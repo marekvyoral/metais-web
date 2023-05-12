@@ -5,10 +5,12 @@ import Footer from "./components/Footer";
 import Table from "./components/Table";
 import Input from "./components/Input";
 import RadioButton from "./components/RadioButton";
+import Select from "./components/select-lazy-loading/SelectLazyLoading";
 
 const App: React.FC = () => {
   const [name, setName] = useState<string>('Janko')
   const [lastName, setLastName] = useState<string>('Hraško')
+  const [country, setCountry] = useState<string | null>(null);
   return (
     <>
       <Navbar />
@@ -33,6 +35,12 @@ const App: React.FC = () => {
                 name="account"
                 value="Hraško"
                 label="Máte už vytvorený osobný účet?"
+              />
+              <Select
+                name="account"
+                label="Vyber krajiny"
+                onChange={setCountry}
+                value={country}
               />
               <div style={{ textAlign: "center" }}>
                 <button className="govuk-button">Odoslať formulár</button>
