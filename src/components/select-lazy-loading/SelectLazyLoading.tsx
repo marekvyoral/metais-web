@@ -1,6 +1,7 @@
-import React, { useState } from "react";
 import {
+  GroupBase,
   MenuProps,
+  MultiValue,
   OptionProps,
   OptionsOrGroups,
   components,
@@ -8,62 +9,50 @@ import {
 import { AsyncPaginate } from "react-select-async-paginate";
 import "./selectLazyLoading.scss";
 
-interface ISelectProps {
+interface ISelectProps<T> {
+  value: T | MultiValue<T> | null;
+  onChange: (val: T | MultiValue<T> | null) => void;
   label: string;
   name: string;
-  onChange: (val: string | null) => void;
-  value: string | null;
+  optionValue: keyof T;
+  optionLabel: keyof T;
+  option?: (props: OptionProps<T>) => JSX.Element;
+  placeHolder?: string;
+  isMulti?: boolean;
+  loadOptions: (
+    searchQuery: string,
+    options: OptionsOrGroups<T, GroupBase<T>>,
+    additional: { page: number } | undefined
+  ) => Promise<{
+    options: OptionsOrGroups<T, GroupBase<T>>;
+    hasMore: boolean;
+    additional: {
+      page: number;
+    };
+  }>;
 }
 
-type OptionType = {
-  value: number;
-  name: string;
-};
-
-type test = {
-  page: number;
-};
-
-const Select: React.FunctionComponent<ISelectProps> = ({ label, name }) => {
-  const [value, onChange] = useState<OptionType | null>(null);
-  console.log("value", value);
-
-  const loadOptions = async (
-    searchQuery: string,
-    options: OptionsOrGroups<any, any>,
-    additional: test | undefined
-  ) => {
-    console.log("options", options);
-    console.log("page", additional?.page);
-    console.log("searchQuery", searchQuery);
-
-    const response = await fetch(
-      `https://www.anapioficeandfire.com/api/houses?region=${searchQuery}&page=${
-        additional?.page || 1
-      }&pageSize=10`
-    );
-    const responseJSON = await response.json();
-
-    return {
-      options: responseJSON,
-      hasMore: responseJSON.length >= 1,
-      additional: {
-        page:
-          searchQuery && !additional?.page ? 2 : (additional?.page || 1) + 1,
-      },
-    };
-  };
-
-  const Option = (props: OptionProps<any>) => {
-    return (
-      <components.Option {...props} className="select-option">
-        <div>{props.data.name}</div>
-        <span>{props.data.region}</span>
-      </components.Option>
+const SelectLazyLoading = <T,>({
+  value,
+  onChange,
+  label,
+  name,
+  optionValue,
+  optionLabel,
+  option,
+  placeHolder,
+  isMulti = false,
+  loadOptions,
+}: ISelectProps<T>) => {
+  const Option = (props: OptionProps<T>) => {
+    return option ? (
+      option(props)
+    ) : (
+      <components.Option {...props} className="select-option" />
     );
   };
 
-  const Menu = (props: MenuProps<any | any, false, any>) => {
+  const Menu = (props: MenuProps<T, true, GroupBase<T>>) => {
     return (
       <components.Menu {...props} className="menu">
         {props.children}
@@ -78,19 +67,18 @@ const Select: React.FunctionComponent<ISelectProps> = ({ label, name }) => {
         value={value}
         loadOptions={loadOptions}
         onChange={onChange}
-        getOptionValue={(option) => option.name}
-        getOptionLabel={(option) => option.name}
-        placeholder=""
+        getOptionValue={(option) => option[optionValue] as string}
+        getOptionLabel={(option) => option[optionLabel] as string}
+        placeholder={placeHolder || ""}
         components={{ Option, Menu }}
-        isMulti={false}
+        isMulti={isMulti}
         className="govuk-select select-lazy-loading"
-        unstyled
         name={name}
         id={name}
-        onFocus={() => null}
+        unstyled
       />
     </div>
   );
 };
 
-export default Select;
+export default SelectLazyLoading;
