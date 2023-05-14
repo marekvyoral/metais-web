@@ -1,84 +1,73 @@
-import {
-  GroupBase,
-  MenuProps,
-  MultiValue,
-  OptionProps,
-  OptionsOrGroups,
-  components,
-} from "react-select";
-import { AsyncPaginate } from "react-select-async-paginate";
-import "./selectLazyLoading.scss";
+import { GroupBase, MenuProps, MultiValue, OptionProps, OptionsOrGroups, components } from 'react-select';
+import { AsyncPaginate } from 'react-select-async-paginate';
+import './selectLazyLoading.scss';
 
 interface ISelectProps<T> {
-  value: T | MultiValue<T> | null;
-  onChange: (val: T | MultiValue<T> | null) => void;
-  label: string;
-  name: string;
-  optionValue: keyof T;
-  optionLabel: keyof T;
-  option?: (props: OptionProps<T>) => JSX.Element;
-  placeHolder?: string;
-  isMulti?: boolean;
-  loadOptions: (
-    searchQuery: string,
-    options: OptionsOrGroups<T, GroupBase<T>>,
-    additional: { page: number } | undefined
-  ) => Promise<{
-    options: OptionsOrGroups<T, GroupBase<T>>;
-    hasMore: boolean;
-    additional: {
-      page: number;
-    };
-  }>;
+    value: T | MultiValue<T> | null;
+    onChange: (val: T | MultiValue<T> | null) => void;
+    label: string;
+    name: string;
+    optionValue: keyof T;
+    optionLabel: keyof T;
+    option?: (props: OptionProps<T>) => JSX.Element;
+    placeHolder?: string;
+    isMulti?: boolean;
+    loadOptions: (
+        searchQuery: string,
+        options: OptionsOrGroups<T, GroupBase<T>>,
+        additional: { page: number } | undefined,
+    ) => Promise<{
+        options: OptionsOrGroups<T, GroupBase<T>>;
+        hasMore: boolean;
+        additional: {
+            page: number;
+        };
+    }>;
 }
 
 const SelectLazyLoading = <T,>({
-  value,
-  onChange,
-  label,
-  name,
-  optionValue,
-  optionLabel,
-  option,
-  placeHolder,
-  isMulti = false,
-  loadOptions,
+    value,
+    onChange,
+    label,
+    name,
+    optionValue,
+    optionLabel,
+    option,
+    placeHolder,
+    isMulti = false,
+    loadOptions,
 }: ISelectProps<T>) => {
-  const Option = (props: OptionProps<T>) => {
-    return option ? (
-      option(props)
-    ) : (
-      <components.Option {...props} className="select-option" />
-    );
-  };
+    const Option = (props: OptionProps<T>) => {
+        return option ? option(props) : <components.Option {...props} className="select-option" />;
+    };
 
-  const Menu = (props: MenuProps<T, true, GroupBase<T>>) => {
+    const Menu = (props: MenuProps<T, true, GroupBase<T>>) => {
+        return (
+            <components.Menu {...props} className="menu">
+                {props.children}
+            </components.Menu>
+        );
+    };
+
     return (
-      <components.Menu {...props} className="menu">
-        {props.children}
-      </components.Menu>
+        <div className="govuk-form-group">
+            <label className="govuk-label">{label}</label>
+            <AsyncPaginate
+                value={value}
+                loadOptions={loadOptions}
+                onChange={onChange}
+                getOptionValue={(option) => option[optionValue] as string}
+                getOptionLabel={(option) => option[optionLabel] as string}
+                placeholder={placeHolder || ''}
+                components={{ Option, Menu }}
+                isMulti={isMulti}
+                className="govuk-select select-lazy-loading"
+                name={name}
+                id={name}
+                unstyled
+            />
+        </div>
     );
-  };
-
-  return (
-    <div className="govuk-form-group">
-      <label className="govuk-label">{label}</label>
-      <AsyncPaginate
-        value={value}
-        loadOptions={loadOptions}
-        onChange={onChange}
-        getOptionValue={(option) => option[optionValue] as string}
-        getOptionLabel={(option) => option[optionLabel] as string}
-        placeholder={placeHolder || ""}
-        components={{ Option, Menu }}
-        isMulti={isMulti}
-        className="govuk-select select-lazy-loading"
-        name={name}
-        id={name}
-        unstyled
-      />
-    </div>
-  );
 };
 
 export default SelectLazyLoading;
