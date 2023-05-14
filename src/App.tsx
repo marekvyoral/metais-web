@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
+import React, { useCallback, useMemo, useState } from 'react';
 import { MultiValue, OptionProps, components } from 'react-select';
 import './app.scss';
 import HomeIcon from './assets/images/header-web/home.png';
@@ -44,56 +44,42 @@ const App: React.FC = () => {
         );
     };
 
-    const getOptions = useMutation<OptionType[], unknown, { searchQuery: string; page: number }>(({ searchQuery, page }) =>
+    const getOptions = useMutation<OptionType[] | null, unknown, { searchQuery: string; page: number }>(({ searchQuery, page }) =>
         fetch(`https://www.anapioficeandfire.com/api/houses?region=${searchQuery}&page=${page}&pageSize=10`).then((response) => response.json()),
     );
 
-    // const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
-    //     const page = searchQuery && !additional?.page ? 1 : (additional?.page || 0) + 1;
-    //     const options = await getOptions.mutateAsync({ searchQuery, page });
-    //     const response = await fetch(
-    //       `https://www.anapioficeandfire.com/api/houses?region=${searchQuery}&page=${page}&pageSize=10`
-    //     );
-    //     const responseJSON = await response.json();
+    const loadOptions = useCallback(
+        async (searchQuery: string, additional: { page: number } | undefined) => {
+            const page = searchQuery && !additional?.page ? 1 : (additional?.page || 0) + 1;
+            const options = await getOptions.mutateAsync({ searchQuery, page });
 
-    //     return {
-    //         options: responseJSON,
-    //         hasMore: options?.length ? true : false,
-    //         additional: {
-    //             page: page,
-    //         },
-    //     };
-    // };
+            return {
+                options: options || [],
+                hasMore: options?.length ? true : false,
+                additional: {
+                    page: page,
+                },
+            };
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [],
+    );
 
-    // const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
-    //     const response = await fetch(`https://www.anapioficeandfire.com/api/houses?region=${searchQuery}&page=${additional?.page || 1}&pageSize=10`);
-    //     const responseJSON = await response.json();
-    //     console.log('responseJSON', responseJSON);
-    //     return {
-    //         options: responseJSON,
-    //         hasMore: responseJSON.length >= 1,
-    //         additional: {
-    //             page: searchQuery && !additional?.page ? 2 : (additional?.page || 1) + 1,
-    //         },
-    //     };
-    // };
-
-    const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
-        const page = searchQuery && !additional?.page ? 1 : (additional?.page || 0) + 1;
-        // const response = await fetch(`https://www.anapioficeandfire.com/api/houses?region=${searchQuery}&page=${page}&pageSize=10`);
-        // const responseJSON = await response.json();
-
-        const responseJSON = await getOptions.mutateAsync({ searchQuery, page });
-        console.log('responseJSON', responseJSON);
-        
-        return {
-            options: responseJSON,
-            hasMore: responseJSON.length >= 1,
-            additional: {
-                page: page,
-            },
-        };
-    };
+    const lazyLoadingSelect = useMemo(
+        () => (
+            <SelectLazyLoading<OptionType>
+                name="account"
+                label="Vyber krajiny"
+                onChange={setCountry}
+                value={country}
+                optionValue="name"
+                optionLabel="name"
+                option={(props) => selectLazyLoadingOption(props)}
+                loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
+            />
+        ),
+        [country, loadOptions],
+    );
 
     return (
         <>
@@ -112,16 +98,7 @@ const App: React.FC = () => {
                             <Input name="name" value={name} label="Meno použivateľa" onChange={(value) => setName(value)} />
                             <Input name="lastName" value={lastName} label="Priezvisko použivateľa" onChange={(value) => setLastName(value)} />
                             <RadioButton name="account" value="Hraško" label="Máte už vytvorený osobný účet?" />
-                            <SelectLazyLoading<OptionType>
-                                name="account"
-                                label="Vyber krajiny"
-                                onChange={setCountry}
-                                value={country}
-                                optionValue="name"
-                                optionLabel="name"
-                                option={(props) => selectLazyLoadingOption(props)}
-                                loadOptions={(searchQuery, _, additional) => loadOptions(searchQuery, additional)}
-                            />
+                            {lazyLoadingSelect}
                             <div style={{ textAlign: 'center' }}>
                                 <button className="govuk-button">Odoslať formulár</button>
                             </div>

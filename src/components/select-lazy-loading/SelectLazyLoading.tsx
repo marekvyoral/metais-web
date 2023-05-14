@@ -2,6 +2,14 @@ import { GroupBase, MenuProps, MultiValue, OptionProps, OptionsOrGroups, compone
 import { AsyncPaginate } from 'react-select-async-paginate';
 import './selectLazyLoading.scss';
 
+export interface LoadOptionsResponse<T> {
+    options: T[];
+    hasMore: boolean;
+    additional: {
+        page: number;
+    };
+}
+
 interface ISelectProps<T> {
     value: T | MultiValue<T> | null;
     onChange: (val: T | MultiValue<T> | null) => void;
@@ -14,15 +22,9 @@ interface ISelectProps<T> {
     isMulti?: boolean;
     loadOptions: (
         searchQuery: string,
-        options: OptionsOrGroups<T, GroupBase<T>>,
+        prevOptions: OptionsOrGroups<T, GroupBase<T>>,
         additional: { page: number } | undefined,
-    ) => Promise<{
-        options: OptionsOrGroups<T, GroupBase<T>>;
-        hasMore: boolean;
-        additional: {
-            page: number;
-        };
-    }>;
+    ) => Promise<LoadOptionsResponse<T>>;
 }
 
 const SelectLazyLoading = <T,>({
@@ -37,16 +39,16 @@ const SelectLazyLoading = <T,>({
     isMulti = false,
     loadOptions,
 }: ISelectProps<T>) => {
-    const Option = (props: OptionProps<T>) => {
-        return option ? option(props) : <components.Option {...props} className="select-option" />;
-    };
-
     const Menu = (props: MenuProps<T, true, GroupBase<T>>) => {
         return (
             <components.Menu {...props} className="menu">
                 {props.children}
             </components.Menu>
         );
+    };
+
+    const Option = (props: OptionProps<T>) => {
+        return option ? option(props) : <components.Option {...props} className="select-option" />;
     };
 
     return (
