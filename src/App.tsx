@@ -11,6 +11,8 @@ import Navbar from "./components/Navbar";
 import RadioButton from "./components/RadioButton";
 import Table from "./components/Table";
 import SelectLazyLoading from "./components/select-lazy-loading/SelectLazyLoading";
+import { BreadCrumbs } from "./components/bread-crumbs/BreadCrumbs";
+import HomeIcon from './assets/images/header-web/home.png'
 
 type OptionType = {
   region: number;
@@ -59,6 +61,7 @@ const App: React.FC = () => {
       <Navbar />
       <div className="govuk-width-container" id="main-content">
         <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
+        <BreadCrumbs links={[{label:'Home', href:'/', icon:HomeIcon}, {label:'Second', href:'/second'}]} />
           <Table />
           <div>
             <form action="/" method="post">
