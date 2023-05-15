@@ -35,7 +35,7 @@ const App: React.FC = () => {
     const [lastName, setLastName] = useState<string>('Hraško');
     const [country, setCountry] = useState<OptionType | MultiValue<OptionType> | null>(null);
 
-    const selectLazyLoadingOption = (props: OptionProps<any>) => {
+    const selectLazyLoadingOption = (props: OptionProps<OptionType>) => {
         return (
             <components.Option {...props} className="select-option">
                 <div>{props.data.name}</div>
@@ -50,22 +50,18 @@ const App: React.FC = () => {
         fetch(`https://www.anapioficeandfire.com/api/houses?region=${searchQuery}&page=${page}&pageSize=10`).then((response) => response.json()),
     );
 
-    const loadOptions = useCallback(
-        async (searchQuery: string, additional: { page: number } | undefined) => {
-            const page = searchQuery && !additional?.page ? 1 : (additional?.page || 0) + 1;
-            const options = await getOptions.mutateAsync({ searchQuery, page });
+    const loadOptions = useCallback(async (searchQuery: string, additional: { page: number } | undefined) => {
+        const page = searchQuery && !additional?.page ? 1 : (additional?.page || 0) + 1;
+        const options = await getOptions.mutateAsync({ searchQuery, page });
 
-            return {
-                options: options || [],
-                hasMore: options?.length ? true : false,
-                additional: {
-                    page: page,
-                },
-            };
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [],
-    );
+        return {
+            options: options || [],
+            hasMore: options?.length ? true : false,
+            additional: {
+                page: page,
+            },
+        };
+    }, []);
 
     const lazyLoadingSelect = useMemo(
         () => (
