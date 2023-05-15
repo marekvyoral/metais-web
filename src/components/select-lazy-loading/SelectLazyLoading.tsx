@@ -1,8 +1,9 @@
+import React from 'react';
 import { GroupBase, MenuProps, MultiValue, OptionProps, OptionsOrGroups, components } from 'react-select';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import './selectLazyLoading.scss';
 
-export interface LoadOptionsResponse<T> {
+export interface ILoadOptionsResponse<T> {
     options: T[];
     hasMore: boolean;
     additional: {
@@ -24,7 +25,7 @@ interface ISelectProps<T> {
         searchQuery: string,
         prevOptions: OptionsOrGroups<T, GroupBase<T>>,
         additional: { page: number } | undefined,
-    ) => Promise<LoadOptionsResponse<T>>;
+    ) => Promise<ILoadOptionsResponse<T>>;
 }
 
 const SelectLazyLoading = <T,>({
