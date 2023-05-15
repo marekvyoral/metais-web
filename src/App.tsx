@@ -39,7 +39,9 @@ const App: React.FC = () => {
         return (
             <components.Option {...props} className="select-option">
                 <div>{props.data.name}</div>
-                <span>{props.data.region}</span>
+                <span>
+                    <small>{props.data.region}</small>
+                </span>
             </components.Option>
         );
     };
@@ -99,7 +101,7 @@ const App: React.FC = () => {
                             <Input name="lastName" value={lastName} label="Priezvisko použivateľa" onChange={(value) => setLastName(value)} />
                             <RadioButton name="account" value="Hraško" label="Máte už vytvorený osobný účet?" />
                             {lazyLoadingSelect}
-                            <div style={{ textAlign: 'center' }}>
+                            <div>
                                 <button className="govuk-button">Odoslať formulár</button>
                             </div>
                         </form>
