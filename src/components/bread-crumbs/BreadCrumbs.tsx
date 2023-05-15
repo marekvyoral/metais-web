@@ -11,7 +11,7 @@ type BreadCrumbsItemProps = {
     label: string
   }
 
-const BreadCrumbsItem: React.FC<BreadCrumbsItemProps> = ({icon, href, label, ...props}) => {
+const BreadCrumbsItem: React.FC<BreadCrumbsItemProps> = ({icon, href, label}) => {
     return (
         <li className='govuk-breadcrumbs__list-item'>
             <a className='govuk-breadcrumbs__link' href={href}>
@@ -22,11 +22,11 @@ const BreadCrumbsItem: React.FC<BreadCrumbsItemProps> = ({icon, href, label, ...
     )
 }
 
-export const BreadCrumbs: React.FC<BreadCrumbsProps> = ({links, ...props}) => {
+export const BreadCrumbs: React.FC<BreadCrumbsProps> = ({links}) => {
     return (  
             <div className='govuk-breadcrumbs'>
                 <ul className='govuk-breadcrumbs__list'>
-                    {links.map(value => <BreadCrumbsItem href={value.href} label={value.label} icon={value.icon} />)}
+                    {links.map(value => <BreadCrumbsItem href={value.href} label={value.label} icon={value.icon} key={value.label}/>)}
                 </ul>
         </div>
 
