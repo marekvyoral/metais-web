@@ -50,18 +50,21 @@ const App: React.FC = () => {
         fetch(`https://www.anapioficeandfire.com/api/houses?region=${searchQuery}&page=${page}&pageSize=10`).then((response) => response.json()),
     );
 
-    const loadOptions = useCallback(async (searchQuery: string, additional: { page: number } | undefined) => {
-        const page = searchQuery && !additional?.page ? 1 : (additional?.page || 0) + 1;
-        const options = await getOptions.mutateAsync({ searchQuery, page });
+    const loadOptions = useCallback(
+        async (searchQuery: string, additional: { page: number } | undefined) => {
+            const page = searchQuery && !additional?.page ? 1 : (additional?.page || 0) + 1;
+            const options = await getOptions.mutateAsync({ searchQuery, page });
 
-        return {
-            options: options || [],
-            hasMore: options?.length ? true : false,
-            additional: {
-                page: page,
-            },
-        };
-    }, []);
+            return {
+                options: options || [],
+                hasMore: options?.length ? true : false,
+                additional: {
+                    page: page,
+                },
+            };
+        },
+        [getOptions],
+    );
 
     const lazyLoadingSelect = useMemo(
         () => (

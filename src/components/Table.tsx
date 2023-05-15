@@ -1,9 +1,6 @@
 import * as React from 'react';
 
-interface ITableProps {
-}
-
-const Table: React.FunctionComponent<ITableProps> = (props) => {
+const Table: React.FunctionComponent = () => {
   return (
     <div data-module="idsk-table" id="priklad-2">
       <div className="idsk-table__heading">
@@ -116,7 +113,7 @@ const Table: React.FunctionComponent<ITableProps> = (props) => {
             <button
               type="submit"
               className="idsk-button submit-table-filter"
-              disabled={true}
+              disabled
             >
               Filtrovať (<span className="count">0</span>)
             </button>
