@@ -7,20 +7,20 @@ interface IInputProps {
     onChange?: (value: string) => void;
 }
 
-const Input: React.FunctionComponent<IInputProps> = ({label, name, value, onChange}) => {
-  return (
-    <div className="govuk-form-group">
-      <label className="govuk-label">{label}</label>
-      <input
-        className="govuk-input"
-        id={`input_name_${name}`}
-        name={name}
-        type="text"
-        value={value}
-        onChange={(e) => onChange && onChange(e.target.value)}
-      />
-    </div>
-  );
+const Input: React.FunctionComponent<IInputProps> = ({ label, name, value, onChange }) => {
+    return (
+        <div className="govuk-form-group">
+            <label className="govuk-label">{label}</label>
+            <input
+                className="govuk-input"
+                id={`input_name_${name}`}
+                name={name}
+                type="text"
+                value={value}
+                onChange={(e) => onChange && onChange(e.target.value)}
+            />
+        </div>
+    );
 };
 
 export default Input;

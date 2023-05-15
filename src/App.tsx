@@ -63,7 +63,8 @@ const App: React.FC = () => {
                 },
             };
         },
-        [getOptions],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [],
     );
 
     const lazyLoadingSelect = useMemo(
