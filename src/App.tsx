@@ -34,7 +34,7 @@ const App: React.FC = () => {
     const [lastName, setLastName] = useState<string>('Hraško');
     const [country, setCountry] = useState<OptionType | MultiValue<OptionType> | null>(null);
 
-    const selectLazyLoadingOption = (props: OptionProps<any>) => {
+    const selectLazyLoadingOption = (props: OptionProps<OptionType>) => {
         return (
             <components.Option {...props} className="select-option">
                 <div>{props.data.name}</div>
