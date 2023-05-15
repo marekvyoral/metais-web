@@ -89,7 +89,7 @@ const App: React.FC = () => {
                 <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
                     <BreadCrumbs
                         links={[
-                            { label: 'Home', href: '/', icon: "/assets/images/header-web/home.png" },
+                            { label: 'Home', href: '/', icon: '/assets/images/header-web/home.png' },
                             { label: 'Second', href: '/second' },
                         ]}
                     />
