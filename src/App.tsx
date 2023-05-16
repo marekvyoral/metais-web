@@ -10,6 +10,7 @@ import { Input } from './components/Input'
 import { Table } from './components/Table'
 import { BreadCrumbs } from './components/bread-crumbs/BreadCrumbs'
 import { SelectLazyLoading } from './components/select-lazy-loading/SelectLazyLoading'
+import HomeIcon from './assets/images/home.svg'
 
 type OptionType = {
   url: string
@@ -90,7 +91,7 @@ export const App: React.FC = () => {
         <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
           <BreadCrumbs
             links={[
-              { label: 'Home', href: '/', icon: '/assets/images/header-web/home.png' },
+              { label: 'Home', href: '/', icon: HomeIcon },
               { label: 'Second', href: '/second' },
             ]}
           />
