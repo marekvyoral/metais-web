@@ -9,6 +9,7 @@ import RadioButton from './components/radioButton';
 import Table from './components/table';
 import { BreadCrumbs } from './components/bread-crumbs/breadCrumbs';
 import SelectLazyLoading from './components/select-lazy-loading/selectLazyLoading';
+import { AccordionContainer, AccordionSection } from './components/Accordion';
 
 type OptionType = {
     url: string;
@@ -85,7 +86,7 @@ const App: React.FC = () => {
     return (
         <>
             <Navbar />
-            <div className="govuk-width-container" id="main-content">
+            <div className="js-enabled govuk-width-container" id="main-content">
                 <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
                     <BreadCrumbs
                         links={[
@@ -93,6 +94,17 @@ const App: React.FC = () => {
                             { label: 'Second', href: '/second' },
                         ]}
                     />
+                    <AccordionContainer id="ukazkova_sekcia">
+                        <AccordionSection title="Sekcia1" summary="Toto je zhrnutie obsahu 1.">
+                            Obsah prvej sekcie.
+                        </AccordionSection>
+                        <AccordionSection title="Sekcia2" summary="Toto je zhrnutie obsahu 2.">
+                            Obsah druhej sekcie.
+                        </AccordionSection>
+                        <AccordionSection title="Sekcia3" summary="Toto je zhrnutie obsahu 3.">
+                            Obsah tretej sekcie.
+                        </AccordionSection>
+                    </AccordionContainer>
                     <Table />
                     <div>
                         <form action="/" method="post">
@@ -113,3 +125,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
