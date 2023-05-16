@@ -2,14 +2,13 @@ import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useMemo, useState } from 'react';
 import { MultiValue, OptionProps, components } from 'react-select';
 import './app.scss';
-import HomeIcon from './assets/images/header-web/home.png';
-import Footer from './components/Footer';
-import Input from './components/Input';
-import Navbar from './components/Navbar';
-import RadioButton from './components/RadioButton';
-import Table from './components/Table';
-import { BreadCrumbs } from './components/bread-crumbs/BreadCrumbs';
-import SelectLazyLoading from './components/select-lazy-loading/SelectLazyLoading';
+import Footer from './components/footer';
+import Input from './components/input';
+import Navbar from './components/navbar';
+import RadioButton from './components/radioButton';
+import Table from './components/table';
+import { BreadCrumbs } from './components/bread-crumbs/breadCrumbs';
+import SelectLazyLoading from './components/select-lazy-loading/selectLazyLoading';
 
 type OptionType = {
     url: string;
@@ -35,7 +34,7 @@ const App: React.FC = () => {
     const [lastName, setLastName] = useState<string>('Hraško');
     const [country, setCountry] = useState<OptionType | MultiValue<OptionType> | null>(null);
 
-    const selectLazyLoadingOption = (props: OptionProps<any>) => {
+    const selectLazyLoadingOption = (props: OptionProps<OptionType>) => {
         return (
             <components.Option {...props} className="select-option">
                 <div>{props.data.name}</div>
@@ -90,7 +89,7 @@ const App: React.FC = () => {
                 <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
                     <BreadCrumbs
                         links={[
-                            { label: 'Home', href: '/', icon: HomeIcon },
+                            { label: 'Home', href: '/', icon: '/assets/images/header-web/home.png' },
                             { label: 'Second', href: '/second' },
                         ]}
                     />

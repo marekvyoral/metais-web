@@ -1,5 +1,4 @@
 import React from 'react';
-import logo_miri from '../assets/images/header-web/logo-mirri-farebne.svg';
 
 const Navbar: React.FC = () => {
     return (
@@ -120,7 +119,11 @@ const Navbar: React.FC = () => {
                                 <div className="govuk-grid-column-full govuk-grid-column-one-third-from-desktop">
                                     <div className="idsk-header-web__main-headline">
                                         <a href="/" title="Odkaz na úvodnú stránku">
-                                            <img src={logo_miri} alt="ID-SK Frontend" className="idsk-header-web__main-headline-logo" />
+                                            <img
+                                                src="/assets/images/header-web/logo-mirri-farebne.svg"
+                                                alt="ID-SK Frontend"
+                                                className="idsk-header-web__main-headline-logo"
+                                            />
                                         </a>
 
                                         <button
