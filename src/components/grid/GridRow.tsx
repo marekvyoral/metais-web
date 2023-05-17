@@ -1,9 +1,5 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 
-interface IGridRowProps {
-  children: ReactElement[] | ReactElement
-}
-
-export const GridRow = ({ children }: IGridRowProps) => {
+export const GridRow: React.FC<React.PropsWithChildren> = ({ children }) => {
   return <div className="govuk-grid-row">{children}</div>
 }

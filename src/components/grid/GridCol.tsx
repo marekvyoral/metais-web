@@ -1,10 +1,9 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 
-interface IGridColProps {
-  children: ReactElement
-  setWidth: 'full' | 'two-thirds' | 'one-half' | 'one-third' | 'one-quarter'
+interface IGridColProps extends React.PropsWithChildren {
+  setWidth?: 'full' | 'two-thirds' | 'one-half' | 'one-third' | 'one-quarter'
 }
 
-export const GridCol = ({ children, setWidth }: IGridColProps) => {
+export const GridCol: React.FC<IGridColProps> = ({ children, setWidth = 'full' }) => {
   return <div className={`govuk-grid-column-${setWidth}`}>{children}</div>
 }
