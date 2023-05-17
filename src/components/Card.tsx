@@ -56,17 +56,16 @@ export const Card: React.FC<ICardProps> = ({ className = 'basic', tag1, tag2, ti
             {title}
           </a>
         </div>
-        {className.includes('profile') && description ? (
-          <div className="idsk-body idsk-body-profile-vertical">
-            <a href="#" className="idsk-card-title govuk-link" title={description}>
-              {description}
-            </a>
-          </div>
-        ) : description ? (
-          <p className={`idsk-body idsk-body-${className}`}>{description}</p>
-        ) : (
-          <></>
-        )}
+        {description &&
+          (className.includes('profile') ? (
+            <div className="idsk-body idsk-body-profile-vertical">
+              <a href="#" className="idsk-card-title govuk-link" title={description}>
+                {description}
+              </a>
+            </div>
+          ) : (
+            <p className={`idsk-body idsk-body-${className}`}>{description}</p>
+          ))}
       </div>
     </div>
   )
