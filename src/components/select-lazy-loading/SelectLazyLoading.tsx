@@ -19,7 +19,7 @@ interface ISelectProps<T> {
   getOptionValue: (item: T) => string
   getOptionLabel: (item: T) => string
   option?: (props: OptionProps<T>) => JSX.Element
-  placeHolder?: string
+  placeholder?: string
   isMulti?: boolean
   loadOptions: (
     searchQuery: string,
@@ -36,7 +36,7 @@ export const SelectLazyLoading = <T,>({
   getOptionValue,
   getOptionLabel,
   option,
-  placeHolder,
+  placeholder,
   isMulti = false,
   loadOptions,
 }: ISelectProps<T>): JSX.Element => {
@@ -61,7 +61,7 @@ export const SelectLazyLoading = <T,>({
         onChange={onChange}
         getOptionValue={getOptionValue}
         getOptionLabel={getOptionLabel}
-        placeholder={placeHolder || ''}
+        placeholder={placeholder || ''}
         components={{ Option, Menu }}
         isMulti={isMulti}
         className="govuk-select select-lazy-loading"
