@@ -1,15 +1,4 @@
-import React, { useState, useEffect } from 'react'
-
-/**
- * Create associative array object, where keys are numbers from 0 to "length" and values are equal "defaultValue"
- * example: createAssociativeArray(3, false) = {0: false, 1: false; 2: false}
- * @param length length
- * @param defaultValue value (boolean)
- * @returns associative Array
- */
-const createAssociativeArray: (length: number, defaultValue: boolean) => { [key: string]: boolean } = (length, defaultValue) => {
-  return Array.apply(false, Array(length)).reduce<{ [key: string]: boolean }>((prev, _curr, index) => ({ ...prev, [index]: defaultValue }), {})
-}
+import React, { useState } from 'react'
 
 type AccordionContainerProps = {
   children: React.ReactNode
@@ -19,19 +8,11 @@ type AccordionContainerProps = {
 const AccordionContainer: React.FC<AccordionContainerProps> = ({ children, id }) => {
   const childCount = Array.isArray(children) ? children.length : 0
 
-  const [expandedChildIndexes, setExpandedChildIndexes] = useState<{ [key: string]: boolean }>(createAssociativeArray(childCount, false))
-  const [isAllExpanded, setIsAllExpanded] = useState(false)
-
-  useEffect(() => {
-    if (!expandedChildIndexes) {
-      return
-    }
-    const countOfExpanded = Object.keys(expandedChildIndexes).reduce<number>((prev, _, index) => prev + (expandedChildIndexes[index] ? 1 : 0), 0)
-    setIsAllExpanded(countOfExpanded === childCount ? true : false)
-  }, [expandedChildIndexes, childCount])
+  const [expandedChildIndexes, setExpandedChildIndexes] = useState<boolean[]>(Array(childCount).fill(false))
+  const isAllExpanded = expandedChildIndexes.every((x) => x)
 
   const toggleAllExpanded = () => {
-    setExpandedChildIndexes(createAssociativeArray(childCount, !isAllExpanded))
+    setExpandedChildIndexes(Array(childCount).fill(!isAllExpanded))
   }
 
   return (
@@ -47,7 +28,12 @@ const AccordionContainer: React.FC<AccordionContainerProps> = ({ children, id })
           const title = (child.props && child.props.title) || 'title' + index
           const summary = (child.props && child.props.summary) || 'summary' + index
           const expanded = expandedChildIndexes && expandedChildIndexes[index]
-          const onToggle = () => setExpandedChildIndexes((vals) => ({ ...vals, [index]: !expanded }))
+          const onToggle = () =>
+            setExpandedChildIndexes((prev) => {
+              const newArr = [...prev]
+              newArr[index] = !expanded
+              return newArr
+            })
           return (
             <div className={'govuk-accordion__section' + (expanded ? ' govuk-accordion__section--expanded' : '')}>
               <div className="govuk-accordion__section-header">
