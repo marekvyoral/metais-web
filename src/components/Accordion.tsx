@@ -1,12 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useId } from 'react'
 
-interface IAccordionContainerProps extends React.PropsWithChildren {
-    children: React.ReactNode
-    id: string
-}
-
-const AccordionContainer: React.FC<IAccordionContainerProps> = ({ children, id }) => {
+const AccordionContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
     const childCount = Array.isArray(children) ? children.length : 0
+    const id = useId()
 
     const [expandedChildIndexes, setExpandedChildIndexes] = useState<boolean[]>(Array(childCount).fill(false))
     const isAllExpanded = expandedChildIndexes.every((x) => x)
@@ -56,13 +52,12 @@ const AccordionContainer: React.FC<IAccordionContainerProps> = ({ children, id }
     )
 }
 
-type AccordionSectionProps = {
+interface IAccordionSectionProps extends React.PropsWithChildren {
     title: string
     summary: React.ReactNode
-    children: React.ReactNode
 }
 
-const AccordionSection: React.FC<AccordionSectionProps> = ({ children }) => {
+const AccordionSection: React.FC<IAccordionSectionProps> = ({ children }) => {
     return <>{children}</>
 }
 
