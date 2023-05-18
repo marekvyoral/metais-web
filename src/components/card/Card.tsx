@@ -4,25 +4,28 @@ interface Tag {
   title: string
   href: string
 }
+interface Image {
+  src: string
+  alt: string
+}
 
-interface ICardProps {
+interface ICardProps extends React.PropsWithChildren {
   className?: 'basic' | 'secondary' | 'secondary-horizontal' | 'simple' | 'hero' | 'basic-variant' | 'profile-vertical' | 'profile-horizontal'
   tag1?: Tag
   tag2?: Tag
   title: string
   description?: string
   date?: string
-  imgSrc?: string
-  imgAlt?: string
+  img?: Image
   cardHref: string
 }
 
-export const Card: React.FC<ICardProps> = ({ className = 'basic', tag1, tag2, title, description, date, imgSrc, imgAlt, cardHref }) => {
+export const Card: React.FC<ICardProps> = ({ className = 'basic', tag1, tag2, title, description, date, img, cardHref, children }) => {
   return (
     <div className={`idsk-card idsk-card-${className}`}>
-      {imgSrc && (
+      {img && (
         <a href={cardHref} title={title}>
-          <img className={`idsk-card-img idsk-card-img-${className}`} src={imgSrc} alt={imgAlt} aria-hidden="true" />
+          <img className={`idsk-card-img idsk-card-img-${className}`} src={img.src} alt={img.alt} aria-hidden="true" />
         </a>
       )}
 
@@ -66,6 +69,8 @@ export const Card: React.FC<ICardProps> = ({ className = 'basic', tag1, tag2, ti
           ) : (
             <p className={`idsk-body idsk-body-${className}`}>{description}</p>
           ))}
+
+        {className === 'profile-horizontal' && <>{children}</>}
       </div>
     </div>
   )
