@@ -2,7 +2,6 @@ import { useMutation } from '@tanstack/react-query'
 import React, { useCallback, useMemo, useState } from 'react'
 import { MultiValue, OptionProps, components } from 'react-select'
 
-import './app.scss'
 import { Footer } from './components/Footer'
 import { Navbar } from './components/Navbar'
 import { RadioButton } from './components/RadioButton'
@@ -88,7 +87,7 @@ export const App: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="js-enabled govuk-width-container" id="main-content">
+      <div className="govuk-width-container" id="main-content">
         <main className="govuk-main-wrapper govuk-main-wrapper--auto-spacing">
           <BreadCrumbs
             links={[
