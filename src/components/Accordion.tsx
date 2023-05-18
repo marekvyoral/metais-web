@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
-type AccordionContainerProps = {
+interface IAccordionContainerProps extends React.PropsWithChildren {
     children: React.ReactNode
     id: string
 }
 
-const AccordionContainer: React.FC<AccordionContainerProps> = ({ children, id }) => {
+const AccordionContainer: React.FC<IAccordionContainerProps> = ({ children, id }) => {
     const childCount = Array.isArray(children) ? children.length : 0
 
     const [expandedChildIndexes, setExpandedChildIndexes] = useState<boolean[]>(Array(childCount).fill(false))
