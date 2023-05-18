@@ -1,22 +1,24 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { BrowserRouter } from 'react-router-dom'
 
-import { reportWebVitals } from './reportWebVitals'
 import { App } from './App'
+import { reportWebVitals } from './reportWebVitals'
 import './index.scss'
 
+document.body.classList.add('js-enabled')
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const queryClient = new QueryClient()
 
-document.body.classList.add('js-enabled')
-
 root.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </React.StrictMode>,
+    <React.StrictMode>
+        <BrowserRouter>
+            <QueryClientProvider client={queryClient}>
+                <App />
+            </QueryClientProvider>
+        </BrowserRouter>
+    </React.StrictMode>,
 )
 
 // If you want to start measuring performance in your app, pass a function
