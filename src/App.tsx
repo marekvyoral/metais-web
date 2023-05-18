@@ -76,8 +76,8 @@ export const App: React.FC = () => {
         label="Vyber krajiny"
         onChange={setCountry}
         value={country}
-        optionValue="name"
-        optionLabel="name"
+        getOptionValue={(item) => item.name}
+        getOptionLabel={(item) => item.name}
         option={(props) => selectLazyLoadingOption(props)}
         loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
       />

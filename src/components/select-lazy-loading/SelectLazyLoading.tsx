@@ -16,10 +16,10 @@ interface ISelectProps<T> {
   onChange: (val: T | MultiValue<T> | null) => void
   label: string
   name: string
-  optionValue: keyof T
-  optionLabel: keyof T
+  getOptionValue: (item: T) => string
+  getOptionLabel: (item: T) => string
   option?: (props: OptionProps<T>) => JSX.Element
-  placeHolder?: string
+  placeholder?: string
   isMulti?: boolean
   loadOptions: (
     searchQuery: string,
@@ -33,13 +33,13 @@ export const SelectLazyLoading = <T,>({
   onChange,
   label,
   name,
-  optionValue,
-  optionLabel,
+  getOptionValue,
+  getOptionLabel,
   option,
-  placeHolder,
+  placeholder,
   isMulti = false,
   loadOptions,
-}: ISelectProps<T>) => {
+}: ISelectProps<T>): JSX.Element => {
   const Menu = (props: MenuProps<T, true, GroupBase<T>>) => {
     return (
       <components.Menu {...props} className="menu">
@@ -59,9 +59,9 @@ export const SelectLazyLoading = <T,>({
         value={value}
         loadOptions={loadOptions}
         onChange={onChange}
-        getOptionValue={(item) => item[optionValue] as string}
-        getOptionLabel={(item) => item[optionLabel] as string}
-        placeholder={placeHolder || ''}
+        getOptionValue={getOptionValue}
+        getOptionLabel={getOptionLabel}
+        placeholder={placeholder || ''}
         components={{ Option, Menu }}
         isMulti={isMulti}
         className="govuk-select select-lazy-loading"
