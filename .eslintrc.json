@@ -95,7 +95,6 @@
         "newlines-between": "always"
       }
     ],
-    "import/no-default-export": "warn",
     "prettier/prettier": [
       "warn"
     ],

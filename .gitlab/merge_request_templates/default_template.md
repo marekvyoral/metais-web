@@ -13,3 +13,5 @@
 > If the style changes depending on **screen size**, attach screenshots on multiple screen sizes
 
 > If the style changes depending on used **browser** or **device platform** (web-Chrome, web-IE, Android-Chrome, iOS-Safari ...) then attach screenshots of app in relevant browsers/platforms
+
+> If there are no visual changes, write "No visual changes"
