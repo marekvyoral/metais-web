@@ -1,0 +1,11 @@
+stages:
+  - run-eslint
+
+checks:
+  image: node:latest
+  stage: run-eslint
+  before_script:
+    - echo "running yarn install"
+    - yarn install
+  script:
+    - npm run lint
