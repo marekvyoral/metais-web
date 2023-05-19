@@ -1,4 +1,5 @@
 import React, { useState, useId } from 'react'
+import classNames from 'classnames'
 
 const AccordionContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
     const childCount = Array.isArray(children) ? children.length : 0
@@ -31,7 +32,7 @@ const AccordionContainer: React.FC<React.PropsWithChildren> = ({ children }) => 
                             return newArr
                         })
                     return (
-                        <div className={'govuk-accordion__section' + (expanded ? ' govuk-accordion__section--expanded' : '')}>
+                        <div className={classNames('govuk-accordion__section', { 'govuk-accordion__section--expanded': expanded })}>
                             <div className="govuk-accordion__section-header">
                                 <h2 className="govuk-accordion__section-heading">
                                     <button className="govuk-accordion__section-button" onClick={onToggle} id={id + '-heading-' + (index + 1)}>
