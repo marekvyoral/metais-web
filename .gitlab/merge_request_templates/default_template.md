@@ -4,14 +4,14 @@
 
 **Description:**
 
-> _(describe changes, mention important parts of changed code or parts of code that need special attention from reviewer)_
+> -   Describe changes as a list of bullet points
+> -   Mention parts of code which need special attention from reviewer
 
 ---
 
-**Screenshots of changed/added elements:**
+**Screenshots of changed elements:**
 
-> If the style changes depending on **screen size**, attach screenshots on multiple screen sizes
-
-> If the style changes depending on used **browser** or **device platform** (web-Chrome, web-IE, Android-Chrome, iOS-Safari ...) then attach screenshots of app in relevant browsers/platforms
-
-> If there are no visual changes, write "No visual changes"
+> -   Attach screenshots on multiple screen sizes, if the visual changes are depending on _screen size_
+> -   Attach screenshots of app in relevant browsers/platforms, if the visual changes are depending on used _browser_ or _device platform_ (web-Chrome, web-IE, Android-Chrome, iOS-Safari ...)
+> -   Attach video or gif, if the changes affect _interactive elements or animations_ (rotating arrow, closing modal)
+> -   If there are no visual changes, enter "No visual changes"
