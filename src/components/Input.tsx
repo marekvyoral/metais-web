@@ -1,24 +1,44 @@
-import React from 'react'
+import * as React from 'react'
+import { forwardRef } from 'react'
+import { FieldError } from 'react-hook-form'
+import classNames from 'classnames'
 
-interface IInputProps {
-    label: string
+interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+    id: string
+    label?: string
     name: string
-    value?: string
-    onChange?: (value: string) => void
+    hint?: string
+    error?: FieldError
+    disabled?: boolean
 }
+export const Input = forwardRef<HTMLInputElement, IInputProps>(({ id, label, name, hint, error, disabled, ...rest }, ref) => {
+    const hintId = `${id}-hint`
 
-export const Input: React.FunctionComponent<IInputProps> = ({ label, name, value, onChange }) => {
     return (
-        <div className="govuk-form-group">
-            <label className="govuk-label">{label}</label>
+        <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!error })}>
+            <label className="govuk-label" htmlFor={id}>
+                {label}
+            </label>
+            {hint && (
+                <span className="govuk-hint" id={hintId}>
+                    {hint}
+                </span>
+            )}
+            {error && error.message && (
+                <>
+                    <span className="govuk-error-message">{error.message}</span>
+                </>
+            )}
             <input
-                className="govuk-input"
-                id={`input_name_${name}`}
+                className={classNames('govuk-input', { 'govuk-input--error': !!error })}
+                id={id}
                 name={name}
                 type="text"
-                value={value}
-                onChange={(e) => onChange && onChange(e.target.value)}
+                ref={ref}
+                {...rest}
+                aria-describedby={hint ? hintId : undefined}
+                disabled={disabled}
             />
         </div>
     )
-}
+})

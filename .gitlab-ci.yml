@@ -1,0 +1,12 @@
+stages:
+    - run-checks
+
+checks:
+    image: node:latest
+    stage: run-checks
+    before_script:
+        - echo "running yarn install"
+        - yarn install
+    script:
+        - yarn run typescript-check
+        - yarn run lint
