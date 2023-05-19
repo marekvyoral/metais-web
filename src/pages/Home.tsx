@@ -1,10 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
 import React, { useCallback, useMemo, useState } from 'react'
-import { MultiValue, OptionProps, components } from 'react-select'
 import { Link } from 'react-router-dom'
+import { MultiValue, OptionProps, components } from 'react-select'
 
 import HomeIcon from '../assets/images/home.svg'
-import { Input } from '../components/Input'
 import { RadioButton } from '../components/RadioButton'
 import { Table } from '../components/Table'
 import { BreadCrumbs } from '../components/bread-crumbs/BreadCrumbs'
@@ -31,8 +30,6 @@ type OptionType = {
 }
 
 export const Home: React.FC = () => {
-    const [name, setName] = useState<string>('Janko')
-    const [lastName, setLastName] = useState<string>('Hraško')
     const [country, setCountry] = useState<OptionType | MultiValue<OptionType> | null>(null)
 
     const selectLazyLoadingOption = (props: OptionProps<OptionType>) => {
@@ -95,8 +92,6 @@ export const Home: React.FC = () => {
             <Table />
             <div>
                 <form action="/" method="post">
-                    <Input name="name" value={name} label="Meno použivateľa" onChange={(value) => setName(value)} />
-                    <Input name="lastName" value={lastName} label="Priezvisko použivateľa" onChange={(value) => setLastName(value)} />
                     <RadioButton name="account" value="Hraško" label="Máte už vytvorený osobný účet?" />
                     {lazyLoadingSelect}
                     <div>

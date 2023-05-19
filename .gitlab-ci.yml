@@ -1,11 +1,12 @@
 stages:
-  - run-eslint
+    - run-checks
 
 checks:
-  image: node:latest
-  stage: run-eslint
-  before_script:
-    - echo "running yarn install"
-    - yarn install
-  script:
-    - npm run lint
+    image: node:latest
+    stage: run-checks
+    before_script:
+        - echo "running yarn install"
+        - yarn install
+    script:
+        - yarn run typescript-check
+        - yarn run lint
