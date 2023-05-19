@@ -233,19 +233,17 @@ export const ProfileVertical: Story = {
     ),
 }
 
-export const ProfileHorizontal: Story = {
-    render: (args) => (
-        <Card
-            {...args}
-            className="profile-horizontal"
-            title="Profile/Horizontal"
-            cardHref="#"
-            img={{ src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' }}
-            tag1={{ title: 'tag1', href: '#' }}
-            tag2={{ title: 'tag2', href: '#' }}
-            date="1.3.2023"
-            description="Rola/funkcia"
-        >
+export const ProfileHorizontalWithChildren: Story = {
+    args: {
+        className: 'profile-horizontal',
+        title: 'Profile/Horizontal',
+        cardHref: '#',
+        img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' },
+        description: 'Rola/funkcia',
+        tag1: { title: 'tag1', href: '#' },
+        tag2: { title: 'tag2', href: '#' },
+        date: '1.3.2023',
+        children: (
             <>
                 <div aria-hidden="true">
                     <svg width="24" height="19" viewBox="0 0 29 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -280,6 +278,6 @@ export const ProfileHorizontal: Story = {
                     </svg>
                 </div>
             </>
-        </Card>
-    ),
+        ),
+    },
 }
