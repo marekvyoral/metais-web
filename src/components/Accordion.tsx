@@ -14,11 +14,11 @@ interface IAccordionContainerProps extends React.PropsWithChildren {
 export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ sections }) => {
     const id = useId()
 
-    const [expandedChildIndexes, setExpandedChildIndexes] = useState<boolean[]>(() => Array(sections.length).fill(false))
-    const isAllExpanded = expandedChildIndexes.every((x) => x)
+    const [expandedSectionIndexes, setExpandedSectionIndexes] = useState<boolean[]>(() => Array(sections.length).fill(false))
+    const isAllExpanded = expandedSectionIndexes.every((x) => x)
 
     const toggleAllExpanded = () => {
-        setExpandedChildIndexes(Array(sections.length).fill(!isAllExpanded))
+        setExpandedSectionIndexes(Array(sections.length).fill(!isAllExpanded))
     }
 
     return (
@@ -30,11 +30,9 @@ export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ section
                 </button>
             </div>
             {sections.map((section, index) => {
-                const title = section.title
-                const summary = section.summary
-                const isExpanded = expandedChildIndexes[index]
+                const isExpanded = expandedSectionIndexes[index]
                 const onToggle = () =>
-                    setExpandedChildIndexes((prev) => {
+                    setExpandedSectionIndexes((prev) => {
                         const newArr = [...prev]
                         newArr[index] = !isExpanded
                         return newArr
@@ -45,11 +43,11 @@ export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ section
                         <div className="govuk-accordion__section-header">
                             <h2 className="govuk-accordion__section-heading">
                                 <button className="govuk-accordion__section-button" aria-expanded={isExpanded} onClick={onToggle} id={buttonId}>
-                                    {title}
+                                    {section.title}
                                 </button>
                                 <span className="govuk-accordion__icon" onClick={onToggle} />
                             </h2>
-                            <div className="govuk-accordion__section-summary govuk-body">{summary}</div>
+                            <div className="govuk-accordion__section-summary govuk-body">{section.summary}</div>
                         </div>
                         <div className="govuk-accordion__section-content" aria-labelledby={buttonId}>
                             <p className="govuk-body">{section.content}</p>
