@@ -30,8 +30,8 @@ export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ section
                 </button>
             </div>
             {sections.map((section, index) => {
-                const title = section.title || 'title' + index
-                const summary = section.summary || 'summary' + index
+                const title = section.title
+                const summary = section.summary
                 const isExpanded = expandedChildIndexes[index]
                 const onToggle = () =>
                     setExpandedChildIndexes((prev) => {
