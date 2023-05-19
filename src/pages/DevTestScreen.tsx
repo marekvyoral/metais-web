@@ -1,5 +1,30 @@
 import * as React from 'react'
 
+import { AccordionContainer } from '../components/Accordion'
+
 export const DevTestScreen: React.FC = () => {
-    return <h4>Obrazovka na testovanie komponentov</h4>
+    return (
+        <>
+            <h4>Obrazovka na testovanie komponentov</h4>
+
+            <AccordionContainer
+                sections={[
+                    { title: 'Title1', summary: 'Summary1', content: 'content-1' },
+
+                    { title: 'Title2', summary: 'Summary2', content: 'content-2' },
+
+                    { title: 'Title3', summary: 'Summary1', content: 'content-3' },
+                    {
+                        title: 'Title4',
+                        summary: (
+                            <>
+                                Summary <b>4</b> (JSX)
+                            </>
+                        ),
+                        content: 'content-4',
+                    },
+                ]}
+            />
+        </>
+    )
 }
