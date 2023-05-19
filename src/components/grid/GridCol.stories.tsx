@@ -13,6 +13,16 @@ export default meta
 
 type Story = StoryObj<typeof GridCol>
 
+export const Default: Story = {
+    render: (args) => (
+        <GridRow>
+            <GridCol setWidth={args.setWidth}>
+                <div style={{ backgroundColor: 'blue', height: 20, width: '100%' }} />
+            </GridCol>
+        </GridRow>
+    ),
+}
+
 export const Full: Story = {
     render: () => (
         <GridRow>
