@@ -16,38 +16,39 @@ export default meta
 type Story = StoryObj<typeof Card>
 
 export const Basic: Story = {
-    render: (args) => (
-        <Card
-            {...args}
-            title="I am a Basic Card"
-            cardHref="#"
-            img={{ src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' }}
-            description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s."
-            tag1={{ title: 'tag1', href: '#' }}
-            tag2={{ title: 'tag2', href: '#' }}
-            date="1.3.2023"
-        />
-    ),
+    args: {
+        title: 'I am a Basic Card',
+        cardHref: '#',
+        img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' },
+        description:
+            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
+        tag1: { title: 'tag1', href: '#' },
+        tag2: { title: 'tag2', href: '#' },
+        date: '1.3.2023',
+    },
 }
 
 export const Secondary: Story = {
-    render: (args) => (
-        <GridRow>
-            <GridCol setWidth="one-third">
-                <Card
-                    {...args}
-                    className="secondary"
-                    title="I am a Secondary Card"
-                    cardHref="#"
-                    img={{ src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' }}
-                    description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s."
-                    tag1={{ title: 'tag1', href: '#' }}
-                    tag2={{ title: 'tag2', href: '#' }}
-                    date="1.3.2023"
-                />
-            </GridCol>
-        </GridRow>
-    ),
+    decorators: [
+        (StoryComponent) => (
+            <GridRow>
+                <GridCol setWidth="one-third">
+                    <StoryComponent />
+                </GridCol>
+            </GridRow>
+        ),
+    ],
+    args: {
+        className: 'secondary',
+        title: 'I am a Secondary Card',
+        cardHref: '#',
+        img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' },
+        description:
+            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
+        tag1: { title: 'tag1', href: '#' },
+        tag2: { title: 'tag2', href: '#' },
+        date: '1.3.2023',
+    },
 }
 
 export const SecondaryInRow: Story = {
