@@ -39,7 +39,7 @@ export const Secondary: Story = {
         ),
     ],
     args: {
-        className: 'secondary',
+        variant: 'secondary',
         title: 'I am a Secondary Card',
         cardHref: '#',
         img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' },
@@ -68,7 +68,7 @@ export const SecondaryInRow: Story = {
         ),
     ],
     args: {
-        className: 'secondary',
+        variant: 'secondary',
         title: 'I am a Secondary Card',
         cardHref: '#',
         img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' },
@@ -82,7 +82,7 @@ export const SecondaryInRow: Story = {
 
 export const SecondaryHorizontal: Story = {
     args: {
-        className: 'secondary-horizontal',
+        variant: 'secondary-horizontal',
         title: 'I am a Secondary Horizontal Card',
         cardHref: '#',
         img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Secondary horizontal' },
@@ -96,7 +96,7 @@ export const SecondaryHorizontal: Story = {
 
 export const Hero: Story = {
     args: {
-        className: 'hero',
+        variant: 'hero',
         title: 'I am a Hero Card',
         cardHref: '#',
         img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Secondary horizontal' },
@@ -110,7 +110,7 @@ export const Hero: Story = {
 
 export const Simple: Story = {
     args: {
-        className: 'simple',
+        variant: 'simple',
         title: 'I am a Simple Card',
         cardHref: '#',
         img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Secondary horizontal' },
@@ -133,7 +133,7 @@ export const BasicVariant: Story = {
         ),
     ],
     args: {
-        className: 'basic-variant',
+        variant: 'basic-variant',
         title: 'I am a NoImage Card',
         cardHref: '#',
         description:
@@ -162,7 +162,7 @@ export const BasicVariantTable: Story = {
         ),
     ],
     args: {
-        className: 'basic-variant',
+        variant: 'basic-variant',
         title: 'I am a NoImage Card',
         cardHref: '#',
         description:
@@ -175,7 +175,7 @@ export const BasicVariantTable: Story = {
 
 export const ProfileVertical: Story = {
     args: {
-        className: 'profile-vertical',
+        variant: 'profile-vertical',
         title: 'Profile/Vertical',
         cardHref: '#',
         img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Secondary horizontal' },
@@ -188,7 +188,7 @@ export const ProfileVertical: Story = {
 
 export const ProfileHorizontalWithChildren: Story = {
     args: {
-        className: 'profile-horizontal',
+        variant: 'profile-horizontal',
         title: 'Profile/Horizontal',
         cardHref: '#',
         img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' },
