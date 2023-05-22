@@ -8,6 +8,8 @@ interface IFormInput {
     name1: string
 }
 
+import { AccordionContainer } from '../components/Accordion'
+
 export const DevTestScreen: React.FC = () => {
     const { register, handleSubmit } = useForm({
         defaultValues: {
@@ -18,7 +20,7 @@ export const DevTestScreen: React.FC = () => {
 
     const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data)
     return (
-        <div>
+        <>
             <h4>Obrazovka na testovanie komponentov</h4>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <fieldset className="govuk-fieldset">
@@ -29,6 +31,25 @@ export const DevTestScreen: React.FC = () => {
                     <button className="govuk-button">Odoslať formulár</button>
                 </div>
             </form>
-        </div>
+
+            <AccordionContainer
+                sections={[
+                    { title: 'Title1', summary: 'Summary1', content: 'content-1' },
+
+                    { title: 'Title2', summary: 'Summary2', content: 'content-2' },
+
+                    { title: 'Title3', summary: 'Summary1', content: 'content-3' },
+                    {
+                        title: 'Title4',
+                        summary: (
+                            <>
+                                Summary <b>4</b> (JSX)
+                            </>
+                        ),
+                        content: 'content-4',
+                    },
+                ]}
+            />
+        </>
     )
 }
