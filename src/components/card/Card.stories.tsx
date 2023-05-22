@@ -81,156 +81,109 @@ export const SecondaryInRow: Story = {
 }
 
 export const SecondaryHorizontal: Story = {
-    render: (args) => (
-        <Card
-            {...args}
-            className="secondary-horizontal"
-            title="I am a Secondary Horizontal Card"
-            cardHref="#"
-            img={{ src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' }}
-            description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s."
-            tag1={{ title: 'tag1', href: '#' }}
-            tag2={{ title: 'tag2', href: '#' }}
-            date="1.3.2023"
-        />
-    ),
+    args: {
+        className: 'secondary-horizontal',
+        title: 'I am a Secondary Horizontal Card',
+        cardHref: '#',
+        img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Secondary horizontal' },
+        description:
+            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
+        tag1: { title: 'tag1', href: '#' },
+        tag2: { title: 'tag2', href: '#' },
+        date: '1.3.2023',
+    },
 }
 
 export const Hero: Story = {
-    render: (args) => (
-        <Card
-            {...args}
-            className="hero"
-            title="I am a Hero Card"
-            cardHref="#"
-            img={{ src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' }}
-            description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s."
-            tag1={{ title: 'tag1', href: '#' }}
-            tag2={{ title: 'tag2', href: '#' }}
-            date="1.3.2023"
-        />
-    ),
+    args: {
+        className: 'hero',
+        title: 'I am a Hero Card',
+        cardHref: '#',
+        img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Secondary horizontal' },
+        description:
+            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
+        tag1: { title: 'tag1', href: '#' },
+        tag2: { title: 'tag2', href: '#' },
+        date: '1.3.2023',
+    },
 }
 
 export const Simple: Story = {
-    render: (args) => (
-        <Card
-            {...args}
-            className="simple"
-            title="I am a Simple Card"
-            cardHref="#"
-            img={{ src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' }}
-            tag1={{ title: 'tag1', href: '#' }}
-            tag2={{ title: 'tag2', href: '#' }}
-            date="1.3.2023"
-        />
-    ),
+    args: {
+        className: 'simple',
+        title: 'I am a Simple Card',
+        cardHref: '#',
+        img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Secondary horizontal' },
+        description:
+            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
+        tag1: { title: 'tag1', href: '#' },
+        tag2: { title: 'tag2', href: '#' },
+        date: '1.3.2023',
+    },
 }
 
 export const BasicVariant: Story = {
-    render: (args) => (
-        <GridRow>
-            <GridCol>
-                <Card
-                    {...args}
-                    className="basic-variant"
-                    title="I am a NoImage Card"
-                    cardHref="#"
-                    tag1={{ title: 'tag1', href: '#' }}
-                    tag2={{ title: 'tag2', href: '#' }}
-                    date="1.3.2023"
-                    description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s."
-                />
-            </GridCol>
-        </GridRow>
-    ),
+    decorators: [
+        (StoryComponent) => (
+            <GridRow>
+                <GridCol>
+                    <StoryComponent />
+                </GridCol>
+            </GridRow>
+        ),
+    ],
+    args: {
+        className: 'basic-variant',
+        title: 'I am a NoImage Card',
+        cardHref: '#',
+        description:
+            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
+        tag1: { title: 'tag1', href: '#' },
+        tag2: { title: 'tag2', href: '#' },
+        date: '1.3.2023',
+    },
 }
 
 export const BasicVariantTable: Story = {
-    render: (args) => (
-        <GridRow>
-            <GridCol setWidth="one-half">
-                <Card
-                    {...args}
-                    className="basic-variant"
-                    title="I am a NoImage Card"
-                    cardHref="#"
-                    tag1={{ title: 'tag1', href: '#' }}
-                    tag2={{ title: 'tag2', href: '#' }}
-                    date="1.3.2023"
-                    description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s."
-                />
-                <Card
-                    {...args}
-                    className="basic-variant"
-                    title="I am a NoImage Card"
-                    cardHref="#"
-                    tag1={{ title: 'tag1', href: '#' }}
-                    tag2={{ title: 'tag2', href: '#' }}
-                    date="1.3.2023"
-                    description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s."
-                />
-                <Card
-                    {...args}
-                    className="basic-variant"
-                    title="I am a NoImage Card"
-                    cardHref="#"
-                    tag1={{ title: 'tag1', href: '#' }}
-                    tag2={{ title: 'tag2', href: '#' }}
-                    date="1.3.2023"
-                    description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s."
-                />
-            </GridCol>
-            <GridCol setWidth="one-half">
-                <Card
-                    {...args}
-                    className="basic-variant"
-                    title="I am a NoImage Card"
-                    cardHref="#"
-                    tag1={{ title: 'tag1', href: '#' }}
-                    tag2={{ title: 'tag2', href: '#' }}
-                    date="1.3.2023"
-                    description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s."
-                />
-                <Card
-                    {...args}
-                    className="basic-variant"
-                    title="I am a NoImage Card"
-                    cardHref="#"
-                    tag1={{ title: 'tag1', href: '#' }}
-                    tag2={{ title: 'tag2', href: '#' }}
-                    date="1.3.2023"
-                    description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s."
-                />
-                <Card
-                    {...args}
-                    className="basic-variant"
-                    title="I am a NoImage Card"
-                    cardHref="#"
-                    tag1={{ title: 'tag1', href: '#' }}
-                    tag2={{ title: 'tag2', href: '#' }}
-                    date="1.3.2023"
-                    description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s."
-                />
-            </GridCol>
-        </GridRow>
-    ),
+    decorators: [
+        (StoryComponent) => (
+            <GridRow>
+                <GridCol setWidth="one-half">
+                    <StoryComponent />
+                    <StoryComponent />
+                    <StoryComponent />
+                </GridCol>
+                <GridCol setWidth="one-half">
+                    <StoryComponent />
+                    <StoryComponent />
+                    <StoryComponent />
+                </GridCol>
+            </GridRow>
+        ),
+    ],
+    args: {
+        className: 'basic-variant',
+        title: 'I am a NoImage Card',
+        cardHref: '#',
+        description:
+            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
+        tag1: { title: 'tag1', href: '#' },
+        tag2: { title: 'tag2', href: '#' },
+        date: '1.3.2023',
+    },
 }
 
 export const ProfileVertical: Story = {
-    render: (args) => (
-        <Card
-            {...args}
-            className="profile-vertical"
-            title="Profile/Vertical"
-            cardHref="#"
-            img={{ src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Basic Card' }}
-            tag1={{ title: 'tag1', href: '#' }}
-            tag2={{ title: 'tag2', href: '#' }}
-            date="1.3.2023"
-            description="Rola/funkcia"
-        />
-    ),
+    args: {
+        className: 'profile-vertical',
+        title: 'Profile/Vertical',
+        cardHref: '#',
+        img: { src: '/assets/images/header-web/logo-mirri-farebne.svg', alt: 'Secondary horizontal' },
+        description: 'Rola/funkcia',
+        tag1: { title: 'tag1', href: '#' },
+        tag2: { title: 'tag2', href: '#' },
+        date: '1.3.2023',
+    },
 }
 
 export const ProfileHorizontalWithChildren: Story = {
