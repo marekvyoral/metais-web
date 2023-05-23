@@ -27,7 +27,7 @@ export const DefaultTextList: Story = {
 
 export const NumberTextList: Story = {
     args: {
-        number: true,
+        variant: 'number',
         children: (
             <>
                 <TextListItem>List item 1</TextListItem>
@@ -40,7 +40,7 @@ export const NumberTextList: Story = {
 
 export const BulletTextList: Story = {
     args: {
-        bullet: true,
+        variant: 'bullet',
         children: (
             <>
                 <TextListItem>List item 1</TextListItem>
