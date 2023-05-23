@@ -31,7 +31,7 @@ export const DevTestScreen: React.FC = () => {
             <TextEmbedded>TextEmbedded</TextEmbedded>
             <TextWarning>TextWarning</TextWarning>
             <TextHidden summaryText="summaryText">TextHidden</TextHidden>
-            <TextList number>
+            <TextList variant="number">
                 <TextListItem>textlistitem</TextListItem>
                 <TextListItem>textlistitem</TextListItem>
                 <TextListItem>
