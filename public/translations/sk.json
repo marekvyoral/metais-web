@@ -1,0 +1,105 @@
+{
+    "footer": {
+        "services": {
+            "title": "Služby a informácie",
+            "rations": "Dávky",
+            "lifeEvents": "Narodenia, úmrtia, sobáše a starostlivosť",
+            "business": "Podnikanie a samostatne zárobkovej činnosti",
+            "care": "Starostlivosť o deti a rodičovstvo",
+            "population": "Obyvateľstvo a život v Spojenom kráľovstve",
+            "criminality": "Kriminalita, spravodlivosť a zákon",
+            "disabled": "Zdravotne postihnutí ľudia",
+            "traffic": "Vodičský preukaz a doprava",
+            "education": "Vzdelávanie a učenie sa",
+            "employment": "Zamestnávanie ľudí",
+            "environment": "Životné prostredie a vidiek",
+            "city": "Bývanie a miestne služby",
+            "taxes": "Finančné záležitosti a dane",
+            "travel": "Cestovanie a život v zahraničí",
+            "visas": "Víza a imigrácia",
+            "work": "Práca, zamestnanie a dôchodky"
+        },
+        "politics": {
+            "title": "Oddelenia a politika",
+            "government": "Ako funguje vláda",
+            "departments": "Oddelenia",
+            "worldwide": "Celosvetovo",
+            "politics": "Politiky",
+            "publications": "Publikácie",
+            "announcements": "Oznamy"
+        },
+        "support": {
+            "title": "Odkazy na podporu",
+            "help": "Pomoc",
+            "cookies": "Súbory cookies",
+            "contact": "Kontakt",
+            "terms": "Obchodné podmienky",
+            "servicesCzech": "Zoznam služieb v cestine"
+        },
+        "created": "Vytvorené",
+        "createdBy": "Úradom pre digitálne služby vlády",
+        "license": "Open Government Licence v3.0",
+        "licenseIf": ", pokiaľ nie je uvedené inak",
+        "rights": "© Autorské práva"
+    },
+    "navbar": {
+        "skip": "Preskočiť na hlavný obsah",
+        "official": "Oficiálna stránka",
+        "publicAdministration": "verejnej správy SR",
+        "sk": "SK",
+        "e-gov": "e-gov",
+        "domain": "Doména gov.sk je oficálna",
+        "officialSite": "Toto je oficiálna webová stránka orgánu verejnej moci Slovenskej republiky. Oficiálne stránky využívajú najmä doménu gov.sk.",
+        "link": "Odkazy na jednotlivé webové sídla orgánov verejnej moci nájdete na tomto odkaze",
+        "security": "Táto stránka je zabezpečená",
+        "safety": "Buďte pozorní a vždy sa uistite, že zdieľate informácie iba cez zabezpečenú webovú stránku verejnej správy SR.Zabezpečená stránka vždy začína https:// pred názvom domény webového sídla.",
+        "menu": "Menu",
+        "search": "Search",
+        "searchPlaceholder": "Zadajte hľadaný výraz",
+        "eurofonds": "Eurofondy",
+        "development": "Regionálny rozvoj",
+        "info": "Informatizácia",
+        "invest": "Investície",
+        "inovations": "Inovácie"
+    },
+    "radioButton": {
+        "yes": "Áno",
+        "no": "Nie"
+    },
+    "table": {
+        "title": "Mestá",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+        "heading": "Filtrovať obsah",
+        "unpack": "Rozbaliť obsah filtra",
+        "pack": "Zbaliť obsah filtra",
+        "city": "Mesto",
+        "region": "Kraj",
+        "district": "Okres",
+        "area": "Rozloha",
+        "density": "Hustota",
+        "source": "Zdroj:",
+        "sourceUrl": "sk.wikipedia.org",
+        "filter": "Filtrovať",
+        "chooseDistrict": "Vybrať okres",
+        "activeFilter": "Aktívny filter",
+        "wrapActiveFilter": "Zbaliť aktívny filter",
+        "unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie."
+    },
+    "form": {
+        "userFirstName": "Meno použivateľa",
+        "userSurName": "Priezvisko použivateľa",
+        "select": {
+            "country": "Výber krajiny"
+        },
+        "submit": "Odoslať formulár"
+    },
+    "languageSelector": {
+        "open": "Rozbaliť jazykové menu",
+        "close": "Skryť jazykové menu"
+    },
+    "language": {
+        "sk": "Slovenčina",
+        "en": "English",
+        "ge": "German"
+    }
+}

@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { LanguageSelector } from './language-selector/LanguageSelector'
+
 export const Navbar: React.FC = () => {
     return (
         <>
@@ -75,39 +77,7 @@ export const Navbar: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className="idsk-header-web__brand-spacer" />
-                                    <div className="idsk-header-web__brand-language">
-                                        <button
-                                            className="idsk-header-web__brand-language-button"
-                                            aria-label="Rozbaliť jazykové menu"
-                                            aria-expanded="false"
-                                            data-text-for-hide="Skryť jazykové menu"
-                                            data-text-for-show="Rozbaliť jazykové menu"
-                                        >
-                                            Slovenčina
-                                            <span className="idsk-header-web__link-arrow" />
-                                        </button>
-                                        <ul className="idsk-header-web__brand-language-list">
-                                            <li className="idsk-header-web__brand-language-list-item">
-                                                <a className="govuk-link idsk-header-web__brand-language-list-item-link " title="English" href="#2">
-                                                    English
-                                                </a>
-                                            </li>
-                                            <li className="idsk-header-web__brand-language-list-item">
-                                                <a className="govuk-link idsk-header-web__brand-language-list-item-link " title="German" href="#3">
-                                                    German
-                                                </a>
-                                            </li>
-                                            <li className="idsk-header-web__brand-language-list-item">
-                                                <a
-                                                    className="govuk-link idsk-header-web__brand-language-list-item-link idsk-header-web__brand-language-list-item-link--selected"
-                                                    title="Slovenčina"
-                                                    href="#1"
-                                                >
-                                                    Slovenčina
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <LanguageSelector />
                                 </div>
                             </div>
                         </div>
