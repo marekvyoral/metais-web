@@ -92,7 +92,9 @@ export const Home: React.FC = () => {
             <Table />
             <div>
                 <form action="/" method="post">
-                    <RadioButton id="id" name="account" value="Hraško" label="Máte už vytvorený osobný účet?" />
+                    <RadioButton id="id" name="account" value="Hraško">
+                        RadioButton
+                    </RadioButton>
                     {lazyLoadingSelect}
                     <div>
                         <button className="govuk-button">Odoslať formulár</button>
