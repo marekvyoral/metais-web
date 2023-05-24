@@ -9,8 +9,6 @@ import { Table } from '../components/Table'
 import { BreadCrumbs } from '../components/bread-crumbs/BreadCrumbs'
 import { SelectLazyLoading } from '../components/select-lazy-loading/SelectLazyLoading'
 import { RouteNames } from '../navigation/routeNames'
-import { TextLinkExternal } from '../components/typography/TextLinkExternal'
-import { TextLink } from '../components/typography/TextLink'
 
 type OptionType = {
     url: string
@@ -91,13 +89,6 @@ export const Home: React.FC = () => {
                 ]}
             />
             <Link to={RouteNames.DEV_TEST_SCREEN}>Testovacia obrazovka</Link>
-            <p>
-                <TextLinkExternal to={RouteNames.DEV_TEST_SCREEN}>TextLinkExternal</TextLinkExternal>
-            </p>
-            <p>
-                <TextLink title={'TextLink'} href={'#'} textLink="TextLink" newTab />
-            </p>
-
             <Table />
             <div>
                 <form action="/" method="post">

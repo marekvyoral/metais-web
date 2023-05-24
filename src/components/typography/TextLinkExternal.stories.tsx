@@ -1,51 +1,61 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 
-import { TextLinkExternal } from './TextLinkExternal'
+import { TextLink } from './TextLink'
 
-const meta: Meta<typeof TextLinkExternal> = {
-    title: 'Components/typography/TextLinkExternal',
-    component: TextLinkExternal,
+const meta: Meta<typeof TextLink> = {
+    title: 'Components/typography/TextLink',
+    component: TextLink,
     tags: ['autodocs'],
+    decorators: [
+        (StoryComponent) => (
+            <BrowserRouter>
+                <StoryComponent />
+            </BrowserRouter>
+        ),
+    ],
 }
 
 export default meta
-type Story = StoryObj<typeof TextLinkExternal>
 
-export const DefaultTextLinkExternal: Story = {
+type Story = StoryObj<typeof TextLink>
+
+export const DefaultTextLink: Story = {
     args: {
         to: '#',
-        children: 'DefaultTextLinkExternal',
+        children: 'DefaultTextLink',
     },
 }
 
-export const TextLinkExternalBack: Story = {
+export const TextLinkBack: Story = {
     args: {
         to: '#',
-        children: 'TextLinkExternalBack',
+        children: 'TextLinkBack',
         linkBack: true,
     },
 }
 
-export const TextLinkExternalNoVisitedState: Story = {
+export const TextLinkNoVisitedState: Story = {
     args: {
         to: '#',
-        children: 'TextLinkExternalNoVisitedState',
+        children: 'TextLinkNoVisitedState',
         noVisitedState: true,
     },
 }
 
-export const TextLinkExternalInverse: Story = {
+export const TextLinkInverse: Story = {
     args: {
         to: '#',
-        children: 'TextLinkExternalInverse',
+        children: 'TextLinkInverse',
         inverse: true,
     },
 }
 
-export const TextLinkExternalNoUnderline: Story = {
+export const TextLinkNoUnderline: Story = {
     args: {
         to: '#',
-        children: 'TextLinkExternalNoUnderline',
+        children: 'TextLinkNoUnderline',
         noUnderline: true,
     },
 }
