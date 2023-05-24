@@ -6,7 +6,6 @@ export const DevTestScreen: React.FC = () => {
     return (
         <>
             <h4>Obrazovka na testovanie komponentov</h4>
-
             <AccordionContainer
                 sections={[
                     { title: 'Title1', summary: 'Summary1', content: 'content-1' },
