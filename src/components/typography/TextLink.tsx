@@ -4,7 +4,7 @@ import React, { forwardRef } from 'react'
 interface ITextLinkProps extends React.PropsWithChildren {
     title: string
     href: string
-    textLink?: string
+    textLink: string
     linkBack?: boolean
     noVisitedState?: boolean
     newTab?: boolean
