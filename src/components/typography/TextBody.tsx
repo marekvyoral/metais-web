@@ -1,5 +1,4 @@
-import * as React from 'react'
-import { forwardRef } from 'react'
+import React, { forwardRef } from 'react'
 
 interface ITextBodyProps extends React.PropsWithChildren {
     size?: 'S' | 'L'

@@ -1,5 +1,4 @@
-import * as React from 'react'
-import { forwardRef } from 'react'
+import React, { forwardRef } from 'react'
 
 export const TextEmbedded = forwardRef<HTMLBodyElement, React.PropsWithChildren>(({ children }) => {
     return (
