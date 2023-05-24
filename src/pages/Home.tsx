@@ -92,9 +92,7 @@ export const Home: React.FC = () => {
             <Table />
             <div>
                 <form action="/" method="post">
-                    <RadioButton id="id" name="account" value="Hraško">
-                        RadioButton
-                    </RadioButton>
+                    <RadioButton id="id" name="account" value="Hraško" label={'RadioButton 1'} />
                     {lazyLoadingSelect}
                     <div>
                         <button className="govuk-button">Odoslať formulár</button>
