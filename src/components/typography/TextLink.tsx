@@ -7,34 +7,30 @@ interface ITextLinkProps extends React.PropsWithChildren {
     textLink?: string
     linkBack?: boolean
     noVisitedState?: boolean
-    rel?: string
-    target?: string
+    newTab?: boolean
     inverse?: boolean
     noUnderline?: boolean
 }
 
 export const TextLink = forwardRef<HTMLBodyElement, ITextLinkProps>(
-    ({ children, title, href, textLink, linkBack, noVisitedState, rel, target, inverse, noUnderline }) => {
+    ({ title, href, textLink, linkBack, noVisitedState, newTab, inverse, noUnderline }) => {
         return (
             <>
-                <p>
-                    <a
-                        className={classNames(
-                            'govuk-link',
-                            { 'govuk-link--no-visited-state': !!noVisitedState },
-                            { 'govuk-link--inverse': !!inverse },
-                            { 'govuk-link--no-underline': !!noUnderline },
-                            { 'link-back': !!linkBack },
-                        )}
-                        href={href}
-                        title={title}
-                        rel={rel}
-                        target={target}
-                    >
-                        {textLink}
-                    </a>
-                    {children}
-                </p>
+                <a
+                    className={classNames(
+                        'govuk-link',
+                        { 'govuk-link--no-visited-state': !!noVisitedState },
+                        { 'govuk-link--inverse': !!inverse },
+                        { 'govuk-link--no-underline': !!noUnderline },
+                        { 'link-back': !!linkBack },
+                    )}
+                    href={href}
+                    title={title}
+                    rel={newTab ? 'noreferrer noopener' : undefined}
+                    target={newTab ? '_blank' : undefined}
+                >
+                    {textLink}
+                </a>
             </>
         )
     },

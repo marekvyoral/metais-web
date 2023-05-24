@@ -46,13 +46,12 @@ export const TextLinkNoVisitedState: Story = {
     },
 }
 
-export const TextLinkNotNewTab: Story = {
+export const TextLinkNewTab: Story = {
     args: {
-        title: 'TextLinkNotNewTab',
+        title: 'TextLinkNewTab',
         href: '#',
-        textLink: 'TextLinkNotNewTab',
-        rel: 'noreferrer noopener',
-        target: '_blank',
+        textLink: 'TextLinkNewTab',
+        newTab: true,
     },
 }
 
