@@ -1,61 +1,74 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React from 'react'
-import { BrowserRouter } from 'react-router-dom'
 
-import { TextLink } from './TextLink'
+import { TextLinkExternal } from './TextLinkExternal'
 
-const meta: Meta<typeof TextLink> = {
-    title: 'Components/typography/TextLink',
-    component: TextLink,
+const meta: Meta<typeof TextLinkExternal> = {
+    title: 'Components/typography/TextLinkExternal',
+    component: TextLinkExternal,
     tags: ['autodocs'],
-    decorators: [
-        (StoryComponent) => (
-            <BrowserRouter>
-                <StoryComponent />
-            </BrowserRouter>
-        ),
-    ],
 }
 
 export default meta
+type Story = StoryObj<typeof TextLinkExternal>
 
-type Story = StoryObj<typeof TextLink>
-
-export const DefaultTextLink: Story = {
+export const DefaultTextLinkExternal: Story = {
     args: {
-        to: '#',
-        children: 'DefaultTextLink',
+        title: 'DefaultTextLinkExternal',
+        href: '#',
+        textLink: 'DefaultTextLinkExternal',
     },
 }
 
-export const TextLinkBack: Story = {
+export const TextLinkTextExternal: Story = {
     args: {
-        to: '#',
-        children: 'TextLinkBack',
+        title: 'TextLinkTextExternal',
+        href: '#',
+        children: 'TextLinkTextExternal',
+        textLink: 'TextLinkTextExternal',
+    },
+}
+
+export const TextLinkBackExternal: Story = {
+    args: {
+        title: 'TextLinkBackExternal',
+        href: '#',
+        textLink: 'TextLinkBackExternal',
         linkBack: true,
     },
 }
 
-export const TextLinkNoVisitedState: Story = {
+export const TextLinkNoVisitedStateExternal: Story = {
     args: {
-        to: '#',
-        children: 'TextLinkNoVisitedState',
+        title: 'TextLinkNoVisitedStateExternal',
+        href: '#',
+        textLink: 'TextLinkNoVisitedStateExternal',
         noVisitedState: true,
     },
 }
 
-export const TextLinkInverse: Story = {
+export const TextLinkNewTabExternal: Story = {
     args: {
-        to: '#',
-        children: 'TextLinkInverse',
+        title: 'TextLinkNewTabExternal',
+        href: '#',
+        textLink: 'TextLinkNewTabExternal',
+        newTab: true,
+    },
+}
+
+export const TextLinkInverseExternal: Story = {
+    args: {
+        title: 'TextLinkInverseExternal',
+        href: '#',
+        textLink: 'TextLinkInverseExternal',
         inverse: true,
     },
 }
 
-export const TextLinkNoUnderline: Story = {
+export const TextLinkNoUnderlineExternal: Story = {
     args: {
-        to: '#',
-        children: 'TextLinkNoUnderline',
+        title: 'TextLinkInverseExternal',
+        href: '#',
+        textLink: 'TextLinkInverseExternal',
         noUnderline: true,
     },
 }
