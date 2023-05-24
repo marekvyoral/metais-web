@@ -4,7 +4,7 @@ interface ITextBodyProps extends React.PropsWithChildren {
     size?: 'S' | 'L'
 }
 
-export const TextBody = forwardRef<HTMLBodyElement, ITextBodyProps>(({ children, size }) => {
+export const TextBody = forwardRef<HTMLParagraphElement, ITextBodyProps>(({ children, size }) => {
     return (
         <>
             {!size && <p className="govuk-body">{children}</p>}

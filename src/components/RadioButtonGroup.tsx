@@ -5,6 +5,6 @@ interface IRadioButtonGroupProps extends React.PropsWithChildren {
     inline?: boolean
 }
 
-export const RadioButtonGroup = forwardRef<HTMLInputElement, IRadioButtonGroupProps>(({ children, inline }) => {
+export const RadioButtonGroup = forwardRef<HTMLDivElement, IRadioButtonGroupProps>(({ children, inline }) => {
     return <div className={classNames('govuk-radios', { 'govuk-radios--inline': !!inline })}>{children}</div>
 })

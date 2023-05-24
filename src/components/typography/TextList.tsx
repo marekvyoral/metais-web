@@ -4,7 +4,7 @@ interface ITextListProps extends React.PropsWithChildren {
     variant?: 'bullet' | 'number'
 }
 
-export const TextList = forwardRef<HTMLBodyElement, ITextListProps>(({ children, variant }) => {
+export const TextList = forwardRef<HTMLOListElement | HTMLUListElement, ITextListProps>(({ children, variant }) => {
     return (
         <>
             {!variant && <ul className="govuk-list">{children}</ul>}

@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react'
 
-interface ITextBodyProps extends React.PropsWithChildren {
+interface ITextWarningProps extends React.PropsWithChildren {
     assistive?: string
 }
 
-export const TextWarning = forwardRef<HTMLBodyElement, ITextBodyProps>(({ children, assistive }) => {
+export const TextWarning = forwardRef<HTMLDivElement, ITextWarningProps>(({ children, assistive }) => {
     return (
         <div className="govuk-warning-text">
             <span className="govuk-warning-text__icon" aria-hidden="true">

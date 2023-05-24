@@ -12,7 +12,7 @@ interface ITextLinkExternalProps extends React.PropsWithChildren {
     noUnderline?: boolean
 }
 
-export const TextLinkExternal = forwardRef<HTMLBodyElement, ITextLinkExternalProps>(
+export const TextLinkExternal = forwardRef<HTMLAnchorElement, ITextLinkExternalProps>(
     ({ title, href, textLink, linkBack, noVisitedState, newTab, inverse, noUnderline }) => {
         return (
             <>
