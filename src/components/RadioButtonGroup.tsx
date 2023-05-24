@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React, { forwardRef } from 'react'
 
 interface IRadioButtonGroupProps extends React.PropsWithChildren {
@@ -5,10 +6,5 @@ interface IRadioButtonGroupProps extends React.PropsWithChildren {
 }
 
 export const RadioButtonGroup = forwardRef<HTMLInputElement, IRadioButtonGroupProps>(({ children, inline }) => {
-    return (
-        <>
-            {!inline && <div className="govuk-radios">{children}</div>}
-            {inline && <div className="govuk-radios govuk-radios--inline">{children}</div>}
-        </>
-    )
+    return <div className={classNames('govuk-radios', { 'govuk-radios--inline': !!inline })}>{children}</div>
 })
