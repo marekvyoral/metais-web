@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react'
 
-export const TextEmbedded = forwardRef<HTMLDivElement, React.PropsWithChildren>(({ children }) => {
+export const TextEmbedded = forwardRef<HTMLDivElement, React.PropsWithChildren>(({ children }, ref) => {
     return (
-        <>
-            <div className="govuk-inset-text">{children}</div>
-        </>
+        <div ref={ref} className="govuk-inset-text">
+            {children}
+        </div>
     )
 })

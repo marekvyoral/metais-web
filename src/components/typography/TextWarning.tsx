@@ -4,9 +4,9 @@ interface ITextWarningProps extends React.PropsWithChildren {
     assistive?: string
 }
 
-export const TextWarning = forwardRef<HTMLDivElement, ITextWarningProps>(({ children, assistive }) => {
+export const TextWarning = forwardRef<HTMLDivElement, ITextWarningProps>(({ children, assistive }, ref) => {
     return (
-        <div className="govuk-warning-text">
+        <div className="govuk-warning-text" ref={ref}>
             <span className="govuk-warning-text__icon" aria-hidden="true">
                 !
             </span>

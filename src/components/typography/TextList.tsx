@@ -4,12 +4,24 @@ interface ITextListProps extends React.PropsWithChildren {
     variant?: 'bullet' | 'number'
 }
 
-export const TextList = forwardRef<HTMLOListElement | HTMLUListElement, ITextListProps>(({ children, variant }) => {
+export const TextList = forwardRef<HTMLOListElement, ITextListProps>(({ children, variant }, ref) => {
     return (
         <>
-            {!variant && <ul className="govuk-list">{children}</ul>}
-            {variant === 'bullet' && <ul className="govuk-list govuk-list--bullet">{children}</ul>}
-            {variant === 'number' && <ol className="govuk-list govuk-list--number">{children}</ol>}
+            {!variant && (
+                <ul ref={ref} className="govuk-list">
+                    {children}
+                </ul>
+            )}
+            {variant === 'bullet' && (
+                <ul ref={ref} className="govuk-list govuk-list--bullet">
+                    {children}
+                </ul>
+            )}
+            {variant === 'number' && (
+                <ol ref={ref} className="govuk-list govuk-list--number">
+                    {children}
+                </ol>
+            )}
         </>
     )
 })

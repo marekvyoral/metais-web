@@ -10,9 +10,10 @@ interface ITextLinkProps extends React.PropsWithChildren {
     to: string
 }
 
-export const TextLink = forwardRef<HTMLAnchorElement, ITextLinkProps>(({ children, linkBack, noVisitedState, inverse, noUnderline, to }) => {
+export const TextLink = forwardRef<HTMLAnchorElement, ITextLinkProps>(({ children, linkBack, noVisitedState, inverse, noUnderline, to }, ref) => {
     return (
         <Link
+            ref={ref}
             className={classNames(
                 'govuk-link',
                 { 'govuk-link--no-visited-state': !!noVisitedState },
