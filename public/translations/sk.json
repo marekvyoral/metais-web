@@ -101,5 +101,8 @@
         "sk": "Slovenčina",
         "en": "English",
         "ge": "German"
+    },
+    "tab": {
+        "contents": "Obsah"
     }
 }
