@@ -96,9 +96,12 @@
     "languageSelector": {
         "open": "Open language menu",
         "close": "Close language menu"
-      },
-      "language": {
-          "sk": "Slovenčina",
-          "en": "English"
-      }
+    },
+    "language": {
+        "sk": "Slovenčina",
+        "en": "English"
+    },
+    "tab": {
+        "contents": "Contents"
+    }
 }
