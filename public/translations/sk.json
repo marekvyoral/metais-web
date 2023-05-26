@@ -83,7 +83,8 @@
         "chooseDistrict": "Vybrať okres",
         "activeFilter": "Aktívny filter",
         "wrapActiveFilter": "Zbaliť aktívny filter",
-        "unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie."
+        "unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie.",
+        "pagination": "Tabuľková navigácia"
     },
     "form": {
         "userFirstName": "Meno použivateľa",

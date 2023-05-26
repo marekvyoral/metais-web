@@ -83,7 +83,8 @@
         "chooseDistrict": "Choose district",
         "activeFilter": "Active filter",
         "wrapActiveFilter": "Pack active filter",
-        "unorderedColumn": "Unsorted column - will use ascending sorting."
+        "unorderedColumn": "Unsorted column - will use ascending sorting.",
+        "pagination": "Page navigation"
     },
     "form": {
         "userFirstName": "First name of user",

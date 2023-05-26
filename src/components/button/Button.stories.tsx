@@ -1,4 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import React from 'react'
+
+import { HomeIcon } from '../../assets/images'
 
 import { Button } from './Button'
 
@@ -57,5 +60,36 @@ export const SecondaryDisabled: Story = {
         onClick: () => undefined,
         variant: 'secondary',
         disabled: true,
+    },
+}
+
+export const ButtonNumberLabel: Story = {
+    args: {
+        label: 132,
+        onClick: () => undefined,
+        variant: 'secondary',
+        disabled: true,
+    },
+}
+
+export const ButtonJsxLabel: Story = {
+    args: {
+        label: (
+            <div>
+                <strong>Strong</strong> and{' '}
+                <ruby>
+                    明日
+                    <rt>Ashita</rt>
+                </ruby>
+            </div>
+        ),
+        variant: 'warning',
+    },
+}
+
+export const IconInLabel: Story = {
+    args: {
+        label: <div>{<img src={HomeIcon} alt="home" />}</div>,
+        variant: 'secondary',
     },
 }

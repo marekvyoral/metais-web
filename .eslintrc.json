@@ -26,7 +26,8 @@
     "react",
     "@typescript-eslint",
     "react-hooks",
-    "import"
+    "import",
+    "prettier"
   ],
   "rules": {
     /**
@@ -107,6 +108,14 @@
     "@typescript-eslint/no-shadow": "warn",
     "no-duplicate-imports": "error",
     "react/self-closing-comp": "warn",
-    "no-use-before-define": "warn"
+    "no-use-before-define": "warn",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          "*.svg"
+        ]
+      }
+    ]
   }
 }

@@ -1,0 +1,33 @@
+@import '@id-sk/frontend/idsk/all';
+
+.pagination {
+    display: flex;
+    align-items: center;
+
+    &.hidden {
+        display: none;
+    }
+
+    .paginatorItem,
+    > button {
+        margin-bottom: 0px;
+
+        &:not(:last-child) {
+            margin-right: govuk-spacing(1);
+        }
+    }
+
+    .selectedButton {
+        border: 2px solid govuk-colour('black') !important;
+        color: govuk-colour('black');
+        background-color: govuk-colour('white');
+    }
+
+    .paginatorStepButton {
+        width: 75px;
+
+        @include mq($until: tablet) {
+            display: none;
+        }
+    }
+}
