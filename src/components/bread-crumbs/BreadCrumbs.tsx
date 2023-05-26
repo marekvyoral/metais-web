@@ -1,5 +1,6 @@
-import * as React from 'react'
-import './breadCrumbs.scss'
+import React from 'react'
+
+import styles from './breadCrumbs.module.scss'
 
 type BreadCrumbsItemProps = {
     icon?: string
@@ -15,7 +16,7 @@ const BreadCrumbsItem: React.FC<BreadCrumbsItemProps> = ({ icon, href, label }) 
     return (
         <li className="govuk-breadcrumbs__list-item">
             <a className="govuk-breadcrumbs__link" href={href}>
-                {icon && <img src={icon} alt="icon" />}
+                {icon && <img src={icon} alt="icon" className={styles.linkIcon} />}
                 {label}
             </a>
         </li>

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import React, { useState } from 'react'
 
 import { SelectLazyLoading } from './SelectLazyLoading'
 
@@ -45,10 +46,16 @@ const loadOptions = async (searchQuery: string, additional: { page: number } | u
 }
 
 export const PaginatedRemoteFetch: Story = {
+    render: ({ value: initValue, ...args }) => {
+        const StateWrapper = () => {
+            const [selectedValue, setSelectedValue] = useState(initValue)
+            return <SelectLazyLoading value={selectedValue} {...args} onChange={setSelectedValue} />
+        }
+        return <StateWrapper />
+    },
     args: {
         name: 'paginated-remote-fetch',
         label: 'Vyber krajiny',
-        onChange: () => null,
         value: { name: 'selected item name' },
         getOptionValue: (item) => item.name,
         getOptionLabel: (item) => item.name,

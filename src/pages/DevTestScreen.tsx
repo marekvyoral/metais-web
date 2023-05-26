@@ -1,11 +1,14 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 
 import { AccordionContainer } from '../components/Accordion'
+import { Paginator } from '../components/paginator/Paginator'
 
 export const DevTestScreen: React.FC = () => {
+    const [page, setPage] = useState(5)
     return (
         <>
             <h4>Obrazovka na testovanie komponentov</h4>
+            <Paginator dataLength={100} pageNumber={page} onPageChanged={setPage} pageSize={10} />
             <AccordionContainer
                 sections={[
                     { title: 'Title1', summary: 'Summary1', content: 'content-1' },
