@@ -1,4 +1,4 @@
-**JIRA issue:** _(issue-id)_
+**JIRA issue link:** [issue-id](https://jira-support.isdd.sk/browse/issue-id)
 
 ---
 
