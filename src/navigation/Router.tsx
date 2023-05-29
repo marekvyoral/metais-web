@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Route, Routes } from 'react-router'
 
-import { Home } from '../pages/Home'
-import { DevTestScreen } from '../pages/DevTestScreen'
+import { Home } from '../../app/meta-is-portal/src/pages/Home'
+import { DevTestScreen } from '../../app/meta-is-portal/src/pages/DevTestScreen'
 
 import { RootRouteContainer } from './route-containers/RootRouteContainer'
 import { RouteNames } from './routeNames'

@@ -19,11 +19,16 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/assets/*": ["src/assets/*"]
+    },
     "types": [
       "vite/client"
     ]
   },
   "include": [
-    "src"
+    "src",
+    "app/meta-is-portal/src/pages"
   ]
 }
