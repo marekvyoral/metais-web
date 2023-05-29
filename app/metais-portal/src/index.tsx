@@ -4,12 +4,11 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
 
-import { App } from './App'
-import { reportWebVitals } from './reportWebVitals'
-
+import { App } from '@/App'
+import { reportWebVitals } from '@/reportWebVitals'
 import { i18nInstance } from '@/localization/i18next'
 
-import './index.scss'
+import '@/index.scss'
 
 document.body.classList.add('js-enabled')
 const root = createRoot(document.getElementById('root') as HTMLElement)
