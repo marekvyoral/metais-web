@@ -9,4 +9,4 @@ checks:
         - cd app/metais-portal && yarn install
     script:
         - yarn run typescript-check
-        - cd app/metais-portal && yarn run lint
+        - yarn run lint
