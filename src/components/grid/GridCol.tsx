@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 
-interface IGridColProps extends React.PropsWithChildren {
+interface IGridColProps extends PropsWithChildren {
     setWidth?: 'full' | 'two-thirds' | 'one-half' | 'one-third' | 'one-quarter'
 }
 

@@ -1,8 +1,8 @@
 import classNames from 'classnames'
-import React, { forwardRef } from 'react'
+import React, { PropsWithChildren, forwardRef } from 'react'
 import { Link } from 'react-router-dom'
 
-interface ITextLinkProps extends React.PropsWithChildren {
+interface ITextLinkProps extends PropsWithChildren {
     linkBack?: boolean
     noVisitedState?: boolean
     inverse?: boolean

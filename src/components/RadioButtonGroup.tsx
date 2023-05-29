@@ -1,7 +1,7 @@
 import classNames from 'classnames'
-import React, { forwardRef } from 'react'
+import React, { PropsWithChildren, forwardRef } from 'react'
 
-interface IRadioButtonGroupProps extends React.PropsWithChildren {
+interface IRadioButtonGroupProps extends PropsWithChildren {
     inline?: boolean
 }
 

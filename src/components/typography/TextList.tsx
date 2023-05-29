@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react'
+import React, { PropsWithChildren, forwardRef } from 'react'
 
-interface ITextListProps extends React.PropsWithChildren {
+interface ITextListProps extends PropsWithChildren {
     variant?: 'bullet' | 'number'
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useId } from 'react'
+import React, { useState, useId, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 
 type AccordionSection = {
@@ -7,7 +7,7 @@ type AccordionSection = {
     content: React.ReactNode
 }
 
-interface IAccordionContainerProps extends React.PropsWithChildren {
+interface IAccordionContainerProps extends PropsWithChildren {
     sections: AccordionSection[]
 }
 

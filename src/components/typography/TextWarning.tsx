@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react'
+import React, { PropsWithChildren, forwardRef } from 'react'
 
-interface ITextWarningProps extends React.PropsWithChildren {
+interface ITextWarningProps extends PropsWithChildren {
     assistive?: string
 }
 

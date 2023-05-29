@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
+
 import { AccordionContainer } from '../../../../src/components/Accordion'
 import { Paginator } from '../../../../src/components/paginator/Paginator'
-
 
 export const DevTestScreen: React.FC = () => {
     const [page, setPage] = useState(5)

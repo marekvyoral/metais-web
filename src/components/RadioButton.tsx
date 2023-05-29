@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react'
+import React, { DetailedHTMLProps, forwardRef } from 'react'
 
-interface IRadioButtonProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+interface IRadioButtonProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     id: string
     name: string
     value: string

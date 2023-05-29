@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
 
@@ -11,7 +11,7 @@ import { i18nInstance } from './localization/i18next'
 import './index.scss'
 
 document.body.classList.add('js-enabled')
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+const root = createRoot(document.getElementById('root') as HTMLElement)
 const queryClient = new QueryClient()
 
 root.render(

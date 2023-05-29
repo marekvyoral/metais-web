@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react'
+import React, { DetailedHTMLProps, forwardRef } from 'react'
 
-interface SelectProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
+interface SelectProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
     id: string
     label: string
     options: { value: string; label: string; disabled?: boolean }[]

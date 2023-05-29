@@ -1,7 +1,7 @@
 import classNames from 'classnames'
-import React, { forwardRef } from 'react'
+import React, { PropsWithChildren, forwardRef } from 'react'
 
-interface ITextLinkExternalProps extends React.PropsWithChildren {
+interface ITextLinkExternalProps extends PropsWithChildren {
     title: string
     href: string
     textLink: string

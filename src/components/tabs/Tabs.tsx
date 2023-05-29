@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { PropsWithChildren, useState } from 'react'
 import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
 
@@ -64,7 +64,7 @@ interface Tab {
     content: React.ReactNode
 }
 
-interface ITabs extends React.PropsWithChildren {
+interface ITabs extends PropsWithChildren {
     tabList: Tab[]
 }
 

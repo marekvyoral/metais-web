@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react'
+import React, { PropsWithChildren, forwardRef } from 'react'
 
-interface ITextHeadingProps extends React.PropsWithChildren {
+interface ITextHeadingProps extends PropsWithChildren {
     size: 'S' | 'M' | 'L' | 'XL'
 }
 export const TextHeading = forwardRef<HTMLHeadingElement, ITextHeadingProps>(({ children, size }, ref) => {

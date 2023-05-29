@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react'
+import React, { PropsWithChildren, forwardRef } from 'react'
 
-interface ITextHiddenProps extends React.PropsWithChildren {
+interface ITextHiddenProps extends PropsWithChildren {
     summaryText: string
 }
 

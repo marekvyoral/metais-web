@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 
 interface Tag {
     title: string
@@ -9,7 +9,7 @@ interface Image {
     alt: string
 }
 
-interface ICardProps extends React.PropsWithChildren {
+interface ICardProps extends PropsWithChildren {
     variant?: 'basic' | 'secondary' | 'secondary-horizontal' | 'simple' | 'hero' | 'basic-variant' | 'profile-vertical' | 'profile-horizontal'
     tag1?: Tag
     tag2?: Tag

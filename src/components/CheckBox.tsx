@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react'
+import React, { DetailedHTMLProps, forwardRef } from 'react'
 
-interface ICheckBoxProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+interface ICheckBoxProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     id: string
     label: string
     name: string
