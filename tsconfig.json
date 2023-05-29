@@ -21,7 +21,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/assets/*": ["src/assets/*"]
+      "@/*": ["src/*"]
     },
     "types": [
       "vite/client"

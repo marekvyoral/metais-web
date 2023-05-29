@@ -120,9 +120,12 @@
   },
   "settings": {
     "import/resolver": {
-      "alias": [
-          ["@/assets", "./src/assets/"]
+      "typescript": {},
+      "alias": {
+        "map": [
+          ["@", "src"]
         ]
       }
+    }
   }
 }
