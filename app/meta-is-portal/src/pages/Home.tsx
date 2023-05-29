@@ -3,12 +3,11 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MultiValue, OptionProps, components } from 'react-select'
 
-import { RadioButton } from '../../../../src/components/RadioButton'
-import { Table } from '../../../../src/components/Table'
-import { BreadCrumbs } from '../../../../src/components/bread-crumbs/BreadCrumbs'
-import { SelectLazyLoading } from '../../../../src/components/select-lazy-loading/SelectLazyLoading'
-import { RouteNames } from '../../../../src/navigation/routeNames'
-
+import { RadioButton } from '@/components/RadioButton'
+import { Table } from '@/components/Table'
+import { BreadCrumbs } from '@/components/bread-crumbs/BreadCrumbs'
+import { SelectLazyLoading } from '@/components/select-lazy-loading/SelectLazyLoading'
+import { RouteNames } from '@/navigation/routeNames'
 import { HomeIcon } from '@/assets/images'
 
 type OptionType = {
