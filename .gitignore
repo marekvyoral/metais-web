@@ -25,3 +25,6 @@ yarn-error.log*
 
 /app/metais-portal/public/assets
 /app/metais-portal/storybook-static
+
+/node_modules
+
