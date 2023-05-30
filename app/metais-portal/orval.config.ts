@@ -1,14 +1,19 @@
 import { defineConfig } from 'orval'
-const paths = [] // './swagger.json', './swagger1.json' add swagger paths
+const paths = ['./iam-swagger.json', './userconfig-swagger.json'] // add swagger paths
+
+const getSwaggerName = (swaggerFilePath: string) => {
+    return swaggerFilePath?.replace(/\.\/|\.json$/g, '')
+}
 
 const createMultipleConfigs = () => {
-    return paths?.map((path, index) => {
+    return paths?.map((path) => {
+        const swaggerName = getSwaggerName(path)
         return {
             input: {
                 target: path,
             },
             output: {
-                target: `./src/generated/part${index}.ts`,
+                target: `./src/generated/${swaggerName}.ts`,
                 client: 'react-query',
                 prettier: true,
                 override: {

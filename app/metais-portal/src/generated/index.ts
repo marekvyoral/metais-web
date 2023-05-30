@@ -1,2 +1,2 @@
-// export * from './part0'
-// export * from './part1'
+// EXPORT ALL GENERATED FILES
+export * from './userconfig-swagger'
