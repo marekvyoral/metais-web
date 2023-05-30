@@ -1,0 +1,1356 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Api Documentation",
+    "version": "3.0-SNAPSHOT",
+    "title": "MetaIS User Config"
+  },
+  "host": "userconfig-metais3.apps.dev.isdd.sk",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "favorites-columns-controller",
+      "description": "Favorites Columns Controller"
+    },
+    { "name": "health-controller", "description": "Health Controller" },
+    { "name": "kv-controller", "description": "Kv Controller" }
+  ],
+  "paths": {
+    "/columns/citype/{citype}": {
+      "get": {
+        "tags": ["favorites-columns-controller"],
+        "summary": "getUserColumns",
+        "operationId": "getUserColumnsUsingGET",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "OAuth2Request.approved",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.redirectUri",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.refresh",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.refreshTokenRequest.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.resourceIds",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "OAuth2Request.responseTypes",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "citype",
+            "in": "path",
+            "description": "citype",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "clientOnly",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "userAuthentication.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userAuthentication.credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/FavoriteCiType" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [
+          { "BasicAuth": [] },
+          { "Bearer": [] },
+          { "OAuth": ["read", "trust", "write"] }
+        ],
+        "deprecated": false
+      },
+      "delete": {
+        "tags": ["favorites-columns-controller"],
+        "summary": "resetUserColumns",
+        "operationId": "resetUserColumnsUsingDELETE",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "OAuth2Request.approved",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.redirectUri",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.refresh",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.refreshTokenRequest.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.resourceIds",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "OAuth2Request.responseTypes",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "citype",
+            "in": "path",
+            "description": "citype",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "clientOnly",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "userAuthentication.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userAuthentication.credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "204": { "description": "No Content" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "BasicAuth": [] },
+          { "Bearer": [] },
+          { "OAuth": ["read", "trust", "write"] }
+        ],
+        "deprecated": false
+      }
+    },
+    "/columns/citype/{citype}/default": {
+      "get": {
+        "tags": ["favorites-columns-controller"],
+        "summary": "getDefaultColumns",
+        "operationId": "getDefaultColumnsUsingGET",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "OAuth2Request.approved",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.redirectUri",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.refresh",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.refreshTokenRequest.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.resourceIds",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "OAuth2Request.responseTypes",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "citype",
+            "in": "path",
+            "description": "citype",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "clientOnly",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "userAuthentication.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userAuthentication.credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/FavoriteCiType" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [
+          { "BasicAuth": [] },
+          { "Bearer": [] },
+          { "OAuth": ["read", "trust", "write"] }
+        ],
+        "deprecated": false
+      }
+    },
+    "/columns/store": {
+      "post": {
+        "tags": ["favorites-columns-controller"],
+        "summary": "insertUserColumns",
+        "operationId": "insertUserColumnsUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "OAuth2Request.approved",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.redirectUri",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.refresh",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.refreshTokenRequest.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.resourceIds",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "OAuth2Request.responseTypes",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "clientOnly",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "in": "body",
+            "name": "favoriteCiType",
+            "description": "favoriteCiType",
+            "required": true,
+            "schema": { "$ref": "#/definitions/FavoriteCiType" }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "userAuthentication.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userAuthentication.credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [
+          { "BasicAuth": [] },
+          { "Bearer": [] },
+          { "OAuth": ["read", "trust", "write"] }
+        ],
+        "deprecated": false
+      }
+    },
+    "/columns/store/default": {
+      "post": {
+        "tags": ["favorites-columns-controller"],
+        "summary": "insertDefaultColumns",
+        "operationId": "insertDefaultColumnsUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "OAuth2Request.approved",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.redirectUri",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.refresh",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.refreshTokenRequest.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.resourceIds",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "OAuth2Request.responseTypes",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "clientOnly",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "in": "body",
+            "name": "favoriteCiType",
+            "description": "favoriteCiType",
+            "required": true,
+            "schema": { "$ref": "#/definitions/FavoriteCiType" }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "userAuthentication.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userAuthentication.credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [
+          { "BasicAuth": [] },
+          { "Bearer": [] },
+          { "OAuth": ["read", "trust", "write"] }
+        ],
+        "deprecated": false
+      }
+    },
+    "/endpoints/health/liveness": {
+      "get": {
+        "tags": ["health-controller"],
+        "summary": "liveness",
+        "operationId": "livenessUsingGET",
+        "produces": ["*/*"],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [
+          { "BasicAuth": [] },
+          { "Bearer": [] },
+          { "OAuth": ["read", "trust", "write"] }
+        ],
+        "deprecated": false
+      }
+    },
+    "/endpoints/health/readiness": {
+      "get": {
+        "tags": ["health-controller"],
+        "summary": "readiness",
+        "operationId": "readinessUsingGET",
+        "produces": ["*/*"],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [
+          { "BasicAuth": [] },
+          { "Bearer": [] },
+          { "OAuth": ["read", "trust", "write"] }
+        ],
+        "deprecated": false
+      }
+    },
+    "/kv/**": {
+      "get": {
+        "tags": ["kv-controller"],
+        "summary": "getKvData",
+        "operationId": "getKvDataUsingGET",
+        "produces": ["application/json;charset=utf-8"],
+        "parameters": [
+          {
+            "name": "OAuth2Request.approved",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.redirectUri",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.refresh",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.refreshTokenRequest.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.resourceIds",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "OAuth2Request.responseTypes",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "clientOnly",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page",
+            "required": false,
+            "type": "integer",
+            "default": 1,
+            "format": "int32"
+          },
+          {
+            "name": "perpage",
+            "in": "query",
+            "description": "perpage",
+            "required": false,
+            "type": "integer",
+            "default": 50,
+            "format": "int32"
+          },
+          {
+            "name": "principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "shared",
+            "in": "query",
+            "description": "shared",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "userAuthentication.authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "userAuthentication.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userAuthentication.credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK", "schema": { "type": "object" } },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [
+          { "BasicAuth": [] },
+          { "Bearer": [] },
+          { "OAuth": ["read", "trust", "write"] }
+        ],
+        "deprecated": false
+      },
+      "put": {
+        "tags": ["kv-controller"],
+        "summary": "createKvPair",
+        "operationId": "createKvPairUsingPUT",
+        "consumes": ["application/json;charset=utf-8"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "OAuth2Request.approved",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.redirectUri",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.refresh",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.refreshTokenRequest.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.resourceIds",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "OAuth2Request.responseTypes",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "clientOnly",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "shared",
+            "in": "query",
+            "description": "shared",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "userAuthentication.authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "userAuthentication.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userAuthentication.credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "in": "body",
+            "name": "value",
+            "description": "value",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK", "schema": { "type": "object" } },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [
+          { "BasicAuth": [] },
+          { "Bearer": [] },
+          { "OAuth": ["read", "trust", "write"] }
+        ],
+        "deprecated": false
+      },
+      "delete": {
+        "tags": ["kv-controller"],
+        "summary": "deleteKvData",
+        "operationId": "deleteKvDataUsingDELETE",
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "OAuth2Request.approved",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.redirectUri",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.refresh",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "OAuth2Request.refreshTokenRequest.grantType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "OAuth2Request.resourceIds",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "OAuth2Request.responseTypes",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": { "type": "string" },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "clientOnly",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "shared",
+            "in": "query",
+            "description": "shared",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "userAuthentication.authenticated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "userAuthentication.authorities[0].authority",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "userAuthentication.credentials",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.details",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          },
+          {
+            "name": "userAuthentication.principal",
+            "in": "query",
+            "required": false,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK", "schema": { "type": "object" } },
+          "204": { "description": "No Content" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [
+          { "BasicAuth": [] },
+          { "Bearer": [] },
+          { "OAuth": ["read", "trust", "write"] }
+        ],
+        "deprecated": false
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BasicAuth": { "type": "basic" },
+    "Bearer": { "type": "apiKey", "name": "Authorization", "in": "header" },
+    "OAuth": {
+      "type": "oauth2",
+      "authorizationUrl": "/authorize",
+      "tokenUrl": "/token",
+      "flow": "accessCode",
+      "scopes": {
+        "read": "read all",
+        "trust": "trust all",
+        "write": "access all"
+      }
+    }
+  },
+  "definitions": {
+    "FavoriteCiType": {
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/FavoriteColumn" }
+        },
+        "ciType": { "type": "string" },
+        "id": { "type": "integer", "format": "int64" },
+        "metaAttributes": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/FavoriteColumn" }
+        }
+      },
+      "title": "FavoriteCiType"
+    },
+    "FavoriteColumn": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "order": { "type": "integer", "format": "int32" }
+      },
+      "title": "FavoriteColumn"
+    }
+  }
+}
