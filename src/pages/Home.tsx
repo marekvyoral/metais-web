@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { MultiValue, OptionProps, components } from 'react-select'
 
 import { RadioButton } from '../components/RadioButton'
-import { Table } from '../components/Table'
 import { BreadCrumbs } from '../components/bread-crumbs/BreadCrumbs'
 import { SelectLazyLoading } from '../components/select-lazy-loading/SelectLazyLoading'
 import { RouteNames } from '../navigation/routeNames'
@@ -89,7 +88,6 @@ export const Home: React.FC = () => {
                 ]}
             />
             <Link to={RouteNames.DEV_TEST_SCREEN}>Testovacia obrazovka</Link>
-            <Table />
             <div>
                 <form action="/" method="post">
                     <RadioButton id="id" name="account" value="Hraško" label={'RadioButton 1'} />

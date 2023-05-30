@@ -84,6 +84,7 @@
         "activeFilter": "Aktívny filter",
         "wrapActiveFilter": "Zbaliť aktívny filter",
         "unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie.",
+        "resetOrder": "Resetovať poradie",
         "pagination": "Tabuľková navigácia"
     },
     "form": {
