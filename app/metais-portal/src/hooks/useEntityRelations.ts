@@ -18,12 +18,17 @@ export const useEntityRelationsTypesCount = (id: string) => {
     }
 }
 
-export const useEntityRelationsDataList = (keyList: string[], id: string, start: boolean) => {
+export interface IPageConfig {
+    page: number
+    perPage: number
+}
+
+export const useEntityRelationsDataList = (keyList: string[], id: string, start: boolean, pageConfig: IPageConfig) => {
     const resultList = useQueries({
         queries: keyList.map((value: string) => {
             return {
                 queryKey: ['entityRelationsData', id, value],
-                queryFn: () => getEntityRelationTypeData(id, value),
+                queryFn: () => getEntityRelationTypeData(id, value, pageConfig),
                 enabled: !!value && start,
             }
         }),

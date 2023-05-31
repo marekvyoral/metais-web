@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { SetStateAction, useState } from 'react'
 
 import { useDocumentsListData } from '@/hooks/useEntityDocsListData'
+import { IPageConfig } from '@/hooks/useEntityRelations'
 
 interface IView {
     data: object
+    setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
 }
 
 interface IEntityDocumentsListContainer {
@@ -14,7 +16,13 @@ interface IEntityDocumentsListContainer {
 }
 
 export const EntityDocumentsListContainer: React.FC<IEntityDocumentsListContainer> = ({ entityId, View, LoadingView, ErrorView }) => {
-    const { isLoading, isError, data: documentCiData, resultList: documentsList } = useDocumentsListData(entityId)
+    const defaultPageConfig: IPageConfig = {
+        page: 1,
+        perPage: 100,
+    }
+
+    const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
+    const { isLoading, isError, data: documentCiData, resultList: documentsList } = useDocumentsListData(entityId, pageConfig)
 
     if (isLoading) {
         return <LoadingView />
@@ -24,5 +32,10 @@ export const EntityDocumentsListContainer: React.FC<IEntityDocumentsListContaine
         return <ErrorView />
     }
 
-    return <View data={{ documentCiData, documentsList }} />
+    const viewProps: IView = {
+        data: documentCiData,
+        setPageConfig,
+    }
+
+    return <View {...viewProps} />
 }

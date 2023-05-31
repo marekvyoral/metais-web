@@ -2,15 +2,28 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { EntityCiContainer } from './EntityCiContainer'
+import { Tabs } from '../tabs/Tabs'
 
-interface ViewProps {
-    data: object
+import { EntityDocumentsListContainer } from './EntityDocumentListContainer'
+
+interface IView {
+    data: any
 }
 
-const View: React.FC<ViewProps> = ({ data }) => {
-    console.log(data)
-    return <div>view</div>
+const View: React.FC<IView> = ({ data }) => {
+    const tabList = [
+        {
+            id: '1',
+            title: 'data z kontainera',
+            content: <p>{JSON.stringify(data)}</p>,
+        },
+    ]
+
+    return (
+        <>
+            <Tabs tabList={tabList} />
+        </>
+    )
 }
 
 const Loading: React.FC = () => {
@@ -23,14 +36,14 @@ const Error: React.FC = () => {
 
 const queryClient = new QueryClient()
 
-const meta: Meta<typeof EntityCiContainer> = {
-    title: 'Components/EntityCiContainer',
-    component: EntityCiContainer,
+const meta: Meta<typeof EntityDocumentsListContainer> = {
+    title: 'Components/EntityDocumentsListContainer',
+    component: EntityDocumentsListContainer,
     tags: ['autodocs'],
 }
 
 export default meta
-type Story = StoryObj<typeof EntityCiContainer>
+type Story = StoryObj<typeof EntityDocumentsListContainer>
 
 export const Main: Story = {
     decorators: [
@@ -42,7 +55,6 @@ export const Main: Story = {
     ],
     args: {
         entityId: '0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e',
-        entityName: 'KRIS',
         View: View,
         LoadingView: Loading,
         ErrorView: Error,

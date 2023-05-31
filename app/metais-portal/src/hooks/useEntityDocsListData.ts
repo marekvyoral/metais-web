@@ -1,5 +1,7 @@
 import { useQueries, useQuery } from '@tanstack/react-query'
 
+import { IPageConfig } from './useEntityRelations'
+
 import { getDocumentsData, postDocumentParams } from '@/api/EntityDocsListApi'
 
 export const useDocumentData = (idList: string[]) => {
@@ -23,14 +25,14 @@ export const useDocumentData = (idList: string[]) => {
     }
 }
 
-export const useDocumentsListData = (id: string) => {
+export const useDocumentsListData = (id: string, pageConfig: IPageConfig) => {
     const {
         isLoading: isControlLoading,
         isError: isControlError,
         data,
     } = useQuery({
         queryKey: ['documentsControl'],
-        queryFn: () => postDocumentParams(id),
+        queryFn: () => postDocumentParams(id, pageConfig),
     })
 
     const fromNodesConfigItemUuids = data?.fromNodes.neighbourPairs.map((item) => item.configurationItem.uuid) ?? []

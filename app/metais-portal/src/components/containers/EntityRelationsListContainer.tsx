@@ -1,10 +1,11 @@
 import React, { SetStateAction, useState } from 'react'
 
-import { useEntityRelationsDataList, useEntityRelationsTypesCount } from '@/hooks/useEntityRelations'
+import { IPageConfig, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@/hooks/useEntityRelations'
 
 interface IView {
     data: object
     setEnabled: React.Dispatch<SetStateAction<boolean>>
+    setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
 }
 
 interface IEntityRelationsListContainer {
@@ -18,13 +19,19 @@ export const EntityRelationsListContainer: React.FC<IEntityRelationsListContaine
     //gives list and numbers of entities of certain types f.e. Programs
     const { isLoading, isError, keysToDisplay, data: entityTypes } = useEntityRelationsTypesCount(entityId)
 
-    //for loading onClick
-    const [enabled, setEnabled] = useState(false)
+    const defaultPageConfig: IPageConfig = {
+        page: 1,
+        perPage: 5,
+    }
+
+    const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
+    const [enabled, setEnabled] = useState(true)
+
     const {
         isLoading: isTypeRelationsDataListLoading,
         isError: isTypeRelationsDataListError,
         resultList: relationsList,
-    } = useEntityRelationsDataList(keysToDisplay, entityId, enabled)
+    } = useEntityRelationsDataList(keysToDisplay, entityId, enabled, pageConfig)
 
     if (isLoading || isTypeRelationsDataListLoading) {
         return <LoadingView />
@@ -34,5 +41,5 @@ export const EntityRelationsListContainer: React.FC<IEntityRelationsListContaine
         return <ErrorView />
     }
 
-    return <View data={{ entityTypes, relationsList }} setEnabled={setEnabled} />
+    return <View data={{ entityTypes, relationsList }} setEnabled={setEnabled} setPageConfig={setPageConfig} />
 }

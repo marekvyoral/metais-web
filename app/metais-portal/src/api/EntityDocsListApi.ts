@@ -1,8 +1,11 @@
-export const postDocumentParams = (id: string) => {
+import { IPageConfig } from '@/hooks/useEntityRelations'
+
+export const postDocumentParams = (id: string, pageConfig: IPageConfig) => {
     //proxy for production - CORS was blocking access
     const proxyUrl = 'https://corsproxy.io/?'
     const url = `https://metais.vicepremier.gov.sk/cmdb/read/relations/neighbours/${id}`
 
+    //su aj ine parametre premenne??
     const params = {
         neighboursFilter: {
             usageType: ['system', 'application'],
@@ -10,8 +13,8 @@ export const postDocumentParams = (id: string) => {
             relType: ['CI_HAS_DOCUMENT', 'Dokument_sa_tyka_KRIS', 'CONTROL_HAS_DOCUMENT', 'PROJECT_HAS_DOCUMENT'],
             ciType: ['Dokument'],
         },
-        page: 1,
-        perpage: 100,
+        page: pageConfig.page,
+        perpage: pageConfig.perPage,
     }
 
     return fetch(proxyUrl + url, {
