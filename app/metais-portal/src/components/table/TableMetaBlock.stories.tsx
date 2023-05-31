@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 
-import { TableMetaBlock } from './TableMetaBlock'
+import { TableMetaBlock } from '@/components/table/TableMetaBlock'
 
 const meta: Meta<typeof TableMetaBlock> = {
     title: 'Components/Table/TableMetaBlock',
