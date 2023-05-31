@@ -6,7 +6,7 @@ checks:
     stage: run-checks
     before_script:
         - echo "running yarn install"
-        - yarn install
+        - cd app/metais-portal && yarn install
     script:
         - yarn run typescript-check
         - yarn run lint
