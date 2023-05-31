@@ -2,9 +2,6 @@ import React from 'react'
 
 import { Router } from '@/navigation/Router'
 
-function App() {
-
-  return <Router />
+export const App: React.FC = () => {
+    return <Router />
 }
-
-export default App

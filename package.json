@@ -40,7 +40,7 @@
     "preview": "yarn preview:portal & yarn preview:admin && fg",
     "preview:portal": "vite preview app/metais-portal",
     "preview:admin": "vite preview app/metais-admin",
-    "typescript-check": "tsc --noEmit",
+    "typescript-check": "tsc --noEmit -p app/metais-admin/tsconfig.json && tsc --noEmit -p app/metais-portal/tsconfig.json",
     "lint": "eslint app/* --max-warnings 0",
     "lint-fix": "eslint app/* --fix",
     "prepare": "yarn prepare:portal && yarn prepare:admin",
