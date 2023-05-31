@@ -12,7 +12,7 @@ import './index.scss'
 const root = createRoot(document.getElementById('root') as HTMLElement)
 const queryClient = new QueryClient()
 
-root.createRoot(document.getElementById('root') as HTMLElement).render(
+root.render(
     <React.StrictMode>
         <BrowserRouter>
             <QueryClientProvider client={queryClient}>
