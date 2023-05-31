@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { useDocumentsListData } from '@/hooks/useEntityDocsListData'
+
 interface IView {
     data: object
 }

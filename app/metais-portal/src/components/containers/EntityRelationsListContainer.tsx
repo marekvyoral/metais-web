@@ -1,5 +1,7 @@
 import React, { SetStateAction, useState } from 'react'
 
+import { useEntityRelationsDataList, useEntityRelationsTypesCount } from '@/hooks/useEntityRelations'
+
 interface IView {
     data: object
     setEnabled: React.Dispatch<SetStateAction<boolean>>
@@ -22,7 +24,7 @@ export const EntityRelationsListContainer: React.FC<IEntityRelationsListContaine
         isLoading: isTypeRelationsDataListLoading,
         isError: isTypeRelationsDataListError,
         resultList: relationsList,
-    } = useTypeRelationsDataList(keysToDisplay, entityId, enabled)
+    } = useEntityRelationsDataList(keysToDisplay, entityId, enabled)
 
     if (isLoading || isTypeRelationsDataListLoading) {
         return <LoadingView />

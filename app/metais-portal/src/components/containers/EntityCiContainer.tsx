@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useEntityCiData } from '@/hooks/useEntityCiData'
 
 interface IView {
     data: object
