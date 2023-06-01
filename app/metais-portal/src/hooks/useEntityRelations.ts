@@ -23,17 +23,17 @@ export interface IPageConfig {
     perPage: number
 }
 
-export const useEntityRelationsDataList = (keyList: string[], id: string, start: boolean, pageConfig: IPageConfig) => {
+export const useEntityRelationsDataList = (keyList: string[], id: string, pageConfig: IPageConfig, name: string) => {
     const resultList = useQueries({
         queries: keyList.map((value: string) => {
             return {
                 queryKey: ['entityRelationsData', id, value],
                 queryFn: () => getEntityRelationTypeData(id, value, pageConfig),
-                enabled: !!value && start,
+                enabled: !!value && value === name,
             }
         }),
     })
-
+    console.log(resultList)
     const isLoading = resultList.map((item) => item.isLoading).some((item) => item)
     const isError = resultList.map((item) => item.isError).some((item) => item)
 

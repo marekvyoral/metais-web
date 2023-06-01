@@ -2,16 +2,23 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { EntityRelationsListContainer } from './EntityRelationsListContainer'
+import { EntityRelationsListContainer, IRelationsView } from './EntityRelationsListContainer'
 
-interface IView {
-    data: any
-}
-
-const View: React.FC<IView> = ({ data }) => {
-    console.log(data)
-
-    return <div>data</div>
+const View: React.FC<IRelationsView> = ({ entityTypes, relationsList, keysToDisplay, setClickedEntityName, setPageConfig }) => {
+    return (
+        <div>
+            <p>shows that it only start calls api when clicked on entity</p>
+            {keysToDisplay.map((key) => (
+                <button key={key} onClick={() => setClickedEntityName(key)}>
+                    {key}
+                </button>
+            ))}
+            <p>status</p>
+            <p>{JSON.stringify(relationsList.map((item) => item.status))}</p>
+            <p>isFetching</p>
+            <p>{JSON.stringify(relationsList.map((item) => item.isFetching))}</p>
+        </div>
+    )
 }
 
 const Loading: React.FC = () => {

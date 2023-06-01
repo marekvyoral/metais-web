@@ -2,15 +2,17 @@ import React, { SetStateAction, useState } from 'react'
 
 import { IPageConfig, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@/hooks/useEntityRelations'
 
-interface IView {
-    data: object
-    setEnabled: React.Dispatch<SetStateAction<boolean>>
+export interface IRelationsView {
+    entityTypes: any
+    relationsList: any
+    keysToDisplay: string[]
+    setClickedEntityName: React.Dispatch<SetStateAction<string>>
     setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
 }
 
 interface IEntityRelationsListContainer {
     entityId: string
-    View: React.FC<IView>
+    View: React.FC<IRelationsView>
     LoadingView: React.FC
     ErrorView: React.FC
 }
@@ -25,21 +27,21 @@ export const EntityRelationsListContainer: React.FC<IEntityRelationsListContaine
     }
 
     const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
-    const [enabled, setEnabled] = useState(true)
+    const [clickedEntityName, setClickedEntityName] = useState<string>('')
 
     const {
         isLoading: isTypeRelationsDataListLoading,
         isError: isTypeRelationsDataListError,
         resultList: relationsList,
-    } = useEntityRelationsDataList(keysToDisplay, entityId, enabled, pageConfig)
+    } = useEntityRelationsDataList(keysToDisplay, entityId, pageConfig, clickedEntityName)
 
-    if (isLoading || isTypeRelationsDataListLoading) {
-        return <LoadingView />
-    }
-
-    if (isError || isTypeRelationsDataListError) {
-        return <ErrorView />
-    }
-
-    return <View data={{ entityTypes, relationsList }} setEnabled={setEnabled} setPageConfig={setPageConfig} />
+    return (
+        <View
+            entityTypes={entityTypes}
+            relationsList={relationsList}
+            keysToDisplay={keysToDisplay}
+            setPageConfig={setPageConfig}
+            setClickedEntityName={setClickedEntityName}
+        />
+    )
 }
