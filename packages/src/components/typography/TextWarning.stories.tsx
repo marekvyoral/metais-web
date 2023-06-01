@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { TextWarning } from '@/components/typography/TextWarning'
+import { TextWarning } from './TextWarning'
 
 const meta: Meta<typeof TextWarning> = {
     title: 'Components/typography/TextWarning',

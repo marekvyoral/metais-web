@@ -2,11 +2,11 @@ import { Meta, StoryObj } from '@storybook/react'
 import { ColumnDef, ColumnOrderState, PaginationState, SortingState, ExpandedState } from '@tanstack/react-table'
 import React, { useState } from 'react'
 
-import { Table } from '@/components/table/Table'
-import { TableMetaBlock } from '@/components/table/TableMetaBlock'
-import { ExpandableHeaderCellWrapper } from '@/components/table/ExpandableHeaderCellWrapper'
-import { ExpandableRowCellWrapper } from '@/components/table/ExpandableRowCellWrapper'
-import { resetColumnOrder } from '@/components/table/tableUtils'
+import { Table } from './Table'
+import { TableMetaBlock } from './TableMetaBlock'
+import { ExpandableHeaderCellWrapper } from './ExpandableHeaderCellWrapper'
+import { ExpandableRowCellWrapper } from './ExpandableRowCellWrapper'
+import { resetColumnOrder } from './tableUtils'
 
 const meta: Meta<typeof Table> = {
     title: 'Components/Table',

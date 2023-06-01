@@ -27,3 +27,4 @@ yarn-error.log*
 /app/*/storybook-static
 
 /node_modules
+.idea/

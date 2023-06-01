@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 
-import { TextList } from '@/components/typography/TextList'
-import { TextListItem } from '@/components/typography/TextListItem'
+import { TextList } from './TextList'
+import { TextListItem } from './TextListItem'
 
 const meta: Meta<typeof TextList> = {
     title: 'Components/typography/TextList',

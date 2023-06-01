@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import { Table } from '@tanstack/react-table'
 
-import { PaginatorRightArrowIcon } from '@/assets/images'
+import { PaginatorRightArrowIcon } from '../../assets/images'
 
 interface ExpandableHeaderCellProps<T> extends PropsWithChildren {
     table: Table<T>

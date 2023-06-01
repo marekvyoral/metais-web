@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { TextHidden } from '@/components/typography/TextHidden'
+import { TextHidden } from './TextHidden'
 
 const meta: Meta<typeof TextHidden> = {
     title: 'Components/typography/TextHidden',

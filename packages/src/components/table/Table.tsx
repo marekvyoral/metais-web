@@ -15,8 +15,8 @@ import React from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import { DraggableColumnHeader } from '@/components/table/DraggableColumnHeader'
-import { TableRow } from '@/components/table/TableRow'
+import { DraggableColumnHeader } from './DraggableColumnHeader'
+import { TableRow } from './TableRow'
 
 interface ITableProps<T> {
     data: Array<T>

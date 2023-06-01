@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { TextLinkExternal } from '@/components/typography/TextLinkExternal'
+import { TextLinkExternal } from '../typography/TextLinkExternal'
 
 interface ITableMetaBlockProps {
     source?: { value: string; href: string }

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { TextHeading } from '@/components/typography/TextHeading'
+import { TextHeading } from './TextHeading'
 
 const meta: Meta<typeof TextHeading> = {
     title: 'Components/typography/TextHeading',

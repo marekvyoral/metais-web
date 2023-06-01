@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { TextLinkExternal } from '@/components/typography/TextLinkExternal'
+import { TextLinkExternal } from './TextLinkExternal'
 
 const meta: Meta<typeof TextLinkExternal> = {
     title: 'Components/typography/TextLinkExternal',

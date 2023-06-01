@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 
-import { TextLink } from '@/components/typography/TextLink'
+import { TextLink } from './TextLink'
 
 const meta: Meta<typeof TextLink> = {
     title: 'Components/typography/TextLink',
