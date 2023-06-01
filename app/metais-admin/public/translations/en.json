@@ -1,0 +1,109 @@
+{
+    "footer": {
+        "services": {
+            "title": "Services and Information",
+            "rations": "Rations",
+            "lifeEvents": "Births, deaths, marriages, and care",
+            "business": "Business and self-employment",
+            "care": "Childcare and parenting",
+            "population": "Population and life in the United Kingdom",
+            "criminality": "Crime, justice, and law",
+            "disabled": "Disabled people",
+            "traffic": "Driving license and transportation",
+            "education": "Education and learning",
+            "employment": "Employment of people",
+            "environment": "Environment and countryside",
+            "city": "Housing and local services",
+            "taxes": "Financial matters and taxes",
+            "travel": "Travel and living abroad",
+            "visas": "Visas and immigration",
+            "work": "Work, employment, and pensions"
+        },
+        "politics": {
+            "title": "Departments and Policies",
+            "government": "How government works",
+            "departments": "Departments",
+            "worldwide": "Worldwide",
+            "politics": "Politics",
+            "publications": "Publications",
+            "announcements": "Announcements"
+        },
+        "support": {
+            "title": "Support Links",
+            "help": "Help",
+            "cookies": "Cookies",
+            "contact": "Contact",
+            "terms": "Terms and Conditions",
+            "servicesCzech": "List of services in Czech"
+        },
+        "created": "Created",
+        "createdBy": "Government Digital Services Office",
+        "license": "Open Government Licence v3.0",
+        "licenseIf": ", unless otherwise stated",
+        "rights": "© Copyright"
+    },
+    "navbar": {
+        "skip": "Skip to main content",
+        "official": "Official Website",
+        "publicAdministration": "Public Administration",
+        "sk": "SK",
+        "e-gov": "e-gov",
+        "domain": "The gov.sk domain is official",
+        "officialSite": "This is the official website of the public authority of the Slovak Republic. Official websites primarily use the gov.sk domain.",
+        "link": "Links to individual websites of public authorities can be found at this link",
+        "security": "This page is secure",
+        "safety": "Be cautious and always ensure that you share information only through a secure website of the public administration of the Slovak Republic. A secure page always starts with https:// before the domain name of the website.",
+        "menu": "Menu",
+        "search": "Search",
+        "searchPlaceholder": "Enter search term",
+        "eurofonds": "Eurofunds",
+        "development": "Regional Development",
+        "info": "Digitization",
+        "invest": "Investments",
+        "inovations": "Innovations"
+    },
+    "radioButton": {
+        "yes": "Yes",
+        "no": "No"
+    },
+    "table": {
+        "title": "Cities",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+        "heading": "Filter Content",
+        "unpack": "Unpack Filter Content",
+        "pack": "Pack Filter Content",
+        "city": "City",
+        "region": "Region",
+        "district": "District",
+        "area": "Area",
+        "density": "Density",
+        "source": "Source:",
+        "sourceUrl": "sk.wikipedia.org",
+        "filter": "Filter",
+        "chooseDistrict": "Choose district",
+        "activeFilter": "Active filter",
+        "wrapActiveFilter": "Pack active filter",
+        "unorderedColumn": "Unsorted column - will use ascending sorting.",
+        "resetOrder": "Reset order",
+        "pagination": "Page navigation"
+    },
+    "form": {
+        "userFirstName": "First name of user",
+        "userSurName": "Surname of user",
+        "select": {
+            "country": "Choose country"
+        },
+        "submit": "Submit form"
+    },
+    "languageSelector": {
+        "open": "Open language menu",
+        "close": "Close language menu"
+    },
+    "language": {
+        "sk": "Slovenčina",
+        "en": "English"
+    },
+    "tab": {
+        "contents": "Contents"
+    }
+}
