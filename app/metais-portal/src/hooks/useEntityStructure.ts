@@ -16,10 +16,22 @@ export const useEntityStructure = (entityName: string) => {
     })
 
     const units = data?.attributes.some((attribute) => attribute.units !== null)
-    const constraints =
+
+    const constraintsAttributes =
         data?.attributes
             .map((attribute) => attribute.constraints.filter((item) => item.type === 'enum').map((constraint) => constraint.enumCode))
             .flat() ?? []
+
+    const constraintsAttributesProfiles =
+        data?.attributeProfiles
+            .map((profile) =>
+                profile.attributes.map((attribute) =>
+                    attribute.constraints.filter((item) => item.type === 'enum').map((constraint) => constraint.enumCode),
+                ),
+            )
+            .flat(2) ?? []
+
+    const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
     const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useHowToDisplayUnits(units)
 

@@ -15,7 +15,7 @@ interface IProjectListContainer {
 }
 
 export const ProjectListContainer: React.FC<IProjectListContainer> = ({ entityName, View, LoadingView, ErrorView }) => {
-    const { isLoading, isError, data, unitsData, constraintsData } = useEntityStructure(entityName)
+    const { isLoading, isError, data: entityStructure, unitsData, constraintsData } = useEntityStructure(entityName)
     const { isLoading: isColumnListLoading, isError: isColumnListError, data: columnListData } = useColumnList(entityName)
 
     if (isLoading || isColumnListLoading) {
@@ -26,5 +26,5 @@ export const ProjectListContainer: React.FC<IProjectListContainer> = ({ entityNa
         return <ErrorView />
     }
 
-    return <View data={{ data, columnListData, unitsData, constraintsData }} />
+    return <View data={{ entityStructure, columnListData, unitsData, constraintsData }} />
 }
