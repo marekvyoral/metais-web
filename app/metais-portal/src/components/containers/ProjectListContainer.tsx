@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 
-import { getColumnList, getEntityStructure } from '../api/TableApi'
+import { useEntityStructure } from '@/hooks/useEntityStructure'
+import { useColumnList } from '@/hooks/useColumnList'
 
 interface IView {
     data: object
@@ -15,27 +15,16 @@ interface IProjectListContainer {
 }
 
 export const ProjectListContainer: React.FC<IProjectListContainer> = ({ entityName, View, LoadingView, ErrorView }) => {
-    const { isLoading, isError, data } = useQuery({
-        queryKey: ['entityStructure', entityName],
-        queryFn: () => getEntityStructure(entityName),
-    })
+    const { isLoading, isError, data, unitsData, constraintsData } = useEntityStructure(entityName)
+    const { isLoading: isColumnListLoading, isError: isColumnListError, data: columnListData } = useColumnList(entityName)
 
-    const {
-        isLoading: isColumnLoading,
-        isError: isColumnError,
-        data: columnsList,
-    } = useQuery({
-        queryKey: ['columnsList', entityName],
-        queryFn: () => getColumnList(entityName),
-    })
-
-    if (isLoading || isColumnLoading) {
+    if (isLoading || isColumnListLoading) {
         return <LoadingView />
     }
 
-    if (isError || isColumnError) {
+    if (isError || isColumnListError) {
         return <ErrorView />
     }
 
-    return <View data={{ data, columnsList }} />
+    return <View data={{ data, columnListData, unitsData, constraintsData }} />
 }
