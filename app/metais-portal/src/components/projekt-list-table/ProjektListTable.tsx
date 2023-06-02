@@ -1,28 +1,33 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Paginator } from '../paginator/Paginator'
 
 import { placeholderColumns, placeholderData } from './mockDataTable'
 
 import { Table } from '@/components/table/Table'
-import { IListView } from '@/pages/projekt/create'
+import { IListData, IListFilterCallbacks } from '@/pages/projekt/index'
 
 interface IListTable {
-    data: IListView
+    data: IListData
+    filterCallbacks: IListFilterCallbacks
 }
 
-export const ListTable: React.FC<IListTable> = ({ data }) => {
-    const { entityStructure, columnListData, constraintsData, tableData, unitsData, setTableParams, tableParams } = data
-    const currentPage = tableParams.page
-    const pageSize = tableParams.perpage
+export const ProjektListTable: React.FC<IListTable> = ({ data, filterCallbacks }) => {
+    const currentPage = filterCallbacks.tableParams.page
+    const pageSize = filterCallbacks.tableParams.perpage
     const startData = currentPage * pageSize - pageSize
 
     const handlePageChange = (page: number) => {
-        setTableParams((prev) => ({
+        filterCallbacks.setTableParams((prev) => ({
             ...prev,
             page,
         }))
     }
+
+    /*
+        tableData returns 
+        current page, perPage, totalPages, totalItems
+    */
 
     return (
         <>

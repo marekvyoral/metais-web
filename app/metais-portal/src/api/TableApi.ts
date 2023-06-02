@@ -19,6 +19,7 @@ export interface ITableDataParams {
     sortType: string
 }
 
+//NEEDS what exactly to call this with
 export const postTableData = (params: ITableDataParams) => {
     const proxyUrl = 'https://corsproxy.io/?'
     return fetch(proxyUrl + `https://metais.vicepremier.gov.sk/cmdb/read/cilistfiltered`, {

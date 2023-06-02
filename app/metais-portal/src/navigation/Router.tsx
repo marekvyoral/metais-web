@@ -5,7 +5,7 @@ import { RootRouteContainer } from '@/navigation/route-containers/RootRouteConta
 import { RouteNames } from '@/navigation/routeNames'
 import { DevTestScreen } from '@/pages/DevTestScreen'
 import { Home } from '@/pages/Home'
-import { List } from '@/pages/projekt/create'
+import { List } from '@/pages/projekt/index'
 
 export const Router: React.FC = () => {
     return (
