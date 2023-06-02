@@ -32,10 +32,5 @@ export const EntityDocumentsListContainer: React.FC<IEntityDocumentsListContaine
         return <ErrorView />
     }
 
-    const viewProps: IView = {
-        data: documentCiData,
-        setPageConfig,
-    }
-
-    return <View {...viewProps} />
+    return <View data={{ documentCiData, documentsList }} setPageConfig={setPageConfig} />
 }
