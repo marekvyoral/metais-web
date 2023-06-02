@@ -9,16 +9,18 @@ import { placeholderColumns, placeholderData } from './mockDataTable'
 import { Table } from '@/components/table/Table'
 import { IListData, IListFilterCallbacks } from '@/pages/projekt/index'
 import styles from '@/components/ci-table/table.module.scss'
+import { IListQueryArgs } from '@/api/TableApi'
 
 interface ICiTable {
     data: IListData
     filterCallbacks: IListFilterCallbacks
+    filter: IListQueryArgs
 }
 
-export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
+export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks, filter }) => {
     const { t } = useTranslation()
-    const pageNumber = filterCallbacks.tableParams.pageNumber
-    const pageSize = filterCallbacks.tableParams.pageSize
+    const pageNumber = filter.pageNumber
+    const pageSize = filter.pageSize
     const startData = pageNumber * pageSize - pageSize
     const dataLength = placeholderData.length
 
@@ -26,7 +28,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
     const [max, setMax] = useState<number>(pageSize)
 
     const handlePageChange = (page: number, from: number, to: number) => {
-        filterCallbacks.setTableParams((prev) => ({
+        filterCallbacks.setListQueryArgs((prev) => ({
             ...prev,
             pageNumber: page,
         }))

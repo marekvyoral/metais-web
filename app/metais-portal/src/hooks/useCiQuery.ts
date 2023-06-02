@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { ITableDataParams, postTableData } from '@/api/TableApi'
+import { IListQueryArgs, postTableData } from '@/api/TableApi'
 
-export const useTableData = (params: ITableDataParams) => {
+export const useCiQuery = (params: IListQueryArgs) => {
     const { isLoading, isError, data } = useQuery({
         queryKey: ['tableData', params],
         queryFn: () => postTableData(params),

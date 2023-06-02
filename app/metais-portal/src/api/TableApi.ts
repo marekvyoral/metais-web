@@ -8,7 +8,7 @@ export const getColumnList = (entityName: string) => {
     return fetch(BASE_URL + `/userconfig/columns/citype/${entityName}/default`).then((res) => res.json())
 }
 
-export interface ITableDataParams {
+export interface IListQueryArgs {
     filter: {
         type: string[]
         metaAttributes: {
@@ -21,7 +21,7 @@ export interface ITableDataParams {
     sortType: string
 }
 
-export const postTableData = (params: ITableDataParams) => {
+export const postTableData = (params: IListQueryArgs) => {
     const proxyUrl = 'https://corsproxy.io/?'
 
     const postData = {

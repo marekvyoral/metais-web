@@ -2,7 +2,7 @@ import React, { SetStateAction } from 'react'
 
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { CiTable } from '@/components/ci-table/CiTable'
-import { ITableDataParams } from '@/api/TableApi'
+import { IListQueryArgs } from '@/api/TableApi'
 
 export interface IListData {
     //placeholder types
@@ -14,26 +14,26 @@ export interface IListData {
 }
 
 export interface IListFilterCallbacks {
-    setTableParams: React.Dispatch<SetStateAction<ITableDataParams>>
-    tableParams: ITableDataParams
+    setListQueryArgs: React.Dispatch<SetStateAction<IListQueryArgs>>
 }
 
 export interface IListView {
     data: IListData
     filterCallbacks: IListFilterCallbacks
+    filter: IListQueryArgs
 }
 
 export const List: React.FC = () => {
     return (
         <CiListContainer
             entityName="Projekt"
-            View={({ data, filterCallbacks }) => (
+            View={({ data, filterCallbacks, filter }) => (
                 <>
                     {/* 
             ProjektFilter
             ProjektActions
             */}
-                    <CiTable data={data} filterCallbacks={filterCallbacks} />
+                    <CiTable data={data} filterCallbacks={filterCallbacks} filter={filter} />
                 </>
             )}
         />
