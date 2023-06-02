@@ -1,8 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-vite'
-import path from 'path'
-import { loadConfigFromFile } from 'vite'
 
-import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 const config: StorybookConfig = {
@@ -20,7 +17,6 @@ const config: StorybookConfig = {
             ...config,
             plugins: [
                 ...(config.plugins || []),
-                react(),
                 tsconfigPaths({
                     parseNative: false,
                 }),
