@@ -1,9 +1,10 @@
+import { BASE_URL } from '@/constants/constants'
 import { IPageConfig } from '@/hooks/useEntityRelations'
 
 export const postDocumentParams = (id: string, pageConfig: IPageConfig) => {
     //proxy for production - CORS was blocking access
     const proxyUrl = 'https://corsproxy.io/?'
-    const url = `https://metais.vicepremier.gov.sk/cmdb/read/relations/neighbours/${id}`
+    const url = BASE_URL + `/cmdb/read/relations/neighbours/${id}`
 
     //su aj ine parametre premenne??
     const params = {
@@ -27,5 +28,5 @@ export const postDocumentParams = (id: string, pageConfig: IPageConfig) => {
 }
 
 export const getDocumentsData = (id: string) => {
-    return fetch(`https://metais.vicepremier.gov.sk/dms/file/meta/${id}`).then((res) => res.json())
+    return fetch(BASE_URL + `/dms/file/meta/${id}`).then((res) => res.json())
 }
