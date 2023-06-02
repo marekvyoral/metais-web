@@ -7,15 +7,15 @@ import { placeholderColumns, placeholderData } from './mockDataTable'
 import { Table } from '@/components/table/Table'
 import { IListData, IListFilterCallbacks } from '@/pages/projekt/index'
 
-interface IListTable {
+interface ICiTable {
     data: IListData
     filterCallbacks: IListFilterCallbacks
 }
 
-export const ProjektListTable: React.FC<IListTable> = ({ data, filterCallbacks }) => {
-    const currentPage = filterCallbacks.tableParams.page
-    const pageSize = filterCallbacks.tableParams.perpage
-    const startData = currentPage * pageSize - pageSize
+export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
+    const pageNumber = filterCallbacks.tableParams.pageNumber
+    const pageSize = filterCallbacks.tableParams.pageSize
+    const startData = pageNumber * pageSize - pageSize
 
     const handlePageChange = (page: number) => {
         filterCallbacks.setTableParams((prev) => ({
@@ -24,16 +24,11 @@ export const ProjektListTable: React.FC<IListTable> = ({ data, filterCallbacks }
         }))
     }
 
-    /*
-        tableData returns 
-        current page, perPage, totalPages, totalItems
-    */
-
     return (
         <>
             <Table columns={placeholderColumns} data={placeholderData.slice(startData, startData + pageSize)} />
             <Paginator
-                pageNumber={currentPage}
+                pageNumber={pageNumber}
                 pageSize={pageSize}
                 dataLength={placeholderData.length}
                 onPageChanged={(page) => handlePageChange(page)}

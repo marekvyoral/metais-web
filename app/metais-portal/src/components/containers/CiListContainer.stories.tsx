@@ -2,34 +2,26 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { ProjectListContainer } from './ProjectListContainer'
+import { CiListContainer } from './CiListContainer'
 
 interface IView {
     data: any
 }
 
 const View: React.FC<IView> = ({ data }) => {
-    console.log(data)
     return <>view</>
-}
-const Loading: React.FC = () => {
-    return <div>loading</div>
-}
-
-const Error: React.FC = () => {
-    return <div>error</div>
 }
 
 const queryClient = new QueryClient()
 
-const meta: Meta<typeof ProjectListContainer> = {
-    title: 'Components/ProjectListContainer',
-    component: ProjectListContainer,
+const meta: Meta<typeof CiListContainer> = {
+    title: 'Components/CiListContainer',
+    component: CiListContainer,
     tags: ['autodocs'],
 }
 
 export default meta
-type Story = StoryObj<typeof ProjectListContainer>
+type Story = StoryObj<typeof CiListContainer>
 
 export const Main: Story = {
     decorators: [
@@ -42,7 +34,5 @@ export const Main: Story = {
     args: {
         entityName: 'Projekt',
         View: View,
-        LoadingView: Loading,
-        ErrorView: Error,
     },
 }

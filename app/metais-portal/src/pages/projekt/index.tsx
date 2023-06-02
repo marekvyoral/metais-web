@@ -1,7 +1,7 @@
 import React, { SetStateAction } from 'react'
 
-import { ProjectListContainer } from '@/components/containers/ProjectListContainer'
-import { ProjektListTable } from '@/components/projekt-list-table/ProjektListTable'
+import { CiListContainer } from '@/components/containers/CiListContainer'
+import { CiTable } from '@/components/ci-table/CiTable'
 import { ITableDataParams } from '@/api/TableApi'
 
 export interface IListData {
@@ -25,7 +25,7 @@ export interface IListView {
 
 export const List: React.FC = () => {
     return (
-        <ProjectListContainer
+        <CiListContainer
             entityName="Projekt"
             View={({ data, filterCallbacks }) => (
                 <>
@@ -33,7 +33,7 @@ export const List: React.FC = () => {
             ProjektFilter
             ProjektActions
             */}
-                    <ProjektListTable data={data} filterCallbacks={filterCallbacks} />
+                    <CiTable data={data} filterCallbacks={filterCallbacks} />
                 </>
             )}
         />
