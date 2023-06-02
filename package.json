@@ -50,7 +50,6 @@
     "prepare:portal": "recursive-copy -w node_modules/@id-sk/frontend/govuk/assets app/metais-portal/public/assets && recursive-copy -w node_modules/@id-sk/frontend/idsk/assets app/metais-portal/public/assets",
     "prepare:admin": "recursive-copy -w node_modules/@id-sk/frontend/govuk/assets app/metais-admin/public/assets && recursive-copy -w node_modules/@id-sk/frontend/idsk/assets app/metais-admin/public/assets",
     "storybook": "storybook dev -p 6006 --disable-telemetry",
-    "storybook:portal": "cd app/metais-portal && storybook dev -p 6006 --disable-telemetry",
     "build-storybook": "storybook build"
   },
   "eslintConfig": {
