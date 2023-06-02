@@ -1,0 +1,11 @@
+diff --git a/node_modules/@id-sk/frontend/idsk/components/header-extended/_header-extended.scss b/node_modules/@id-sk/frontend/idsk/components/header-extended/_header-extended.scss
+index e61867e..8d13f26 100644
+--- a/node_modules/@id-sk/frontend/idsk/components/header-extended/_header-extended.scss
++++ b/node_modules/@id-sk/frontend/idsk/components/header-extended/_header-extended.scss
+@@ -1,5 +1,5 @@
+ @import "../../base";
+-@import "./node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
++@import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
+ 
+ @include govuk-exports("idsk/component/header-extended") {
+   $idsk-header-background: govuk-colour("white") !default;
