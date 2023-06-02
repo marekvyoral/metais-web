@@ -107,7 +107,7 @@
     "tab": {
         "contents": "Obsah"
     },
-    "ciTable": {
+    "pagination": {
         "showing": "Zobrazených",
         "ofTotal": "z celkových",
         "records": "záznamov"

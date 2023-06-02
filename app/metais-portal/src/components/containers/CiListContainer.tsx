@@ -9,14 +9,13 @@ import { IListQueryArgs } from '@/api/TableApi'
 
 interface ICiListContainer {
     entityName: string
-    View: React.FC<IListView>
+    ListComponent: React.FC<IListView>
 }
 
-export const CiListContainer: React.FC<ICiListContainer> = ({ entityName, View }) => {
+export const CiListContainer: React.FC<ICiListContainer> = ({ entityName, ListComponent }) => {
     const { isLoading, isError, data: entityStructure, unitsData, constraintsData } = useEntityStructure(entityName)
     const { isLoading: isColumnListLoading, isError: isColumnListError, data: columnListData } = useColumnList(entityName)
 
-    //what parameters should it call by default?
     const defaultListQueryArgs = {
         filter: { type: ['Program'], metaAttributes: { state: ['DRAFT'] } },
         sortBy: 'Gen_Profil_nazov',
@@ -27,11 +26,10 @@ export const CiListContainer: React.FC<ICiListContainer> = ({ entityName, View }
 
     const [listQueryArgs, setListQueryArgs] = useState<IListQueryArgs>(defaultListQueryArgs)
 
-    //post call for table data
     const { isLoading: isTableDataLoading, isError: isTableDataError, data: tableData } = useCiQuery(listQueryArgs)
 
     return (
-        <View
+        <ListComponent
             data={{ entityStructure, unitsData, constraintsData, columnListData, tableData }}
             filterCallbacks={{ setListQueryArgs }}
             filter={listQueryArgs}

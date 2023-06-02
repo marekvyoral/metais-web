@@ -106,7 +106,7 @@
     "tab": {
         "contents": "Contents"
     },
-    "ciTable": {
+    "pagination": {
         "showing": "Showing",
         "ofTotal": "of a total of",
         "records": "records"

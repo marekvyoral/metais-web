@@ -23,11 +23,11 @@ export interface IListView {
     filter: IListQueryArgs
 }
 
-export const List: React.FC = () => {
+export default function () {
     return (
         <CiListContainer
             entityName="Projekt"
-            View={({ data, filterCallbacks, filter }) => (
+            ListComponent={({ data, filterCallbacks, filter }) => (
                 <>
                     {/* 
             ProjektFilter
