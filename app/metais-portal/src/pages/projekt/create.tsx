@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { ProjectListContainer } from '@/components/containers/ProjectListContainer'
-import { ListTable } from '@/components/list-table/ListTable'
+import { ListTable } from '@/components/projekt-list-table/ProjektListTable'
 
 export interface IListView {
     entityStructure: object

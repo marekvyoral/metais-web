@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useEntityStructure } from '@/hooks/useEntityStructure'
 import { useColumnList } from '@/hooks/useColumnList'
-import { IListView } from '@/pages/projekt/List'
+import { IListView } from '@/pages/projekt/create'
 
 interface IProjectListContainer {
     entityName: string
