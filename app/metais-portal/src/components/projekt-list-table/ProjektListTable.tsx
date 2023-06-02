@@ -12,10 +12,17 @@ interface IListTable {
 }
 
 export const ListTable: React.FC<IListTable> = ({ data }) => {
-    const { entityStructure, columnListData, constraintsData, tableData, unitsData } = data
-    const [currentPage, setCurrentPage] = useState(1)
-    const pageSize = 7
+    const { entityStructure, columnListData, constraintsData, tableData, unitsData, setTableParams, tableParams } = data
+    const currentPage = tableParams.page
+    const pageSize = tableParams.perpage
     const startData = currentPage * pageSize - pageSize
+
+    const handlePageChange = (page: number) => {
+        setTableParams((prev) => ({
+            ...prev,
+            page,
+        }))
+    }
 
     return (
         <>
@@ -24,7 +31,7 @@ export const ListTable: React.FC<IListTable> = ({ data }) => {
                 pageNumber={currentPage}
                 pageSize={pageSize}
                 dataLength={placeholderData.length}
-                onPageChanged={(page) => setCurrentPage(page)}
+                onPageChanged={(page) => handlePageChange(page)}
             />
         </>
     )

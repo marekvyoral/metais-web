@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useEntityStructure } from '@/hooks/useEntityStructure'
 import { useColumnList } from '@/hooks/useColumnList'
 import { IListView } from '@/pages/projekt/create'
+import { ITableDataParams } from '@/api/TableApi'
+import { useTableData } from '@/hooks/useTableData'
 
 interface IProjectListContainer {
     entityName: string
@@ -15,13 +17,23 @@ export const ProjectListContainer: React.FC<IProjectListContainer> = ({ entityNa
     const { isLoading, isError, data: entityStructure, unitsData, constraintsData } = useEntityStructure(entityName)
     const { isLoading: isColumnListLoading, isError: isColumnListError, data: columnListData } = useColumnList(entityName)
 
-    //post call for table data ?
+    const defaultParams: ITableDataParams = {
+        filter: { type: ['Program'], metaAttributes: { state: ['DRAFT'] } },
+        sortBy: 'Gen_Profil_nazov',
+        sortType: 'ASC',
+        //pagination
+        page: 1,
+        perpage: 7,
+    }
+    const [tableParams, setTableParams] = useState<ITableDataParams>(defaultParams)
+    //post call for table data
+    const { isLoading: isTableDataLoading, isError: isTableDataError, data: tableData } = useTableData(tableParams)
 
-    if (isLoading || isColumnListLoading) {
+    if (isLoading || isColumnListLoading || isTableDataLoading) {
         return <LoadingView />
     }
 
-    if (isError || isColumnListError) {
+    if (isError || isColumnListError || isTableDataError) {
         return <ErrorView />
     }
 
@@ -29,9 +41,11 @@ export const ProjectListContainer: React.FC<IProjectListContainer> = ({ entityNa
         <View
             entityStructure={entityStructure}
             columnListData={columnListData}
-            tableData={{}}
+            tableData={tableData}
             unitsData={unitsData}
             constraintsData={constraintsData}
+            setTableParams={setTableParams}
+            tableParams={tableParams}
         />
     )
 }

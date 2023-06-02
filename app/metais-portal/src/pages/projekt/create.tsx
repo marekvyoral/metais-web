@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { SetStateAction } from 'react'
 
 import { ProjectListContainer } from '@/components/containers/ProjectListContainer'
 import { ListTable } from '@/components/projekt-list-table/ProjektListTable'
+import { ITableDataParams } from '@/api/TableApi'
 
 export interface IListView {
     entityStructure: object
@@ -9,16 +10,18 @@ export interface IListView {
     unitsData: object
     constraintsData: object
     tableData: object
+    setTableParams: React.Dispatch<SetStateAction<ITableDataParams>>
+    tableParams: ITableDataParams
 }
 
-const ListView: React.FC<IListView> = ({ entityStructure, columnListData, constraintsData, tableData, unitsData }) => {
+const ListView: React.FC<IListView> = ({ entityStructure, columnListData, constraintsData, tableData, unitsData, setTableParams, tableParams }) => {
     return (
         <>
             {/*
             ListFilter
             Actions
              */}
-            <ListTable data={{ entityStructure, columnListData, constraintsData, tableData, unitsData }} />
+            <ListTable data={{ entityStructure, columnListData, constraintsData, tableData, unitsData, setTableParams, tableParams }} />
         </>
     )
 }

@@ -6,22 +6,26 @@ export const getColumnList = (entityName: string) => {
     return fetch(`https://metais.vicepremier.gov.sk/userconfig/columns/citype/${entityName}/default`).then((res) => res.json())
 }
 
-export const postTableData = () => {
-    const proxyUrl = 'https://corsproxy.io/?'
-
-    const data = {
-        filter: { type: ['Program'], metaAttributes: { state: ['DRAFT'] } },
-        page: 1,
-        perpage: 10000,
-        sortBy: 'Gen_Profil_nazov',
-        sortType: 'ASC',
+export interface ITableDataParams {
+    filter: {
+        type: string[]
+        metaAttributes: {
+            state: string[]
+        }
     }
+    page: number
+    perpage: number
+    sortBy: string
+    sortType: string
+}
 
+export const postTableData = (params: ITableDataParams) => {
+    const proxyUrl = 'https://corsproxy.io/?'
     return fetch(proxyUrl + `https://metais.vicepremier.gov.sk/cmdb/read/cilistfiltered`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(params),
     }).then((res) => res.json())
 }
