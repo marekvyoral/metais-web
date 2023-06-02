@@ -4,6 +4,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @include mq($until: desktop) {
+        flex-direction: column;
+        justify-content: center;
+    }
 }
 
 .text {

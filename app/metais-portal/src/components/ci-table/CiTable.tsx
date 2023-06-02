@@ -45,9 +45,11 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
                     onPageChanged={(page, from, to) => handlePageChange(page, from, to)}
                 />
                 {/* need to add custom classnames... maybe change inside component?*/}
-                <TextBody size="S">
-                    {t('ciTable.showing')} {min} - {max} {t('ciTable.ofTotal')} {placeholderData.length} {t('ciTable.records')}
-                </TextBody>
+                <div style={{ textAlign: 'right' }}>
+                    <TextBody size="S">
+                        {t('ciTable.showing')} {min} - {max} {t('ciTable.ofTotal')} {placeholderData.length} {t('ciTable.records')}
+                    </TextBody>
+                </div>
             </div>
         </>
     )
