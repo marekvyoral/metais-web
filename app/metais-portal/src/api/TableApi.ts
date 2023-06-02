@@ -22,13 +22,16 @@ export interface ITableDataParams {
 }
 
 export const postTableData = (params: ITableDataParams) => {
+    const proxyUrl = 'https://corsproxy.io/?'
+
     const postData = {
-        ...params,
-        page: params.pageNumber,
+        filter: params.filter,
         perpage: params.pageSize,
+        page: params.pageNumber,
+        sortBy: params.sortBy,
+        sortType: params.sortType,
     }
 
-    const proxyUrl = 'https://corsproxy.io/?'
     return fetch(proxyUrl + BASE_URL + `/cmdb/read/cilistfiltered`, {
         method: 'POST',
         headers: {

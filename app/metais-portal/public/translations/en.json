@@ -105,5 +105,10 @@
     },
     "tab": {
         "contents": "Contents"
+    },
+    "ciTable": {
+        "showing": "Showing",
+        "ofTotal": "of a total of",
+        "records": "records"
     }
 }

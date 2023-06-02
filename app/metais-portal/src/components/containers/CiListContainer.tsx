@@ -17,13 +17,14 @@ export const CiListContainer: React.FC<ICiListContainer> = ({ entityName, View }
     const { isLoading: isColumnListLoading, isError: isColumnListError, data: columnListData } = useColumnList(entityName)
 
     //what parameters should it call by default?
-    const defaultParams: ITableDataParams = {
+    const defaultParams = {
         filter: { type: ['Program'], metaAttributes: { state: ['DRAFT'] } },
         sortBy: 'Gen_Profil_nazov',
         sortType: 'ASC',
         pageNumber: BASE_PAGE_NUMBER,
         pageSize: BASE_PAGE_SIZE,
     }
+
     const [tableParams, setTableParams] = useState<ITableDataParams>(defaultParams)
 
     //post call for table data

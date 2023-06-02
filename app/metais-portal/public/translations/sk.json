@@ -106,5 +106,10 @@
     },
     "tab": {
         "contents": "Obsah"
+    },
+    "ciTable": {
+        "showing": "Zobrazených",
+        "ofTotal": "z celkových",
+        "records": "záznamov"
     }
 }
