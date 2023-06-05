@@ -1,8 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/app/metais-portal/node_modules
-/app/metais-portal/.pnp
+/app/*/.pnp
 .pnp.js
 
 # testing
@@ -27,4 +26,3 @@ yarn-error.log*
 /app/*/storybook-static
 
 /node_modules
-.idea/

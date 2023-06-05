@@ -1,14 +1,3 @@
 {
-  "extends": "../../.eslintrc.json",
-  "settings": {
-    "import/resolver": {
-      "typescript": {},
-      "alias": {
-        "map": [
-          ["@", "src"],
-          ["shared", "../../packages/src"]
-        ]
-      }
-    }
-  }
+  "extends": "../../.eslintrc.json"
 }

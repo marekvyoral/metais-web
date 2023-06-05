@@ -4,7 +4,6 @@
     "baseUrl": "."
   },
   "include": [
-    "src",
-    "../../packages/src"
+    "src"
   ]
 }
