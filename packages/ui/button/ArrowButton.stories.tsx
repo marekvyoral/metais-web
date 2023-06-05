@@ -2,7 +2,7 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
 
-import { ArrowButton } from '@/components/button/ArrowButton'
+import { ArrowButton } from './ArrowButton'
 
 const meta: Meta<typeof ArrowButton> = {
     title: 'Components/ArrowButton',

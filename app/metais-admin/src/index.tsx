@@ -6,7 +6,7 @@ import { I18nextProvider } from 'react-i18next'
 
 import { App } from '@/App'
 import { reportWebVitals } from '@/reportWebVitals'
-import { i18nInstance } from '@/localization/i18next'
+import { i18nInstance } from 'ui/localization/i18next'
 import './index.scss'
 
 const root = createRoot(document.getElementById('root') as HTMLElement)

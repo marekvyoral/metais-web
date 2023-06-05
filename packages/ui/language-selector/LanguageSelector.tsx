@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
 
-import { Languages } from '@/localization/languages'
+import { Languages } from '../localization/languages'
 
 interface ILanguageItem {
     handleClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, lng: Languages) => void

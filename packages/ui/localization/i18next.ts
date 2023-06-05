@@ -2,7 +2,7 @@ import { createInstance } from 'i18next'
 import Backend from 'i18next-http-backend'
 import { initReactI18next } from 'react-i18next'
 
-import { Languages } from '@/localization/languages'
+import { Languages } from './languages'
 
 export const i18nInstance = createInstance()
 

@@ -2,10 +2,16 @@ import classNames from 'classnames'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import styles from '@/components/paginator/paginator.module.scss'
-import { computePageModel } from '@/components/paginator/paginatorModel'
-import { Button } from '@/components/button/Button'
-import { DotsIcon, PaginatorEndArrowIcon, PaginatorLeftArrowIcon, PaginatorRightArrowIcon, PaginatorStartArrowIcon } from '@/assets/images'
+import styles from './paginator.module.scss'
+import { computePageModel } from './paginatorModel'
+import { Button } from '../button/Button'
+import {
+    DotsIcon,
+    PaginatorEndArrowIcon,
+    PaginatorLeftArrowIcon,
+    PaginatorRightArrowIcon,
+    PaginatorStartArrowIcon,
+} from '../../../app/metais-portal/src/assets/images'
 
 type PaginatorProps = {
     pageNumber: number

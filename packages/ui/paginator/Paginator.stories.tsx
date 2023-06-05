@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 
-import { Paginator } from '@/components/paginator/Paginator'
+import { Paginator } from './Paginator'
 
 const meta: Meta<typeof Paginator> = {
     title: 'Components/Paginator',
