@@ -6,12 +6,12 @@ export default defineConfig({
             target: 'http://cmdb-metais3.apps.dev.isdd.sk/v2/api-docs',
         },
         output: {
-            target: `./src/generated/cmdb-swagger.ts`,
+            target: `./app/metais-portal/src/generated/cmdb-swagger.ts`,
             client: 'react-query',
             prettier: true,
             override: {
                 mutator: {
-                    path: './src/hooks/use-custom-client.ts',
+                    path: './app/metais-portal/src/hooks/use-custom-client.ts',
                     name: 'useCustomClient',
                 },
             },
@@ -25,12 +25,12 @@ export default defineConfig({
             target: 'http://types-repo-metais3.apps.dev.isdd.sk/v2/api-docs',
         },
         output: {
-            target: `./src/generated/types-repo-swagger.ts`,
+            target: `./app/metais-portal/src/generated/types-repo-swagger.ts`,
             client: 'react-query',
             prettier: true,
             override: {
                 mutator: {
-                    path: './src/hooks/use-custom-client.ts',
+                    path: './app/metais-portal/src/hooks/use-custom-client.ts',
                     name: 'useCustomClient',
                 },
             },

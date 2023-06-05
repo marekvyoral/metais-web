@@ -1,16 +1,16 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/app/metais-portal/node_modules
-/app/metais-portal/.pnp
+/app/*/node_modules
+/app/*/.pnp
 .pnp.js
 
 # testing
-/app/metais-portal/coverage
+/app/*/coverage
 
 # production
-/app/metais-portal/build
-/app/metais-portal/dist
+/app/*/build
+/app/*/dist
 
 # misc
 .DS_Store
@@ -23,5 +23,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/app/metais-portal/public/assets
-/app/metais-portal/storybook-static
+/app/*/public/assets
+/app/*/storybook-static
+
+/node_modules
