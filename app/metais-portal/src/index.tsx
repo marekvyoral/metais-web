@@ -3,10 +3,10 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
+import { i18nInstance } from 'ui/localization/i18next'
 
 import { App } from '@/App'
 import { reportWebVitals } from '@/reportWebVitals'
-import { i18nInstance } from 'ui/localization/i18next'
 
 import '@/index.scss'
 
