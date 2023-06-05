@@ -1,4 +1,4 @@
-import { BASE_URL } from '@/constants/constants'
+import { BASE_URL } from '@/api/constants'
 
 export const getEntityStructure = (entityName: string) => {
     return fetch(BASE_URL + `/typesrepository/citypes/citype/${entityName}?lang=sk`).then((res) => res.json())

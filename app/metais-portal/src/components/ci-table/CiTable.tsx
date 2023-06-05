@@ -19,21 +19,22 @@ interface ICiTable {
 
 export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks, filter }) => {
     const { t } = useTranslation()
+
     const pageNumber = filter.pageNumber
     const pageSize = filter.pageSize
     const startData = pageNumber * pageSize - pageSize
     const dataLength = placeholderData.length
 
-    const [min, setMin] = useState<number>(1)
-    const [max, setMax] = useState<number>(pageSize)
+    const [start, setStart] = useState<number>(1)
+    const [end, setEnd] = useState<number>(pageSize)
 
     const handlePageChange = (page: number, from: number, to: number) => {
         filterCallbacks.setListQueryArgs((prev) => ({
             ...prev,
             pageNumber: page,
         }))
-        setMin(from + 1)
-        setMax(to + 1 > dataLength ? dataLength : to + 1)
+        setStart(from + 1)
+        setEnd(to + 1 > dataLength ? dataLength : to + 1)
     }
 
     return (
@@ -49,7 +50,11 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks, filter }) =
                 {/* need to add custom classnames... maybe change inside component?*/}
                 <div style={{ textAlign: 'right' }}>
                     <TextBody size="S">
-                        {t('ciTable.showing')} {min} - {max} {t('ciTable.ofTotal')} {placeholderData.length} {t('ciTable.records')}
+                        {t('table.paginationSummary', {
+                            start,
+                            end,
+                            total: placeholderData.length,
+                        })}
                     </TextBody>
                 </div>
             </div>

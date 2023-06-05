@@ -23,7 +23,7 @@ export interface IListView {
     filter: IListQueryArgs
 }
 
-export default function () {
+const ProjektListPage: React.FC = () => {
     return (
         <CiListContainer
             entityName="Projekt"
@@ -39,3 +39,5 @@ export default function () {
         />
     )
 }
+
+export default ProjektListPage

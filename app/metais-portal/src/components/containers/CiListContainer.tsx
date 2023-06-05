@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useEntityStructure } from '@/hooks/useEntityStructure'
 import { useColumnList } from '@/hooks/useColumnList'
 import { IListView } from '@/pages/projekt/index'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/constants/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api/constants'
 import { useCiQuery } from '@/hooks/useCiQuery'
 import { IListQueryArgs } from '@/api/TableApi'
 
