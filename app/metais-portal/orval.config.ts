@@ -1,35 +1,42 @@
 import { defineConfig } from 'orval'
-const paths = ['./iam-swagger.json', './userconfig-swagger.json'] // add swagger paths
 
-const getSwaggerName = (swaggerFilePath: string) => {
-    return swaggerFilePath?.replace(/\.\/|\.json$/g, '')
-}
-
-const createMultipleConfigs = () => {
-    return paths?.map((path) => {
-        const swaggerName = getSwaggerName(path)
-        return {
-            input: {
-                target: path,
-            },
-            output: {
-                target: `./src/generated/${swaggerName}.ts`,
-                client: 'react-query',
-                prettier: true,
-                override: {
-                    mutator: {
-                        path: './src/hooks/use-custom-client.ts',
-                        name: 'useCustomClient',
-                    },
+export default defineConfig({
+    cmdbSwagger: {
+        input: {
+            target: 'http://cmdb-metais3.apps.dev.isdd.sk/v2/api-docs',
+        },
+        output: {
+            target: `./src/generated/cmdb-swagger.ts`,
+            client: 'react-query',
+            prettier: true,
+            override: {
+                mutator: {
+                    path: './src/hooks/use-custom-client.ts',
+                    name: 'useCustomClient',
                 },
             },
-            hooks: {
-                afterAllFilesWrite: 'prettier --write',
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    typesRepo: {
+        input: {
+            target: 'http://types-repo-metais3.apps.dev.isdd.sk/v2/api-docs',
+        },
+        output: {
+            target: `./src/generated/types-repo-swagger.ts`,
+            client: 'react-query',
+            prettier: true,
+            override: {
+                mutator: {
+                    path: './src/hooks/use-custom-client.ts',
+                    name: 'useCustomClient',
+                },
             },
-        }
-    })
-}
-
-const computedConfig = createMultipleConfigs()
-
-export default defineConfig(computedConfig)
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+})

@@ -1,2 +1,3 @@
 // EXPORT ALL GENERATED FILES
-export * from './userconfig-swagger'
+export * from './cmdb-swagger'
+export * from './types-repo-swagger'
