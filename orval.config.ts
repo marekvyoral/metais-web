@@ -1,20 +1,34 @@
+import path from 'path'
+
+import dotenv from 'dotenv'
 import { defineConfig } from 'orval'
+
+if (process.env.DOTENV_CONFIG_PATH) {
+    dotenv.config({
+        path: path.resolve(__dirname, process.env.DOTENV_CONFIG_PATH),
+    })
+}
+
+const defaultOutputOptions: object = {
+    client: 'react-query',
+    prettier: true,
+    mock: JSON.parse(process.env.VITE_SWAGGER_MOCK ?? 'false') ?? false,
+    override: {
+        mutator: {
+            path: './app/metais-portal/src/api/hooks/use-custom-client.ts',
+            name: 'useCustomClient',
+        },
+    },
+}
 
 export default defineConfig({
     cmdbSwagger: {
         input: {
-            target: 'http://cmdb-metais3.apps.dev.isdd.sk/v2/api-docs',
+            target: process.env.VITE_CMDB_SWAGGER_API_ENDPOINT ?? '',
         },
         output: {
-            target: `./app/metais-portal/src/generated/cmdb-swagger.ts`,
-            client: 'react-query',
-            prettier: true,
-            override: {
-                mutator: {
-                    path: './app/metais-portal/src/hooks/use-custom-client.ts',
-                    name: 'useCustomClient',
-                },
-            },
+            target: `./app/metais-portal/src/api/generated/cmdb-swagger.ts`,
+            ...defaultOutputOptions,
         },
         hooks: {
             afterAllFilesWrite: 'prettier --write',
@@ -22,18 +36,11 @@ export default defineConfig({
     },
     typesRepo: {
         input: {
-            target: 'http://types-repo-metais3.apps.dev.isdd.sk/v2/api-docs',
+            target: process.env.VITE_TYPES_REPO_SWAGGER_API_ENDPOINT ?? '',
         },
         output: {
-            target: `./app/metais-portal/src/generated/types-repo-swagger.ts`,
-            client: 'react-query',
-            prettier: true,
-            override: {
-                mutator: {
-                    path: './app/metais-portal/src/hooks/use-custom-client.ts',
-                    name: 'useCustomClient',
-                },
-            },
+            target: `./app/metais-portal/src/api/generated/types-repo-swagger.ts`,
+            ...defaultOutputOptions,
         },
         hooks: {
             afterAllFilesWrite: 'prettier --write',

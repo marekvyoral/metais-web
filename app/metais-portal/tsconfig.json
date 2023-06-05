@@ -4,5 +4,5 @@
         "baseUrl": "."
     },
     "include": ["src"],
-    "exclude": ["**/generated/*.ts"]
+    "exclude": ["**/api/generated/*.ts", "**/api/*.ts"]
 }
