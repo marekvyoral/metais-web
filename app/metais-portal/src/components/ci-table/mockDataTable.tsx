@@ -1,13 +1,35 @@
-export const placeholderColumns = [
+import { ColumnDef } from '@tanstack/react-table'
+import React from 'react'
+
+import { CheckBox } from '../CheckBox'
+
+export type Table = {
+    nazov: React.ReactNode
+    kod: React.ReactNode
+    sluzba: React.ReactNode
+    elek: React.ReactNode
+    evidencia: React.ReactNode
+}
+
+export const placeholderColumns: ColumnDef<Table>[] = [
     {
-        header: 'Nazov koncovej sluzby',
+        accessorFn: (row) => row.nazov,
+        header: () => (
+            <>
+                <CheckBox label="" name="hi" id="hi" value="hi" />
+                <div className="th-span" draggable="true">
+                    koncova sluzba
+                </div>
+            </>
+        ),
         id: '1',
-        accessorKey: 'nazov',
+        cell: (row) => <CheckBox label={row.getValue() as string} name="hi" id="hi" value="hi" />,
     },
     {
+        accessorFn: (row) => row.kod,
         header: 'Kod MetaIS',
         id: '2',
-        accessorKey: 'kod',
+        cell: (row) => <strong>{row.getValue() as string}</strong>,
     },
     {
         header: 'Typ sluzby',
@@ -17,29 +39,31 @@ export const placeholderColumns = [
     {
         header: 'Uroven elek sluzby',
         id: '4',
-        accessorKey: 'elek',
+        accessorFn: (row) => row.elek,
+        cell: (row) => <a href="#">{row.getValue() as string}</a>,
     },
     {
+        accessorFn: (row) => row.evidencia,
         header: 'Stav evidencie',
         id: '5',
-        accessorKey: 'evidencia',
+        cell: (row) => (row.getValue() === 'nevytvorene' ? <p style={{ color: 'red' }}>{row.getValue() as string}</p> : row.getValue()),
     },
 ]
 
-export const placeholderData = [
+export const placeholderData: Table[] = [
     {
-        nazov: 'podanie ziadosti',
-        kod: '12345',
+        nazov: 'asd',
+        kod: '1235',
         sluzba: 'statna sprava...',
         elek: 'uroven 1',
         evidencia: 'vytvorene',
     },
     {
         nazov: 'podanie ziadosti',
-        kod: '12345',
+        kod: '145',
         sluzba: 'statna sprava...',
         elek: 'uroven 2',
-        evidencia: 'vytvorene',
+        evidencia: 'nevytvorene',
     },
     {
         nazov: 'podanie ziadosti',
@@ -53,7 +77,7 @@ export const placeholderData = [
         kod: '12345',
         sluzba: 'statna sprava...',
         elek: 'uroven 4',
-        evidencia: 'vytvorene',
+        evidencia: 'nevytvorene',
     },
     {
         nazov: 'podanie ziadosti',
