@@ -11,6 +11,9 @@
 }
 
 .text {
-    color: govuk-colour('dark-grey');
-    margin: 0;
+    color: govuk-colour('dark-grey') !important;
+    margin: 0 !important;
+    @include mq($until: desktop) {
+        margin-top: 10px !important;
+    }
 }

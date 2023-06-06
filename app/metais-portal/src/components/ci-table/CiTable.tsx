@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
-import { Paginator } from '../paginator/Paginator'
-import { TextBody } from '../typography/TextBody'
+import { PaginatorWrapper } from '../paginatorWrapper/PaginatorWrapper'
 
 import { placeholderColumns, placeholderData } from './mockDataTable'
 
 import { Table } from '@/components/table/Table'
 import { IListData, IListFilterCallbacks } from '@/pages/projekt/index'
-import styles from '@/components/ci-table/table.module.scss'
 import { IListQueryArgs } from '@/api/TableApi'
 
 interface ICiTable {
@@ -18,8 +15,6 @@ interface ICiTable {
 }
 
 export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks, filter }) => {
-    const { t } = useTranslation()
-
     const pageNumber = filter.pageNumber
     const pageSize = filter.pageSize
     const startData = pageNumber * pageSize - pageSize
@@ -40,24 +35,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks, filter }) =
     return (
         <>
             <Table columns={placeholderColumns} data={placeholderData.slice(startData, startData + pageSize)} />
-            <div className={styles.paginationDiv}>
-                <Paginator
-                    pageNumber={pageNumber}
-                    pageSize={pageSize}
-                    dataLength={dataLength}
-                    onPageChanged={(page, from, to) => handlePageChange(page, from, to)}
-                />
-                {/* need to add custom classnames... maybe change inside component?*/}
-                <div style={{ textAlign: 'right' }}>
-                    <TextBody size="S">
-                        {t('table.paginationSummary', {
-                            start,
-                            end,
-                            total: placeholderData.length,
-                        })}
-                    </TextBody>
-                </div>
-            </div>
+            <PaginatorWrapper paginator={{ pageNumber, pageSize, dataLength, handlePageChange }} text={{ start, end, total: dataLength }} />
         </>
     )
 }
