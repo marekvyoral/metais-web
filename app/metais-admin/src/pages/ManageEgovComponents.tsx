@@ -90,13 +90,13 @@ export const ManageEgovComponents: React.FC = () => {
         },
     ]
     const [sorting, setSorting] = useState<SortingState>([])
-    const [page, setPage] = useState(0)
+    const [page, setPage] = useState(1)
     return (
         <div>
             <Table data={mockData} columns={columns} sorting={sorting} onSortingChange={setSorting} />
 
             <div>
-                <Paginator pageNumber={page} pageSize={10} dataLength={100} onPageChanged={(p, from, to) => setPage(to)} />
+                <Paginator pageNumber={page} pageSize={10} dataLength={100} onPageChanged={(p) => setPage(p)} />
             </div>
         </div>
     )
