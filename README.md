@@ -12,10 +12,11 @@ To make the functions from `@id-sk` library work, make sure to include `@import 
 
 |  | ❌ Don't do this    | ✅ Do this| Parameters |
 | - | - | - | - |
-| Colors | `background-color: #FFFFF`   |`background-color: govuk-colour("white");`   | [Colors](https://idsk.gov.sk/komponenty/farby)|
+| Colors | `background-color: #FFFFF`   |`background-color: govuk-colour("white");` <br /><br /> example from figma: <br /> `rgba(208, 25, 15, 0.1)`->`rgba(govuk-colour("red"), 0.1)` <br /> `rgba(208, 25, 15, 1)`->`govuk-colour("red")`| [Colors](https://idsk.gov.sk/komponenty/farby)|
+| Lighter colors | `background-color: rgba(208, 35, 15);`   | Make a colour lighter by mixing it with white <br />`background-color: govuk-tint(govuk-colour("red"), 90);`|**$colour** <br/>- colour to tint <br /> **$percentage**<br/>- percentage of white `$colour` in returned color |
+| Darker colors | `background-color: rgba(208, 0, 15);`   | Make a colour darker by mixing it with black <br />`background-color: govuk-shade(govuk-colour("red"), 10);`|**$colour** <br/>- colour to shade <br /> **$percentage**<br/>- percentage of black `$colour` in returned color |
 | Spacing | `margin: 5px`   |`margin: govuk-spacing(1)`| <code>$govuk-spacing-points: (<br />&nbsp; 0: 0, 1: 5px,<br />&nbsp; 2: 10px,  3: 15px,<br />&nbsp;  4: 20px,  5: 25px,<br />&nbsp;  6: 30px,  7: 40px,<br />&nbsp;  8: 50px,  9: 60px<br />) !default;</code> |
 | Media query | <code>@media (max-width: 760px) {display: none;}</code>|<code>@include mq($until: tablet) {display: none;}</code>|<code>$govuk-breakpoints: (<br />&nbsp;&nbsp;mobile:  320px,<br />&nbsp;&nbsp;tablet:  641px,<br />&nbsp;&nbsp;desktop: 769px<br />) !default;</code>
-|
 
 #### When custom styles are needed, please use [**CSS Modules**](https://create-react-app.dev/docs/adding-a-css-modules-stylesheet). ####
 
