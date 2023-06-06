@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Paginator } from 'ui/paginator/Paginator'
+import { Paginator } from 'idsk-ui-kit/paginator/Paginator'
 
 import { AccordionContainer } from '@/components/Accordion'
 

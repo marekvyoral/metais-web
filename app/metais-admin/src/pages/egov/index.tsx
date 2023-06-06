@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Table } from 'ui/table/Table'
+import { Table } from 'idsk-ui-kit/table/Table'
 import { SortingState } from '@tanstack/react-table'
-import { Paginator } from 'ui/paginator/Paginator'
+import { Paginator } from 'idsk-ui-kit/paginator/Paginator'
 
 const mockData = [
     {
@@ -66,7 +66,7 @@ const mockData = [
     },
 ]
 
-export const ManageEgovComponents: React.FC = () => {
+export const Index: React.FC = () => {
     const columns = [
         {
             header: 'Meno',

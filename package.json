@@ -32,7 +32,8 @@
     "react-select-async-paginate": "^0.7.2",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0",
-    "ui": "*"
+    "idsk-ui-kit": "*",
+    "metais-common": "*"
   },
   "scripts": {
     "start": "yarn start:portal & yarn start:admin && fg",

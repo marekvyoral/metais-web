@@ -5,13 +5,7 @@ import { useTranslation } from 'react-i18next'
 import styles from './paginator.module.scss'
 import { computePageModel } from './paginatorModel'
 import { Button } from '../button/Button'
-import {
-    DotsIcon,
-    PaginatorEndArrowIcon,
-    PaginatorLeftArrowIcon,
-    PaginatorRightArrowIcon,
-    PaginatorStartArrowIcon,
-} from '../../../app/metais-portal/src/assets/images'
+import { DotsIcon, PaginatorEndArrowIcon, PaginatorLeftArrowIcon, PaginatorRightArrowIcon, PaginatorStartArrowIcon } from '../assets/images'
 
 type PaginatorProps = {
     pageNumber: number
