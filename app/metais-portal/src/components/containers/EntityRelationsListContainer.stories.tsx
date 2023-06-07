@@ -4,19 +4,19 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { EntityRelationsListContainer, IRelationsView } from './EntityRelationsListContainer'
 
-export const RelationsView: React.FC<IRelationsView> = ({ entityTypes, relationsList, keysToDisplay, setClickedEntityName, setPageConfig }) => {
+export const RelationsView: React.FC<IRelationsView> = ({ data, filterCallback, setClickedEntityName }) => {
     return (
         <div>
             <p>shows that it only start calls api when clicked on entity</p>
-            {keysToDisplay.map((key) => (
+            {data.keysToDisplay.map((key) => (
                 <button key={key} onClick={() => setClickedEntityName(key)}>
                     {key}
                 </button>
             ))}
             <p>status</p>
-            <p>{JSON.stringify(relationsList)}</p>
+            <p>{JSON.stringify(data.relationsList)}</p>
             <p>isFetching</p>
-            <p>{JSON.stringify(relationsList)}</p>
+            <p>{JSON.stringify(data.relationsList)}</p>
         </div>
     )
 }

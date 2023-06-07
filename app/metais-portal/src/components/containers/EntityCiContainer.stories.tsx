@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { EntityCiContainer, IEntityCiContainerView } from './EntityCiContainer'
 
 export const View: React.FC<IEntityCiContainerView> = ({ data }) => {
-    return <div>view</div>
+    return <div>{JSON.stringify(data).slice(0, 100)}...</div>
 }
 
 const queryClient = new QueryClient()

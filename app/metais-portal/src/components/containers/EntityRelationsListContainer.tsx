@@ -4,11 +4,15 @@ import { IPageConfig, useEntityRelationsDataList, useEntityRelationsTypesCount }
 import { ReadCiNeighboursWithAllRelsUsingGET200, ReadNeighboursConfigurationItemsCountUsingGET200 } from '@/api/generated/cmdb-swagger'
 
 export interface IRelationsView {
-    entityTypes: ReadNeighboursConfigurationItemsCountUsingGET200 | undefined
-    relationsList: ReadCiNeighboursWithAllRelsUsingGET200 | undefined
-    keysToDisplay: string[]
+    data: {
+        entityTypes: ReadNeighboursConfigurationItemsCountUsingGET200 | undefined
+        relationsList: ReadCiNeighboursWithAllRelsUsingGET200 | undefined
+        keysToDisplay: string[]
+    }
+    filterCallback: {
+        setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
+    }
     setClickedEntityName: React.Dispatch<SetStateAction<string>>
-    setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
 }
 
 interface IEntityRelationsListContainer {
@@ -35,10 +39,12 @@ export const EntityRelationsListContainer: React.FC<IEntityRelationsListContaine
 
     return (
         <View
-            entityTypes={entityTypes}
-            relationsList={relationsList}
-            keysToDisplay={keysToDisplay}
-            setPageConfig={setPageConfig}
+            data={{
+                entityTypes,
+                relationsList,
+                keysToDisplay,
+            }}
+            filterCallback={{ setPageConfig }}
             setClickedEntityName={setClickedEntityName}
         />
     )

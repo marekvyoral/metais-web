@@ -1,11 +1,12 @@
-import { useQueries, useQuery } from '@tanstack/react-query'
+import { UseQueryResult, useQueries, useQuery } from '@tanstack/react-query'
 
-import { IPageConfig } from './useEntityRelations'
+import { IPageConfig } from '../useEntityRelations'
 
 import { getDocumentsData, postDocumentParams } from '@/api/EntityDocsListApi'
+import { IDocument, IDocumentsData } from './entityDocsListTypes'
 
 export const useDocumentData = (idList: string[]) => {
-    const resultList = useQueries({
+    const resultList: UseQueryResult<IDocument, unknown>[] = useQueries({
         queries: idList.map((value) => {
             return {
                 queryKey: ['documentsData', value],
@@ -14,7 +15,7 @@ export const useDocumentData = (idList: string[]) => {
             }
         }),
     })
-
+    console.log(resultList)
     const isLoading = resultList.some((item) => item.isLoading)
     const isError = resultList.some((item) => item.isError)
 
@@ -26,14 +27,12 @@ export const useDocumentData = (idList: string[]) => {
 }
 
 export const useDocumentsListData = (id: string, pageConfig: IPageConfig) => {
-    const {
-        isLoading: isControlLoading,
-        isError: isControlError,
-        data,
-    } = useQuery({
+    const documentListData: UseQueryResult<IDocumentsData, unknown> = useQuery({
         queryKey: ['documentsControl'],
         queryFn: () => postDocumentParams(id, pageConfig),
     })
+
+    const { isLoading: isControlLoading, isError: isControlError, data } = documentListData
 
     const fromNodesConfigItemUuids = data?.fromNodes.neighbourPairs.map((item) => item.configurationItem.uuid) ?? []
     const toNodesConfigItemUuids = data?.toNodes.neighbourPairs.map((item) => item.configurationItem.uuid) ?? []

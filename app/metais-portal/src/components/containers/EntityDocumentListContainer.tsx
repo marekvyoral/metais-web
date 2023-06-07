@@ -1,36 +1,34 @@
 import React, { SetStateAction, useState } from 'react'
 
-import { useDocumentsListData } from '@/hooks/useEntityDocsListData'
+import { useDocumentsListData } from '@/hooks/useEntityDocsListData/useEntityDocsListData'
 import { IPageConfig } from '@/hooks/useEntityRelations'
+import { IDocument, IDocumentsData } from '@/hooks/useEntityDocsListData/entityDocsListTypes'
 
-interface IView {
-    data: object
-    setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
+export interface IDocsView {
+    data: {
+        documentCiData: IDocumentsData | undefined
+        documentsList: (IDocument | undefined)[]
+    }
+    filterCallbacks: {
+        setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
+    }
 }
 
 interface IEntityDocumentsListContainer {
     entityId: string
-    View: React.FC<IView>
-    LoadingView: React.FC
-    ErrorView: React.FC
+    View: React.FC<IDocsView>
 }
 
-export const EntityDocumentsListContainer: React.FC<IEntityDocumentsListContainer> = ({ entityId, View, LoadingView, ErrorView }) => {
+export const EntityDocumentsListContainer: React.FC<IEntityDocumentsListContainer> = ({ entityId, View }) => {
     const defaultPageConfig: IPageConfig = {
         page: 1,
         perPage: 100,
     }
 
     const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
-    const { isLoading, isError, data: documentCiData, resultList: documentsList } = useDocumentsListData(entityId, pageConfig)
+    const { isLoading, isError, data: documentCiData, resultList } = useDocumentsListData(entityId, pageConfig)
 
-    if (isLoading) {
-        return <LoadingView />
-    }
+    const documentsList = resultList.map((item) => item.data)
 
-    if (isError) {
-        return <ErrorView />
-    }
-
-    return <View data={{ documentCiData, documentsList }} setPageConfig={setPageConfig} />
+    return <View data={{ documentCiData, documentsList }} filterCallbacks={{ setPageConfig }} />
 }
