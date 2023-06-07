@@ -1,6 +1,6 @@
-import { UseQueryResult, useQueries } from '@tanstack/react-query'
+import { UseQueryResult, useQueries, useQuery } from '@tanstack/react-query'
 
-import { getHowToDisplayConstraints } from '@/api/HowToDisplay'
+import { getHowToDisplayConstraints, getHowToDisplayUnits } from '@/api/HowToDisplay'
 
 export interface IEnumItem {
     id: number
@@ -43,10 +43,6 @@ export const useHowToDisplayConstraints = (constraintsList: (string | undefined)
         resultList,
     }
 }
-
-import { useQuery } from '@tanstack/react-query'
-
-import { getHowToDisplayUnits } from '@/api/HowToDisplay'
 
 export const useHowToDisplayUnits = (enabled: boolean) => {
     const units: UseQueryResult<IEnumData, unknown> = useQuery({
