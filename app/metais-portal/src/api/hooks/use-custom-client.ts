@@ -13,7 +13,8 @@ type CustomClient<T> = (data: {
 
 export const useCustomClient = <T>(baseURL: string): CustomClient<T> => {
     return async ({ url, method, params, data }) => {
-        const response = await fetch(`${baseURL}${url}` + new URLSearchParams(params), {
+        const searchParams = params ? `?${new URLSearchParams(params)}` : ''
+        const response = await fetch(`${baseURL}${url}` + searchParams, {
             headers: {
                 method,
                 ...data?.headers,
