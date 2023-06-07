@@ -14,7 +14,7 @@ interface ICiTable {
     filter: IListQueryArgs
 }
 
-export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks, filter }) => {
+export const CiTable: React.FC<ICiTable> = ({ filterCallbacks, filter }) => {
     const pageNumber = filter.pageNumber
     const pageSize = filter.pageSize
     const startData = pageNumber * pageSize - pageSize

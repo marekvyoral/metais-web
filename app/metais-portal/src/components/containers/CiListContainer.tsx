@@ -13,8 +13,8 @@ interface ICiListContainer {
 }
 
 export const CiListContainer: React.FC<ICiListContainer> = ({ entityName, ListComponent }) => {
-    const { isLoading, isError, ciTypeData: entityStructure, unitsData, constraintsData } = useEntityStructure(entityName)
-    const { isLoading: isColumnListLoading, isError: isColumnListError, data: columnListData } = useColumnList(entityName)
+    const { ciTypeData: entityStructure, unitsData, constraintsData } = useEntityStructure(entityName)
+    const { data: columnListData } = useColumnList(entityName)
 
     const defaultListQueryArgs = {
         filter: { type: ['Program'], metaAttributes: { state: ['DRAFT'] } },
@@ -26,7 +26,7 @@ export const CiListContainer: React.FC<ICiListContainer> = ({ entityName, ListCo
 
     const [listQueryArgs, setListQueryArgs] = useState<IListQueryArgs>(defaultListQueryArgs)
 
-    const { isLoading: isTableDataLoading, isError: isTableDataError, data: tableData } = useCiQuery(listQueryArgs)
+    const { data: tableData } = useCiQuery(listQueryArgs)
 
     return (
         <ListComponent
