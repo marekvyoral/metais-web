@@ -48,6 +48,9 @@ export default defineConfig({
                     path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClient.ts',
                     name: 'useCmdbSwaggerClient',
                 },
+                query: {
+                    useQuery: true,
+                },
             },
             ...defaultOutputOptions,
         },
