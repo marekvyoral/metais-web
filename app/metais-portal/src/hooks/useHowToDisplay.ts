@@ -2,29 +2,10 @@ import { UseQueryResult, useQueries, useQuery } from '@tanstack/react-query'
 
 import { getHowToDisplayConstraints, getHowToDisplayUnits } from '@/api/HowToDisplay'
 
-export interface IEnumItem {
-    id: number
-    code: string
-    value: string
-    valid: boolean
-    description: string
-    orderList: number | null
-    engValue: string
-    engDescription: string
-}
-
-export interface IEnumData {
-    id: number
-    code: string
-    name: string
-    description: string
-    valid: boolean
-    category: null
-    enumItems: IEnumItem[]
-}
+import { EnumType } from '@/api/generated/enums-repo-swagger'
 
 export const useHowToDisplayConstraints = (constraintsList: (string | undefined)[]) => {
-    const resultList: UseQueryResult<IEnumData, unknown>[] = useQueries({
+    const resultList: UseQueryResult<EnumType, unknown>[] = useQueries({
         queries: constraintsList.map((value: string | undefined) => {
             return {
                 queryKey: ['displayConstraints', value],
@@ -45,7 +26,7 @@ export const useHowToDisplayConstraints = (constraintsList: (string | undefined)
 }
 
 export const useHowToDisplayUnits = (enabled: boolean) => {
-    const units: UseQueryResult<IEnumData, unknown> = useQuery({
+    const units: UseQueryResult<EnumType, unknown> = useQuery({
         queryKey: ['displayUnits'],
         queryFn: () => getHowToDisplayUnits(),
         enabled: enabled,
