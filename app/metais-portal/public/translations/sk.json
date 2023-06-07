@@ -93,7 +93,9 @@
         "select": {
             "country": "Výber krajiny"
         },
-        "submit": "Odoslať formulár"
+        "submit": "Odoslať formulár",
+        "waitSending": "Čakajte prosím. Odosielam formulár.",
+        "cancel": "Zrušiť"
     },
     "languageSelector": {
         "open": "Rozbaliť jazykové menu",
