@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { useHowToDisplayUnits } from './useHowtToDisplayUnits'
-import { useHowToDisplayConstraints } from './useHowToDisplayConstraints'
+import { useHowToDisplayConstraints, useHowToDisplayUnits } from './useHowToDisplay'
 
 import { getEntityStructure } from '@/api/TableApi'
 

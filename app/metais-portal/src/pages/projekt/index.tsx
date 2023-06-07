@@ -5,13 +5,14 @@ import { CiTable } from '@/components/ci-table/CiTable'
 import { IListQueryArgs } from '@/api/TableApi'
 import { IColumn } from '@/hooks/useColumnList'
 import { ICiQueryData } from '@/hooks/useCiQuery'
+import { IEnumData } from '@/hooks/useHowToDisplay'
 
 export interface IListData {
     //placeholder types
     entityStructure: object
     columnListData: IColumn | undefined
-    unitsData: object
-    constraintsData: object
+    unitsData: IEnumData | undefined
+    constraintsData: (IEnumData | undefined)[]
     tableData: ICiQueryData | undefined
 }
 
