@@ -14,9 +14,10 @@ type CustomClient<T> = (data: {
 export const useCustomClient = <T>(baseURL: string): CustomClient<T> => {
     return async ({ url, method, params, data }) => {
         const searchParams = params ? `?${new URLSearchParams(params)}` : ''
-        const response = await fetch(`https://corsproxy.io/?${baseURL}${url}` + searchParams, {
+        const response = await fetch(`${baseURL}${url}` + searchParams, {
+            method,
             headers: {
-                method,
+                'Content-Type': 'application/json',
                 ...data?.headers,
                 // accessToken: `Bearer ${accessToken}`,
             },

@@ -26,6 +26,11 @@ export default ({ mode }) => {
                     changeOrigin: true,
                     secure: false,
                 },
+                '^/read/.*': {
+                    target: 'https://metais.vicepremier.gov.sk/cmdb',
+                    changeOrigin: true,
+                    secure: false,
+                },
             },
         },
     })
