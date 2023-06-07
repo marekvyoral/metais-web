@@ -21,7 +21,7 @@ interface IEntityRelationsListContainer {
 }
 
 export const EntityRelationsListContainer: React.FC<IEntityRelationsListContainer> = ({ entityId, View }) => {
-    const { isLoading, isError, keysToDisplay, data: entityTypes } = useEntityRelationsTypesCount(entityId)
+    const { keysToDisplay, data: entityTypes } = useEntityRelationsTypesCount(entityId)
 
     const defaultPageConfig: IPageConfig = {
         page: 1,
@@ -31,11 +31,7 @@ export const EntityRelationsListContainer: React.FC<IEntityRelationsListContaine
     const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
     const [clickedEntityName, setClickedEntityName] = useState<string>('')
 
-    const {
-        isLoading: isTypeRelationsDataListLoading,
-        isError: isTypeRelationsDataListError,
-        data: relationsList,
-    } = useEntityRelationsDataList(entityId, pageConfig, clickedEntityName)
+    const { data: relationsList } = useEntityRelationsDataList(entityId, pageConfig, clickedEntityName)
 
     return (
         <View

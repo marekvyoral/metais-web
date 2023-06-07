@@ -54,5 +54,12 @@ export const EntityCiContainer: React.FC<IEntityCiContainer> = ({ entityId, enti
     const isLoading = [isCiTypeDataLoading, isCiItemLoading, isUnitsLoading, isConstraintLoading].some((item) => item)
     const isError = [isCiTypeDataError, isCiItemError, isUnitsError, isConstraintError].some((item) => item)
 
+    if (isLoading) {
+        return <div>Loading</div>
+    }
+    if (isError) {
+        return <div>Error</div>
+    }
+
     return <View data={{ ciTypeData, ciItemData, constraintsData, unitsData }} />
 }

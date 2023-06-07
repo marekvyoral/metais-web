@@ -26,7 +26,7 @@ export const EntityDocumentsListContainer: React.FC<IEntityDocumentsListContaine
     }
 
     const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
-    const { isLoading, isError, data: documentCiData, resultList } = useDocumentsListData(entityId, pageConfig)
+    const { data: documentCiData, resultList } = useDocumentsListData(entityId, pageConfig)
 
     const documentsList = resultList.map((item) => item.data)
 

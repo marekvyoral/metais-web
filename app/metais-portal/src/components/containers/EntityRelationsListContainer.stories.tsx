@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { EntityRelationsListContainer, IRelationsView } from './EntityRelationsListContainer'
 
-export const RelationsView: React.FC<IRelationsView> = ({ data, filterCallback, setClickedEntityName }) => {
+export const RelationsView: React.FC<IRelationsView> = ({ data, setClickedEntityName }) => {
     return (
         <div>
             <p>shows that it only start calls api when clicked on entity</p>
