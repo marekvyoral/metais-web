@@ -1,0 +1,19 @@
+@import '@id-sk/frontend/idsk/all';
+
+.paginationDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include mq($until: desktop) {
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+.text {
+    color: govuk-colour('dark-grey') !important;
+    margin: 0 !important;
+    @include mq($until: desktop) {
+        margin-top: 10px !important;
+    }
+}

@@ -5,12 +5,14 @@ import { RootRouteContainer } from '@/navigation/route-containers/RootRouteConta
 import { RouteNames } from '@/navigation/routeNames'
 import { DevTestScreen } from '@/pages/DevTestScreen'
 import { Home } from '@/pages/Home'
+import ProjektListPage from '@/pages/projekt'
 
 export const Router: React.FC = () => {
     return (
         <Routes>
             <Route path="/" element={<RootRouteContainer />}>
                 <Route path={RouteNames.HOME} element={<Home />} />
+                <Route path={RouteNames.PROJEKT_LIST_PAGE} element={<ProjektListPage />} />
             </Route>
             <Route path={RouteNames.DEV_TEST_SCREEN} element={<DevTestScreen />} />
         </Routes>

@@ -1,7 +1,6 @@
 import { UseQueryResult, useQueries, useQuery } from '@tanstack/react-query'
 
 import { getHowToDisplayConstraints, getHowToDisplayUnits } from '@/api/HowToDisplay'
-
 import { EnumType } from '@/api/generated/enums-repo-swagger'
 
 export const useHowToDisplayConstraints = (constraintsList: (string | undefined)[]) => {
