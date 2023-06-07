@@ -1,16 +1,32 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
-// https://vitejs.dev/config/
-export default defineConfig({
-    plugins: [
-        react(),
-        tsconfigPaths({
-            parseNative: false,
-        }),
-    ],
-    server: {
-        port: 3000,
-    },
-})
+export default ({ mode }) => {
+    process.env = {
+        ...process.env,
+        ...loadEnv(mode, process.cwd()),
+    }
+    // https://vitejs.dev/config/
+    return defineConfig({
+        plugins: [
+            react(),
+            tsconfigPaths({
+                parseNative: false,
+            }),
+        ],
+        server: {
+            port: 3000,
+            cors: {
+                origin: '*',
+            },
+            proxy: {
+                '^/citypes/.*': {
+                    target: 'http://types-repo-metais3.apps.dev.isdd.sk',
+                    changeOrigin: true,
+                    secure: false,
+                },
+            },
+        },
+    })
+}

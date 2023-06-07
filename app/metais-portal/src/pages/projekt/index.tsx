@@ -6,10 +6,10 @@ import { IListQueryArgs } from '@/api/TableApi'
 import { IColumn } from '@/hooks/useColumnList'
 import { ICiQueryData } from '@/hooks/useCiQuery'
 import { IEnumData } from '@/hooks/useHowToDisplay'
+import { CiType } from '@/api/generated/types-repo-swagger'
 
 export interface IListData {
-    //placeholder types
-    entityStructure: object
+    entityStructure: CiType | undefined
     columnListData: IColumn | undefined
     unitsData: IEnumData | undefined
     constraintsData: (IEnumData | undefined)[]
