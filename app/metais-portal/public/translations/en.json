@@ -93,7 +93,9 @@
         "select": {
             "country": "Choose country"
         },
-        "submit": "Submit form"
+        "submit": "Submit form",
+        "waitSending": "Wait please. I am sending the form.",
+        "cancel": "Cancel"
     },
     "languageSelector": {
         "open": "Open language menu",
