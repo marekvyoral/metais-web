@@ -2,15 +2,9 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+import { CiTable } from '../ci-table/CiTable'
+
 import { CiListContainer } from './CiListContainer'
-
-interface IView {
-    data: any
-}
-
-const View: React.FC<IView> = ({ data }) => {
-    return <>view</>
-}
 
 const queryClient = new QueryClient()
 
@@ -24,15 +18,16 @@ export default meta
 type Story = StoryObj<typeof CiListContainer>
 
 export const Main: Story = {
-    decorators: [
-        (StoryComponent) => (
-            <QueryClientProvider client={queryClient}>
-                <StoryComponent />
-            </QueryClientProvider>
-        ),
-    ],
-    args: {
-        entityName: 'Projekt',
-        View: View,
-    },
+    render: () => (
+        <QueryClientProvider client={queryClient}>
+            <CiListContainer
+                entityName="Projekt"
+                ListComponent={({ data, filterCallbacks, filter }) => (
+                    <>
+                        <CiTable data={data} filterCallbacks={filterCallbacks} filter={filter} />
+                    </>
+                )}
+            />
+        </QueryClientProvider>
+    ),
 }

@@ -1,11 +1,11 @@
-import { BASE_URL } from '@/api/constants'
+import { baseUrl } from './constants'
 
 export const getEntityStructure = (entityName: string) => {
-    return fetch(BASE_URL + `/typesrepository/citypes/citype/${entityName}?lang=sk`).then((res) => res.json())
+    return fetch(baseUrl + `/typesrepository/citypes/citype/${entityName}?lang=sk`).then((res) => res.json())
 }
 
 export const getColumnList = (entityName: string) => {
-    return fetch(BASE_URL + `/userconfig/columns/citype/${entityName}/default`).then((res) => res.json())
+    return fetch(baseUrl + `/userconfig/columns/citype/${entityName}/default`).then((res) => res.json())
 }
 
 export interface IListQueryArgs {
@@ -32,7 +32,7 @@ export const postTableData = (params: IListQueryArgs) => {
         sortType: params.sortType,
     }
 
-    return fetch(proxyUrl + BASE_URL + `/cmdb/read/cilistfiltered`, {
+    return fetch(proxyUrl + baseUrl + `/cmdb/read/cilistfiltered`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
