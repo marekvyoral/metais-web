@@ -2,23 +2,10 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { EntityCiContainer } from './EntityCiContainer'
+import { EntityCiContainer, IEntityCiContainerView } from './EntityCiContainer'
 
-interface ViewProps {
-    data: object
-}
-
-const View: React.FC<ViewProps> = ({ data }) => {
-    console.log(data)
+export const View: React.FC<IEntityCiContainerView> = ({ data }) => {
     return <div>view</div>
-}
-
-const Loading: React.FC = () => {
-    return <div>loading</div>
-}
-
-const Error: React.FC = () => {
-    return <div>error</div>
 }
 
 const queryClient = new QueryClient()
@@ -44,7 +31,5 @@ export const Main: Story = {
         entityId: '0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e',
         entityName: 'KRIS',
         View: View,
-        LoadingView: Loading,
-        ErrorView: Error,
     },
 }

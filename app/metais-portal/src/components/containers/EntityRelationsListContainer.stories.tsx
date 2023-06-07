@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { EntityRelationsListContainer, IRelationsView } from './EntityRelationsListContainer'
 
-const View: React.FC<IRelationsView> = ({ entityTypes, relationsList, keysToDisplay, setClickedEntityName, setPageConfig }) => {
+export const RelationsView: React.FC<IRelationsView> = ({ entityTypes, relationsList, keysToDisplay, setClickedEntityName, setPageConfig }) => {
     return (
         <div>
             <p>shows that it only start calls api when clicked on entity</p>
@@ -14,19 +14,11 @@ const View: React.FC<IRelationsView> = ({ entityTypes, relationsList, keysToDisp
                 </button>
             ))}
             <p>status</p>
-            <p>{JSON.stringify(relationsList.map((item) => item.status))}</p>
+            <p>{JSON.stringify(relationsList)}</p>
             <p>isFetching</p>
-            <p>{JSON.stringify(relationsList.map((item) => item.isFetching))}</p>
+            <p>{JSON.stringify(relationsList)}</p>
         </div>
     )
-}
-
-const Loading: React.FC = () => {
-    return <div>loading</div>
-}
-
-const Error: React.FC = () => {
-    return <div>error</div>
 }
 
 const queryClient = new QueryClient()
@@ -50,8 +42,6 @@ export const Main: Story = {
     ],
     args: {
         entityId: '0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e',
-        View: View,
-        LoadingView: Loading,
-        ErrorView: Error,
+        View: RelationsView,
     },
 }

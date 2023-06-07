@@ -1,34 +1,58 @@
 import React from 'react'
 
-import { useEntityCiData } from '@/hooks/useEntityCiData'
-import { useEntityCiAttributes } from '@/hooks/useEntityCiAttributes'
+import { AttributeConstraintEnumAllOf, CiType, useGetCiTypeUsingGET } from '../../api/generated/types-repo-swagger'
 
-interface IView {
-    data: object
+import { ReadConfigurationItemUsingGET200, useReadConfigurationItemUsingGET } from '@/api/generated/cmdb-swagger'
+import { IEnumData, useHowToDisplayConstraints, useHowToDisplayUnits } from '@/hooks/useHowToDisplay'
+
+export interface IEntityCiContainerView {
+    data: {
+        ciTypeData: CiType | undefined
+        ciItemData: ReadConfigurationItemUsingGET200 | undefined
+        constraintsData: (IEnumData | undefined)[]
+        unitsData: IEnumData | undefined
+    }
 }
 
 interface IEntityCiContainer {
     entityName: string
     entityId: string
-    View: React.FC<IView>
-    LoadingView: React.FC
-    ErrorView: React.FC
+    View: React.FC<IEntityCiContainerView>
 }
 
-export const EntityCiContainer: React.FC<IEntityCiContainer> = ({ entityId, entityName, View, LoadingView, ErrorView }) => {
-    const { isLoading: isEntityDataLoading, isError: isEntityDataError, entityCiData } = useEntityCiData(entityName)
-    const { isLoading: isAttributesLoading, isError: isAttributesError, data: entityCiAttributes } = useEntityCiAttributes(entityId)
+export const EntityCiContainer: React.FC<IEntityCiContainer> = ({ entityId, entityName, View }) => {
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeUsingGET(entityName)
+    const { data: ciItemData, isLoading: isCiItemLoading, isError: isCiItemError } = useReadConfigurationItemUsingGET(entityId)
 
-    const isLoading = [isEntityDataLoading, isAttributesLoading].some((item) => item)
-    const isError = [isEntityDataError, isAttributesError].some((item) => item)
+    const units = ciTypeData?.attributes?.some((attribute) => attribute.units !== null) ?? false
+    const constraintsAttributes =
+        ciTypeData?.attributes
+            ?.map((attribute) =>
+                attribute?.constraints
+                    ?.filter((item) => item.type === 'enum')
+                    .map((constraint: AttributeConstraintEnumAllOf) => constraint?.enumCode),
+            )
+            .flat() ?? []
 
-    if (isLoading) {
-        return <LoadingView />
-    }
+    const constraintsAttributesProfiles =
+        ciTypeData?.attributeProfiles
+            ?.map((profile) =>
+                profile?.attributes?.map((attribute) =>
+                    attribute?.constraints
+                        ?.filter((item) => item.type === 'enum')
+                        .map((constraint: AttributeConstraintEnumAllOf) => constraint?.enumCode),
+                ),
+            )
+            .flat(2) ?? []
 
-    if (isError) {
-        return <ErrorView />
-    }
+    const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
-    return <View data={{ entityCiData, entityCiAttributes }} />
+    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useHowToDisplayUnits(units)
+    const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
+
+    const constraintsData = resultList.map((item) => item.data)
+    const isLoading = [isCiTypeDataLoading, isCiItemLoading, isUnitsLoading, isConstraintLoading].some((item) => item)
+    const isError = [isCiTypeDataError, isCiItemError, isUnitsError, isConstraintError].some((item) => item)
+
+    return <View data={{ ciTypeData, ciItemData, constraintsData, unitsData }} />
 }

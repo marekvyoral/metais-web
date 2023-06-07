@@ -2,12 +2,18 @@ import React, { useState } from 'react'
 
 import { AccordionContainer } from '@/components/Accordion'
 import { Paginator } from '@/components/paginator/Paginator'
+import { EntityCiContainer } from '@/components/containers/EntityCiContainer'
+import { View } from '@/components/containers/EntityCiContainer.stories'
+import { EntityRelationsListContainer } from '@/components/containers/EntityRelationsListContainer'
+import { RelationsView } from '@/components/containers/EntityRelationsListContainer.stories'
 
 export const DevTestScreen: React.FC = () => {
     const [page, setPage] = useState(5)
     return (
         <>
             <h4>Obrazovka na testovanie komponentov</h4>
+            <EntityCiContainer entityName="KRIS" entityId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={View} />
+            <EntityRelationsListContainer entityId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={RelationsView} />
             <Paginator dataLength={100} pageNumber={page} onPageChanged={setPage} pageSize={10} />
             <AccordionContainer
                 sections={[

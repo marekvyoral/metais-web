@@ -13,18 +13,12 @@ const defaultOutputOptions: object = {
     client: 'react-query',
     prettier: true,
     mock: JSON.parse(process.env.VITE_SWAGGER_MOCK ?? 'false') ?? false,
-    override: {
-        mutator: {
-            path: './app/metais-portal/src/api/hooks/use-custom-client.ts',
-            name: 'useCustomClient',
-        },
-    },
 }
 
 export default defineConfig({
     cmdbSwagger: {
         input: {
-            target: process.env.VITE_CMDB_SWAGGER_API_ENDPOINT ?? '',
+            target: (process.env.VITE_REST_CLIENT_CMDB_SWAGGER_BASE_URL ?? '') + (process.env.VITE_SWAGGER_ENDPOINT_SUFFIX ?? ''),
             filters: {
                 tags: [
                     'cmdb-cache-controller',
@@ -49,6 +43,12 @@ export default defineConfig({
         },
         output: {
             target: `./app/metais-portal/src/api/generated/cmdb-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClient.ts',
+                    name: 'useCmdbSwaggerClient',
+                },
+            },
             ...defaultOutputOptions,
         },
         hooks: {
@@ -57,7 +57,7 @@ export default defineConfig({
     },
     typesRepo: {
         input: {
-            target: process.env.VITE_TYPES_REPO_SWAGGER_API_ENDPOINT ?? '',
+            target: (process.env.VITE_REST_CLIENT_TYPES_REPO_SWAGGER_BASE_URL ?? '') + (process.env.VITE_SWAGGER_ENDPOINT_SUFFIX ?? ''),
             filters: {
                 tags: [
                     'attribute-controller',
@@ -72,6 +72,12 @@ export default defineConfig({
         },
         output: {
             target: `./app/metais-portal/src/api/generated/types-repo-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './app/metais-portal/src/api/hooks/useTypesRepoSwaggerClient.ts',
+                    name: 'useTypesRepoSwaggerClient',
+                },
+            },
             ...defaultOutputOptions,
         },
         hooks: {

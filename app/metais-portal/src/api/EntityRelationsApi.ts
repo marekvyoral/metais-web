@@ -1,13 +1,13 @@
-import { BASE_URL } from '@/constants/constants'
-import { IPageConfig } from '@/hooks/useEntityRelations'
+import { IPageConfig } from './../hooks/useEntityRelations'
+import { urlBase } from './constants'
 
 export const getEntityRelationsTypeCount = (id: string) => {
-    return fetch(BASE_URL + `/cmdb/read/ci/${id}/neighbourscount?includeInvalidated=false`).then((res) => res.json())
+    return fetch(urlBase + `/cmdb/read/ci/${id}/neighbourscount?includeInvalidated=false`).then((res) => res.json())
 }
 
 export const getEntityRelationTypeData = (id: string, type: string, pageConfig: IPageConfig) => {
     return fetch(
-        BASE_URL +
+        urlBase +
             `/cmdb/read/relations/neighbourswithallrels/${id}?&ciTypes=${type}&page=${pageConfig.page}&perPage=${pageConfig.perPage}&state=DRAFT`,
     ).then((res) => res.json())
 }
