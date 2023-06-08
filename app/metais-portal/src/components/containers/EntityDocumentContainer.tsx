@@ -1,28 +1,27 @@
 import React, { SetStateAction, useState } from 'react'
 
 import { IPageConfig } from '@/hooks/useEntityRelations'
-import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
-import { useParams } from 'react-router-dom'
+import { NeighboursFilterContainerUi, ReadCiNeighboursUsingPOST200, useReadCiNeighboursUsingPOST } from '@/api'
 
 interface IView {
     data: object
     setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
+    isLoading: boolean
+    isError: boolean
 }
 
 interface IEntityDocumentsContainer {
+    configurationItemId?: string
     View: React.FC<IView>
-    LoadingView: React.FC
-    ErrorView: React.FC
 }
 
-export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ View, LoadingView, ErrorView }) => {
+export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ configurationItemId, View }) => {
     const defaultPageConfig: IPageConfig = {
         page: 1,
         perPage: 100,
     }
-
-    const { id } = useParams()
     const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
+
     const filter: NeighboursFilterContainerUi = {
         neighboursFilter: {
             ciType: ['Dokument'],
@@ -33,30 +32,22 @@ export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ 
         ...pageConfig,
     }
 
-    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(id, filter, {})
+    if (!configurationItemId) return <View data={{}} setPageConfig={setPageConfig} isLoading={false} isError={true} />
 
-    //const { isLoading, isError, data: documentCiData, resultList: documentsList } = useDocumentsListData(entityId, pageConfig)
-
-    if (isLoading) {
-        return <LoadingView />
-    }
-
-    if (isError) {
-        return <ErrorView />
-    }
-
-    const mapCiData = (documentCiData) => {
-        return documentCiData?.fromNodes?.neighbourPairs?.map((nP) => {
-            let keyValue = []
-            nP?.configurationItem?.attributes?.forEach((a) => {
-                keyValue.push([a?.name, a?.value])
-            })
-            const attributes = Object.fromEntries(keyValue)
-
-            return { attributes, metaAttributes: { ...nP?.configurationItem?.metaAttributes } }
-        })
-    }
+    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId, filter, {})
     const data = mapCiData(documentCiData)
-    console.log('data', data)
-    return <View data={{ data }} setPageConfig={setPageConfig} />
+
+    return <View data={{ data }} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />
+}
+
+const mapCiData = (documentCiData: ReadCiNeighboursUsingPOST200 | void) => {
+    return documentCiData?.fromNodes?.neighbourPairs?.map((nP) => {
+        let keyValue = []
+        nP?.configurationItem?.attributes?.forEach((a) => {
+            keyValue.push([a?.name, a?.value])
+        })
+        const attributes = Object.fromEntries(keyValue)
+
+        return { attributes, metaAttributes: { ...nP?.configurationItem?.metaAttributes } }
+    })
 }
