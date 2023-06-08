@@ -17,6 +17,21 @@ export default ({ mode }) => {
         ],
         server: {
             port: 3000,
+            cors: {
+                origin: '*',
+            },
+            proxy: {
+                '^/citypes/.*': {
+                    target: 'http://types-repo-metais3.apps.dev.isdd.sk',
+                    changeOrigin: true,
+                    secure: false,
+                },
+                '^/read/.*': {
+                    target: 'https://metais.vicepremier.gov.sk/cmdb',
+                    changeOrigin: true,
+                    secure: false,
+                },
+            },
         },
     })
 }
