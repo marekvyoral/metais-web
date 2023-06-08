@@ -106,5 +106,10 @@
     },
     "tab": {
         "contents": "Obsah"
+    },
+    "tabContent": {
+        "buttonAddNewRelation": "Pridať nový vzťah",
+        "buttonAddNewRelationCard": "Pridať novú položku a vzťah",
+        "selectView": "Zobraziť"
     }
 }

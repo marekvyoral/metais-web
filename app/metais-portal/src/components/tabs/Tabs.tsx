@@ -41,16 +41,12 @@ const TabItemMobile: React.FC<ITabItemMobile> = ({ id, handleMobileSelect, title
                 <span className="idsk-tabs__tab-arrow-mobile" />
             </button>
             <section className={classnames('idsk-tabs__panel', { 'idsk-tabs__panel--hidden': !isSelected })} id={id}>
-                <div className="idsk-tabs__panel-content">
-                    <h2 className="govuk-heading-l">{title}</h2>
-                    {content}
-                </div>
+                <div className="idsk-tabs__panel-content">{content}</div>
                 <div
                     className={classnames('idsk-tabs__mobile-tab-content', {
                         'idsk-tabs__mobile-tab-content--hidden': !isSelected,
                     })}
                 >
-                    <h2 className="govuk-heading-l">{title}</h2>
                     {content}
                 </div>
             </section>

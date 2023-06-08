@@ -1,5 +1,10 @@
-import React from 'react'
+import classNames from 'classnames'
+import React, { PropsWithChildren } from 'react'
 
-export const GridRow: React.FC<React.PropsWithChildren> = ({ children }) => {
-    return <div className="govuk-grid-row">{children}</div>
+interface IGridRowProps extends PropsWithChildren {
+    className?: string
+}
+
+export const GridRow: React.FC<IGridRowProps> = ({ children, className }) => {
+    return <div className={classNames('govuk-grid-row', className)}>{children}</div>
 }
