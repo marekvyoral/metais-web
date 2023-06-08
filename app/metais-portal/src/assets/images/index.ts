@@ -6,3 +6,4 @@ export { default as PaginatorEndArrowIcon } from '@/assets/images/paginator-end-
 export { default as PaginatorRightArrowIcon } from '@/assets/images/paginator-right-arrow.svg'
 export { default as PaginatorLeftArrowIcon } from '@/assets/images/paginator-left-arrow.svg'
 export { default as PaginatorStartArrowIcon } from '@/assets/images/paginator-start-arrow.svg'
+export { default as LoadingArrow } from './loading-arrow.svg'
