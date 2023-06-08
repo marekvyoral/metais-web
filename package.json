@@ -10,8 +10,8 @@
     "@hookform/error-message": "^2.0.1",
     "@id-sk/frontend": "^2.10.0",
     "@tanstack/react-query": "^4.29.7",
-    "@testing-library/jest-dom": "^5.14.1",
     "@tanstack/react-table": "^8.9.1",
+    "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "@types/jest": "^27.0.1",
@@ -21,6 +21,7 @@
     "classnames": "^2.3.2",
     "i18next": "^22.4.15",
     "i18next-http-backend": "^2.2.0",
+    "patch-package": "^7.0.0",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
@@ -53,7 +54,9 @@
     "prepare:admin": "recursive-copy -w node_modules/@id-sk/frontend/govuk/assets app/metais-admin/public/assets && recursive-copy -w node_modules/@id-sk/frontend/idsk/assets app/metais-admin/public/assets",
     "storybook:idsk": "cd packages/idsk-ui-kit && storybook dev -p 6006 --disable-telemetry",
     "storybook:portal": "cd app/metais-portal && storybook dev -p 6006 --disable-telemetry",
-    "build-storybook": "storybook build"
+    "build-storybook": "cd app/metais-portal && storybook build",
+    "postinstall": "patch-package",
+    "generate-api": "cross-env DOTENV_CONFIG_PATH=./.env orval --config ./orval.config.ts"
   },
   "eslintConfig": {
     "extends": [
@@ -87,6 +90,7 @@
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.5",
     "@vitejs/plugin-react": "^4.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.40.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-import-resolver-alias": "^1.1.2",
@@ -96,6 +100,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.12",
+    "orval": "^6.16.0",
     "prettier": "^2.8.8",
     "prop-types": "^15.8.1",
     "recursive-copy-cli": "^1.0.20",
