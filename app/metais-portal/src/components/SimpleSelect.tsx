@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React, { DetailedHTMLProps, forwardRef } from 'react'
 
 interface SelectProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
@@ -7,9 +8,9 @@ interface SelectProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLSe
     disabled?: boolean
 }
 
-export const SimpleSelect = forwardRef<HTMLSelectElement, SelectProps>(({ id, label, options, disabled = false, ...rest }, ref) => {
+export const SimpleSelect = forwardRef<HTMLSelectElement, SelectProps>(({ id, label, options, disabled = false, className, ...rest }, ref) => {
     return (
-        <div className="govuk-form-group">
+        <div className={classNames('govuk-form-group', className)}>
             <label className="govuk-label" htmlFor={id}>
                 {label}
             </label>

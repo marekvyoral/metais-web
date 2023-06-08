@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 type AccordionSection = {
     title: string
-    summary: React.ReactNode
+    summary?: React.ReactNode
     content: React.ReactNode
 }
 
