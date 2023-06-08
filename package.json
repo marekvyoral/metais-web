@@ -33,7 +33,7 @@
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0",
     "idsk-ui-kit": "*",
-    "metais-common": "*"
+    "@isdd/metais-common": "*"
   },
   "scripts": {
     "start": "yarn start:portal & yarn start:admin && fg",
@@ -51,7 +51,7 @@
     "prepare": "yarn prepare:portal && yarn prepare:admin",
     "prepare:portal": "recursive-copy -w node_modules/@id-sk/frontend/govuk/assets app/metais-portal/public/assets && recursive-copy -w node_modules/@id-sk/frontend/idsk/assets app/metais-portal/public/assets",
     "prepare:admin": "recursive-copy -w node_modules/@id-sk/frontend/govuk/assets app/metais-admin/public/assets && recursive-copy -w node_modules/@id-sk/frontend/idsk/assets app/metais-admin/public/assets",
-    "storybook": "storybook dev -p 6006 --disable-telemetry",
+    "storybook:idsk": "cd packages/idsk-ui-kit && storybook dev -p 6006 --disable-telemetry",
     "storybook:portal": "cd app/metais-portal && storybook dev -p 6006 --disable-telemetry",
     "build-storybook": "storybook build"
   },
