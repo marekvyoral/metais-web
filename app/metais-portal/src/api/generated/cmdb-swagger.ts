@@ -7,8 +7,7 @@
  */
 import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
-import { useCustomClient } from '../hooks/use-custom-client'
-import type { ErrorType, BodyType } from '../hooks/use-custom-client'
+import { useCmdbSwaggerClient } from '../hooks/useCmdbSwaggerClient'
 export type ValidateCIsByTypesAndOwnerUsingGETParams = {
     'OAuth2Request.approved'?: boolean
     'OAuth2Request.authorities[0].authority'?: string
@@ -3488,7 +3487,7 @@ type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
  * @summary addCiToGroup
  */
 export const useAddCiToGroupUsingPOSTHook = () => {
-    const addCiToGroupUsingPOST = useCustomClient<RequestIdUi | void>()
+    const addCiToGroupUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
     return (uuid: string, addCiToGroupUsingPOSTBody: string[], params?: AddCiToGroupUsingPOSTParams) => {
         return addCiToGroupUsingPOST({
@@ -3501,17 +3500,17 @@ export const useAddCiToGroupUsingPOSTHook = () => {
     }
 }
 
-export const useAddCiToGroupUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useAddCiToGroupUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useAddCiToGroupUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: BodyType<string[]>; params?: AddCiToGroupUsingPOSTParams },
+        { uuid: string; data: string[]; params?: AddCiToGroupUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useAddCiToGroupUsingPOSTHook>>>,
     TError,
-    { uuid: string; data: BodyType<string[]>; params?: AddCiToGroupUsingPOSTParams },
+    { uuid: string; data: string[]; params?: AddCiToGroupUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3520,7 +3519,7 @@ export const useAddCiToGroupUsingPOSTMutationOptions = <TError = ErrorType<unkno
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useAddCiToGroupUsingPOSTHook>>>,
-        { uuid: string; data: BodyType<string[]>; params?: AddCiToGroupUsingPOSTParams }
+        { uuid: string; data: string[]; params?: AddCiToGroupUsingPOSTParams }
     > = (props) => {
         const { uuid, data, params } = props ?? {}
 
@@ -3531,17 +3530,17 @@ export const useAddCiToGroupUsingPOSTMutationOptions = <TError = ErrorType<unkno
 }
 
 export type AddCiToGroupUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useAddCiToGroupUsingPOSTHook>>>>
-export type AddCiToGroupUsingPOSTMutationBody = BodyType<string[]>
-export type AddCiToGroupUsingPOSTMutationError = ErrorType<unknown>
+export type AddCiToGroupUsingPOSTMutationBody = string[]
+export type AddCiToGroupUsingPOSTMutationError = unknown
 
 /**
  * @summary addCiToGroup
  */
-export const useAddCiToGroupUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useAddCiToGroupUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useAddCiToGroupUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: BodyType<string[]>; params?: AddCiToGroupUsingPOSTParams },
+        { uuid: string; data: string[]; params?: AddCiToGroupUsingPOSTParams },
         TContext
     >
 }) => {
@@ -3554,14 +3553,14 @@ export const useAddCiToGroupUsingPOST = <TError = ErrorType<unknown>, TContext =
  * @summary clearCacheAll
  */
 export const useClearCacheAllUsingDELETEHook = () => {
-    const clearCacheAllUsingDELETE = useCustomClient<string | void>()
+    const clearCacheAllUsingDELETE = useCmdbSwaggerClient<string | void>()
 
     return () => {
         return clearCacheAllUsingDELETE({ url: `/cache`, method: 'delete' })
     }
 }
 
-export const useClearCacheAllUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearCacheAllUsingDELETEMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCacheAllUsingDELETEHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCacheAllUsingDELETEHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3577,12 +3576,12 @@ export const useClearCacheAllUsingDELETEMutationOptions = <TError = ErrorType<un
 
 export type ClearCacheAllUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearCacheAllUsingDELETEHook>>>>
 
-export type ClearCacheAllUsingDELETEMutationError = ErrorType<unknown>
+export type ClearCacheAllUsingDELETEMutationError = unknown
 
 /**
  * @summary clearCacheAll
  */
-export const useClearCacheAllUsingDELETE = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearCacheAllUsingDELETE = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCacheAllUsingDELETEHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearCacheAllUsingDELETEMutationOptions(options)
@@ -3594,18 +3593,14 @@ export const useClearCacheAllUsingDELETE = <TError = ErrorType<unknown>, TVariab
  * @summary clearCmdbReadRoleParticipantCache
  */
 export const useClearCmdbReadRoleParticipantCacheUsingDELETEHook = () => {
-    const clearCmdbReadRoleParticipantCacheUsingDELETE = useCustomClient<string | void>()
+    const clearCmdbReadRoleParticipantCacheUsingDELETE = useCmdbSwaggerClient<string | void>()
 
     return () => {
         return clearCmdbReadRoleParticipantCacheUsingDELETE({ url: `/cache/cmdb/readRoleParticipant`, method: 'delete' })
     }
 }
 
-export const useClearCmdbReadRoleParticipantCacheUsingDELETEMutationOptions = <
-    TError = ErrorType<unknown>,
-    TVariables = void,
-    TContext = unknown,
->(options?: {
+export const useClearCmdbReadRoleParticipantCacheUsingDELETEMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useClearCmdbReadRoleParticipantCacheUsingDELETEHook>>>,
         TError,
@@ -3631,12 +3626,12 @@ export type ClearCmdbReadRoleParticipantCacheUsingDELETEMutationResult = NonNull
     Awaited<ReturnType<ReturnType<typeof useClearCmdbReadRoleParticipantCacheUsingDELETEHook>>>
 >
 
-export type ClearCmdbReadRoleParticipantCacheUsingDELETEMutationError = ErrorType<unknown>
+export type ClearCmdbReadRoleParticipantCacheUsingDELETEMutationError = unknown
 
 /**
  * @summary clearCmdbReadRoleParticipantCache
  */
-export const useClearCmdbReadRoleParticipantCacheUsingDELETE = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearCmdbReadRoleParticipantCacheUsingDELETE = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useClearCmdbReadRoleParticipantCacheUsingDELETEHook>>>,
         TError,
@@ -3653,14 +3648,14 @@ export const useClearCmdbReadRoleParticipantCacheUsingDELETE = <TError = ErrorTy
  * @summary clearIdentityCache
  */
 export const useClearIdentityCacheUsingDELETEHook = () => {
-    const clearIdentityCacheUsingDELETE = useCustomClient<string | void>()
+    const clearIdentityCacheUsingDELETE = useCmdbSwaggerClient<string | void>()
 
     return () => {
         return clearIdentityCacheUsingDELETE({ url: `/cache/identity`, method: 'delete' })
     }
 }
 
-export const useClearIdentityCacheUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearIdentityCacheUsingDELETEMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearIdentityCacheUsingDELETEHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearIdentityCacheUsingDELETEHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3676,12 +3671,12 @@ export const useClearIdentityCacheUsingDELETEMutationOptions = <TError = ErrorTy
 
 export type ClearIdentityCacheUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearIdentityCacheUsingDELETEHook>>>>
 
-export type ClearIdentityCacheUsingDELETEMutationError = ErrorType<unknown>
+export type ClearIdentityCacheUsingDELETEMutationError = unknown
 
 /**
  * @summary clearIdentityCache
  */
-export const useClearIdentityCacheUsingDELETE = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearIdentityCacheUsingDELETE = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearIdentityCacheUsingDELETEHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearIdentityCacheUsingDELETEMutationOptions(options)
@@ -3693,14 +3688,14 @@ export const useClearIdentityCacheUsingDELETE = <TError = ErrorType<unknown>, TV
  * @summary clearOrganizationCache
  */
 export const useClearOrganizationCacheUsingDELETEHook = () => {
-    const clearOrganizationCacheUsingDELETE = useCustomClient<string | void>()
+    const clearOrganizationCacheUsingDELETE = useCmdbSwaggerClient<string | void>()
 
     return () => {
         return clearOrganizationCacheUsingDELETE({ url: `/cache/organization`, method: 'delete' })
     }
 }
 
-export const useClearOrganizationCacheUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearOrganizationCacheUsingDELETEMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearOrganizationCacheUsingDELETEHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearOrganizationCacheUsingDELETEHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3718,12 +3713,12 @@ export type ClearOrganizationCacheUsingDELETEMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useClearOrganizationCacheUsingDELETEHook>>>
 >
 
-export type ClearOrganizationCacheUsingDELETEMutationError = ErrorType<unknown>
+export type ClearOrganizationCacheUsingDELETEMutationError = unknown
 
 /**
  * @summary clearOrganizationCache
  */
-export const useClearOrganizationCacheUsingDELETE = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearOrganizationCacheUsingDELETE = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearOrganizationCacheUsingDELETEHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearOrganizationCacheUsingDELETEMutationOptions(options)
@@ -3735,14 +3730,14 @@ export const useClearOrganizationCacheUsingDELETE = <TError = ErrorType<unknown>
  * @summary clearRoleCache
  */
 export const useClearRoleCacheUsingDELETEHook = () => {
-    const clearRoleCacheUsingDELETE = useCustomClient<string | void>()
+    const clearRoleCacheUsingDELETE = useCmdbSwaggerClient<string | void>()
 
     return () => {
         return clearRoleCacheUsingDELETE({ url: `/cache/role`, method: 'delete' })
     }
 }
 
-export const useClearRoleCacheUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearRoleCacheUsingDELETEMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRoleCacheUsingDELETEHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRoleCacheUsingDELETEHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3758,12 +3753,12 @@ export const useClearRoleCacheUsingDELETEMutationOptions = <TError = ErrorType<u
 
 export type ClearRoleCacheUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearRoleCacheUsingDELETEHook>>>>
 
-export type ClearRoleCacheUsingDELETEMutationError = ErrorType<unknown>
+export type ClearRoleCacheUsingDELETEMutationError = unknown
 
 /**
  * @summary clearRoleCache
  */
-export const useClearRoleCacheUsingDELETE = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearRoleCacheUsingDELETE = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRoleCacheUsingDELETEHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearRoleCacheUsingDELETEMutationOptions(options)
@@ -3775,14 +3770,14 @@ export const useClearRoleCacheUsingDELETE = <TError = ErrorType<unknown>, TVaria
  * @summary clearCache
  */
 export const useClearCacheUsingDELETEHook = () => {
-    const clearCacheUsingDELETE = useCustomClient<string | void>()
+    const clearCacheUsingDELETE = useCmdbSwaggerClient<string | void>()
 
     return () => {
         return clearCacheUsingDELETE({ url: `/cache/schema`, method: 'delete' })
     }
 }
 
-export const useClearCacheUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearCacheUsingDELETEMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCacheUsingDELETEHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCacheUsingDELETEHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3798,12 +3793,12 @@ export const useClearCacheUsingDELETEMutationOptions = <TError = ErrorType<unkno
 
 export type ClearCacheUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearCacheUsingDELETEHook>>>>
 
-export type ClearCacheUsingDELETEMutationError = ErrorType<unknown>
+export type ClearCacheUsingDELETEMutationError = unknown
 
 /**
  * @summary clearCache
  */
-export const useClearCacheUsingDELETE = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearCacheUsingDELETE = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCacheUsingDELETEHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearCacheUsingDELETEMutationOptions(options)
@@ -3815,14 +3810,14 @@ export const useClearCacheUsingDELETE = <TError = ErrorType<unknown>, TVariables
  * @summary clearCiCache
  */
 export const useClearCiCacheUsingDELETE1Hook = () => {
-    const clearCiCacheUsingDELETE1 = useCustomClient<string | void>()
+    const clearCiCacheUsingDELETE1 = useCmdbSwaggerClient<string | void>()
 
     return () => {
         return clearCiCacheUsingDELETE1({ url: `/cache/schema/ci`, method: 'delete' })
     }
 }
 
-export const useClearCiCacheUsingDELETE1MutationOptions = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearCiCacheUsingDELETE1MutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCiCacheUsingDELETE1Hook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCiCacheUsingDELETE1Hook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3838,12 +3833,12 @@ export const useClearCiCacheUsingDELETE1MutationOptions = <TError = ErrorType<un
 
 export type ClearCiCacheUsingDELETE1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearCiCacheUsingDELETE1Hook>>>>
 
-export type ClearCiCacheUsingDELETE1MutationError = ErrorType<unknown>
+export type ClearCiCacheUsingDELETE1MutationError = unknown
 
 /**
  * @summary clearCiCache
  */
-export const useClearCiCacheUsingDELETE1 = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearCiCacheUsingDELETE1 = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCiCacheUsingDELETE1Hook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearCiCacheUsingDELETE1MutationOptions(options)
@@ -3855,14 +3850,14 @@ export const useClearCiCacheUsingDELETE1 = <TError = ErrorType<unknown>, TVariab
  * @summary clearCiCache
  */
 export const useClearCiCacheUsingDELETEHook = () => {
-    const clearCiCacheUsingDELETE = useCustomClient<string | void>()
+    const clearCiCacheUsingDELETE = useCmdbSwaggerClient<string | void>()
 
     return (ciType: string) => {
         return clearCiCacheUsingDELETE({ url: `/cache/schema/ci/${ciType}`, method: 'delete' })
     }
 }
 
-export const useClearCiCacheUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useClearCiCacheUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCiCacheUsingDELETEHook>>>, TError, { ciType: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCiCacheUsingDELETEHook>>>, TError, { ciType: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3880,12 +3875,12 @@ export const useClearCiCacheUsingDELETEMutationOptions = <TError = ErrorType<unk
 
 export type ClearCiCacheUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearCiCacheUsingDELETEHook>>>>
 
-export type ClearCiCacheUsingDELETEMutationError = ErrorType<unknown>
+export type ClearCiCacheUsingDELETEMutationError = unknown
 
 /**
  * @summary clearCiCache
  */
-export const useClearCiCacheUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useClearCiCacheUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCiCacheUsingDELETEHook>>>, TError, { ciType: string }, TContext>
 }) => {
     const mutationOptions = useClearCiCacheUsingDELETEMutationOptions(options)
@@ -3897,14 +3892,14 @@ export const useClearCiCacheUsingDELETE = <TError = ErrorType<unknown>, TContext
  * @summary clearEnumCache
  */
 export const useClearEnumCacheUsingDELETE1Hook = () => {
-    const clearEnumCacheUsingDELETE1 = useCustomClient<string | void>()
+    const clearEnumCacheUsingDELETE1 = useCmdbSwaggerClient<string | void>()
 
     return () => {
         return clearEnumCacheUsingDELETE1({ url: `/cache/schema/enum`, method: 'delete' })
     }
 }
 
-export const useClearEnumCacheUsingDELETE1MutationOptions = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearEnumCacheUsingDELETE1MutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearEnumCacheUsingDELETE1Hook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearEnumCacheUsingDELETE1Hook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3920,12 +3915,12 @@ export const useClearEnumCacheUsingDELETE1MutationOptions = <TError = ErrorType<
 
 export type ClearEnumCacheUsingDELETE1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearEnumCacheUsingDELETE1Hook>>>>
 
-export type ClearEnumCacheUsingDELETE1MutationError = ErrorType<unknown>
+export type ClearEnumCacheUsingDELETE1MutationError = unknown
 
 /**
  * @summary clearEnumCache
  */
-export const useClearEnumCacheUsingDELETE1 = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearEnumCacheUsingDELETE1 = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearEnumCacheUsingDELETE1Hook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearEnumCacheUsingDELETE1MutationOptions(options)
@@ -3937,14 +3932,14 @@ export const useClearEnumCacheUsingDELETE1 = <TError = ErrorType<unknown>, TVari
  * @summary clearEnumCache
  */
 export const useClearEnumCacheUsingDELETEHook = () => {
-    const clearEnumCacheUsingDELETE = useCustomClient<string | void>()
+    const clearEnumCacheUsingDELETE = useCmdbSwaggerClient<string | void>()
 
     return (enumType: string) => {
         return clearEnumCacheUsingDELETE({ url: `/cache/schema/enum/${enumType}`, method: 'delete' })
     }
 }
 
-export const useClearEnumCacheUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useClearEnumCacheUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearEnumCacheUsingDELETEHook>>>, TError, { enumType: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearEnumCacheUsingDELETEHook>>>, TError, { enumType: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3962,12 +3957,12 @@ export const useClearEnumCacheUsingDELETEMutationOptions = <TError = ErrorType<u
 
 export type ClearEnumCacheUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearEnumCacheUsingDELETEHook>>>>
 
-export type ClearEnumCacheUsingDELETEMutationError = ErrorType<unknown>
+export type ClearEnumCacheUsingDELETEMutationError = unknown
 
 /**
  * @summary clearEnumCache
  */
-export const useClearEnumCacheUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useClearEnumCacheUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearEnumCacheUsingDELETEHook>>>, TError, { enumType: string }, TContext>
 }) => {
     const mutationOptions = useClearEnumCacheUsingDELETEMutationOptions(options)
@@ -3979,14 +3974,14 @@ export const useClearEnumCacheUsingDELETE = <TError = ErrorType<unknown>, TConte
  * @summary clearRelCache
  */
 export const useClearRelCacheUsingDELETE1Hook = () => {
-    const clearRelCacheUsingDELETE1 = useCustomClient<string | void>()
+    const clearRelCacheUsingDELETE1 = useCmdbSwaggerClient<string | void>()
 
     return () => {
         return clearRelCacheUsingDELETE1({ url: `/cache/schema/rel`, method: 'delete' })
     }
 }
 
-export const useClearRelCacheUsingDELETE1MutationOptions = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearRelCacheUsingDELETE1MutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRelCacheUsingDELETE1Hook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRelCacheUsingDELETE1Hook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4002,12 +3997,12 @@ export const useClearRelCacheUsingDELETE1MutationOptions = <TError = ErrorType<u
 
 export type ClearRelCacheUsingDELETE1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearRelCacheUsingDELETE1Hook>>>>
 
-export type ClearRelCacheUsingDELETE1MutationError = ErrorType<unknown>
+export type ClearRelCacheUsingDELETE1MutationError = unknown
 
 /**
  * @summary clearRelCache
  */
-export const useClearRelCacheUsingDELETE1 = <TError = ErrorType<unknown>, TVariables = void, TContext = unknown>(options?: {
+export const useClearRelCacheUsingDELETE1 = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRelCacheUsingDELETE1Hook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearRelCacheUsingDELETE1MutationOptions(options)
@@ -4019,14 +4014,14 @@ export const useClearRelCacheUsingDELETE1 = <TError = ErrorType<unknown>, TVaria
  * @summary clearRelCache
  */
 export const useClearRelCacheUsingDELETEHook = () => {
-    const clearRelCacheUsingDELETE = useCustomClient<string | void>()
+    const clearRelCacheUsingDELETE = useCmdbSwaggerClient<string | void>()
 
     return (relType: string) => {
         return clearRelCacheUsingDELETE({ url: `/cache/schema/rel/${relType}`, method: 'delete' })
     }
 }
 
-export const useClearRelCacheUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useClearRelCacheUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRelCacheUsingDELETEHook>>>, TError, { relType: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRelCacheUsingDELETEHook>>>, TError, { relType: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4044,12 +4039,12 @@ export const useClearRelCacheUsingDELETEMutationOptions = <TError = ErrorType<un
 
 export type ClearRelCacheUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearRelCacheUsingDELETEHook>>>>
 
-export type ClearRelCacheUsingDELETEMutationError = ErrorType<unknown>
+export type ClearRelCacheUsingDELETEMutationError = unknown
 
 /**
  * @summary clearRelCache
  */
-export const useClearRelCacheUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useClearRelCacheUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRelCacheUsingDELETEHook>>>, TError, { relType: string }, TContext>
 }) => {
     const mutationOptions = useClearRelCacheUsingDELETEMutationOptions(options)
@@ -4061,9 +4056,9 @@ export const useClearRelCacheUsingDELETE = <TError = ErrorType<unknown>, TContex
  * @summary changePoHierarchy
  */
 export const useChangePoHierarchyUsingPOSTHook = () => {
-    const changePoHierarchyUsingPOST = useCustomClient<RequestIdUi | void>()
+    const changePoHierarchyUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (oldRelId: string, newRelId: string, changeHierarchyUi: BodyType<ChangeHierarchyUi>, params?: ChangePoHierarchyUsingPOSTParams) => {
+    return (oldRelId: string, newRelId: string, changeHierarchyUi: ChangeHierarchyUi, params?: ChangePoHierarchyUsingPOSTParams) => {
         return changePoHierarchyUsingPOST({
             url: `/changeHierarchy/${oldRelId}/${newRelId}`,
             method: 'post',
@@ -4074,17 +4069,17 @@ export const useChangePoHierarchyUsingPOSTHook = () => {
     }
 }
 
-export const useChangePoHierarchyUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useChangePoHierarchyUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useChangePoHierarchyUsingPOSTHook>>>,
         TError,
-        { oldRelId: string; newRelId: string; data: BodyType<ChangeHierarchyUi>; params?: ChangePoHierarchyUsingPOSTParams },
+        { oldRelId: string; newRelId: string; data: ChangeHierarchyUi; params?: ChangePoHierarchyUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useChangePoHierarchyUsingPOSTHook>>>,
     TError,
-    { oldRelId: string; newRelId: string; data: BodyType<ChangeHierarchyUi>; params?: ChangePoHierarchyUsingPOSTParams },
+    { oldRelId: string; newRelId: string; data: ChangeHierarchyUi; params?: ChangePoHierarchyUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4093,7 +4088,7 @@ export const useChangePoHierarchyUsingPOSTMutationOptions = <TError = ErrorType<
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useChangePoHierarchyUsingPOSTHook>>>,
-        { oldRelId: string; newRelId: string; data: BodyType<ChangeHierarchyUi>; params?: ChangePoHierarchyUsingPOSTParams }
+        { oldRelId: string; newRelId: string; data: ChangeHierarchyUi; params?: ChangePoHierarchyUsingPOSTParams }
     > = (props) => {
         const { oldRelId, newRelId, data, params } = props ?? {}
 
@@ -4104,17 +4099,17 @@ export const useChangePoHierarchyUsingPOSTMutationOptions = <TError = ErrorType<
 }
 
 export type ChangePoHierarchyUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useChangePoHierarchyUsingPOSTHook>>>>
-export type ChangePoHierarchyUsingPOSTMutationBody = BodyType<ChangeHierarchyUi>
-export type ChangePoHierarchyUsingPOSTMutationError = ErrorType<unknown>
+export type ChangePoHierarchyUsingPOSTMutationBody = ChangeHierarchyUi
+export type ChangePoHierarchyUsingPOSTMutationError = unknown
 
 /**
  * @summary changePoHierarchy
  */
-export const useChangePoHierarchyUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useChangePoHierarchyUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useChangePoHierarchyUsingPOSTHook>>>,
         TError,
-        { oldRelId: string; newRelId: string; data: BodyType<ChangeHierarchyUi>; params?: ChangePoHierarchyUsingPOSTParams },
+        { oldRelId: string; newRelId: string; data: ChangeHierarchyUi; params?: ChangePoHierarchyUsingPOSTParams },
         TContext
     >
 }) => {
@@ -4127,9 +4122,9 @@ export const useChangePoHierarchyUsingPOST = <TError = ErrorType<unknown>, TCont
  * @summary changeOwnerSet
  */
 export const useChangeOwnerSetUsingPOSTHook = () => {
-    const changeOwnerSetUsingPOST = useCustomClient<RequestIdUi | void>()
+    const changeOwnerSetUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (changeOwnerSetUi: BodyType<ChangeOwnerSetUi>, params?: ChangeOwnerSetUsingPOSTParams) => {
+    return (changeOwnerSetUi: ChangeOwnerSetUi, params?: ChangeOwnerSetUsingPOSTParams) => {
         return changeOwnerSetUsingPOST({
             url: `/changeOwner/list`,
             method: 'post',
@@ -4140,17 +4135,17 @@ export const useChangeOwnerSetUsingPOSTHook = () => {
     }
 }
 
-export const useChangeOwnerSetUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useChangeOwnerSetUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetUsingPOSTHook>>>,
         TError,
-        { data: BodyType<ChangeOwnerSetUi>; params?: ChangeOwnerSetUsingPOSTParams },
+        { data: ChangeOwnerSetUi; params?: ChangeOwnerSetUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetUsingPOSTHook>>>,
     TError,
-    { data: BodyType<ChangeOwnerSetUi>; params?: ChangeOwnerSetUsingPOSTParams },
+    { data: ChangeOwnerSetUi; params?: ChangeOwnerSetUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4159,7 +4154,7 @@ export const useChangeOwnerSetUsingPOSTMutationOptions = <TError = ErrorType<unk
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetUsingPOSTHook>>>,
-        { data: BodyType<ChangeOwnerSetUi>; params?: ChangeOwnerSetUsingPOSTParams }
+        { data: ChangeOwnerSetUi; params?: ChangeOwnerSetUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -4170,17 +4165,17 @@ export const useChangeOwnerSetUsingPOSTMutationOptions = <TError = ErrorType<unk
 }
 
 export type ChangeOwnerSetUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetUsingPOSTHook>>>>
-export type ChangeOwnerSetUsingPOSTMutationBody = BodyType<ChangeOwnerSetUi>
-export type ChangeOwnerSetUsingPOSTMutationError = ErrorType<unknown>
+export type ChangeOwnerSetUsingPOSTMutationBody = ChangeOwnerSetUi
+export type ChangeOwnerSetUsingPOSTMutationError = unknown
 
 /**
  * @summary changeOwnerSet
  */
-export const useChangeOwnerSetUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useChangeOwnerSetUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetUsingPOSTHook>>>,
         TError,
-        { data: BodyType<ChangeOwnerSetUi>; params?: ChangeOwnerSetUsingPOSTParams },
+        { data: ChangeOwnerSetUi; params?: ChangeOwnerSetUsingPOSTParams },
         TContext
     >
 }) => {
@@ -4193,9 +4188,9 @@ export const useChangeOwnerSetUsingPOST = <TError = ErrorType<unknown>, TContext
  * @summary deleteRelationship
  */
 export const useDeleteRelationshipUsingPOSTHook = () => {
-    const deleteRelationshipUsingPOST = useCustomClient<RequestIdUi | void>()
+    const deleteRelationshipUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (relationshipInvalidateUiBody: BodyType<RelationshipInvalidateUiBody>, params?: DeleteRelationshipUsingPOSTParams) => {
+    return (relationshipInvalidateUiBody: RelationshipInvalidateUiBody, params?: DeleteRelationshipUsingPOSTParams) => {
         return deleteRelationshipUsingPOST({
             url: `/delete/relation`,
             method: 'post',
@@ -4206,17 +4201,17 @@ export const useDeleteRelationshipUsingPOSTHook = () => {
     }
 }
 
-export const useDeleteRelationshipUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteRelationshipUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteRelationshipUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelationshipInvalidateUiBody>; params?: DeleteRelationshipUsingPOSTParams },
+        { data: RelationshipInvalidateUiBody; params?: DeleteRelationshipUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useDeleteRelationshipUsingPOSTHook>>>,
     TError,
-    { data: BodyType<RelationshipInvalidateUiBody>; params?: DeleteRelationshipUsingPOSTParams },
+    { data: RelationshipInvalidateUiBody; params?: DeleteRelationshipUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4225,7 +4220,7 @@ export const useDeleteRelationshipUsingPOSTMutationOptions = <TError = ErrorType
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useDeleteRelationshipUsingPOSTHook>>>,
-        { data: BodyType<RelationshipInvalidateUiBody>; params?: DeleteRelationshipUsingPOSTParams }
+        { data: RelationshipInvalidateUiBody; params?: DeleteRelationshipUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -4236,17 +4231,17 @@ export const useDeleteRelationshipUsingPOSTMutationOptions = <TError = ErrorType
 }
 
 export type DeleteRelationshipUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteRelationshipUsingPOSTHook>>>>
-export type DeleteRelationshipUsingPOSTMutationBody = BodyType<RelationshipInvalidateUiBody>
-export type DeleteRelationshipUsingPOSTMutationError = ErrorType<unknown>
+export type DeleteRelationshipUsingPOSTMutationBody = RelationshipInvalidateUiBody
+export type DeleteRelationshipUsingPOSTMutationError = unknown
 
 /**
  * @summary deleteRelationship
  */
-export const useDeleteRelationshipUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteRelationshipUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteRelationshipUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelationshipInvalidateUiBody>; params?: DeleteRelationshipUsingPOSTParams },
+        { data: RelationshipInvalidateUiBody; params?: DeleteRelationshipUsingPOSTParams },
         TContext
     >
 }) => {
@@ -4259,7 +4254,7 @@ export const useDeleteRelationshipUsingPOST = <TError = ErrorType<unknown>, TCon
  * @summary liveness
  */
 export const useLivenessUsingGETHook = () => {
-    const livenessUsingGET = useCustomClient<void>()
+    const livenessUsingGET = useCmdbSwaggerClient<void>()
 
     return (signal?: AbortSignal) => {
         return livenessUsingGET({ url: `/endpoints/health/liveness`, method: 'get', signal })
@@ -4268,10 +4263,7 @@ export const useLivenessUsingGETHook = () => {
 
 export const getLivenessUsingGETQueryKey = () => [`/endpoints/health/liveness`] as const
 
-export const useLivenessUsingGETQueryOptions = <
-    TData = Awaited<ReturnType<ReturnType<typeof useLivenessUsingGETHook>>>,
-    TError = ErrorType<unknown>,
->(options?: {
+export const useLivenessUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useLivenessUsingGETHook>>>, TError = unknown>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLivenessUsingGETHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLivenessUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -4286,12 +4278,12 @@ export const useLivenessUsingGETQueryOptions = <
 }
 
 export type LivenessUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useLivenessUsingGETHook>>>>
-export type LivenessUsingGETQueryError = ErrorType<unknown>
+export type LivenessUsingGETQueryError = unknown
 
 /**
  * @summary liveness
  */
-export const useLivenessUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useLivenessUsingGETHook>>>, TError = ErrorType<unknown>>(options?: {
+export const useLivenessUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useLivenessUsingGETHook>>>, TError = unknown>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLivenessUsingGETHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useLivenessUsingGETQueryOptions(options)
@@ -4307,7 +4299,7 @@ export const useLivenessUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof
  * @summary readiness
  */
 export const useReadinessUsingGETHook = () => {
-    const readinessUsingGET = useCustomClient<void>()
+    const readinessUsingGET = useCmdbSwaggerClient<void>()
 
     return (signal?: AbortSignal) => {
         return readinessUsingGET({ url: `/endpoints/health/readiness`, method: 'get', signal })
@@ -4318,7 +4310,7 @@ export const getReadinessUsingGETQueryKey = () => [`/endpoints/health/readiness`
 
 export const useReadinessUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadinessUsingGETHook>>>,
-    TError = ErrorType<unknown>,
+    TError = unknown,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadinessUsingGETHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadinessUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -4334,15 +4326,12 @@ export const useReadinessUsingGETQueryOptions = <
 }
 
 export type ReadinessUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadinessUsingGETHook>>>>
-export type ReadinessUsingGETQueryError = ErrorType<unknown>
+export type ReadinessUsingGETQueryError = unknown
 
 /**
  * @summary readiness
  */
-export const useReadinessUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useReadinessUsingGETHook>>>,
-    TError = ErrorType<unknown>,
->(options?: {
+export const useReadinessUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadinessUsingGETHook>>>, TError = unknown>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadinessUsingGETHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useReadinessUsingGETQueryOptions(options)
@@ -4358,9 +4347,9 @@ export const useReadinessUsingGET = <
  * @summary reportError
  */
 export const useReportErrorUsingPOSTHook = () => {
-    const reportErrorUsingPOST = useCustomClient<ReportErrorUsingPOST200 | void>()
+    const reportErrorUsingPOST = useCmdbSwaggerClient<ReportErrorUsingPOST200 | void>()
 
-    return (userFeedbackErrorReportUi: BodyType<UserFeedbackErrorReportUi>, params?: ReportErrorUsingPOSTParams) => {
+    return (userFeedbackErrorReportUi: UserFeedbackErrorReportUi, params?: ReportErrorUsingPOSTParams) => {
         return reportErrorUsingPOST({
             url: `/feedback/error`,
             method: 'post',
@@ -4371,17 +4360,17 @@ export const useReportErrorUsingPOSTHook = () => {
     }
 }
 
-export const useReportErrorUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReportErrorUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReportErrorUsingPOSTHook>>>,
         TError,
-        { data: BodyType<UserFeedbackErrorReportUi>; params?: ReportErrorUsingPOSTParams },
+        { data: UserFeedbackErrorReportUi; params?: ReportErrorUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReportErrorUsingPOSTHook>>>,
     TError,
-    { data: BodyType<UserFeedbackErrorReportUi>; params?: ReportErrorUsingPOSTParams },
+    { data: UserFeedbackErrorReportUi; params?: ReportErrorUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4390,7 +4379,7 @@ export const useReportErrorUsingPOSTMutationOptions = <TError = ErrorType<unknow
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReportErrorUsingPOSTHook>>>,
-        { data: BodyType<UserFeedbackErrorReportUi>; params?: ReportErrorUsingPOSTParams }
+        { data: UserFeedbackErrorReportUi; params?: ReportErrorUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -4401,17 +4390,17 @@ export const useReportErrorUsingPOSTMutationOptions = <TError = ErrorType<unknow
 }
 
 export type ReportErrorUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReportErrorUsingPOSTHook>>>>
-export type ReportErrorUsingPOSTMutationBody = BodyType<UserFeedbackErrorReportUi>
-export type ReportErrorUsingPOSTMutationError = ErrorType<unknown>
+export type ReportErrorUsingPOSTMutationBody = UserFeedbackErrorReportUi
+export type ReportErrorUsingPOSTMutationError = unknown
 
 /**
  * @summary reportError
  */
-export const useReportErrorUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReportErrorUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReportErrorUsingPOSTHook>>>,
         TError,
-        { data: BodyType<UserFeedbackErrorReportUi>; params?: ReportErrorUsingPOSTParams },
+        { data: UserFeedbackErrorReportUi; params?: ReportErrorUsingPOSTParams },
         TContext
     >
 }) => {
@@ -4424,7 +4413,7 @@ export const useReportErrorUsingPOST = <TError = ErrorType<unknown>, TContext = 
  * @summary getUuid
  */
 export const useGetUuidUsingGETHook = () => {
-    const getUuidUsingGET = useCustomClient<string>()
+    const getUuidUsingGET = useCmdbSwaggerClient<string>()
 
     return (params?: GetUuidUsingGETParams, signal?: AbortSignal) => {
         return getUuidUsingGET({ url: `/generate/uuid`, method: 'get', params, signal })
@@ -4433,7 +4422,7 @@ export const useGetUuidUsingGETHook = () => {
 
 export const getGetUuidUsingGETQueryKey = (params?: GetUuidUsingGETParams) => [`/generate/uuid`, ...(params ? [params] : [])] as const
 
-export const useGetUuidUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError = ErrorType<void>>(
+export const useGetUuidUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError = void>(
     params?: GetUuidUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -4449,12 +4438,12 @@ export const useGetUuidUsingGETQueryOptions = <TData = Awaited<ReturnType<Return
 }
 
 export type GetUuidUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>>
-export type GetUuidUsingGETQueryError = ErrorType<void>
+export type GetUuidUsingGETQueryError = void
 
 /**
  * @summary getUuid
  */
-export const useGetUuidUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError = ErrorType<void>>(
+export const useGetUuidUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError = void>(
     params?: GetUuidUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -4471,7 +4460,7 @@ export const useGetUuidUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof 
  * @summary getGroupList
  */
 export const useGetGroupListUsingGETHook = () => {
-    const getGroupListUsingGET = useCustomClient<GetGroupListUsingGET200>()
+    const getGroupListUsingGET = useCmdbSwaggerClient<GetGroupListUsingGET200>()
 
     return (params?: GetGroupListUsingGETParams, signal?: AbortSignal) => {
         return getGroupListUsingGET({ url: `/grouplist`, method: 'get', params, signal })
@@ -4480,10 +4469,7 @@ export const useGetGroupListUsingGETHook = () => {
 
 export const getGetGroupListUsingGETQueryKey = (params?: GetGroupListUsingGETParams) => [`/grouplist`, ...(params ? [params] : [])] as const
 
-export const useGetGroupListUsingGETQueryOptions = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useGetGroupListUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError = void>(
     params?: GetGroupListUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -4500,12 +4486,12 @@ export const useGetGroupListUsingGETQueryOptions = <
 }
 
 export type GetGroupListUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>>
-export type GetGroupListUsingGETQueryError = ErrorType<void>
+export type GetGroupListUsingGETQueryError = void
 
 /**
  * @summary getGroupList
  */
-export const useGetGroupListUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError = ErrorType<void>>(
+export const useGetGroupListUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError = void>(
     params?: GetGroupListUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -4522,7 +4508,7 @@ export const useGetGroupListUsingGET = <TData = Awaited<ReturnType<ReturnType<ty
  * @summary getConfigurationItemsGroups
  */
 export const useGetConfigurationItemsGroupsUsingGETHook = () => {
-    const getConfigurationItemsGroupsUsingGET = useCustomClient<GetConfigurationItemsGroupsUsingGET200>()
+    const getConfigurationItemsGroupsUsingGET = useCmdbSwaggerClient<GetConfigurationItemsGroupsUsingGET200>()
 
     return (uuid: string, params?: GetConfigurationItemsGroupsUsingGETParams, signal?: AbortSignal) => {
         return getConfigurationItemsGroupsUsingGET({ url: `/grouplist/ci/${uuid}`, method: 'get', params, signal })
@@ -4534,7 +4520,7 @@ export const getGetConfigurationItemsGroupsUsingGETQueryKey = (uuid: string, par
 
 export const useGetConfigurationItemsGroupsUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: GetConfigurationItemsGroupsUsingGETParams,
@@ -4555,14 +4541,14 @@ export const useGetConfigurationItemsGroupsUsingGETQueryOptions = <
 export type GetConfigurationItemsGroupsUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsUsingGETHook>>>
 >
-export type GetConfigurationItemsGroupsUsingGETQueryError = ErrorType<void>
+export type GetConfigurationItemsGroupsUsingGETQueryError = void
 
 /**
  * @summary getConfigurationItemsGroups
  */
 export const useGetConfigurationItemsGroupsUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: GetConfigurationItemsGroupsUsingGETParams,
@@ -4581,9 +4567,9 @@ export const useGetConfigurationItemsGroupsUsingGET = <
  * @summary storePoHierarchyRel
  */
 export const useStorePoHierarchyRelUsingPOSTHook = () => {
-    const storePoHierarchyRelUsingPOST = useCustomClient<RequestIdUi | void>()
+    const storePoHierarchyRelUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (relId: string, relationshipUiBody: BodyType<RelationshipUiBody>, params?: StorePoHierarchyRelUsingPOSTParams) => {
+    return (relId: string, relationshipUiBody: RelationshipUiBody, params?: StorePoHierarchyRelUsingPOSTParams) => {
         return storePoHierarchyRelUsingPOST({
             url: `/hierarchy/${relId}`,
             method: 'post',
@@ -4594,17 +4580,17 @@ export const useStorePoHierarchyRelUsingPOSTHook = () => {
     }
 }
 
-export const useStorePoHierarchyRelUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStorePoHierarchyRelUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoHierarchyRelUsingPOSTHook>>>,
         TError,
-        { relId: string; data: BodyType<RelationshipUiBody>; params?: StorePoHierarchyRelUsingPOSTParams },
+        { relId: string; data: RelationshipUiBody; params?: StorePoHierarchyRelUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStorePoHierarchyRelUsingPOSTHook>>>,
     TError,
-    { relId: string; data: BodyType<RelationshipUiBody>; params?: StorePoHierarchyRelUsingPOSTParams },
+    { relId: string; data: RelationshipUiBody; params?: StorePoHierarchyRelUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4613,7 +4599,7 @@ export const useStorePoHierarchyRelUsingPOSTMutationOptions = <TError = ErrorTyp
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStorePoHierarchyRelUsingPOSTHook>>>,
-        { relId: string; data: BodyType<RelationshipUiBody>; params?: StorePoHierarchyRelUsingPOSTParams }
+        { relId: string; data: RelationshipUiBody; params?: StorePoHierarchyRelUsingPOSTParams }
     > = (props) => {
         const { relId, data, params } = props ?? {}
 
@@ -4624,17 +4610,17 @@ export const useStorePoHierarchyRelUsingPOSTMutationOptions = <TError = ErrorTyp
 }
 
 export type StorePoHierarchyRelUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStorePoHierarchyRelUsingPOSTHook>>>>
-export type StorePoHierarchyRelUsingPOSTMutationBody = BodyType<RelationshipUiBody>
-export type StorePoHierarchyRelUsingPOSTMutationError = ErrorType<unknown>
+export type StorePoHierarchyRelUsingPOSTMutationBody = RelationshipUiBody
+export type StorePoHierarchyRelUsingPOSTMutationError = unknown
 
 /**
  * @summary storePoHierarchyRel
  */
-export const useStorePoHierarchyRelUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStorePoHierarchyRelUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoHierarchyRelUsingPOSTHook>>>,
         TError,
-        { relId: string; data: BodyType<RelationshipUiBody>; params?: StorePoHierarchyRelUsingPOSTParams },
+        { relId: string; data: RelationshipUiBody; params?: StorePoHierarchyRelUsingPOSTParams },
         TContext
     >
 }) => {
@@ -4647,7 +4633,7 @@ export const useStorePoHierarchyRelUsingPOST = <TError = ErrorType<unknown>, TCo
  * @summary readAllCiHistoryVersions
  */
 export const useReadAllCiHistoryVersionsUsingGETHook = () => {
-    const readAllCiHistoryVersionsUsingGET = useCustomClient<HistoryVersionsListUiConfigurationItemUi>()
+    const readAllCiHistoryVersionsUsingGET = useCmdbSwaggerClient<HistoryVersionsListUiConfigurationItemUi>()
 
     return (params: ReadAllCiHistoryVersionsUsingGETParams, signal?: AbortSignal) => {
         return readAllCiHistoryVersionsUsingGET({ url: `/history/read/ci/list`, method: 'get', params, signal })
@@ -4659,7 +4645,7 @@ export const getReadAllCiHistoryVersionsUsingGETQueryKey = (params: ReadAllCiHis
 
 export const useReadAllCiHistoryVersionsUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadAllCiHistoryVersionsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params: ReadAllCiHistoryVersionsUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadAllCiHistoryVersionsUsingGETHook>>>, TError, TData> },
@@ -4677,14 +4663,14 @@ export const useReadAllCiHistoryVersionsUsingGETQueryOptions = <
 }
 
 export type ReadAllCiHistoryVersionsUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadAllCiHistoryVersionsUsingGETHook>>>>
-export type ReadAllCiHistoryVersionsUsingGETQueryError = ErrorType<void>
+export type ReadAllCiHistoryVersionsUsingGETQueryError = void
 
 /**
  * @summary readAllCiHistoryVersions
  */
 export const useReadAllCiHistoryVersionsUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadAllCiHistoryVersionsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params: ReadAllCiHistoryVersionsUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadAllCiHistoryVersionsUsingGETHook>>>, TError, TData> },
@@ -4702,7 +4688,7 @@ export const useReadAllCiHistoryVersionsUsingGET = <
  * @summary readCiHistoryVersion
  */
 export const useReadCiHistoryVersionUsingGETHook = () => {
-    const readCiHistoryVersionUsingGET = useCustomClient<HistoryVersionUiConfigurationItemUi>()
+    const readCiHistoryVersionUsingGET = useCmdbSwaggerClient<HistoryVersionUiConfigurationItemUi>()
 
     return (uuid: string, params?: ReadCiHistoryVersionUsingGETParams, signal?: AbortSignal) => {
         return readCiHistoryVersionUsingGET({ url: `/history/read/ci/${uuid}`, method: 'get', params, signal })
@@ -4714,7 +4700,7 @@ export const getReadCiHistoryVersionUsingGETQueryKey = (uuid: string, params?: R
 
 export const useReadCiHistoryVersionUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadCiHistoryVersionUsingGETParams,
@@ -4733,15 +4719,12 @@ export const useReadCiHistoryVersionUsingGETQueryOptions = <
 }
 
 export type ReadCiHistoryVersionUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionUsingGETHook>>>>
-export type ReadCiHistoryVersionUsingGETQueryError = ErrorType<void>
+export type ReadCiHistoryVersionUsingGETQueryError = void
 
 /**
  * @summary readCiHistoryVersion
  */
-export const useReadCiHistoryVersionUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useReadCiHistoryVersionUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionUsingGETHook>>>, TError = void>(
     uuid: string,
     params?: ReadCiHistoryVersionUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionUsingGETHook>>>, TError, TData> },
@@ -4759,7 +4742,7 @@ export const useReadCiHistoryVersionUsingGET = <
  * @summary readCiHistoryVersions
  */
 export const useReadCiHistoryVersionsUsingGETHook = () => {
-    const readCiHistoryVersionsUsingGET = useCustomClient<HistoryVersionsListUiConfigurationItemUi>()
+    const readCiHistoryVersionsUsingGET = useCmdbSwaggerClient<HistoryVersionsListUiConfigurationItemUi>()
 
     return (uuid: string, params: ReadCiHistoryVersionsUsingGETParams, signal?: AbortSignal) => {
         return readCiHistoryVersionsUsingGET({ url: `/history/read/ci/${uuid}/list`, method: 'get', params, signal })
@@ -4771,7 +4754,7 @@ export const getReadCiHistoryVersionsUsingGETQueryKey = (uuid: string, params: R
 
 export const useReadCiHistoryVersionsUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params: ReadCiHistoryVersionsUsingGETParams,
@@ -4790,15 +4773,12 @@ export const useReadCiHistoryVersionsUsingGETQueryOptions = <
 }
 
 export type ReadCiHistoryVersionsUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsUsingGETHook>>>>
-export type ReadCiHistoryVersionsUsingGETQueryError = ErrorType<void>
+export type ReadCiHistoryVersionsUsingGETQueryError = void
 
 /**
  * @summary readCiHistoryVersions
  */
-export const useReadCiHistoryVersionsUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useReadCiHistoryVersionsUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsUsingGETHook>>>, TError = void>(
     uuid: string,
     params: ReadCiHistoryVersionsUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsUsingGETHook>>>, TError, TData> },
@@ -4816,7 +4796,7 @@ export const useReadCiHistoryVersionsUsingGET = <
  * @summary readCiHistoryVersionsActionsList
  */
 export const useReadCiHistoryVersionsActionsListUsingGETHook = () => {
-    const readCiHistoryVersionsActionsListUsingGET = useCustomClient<string[]>()
+    const readCiHistoryVersionsActionsListUsingGET = useCmdbSwaggerClient<string[]>()
 
     return (uuid: string, params?: ReadCiHistoryVersionsActionsListUsingGETParams, signal?: AbortSignal) => {
         return readCiHistoryVersionsActionsListUsingGET({ url: `/history/read/ci/${uuid}/list/actions`, method: 'get', params, signal })
@@ -4828,7 +4808,7 @@ export const getReadCiHistoryVersionsActionsListUsingGETQueryKey = (uuid: string
 
 export const useReadCiHistoryVersionsActionsListUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadCiHistoryVersionsActionsListUsingGETParams,
@@ -4851,14 +4831,14 @@ export const useReadCiHistoryVersionsActionsListUsingGETQueryOptions = <
 export type ReadCiHistoryVersionsActionsListUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListUsingGETHook>>>
 >
-export type ReadCiHistoryVersionsActionsListUsingGETQueryError = ErrorType<void>
+export type ReadCiHistoryVersionsActionsListUsingGETQueryError = void
 
 /**
  * @summary readCiHistoryVersionsActionsList
  */
 export const useReadCiHistoryVersionsActionsListUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadCiHistoryVersionsActionsListUsingGETParams,
@@ -4877,7 +4857,7 @@ export const useReadCiHistoryVersionsActionsListUsingGET = <
  * @summary readCiHistoryModifiedByList
  */
 export const useReadCiHistoryModifiedByListUsingGETHook = () => {
-    const readCiHistoryModifiedByListUsingGET = useCustomClient<string[]>()
+    const readCiHistoryModifiedByListUsingGET = useCmdbSwaggerClient<string[]>()
 
     return (uuid: string, params?: ReadCiHistoryModifiedByListUsingGETParams, signal?: AbortSignal) => {
         return readCiHistoryModifiedByListUsingGET({ url: `/history/read/ci/${uuid}/list/modifiedBy`, method: 'get', params, signal })
@@ -4889,7 +4869,7 @@ export const getReadCiHistoryModifiedByListUsingGETQueryKey = (uuid: string, par
 
 export const useReadCiHistoryModifiedByListUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadCiHistoryModifiedByListUsingGETParams,
@@ -4910,14 +4890,14 @@ export const useReadCiHistoryModifiedByListUsingGETQueryOptions = <
 export type ReadCiHistoryModifiedByListUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListUsingGETHook>>>
 >
-export type ReadCiHistoryModifiedByListUsingGETQueryError = ErrorType<void>
+export type ReadCiHistoryModifiedByListUsingGETQueryError = void
 
 /**
  * @summary readCiHistoryModifiedByList
  */
 export const useReadCiHistoryModifiedByListUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadCiHistoryModifiedByListUsingGETParams,
@@ -4936,7 +4916,7 @@ export const useReadCiHistoryModifiedByListUsingGET = <
  * @summary readCiHistoryVersionsIncidentRels
  */
 export const useReadCiHistoryVersionsIncidentRelsUsingGETHook = () => {
-    const readCiHistoryVersionsIncidentRelsUsingGET = useCustomClient<CiHistoryVersionsIncidentRelationshipsUi>()
+    const readCiHistoryVersionsIncidentRelsUsingGET = useCmdbSwaggerClient<CiHistoryVersionsIncidentRelationshipsUi>()
 
     return (uuid: string, params: ReadCiHistoryVersionsIncidentRelsUsingGETParams, signal?: AbortSignal) => {
         return readCiHistoryVersionsIncidentRelsUsingGET({ url: `/history/read/ci/${uuid}/rels`, method: 'get', params, signal })
@@ -4948,7 +4928,7 @@ export const getReadCiHistoryVersionsIncidentRelsUsingGETQueryKey = (uuid: strin
 
 export const useReadCiHistoryVersionsIncidentRelsUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsIncidentRelsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params: ReadCiHistoryVersionsIncidentRelsUsingGETParams,
@@ -4971,14 +4951,14 @@ export const useReadCiHistoryVersionsIncidentRelsUsingGETQueryOptions = <
 export type ReadCiHistoryVersionsIncidentRelsUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsIncidentRelsUsingGETHook>>>
 >
-export type ReadCiHistoryVersionsIncidentRelsUsingGETQueryError = ErrorType<void>
+export type ReadCiHistoryVersionsIncidentRelsUsingGETQueryError = void
 
 /**
  * @summary readCiHistoryVersionsIncidentRels
  */
 export const useReadCiHistoryVersionsIncidentRelsUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsIncidentRelsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params: ReadCiHistoryVersionsIncidentRelsUsingGETParams,
@@ -4997,7 +4977,7 @@ export const useReadCiHistoryVersionsIncidentRelsUsingGET = <
  * @summary gdprHistory
  */
 export const useGdprHistoryUsingGETHook = () => {
-    const gdprHistoryUsingGET = useCustomClient<ConfigurationItemSetUi>()
+    const gdprHistoryUsingGET = useCmdbSwaggerClient<ConfigurationItemSetUi>()
 
     return (params: GdprHistoryUsingGETParams, signal?: AbortSignal) => {
         return gdprHistoryUsingGET({ url: `/history/read/gdpr/list`, method: 'get', params, signal })
@@ -5006,10 +4986,7 @@ export const useGdprHistoryUsingGETHook = () => {
 
 export const getGdprHistoryUsingGETQueryKey = (params: GdprHistoryUsingGETParams) => [`/history/read/gdpr/list`, ...(params ? [params] : [])] as const
 
-export const useGdprHistoryUsingGETQueryOptions = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGdprHistoryUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useGdprHistoryUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGdprHistoryUsingGETHook>>>, TError = void>(
     params: GdprHistoryUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGdprHistoryUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGdprHistoryUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -5026,12 +5003,12 @@ export const useGdprHistoryUsingGETQueryOptions = <
 }
 
 export type GdprHistoryUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGdprHistoryUsingGETHook>>>>
-export type GdprHistoryUsingGETQueryError = ErrorType<void>
+export type GdprHistoryUsingGETQueryError = void
 
 /**
  * @summary gdprHistory
  */
-export const useGdprHistoryUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGdprHistoryUsingGETHook>>>, TError = ErrorType<void>>(
+export const useGdprHistoryUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGdprHistoryUsingGETHook>>>, TError = void>(
     params: GdprHistoryUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGdprHistoryUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -5048,7 +5025,7 @@ export const useGdprHistoryUsingGET = <TData = Awaited<ReturnType<ReturnType<typ
  * @summary readRelHistoryVersion
  */
 export const useReadRelHistoryVersionUsingGETHook = () => {
-    const readRelHistoryVersionUsingGET = useCustomClient<HistoryVersionUiRelationshipUi>()
+    const readRelHistoryVersionUsingGET = useCmdbSwaggerClient<HistoryVersionUiRelationshipUi>()
 
     return (uuid: string, params?: ReadRelHistoryVersionUsingGETParams, signal?: AbortSignal) => {
         return readRelHistoryVersionUsingGET({ url: `/history/read/rel/${uuid}`, method: 'get', params, signal })
@@ -5060,7 +5037,7 @@ export const getReadRelHistoryVersionUsingGETQueryKey = (uuid: string, params?: 
 
 export const useReadRelHistoryVersionUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadRelHistoryVersionUsingGETParams,
@@ -5079,15 +5056,12 @@ export const useReadRelHistoryVersionUsingGETQueryOptions = <
 }
 
 export type ReadRelHistoryVersionUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionUsingGETHook>>>>
-export type ReadRelHistoryVersionUsingGETQueryError = ErrorType<void>
+export type ReadRelHistoryVersionUsingGETQueryError = void
 
 /**
  * @summary readRelHistoryVersion
  */
-export const useReadRelHistoryVersionUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useReadRelHistoryVersionUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionUsingGETHook>>>, TError = void>(
     uuid: string,
     params?: ReadRelHistoryVersionUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionUsingGETHook>>>, TError, TData> },
@@ -5105,7 +5079,7 @@ export const useReadRelHistoryVersionUsingGET = <
  * @summary readRelHistoryVersions
  */
 export const useReadRelHistoryVersionsUsingGETHook = () => {
-    const readRelHistoryVersionsUsingGET = useCustomClient<HistoryVersionsListUiRelationshipUi>()
+    const readRelHistoryVersionsUsingGET = useCmdbSwaggerClient<HistoryVersionsListUiRelationshipUi>()
 
     return (uuid: string, params: ReadRelHistoryVersionsUsingGETParams, signal?: AbortSignal) => {
         return readRelHistoryVersionsUsingGET({ url: `/history/read/rel/${uuid}/list`, method: 'get', params, signal })
@@ -5117,7 +5091,7 @@ export const getReadRelHistoryVersionsUsingGETQueryKey = (uuid: string, params: 
 
 export const useReadRelHistoryVersionsUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params: ReadRelHistoryVersionsUsingGETParams,
@@ -5136,14 +5110,14 @@ export const useReadRelHistoryVersionsUsingGETQueryOptions = <
 }
 
 export type ReadRelHistoryVersionsUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionsUsingGETHook>>>>
-export type ReadRelHistoryVersionsUsingGETQueryError = ErrorType<void>
+export type ReadRelHistoryVersionsUsingGETQueryError = void
 
 /**
  * @summary readRelHistoryVersions
  */
 export const useReadRelHistoryVersionsUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params: ReadRelHistoryVersionsUsingGETParams,
@@ -5162,9 +5136,9 @@ export const useReadRelHistoryVersionsUsingGET = <
  * @summary invalidateConfigurationItem
  */
 export const useInvalidateConfigurationItemUsingPOSTHook = () => {
-    const invalidateConfigurationItemUsingPOST = useCustomClient<RequestIdUi | void>()
+    const invalidateConfigurationItemUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (configurationItemInvalidateUiBody: BodyType<ConfigurationItemInvalidateUiBody>, params?: InvalidateConfigurationItemUsingPOSTParams) => {
+    return (configurationItemInvalidateUiBody: ConfigurationItemInvalidateUiBody, params?: InvalidateConfigurationItemUsingPOSTParams) => {
         return invalidateConfigurationItemUsingPOST({
             url: `/invalidate/ci`,
             method: 'post',
@@ -5175,17 +5149,17 @@ export const useInvalidateConfigurationItemUsingPOSTHook = () => {
     }
 }
 
-export const useInvalidateConfigurationItemUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useInvalidateConfigurationItemUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemUsingPOSTHook>>>,
         TError,
-        { data: BodyType<ConfigurationItemInvalidateUiBody>; params?: InvalidateConfigurationItemUsingPOSTParams },
+        { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemUsingPOSTHook>>>,
     TError,
-    { data: BodyType<ConfigurationItemInvalidateUiBody>; params?: InvalidateConfigurationItemUsingPOSTParams },
+    { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5194,7 +5168,7 @@ export const useInvalidateConfigurationItemUsingPOSTMutationOptions = <TError = 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemUsingPOSTHook>>>,
-        { data: BodyType<ConfigurationItemInvalidateUiBody>; params?: InvalidateConfigurationItemUsingPOSTParams }
+        { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -5207,17 +5181,17 @@ export const useInvalidateConfigurationItemUsingPOSTMutationOptions = <TError = 
 export type InvalidateConfigurationItemUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemUsingPOSTHook>>>
 >
-export type InvalidateConfigurationItemUsingPOSTMutationBody = BodyType<ConfigurationItemInvalidateUiBody>
-export type InvalidateConfigurationItemUsingPOSTMutationError = ErrorType<unknown>
+export type InvalidateConfigurationItemUsingPOSTMutationBody = ConfigurationItemInvalidateUiBody
+export type InvalidateConfigurationItemUsingPOSTMutationError = unknown
 
 /**
  * @summary invalidateConfigurationItem
  */
-export const useInvalidateConfigurationItemUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useInvalidateConfigurationItemUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemUsingPOSTHook>>>,
         TError,
-        { data: BodyType<ConfigurationItemInvalidateUiBody>; params?: InvalidateConfigurationItemUsingPOSTParams },
+        { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemUsingPOSTParams },
         TContext
     >
 }) => {
@@ -5230,10 +5204,10 @@ export const useInvalidateConfigurationItemUsingPOST = <TError = ErrorType<unkno
  * @summary invalidateConfigurationItemBiznisMdules
  */
 export const useInvalidateConfigurationItemBiznisMdulesUsingPOSTHook = () => {
-    const invalidateConfigurationItemBiznisMdulesUsingPOST = useCustomClient<RequestIdUi | void>()
+    const invalidateConfigurationItemBiznisMdulesUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
     return (
-        configurationItemInvalidateUiBody: BodyType<ConfigurationItemInvalidateUiBody>,
+        configurationItemInvalidateUiBody: ConfigurationItemInvalidateUiBody,
         params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams,
     ) => {
         return invalidateConfigurationItemBiznisMdulesUsingPOST({
@@ -5246,17 +5220,17 @@ export const useInvalidateConfigurationItemBiznisMdulesUsingPOSTHook = () => {
     }
 }
 
-export const useInvalidateConfigurationItemBiznisMdulesUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useInvalidateConfigurationItemBiznisMdulesUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemBiznisMdulesUsingPOSTHook>>>,
         TError,
-        { data: BodyType<ConfigurationItemInvalidateUiBody>; params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams },
+        { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemBiznisMdulesUsingPOSTHook>>>,
     TError,
-    { data: BodyType<ConfigurationItemInvalidateUiBody>; params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams },
+    { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5265,7 +5239,7 @@ export const useInvalidateConfigurationItemBiznisMdulesUsingPOSTMutationOptions 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemBiznisMdulesUsingPOSTHook>>>,
-        { data: BodyType<ConfigurationItemInvalidateUiBody>; params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams }
+        { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -5278,17 +5252,17 @@ export const useInvalidateConfigurationItemBiznisMdulesUsingPOSTMutationOptions 
 export type InvalidateConfigurationItemBiznisMdulesUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemBiznisMdulesUsingPOSTHook>>>
 >
-export type InvalidateConfigurationItemBiznisMdulesUsingPOSTMutationBody = BodyType<ConfigurationItemInvalidateUiBody>
-export type InvalidateConfigurationItemBiznisMdulesUsingPOSTMutationError = ErrorType<unknown>
+export type InvalidateConfigurationItemBiznisMdulesUsingPOSTMutationBody = ConfigurationItemInvalidateUiBody
+export type InvalidateConfigurationItemBiznisMdulesUsingPOSTMutationError = unknown
 
 /**
  * @summary invalidateConfigurationItemBiznisMdules
  */
-export const useInvalidateConfigurationItemBiznisMdulesUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useInvalidateConfigurationItemBiznisMdulesUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemBiznisMdulesUsingPOSTHook>>>,
         TError,
-        { data: BodyType<ConfigurationItemInvalidateUiBody>; params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams },
+        { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams },
         TContext
     >
 }) => {
@@ -5301,9 +5275,9 @@ export const useInvalidateConfigurationItemBiznisMdulesUsingPOST = <TError = Err
  * @summary invalidateSet
  */
 export const useInvalidateSetUsingPOSTHook = () => {
-    const invalidateSetUsingPOST = useCustomClient<RequestIdUi | void>()
+    const invalidateSetUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (itemSetUi: BodyType<ItemSetUi>, params?: InvalidateSetUsingPOSTParams) => {
+    return (itemSetUi: ItemSetUi, params?: InvalidateSetUsingPOSTParams) => {
         return invalidateSetUsingPOST({
             url: `/invalidate/list`,
             method: 'post',
@@ -5314,17 +5288,17 @@ export const useInvalidateSetUsingPOSTHook = () => {
     }
 }
 
-export const useInvalidateSetUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useInvalidateSetUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>,
         TError,
-        { data: BodyType<ItemSetUi>; params?: InvalidateSetUsingPOSTParams },
+        { data: ItemSetUi; params?: InvalidateSetUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>,
     TError,
-    { data: BodyType<ItemSetUi>; params?: InvalidateSetUsingPOSTParams },
+    { data: ItemSetUi; params?: InvalidateSetUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5333,7 +5307,7 @@ export const useInvalidateSetUsingPOSTMutationOptions = <TError = ErrorType<unkn
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>,
-        { data: BodyType<ItemSetUi>; params?: InvalidateSetUsingPOSTParams }
+        { data: ItemSetUi; params?: InvalidateSetUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -5344,17 +5318,17 @@ export const useInvalidateSetUsingPOSTMutationOptions = <TError = ErrorType<unkn
 }
 
 export type InvalidateSetUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>>
-export type InvalidateSetUsingPOSTMutationBody = BodyType<ItemSetUi>
-export type InvalidateSetUsingPOSTMutationError = ErrorType<unknown>
+export type InvalidateSetUsingPOSTMutationBody = ItemSetUi
+export type InvalidateSetUsingPOSTMutationError = unknown
 
 /**
  * @summary invalidateSet
  */
-export const useInvalidateSetUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useInvalidateSetUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>,
         TError,
-        { data: BodyType<ItemSetUi>; params?: InvalidateSetUsingPOSTParams },
+        { data: ItemSetUi; params?: InvalidateSetUsingPOSTParams },
         TContext
     >
 }) => {
@@ -5367,9 +5341,9 @@ export const useInvalidateSetUsingPOST = <TError = ErrorType<unknown>, TContext 
  * @summary invalidateRelationship
  */
 export const useInvalidateRelationshipUsingPOSTHook = () => {
-    const invalidateRelationshipUsingPOST = useCustomClient<RequestIdUi | void>()
+    const invalidateRelationshipUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (relationshipInvalidateUiBody: BodyType<RelationshipInvalidateUiBody>, params?: InvalidateRelationshipUsingPOSTParams) => {
+    return (relationshipInvalidateUiBody: RelationshipInvalidateUiBody, params?: InvalidateRelationshipUsingPOSTParams) => {
         return invalidateRelationshipUsingPOST({
             url: `/invalidate/relation`,
             method: 'post',
@@ -5380,17 +5354,17 @@ export const useInvalidateRelationshipUsingPOSTHook = () => {
     }
 }
 
-export const useInvalidateRelationshipUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useInvalidateRelationshipUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateRelationshipUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelationshipInvalidateUiBody>; params?: InvalidateRelationshipUsingPOSTParams },
+        { data: RelationshipInvalidateUiBody; params?: InvalidateRelationshipUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useInvalidateRelationshipUsingPOSTHook>>>,
     TError,
-    { data: BodyType<RelationshipInvalidateUiBody>; params?: InvalidateRelationshipUsingPOSTParams },
+    { data: RelationshipInvalidateUiBody; params?: InvalidateRelationshipUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5399,7 +5373,7 @@ export const useInvalidateRelationshipUsingPOSTMutationOptions = <TError = Error
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useInvalidateRelationshipUsingPOSTHook>>>,
-        { data: BodyType<RelationshipInvalidateUiBody>; params?: InvalidateRelationshipUsingPOSTParams }
+        { data: RelationshipInvalidateUiBody; params?: InvalidateRelationshipUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -5412,17 +5386,17 @@ export const useInvalidateRelationshipUsingPOSTMutationOptions = <TError = Error
 export type InvalidateRelationshipUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useInvalidateRelationshipUsingPOSTHook>>>
 >
-export type InvalidateRelationshipUsingPOSTMutationBody = BodyType<RelationshipInvalidateUiBody>
-export type InvalidateRelationshipUsingPOSTMutationError = ErrorType<unknown>
+export type InvalidateRelationshipUsingPOSTMutationBody = RelationshipInvalidateUiBody
+export type InvalidateRelationshipUsingPOSTMutationError = unknown
 
 /**
  * @summary invalidateRelationship
  */
-export const useInvalidateRelationshipUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useInvalidateRelationshipUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateRelationshipUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelationshipInvalidateUiBody>; params?: InvalidateRelationshipUsingPOSTParams },
+        { data: RelationshipInvalidateUiBody; params?: InvalidateRelationshipUsingPOSTParams },
         TContext
     >
 }) => {
@@ -5435,7 +5409,7 @@ export const useInvalidateRelationshipUsingPOST = <TError = ErrorType<unknown>, 
  * @summary getMetrics
  */
 export const useGetMetricsUsingGETHook = () => {
-    const getMetricsUsingGET = useCustomClient<void>()
+    const getMetricsUsingGET = useCmdbSwaggerClient<void>()
 
     return (params?: GetMetricsUsingGETParams, signal?: AbortSignal) => {
         return getMetricsUsingGET({ url: `/metrics`, method: 'get', params, signal })
@@ -5444,10 +5418,7 @@ export const useGetMetricsUsingGETHook = () => {
 
 export const getGetMetricsUsingGETQueryKey = (params?: GetMetricsUsingGETParams) => [`/metrics`, ...(params ? [params] : [])] as const
 
-export const useGetMetricsUsingGETQueryOptions = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGetMetricsUsingGETHook>>>,
-    TError = ErrorType<unknown>,
->(
+export const useGetMetricsUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetricsUsingGETHook>>>, TError = unknown>(
     params?: GetMetricsUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetricsUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetricsUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -5464,12 +5435,12 @@ export const useGetMetricsUsingGETQueryOptions = <
 }
 
 export type GetMetricsUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetMetricsUsingGETHook>>>>
-export type GetMetricsUsingGETQueryError = ErrorType<unknown>
+export type GetMetricsUsingGETQueryError = unknown
 
 /**
  * @summary getMetrics
  */
-export const useGetMetricsUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetricsUsingGETHook>>>, TError = ErrorType<unknown>>(
+export const useGetMetricsUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetricsUsingGETHook>>>, TError = unknown>(
     params?: GetMetricsUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetricsUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -5486,7 +5457,7 @@ export const useGetMetricsUsingGET = <TData = Awaited<ReturnType<ReturnType<type
  * @summary readNotificationsWithFilter
  */
 export const useReadNotificationsWithFilterUsingGETHook = () => {
-    const readNotificationsWithFilterUsingGET = useCustomClient<ReadNotificationsWithFilterUsingGET200>()
+    const readNotificationsWithFilterUsingGET = useCmdbSwaggerClient<ReadNotificationsWithFilterUsingGET200>()
 
     return (params?: ReadNotificationsWithFilterUsingGETParams, signal?: AbortSignal) => {
         return readNotificationsWithFilterUsingGET({ url: `/notification`, method: 'get', params, signal })
@@ -5498,7 +5469,7 @@ export const getReadNotificationsWithFilterUsingGETQueryKey = (params?: ReadNoti
 
 export const useReadNotificationsWithFilterUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadNotificationsWithFilterUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params?: ReadNotificationsWithFilterUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadNotificationsWithFilterUsingGETHook>>>, TError, TData> },
@@ -5518,14 +5489,14 @@ export const useReadNotificationsWithFilterUsingGETQueryOptions = <
 export type ReadNotificationsWithFilterUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadNotificationsWithFilterUsingGETHook>>>
 >
-export type ReadNotificationsWithFilterUsingGETQueryError = ErrorType<void>
+export type ReadNotificationsWithFilterUsingGETQueryError = void
 
 /**
  * @summary readNotificationsWithFilter
  */
 export const useReadNotificationsWithFilterUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadNotificationsWithFilterUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params?: ReadNotificationsWithFilterUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadNotificationsWithFilterUsingGETHook>>>, TError, TData> },
@@ -5543,7 +5514,7 @@ export const useReadNotificationsWithFilterUsingGET = <
  * @summary storeNotifications
  */
 export const useStoreNotificationsUsingPOSTHook = () => {
-    const storeNotificationsUsingPOST = useCustomClient<boolean | void>()
+    const storeNotificationsUsingPOST = useCmdbSwaggerClient<boolean | void>()
 
     return (notification: Notification[], params?: StoreNotificationsUsingPOSTParams) => {
         return storeNotificationsUsingPOST({
@@ -5556,17 +5527,17 @@ export const useStoreNotificationsUsingPOSTHook = () => {
     }
 }
 
-export const useStoreNotificationsUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreNotificationsUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNotificationsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<Notification[]>; params?: StoreNotificationsUsingPOSTParams },
+        { data: Notification[]; params?: StoreNotificationsUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreNotificationsUsingPOSTHook>>>,
     TError,
-    { data: BodyType<Notification[]>; params?: StoreNotificationsUsingPOSTParams },
+    { data: Notification[]; params?: StoreNotificationsUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5575,7 +5546,7 @@ export const useStoreNotificationsUsingPOSTMutationOptions = <TError = ErrorType
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreNotificationsUsingPOSTHook>>>,
-        { data: BodyType<Notification[]>; params?: StoreNotificationsUsingPOSTParams }
+        { data: Notification[]; params?: StoreNotificationsUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -5586,17 +5557,17 @@ export const useStoreNotificationsUsingPOSTMutationOptions = <TError = ErrorType
 }
 
 export type StoreNotificationsUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreNotificationsUsingPOSTHook>>>>
-export type StoreNotificationsUsingPOSTMutationBody = BodyType<Notification[]>
-export type StoreNotificationsUsingPOSTMutationError = ErrorType<unknown>
+export type StoreNotificationsUsingPOSTMutationBody = Notification[]
+export type StoreNotificationsUsingPOSTMutationError = unknown
 
 /**
  * @summary storeNotifications
  */
-export const useStoreNotificationsUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreNotificationsUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNotificationsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<Notification[]>; params?: StoreNotificationsUsingPOSTParams },
+        { data: Notification[]; params?: StoreNotificationsUsingPOSTParams },
         TContext
     >
 }) => {
@@ -5609,9 +5580,9 @@ export const useStoreNotificationsUsingPOST = <TError = ErrorType<unknown>, TCon
  * @summary updateNotifications
  */
 export const useUpdateNotificationsUsingPUTHook = () => {
-    const updateNotificationsUsingPUT = useCustomClient<void>()
+    const updateNotificationsUsingPUT = useCmdbSwaggerClient<void>()
 
-    return (notificationUpdateHolderUi: BodyType<NotificationUpdateHolderUi>, params?: UpdateNotificationsUsingPUTParams) => {
+    return (notificationUpdateHolderUi: NotificationUpdateHolderUi, params?: UpdateNotificationsUsingPUTParams) => {
         return updateNotificationsUsingPUT({
             url: `/notification`,
             method: 'put',
@@ -5622,17 +5593,17 @@ export const useUpdateNotificationsUsingPUTHook = () => {
     }
 }
 
-export const useUpdateNotificationsUsingPUTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useUpdateNotificationsUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateNotificationsUsingPUTHook>>>,
         TError,
-        { data: BodyType<NotificationUpdateHolderUi>; params?: UpdateNotificationsUsingPUTParams },
+        { data: NotificationUpdateHolderUi; params?: UpdateNotificationsUsingPUTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useUpdateNotificationsUsingPUTHook>>>,
     TError,
-    { data: BodyType<NotificationUpdateHolderUi>; params?: UpdateNotificationsUsingPUTParams },
+    { data: NotificationUpdateHolderUi; params?: UpdateNotificationsUsingPUTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5641,7 +5612,7 @@ export const useUpdateNotificationsUsingPUTMutationOptions = <TError = ErrorType
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useUpdateNotificationsUsingPUTHook>>>,
-        { data: BodyType<NotificationUpdateHolderUi>; params?: UpdateNotificationsUsingPUTParams }
+        { data: NotificationUpdateHolderUi; params?: UpdateNotificationsUsingPUTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -5652,17 +5623,17 @@ export const useUpdateNotificationsUsingPUTMutationOptions = <TError = ErrorType
 }
 
 export type UpdateNotificationsUsingPUTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateNotificationsUsingPUTHook>>>>
-export type UpdateNotificationsUsingPUTMutationBody = BodyType<NotificationUpdateHolderUi>
-export type UpdateNotificationsUsingPUTMutationError = ErrorType<unknown>
+export type UpdateNotificationsUsingPUTMutationBody = NotificationUpdateHolderUi
+export type UpdateNotificationsUsingPUTMutationError = unknown
 
 /**
  * @summary updateNotifications
  */
-export const useUpdateNotificationsUsingPUT = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useUpdateNotificationsUsingPUT = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateNotificationsUsingPUTHook>>>,
         TError,
-        { data: BodyType<NotificationUpdateHolderUi>; params?: UpdateNotificationsUsingPUTParams },
+        { data: NotificationUpdateHolderUi; params?: UpdateNotificationsUsingPUTParams },
         TContext
     >
 }) => {
@@ -5675,9 +5646,9 @@ export const useUpdateNotificationsUsingPUT = <TError = ErrorType<unknown>, TCon
  * @summary storePo
  */
 export const useStorePoUsingPOSTHook = () => {
-    const storePoUsingPOST = useCustomClient<RequestIdUi | void>()
+    const storePoUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (poId: string, configurationItemUiBody: BodyType<ConfigurationItemUiBody>, params?: StorePoUsingPOSTParams) => {
+    return (poId: string, configurationItemUiBody: ConfigurationItemUiBody, params?: StorePoUsingPOSTParams) => {
         return storePoUsingPOST({
             url: `/po/${poId}`,
             method: 'post',
@@ -5688,17 +5659,17 @@ export const useStorePoUsingPOSTHook = () => {
     }
 }
 
-export const useStorePoUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStorePoUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoUsingPOSTHook>>>,
         TError,
-        { poId: string; data: BodyType<ConfigurationItemUiBody>; params?: StorePoUsingPOSTParams },
+        { poId: string; data: ConfigurationItemUiBody; params?: StorePoUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStorePoUsingPOSTHook>>>,
     TError,
-    { poId: string; data: BodyType<ConfigurationItemUiBody>; params?: StorePoUsingPOSTParams },
+    { poId: string; data: ConfigurationItemUiBody; params?: StorePoUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5707,7 +5678,7 @@ export const useStorePoUsingPOSTMutationOptions = <TError = ErrorType<unknown>, 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStorePoUsingPOSTHook>>>,
-        { poId: string; data: BodyType<ConfigurationItemUiBody>; params?: StorePoUsingPOSTParams }
+        { poId: string; data: ConfigurationItemUiBody; params?: StorePoUsingPOSTParams }
     > = (props) => {
         const { poId, data, params } = props ?? {}
 
@@ -5718,17 +5689,17 @@ export const useStorePoUsingPOSTMutationOptions = <TError = ErrorType<unknown>, 
 }
 
 export type StorePoUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStorePoUsingPOSTHook>>>>
-export type StorePoUsingPOSTMutationBody = BodyType<ConfigurationItemUiBody>
-export type StorePoUsingPOSTMutationError = ErrorType<unknown>
+export type StorePoUsingPOSTMutationBody = ConfigurationItemUiBody
+export type StorePoUsingPOSTMutationError = unknown
 
 /**
  * @summary storePo
  */
-export const useStorePoUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStorePoUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoUsingPOSTHook>>>,
         TError,
-        { poId: string; data: BodyType<ConfigurationItemUiBody>; params?: StorePoUsingPOSTParams },
+        { poId: string; data: ConfigurationItemUiBody; params?: StorePoUsingPOSTParams },
         TContext
     >
 }) => {
@@ -5741,9 +5712,9 @@ export const useStorePoUsingPOST = <TError = ErrorType<unknown>, TContext = unkn
  * @summary storePoWithHierarchyRel
  */
 export const useStorePoWithHierarchyRelUsingPOSTHook = () => {
-    const storePoWithHierarchyRelUsingPOST = useCustomClient<RequestIdUi | void>()
+    const storePoWithHierarchyRelUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (poId: string, relId: string, poWithHierarchyUiBody: BodyType<PoWithHierarchyUiBody>, params?: StorePoWithHierarchyRelUsingPOSTParams) => {
+    return (poId: string, relId: string, poWithHierarchyUiBody: PoWithHierarchyUiBody, params?: StorePoWithHierarchyRelUsingPOSTParams) => {
         return storePoWithHierarchyRelUsingPOST({
             url: `/poWithHierarchy/${poId}/${relId}`,
             method: 'post',
@@ -5754,17 +5725,17 @@ export const useStorePoWithHierarchyRelUsingPOSTHook = () => {
     }
 }
 
-export const useStorePoWithHierarchyRelUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStorePoWithHierarchyRelUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoWithHierarchyRelUsingPOSTHook>>>,
         TError,
-        { poId: string; relId: string; data: BodyType<PoWithHierarchyUiBody>; params?: StorePoWithHierarchyRelUsingPOSTParams },
+        { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: StorePoWithHierarchyRelUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStorePoWithHierarchyRelUsingPOSTHook>>>,
     TError,
-    { poId: string; relId: string; data: BodyType<PoWithHierarchyUiBody>; params?: StorePoWithHierarchyRelUsingPOSTParams },
+    { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: StorePoWithHierarchyRelUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5773,7 +5744,7 @@ export const useStorePoWithHierarchyRelUsingPOSTMutationOptions = <TError = Erro
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStorePoWithHierarchyRelUsingPOSTHook>>>,
-        { poId: string; relId: string; data: BodyType<PoWithHierarchyUiBody>; params?: StorePoWithHierarchyRelUsingPOSTParams }
+        { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: StorePoWithHierarchyRelUsingPOSTParams }
     > = (props) => {
         const { poId, relId, data, params } = props ?? {}
 
@@ -5786,17 +5757,17 @@ export const useStorePoWithHierarchyRelUsingPOSTMutationOptions = <TError = Erro
 export type StorePoWithHierarchyRelUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStorePoWithHierarchyRelUsingPOSTHook>>>
 >
-export type StorePoWithHierarchyRelUsingPOSTMutationBody = BodyType<PoWithHierarchyUiBody>
-export type StorePoWithHierarchyRelUsingPOSTMutationError = ErrorType<unknown>
+export type StorePoWithHierarchyRelUsingPOSTMutationBody = PoWithHierarchyUiBody
+export type StorePoWithHierarchyRelUsingPOSTMutationError = unknown
 
 /**
  * @summary storePoWithHierarchyRel
  */
-export const useStorePoWithHierarchyRelUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStorePoWithHierarchyRelUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoWithHierarchyRelUsingPOSTHook>>>,
         TError,
-        { poId: string; relId: string; data: BodyType<PoWithHierarchyUiBody>; params?: StorePoWithHierarchyRelUsingPOSTParams },
+        { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: StorePoWithHierarchyRelUsingPOSTParams },
         TContext
     >
 }) => {
@@ -5809,7 +5780,7 @@ export const useStorePoWithHierarchyRelUsingPOST = <TError = ErrorType<unknown>,
  * @summary getCountCiTypesByOwner
  */
 export const useGetCountCiTypesByOwnerUsingGETHook = () => {
-    const getCountCiTypesByOwnerUsingGET = useCustomClient<CountTypes[]>()
+    const getCountCiTypesByOwnerUsingGET = useCmdbSwaggerClient<CountTypes[]>()
 
     return (params?: GetCountCiTypesByOwnerUsingGETParams, signal?: AbortSignal) => {
         return getCountCiTypesByOwnerUsingGET({ url: `/read/ci/counttypes`, method: 'get', params, signal })
@@ -5821,7 +5792,7 @@ export const getGetCountCiTypesByOwnerUsingGETQueryKey = (params?: GetCountCiTyp
 
 export const useGetCountCiTypesByOwnerUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetCountCiTypesByOwnerUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params?: GetCountCiTypesByOwnerUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCountCiTypesByOwnerUsingGETHook>>>, TError, TData> },
@@ -5839,14 +5810,14 @@ export const useGetCountCiTypesByOwnerUsingGETQueryOptions = <
 }
 
 export type GetCountCiTypesByOwnerUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetCountCiTypesByOwnerUsingGETHook>>>>
-export type GetCountCiTypesByOwnerUsingGETQueryError = ErrorType<void>
+export type GetCountCiTypesByOwnerUsingGETQueryError = void
 
 /**
  * @summary getCountCiTypesByOwner
  */
 export const useGetCountCiTypesByOwnerUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetCountCiTypesByOwnerUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params?: GetCountCiTypesByOwnerUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCountCiTypesByOwnerUsingGETHook>>>, TError, TData> },
@@ -5864,7 +5835,7 @@ export const useGetCountCiTypesByOwnerUsingGET = <
  * @summary readConfigurationItem
  */
 export const useReadConfigurationItemUsingGETHook = () => {
-    const readConfigurationItemUsingGET = useCustomClient<ReadConfigurationItemUsingGET200>()
+    const readConfigurationItemUsingGET = useCmdbSwaggerClient<ReadConfigurationItemUsingGET200>()
 
     return (uuid: string, params?: ReadConfigurationItemUsingGETParams, signal?: AbortSignal) => {
         return readConfigurationItemUsingGET({ url: `/read/ci/${uuid}`, method: 'get', params, signal })
@@ -5876,7 +5847,7 @@ export const getReadConfigurationItemUsingGETQueryKey = (uuid: string, params?: 
 
 export const useReadConfigurationItemUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadConfigurationItemUsingGETParams,
@@ -5895,15 +5866,12 @@ export const useReadConfigurationItemUsingGETQueryOptions = <
 }
 
 export type ReadConfigurationItemUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemUsingGETHook>>>>
-export type ReadConfigurationItemUsingGETQueryError = ErrorType<void>
+export type ReadConfigurationItemUsingGETQueryError = void
 
 /**
  * @summary readConfigurationItem
  */
-export const useReadConfigurationItemUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useReadConfigurationItemUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemUsingGETHook>>>, TError = void>(
     uuid: string,
     params?: ReadConfigurationItemUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemUsingGETHook>>>, TError, TData> },
@@ -5921,7 +5889,7 @@ export const useReadConfigurationItemUsingGET = <
  * @summary readNeighboursConfigurationItems
  */
 export const useReadNeighboursConfigurationItemsUsingGETHook = () => {
-    const readNeighboursConfigurationItemsUsingGET = useCustomClient<ReadNeighboursConfigurationItemsUsingGET200>()
+    const readNeighboursConfigurationItemsUsingGET = useCmdbSwaggerClient<ReadNeighboursConfigurationItemsUsingGET200>()
 
     return (uuid: string, params?: ReadNeighboursConfigurationItemsUsingGETParams, signal?: AbortSignal) => {
         return readNeighboursConfigurationItemsUsingGET({ url: `/read/ci/${uuid}/neighbours`, method: 'get', params, signal })
@@ -5933,7 +5901,7 @@ export const getReadNeighboursConfigurationItemsUsingGETQueryKey = (uuid: string
 
 export const useReadNeighboursConfigurationItemsUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadNeighboursConfigurationItemsUsingGETParams,
@@ -5956,14 +5924,14 @@ export const useReadNeighboursConfigurationItemsUsingGETQueryOptions = <
 export type ReadNeighboursConfigurationItemsUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsUsingGETHook>>>
 >
-export type ReadNeighboursConfigurationItemsUsingGETQueryError = ErrorType<void>
+export type ReadNeighboursConfigurationItemsUsingGETQueryError = void
 
 /**
  * @summary readNeighboursConfigurationItems
  */
 export const useReadNeighboursConfigurationItemsUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadNeighboursConfigurationItemsUsingGETParams,
@@ -5982,7 +5950,7 @@ export const useReadNeighboursConfigurationItemsUsingGET = <
  * @summary readNeighboursConfigurationItemsCount
  */
 export const useReadNeighboursConfigurationItemsCountUsingGETHook = () => {
-    const readNeighboursConfigurationItemsCountUsingGET = useCustomClient<ReadNeighboursConfigurationItemsCountUsingGET200>()
+    const readNeighboursConfigurationItemsCountUsingGET = useCmdbSwaggerClient<ReadNeighboursConfigurationItemsCountUsingGET200>()
 
     return (uuid: string, params?: ReadNeighboursConfigurationItemsCountUsingGETParams, signal?: AbortSignal) => {
         return readNeighboursConfigurationItemsCountUsingGET({ url: `/read/ci/${uuid}/neighbourscount`, method: 'get', params, signal })
@@ -5996,7 +5964,7 @@ export const getReadNeighboursConfigurationItemsCountUsingGETQueryKey = (
 
 export const useReadNeighboursConfigurationItemsCountUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsCountUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadNeighboursConfigurationItemsCountUsingGETParams,
@@ -6021,14 +5989,14 @@ export const useReadNeighboursConfigurationItemsCountUsingGETQueryOptions = <
 export type ReadNeighboursConfigurationItemsCountUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsCountUsingGETHook>>>
 >
-export type ReadNeighboursConfigurationItemsCountUsingGETQueryError = ErrorType<void>
+export type ReadNeighboursConfigurationItemsCountUsingGETQueryError = void
 
 /**
  * @summary readNeighboursConfigurationItemsCount
  */
 export const useReadNeighboursConfigurationItemsCountUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsCountUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadNeighboursConfigurationItemsCountUsingGETParams,
@@ -6049,7 +6017,7 @@ export const useReadNeighboursConfigurationItemsCountUsingGET = <
  * @summary readRelationships
  */
 export const useReadRelationshipsUsingGETHook = () => {
-    const readRelationshipsUsingGET = useCustomClient<ReadRelationshipsUsingGET200>()
+    const readRelationshipsUsingGET = useCmdbSwaggerClient<ReadRelationshipsUsingGET200>()
 
     return (uuid: string, params?: ReadRelationshipsUsingGETParams, signal?: AbortSignal) => {
         return readRelationshipsUsingGET({ url: `/read/ci/${uuid}/relations`, method: 'get', params, signal })
@@ -6061,7 +6029,7 @@ export const getReadRelationshipsUsingGETQueryKey = (uuid: string, params?: Read
 
 export const useReadRelationshipsUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadRelationshipsUsingGETParams,
@@ -6080,15 +6048,12 @@ export const useReadRelationshipsUsingGETQueryOptions = <
 }
 
 export type ReadRelationshipsUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadRelationshipsUsingGETHook>>>>
-export type ReadRelationshipsUsingGETQueryError = ErrorType<void>
+export type ReadRelationshipsUsingGETQueryError = void
 
 /**
  * @summary readRelationships
  */
-export const useReadRelationshipsUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipsUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useReadRelationshipsUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipsUsingGETHook>>>, TError = void>(
     uuid: string,
     params?: ReadRelationshipsUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelationshipsUsingGETHook>>>, TError, TData> },
@@ -6106,7 +6071,7 @@ export const useReadRelationshipsUsingGET = <
  * @summary readCiList
  */
 export const useReadCiListUsingGETHook = () => {
-    const readCiListUsingGET = useCustomClient<ReadCiListUsingGET200>()
+    const readCiListUsingGET = useCmdbSwaggerClient<ReadCiListUsingGET200>()
 
     return (params?: ReadCiListUsingGETParams, signal?: AbortSignal) => {
         return readCiListUsingGET({ url: `/read/cilist`, method: 'get', params, signal })
@@ -6115,10 +6080,7 @@ export const useReadCiListUsingGETHook = () => {
 
 export const getReadCiListUsingGETQueryKey = (params?: ReadCiListUsingGETParams) => [`/read/cilist`, ...(params ? [params] : [])] as const
 
-export const useReadCiListUsingGETQueryOptions = <
-    TData = Awaited<ReturnType<ReturnType<typeof useReadCiListUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useReadCiListUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiListUsingGETHook>>>, TError = void>(
     params?: ReadCiListUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -6135,12 +6097,12 @@ export const useReadCiListUsingGETQueryOptions = <
 }
 
 export type ReadCiListUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingGETHook>>>>
-export type ReadCiListUsingGETQueryError = ErrorType<void>
+export type ReadCiListUsingGETQueryError = void
 
 /**
  * @summary readCiList
  */
-export const useReadCiListUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiListUsingGETHook>>>, TError = ErrorType<void>>(
+export const useReadCiListUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiListUsingGETHook>>>, TError = void>(
     params?: ReadCiListUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -6157,9 +6119,9 @@ export const useReadCiListUsingGET = <TData = Awaited<ReturnType<ReturnType<type
  * @summary readCiList
  */
 export const useReadCiListUsingPOSTHook = () => {
-    const readCiListUsingPOST = useCustomClient<ReadCiListUsingPOST200 | void>()
+    const readCiListUsingPOST = useCmdbSwaggerClient<ReadCiListUsingPOST200 | void>()
 
-    return (ciListFilterContainerUiBody: BodyType<CiListFilterContainerUiBody>, params?: ReadCiListUsingPOSTParams) => {
+    return (ciListFilterContainerUiBody: CiListFilterContainerUiBody, params?: ReadCiListUsingPOSTParams) => {
         return readCiListUsingPOST({
             url: `/read/cilistfiltered`,
             method: 'post',
@@ -6170,17 +6132,17 @@ export const useReadCiListUsingPOSTHook = () => {
     }
 }
 
-export const useReadCiListUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadCiListUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
         TError,
-        { data: BodyType<CiListFilterContainerUiBody>; params?: ReadCiListUsingPOSTParams },
+        { data: CiListFilterContainerUiBody; params?: ReadCiListUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
     TError,
-    { data: BodyType<CiListFilterContainerUiBody>; params?: ReadCiListUsingPOSTParams },
+    { data: CiListFilterContainerUiBody; params?: ReadCiListUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6189,7 +6151,7 @@ export const useReadCiListUsingPOSTMutationOptions = <TError = ErrorType<unknown
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
-        { data: BodyType<CiListFilterContainerUiBody>; params?: ReadCiListUsingPOSTParams }
+        { data: CiListFilterContainerUiBody; params?: ReadCiListUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -6200,17 +6162,17 @@ export const useReadCiListUsingPOSTMutationOptions = <TError = ErrorType<unknown
 }
 
 export type ReadCiListUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>>
-export type ReadCiListUsingPOSTMutationBody = BodyType<CiListFilterContainerUiBody>
-export type ReadCiListUsingPOSTMutationError = ErrorType<unknown>
+export type ReadCiListUsingPOSTMutationBody = CiListFilterContainerUiBody
+export type ReadCiListUsingPOSTMutationError = unknown
 
 /**
  * @summary readCiList
  */
-export const useReadCiListUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadCiListUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
         TError,
-        { data: BodyType<CiListFilterContainerUiBody>; params?: ReadCiListUsingPOSTParams },
+        { data: CiListFilterContainerUiBody; params?: ReadCiListUsingPOSTParams },
         TContext
     >
 }) => {
@@ -6223,9 +6185,9 @@ export const useReadCiListUsingPOST = <TError = ErrorType<unknown>, TContext = u
  * @summary readCiRelationshipCiList
  */
 export const useReadCiRelationshipCiListUsingPOSTHook = () => {
-    const readCiRelationshipCiListUsingPOST = useCustomClient<ReadCiRelationshipCiListUsingPOST200 | void>()
+    const readCiRelationshipCiListUsingPOST = useCmdbSwaggerClient<ReadCiRelationshipCiListUsingPOST200 | void>()
 
-    return (relListFilterContainerUiBody: BodyType<RelListFilterContainerUiBody>, params?: ReadCiRelationshipCiListUsingPOSTParams) => {
+    return (relListFilterContainerUiBody: RelListFilterContainerUiBody, params?: ReadCiRelationshipCiListUsingPOSTParams) => {
         return readCiRelationshipCiListUsingPOST({
             url: `/read/cirelationshipcilistfiltered`,
             method: 'post',
@@ -6236,17 +6198,17 @@ export const useReadCiRelationshipCiListUsingPOSTHook = () => {
     }
 }
 
-export const useReadCiRelationshipCiListUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadCiRelationshipCiListUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelListFilterContainerUiBody>; params?: ReadCiRelationshipCiListUsingPOSTParams },
+        { data: RelListFilterContainerUiBody; params?: ReadCiRelationshipCiListUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListUsingPOSTHook>>>,
     TError,
-    { data: BodyType<RelListFilterContainerUiBody>; params?: ReadCiRelationshipCiListUsingPOSTParams },
+    { data: RelListFilterContainerUiBody; params?: ReadCiRelationshipCiListUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6255,7 +6217,7 @@ export const useReadCiRelationshipCiListUsingPOSTMutationOptions = <TError = Err
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListUsingPOSTHook>>>,
-        { data: BodyType<RelListFilterContainerUiBody>; params?: ReadCiRelationshipCiListUsingPOSTParams }
+        { data: RelListFilterContainerUiBody; params?: ReadCiRelationshipCiListUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -6268,17 +6230,17 @@ export const useReadCiRelationshipCiListUsingPOSTMutationOptions = <TError = Err
 export type ReadCiRelationshipCiListUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListUsingPOSTHook>>>
 >
-export type ReadCiRelationshipCiListUsingPOSTMutationBody = BodyType<RelListFilterContainerUiBody>
-export type ReadCiRelationshipCiListUsingPOSTMutationError = ErrorType<unknown>
+export type ReadCiRelationshipCiListUsingPOSTMutationBody = RelListFilterContainerUiBody
+export type ReadCiRelationshipCiListUsingPOSTMutationError = unknown
 
 /**
  * @summary readCiRelationshipCiList
  */
-export const useReadCiRelationshipCiListUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadCiRelationshipCiListUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelListFilterContainerUiBody>; params?: ReadCiRelationshipCiListUsingPOSTParams },
+        { data: RelListFilterContainerUiBody; params?: ReadCiRelationshipCiListUsingPOSTParams },
         TContext
     >
 }) => {
@@ -6291,9 +6253,9 @@ export const useReadCiRelationshipCiListUsingPOST = <TError = ErrorType<unknown>
  * @summary readCiUuidSet
  */
 export const useReadCiUuidSetUsingPOSTHook = () => {
-    const readCiUuidSetUsingPOST = useCustomClient<ReadCiUuidSetUsingPOST200 | void>()
+    const readCiUuidSetUsingPOST = useCmdbSwaggerClient<ReadCiUuidSetUsingPOST200 | void>()
 
-    return (ciListFilterContainerUiBody: BodyType<CiListFilterContainerUiBody>, params?: ReadCiUuidSetUsingPOSTParams) => {
+    return (ciListFilterContainerUiBody: CiListFilterContainerUiBody, params?: ReadCiUuidSetUsingPOSTParams) => {
         return readCiUuidSetUsingPOST({
             url: `/read/ciuuidsetfiltered`,
             method: 'post',
@@ -6304,17 +6266,17 @@ export const useReadCiUuidSetUsingPOSTHook = () => {
     }
 }
 
-export const useReadCiUuidSetUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadCiUuidSetUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetUsingPOSTHook>>>,
         TError,
-        { data: BodyType<CiListFilterContainerUiBody>; params?: ReadCiUuidSetUsingPOSTParams },
+        { data: CiListFilterContainerUiBody; params?: ReadCiUuidSetUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetUsingPOSTHook>>>,
     TError,
-    { data: BodyType<CiListFilterContainerUiBody>; params?: ReadCiUuidSetUsingPOSTParams },
+    { data: CiListFilterContainerUiBody; params?: ReadCiUuidSetUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6323,7 +6285,7 @@ export const useReadCiUuidSetUsingPOSTMutationOptions = <TError = ErrorType<unkn
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetUsingPOSTHook>>>,
-        { data: BodyType<CiListFilterContainerUiBody>; params?: ReadCiUuidSetUsingPOSTParams }
+        { data: CiListFilterContainerUiBody; params?: ReadCiUuidSetUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -6334,17 +6296,17 @@ export const useReadCiUuidSetUsingPOSTMutationOptions = <TError = ErrorType<unkn
 }
 
 export type ReadCiUuidSetUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetUsingPOSTHook>>>>
-export type ReadCiUuidSetUsingPOSTMutationBody = BodyType<CiListFilterContainerUiBody>
-export type ReadCiUuidSetUsingPOSTMutationError = ErrorType<unknown>
+export type ReadCiUuidSetUsingPOSTMutationBody = CiListFilterContainerUiBody
+export type ReadCiUuidSetUsingPOSTMutationError = unknown
 
 /**
  * @summary readCiUuidSet
  */
-export const useReadCiUuidSetUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadCiUuidSetUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetUsingPOSTHook>>>,
         TError,
-        { data: BodyType<CiListFilterContainerUiBody>; params?: ReadCiUuidSetUsingPOSTParams },
+        { data: CiListFilterContainerUiBody; params?: ReadCiUuidSetUsingPOSTParams },
         TContext
     >
 }) => {
@@ -6357,9 +6319,9 @@ export const useReadCiUuidSetUsingPOST = <TError = ErrorType<unknown>, TContext 
  * @summary readIncidentRelationships
  */
 export const useReadIncidentRelationshipsUsingPOSTHook = () => {
-    const readIncidentRelationshipsUsingPOST = useCustomClient<RelationshipSetUi | void>()
+    const readIncidentRelationshipsUsingPOST = useCmdbSwaggerClient<RelationshipSetUi | void>()
 
-    return (incidentRelationshipsFilterUi: BodyType<IncidentRelationshipsFilterUi>, params?: ReadIncidentRelationshipsUsingPOSTParams) => {
+    return (incidentRelationshipsFilterUi: IncidentRelationshipsFilterUi, params?: ReadIncidentRelationshipsUsingPOSTParams) => {
         return readIncidentRelationshipsUsingPOST({
             url: `/read/incidentrelationships`,
             method: 'post',
@@ -6370,17 +6332,17 @@ export const useReadIncidentRelationshipsUsingPOSTHook = () => {
     }
 }
 
-export const useReadIncidentRelationshipsUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadIncidentRelationshipsUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<IncidentRelationshipsFilterUi>; params?: ReadIncidentRelationshipsUsingPOSTParams },
+        { data: IncidentRelationshipsFilterUi; params?: ReadIncidentRelationshipsUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsUsingPOSTHook>>>,
     TError,
-    { data: BodyType<IncidentRelationshipsFilterUi>; params?: ReadIncidentRelationshipsUsingPOSTParams },
+    { data: IncidentRelationshipsFilterUi; params?: ReadIncidentRelationshipsUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6389,7 +6351,7 @@ export const useReadIncidentRelationshipsUsingPOSTMutationOptions = <TError = Er
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsUsingPOSTHook>>>,
-        { data: BodyType<IncidentRelationshipsFilterUi>; params?: ReadIncidentRelationshipsUsingPOSTParams }
+        { data: IncidentRelationshipsFilterUi; params?: ReadIncidentRelationshipsUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -6402,17 +6364,17 @@ export const useReadIncidentRelationshipsUsingPOSTMutationOptions = <TError = Er
 export type ReadIncidentRelationshipsUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsUsingPOSTHook>>>
 >
-export type ReadIncidentRelationshipsUsingPOSTMutationBody = BodyType<IncidentRelationshipsFilterUi>
-export type ReadIncidentRelationshipsUsingPOSTMutationError = ErrorType<unknown>
+export type ReadIncidentRelationshipsUsingPOSTMutationBody = IncidentRelationshipsFilterUi
+export type ReadIncidentRelationshipsUsingPOSTMutationError = unknown
 
 /**
  * @summary readIncidentRelationships
  */
-export const useReadIncidentRelationshipsUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadIncidentRelationshipsUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<IncidentRelationshipsFilterUi>; params?: ReadIncidentRelationshipsUsingPOSTParams },
+        { data: IncidentRelationshipsFilterUi; params?: ReadIncidentRelationshipsUsingPOSTParams },
         TContext
     >
 }) => {
@@ -6425,7 +6387,7 @@ export const useReadIncidentRelationshipsUsingPOST = <TError = ErrorType<unknown
  * @summary getKSSpravcaVerejnaMocAktivnaFZC
  */
 export const useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook = () => {
-    const getKSSpravcaVerejnaMocAktivnaFZCUsingGET = useCustomClient<QueryResultTableUi>()
+    const getKSSpravcaVerejnaMocAktivnaFZCUsingGET = useCmdbSwaggerClient<QueryResultTableUi>()
 
     return (params?: GetKSSpravcaVerejnaMocAktivnaFZCUsingGETParams, signal?: AbortSignal) => {
         return getKSSpravcaVerejnaMocAktivnaFZCUsingGET({ url: `/read/ksSpVmFazaZivCyklu`, method: 'get', params, signal })
@@ -6437,7 +6399,7 @@ export const getGetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryKey = (params?: Get
 
 export const useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params?: GetKSSpravcaVerejnaMocAktivnaFZCUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>, TError, TData> },
@@ -6459,14 +6421,14 @@ export const useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryOptions = <
 export type GetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>
 >
-export type GetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryError = ErrorType<void>
+export type GetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryError = void
 
 /**
  * @summary getKSSpravcaVerejnaMocAktivnaFZC
  */
 export const useGetKSSpravcaVerejnaMocAktivnaFZCUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params?: GetKSSpravcaVerejnaMocAktivnaFZCUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>, TError, TData> },
@@ -6484,24 +6446,24 @@ export const useGetKSSpravcaVerejnaMocAktivnaFZCUsingGET = <
  * @summary readQuery
  */
 export const useReadQueryUsingPOSTHook = () => {
-    const readQueryUsingPOST = useCustomClient<QueryResultTableUi | void>()
+    const readQueryUsingPOST = useCmdbSwaggerClient<QueryResultTableUi | void>()
 
-    return (queryUi: BodyType<QueryUi>, params?: ReadQueryUsingPOSTParams) => {
+    return (queryUi: QueryUi, params?: ReadQueryUsingPOSTParams) => {
         return readQueryUsingPOST({ url: `/read/query`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: queryUi, params })
     }
 }
 
-export const useReadQueryUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadQueryUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>,
         TError,
-        { data: BodyType<QueryUi>; params?: ReadQueryUsingPOSTParams },
+        { data: QueryUi; params?: ReadQueryUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>,
     TError,
-    { data: BodyType<QueryUi>; params?: ReadQueryUsingPOSTParams },
+    { data: QueryUi; params?: ReadQueryUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6510,7 +6472,7 @@ export const useReadQueryUsingPOSTMutationOptions = <TError = ErrorType<unknown>
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>,
-        { data: BodyType<QueryUi>; params?: ReadQueryUsingPOSTParams }
+        { data: QueryUi; params?: ReadQueryUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -6521,17 +6483,17 @@ export const useReadQueryUsingPOSTMutationOptions = <TError = ErrorType<unknown>
 }
 
 export type ReadQueryUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>>
-export type ReadQueryUsingPOSTMutationBody = BodyType<QueryUi>
-export type ReadQueryUsingPOSTMutationError = ErrorType<unknown>
+export type ReadQueryUsingPOSTMutationBody = QueryUi
+export type ReadQueryUsingPOSTMutationError = unknown
 
 /**
  * @summary readQuery
  */
-export const useReadQueryUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadQueryUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>,
         TError,
-        { data: BodyType<QueryUi>; params?: ReadQueryUsingPOSTParams },
+        { data: QueryUi; params?: ReadQueryUsingPOSTParams },
         TContext
     >
 }) => {
@@ -6544,7 +6506,7 @@ export const useReadQueryUsingPOST = <TError = ErrorType<unknown>, TContext = un
  * @summary readRelationship
  */
 export const useReadRelationshipUsingGETHook = () => {
-    const readRelationshipUsingGET = useCustomClient<ReadRelationshipUsingGET200>()
+    const readRelationshipUsingGET = useCmdbSwaggerClient<ReadRelationshipUsingGET200>()
 
     return (uuid: string, params?: ReadRelationshipUsingGETParams, signal?: AbortSignal) => {
         return readRelationshipUsingGET({ url: `/read/relation/${uuid}`, method: 'get', params, signal })
@@ -6556,7 +6518,7 @@ export const getReadRelationshipUsingGETQueryKey = (uuid: string, params?: ReadR
 
 export const useReadRelationshipUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadRelationshipUsingGETParams,
@@ -6575,15 +6537,12 @@ export const useReadRelationshipUsingGETQueryOptions = <
 }
 
 export type ReadRelationshipUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadRelationshipUsingGETHook>>>>
-export type ReadRelationshipUsingGETQueryError = ErrorType<void>
+export type ReadRelationshipUsingGETQueryError = void
 
 /**
  * @summary readRelationship
  */
-export const useReadRelationshipUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useReadRelationshipUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipUsingGETHook>>>, TError = void>(
     uuid: string,
     params?: ReadRelationshipUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelationshipUsingGETHook>>>, TError, TData> },
@@ -6601,9 +6560,9 @@ export const useReadRelationshipUsingGET = <
  * @summary readCiNeighbours
  */
 export const useReadCiNeighboursUsingPOSTHook = () => {
-    const readCiNeighboursUsingPOST = useCustomClient<ReadCiNeighboursUsingPOST200 | void>()
+    const readCiNeighboursUsingPOST = useCmdbSwaggerClient<ReadCiNeighboursUsingPOST200 | void>()
 
-    return (uuid: string, neighboursFilterContainerUi: BodyType<NeighboursFilterContainerUi>, params?: ReadCiNeighboursUsingPOSTParams) => {
+    return (uuid: string, neighboursFilterContainerUi: NeighboursFilterContainerUi, params?: ReadCiNeighboursUsingPOSTParams) => {
         return readCiNeighboursUsingPOST({
             url: `/read/relations/neighbours/${uuid}`,
             method: 'post',
@@ -6614,17 +6573,17 @@ export const useReadCiNeighboursUsingPOSTHook = () => {
     }
 }
 
-export const useReadCiNeighboursUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadCiNeighboursUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: BodyType<NeighboursFilterContainerUi>; params?: ReadCiNeighboursUsingPOSTParams },
+        { uuid: string; data: NeighboursFilterContainerUi; params?: ReadCiNeighboursUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursUsingPOSTHook>>>,
     TError,
-    { uuid: string; data: BodyType<NeighboursFilterContainerUi>; params?: ReadCiNeighboursUsingPOSTParams },
+    { uuid: string; data: NeighboursFilterContainerUi; params?: ReadCiNeighboursUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6633,7 +6592,7 @@ export const useReadCiNeighboursUsingPOSTMutationOptions = <TError = ErrorType<u
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursUsingPOSTHook>>>,
-        { uuid: string; data: BodyType<NeighboursFilterContainerUi>; params?: ReadCiNeighboursUsingPOSTParams }
+        { uuid: string; data: NeighboursFilterContainerUi; params?: ReadCiNeighboursUsingPOSTParams }
     > = (props) => {
         const { uuid, data, params } = props ?? {}
 
@@ -6644,17 +6603,17 @@ export const useReadCiNeighboursUsingPOSTMutationOptions = <TError = ErrorType<u
 }
 
 export type ReadCiNeighboursUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursUsingPOSTHook>>>>
-export type ReadCiNeighboursUsingPOSTMutationBody = BodyType<NeighboursFilterContainerUi>
-export type ReadCiNeighboursUsingPOSTMutationError = ErrorType<unknown>
+export type ReadCiNeighboursUsingPOSTMutationBody = NeighboursFilterContainerUi
+export type ReadCiNeighboursUsingPOSTMutationError = unknown
 
 /**
  * @summary readCiNeighbours
  */
-export const useReadCiNeighboursUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadCiNeighboursUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: BodyType<NeighboursFilterContainerUi>; params?: ReadCiNeighboursUsingPOSTParams },
+        { uuid: string; data: NeighboursFilterContainerUi; params?: ReadCiNeighboursUsingPOSTParams },
         TContext
     >
 }) => {
@@ -6667,7 +6626,7 @@ export const useReadCiNeighboursUsingPOST = <TError = ErrorType<unknown>, TConte
  * @summary readCiNeighboursWithAllRels
  */
 export const useReadCiNeighboursWithAllRelsUsingGETHook = () => {
-    const readCiNeighboursWithAllRelsUsingGET = useCustomClient<ReadCiNeighboursWithAllRelsUsingGET200>()
+    const readCiNeighboursWithAllRelsUsingGET = useCmdbSwaggerClient<ReadCiNeighboursWithAllRelsUsingGET200>()
 
     return (uuid: string, params?: ReadCiNeighboursWithAllRelsUsingGETParams, signal?: AbortSignal) => {
         return readCiNeighboursWithAllRelsUsingGET({ url: `/read/relations/neighbourswithallrels/${uuid}`, method: 'get', params, signal })
@@ -6679,7 +6638,7 @@ export const getReadCiNeighboursWithAllRelsUsingGETQueryKey = (uuid: string, par
 
 export const useReadCiNeighboursWithAllRelsUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursWithAllRelsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadCiNeighboursWithAllRelsUsingGETParams,
@@ -6700,14 +6659,14 @@ export const useReadCiNeighboursWithAllRelsUsingGETQueryOptions = <
 export type ReadCiNeighboursWithAllRelsUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursWithAllRelsUsingGETHook>>>
 >
-export type ReadCiNeighboursWithAllRelsUsingGETQueryError = ErrorType<void>
+export type ReadCiNeighboursWithAllRelsUsingGETQueryError = void
 
 /**
  * @summary readCiNeighboursWithAllRels
  */
 export const useReadCiNeighboursWithAllRelsUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursWithAllRelsUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     uuid: string,
     params?: ReadCiNeighboursWithAllRelsUsingGETParams,
@@ -6726,9 +6685,9 @@ export const useReadCiNeighboursWithAllRelsUsingGET = <
  * @summary readRelationshipList
  */
 export const useReadRelationshipListUsingPOSTHook = () => {
-    const readRelationshipListUsingPOST = useCustomClient<ReadRelationshipListUsingPOST200 | void>()
+    const readRelationshipListUsingPOST = useCmdbSwaggerClient<ReadRelationshipListUsingPOST200 | void>()
 
-    return (relListFilterContainerUiBody: BodyType<RelListFilterContainerUiBody>, params?: ReadRelationshipListUsingPOSTParams) => {
+    return (relListFilterContainerUiBody: RelListFilterContainerUiBody, params?: ReadRelationshipListUsingPOSTParams) => {
         return readRelationshipListUsingPOST({
             url: `/read/relationshiplistfiltered`,
             method: 'post',
@@ -6739,17 +6698,17 @@ export const useReadRelationshipListUsingPOSTHook = () => {
     }
 }
 
-export const useReadRelationshipListUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadRelationshipListUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadRelationshipListUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelListFilterContainerUiBody>; params?: ReadRelationshipListUsingPOSTParams },
+        { data: RelListFilterContainerUiBody; params?: ReadRelationshipListUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadRelationshipListUsingPOSTHook>>>,
     TError,
-    { data: BodyType<RelListFilterContainerUiBody>; params?: ReadRelationshipListUsingPOSTParams },
+    { data: RelListFilterContainerUiBody; params?: ReadRelationshipListUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6758,7 +6717,7 @@ export const useReadRelationshipListUsingPOSTMutationOptions = <TError = ErrorTy
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadRelationshipListUsingPOSTHook>>>,
-        { data: BodyType<RelListFilterContainerUiBody>; params?: ReadRelationshipListUsingPOSTParams }
+        { data: RelListFilterContainerUiBody; params?: ReadRelationshipListUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -6769,17 +6728,17 @@ export const useReadRelationshipListUsingPOSTMutationOptions = <TError = ErrorTy
 }
 
 export type ReadRelationshipListUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadRelationshipListUsingPOSTHook>>>>
-export type ReadRelationshipListUsingPOSTMutationBody = BodyType<RelListFilterContainerUiBody>
-export type ReadRelationshipListUsingPOSTMutationError = ErrorType<unknown>
+export type ReadRelationshipListUsingPOSTMutationBody = RelListFilterContainerUiBody
+export type ReadRelationshipListUsingPOSTMutationError = unknown
 
 /**
  * @summary readRelationshipList
  */
-export const useReadRelationshipListUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadRelationshipListUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadRelationshipListUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelListFilterContainerUiBody>; params?: ReadRelationshipListUsingPOSTParams },
+        { data: RelListFilterContainerUiBody; params?: ReadRelationshipListUsingPOSTParams },
         TContext
     >
 }) => {
@@ -6792,9 +6751,9 @@ export const useReadRelationshipListUsingPOST = <TError = ErrorType<unknown>, TC
  * @summary readPoSuperiorPoRelationship
  */
 export const useReadPoSuperiorPoRelationshipUsingPOSTHook = () => {
-    const readPoSuperiorPoRelationshipUsingPOST = useCustomClient<ReadPoSuperiorPoRelationshipUsingPOST200 | void>()
+    const readPoSuperiorPoRelationshipUsingPOST = useCmdbSwaggerClient<ReadPoSuperiorPoRelationshipUsingPOST200 | void>()
 
-    return (uuidSetUi: BodyType<UuidSetUi>, params?: ReadPoSuperiorPoRelationshipUsingPOSTParams) => {
+    return (uuidSetUi: UuidSetUi, params?: ReadPoSuperiorPoRelationshipUsingPOSTParams) => {
         return readPoSuperiorPoRelationshipUsingPOST({
             url: `/read/relationspo`,
             method: 'post',
@@ -6805,17 +6764,17 @@ export const useReadPoSuperiorPoRelationshipUsingPOSTHook = () => {
     }
 }
 
-export const useReadPoSuperiorPoRelationshipUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadPoSuperiorPoRelationshipUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipUsingPOSTHook>>>,
         TError,
-        { data: BodyType<UuidSetUi>; params?: ReadPoSuperiorPoRelationshipUsingPOSTParams },
+        { data: UuidSetUi; params?: ReadPoSuperiorPoRelationshipUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipUsingPOSTHook>>>,
     TError,
-    { data: BodyType<UuidSetUi>; params?: ReadPoSuperiorPoRelationshipUsingPOSTParams },
+    { data: UuidSetUi; params?: ReadPoSuperiorPoRelationshipUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6824,7 +6783,7 @@ export const useReadPoSuperiorPoRelationshipUsingPOSTMutationOptions = <TError =
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipUsingPOSTHook>>>,
-        { data: BodyType<UuidSetUi>; params?: ReadPoSuperiorPoRelationshipUsingPOSTParams }
+        { data: UuidSetUi; params?: ReadPoSuperiorPoRelationshipUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -6837,17 +6796,17 @@ export const useReadPoSuperiorPoRelationshipUsingPOSTMutationOptions = <TError =
 export type ReadPoSuperiorPoRelationshipUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipUsingPOSTHook>>>
 >
-export type ReadPoSuperiorPoRelationshipUsingPOSTMutationBody = BodyType<UuidSetUi>
-export type ReadPoSuperiorPoRelationshipUsingPOSTMutationError = ErrorType<unknown>
+export type ReadPoSuperiorPoRelationshipUsingPOSTMutationBody = UuidSetUi
+export type ReadPoSuperiorPoRelationshipUsingPOSTMutationError = unknown
 
 /**
  * @summary readPoSuperiorPoRelationship
  */
-export const useReadPoSuperiorPoRelationshipUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadPoSuperiorPoRelationshipUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipUsingPOSTHook>>>,
         TError,
-        { data: BodyType<UuidSetUi>; params?: ReadPoSuperiorPoRelationshipUsingPOSTParams },
+        { data: UuidSetUi; params?: ReadPoSuperiorPoRelationshipUsingPOSTParams },
         TContext
     >
 }) => {
@@ -6860,9 +6819,9 @@ export const useReadPoSuperiorPoRelationshipUsingPOST = <TError = ErrorType<unkn
  * @summary readRelList
  */
 export const useReadRelListUsingPOSTHook = () => {
-    const readRelListUsingPOST = useCustomClient<ReadRelListUsingPOST200 | void>()
+    const readRelListUsingPOST = useCmdbSwaggerClient<ReadRelListUsingPOST200 | void>()
 
-    return (relFilterSmallUi: BodyType<RelFilterSmallUi>, params?: ReadRelListUsingPOSTParams) => {
+    return (relFilterSmallUi: RelFilterSmallUi, params?: ReadRelListUsingPOSTParams) => {
         return readRelListUsingPOST({
             url: `/read/rellistfiltered`,
             method: 'post',
@@ -6873,17 +6832,17 @@ export const useReadRelListUsingPOSTHook = () => {
     }
 }
 
-export const useReadRelListUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadRelListUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelFilterSmallUi>; params?: ReadRelListUsingPOSTParams },
+        { data: RelFilterSmallUi; params?: ReadRelListUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>,
     TError,
-    { data: BodyType<RelFilterSmallUi>; params?: ReadRelListUsingPOSTParams },
+    { data: RelFilterSmallUi; params?: ReadRelListUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6892,7 +6851,7 @@ export const useReadRelListUsingPOSTMutationOptions = <TError = ErrorType<unknow
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>,
-        { data: BodyType<RelFilterSmallUi>; params?: ReadRelListUsingPOSTParams }
+        { data: RelFilterSmallUi; params?: ReadRelListUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -6903,17 +6862,17 @@ export const useReadRelListUsingPOSTMutationOptions = <TError = ErrorType<unknow
 }
 
 export type ReadRelListUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>>
-export type ReadRelListUsingPOSTMutationBody = BodyType<RelFilterSmallUi>
-export type ReadRelListUsingPOSTMutationError = ErrorType<unknown>
+export type ReadRelListUsingPOSTMutationBody = RelFilterSmallUi
+export type ReadRelListUsingPOSTMutationError = unknown
 
 /**
  * @summary readRelList
  */
-export const useReadRelListUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadRelListUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelFilterSmallUi>; params?: ReadRelListUsingPOSTParams },
+        { data: RelFilterSmallUi; params?: ReadRelListUsingPOSTParams },
         TContext
     >
 }) => {
@@ -6926,9 +6885,9 @@ export const useReadRelListUsingPOST = <TError = ErrorType<unknown>, TContext = 
  * @summary getRoleParticipantBulk
  */
 export const useGetRoleParticipantBulkUsingPOSTHook = () => {
-    const getRoleParticipantBulkUsingPOST = useCustomClient<RoleParticipantUI[] | void>()
+    const getRoleParticipantBulkUsingPOST = useCmdbSwaggerClient<RoleParticipantUI[] | void>()
 
-    return (gidSetUi: BodyType<GidSetUi>, params?: GetRoleParticipantBulkUsingPOSTParams) => {
+    return (gidSetUi: GidSetUi, params?: GetRoleParticipantBulkUsingPOSTParams) => {
         return getRoleParticipantBulkUsingPOST({
             url: `/read/roleParticipant`,
             method: 'post',
@@ -6939,17 +6898,17 @@ export const useGetRoleParticipantBulkUsingPOSTHook = () => {
     }
 }
 
-export const useGetRoleParticipantBulkUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useGetRoleParticipantBulkUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkUsingPOSTHook>>>,
         TError,
-        { data: BodyType<GidSetUi>; params?: GetRoleParticipantBulkUsingPOSTParams },
+        { data: GidSetUi; params?: GetRoleParticipantBulkUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkUsingPOSTHook>>>,
     TError,
-    { data: BodyType<GidSetUi>; params?: GetRoleParticipantBulkUsingPOSTParams },
+    { data: GidSetUi; params?: GetRoleParticipantBulkUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6958,7 +6917,7 @@ export const useGetRoleParticipantBulkUsingPOSTMutationOptions = <TError = Error
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkUsingPOSTHook>>>,
-        { data: BodyType<GidSetUi>; params?: GetRoleParticipantBulkUsingPOSTParams }
+        { data: GidSetUi; params?: GetRoleParticipantBulkUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -6971,17 +6930,17 @@ export const useGetRoleParticipantBulkUsingPOSTMutationOptions = <TError = Error
 export type GetRoleParticipantBulkUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkUsingPOSTHook>>>
 >
-export type GetRoleParticipantBulkUsingPOSTMutationBody = BodyType<GidSetUi>
-export type GetRoleParticipantBulkUsingPOSTMutationError = ErrorType<unknown>
+export type GetRoleParticipantBulkUsingPOSTMutationBody = GidSetUi
+export type GetRoleParticipantBulkUsingPOSTMutationError = unknown
 
 /**
  * @summary getRoleParticipantBulk
  */
-export const useGetRoleParticipantBulkUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useGetRoleParticipantBulkUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkUsingPOSTHook>>>,
         TError,
-        { data: BodyType<GidSetUi>; params?: GetRoleParticipantBulkUsingPOSTParams },
+        { data: GidSetUi; params?: GetRoleParticipantBulkUsingPOSTParams },
         TContext
     >
 }) => {
@@ -6994,7 +6953,7 @@ export const useGetRoleParticipantBulkUsingPOST = <TError = ErrorType<unknown>, 
  * @summary getRoleParticipant
  */
 export const useGetRoleParticipantUsingGETHook = () => {
-    const getRoleParticipantUsingGET = useCustomClient<RoleParticipantUI>()
+    const getRoleParticipantUsingGET = useCmdbSwaggerClient<RoleParticipantUI>()
 
     return (gid: string, params?: GetRoleParticipantUsingGETParams, signal?: AbortSignal) => {
         return getRoleParticipantUsingGET({ url: `/read/roleParticipant/${gid}`, method: 'get', params, signal })
@@ -7006,7 +6965,7 @@ export const getGetRoleParticipantUsingGETQueryKey = (gid: string, params?: GetR
 
 export const useGetRoleParticipantUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     gid: string,
     params?: GetRoleParticipantUsingGETParams,
@@ -7025,15 +6984,12 @@ export const useGetRoleParticipantUsingGETQueryOptions = <
 }
 
 export type GetRoleParticipantUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantUsingGETHook>>>>
-export type GetRoleParticipantUsingGETQueryError = ErrorType<void>
+export type GetRoleParticipantUsingGETQueryError = void
 
 /**
  * @summary getRoleParticipant
  */
-export const useGetRoleParticipantUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useGetRoleParticipantUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantUsingGETHook>>>, TError = void>(
     gid: string,
     params?: GetRoleParticipantUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantUsingGETHook>>>, TError, TData> },
@@ -7051,7 +7007,7 @@ export const useGetRoleParticipantUsingGET = <
  * @summary searchAll
  */
 export const useSearchAllUsingGETHook = () => {
-    const searchAllUsingGET = useCustomClient<SearchAllUsingGET200>()
+    const searchAllUsingGET = useCmdbSwaggerClient<SearchAllUsingGET200>()
 
     return (params?: SearchAllUsingGETParams, signal?: AbortSignal) => {
         return searchAllUsingGET({ url: `/read/search`, method: 'get', params, signal })
@@ -7060,7 +7016,7 @@ export const useSearchAllUsingGETHook = () => {
 
 export const getSearchAllUsingGETQueryKey = (params?: SearchAllUsingGETParams) => [`/read/search`, ...(params ? [params] : [])] as const
 
-export const useSearchAllUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useSearchAllUsingGETHook>>>, TError = ErrorType<void>>(
+export const useSearchAllUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useSearchAllUsingGETHook>>>, TError = void>(
     params?: SearchAllUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useSearchAllUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useSearchAllUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -7076,12 +7032,12 @@ export const useSearchAllUsingGETQueryOptions = <TData = Awaited<ReturnType<Retu
 }
 
 export type SearchAllUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useSearchAllUsingGETHook>>>>
-export type SearchAllUsingGETQueryError = ErrorType<void>
+export type SearchAllUsingGETQueryError = void
 
 /**
  * @summary searchAll
  */
-export const useSearchAllUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useSearchAllUsingGETHook>>>, TError = ErrorType<void>>(
+export const useSearchAllUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useSearchAllUsingGETHook>>>, TError = void>(
     params?: SearchAllUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useSearchAllUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -7098,9 +7054,9 @@ export const useSearchAllUsingGET = <TData = Awaited<ReturnType<ReturnType<typeo
  * @summary readConfigurationItemsByMetaIsCodes
  */
 export const useReadConfigurationItemsByMetaIsCodesUsingPOSTHook = () => {
-    const readConfigurationItemsByMetaIsCodesUsingPOST = useCustomClient<ReadConfigurationItemsByMetaIsCodesUsingPOST200 | void>()
+    const readConfigurationItemsByMetaIsCodesUsingPOST = useCmdbSwaggerClient<ReadConfigurationItemsByMetaIsCodesUsingPOST200 | void>()
 
-    return (metaIsCodesListUi: BodyType<MetaIsCodesListUi>, params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams) => {
+    return (metaIsCodesListUi: MetaIsCodesListUi, params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams) => {
         return readConfigurationItemsByMetaIsCodesUsingPOST({
             url: `/readByMetaIsCode/ci`,
             method: 'post',
@@ -7111,17 +7067,17 @@ export const useReadConfigurationItemsByMetaIsCodesUsingPOSTHook = () => {
     }
 }
 
-export const useReadConfigurationItemsByMetaIsCodesUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadConfigurationItemsByMetaIsCodesUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesUsingPOSTHook>>>,
         TError,
-        { data: BodyType<MetaIsCodesListUi>; params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams },
+        { data: MetaIsCodesListUi; params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesUsingPOSTHook>>>,
     TError,
-    { data: BodyType<MetaIsCodesListUi>; params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams },
+    { data: MetaIsCodesListUi; params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7130,7 +7086,7 @@ export const useReadConfigurationItemsByMetaIsCodesUsingPOSTMutationOptions = <T
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesUsingPOSTHook>>>,
-        { data: BodyType<MetaIsCodesListUi>; params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams }
+        { data: MetaIsCodesListUi; params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -7143,17 +7099,17 @@ export const useReadConfigurationItemsByMetaIsCodesUsingPOSTMutationOptions = <T
 export type ReadConfigurationItemsByMetaIsCodesUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesUsingPOSTHook>>>
 >
-export type ReadConfigurationItemsByMetaIsCodesUsingPOSTMutationBody = BodyType<MetaIsCodesListUi>
-export type ReadConfigurationItemsByMetaIsCodesUsingPOSTMutationError = ErrorType<unknown>
+export type ReadConfigurationItemsByMetaIsCodesUsingPOSTMutationBody = MetaIsCodesListUi
+export type ReadConfigurationItemsByMetaIsCodesUsingPOSTMutationError = unknown
 
 /**
  * @summary readConfigurationItemsByMetaIsCodes
  */
-export const useReadConfigurationItemsByMetaIsCodesUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadConfigurationItemsByMetaIsCodesUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesUsingPOSTHook>>>,
         TError,
-        { data: BodyType<MetaIsCodesListUi>; params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams },
+        { data: MetaIsCodesListUi; params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams },
         TContext
     >
 }) => {
@@ -7166,7 +7122,7 @@ export const useReadConfigurationItemsByMetaIsCodesUsingPOST = <TError = ErrorTy
  * @summary readConfigurationItemByMetaIsCode
  */
 export const useReadConfigurationItemByMetaIsCodeUsingGETHook = () => {
-    const readConfigurationItemByMetaIsCodeUsingGET = useCustomClient<ReadConfigurationItemByMetaIsCodeUsingGET200>()
+    const readConfigurationItemByMetaIsCodeUsingGET = useCmdbSwaggerClient<ReadConfigurationItemByMetaIsCodeUsingGET200>()
 
     return (metaIsCode: string, params?: ReadConfigurationItemByMetaIsCodeUsingGETParams, signal?: AbortSignal) => {
         return readConfigurationItemByMetaIsCodeUsingGET({ url: `/readByMetaIsCode/ci/${metaIsCode}`, method: 'get', params, signal })
@@ -7178,7 +7134,7 @@ export const getReadConfigurationItemByMetaIsCodeUsingGETQueryKey = (metaIsCode:
 
 export const useReadConfigurationItemByMetaIsCodeUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     metaIsCode: string,
     params?: ReadConfigurationItemByMetaIsCodeUsingGETParams,
@@ -7201,14 +7157,14 @@ export const useReadConfigurationItemByMetaIsCodeUsingGETQueryOptions = <
 export type ReadConfigurationItemByMetaIsCodeUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeUsingGETHook>>>
 >
-export type ReadConfigurationItemByMetaIsCodeUsingGETQueryError = ErrorType<void>
+export type ReadConfigurationItemByMetaIsCodeUsingGETQueryError = void
 
 /**
  * @summary readConfigurationItemByMetaIsCode
  */
 export const useReadConfigurationItemByMetaIsCodeUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     metaIsCode: string,
     params?: ReadConfigurationItemByMetaIsCodeUsingGETParams,
@@ -7227,9 +7183,9 @@ export const useReadConfigurationItemByMetaIsCodeUsingGET = <
  * @summary readConfigurationItemByRefID
  */
 export const useReadConfigurationItemByRefIDUsingPOSTHook = () => {
-    const readConfigurationItemByRefIDUsingPOST = useCustomClient<ReadConfigurationItemByRefIDUsingPOST200 | void>()
+    const readConfigurationItemByRefIDUsingPOST = useCmdbSwaggerClient<ReadConfigurationItemByRefIDUsingPOST200 | void>()
 
-    return (readConfigurationItemByRefIDUsingPOSTBody: BodyType<string>, params?: ReadConfigurationItemByRefIDUsingPOSTParams) => {
+    return (readConfigurationItemByRefIDUsingPOSTBody: string, params?: ReadConfigurationItemByRefIDUsingPOSTParams) => {
         return readConfigurationItemByRefIDUsingPOST({
             url: `/readByRefID/ci`,
             method: 'post',
@@ -7240,17 +7196,17 @@ export const useReadConfigurationItemByRefIDUsingPOSTHook = () => {
     }
 }
 
-export const useReadConfigurationItemByRefIDUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadConfigurationItemByRefIDUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDUsingPOSTHook>>>,
         TError,
-        { data: BodyType<string>; params?: ReadConfigurationItemByRefIDUsingPOSTParams },
+        { data: string; params?: ReadConfigurationItemByRefIDUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDUsingPOSTHook>>>,
     TError,
-    { data: BodyType<string>; params?: ReadConfigurationItemByRefIDUsingPOSTParams },
+    { data: string; params?: ReadConfigurationItemByRefIDUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7259,7 +7215,7 @@ export const useReadConfigurationItemByRefIDUsingPOSTMutationOptions = <TError =
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDUsingPOSTHook>>>,
-        { data: BodyType<string>; params?: ReadConfigurationItemByRefIDUsingPOSTParams }
+        { data: string; params?: ReadConfigurationItemByRefIDUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -7272,17 +7228,17 @@ export const useReadConfigurationItemByRefIDUsingPOSTMutationOptions = <TError =
 export type ReadConfigurationItemByRefIDUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDUsingPOSTHook>>>
 >
-export type ReadConfigurationItemByRefIDUsingPOSTMutationBody = BodyType<string>
-export type ReadConfigurationItemByRefIDUsingPOSTMutationError = ErrorType<unknown>
+export type ReadConfigurationItemByRefIDUsingPOSTMutationBody = string
+export type ReadConfigurationItemByRefIDUsingPOSTMutationError = unknown
 
 /**
  * @summary readConfigurationItemByRefID
  */
-export const useReadConfigurationItemByRefIDUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadConfigurationItemByRefIDUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDUsingPOSTHook>>>,
         TError,
-        { data: BodyType<string>; params?: ReadConfigurationItemByRefIDUsingPOSTParams },
+        { data: string; params?: ReadConfigurationItemByRefIDUsingPOSTParams },
         TContext
     >
 }) => {
@@ -7295,9 +7251,9 @@ export const useReadConfigurationItemByRefIDUsingPOST = <TError = ErrorType<unkn
  * @summary readGroupItems
  */
 export const useReadGroupItemsUsingPOSTHook = () => {
-    const readGroupItemsUsingPOST = useCustomClient<ReadGroupItemsUsingPOST200 | void>()
+    const readGroupItemsUsingPOST = useCmdbSwaggerClient<ReadGroupItemsUsingPOST200 | void>()
 
-    return (uuid: string, groupMembersFilterUi: BodyType<GroupMembersFilterUi>, params?: ReadGroupItemsUsingPOSTParams) => {
+    return (uuid: string, groupMembersFilterUi: GroupMembersFilterUi, params?: ReadGroupItemsUsingPOSTParams) => {
         return readGroupItemsUsingPOST({
             url: `/readmembers/group/${uuid}`,
             method: 'post',
@@ -7308,17 +7264,17 @@ export const useReadGroupItemsUsingPOSTHook = () => {
     }
 }
 
-export const useReadGroupItemsUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadGroupItemsUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadGroupItemsUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: BodyType<GroupMembersFilterUi>; params?: ReadGroupItemsUsingPOSTParams },
+        { uuid: string; data: GroupMembersFilterUi; params?: ReadGroupItemsUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadGroupItemsUsingPOSTHook>>>,
     TError,
-    { uuid: string; data: BodyType<GroupMembersFilterUi>; params?: ReadGroupItemsUsingPOSTParams },
+    { uuid: string; data: GroupMembersFilterUi; params?: ReadGroupItemsUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7327,7 +7283,7 @@ export const useReadGroupItemsUsingPOSTMutationOptions = <TError = ErrorType<unk
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadGroupItemsUsingPOSTHook>>>,
-        { uuid: string; data: BodyType<GroupMembersFilterUi>; params?: ReadGroupItemsUsingPOSTParams }
+        { uuid: string; data: GroupMembersFilterUi; params?: ReadGroupItemsUsingPOSTParams }
     > = (props) => {
         const { uuid, data, params } = props ?? {}
 
@@ -7338,17 +7294,17 @@ export const useReadGroupItemsUsingPOSTMutationOptions = <TError = ErrorType<unk
 }
 
 export type ReadGroupItemsUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadGroupItemsUsingPOSTHook>>>>
-export type ReadGroupItemsUsingPOSTMutationBody = BodyType<GroupMembersFilterUi>
-export type ReadGroupItemsUsingPOSTMutationError = ErrorType<unknown>
+export type ReadGroupItemsUsingPOSTMutationBody = GroupMembersFilterUi
+export type ReadGroupItemsUsingPOSTMutationError = unknown
 
 /**
  * @summary readGroupItems
  */
-export const useReadGroupItemsUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadGroupItemsUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadGroupItemsUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: BodyType<GroupMembersFilterUi>; params?: ReadGroupItemsUsingPOSTParams },
+        { uuid: string; data: GroupMembersFilterUi; params?: ReadGroupItemsUsingPOSTParams },
         TContext
     >
 }) => {
@@ -7361,9 +7317,9 @@ export const useReadGroupItemsUsingPOST = <TError = ErrorType<unknown>, TContext
  * @summary recycleInvalidatedCis
  */
 export const useRecycleInvalidatedCisUsingPOSTHook = () => {
-    const recycleInvalidatedCisUsingPOST = useCustomClient<RequestIdUi | void>()
+    const recycleInvalidatedCisUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (recycleCisUiBody: BodyType<RecycleCisUiBody>, params?: RecycleInvalidatedCisUsingPOSTParams) => {
+    return (recycleCisUiBody: RecycleCisUiBody, params?: RecycleInvalidatedCisUsingPOSTParams) => {
         return recycleInvalidatedCisUsingPOST({
             url: `/recycle/cis`,
             method: 'post',
@@ -7374,17 +7330,17 @@ export const useRecycleInvalidatedCisUsingPOSTHook = () => {
     }
 }
 
-export const useRecycleInvalidatedCisUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRecycleInvalidatedCisUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RecycleCisUiBody>; params?: RecycleInvalidatedCisUsingPOSTParams },
+        { data: RecycleCisUiBody; params?: RecycleInvalidatedCisUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisUsingPOSTHook>>>,
     TError,
-    { data: BodyType<RecycleCisUiBody>; params?: RecycleInvalidatedCisUsingPOSTParams },
+    { data: RecycleCisUiBody; params?: RecycleInvalidatedCisUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7393,7 +7349,7 @@ export const useRecycleInvalidatedCisUsingPOSTMutationOptions = <TError = ErrorT
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisUsingPOSTHook>>>,
-        { data: BodyType<RecycleCisUiBody>; params?: RecycleInvalidatedCisUsingPOSTParams }
+        { data: RecycleCisUiBody; params?: RecycleInvalidatedCisUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -7404,17 +7360,17 @@ export const useRecycleInvalidatedCisUsingPOSTMutationOptions = <TError = ErrorT
 }
 
 export type RecycleInvalidatedCisUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisUsingPOSTHook>>>>
-export type RecycleInvalidatedCisUsingPOSTMutationBody = BodyType<RecycleCisUiBody>
-export type RecycleInvalidatedCisUsingPOSTMutationError = ErrorType<unknown>
+export type RecycleInvalidatedCisUsingPOSTMutationBody = RecycleCisUiBody
+export type RecycleInvalidatedCisUsingPOSTMutationError = unknown
 
 /**
  * @summary recycleInvalidatedCis
  */
-export const useRecycleInvalidatedCisUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRecycleInvalidatedCisUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RecycleCisUiBody>; params?: RecycleInvalidatedCisUsingPOSTParams },
+        { data: RecycleCisUiBody; params?: RecycleInvalidatedCisUsingPOSTParams },
         TContext
     >
 }) => {
@@ -7427,9 +7383,9 @@ export const useRecycleInvalidatedCisUsingPOST = <TError = ErrorType<unknown>, T
  * @summary recycleInvalidatedCisBiznis
  */
 export const useRecycleInvalidatedCisBiznisUsingPOSTHook = () => {
-    const recycleInvalidatedCisBiznisUsingPOST = useCustomClient<RequestIdUi | void>()
+    const recycleInvalidatedCisBiznisUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (recycleCisUiBody: BodyType<RecycleCisUiBody>, params?: RecycleInvalidatedCisBiznisUsingPOSTParams) => {
+    return (recycleCisUiBody: RecycleCisUiBody, params?: RecycleInvalidatedCisBiznisUsingPOSTParams) => {
         return recycleInvalidatedCisBiznisUsingPOST({
             url: `/recycle/cis/biznis`,
             method: 'post',
@@ -7440,17 +7396,17 @@ export const useRecycleInvalidatedCisBiznisUsingPOSTHook = () => {
     }
 }
 
-export const useRecycleInvalidatedCisBiznisUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRecycleInvalidatedCisBiznisUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisBiznisUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RecycleCisUiBody>; params?: RecycleInvalidatedCisBiznisUsingPOSTParams },
+        { data: RecycleCisUiBody; params?: RecycleInvalidatedCisBiznisUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisBiznisUsingPOSTHook>>>,
     TError,
-    { data: BodyType<RecycleCisUiBody>; params?: RecycleInvalidatedCisBiznisUsingPOSTParams },
+    { data: RecycleCisUiBody; params?: RecycleInvalidatedCisBiznisUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7459,7 +7415,7 @@ export const useRecycleInvalidatedCisBiznisUsingPOSTMutationOptions = <TError = 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisBiznisUsingPOSTHook>>>,
-        { data: BodyType<RecycleCisUiBody>; params?: RecycleInvalidatedCisBiznisUsingPOSTParams }
+        { data: RecycleCisUiBody; params?: RecycleInvalidatedCisBiznisUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -7472,17 +7428,17 @@ export const useRecycleInvalidatedCisBiznisUsingPOSTMutationOptions = <TError = 
 export type RecycleInvalidatedCisBiznisUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisBiznisUsingPOSTHook>>>
 >
-export type RecycleInvalidatedCisBiznisUsingPOSTMutationBody = BodyType<RecycleCisUiBody>
-export type RecycleInvalidatedCisBiznisUsingPOSTMutationError = ErrorType<unknown>
+export type RecycleInvalidatedCisBiznisUsingPOSTMutationBody = RecycleCisUiBody
+export type RecycleInvalidatedCisBiznisUsingPOSTMutationError = unknown
 
 /**
  * @summary recycleInvalidatedCisBiznis
  */
-export const useRecycleInvalidatedCisBiznisUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRecycleInvalidatedCisBiznisUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisBiznisUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RecycleCisUiBody>; params?: RecycleInvalidatedCisBiznisUsingPOSTParams },
+        { data: RecycleCisUiBody; params?: RecycleInvalidatedCisBiznisUsingPOSTParams },
         TContext
     >
 }) => {
@@ -7495,9 +7451,9 @@ export const useRecycleInvalidatedCisBiznisUsingPOST = <TError = ErrorType<unkno
  * @summary recyclePoWithHierarchy
  */
 export const useRecyclePoWithHierarchyUsingPOSTHook = () => {
-    const recyclePoWithHierarchyUsingPOST = useCustomClient<RequestIdUi | void>()
+    const recyclePoWithHierarchyUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (poId: string, relId: string, poWithHierarchyUiBody: BodyType<PoWithHierarchyUiBody>, params?: RecyclePoWithHierarchyUsingPOSTParams) => {
+    return (poId: string, relId: string, poWithHierarchyUiBody: PoWithHierarchyUiBody, params?: RecyclePoWithHierarchyUsingPOSTParams) => {
         return recyclePoWithHierarchyUsingPOST({
             url: `/recycle/poWithHierarchy/${poId}/${relId}`,
             method: 'post',
@@ -7508,17 +7464,17 @@ export const useRecyclePoWithHierarchyUsingPOSTHook = () => {
     }
 }
 
-export const useRecyclePoWithHierarchyUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRecyclePoWithHierarchyUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecyclePoWithHierarchyUsingPOSTHook>>>,
         TError,
-        { poId: string; relId: string; data: BodyType<PoWithHierarchyUiBody>; params?: RecyclePoWithHierarchyUsingPOSTParams },
+        { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: RecyclePoWithHierarchyUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRecyclePoWithHierarchyUsingPOSTHook>>>,
     TError,
-    { poId: string; relId: string; data: BodyType<PoWithHierarchyUiBody>; params?: RecyclePoWithHierarchyUsingPOSTParams },
+    { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: RecyclePoWithHierarchyUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7527,7 +7483,7 @@ export const useRecyclePoWithHierarchyUsingPOSTMutationOptions = <TError = Error
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useRecyclePoWithHierarchyUsingPOSTHook>>>,
-        { poId: string; relId: string; data: BodyType<PoWithHierarchyUiBody>; params?: RecyclePoWithHierarchyUsingPOSTParams }
+        { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: RecyclePoWithHierarchyUsingPOSTParams }
     > = (props) => {
         const { poId, relId, data, params } = props ?? {}
 
@@ -7540,17 +7496,17 @@ export const useRecyclePoWithHierarchyUsingPOSTMutationOptions = <TError = Error
 export type RecyclePoWithHierarchyUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useRecyclePoWithHierarchyUsingPOSTHook>>>
 >
-export type RecyclePoWithHierarchyUsingPOSTMutationBody = BodyType<PoWithHierarchyUiBody>
-export type RecyclePoWithHierarchyUsingPOSTMutationError = ErrorType<unknown>
+export type RecyclePoWithHierarchyUsingPOSTMutationBody = PoWithHierarchyUiBody
+export type RecyclePoWithHierarchyUsingPOSTMutationError = unknown
 
 /**
  * @summary recyclePoWithHierarchy
  */
-export const useRecyclePoWithHierarchyUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRecyclePoWithHierarchyUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecyclePoWithHierarchyUsingPOSTHook>>>,
         TError,
-        { poId: string; relId: string; data: BodyType<PoWithHierarchyUiBody>; params?: RecyclePoWithHierarchyUsingPOSTParams },
+        { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: RecyclePoWithHierarchyUsingPOSTParams },
         TContext
     >
 }) => {
@@ -7563,9 +7519,9 @@ export const useRecyclePoWithHierarchyUsingPOST = <TError = ErrorType<unknown>, 
  * @summary recycleInvalidatedRels
  */
 export const useRecycleInvalidatedRelsUsingPOSTHook = () => {
-    const recycleInvalidatedRelsUsingPOST = useCustomClient<RequestIdUi | void>()
+    const recycleInvalidatedRelsUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (recycleRelsUiBody: BodyType<RecycleRelsUiBody>, params?: RecycleInvalidatedRelsUsingPOSTParams) => {
+    return (recycleRelsUiBody: RecycleRelsUiBody, params?: RecycleInvalidatedRelsUsingPOSTParams) => {
         return recycleInvalidatedRelsUsingPOST({
             url: `/recycle/rels`,
             method: 'post',
@@ -7576,17 +7532,17 @@ export const useRecycleInvalidatedRelsUsingPOSTHook = () => {
     }
 }
 
-export const useRecycleInvalidatedRelsUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRecycleInvalidatedRelsUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RecycleRelsUiBody>; params?: RecycleInvalidatedRelsUsingPOSTParams },
+        { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsUsingPOSTHook>>>,
     TError,
-    { data: BodyType<RecycleRelsUiBody>; params?: RecycleInvalidatedRelsUsingPOSTParams },
+    { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7595,7 +7551,7 @@ export const useRecycleInvalidatedRelsUsingPOSTMutationOptions = <TError = Error
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsUsingPOSTHook>>>,
-        { data: BodyType<RecycleRelsUiBody>; params?: RecycleInvalidatedRelsUsingPOSTParams }
+        { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -7608,17 +7564,17 @@ export const useRecycleInvalidatedRelsUsingPOSTMutationOptions = <TError = Error
 export type RecycleInvalidatedRelsUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsUsingPOSTHook>>>
 >
-export type RecycleInvalidatedRelsUsingPOSTMutationBody = BodyType<RecycleRelsUiBody>
-export type RecycleInvalidatedRelsUsingPOSTMutationError = ErrorType<unknown>
+export type RecycleInvalidatedRelsUsingPOSTMutationBody = RecycleRelsUiBody
+export type RecycleInvalidatedRelsUsingPOSTMutationError = unknown
 
 /**
  * @summary recycleInvalidatedRels
  */
-export const useRecycleInvalidatedRelsUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRecycleInvalidatedRelsUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RecycleRelsUiBody>; params?: RecycleInvalidatedRelsUsingPOSTParams },
+        { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsUsingPOSTParams },
         TContext
     >
 }) => {
@@ -7631,9 +7587,9 @@ export const useRecycleInvalidatedRelsUsingPOST = <TError = ErrorType<unknown>, 
  * @summary recycleInvalidatedRelsBiznis
  */
 export const useRecycleInvalidatedRelsBiznisUsingPOSTHook = () => {
-    const recycleInvalidatedRelsBiznisUsingPOST = useCustomClient<RequestIdUi | void>()
+    const recycleInvalidatedRelsBiznisUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (recycleRelsUiBody: BodyType<RecycleRelsUiBody>, params?: RecycleInvalidatedRelsBiznisUsingPOSTParams) => {
+    return (recycleRelsUiBody: RecycleRelsUiBody, params?: RecycleInvalidatedRelsBiznisUsingPOSTParams) => {
         return recycleInvalidatedRelsBiznisUsingPOST({
             url: `/recycle/rels/biznis`,
             method: 'post',
@@ -7644,17 +7600,17 @@ export const useRecycleInvalidatedRelsBiznisUsingPOSTHook = () => {
     }
 }
 
-export const useRecycleInvalidatedRelsBiznisUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRecycleInvalidatedRelsBiznisUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsBiznisUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RecycleRelsUiBody>; params?: RecycleInvalidatedRelsBiznisUsingPOSTParams },
+        { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsBiznisUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsBiznisUsingPOSTHook>>>,
     TError,
-    { data: BodyType<RecycleRelsUiBody>; params?: RecycleInvalidatedRelsBiznisUsingPOSTParams },
+    { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsBiznisUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7663,7 +7619,7 @@ export const useRecycleInvalidatedRelsBiznisUsingPOSTMutationOptions = <TError =
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsBiznisUsingPOSTHook>>>,
-        { data: BodyType<RecycleRelsUiBody>; params?: RecycleInvalidatedRelsBiznisUsingPOSTParams }
+        { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsBiznisUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -7676,17 +7632,17 @@ export const useRecycleInvalidatedRelsBiznisUsingPOSTMutationOptions = <TError =
 export type RecycleInvalidatedRelsBiznisUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsBiznisUsingPOSTHook>>>
 >
-export type RecycleInvalidatedRelsBiznisUsingPOSTMutationBody = BodyType<RecycleRelsUiBody>
-export type RecycleInvalidatedRelsBiznisUsingPOSTMutationError = ErrorType<unknown>
+export type RecycleInvalidatedRelsBiznisUsingPOSTMutationBody = RecycleRelsUiBody
+export type RecycleInvalidatedRelsBiznisUsingPOSTMutationError = unknown
 
 /**
  * @summary recycleInvalidatedRelsBiznis
  */
-export const useRecycleInvalidatedRelsBiznisUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRecycleInvalidatedRelsBiznisUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsBiznisUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RecycleRelsUiBody>; params?: RecycleInvalidatedRelsBiznisUsingPOSTParams },
+        { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsBiznisUsingPOSTParams },
         TContext
     >
 }) => {
@@ -7699,14 +7655,14 @@ export const useRecycleInvalidatedRelsBiznisUsingPOST = <TError = ErrorType<unkn
  * @summary removeGroup
  */
 export const useRemoveGroupUsingPOSTHook = () => {
-    const removeGroupUsingPOST = useCustomClient<RequestIdUi | void>()
+    const removeGroupUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
     return (uuid: string, params?: RemoveGroupUsingPOSTParams) => {
         return removeGroupUsingPOST({ url: `/remove/group/${uuid}`, method: 'post', params })
     }
 }
 
-export const useRemoveGroupUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRemoveGroupUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveGroupUsingPOSTHook>>>,
         TError,
@@ -7737,12 +7693,12 @@ export const useRemoveGroupUsingPOSTMutationOptions = <TError = ErrorType<unknow
 
 export type RemoveGroupUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRemoveGroupUsingPOSTHook>>>>
 
-export type RemoveGroupUsingPOSTMutationError = ErrorType<unknown>
+export type RemoveGroupUsingPOSTMutationError = unknown
 
 /**
  * @summary removeGroup
  */
-export const useRemoveGroupUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRemoveGroupUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveGroupUsingPOSTHook>>>,
         TError,
@@ -7759,7 +7715,7 @@ export const useRemoveGroupUsingPOST = <TError = ErrorType<unknown>, TContext = 
  * @summary removeCiFromGroup
  */
 export const useRemoveCiFromGroupUsingPOSTHook = () => {
-    const removeCiFromGroupUsingPOST = useCustomClient<RequestIdUi | void>()
+    const removeCiFromGroupUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
     return (uuid: string, removeCiFromGroupUsingPOSTBody: string[], params?: RemoveCiFromGroupUsingPOSTParams) => {
         return removeCiFromGroupUsingPOST({
@@ -7772,17 +7728,17 @@ export const useRemoveCiFromGroupUsingPOSTHook = () => {
     }
 }
 
-export const useRemoveCiFromGroupUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRemoveCiFromGroupUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveCiFromGroupUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: BodyType<string[]>; params?: RemoveCiFromGroupUsingPOSTParams },
+        { uuid: string; data: string[]; params?: RemoveCiFromGroupUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRemoveCiFromGroupUsingPOSTHook>>>,
     TError,
-    { uuid: string; data: BodyType<string[]>; params?: RemoveCiFromGroupUsingPOSTParams },
+    { uuid: string; data: string[]; params?: RemoveCiFromGroupUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7791,7 +7747,7 @@ export const useRemoveCiFromGroupUsingPOSTMutationOptions = <TError = ErrorType<
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useRemoveCiFromGroupUsingPOSTHook>>>,
-        { uuid: string; data: BodyType<string[]>; params?: RemoveCiFromGroupUsingPOSTParams }
+        { uuid: string; data: string[]; params?: RemoveCiFromGroupUsingPOSTParams }
     > = (props) => {
         const { uuid, data, params } = props ?? {}
 
@@ -7802,17 +7758,17 @@ export const useRemoveCiFromGroupUsingPOSTMutationOptions = <TError = ErrorType<
 }
 
 export type RemoveCiFromGroupUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRemoveCiFromGroupUsingPOSTHook>>>>
-export type RemoveCiFromGroupUsingPOSTMutationBody = BodyType<string[]>
-export type RemoveCiFromGroupUsingPOSTMutationError = ErrorType<unknown>
+export type RemoveCiFromGroupUsingPOSTMutationBody = string[]
+export type RemoveCiFromGroupUsingPOSTMutationError = unknown
 
 /**
  * @summary removeCiFromGroup
  */
-export const useRemoveCiFromGroupUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRemoveCiFromGroupUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveCiFromGroupUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: BodyType<string[]>; params?: RemoveCiFromGroupUsingPOSTParams },
+        { uuid: string; data: string[]; params?: RemoveCiFromGroupUsingPOSTParams },
         TContext
     >
 }) => {
@@ -7825,7 +7781,7 @@ export const useRemoveCiFromGroupUsingPOST = <TError = ErrorType<unknown>, TCont
  * @summary readReportsWithFilter
  */
 export const useReadReportsWithFilterUsingGETHook = () => {
-    const readReportsWithFilterUsingGET = useCustomClient<ReadReportsWithFilterUsingGET200>()
+    const readReportsWithFilterUsingGET = useCmdbSwaggerClient<ReadReportsWithFilterUsingGET200>()
 
     return (params?: ReadReportsWithFilterUsingGETParams, signal?: AbortSignal) => {
         return readReportsWithFilterUsingGET({ url: `/reports`, method: 'get', params, signal })
@@ -7837,7 +7793,7 @@ export const getReadReportsWithFilterUsingGETQueryKey = (params?: ReadReportsWit
 
 export const useReadReportsWithFilterUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params?: ReadReportsWithFilterUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterUsingGETHook>>>, TError, TData> },
@@ -7855,15 +7811,12 @@ export const useReadReportsWithFilterUsingGETQueryOptions = <
 }
 
 export type ReadReportsWithFilterUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterUsingGETHook>>>>
-export type ReadReportsWithFilterUsingGETQueryError = ErrorType<void>
+export type ReadReportsWithFilterUsingGETQueryError = void
 
 /**
  * @summary readReportsWithFilter
  */
-export const useReadReportsWithFilterUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useReadReportsWithFilterUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterUsingGETHook>>>, TError = void>(
     params?: ReadReportsWithFilterUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -7880,7 +7833,7 @@ export const useReadReportsWithFilterUsingGET = <
  * @summary getRequestStatus
  */
 export const useGetRequestStatusUsingGETHook = () => {
-    const getRequestStatusUsingGET = useCustomClient<RequestStatusResultUi>()
+    const getRequestStatusUsingGET = useCmdbSwaggerClient<RequestStatusResultUi>()
 
     return (requestId: string, signal?: AbortSignal) => {
         return getRequestStatusUsingGET({ url: `/request-tracking/${requestId}`, method: 'get', signal })
@@ -7891,7 +7844,7 @@ export const getGetRequestStatusUsingGETQueryKey = (requestId: string) => [`/req
 
 export const useGetRequestStatusUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetRequestStatusUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     requestId: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRequestStatusUsingGETHook>>>, TError, TData> },
@@ -7909,15 +7862,12 @@ export const useGetRequestStatusUsingGETQueryOptions = <
 }
 
 export type GetRequestStatusUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetRequestStatusUsingGETHook>>>>
-export type GetRequestStatusUsingGETQueryError = ErrorType<void>
+export type GetRequestStatusUsingGETQueryError = void
 
 /**
  * @summary getRequestStatus
  */
-export const useGetRequestStatusUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGetRequestStatusUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useGetRequestStatusUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetRequestStatusUsingGETHook>>>, TError = void>(
     requestId: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRequestStatusUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -7934,9 +7884,9 @@ export const useGetRequestStatusUsingGET = <
  * @summary readCiList
  */
 export const useReadCiListUsingPOST1Hook = () => {
-    const readCiListUsingPOST1 = useCustomClient<ReadCiListUsingPOST1200 | void>()
+    const readCiListUsingPOST1 = useCmdbSwaggerClient<ReadCiListUsingPOST1200 | void>()
 
-    return (hierarchyPOFilterUi: BodyType<HierarchyPOFilterUi>, params?: ReadCiListUsingPOST1Params) => {
+    return (hierarchyPOFilterUi: HierarchyPOFilterUi, params?: ReadCiListUsingPOST1Params) => {
         return readCiListUsingPOST1({
             url: `/rights/implicitHierarchy`,
             method: 'post',
@@ -7947,17 +7897,17 @@ export const useReadCiListUsingPOST1Hook = () => {
     }
 }
 
-export const useReadCiListUsingPOST1MutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadCiListUsingPOST1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOST1Hook>>>,
         TError,
-        { data: BodyType<HierarchyPOFilterUi>; params?: ReadCiListUsingPOST1Params },
+        { data: HierarchyPOFilterUi; params?: ReadCiListUsingPOST1Params },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOST1Hook>>>,
     TError,
-    { data: BodyType<HierarchyPOFilterUi>; params?: ReadCiListUsingPOST1Params },
+    { data: HierarchyPOFilterUi; params?: ReadCiListUsingPOST1Params },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7966,7 +7916,7 @@ export const useReadCiListUsingPOST1MutationOptions = <TError = ErrorType<unknow
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOST1Hook>>>,
-        { data: BodyType<HierarchyPOFilterUi>; params?: ReadCiListUsingPOST1Params }
+        { data: HierarchyPOFilterUi; params?: ReadCiListUsingPOST1Params }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -7977,17 +7927,17 @@ export const useReadCiListUsingPOST1MutationOptions = <TError = ErrorType<unknow
 }
 
 export type ReadCiListUsingPOST1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOST1Hook>>>>
-export type ReadCiListUsingPOST1MutationBody = BodyType<HierarchyPOFilterUi>
-export type ReadCiListUsingPOST1MutationError = ErrorType<unknown>
+export type ReadCiListUsingPOST1MutationBody = HierarchyPOFilterUi
+export type ReadCiListUsingPOST1MutationError = unknown
 
 /**
  * @summary readCiList
  */
-export const useReadCiListUsingPOST1 = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReadCiListUsingPOST1 = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOST1Hook>>>,
         TError,
-        { data: BodyType<HierarchyPOFilterUi>; params?: ReadCiListUsingPOST1Params },
+        { data: HierarchyPOFilterUi; params?: ReadCiListUsingPOST1Params },
         TContext
     >
 }) => {
@@ -8000,14 +7950,14 @@ export const useReadCiListUsingPOST1 = <TError = ErrorType<unknown>, TContext = 
  * @summary deleteStandard
  */
 export const useDeleteStandardUsingDELETEHook = () => {
-    const deleteStandardUsingDELETE = useCustomClient<void>()
+    const deleteStandardUsingDELETE = useCmdbSwaggerClient<void>()
 
     return (params?: DeleteStandardUsingDELETEParams) => {
         return deleteStandardUsingDELETE({ url: `/standard`, method: 'delete', params })
     }
 }
 
-export const useDeleteStandardUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardUsingDELETEHook>>>,
         TError,
@@ -8038,12 +7988,12 @@ export const useDeleteStandardUsingDELETEMutationOptions = <TError = ErrorType<u
 
 export type DeleteStandardUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteStandardUsingDELETEHook>>>>
 
-export type DeleteStandardUsingDELETEMutationError = ErrorType<unknown>
+export type DeleteStandardUsingDELETEMutationError = unknown
 
 /**
  * @summary deleteStandard
  */
-export const useDeleteStandardUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardUsingDELETEHook>>>,
         TError,
@@ -8060,7 +8010,7 @@ export const useDeleteStandardUsingDELETE = <TError = ErrorType<unknown>, TConte
  * @summary readMeetingRequestsFromStandard
  */
 export const useReadMeetingRequestsFromStandardUsingGETHook = () => {
-    const readMeetingRequestsFromStandardUsingGET = useCustomClient<MeetingRequestListUi>()
+    const readMeetingRequestsFromStandardUsingGET = useCmdbSwaggerClient<MeetingRequestListUi>()
 
     return (params?: ReadMeetingRequestsFromStandardUsingGETParams, signal?: AbortSignal) => {
         return readMeetingRequestsFromStandardUsingGET({ url: `/standard/meetingRequests`, method: 'get', params, signal })
@@ -8072,7 +8022,7 @@ export const getReadMeetingRequestsFromStandardUsingGETQueryKey = (params?: Read
 
 export const useReadMeetingRequestsFromStandardUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadMeetingRequestsFromStandardUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params?: ReadMeetingRequestsFromStandardUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadMeetingRequestsFromStandardUsingGETHook>>>, TError, TData> },
@@ -8094,14 +8044,14 @@ export const useReadMeetingRequestsFromStandardUsingGETQueryOptions = <
 export type ReadMeetingRequestsFromStandardUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadMeetingRequestsFromStandardUsingGETHook>>>
 >
-export type ReadMeetingRequestsFromStandardUsingGETQueryError = ErrorType<void>
+export type ReadMeetingRequestsFromStandardUsingGETQueryError = void
 
 /**
  * @summary readMeetingRequestsFromStandard
  */
 export const useReadMeetingRequestsFromStandardUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadMeetingRequestsFromStandardUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params?: ReadMeetingRequestsFromStandardUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadMeetingRequestsFromStandardUsingGETHook>>>, TError, TData> },
@@ -8119,9 +8069,9 @@ export const useReadMeetingRequestsFromStandardUsingGET = <
  * @summary storeStandardMeetingRequests
  */
 export const useStoreStandardMeetingRequestsUsingPOSTHook = () => {
-    const storeStandardMeetingRequestsUsingPOST = useCustomClient<void>()
+    const storeStandardMeetingRequestsUsingPOST = useCmdbSwaggerClient<void>()
 
-    return (meetingRequestListUi: BodyType<MeetingRequestListUi>, params?: StoreStandardMeetingRequestsUsingPOSTParams) => {
+    return (meetingRequestListUi: MeetingRequestListUi, params?: StoreStandardMeetingRequestsUsingPOSTParams) => {
         return storeStandardMeetingRequestsUsingPOST({
             url: `/standard/meetingRequests`,
             method: 'post',
@@ -8132,17 +8082,17 @@ export const useStoreStandardMeetingRequestsUsingPOSTHook = () => {
     }
 }
 
-export const useStoreStandardMeetingRequestsUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreStandardMeetingRequestsUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardMeetingRequestsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<MeetingRequestListUi>; params?: StoreStandardMeetingRequestsUsingPOSTParams },
+        { data: MeetingRequestListUi; params?: StoreStandardMeetingRequestsUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreStandardMeetingRequestsUsingPOSTHook>>>,
     TError,
-    { data: BodyType<MeetingRequestListUi>; params?: StoreStandardMeetingRequestsUsingPOSTParams },
+    { data: MeetingRequestListUi; params?: StoreStandardMeetingRequestsUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8151,7 +8101,7 @@ export const useStoreStandardMeetingRequestsUsingPOSTMutationOptions = <TError =
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardMeetingRequestsUsingPOSTHook>>>,
-        { data: BodyType<MeetingRequestListUi>; params?: StoreStandardMeetingRequestsUsingPOSTParams }
+        { data: MeetingRequestListUi; params?: StoreStandardMeetingRequestsUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -8164,17 +8114,17 @@ export const useStoreStandardMeetingRequestsUsingPOSTMutationOptions = <TError =
 export type StoreStandardMeetingRequestsUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreStandardMeetingRequestsUsingPOSTHook>>>
 >
-export type StoreStandardMeetingRequestsUsingPOSTMutationBody = BodyType<MeetingRequestListUi>
-export type StoreStandardMeetingRequestsUsingPOSTMutationError = ErrorType<unknown>
+export type StoreStandardMeetingRequestsUsingPOSTMutationBody = MeetingRequestListUi
+export type StoreStandardMeetingRequestsUsingPOSTMutationError = unknown
 
 /**
  * @summary storeStandardMeetingRequests
  */
-export const useStoreStandardMeetingRequestsUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreStandardMeetingRequestsUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardMeetingRequestsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<MeetingRequestListUi>; params?: StoreStandardMeetingRequestsUsingPOSTParams },
+        { data: MeetingRequestListUi; params?: StoreStandardMeetingRequestsUsingPOSTParams },
         TContext
     >
 }) => {
@@ -8187,14 +8137,14 @@ export const useStoreStandardMeetingRequestsUsingPOST = <TError = ErrorType<unkn
  * @summary deleteStandardMeetingRequests
  */
 export const useDeleteStandardMeetingRequestsUsingDELETEHook = () => {
-    const deleteStandardMeetingRequestsUsingDELETE = useCustomClient<void>()
+    const deleteStandardMeetingRequestsUsingDELETE = useCmdbSwaggerClient<void>()
 
     return (params?: DeleteStandardMeetingRequestsUsingDELETEParams) => {
         return deleteStandardMeetingRequestsUsingDELETE({ url: `/standard/meetingRequests`, method: 'delete', params })
     }
 }
 
-export const useDeleteStandardMeetingRequestsUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardMeetingRequestsUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingDELETEHook>>>,
         TError,
@@ -8227,12 +8177,12 @@ export type DeleteStandardMeetingRequestsUsingDELETEMutationResult = NonNullable
     Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingDELETEHook>>>
 >
 
-export type DeleteStandardMeetingRequestsUsingDELETEMutationError = ErrorType<unknown>
+export type DeleteStandardMeetingRequestsUsingDELETEMutationError = unknown
 
 /**
  * @summary deleteStandardMeetingRequests
  */
-export const useDeleteStandardMeetingRequestsUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardMeetingRequestsUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingDELETEHook>>>,
         TError,
@@ -8249,10 +8199,10 @@ export const useDeleteStandardMeetingRequestsUsingDELETE = <TError = ErrorType<u
  * @summary deleteStandardMeetingRequests
  */
 export const useDeleteStandardMeetingRequestsUsingPOSTHook = () => {
-    const deleteStandardMeetingRequestsUsingPOST = useCustomClient<void>()
+    const deleteStandardMeetingRequestsUsingPOST = useCmdbSwaggerClient<void>()
 
     return (
-        deleteStandardMeetingRequestsUsingPOSTDeleteidsBody: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>,
+        deleteStandardMeetingRequestsUsingPOSTDeleteidsBody: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody,
         params?: DeleteStandardMeetingRequestsUsingPOSTParams,
     ) => {
         return deleteStandardMeetingRequestsUsingPOST({
@@ -8265,17 +8215,17 @@ export const useDeleteStandardMeetingRequestsUsingPOSTHook = () => {
     }
 }
 
-export const useDeleteStandardMeetingRequestsUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardMeetingRequestsUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>; params?: DeleteStandardMeetingRequestsUsingPOSTParams },
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardMeetingRequestsUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingPOSTHook>>>,
     TError,
-    { data: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>; params?: DeleteStandardMeetingRequestsUsingPOSTParams },
+    { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardMeetingRequestsUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8284,7 +8234,7 @@ export const useDeleteStandardMeetingRequestsUsingPOSTMutationOptions = <TError 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingPOSTHook>>>,
-        { data: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>; params?: DeleteStandardMeetingRequestsUsingPOSTParams }
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardMeetingRequestsUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -8297,17 +8247,17 @@ export const useDeleteStandardMeetingRequestsUsingPOSTMutationOptions = <TError 
 export type DeleteStandardMeetingRequestsUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingPOSTHook>>>
 >
-export type DeleteStandardMeetingRequestsUsingPOSTMutationBody = BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>
-export type DeleteStandardMeetingRequestsUsingPOSTMutationError = ErrorType<unknown>
+export type DeleteStandardMeetingRequestsUsingPOSTMutationBody = DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody
+export type DeleteStandardMeetingRequestsUsingPOSTMutationError = unknown
 
 /**
  * @summary deleteStandardMeetingRequests
  */
-export const useDeleteStandardMeetingRequestsUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardMeetingRequestsUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>; params?: DeleteStandardMeetingRequestsUsingPOSTParams },
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardMeetingRequestsUsingPOSTParams },
         TContext
     >
 }) => {
@@ -8320,7 +8270,7 @@ export const useDeleteStandardMeetingRequestsUsingPOST = <TError = ErrorType<unk
  * @summary readStandardRequestsFromStandard
  */
 export const useReadStandardRequestsFromStandardUsingGETHook = () => {
-    const readStandardRequestsFromStandardUsingGET = useCustomClient<StandardRequestListUi>()
+    const readStandardRequestsFromStandardUsingGET = useCmdbSwaggerClient<StandardRequestListUi>()
 
     return (params?: ReadStandardRequestsFromStandardUsingGETParams, signal?: AbortSignal) => {
         return readStandardRequestsFromStandardUsingGET({ url: `/standard/standardRequests`, method: 'get', params, signal })
@@ -8332,7 +8282,7 @@ export const getReadStandardRequestsFromStandardUsingGETQueryKey = (params?: Rea
 
 export const useReadStandardRequestsFromStandardUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadStandardRequestsFromStandardUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params?: ReadStandardRequestsFromStandardUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadStandardRequestsFromStandardUsingGETHook>>>, TError, TData> },
@@ -8354,14 +8304,14 @@ export const useReadStandardRequestsFromStandardUsingGETQueryOptions = <
 export type ReadStandardRequestsFromStandardUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadStandardRequestsFromStandardUsingGETHook>>>
 >
-export type ReadStandardRequestsFromStandardUsingGETQueryError = ErrorType<void>
+export type ReadStandardRequestsFromStandardUsingGETQueryError = void
 
 /**
  * @summary readStandardRequestsFromStandard
  */
 export const useReadStandardRequestsFromStandardUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadStandardRequestsFromStandardUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params?: ReadStandardRequestsFromStandardUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadStandardRequestsFromStandardUsingGETHook>>>, TError, TData> },
@@ -8379,9 +8329,9 @@ export const useReadStandardRequestsFromStandardUsingGET = <
  * @summary storeStandardStandardRequests
  */
 export const useStoreStandardStandardRequestsUsingPOSTHook = () => {
-    const storeStandardStandardRequestsUsingPOST = useCustomClient<void>()
+    const storeStandardStandardRequestsUsingPOST = useCmdbSwaggerClient<void>()
 
-    return (standardRequestListUi: BodyType<StandardRequestListUi>, params?: StoreStandardStandardRequestsUsingPOSTParams) => {
+    return (standardRequestListUi: StandardRequestListUi, params?: StoreStandardStandardRequestsUsingPOSTParams) => {
         return storeStandardStandardRequestsUsingPOST({
             url: `/standard/standardRequests`,
             method: 'post',
@@ -8392,17 +8342,17 @@ export const useStoreStandardStandardRequestsUsingPOSTHook = () => {
     }
 }
 
-export const useStoreStandardStandardRequestsUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreStandardStandardRequestsUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardStandardRequestsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<StandardRequestListUi>; params?: StoreStandardStandardRequestsUsingPOSTParams },
+        { data: StandardRequestListUi; params?: StoreStandardStandardRequestsUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreStandardStandardRequestsUsingPOSTHook>>>,
     TError,
-    { data: BodyType<StandardRequestListUi>; params?: StoreStandardStandardRequestsUsingPOSTParams },
+    { data: StandardRequestListUi; params?: StoreStandardStandardRequestsUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8411,7 +8361,7 @@ export const useStoreStandardStandardRequestsUsingPOSTMutationOptions = <TError 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardStandardRequestsUsingPOSTHook>>>,
-        { data: BodyType<StandardRequestListUi>; params?: StoreStandardStandardRequestsUsingPOSTParams }
+        { data: StandardRequestListUi; params?: StoreStandardStandardRequestsUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -8424,17 +8374,17 @@ export const useStoreStandardStandardRequestsUsingPOSTMutationOptions = <TError 
 export type StoreStandardStandardRequestsUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreStandardStandardRequestsUsingPOSTHook>>>
 >
-export type StoreStandardStandardRequestsUsingPOSTMutationBody = BodyType<StandardRequestListUi>
-export type StoreStandardStandardRequestsUsingPOSTMutationError = ErrorType<unknown>
+export type StoreStandardStandardRequestsUsingPOSTMutationBody = StandardRequestListUi
+export type StoreStandardStandardRequestsUsingPOSTMutationError = unknown
 
 /**
  * @summary storeStandardStandardRequests
  */
-export const useStoreStandardStandardRequestsUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreStandardStandardRequestsUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardStandardRequestsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<StandardRequestListUi>; params?: StoreStandardStandardRequestsUsingPOSTParams },
+        { data: StandardRequestListUi; params?: StoreStandardStandardRequestsUsingPOSTParams },
         TContext
     >
 }) => {
@@ -8447,14 +8397,14 @@ export const useStoreStandardStandardRequestsUsingPOST = <TError = ErrorType<unk
  * @summary deleteStandardStandard
  */
 export const useDeleteStandardStandardUsingDELETEHook = () => {
-    const deleteStandardStandardUsingDELETE = useCustomClient<void>()
+    const deleteStandardStandardUsingDELETE = useCmdbSwaggerClient<void>()
 
     return (params?: DeleteStandardStandardUsingDELETEParams) => {
         return deleteStandardStandardUsingDELETE({ url: `/standard/standardRequests`, method: 'delete', params })
     }
 }
 
-export const useDeleteStandardStandardUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardStandardUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardUsingDELETEHook>>>,
         TError,
@@ -8487,12 +8437,12 @@ export type DeleteStandardStandardUsingDELETEMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardUsingDELETEHook>>>
 >
 
-export type DeleteStandardStandardUsingDELETEMutationError = ErrorType<unknown>
+export type DeleteStandardStandardUsingDELETEMutationError = unknown
 
 /**
  * @summary deleteStandardStandard
  */
-export const useDeleteStandardStandardUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardStandardUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardUsingDELETEHook>>>,
         TError,
@@ -8509,10 +8459,10 @@ export const useDeleteStandardStandardUsingDELETE = <TError = ErrorType<unknown>
  * @summary deleteStandardStandardRequests
  */
 export const useDeleteStandardStandardRequestsUsingPOSTHook = () => {
-    const deleteStandardStandardRequestsUsingPOST = useCustomClient<void>()
+    const deleteStandardStandardRequestsUsingPOST = useCmdbSwaggerClient<void>()
 
     return (
-        deleteStandardMeetingRequestsUsingPOSTDeleteidsBody: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>,
+        deleteStandardMeetingRequestsUsingPOSTDeleteidsBody: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody,
         params?: DeleteStandardStandardRequestsUsingPOSTParams,
     ) => {
         return deleteStandardStandardRequestsUsingPOST({
@@ -8525,17 +8475,17 @@ export const useDeleteStandardStandardRequestsUsingPOSTHook = () => {
     }
 }
 
-export const useDeleteStandardStandardRequestsUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardStandardRequestsUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>; params?: DeleteStandardStandardRequestsUsingPOSTParams },
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardStandardRequestsUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsUsingPOSTHook>>>,
     TError,
-    { data: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>; params?: DeleteStandardStandardRequestsUsingPOSTParams },
+    { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardStandardRequestsUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8544,7 +8494,7 @@ export const useDeleteStandardStandardRequestsUsingPOSTMutationOptions = <TError
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsUsingPOSTHook>>>,
-        { data: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>; params?: DeleteStandardStandardRequestsUsingPOSTParams }
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardStandardRequestsUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -8557,17 +8507,17 @@ export const useDeleteStandardStandardRequestsUsingPOSTMutationOptions = <TError
 export type DeleteStandardStandardRequestsUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsUsingPOSTHook>>>
 >
-export type DeleteStandardStandardRequestsUsingPOSTMutationBody = BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>
-export type DeleteStandardStandardRequestsUsingPOSTMutationError = ErrorType<unknown>
+export type DeleteStandardStandardRequestsUsingPOSTMutationBody = DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody
+export type DeleteStandardStandardRequestsUsingPOSTMutationError = unknown
 
 /**
  * @summary deleteStandardStandardRequests
  */
-export const useDeleteStandardStandardRequestsUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardStandardRequestsUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsUsingPOSTHook>>>,
         TError,
-        { data: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>; params?: DeleteStandardStandardRequestsUsingPOSTParams },
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardStandardRequestsUsingPOSTParams },
         TContext
     >
 }) => {
@@ -8580,7 +8530,7 @@ export const useDeleteStandardStandardRequestsUsingPOST = <TError = ErrorType<un
  * @summary readVotesFromStandard
  */
 export const useReadVotesFromStandardUsingGETHook = () => {
-    const readVotesFromStandardUsingGET = useCustomClient<VoteListUi>()
+    const readVotesFromStandardUsingGET = useCmdbSwaggerClient<VoteListUi>()
 
     return (params?: ReadVotesFromStandardUsingGETParams, signal?: AbortSignal) => {
         return readVotesFromStandardUsingGET({ url: `/standard/votes`, method: 'get', params, signal })
@@ -8592,7 +8542,7 @@ export const getReadVotesFromStandardUsingGETQueryKey = (params?: ReadVotesFromS
 
 export const useReadVotesFromStandardUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params?: ReadVotesFromStandardUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardUsingGETHook>>>, TError, TData> },
@@ -8610,15 +8560,12 @@ export const useReadVotesFromStandardUsingGETQueryOptions = <
 }
 
 export type ReadVotesFromStandardUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardUsingGETHook>>>>
-export type ReadVotesFromStandardUsingGETQueryError = ErrorType<void>
+export type ReadVotesFromStandardUsingGETQueryError = void
 
 /**
  * @summary readVotesFromStandard
  */
-export const useReadVotesFromStandardUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useReadVotesFromStandardUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardUsingGETHook>>>, TError = void>(
     params?: ReadVotesFromStandardUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -8635,9 +8582,9 @@ export const useReadVotesFromStandardUsingGET = <
  * @summary storeStandardVotes
  */
 export const useStoreStandardVotesUsingPOSTHook = () => {
-    const storeStandardVotesUsingPOST = useCustomClient<void>()
+    const storeStandardVotesUsingPOST = useCmdbSwaggerClient<void>()
 
-    return (voteListUi: BodyType<VoteListUi>, params?: StoreStandardVotesUsingPOSTParams) => {
+    return (voteListUi: VoteListUi, params?: StoreStandardVotesUsingPOSTParams) => {
         return storeStandardVotesUsingPOST({
             url: `/standard/votes`,
             method: 'post',
@@ -8648,17 +8595,17 @@ export const useStoreStandardVotesUsingPOSTHook = () => {
     }
 }
 
-export const useStoreStandardVotesUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreStandardVotesUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>,
         TError,
-        { data: BodyType<VoteListUi>; params?: StoreStandardVotesUsingPOSTParams },
+        { data: VoteListUi; params?: StoreStandardVotesUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>,
     TError,
-    { data: BodyType<VoteListUi>; params?: StoreStandardVotesUsingPOSTParams },
+    { data: VoteListUi; params?: StoreStandardVotesUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8667,7 +8614,7 @@ export const useStoreStandardVotesUsingPOSTMutationOptions = <TError = ErrorType
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>,
-        { data: BodyType<VoteListUi>; params?: StoreStandardVotesUsingPOSTParams }
+        { data: VoteListUi; params?: StoreStandardVotesUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -8678,17 +8625,17 @@ export const useStoreStandardVotesUsingPOSTMutationOptions = <TError = ErrorType
 }
 
 export type StoreStandardVotesUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>>
-export type StoreStandardVotesUsingPOSTMutationBody = BodyType<VoteListUi>
-export type StoreStandardVotesUsingPOSTMutationError = ErrorType<unknown>
+export type StoreStandardVotesUsingPOSTMutationBody = VoteListUi
+export type StoreStandardVotesUsingPOSTMutationError = unknown
 
 /**
  * @summary storeStandardVotes
  */
-export const useStoreStandardVotesUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreStandardVotesUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>,
         TError,
-        { data: BodyType<VoteListUi>; params?: StoreStandardVotesUsingPOSTParams },
+        { data: VoteListUi; params?: StoreStandardVotesUsingPOSTParams },
         TContext
     >
 }) => {
@@ -8701,14 +8648,14 @@ export const useStoreStandardVotesUsingPOST = <TError = ErrorType<unknown>, TCon
  * @summary deleteStandardVotes
  */
 export const useDeleteStandardVotesUsingDELETEHook = () => {
-    const deleteStandardVotesUsingDELETE = useCustomClient<void>()
+    const deleteStandardVotesUsingDELETE = useCmdbSwaggerClient<void>()
 
     return (params?: DeleteStandardVotesUsingDELETEParams) => {
         return deleteStandardVotesUsingDELETE({ url: `/standard/votes`, method: 'delete', params })
     }
 }
 
-export const useDeleteStandardVotesUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardVotesUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingDELETEHook>>>,
         TError,
@@ -8739,12 +8686,12 @@ export const useDeleteStandardVotesUsingDELETEMutationOptions = <TError = ErrorT
 
 export type DeleteStandardVotesUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingDELETEHook>>>>
 
-export type DeleteStandardVotesUsingDELETEMutationError = ErrorType<unknown>
+export type DeleteStandardVotesUsingDELETEMutationError = unknown
 
 /**
  * @summary deleteStandardVotes
  */
-export const useDeleteStandardVotesUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardVotesUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingDELETEHook>>>,
         TError,
@@ -8761,10 +8708,10 @@ export const useDeleteStandardVotesUsingDELETE = <TError = ErrorType<unknown>, T
  * @summary deleteStandardVotes
  */
 export const useDeleteStandardVotesUsingPOSTHook = () => {
-    const deleteStandardVotesUsingPOST = useCustomClient<void>()
+    const deleteStandardVotesUsingPOST = useCmdbSwaggerClient<void>()
 
     return (
-        deleteStandardMeetingRequestsUsingPOSTDeleteidsBody: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>,
+        deleteStandardMeetingRequestsUsingPOSTDeleteidsBody: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody,
         params?: DeleteStandardVotesUsingPOSTParams,
     ) => {
         return deleteStandardVotesUsingPOST({
@@ -8777,17 +8724,17 @@ export const useDeleteStandardVotesUsingPOSTHook = () => {
     }
 }
 
-export const useDeleteStandardVotesUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardVotesUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingPOSTHook>>>,
         TError,
-        { data: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>; params?: DeleteStandardVotesUsingPOSTParams },
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardVotesUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingPOSTHook>>>,
     TError,
-    { data: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>; params?: DeleteStandardVotesUsingPOSTParams },
+    { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardVotesUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8796,7 +8743,7 @@ export const useDeleteStandardVotesUsingPOSTMutationOptions = <TError = ErrorTyp
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingPOSTHook>>>,
-        { data: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>; params?: DeleteStandardVotesUsingPOSTParams }
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardVotesUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -8807,17 +8754,17 @@ export const useDeleteStandardVotesUsingPOSTMutationOptions = <TError = ErrorTyp
 }
 
 export type DeleteStandardVotesUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingPOSTHook>>>>
-export type DeleteStandardVotesUsingPOSTMutationBody = BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>
-export type DeleteStandardVotesUsingPOSTMutationError = ErrorType<unknown>
+export type DeleteStandardVotesUsingPOSTMutationBody = DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody
+export type DeleteStandardVotesUsingPOSTMutationError = unknown
 
 /**
  * @summary deleteStandardVotes
  */
-export const useDeleteStandardVotesUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteStandardVotesUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingPOSTHook>>>,
         TError,
-        { data: BodyType<DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody>; params?: DeleteStandardVotesUsingPOSTParams },
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardVotesUsingPOSTParams },
         TContext
     >
 }) => {
@@ -8830,9 +8777,9 @@ export const useDeleteStandardVotesUsingPOST = <TError = ErrorType<unknown>, TCo
  * @summary storeConfigurationItem
  */
 export const useStoreConfigurationItemUsingPOSTHook = () => {
-    const storeConfigurationItemUsingPOST = useCustomClient<RequestIdUi | void>()
+    const storeConfigurationItemUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (configurationItemUiBody: BodyType<ConfigurationItemUiBody>, params?: StoreConfigurationItemUsingPOSTParams) => {
+    return (configurationItemUiBody: ConfigurationItemUiBody, params?: StoreConfigurationItemUsingPOSTParams) => {
         return storeConfigurationItemUsingPOST({
             url: `/store/ci`,
             method: 'post',
@@ -8843,17 +8790,17 @@ export const useStoreConfigurationItemUsingPOSTHook = () => {
     }
 }
 
-export const useStoreConfigurationItemUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreConfigurationItemUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemUsingPOSTHook>>>,
         TError,
-        { data: BodyType<ConfigurationItemUiBody>; params?: StoreConfigurationItemUsingPOSTParams },
+        { data: ConfigurationItemUiBody; params?: StoreConfigurationItemUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemUsingPOSTHook>>>,
     TError,
-    { data: BodyType<ConfigurationItemUiBody>; params?: StoreConfigurationItemUsingPOSTParams },
+    { data: ConfigurationItemUiBody; params?: StoreConfigurationItemUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8862,7 +8809,7 @@ export const useStoreConfigurationItemUsingPOSTMutationOptions = <TError = Error
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemUsingPOSTHook>>>,
-        { data: BodyType<ConfigurationItemUiBody>; params?: StoreConfigurationItemUsingPOSTParams }
+        { data: ConfigurationItemUiBody; params?: StoreConfigurationItemUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -8875,17 +8822,17 @@ export const useStoreConfigurationItemUsingPOSTMutationOptions = <TError = Error
 export type StoreConfigurationItemUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemUsingPOSTHook>>>
 >
-export type StoreConfigurationItemUsingPOSTMutationBody = BodyType<ConfigurationItemUiBody>
-export type StoreConfigurationItemUsingPOSTMutationError = ErrorType<unknown>
+export type StoreConfigurationItemUsingPOSTMutationBody = ConfigurationItemUiBody
+export type StoreConfigurationItemUsingPOSTMutationError = unknown
 
 /**
  * @summary storeConfigurationItem
  */
-export const useStoreConfigurationItemUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreConfigurationItemUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemUsingPOSTHook>>>,
         TError,
-        { data: BodyType<ConfigurationItemUiBody>; params?: StoreConfigurationItemUsingPOSTParams },
+        { data: ConfigurationItemUiBody; params?: StoreConfigurationItemUsingPOSTParams },
         TContext
     >
 }) => {
@@ -8898,9 +8845,9 @@ export const useStoreConfigurationItemUsingPOST = <TError = ErrorType<unknown>, 
  * @summary storeConfigurationItemBiznis
  */
 export const useStoreConfigurationItemBiznisUsingPOSTHook = () => {
-    const storeConfigurationItemBiznisUsingPOST = useCustomClient<RequestIdUi | void>()
+    const storeConfigurationItemBiznisUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (configurationItemUiBody: BodyType<ConfigurationItemUiBody>, params?: StoreConfigurationItemBiznisUsingPOSTParams) => {
+    return (configurationItemUiBody: ConfigurationItemUiBody, params?: StoreConfigurationItemBiznisUsingPOSTParams) => {
         return storeConfigurationItemBiznisUsingPOST({
             url: `/store/ci/biznis`,
             method: 'post',
@@ -8911,17 +8858,17 @@ export const useStoreConfigurationItemBiznisUsingPOSTHook = () => {
     }
 }
 
-export const useStoreConfigurationItemBiznisUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreConfigurationItemBiznisUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemBiznisUsingPOSTHook>>>,
         TError,
-        { data: BodyType<ConfigurationItemUiBody>; params?: StoreConfigurationItemBiznisUsingPOSTParams },
+        { data: ConfigurationItemUiBody; params?: StoreConfigurationItemBiznisUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemBiznisUsingPOSTHook>>>,
     TError,
-    { data: BodyType<ConfigurationItemUiBody>; params?: StoreConfigurationItemBiznisUsingPOSTParams },
+    { data: ConfigurationItemUiBody; params?: StoreConfigurationItemBiznisUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8930,7 +8877,7 @@ export const useStoreConfigurationItemBiznisUsingPOSTMutationOptions = <TError =
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemBiznisUsingPOSTHook>>>,
-        { data: BodyType<ConfigurationItemUiBody>; params?: StoreConfigurationItemBiznisUsingPOSTParams }
+        { data: ConfigurationItemUiBody; params?: StoreConfigurationItemBiznisUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -8943,17 +8890,17 @@ export const useStoreConfigurationItemBiznisUsingPOSTMutationOptions = <TError =
 export type StoreConfigurationItemBiznisUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemBiznisUsingPOSTHook>>>
 >
-export type StoreConfigurationItemBiznisUsingPOSTMutationBody = BodyType<ConfigurationItemUiBody>
-export type StoreConfigurationItemBiznisUsingPOSTMutationError = ErrorType<unknown>
+export type StoreConfigurationItemBiznisUsingPOSTMutationBody = ConfigurationItemUiBody
+export type StoreConfigurationItemBiznisUsingPOSTMutationError = unknown
 
 /**
  * @summary storeConfigurationItemBiznis
  */
-export const useStoreConfigurationItemBiznisUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreConfigurationItemBiznisUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemBiznisUsingPOSTHook>>>,
         TError,
-        { data: BodyType<ConfigurationItemUiBody>; params?: StoreConfigurationItemBiznisUsingPOSTParams },
+        { data: ConfigurationItemUiBody; params?: StoreConfigurationItemBiznisUsingPOSTParams },
         TContext
     >
 }) => {
@@ -8966,9 +8913,9 @@ export const useStoreConfigurationItemBiznisUsingPOST = <TError = ErrorType<unkn
  * @summary storeGraph
  */
 export const useStoreGraphUsingPOSTHook = () => {
-    const storeGraphUsingPOST = useCustomClient<RequestIdUi | void>()
+    const storeGraphUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (graphRequestUiBody: BodyType<GraphRequestUiBody>, params?: StoreGraphUsingPOSTParams) => {
+    return (graphRequestUiBody: GraphRequestUiBody, params?: StoreGraphUsingPOSTParams) => {
         return storeGraphUsingPOST({
             url: `/store/graph`,
             method: 'post',
@@ -8979,17 +8926,17 @@ export const useStoreGraphUsingPOSTHook = () => {
     }
 }
 
-export const useStoreGraphUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreGraphUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>,
         TError,
-        { data: BodyType<GraphRequestUiBody>; params?: StoreGraphUsingPOSTParams },
+        { data: GraphRequestUiBody; params?: StoreGraphUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>,
     TError,
-    { data: BodyType<GraphRequestUiBody>; params?: StoreGraphUsingPOSTParams },
+    { data: GraphRequestUiBody; params?: StoreGraphUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8998,7 +8945,7 @@ export const useStoreGraphUsingPOSTMutationOptions = <TError = ErrorType<unknown
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>,
-        { data: BodyType<GraphRequestUiBody>; params?: StoreGraphUsingPOSTParams }
+        { data: GraphRequestUiBody; params?: StoreGraphUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -9009,17 +8956,17 @@ export const useStoreGraphUsingPOSTMutationOptions = <TError = ErrorType<unknown
 }
 
 export type StoreGraphUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>>
-export type StoreGraphUsingPOSTMutationBody = BodyType<GraphRequestUiBody>
-export type StoreGraphUsingPOSTMutationError = ErrorType<unknown>
+export type StoreGraphUsingPOSTMutationBody = GraphRequestUiBody
+export type StoreGraphUsingPOSTMutationError = unknown
 
 /**
  * @summary storeGraph
  */
-export const useStoreGraphUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreGraphUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>,
         TError,
-        { data: BodyType<GraphRequestUiBody>; params?: StoreGraphUsingPOSTParams },
+        { data: GraphRequestUiBody; params?: StoreGraphUsingPOSTParams },
         TContext
     >
 }) => {
@@ -9032,9 +8979,9 @@ export const useStoreGraphUsingPOST = <TError = ErrorType<unknown>, TContext = u
  * @summary storeGraphBiznis
  */
 export const useStoreGraphBiznisUsingPOSTHook = () => {
-    const storeGraphBiznisUsingPOST = useCustomClient<RequestIdUi | void>()
+    const storeGraphBiznisUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (graphRequestUiBody: BodyType<GraphRequestUiBody>, params?: StoreGraphBiznisUsingPOSTParams) => {
+    return (graphRequestUiBody: GraphRequestUiBody, params?: StoreGraphBiznisUsingPOSTParams) => {
         return storeGraphBiznisUsingPOST({
             url: `/store/graph/biznis`,
             method: 'post',
@@ -9045,17 +8992,17 @@ export const useStoreGraphBiznisUsingPOSTHook = () => {
     }
 }
 
-export const useStoreGraphBiznisUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreGraphBiznisUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisUsingPOSTHook>>>,
         TError,
-        { data: BodyType<GraphRequestUiBody>; params?: StoreGraphBiznisUsingPOSTParams },
+        { data: GraphRequestUiBody; params?: StoreGraphBiznisUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisUsingPOSTHook>>>,
     TError,
-    { data: BodyType<GraphRequestUiBody>; params?: StoreGraphBiznisUsingPOSTParams },
+    { data: GraphRequestUiBody; params?: StoreGraphBiznisUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -9064,7 +9011,7 @@ export const useStoreGraphBiznisUsingPOSTMutationOptions = <TError = ErrorType<u
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisUsingPOSTHook>>>,
-        { data: BodyType<GraphRequestUiBody>; params?: StoreGraphBiznisUsingPOSTParams }
+        { data: GraphRequestUiBody; params?: StoreGraphBiznisUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -9075,17 +9022,17 @@ export const useStoreGraphBiznisUsingPOSTMutationOptions = <TError = ErrorType<u
 }
 
 export type StoreGraphBiznisUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisUsingPOSTHook>>>>
-export type StoreGraphBiznisUsingPOSTMutationBody = BodyType<GraphRequestUiBody>
-export type StoreGraphBiznisUsingPOSTMutationError = ErrorType<unknown>
+export type StoreGraphBiznisUsingPOSTMutationBody = GraphRequestUiBody
+export type StoreGraphBiznisUsingPOSTMutationError = unknown
 
 /**
  * @summary storeGraphBiznis
  */
-export const useStoreGraphBiznisUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreGraphBiznisUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisUsingPOSTHook>>>,
         TError,
-        { data: BodyType<GraphRequestUiBody>; params?: StoreGraphBiznisUsingPOSTParams },
+        { data: GraphRequestUiBody; params?: StoreGraphBiznisUsingPOSTParams },
         TContext
     >
 }) => {
@@ -9098,24 +9045,24 @@ export const useStoreGraphBiznisUsingPOST = <TError = ErrorType<unknown>, TConte
  * @summary storeGroup
  */
 export const useStoreGroupUsingPOSTHook = () => {
-    const storeGroupUsingPOST = useCustomClient<RequestIdUi | void>()
+    const storeGroupUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (groupUi: BodyType<GroupUi>, params?: StoreGroupUsingPOSTParams) => {
+    return (groupUi: GroupUi, params?: StoreGroupUsingPOSTParams) => {
         return storeGroupUsingPOST({ url: `/store/group`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: groupUi, params })
     }
 }
 
-export const useStoreGroupUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreGroupUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>,
         TError,
-        { data: BodyType<GroupUi>; params?: StoreGroupUsingPOSTParams },
+        { data: GroupUi; params?: StoreGroupUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>,
     TError,
-    { data: BodyType<GroupUi>; params?: StoreGroupUsingPOSTParams },
+    { data: GroupUi; params?: StoreGroupUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -9124,7 +9071,7 @@ export const useStoreGroupUsingPOSTMutationOptions = <TError = ErrorType<unknown
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>,
-        { data: BodyType<GroupUi>; params?: StoreGroupUsingPOSTParams }
+        { data: GroupUi; params?: StoreGroupUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -9135,17 +9082,17 @@ export const useStoreGroupUsingPOSTMutationOptions = <TError = ErrorType<unknown
 }
 
 export type StoreGroupUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>>
-export type StoreGroupUsingPOSTMutationBody = BodyType<GroupUi>
-export type StoreGroupUsingPOSTMutationError = ErrorType<unknown>
+export type StoreGroupUsingPOSTMutationBody = GroupUi
+export type StoreGroupUsingPOSTMutationError = unknown
 
 /**
  * @summary storeGroup
  */
-export const useStoreGroupUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreGroupUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>,
         TError,
-        { data: BodyType<GroupUi>; params?: StoreGroupUsingPOSTParams },
+        { data: GroupUi; params?: StoreGroupUsingPOSTParams },
         TContext
     >
 }) => {
@@ -9158,14 +9105,14 @@ export const useStoreGroupUsingPOST = <TError = ErrorType<unknown>, TContext = u
  * @summary storeManagerToGroup
  */
 export const useStoreManagerToGroupUsingPOSTHook = () => {
-    const storeManagerToGroupUsingPOST = useCustomClient<RequestIdUi | void>()
+    const storeManagerToGroupUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
     return (group: string, uuid: string, params?: StoreManagerToGroupUsingPOSTParams) => {
         return storeManagerToGroupUsingPOST({ url: `/store/group/${group}/add/${uuid}`, method: 'post', params })
     }
 }
 
-export const useStoreManagerToGroupUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreManagerToGroupUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreManagerToGroupUsingPOSTHook>>>,
         TError,
@@ -9196,12 +9143,12 @@ export const useStoreManagerToGroupUsingPOSTMutationOptions = <TError = ErrorTyp
 
 export type StoreManagerToGroupUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreManagerToGroupUsingPOSTHook>>>>
 
-export type StoreManagerToGroupUsingPOSTMutationError = ErrorType<unknown>
+export type StoreManagerToGroupUsingPOSTMutationError = unknown
 
 /**
  * @summary storeManagerToGroup
  */
-export const useStoreManagerToGroupUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreManagerToGroupUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreManagerToGroupUsingPOSTHook>>>,
         TError,
@@ -9218,14 +9165,14 @@ export const useStoreManagerToGroupUsingPOST = <TError = ErrorType<unknown>, TCo
  * @summary removeManagerFromGroup
  */
 export const useRemoveManagerFromGroupUsingPOSTHook = () => {
-    const removeManagerFromGroupUsingPOST = useCustomClient<RequestIdUi | void>()
+    const removeManagerFromGroupUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
     return (group: string, uuid: string, params?: RemoveManagerFromGroupUsingPOSTParams) => {
         return removeManagerFromGroupUsingPOST({ url: `/store/group/${group}/remove/${uuid}`, method: 'post', params })
     }
 }
 
-export const useRemoveManagerFromGroupUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRemoveManagerFromGroupUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveManagerFromGroupUsingPOSTHook>>>,
         TError,
@@ -9258,12 +9205,12 @@ export type RemoveManagerFromGroupUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useRemoveManagerFromGroupUsingPOSTHook>>>
 >
 
-export type RemoveManagerFromGroupUsingPOSTMutationError = ErrorType<unknown>
+export type RemoveManagerFromGroupUsingPOSTMutationError = unknown
 
 /**
  * @summary removeManagerFromGroup
  */
-export const useRemoveManagerFromGroupUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useRemoveManagerFromGroupUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveManagerFromGroupUsingPOSTHook>>>,
         TError,
@@ -9280,14 +9227,14 @@ export const useRemoveManagerFromGroupUsingPOST = <TError = ErrorType<unknown>, 
  * @summary storeCiNeighboursSU
  */
 export const useStoreCiNeighboursSUUsingPOSTHook = () => {
-    const storeCiNeighboursSUUsingPOST = useCustomClient<RequestIdUi | void>()
+    const storeCiNeighboursSUUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
     return (programMetaCode: string, params?: StoreCiNeighboursSUUsingPOSTParams) => {
         return storeCiNeighboursSUUsingPOST({ url: `/store/projects/programRelations/${programMetaCode}`, method: 'post', params })
     }
 }
 
-export const useStoreCiNeighboursSUUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreCiNeighboursSUUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreCiNeighboursSUUsingPOSTHook>>>,
         TError,
@@ -9318,12 +9265,12 @@ export const useStoreCiNeighboursSUUsingPOSTMutationOptions = <TError = ErrorTyp
 
 export type StoreCiNeighboursSUUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreCiNeighboursSUUsingPOSTHook>>>>
 
-export type StoreCiNeighboursSUUsingPOSTMutationError = ErrorType<unknown>
+export type StoreCiNeighboursSUUsingPOSTMutationError = unknown
 
 /**
  * @summary storeCiNeighboursSU
  */
-export const useStoreCiNeighboursSUUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreCiNeighboursSUUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreCiNeighboursSUUsingPOSTHook>>>,
         TError,
@@ -9340,9 +9287,9 @@ export const useStoreCiNeighboursSUUsingPOST = <TError = ErrorType<unknown>, TCo
  * @summary storeRelationship
  */
 export const useStoreRelationshipUsingPOSTHook = () => {
-    const storeRelationshipUsingPOST = useCustomClient<RequestIdUi | void>()
+    const storeRelationshipUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (relationshipUiBody: BodyType<RelationshipUiBody>, params?: StoreRelationshipUsingPOSTParams) => {
+    return (relationshipUiBody: RelationshipUiBody, params?: StoreRelationshipUsingPOSTParams) => {
         return storeRelationshipUsingPOST({
             url: `/store/relation`,
             method: 'post',
@@ -9353,17 +9300,17 @@ export const useStoreRelationshipUsingPOSTHook = () => {
     }
 }
 
-export const useStoreRelationshipUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreRelationshipUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreRelationshipUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelationshipUiBody>; params?: StoreRelationshipUsingPOSTParams },
+        { data: RelationshipUiBody; params?: StoreRelationshipUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreRelationshipUsingPOSTHook>>>,
     TError,
-    { data: BodyType<RelationshipUiBody>; params?: StoreRelationshipUsingPOSTParams },
+    { data: RelationshipUiBody; params?: StoreRelationshipUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -9372,7 +9319,7 @@ export const useStoreRelationshipUsingPOSTMutationOptions = <TError = ErrorType<
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreRelationshipUsingPOSTHook>>>,
-        { data: BodyType<RelationshipUiBody>; params?: StoreRelationshipUsingPOSTParams }
+        { data: RelationshipUiBody; params?: StoreRelationshipUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -9383,17 +9330,17 @@ export const useStoreRelationshipUsingPOSTMutationOptions = <TError = ErrorType<
 }
 
 export type StoreRelationshipUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreRelationshipUsingPOSTHook>>>>
-export type StoreRelationshipUsingPOSTMutationBody = BodyType<RelationshipUiBody>
-export type StoreRelationshipUsingPOSTMutationError = ErrorType<unknown>
+export type StoreRelationshipUsingPOSTMutationBody = RelationshipUiBody
+export type StoreRelationshipUsingPOSTMutationError = unknown
 
 /**
  * @summary storeRelationship
  */
-export const useStoreRelationshipUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreRelationshipUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreRelationshipUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelationshipUiBody>; params?: StoreRelationshipUsingPOSTParams },
+        { data: RelationshipUiBody; params?: StoreRelationshipUsingPOSTParams },
         TContext
     >
 }) => {
@@ -9406,9 +9353,9 @@ export const useStoreRelationshipUsingPOST = <TError = ErrorType<unknown>, TCont
  * @summary storeGroupItems
  */
 export const useStoreGroupItemsUsingPOSTHook = () => {
-    const storeGroupItemsUsingPOST = useCustomClient<RequestIdUi | void>()
+    const storeGroupItemsUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (uuid: string, storeGroupMembersSetUi: BodyType<StoreGroupMembersSetUi>, params?: StoreGroupItemsUsingPOSTParams) => {
+    return (uuid: string, storeGroupMembersSetUi: StoreGroupMembersSetUi, params?: StoreGroupItemsUsingPOSTParams) => {
         return storeGroupItemsUsingPOST({
             url: `/storemembers/group/${uuid}`,
             method: 'post',
@@ -9419,17 +9366,17 @@ export const useStoreGroupItemsUsingPOSTHook = () => {
     }
 }
 
-export const useStoreGroupItemsUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreGroupItemsUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGroupItemsUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: BodyType<StoreGroupMembersSetUi>; params?: StoreGroupItemsUsingPOSTParams },
+        { uuid: string; data: StoreGroupMembersSetUi; params?: StoreGroupItemsUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreGroupItemsUsingPOSTHook>>>,
     TError,
-    { uuid: string; data: BodyType<StoreGroupMembersSetUi>; params?: StoreGroupItemsUsingPOSTParams },
+    { uuid: string; data: StoreGroupMembersSetUi; params?: StoreGroupItemsUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -9438,7 +9385,7 @@ export const useStoreGroupItemsUsingPOSTMutationOptions = <TError = ErrorType<un
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreGroupItemsUsingPOSTHook>>>,
-        { uuid: string; data: BodyType<StoreGroupMembersSetUi>; params?: StoreGroupItemsUsingPOSTParams }
+        { uuid: string; data: StoreGroupMembersSetUi; params?: StoreGroupItemsUsingPOSTParams }
     > = (props) => {
         const { uuid, data, params } = props ?? {}
 
@@ -9449,17 +9396,17 @@ export const useStoreGroupItemsUsingPOSTMutationOptions = <TError = ErrorType<un
 }
 
 export type StoreGroupItemsUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreGroupItemsUsingPOSTHook>>>>
-export type StoreGroupItemsUsingPOSTMutationBody = BodyType<StoreGroupMembersSetUi>
-export type StoreGroupItemsUsingPOSTMutationError = ErrorType<unknown>
+export type StoreGroupItemsUsingPOSTMutationBody = StoreGroupMembersSetUi
+export type StoreGroupItemsUsingPOSTMutationError = unknown
 
 /**
  * @summary storeGroupItems
  */
-export const useStoreGroupItemsUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreGroupItemsUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGroupItemsUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: BodyType<StoreGroupMembersSetUi>; params?: StoreGroupItemsUsingPOSTParams },
+        { uuid: string; data: StoreGroupMembersSetUi; params?: StoreGroupItemsUsingPOSTParams },
         TContext
     >
 }) => {
@@ -9472,7 +9419,7 @@ export const useStoreGroupItemsUsingPOST = <TError = ErrorType<unknown>, TContex
  * @summary ciRelTypesIntegrityCheck
  */
 export const useCiRelTypesIntegrityCheckUsingGETHook = () => {
-    const ciRelTypesIntegrityCheckUsingGET = useCustomClient<CiRelTypesIntegrityCheckUsingGET200>()
+    const ciRelTypesIntegrityCheckUsingGET = useCmdbSwaggerClient<CiRelTypesIntegrityCheckUsingGET200>()
 
     return (signal?: AbortSignal) => {
         return ciRelTypesIntegrityCheckUsingGET({ url: `/util/ciRelTypesIntegrityCheck`, method: 'get', signal })
@@ -9483,7 +9430,7 @@ export const getCiRelTypesIntegrityCheckUsingGETQueryKey = () => [`/util/ciRelTy
 
 export const useCiRelTypesIntegrityCheckUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useCiRelTypesIntegrityCheckUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useCiRelTypesIntegrityCheckUsingGETHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useCiRelTypesIntegrityCheckUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -9500,14 +9447,14 @@ export const useCiRelTypesIntegrityCheckUsingGETQueryOptions = <
 }
 
 export type CiRelTypesIntegrityCheckUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCiRelTypesIntegrityCheckUsingGETHook>>>>
-export type CiRelTypesIntegrityCheckUsingGETQueryError = ErrorType<void>
+export type CiRelTypesIntegrityCheckUsingGETQueryError = void
 
 /**
  * @summary ciRelTypesIntegrityCheck
  */
 export const useCiRelTypesIntegrityCheckUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useCiRelTypesIntegrityCheckUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useCiRelTypesIntegrityCheckUsingGETHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -9524,14 +9471,14 @@ export const useCiRelTypesIntegrityCheckUsingGET = <
  * @summary confluenceDocumentResults
  */
 export const useConfluenceDocumentResultsUsingPOSTHook = () => {
-    const confluenceDocumentResultsUsingPOST = useCustomClient<Result | void>()
+    const confluenceDocumentResultsUsingPOST = useCmdbSwaggerClient<Result | void>()
 
     return (params: ConfluenceDocumentResultsUsingPOSTParams) => {
         return confluenceDocumentResultsUsingPOST({ url: `/util/conf`, method: 'post', params })
     }
 }
 
-export const useConfluenceDocumentResultsUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useConfluenceDocumentResultsUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useConfluenceDocumentResultsUsingPOSTHook>>>,
         TError,
@@ -9564,12 +9511,12 @@ export type ConfluenceDocumentResultsUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useConfluenceDocumentResultsUsingPOSTHook>>>
 >
 
-export type ConfluenceDocumentResultsUsingPOSTMutationError = ErrorType<unknown>
+export type ConfluenceDocumentResultsUsingPOSTMutationError = unknown
 
 /**
  * @summary confluenceDocumentResults
  */
-export const useConfluenceDocumentResultsUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useConfluenceDocumentResultsUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useConfluenceDocumentResultsUsingPOSTHook>>>,
         TError,
@@ -9586,7 +9533,7 @@ export const useConfluenceDocumentResultsUsingPOST = <TError = ErrorType<unknown
  * @summary integrityCheck
  */
 export const useIntegrityCheckUsingGETHook = () => {
-    const integrityCheckUsingGET = useCustomClient<IntegrityCheckHolder>()
+    const integrityCheckUsingGET = useCmdbSwaggerClient<IntegrityCheckHolder>()
 
     return (signal?: AbortSignal) => {
         return integrityCheckUsingGET({ url: `/util/databaseIntegrityCheck`, method: 'get', signal })
@@ -9597,7 +9544,7 @@ export const getIntegrityCheckUsingGETQueryKey = () => [`/util/databaseIntegrity
 
 export const useIntegrityCheckUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useIntegrityCheckUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useIntegrityCheckUsingGETHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useIntegrityCheckUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -9614,15 +9561,12 @@ export const useIntegrityCheckUsingGETQueryOptions = <
 }
 
 export type IntegrityCheckUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useIntegrityCheckUsingGETHook>>>>
-export type IntegrityCheckUsingGETQueryError = ErrorType<void>
+export type IntegrityCheckUsingGETQueryError = void
 
 /**
  * @summary integrityCheck
  */
-export const useIntegrityCheckUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useIntegrityCheckUsingGETHook>>>,
-    TError = ErrorType<void>,
->(options?: {
+export const useIntegrityCheckUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useIntegrityCheckUsingGETHook>>>, TError = void>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useIntegrityCheckUsingGETHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useIntegrityCheckUsingGETQueryOptions(options)
@@ -9638,7 +9582,7 @@ export const useIntegrityCheckUsingGET = <
  * @summary getDocument
  */
 export const useGetDocumentUsingGETHook = () => {
-    const getDocumentUsingGET = useCustomClient<GetResponseWrapper>()
+    const getDocumentUsingGET = useCmdbSwaggerClient<GetResponseWrapper>()
 
     return (ciUuid: string, signal?: AbortSignal) => {
         return getDocumentUsingGET({ url: `/util/getDocument/${ciUuid}`, method: 'get', signal })
@@ -9647,10 +9591,7 @@ export const useGetDocumentUsingGETHook = () => {
 
 export const getGetDocumentUsingGETQueryKey = (ciUuid: string) => [`/util/getDocument/${ciUuid}`] as const
 
-export const useGetDocumentUsingGETQueryOptions = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGetDocumentUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useGetDocumentUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetDocumentUsingGETHook>>>, TError = void>(
     ciUuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetDocumentUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetDocumentUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -9667,12 +9608,12 @@ export const useGetDocumentUsingGETQueryOptions = <
 }
 
 export type GetDocumentUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetDocumentUsingGETHook>>>>
-export type GetDocumentUsingGETQueryError = ErrorType<void>
+export type GetDocumentUsingGETQueryError = void
 
 /**
  * @summary getDocument
  */
-export const useGetDocumentUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetDocumentUsingGETHook>>>, TError = ErrorType<void>>(
+export const useGetDocumentUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetDocumentUsingGETHook>>>, TError = void>(
     ciUuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetDocumentUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -9689,14 +9630,14 @@ export const useGetDocumentUsingGET = <TData = Awaited<ReturnType<ReturnType<typ
  * @summary reindexHierarchy
  */
 export const useReindexHierarchyUsingPOSTHook = () => {
-    const reindexHierarchyUsingPOST = useCustomClient<string | void>()
+    const reindexHierarchyUsingPOST = useCmdbSwaggerClient<string | void>()
 
     return (params?: ReindexHierarchyUsingPOSTParams) => {
         return reindexHierarchyUsingPOST({ url: `/util/hierarchypo`, method: 'post', params })
     }
 }
 
-export const useReindexHierarchyUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReindexHierarchyUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReindexHierarchyUsingPOSTHook>>>,
         TError,
@@ -9727,12 +9668,12 @@ export const useReindexHierarchyUsingPOSTMutationOptions = <TError = ErrorType<u
 
 export type ReindexHierarchyUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexHierarchyUsingPOSTHook>>>>
 
-export type ReindexHierarchyUsingPOSTMutationError = ErrorType<unknown>
+export type ReindexHierarchyUsingPOSTMutationError = unknown
 
 /**
  * @summary reindexHierarchy
  */
-export const useReindexHierarchyUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReindexHierarchyUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReindexHierarchyUsingPOSTHook>>>,
         TError,
@@ -9749,14 +9690,14 @@ export const useReindexHierarchyUsingPOST = <TError = ErrorType<unknown>, TConte
  * @summary partialReindex
  */
 export const usePartialReindexUsingPOSTHook = () => {
-    const partialReindexUsingPOST = useCustomClient<string | void>()
+    const partialReindexUsingPOST = useCmdbSwaggerClient<string | void>()
 
     return (params: PartialReindexUsingPOSTParams) => {
         return partialReindexUsingPOST({ url: `/util/indexelastic`, method: 'post', params })
     }
 }
 
-export const usePartialReindexUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const usePartialReindexUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof usePartialReindexUsingPOSTHook>>>,
         TError,
@@ -9787,12 +9728,12 @@ export const usePartialReindexUsingPOSTMutationOptions = <TError = ErrorType<unk
 
 export type PartialReindexUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof usePartialReindexUsingPOSTHook>>>>
 
-export type PartialReindexUsingPOSTMutationError = ErrorType<unknown>
+export type PartialReindexUsingPOSTMutationError = unknown
 
 /**
  * @summary partialReindex
  */
-export const usePartialReindexUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const usePartialReindexUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof usePartialReindexUsingPOSTHook>>>,
         TError,
@@ -9809,7 +9750,7 @@ export const usePartialReindexUsingPOST = <TError = ErrorType<unknown>, TContext
  * @summary getProperties
  */
 export const useGetPropertiesUsingGETHook = () => {
-    const getPropertiesUsingGET = useCustomClient<GetPropertiesUsingGET200>()
+    const getPropertiesUsingGET = useCmdbSwaggerClient<GetPropertiesUsingGET200>()
 
     return (signal?: AbortSignal) => {
         return getPropertiesUsingGET({ url: `/util/properties`, method: 'get', signal })
@@ -9820,7 +9761,7 @@ export const getGetPropertiesUsingGETQueryKey = () => [`/util/properties`] as co
 
 export const useGetPropertiesUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetPropertiesUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetPropertiesUsingGETHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetPropertiesUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -9836,15 +9777,12 @@ export const useGetPropertiesUsingGETQueryOptions = <
 }
 
 export type GetPropertiesUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetPropertiesUsingGETHook>>>>
-export type GetPropertiesUsingGETQueryError = ErrorType<void>
+export type GetPropertiesUsingGETQueryError = void
 
 /**
  * @summary getProperties
  */
-export const useGetPropertiesUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGetPropertiesUsingGETHook>>>,
-    TError = ErrorType<void>,
->(options?: {
+export const useGetPropertiesUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetPropertiesUsingGETHook>>>, TError = void>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetPropertiesUsingGETHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useGetPropertiesUsingGETQueryOptions(options)
@@ -9860,14 +9798,14 @@ export const useGetPropertiesUsingGET = <
  * @summary reindexCi
  */
 export const useReindexCiUsingPOSTHook = () => {
-    const reindexCiUsingPOST = useCustomClient<string | void>()
+    const reindexCiUsingPOST = useCmdbSwaggerClient<string | void>()
 
     return (ciUuid: string) => {
         return reindexCiUsingPOST({ url: `/util/reindexci/${ciUuid}`, method: 'post' })
     }
 }
 
-export const useReindexCiUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReindexCiUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexCiUsingPOSTHook>>>, TError, { ciUuid: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexCiUsingPOSTHook>>>, TError, { ciUuid: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -9885,12 +9823,12 @@ export const useReindexCiUsingPOSTMutationOptions = <TError = ErrorType<unknown>
 
 export type ReindexCiUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexCiUsingPOSTHook>>>>
 
-export type ReindexCiUsingPOSTMutationError = ErrorType<unknown>
+export type ReindexCiUsingPOSTMutationError = unknown
 
 /**
  * @summary reindexCi
  */
-export const useReindexCiUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReindexCiUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexCiUsingPOSTHook>>>, TError, { ciUuid: string }, TContext>
 }) => {
     const mutationOptions = useReindexCiUsingPOSTMutationOptions(options)
@@ -9902,14 +9840,14 @@ export const useReindexCiUsingPOST = <TError = ErrorType<unknown>, TContext = un
  * @summary reindex
  */
 export const useReindexUsingPOSTHook = () => {
-    const reindexUsingPOST = useCustomClient<string | void>()
+    const reindexUsingPOST = useCmdbSwaggerClient<string | void>()
 
     return (params?: ReindexUsingPOSTParams) => {
         return reindexUsingPOST({ url: `/util/reindexelastic`, method: 'post', params })
     }
 }
 
-export const useReindexUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReindexUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReindexUsingPOSTHook>>>,
         TError,
@@ -9934,12 +9872,12 @@ export const useReindexUsingPOSTMutationOptions = <TError = ErrorType<unknown>, 
 
 export type ReindexUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexUsingPOSTHook>>>>
 
-export type ReindexUsingPOSTMutationError = ErrorType<unknown>
+export type ReindexUsingPOSTMutationError = unknown
 
 /**
  * @summary reindex
  */
-export const useReindexUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReindexUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReindexUsingPOSTHook>>>,
         TError,
@@ -9956,14 +9894,14 @@ export const useReindexUsingPOST = <TError = ErrorType<unknown>, TContext = unkn
  * @summary reindexRelationships
  */
 export const useReindexRelationshipsUsingPOSTHook = () => {
-    const reindexRelationshipsUsingPOST = useCustomClient<ResponseEntity | void>()
+    const reindexRelationshipsUsingPOST = useCmdbSwaggerClient<ResponseEntity | void>()
 
     return (params?: ReindexRelationshipsUsingPOSTParams) => {
         return reindexRelationshipsUsingPOST({ url: `/util/reindexrelationships`, method: 'post', params })
     }
 }
 
-export const useReindexRelationshipsUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReindexRelationshipsUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReindexRelationshipsUsingPOSTHook>>>,
         TError,
@@ -9994,12 +9932,12 @@ export const useReindexRelationshipsUsingPOSTMutationOptions = <TError = ErrorTy
 
 export type ReindexRelationshipsUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexRelationshipsUsingPOSTHook>>>>
 
-export type ReindexRelationshipsUsingPOSTMutationError = ErrorType<unknown>
+export type ReindexRelationshipsUsingPOSTMutationError = unknown
 
 /**
  * @summary reindexRelationships
  */
-export const useReindexRelationshipsUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReindexRelationshipsUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReindexRelationshipsUsingPOSTHook>>>,
         TError,
@@ -10016,14 +9954,14 @@ export const useReindexRelationshipsUsingPOST = <TError = ErrorType<unknown>, TC
  * @summary reindexReports
  */
 export const useReindexReportsUsingDELETEHook = () => {
-    const reindexReportsUsingDELETE = useCustomClient<void>()
+    const reindexReportsUsingDELETE = useCmdbSwaggerClient<void>()
 
     return (params?: ReindexReportsUsingDELETEParams) => {
         return reindexReportsUsingDELETE({ url: `/util/reports`, method: 'delete', params })
     }
 }
 
-export const useReindexReportsUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReindexReportsUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReindexReportsUsingDELETEHook>>>,
         TError,
@@ -10054,12 +9992,12 @@ export const useReindexReportsUsingDELETEMutationOptions = <TError = ErrorType<u
 
 export type ReindexReportsUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexReportsUsingDELETEHook>>>>
 
-export type ReindexReportsUsingDELETEMutationError = ErrorType<unknown>
+export type ReindexReportsUsingDELETEMutationError = unknown
 
 /**
  * @summary reindexReports
  */
-export const useReindexReportsUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useReindexReportsUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReindexReportsUsingDELETEHook>>>,
         TError,
@@ -10076,9 +10014,9 @@ export const useReindexReportsUsingDELETE = <TError = ErrorType<unknown>, TConte
  * @summary updateConfluence
  */
 export const useUpdateConfluenceUsingPOSTHook = () => {
-    const updateConfluenceUsingPOST = useCustomClient<RequestIdUi | void>()
+    const updateConfluenceUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (docUuid: string, version: BodyType<Version>, params?: UpdateConfluenceUsingPOSTParams) => {
+    return (docUuid: string, version: Version, params?: UpdateConfluenceUsingPOSTParams) => {
         return updateConfluenceUsingPOST({
             url: `/util/update/docConfluence/${docUuid}`,
             method: 'post',
@@ -10089,17 +10027,17 @@ export const useUpdateConfluenceUsingPOSTHook = () => {
     }
 }
 
-export const useUpdateConfluenceUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useUpdateConfluenceUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateConfluenceUsingPOSTHook>>>,
         TError,
-        { docUuid: string; data: BodyType<Version>; params?: UpdateConfluenceUsingPOSTParams },
+        { docUuid: string; data: Version; params?: UpdateConfluenceUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useUpdateConfluenceUsingPOSTHook>>>,
     TError,
-    { docUuid: string; data: BodyType<Version>; params?: UpdateConfluenceUsingPOSTParams },
+    { docUuid: string; data: Version; params?: UpdateConfluenceUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -10108,7 +10046,7 @@ export const useUpdateConfluenceUsingPOSTMutationOptions = <TError = ErrorType<u
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useUpdateConfluenceUsingPOSTHook>>>,
-        { docUuid: string; data: BodyType<Version>; params?: UpdateConfluenceUsingPOSTParams }
+        { docUuid: string; data: Version; params?: UpdateConfluenceUsingPOSTParams }
     > = (props) => {
         const { docUuid, data, params } = props ?? {}
 
@@ -10119,17 +10057,17 @@ export const useUpdateConfluenceUsingPOSTMutationOptions = <TError = ErrorType<u
 }
 
 export type UpdateConfluenceUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateConfluenceUsingPOSTHook>>>>
-export type UpdateConfluenceUsingPOSTMutationBody = BodyType<Version>
-export type UpdateConfluenceUsingPOSTMutationError = ErrorType<unknown>
+export type UpdateConfluenceUsingPOSTMutationBody = Version
+export type UpdateConfluenceUsingPOSTMutationError = unknown
 
 /**
  * @summary updateConfluence
  */
-export const useUpdateConfluenceUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useUpdateConfluenceUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateConfluenceUsingPOSTHook>>>,
         TError,
-        { docUuid: string; data: BodyType<Version>; params?: UpdateConfluenceUsingPOSTParams },
+        { docUuid: string; data: Version; params?: UpdateConfluenceUsingPOSTParams },
         TContext
     >
 }) => {
@@ -10142,9 +10080,9 @@ export const useUpdateConfluenceUsingPOST = <TError = ErrorType<unknown>, TConte
  * @summary validateStoreGraph
  */
 export const useValidateStoreGraphUsingPOSTHook = () => {
-    const validateStoreGraphUsingPOST = useCustomClient<ErrorMessageHolderUi | void>()
+    const validateStoreGraphUsingPOST = useCmdbSwaggerClient<ErrorMessageHolderUi | void>()
 
-    return (graphRequestUiBody: BodyType<GraphRequestUiBody>, params?: ValidateStoreGraphUsingPOSTParams) => {
+    return (graphRequestUiBody: GraphRequestUiBody, params?: ValidateStoreGraphUsingPOSTParams) => {
         return validateStoreGraphUsingPOST({
             url: `/validate/graph`,
             method: 'post',
@@ -10155,17 +10093,17 @@ export const useValidateStoreGraphUsingPOSTHook = () => {
     }
 }
 
-export const useValidateStoreGraphUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useValidateStoreGraphUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphUsingPOSTHook>>>,
         TError,
-        { data: BodyType<GraphRequestUiBody>; params?: ValidateStoreGraphUsingPOSTParams },
+        { data: GraphRequestUiBody; params?: ValidateStoreGraphUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphUsingPOSTHook>>>,
     TError,
-    { data: BodyType<GraphRequestUiBody>; params?: ValidateStoreGraphUsingPOSTParams },
+    { data: GraphRequestUiBody; params?: ValidateStoreGraphUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -10174,7 +10112,7 @@ export const useValidateStoreGraphUsingPOSTMutationOptions = <TError = ErrorType
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphUsingPOSTHook>>>,
-        { data: BodyType<GraphRequestUiBody>; params?: ValidateStoreGraphUsingPOSTParams }
+        { data: GraphRequestUiBody; params?: ValidateStoreGraphUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -10185,17 +10123,17 @@ export const useValidateStoreGraphUsingPOSTMutationOptions = <TError = ErrorType
 }
 
 export type ValidateStoreGraphUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphUsingPOSTHook>>>>
-export type ValidateStoreGraphUsingPOSTMutationBody = BodyType<GraphRequestUiBody>
-export type ValidateStoreGraphUsingPOSTMutationError = ErrorType<unknown>
+export type ValidateStoreGraphUsingPOSTMutationBody = GraphRequestUiBody
+export type ValidateStoreGraphUsingPOSTMutationError = unknown
 
 /**
  * @summary validateStoreGraph
  */
-export const useValidateStoreGraphUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useValidateStoreGraphUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphUsingPOSTHook>>>,
         TError,
-        { data: BodyType<GraphRequestUiBody>; params?: ValidateStoreGraphUsingPOSTParams },
+        { data: GraphRequestUiBody; params?: ValidateStoreGraphUsingPOSTParams },
         TContext
     >
 }) => {
@@ -10208,7 +10146,7 @@ export const useValidateStoreGraphUsingPOST = <TError = ErrorType<unknown>, TCon
  * @summary validateCIsByTypesAndOwner
  */
 export const useValidateCIsByTypesAndOwnerUsingGETHook = () => {
-    const validateCIsByTypesAndOwnerUsingGET = useCustomClient<CiProblemMessageHolderListUi>()
+    const validateCIsByTypesAndOwnerUsingGET = useCmdbSwaggerClient<CiProblemMessageHolderListUi>()
 
     return (params: ValidateCIsByTypesAndOwnerUsingGETParams, signal?: AbortSignal) => {
         return validateCIsByTypesAndOwnerUsingGET({ url: `/validateCIsByTypesAndOwner`, method: 'get', params, signal })
@@ -10220,7 +10158,7 @@ export const getValidateCIsByTypesAndOwnerUsingGETQueryKey = (params: ValidateCI
 
 export const useValidateCIsByTypesAndOwnerUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useValidateCIsByTypesAndOwnerUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params: ValidateCIsByTypesAndOwnerUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useValidateCIsByTypesAndOwnerUsingGETHook>>>, TError, TData> },
@@ -10240,14 +10178,14 @@ export const useValidateCIsByTypesAndOwnerUsingGETQueryOptions = <
 export type ValidateCIsByTypesAndOwnerUsingGETQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useValidateCIsByTypesAndOwnerUsingGETHook>>>
 >
-export type ValidateCIsByTypesAndOwnerUsingGETQueryError = ErrorType<void>
+export type ValidateCIsByTypesAndOwnerUsingGETQueryError = void
 
 /**
  * @summary validateCIsByTypesAndOwner
  */
 export const useValidateCIsByTypesAndOwnerUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useValidateCIsByTypesAndOwnerUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params: ValidateCIsByTypesAndOwnerUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useValidateCIsByTypesAndOwnerUsingGETHook>>>, TError, TData> },
