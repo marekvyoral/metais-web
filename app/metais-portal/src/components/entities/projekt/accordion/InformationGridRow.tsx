@@ -1,11 +1,11 @@
 import React, { PropsWithChildren } from 'react'
+import { TextBody } from 'idsk-ui-kit/typography/TextBody'
+import { InfoIconWithText } from 'idsk-ui-kit/typography/InfoIconWithText'
 
 import styles from './informationGridRow.module.scss'
 
 import { GridCol } from '@/components/grid/GridCol'
-import { TextBody } from 'idsk-ui-kit/typography/TextBody'
 import { GridRow } from '@/components/grid/GridRow'
-import { InfoIconWithText } from 'idsk-ui-kit/typography/InfoIconWithText'
 
 interface IInformationGridRowProps extends PropsWithChildren {
     label: string

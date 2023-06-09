@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { TextHeading } from 'idsk-ui-kit/typography/TextHeading'
+
 import { Tabs } from '@/components/tabs/Tabs'
 import { ApplicationServiceRelations } from '@/components/entities/projekt/ApplicationServiceRelations'
 import { ProjectInformationAccordion } from '@/components/entities/projekt/accordion/ProjectInformationAccordion'

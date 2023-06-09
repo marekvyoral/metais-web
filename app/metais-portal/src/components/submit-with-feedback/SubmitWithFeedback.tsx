@@ -1,9 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { Button } from 'idsk-ui-kit/button/Button'
 
 import styles from './submitWithFeedback.module.scss'
 
-import { Button } from 'idsk-ui-kit/button/Button'
 import { SubmitIndicator } from '@/components/submit-indicator/SubmitIndicator'
 import { ButtonGroupRow } from '@/components/layouts/button-group-row/ButtonGroupRow'
 import { LoadingArrow } from '@/assets/images'
