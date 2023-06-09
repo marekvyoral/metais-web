@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 import { SubmitWithFeedback } from './SubmitWithFeedback'
 
-import { Button } from '@/components/button/Button'
+import { Button } from 'idsk-ui-kit/button/Button'
 
 const meta: Meta<typeof SubmitWithFeedback> = {
     title: 'Components/SubmitWithFeedback',

@@ -6,8 +6,8 @@ import { CardColumnList } from './cards/CardColumnList'
 import { ListActions } from './lists/ListActions'
 import styles from './applicationServiceRelations.module.scss'
 
-import { TextLinkExternal } from '@/components/typography/TextLinkExternal'
-import { Button } from '@/components/button/Button'
+import { TextLinkExternal } from 'idsk-ui-kit/typography/TextLinkExternal'
+import { Button } from 'idsk-ui-kit/button/Button'
 
 export const ApplicationServiceRelations: React.FC = () => {
     const { t } = useTranslation()

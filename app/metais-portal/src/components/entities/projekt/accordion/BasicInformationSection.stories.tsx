@@ -3,7 +3,7 @@ import React from 'react'
 
 import { BasicInformationSection } from './BasicInformationSection'
 
-import { TextLinkExternal } from '@/components/typography/TextLinkExternal'
+import { TextLinkExternal } from 'idsk-ui-kit/typography/TextLinkExternal'
 
 const meta: Meta<typeof BasicInformationSection> = {
     title: 'Components/metais/entity/accordion/BasicInformationSection',

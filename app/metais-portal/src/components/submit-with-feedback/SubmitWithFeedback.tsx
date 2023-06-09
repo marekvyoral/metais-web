@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import styles from './submitWithFeedback.module.scss'
 
-import { Button } from '@/components/button/Button'
+import { Button } from 'idsk-ui-kit/button/Button'
 import { SubmitIndicator } from '@/components/submit-indicator/SubmitIndicator'
 import { ButtonGroupRow } from '@/components/layouts/button-group-row/ButtonGroupRow'
 import { LoadingArrow } from '@/assets/images'

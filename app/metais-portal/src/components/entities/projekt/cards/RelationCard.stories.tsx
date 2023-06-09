@@ -3,7 +3,7 @@ import React from 'react'
 
 import { RelationCard } from './RelationCard'
 
-import { TextLinkExternal } from '@/components/typography/TextLinkExternal'
+import { TextLinkExternal } from 'idsk-ui-kit/typography/TextLinkExternal'
 
 const meta: Meta<typeof RelationCard> = {
     title: 'Components/metais/entity/Card/RelationCard',

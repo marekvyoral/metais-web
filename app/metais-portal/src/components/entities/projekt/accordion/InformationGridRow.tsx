@@ -3,9 +3,9 @@ import React, { PropsWithChildren } from 'react'
 import styles from './informationGridRow.module.scss'
 
 import { GridCol } from '@/components/grid/GridCol'
-import { TextBody } from '@/components/typography/TextBody'
+import { TextBody } from 'idsk-ui-kit/typography/TextBody'
 import { GridRow } from '@/components/grid/GridRow'
-import { InfoIconWithText } from '@/components/typography/InfoIconWithText'
+import { InfoIconWithText } from 'idsk-ui-kit/typography/InfoIconWithText'
 
 interface IInformationGridRowProps extends PropsWithChildren {
     label: string

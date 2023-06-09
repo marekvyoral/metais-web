@@ -3,7 +3,7 @@ import React from 'react'
 import { BasicInformationSection } from './BasicInformationSection'
 
 import { AccordionContainer } from '@/components/Accordion'
-import { TextLinkExternal } from '@/components/typography/TextLinkExternal'
+import { TextLinkExternal } from 'idsk-ui-kit/typography/TextLinkExternal'
 
 export const ProjectInformationAccordion: React.FC = () => {
     return (

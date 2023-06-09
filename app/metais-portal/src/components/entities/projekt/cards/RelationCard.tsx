@@ -7,7 +7,7 @@ import { RelationAttribute } from './RelationAttribute'
 
 import { GridRow } from '@/components/grid/GridRow'
 import { GridCol } from '@/components/grid/GridCol'
-import { TextBody } from '@/components/typography/TextBody'
+import { TextBody } from 'idsk-ui-kit/typography/TextBody'
 
 interface IRelationCardProps extends PropsWithChildren {
     label: React.ReactNode
