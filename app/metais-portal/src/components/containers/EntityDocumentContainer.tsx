@@ -42,6 +42,7 @@ export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ 
 
 const mapCiData = (documentCiData: ReadCiNeighboursUsingPOST200 | void) => {
     return documentCiData?.fromNodes?.neighbourPairs?.map((nP) => {
+        //todo check this after orval keyValue changes
         let keyValue = []
         nP?.configurationItem?.attributes?.forEach((a) => {
             keyValue.push([a?.name, a?.value])

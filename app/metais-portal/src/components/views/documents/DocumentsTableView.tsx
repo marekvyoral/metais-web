@@ -22,7 +22,7 @@ const Error: React.FC = () => {
     return <div>error</div>
 }
 
-export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColumns, isLoading, isError }) => {
+export const DocumentsTableView: React.FC<DocumentsTable> = ({ data, additionalColumns, isLoading, isError }) => {
     if (isLoading) return <Loading />
     if (isError) return <Error />
 
