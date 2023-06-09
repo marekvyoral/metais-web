@@ -11,10 +11,10 @@ type CustomClient<T> = (data: {
     signal?: AbortSignal
 }) => Promise<T>
 
-const baseURL = import.meta.env.VITE_REST_CLIENT_BASE_URL
-export const useCustomClient = <T>(): CustomClient<T> => {
+export const useCustomClient = <T>(baseURL: string): CustomClient<T> => {
     return async ({ url, method, params, data }) => {
-        const response = await fetch(`${baseURL}${url}` + new URLSearchParams(params), {
+        const searchParams = params ? `?${new URLSearchParams(params)}` : ''
+        const response = await fetch(`${baseURL}${url}` + searchParams, {
             headers: {
                 method,
                 ...data?.headers,
@@ -26,5 +26,3 @@ export const useCustomClient = <T>(): CustomClient<T> => {
         return response.json()
     }
 }
-
-export default useCustomClient

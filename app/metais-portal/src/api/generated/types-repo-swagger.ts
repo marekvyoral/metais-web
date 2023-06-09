@@ -7,8 +7,7 @@
  */
 import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
-import { useCustomClient } from '../hooks/use-custom-client'
-import type { ErrorType, BodyType } from '../hooks/use-custom-client'
+import { useTypesRepoSwaggerClient } from '../hooks/useTypesRepoSwaggerClient'
 export type ListRelationshipTypesUsingGET1Params = {
     /**
      * roles
@@ -1066,14 +1065,14 @@ type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
  * @summary storeVisible
  */
 export const useStoreVisibleUsingPUTHook = () => {
-    const storeVisibleUsingPUT = useCustomClient<void>()
+    const storeVisibleUsingPUT = useTypesRepoSwaggerClient<void>()
 
     return (attrProfileTechnicalName: string, technicalName: string, params?: StoreVisibleUsingPUTParams) => {
         return storeVisibleUsingPUT({ url: `/attributes/attribute/invisible/${attrProfileTechnicalName}/${technicalName}`, method: 'put', params })
     }
 }
 
-export const useStoreVisibleUsingPUTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreVisibleUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreVisibleUsingPUTHook>>>,
         TError,
@@ -1104,12 +1103,12 @@ export const useStoreVisibleUsingPUTMutationOptions = <TError = ErrorType<unknow
 
 export type StoreVisibleUsingPUTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreVisibleUsingPUTHook>>>>
 
-export type StoreVisibleUsingPUTMutationError = ErrorType<unknown>
+export type StoreVisibleUsingPUTMutationError = unknown
 
 /**
  * @summary storeVisible
  */
-export const useStoreVisibleUsingPUT = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreVisibleUsingPUT = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreVisibleUsingPUTHook>>>,
         TError,
@@ -1126,7 +1125,7 @@ export const useStoreVisibleUsingPUT = <TError = ErrorType<unknown>, TContext = 
  * @summary storeInvisible
  */
 export const useStoreInvisibleUsingDELETEHook = () => {
-    const storeInvisibleUsingDELETE = useCustomClient<void>()
+    const storeInvisibleUsingDELETE = useTypesRepoSwaggerClient<void>()
 
     return (attrProfileTechnicalName: string, technicalName: string, params?: StoreInvisibleUsingDELETEParams) => {
         return storeInvisibleUsingDELETE({
@@ -1137,7 +1136,7 @@ export const useStoreInvisibleUsingDELETEHook = () => {
     }
 }
 
-export const useStoreInvisibleUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreInvisibleUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreInvisibleUsingDELETEHook>>>,
         TError,
@@ -1168,12 +1167,12 @@ export const useStoreInvisibleUsingDELETEMutationOptions = <TError = ErrorType<u
 
 export type StoreInvisibleUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreInvisibleUsingDELETEHook>>>>
 
-export type StoreInvisibleUsingDELETEMutationError = ErrorType<unknown>
+export type StoreInvisibleUsingDELETEMutationError = unknown
 
 /**
  * @summary storeInvisible
  */
-export const useStoreInvisibleUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreInvisibleUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreInvisibleUsingDELETEHook>>>,
         TError,
@@ -1190,9 +1189,9 @@ export const useStoreInvisibleUsingDELETE = <TError = ErrorType<unknown>, TConte
  * @summary storeExistAttribute
  */
 export const useStoreExistAttributeUsingPUTHook = () => {
-    const storeExistAttributeUsingPUT = useCustomClient<void>()
+    const storeExistAttributeUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (attributeBody: BodyType<AttributeBody>, params?: StoreExistAttributeUsingPUTParams) => {
+    return (attributeBody: AttributeBody, params?: StoreExistAttributeUsingPUTParams) => {
         return storeExistAttributeUsingPUT({
             url: `/attributes/attribute/store`,
             method: 'put',
@@ -1203,17 +1202,17 @@ export const useStoreExistAttributeUsingPUTHook = () => {
     }
 }
 
-export const useStoreExistAttributeUsingPUTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreExistAttributeUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeUsingPUTHook>>>,
         TError,
-        { data: BodyType<AttributeBody>; params?: StoreExistAttributeUsingPUTParams },
+        { data: AttributeBody; params?: StoreExistAttributeUsingPUTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeUsingPUTHook>>>,
     TError,
-    { data: BodyType<AttributeBody>; params?: StoreExistAttributeUsingPUTParams },
+    { data: AttributeBody; params?: StoreExistAttributeUsingPUTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1222,7 +1221,7 @@ export const useStoreExistAttributeUsingPUTMutationOptions = <TError = ErrorType
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeUsingPUTHook>>>,
-        { data: BodyType<AttributeBody>; params?: StoreExistAttributeUsingPUTParams }
+        { data: AttributeBody; params?: StoreExistAttributeUsingPUTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -1233,17 +1232,17 @@ export const useStoreExistAttributeUsingPUTMutationOptions = <TError = ErrorType
 }
 
 export type StoreExistAttributeUsingPUTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeUsingPUTHook>>>>
-export type StoreExistAttributeUsingPUTMutationBody = BodyType<AttributeBody>
-export type StoreExistAttributeUsingPUTMutationError = ErrorType<unknown>
+export type StoreExistAttributeUsingPUTMutationBody = AttributeBody
+export type StoreExistAttributeUsingPUTMutationError = unknown
 
 /**
  * @summary storeExistAttribute
  */
-export const useStoreExistAttributeUsingPUT = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreExistAttributeUsingPUT = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeUsingPUTHook>>>,
         TError,
-        { data: BodyType<AttributeBody>; params?: StoreExistAttributeUsingPUTParams },
+        { data: AttributeBody; params?: StoreExistAttributeUsingPUTParams },
         TContext
     >
 }) => {
@@ -1256,9 +1255,9 @@ export const useStoreExistAttributeUsingPUT = <TError = ErrorType<unknown>, TCon
  * @summary storeNewAttribute
  */
 export const useStoreNewAttributeUsingPOSTHook = () => {
-    const storeNewAttributeUsingPOST = useCustomClient<void>()
+    const storeNewAttributeUsingPOST = useTypesRepoSwaggerClient<void>()
 
-    return (atrProfTechnicalName: string, attributeBody: BodyType<AttributeBody>, params?: StoreNewAttributeUsingPOSTParams) => {
+    return (atrProfTechnicalName: string, attributeBody: AttributeBody, params?: StoreNewAttributeUsingPOSTParams) => {
         return storeNewAttributeUsingPOST({
             url: `/attributes/attribute/store/${atrProfTechnicalName}`,
             method: 'post',
@@ -1269,17 +1268,17 @@ export const useStoreNewAttributeUsingPOSTHook = () => {
     }
 }
 
-export const useStoreNewAttributeUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreNewAttributeUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttributeUsingPOSTHook>>>,
         TError,
-        { atrProfTechnicalName: string; data: BodyType<AttributeBody>; params?: StoreNewAttributeUsingPOSTParams },
+        { atrProfTechnicalName: string; data: AttributeBody; params?: StoreNewAttributeUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreNewAttributeUsingPOSTHook>>>,
     TError,
-    { atrProfTechnicalName: string; data: BodyType<AttributeBody>; params?: StoreNewAttributeUsingPOSTParams },
+    { atrProfTechnicalName: string; data: AttributeBody; params?: StoreNewAttributeUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1288,7 +1287,7 @@ export const useStoreNewAttributeUsingPOSTMutationOptions = <TError = ErrorType<
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttributeUsingPOSTHook>>>,
-        { atrProfTechnicalName: string; data: BodyType<AttributeBody>; params?: StoreNewAttributeUsingPOSTParams }
+        { atrProfTechnicalName: string; data: AttributeBody; params?: StoreNewAttributeUsingPOSTParams }
     > = (props) => {
         const { atrProfTechnicalName, data, params } = props ?? {}
 
@@ -1299,17 +1298,17 @@ export const useStoreNewAttributeUsingPOSTMutationOptions = <TError = ErrorType<
 }
 
 export type StoreNewAttributeUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreNewAttributeUsingPOSTHook>>>>
-export type StoreNewAttributeUsingPOSTMutationBody = BodyType<AttributeBody>
-export type StoreNewAttributeUsingPOSTMutationError = ErrorType<unknown>
+export type StoreNewAttributeUsingPOSTMutationBody = AttributeBody
+export type StoreNewAttributeUsingPOSTMutationError = unknown
 
 /**
  * @summary storeNewAttribute
  */
-export const useStoreNewAttributeUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreNewAttributeUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttributeUsingPOSTHook>>>,
         TError,
-        { atrProfTechnicalName: string; data: BodyType<AttributeBody>; params?: StoreNewAttributeUsingPOSTParams },
+        { atrProfTechnicalName: string; data: AttributeBody; params?: StoreNewAttributeUsingPOSTParams },
         TContext
     >
 }) => {
@@ -1322,14 +1321,14 @@ export const useStoreNewAttributeUsingPOST = <TError = ErrorType<unknown>, TCont
  * @summary storeValid
  */
 export const useStoreValidUsingPUTHook = () => {
-    const storeValidUsingPUT = useCustomClient<void>()
+    const storeValidUsingPUT = useTypesRepoSwaggerClient<void>()
 
     return (attrProfileTechnicalName: string, technicalName: string, params?: StoreValidUsingPUTParams) => {
         return storeValidUsingPUT({ url: `/attributes/attribute/valid/${attrProfileTechnicalName}/${technicalName}`, method: 'put', params })
     }
 }
 
-export const useStoreValidUsingPUTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreValidUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUTHook>>>,
         TError,
@@ -1360,12 +1359,12 @@ export const useStoreValidUsingPUTMutationOptions = <TError = ErrorType<unknown>
 
 export type StoreValidUsingPUTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUTHook>>>>
 
-export type StoreValidUsingPUTMutationError = ErrorType<unknown>
+export type StoreValidUsingPUTMutationError = unknown
 
 /**
  * @summary storeValid
  */
-export const useStoreValidUsingPUT = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreValidUsingPUT = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUTHook>>>,
         TError,
@@ -1382,14 +1381,14 @@ export const useStoreValidUsingPUT = <TError = ErrorType<unknown>, TContext = un
  * @summary storeUnvalid
  */
 export const useStoreUnvalidUsingDELETEHook = () => {
-    const storeUnvalidUsingDELETE = useCustomClient<void>()
+    const storeUnvalidUsingDELETE = useTypesRepoSwaggerClient<void>()
 
     return (attrProfileTechnicalName: string, technicalName: string, params?: StoreUnvalidUsingDELETEParams) => {
         return storeUnvalidUsingDELETE({ url: `/attributes/attribute/valid/${attrProfileTechnicalName}/${technicalName}`, method: 'delete', params })
     }
 }
 
-export const useStoreUnvalidUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreUnvalidUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETEHook>>>,
         TError,
@@ -1420,12 +1419,12 @@ export const useStoreUnvalidUsingDELETEMutationOptions = <TError = ErrorType<unk
 
 export type StoreUnvalidUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETEHook>>>>
 
-export type StoreUnvalidUsingDELETEMutationError = ErrorType<unknown>
+export type StoreUnvalidUsingDELETEMutationError = unknown
 
 /**
  * @summary storeUnvalid
  */
-export const useStoreUnvalidUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreUnvalidUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETEHook>>>,
         TError,
@@ -1442,9 +1441,9 @@ export const useStoreUnvalidUsingDELETE = <TError = ErrorType<unknown>, TContext
  * @summary storeNewAttrProfile
  */
 export const useStoreNewAttrProfileUsingPOSTHook = () => {
-    const storeNewAttrProfileUsingPOST = useCustomClient<void>()
+    const storeNewAttrProfileUsingPOST = useTypesRepoSwaggerClient<void>()
 
-    return (attributeProfileBody: BodyType<AttributeProfileBody>, params?: StoreNewAttrProfileUsingPOSTParams) => {
+    return (attributeProfileBody: AttributeProfileBody, params?: StoreNewAttrProfileUsingPOSTParams) => {
         return storeNewAttrProfileUsingPOST({
             url: `/attrprofiles/attrprofile/store`,
             method: 'post',
@@ -1455,17 +1454,17 @@ export const useStoreNewAttrProfileUsingPOSTHook = () => {
     }
 }
 
-export const useStoreNewAttrProfileUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreNewAttrProfileUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileUsingPOSTHook>>>,
         TError,
-        { data: BodyType<AttributeProfileBody>; params?: StoreNewAttrProfileUsingPOSTParams },
+        { data: AttributeProfileBody; params?: StoreNewAttrProfileUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileUsingPOSTHook>>>,
     TError,
-    { data: BodyType<AttributeProfileBody>; params?: StoreNewAttrProfileUsingPOSTParams },
+    { data: AttributeProfileBody; params?: StoreNewAttrProfileUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1474,7 +1473,7 @@ export const useStoreNewAttrProfileUsingPOSTMutationOptions = <TError = ErrorTyp
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileUsingPOSTHook>>>,
-        { data: BodyType<AttributeProfileBody>; params?: StoreNewAttrProfileUsingPOSTParams }
+        { data: AttributeProfileBody; params?: StoreNewAttrProfileUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -1485,17 +1484,17 @@ export const useStoreNewAttrProfileUsingPOSTMutationOptions = <TError = ErrorTyp
 }
 
 export type StoreNewAttrProfileUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileUsingPOSTHook>>>>
-export type StoreNewAttrProfileUsingPOSTMutationBody = BodyType<AttributeProfileBody>
-export type StoreNewAttrProfileUsingPOSTMutationError = ErrorType<unknown>
+export type StoreNewAttrProfileUsingPOSTMutationBody = AttributeProfileBody
+export type StoreNewAttrProfileUsingPOSTMutationError = unknown
 
 /**
  * @summary storeNewAttrProfile
  */
-export const useStoreNewAttrProfileUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreNewAttrProfileUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileUsingPOSTHook>>>,
         TError,
-        { data: BodyType<AttributeProfileBody>; params?: StoreNewAttrProfileUsingPOSTParams },
+        { data: AttributeProfileBody; params?: StoreNewAttrProfileUsingPOSTParams },
         TContext
     >
 }) => {
@@ -1508,9 +1507,9 @@ export const useStoreNewAttrProfileUsingPOST = <TError = ErrorType<unknown>, TCo
  * @summary storeExistAttrProfile
  */
 export const useStoreExistAttrProfileUsingPUTHook = () => {
-    const storeExistAttrProfileUsingPUT = useCustomClient<void>()
+    const storeExistAttrProfileUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (attributeProfileBody: BodyType<AttributeProfileBody>, params?: StoreExistAttrProfileUsingPUTParams) => {
+    return (attributeProfileBody: AttributeProfileBody, params?: StoreExistAttrProfileUsingPUTParams) => {
         return storeExistAttrProfileUsingPUT({
             url: `/attrprofiles/attrprofile/store`,
             method: 'put',
@@ -1521,17 +1520,17 @@ export const useStoreExistAttrProfileUsingPUTHook = () => {
     }
 }
 
-export const useStoreExistAttrProfileUsingPUTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreExistAttrProfileUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileUsingPUTHook>>>,
         TError,
-        { data: BodyType<AttributeProfileBody>; params?: StoreExistAttrProfileUsingPUTParams },
+        { data: AttributeProfileBody; params?: StoreExistAttrProfileUsingPUTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileUsingPUTHook>>>,
     TError,
-    { data: BodyType<AttributeProfileBody>; params?: StoreExistAttrProfileUsingPUTParams },
+    { data: AttributeProfileBody; params?: StoreExistAttrProfileUsingPUTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1540,7 +1539,7 @@ export const useStoreExistAttrProfileUsingPUTMutationOptions = <TError = ErrorTy
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileUsingPUTHook>>>,
-        { data: BodyType<AttributeProfileBody>; params?: StoreExistAttrProfileUsingPUTParams }
+        { data: AttributeProfileBody; params?: StoreExistAttrProfileUsingPUTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -1551,17 +1550,17 @@ export const useStoreExistAttrProfileUsingPUTMutationOptions = <TError = ErrorTy
 }
 
 export type StoreExistAttrProfileUsingPUTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileUsingPUTHook>>>>
-export type StoreExistAttrProfileUsingPUTMutationBody = BodyType<AttributeProfileBody>
-export type StoreExistAttrProfileUsingPUTMutationError = ErrorType<unknown>
+export type StoreExistAttrProfileUsingPUTMutationBody = AttributeProfileBody
+export type StoreExistAttrProfileUsingPUTMutationError = unknown
 
 /**
  * @summary storeExistAttrProfile
  */
-export const useStoreExistAttrProfileUsingPUT = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreExistAttrProfileUsingPUT = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileUsingPUTHook>>>,
         TError,
-        { data: BodyType<AttributeProfileBody>; params?: StoreExistAttrProfileUsingPUTParams },
+        { data: AttributeProfileBody; params?: StoreExistAttrProfileUsingPUTParams },
         TContext
     >
 }) => {
@@ -1574,9 +1573,9 @@ export const useStoreExistAttrProfileUsingPUT = <TError = ErrorType<unknown>, TC
  * @summary storeExistGenericAttrProfile
  */
 export const useStoreExistGenericAttrProfileUsingPUTHook = () => {
-    const storeExistGenericAttrProfileUsingPUT = useCustomClient<void>()
+    const storeExistGenericAttrProfileUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (attributeProfileBody: BodyType<AttributeProfileBody>, params?: StoreExistGenericAttrProfileUsingPUTParams) => {
+    return (attributeProfileBody: AttributeProfileBody, params?: StoreExistGenericAttrProfileUsingPUTParams) => {
         return storeExistGenericAttrProfileUsingPUT({
             url: `/attrprofiles/attrprofile/store/generic`,
             method: 'put',
@@ -1587,17 +1586,17 @@ export const useStoreExistGenericAttrProfileUsingPUTHook = () => {
     }
 }
 
-export const useStoreExistGenericAttrProfileUsingPUTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreExistGenericAttrProfileUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistGenericAttrProfileUsingPUTHook>>>,
         TError,
-        { data: BodyType<AttributeProfileBody>; params?: StoreExistGenericAttrProfileUsingPUTParams },
+        { data: AttributeProfileBody; params?: StoreExistGenericAttrProfileUsingPUTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreExistGenericAttrProfileUsingPUTHook>>>,
     TError,
-    { data: BodyType<AttributeProfileBody>; params?: StoreExistGenericAttrProfileUsingPUTParams },
+    { data: AttributeProfileBody; params?: StoreExistGenericAttrProfileUsingPUTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1606,7 +1605,7 @@ export const useStoreExistGenericAttrProfileUsingPUTMutationOptions = <TError = 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreExistGenericAttrProfileUsingPUTHook>>>,
-        { data: BodyType<AttributeProfileBody>; params?: StoreExistGenericAttrProfileUsingPUTParams }
+        { data: AttributeProfileBody; params?: StoreExistGenericAttrProfileUsingPUTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -1619,17 +1618,17 @@ export const useStoreExistGenericAttrProfileUsingPUTMutationOptions = <TError = 
 export type StoreExistGenericAttrProfileUsingPUTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreExistGenericAttrProfileUsingPUTHook>>>
 >
-export type StoreExistGenericAttrProfileUsingPUTMutationBody = BodyType<AttributeProfileBody>
-export type StoreExistGenericAttrProfileUsingPUTMutationError = ErrorType<unknown>
+export type StoreExistGenericAttrProfileUsingPUTMutationBody = AttributeProfileBody
+export type StoreExistGenericAttrProfileUsingPUTMutationError = unknown
 
 /**
  * @summary storeExistGenericAttrProfile
  */
-export const useStoreExistGenericAttrProfileUsingPUT = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreExistGenericAttrProfileUsingPUT = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistGenericAttrProfileUsingPUTHook>>>,
         TError,
-        { data: BodyType<AttributeProfileBody>; params?: StoreExistGenericAttrProfileUsingPUTParams },
+        { data: AttributeProfileBody; params?: StoreExistGenericAttrProfileUsingPUTParams },
         TContext
     >
 }) => {
@@ -1642,14 +1641,14 @@ export const useStoreExistGenericAttrProfileUsingPUT = <TError = ErrorType<unkno
  * @summary storeValid
  */
 export const useStoreValidUsingPUT1Hook = () => {
-    const storeValidUsingPUT1 = useCustomClient<void>()
+    const storeValidUsingPUT1 = useTypesRepoSwaggerClient<void>()
 
     return (technicalName: string, params?: StoreValidUsingPUT1Params) => {
         return storeValidUsingPUT1({ url: `/attrprofiles/attrprofile/valid/${technicalName}`, method: 'put', params })
     }
 }
 
-export const useStoreValidUsingPUT1MutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreValidUsingPUT1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT1Hook>>>,
         TError,
@@ -1680,12 +1679,12 @@ export const useStoreValidUsingPUT1MutationOptions = <TError = ErrorType<unknown
 
 export type StoreValidUsingPUT1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT1Hook>>>>
 
-export type StoreValidUsingPUT1MutationError = ErrorType<unknown>
+export type StoreValidUsingPUT1MutationError = unknown
 
 /**
  * @summary storeValid
  */
-export const useStoreValidUsingPUT1 = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreValidUsingPUT1 = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT1Hook>>>,
         TError,
@@ -1702,14 +1701,14 @@ export const useStoreValidUsingPUT1 = <TError = ErrorType<unknown>, TContext = u
  * @summary storeUnValid
  */
 export const useStoreUnValidUsingDELETEHook = () => {
-    const storeUnValidUsingDELETE = useCustomClient<void>()
+    const storeUnValidUsingDELETE = useTypesRepoSwaggerClient<void>()
 
     return (technicalName: string, params?: StoreUnValidUsingDELETEParams) => {
         return storeUnValidUsingDELETE({ url: `/attrprofiles/attrprofile/valid/${technicalName}`, method: 'delete', params })
     }
 }
 
-export const useStoreUnValidUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreUnValidUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreUnValidUsingDELETEHook>>>,
         TError,
@@ -1740,12 +1739,12 @@ export const useStoreUnValidUsingDELETEMutationOptions = <TError = ErrorType<unk
 
 export type StoreUnValidUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreUnValidUsingDELETEHook>>>>
 
-export type StoreUnValidUsingDELETEMutationError = ErrorType<unknown>
+export type StoreUnValidUsingDELETEMutationError = unknown
 
 /**
  * @summary storeUnValid
  */
-export const useStoreUnValidUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreUnValidUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreUnValidUsingDELETEHook>>>,
         TError,
@@ -1762,7 +1761,7 @@ export const useStoreUnValidUsingDELETE = <TError = ErrorType<unknown>, TContext
  * @summary getAttributeProfile
  */
 export const useGetAttributeProfileUsingGETHook = () => {
-    const getAttributeProfileUsingGET = useCustomClient<AttributeProfile>()
+    const getAttributeProfileUsingGET = useTypesRepoSwaggerClient<AttributeProfile>()
 
     return (technicalName: string, signal?: AbortSignal) => {
         return getAttributeProfileUsingGET({ url: `/attrprofiles/attrprofile/${technicalName}`, method: 'get', signal })
@@ -1773,7 +1772,7 @@ export const getGetAttributeProfileUsingGETQueryKey = (technicalName: string) =>
 
 export const useGetAttributeProfileUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileUsingGETHook>>>, TError, TData> },
@@ -1791,15 +1790,12 @@ export const useGetAttributeProfileUsingGETQueryOptions = <
 }
 
 export type GetAttributeProfileUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileUsingGETHook>>>>
-export type GetAttributeProfileUsingGETQueryError = ErrorType<void>
+export type GetAttributeProfileUsingGETQueryError = void
 
 /**
  * @summary getAttributeProfile
  */
-export const useGetAttributeProfileUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useGetAttributeProfileUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileUsingGETHook>>>, TError = void>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -1816,9 +1812,9 @@ export const useGetAttributeProfileUsingGET = <
  * @summary listAttrProfile
  */
 export const useListAttrProfileUsingGETHook = () => {
-    const listAttrProfileUsingGET = useCustomClient<AttributeProfilePreview>()
+    const listAttrProfileUsingGET = useTypesRepoSwaggerClient<AttributeProfilePreview>()
 
-    return (attributeProfileFilterBody: BodyType<AttributeProfileFilterBody>, signal?: AbortSignal) => {
+    return (attributeProfileFilterBody: AttributeProfileFilterBody, signal?: AbortSignal) => {
         return listAttrProfileUsingGET({ url: `/attrprofiles/list`, method: 'get', headers: { 'Content-Type': 'application/json' }, signal })
     }
 }
@@ -1826,10 +1822,7 @@ export const useListAttrProfileUsingGETHook = () => {
 export const getListAttrProfileUsingGETQueryKey = (attributeProfileFilterBody: AttributeProfileFilterBody) =>
     [`/attrprofiles/list`, attributeProfileFilterBody] as const
 
-export const useListAttrProfileUsingGETQueryOptions = <
-    TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useListAttrProfileUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingGETHook>>>, TError = void>(
     attributeProfileFilterBody: AttributeProfileFilterBody,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -1846,12 +1839,12 @@ export const useListAttrProfileUsingGETQueryOptions = <
 }
 
 export type ListAttrProfileUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingGETHook>>>>
-export type ListAttrProfileUsingGETQueryError = ErrorType<void>
+export type ListAttrProfileUsingGETQueryError = void
 
 /**
  * @summary listAttrProfile
  */
-export const useListAttrProfileUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingGETHook>>>, TError = ErrorType<void>>(
+export const useListAttrProfileUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingGETHook>>>, TError = void>(
     attributeProfileFilterBody: AttributeProfileFilterBody,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -1868,9 +1861,9 @@ export const useListAttrProfileUsingGET = <TData = Awaited<ReturnType<ReturnType
  * @summary listAttrProfile
  */
 export const useListAttrProfileUsingPOSTHook = () => {
-    const listAttrProfileUsingPOST = useCustomClient<AttributeProfilePreview | void>()
+    const listAttrProfileUsingPOST = useTypesRepoSwaggerClient<AttributeProfilePreview | void>()
 
-    return (attributeProfileFilterBody: BodyType<AttributeProfileFilterBody>) => {
+    return (attributeProfileFilterBody: AttributeProfileFilterBody) => {
         return listAttrProfileUsingPOST({
             url: `/attrprofiles/list`,
             method: 'post',
@@ -1880,17 +1873,17 @@ export const useListAttrProfileUsingPOSTHook = () => {
     }
 }
 
-export const useListAttrProfileUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useListAttrProfileUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingPOSTHook>>>,
         TError,
-        { data: BodyType<AttributeProfileFilterBody> },
+        { data: AttributeProfileFilterBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingPOSTHook>>>,
     TError,
-    { data: BodyType<AttributeProfileFilterBody> },
+    { data: AttributeProfileFilterBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1899,7 +1892,7 @@ export const useListAttrProfileUsingPOSTMutationOptions = <TError = ErrorType<un
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingPOSTHook>>>,
-        { data: BodyType<AttributeProfileFilterBody> }
+        { data: AttributeProfileFilterBody }
     > = (props) => {
         const { data } = props ?? {}
 
@@ -1910,17 +1903,17 @@ export const useListAttrProfileUsingPOSTMutationOptions = <TError = ErrorType<un
 }
 
 export type ListAttrProfileUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingPOSTHook>>>>
-export type ListAttrProfileUsingPOSTMutationBody = BodyType<AttributeProfileFilterBody>
-export type ListAttrProfileUsingPOSTMutationError = ErrorType<unknown>
+export type ListAttrProfileUsingPOSTMutationBody = AttributeProfileFilterBody
+export type ListAttrProfileUsingPOSTMutationError = unknown
 
 /**
  * @summary listAttrProfile
  */
-export const useListAttrProfileUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useListAttrProfileUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useListAttrProfileUsingPOSTHook>>>,
         TError,
-        { data: BodyType<AttributeProfileFilterBody> },
+        { data: AttributeProfileFilterBody },
         TContext
     >
 }) => {
@@ -1933,9 +1926,9 @@ export const useListAttrProfileUsingPOST = <TError = ErrorType<unknown>, TContex
  * @summary listGenericAttrProfile
  */
 export const useListGenericAttrProfileUsingGETHook = () => {
-    const listGenericAttrProfileUsingGET = useCustomClient<AttributeProfilePreview>()
+    const listGenericAttrProfileUsingGET = useTypesRepoSwaggerClient<AttributeProfilePreview>()
 
-    return (attributeProfileFilterBody: BodyType<AttributeProfileFilterBody>, signal?: AbortSignal) => {
+    return (attributeProfileFilterBody: AttributeProfileFilterBody, signal?: AbortSignal) => {
         return listGenericAttrProfileUsingGET({
             url: `/attrprofiles/list/generic`,
             method: 'get',
@@ -1950,7 +1943,7 @@ export const getListGenericAttrProfileUsingGETQueryKey = (attributeProfileFilter
 
 export const useListGenericAttrProfileUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useListGenericAttrProfileUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     attributeProfileFilterBody: AttributeProfileFilterBody,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListGenericAttrProfileUsingGETHook>>>, TError, TData> },
@@ -1968,14 +1961,14 @@ export const useListGenericAttrProfileUsingGETQueryOptions = <
 }
 
 export type ListGenericAttrProfileUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListGenericAttrProfileUsingGETHook>>>>
-export type ListGenericAttrProfileUsingGETQueryError = ErrorType<void>
+export type ListGenericAttrProfileUsingGETQueryError = void
 
 /**
  * @summary listGenericAttrProfile
  */
 export const useListGenericAttrProfileUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useListGenericAttrProfileUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     attributeProfileFilterBody: AttributeProfileFilterBody,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListGenericAttrProfileUsingGETHook>>>, TError, TData> },
@@ -1993,7 +1986,7 @@ export const useListGenericAttrProfileUsingGET = <
  * @summary listAttrProfileLM
  */
 export const useListAttrProfileLMUsingGETHook = () => {
-    const listAttrProfileLMUsingGET = useCustomClient<AttributeProfilePreview>()
+    const listAttrProfileLMUsingGET = useTypesRepoSwaggerClient<AttributeProfilePreview>()
 
     return (signal?: AbortSignal) => {
         return listAttrProfileLMUsingGET({ url: `/attrprofiles/listLM`, method: 'get', signal })
@@ -2004,7 +1997,7 @@ export const getListAttrProfileLMUsingGETQueryKey = () => [`/attrprofiles/listLM
 
 export const useListAttrProfileLMUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMUsingGETHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -2021,14 +2014,14 @@ export const useListAttrProfileLMUsingGETQueryOptions = <
 }
 
 export type ListAttrProfileLMUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMUsingGETHook>>>>
-export type ListAttrProfileLMUsingGETQueryError = ErrorType<void>
+export type ListAttrProfileLMUsingGETQueryError = void
 
 /**
  * @summary listAttrProfileLM
  */
 export const useListAttrProfileLMUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMUsingGETHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2045,9 +2038,9 @@ export const useListAttrProfileLMUsingGET = <
  * @summary storeNewCiTypeRelationshipTypeMap
  */
 export const useStoreNewCiTypeRelationshipTypeMapUsingPOSTHook = () => {
-    const storeNewCiTypeRelationshipTypeMapUsingPOST = useCustomClient<void>()
+    const storeNewCiTypeRelationshipTypeMapUsingPOST = useTypesRepoSwaggerClient<void>()
 
-    return (ciTypeRelationshipTypeMapBody: BodyType<CiTypeRelationshipTypeMapBody>, params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams) => {
+    return (ciTypeRelationshipTypeMapBody: CiTypeRelationshipTypeMapBody, params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams) => {
         return storeNewCiTypeRelationshipTypeMapUsingPOST({
             url: `/cityperelationshiptypemaps/cityperelationshiptypemap/store`,
             method: 'post',
@@ -2058,17 +2051,17 @@ export const useStoreNewCiTypeRelationshipTypeMapUsingPOSTHook = () => {
     }
 }
 
-export const useStoreNewCiTypeRelationshipTypeMapUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreNewCiTypeRelationshipTypeMapUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeRelationshipTypeMapUsingPOSTHook>>>,
         TError,
-        { data: BodyType<CiTypeRelationshipTypeMapBody>; params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams },
+        { data: CiTypeRelationshipTypeMapBody; params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeRelationshipTypeMapUsingPOSTHook>>>,
     TError,
-    { data: BodyType<CiTypeRelationshipTypeMapBody>; params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams },
+    { data: CiTypeRelationshipTypeMapBody; params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2077,7 +2070,7 @@ export const useStoreNewCiTypeRelationshipTypeMapUsingPOSTMutationOptions = <TEr
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeRelationshipTypeMapUsingPOSTHook>>>,
-        { data: BodyType<CiTypeRelationshipTypeMapBody>; params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams }
+        { data: CiTypeRelationshipTypeMapBody; params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -2090,17 +2083,17 @@ export const useStoreNewCiTypeRelationshipTypeMapUsingPOSTMutationOptions = <TEr
 export type StoreNewCiTypeRelationshipTypeMapUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeRelationshipTypeMapUsingPOSTHook>>>
 >
-export type StoreNewCiTypeRelationshipTypeMapUsingPOSTMutationBody = BodyType<CiTypeRelationshipTypeMapBody>
-export type StoreNewCiTypeRelationshipTypeMapUsingPOSTMutationError = ErrorType<unknown>
+export type StoreNewCiTypeRelationshipTypeMapUsingPOSTMutationBody = CiTypeRelationshipTypeMapBody
+export type StoreNewCiTypeRelationshipTypeMapUsingPOSTMutationError = unknown
 
 /**
  * @summary storeNewCiTypeRelationshipTypeMap
  */
-export const useStoreNewCiTypeRelationshipTypeMapUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreNewCiTypeRelationshipTypeMapUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeRelationshipTypeMapUsingPOSTHook>>>,
         TError,
-        { data: BodyType<CiTypeRelationshipTypeMapBody>; params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams },
+        { data: CiTypeRelationshipTypeMapBody; params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams },
         TContext
     >
 }) => {
@@ -2113,9 +2106,9 @@ export const useStoreNewCiTypeRelationshipTypeMapUsingPOST = <TError = ErrorType
  * @summary storeExistsCiTypeRelationshipTypeMap
  */
 export const useStoreExistsCiTypeRelationshipTypeMapUsingPUTHook = () => {
-    const storeExistsCiTypeRelationshipTypeMapUsingPUT = useCustomClient<void>()
+    const storeExistsCiTypeRelationshipTypeMapUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (ciTypeRelationshipTypeMapBody: BodyType<CiTypeRelationshipTypeMapBody>, params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams) => {
+    return (ciTypeRelationshipTypeMapBody: CiTypeRelationshipTypeMapBody, params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams) => {
         return storeExistsCiTypeRelationshipTypeMapUsingPUT({
             url: `/cityperelationshiptypemaps/cityperelationshiptypemap/store`,
             method: 'put',
@@ -2126,17 +2119,17 @@ export const useStoreExistsCiTypeRelationshipTypeMapUsingPUTHook = () => {
     }
 }
 
-export const useStoreExistsCiTypeRelationshipTypeMapUsingPUTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreExistsCiTypeRelationshipTypeMapUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistsCiTypeRelationshipTypeMapUsingPUTHook>>>,
         TError,
-        { data: BodyType<CiTypeRelationshipTypeMapBody>; params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams },
+        { data: CiTypeRelationshipTypeMapBody; params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreExistsCiTypeRelationshipTypeMapUsingPUTHook>>>,
     TError,
-    { data: BodyType<CiTypeRelationshipTypeMapBody>; params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams },
+    { data: CiTypeRelationshipTypeMapBody; params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2145,7 +2138,7 @@ export const useStoreExistsCiTypeRelationshipTypeMapUsingPUTMutationOptions = <T
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreExistsCiTypeRelationshipTypeMapUsingPUTHook>>>,
-        { data: BodyType<CiTypeRelationshipTypeMapBody>; params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams }
+        { data: CiTypeRelationshipTypeMapBody; params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -2158,17 +2151,17 @@ export const useStoreExistsCiTypeRelationshipTypeMapUsingPUTMutationOptions = <T
 export type StoreExistsCiTypeRelationshipTypeMapUsingPUTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreExistsCiTypeRelationshipTypeMapUsingPUTHook>>>
 >
-export type StoreExistsCiTypeRelationshipTypeMapUsingPUTMutationBody = BodyType<CiTypeRelationshipTypeMapBody>
-export type StoreExistsCiTypeRelationshipTypeMapUsingPUTMutationError = ErrorType<unknown>
+export type StoreExistsCiTypeRelationshipTypeMapUsingPUTMutationBody = CiTypeRelationshipTypeMapBody
+export type StoreExistsCiTypeRelationshipTypeMapUsingPUTMutationError = unknown
 
 /**
  * @summary storeExistsCiTypeRelationshipTypeMap
  */
-export const useStoreExistsCiTypeRelationshipTypeMapUsingPUT = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreExistsCiTypeRelationshipTypeMapUsingPUT = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistsCiTypeRelationshipTypeMapUsingPUTHook>>>,
         TError,
-        { data: BodyType<CiTypeRelationshipTypeMapBody>; params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams },
+        { data: CiTypeRelationshipTypeMapBody; params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams },
         TContext
     >
 }) => {
@@ -2181,9 +2174,9 @@ export const useStoreExistsCiTypeRelationshipTypeMapUsingPUT = <TError = ErrorTy
  * @summary storeAdminEntity
  */
 export const useStoreAdminEntityUsingPOSTHook = () => {
-    const storeAdminEntityUsingPOST = useCustomClient<void>()
+    const storeAdminEntityUsingPOST = useTypesRepoSwaggerClient<void>()
 
-    return (ciTypeBody: BodyType<CiTypeBody>, params?: StoreAdminEntityUsingPOSTParams) => {
+    return (ciTypeBody: CiTypeBody, params?: StoreAdminEntityUsingPOSTParams) => {
         return storeAdminEntityUsingPOST({
             url: `/citypes/adminentity/store`,
             method: 'post',
@@ -2194,17 +2187,17 @@ export const useStoreAdminEntityUsingPOSTHook = () => {
     }
 }
 
-export const useStoreAdminEntityUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreAdminEntityUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>,
         TError,
-        { data: BodyType<CiTypeBody>; params?: StoreAdminEntityUsingPOSTParams },
+        { data: CiTypeBody; params?: StoreAdminEntityUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>,
     TError,
-    { data: BodyType<CiTypeBody>; params?: StoreAdminEntityUsingPOSTParams },
+    { data: CiTypeBody; params?: StoreAdminEntityUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2213,7 +2206,7 @@ export const useStoreAdminEntityUsingPOSTMutationOptions = <TError = ErrorType<u
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>,
-        { data: BodyType<CiTypeBody>; params?: StoreAdminEntityUsingPOSTParams }
+        { data: CiTypeBody; params?: StoreAdminEntityUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -2224,17 +2217,17 @@ export const useStoreAdminEntityUsingPOSTMutationOptions = <TError = ErrorType<u
 }
 
 export type StoreAdminEntityUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>>
-export type StoreAdminEntityUsingPOSTMutationBody = BodyType<CiTypeBody>
-export type StoreAdminEntityUsingPOSTMutationError = ErrorType<unknown>
+export type StoreAdminEntityUsingPOSTMutationBody = CiTypeBody
+export type StoreAdminEntityUsingPOSTMutationError = unknown
 
 /**
  * @summary storeAdminEntity
  */
-export const useStoreAdminEntityUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreAdminEntityUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>,
         TError,
-        { data: BodyType<CiTypeBody>; params?: StoreAdminEntityUsingPOSTParams },
+        { data: CiTypeBody; params?: StoreAdminEntityUsingPOSTParams },
         TContext
     >
 }) => {
@@ -2247,9 +2240,9 @@ export const useStoreAdminEntityUsingPOST = <TError = ErrorType<unknown>, TConte
  * @summary storeNewCiType
  */
 export const useStoreNewCiTypeUsingPOSTHook = () => {
-    const storeNewCiTypeUsingPOST = useCustomClient<void>()
+    const storeNewCiTypeUsingPOST = useTypesRepoSwaggerClient<void>()
 
-    return (ciTypeBody: BodyType<CiTypeBody>, params?: StoreNewCiTypeUsingPOSTParams) => {
+    return (ciTypeBody: CiTypeBody, params?: StoreNewCiTypeUsingPOSTParams) => {
         return storeNewCiTypeUsingPOST({
             url: `/citypes/citype/store`,
             method: 'post',
@@ -2260,17 +2253,17 @@ export const useStoreNewCiTypeUsingPOSTHook = () => {
     }
 }
 
-export const useStoreNewCiTypeUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreNewCiTypeUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>,
         TError,
-        { data: BodyType<CiTypeBody>; params?: StoreNewCiTypeUsingPOSTParams },
+        { data: CiTypeBody; params?: StoreNewCiTypeUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>,
     TError,
-    { data: BodyType<CiTypeBody>; params?: StoreNewCiTypeUsingPOSTParams },
+    { data: CiTypeBody; params?: StoreNewCiTypeUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2279,7 +2272,7 @@ export const useStoreNewCiTypeUsingPOSTMutationOptions = <TError = ErrorType<unk
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>,
-        { data: BodyType<CiTypeBody>; params?: StoreNewCiTypeUsingPOSTParams }
+        { data: CiTypeBody; params?: StoreNewCiTypeUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -2290,17 +2283,17 @@ export const useStoreNewCiTypeUsingPOSTMutationOptions = <TError = ErrorType<unk
 }
 
 export type StoreNewCiTypeUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>>
-export type StoreNewCiTypeUsingPOSTMutationBody = BodyType<CiTypeBody>
-export type StoreNewCiTypeUsingPOSTMutationError = ErrorType<unknown>
+export type StoreNewCiTypeUsingPOSTMutationBody = CiTypeBody
+export type StoreNewCiTypeUsingPOSTMutationError = unknown
 
 /**
  * @summary storeNewCiType
  */
-export const useStoreNewCiTypeUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreNewCiTypeUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>,
         TError,
-        { data: BodyType<CiTypeBody>; params?: StoreNewCiTypeUsingPOSTParams },
+        { data: CiTypeBody; params?: StoreNewCiTypeUsingPOSTParams },
         TContext
     >
 }) => {
@@ -2313,9 +2306,9 @@ export const useStoreNewCiTypeUsingPOST = <TError = ErrorType<unknown>, TContext
  * @summary storeExistCiType
  */
 export const useStoreExistCiTypeUsingPUTHook = () => {
-    const storeExistCiTypeUsingPUT = useCustomClient<void>()
+    const storeExistCiTypeUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (ciTypeBody: BodyType<CiTypeBody>, params?: StoreExistCiTypeUsingPUTParams) => {
+    return (ciTypeBody: CiTypeBody, params?: StoreExistCiTypeUsingPUTParams) => {
         return storeExistCiTypeUsingPUT({
             url: `/citypes/citype/store`,
             method: 'put',
@@ -2326,17 +2319,17 @@ export const useStoreExistCiTypeUsingPUTHook = () => {
     }
 }
 
-export const useStoreExistCiTypeUsingPUTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreExistCiTypeUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>,
         TError,
-        { data: BodyType<CiTypeBody>; params?: StoreExistCiTypeUsingPUTParams },
+        { data: CiTypeBody; params?: StoreExistCiTypeUsingPUTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>,
     TError,
-    { data: BodyType<CiTypeBody>; params?: StoreExistCiTypeUsingPUTParams },
+    { data: CiTypeBody; params?: StoreExistCiTypeUsingPUTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2345,7 +2338,7 @@ export const useStoreExistCiTypeUsingPUTMutationOptions = <TError = ErrorType<un
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>,
-        { data: BodyType<CiTypeBody>; params?: StoreExistCiTypeUsingPUTParams }
+        { data: CiTypeBody; params?: StoreExistCiTypeUsingPUTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -2356,17 +2349,17 @@ export const useStoreExistCiTypeUsingPUTMutationOptions = <TError = ErrorType<un
 }
 
 export type StoreExistCiTypeUsingPUTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>>
-export type StoreExistCiTypeUsingPUTMutationBody = BodyType<CiTypeBody>
-export type StoreExistCiTypeUsingPUTMutationError = ErrorType<unknown>
+export type StoreExistCiTypeUsingPUTMutationBody = CiTypeBody
+export type StoreExistCiTypeUsingPUTMutationError = unknown
 
 /**
  * @summary storeExistCiType
  */
-export const useStoreExistCiTypeUsingPUT = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreExistCiTypeUsingPUT = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>,
         TError,
-        { data: BodyType<CiTypeBody>; params?: StoreExistCiTypeUsingPUTParams },
+        { data: CiTypeBody; params?: StoreExistCiTypeUsingPUTParams },
         TContext
     >
 }) => {
@@ -2379,14 +2372,14 @@ export const useStoreExistCiTypeUsingPUT = <TError = ErrorType<unknown>, TContex
  * @summary storeValid
  */
 export const useStoreValidUsingPUT2Hook = () => {
-    const storeValidUsingPUT2 = useCustomClient<void>()
+    const storeValidUsingPUT2 = useTypesRepoSwaggerClient<void>()
 
     return (technicalName: string, params?: StoreValidUsingPUT2Params) => {
         return storeValidUsingPUT2({ url: `/citypes/citype/valid/${technicalName}`, method: 'put', params })
     }
 }
 
-export const useStoreValidUsingPUT2MutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreValidUsingPUT2MutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT2Hook>>>,
         TError,
@@ -2417,12 +2410,12 @@ export const useStoreValidUsingPUT2MutationOptions = <TError = ErrorType<unknown
 
 export type StoreValidUsingPUT2MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT2Hook>>>>
 
-export type StoreValidUsingPUT2MutationError = ErrorType<unknown>
+export type StoreValidUsingPUT2MutationError = unknown
 
 /**
  * @summary storeValid
  */
-export const useStoreValidUsingPUT2 = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreValidUsingPUT2 = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT2Hook>>>,
         TError,
@@ -2439,14 +2432,14 @@ export const useStoreValidUsingPUT2 = <TError = ErrorType<unknown>, TContext = u
  * @summary storeUnvalid
  */
 export const useStoreUnvalidUsingDELETE1Hook = () => {
-    const storeUnvalidUsingDELETE1 = useCustomClient<void>()
+    const storeUnvalidUsingDELETE1 = useTypesRepoSwaggerClient<void>()
 
     return (technicalName: string, params?: StoreUnvalidUsingDELETE1Params) => {
         return storeUnvalidUsingDELETE1({ url: `/citypes/citype/valid/${technicalName}`, method: 'delete', params })
     }
 }
 
-export const useStoreUnvalidUsingDELETE1MutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreUnvalidUsingDELETE1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETE1Hook>>>,
         TError,
@@ -2477,12 +2470,12 @@ export const useStoreUnvalidUsingDELETE1MutationOptions = <TError = ErrorType<un
 
 export type StoreUnvalidUsingDELETE1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETE1Hook>>>>
 
-export type StoreUnvalidUsingDELETE1MutationError = ErrorType<unknown>
+export type StoreUnvalidUsingDELETE1MutationError = unknown
 
 /**
  * @summary storeUnvalid
  */
-export const useStoreUnvalidUsingDELETE1 = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreUnvalidUsingDELETE1 = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETE1Hook>>>,
         TError,
@@ -2499,7 +2492,7 @@ export const useStoreUnvalidUsingDELETE1 = <TError = ErrorType<unknown>, TContex
  * @summary getCiType
  */
 export const useGetCiTypeUsingGETHook = () => {
-    const getCiTypeUsingGET = useCustomClient<CiType>()
+    const getCiTypeUsingGET = useTypesRepoSwaggerClient<CiType>()
 
     return (technicalName: string, signal?: AbortSignal) => {
         return getCiTypeUsingGET({ url: `/citypes/citype/${technicalName}`, method: 'get', signal })
@@ -2508,7 +2501,7 @@ export const useGetCiTypeUsingGETHook = () => {
 
 export const getGetCiTypeUsingGETQueryKey = (technicalName: string) => [`/citypes/citype/${technicalName}`] as const
 
-export const useGetCiTypeUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetCiTypeUsingGETHook>>>, TError = ErrorType<void>>(
+export const useGetCiTypeUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetCiTypeUsingGETHook>>>, TError = void>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCiTypeUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCiTypeUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -2525,12 +2518,12 @@ export const useGetCiTypeUsingGETQueryOptions = <TData = Awaited<ReturnType<Retu
 }
 
 export type GetCiTypeUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetCiTypeUsingGETHook>>>>
-export type GetCiTypeUsingGETQueryError = ErrorType<void>
+export type GetCiTypeUsingGETQueryError = void
 
 /**
  * @summary getCiType
  */
-export const useGetCiTypeUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetCiTypeUsingGETHook>>>, TError = ErrorType<void>>(
+export const useGetCiTypeUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetCiTypeUsingGETHook>>>, TError = void>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCiTypeUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2547,9 +2540,9 @@ export const useGetCiTypeUsingGET = <TData = Awaited<ReturnType<ReturnType<typeo
  * @summary storeAttributeTextation
  */
 export const useStoreAttributeTextationUsingPUTHook = () => {
-    const storeAttributeTextationUsingPUT = useCustomClient<void>()
+    const storeAttributeTextationUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (technicalName: string, attTecName: string, attributeBody: BodyType<AttributeBody>, params?: StoreAttributeTextationUsingPUTParams) => {
+    return (technicalName: string, attTecName: string, attributeBody: AttributeBody, params?: StoreAttributeTextationUsingPUTParams) => {
         return storeAttributeTextationUsingPUT({
             url: `/citypes/citype/${technicalName}/attribute/${attTecName}`,
             method: 'put',
@@ -2560,17 +2553,17 @@ export const useStoreAttributeTextationUsingPUTHook = () => {
     }
 }
 
-export const useStoreAttributeTextationUsingPUTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreAttributeTextationUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUTHook>>>,
         TError,
-        { technicalName: string; attTecName: string; data: BodyType<AttributeBody>; params?: StoreAttributeTextationUsingPUTParams },
+        { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUTHook>>>,
     TError,
-    { technicalName: string; attTecName: string; data: BodyType<AttributeBody>; params?: StoreAttributeTextationUsingPUTParams },
+    { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2579,7 +2572,7 @@ export const useStoreAttributeTextationUsingPUTMutationOptions = <TError = Error
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUTHook>>>,
-        { technicalName: string; attTecName: string; data: BodyType<AttributeBody>; params?: StoreAttributeTextationUsingPUTParams }
+        { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUTParams }
     > = (props) => {
         const { technicalName, attTecName, data, params } = props ?? {}
 
@@ -2592,17 +2585,17 @@ export const useStoreAttributeTextationUsingPUTMutationOptions = <TError = Error
 export type StoreAttributeTextationUsingPUTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUTHook>>>
 >
-export type StoreAttributeTextationUsingPUTMutationBody = BodyType<AttributeBody>
-export type StoreAttributeTextationUsingPUTMutationError = ErrorType<unknown>
+export type StoreAttributeTextationUsingPUTMutationBody = AttributeBody
+export type StoreAttributeTextationUsingPUTMutationError = unknown
 
 /**
  * @summary storeAttributeTextation
  */
-export const useStoreAttributeTextationUsingPUT = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreAttributeTextationUsingPUT = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUTHook>>>,
         TError,
-        { technicalName: string; attTecName: string; data: BodyType<AttributeBody>; params?: StoreAttributeTextationUsingPUTParams },
+        { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUTParams },
         TContext
     >
 }) => {
@@ -2615,14 +2608,14 @@ export const useStoreAttributeTextationUsingPUT = <TError = ErrorType<unknown>, 
  * @summary deleteAttributeTextation
  */
 export const useDeleteAttributeTextationUsingDELETEHook = () => {
-    const deleteAttributeTextationUsingDELETE = useCustomClient<void>()
+    const deleteAttributeTextationUsingDELETE = useTypesRepoSwaggerClient<void>()
 
     return (technicalName: string, attTecName: string) => {
         return deleteAttributeTextationUsingDELETE({ url: `/citypes/citype/${technicalName}/attribute/${attTecName}`, method: 'delete' })
     }
 }
 
-export const useDeleteAttributeTextationUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteAttributeTextationUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationUsingDELETEHook>>>,
         TError,
@@ -2655,12 +2648,12 @@ export type DeleteAttributeTextationUsingDELETEMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationUsingDELETEHook>>>
 >
 
-export type DeleteAttributeTextationUsingDELETEMutationError = ErrorType<unknown>
+export type DeleteAttributeTextationUsingDELETEMutationError = unknown
 
 /**
  * @summary deleteAttributeTextation
  */
-export const useDeleteAttributeTextationUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteAttributeTextationUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationUsingDELETEHook>>>,
         TError,
@@ -2677,7 +2670,7 @@ export const useDeleteAttributeTextationUsingDELETE = <TError = ErrorType<unknow
  * @summary getAttributeOverrides
  */
 export const useGetAttributeOverridesUsingGETHook = () => {
-    const getAttributeOverridesUsingGET = useCustomClient<Attribute[]>()
+    const getAttributeOverridesUsingGET = useTypesRepoSwaggerClient<Attribute[]>()
 
     return (technicalName: string, signal?: AbortSignal) => {
         return getAttributeOverridesUsingGET({ url: `/citypes/citype/${technicalName}/attributeOverride`, method: 'get', signal })
@@ -2688,7 +2681,7 @@ export const getGetAttributeOverridesUsingGETQueryKey = (technicalName: string) 
 
 export const useGetAttributeOverridesUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesUsingGETHook>>>, TError, TData> },
@@ -2706,15 +2699,12 @@ export const useGetAttributeOverridesUsingGETQueryOptions = <
 }
 
 export type GetAttributeOverridesUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesUsingGETHook>>>>
-export type GetAttributeOverridesUsingGETQueryError = ErrorType<void>
+export type GetAttributeOverridesUsingGETQueryError = void
 
 /**
  * @summary getAttributeOverrides
  */
-export const useGetAttributeOverridesUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useGetAttributeOverridesUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesUsingGETHook>>>, TError = void>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2731,7 +2721,7 @@ export const useGetAttributeOverridesUsingGET = <
  * @summary listRelatedCiTypes
  */
 export const useListRelatedCiTypesUsingGETHook = () => {
-    const listRelatedCiTypesUsingGET = useCustomClient<RelatedCiTypePreviewList>()
+    const listRelatedCiTypesUsingGET = useTypesRepoSwaggerClient<RelatedCiTypePreviewList>()
 
     return (technicalName: string, signal?: AbortSignal) => {
         return listRelatedCiTypesUsingGET({ url: `/citypes/citype/${technicalName}/related`, method: 'get', signal })
@@ -2742,7 +2732,7 @@ export const getListRelatedCiTypesUsingGETQueryKey = (technicalName: string) => 
 
 export const useListRelatedCiTypesUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesUsingGETHook>>>, TError, TData> },
@@ -2760,15 +2750,12 @@ export const useListRelatedCiTypesUsingGETQueryOptions = <
 }
 
 export type ListRelatedCiTypesUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesUsingGETHook>>>>
-export type ListRelatedCiTypesUsingGETQueryError = ErrorType<void>
+export type ListRelatedCiTypesUsingGETQueryError = void
 
 /**
  * @summary listRelatedCiTypes
  */
-export const useListRelatedCiTypesUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useListRelatedCiTypesUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesUsingGETHook>>>, TError = void>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2785,7 +2772,7 @@ export const useListRelatedCiTypesUsingGET = <
  * @summary getSummarizingCard
  */
 export const useGetSummarizingCardUsingGETHook = () => {
-    const getSummarizingCardUsingGET = useCustomClient<SummarizingCardUi>()
+    const getSummarizingCardUsingGET = useTypesRepoSwaggerClient<SummarizingCardUi>()
 
     return (technicalName: string, signal?: AbortSignal) => {
         return getSummarizingCardUsingGET({ url: `/citypes/citype/${technicalName}/summarizingcard`, method: 'get', signal })
@@ -2796,7 +2783,7 @@ export const getGetSummarizingCardUsingGETQueryKey = (technicalName: string) => 
 
 export const useGetSummarizingCardUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardUsingGETHook>>>, TError, TData> },
@@ -2814,15 +2801,12 @@ export const useGetSummarizingCardUsingGETQueryOptions = <
 }
 
 export type GetSummarizingCardUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardUsingGETHook>>>>
-export type GetSummarizingCardUsingGETQueryError = ErrorType<void>
+export type GetSummarizingCardUsingGETQueryError = void
 
 /**
  * @summary getSummarizingCard
  */
-export const useGetSummarizingCardUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useGetSummarizingCardUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardUsingGETHook>>>, TError = void>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2839,9 +2823,9 @@ export const useGetSummarizingCardUsingGET = <
  * @summary setSummarizingCard
  */
 export const useSetSummarizingCardUsingPUTHook = () => {
-    const setSummarizingCardUsingPUT = useCustomClient<void>()
+    const setSummarizingCardUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (technicalName: string, summarizingCardUi: BodyType<SummarizingCardUi>) => {
+    return (technicalName: string, summarizingCardUi: SummarizingCardUi) => {
         return setSummarizingCardUsingPUT({
             url: `/citypes/citype/${technicalName}/summarizingcard`,
             method: 'put',
@@ -2851,17 +2835,17 @@ export const useSetSummarizingCardUsingPUTHook = () => {
     }
 }
 
-export const useSetSummarizingCardUsingPUTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useSetSummarizingCardUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useSetSummarizingCardUsingPUTHook>>>,
         TError,
-        { technicalName: string; data: BodyType<SummarizingCardUi> },
+        { technicalName: string; data: SummarizingCardUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useSetSummarizingCardUsingPUTHook>>>,
     TError,
-    { technicalName: string; data: BodyType<SummarizingCardUi> },
+    { technicalName: string; data: SummarizingCardUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2870,7 +2854,7 @@ export const useSetSummarizingCardUsingPUTMutationOptions = <TError = ErrorType<
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useSetSummarizingCardUsingPUTHook>>>,
-        { technicalName: string; data: BodyType<SummarizingCardUi> }
+        { technicalName: string; data: SummarizingCardUi }
     > = (props) => {
         const { technicalName, data } = props ?? {}
 
@@ -2881,17 +2865,17 @@ export const useSetSummarizingCardUsingPUTMutationOptions = <TError = ErrorType<
 }
 
 export type SetSummarizingCardUsingPUTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useSetSummarizingCardUsingPUTHook>>>>
-export type SetSummarizingCardUsingPUTMutationBody = BodyType<SummarizingCardUi>
-export type SetSummarizingCardUsingPUTMutationError = ErrorType<unknown>
+export type SetSummarizingCardUsingPUTMutationBody = SummarizingCardUi
+export type SetSummarizingCardUsingPUTMutationError = unknown
 
 /**
  * @summary setSummarizingCard
  */
-export const useSetSummarizingCardUsingPUT = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useSetSummarizingCardUsingPUT = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useSetSummarizingCardUsingPUTHook>>>,
         TError,
-        { technicalName: string; data: BodyType<SummarizingCardUi> },
+        { technicalName: string; data: SummarizingCardUi },
         TContext
     >
 }) => {
@@ -2904,14 +2888,14 @@ export const useSetSummarizingCardUsingPUT = <TError = ErrorType<unknown>, TCont
  * @summary deleteSummarizingCard
  */
 export const useDeleteSummarizingCardUsingDELETEHook = () => {
-    const deleteSummarizingCardUsingDELETE = useCustomClient<void>()
+    const deleteSummarizingCardUsingDELETE = useTypesRepoSwaggerClient<void>()
 
     return (technicalName: string) => {
         return deleteSummarizingCardUsingDELETE({ url: `/citypes/citype/${technicalName}/summarizingcard`, method: 'delete' })
     }
 }
 
-export const useDeleteSummarizingCardUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteSummarizingCardUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteSummarizingCardUsingDELETEHook>>>,
         TError,
@@ -2943,12 +2927,12 @@ export type DeleteSummarizingCardUsingDELETEMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useDeleteSummarizingCardUsingDELETEHook>>>
 >
 
-export type DeleteSummarizingCardUsingDELETEMutationError = ErrorType<unknown>
+export type DeleteSummarizingCardUsingDELETEMutationError = unknown
 
 /**
  * @summary deleteSummarizingCard
  */
-export const useDeleteSummarizingCardUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteSummarizingCardUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteSummarizingCardUsingDELETEHook>>>,
         TError,
@@ -2965,7 +2949,7 @@ export const useDeleteSummarizingCardUsingDELETE = <TError = ErrorType<unknown>,
  * @summary generateCodeAndURL
  */
 export const useGenerateCodeAndURLUsingGET1Hook = () => {
-    const generateCodeAndURLUsingGET1 = useCustomClient<CiCode>()
+    const generateCodeAndURLUsingGET1 = useTypesRepoSwaggerClient<CiCode>()
 
     return (technicalName: string, params?: GenerateCodeAndURLUsingGET1Params, signal?: AbortSignal) => {
         return generateCodeAndURLUsingGET1({ url: `/citypes/generate/${technicalName}`, method: 'get', params, signal })
@@ -2977,7 +2961,7 @@ export const getGenerateCodeAndURLUsingGET1QueryKey = (technicalName: string, pa
 
 export const useGenerateCodeAndURLUsingGET1QueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGET1Hook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     technicalName: string,
     params?: GenerateCodeAndURLUsingGET1Params,
@@ -2996,15 +2980,12 @@ export const useGenerateCodeAndURLUsingGET1QueryOptions = <
 }
 
 export type GenerateCodeAndURLUsingGET1QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGET1Hook>>>>
-export type GenerateCodeAndURLUsingGET1QueryError = ErrorType<void>
+export type GenerateCodeAndURLUsingGET1QueryError = void
 
 /**
  * @summary generateCodeAndURL
  */
-export const useGenerateCodeAndURLUsingGET1 = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGET1Hook>>>,
-    TError = ErrorType<void>,
->(
+export const useGenerateCodeAndURLUsingGET1 = <TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGET1Hook>>>, TError = void>(
     technicalName: string,
     params?: GenerateCodeAndURLUsingGET1Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGET1Hook>>>, TError, TData> },
@@ -3022,7 +3003,7 @@ export const useGenerateCodeAndURLUsingGET1 = <
  * @summary generateCodeAndURL
  */
 export const useGenerateCodeAndURLUsingGETHook = () => {
-    const generateCodeAndURLUsingGET = useCustomClient<CiCode[]>()
+    const generateCodeAndURLUsingGET = useTypesRepoSwaggerClient<CiCode[]>()
 
     return (technicalName: string, params: GenerateCodeAndURLUsingGETParams, signal?: AbortSignal) => {
         return generateCodeAndURLUsingGET({ url: `/citypes/generate/${technicalName}/bulk`, method: 'get', params, signal })
@@ -3034,7 +3015,7 @@ export const getGenerateCodeAndURLUsingGETQueryKey = (technicalName: string, par
 
 export const useGenerateCodeAndURLUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     technicalName: string,
     params: GenerateCodeAndURLUsingGETParams,
@@ -3053,15 +3034,12 @@ export const useGenerateCodeAndURLUsingGETQueryOptions = <
 }
 
 export type GenerateCodeAndURLUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGETHook>>>>
-export type GenerateCodeAndURLUsingGETQueryError = ErrorType<void>
+export type GenerateCodeAndURLUsingGETQueryError = void
 
 /**
  * @summary generateCodeAndURL
  */
-export const useGenerateCodeAndURLUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useGenerateCodeAndURLUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGETHook>>>, TError = void>(
     technicalName: string,
     params: GenerateCodeAndURLUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGETHook>>>, TError, TData> },
@@ -3079,7 +3057,7 @@ export const useGenerateCodeAndURLUsingGET = <
  * @summary getLastCode
  */
 export const useGetLastCodeUsingGETHook = () => {
-    const getLastCodeUsingGET = useCustomClient<CiCode>()
+    const getLastCodeUsingGET = useTypesRepoSwaggerClient<CiCode>()
 
     return (technicalName: string, params?: GetLastCodeUsingGETParams, signal?: AbortSignal) => {
         return getLastCodeUsingGET({ url: `/citypes/getLastCode/${technicalName}`, method: 'get', params, signal })
@@ -3089,10 +3067,7 @@ export const useGetLastCodeUsingGETHook = () => {
 export const getGetLastCodeUsingGETQueryKey = (technicalName: string, params?: GetLastCodeUsingGETParams) =>
     [`/citypes/getLastCode/${technicalName}`, ...(params ? [params] : [])] as const
 
-export const useGetLastCodeUsingGETQueryOptions = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useGetLastCodeUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>, TError = void>(
     technicalName: string,
     params?: GetLastCodeUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>, TError, TData> },
@@ -3110,12 +3085,12 @@ export const useGetLastCodeUsingGETQueryOptions = <
 }
 
 export type GetLastCodeUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>>
-export type GetLastCodeUsingGETQueryError = ErrorType<void>
+export type GetLastCodeUsingGETQueryError = void
 
 /**
  * @summary getLastCode
  */
-export const useGetLastCodeUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>, TError = ErrorType<void>>(
+export const useGetLastCodeUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>, TError = void>(
     technicalName: string,
     params?: GetLastCodeUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>, TError, TData> },
@@ -3133,19 +3108,16 @@ export const useGetLastCodeUsingGET = <TData = Awaited<ReturnType<ReturnType<typ
  * @summary listCiTypes
  */
 export const useListCiTypesUsingGETHook = () => {
-    const listCiTypesUsingGET = useCustomClient<CiTypePreviewList>()
+    const listCiTypesUsingGET = useTypesRepoSwaggerClient<CiTypePreviewList>()
 
-    return (ciTypeFilterBody: BodyType<CiTypeFilterBody>, signal?: AbortSignal) => {
+    return (ciTypeFilterBody: CiTypeFilterBody, signal?: AbortSignal) => {
         return listCiTypesUsingGET({ url: `/citypes/list`, method: 'get', headers: { 'Content-Type': 'application/json' }, signal })
     }
 }
 
 export const getListCiTypesUsingGETQueryKey = (ciTypeFilterBody: CiTypeFilterBody) => [`/citypes/list`, ciTypeFilterBody] as const
 
-export const useListCiTypesUsingGETQueryOptions = <
-    TData = Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useListCiTypesUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingGETHook>>>, TError = void>(
     ciTypeFilterBody: CiTypeFilterBody,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -3162,12 +3134,12 @@ export const useListCiTypesUsingGETQueryOptions = <
 }
 
 export type ListCiTypesUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingGETHook>>>>
-export type ListCiTypesUsingGETQueryError = ErrorType<void>
+export type ListCiTypesUsingGETQueryError = void
 
 /**
  * @summary listCiTypes
  */
-export const useListCiTypesUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingGETHook>>>, TError = ErrorType<void>>(
+export const useListCiTypesUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingGETHook>>>, TError = void>(
     ciTypeFilterBody: CiTypeFilterBody,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -3184,33 +3156,21 @@ export const useListCiTypesUsingGET = <TData = Awaited<ReturnType<ReturnType<typ
  * @summary listCiTypes
  */
 export const useListCiTypesUsingPOSTHook = () => {
-    const listCiTypesUsingPOST = useCustomClient<CiTypePreviewList | void>()
+    const listCiTypesUsingPOST = useTypesRepoSwaggerClient<CiTypePreviewList | void>()
 
-    return (ciTypeFilterBody: BodyType<CiTypeFilterBody>) => {
+    return (ciTypeFilterBody: CiTypeFilterBody) => {
         return listCiTypesUsingPOST({ url: `/citypes/list`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: ciTypeFilterBody })
     }
 }
 
-export const useListCiTypesUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingPOSTHook>>>,
-        TError,
-        { data: BodyType<CiTypeFilterBody> },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingPOSTHook>>>,
-    TError,
-    { data: BodyType<CiTypeFilterBody> },
-    TContext
-> => {
+export const useListCiTypesUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingPOSTHook>>>, TError, { data: CiTypeFilterBody }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingPOSTHook>>>, TError, { data: CiTypeFilterBody }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const listCiTypesUsingPOST = useListCiTypesUsingPOSTHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingPOSTHook>>>, { data: BodyType<CiTypeFilterBody> }> = (
-        props,
-    ) => {
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingPOSTHook>>>, { data: CiTypeFilterBody }> = (props) => {
         const { data } = props ?? {}
 
         return listCiTypesUsingPOST(data)
@@ -3220,19 +3180,14 @@ export const useListCiTypesUsingPOSTMutationOptions = <TError = ErrorType<unknow
 }
 
 export type ListCiTypesUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingPOSTHook>>>>
-export type ListCiTypesUsingPOSTMutationBody = BodyType<CiTypeFilterBody>
-export type ListCiTypesUsingPOSTMutationError = ErrorType<unknown>
+export type ListCiTypesUsingPOSTMutationBody = CiTypeFilterBody
+export type ListCiTypesUsingPOSTMutationError = unknown
 
 /**
  * @summary listCiTypes
  */
-export const useListCiTypesUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingPOSTHook>>>,
-        TError,
-        { data: BodyType<CiTypeFilterBody> },
-        TContext
-    >
+export const useListCiTypesUsingPOST = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypesUsingPOSTHook>>>, TError, { data: CiTypeFilterBody }, TContext>
 }) => {
     const mutationOptions = useListCiTypesUsingPOSTMutationOptions(options)
 
@@ -3243,9 +3198,9 @@ export const useListCiTypesUsingPOST = <TError = ErrorType<unknown>, TContext = 
  * @summary listTypes
  */
 export const useListTypesUsingPOSTHook = () => {
-    const listTypesUsingPOST = useCustomClient<CiTypesRelationshipTypesList | void>()
+    const listTypesUsingPOST = useTypesRepoSwaggerClient<CiTypesRelationshipTypesList | void>()
 
-    return (typesFilter: BodyType<TypesFilter>) => {
+    return (typesFilter: TypesFilter) => {
         return listTypesUsingPOST({
             url: `/citypes/relationshiptypes/list`,
             method: 'post',
@@ -3255,21 +3210,14 @@ export const useListTypesUsingPOSTHook = () => {
     }
 }
 
-export const useListTypesUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useListTypesUsingPOSTHook>>>,
-        TError,
-        { data: BodyType<TypesFilter> },
-        TContext
-    >
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListTypesUsingPOSTHook>>>, TError, { data: BodyType<TypesFilter> }, TContext> => {
+export const useListTypesUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListTypesUsingPOSTHook>>>, TError, { data: TypesFilter }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListTypesUsingPOSTHook>>>, TError, { data: TypesFilter }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const listTypesUsingPOST = useListTypesUsingPOSTHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useListTypesUsingPOSTHook>>>, { data: BodyType<TypesFilter> }> = (
-        props,
-    ) => {
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useListTypesUsingPOSTHook>>>, { data: TypesFilter }> = (props) => {
         const { data } = props ?? {}
 
         return listTypesUsingPOST(data)
@@ -3279,19 +3227,14 @@ export const useListTypesUsingPOSTMutationOptions = <TError = ErrorType<unknown>
 }
 
 export type ListTypesUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListTypesUsingPOSTHook>>>>
-export type ListTypesUsingPOSTMutationBody = BodyType<TypesFilter>
-export type ListTypesUsingPOSTMutationError = ErrorType<unknown>
+export type ListTypesUsingPOSTMutationBody = TypesFilter
+export type ListTypesUsingPOSTMutationError = unknown
 
 /**
  * @summary listTypes
  */
-export const useListTypesUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useListTypesUsingPOSTHook>>>,
-        TError,
-        { data: BodyType<TypesFilter> },
-        TContext
-    >
+export const useListTypesUsingPOST = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListTypesUsingPOSTHook>>>, TError, { data: TypesFilter }, TContext>
 }) => {
     const mutationOptions = useListTypesUsingPOSTMutationOptions(options)
 
@@ -3302,9 +3245,9 @@ export const useListTypesUsingPOST = <TError = ErrorType<unknown>, TContext = un
  * @summary storeAdminEntity
  */
 export const useStoreAdminEntityUsingPOST1Hook = () => {
-    const storeAdminEntityUsingPOST1 = useCustomClient<void>()
+    const storeAdminEntityUsingPOST1 = useTypesRepoSwaggerClient<void>()
 
-    return (relationshipType: BodyType<RelationshipType>, params?: StoreAdminEntityUsingPOST1Params) => {
+    return (relationshipType: RelationshipType, params?: StoreAdminEntityUsingPOST1Params) => {
         return storeAdminEntityUsingPOST1({
             url: `/relationshiptypes/adminentity/store`,
             method: 'post',
@@ -3315,17 +3258,17 @@ export const useStoreAdminEntityUsingPOST1Hook = () => {
     }
 }
 
-export const useStoreAdminEntityUsingPOST1MutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreAdminEntityUsingPOST1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOST1Hook>>>,
         TError,
-        { data: BodyType<RelationshipType>; params?: StoreAdminEntityUsingPOST1Params },
+        { data: RelationshipType; params?: StoreAdminEntityUsingPOST1Params },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOST1Hook>>>,
     TError,
-    { data: BodyType<RelationshipType>; params?: StoreAdminEntityUsingPOST1Params },
+    { data: RelationshipType; params?: StoreAdminEntityUsingPOST1Params },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3334,7 +3277,7 @@ export const useStoreAdminEntityUsingPOST1MutationOptions = <TError = ErrorType<
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOST1Hook>>>,
-        { data: BodyType<RelationshipType>; params?: StoreAdminEntityUsingPOST1Params }
+        { data: RelationshipType; params?: StoreAdminEntityUsingPOST1Params }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -3345,17 +3288,17 @@ export const useStoreAdminEntityUsingPOST1MutationOptions = <TError = ErrorType<
 }
 
 export type StoreAdminEntityUsingPOST1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOST1Hook>>>>
-export type StoreAdminEntityUsingPOST1MutationBody = BodyType<RelationshipType>
-export type StoreAdminEntityUsingPOST1MutationError = ErrorType<unknown>
+export type StoreAdminEntityUsingPOST1MutationBody = RelationshipType
+export type StoreAdminEntityUsingPOST1MutationError = unknown
 
 /**
  * @summary storeAdminEntity
  */
-export const useStoreAdminEntityUsingPOST1 = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreAdminEntityUsingPOST1 = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOST1Hook>>>,
         TError,
-        { data: BodyType<RelationshipType>; params?: StoreAdminEntityUsingPOST1Params },
+        { data: RelationshipType; params?: StoreAdminEntityUsingPOST1Params },
         TContext
     >
 }) => {
@@ -3368,9 +3311,9 @@ export const useStoreAdminEntityUsingPOST1 = <TError = ErrorType<unknown>, TCont
  * @summary listRelationshipTypes
  */
 export const useListRelationshipTypesUsingGETHook = () => {
-    const listRelationshipTypesUsingGET = useCustomClient<RelationshipTypePreviewList>()
+    const listRelationshipTypesUsingGET = useTypesRepoSwaggerClient<RelationshipTypePreviewList>()
 
-    return (relationshipTypeFilterBody: BodyType<RelationshipTypeFilterBody>, signal?: AbortSignal) => {
+    return (relationshipTypeFilterBody: RelationshipTypeFilterBody, signal?: AbortSignal) => {
         return listRelationshipTypesUsingGET({
             url: `/relationshiptypes/list`,
             method: 'get',
@@ -3385,7 +3328,7 @@ export const getListRelationshipTypesUsingGETQueryKey = (relationshipTypeFilterB
 
 export const useListRelationshipTypesUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     relationshipTypeFilterBody: RelationshipTypeFilterBody,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingGETHook>>>, TError, TData> },
@@ -3403,15 +3346,12 @@ export const useListRelationshipTypesUsingGETQueryOptions = <
 }
 
 export type ListRelationshipTypesUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingGETHook>>>>
-export type ListRelationshipTypesUsingGETQueryError = ErrorType<void>
+export type ListRelationshipTypesUsingGETQueryError = void
 
 /**
  * @summary listRelationshipTypes
  */
-export const useListRelationshipTypesUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useListRelationshipTypesUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingGETHook>>>, TError = void>(
     relationshipTypeFilterBody: RelationshipTypeFilterBody,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -3428,9 +3368,9 @@ export const useListRelationshipTypesUsingGET = <
  * @summary listRelationshipTypes
  */
 export const useListRelationshipTypesUsingPOSTHook = () => {
-    const listRelationshipTypesUsingPOST = useCustomClient<RelationshipTypePreviewList | void>()
+    const listRelationshipTypesUsingPOST = useTypesRepoSwaggerClient<RelationshipTypePreviewList | void>()
 
-    return (relationshipTypeFilterBody: BodyType<RelationshipTypeFilterBody>) => {
+    return (relationshipTypeFilterBody: RelationshipTypeFilterBody) => {
         return listRelationshipTypesUsingPOST({
             url: `/relationshiptypes/list`,
             method: 'post',
@@ -3440,17 +3380,17 @@ export const useListRelationshipTypesUsingPOSTHook = () => {
     }
 }
 
-export const useListRelationshipTypesUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useListRelationshipTypesUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelationshipTypeFilterBody> },
+        { data: RelationshipTypeFilterBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingPOSTHook>>>,
     TError,
-    { data: BodyType<RelationshipTypeFilterBody> },
+    { data: RelationshipTypeFilterBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3459,7 +3399,7 @@ export const useListRelationshipTypesUsingPOSTMutationOptions = <TError = ErrorT
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingPOSTHook>>>,
-        { data: BodyType<RelationshipTypeFilterBody> }
+        { data: RelationshipTypeFilterBody }
     > = (props) => {
         const { data } = props ?? {}
 
@@ -3470,17 +3410,17 @@ export const useListRelationshipTypesUsingPOSTMutationOptions = <TError = ErrorT
 }
 
 export type ListRelationshipTypesUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingPOSTHook>>>>
-export type ListRelationshipTypesUsingPOSTMutationBody = BodyType<RelationshipTypeFilterBody>
-export type ListRelationshipTypesUsingPOSTMutationError = ErrorType<unknown>
+export type ListRelationshipTypesUsingPOSTMutationBody = RelationshipTypeFilterBody
+export type ListRelationshipTypesUsingPOSTMutationError = unknown
 
 /**
  * @summary listRelationshipTypes
  */
-export const useListRelationshipTypesUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useListRelationshipTypesUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelationshipTypeFilterBody> },
+        { data: RelationshipTypeFilterBody },
         TContext
     >
 }) => {
@@ -3493,9 +3433,9 @@ export const useListRelationshipTypesUsingPOST = <TError = ErrorType<unknown>, T
  * @summary storeNewRelationshipType
  */
 export const useStoreNewRelationshipTypeUsingPOSTHook = () => {
-    const storeNewRelationshipTypeUsingPOST = useCustomClient<RelationshipType | void>()
+    const storeNewRelationshipTypeUsingPOST = useTypesRepoSwaggerClient<RelationshipType | void>()
 
-    return (relationshipTypeBody: BodyType<RelationshipTypeBody>, params?: StoreNewRelationshipTypeUsingPOSTParams) => {
+    return (relationshipTypeBody: RelationshipTypeBody, params?: StoreNewRelationshipTypeUsingPOSTParams) => {
         return storeNewRelationshipTypeUsingPOST({
             url: `/relationshiptypes/relationshiptype/store`,
             method: 'post',
@@ -3506,17 +3446,17 @@ export const useStoreNewRelationshipTypeUsingPOSTHook = () => {
     }
 }
 
-export const useStoreNewRelationshipTypeUsingPOSTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreNewRelationshipTypeUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewRelationshipTypeUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelationshipTypeBody>; params?: StoreNewRelationshipTypeUsingPOSTParams },
+        { data: RelationshipTypeBody; params?: StoreNewRelationshipTypeUsingPOSTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreNewRelationshipTypeUsingPOSTHook>>>,
     TError,
-    { data: BodyType<RelationshipTypeBody>; params?: StoreNewRelationshipTypeUsingPOSTParams },
+    { data: RelationshipTypeBody; params?: StoreNewRelationshipTypeUsingPOSTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3525,7 +3465,7 @@ export const useStoreNewRelationshipTypeUsingPOSTMutationOptions = <TError = Err
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreNewRelationshipTypeUsingPOSTHook>>>,
-        { data: BodyType<RelationshipTypeBody>; params?: StoreNewRelationshipTypeUsingPOSTParams }
+        { data: RelationshipTypeBody; params?: StoreNewRelationshipTypeUsingPOSTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -3538,17 +3478,17 @@ export const useStoreNewRelationshipTypeUsingPOSTMutationOptions = <TError = Err
 export type StoreNewRelationshipTypeUsingPOSTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreNewRelationshipTypeUsingPOSTHook>>>
 >
-export type StoreNewRelationshipTypeUsingPOSTMutationBody = BodyType<RelationshipTypeBody>
-export type StoreNewRelationshipTypeUsingPOSTMutationError = ErrorType<unknown>
+export type StoreNewRelationshipTypeUsingPOSTMutationBody = RelationshipTypeBody
+export type StoreNewRelationshipTypeUsingPOSTMutationError = unknown
 
 /**
  * @summary storeNewRelationshipType
  */
-export const useStoreNewRelationshipTypeUsingPOST = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreNewRelationshipTypeUsingPOST = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewRelationshipTypeUsingPOSTHook>>>,
         TError,
-        { data: BodyType<RelationshipTypeBody>; params?: StoreNewRelationshipTypeUsingPOSTParams },
+        { data: RelationshipTypeBody; params?: StoreNewRelationshipTypeUsingPOSTParams },
         TContext
     >
 }) => {
@@ -3561,9 +3501,9 @@ export const useStoreNewRelationshipTypeUsingPOST = <TError = ErrorType<unknown>
  * @summary storeExistRelationshipType
  */
 export const useStoreExistRelationshipTypeUsingPUTHook = () => {
-    const storeExistRelationshipTypeUsingPUT = useCustomClient<RelationshipType | void>()
+    const storeExistRelationshipTypeUsingPUT = useTypesRepoSwaggerClient<RelationshipType | void>()
 
-    return (relationshipTypeBody: BodyType<RelationshipTypeBody>, params?: StoreExistRelationshipTypeUsingPUTParams) => {
+    return (relationshipTypeBody: RelationshipTypeBody, params?: StoreExistRelationshipTypeUsingPUTParams) => {
         return storeExistRelationshipTypeUsingPUT({
             url: `/relationshiptypes/relationshiptype/store`,
             method: 'put',
@@ -3574,17 +3514,17 @@ export const useStoreExistRelationshipTypeUsingPUTHook = () => {
     }
 }
 
-export const useStoreExistRelationshipTypeUsingPUTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreExistRelationshipTypeUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistRelationshipTypeUsingPUTHook>>>,
         TError,
-        { data: BodyType<RelationshipTypeBody>; params?: StoreExistRelationshipTypeUsingPUTParams },
+        { data: RelationshipTypeBody; params?: StoreExistRelationshipTypeUsingPUTParams },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreExistRelationshipTypeUsingPUTHook>>>,
     TError,
-    { data: BodyType<RelationshipTypeBody>; params?: StoreExistRelationshipTypeUsingPUTParams },
+    { data: RelationshipTypeBody; params?: StoreExistRelationshipTypeUsingPUTParams },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3593,7 +3533,7 @@ export const useStoreExistRelationshipTypeUsingPUTMutationOptions = <TError = Er
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreExistRelationshipTypeUsingPUTHook>>>,
-        { data: BodyType<RelationshipTypeBody>; params?: StoreExistRelationshipTypeUsingPUTParams }
+        { data: RelationshipTypeBody; params?: StoreExistRelationshipTypeUsingPUTParams }
     > = (props) => {
         const { data, params } = props ?? {}
 
@@ -3606,17 +3546,17 @@ export const useStoreExistRelationshipTypeUsingPUTMutationOptions = <TError = Er
 export type StoreExistRelationshipTypeUsingPUTMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreExistRelationshipTypeUsingPUTHook>>>
 >
-export type StoreExistRelationshipTypeUsingPUTMutationBody = BodyType<RelationshipTypeBody>
-export type StoreExistRelationshipTypeUsingPUTMutationError = ErrorType<unknown>
+export type StoreExistRelationshipTypeUsingPUTMutationBody = RelationshipTypeBody
+export type StoreExistRelationshipTypeUsingPUTMutationError = unknown
 
 /**
  * @summary storeExistRelationshipType
  */
-export const useStoreExistRelationshipTypeUsingPUT = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreExistRelationshipTypeUsingPUT = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistRelationshipTypeUsingPUTHook>>>,
         TError,
-        { data: BodyType<RelationshipTypeBody>; params?: StoreExistRelationshipTypeUsingPUTParams },
+        { data: RelationshipTypeBody; params?: StoreExistRelationshipTypeUsingPUTParams },
         TContext
     >
 }) => {
@@ -3629,14 +3569,14 @@ export const useStoreExistRelationshipTypeUsingPUT = <TError = ErrorType<unknown
  * @summary validRelationshipType
  */
 export const useValidRelationshipTypeUsingPUTHook = () => {
-    const validRelationshipTypeUsingPUT = useCustomClient<void>()
+    const validRelationshipTypeUsingPUT = useTypesRepoSwaggerClient<void>()
 
     return (technicalName: string, params?: ValidRelationshipTypeUsingPUTParams) => {
         return validRelationshipTypeUsingPUT({ url: `/relationshiptypes/relationshiptype/valid/${technicalName}`, method: 'put', params })
     }
 }
 
-export const useValidRelationshipTypeUsingPUTMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useValidRelationshipTypeUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeUsingPUTHook>>>,
         TError,
@@ -3667,12 +3607,12 @@ export const useValidRelationshipTypeUsingPUTMutationOptions = <TError = ErrorTy
 
 export type ValidRelationshipTypeUsingPUTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeUsingPUTHook>>>>
 
-export type ValidRelationshipTypeUsingPUTMutationError = ErrorType<unknown>
+export type ValidRelationshipTypeUsingPUTMutationError = unknown
 
 /**
  * @summary validRelationshipType
  */
-export const useValidRelationshipTypeUsingPUT = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useValidRelationshipTypeUsingPUT = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeUsingPUTHook>>>,
         TError,
@@ -3689,14 +3629,14 @@ export const useValidRelationshipTypeUsingPUT = <TError = ErrorType<unknown>, TC
  * @summary unvalidRelationshipType
  */
 export const useUnvalidRelationshipTypeUsingDELETEHook = () => {
-    const unvalidRelationshipTypeUsingDELETE = useCustomClient<void>()
+    const unvalidRelationshipTypeUsingDELETE = useTypesRepoSwaggerClient<void>()
 
     return (technicalName: string, params?: UnvalidRelationshipTypeUsingDELETEParams) => {
         return unvalidRelationshipTypeUsingDELETE({ url: `/relationshiptypes/relationshiptype/valid/${technicalName}`, method: 'delete', params })
     }
 }
 
-export const useUnvalidRelationshipTypeUsingDELETEMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useUnvalidRelationshipTypeUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUnvalidRelationshipTypeUsingDELETEHook>>>,
         TError,
@@ -3729,12 +3669,12 @@ export type UnvalidRelationshipTypeUsingDELETEMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useUnvalidRelationshipTypeUsingDELETEHook>>>
 >
 
-export type UnvalidRelationshipTypeUsingDELETEMutationError = ErrorType<unknown>
+export type UnvalidRelationshipTypeUsingDELETEMutationError = unknown
 
 /**
  * @summary unvalidRelationshipType
  */
-export const useUnvalidRelationshipTypeUsingDELETE = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useUnvalidRelationshipTypeUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUnvalidRelationshipTypeUsingDELETEHook>>>,
         TError,
@@ -3751,7 +3691,7 @@ export const useUnvalidRelationshipTypeUsingDELETE = <TError = ErrorType<unknown
  * @summary getRelationshipType
  */
 export const useGetRelationshipTypeUsingGETHook = () => {
-    const getRelationshipTypeUsingGET = useCustomClient<RelationshipType>()
+    const getRelationshipTypeUsingGET = useTypesRepoSwaggerClient<RelationshipType>()
 
     return (technicalName: string, signal?: AbortSignal) => {
         return getRelationshipTypeUsingGET({ url: `/relationshiptypes/relationshiptype/${technicalName}`, method: 'get', signal })
@@ -3762,7 +3702,7 @@ export const getGetRelationshipTypeUsingGETQueryKey = (technicalName: string) =>
 
 export const useGetRelationshipTypeUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeUsingGETHook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeUsingGETHook>>>, TError, TData> },
@@ -3780,15 +3720,12 @@ export const useGetRelationshipTypeUsingGETQueryOptions = <
 }
 
 export type GetRelationshipTypeUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeUsingGETHook>>>>
-export type GetRelationshipTypeUsingGETQueryError = ErrorType<void>
+export type GetRelationshipTypeUsingGETQueryError = void
 
 /**
  * @summary getRelationshipType
  */
-export const useGetRelationshipTypeUsingGET = <
-    TData = Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeUsingGETHook>>>,
-    TError = ErrorType<void>,
->(
+export const useGetRelationshipTypeUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeUsingGETHook>>>, TError = void>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -3805,9 +3742,9 @@ export const useGetRelationshipTypeUsingGET = <
  * @summary storeAttributeTextation
  */
 export const useStoreAttributeTextationUsingPUT1Hook = () => {
-    const storeAttributeTextationUsingPUT1 = useCustomClient<void>()
+    const storeAttributeTextationUsingPUT1 = useTypesRepoSwaggerClient<void>()
 
-    return (technicalName: string, attTecName: string, attributeBody: BodyType<AttributeBody>, params?: StoreAttributeTextationUsingPUT1Params) => {
+    return (technicalName: string, attTecName: string, attributeBody: AttributeBody, params?: StoreAttributeTextationUsingPUT1Params) => {
         return storeAttributeTextationUsingPUT1({
             url: `/relationshiptypes/relationshiptype/${technicalName}/attribute/${attTecName}`,
             method: 'put',
@@ -3818,17 +3755,17 @@ export const useStoreAttributeTextationUsingPUT1Hook = () => {
     }
 }
 
-export const useStoreAttributeTextationUsingPUT1MutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreAttributeTextationUsingPUT1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUT1Hook>>>,
         TError,
-        { technicalName: string; attTecName: string; data: BodyType<AttributeBody>; params?: StoreAttributeTextationUsingPUT1Params },
+        { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUT1Params },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUT1Hook>>>,
     TError,
-    { technicalName: string; attTecName: string; data: BodyType<AttributeBody>; params?: StoreAttributeTextationUsingPUT1Params },
+    { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUT1Params },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3837,7 +3774,7 @@ export const useStoreAttributeTextationUsingPUT1MutationOptions = <TError = Erro
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUT1Hook>>>,
-        { technicalName: string; attTecName: string; data: BodyType<AttributeBody>; params?: StoreAttributeTextationUsingPUT1Params }
+        { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUT1Params }
     > = (props) => {
         const { technicalName, attTecName, data, params } = props ?? {}
 
@@ -3850,17 +3787,17 @@ export const useStoreAttributeTextationUsingPUT1MutationOptions = <TError = Erro
 export type StoreAttributeTextationUsingPUT1MutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUT1Hook>>>
 >
-export type StoreAttributeTextationUsingPUT1MutationBody = BodyType<AttributeBody>
-export type StoreAttributeTextationUsingPUT1MutationError = ErrorType<unknown>
+export type StoreAttributeTextationUsingPUT1MutationBody = AttributeBody
+export type StoreAttributeTextationUsingPUT1MutationError = unknown
 
 /**
  * @summary storeAttributeTextation
  */
-export const useStoreAttributeTextationUsingPUT1 = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useStoreAttributeTextationUsingPUT1 = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUT1Hook>>>,
         TError,
-        { technicalName: string; attTecName: string; data: BodyType<AttributeBody>; params?: StoreAttributeTextationUsingPUT1Params },
+        { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUT1Params },
         TContext
     >
 }) => {
@@ -3873,7 +3810,7 @@ export const useStoreAttributeTextationUsingPUT1 = <TError = ErrorType<unknown>,
  * @summary deleteAttributeTextation
  */
 export const useDeleteAttributeTextationUsingDELETE1Hook = () => {
-    const deleteAttributeTextationUsingDELETE1 = useCustomClient<void>()
+    const deleteAttributeTextationUsingDELETE1 = useTypesRepoSwaggerClient<void>()
 
     return (technicalName: string, attTecName: string, params?: DeleteAttributeTextationUsingDELETE1Params) => {
         return deleteAttributeTextationUsingDELETE1({
@@ -3884,7 +3821,7 @@ export const useDeleteAttributeTextationUsingDELETE1Hook = () => {
     }
 }
 
-export const useDeleteAttributeTextationUsingDELETE1MutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteAttributeTextationUsingDELETE1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationUsingDELETE1Hook>>>,
         TError,
@@ -3917,12 +3854,12 @@ export type DeleteAttributeTextationUsingDELETE1MutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationUsingDELETE1Hook>>>
 >
 
-export type DeleteAttributeTextationUsingDELETE1MutationError = ErrorType<unknown>
+export type DeleteAttributeTextationUsingDELETE1MutationError = unknown
 
 /**
  * @summary deleteAttributeTextation
  */
-export const useDeleteAttributeTextationUsingDELETE1 = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteAttributeTextationUsingDELETE1 = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationUsingDELETE1Hook>>>,
         TError,
@@ -3939,7 +3876,7 @@ export const useDeleteAttributeTextationUsingDELETE1 = <TError = ErrorType<unkno
  * @summary getAttributeOverrides
  */
 export const useGetAttributeOverridesUsingGET1Hook = () => {
-    const getAttributeOverridesUsingGET1 = useCustomClient<Attribute[]>()
+    const getAttributeOverridesUsingGET1 = useTypesRepoSwaggerClient<Attribute[]>()
 
     return (technicalName: string, signal?: AbortSignal) => {
         return getAttributeOverridesUsingGET1({
@@ -3955,7 +3892,7 @@ export const getGetAttributeOverridesUsingGET1QueryKey = (technicalName: string)
 
 export const useGetAttributeOverridesUsingGET1QueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesUsingGET1Hook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesUsingGET1Hook>>>, TError, TData> },
@@ -3973,14 +3910,14 @@ export const useGetAttributeOverridesUsingGET1QueryOptions = <
 }
 
 export type GetAttributeOverridesUsingGET1QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesUsingGET1Hook>>>>
-export type GetAttributeOverridesUsingGET1QueryError = ErrorType<void>
+export type GetAttributeOverridesUsingGET1QueryError = void
 
 /**
  * @summary getAttributeOverrides
  */
 export const useGetAttributeOverridesUsingGET1 = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesUsingGET1Hook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesUsingGET1Hook>>>, TError, TData> },
@@ -3998,7 +3935,7 @@ export const useGetAttributeOverridesUsingGET1 = <
  * @summary listRelationshipTypes
  */
 export const useListRelationshipTypesUsingGET1Hook = () => {
-    const listRelationshipTypesUsingGET1 = useCustomClient<RightsTypeHolder[]>()
+    const listRelationshipTypesUsingGET1 = useTypesRepoSwaggerClient<RightsTypeHolder[]>()
 
     return (params: ListRelationshipTypesUsingGET1Params, signal?: AbortSignal) => {
         return listRelationshipTypesUsingGET1({ url: `/rights/list`, method: 'get', params, signal })
@@ -4010,7 +3947,7 @@ export const getListRelationshipTypesUsingGET1QueryKey = (params: ListRelationsh
 
 export const useListRelationshipTypesUsingGET1QueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingGET1Hook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params: ListRelationshipTypesUsingGET1Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingGET1Hook>>>, TError, TData> },
@@ -4028,14 +3965,14 @@ export const useListRelationshipTypesUsingGET1QueryOptions = <
 }
 
 export type ListRelationshipTypesUsingGET1QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingGET1Hook>>>>
-export type ListRelationshipTypesUsingGET1QueryError = ErrorType<void>
+export type ListRelationshipTypesUsingGET1QueryError = void
 
 /**
  * @summary listRelationshipTypes
  */
 export const useListRelationshipTypesUsingGET1 = <
     TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingGET1Hook>>>,
-    TError = ErrorType<void>,
+    TError = void,
 >(
     params: ListRelationshipTypesUsingGET1Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesUsingGET1Hook>>>, TError, TData> },

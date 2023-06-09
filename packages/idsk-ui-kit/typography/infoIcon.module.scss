@@ -1,0 +1,27 @@
+@import '@id-sk/frontend/idsk/all';
+
+.infoIcon {
+    border: govuk-colour('mid-grey') !important;
+    background: govuk-colour('mid-grey') !important;
+    width: govuk-spacing(4) !important;
+    height: govuk-spacing(4) !important;
+    min-width: govuk-spacing(4) !important;
+    min-height: govuk-spacing(4) !important;
+    padding-top: govuk-spacing(0) !important;
+    font-size: 1em !important;
+    line-height: govuk-spacing(4) !important;
+    margin-top: govuk-spacing(0) !important;
+    position: static !important;
+}
+
+.infoIconGroup {
+    display: flex !important;
+    align-items: center !important;
+    padding: govuk-spacing(0) !important;
+    margin: govuk-spacing(0) !important;
+}
+
+.infoText {
+    padding-left: govuk-spacing(2) !important;
+    font-size: 16px !important;
+}

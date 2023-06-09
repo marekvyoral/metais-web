@@ -93,7 +93,9 @@
         "select": {
             "country": "Choose country"
         },
-        "submit": "Submit form"
+        "submit": "Submit form",
+        "waitSending": "Wait please. I am sending the form.",
+        "cancel": "Cancel"
     },
     "languageSelector": {
         "open": "Open language menu",
@@ -105,5 +107,40 @@
     },
     "tab": {
         "contents": "Contents"
+    },
+    "relationCard": {
+        "name": "Title",
+        "codeMetaIS": "Code MetaIS",
+        "admin": "Administrator",
+        "relations": "Relations",
+        "status": "Registration status:",
+        "statusTrue": "Created",
+        "statusFalse": "Invalidated"
+    },
+    "attributeProfileAccordion": {
+        "admin": "Administrator",
+        "informationSystemName": "Information system name",
+        "codeMetaIS": "Code MetaIS",
+        "referenceIdentifier": "Reference identifier",
+        "note": "Note",
+        "description": "Description"
+    },
+    "applicationServiceRelations": {
+        "buttonAddNewRelation": "Add a new relation",
+        "buttonAddNewRelationCard": "Add a new item and relationship"
+    },
+    "listActions": {
+        "selectView": "View"
+    },
+    "projectInformationAccordion": {
+        "info": "Information",
+        "basicInformation": "Basic information"
+    },
+    "ciType": {
+        "informations": "Information",
+        "documents": "Documents"
+    },
+    "relationType": {
+        "as": "Application service"
     }
 }

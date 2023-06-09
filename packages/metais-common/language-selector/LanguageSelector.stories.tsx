@@ -6,7 +6,7 @@ import { i18nInstance } from '../localization/i18next'
 import { LanguageSelector } from './LanguageSelector'
 
 const meta: Meta<typeof LanguageSelector> = {
-    title: 'Components/LanguageSelector',
+    title: 'Components/LanguageSelectorAdmin',
     component: LanguageSelector,
 }
 
