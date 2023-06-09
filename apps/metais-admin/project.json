@@ -1,0 +1,92 @@
+{
+    "name": "metais-admin",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "apps/metais-admin/src",
+    "projectType": "application",
+    "targets": {
+        "typescript-check": {
+          "executor": "nx:run-commands",
+          "options": {
+            "command": "yarn tsc --noEmit -p apps/metais-admin/tsconfig.json"
+          }
+        },
+        "build": {
+            "executor": "@nx/vite:build",
+            "outputs": ["{options.outputPath}"],
+            "defaultConfiguration": "production",
+            "options": {
+                "outputPath": "dist/apps/metais-admin"
+            },
+            "configurations": {
+                "development": {
+                    "mode": "development"
+                },
+                "production": {
+                    "mode": "production"
+                }
+            }
+        },
+        "start": {
+            "executor": "@nx/vite:dev-server",
+            "defaultConfiguration": "development",
+            "options": {
+                "buildTarget": "metais-admin:build"
+            },
+            "configurations": {
+                "development": {
+                    "buildTarget": "metais-admin:build:development",
+                    "hmr": true
+                },
+                "production": {
+                    "buildTarget": "metais-admin:build:production",
+                    "hmr": false
+                }
+            }
+        },
+        "preview": {
+            "executor": "@nx/vite:preview-server",
+            "defaultConfiguration": "development",
+            "options": {
+                "buildTarget": "metais-admin:build"
+            },
+            "configurations": {
+                "development": {
+                    "buildTarget": "metais-admin:build:development"
+                },
+                "production": {
+                    "buildTarget": "metais-admin:build:production"
+                }
+            }
+        },
+        "test": {
+            "executor": "@nx/vite:test",
+            "outputs": ["coverage/apps/metais-admin"],
+            "options": {
+                "passWithNoTests": true,
+                "reportsDirectory": "../../coverage/apps/metais-admin"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["apps/metais-admin/**/*.{ts,tsx,js,jsx}"]
+            }
+        },
+        "lint:fix": {
+          "executor": "@nx/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "fix": true,
+            "lintFilePatterns": ["apps/metais-admin/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "serve-static": {
+            "executor": "@nx/web:file-server",
+            "options": {
+                "buildTarget": "metais-admin:build"
+            }
+        }
+    },
+    "tags": []
+}

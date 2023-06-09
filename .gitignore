@@ -1,16 +1,16 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/app/*/node_modules
-/app/*/.pnp
+/apps/*/node_modules
+/apps/*/.pnp
 .pnp.js
 
 # testing
-/app/*/coverage
+/apps/*/coverage
 
 # production
-/app/*/build
-/app/*/dist
+/apps/*/build
+/apps/*/dist
 
 # misc
 .DS_Store
@@ -23,10 +23,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/app/*/public/assets
-/app/*/storybook-static
+/apps/*/public/assets
+/apps/*/storybook-static
 
-/packackes/*/node_modules
+/packages/*/node_modules
 
 /node_modules
 .idea

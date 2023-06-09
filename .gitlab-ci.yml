@@ -8,5 +8,5 @@ checks:
         - echo "running yarn install"
         - yarn install
     script:
-        - yarn run typescript-check
-        - yarn run lint
+        - npx nx run-many -t metais-admin metais-portal typescript-check
+        - npx nx run-many -t metais-admin metais-portal lint

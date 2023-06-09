@@ -1,33 +1,36 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
-    },
-    "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:react-hooks/recommended",
-        "plugin:import/recommended",
-        "plugin:import/typescript",
-        "prettier",
-        "plugin:prettier/recommended"
-    ],
-    "overrides": [],
-    "parser": "@typescript-eslint/parser",
-    "ignorePatterns": ["**/**/**/**/generated/*.ts"],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    },
-    "plugins": ["react", "@typescript-eslint", "react-hooks", "import", "prettier"],
-    "rules": {
-        /**
-         * Base rules
-         */
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "ignorePatterns": ["**/*", "**/**/**/**/generated/*.ts"],
+  "plugins": ["react", "@typescript-eslint", "react-hooks", "import", "prettier", "@nx", "import"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        /*
+        * Base rules
+        */
         // Disallow the use of alert, confirm, and prompt
         // https://eslint.org/docs/rules/no-alert
         "no-alert": "error",
@@ -37,11 +40,11 @@
         // Warn about warning comments, e.g: todo, fixme
         // https://eslint.org/docs/2.0.0/rules/no-warning-comments
         "no-warning-comments": [
-            "warn",
-            {
-                "terms": ["todo", "fixme"],
-                "location": "start"
-            }
+          "warn",
+          {
+            "terms": ["todo", "fixme"],
+            "location": "start"
+          }
         ],
         /**
          * React rules
@@ -58,19 +61,19 @@
         // Prevent missing displayName in a React component definition, e.g. with forwardRef, etc.
         // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/display-name.md
         "react/display-name": [
-            "off",
-            {
-                "ignoreTranspilerName": false
-            }
+          "off",
+          {
+            "ignoreTranspilerName": false
+          }
         ],
         // Enforce boolean attributes notation in JSX
         // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-boolean-value.md
         "react/jsx-boolean-value": [
-            "error",
-            "never",
-            {
-                "always": []
-            }
+          "error",
+          "never",
+          {
+            "always": []
+          }
         ],
         /**
          * Import rules
@@ -86,10 +89,10 @@
         // Allow any order of import statements
         // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/order.md
         "import/order": [
-            "warn",
-            {
-                "newlines-between": "always"
-            }
+          "warn",
+          {
+            "newlines-between": "always"
+          }
         ],
         "prettier/prettier": ["warn"],
         "no-console": "warn",
@@ -100,18 +103,42 @@
         "react/self-closing-comp": "warn",
         "no-use-before-define": "warn",
         "no-restricted-imports": [
-            "error",
-            {
-                "patterns": ["*.svg"]
-            }
+          "error",
+          {
+            "patterns": ["*.svg"]
+          }
         ]
+      }
     },
-    "settings": {
-        "import/resolver": {
-            "typescript": {},
-            "alias": {
-                "map": [["@", "src"]]
-            }
-        }
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nx/typescript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nx/javascript"],
+      "rules": {}
     }
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+
+        "project": [
+          "packages/*/tsconfig.json",
+          "apps/*/tsconfig.json"
+        ]
+      },
+      "alias": {
+        "map": [
+          ["@portal", "apps/metais-portal/src"],
+          ["@admin", "apps/metais-admin/src"],
+          ["@metais-web/metais-common", "packages/metais-common/src/index.ts"],
+          ["@metais-web/idsk-ui-kit", "packages/idsk-ui-kit/src/index.ts"]
+        ]
+      }
+    }
+  }
 }
