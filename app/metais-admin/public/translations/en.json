@@ -105,5 +105,10 @@
     },
     "tab": {
         "contents": "Contents"
+    },
+    "tabContent": {
+        "buttonAddNewRelation": "Add a new relation",
+        "buttonAddNewRelationCard": "Add a new item and relation",
+        "selectView": "View"
     }
 }

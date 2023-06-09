@@ -108,5 +108,40 @@
     },
     "tab": {
         "contents": "Obsah"
+    },
+    "relationCard": {
+        "name": "Názov",
+        "codeMetaIS": "Kód MetaIS",
+        "admin": "Správca",
+        "relations": "Vzťahy",
+        "status": "Stav evidencie:",
+        "statusTrue": "Vytvorené",
+        "statusFalse": "Zneplatnené"
+    },
+    "attributeProfileAccordion": {
+        "admin": "Správca",
+        "informationSystemName": "Názov informačného systému",
+        "codeMetaIS": "Kód MetaIS",
+        "referenceIdentifier": "Referencovateľný identifikátor",
+        "note": "Poznámka",
+        "description": "Popis"
+    },
+    "applicationServiceRelations": {
+        "buttonAddNewRelation": "Pridať nový vzťah",
+        "buttonAddNewRelationCard": "Pridať novú položku a vzťah"
+    },
+    "listActions": {
+        "selectView": "Zobraziť"
+    },
+    "projectInformationAccordion": {
+        "info": "Informácie",
+        "basicInformation": "Základné informácie"
+    },
+    "ciType": {
+        "informations": "Informácie",
+        "documents": "Dokumenty"
+    },
+    "relationType": {
+        "as": "Aplikačná služba"
     }
 }

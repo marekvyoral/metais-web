@@ -1,0 +1,8 @@
+@import '@id-sk/frontend/idsk/all';
+
+.cardColumnList {
+    display: flex;
+    flex-direction: column;
+    gap: govuk-spacing(4);
+    margin-bottom: govuk-spacing(2);
+}

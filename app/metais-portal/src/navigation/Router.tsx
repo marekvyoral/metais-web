@@ -6,6 +6,7 @@ import { RouteNames } from '@/navigation/routeNames'
 import { DevTestScreen } from '@/pages/DevTestScreen'
 import { Home } from '@/pages/Home'
 import { Documents } from '@/pages/ci/[entityName]/[entityId]/Documents'
+import ProjektEntityDetailPage from '@/pages/project/[id]'
 
 export const Router: React.FC = () => {
     return (
@@ -15,6 +16,7 @@ export const Router: React.FC = () => {
             </Route>
             <Route path={RouteNames.DEV_TEST_SCREEN} element={<DevTestScreen />} />
             <Route path={'Documents/:entityId'} element={<Documents />} />
+            <Route path={RouteNames.PROJEKT_ENTITY_DETAIL} element={<ProjektEntityDetailPage />} />
         </Routes>
     )
 }

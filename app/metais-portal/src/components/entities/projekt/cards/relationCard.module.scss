@@ -1,0 +1,59 @@
+@import '@id-sk/frontend/idsk/all';
+
+.itemText {
+    font-size: 16px;
+    margin-bottom: govuk-spacing(2) !important;
+
+    @include mq($until: tablet) {
+        font-size: 14px;
+        margin-top: govuk-spacing(2);
+    }
+}
+
+.itemBox {
+    border: 1px solid govuk-colour('mid-grey');
+    padding: govuk-spacing(4);
+    padding-bottom: govuk-spacing(2);
+}
+
+.itemContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: govuk-spacing(4);
+
+    @include mq($until: tablet) {
+        flex-direction: column;
+        margin-top: govuk-spacing(4);
+        margin-bottom: govuk-spacing(4);
+        gap: govuk-spacing(2);
+    }
+}
+
+.errorItemBox {
+    border: 1px solid govuk-colour('red');
+    background-color: rgba(govuk-colour('red'), 0.1);
+}
+
+.errorItemText {
+    color: govuk-colour('red');
+}
+
+.withoutMargin {
+    margin-bottom: govuk-spacing(0) !important;
+}
+
+.heading {
+    margin-bottom: govuk-spacing(4);
+    @include mq($until: tablet) {
+        gap: govuk-spacing(4);
+    }
+}
+
+.headingItem {
+    @include mq($until: tablet) {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: govuk-spacing(0) !important;
+    }
+}

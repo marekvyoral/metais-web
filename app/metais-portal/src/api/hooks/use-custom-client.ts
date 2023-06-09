@@ -27,5 +27,3 @@ export const useCustomClient = <T>(baseURL: string): CustomClient<T> => {
         return response.json()
     }
 }
-
-export default useCustomClient

@@ -1,0 +1,15 @@
+@import '@id-sk/frontend/idsk/all';
+
+.textRow {
+    margin-bottom: govuk-spacing(2) !important;
+    @include mq($until: tablet) {
+        margin-top: govuk-spacing(2) !important;
+        margin-bottom: govuk-spacing(0) !important;
+    }
+}
+
+.groupRow {
+    @include mq($until: tablet) {
+        margin-bottom: govuk-spacing(4);
+    }
+}

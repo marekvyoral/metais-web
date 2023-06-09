@@ -53,7 +53,8 @@
     "storybook:portal": "cd app/metais-portal && storybook dev -p 6006 --disable-telemetry",
     "build-storybook": "cd app/metais-portal && storybook build",
     "postinstall": "patch-package",
-    "generate-api": "cross-env DOTENV_CONFIG_PATH=./.env orval --config ./orval.config.ts"
+    "generate-api-development": "cross-env DOTENV_CONFIG_PATH=./.env.development orval --config ./orval.config.ts",
+    "generate-api-production": "cross-env DOTENV_CONFIG_PATH=./.env.production orval --config ./orval.config.ts"
   },
   "eslintConfig": {
     "extends": [
