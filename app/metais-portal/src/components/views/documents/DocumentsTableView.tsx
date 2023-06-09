@@ -2,6 +2,7 @@ import React from 'react'
 import { Table } from '@/components/table/Table'
 import { ColumnDef } from '@tanstack/react-table'
 import { CheckBox } from '@/components/CheckBox'
+import { Paginator } from '@/components/paginator/Paginator'
 
 interface TableCols {
     attributes: any
@@ -25,6 +26,7 @@ const Error: React.FC = () => {
 export const DocumentsTableView: React.FC<DocumentsTable> = ({ data, additionalColumns, isLoading, isError }) => {
     if (isLoading) return <Loading />
     if (isError) return <Error />
+    debugger
 
     const additionalColumnsNullsafe = additionalColumns ?? []
     const columns: Array<ColumnDef<TableCols>> = [
@@ -71,6 +73,10 @@ export const DocumentsTableView: React.FC<DocumentsTable> = ({ data, additionalC
         ...additionalColumnsNullsafe,
     ]
 
-    //todo: replace this with generic table with pagination/filter/actions
-    return <Table columns={columns} data={data} /> //.slice(startData, startData + pageSize)} />
+    return (
+        <>
+            <Table columns={columns} data={data} />
+            <Paginator dataLength={100} pageNumber={1} onPageChanged={() => {}} pageSize={10} />
+        </>
+    ) //todo: paginator wrapper
 }
