@@ -1,5 +1,15 @@
+cache: 
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+        - node_modules/
+
+variables:
+  APP_PATH: '$CI_PROJECT_DIR'
+
 stages:
     - run-checks
+    - build
+    - deploy
 
 checks:
     image: node:latest
@@ -10,3 +20,35 @@ checks:
     script:
         - yarn run typescript-check
         - yarn run lint
+
+build:
+    image: node:latest
+    stage: build
+    script:
+        - yarn run build
+    artifacts:
+        expire_in: 2 days
+        paths:
+            - 'app/metais-portal/dist/'
+            - 'app/metais-admin/dist/'
+    when: manual
+
+deploy-portal:
+    image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
+    variables:
+        API_TOKEN: $PORTAL_DEPLOYMENT_TOKEN
+        OUTPUT_PATH: '$CI_PROJECT_DIR/app/metais-portal/dist/'
+    stage: deploy
+    script:
+        - echo "MetaIS Portal deployed successfully."
+    when: manual
+    
+deploy-admin:
+    image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
+    variables:
+        API_TOKEN: $ADMIN_DEPLOYMENT_TOKEN
+        OUTPUT_PATH: '$CI_PROJECT_DIR/app/metais-admin/dist/'
+    stage: deploy
+    script:
+        - echo "MetaIS Admin deployed successfully."
+    when: manual
