@@ -6,7 +6,7 @@ import styles from './submitWithFeedback.module.scss'
 import { Button } from '@/components/button/Button'
 import { SubmitIndicator } from '@/components/submit-indicator/SubmitIndicator'
 import { ButtonGroupRow } from '@/components/layouts/button-group-row/ButtonGroupRow'
-import { LoadingArrow } from '@/assets/images'
+import { LoadingArrowIcon } from '@/assets/images'
 
 interface ISubmitWithFeedbackProps {
     additionalButtons?: React.ReactNode[]
@@ -19,7 +19,7 @@ export const SubmitWithFeedback: React.FC<ISubmitWithFeedbackProps> = ({ submitB
         <ButtonGroupRow>
             {additionalButtons}
             <Button label={submitButtonLabel} disabled={loading} type="submit" />
-            {loading && <SubmitIndicator loadingLabel={t('form.waitSending')} icon={LoadingArrow} loadingLabelClassName={styles.loadingText} />}
+            {loading && <SubmitIndicator loadingLabel={t('form.waitSending')} icon={LoadingArrowIcon} loadingLabelClassName={styles.loadingText} />}
         </ButtonGroupRow>
     )
 }

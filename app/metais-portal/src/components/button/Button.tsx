@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, forwardRef } from 'react'
 
 interface IButton {
     label: ReactNode
@@ -10,9 +10,10 @@ interface IButton {
     className?: string
 }
 
-export const Button: React.FC<IButton> = ({ label, onClick, variant, disabled, type = 'button', className }) => {
+export const Button = forwardRef<HTMLButtonElement, IButton>(({ label, onClick, variant, disabled, type = 'button', className }, ref) => {
     return (
         <button
+            ref={ref}
             onClick={onClick}
             type={type}
             className={classnames(
@@ -31,4 +32,4 @@ export const Button: React.FC<IButton> = ({ label, onClick, variant, disabled, t
             {label}
         </button>
     )
-}
+})
