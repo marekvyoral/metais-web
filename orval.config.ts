@@ -48,6 +48,26 @@ export default defineConfig({
                     path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClient.ts',
                     name: 'useCmdbSwaggerClient',
                 },
+                operations: {
+                    readConfigurationItemUsingGET: {
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useCmdbSwaggerClientForReadConfigurationItemUsingGET',
+                        },
+                    },
+                    getRoleParticipantUsingGET: {
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useCmdbSwaggerClientForGetRoleParticipantUsingGET',
+                        },
+                    },
+                    readCiNeighboursWithAllRelsUsingGET: {
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useCmdbSwaggerClientForReadCiNeighboursWithAllRelsUsingGET',
+                        },
+                    }
+                },
             },
             ...defaultOutputOptions,
         },

@@ -8,6 +8,9 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useCmdbSwaggerClient } from '../hooks/useCmdbSwaggerClient'
+import { useCmdbSwaggerClientForReadConfigurationItemUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useCmdbSwaggerClientForReadCiNeighboursWithAllRelsUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useCmdbSwaggerClientForGetRoleParticipantUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 export type ValidateCIsByTypesAndOwnerUsingGETParams = {
     'OAuth2Request.approved'?: boolean
     'OAuth2Request.authorities[0].authority'?: string
@@ -5835,7 +5838,7 @@ export const useGetCountCiTypesByOwnerUsingGET = <
  * @summary readConfigurationItem
  */
 export const useReadConfigurationItemUsingGETHook = () => {
-    const readConfigurationItemUsingGET = useCmdbSwaggerClient<ReadConfigurationItemUsingGET200>()
+    const readConfigurationItemUsingGET = useCmdbSwaggerClientForReadConfigurationItemUsingGET<ReadConfigurationItemUsingGET200>()
 
     return (uuid: string, params?: ReadConfigurationItemUsingGETParams, signal?: AbortSignal) => {
         return readConfigurationItemUsingGET({ url: `/read/ci/${uuid}`, method: 'get', params, signal })
@@ -6626,7 +6629,7 @@ export const useReadCiNeighboursUsingPOST = <TError = unknown, TContext = unknow
  * @summary readCiNeighboursWithAllRels
  */
 export const useReadCiNeighboursWithAllRelsUsingGETHook = () => {
-    const readCiNeighboursWithAllRelsUsingGET = useCmdbSwaggerClient<ReadCiNeighboursWithAllRelsUsingGET200>()
+    const readCiNeighboursWithAllRelsUsingGET = useCmdbSwaggerClientForReadCiNeighboursWithAllRelsUsingGET<ReadCiNeighboursWithAllRelsUsingGET200>()
 
     return (uuid: string, params?: ReadCiNeighboursWithAllRelsUsingGETParams, signal?: AbortSignal) => {
         return readCiNeighboursWithAllRelsUsingGET({ url: `/read/relations/neighbourswithallrels/${uuid}`, method: 'get', params, signal })
@@ -6953,7 +6956,7 @@ export const useGetRoleParticipantBulkUsingPOST = <TError = unknown, TContext = 
  * @summary getRoleParticipant
  */
 export const useGetRoleParticipantUsingGETHook = () => {
-    const getRoleParticipantUsingGET = useCmdbSwaggerClient<RoleParticipantUI>()
+    const getRoleParticipantUsingGET = useCmdbSwaggerClientForGetRoleParticipantUsingGET<RoleParticipantUI>()
 
     return (gid: string, params?: GetRoleParticipantUsingGETParams, signal?: AbortSignal) => {
         return getRoleParticipantUsingGET({ url: `/read/roleParticipant/${gid}`, method: 'get', params, signal })

@@ -2,7 +2,7 @@ export type BodyType<BodyData> = BodyData & { headers?: object }
 
 export type ErrorType<ErrorData> = ErrorData
 
-type CustomClient<T> = (data: {
+export type CustomClient<T> = (data: {
     url: string
     method: 'get' | 'post' | 'put' | 'delete' | 'patch'
     params?: Record<string, string>
