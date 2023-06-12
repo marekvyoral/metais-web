@@ -142,5 +142,14 @@
     },
     "relationType": {
         "as": "Application service"
+    },
+    "documentsTab": {
+        "table": {
+            "name": "Name",
+            "note": "Note",
+            "evidenceStatus": "Evidence status",
+            "createdAt": "Created",
+            "lastModifiedAt": "Last change"
+        }
     }
 }

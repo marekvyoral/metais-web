@@ -3,10 +3,12 @@ import { Table } from '@/components/table/Table'
 import { ColumnDef } from '@tanstack/react-table'
 import { CheckBox } from '@/components/CheckBox'
 import { Paginator } from '@/components/paginator/Paginator'
+import { useTranslation } from 'react-i18next'
 
 interface TableCols {
     attributes: any
     metaAttributes: any
+    selected: boolean
 }
 interface DocumentsTable {
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -27,7 +29,8 @@ const Error: React.FC = () => {
 export const DocumentsTableView: React.FC<DocumentsTable> = ({ data, additionalColumns, isLoading, isError }) => {
     if (isLoading) return <Loading />
     if (isError) return <Error />
-    debugger
+
+    const { t } = useTranslation()
 
     const additionalColumnsNullsafe = additionalColumns ?? []
     const columns: Array<ColumnDef<TableCols>> = [
@@ -43,31 +46,31 @@ export const DocumentsTableView: React.FC<DocumentsTable> = ({ data, additionalC
         },
         {
             accessorFn: (row) => row?.attributes?.Gen_Profil_nazov,
-            header: 'Name',
+            header: t('documentsTab.table.name'),
             id: '1',
             cell: (row) => row.getValue() as string,
         },
         {
             accessorFn: (row) => row?.attributes?.Gen_Profil_poznamka,
-            header: 'Note',
+            header: t('documentsTab.table.note'),
             id: '2',
             cell: (row) => row.getValue() as string,
         },
         {
             accessorFn: (row) => row?.metaAttributes?.state,
-            header: 'Evidence status',
+            header: t('documentsTab.table.evidenceStatus'),
             id: '3',
             cell: (row) => row.getValue() as string,
         },
         {
             accessorFn: (row) => row?.metaAttributes?.createdAt,
-            header: 'Created',
+            header: t('documentsTab.table.createdAt'),
             id: '4',
             cell: (row) => row.getValue() as string,
         },
         {
             accessorFn: (row) => row?.metaAttributes?.lastModifiedAt,
-            header: 'Last change',
+            header: t('documentsTab.table.lastModifiedAt'),
             id: '5',
             cell: (row) => row.getValue() as string,
         },

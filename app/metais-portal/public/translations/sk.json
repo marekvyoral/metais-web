@@ -143,5 +143,14 @@
     },
     "relationType": {
         "as": "Aplikačná služba"
+    },
+    "documentsTab": {
+        "table": {
+            "name": "Názov",
+            "note": "Poznámka",
+            "evidenceStatus": "Stav evidencie",
+            "createdAt": "Vytvorené",
+            "lastModifiedAt": "Posledná zmena"
+        }
     }
 }
