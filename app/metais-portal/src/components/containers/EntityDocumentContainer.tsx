@@ -41,11 +41,12 @@ export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ 
 }
 
 const mapCiData = (documentCiData: ReadCiNeighboursUsingPOST200 | void) => {
-    return documentCiData?.fromNodes?.neighbourPairs?.map((nP) => {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    return documentCiData?.fromNodes?.neighbourPairs?.map((nP: any) => {
         //todo check this after orval keyValue changes
-        let keyValue = []
-        nP?.configurationItem?.attributes?.forEach((a) => {
-            keyValue.push([a?.name, a?.value])
+        const keyValue = new Map<string, string>()
+        nP?.configurationItem?.attributes?.forEach((attribute: any) => {
+            keyValue.set(attribute?.name, attribute?.value)
         })
         const attributes = Object.fromEntries(keyValue)
 

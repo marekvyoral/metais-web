@@ -9,6 +9,7 @@ interface TableCols {
     metaAttributes: any
 }
 interface DocumentsTable {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     data: any //todo: missing return types from orval
     isLoading: boolean
     isError: boolean
