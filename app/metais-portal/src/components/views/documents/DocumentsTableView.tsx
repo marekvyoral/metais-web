@@ -27,10 +27,10 @@ const Error: React.FC = () => {
 }
 
 export const DocumentsTableView: React.FC<DocumentsTable> = ({ data, additionalColumns, isLoading, isError }) => {
+    const { t } = useTranslation()
+
     if (isLoading) return <Loading />
     if (isError) return <Error />
-
-    const { t } = useTranslation()
 
     const additionalColumnsNullsafe = additionalColumns ?? []
     const columns: Array<ColumnDef<TableCols>> = [
