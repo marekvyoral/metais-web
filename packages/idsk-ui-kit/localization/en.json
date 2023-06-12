@@ -1,0 +1,10 @@
+{
+    "languageSelector": {
+        "open": "Open language menu",
+        "close": "Close language menu"
+    },
+    "language": {
+        "sk": "Slovenčina",
+        "en": "English"
+    }
+}

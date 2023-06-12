@@ -1,13 +1,12 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { TextLinkExternal } from '@isdd/idsk-ui-kit/typography/TextLinkExternal'
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
 
 import { RelationCard } from './cards/RelationCard'
 import { CardColumnList } from './cards/CardColumnList'
 import { ListActions } from './lists/ListActions'
 import styles from './applicationServiceRelations.module.scss'
-
-import { TextLinkExternal } from '@/components/typography/TextLinkExternal'
-import { Button } from '@/components/button/Button'
 
 export const ApplicationServiceRelations: React.FC = () => {
     const { t } = useTranslation()

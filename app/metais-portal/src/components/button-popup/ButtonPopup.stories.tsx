@@ -1,8 +1,8 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
 
 import { Input } from '../Input'
-import { Button } from '../button/Button'
 
 import { ButtonPopup } from './ButtonPopup'
 

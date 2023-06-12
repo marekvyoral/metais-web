@@ -1,13 +1,13 @@
 import React, { PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
+import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 
 import styles from './relationCard.module.scss'
 import { RelationAttribute } from './RelationAttribute'
 
 import { GridRow } from '@/components/grid/GridRow'
 import { GridCol } from '@/components/grid/GridCol'
-import { TextBody } from '@/components/typography/TextBody'
 
 interface IRelationCardProps extends PropsWithChildren {
     label: React.ReactNode

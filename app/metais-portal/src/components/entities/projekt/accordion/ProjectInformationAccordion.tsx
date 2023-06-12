@@ -1,9 +1,9 @@
 import React from 'react'
+import { TextLinkExternal } from '@isdd/idsk-ui-kit/typography/TextLinkExternal'
 
 import { BasicInformationSection } from './BasicInformationSection'
 
 import { AccordionContainer } from '@/components/Accordion'
-import { TextLinkExternal } from '@/components/typography/TextLinkExternal'
 
 export const ProjectInformationAccordion: React.FC = () => {
     return (
