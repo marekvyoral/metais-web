@@ -22,7 +22,7 @@ export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ 
     }
     const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
 
-    const filter: NeighboursFilterContainerUi = {
+    const defaultFilter: NeighboursFilterContainerUi = {
         neighboursFilter: {
             ciType: ['Dokument'],
             metaAttributes: { state: ['DRAFT'] },
@@ -34,7 +34,7 @@ export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ 
 
     if (!configurationItemId) return <View data={{}} setPageConfig={setPageConfig} isLoading={false} isError={true} />
 
-    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId, filter, {})
+    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId, defaultFilter, {})
     const data = mapCiData(documentCiData)
 
     return <View data={{ data }} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />
