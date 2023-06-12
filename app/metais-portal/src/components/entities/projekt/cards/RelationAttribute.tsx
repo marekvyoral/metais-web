@@ -1,9 +1,9 @@
 import React, { PropsWithChildren } from 'react'
+import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 
 import styles from './relationAttribute.module.scss'
 
 import { GridCol } from '@/components/grid/GridCol'
-import { TextBody } from '@/components/typography/TextBody'
 import { GridRow } from '@/components/grid/GridRow'
 
 interface IAttributeProps extends PropsWithChildren {

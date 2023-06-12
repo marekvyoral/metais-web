@@ -23,7 +23,7 @@
             "jsx": true
         }
     },
-    "plugins": ["react", "@typescript-eslint", "react-hooks", "import", "prettier"],
+    "plugins": ["react", "import", "@typescript-eslint", "react-hooks", "import", "prettier"],
     "rules": {
         /**
          * Base rules
@@ -110,7 +110,11 @@
         "import/resolver": {
             "typescript": {},
             "alias": {
-                "map": [["@", "src"]]
+                "map": [
+                    ["@", "src"],
+                    ["@isdd/metais-common", "../../packages/metais-common"],
+                    ["@isdd/idsk-ui-kit", "../../packages/idsk-ui-kit"]
+                ]
             }
         }
     }

@@ -21,7 +21,9 @@
     "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@isdd/idsk-ui-kit/*": ["../../packages/idsk-ui-kit/*"],
+      "@isdd/metais-common/*": ["../../packages/metais-common/*"],
     },
     "types": [
       "vite/client"

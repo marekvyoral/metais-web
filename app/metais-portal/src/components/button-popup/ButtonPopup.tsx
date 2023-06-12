@@ -1,8 +1,7 @@
 import React, { ReactNode, useRef } from 'react'
 import { Popup } from 'reactjs-popup'
 import { PopupActions } from 'reactjs-popup/dist/types'
-
-import { Button } from '../button/Button'
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
 
 import styles from './buttonPopup.module.scss'
 

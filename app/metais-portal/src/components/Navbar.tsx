@@ -1,6 +1,5 @@
 import React from 'react'
-
-import { LanguageSelector } from '@/components/language-selector/LanguageSelector'
+import { LanguageSelector } from '@isdd/metais-common/language-selector/LanguageSelector'
 
 export const Navbar: React.FC = () => {
     return (
