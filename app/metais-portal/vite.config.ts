@@ -22,12 +22,12 @@ export default defineConfig(({ mode }) => {
             },
             proxy: {
                 '^/citypes/.*': {
-                    target: process.env.VITE_REST_CLIENT_CMDB_BASE_URL,
+                    target: process.env.VITE_REST_CLIENT_TYPES_REPO_BASE_URL,
                     changeOrigin: true,
                     secure: false,
                 },
                 '^/read/.*': {
-                    target: process.env.VITE_REST_CLIENT_TYPES_REPO_BASE_URL,
+                    target: process.env.VITE_REST_CLIENT_CMDB_BASE_URL,
                     changeOrigin: true,
                     secure: false,
                 },
