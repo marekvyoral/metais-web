@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getObjectPropertyByPath = (object: any, path: string) => {
     if (object == null) {
         return object
@@ -10,6 +11,7 @@ export const getObjectPropertyByPath = (object: any, path: string) => {
         }
         // handle array in path
         else if (part === '0') {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return object.map((arrayItem: any) => getObjectPropertyByPath(arrayItem, parts.slice(i + 1).join('.')))
         } else object = object[part]
     }

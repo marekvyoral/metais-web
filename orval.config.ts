@@ -18,6 +18,9 @@ const defaultOutputOptions: object = {
 export default defineConfig({
     cmdbSwagger: {
         input: {
+            override: {
+                transformer: './app/metais-portal/src/api/hooks/transform/attributesTypesTransformer.js',
+            },
             target: process.env.VITE_REST_CLIENT_CMDB_SWAGGER_SWAGGER_URL ?? '',
             filters: {
                 tags: [
@@ -66,7 +69,7 @@ export default defineConfig({
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useCmdbSwaggerClientForReadCiNeighboursWithAllRelsUsingGET',
                         },
-                    }
+                    },
                 },
             },
             ...defaultOutputOptions,

@@ -2631,11 +2631,6 @@ export type RelationshipInvalidateUiBody = RelationshipInvalidateUi
  */
 export type CiListFilterContainerUiBody = CiListFilterContainerUi
 
-export interface PoWithHierarchyUi {
-    hierarchy?: RelationshipUi
-    po?: ConfigurationItemUi
-}
-
 /**
  * poWithHierarchyUi
  */
@@ -2681,6 +2676,13 @@ export interface HistoryVersionUiRelationshipUi {
     actions?: string[]
     item?: RelationshipUi
     versionId?: string
+}
+
+export interface PaginationUi {
+    page?: number
+    perPage?: number
+    totalPages?: number
+    totaltems?: number
 }
 
 export interface HistoryVersionsListUiRelationshipUi {
@@ -2764,6 +2766,12 @@ export const UsageTypeFilterUiBlackListItem = {
 export interface UsageTypeFilterUi {
     blackList?: UsageTypeFilterUiBlackListItem[]
     whiteList?: UsageTypeFilterUiWhiteListItem[]
+}
+
+export interface StoreSetUi {
+    configurationItemSet?: ConfigurationItemUi[]
+    invalidateReason?: InvalidateReason
+    relationshipSet?: RelationshipUi[]
 }
 
 export interface StoreGroupMembersSetUi {
@@ -2935,12 +2943,6 @@ export interface RelationshipUi {
     uuid?: string
 }
 
-export interface StoreSetUi {
-    configurationItemSet?: ConfigurationItemUi[]
-    invalidateReason?: InvalidateReason
-    relationshipSet?: RelationshipUi[]
-}
-
 export interface RelationshipSetUi {
     pagination?: PaginationUi
     relationshipSet?: RelationshipUi[]
@@ -3043,11 +3045,9 @@ export interface ProfilePicture {
     width?: number
 }
 
-export interface PaginationUi {
-    page?: number
-    perPage?: number
-    totalPages?: number
-    totaltems?: number
+export interface PoWithHierarchyUi {
+    hierarchy?: RelationshipUi
+    po?: ConfigurationItemUi
 }
 
 export type NotificationUpdateHolderUiTypeOfAction =
@@ -3318,14 +3318,6 @@ export const ErrorMessageUiErrorType = {
     PROCESSING_ERROR: 'PROCESSING_ERROR',
 } as const
 
-export interface ErrorMessageUi {
-    attributeName?: string
-    errorDetail?: ErrorDetailUi
-    errorType?: ErrorMessageUiErrorType
-    itemId?: string
-    itemType?: ErrorMessageUiItemType
-}
-
 export interface ErrorMessageHolderUi {
     messages?: ErrorMessageUi[]
 }
@@ -3347,6 +3339,14 @@ export interface ErrorDetailUi {
     regex?: string
 }
 
+export interface ErrorMessageUi {
+    attributeName?: string
+    errorDetail?: ErrorDetailUi
+    errorType?: ErrorMessageUiErrorType
+    itemId?: string
+    itemType?: ErrorMessageUiItemType
+}
+
 export interface CustomMessageUi {
     failPlaceholderValues?: string[]
     messageFailType?: string
@@ -3359,8 +3359,10 @@ export interface CountTypes {
     type?: string
 }
 
+export type ConfigurationItemUiAttributes = { [key: string]: any }
+
 export interface ConfigurationItemUi {
-    attributes?: AttributeUi[]
+    attributes?: ConfigurationItemUiAttributes
     metaAttributes?: MetaAttributesUi
     owner?: string
     type?: string
