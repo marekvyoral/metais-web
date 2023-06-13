@@ -1,0 +1,6 @@
+$govuk-global-styles: true;
+@import '@id-sk/frontend/idsk/all';
+
+.lightColor {
+    color: govuk-colour('dark-grey');
+}

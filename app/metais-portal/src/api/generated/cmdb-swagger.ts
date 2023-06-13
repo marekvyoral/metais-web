@@ -6134,53 +6134,44 @@ export const useReadCiListUsingPOSTHook = () => {
     }
 }
 
-export const useReadCiListUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
-        TError,
-        { data: CiListFilterContainerUiBody; params?: ReadCiListUsingPOSTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
-    TError,
-    { data: CiListFilterContainerUiBody; params?: ReadCiListUsingPOSTParams },
-    TContext
-> => {
-    const { mutation: mutationOptions } = options ?? {}
+export const getReadCiListUsingPOSTQueryKey = (ciListFilterContainerUiBody: CiListFilterContainerUiBody, params?: ReadCiListUsingPOSTParams) =>
+    [`/read/cilistfiltered`, ...(params ? [params] : []), ciListFilterContainerUiBody] as const
+
+export const useReadCiListUsingPOSTQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError = unknown>(
+    ciListFilterContainerUiBody: CiListFilterContainerUiBody,
+    params?: ReadCiListUsingPOSTParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getReadCiListUsingPOSTQueryKey(ciListFilterContainerUiBody, params)
 
     const readCiListUsingPOST = useReadCiListUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
-        { data: CiListFilterContainerUiBody; params?: ReadCiListUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>> = () =>
+        readCiListUsingPOST(ciListFilterContainerUiBody, params)
 
-        return readCiListUsingPOST(data, params)
-    }
-
-    return { mutationFn, ...mutationOptions }
+    return { queryKey, queryFn, ...queryOptions }
 }
 
-export type ReadCiListUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>>
-export type ReadCiListUsingPOSTMutationBody = CiListFilterContainerUiBody
-export type ReadCiListUsingPOSTMutationError = unknown
+export type ReadCiListUsingPOSTQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>>
+export type ReadCiListUsingPOSTQueryError = unknown
 
 /**
  * @summary readCiList
  */
-export const useReadCiListUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
-        TError,
-        { data: CiListFilterContainerUiBody; params?: ReadCiListUsingPOSTParams },
-        TContext
-    >
-}) => {
-    const mutationOptions = useReadCiListUsingPOSTMutationOptions(options)
+export const useReadCiListUsingPOST = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError = unknown>(
+    ciListFilterContainerUiBody: CiListFilterContainerUiBody,
+    params?: ReadCiListUsingPOSTParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useReadCiListUsingPOSTQueryOptions(ciListFilterContainerUiBody, params, options)
 
-    return useMutation(mutationOptions)
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
 }
 
 /**

@@ -50,6 +50,11 @@ export default defineConfig({
                             useQuery: true,
                         },
                     },
+                    readCiListUsingPOST: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
                 },
                 mutator: {
                     path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClient.ts',
