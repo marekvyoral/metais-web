@@ -1,20 +1,29 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 
 import { TextHeading } from '@/components/typography/TextHeading'
 import { Tabs } from '@/components/tabs/Tabs'
 import { ApplicationServiceRelations } from '@/components/entities/projekt/ApplicationServiceRelations'
 import { ProjectInformationAccordion } from '@/components/entities/projekt/accordion/ProjectInformationAccordion'
+import { useReadConfigurationItemUsingGET, useGetRoleParticipantUsingGET, useReadCiNeighboursWithAllRelsUsingGET } from '@/api'
 
 const ProjektEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
+    const { projektId } = useParams()
+    const { data } = useReadConfigurationItemUsingGET(projektId ?? '')
+    const { data: ciWithRels } = useReadCiNeighboursWithAllRelsUsingGET(projektId ?? '')
+    const { data: participantData } = useGetRoleParticipantUsingGET(data?.metaAttributes?.owner ?? '')
     const tabList = [
         {
             id: '1',
             title: t('ciType.informations'),
             content: (
                 <>
-                    <ProjectInformationAccordion />
+                    <ProjectInformationAccordion
+                        attributes={data?.attributes}
+                        participantAttributes={participantData?.configurationItemUi?.attributes}
+                    />
                 </>
             ),
         },

@@ -5,7 +5,12 @@ import { BasicInformationSection } from './BasicInformationSection'
 import { AccordionContainer } from '@/components/Accordion'
 import { TextLinkExternal } from '@/components/typography/TextLinkExternal'
 
-export const ProjectInformationAccordion: React.FC = () => {
+interface ProjectInformationAccordionProps {
+    attributes: { [key: string]: any }
+    participantAttributes?: { [key: string]: any }
+}
+
+export const ProjectInformationAccordion: React.FC<ProjectInformationAccordionProps> = ({ attributes, participantAttributes }) => {
     return (
         <>
             <AccordionContainer
@@ -15,26 +20,24 @@ export const ProjectInformationAccordion: React.FC = () => {
 
                         content: (
                             <BasicInformationSection
-                                codeMetaIS={'isvs_11775'}
+                                codeMetaIS={attributes?.Gen_Profil_kod_metais}
                                 admin={
                                     <TextLinkExternal
-                                        title={'Ministerstvo dopravy Slovenskej republiky'}
+                                        title={participantAttributes?.Gen_Profil_nazov}
                                         href={'#'}
-                                        textLink={'Ministerstvo dopravy Slovenskej republiky'}
+                                        textLink={participantAttributes?.Gen_Profil_nazov}
                                     />
                                 }
-                                informationSystemName={'Elektronický národný register informácií dopravy'}
+                                informationSystemName={attributes?.Gen_Profil_nazov}
                                 referenceIdentifier={
                                     <TextLinkExternal
-                                        title={'https://data.gov.sk/id/egov/isvs/11775'}
-                                        href={'https://data.gov.sk/id/egov/isvs/11775'}
-                                        textLink={'https://data.gov.sk/id/egov/isvs/11775'}
+                                        title={attributes?.Gen_Profil_ref_id}
+                                        href={attributes?.Gen_Profil_ref_id}
+                                        textLink={attributes?.Gen_Profil_ref_id}
                                     />
                                 }
-                                note={'skratka – „eNRI DOP“'}
-                                description={
-                                    'Zámerom projektu je vybudovať komplexný informačný systém, ktorý bude slúžiť najmä ako: a) národný prístupový bod pre služby viazané na EÚ Smernicu a Delegované nariadenia: Smernica 2010/40/EÚ (o rámci na zavedenie inteligentných dopravných systémov v oblasti cestnej dopravy a na rozhrania s inými druhmi dopravy), Delegované nariadenia č. 2017/1926 (poskytovanie informačných služieb o multimodálnom cestovaní v celej EÚ), č. 885/2013 (poskytovanie informačných služieb pre bezpečné a chránené parkovacie miesta pre nákladné a úžitkové vozidlá), č. 886/2013 (poskytovanie bezplatných minimálnych univerzálnych dopravných informácií týkajúcich sa bezpečnosti cestnej premávky užívateľom) a č. 2015/962 (poskytovanie informačných služieb o doprave v reálnom čase v celej EÚ), b) register informácií z dopravy, ktoré majú podporiť cestovanie verejnou dopravou, a využívanie ekologických dopravných módov, c) báza pre inteligentný dopravný systém, ktorý zabezpečí vyššiu atraktívnosť ekologických dopravných módov.'
-                                }
+                                note={attributes?.Gen_Profil_poznamka}
+                                description={attributes?.Gen_Profil_popis}
                             />
                         ),
                     },
