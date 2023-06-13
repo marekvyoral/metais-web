@@ -6,14 +6,16 @@ import { TextHeading } from '@/components/typography/TextHeading'
 import { Tabs } from '@/components/tabs/Tabs'
 import { ApplicationServiceRelations } from '@/components/entities/projekt/ApplicationServiceRelations'
 import { ProjectInformationAccordion } from '@/components/entities/projekt/accordion/ProjectInformationAccordion'
-import { useReadConfigurationItemUsingGET, useGetRoleParticipantUsingGET, useReadCiNeighboursWithAllRelsUsingGET } from '@/api'
+import { useReadConfigurationItemUsingGET, useGetRoleParticipantUsingGET, useReadCiNeighboursWithAllRelsUsingGET, useGetCiTypeUsingGET } from '@/api'
 
 const ProjektEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
     const { projektId } = useParams()
     const { data } = useReadConfigurationItemUsingGET(projektId ?? '')
-    const { data: ciWithRels } = useReadCiNeighboursWithAllRelsUsingGET(projektId ?? '')
+    const { data: ciTypes } = useGetCiTypeUsingGET('ISVS')
+    // const { data: ciWithRels } = useReadCiNeighboursWithAllRelsUsingGET(projektId ?? '')
     const { data: participantData } = useGetRoleParticipantUsingGET(data?.metaAttributes?.owner ?? '')
+
     const tabList = [
         {
             id: '1',
@@ -23,6 +25,7 @@ const ProjektEntityDetailPage: React.FC = () => {
                     <ProjectInformationAccordion
                         attributes={data?.attributes}
                         participantAttributes={participantData?.configurationItemUi?.attributes}
+                        ciTypesAttributes={ciTypes?.attributes}
                     />
                 </>
             ),
