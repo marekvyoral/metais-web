@@ -109,6 +109,12 @@
     "tab": {
         "contents": "Contents"
     },
+    "errors": {
+        "fixLink": "Correct"
+    },
+    "mutationFeedback": {
+        "successfulUpdated": "The item was successfully changed"
+    },
     "relationCard": {
         "name": "Title",
         "codeMetaIS": "Code MetaIS",

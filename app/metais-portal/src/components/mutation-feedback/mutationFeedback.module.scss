@@ -1,6 +1,11 @@
 @import '@id-sk/frontend/idsk/all';
 
-.loadingBlock {
+.successText {
+    color: govuk-colour('green');
+    font-weight: bold;
+}
+
+.successBlock {
     align-items: center;
     display: flex;
     padding: govuk-spacing(2) 0;
