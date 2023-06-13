@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
+import { TextLinkExternal } from '@isdd/idsk-ui-kit/typography/TextLinkExternal'
 
 import { RelationCard } from './RelationCard'
-
-import { TextLinkExternal } from '@/components/typography/TextLinkExternal'
 
 const meta: Meta<typeof RelationCard> = {
     title: 'Components/metais/entity/Card/RelationCard',

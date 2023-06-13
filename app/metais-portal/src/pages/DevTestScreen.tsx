@@ -1,13 +1,22 @@
 import React, { useState } from 'react'
+import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 
 import { AccordionContainer } from '@/components/Accordion'
-import { Paginator } from '@/components/paginator/Paginator'
+import { CiContainer } from '@/components/containers/CiContainer'
+import { View } from '@/components/containers/CiContainer.stories'
+import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
+import { RelationsView } from '@/components/containers/RelationsListContainer.stories'
+import { DocumentsListContainer } from '@/components/containers/DocumentListContainer'
+import { DocsView } from '@/components/containers/DocumentListContainer.stories'
 
 export const DevTestScreen: React.FC = () => {
     const [page, setPage] = useState(5)
     return (
         <>
             <h4>Obrazovka na testovanie komponentov</h4>
+            <CiContainer entityName="KRIS" entityId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={View} />
+            <RelationsListContainer entityId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={RelationsView} />
+            <DocumentsListContainer entityName="KRIS" entityId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={DocsView} />
             <Paginator dataLength={100} pageNumber={page} onPageChanged={setPage} pageSize={10} />
             <AccordionContainer
                 sections={[

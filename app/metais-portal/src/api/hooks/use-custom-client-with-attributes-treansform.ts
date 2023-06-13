@@ -26,7 +26,7 @@ export const useCustomClientWithAttributesTransform = <T>(baseURL: string, ...at
             },
             ...(data ? { body: JSON.stringify(data) } : {}),
         })
-
-        return transformResponseWithAttributesToObject(await response.json(), attributesPath)
+        const jsonResponse = await response.json()
+        return transformResponseWithAttributesToObject(jsonResponse, attributesPath)
     }
 }

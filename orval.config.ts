@@ -47,11 +47,12 @@ export default defineConfig({
         output: {
             target: `./app/metais-portal/src/api/generated/cmdb-swagger.ts`,
             override: {
-                mutator: {
-                    path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClient.ts',
-                    name: 'useCmdbSwaggerClient',
-                },
                 operations: {
+                    readCiNeighboursUsingPOST: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
                     readConfigurationItemUsingGET: {
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
@@ -70,6 +71,10 @@ export default defineConfig({
                             name: 'useCmdbSwaggerClientForReadCiNeighboursWithAllRelsUsingGET',
                         },
                     },
+                },
+                mutator: {
+                    path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClient.ts',
+                    name: 'useCmdbSwaggerClient',
                 },
             },
             ...defaultOutputOptions,

@@ -2,10 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useForm } from 'react-hook-form'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
 
 import { SubmitWithFeedback } from './SubmitWithFeedback'
-
-import { Button } from '@/components/button/Button'
 
 const meta: Meta<typeof SubmitWithFeedback> = {
     title: 'Components/SubmitWithFeedback',

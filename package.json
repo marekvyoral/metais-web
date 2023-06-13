@@ -9,6 +9,7 @@
   "dependencies": {
     "@hookform/error-message": "^2.0.1",
     "@id-sk/frontend": "^2.10.0",
+    "@isdd/metais-common": "*",
     "@tanstack/react-query": "^4.29.7",
     "@tanstack/react-table": "^8.9.1",
     "@testing-library/jest-dom": "^5.14.1",
@@ -21,6 +22,7 @@
     "classnames": "^2.3.2",
     "i18next": "^22.4.15",
     "i18next-http-backend": "^2.2.0",
+    "@isdd/idsk-ui-kit": "*",
     "patch-package": "^7.0.0",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",
@@ -31,6 +33,7 @@
     "react-router-dom": "^6.11.1",
     "react-select": "^5.7.3",
     "react-select-async-paginate": "^0.7.2",
+    "reactjs-popup": "^2.0.5",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },
@@ -50,6 +53,7 @@
     "prepare": "yarn prepare:portal && yarn prepare:admin",
     "prepare:portal": "recursive-copy -w node_modules/@id-sk/frontend/govuk/assets app/metais-portal/public/assets && recursive-copy -w node_modules/@id-sk/frontend/idsk/assets app/metais-portal/public/assets",
     "prepare:admin": "recursive-copy -w node_modules/@id-sk/frontend/govuk/assets app/metais-admin/public/assets && recursive-copy -w node_modules/@id-sk/frontend/idsk/assets app/metais-admin/public/assets",
+    "storybook:idsk-ui-kit": "cd packages/idsk-ui-kit && storybook dev -p 6006 --disable-telemetry",
     "storybook:portal": "cd app/metais-portal && storybook dev -p 6006 --disable-telemetry",
     "build-storybook": "cd app/metais-portal && storybook build",
     "postinstall": "patch-package",

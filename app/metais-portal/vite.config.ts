@@ -21,13 +21,18 @@ export default defineConfig(({ mode }) => {
                 origin: '*',
             },
             proxy: {
-                '^/citypes/.*': {
-                    target: 'http://types-repo-metais3.apps.dev.isdd.sk',
+                '^/read/.*': {
+                    target: process.env.VITE_REST_CLIENT_CMDB_TARGET_URL,
                     changeOrigin: true,
                     secure: false,
                 },
-                '^/read/.*': {
-                    target: 'https://metais.vicepremier.gov.sk/cmdb',
+                '^/citypes/.*': {
+                    target: process.env.VITE_REST_CLIENT_TYPES_REPO_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
+                },
+                '^/enumsrepository/.*': {
+                    target: process.env.VITE_REST_CLIENT_ENUMS_REPO_TARGET_URL,
                     changeOrigin: true,
                     secure: false,
                 },

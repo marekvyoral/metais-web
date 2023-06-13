@@ -27,4 +27,7 @@ yarn-error.log*
 /app/*/public/assets
 /app/*/storybook-static
 
+/packages/*/node_modules
+
 /node_modules
+.idea

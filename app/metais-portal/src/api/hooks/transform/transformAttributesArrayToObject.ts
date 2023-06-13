@@ -1,16 +1,21 @@
 import { getObjectPropertyByPath } from './getObjectPropertyByPath'
 import { setObjectPropertyByPath } from './setObjectPropertyByPath'
 
+interface TransformedInterface {
+    name: string
+    value: string
+}
+
 /**
  * Recursive transform function, that transform name-value parirs to object
  *
  * @param {any[]} attributesArray array of attributes name-value
  * @returns {({ name: string; value: string | string[] })} object where name is key and value is value
  */
-const transformAttributesArrayToObject = (attributesArray: any) => {
+const transformAttributesArrayToObject = (attributesArray: Array<never>): object => {
     if (Array.isArray(attributesArray?.[0]))
-        return attributesArray.map((attributesNestedArray: any) => transformAttributesArrayToObject(attributesNestedArray))
-    return Object.fromEntries(attributesArray.map((attribute: any) => [attribute.name, attribute.value]))
+        return attributesArray.map((attributesNestedArray: never) => transformAttributesArrayToObject(attributesNestedArray))
+    return Object.fromEntries(attributesArray.map((attribute: TransformedInterface) => [attribute.name, attribute.value]))
 }
 
 /**
@@ -21,7 +26,7 @@ const transformAttributesArrayToObject = (attributesArray: any) => {
  * @returns {*}
  */
 
-export const transformResponseWithAttributesToObject = (data: any, attributesPaths: string[]) => {
+export const transformResponseWithAttributesToObject = <T>(data: T, attributesPaths: string[]) => {
     if (!data) return
     const newData = data
     attributesPaths.map((attributePath) => {
