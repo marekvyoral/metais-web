@@ -4,8 +4,6 @@ import { useTranslation } from 'react-i18next'
 import styles from './basicInformationSection.module.scss'
 import { InformationGridRow } from './InformationGridRow'
 
-import { CiType, ReadConfigurationItemUsingGET200 } from '@/api'
-
 interface IBasicInformationSectionProps extends PropsWithChildren {
     codeMetaIS: string
     admin: React.ReactNode
@@ -13,8 +11,6 @@ interface IBasicInformationSectionProps extends PropsWithChildren {
     referenceIdentifier: React.ReactNode
     note: string
     description: string
-    ciItemsData?: ReadConfigurationItemUsingGET200 | undefined
-    ciTypesData?: CiType | undefined
 }
 
 export const BasicInformationSection: React.FC<IBasicInformationSectionProps> = ({

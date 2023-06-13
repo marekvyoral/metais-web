@@ -136,7 +136,7 @@ export default defineConfig({
         input: {
             target: process.env.VITE_REST_CLIENT_ENUMS_REPO_SWAGGER_URL ?? '',
             filters: {
-                tags: ['scheduled-jobs-controller'], // NOT WORKING 'enums-controller', 'enums-item-controller'
+                tags: ['scheduled-jobs-controller', 'enums-controller', 'enums-item-controller'],
             },
         },
         output: {

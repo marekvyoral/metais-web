@@ -36,6 +36,11 @@ export default defineConfig(({ mode }) => {
                     changeOrigin: true,
                     secure: false,
                 },
+                '^/enums/.*': {
+                    target: process.env.VITE_REST_CLIENT_ENUMS_REPO_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
+                },
             },
         },
     }
