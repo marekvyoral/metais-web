@@ -6,6 +6,8 @@ import {
     ConfigurationItemMapped,
     NeighbourPairsEntity,
     ReadCiNeighboursUsingPOST200_GeneratedType,
+    AttributesEntity,
+    AttributeValue,
 } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 
 interface IView {
@@ -18,6 +20,32 @@ interface IView {
 interface IEntityDocumentsContainer {
     configurationItemId?: string
     View: React.FC<IView>
+}
+
+export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): ConfigurationItemMapped[] | undefined => {
+    return documentCiData?.fromNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
+        //this should be changed after orval keyValue changes
+        const keyValue = new Map<string, AttributeValue>()
+        nP?.configurationItem?.attributes?.forEach((attribute: AttributesEntity) => {
+            keyValue.set(attribute?.name, attribute?.value)
+        })
+        const attributes = Object.fromEntries(keyValue)
+
+        return { attributes, ...nP?.configurationItem } as ConfigurationItemMapped
+    })
+}
+
+export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): ConfigurationItemMapped[] | undefined => {
+    return documentCiData?.toNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
+        //this should be changed after orval keyValue changes
+        const keyValue = new Map<string, AttributeValue>()
+        nP?.configurationItem?.attributes?.forEach((attribute: AttributesEntity) => {
+            keyValue.set(attribute?.name, attribute?.value)
+        })
+        const attributes = Object.fromEntries(keyValue)
+
+        return { attributes, ...nP?.configurationItem } as ConfigurationItemMapped
+    })
 }
 
 export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ configurationItemId, View }) => {
@@ -44,30 +72,4 @@ export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ 
     const data = mapCiDataFrom(documentCiData as ReadCiNeighboursUsingPOST200_GeneratedType)
 
     return <View data={data} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />
-}
-
-export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): ConfigurationItemMapped[] | undefined => {
-    return documentCiData?.fromNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
-        //this should be changed after orval keyValue changes
-        const keyValue = new Map<string, string>()
-        nP?.configurationItem?.attributes?.forEach((attribute: { name: string; value: string }) => {
-            keyValue.set(attribute?.name, attribute?.value)
-        })
-        const attributes = Object.fromEntries(keyValue)
-
-        return { attributes, ...nP?.configurationItem }
-    })
-}
-
-export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): ConfigurationItemMapped[] | undefined => {
-    return documentCiData?.toNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
-        //this should be changed after orval keyValue changes
-        const keyValue = new Map<string, string>()
-        nP?.configurationItem?.attributes?.forEach((attribute: { name: string; value: string }) => {
-            keyValue.set(attribute?.name, attribute?.value)
-        })
-        const attributes = Object.fromEntries(keyValue)
-
-        return { attributes, ...nP?.configurationItem }
-    })
 }
