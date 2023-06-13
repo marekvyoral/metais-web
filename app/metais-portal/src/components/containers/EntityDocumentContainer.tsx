@@ -37,9 +37,10 @@ export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ 
         ...pageConfig,
     }
 
-    if (!configurationItemId) return <View setPageConfig={setPageConfig} isLoading={false} isError={true} />
+    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', defaultFilter, {})
 
-    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId, defaultFilter, {})
+    if (!configurationItemId) return <View setPageConfig={setPageConfig} isLoading={false} isError />
+
     const data = mapCiDataFrom(documentCiData as ReadCiNeighboursUsingPOST200_GeneratedType)
 
     return <View data={data} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />

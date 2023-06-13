@@ -1,9 +1,10 @@
 import React from 'react'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { ColumnDef } from '@tanstack/react-table'
-import { CheckBox } from '@/components/CheckBox'
 import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 import { useTranslation } from 'react-i18next'
+
+import { CheckBox } from '@/components/CheckBox'
 import { ConfigurationItemMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 
 export interface TableCols extends ConfigurationItemMapped {
@@ -78,7 +79,14 @@ export const DocumentsTableView: React.FC<DocumentsTable> = ({ data, additionalC
     return (
         <>
             <Table columns={columns} data={data} />
-            <Paginator dataLength={100} pageNumber={1} onPageChanged={() => {}} pageSize={10} />
+            <Paginator
+                dataLength={100}
+                pageNumber={1}
+                onPageChanged={() => {
+                    console.log('')
+                }}
+                pageSize={10}
+            />
         </>
     ) //todo: paginator wrapper
 }
