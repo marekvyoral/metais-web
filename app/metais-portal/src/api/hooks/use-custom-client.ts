@@ -12,6 +12,9 @@ type CustomClient<T> = (data: {
 }) => Promise<T>
 
 export const useCustomClient = <T>(baseURL: string): CustomClient<T> => {
+    //vite proxy not working?
+    const proxyUrl = 'https://corsproxy.io/?'
+
     return async ({ url, method, params, data }) => {
         const searchParams = params ? `?${new URLSearchParams(params)}` : ''
         const response = await fetch(`${baseURL}${url}` + searchParams, {

@@ -8,6 +8,20 @@
 import { useQuery } from '@tanstack/react-query'
 import type { UseQueryOptions, QueryFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useEnumsRepoSwaggerClient } from '../hooks/useEnumsRepoSwaggerClient'
+export type GetJobListUsingGET200 = { [key: string]: any }
+
+export type FireJobNowUsingGET200 = { [key: string]: any }
+
+/**
+ * enumItemApi
+ */
+export type EnumItemBody = EnumItem
+
+/**
+ * enumTypeApi
+ */
+export type EnumTypeBody = EnumType
+
 export interface EnumTypePreview {
     category?: string
     code?: string
@@ -51,17 +65,17 @@ type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
  * @summary fireJobNow
  */
 export const useFireJobNowUsingGETHook = () => {
-    const fireJobNowUsingGET = useEnumsRepoSwaggerClient<void>()
+    const fireJobNowUsingGET = useEnumsRepoSwaggerClient<FireJobNowUsingGET200>()
 
-    return (jobName: unknown, signal?: AbortSignal) => {
+    return (jobName: string, signal?: AbortSignal) => {
         return fireJobNowUsingGET({ url: `/scheduler/fire/${jobName}`, method: 'get', signal })
     }
 }
 
-export const getFireJobNowUsingGETQueryKey = (jobName: unknown) => [`/scheduler/fire/${jobName}`] as const
+export const getFireJobNowUsingGETQueryKey = (jobName: string) => [`/scheduler/fire/${jobName}`] as const
 
-export const useFireJobNowUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useFireJobNowUsingGETHook>>>, TError = unknown>(
-    jobName: unknown,
+export const useFireJobNowUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useFireJobNowUsingGETHook>>>, TError = void>(
+    jobName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFireJobNowUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFireJobNowUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -77,13 +91,13 @@ export const useFireJobNowUsingGETQueryOptions = <TData = Awaited<ReturnType<Ret
 }
 
 export type FireJobNowUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useFireJobNowUsingGETHook>>>>
-export type FireJobNowUsingGETQueryError = unknown
+export type FireJobNowUsingGETQueryError = void
 
 /**
  * @summary fireJobNow
  */
-export const useFireJobNowUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useFireJobNowUsingGETHook>>>, TError = unknown>(
-    jobName: unknown,
+export const useFireJobNowUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useFireJobNowUsingGETHook>>>, TError = void>(
+    jobName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFireJobNowUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useFireJobNowUsingGETQueryOptions(jobName, options)
@@ -99,7 +113,7 @@ export const useFireJobNowUsingGET = <TData = Awaited<ReturnType<ReturnType<type
  * @summary getJobList
  */
 export const useGetJobListUsingGETHook = () => {
-    const getJobListUsingGET = useEnumsRepoSwaggerClient<void>()
+    const getJobListUsingGET = useEnumsRepoSwaggerClient<GetJobListUsingGET200>()
 
     return (signal?: AbortSignal) => {
         return getJobListUsingGET({ url: `/scheduler/jobList`, method: 'get', signal })
@@ -110,7 +124,7 @@ export const getGetJobListUsingGETQueryKey = () => [`/scheduler/jobList`] as con
 
 export const useGetJobListUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetJobListUsingGETHook>>>,
-    TError = unknown,
+    TError = void,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetJobListUsingGETHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetJobListUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -126,12 +140,12 @@ export const useGetJobListUsingGETQueryOptions = <
 }
 
 export type GetJobListUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetJobListUsingGETHook>>>>
-export type GetJobListUsingGETQueryError = unknown
+export type GetJobListUsingGETQueryError = void
 
 /**
  * @summary getJobList
  */
-export const useGetJobListUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetJobListUsingGETHook>>>, TError = unknown>(options?: {
+export const useGetJobListUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetJobListUsingGETHook>>>, TError = void>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetJobListUsingGETHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useGetJobListUsingGETQueryOptions(options)

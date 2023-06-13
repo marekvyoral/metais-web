@@ -1,0 +1,11 @@
+{
+    "languageSelector": {
+        "open": "Rozbaliť jazykové menu",
+        "close": "Skryť jazykové menu"
+    },
+    "language": {
+        "sk": "Slovenčina",
+        "en": "English",
+        "ge": "German"
+    }
+}
