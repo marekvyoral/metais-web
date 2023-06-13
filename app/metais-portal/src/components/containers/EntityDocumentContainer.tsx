@@ -1,10 +1,15 @@
 import React, { SetStateAction, useState } from 'react'
 
 import { IPageConfig } from '@/hooks/useEntityRelations'
-import { NeighboursFilterContainerUi, ReadCiNeighboursUsingPOST200, useReadCiNeighboursUsingPOST } from '@/api'
+import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
+import {
+    ConfigurationItemMapped,
+    NeighbourPairsEntity,
+    ReadCiNeighboursUsingPOST200_GeneratedType,
+} from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 
 interface IView {
-    data: object
+    data?: ConfigurationItemMapped[]
     setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
     isLoading: boolean
     isError: boolean
@@ -32,17 +37,16 @@ export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ 
         ...pageConfig,
     }
 
-    if (!configurationItemId) return <View data={{}} setPageConfig={setPageConfig} isLoading={false} isError={true} />
+    if (!configurationItemId) return <View setPageConfig={setPageConfig} isLoading={false} isError={true} />
 
     const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId, defaultFilter, {})
-    const data = mapCiDataFrom(documentCiData)
+    const data = mapCiDataFrom(documentCiData as ReadCiNeighboursUsingPOST200_GeneratedType)
 
-    return <View data={{ data }} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />
+    return <View data={data} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />
 }
 
-export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200 | void) => {
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    return documentCiData?.fromNodes?.neighbourPairs?.map((nP: any) => {
+export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): ConfigurationItemMapped[] | undefined => {
+    return documentCiData?.fromNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
         //todo check this after orval keyValue changes
         const keyValue = new Map<string, string>()
         nP?.configurationItem?.attributes?.forEach((attribute: { name: string; value: string }) => {
@@ -50,13 +54,12 @@ export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200 | voi
         })
         const attributes = Object.fromEntries(keyValue)
 
-        return { attributes, metaAttributes: { ...nP?.configurationItem?.metaAttributes } }
+        return { attributes, ...nP?.configurationItem }
     })
 }
 
-export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200 | void) => {
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    return documentCiData?.toNodes?.neighbourPairs?.map((nP: any) => {
+export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): ConfigurationItemMapped[] | undefined => {
+    return documentCiData?.toNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
         //todo check this after orval keyValue changes
         const keyValue = new Map<string, string>()
         nP?.configurationItem?.attributes?.forEach((attribute: { name: string; value: string }) => {
@@ -64,6 +67,6 @@ export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200 | void)
         })
         const attributes = Object.fromEntries(keyValue)
 
-        return { attributes, metaAttributes: { ...nP?.configurationItem?.metaAttributes } }
+        return { attributes, ...nP?.configurationItem }
     })
 }

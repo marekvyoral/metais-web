@@ -4,15 +4,13 @@ import { ColumnDef } from '@tanstack/react-table'
 import { CheckBox } from '@/components/CheckBox'
 import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 import { useTranslation } from 'react-i18next'
+import { ConfigurationItemMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 
-interface TableCols {
-    attributes: any
-    metaAttributes: any
+export interface TableCols extends ConfigurationItemMapped {
     selected: boolean
 }
 interface DocumentsTable {
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    data: any //todo: missing return types from orval
+    data: TableCols[] //todo: missing return types from orval
     isLoading: boolean
     isError: boolean
     additionalColumns?: Array<ColumnDef<TableCols>>
