@@ -11,7 +11,7 @@ export interface TableCols extends ConfigurationItemMapped {
     selected: boolean
 }
 interface DocumentsTable {
-    data: TableCols[] //todo: missing return types from orval
+    data: TableCols[] //missing return types from orval, types should come from backend, not from _GeneratedType file
     isLoading: boolean
     isError: boolean
     additionalColumns?: Array<ColumnDef<TableCols>>
@@ -83,10 +83,11 @@ export const DocumentsTableView: React.FC<DocumentsTable> = ({ data, additionalC
                 dataLength={100}
                 pageNumber={1}
                 onPageChanged={() => {
-                    console.log('')
+                    //this is a dummy method
                 }}
                 pageSize={10}
             />
         </>
-    ) //todo: paginator wrapper
+    )
+    //temporary paginator component, should be replaced by pagnator wrapper
 }

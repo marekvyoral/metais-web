@@ -48,7 +48,7 @@ export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ 
 
 export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): ConfigurationItemMapped[] | undefined => {
     return documentCiData?.fromNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
-        //todo check this after orval keyValue changes
+        //this should be changed after orval keyValue changes
         const keyValue = new Map<string, string>()
         nP?.configurationItem?.attributes?.forEach((attribute: { name: string; value: string }) => {
             keyValue.set(attribute?.name, attribute?.value)
@@ -61,7 +61,7 @@ export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200_Gener
 
 export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): ConfigurationItemMapped[] | undefined => {
     return documentCiData?.toNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
-        //todo check this after orval keyValue changes
+        //this should be changed after orval keyValue changes
         const keyValue = new Map<string, string>()
         nP?.configurationItem?.attributes?.forEach((attribute: { name: string; value: string }) => {
             keyValue.set(attribute?.name, attribute?.value)

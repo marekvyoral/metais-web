@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 export interface ReadCiNeighboursUsingPOST200_GeneratedType {
     fromNodes: FromNodes
     toNodes: ToNodes
