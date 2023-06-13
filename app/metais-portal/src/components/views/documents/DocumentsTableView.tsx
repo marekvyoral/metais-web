@@ -1,8 +1,8 @@
 import React from 'react'
-import { Table } from '@/components/table/Table'
+import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { ColumnDef } from '@tanstack/react-table'
 import { CheckBox } from '@/components/CheckBox'
-import { Paginator } from '@/components/paginator/Paginator'
+import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 import { useTranslation } from 'react-i18next'
 
 interface TableCols {
