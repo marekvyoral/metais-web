@@ -110,6 +110,12 @@
     "tab": {
         "contents": "Obsah"
     },
+    "errors": {
+        "fixLink": "Opraviť"
+    },
+    "mutationFeedback": {
+        "successfulUpdated": "Položka bola úspešne zmenená"
+    },
     "relationCard": {
         "name": "Názov",
         "codeMetaIS": "Kód MetaIS",
