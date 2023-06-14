@@ -2,15 +2,14 @@ import { getObjectPropertyByPath } from './getObjectPropertyByPath'
 import { setObjectPropertyByPath } from './setObjectPropertyByPath'
 
 interface TransformedInterface {
-    name: string
-    value: string
+    [key: string]: string | number | boolean | string[]
 }
 
 /**
  * Recursive transform function, that transform name-value parirs to object
  *
  * @param {any[]} attributesArray array of attributes name-value
- * @returns {({ name: string; value: string | string[] })} object where name is key and value is value
+ * @returns {(TransformedInterface)} object where name is key and value is value
  */
 const transformAttributesArrayToObject = (attributesArray: Array<never>): object => {
     if (Array.isArray(attributesArray?.[0]))
