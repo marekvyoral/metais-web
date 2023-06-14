@@ -1,1 +1,1 @@
-export * from './DocumentsTableView'
+export * from './DocumentsTable'

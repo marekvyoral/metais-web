@@ -17,7 +17,7 @@ interface IView {
     isError: boolean
 }
 
-interface IEntityDocumentsContainer {
+interface IDocumentsListContainer {
     configurationItemId?: string
     View: React.FC<IView>
 }
@@ -48,7 +48,7 @@ export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_Generat
     })
 }
 
-export const EntityDocumentsContainer: React.FC<IEntityDocumentsContainer> = ({ configurationItemId, View }) => {
+export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ configurationItemId, View }) => {
     const defaultPageConfig: IPageConfig = {
         page: 1,
         perPage: 100,
