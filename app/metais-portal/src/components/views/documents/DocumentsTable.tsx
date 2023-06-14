@@ -8,10 +8,10 @@ import { CheckBox } from '@/components/CheckBox'
 import { ConfigurationItemMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 
 export interface TableCols extends ConfigurationItemMapped {
-    selected: boolean
+    selected?: boolean
 }
 interface DocumentsTable {
-    data: TableCols[] //missing return types from orval, types should come from backend, not from _GeneratedType file
+    data?: TableCols[] //missing return types from orval, types should come from backend, not from _GeneratedType file
     isLoading: boolean
     isError: boolean
     additionalColumns?: Array<ColumnDef<TableCols>>

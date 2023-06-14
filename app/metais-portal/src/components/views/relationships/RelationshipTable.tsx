@@ -5,7 +5,7 @@ import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 import { TableCols } from '../documents'
 
 interface RelationshipsTable {
-    data: TableCols[] //missing return types from orval, types should come from backend, not from _GeneratedType file
+    data?: TableCols[] //missing return types from orval, types should come from backend, not from _GeneratedType file
     isLoading: boolean
     isError: boolean
     columns: Array<ColumnDef<TableCols>>

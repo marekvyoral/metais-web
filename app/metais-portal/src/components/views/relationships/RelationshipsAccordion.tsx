@@ -11,7 +11,7 @@ import { mapCiDataFrom, mapCiDataTo } from '@/components/containers/DocumentList
 import { TableCols } from '../documents'
 
 interface RelationshipsAccordion {
-    data: TableCols //missing return types from orval, types should come from backend, not from _GeneratedType file
+    data?: TableCols //missing return types from orval, types should come from backend, not from _GeneratedType file
     isLoading: boolean
     isError: boolean
     configurationItemId?: string
@@ -46,7 +46,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                                 View={(props) => {
                                     return (
                                         <RelationshipsTable
-                                            data={props?.data as TableCols[]}
+                                            data={props?.data}
                                             columns={targetTableColumns()}
                                             isLoading={props.isLoading}
                                             isError={props.isError}
@@ -67,7 +67,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                                 View={(props) => {
                                     return (
                                         <RelationshipsTable
-                                            data={props?.data as TableCols[]}
+                                            data={props?.data}
                                             columns={sourceTableColumns()}
                                             isLoading={props.isLoading}
                                             isError={props.isError}

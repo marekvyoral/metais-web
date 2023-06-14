@@ -12,14 +12,12 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React from 'react'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableRow } from './TableRow'
 
 interface ITableProps<T> {
-    data: Array<T>
+    data?: Array<T>
     columns: Array<ColumnDef<T>>
     canDrag?: boolean
     sorting?: SortingState
@@ -48,7 +46,7 @@ export const Table = <T,>({
     getSubRows,
 }: ITableProps<T>): JSX.Element => {
     const table = useReactTable({
-        data,
+        data: data ?? [],
         columns,
         state: {
             ...(pagination && { pagination }),

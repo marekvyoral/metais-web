@@ -11,7 +11,7 @@ export const DocumentsListPage: React.FC = () => {
         <DocumentsListContainer
             configurationItemId={entityId}
             View={(props) => {
-                return <DocumentsTable data={props?.data as TableCols[]} isLoading={props.isLoading} isError={props.isError} />
+                return <DocumentsTable data={props?.data} isLoading={props.isLoading} isError={props.isError} />
             }}
         />
     )
