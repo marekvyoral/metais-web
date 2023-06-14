@@ -8,6 +8,7 @@ import { Home } from '@/pages/Home'
 import { DocumentsListPage } from '@/pages/ci/[entityName]/[entityId]'
 import ProjektListPage from '@/pages/projekt'
 import ProjektEntityDetailPage from '@/pages/project/[id]'
+import Relationships from '@/pages/ci/[entityName]/[entityId]/Relationships'
 
 export const Router: React.FC = () => {
     return (
@@ -18,6 +19,7 @@ export const Router: React.FC = () => {
             </Route>
             <Route path={RouteNames.DEV_TEST_SCREEN} element={<DevTestScreen />} />
             <Route path={'/ci/:entityName/:entityId/documents'} element={<DocumentsListPage />} />
+            <Route path={'/ci/:entityName/:entityId/relationships'} element={<Relationships />} />
             <Route path={RouteNames.PROJEKT_ENTITY_DETAIL} element={<ProjektEntityDetailPage />} />
         </Routes>
     )

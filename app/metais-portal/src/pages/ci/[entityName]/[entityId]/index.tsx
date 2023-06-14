@@ -2,7 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 
 import { DocumentsTable, TableCols } from '@/components/views/documents/DocumentsTable'
-import { DocumentsListContainer } from '@/components/containers/EntityDocumentContainer'
+import { DocumentsListContainer } from '@/components/containers/DocumentListContainer'
 
 export const DocumentsListPage: React.FC = () => {
     const { entityId } = useParams()

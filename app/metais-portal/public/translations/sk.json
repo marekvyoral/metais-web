@@ -159,5 +159,18 @@
             "createdAt": "Vytvorené",
             "lastModifiedAt": "Posledná zmena"
         }
+    },
+    "relationshipsTab": {
+        "relationshipsVisualization": "Vizualizácia vzťahov",
+        "tableViewSelectedItemSource": "Tabuľkové zobrazenie (Vybraná položka {{selectedItem}} je ako zdroj)",
+        "tableViewSelectedItemTarget": "Tabuľkové zobrazenie (Vybraná položka {{selectedItem}} je ako  cieľ)",
+        "table": {
+            "target": "Cieľ (Typ)",
+            "targetItemName": "Názov cieľovej položky",
+            "relationshipType": "Typ vzťahu",
+            "evidenceStatus": "Stav evidencie",
+            "source": "Zdroj (Typ)",
+            "sourceItemName": "Názov zdrojovej položky"
+        }
     }
 }

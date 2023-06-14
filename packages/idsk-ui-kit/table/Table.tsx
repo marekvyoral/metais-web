@@ -71,15 +71,13 @@ export const Table = <T,>({
     return (
         <table className="idsk-table">
             <thead className="idsk-table__head">
-                <DndProvider backend={HTML5Backend}>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                        <tr className="idsk-table__row" key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => (
-                                <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
-                            ))}
-                        </tr>
-                    ))}
-                </DndProvider>
+                {table.getHeaderGroups().map((headerGroup) => (
+                    <tr className="idsk-table__row" key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => (
+                            <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
+                        ))}
+                    </tr>
+                ))}
             </thead>
             <tbody className="idsk-table__body">
                 {table.getRowModel().rows.map((row) => (

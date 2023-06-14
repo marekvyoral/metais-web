@@ -9,6 +9,8 @@ import { App } from '@/App'
 import { reportWebVitals } from '@/reportWebVitals'
 
 import '@/index.scss'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 document.body.classList.add('js-enabled')
 const root = createRoot(document.getElementById('root') as HTMLElement)
@@ -19,7 +21,9 @@ root.render(
         <BrowserRouter>
             <QueryClientProvider client={queryClient}>
                 <I18nextProvider i18n={i18nInstance}>
-                    <App />
+                    <DndProvider backend={HTML5Backend}>
+                        <App />
+                    </DndProvider>
                 </I18nextProvider>
             </QueryClientProvider>
         </BrowserRouter>

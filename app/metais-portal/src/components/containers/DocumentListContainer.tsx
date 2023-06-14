@@ -31,7 +31,7 @@ export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200_Gener
         })
         const attributes = Object.fromEntries(keyValue)
 
-        return { attributes, ...nP?.configurationItem } as ConfigurationItemMapped
+        return { ...nP?.configurationItem, attributes } as ConfigurationItemMapped
     })
 }
 
@@ -44,7 +44,7 @@ export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_Generat
         })
         const attributes = Object.fromEntries(keyValue)
 
-        return { attributes, ...nP?.configurationItem } as ConfigurationItemMapped
+        return { ...nP?.configurationItem, attributes } as ConfigurationItemMapped
     })
 }
 
