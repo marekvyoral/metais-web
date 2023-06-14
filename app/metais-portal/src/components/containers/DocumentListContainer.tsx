@@ -1,47 +1,75 @@
 import React, { SetStateAction, useState } from 'react'
 
-import { useDocumentsListData } from '@/hooks/useEntityDocsListData/useEntityDocsListData'
-import { IDocument } from '@/hooks/useEntityDocsListData/entityDocsListTypes'
-import { NeighboursFilterContainerUi, NeighboursFilterUi, ReadCiNeighboursUsingPOST200 } from '@/api/generated/cmdb-swagger'
+import { IPageConfig } from '@/hooks/useEntityRelations'
+import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
+import {
+    ConfigurationItemMapped,
+    NeighbourPairsEntity,
+    ReadCiNeighboursUsingPOST200_GeneratedType,
+    AttributesEntity,
+    AttributeValue,
+} from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 
-export interface IDocsConfig {
-    neighboursFilter: NeighboursFilterUi
-    pageNumber: number
-    pageSize: number
-}
-
-export interface IDocsView {
-    data: {
-        documentCiData: ReadCiNeighboursUsingPOST200 | void | undefined
-        documentsList: (IDocument | undefined)[]
-    }
-    filterCallbacks: {
-        setPageConfig: React.Dispatch<SetStateAction<NeighboursFilterContainerUi>>
-    }
+export interface IView {
+    data?: ConfigurationItemMapped[]
+    setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
+    isLoading: boolean
+    isError: boolean
 }
 
 interface IDocumentsListContainer {
-    entityId: string
-    entityName: string
-    View: React.FC<IDocsView>
+    configurationItemId?: string
+    View: React.FC<IView>
 }
 
-export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ entityId, entityName, View }) => {
-    const defaultPageConfig: NeighboursFilterContainerUi = {
+export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): ConfigurationItemMapped[] | undefined => {
+    return documentCiData?.fromNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
+        //this should be changed after orval keyValue changes
+        const keyValue = new Map<string, AttributeValue>()
+        nP?.configurationItem?.attributes?.forEach((attribute: AttributesEntity) => {
+            keyValue.set(attribute?.name, attribute?.value)
+        })
+        const attributes = Object.fromEntries(keyValue)
+
+        return { attributes, ...nP?.configurationItem } as ConfigurationItemMapped
+    })
+}
+
+export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): ConfigurationItemMapped[] | undefined => {
+    return documentCiData?.toNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
+        //this should be changed after orval keyValue changes
+        const keyValue = new Map<string, AttributeValue>()
+        nP?.configurationItem?.attributes?.forEach((attribute: AttributesEntity) => {
+            keyValue.set(attribute?.name, attribute?.value)
+        })
+        const attributes = Object.fromEntries(keyValue)
+
+        return { attributes, ...nP?.configurationItem } as ConfigurationItemMapped
+    })
+}
+
+export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ configurationItemId, View }) => {
+    const defaultPageConfig: IPageConfig = {
+        page: 1,
+        perPage: 100,
+    }
+    const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
+
+    const defaultFilter: NeighboursFilterContainerUi = {
         neighboursFilter: {
-            usageType: ['system', 'application'],
+            ciType: ['Dokument'],
             metaAttributes: { state: ['DRAFT'] },
             relType: ['CI_HAS_DOCUMENT', 'Dokument_sa_tyka_KRIS', 'CONTROL_HAS_DOCUMENT', 'PROJECT_HAS_DOCUMENT'],
-            ciType: ['Dokument'],
+            usageType: ['system', 'application'],
         },
-        page: 1,
-        perpage: 100,
+        ...pageConfig,
     }
 
-    const [pageConfig, setPageConfig] = useState<NeighboursFilterContainerUi>(defaultPageConfig)
-    const { data: documentCiData, resultList } = useDocumentsListData(entityId, entityName, pageConfig)
+    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', defaultFilter, {})
 
-    const documentsList = resultList.map((item) => item.data)
+    if (!configurationItemId) return <View setPageConfig={setPageConfig} isLoading={false} isError />
 
-    return <View data={{ documentCiData, documentsList }} filterCallbacks={{ setPageConfig }} />
+    const data = mapCiDataFrom(documentCiData as ReadCiNeighboursUsingPOST200_GeneratedType)
+
+    return <View data={data} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />
 }
