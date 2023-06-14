@@ -5,7 +5,6 @@ import { useHowToDisplayConstraints, useHowToDisplayUnits } from './useHowToDisp
 export const useEntityStructure = (entityName: string) => {
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeUsingGET(entityName)
 
-    const units = ciTypeData?.attributes?.some((attribute) => attribute.units !== null) ?? false
     const constraintsAttributes =
         ciTypeData?.attributes
             ?.map((attribute) =>
@@ -28,7 +27,7 @@ export const useEntityStructure = (entityName: string) => {
 
     const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
-    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useHowToDisplayUnits(units)
+    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useHowToDisplayUnits()
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
     const constraintsData = resultList.map((item) => item.data)
