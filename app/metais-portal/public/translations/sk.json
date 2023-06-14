@@ -150,5 +150,8 @@
     },
     "relationType": {
         "as": "Aplikačná služba"
+    },
+    "loading": {
+        "loadingSubPage": "Načítavám podstránku"
     }
 }
