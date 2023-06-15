@@ -1,8 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { TableCols } from '../documents'
-
 import { RelationshipsTable } from './RelationshipTable'
 import { targetTableColumns } from './RelationshipsTargetTableColumns'
 import { sourceTableColumns } from './RelationshipsSourceTableColumns'
@@ -10,10 +8,11 @@ import { sourceTableColumns } from './RelationshipsSourceTableColumns'
 import { AccordionContainer } from '@/components/Accordion'
 import { RelationshipsTableContainer } from '@/components/containers/RelationshipsTableContainer'
 import { sourceTableDefaultFilter, targetTableDefualtFilter } from '@/components/containers/RelationshipFilters'
-import { mapCiDataFrom, mapCiDataTo } from '@/components/containers/DocumentListContainer'
+import { mapCiDataFrom, mapCiDataTo } from '@/componentHelpers'
+import { ConfigurationItemMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 
 interface RelationshipsAccordion {
-    data?: TableCols //missing return types from orval, types should come from backend, not from _GeneratedType file
+    data?: ConfigurationItemMapped //missing return types from orval, types should come from backend, not from _GeneratedType file
     isLoading: boolean
     isError: boolean
     configurationItemId?: string
@@ -40,7 +39,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
 
                     {
                         title: t('relationshipsTab.tableViewSelectedItemSource', {
-                            selectedItem: data?.configurationItem?.attributes?.Gen_Profil_nazov,
+                            selectedItem: data?.attributes?.Gen_Profil_nazov,
                         }),
                         content: (
                             <RelationshipsTableContainer
@@ -63,7 +62,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
 
                     {
                         title: t('relationshipsTab.tableViewSelectedItemSource', {
-                            selectedItem: data?.configurationItem?.attributes?.Gen_Profil_nazov,
+                            selectedItem: data?.attributes?.Gen_Profil_nazov,
                         }),
                         content: (
                             <RelationshipsTableContainer

@@ -1,14 +1,14 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
-import { RelationshipsContainer } from '@/components/containers/RelationshipsContainer'
+import { RelationshipsAccordionContainer } from '@/components/containers/RelationshipsContainer'
 import { RelationshipsAccordion } from '@/components/views/relationships/RelationshipsAccordion'
 
 const RelationshipsAccordionPage: React.FC = () => {
     const { entityId } = useParams()
 
     return (
-        <RelationshipsContainer
+        <RelationshipsAccordionContainer
             configurationItemId={entityId}
             View={(props) => {
                 return (

@@ -2,13 +2,8 @@ import React, { SetStateAction, useState } from 'react'
 
 import { IPageConfig } from '@/hooks/useEntityRelations'
 import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
-import {
-    NeighbourPairsEntity,
-    ReadCiNeighboursUsingPOST200_GeneratedType,
-    AttributesEntity,
-    AttributeValue,
-    NeighbourPairsEntityMapped,
-} from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
+import { ReadCiNeighboursUsingPOST200_GeneratedType, NeighbourPairsEntityMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
+import { mapCiDataFrom } from '@/componentHelpers'
 
 export interface IView {
     data?: NeighbourPairsEntityMapped[]
@@ -20,32 +15,6 @@ export interface IView {
 interface IDocumentsListContainer {
     configurationItemId?: string
     View: React.FC<IView>
-}
-
-export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): NeighbourPairsEntityMapped[] | undefined => {
-    return documentCiData?.fromNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
-        //this should be changed after orval keyValue changes
-        const keyValue = new Map<string, AttributeValue>()
-        nP?.configurationItem?.attributes?.forEach((attribute: AttributesEntity) => {
-            keyValue.set(attribute?.name, attribute?.value)
-        })
-        const attributes = Object.fromEntries(keyValue)
-
-        return { ...nP, configurationItem: { ...nP?.configurationItem, attributes } } as NeighbourPairsEntityMapped
-    })
-}
-
-export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): NeighbourPairsEntityMapped[] | undefined => {
-    return documentCiData?.toNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
-        //this should be changed after orval keyValue changes
-        const keyValue = new Map<string, AttributeValue>()
-        nP?.configurationItem?.attributes?.forEach((attribute: AttributesEntity) => {
-            keyValue.set(attribute?.name, attribute?.value)
-        })
-        const attributes = Object.fromEntries(keyValue)
-
-        return { ...nP, configurationItem: { ...nP?.configurationItem, attributes } } as NeighbourPairsEntityMapped
-    })
 }
 
 export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ configurationItemId, View }) => {
