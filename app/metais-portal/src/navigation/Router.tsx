@@ -18,8 +18,8 @@ export const Router: React.FC = () => {
                 <Route path={RouteNames.PROJEKT_LIST_PAGE} element={<ProjektListPage />} />
             </Route>
             <Route path={RouteNames.DEV_TEST_SCREEN} element={<DevTestScreen />} />
-            <Route path={'/ci/:entityName/:entityId/documents'} element={<DocumentsListPage />} />
-            <Route path={'/ci/:entityName/:entityId/relationships'} element={<RelationshipsAccordionPage />} />
+            <Route path={RouteNames.DOCUMENTS_LIST_TAB} element={<DocumentsListPage />} />
+            <Route path={RouteNames.RELATIONSHIPS_LIST_TAB} element={<RelationshipsAccordionPage />} />
             <Route path={RouteNames.PROJEKT_ENTITY_DETAIL} element={<ProjektEntityDetailPage />} />
         </Routes>
     )
