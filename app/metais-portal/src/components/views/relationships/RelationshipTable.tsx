@@ -26,7 +26,14 @@ export const RelationshipsTable: React.FC<RelationshipsTable> = ({ data, columns
     return (
         <>
             <Table columns={columns} data={data} />
-            <Paginator dataLength={100} pageNumber={1} onPageChanged={() => {}} pageSize={10} />
+            <Paginator
+                dataLength={100}
+                pageNumber={1}
+                onPageChanged={() => {
+                    //dummy method
+                }}
+                pageSize={10}
+            />
         </>
     ) //temporary paginator component, should be replaced by pagnator wrapper
 }

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { RelationshipsContainer } from '@/components/containers/RelationshipsContainer'
 import { RelationshipsAccordion } from '@/components/views/relationships/RelationshipsAccordion'
 
-const Relationships: React.FC = () => {
+const RelationshipsAccordionPage: React.FC = () => {
     const { entityId } = useParams()
 
     return (
@@ -19,4 +19,4 @@ const Relationships: React.FC = () => {
     )
 }
 
-export default Relationships
+export default RelationshipsAccordionPage
