@@ -6,8 +6,7 @@ import { PaginatorWrapper } from '../paginatorWrapper/PaginatorWrapper'
 import { columns } from './ciTableColumns'
 
 import { IListData, IListFilterCallbacks } from '@/pages/projekt/index'
-import { CiListFilterContainerUi } from '@/api/generated/cmdb-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api/constants'
+import { CiListFilterContainerUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api'
 
 interface ICiTable {
     data: IListData

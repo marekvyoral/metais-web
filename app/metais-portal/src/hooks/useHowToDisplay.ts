@@ -1,7 +1,6 @@
 import { UseQueryResult, useQueries } from '@tanstack/react-query'
 
-import { getHowToDisplayConstraints } from '@/api/HowToDisplay'
-import { EnumType, useGetEnumUsingGET } from '@/api'
+import { EnumType, getHowToDisplayConstraints } from '@/api'
 
 export const useHowToDisplayConstraints = (constraintsList: (string | undefined)[]) => {
     const resultList: UseQueryResult<EnumType, unknown>[] = useQueries({
@@ -21,17 +20,5 @@ export const useHowToDisplayConstraints = (constraintsList: (string | undefined)
         isLoading,
         isError,
         resultList,
-    }
-}
-
-export const useHowToDisplayUnits = () => {
-    const units = useGetEnumUsingGET('MERNA_JEDNOTKA')
-
-    const { isLoading, isError, data } = units
-
-    return {
-        isLoading,
-        isError,
-        data,
     }
 }

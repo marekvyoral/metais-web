@@ -1,26 +1,29 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import styles from './basicInformationSection.module.scss'
 import { InformationGridRow } from './InformationGridRow'
 
 import { AccordionContainer } from '@/components/Accordion'
 import { ICiContainerView } from '@/components/containers/CiContainer'
+import { pairEnumsToEnumValues } from '@/componentHelpers'
 
-export const ProjectInformationAccordion: React.FC<ICiContainerView> = ({ data: { ciItemData, ciTypeData } }) => {
+export const ProjectInformationAccordion: React.FC<ICiContainerView> = ({ data: { ciItemData, ciTypeData, constraintsData } }) => {
+    const { t } = useTranslation()
+
     return (
         <>
             <AccordionContainer
                 sections={[
                     {
-                        title: 'Základné informácie',
-
+                        title: t('projectInformationAccordion.basicInformation'),
                         content: (
                             <div className={styles.attributeGridRowBox}>
                                 {ciTypeData?.attributes?.map((attribute) => (
                                     <InformationGridRow
                                         key={attribute?.technicalName}
                                         label={attribute.name ?? ''}
-                                        value={ciItemData?.attributes?.[attribute?.technicalName ?? '']}
+                                        value={pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t)}
                                     />
                                 ))}
                             </div>
@@ -38,9 +41,9 @@ export const ProjectInformationAccordion: React.FC<ICiContainerView> = ({ data: 
                                 content: (
                                     <div className={styles.attributeGridRowBox}>
                                         {attributesProfile?.attributes?.map((attribute) => {
-                                            const rowValue = ciItemData?.attributes?.[attribute?.technicalName ?? ''] // VALUE DEPENDS ON VALUE TYPE enum, array, etc.
+                                            const rowValue = pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t)
                                             return (
-                                                rowValue && (
+                                                !attribute?.invisible && (
                                                     <InformationGridRow
                                                         key={attribute?.technicalName}
                                                         label={attribute.name ?? ''}

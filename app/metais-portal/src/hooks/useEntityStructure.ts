@@ -1,6 +1,6 @@
-import { AttributeConstraintEnumAllOf, useGetCiTypeUsingGET } from '../api/generated/types-repo-swagger'
+import { useHowToDisplayConstraints } from './useHowToDisplay'
 
-import { useHowToDisplayConstraints, useHowToDisplayUnits } from './useHowToDisplay'
+import { AttributeConstraintEnumAllOf, useGetCiTypeUsingGET, useGetEnumUsingGET } from '@/api'
 
 export const useEntityStructure = (entityName: string) => {
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeUsingGET(entityName)
@@ -27,7 +27,7 @@ export const useEntityStructure = (entityName: string) => {
 
     const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
-    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useHowToDisplayUnits()
+    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnumUsingGET('MERNA_JEDNOTKA')
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
     const constraintsData = resultList.map((item) => item.data)

@@ -1,10 +1,15 @@
 import React from 'react'
 
-import { AttributeConstraintEnumAllOf, CiType, useGetCiTypeUsingGET } from '../../api/generated/types-repo-swagger'
-
-import { ReadConfigurationItemUsingGET200, useReadConfigurationItemUsingGET } from '@/api/generated/cmdb-swagger'
-import { useHowToDisplayConstraints, useHowToDisplayUnits } from '@/hooks/useHowToDisplay'
-import { EnumType } from '@/api/generated/enums-repo-swagger'
+import {
+    ReadConfigurationItemUsingGET200,
+    useReadConfigurationItemUsingGET,
+    useGetEnumUsingGET,
+    EnumType,
+    AttributeConstraintEnumAllOf,
+    CiType,
+    useGetCiTypeUsingGET,
+} from '@/api'
+import { useHowToDisplayConstraints } from '@/hooks/useHowToDisplay'
 
 export interface ICiContainerView {
     data: {
@@ -47,7 +52,7 @@ export const CiContainer: React.FC<ICiContainer> = ({ entityId, entityName, View
 
     const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
-    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useHowToDisplayUnits()
+    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnumUsingGET('MERNA_JEDNOTKA')
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
     const constraintsData = resultList.map((item) => item.data)
