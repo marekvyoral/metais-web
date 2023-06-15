@@ -1,14 +1,16 @@
 import React from 'react'
-
-import { AccordionContainer } from '@/components/Accordion'
 import { useTranslation } from 'react-i18next'
-import { RelationshipsTableContainer } from '@/components/containers/RelationshipsTableContainer'
+
+import { TableCols } from '../documents'
+
 import { RelationshipsTable } from './RelationshipTable'
 import { targetTableColumns } from './RelationshipsTargetTableColumns'
 import { sourceTableColumns } from './RelationshipsSourceTableColumns'
+
+import { AccordionContainer } from '@/components/Accordion'
+import { RelationshipsTableContainer } from '@/components/containers/RelationshipsTableContainer'
 import { sourceTableDefaultFilter, targetTableDefualtFilter } from '@/components/containers/RelationshipFilters'
 import { mapCiDataFrom, mapCiDataTo } from '@/components/containers/DocumentListContainer'
-import { TableCols } from '../documents'
 
 interface RelationshipsAccordion {
     data?: TableCols //missing return types from orval, types should come from backend, not from _GeneratedType file
@@ -47,7 +49,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                                     return (
                                         <RelationshipsTable
                                             data={props?.data}
-                                            columns={targetTableColumns()}
+                                            columns={targetTableColumns(t)}
                                             isLoading={props.isLoading}
                                             isError={props.isError}
                                         />
@@ -68,7 +70,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                                     return (
                                         <RelationshipsTable
                                             data={props?.data}
-                                            columns={sourceTableColumns()}
+                                            columns={sourceTableColumns(t)}
                                             isLoading={props.isLoading}
                                             isError={props.isError}
                                         />

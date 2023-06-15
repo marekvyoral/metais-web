@@ -30,9 +30,9 @@ export const RelationshipsTableContainer: React.FC<IRelationshipsTableContainer>
         ...pageConfig,
     }
 
-    if (!configurationItemId) return <View setPageConfig={setPageConfig} isLoading={false} isError={true} />
+    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', preSetFilter, {})
 
-    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId, preSetFilter, {})
+    if (!configurationItemId) return <View setPageConfig={setPageConfig} isLoading={false} isError />
 
     const data = mapData(documentCiData as ReadCiNeighboursUsingPOST200_GeneratedType)
 

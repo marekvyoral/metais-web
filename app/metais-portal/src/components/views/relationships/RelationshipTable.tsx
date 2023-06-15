@@ -2,6 +2,7 @@ import React from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
+
 import { TableCols } from '../documents'
 
 interface RelationshipsTable {

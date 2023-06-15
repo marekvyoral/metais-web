@@ -4,6 +4,16 @@ import { useReadConfigurationItemUsingGET } from '@/api'
 import { AttributeValue, AttributesEntity, ConfigurationItem, ConfigurationItemMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 import { IPageConfig } from '@/hooks/useEntityRelations'
 
+const mapCiData = (documentCiData: ConfigurationItem | void) => {
+    const keyValue = new Map<string, AttributeValue>()
+
+    documentCiData?.attributes?.forEach((attribute: AttributesEntity) => {
+        keyValue.set(attribute?.name, attribute?.value)
+    })
+    const attributes = Object.fromEntries(keyValue)
+    return { ...documentCiData, attributes } as ConfigurationItemMapped
+}
+
 interface IView {
     data?: ConfigurationItemMapped
     setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
@@ -28,14 +38,4 @@ export const RelationshipsContainer: React.FC<IRelationshipsContainer> = ({ conf
     const data = mapCiData(documentCiData as ConfigurationItem)
 
     return <View data={data} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />
-}
-
-const mapCiData = (documentCiData: ConfigurationItem | void) => {
-    const keyValue = new Map<string, AttributeValue>()
-
-    documentCiData?.attributes?.forEach((attribute: AttributesEntity) => {
-        keyValue.set(attribute?.name, attribute?.value)
-    })
-    const attributes = Object.fromEntries(keyValue)
-    return { ...documentCiData, attributes } as ConfigurationItemMapped
 }

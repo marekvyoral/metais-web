@@ -1,5 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+
 import { RelationshipsContainer } from '@/components/containers/RelationshipsContainer'
 import { RelationshipsAccordion } from '@/components/views/relationships/RelationshipsAccordion'
 
