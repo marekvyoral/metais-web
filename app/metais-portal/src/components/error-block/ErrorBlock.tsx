@@ -4,7 +4,7 @@ import { ButtonLink } from '../button-link/ButtonLink'
 
 import styles from './error-block.module.scss'
 
-interface ErrorBlockProps {
+export interface ErrorBlockProps {
     errorTitle?: string
     errorMessage?: string
     buttons?: { label: string; onClick: () => void }[]

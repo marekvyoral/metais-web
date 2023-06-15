@@ -181,5 +181,8 @@
             "UNKNOW": "Neznámy",
             "": ""
         }
+    },
+    "loading": {
+        "loadingSubPage": "Načítavám podstránku"
     }
 }
