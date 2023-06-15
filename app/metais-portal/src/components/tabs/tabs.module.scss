@@ -1,0 +1,32 @@
+@import '@id-sk/frontend/idsk/all';
+.subListButton {
+    margin-left: auto;
+}
+
+.subList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid govuk-colour('mid-grey');
+}
+
+.subListItem {
+    background-color: govuk-colour('white') !important;
+    color: govuk-colour('blue');
+    border: none !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    & :focus {
+        background-color: govuk-colour('white');
+        border: none !important;
+    }
+
+    & > a {
+        border: none !important;
+        color: govuk-colour('blue') !important;
+    }
+
+    & > a:focus {
+        box-shadow: none !important;
+    }
+}

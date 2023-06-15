@@ -2,7 +2,7 @@ $govuk-global-styles: true;
 @import '@id-sk/frontend/idsk/all';
 
 .whiteBackground {
-    background-color: govuk-colour("white");
+    background-color: govuk-colour('white');
 }
 
 .buttonLabel {
@@ -13,4 +13,8 @@ $govuk-global-styles: true;
     .downArrow {
         margin-left: govuk-spacing(1);
     }
+}
+
+.button {
+    margin-bottom: 0;
 }

@@ -107,7 +107,8 @@
         "en": "English"
     },
     "tab": {
-        "contents": "Contents"
+        "contents": "Contents",
+        "moreTabs": "More tabs"
     },
     "errors": {
         "fixLink": "Correct"

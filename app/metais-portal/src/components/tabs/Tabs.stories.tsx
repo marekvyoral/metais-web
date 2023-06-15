@@ -70,6 +70,49 @@ const table = [
     </table>,
 ]
 
+const tabList = [
+    {
+        id: '1',
+        title: 'Uplynuly den 1',
+        content: table[0],
+    },
+    {
+        id: '2',
+        title: 'Uplynulý týždeň 2',
+        content: table[1],
+    },
+    {
+        id: '3',
+        title: 'Uplynulý týždeň 3',
+        content: table[1],
+    },
+    {
+        id: '4',
+        title: 'Uplynulý týždeň 4',
+        content: table[1],
+    },
+    {
+        id: '5',
+        title: 'Uplynulý týždeň 5',
+        content: table[1],
+    },
+    {
+        id: '6',
+        title: 'Uplynulý týždeň 6',
+        content: table[1],
+    },
+    {
+        id: '7',
+        title: 'Uplynulý týždeň 7',
+        content: table[1],
+    },
+    {
+        id: '8',
+        title: 'Uplynulý týždeň 8',
+        content: table[1],
+    },
+]
+
 const meta: Meta<typeof Tabs> = {
     title: 'Components/Tabs',
     component: Tabs,
@@ -81,17 +124,6 @@ type Story = StoryObj<typeof Tabs>
 
 export const Main: Story = {
     args: {
-        tabList: [
-            {
-                id: '1',
-                title: 'Uplynuly den',
-                content: table[0],
-            },
-            {
-                id: '2',
-                title: 'Uplynulý týždeň',
-                content: table[1],
-            },
-        ],
+        tabList: tabList,
     },
 }

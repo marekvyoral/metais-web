@@ -108,7 +108,8 @@
         "ge": "German"
     },
     "tab": {
-        "contents": "Obsah"
+        "contents": "Obsah",
+        "moreTabs": "Dalsie zalozky"
     },
     "errors": {
         "fixLink": "Opraviť"

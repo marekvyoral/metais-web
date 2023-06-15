@@ -22,7 +22,7 @@ export const ButtonPopup: React.FC<IButtonPopupProps> = ({ buttonLabel, popupCon
     )
     return (
         <Popup
-            trigger={<Button label={label} variant="secondary" />}
+            trigger={<Button label={label} variant="secondary" className={styles.button} />}
             position={`bottom ${popupPosition}`}
             arrow={false}
             keepTooltipInside
