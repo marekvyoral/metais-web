@@ -10,7 +10,6 @@ import { pairEnumsToEnumValues } from '@/componentHelpers'
 
 export const ProjectInformationAccordion: React.FC<ICiContainerView> = ({ data: { ciItemData, ciTypeData, constraintsData } }) => {
     const { t } = useTranslation()
-
     return (
         <>
             <AccordionContainer

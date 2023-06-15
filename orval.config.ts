@@ -19,7 +19,7 @@ export default defineConfig({
     cmdbSwagger: {
         input: {
             override: {
-                transformer: './app/metais-portal/src/api/hooks/transform/attributesTypesTransformer.js',
+                transformer: './app/metais-portal/scripts/attributesTypesTransformer.js',
             },
             target: process.env.VITE_REST_CLIENT_CMDB_SWAGGER_SWAGGER_URL ?? '',
             filters: {
@@ -56,19 +56,19 @@ export default defineConfig({
                     readConfigurationItemUsingGET: {
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
-                            name: 'useCmdbSwaggerClientForReadConfigurationItemUsingGET',
+                            name: 'useClientForReadConfigurationItemUsingGET',
                         },
                     },
                     getRoleParticipantUsingGET: {
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
-                            name: 'useCmdbSwaggerClientForGetRoleParticipantUsingGET',
+                            name: 'useClientForGetRoleParticipantUsingGET',
                         },
                     },
                     readCiNeighboursWithAllRelsUsingGET: {
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
-                            name: 'useCmdbSwaggerClientForReadCiNeighboursWithAllRelsUsingGET',
+                            name: 'useClientForReadCiNeighboursWithAllRelsUsingGET',
                         },
                     },
                 },
@@ -83,74 +83,74 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
-    typesRepo: {
-        input: {
-            target: process.env.VITE_REST_CLIENT_TYPES_REPO_SWAGGER_URL ?? '',
-            filters: {
-                tags: [
-                    'attribute-controller',
-                    'attribute-profile-controller',
-                    'ci-type-controller',
-                    'ci-type-relationship-type-map-controller',
-                    'relationship-type-controller',
-                    'rights-type-controller',
-                ],
-            },
-        },
-        output: {
-            target: `./app/metais-portal/src/api/generated/types-repo-swagger.ts`,
-            override: {
-                mutator: {
-                    path: './app/metais-portal/src/api/hooks/useTypesRepoSwaggerClient.ts',
-                    name: 'useTypesRepoSwaggerClient',
-                },
-            },
-            ...defaultOutputOptions,
-        },
-        hooks: {
-            afterAllFilesWrite: 'prettier --write',
-        },
-    },
-    dms: {
-        input: {
-            target: process.env.VITE_REST_CLIENT_DMS_SWAGGER_URL ?? '',
-            filters: {
-                tags: [], //NOT WORKING! 'file-controller' , 'utils-controller'
-            },
-        },
-        output: {
-            target: `./app/metais-portal/src/api/generated/dms-swagger.ts`,
-            override: {
-                mutator: {
-                    path: './app/metais-portal/src/api/hooks/useDmsSwaggerClient.ts',
-                    name: 'useDmsSwaggerClient',
-                },
-            },
-            ...defaultOutputOptions,
-        },
-        hooks: {
-            afterAllFilesWrite: 'prettier --write',
-        },
-    },
-    enumsRepo: {
-        input: {
-            target: process.env.VITE_REST_CLIENT_ENUMS_REPO_SWAGGER_URL ?? '',
-            filters: {
-                tags: ['scheduled-jobs-controller', 'enums-controller', 'enums-item-controller'],
-            },
-        },
-        output: {
-            target: `./app/metais-portal/src/api/generated/enums-repo-swagger.ts`,
-            override: {
-                mutator: {
-                    path: './app/metais-portal/src/api/hooks/useEnumsRepoSwaggerClient.ts',
-                    name: 'useEnumsRepoSwaggerClient',
-                },
-            },
-            ...defaultOutputOptions,
-        },
-        hooks: {
-            afterAllFilesWrite: 'prettier --write',
-        },
-    },
+    // typesRepo: {
+    //     input: {
+    //         target: process.env.VITE_REST_CLIENT_TYPES_REPO_SWAGGER_URL ?? '',
+    //         filters: {
+    //             tags: [
+    //                 'attribute-controller',
+    //                 'attribute-profile-controller',
+    //                 'ci-type-controller',
+    //                 'ci-type-relationship-type-map-controller',
+    //                 'relationship-type-controller',
+    //                 'rights-type-controller',
+    //             ],
+    //         },
+    //     },
+    //     output: {
+    //         target: `./app/metais-portal/src/api/generated/types-repo-swagger.ts`,
+    //         override: {
+    //             mutator: {
+    //                 path: './app/metais-portal/src/api/hooks/useTypesRepoSwaggerClient.ts',
+    //                 name: 'useTypesRepoSwaggerClient',
+    //             },
+    //         },
+    //         ...defaultOutputOptions,
+    //     },
+    //     hooks: {
+    //         afterAllFilesWrite: 'prettier --write',
+    //     },
+    // },
+    // dms: {
+    //     input: {
+    //         target: process.env.VITE_REST_CLIENT_DMS_SWAGGER_URL ?? '',
+    //         filters: {
+    //             tags: [], //NOT WORKING! 'file-controller' , 'utils-controller'
+    //         },
+    //     },
+    //     output: {
+    //         target: `./app/metais-portal/src/api/generated/dms-swagger.ts`,
+    //         override: {
+    //             mutator: {
+    //                 path: './app/metais-portal/src/api/hooks/useDmsSwaggerClient.ts',
+    //                 name: 'useDmsSwaggerClient',
+    //             },
+    //         },
+    //         ...defaultOutputOptions,
+    //     },
+    //     hooks: {
+    //         afterAllFilesWrite: 'prettier --write',
+    //     },
+    // },
+    // enumsRepo: {
+    //     input: {
+    //         target: process.env.VITE_REST_CLIENT_ENUMS_REPO_SWAGGER_URL ?? '',
+    //         filters: {
+    //             tags: ['scheduled-jobs-controller', 'enums-controller', 'enums-item-controller'],
+    //         },
+    //     },
+    //     output: {
+    //         target: `./app/metais-portal/src/api/generated/enums-repo-swagger.ts`,
+    //         override: {
+    //             mutator: {
+    //                 path: './app/metais-portal/src/api/hooks/useEnumsRepoSwaggerClient.ts',
+    //                 name: 'useEnumsRepoSwaggerClient',
+    //             },
+    //         },
+    //         ...defaultOutputOptions,
+    //     },
+    //     hooks: {
+    //         afterAllFilesWrite: 'prettier --write',
+    //     },
+    // },
 })

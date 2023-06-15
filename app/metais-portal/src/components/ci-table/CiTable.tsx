@@ -16,9 +16,9 @@ interface ICiTable {
 
 export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
     //they have spelling mistakes here in data
-    const dataLength = data?.tableData?.pagination.totaltems ?? BASE_PAGE_SIZE
-    const pageNumber = data?.tableData?.pagination.page ?? BASE_PAGE_NUMBER
-    const pageSize = data?.tableData?.pagination.perPage ?? BASE_PAGE_SIZE
+    const dataLength = data?.tableData?.pagination?.totaltems ?? BASE_PAGE_SIZE
+    const pageNumber = data?.tableData?.pagination?.page ?? BASE_PAGE_NUMBER
+    const pageSize = data?.tableData?.pagination?.perPage ?? BASE_PAGE_SIZE
 
     const [start, setStart] = useState<number>(1)
     const [end, setEnd] = useState<number>(pageSize)

@@ -11,7 +11,7 @@ export type CustomClient<T> = (data: {
     signal?: AbortSignal
 }) => Promise<T>
 
-export const useCustomClient = <T>(baseURL: string): CustomClient<T> => {
+export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T) => void): CustomClient<T> => {
     //vite proxy not working?
     // const proxyUrl = 'https://corsproxy.io/?'
 
@@ -27,6 +27,9 @@ export const useCustomClient = <T>(baseURL: string): CustomClient<T> => {
             ...(data ? { body: JSON.stringify(data) } : {}),
         })
 
-        return response.json()
+        const responseBody = await response.json()
+
+        if (callback) callback(responseBody)
+        return responseBody
     }
 }
