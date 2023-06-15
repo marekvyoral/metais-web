@@ -158,5 +158,8 @@
             "createdAt": "Created",
             "lastModifiedAt": "Last change"
         }
+    },
+    "loading": {
+        "loadingSubPage": "Loading sub-page"
     }
 }

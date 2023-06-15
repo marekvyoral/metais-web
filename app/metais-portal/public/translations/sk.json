@@ -159,5 +159,8 @@
             "createdAt": "Vytvorené",
             "lastModifiedAt": "Posledná zmena"
         }
+    },
+    "loading": {
+        "loadingSubPage": "Načítavám podstránku"
     }
 }
