@@ -175,9 +175,10 @@
     "metaAttributes": {
         "state": {
             "DRAFT": "Created",
-			"INVALIDATED": "Invalidated",
-			"DELETED": "Invalidated",
-			"UNKNOW": "Unknown",
-			"": ""
+            "INVALIDATED": "Invalidated",
+            "DELETED": "Invalidated",
+            "UNKNOW": "Unknown",
+            "": ""
+        }
     }
 }
