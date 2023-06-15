@@ -5,7 +5,7 @@ import { RootRouteContainer } from '@/navigation/route-containers/RootRouteConta
 import { RouteNames } from '@/navigation/routeNames'
 import { DevTestScreen } from '@/pages/DevTestScreen'
 import { Home } from '@/pages/Home'
-import { DocumentsListPage } from '@/pages/ci/[entityName]/[entityId]'
+import { DocumentsListPage } from '@/pages/ci/[entityName]/[entityId]/documents'
 import ProjektListPage from '@/pages/projekt'
 import ProjektEntityDetailPage from '@/pages/project/[id]'
 
