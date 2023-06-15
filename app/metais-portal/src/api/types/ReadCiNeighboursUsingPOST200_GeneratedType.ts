@@ -56,3 +56,8 @@ export interface ConfigurationItemMapped {
     attributes?: { [key: string]: AttributeValue } | null
     metaAttributes: MetaAttributes
 }
+
+export interface NeighbourPairsEntityMapped {
+    relationship: Relationship
+    configurationItem: ConfigurationItemMapped
+}

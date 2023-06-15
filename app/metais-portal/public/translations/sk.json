@@ -172,5 +172,14 @@
             "source": "Zdroj (Typ)",
             "sourceItemName": "Názov zdrojovej položky"
         }
+    },
+    "metaAttributes": {
+        "state": {
+            "DRAFT": "Vytvorené",
+            "INVALIDATED": "Zneplatnené",
+            "DELETED": "Zneplatnené",
+            "UNKNOW": "Neznámy",
+            "": ""
+        }
     }
 }

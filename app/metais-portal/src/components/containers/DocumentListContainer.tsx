@@ -3,15 +3,15 @@ import React, { SetStateAction, useState } from 'react'
 import { IPageConfig } from '@/hooks/useEntityRelations'
 import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
 import {
-    ConfigurationItemMapped,
     NeighbourPairsEntity,
     ReadCiNeighboursUsingPOST200_GeneratedType,
     AttributesEntity,
     AttributeValue,
+    NeighbourPairsEntityMapped,
 } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 
 export interface IView {
-    data?: ConfigurationItemMapped[]
+    data?: NeighbourPairsEntityMapped[]
     setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
     isLoading: boolean
     isError: boolean
@@ -22,7 +22,7 @@ interface IDocumentsListContainer {
     View: React.FC<IView>
 }
 
-export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): ConfigurationItemMapped[] | undefined => {
+export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): NeighbourPairsEntityMapped[] | undefined => {
     return documentCiData?.fromNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
         //this should be changed after orval keyValue changes
         const keyValue = new Map<string, AttributeValue>()
@@ -31,11 +31,11 @@ export const mapCiDataFrom = (documentCiData: ReadCiNeighboursUsingPOST200_Gener
         })
         const attributes = Object.fromEntries(keyValue)
 
-        return { ...nP?.configurationItem, attributes } as ConfigurationItemMapped
+        return { ...nP, configurationItem: { ...nP?.configurationItem, attributes } } as NeighbourPairsEntityMapped
     })
 }
 
-export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): ConfigurationItemMapped[] | undefined => {
+export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_GeneratedType | void): NeighbourPairsEntityMapped[] | undefined => {
     return documentCiData?.toNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
         //this should be changed after orval keyValue changes
         const keyValue = new Map<string, AttributeValue>()
@@ -44,7 +44,7 @@ export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_Generat
         })
         const attributes = Object.fromEntries(keyValue)
 
-        return { ...nP?.configurationItem, attributes } as ConfigurationItemMapped
+        return { ...nP, configurationItem: { ...nP?.configurationItem, attributes } } as NeighbourPairsEntityMapped
     })
 }
 

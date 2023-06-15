@@ -171,5 +171,13 @@
             "source": "Source (Type)",
             "sourceItemName": "Source item name"
         }
+    },
+    "metaAttributes": {
+        "state": {
+            "DRAFT": "Created",
+			"INVALIDATED": "Invalidated",
+			"DELETED": "Invalidated",
+			"UNKNOW": "Unknown",
+			"": ""
     }
 }

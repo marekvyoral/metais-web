@@ -6,28 +6,28 @@ import { TableCols } from '../documents'
 export const sourceTableColumns = (t: TFunction<'translation', undefined, 'translation'>) => {
     const columns: Array<ColumnDef<TableCols>> = [
         {
-            accessorFn: (row) => row?.attributes?.Gen_Profil_nazov,
+            accessorFn: (row) => row?.configurationItem?.type,
             header: t('relationshipsTab.table.source'),
             id: '0',
             cell: (row) => row.getValue() as string,
         },
         {
-            accessorFn: (row) => row?.attributes?.Gen_Profil_poznamka,
+            accessorFn: (row) => row?.configurationItem?.attributes?.Gen_Profil_nazov,
             header: t('relationshipsTab.table.sourceItemName'),
             id: '1',
             cell: (row) => row.getValue() as string,
         },
         {
-            accessorFn: (row) => row?.metaAttributes?.state,
+            accessorFn: (row) => row?.relationship?.type,
             header: t('relationshipsTab.table.relationshipType'),
             id: '3',
             cell: (row) => row.getValue() as string,
         },
         {
-            accessorFn: (row) => row?.metaAttributes?.createdAt,
+            accessorFn: (row) => row?.configurationItem?.metaAttributes?.state,
             header: t('relationshipsTab.table.evidenceStatus'),
             id: '4',
-            cell: (row) => row.getValue() as string,
+            cell: (row) => t(`metaAttributes.state.${row.getValue()}`) as string,
         },
     ]
 

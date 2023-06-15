@@ -39,12 +39,14 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                     { title: t('relationshipsTab.relationshipsVisualization'), content: 'todo: graph' },
 
                     {
-                        title: t('relationshipsTab.tableViewSelectedItemSource', { selectedItem: data?.attributes?.Gen_Profil_nazov }),
+                        title: t('relationshipsTab.tableViewSelectedItemSource', {
+                            selectedItem: data?.configurationItem?.attributes?.Gen_Profil_nazov,
+                        }),
                         content: (
                             <RelationshipsTableContainer
                                 configurationItemId={configurationItemId}
                                 defaultFilter={targetTableDefualtFilter}
-                                mapData={mapCiDataFrom}
+                                mapData={mapCiDataFrom} //this is temporary, KV mapping should be done by orval
                                 View={(props) => {
                                     return (
                                         <RelationshipsTable
@@ -60,12 +62,14 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                     },
 
                     {
-                        title: t('relationshipsTab.tableViewSelectedItemSource', { selectedItem: data?.attributes?.Gen_Profil_nazov }),
+                        title: t('relationshipsTab.tableViewSelectedItemSource', {
+                            selectedItem: data?.configurationItem?.attributes?.Gen_Profil_nazov,
+                        }),
                         content: (
                             <RelationshipsTableContainer
                                 configurationItemId={configurationItemId}
                                 defaultFilter={sourceTableDefaultFilter}
-                                mapData={mapCiDataTo}
+                                mapData={mapCiDataTo} //this is temporary, KV mapping should be done by orval
                                 View={(props) => {
                                     return (
                                         <RelationshipsTable

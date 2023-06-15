@@ -2,10 +2,10 @@ import React, { SetStateAction, useState } from 'react'
 
 import { IPageConfig } from '@/hooks/useEntityRelations'
 import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
-import { ReadCiNeighboursUsingPOST200_GeneratedType, ConfigurationItemMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
+import { ReadCiNeighboursUsingPOST200_GeneratedType, NeighbourPairsEntityMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 
 interface IView {
-    data?: ConfigurationItemMapped[]
+    data?: NeighbourPairsEntityMapped[]
     setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
     isLoading: boolean
     isError: boolean
@@ -15,7 +15,7 @@ interface IRelationshipsTableContainer {
     configurationItemId?: string
     View: React.FC<IView>
     defaultFilter: NeighboursFilterContainerUi
-    mapData: (data: ReadCiNeighboursUsingPOST200_GeneratedType | void) => ConfigurationItemMapped[] | undefined
+    mapData: (data: ReadCiNeighboursUsingPOST200_GeneratedType | void) => NeighbourPairsEntityMapped[] | undefined
 }
 
 export const RelationshipsTableContainer: React.FC<IRelationshipsTableContainer> = ({ configurationItemId, View, defaultFilter, mapData }) => {
