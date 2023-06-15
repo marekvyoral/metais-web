@@ -4,4 +4,5 @@ export enum RouteNames {
     PROJEKT_LIST_PAGE = '/projekt/list',
     PROJEKT_ENTITY_DETAIL = 'projekt/:projektId',
     DOCUMENTS_LIST_TAB = '/ci/:entityName/:entityId/documents',
+    RELATIONSHIPS_LIST_TAB = '/ci/:entityName/:entityId/relationships',
 }
