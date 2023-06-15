@@ -61,7 +61,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                     },
 
                     {
-                        title: t('relationshipsTab.tableViewSelectedItemSource', {
+                        title: t('relationshipsTab.tableViewSelectedItemTarget', {
                             selectedItem: data?.attributes?.Gen_Profil_nazov,
                         }),
                         content: (
