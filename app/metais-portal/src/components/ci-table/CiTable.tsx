@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 
 import { PaginatorWrapper } from '../paginatorWrapper/PaginatorWrapper'
