@@ -10,7 +10,7 @@ import { CiContainer } from '@/components/containers/CiContainer'
 
 const ProjektEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
-    const { projektId } = useParams()
+    const { projektId, entityName } = useParams()
 
     const tabList = [
         {
@@ -18,7 +18,7 @@ const ProjektEntityDetailPage: React.FC = () => {
             title: t('ciType.informations'),
             content: (
                 <>
-                    <CiContainer entityName="ISVS" entityId={projektId ?? ''} View={ProjectInformationAccordion} />
+                    <CiContainer entityName={entityName ?? ''} entityId={projektId ?? ''} View={ProjectInformationAccordion} />
                 </>
             ),
         },

@@ -5,8 +5,8 @@ import { PaginatorWrapper } from '../paginatorWrapper/PaginatorWrapper'
 
 import { columns } from './ciTableColumns'
 
-import { IListData, IListFilterCallbacks } from '@/pages/projekt/index'
 import { CiListFilterContainerUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api'
+import { IListData, IListFilterCallbacks } from '@/types/list'
 
 interface ICiTable {
     data: IListData
@@ -38,7 +38,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
     const mappedTableData = mapTableData(data?.tableData) ?? []
 
     const handlePageChange = (page: number, from: number, to: number) => {
-        filterCallbacks.setListQueryArgs((prev) => ({
+        filterCallbacks.setListQueryArgs((prev: CiListFilterContainerUi) => ({
             ...prev,
             //when page: page in api changes perPage, BE mistake?
             perpage: page,

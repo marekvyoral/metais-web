@@ -6,7 +6,7 @@ import { RouteNames } from '@/navigation/routeNames'
 import { DevTestScreen } from '@/pages/DevTestScreen'
 import { Home } from '@/pages/Home'
 import ProjektListPage from '@/pages/projekt'
-import ProjektEntityDetailPage from '@/pages/project/[id]'
+import ProjektEntityDetailPage from '@/pages/ci/[entityName]/[id]'
 
 export const Router: React.FC = () => {
     return (

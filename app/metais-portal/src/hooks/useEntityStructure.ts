@@ -1,6 +1,6 @@
 import { useHowToDisplayConstraints } from './useHowToDisplay'
 
-import { AttributeConstraintEnumAllOf, useGetCiTypeUsingGET, useGetEnumUsingGET } from '@/api'
+import { AttributeConstraintEnumAllOf, useGetCiTypeUsingGET } from '@/api'
 
 export const useEntityStructure = (entityName: string) => {
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeUsingGET(entityName)
@@ -27,18 +27,18 @@ export const useEntityStructure = (entityName: string) => {
 
     const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
-    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnumUsingGET('MERNA_JEDNOTKA')
+    // const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnumUsingGET(MEASURE_UNIT)
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
     const constraintsData = resultList.map((item) => item.data)
-    const isLoading = [isCiTypeDataLoading, isUnitsLoading, isConstraintLoading].some((item) => item)
-    const isError = [isCiTypeDataError, isUnitsError, isConstraintError].some((item) => item)
+    const isLoading = [isCiTypeDataLoading, isConstraintLoading].some((item) => item) //isUnitsLoading,
+    const isError = [isCiTypeDataError, isConstraintError].some((item) => item) //isUnitsError,
 
     return {
         isLoading,
         isError,
         ciTypeData,
-        unitsData,
         constraintsData,
+        unitsData: undefined,
     }
 }

@@ -3,7 +3,6 @@ import React from 'react'
 import {
     ReadConfigurationItemUsingGET200,
     useReadConfigurationItemUsingGET,
-    useGetEnumUsingGET,
     EnumType,
     AttributeConstraintEnumAllOf,
     CiType,
@@ -16,7 +15,7 @@ export interface ICiContainerView {
         ciTypeData: CiType | undefined
         ciItemData: ReadConfigurationItemUsingGET200 | undefined
         constraintsData: (EnumType | undefined)[]
-        unitsData: EnumType | undefined
+        unitsData?: EnumType | undefined
     }
 }
 
@@ -52,12 +51,12 @@ export const CiContainer: React.FC<ICiContainer> = ({ entityId, entityName, View
 
     const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
-    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnumUsingGET('MERNA_JEDNOTKA')
+    // const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnumUsingGET(MEASURE_UNIT)
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
     const constraintsData = resultList.map((item) => item.data)
-    const isLoading = [isCiTypeDataLoading, isCiItemLoading, isUnitsLoading, isConstraintLoading].some((item) => item)
-    const isError = [isCiTypeDataError, isCiItemError, isUnitsError, isConstraintError].some((item) => item)
+    const isLoading = [isCiTypeDataLoading, isCiItemLoading, isConstraintLoading].some((item) => item) //isUnitsLoading,
+    const isError = [isCiTypeDataError, isCiItemError, isConstraintError].some((item) => item) //isUnitsError,
 
     if (isLoading) {
         return <div>Loading</div>
@@ -66,5 +65,5 @@ export const CiContainer: React.FC<ICiContainer> = ({ entityId, entityName, View
         return <div>Error</div>
     }
 
-    return <View data={{ ciTypeData, ciItemData, constraintsData, unitsData }} />
+    return <View data={{ ciTypeData, ciItemData, constraintsData, unitsData: undefined }} />
 }
