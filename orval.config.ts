@@ -19,7 +19,7 @@ export default defineConfig({
     cmdbSwagger: {
         input: {
             override: {
-                transformer: './app/metais-portal/src/api/hooks/transform/attributesTypesTransformer.js',
+                transformer: './app/metais-portal/scripts/attributesTypesTransformer.js',
             },
             target: process.env.VITE_REST_CLIENT_CMDB_SWAGGER_SWAGGER_URL ?? '',
             filters: {
@@ -56,19 +56,19 @@ export default defineConfig({
                     readConfigurationItemUsingGET: {
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
-                            name: 'useCmdbSwaggerClientForReadConfigurationItemUsingGET',
+                            name: 'useClientForReadConfigurationItemUsingGET',
                         },
                     },
                     getRoleParticipantUsingGET: {
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
-                            name: 'useCmdbSwaggerClientForGetRoleParticipantUsingGET',
+                            name: 'useClientForGetRoleParticipantUsingGET',
                         },
                     },
                     readCiNeighboursWithAllRelsUsingGET: {
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
-                            name: 'useCmdbSwaggerClientForReadCiNeighboursWithAllRelsUsingGET',
+                            name: 'useClientForReadCiNeighboursWithAllRelsUsingGET',
                         },
                     },
                 },

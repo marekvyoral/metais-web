@@ -9,10 +9,6 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useEnumsRepoSwaggerClient } from '../hooks/useEnumsRepoSwaggerClient'
-export type GetJobListUsingGET200 = { [key: string]: any }
-
-export type FireJobNowUsingGET200 = { [key: string]: any }
-
 export type ListValidEnumsWithValueUsingGETParams = {
     /**
      * description
@@ -22,144 +18,6 @@ export type ListValidEnumsWithValueUsingGETParams = {
      * value
      */
     value: string
-}
-
-export type DeleteEnumTypeUsingDELETEParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type UpdateEnumTypeUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type InsertEnumTypeUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type DeleteEnumItemUsingDELETEParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type InsertEnumItemUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type UpdateEnumItemUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 /**
@@ -217,41 +75,27 @@ type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
 export const useUpdateEnumItemUsingPUTHook = () => {
     const updateEnumItemUsingPUT = useEnumsRepoSwaggerClient<void>()
 
-    return (enumItemBody: EnumItemBody, params?: UpdateEnumItemUsingPUTParams) => {
+    return (enumItemBody: EnumItemBody) => {
         return updateEnumItemUsingPUT({
             url: `/enumitems/enumitem`,
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             data: enumItemBody,
-            params,
         })
     }
 }
 
 export const useUpdateEnumItemUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useUpdateEnumItemUsingPUTHook>>>,
-        TError,
-        { data: EnumItemBody; params?: UpdateEnumItemUsingPUTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useUpdateEnumItemUsingPUTHook>>>,
-    TError,
-    { data: EnumItemBody; params?: UpdateEnumItemUsingPUTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateEnumItemUsingPUTHook>>>, TError, { data: EnumItemBody }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateEnumItemUsingPUTHook>>>, TError, { data: EnumItemBody }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const updateEnumItemUsingPUT = useUpdateEnumItemUsingPUTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useUpdateEnumItemUsingPUTHook>>>,
-        { data: EnumItemBody; params?: UpdateEnumItemUsingPUTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useUpdateEnumItemUsingPUTHook>>>, { data: EnumItemBody }> = (props) => {
+        const { data } = props ?? {}
 
-        return updateEnumItemUsingPUT(data, params)
+        return updateEnumItemUsingPUT(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -265,12 +109,7 @@ export type UpdateEnumItemUsingPUTMutationError = unknown
  * @summary updateEnumItem
  */
 export const useUpdateEnumItemUsingPUT = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useUpdateEnumItemUsingPUTHook>>>,
-        TError,
-        { data: EnumItemBody; params?: UpdateEnumItemUsingPUTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateEnumItemUsingPUTHook>>>, TError, { data: EnumItemBody }, TContext>
 }) => {
     const mutationOptions = useUpdateEnumItemUsingPUTMutationOptions(options)
 
@@ -325,13 +164,12 @@ export const useValidEnumItemUsingPUT = <TError = unknown, TContext = unknown>(o
 export const useInsertEnumItemUsingPOSTHook = () => {
     const insertEnumItemUsingPOST = useEnumsRepoSwaggerClient<void>()
 
-    return (codeEnumType: string, enumItemBody: EnumItemBody, params?: InsertEnumItemUsingPOSTParams) => {
+    return (codeEnumType: string, enumItemBody: EnumItemBody) => {
         return insertEnumItemUsingPOST({
             url: `/enumitems/enumitem/${codeEnumType}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: enumItemBody,
-            params,
         })
     }
 }
@@ -340,13 +178,13 @@ export const useInsertEnumItemUsingPOSTMutationOptions = <TError = unknown, TCon
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInsertEnumItemUsingPOSTHook>>>,
         TError,
-        { codeEnumType: string; data: EnumItemBody; params?: InsertEnumItemUsingPOSTParams },
+        { codeEnumType: string; data: EnumItemBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useInsertEnumItemUsingPOSTHook>>>,
     TError,
-    { codeEnumType: string; data: EnumItemBody; params?: InsertEnumItemUsingPOSTParams },
+    { codeEnumType: string; data: EnumItemBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -355,11 +193,11 @@ export const useInsertEnumItemUsingPOSTMutationOptions = <TError = unknown, TCon
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useInsertEnumItemUsingPOSTHook>>>,
-        { codeEnumType: string; data: EnumItemBody; params?: InsertEnumItemUsingPOSTParams }
+        { codeEnumType: string; data: EnumItemBody }
     > = (props) => {
-        const { codeEnumType, data, params } = props ?? {}
+        const { codeEnumType, data } = props ?? {}
 
-        return insertEnumItemUsingPOST(codeEnumType, data, params)
+        return insertEnumItemUsingPOST(codeEnumType, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -376,7 +214,7 @@ export const useInsertEnumItemUsingPOST = <TError = unknown, TContext = unknown>
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInsertEnumItemUsingPOSTHook>>>,
         TError,
-        { codeEnumType: string; data: EnumItemBody; params?: InsertEnumItemUsingPOSTParams },
+        { codeEnumType: string; data: EnumItemBody },
         TContext
     >
 }) => {
@@ -391,35 +229,22 @@ export const useInsertEnumItemUsingPOST = <TError = unknown, TContext = unknown>
 export const useDeleteEnumItemUsingDELETEHook = () => {
     const deleteEnumItemUsingDELETE = useEnumsRepoSwaggerClient<void>()
 
-    return (code: string, params?: DeleteEnumItemUsingDELETEParams) => {
-        return deleteEnumItemUsingDELETE({ url: `/enumitems/enumitem/${code}`, method: 'delete', params })
+    return (code: string) => {
+        return deleteEnumItemUsingDELETE({ url: `/enumitems/enumitem/${code}`, method: 'delete' })
     }
 }
 
 export const useDeleteEnumItemUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useDeleteEnumItemUsingDELETEHook>>>,
-        TError,
-        { code: string; params?: DeleteEnumItemUsingDELETEParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useDeleteEnumItemUsingDELETEHook>>>,
-    TError,
-    { code: string; params?: DeleteEnumItemUsingDELETEParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEnumItemUsingDELETEHook>>>, TError, { code: string }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEnumItemUsingDELETEHook>>>, TError, { code: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const deleteEnumItemUsingDELETE = useDeleteEnumItemUsingDELETEHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useDeleteEnumItemUsingDELETEHook>>>,
-        { code: string; params?: DeleteEnumItemUsingDELETEParams }
-    > = (props) => {
-        const { code, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useDeleteEnumItemUsingDELETEHook>>>, { code: string }> = (props) => {
+        const { code } = props ?? {}
 
-        return deleteEnumItemUsingDELETE(code, params)
+        return deleteEnumItemUsingDELETE(code)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -433,12 +258,7 @@ export type DeleteEnumItemUsingDELETEMutationError = unknown
  * @summary deleteEnumItem
  */
 export const useDeleteEnumItemUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useDeleteEnumItemUsingDELETEHook>>>,
-        TError,
-        { code: string; params?: DeleteEnumItemUsingDELETEParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEnumItemUsingDELETEHook>>>, TError, { code: string }, TContext>
 }) => {
     const mutationOptions = useDeleteEnumItemUsingDELETEMutationOptions(options)
 
@@ -451,41 +271,22 @@ export const useDeleteEnumItemUsingDELETE = <TError = unknown, TContext = unknow
 export const useInsertEnumTypeUsingPOSTHook = () => {
     const insertEnumTypeUsingPOST = useEnumsRepoSwaggerClient<void>()
 
-    return (enumTypeBody: EnumTypeBody, params?: InsertEnumTypeUsingPOSTParams) => {
-        return insertEnumTypeUsingPOST({
-            url: `/enums/enum`,
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            data: enumTypeBody,
-            params,
-        })
+    return (enumTypeBody: EnumTypeBody) => {
+        return insertEnumTypeUsingPOST({ url: `/enums/enum`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: enumTypeBody })
     }
 }
 
 export const useInsertEnumTypeUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useInsertEnumTypeUsingPOSTHook>>>,
-        TError,
-        { data: EnumTypeBody; params?: InsertEnumTypeUsingPOSTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useInsertEnumTypeUsingPOSTHook>>>,
-    TError,
-    { data: EnumTypeBody; params?: InsertEnumTypeUsingPOSTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInsertEnumTypeUsingPOSTHook>>>, TError, { data: EnumTypeBody }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInsertEnumTypeUsingPOSTHook>>>, TError, { data: EnumTypeBody }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const insertEnumTypeUsingPOST = useInsertEnumTypeUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useInsertEnumTypeUsingPOSTHook>>>,
-        { data: EnumTypeBody; params?: InsertEnumTypeUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useInsertEnumTypeUsingPOSTHook>>>, { data: EnumTypeBody }> = (props) => {
+        const { data } = props ?? {}
 
-        return insertEnumTypeUsingPOST(data, params)
+        return insertEnumTypeUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -499,12 +300,7 @@ export type InsertEnumTypeUsingPOSTMutationError = unknown
  * @summary insertEnumType
  */
 export const useInsertEnumTypeUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useInsertEnumTypeUsingPOSTHook>>>,
-        TError,
-        { data: EnumTypeBody; params?: InsertEnumTypeUsingPOSTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInsertEnumTypeUsingPOSTHook>>>, TError, { data: EnumTypeBody }, TContext>
 }) => {
     const mutationOptions = useInsertEnumTypeUsingPOSTMutationOptions(options)
 
@@ -517,41 +313,22 @@ export const useInsertEnumTypeUsingPOST = <TError = unknown, TContext = unknown>
 export const useUpdateEnumTypeUsingPUTHook = () => {
     const updateEnumTypeUsingPUT = useEnumsRepoSwaggerClient<void>()
 
-    return (enumTypeBody: EnumTypeBody, params?: UpdateEnumTypeUsingPUTParams) => {
-        return updateEnumTypeUsingPUT({
-            url: `/enums/enum`,
-            method: 'put',
-            headers: { 'Content-Type': 'application/json' },
-            data: enumTypeBody,
-            params,
-        })
+    return (enumTypeBody: EnumTypeBody) => {
+        return updateEnumTypeUsingPUT({ url: `/enums/enum`, method: 'put', headers: { 'Content-Type': 'application/json' }, data: enumTypeBody })
     }
 }
 
 export const useUpdateEnumTypeUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useUpdateEnumTypeUsingPUTHook>>>,
-        TError,
-        { data: EnumTypeBody; params?: UpdateEnumTypeUsingPUTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useUpdateEnumTypeUsingPUTHook>>>,
-    TError,
-    { data: EnumTypeBody; params?: UpdateEnumTypeUsingPUTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateEnumTypeUsingPUTHook>>>, TError, { data: EnumTypeBody }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateEnumTypeUsingPUTHook>>>, TError, { data: EnumTypeBody }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const updateEnumTypeUsingPUT = useUpdateEnumTypeUsingPUTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useUpdateEnumTypeUsingPUTHook>>>,
-        { data: EnumTypeBody; params?: UpdateEnumTypeUsingPUTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useUpdateEnumTypeUsingPUTHook>>>, { data: EnumTypeBody }> = (props) => {
+        const { data } = props ?? {}
 
-        return updateEnumTypeUsingPUT(data, params)
+        return updateEnumTypeUsingPUT(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -565,12 +342,7 @@ export type UpdateEnumTypeUsingPUTMutationError = unknown
  * @summary updateEnumType
  */
 export const useUpdateEnumTypeUsingPUT = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useUpdateEnumTypeUsingPUTHook>>>,
-        TError,
-        { data: EnumTypeBody; params?: UpdateEnumTypeUsingPUTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateEnumTypeUsingPUTHook>>>, TError, { data: EnumTypeBody }, TContext>
 }) => {
     const mutationOptions = useUpdateEnumTypeUsingPUTMutationOptions(options)
 
@@ -720,35 +492,22 @@ export const useValidEnumTypeUsingPUT = <TError = unknown, TContext = unknown>(o
 export const useDeleteEnumTypeUsingDELETEHook = () => {
     const deleteEnumTypeUsingDELETE = useEnumsRepoSwaggerClient<void>()
 
-    return (code: string, params?: DeleteEnumTypeUsingDELETEParams) => {
-        return deleteEnumTypeUsingDELETE({ url: `/enums/enum/${code}`, method: 'delete', params })
+    return (code: string) => {
+        return deleteEnumTypeUsingDELETE({ url: `/enums/enum/${code}`, method: 'delete' })
     }
 }
 
 export const useDeleteEnumTypeUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useDeleteEnumTypeUsingDELETEHook>>>,
-        TError,
-        { code: string; params?: DeleteEnumTypeUsingDELETEParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useDeleteEnumTypeUsingDELETEHook>>>,
-    TError,
-    { code: string; params?: DeleteEnumTypeUsingDELETEParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEnumTypeUsingDELETEHook>>>, TError, { code: string }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEnumTypeUsingDELETEHook>>>, TError, { code: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const deleteEnumTypeUsingDELETE = useDeleteEnumTypeUsingDELETEHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useDeleteEnumTypeUsingDELETEHook>>>,
-        { code: string; params?: DeleteEnumTypeUsingDELETEParams }
-    > = (props) => {
-        const { code, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useDeleteEnumTypeUsingDELETEHook>>>, { code: string }> = (props) => {
+        const { code } = props ?? {}
 
-        return deleteEnumTypeUsingDELETE(code, params)
+        return deleteEnumTypeUsingDELETE(code)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -762,12 +521,7 @@ export type DeleteEnumTypeUsingDELETEMutationError = unknown
  * @summary deleteEnumType
  */
 export const useDeleteEnumTypeUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useDeleteEnumTypeUsingDELETEHook>>>,
-        TError,
-        { code: string; params?: DeleteEnumTypeUsingDELETEParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEnumTypeUsingDELETEHook>>>, TError, { code: string }, TContext>
 }) => {
     const mutationOptions = useDeleteEnumTypeUsingDELETEMutationOptions(options)
 
@@ -979,7 +733,7 @@ export const useListLicenseEnumsUsingGET = <
  * @summary fireJobNow
  */
 export const useFireJobNowUsingGETHook = () => {
-    const fireJobNowUsingGET = useEnumsRepoSwaggerClient<FireJobNowUsingGET200>()
+    const fireJobNowUsingGET = useEnumsRepoSwaggerClient<boolean>()
 
     return (jobName: string, signal?: AbortSignal) => {
         return fireJobNowUsingGET({ url: `/scheduler/fire/${jobName}`, method: 'get', signal })
@@ -1027,7 +781,7 @@ export const useFireJobNowUsingGET = <TData = Awaited<ReturnType<ReturnType<type
  * @summary getJobList
  */
 export const useGetJobListUsingGETHook = () => {
-    const getJobListUsingGET = useEnumsRepoSwaggerClient<GetJobListUsingGET200>()
+    const getJobListUsingGET = useEnumsRepoSwaggerClient<string[]>()
 
     return (signal?: AbortSignal) => {
         return getJobListUsingGET({ url: `/scheduler/jobList`, method: 'get', signal })

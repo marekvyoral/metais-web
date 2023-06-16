@@ -2,7 +2,7 @@ import React, { SetStateAction, useState } from 'react'
 
 import { useDocumentsListData } from '@/hooks/useEntityDocsListData/useEntityDocsListData'
 import { IDocument } from '@/hooks/useEntityDocsListData/entityDocsListTypes'
-import { NeighboursFilterContainerUi, NeighboursFilterUi, ReadCiNeighboursUsingPOST200 } from '@/api/generated/cmdb-swagger'
+import { NeighboursFilterContainerUi, NeighboursFilterUi, CiWithRelsResultUi } from '@/api/generated/cmdb-swagger'
 
 export interface IDocsConfig {
     neighboursFilter: NeighboursFilterUi
@@ -12,7 +12,7 @@ export interface IDocsConfig {
 
 export interface IDocsView {
     data: {
-        documentCiData: ReadCiNeighboursUsingPOST200 | void | undefined
+        documentCiData: CiWithRelsResultUi | void | undefined
         documentsList: (IDocument | undefined)[]
     }
     filterCallbacks: {

@@ -9,221 +9,49 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useCmdbSwaggerClient } from '../hooks/useCmdbSwaggerClient'
-import { useCmdbSwaggerClientForReadConfigurationItemUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
-import { useCmdbSwaggerClientForReadCiNeighboursWithAllRelsUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
-import { useCmdbSwaggerClientForGetRoleParticipantUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForReadConfigurationItemUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForReadCiNeighboursWithAllRelsUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForGetRoleParticipantUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 export type ValidateCIsByTypesAndOwnerUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
     /**
      * poUuid
      */
     poUuid: string
-    principal?: { [key: string]: any }
     /**
      * typeNames
      */
     typeNames: string[]
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
     /**
      * validationTypes
      */
     validationTypes?: string[]
 }
 
-export type ValidateStoreGraphUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type UpdateConfluenceUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReindexReportsUsingDELETEParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
 export type ReindexRelationshipsUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * limit
      */
     limit?: number
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 export type ReindexUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * limit
      */
     limit?: number
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 export type GetPropertiesUsingGET200 = { [key: string]: string }
 
 export type PartialReindexUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * limit
      */
     limit?: number
-    name?: string
-    principal?: { [key: string]: any }
     /**
      * timestamp
      */
     timestamp: string
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReindexHierarchyUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 export type ConfluenceDocumentResultsUsingPOSTParams = {
@@ -239,328 +67,15 @@ export type ConfluenceDocumentResultsUsingPOSTParams = {
 
 export type CiRelTypesIntegrityCheckUsingGET200 = { [key: string]: string[] }
 
-export type StoreGroupItemsUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreRelationshipUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreCiNeighboursSUUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type RemoveManagerFromGroupUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreManagerToGroupUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreGroupUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreGraphBiznisUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreGraphUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreConfigurationItemBiznisUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreConfigurationItemUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type DeleteStandardVotesUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type DeleteStandardVotesUsingDELETEParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreStandardVotesUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
 export type ReadVotesFromStandardUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
     /**
      * ascending
      */
     ascending?: boolean
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * fulltextSearch
      */
     fulltextSearch?: string
-    name?: string
     /**
      * page
      */
@@ -569,110 +84,21 @@ export type ReadVotesFromStandardUsingGETParams = {
      * perPage
      */
     perPage?: number
-    principal?: { [key: string]: any }
     /**
      * sortBy
      */
     sortBy?: string
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type DeleteStandardStandardRequestsUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type DeleteStandardStandardUsingDELETEParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreStandardStandardRequestsUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 export type ReadStandardRequestsFromStandardUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
     /**
      * ascending
      */
     ascending?: boolean
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * fulltextSearch
      */
     fulltextSearch?: string
-    name?: string
     /**
      * page
      */
@@ -681,110 +107,21 @@ export type ReadStandardRequestsFromStandardUsingGETParams = {
      * perPage
      */
     perPage?: number
-    principal?: { [key: string]: any }
     /**
      * sortBy
      */
     sortBy?: string
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type DeleteStandardMeetingRequestsUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type DeleteStandardMeetingRequestsUsingDELETEParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreStandardMeetingRequestsUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 export type ReadMeetingRequestsFromStandardUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
     /**
      * ascending
      */
     ascending?: boolean
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * fulltextSearch
      */
     fulltextSearch?: string
-    name?: string
     /**
      * page
      */
@@ -793,86 +130,17 @@ export type ReadMeetingRequestsFromStandardUsingGETParams = {
      * perPage
      */
     perPage?: number
-    principal?: { [key: string]: any }
     /**
      * sortBy
      */
     sortBy?: string
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
-
-export type DeleteStandardUsingDELETEParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadCiListUsingPOST1200 = { [key: string]: any }
-
-export type ReadCiListUsingPOST1Params = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadReportsWithFilterUsingGET200 = { [key: string]: any }
 
 export type ReadReportsWithFilterUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
     /**
      * category_id
      */
     category_id?: number
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * fulltextSearch
      */
@@ -881,7 +149,6 @@ export type ReadReportsWithFilterUsingGETParams = {
      * language
      */
     language?: string
-    name?: string
     /**
      * page
      */
@@ -890,7 +157,6 @@ export type ReadReportsWithFilterUsingGETParams = {
      * perPage
      */
     perPage?: number
-    principal?: { [key: string]: any }
     /**
      * published
      */
@@ -907,291 +173,11 @@ export type ReadReportsWithFilterUsingGETParams = {
      * sortType
      */
     sortType?: string
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type RemoveCiFromGroupUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type RemoveGroupUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type RecycleInvalidatedRelsBiznisUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type RecycleInvalidatedRelsUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type RecyclePoWithHierarchyUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type RecycleInvalidatedCisBiznisUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type RecycleInvalidatedCisUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadGroupItemsUsingPOST200 = { [key: string]: any }
-
-export type ReadGroupItemsUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 export type ReadConfigurationItemByRefIDUsingPOST200 = { [key: string]: any }
 
-export type ReadConfigurationItemByRefIDUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadConfigurationItemByMetaIsCodeUsingGET200 = { [key: string]: any }
-
-export type ReadConfigurationItemByMetaIsCodeUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadConfigurationItemsByMetaIsCodesUsingPOST200 = { [key: string]: any }
-
-export type ReadConfigurationItemsByMetaIsCodesUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type SearchAllUsingGET200 = { [key: string]: any }
-
 export type SearchAllUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
     /**
      * page
      */
@@ -1200,7 +186,6 @@ export type SearchAllUsingGETParams = {
      * perPage
      */
     perPage?: number
-    principal?: { [key: string]: any }
     /**
      * state
      */
@@ -1209,155 +194,15 @@ export type SearchAllUsingGETParams = {
      * text
      */
     text?: string
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
-export type GetRoleParticipantUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type GetRoleParticipantBulkUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadRelListUsingPOST200 = { [key: string]: any }
-
-export type ReadRelListUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadPoSuperiorPoRelationshipUsingPOST200 = { [key: string]: any }
-
-export type ReadPoSuperiorPoRelationshipUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadRelationshipListUsingPOST200 = { [key: string]: any }
-
-export type ReadRelationshipListUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadCiNeighboursWithAllRelsUsingGET200 = { [key: string]: any }
+export type ReadPoSuperiorPoRelationshipUsingPOST200 = { [key: string]: RelationshipUi }
 
 export type ReadCiNeighboursWithAllRelsUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
     /**
      * ciTypes
      */
     ciTypes?: string[]
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
     /**
      * page
      */
@@ -1366,7 +211,6 @@ export type ReadCiNeighboursWithAllRelsUsingGETParams = {
      * perPage
      */
     perPage?: number
-    principal?: { [key: string]: any }
     /**
      * relTypes
      */
@@ -1383,224 +227,9 @@ export type ReadCiNeighboursWithAllRelsUsingGETParams = {
      * usageType.whiteList[]
      */
     'usageType.whiteList[]'?: string[]
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
-
-export type ReadCiNeighboursUsingPOST200 = { [key: string]: any }
-
-export type ReadCiNeighboursUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadRelationshipUsingGET200 = { [key: string]: any }
-
-export type ReadRelationshipUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadQueryUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type GetKSSpravcaVerejnaMocAktivnaFZCUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadIncidentRelationshipsUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadCiUuidSetUsingPOST200 = { [key: string]: any }
-
-export type ReadCiUuidSetUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadCiRelationshipCiListUsingPOST200 = { [key: string]: any }
-
-export type ReadCiRelationshipCiListUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadCiListUsingPOST200 = { [key: string]: any }
-
-export type ReadCiListUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadCiListUsingGET200 = { [key: string]: any }
 
 export type ReadCiListUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
     /**
      * owner
      */
@@ -1613,7 +242,6 @@ export type ReadCiListUsingGETParams = {
      * perPage
      */
     perPage?: number
-    principal?: { [key: string]: any }
     /**
      * sortBy
      */
@@ -1638,31 +266,9 @@ export type ReadCiListUsingGETParams = {
      * usageType.whiteList[]
      */
     'usageType.whiteList[]'?: string[]
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
-export type ReadRelationshipsUsingGET200 = { [key: string]: any }
-
 export type ReadRelationshipsUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
     /**
      * types[]
      */
@@ -1675,35 +281,15 @@ export type ReadRelationshipsUsingGETParams = {
      * usageType.whiteList[]
      */
     'usageType.whiteList[]'?: string[]
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
-export type ReadNeighboursConfigurationItemsCountUsingGET200 = { [key: string]: any }
+export type ReadNeighboursConfigurationItemsCountUsingGET200 = { [key: string]: number }
 
 export type ReadNeighboursConfigurationItemsCountUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * includeInvalidated
      */
     includeInvalidated?: boolean
-    name?: string
-    principal?: { [key: string]: any }
     /**
      * usageType.blackList[]
      */
@@ -1712,34 +298,13 @@ export type ReadNeighboursConfigurationItemsCountUsingGETParams = {
      * usageType.whiteList[]
      */
     'usageType.whiteList[]'?: string[]
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
-export type ReadNeighboursConfigurationItemsUsingGET200 = { [key: string]: any }
-
 export type ReadNeighboursConfigurationItemsUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * includeInvalidated
      */
     includeInvalidated?: boolean
-    name?: string
     /**
      * nodeType
      */
@@ -1752,7 +317,6 @@ export type ReadNeighboursConfigurationItemsUsingGETParams = {
      * nodeUsageType.whiteList[]
      */
     'nodeUsageType.whiteList[]'?: string[]
-    principal?: { [key: string]: any }
     /**
      * relationshipType
      */
@@ -1765,177 +329,20 @@ export type ReadNeighboursConfigurationItemsUsingGETParams = {
      * relationshipUsageType.whiteList[]
      */
     'relationshipUsageType.whiteList[]'?: string[]
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadConfigurationItemUsingGET200 = { [key: string]: any }
-
-export type ReadConfigurationItemUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 export type GetCountCiTypesByOwnerUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * liableEntities
      */
     liableEntities?: string[]
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
-
-export type StorePoWithHierarchyRelUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StorePoUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type UpdateNotificationsUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreNotificationsUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadNotificationsWithFilterUsingGET200 = { [key: string]: any }
 
 export type ReadNotificationsWithFilterUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
     /**
      * ascending
      */
     ascending?: boolean
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * eventType
      */
@@ -1944,7 +351,6 @@ export type ReadNotificationsWithFilterUsingGETParams = {
      * fulltextSearch
      */
     fulltextSearch?: string
-    name?: string
     /**
      * page
      */
@@ -1953,7 +359,6 @@ export type ReadNotificationsWithFilterUsingGETParams = {
      * perPage
      */
     perPage?: number
-    principal?: { [key: string]: any }
     /**
      * sortBy
      */
@@ -1962,11 +367,6 @@ export type ReadNotificationsWithFilterUsingGETParams = {
      * unread
      */
     unread?: boolean
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
     /**
      * userId
      */
@@ -1993,116 +393,13 @@ export const InvalidateRelationshipUsingPOSTNewStateItem = {
 } as const
 
 export type InvalidateRelationshipUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
     /**
      * newState
      */
     newState?: InvalidateRelationshipUsingPOSTNewStateItem[]
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type InvalidateSetUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type InvalidateConfigurationItemBiznisMdulesUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type InvalidateConfigurationItemUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 export type ReadRelHistoryVersionsUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
     /**
      * page
      */
@@ -2111,39 +408,13 @@ export type ReadRelHistoryVersionsUsingGETParams = {
      * perPage
      */
     perPage: number
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 export type ReadRelHistoryVersionUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
     /**
      * timestamp
      */
     timestamp?: string
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
     /**
      * versionId
      */
@@ -2151,24 +422,10 @@ export type ReadRelHistoryVersionUsingGETParams = {
 }
 
 export type GdprHistoryUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * lastModifiedBy
      */
     lastModifiedBy: string
-    name?: string
     /**
      * page
      */
@@ -2177,28 +434,9 @@ export type GdprHistoryUsingGETParams = {
      * perPage
      */
     perPage: number
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 export type ReadCiHistoryVersionsIncidentRelsUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * excludeStates[]
      */
@@ -2207,7 +445,6 @@ export type ReadCiHistoryVersionsIncidentRelsUsingGETParams = {
      * includeCis
      */
     includeCis?: boolean
-    name?: string
     /**
      * page
      */
@@ -2216,82 +453,17 @@ export type ReadCiHistoryVersionsIncidentRelsUsingGETParams = {
      * perPage
      */
     perPage: number
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
     /**
      * versionId
      */
     versionId: string
 }
 
-export type ReadCiHistoryModifiedByListUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReadCiHistoryVersionsActionsListUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
 export type ReadCiHistoryVersionsUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
     /**
      * action
      */
     action?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * fromDate
      */
@@ -2300,7 +472,6 @@ export type ReadCiHistoryVersionsUsingGETParams = {
      * lastModifiedBy
      */
     lastModifiedBy?: string[]
-    name?: string
     /**
      * page
      */
@@ -2309,43 +480,17 @@ export type ReadCiHistoryVersionsUsingGETParams = {
      * perPage
      */
     perPage: number
-    principal?: { [key: string]: any }
     /**
      * toDate
      */
     toDate?: string
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 export type ReadCiHistoryVersionUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
     /**
      * timestamp
      */
     timestamp?: string
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
     /**
      * versionId
      */
@@ -2353,23 +498,10 @@ export type ReadCiHistoryVersionUsingGETParams = {
 }
 
 export type ReadAllCiHistoryVersionsUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
     /**
      * action
      */
     action?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
     /**
      * fromDate
      */
@@ -2378,7 +510,6 @@ export type ReadAllCiHistoryVersionsUsingGETParams = {
      * lastModifiedBy
      */
     lastModifiedBy?: string[]
-    name?: string
     /**
      * page
      */
@@ -2387,229 +518,10 @@ export type ReadAllCiHistoryVersionsUsingGETParams = {
      * perPage
      */
     perPage: number
-    principal?: { [key: string]: any }
     /**
      * toDate
      */
     toDate?: string
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StorePoHierarchyRelUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type GetConfigurationItemsGroupsUsingGET200 = { [key: string]: any }
-
-export type GetConfigurationItemsGroupsUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type GetGroupListUsingGET200 = { [key: string]: any }
-
-export type GetGroupListUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type GetUuidUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ReportErrorUsingPOST200 = { [key: string]: any }
-
-export type ReportErrorUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type DeleteRelationshipUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ChangeOwnerSetUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ChangePoHierarchyUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type AddCiToGroupUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 /**
@@ -2677,13 +589,6 @@ export interface HistoryVersionUiRelationshipUi {
     actions?: string[]
     item?: RelationshipUi
     versionId?: string
-}
-
-export interface PaginationUi {
-    page?: number
-    perPage?: number
-    totalPages?: number
-    totaltems?: number
 }
 
 export interface HistoryVersionsListUiRelationshipUi {
@@ -2922,6 +827,33 @@ export interface RequestIdUi {
     requestId?: string
 }
 
+export interface RequestId {
+    id?: string
+}
+
+export interface ReportHolderUi {
+    pagination?: PaginationUi
+    reports?: ReportUi[]
+}
+
+export interface ReportCategoryUi {
+    id?: number
+    name?: string
+    nameEn?: string
+}
+
+export interface ReportUi {
+    category?: ReportCategoryUi
+    description?: string
+    id?: number
+    language?: string
+    lastUpdatedTime?: string
+    lookupKey?: string
+    name?: string
+    publikovany?: boolean
+    reportType?: string
+}
+
 export interface RelationshipsProblemMessageUi {
     problemType?: string
     relOrientation?: string
@@ -2949,6 +881,11 @@ export interface RelationshipSetUi {
     relationshipSet?: RelationshipUi[]
 }
 
+export interface RelationshipListUi {
+    pagination?: PaginationUi
+    relationshipList?: RelationshipUi[]
+}
+
 export interface RelationshipInvalidateUi {
     attributes?: AttributeUi[]
     endUuid?: string
@@ -2958,6 +895,24 @@ export interface RelationshipInvalidateUi {
     startUuid?: string
     type?: string
     uuid?: string
+}
+
+export interface RelationshipElasticPreviewUi {
+    endCiName?: string
+    endCiType?: string
+    endCiUuid?: string
+    relState?: string
+    relType?: string
+    relUuid?: string
+    startCiName?: string
+    startCiType?: string
+    startCiUuid?: string
+    usageType?: string
+}
+
+export interface RelationshipElasticPreviewHolderUi {
+    ciRelCi?: RelationshipElasticPreviewUi[]
+    pagination?: PaginationUi
 }
 
 export interface RelTypeFilterUi {
@@ -3012,6 +967,24 @@ export interface RelFilterSmallUi {
     text?: string
 }
 
+export type RelElasticItemAllOf = {
+    PO?: string
+    endName?: string
+    endType?: string
+    endUuid?: string
+    highlight?: HighLightResultHolder
+    itemType?: string
+    startName?: string
+    startType?: string
+    startUuid?: string
+    state?: string
+    type?: string
+    typeName?: string
+    uuid?: string
+}
+
+export type RelElasticItem = GeneralElasticItem & RelElasticItemAllOf
+
 export interface RecycleSetUi {
     ciIdSet?: string[]
     relIdSet?: string[]
@@ -3051,6 +1024,21 @@ export interface PoWithHierarchyUi {
     po?: ConfigurationItemUi
 }
 
+export interface PaginationUi {
+    page?: number
+    perPage?: number
+    totalPages?: number
+    totaltems?: number
+}
+
+export interface PaginationData {
+    page?: number
+    perPage?: number
+    totalItems?: number
+    totalPages?: number
+    totalUnreadedItems?: number
+}
+
 export type NotificationUpdateHolderUiTypeOfAction =
     (typeof NotificationUpdateHolderUiTypeOfAction)[keyof typeof NotificationUpdateHolderUiTypeOfAction]
 
@@ -3081,6 +1069,11 @@ export interface Notification {
     userId?: string
 }
 
+export interface NotificationsList {
+    notifications?: Notification[]
+    pagination?: PaginationData
+}
+
 export interface NeighboursFilterUi {
     ciType?: string[]
     excludedCiUuids?: string[]
@@ -3100,6 +1093,21 @@ export interface NeighboursFilterContainerUi {
     sortBy?: string
     sortSource?: string
     sortType?: string
+}
+
+export interface NeighbourSetUi {
+    fromNodes?: NeighboursResultUi
+    toNodes?: NeighboursResultUi
+}
+
+export interface NeighbourPairUi {
+    configurationItem?: ConfigurationItemUi
+    relationship?: RelationshipUi
+}
+
+export interface NeighboursResultUi {
+    neighbourPairs?: NeighbourPairUi[]
+    pagination?: PaginationUi
 }
 
 export interface MissingAttributesHolderUi {
@@ -3183,6 +1191,21 @@ export interface IncidentRelationshipsFilterUi {
     perPage?: number
 }
 
+export interface IncidentRelationshipSetUi {
+    endRelationshipSet?: RelationshipUi[]
+    startRelationshipSet?: RelationshipUi[]
+}
+
+export interface HighlightResult {
+    field?: string
+    highlightText?: string[]
+}
+
+export interface HighLightResultHolder {
+    attributes?: HighlightResult[]
+    metaAttributes?: HighlightResult[]
+}
+
 export interface HierarchyRightsUi {
     HIERARCHY_FROM_ROOT?: number
     address?: AddressObjectUi
@@ -3190,6 +1213,11 @@ export interface HierarchyRightsUi {
     poName?: string
     poUUID?: string
     roles?: string[]
+}
+
+export interface HierarchyRightsResultUi {
+    pagination?: PaginationUi
+    rights?: HierarchyRightsUi[]
 }
 
 export interface HierarchyPOFilterUi {
@@ -3206,6 +1234,10 @@ export interface GroupUi {
     name?: string
     newComtool?: string
     uuid?: string
+}
+
+export interface GroupSetUi {
+    groupSet?: GroupUi[]
 }
 
 export interface GroupMembersFilterUi {
@@ -3232,6 +1264,17 @@ export interface GidSetUi {
 export interface GetResponseWrapper {
     isExist?: boolean
     sourceAsString?: string
+}
+
+export interface GeneralElasticItem {
+    highlight?: HighLightResultHolder
+    itemType?: string
+    uuid?: string
+}
+
+export interface GeneralElasticItemSet {
+    generalElasticItemSet?: GeneralElasticItem[]
+    pagination?: PaginationUi
 }
 
 export type FilterValueUiValue = { [key: string]: any }
@@ -3319,6 +1362,14 @@ export const ErrorMessageUiErrorType = {
     PROCESSING_ERROR: 'PROCESSING_ERROR',
 } as const
 
+export interface ErrorMessageUi {
+    attributeName?: string
+    errorDetail?: ErrorDetailUi
+    errorType?: ErrorMessageUiErrorType
+    itemId?: string
+    itemType?: ErrorMessageUiItemType
+}
+
 export interface ErrorMessageHolderUi {
     messages?: ErrorMessageUi[]
 }
@@ -3340,13 +1391,16 @@ export interface ErrorDetailUi {
     regex?: string
 }
 
-export interface ErrorMessageUi {
-    attributeName?: string
-    errorDetail?: ErrorDetailUi
-    errorType?: ErrorMessageUiErrorType
-    itemId?: string
-    itemType?: ErrorMessageUiItemType
+export type DMSDocElasticItemAllOf = {
+    contentLength?: number
+    fileName?: string
+    highlight?: HighLightResultHolder
+    itemType?: string
+    type?: string
+    uuid?: string
 }
+
+export type DMSDocElasticItem = GeneralElasticItem & DMSDocElasticItemAllOf
 
 export interface CustomMessageUi {
     failPlaceholderValues?: string[]
@@ -3370,10 +1424,19 @@ export interface ConfigurationItemUi {
     uuid?: string
 }
 
+export interface ConfigurationItemsListUi {
+    configurationItemSet?: ConfigurationItemUi[]
+}
+
 export interface ConfigurationItemSetUi {
     configurationItemSet?: ConfigurationItemUi[]
     incidentRelationshipSet?: RelationshipUi[]
     pagination?: PaginationUi
+}
+
+export interface ConfigurationItemNeighbourSetUi {
+    fromCiSet?: ConfigurationItemUi[]
+    toCiSet?: ConfigurationItemUi[]
 }
 
 export interface ConfigurationItemInvalidateUi {
@@ -3383,6 +1446,26 @@ export interface ConfigurationItemInvalidateUi {
     owner?: string
     type?: string
     uuid?: string
+}
+
+export interface CiWithRelsUi {
+    ci?: ConfigurationItemUi
+    rels?: RelationshipUi[]
+}
+
+export interface CiWithRelsResultUi {
+    ciWithRels?: CiWithRelsUi[]
+    pagination?: PaginationUi
+}
+
+export interface CiUuidSetUi {
+    ciUuids?: string[]
+    pagination?: PaginationUi
+}
+
+export interface CiRelationshipCiPreviewHolderListUi {
+    ciRelCiList?: CiRelationshipCiPreviewHolderUi[]
+    pagination?: PaginationUi
 }
 
 export interface CiProblemMessageUi {
@@ -3398,6 +1481,18 @@ export interface CiProblemMessageHolderUi {
 
 export interface CiProblemMessageHolderListUi {
     ciProblemMessageHolders?: CiProblemMessageHolderUi[]
+}
+
+export interface CiPreviewUi {
+    genName?: string
+    metaIsCode?: string
+    uuid?: string
+}
+
+export interface CiRelationshipCiPreviewHolderUi {
+    ciEnd?: CiPreviewUi
+    ciStart?: CiPreviewUi
+    rel?: RelationshipUi
 }
 
 export interface CiHistoryVersionsIncidentRelationshipsUi {
@@ -3432,6 +1527,20 @@ export interface CiListFilterContainerUi {
     sortType?: string
     usageTypeFilter?: UsageTypeFilterUi
 }
+
+export type CiElasticItemAllOf = {
+    PO?: string
+    code?: string
+    highlight?: HighLightResultHolder
+    itemType?: string
+    name?: string
+    state?: string
+    type?: string
+    typeName?: string
+    uuid?: string
+}
+
+export type CiElasticItem = GeneralElasticItem & CiElasticItemAllOf
 
 export type ChangeOwnerDataUiChangeType = (typeof ChangeOwnerDataUiChangeType)[keyof typeof ChangeOwnerDataUiChangeType]
 
@@ -3495,13 +1604,12 @@ type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
 export const useAddCiToGroupUsingPOSTHook = () => {
     const addCiToGroupUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (uuid: string, addCiToGroupUsingPOSTBody: string[], params?: AddCiToGroupUsingPOSTParams) => {
+    return (uuid: string, addCiToGroupUsingPOSTBody: string[]) => {
         return addCiToGroupUsingPOST({
             url: `/addmembers/group/${uuid}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: addCiToGroupUsingPOSTBody,
-            params,
         })
     }
 }
@@ -3510,26 +1618,20 @@ export const useAddCiToGroupUsingPOSTMutationOptions = <TError = unknown, TConte
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useAddCiToGroupUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: string[]; params?: AddCiToGroupUsingPOSTParams },
+        { uuid: string; data: string[] },
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useAddCiToGroupUsingPOSTHook>>>,
-    TError,
-    { uuid: string; data: string[]; params?: AddCiToGroupUsingPOSTParams },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAddCiToGroupUsingPOSTHook>>>, TError, { uuid: string; data: string[] }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const addCiToGroupUsingPOST = useAddCiToGroupUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useAddCiToGroupUsingPOSTHook>>>,
-        { uuid: string; data: string[]; params?: AddCiToGroupUsingPOSTParams }
-    > = (props) => {
-        const { uuid, data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useAddCiToGroupUsingPOSTHook>>>, { uuid: string; data: string[] }> = (
+        props,
+    ) => {
+        const { uuid, data } = props ?? {}
 
-        return addCiToGroupUsingPOST(uuid, data, params)
+        return addCiToGroupUsingPOST(uuid, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -3546,7 +1648,7 @@ export const useAddCiToGroupUsingPOST = <TError = unknown, TContext = unknown>(o
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useAddCiToGroupUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: string[]; params?: AddCiToGroupUsingPOSTParams },
+        { uuid: string; data: string[] },
         TContext
     >
 }) => {
@@ -4064,13 +2166,12 @@ export const useClearRelCacheUsingDELETE = <TError = unknown, TContext = unknown
 export const useChangePoHierarchyUsingPOSTHook = () => {
     const changePoHierarchyUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (oldRelId: string, newRelId: string, changeHierarchyUi: ChangeHierarchyUi, params?: ChangePoHierarchyUsingPOSTParams) => {
+    return (oldRelId: string, newRelId: string, changeHierarchyUi: ChangeHierarchyUi) => {
         return changePoHierarchyUsingPOST({
             url: `/changeHierarchy/${oldRelId}/${newRelId}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: changeHierarchyUi,
-            params,
         })
     }
 }
@@ -4079,13 +2180,13 @@ export const useChangePoHierarchyUsingPOSTMutationOptions = <TError = unknown, T
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useChangePoHierarchyUsingPOSTHook>>>,
         TError,
-        { oldRelId: string; newRelId: string; data: ChangeHierarchyUi; params?: ChangePoHierarchyUsingPOSTParams },
+        { oldRelId: string; newRelId: string; data: ChangeHierarchyUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useChangePoHierarchyUsingPOSTHook>>>,
     TError,
-    { oldRelId: string; newRelId: string; data: ChangeHierarchyUi; params?: ChangePoHierarchyUsingPOSTParams },
+    { oldRelId: string; newRelId: string; data: ChangeHierarchyUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4094,11 +2195,11 @@ export const useChangePoHierarchyUsingPOSTMutationOptions = <TError = unknown, T
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useChangePoHierarchyUsingPOSTHook>>>,
-        { oldRelId: string; newRelId: string; data: ChangeHierarchyUi; params?: ChangePoHierarchyUsingPOSTParams }
+        { oldRelId: string; newRelId: string; data: ChangeHierarchyUi }
     > = (props) => {
-        const { oldRelId, newRelId, data, params } = props ?? {}
+        const { oldRelId, newRelId, data } = props ?? {}
 
-        return changePoHierarchyUsingPOST(oldRelId, newRelId, data, params)
+        return changePoHierarchyUsingPOST(oldRelId, newRelId, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -4115,7 +2216,7 @@ export const useChangePoHierarchyUsingPOST = <TError = unknown, TContext = unkno
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useChangePoHierarchyUsingPOSTHook>>>,
         TError,
-        { oldRelId: string; newRelId: string; data: ChangeHierarchyUi; params?: ChangePoHierarchyUsingPOSTParams },
+        { oldRelId: string; newRelId: string; data: ChangeHierarchyUi },
         TContext
     >
 }) => {
@@ -4130,13 +2231,12 @@ export const useChangePoHierarchyUsingPOST = <TError = unknown, TContext = unkno
 export const useChangeOwnerSetUsingPOSTHook = () => {
     const changeOwnerSetUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (changeOwnerSetUi: ChangeOwnerSetUi, params?: ChangeOwnerSetUsingPOSTParams) => {
+    return (changeOwnerSetUi: ChangeOwnerSetUi) => {
         return changeOwnerSetUsingPOST({
             url: `/changeOwner/list`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: changeOwnerSetUi,
-            params,
         })
     }
 }
@@ -4145,26 +2245,20 @@ export const useChangeOwnerSetUsingPOSTMutationOptions = <TError = unknown, TCon
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetUsingPOSTHook>>>,
         TError,
-        { data: ChangeOwnerSetUi; params?: ChangeOwnerSetUsingPOSTParams },
+        { data: ChangeOwnerSetUi },
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetUsingPOSTHook>>>,
-    TError,
-    { data: ChangeOwnerSetUi; params?: ChangeOwnerSetUsingPOSTParams },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetUsingPOSTHook>>>, TError, { data: ChangeOwnerSetUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const changeOwnerSetUsingPOST = useChangeOwnerSetUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetUsingPOSTHook>>>,
-        { data: ChangeOwnerSetUi; params?: ChangeOwnerSetUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetUsingPOSTHook>>>, { data: ChangeOwnerSetUi }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return changeOwnerSetUsingPOST(data, params)
+        return changeOwnerSetUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -4181,7 +2275,7 @@ export const useChangeOwnerSetUsingPOST = <TError = unknown, TContext = unknown>
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetUsingPOSTHook>>>,
         TError,
-        { data: ChangeOwnerSetUi; params?: ChangeOwnerSetUsingPOSTParams },
+        { data: ChangeOwnerSetUi },
         TContext
     >
 }) => {
@@ -4196,13 +2290,12 @@ export const useChangeOwnerSetUsingPOST = <TError = unknown, TContext = unknown>
 export const useDeleteRelationshipUsingPOSTHook = () => {
     const deleteRelationshipUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (relationshipInvalidateUiBody: RelationshipInvalidateUiBody, params?: DeleteRelationshipUsingPOSTParams) => {
+    return (relationshipInvalidateUiBody: RelationshipInvalidateUiBody) => {
         return deleteRelationshipUsingPOST({
             url: `/delete/relation`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: relationshipInvalidateUiBody,
-            params,
         })
     }
 }
@@ -4211,13 +2304,13 @@ export const useDeleteRelationshipUsingPOSTMutationOptions = <TError = unknown, 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteRelationshipUsingPOSTHook>>>,
         TError,
-        { data: RelationshipInvalidateUiBody; params?: DeleteRelationshipUsingPOSTParams },
+        { data: RelationshipInvalidateUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useDeleteRelationshipUsingPOSTHook>>>,
     TError,
-    { data: RelationshipInvalidateUiBody; params?: DeleteRelationshipUsingPOSTParams },
+    { data: RelationshipInvalidateUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4226,11 +2319,11 @@ export const useDeleteRelationshipUsingPOSTMutationOptions = <TError = unknown, 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useDeleteRelationshipUsingPOSTHook>>>,
-        { data: RelationshipInvalidateUiBody; params?: DeleteRelationshipUsingPOSTParams }
+        { data: RelationshipInvalidateUiBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return deleteRelationshipUsingPOST(data, params)
+        return deleteRelationshipUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -4247,7 +2340,7 @@ export const useDeleteRelationshipUsingPOST = <TError = unknown, TContext = unkn
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteRelationshipUsingPOSTHook>>>,
         TError,
-        { data: RelationshipInvalidateUiBody; params?: DeleteRelationshipUsingPOSTParams },
+        { data: RelationshipInvalidateUiBody },
         TContext
     >
 }) => {
@@ -4353,15 +2446,14 @@ export const useReadinessUsingGET = <TData = Awaited<ReturnType<ReturnType<typeo
  * @summary reportError
  */
 export const useReportErrorUsingPOSTHook = () => {
-    const reportErrorUsingPOST = useCmdbSwaggerClient<ReportErrorUsingPOST200 | void>()
+    const reportErrorUsingPOST = useCmdbSwaggerClient<RequestId | void>()
 
-    return (userFeedbackErrorReportUi: UserFeedbackErrorReportUi, params?: ReportErrorUsingPOSTParams) => {
+    return (userFeedbackErrorReportUi: UserFeedbackErrorReportUi) => {
         return reportErrorUsingPOST({
             url: `/feedback/error`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: userFeedbackErrorReportUi,
-            params,
         })
     }
 }
@@ -4370,26 +2462,25 @@ export const useReportErrorUsingPOSTMutationOptions = <TError = unknown, TContex
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReportErrorUsingPOSTHook>>>,
         TError,
-        { data: UserFeedbackErrorReportUi; params?: ReportErrorUsingPOSTParams },
+        { data: UserFeedbackErrorReportUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReportErrorUsingPOSTHook>>>,
     TError,
-    { data: UserFeedbackErrorReportUi; params?: ReportErrorUsingPOSTParams },
+    { data: UserFeedbackErrorReportUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
 
     const reportErrorUsingPOST = useReportErrorUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useReportErrorUsingPOSTHook>>>,
-        { data: UserFeedbackErrorReportUi; params?: ReportErrorUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReportErrorUsingPOSTHook>>>, { data: UserFeedbackErrorReportUi }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return reportErrorUsingPOST(data, params)
+        return reportErrorUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -4406,7 +2497,7 @@ export const useReportErrorUsingPOST = <TError = unknown, TContext = unknown>(op
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReportErrorUsingPOSTHook>>>,
         TError,
-        { data: UserFeedbackErrorReportUi; params?: ReportErrorUsingPOSTParams },
+        { data: UserFeedbackErrorReportUi },
         TContext
     >
 }) => {
@@ -4421,24 +2512,23 @@ export const useReportErrorUsingPOST = <TError = unknown, TContext = unknown>(op
 export const useGetUuidUsingGETHook = () => {
     const getUuidUsingGET = useCmdbSwaggerClient<string>()
 
-    return (params?: GetUuidUsingGETParams, signal?: AbortSignal) => {
-        return getUuidUsingGET({ url: `/generate/uuid`, method: 'get', params, signal })
+    return (signal?: AbortSignal) => {
+        return getUuidUsingGET({ url: `/generate/uuid`, method: 'get', signal })
     }
 }
 
-export const getGetUuidUsingGETQueryKey = (params?: GetUuidUsingGETParams) => [`/generate/uuid`, ...(params ? [params] : [])] as const
+export const getGetUuidUsingGETQueryKey = () => [`/generate/uuid`] as const
 
-export const useGetUuidUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError = void>(
-    params?: GetUuidUsingGETParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError, TData> },
-): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
+export const useGetUuidUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError = void>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError, TData>
+}): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGetUuidUsingGETQueryKey(params)
+    const queryKey = queryOptions?.queryKey ?? getGetUuidUsingGETQueryKey()
 
     const getUuidUsingGET = useGetUuidUsingGETHook()
 
-    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>> = ({ signal }) => getUuidUsingGET(params, signal)
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>> = ({ signal }) => getUuidUsingGET(signal)
 
     return { queryKey, queryFn, ...queryOptions }
 }
@@ -4449,11 +2539,10 @@ export type GetUuidUsingGETQueryError = void
 /**
  * @summary getUuid
  */
-export const useGetUuidUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError = void>(
-    params?: GetUuidUsingGETParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError, TData> },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useGetUuidUsingGETQueryOptions(params, options)
+export const useGetUuidUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError = void>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUuidUsingGETHook>>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetUuidUsingGETQueryOptions(options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -4466,27 +2555,28 @@ export const useGetUuidUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof 
  * @summary getGroupList
  */
 export const useGetGroupListUsingGETHook = () => {
-    const getGroupListUsingGET = useCmdbSwaggerClient<GetGroupListUsingGET200>()
+    const getGroupListUsingGET = useCmdbSwaggerClient<GroupSetUi>()
 
-    return (params?: GetGroupListUsingGETParams, signal?: AbortSignal) => {
-        return getGroupListUsingGET({ url: `/grouplist`, method: 'get', params, signal })
+    return (signal?: AbortSignal) => {
+        return getGroupListUsingGET({ url: `/grouplist`, method: 'get', signal })
     }
 }
 
-export const getGetGroupListUsingGETQueryKey = (params?: GetGroupListUsingGETParams) => [`/grouplist`, ...(params ? [params] : [])] as const
+export const getGetGroupListUsingGETQueryKey = () => [`/grouplist`] as const
 
-export const useGetGroupListUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError = void>(
-    params?: GetGroupListUsingGETParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError, TData> },
-): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
+export const useGetGroupListUsingGETQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>,
+    TError = void,
+>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError, TData>
+}): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGetGroupListUsingGETQueryKey(params)
+    const queryKey = queryOptions?.queryKey ?? getGetGroupListUsingGETQueryKey()
 
     const getGroupListUsingGET = useGetGroupListUsingGETHook()
 
-    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>> = ({ signal }) =>
-        getGroupListUsingGET(params, signal)
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>> = ({ signal }) => getGroupListUsingGET(signal)
 
     return { queryKey, queryFn, ...queryOptions }
 }
@@ -4497,11 +2587,10 @@ export type GetGroupListUsingGETQueryError = void
 /**
  * @summary getGroupList
  */
-export const useGetGroupListUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError = void>(
-    params?: GetGroupListUsingGETParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError, TData> },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useGetGroupListUsingGETQueryOptions(params, options)
+export const useGetGroupListUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError = void>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetGroupListUsingGETHook>>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetGroupListUsingGETQueryOptions(options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -4514,32 +2603,30 @@ export const useGetGroupListUsingGET = <TData = Awaited<ReturnType<ReturnType<ty
  * @summary getConfigurationItemsGroups
  */
 export const useGetConfigurationItemsGroupsUsingGETHook = () => {
-    const getConfigurationItemsGroupsUsingGET = useCmdbSwaggerClient<GetConfigurationItemsGroupsUsingGET200>()
+    const getConfigurationItemsGroupsUsingGET = useCmdbSwaggerClient<GroupSetUi>()
 
-    return (uuid: string, params?: GetConfigurationItemsGroupsUsingGETParams, signal?: AbortSignal) => {
-        return getConfigurationItemsGroupsUsingGET({ url: `/grouplist/ci/${uuid}`, method: 'get', params, signal })
+    return (uuid: string, signal?: AbortSignal) => {
+        return getConfigurationItemsGroupsUsingGET({ url: `/grouplist/ci/${uuid}`, method: 'get', signal })
     }
 }
 
-export const getGetConfigurationItemsGroupsUsingGETQueryKey = (uuid: string, params?: GetConfigurationItemsGroupsUsingGETParams) =>
-    [`/grouplist/ci/${uuid}`, ...(params ? [params] : [])] as const
+export const getGetConfigurationItemsGroupsUsingGETQueryKey = (uuid: string) => [`/grouplist/ci/${uuid}`] as const
 
 export const useGetConfigurationItemsGroupsUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsUsingGETHook>>>,
     TError = void,
 >(
     uuid: string,
-    params?: GetConfigurationItemsGroupsUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGetConfigurationItemsGroupsUsingGETQueryKey(uuid, params)
+    const queryKey = queryOptions?.queryKey ?? getGetConfigurationItemsGroupsUsingGETQueryKey(uuid)
 
     const getConfigurationItemsGroupsUsingGET = useGetConfigurationItemsGroupsUsingGETHook()
 
     const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsUsingGETHook>>>> = ({ signal }) =>
-        getConfigurationItemsGroupsUsingGET(uuid, params, signal)
+        getConfigurationItemsGroupsUsingGET(uuid, signal)
 
     return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
 }
@@ -4557,10 +2644,9 @@ export const useGetConfigurationItemsGroupsUsingGET = <
     TError = void,
 >(
     uuid: string,
-    params?: GetConfigurationItemsGroupsUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useGetConfigurationItemsGroupsUsingGETQueryOptions(uuid, params, options)
+    const queryOptions = useGetConfigurationItemsGroupsUsingGETQueryOptions(uuid, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -4575,13 +2661,12 @@ export const useGetConfigurationItemsGroupsUsingGET = <
 export const useStorePoHierarchyRelUsingPOSTHook = () => {
     const storePoHierarchyRelUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (relId: string, relationshipUiBody: RelationshipUiBody, params?: StorePoHierarchyRelUsingPOSTParams) => {
+    return (relId: string, relationshipUiBody: RelationshipUiBody) => {
         return storePoHierarchyRelUsingPOST({
             url: `/hierarchy/${relId}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: relationshipUiBody,
-            params,
         })
     }
 }
@@ -4590,13 +2675,13 @@ export const useStorePoHierarchyRelUsingPOSTMutationOptions = <TError = unknown,
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoHierarchyRelUsingPOSTHook>>>,
         TError,
-        { relId: string; data: RelationshipUiBody; params?: StorePoHierarchyRelUsingPOSTParams },
+        { relId: string; data: RelationshipUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStorePoHierarchyRelUsingPOSTHook>>>,
     TError,
-    { relId: string; data: RelationshipUiBody; params?: StorePoHierarchyRelUsingPOSTParams },
+    { relId: string; data: RelationshipUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4605,11 +2690,11 @@ export const useStorePoHierarchyRelUsingPOSTMutationOptions = <TError = unknown,
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStorePoHierarchyRelUsingPOSTHook>>>,
-        { relId: string; data: RelationshipUiBody; params?: StorePoHierarchyRelUsingPOSTParams }
+        { relId: string; data: RelationshipUiBody }
     > = (props) => {
-        const { relId, data, params } = props ?? {}
+        const { relId, data } = props ?? {}
 
-        return storePoHierarchyRelUsingPOST(relId, data, params)
+        return storePoHierarchyRelUsingPOST(relId, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -4626,7 +2711,7 @@ export const useStorePoHierarchyRelUsingPOST = <TError = unknown, TContext = unk
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoHierarchyRelUsingPOSTHook>>>,
         TError,
-        { relId: string; data: RelationshipUiBody; params?: StorePoHierarchyRelUsingPOSTParams },
+        { relId: string; data: RelationshipUiBody },
         TContext
     >
 }) => {
@@ -4804,32 +2889,30 @@ export const useReadCiHistoryVersionsUsingGET = <TData = Awaited<ReturnType<Retu
 export const useReadCiHistoryVersionsActionsListUsingGETHook = () => {
     const readCiHistoryVersionsActionsListUsingGET = useCmdbSwaggerClient<string[]>()
 
-    return (uuid: string, params?: ReadCiHistoryVersionsActionsListUsingGETParams, signal?: AbortSignal) => {
-        return readCiHistoryVersionsActionsListUsingGET({ url: `/history/read/ci/${uuid}/list/actions`, method: 'get', params, signal })
+    return (uuid: string, signal?: AbortSignal) => {
+        return readCiHistoryVersionsActionsListUsingGET({ url: `/history/read/ci/${uuid}/list/actions`, method: 'get', signal })
     }
 }
 
-export const getReadCiHistoryVersionsActionsListUsingGETQueryKey = (uuid: string, params?: ReadCiHistoryVersionsActionsListUsingGETParams) =>
-    [`/history/read/ci/${uuid}/list/actions`, ...(params ? [params] : [])] as const
+export const getReadCiHistoryVersionsActionsListUsingGETQueryKey = (uuid: string) => [`/history/read/ci/${uuid}/list/actions`] as const
 
 export const useReadCiHistoryVersionsActionsListUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListUsingGETHook>>>,
     TError = void,
 >(
     uuid: string,
-    params?: ReadCiHistoryVersionsActionsListUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListUsingGETHook>>>, TError, TData> & {
     queryKey: QueryKey
 } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getReadCiHistoryVersionsActionsListUsingGETQueryKey(uuid, params)
+    const queryKey = queryOptions?.queryKey ?? getReadCiHistoryVersionsActionsListUsingGETQueryKey(uuid)
 
     const readCiHistoryVersionsActionsListUsingGET = useReadCiHistoryVersionsActionsListUsingGETHook()
 
     const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListUsingGETHook>>>> = ({ signal }) =>
-        readCiHistoryVersionsActionsListUsingGET(uuid, params, signal)
+        readCiHistoryVersionsActionsListUsingGET(uuid, signal)
 
     return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
 }
@@ -4847,10 +2930,9 @@ export const useReadCiHistoryVersionsActionsListUsingGET = <
     TError = void,
 >(
     uuid: string,
-    params?: ReadCiHistoryVersionsActionsListUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useReadCiHistoryVersionsActionsListUsingGETQueryOptions(uuid, params, options)
+    const queryOptions = useReadCiHistoryVersionsActionsListUsingGETQueryOptions(uuid, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -4865,30 +2947,28 @@ export const useReadCiHistoryVersionsActionsListUsingGET = <
 export const useReadCiHistoryModifiedByListUsingGETHook = () => {
     const readCiHistoryModifiedByListUsingGET = useCmdbSwaggerClient<string[]>()
 
-    return (uuid: string, params?: ReadCiHistoryModifiedByListUsingGETParams, signal?: AbortSignal) => {
-        return readCiHistoryModifiedByListUsingGET({ url: `/history/read/ci/${uuid}/list/modifiedBy`, method: 'get', params, signal })
+    return (uuid: string, signal?: AbortSignal) => {
+        return readCiHistoryModifiedByListUsingGET({ url: `/history/read/ci/${uuid}/list/modifiedBy`, method: 'get', signal })
     }
 }
 
-export const getReadCiHistoryModifiedByListUsingGETQueryKey = (uuid: string, params?: ReadCiHistoryModifiedByListUsingGETParams) =>
-    [`/history/read/ci/${uuid}/list/modifiedBy`, ...(params ? [params] : [])] as const
+export const getReadCiHistoryModifiedByListUsingGETQueryKey = (uuid: string) => [`/history/read/ci/${uuid}/list/modifiedBy`] as const
 
 export const useReadCiHistoryModifiedByListUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListUsingGETHook>>>,
     TError = void,
 >(
     uuid: string,
-    params?: ReadCiHistoryModifiedByListUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getReadCiHistoryModifiedByListUsingGETQueryKey(uuid, params)
+    const queryKey = queryOptions?.queryKey ?? getReadCiHistoryModifiedByListUsingGETQueryKey(uuid)
 
     const readCiHistoryModifiedByListUsingGET = useReadCiHistoryModifiedByListUsingGETHook()
 
     const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListUsingGETHook>>>> = ({ signal }) =>
-        readCiHistoryModifiedByListUsingGET(uuid, params, signal)
+        readCiHistoryModifiedByListUsingGET(uuid, signal)
 
     return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
 }
@@ -4906,10 +2986,9 @@ export const useReadCiHistoryModifiedByListUsingGET = <
     TError = void,
 >(
     uuid: string,
-    params?: ReadCiHistoryModifiedByListUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useReadCiHistoryModifiedByListUsingGETQueryOptions(uuid, params, options)
+    const queryOptions = useReadCiHistoryModifiedByListUsingGETQueryOptions(uuid, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -5144,13 +3223,12 @@ export const useReadRelHistoryVersionsUsingGET = <
 export const useInvalidateConfigurationItemUsingPOSTHook = () => {
     const invalidateConfigurationItemUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (configurationItemInvalidateUiBody: ConfigurationItemInvalidateUiBody, params?: InvalidateConfigurationItemUsingPOSTParams) => {
+    return (configurationItemInvalidateUiBody: ConfigurationItemInvalidateUiBody) => {
         return invalidateConfigurationItemUsingPOST({
             url: `/invalidate/ci`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: configurationItemInvalidateUiBody,
-            params,
         })
     }
 }
@@ -5159,13 +3237,13 @@ export const useInvalidateConfigurationItemUsingPOSTMutationOptions = <TError = 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemUsingPOSTHook>>>,
         TError,
-        { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemUsingPOSTParams },
+        { data: ConfigurationItemInvalidateUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemUsingPOSTHook>>>,
     TError,
-    { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemUsingPOSTParams },
+    { data: ConfigurationItemInvalidateUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5174,11 +3252,11 @@ export const useInvalidateConfigurationItemUsingPOSTMutationOptions = <TError = 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemUsingPOSTHook>>>,
-        { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemUsingPOSTParams }
+        { data: ConfigurationItemInvalidateUiBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return invalidateConfigurationItemUsingPOST(data, params)
+        return invalidateConfigurationItemUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -5197,7 +3275,7 @@ export const useInvalidateConfigurationItemUsingPOST = <TError = unknown, TConte
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemUsingPOSTHook>>>,
         TError,
-        { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemUsingPOSTParams },
+        { data: ConfigurationItemInvalidateUiBody },
         TContext
     >
 }) => {
@@ -5212,16 +3290,12 @@ export const useInvalidateConfigurationItemUsingPOST = <TError = unknown, TConte
 export const useInvalidateConfigurationItemBiznisMdulesUsingPOSTHook = () => {
     const invalidateConfigurationItemBiznisMdulesUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (
-        configurationItemInvalidateUiBody: ConfigurationItemInvalidateUiBody,
-        params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams,
-    ) => {
+    return (configurationItemInvalidateUiBody: ConfigurationItemInvalidateUiBody) => {
         return invalidateConfigurationItemBiznisMdulesUsingPOST({
             url: `/invalidate/ci/biznis`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: configurationItemInvalidateUiBody,
-            params,
         })
     }
 }
@@ -5230,13 +3304,13 @@ export const useInvalidateConfigurationItemBiznisMdulesUsingPOSTMutationOptions 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemBiznisMdulesUsingPOSTHook>>>,
         TError,
-        { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams },
+        { data: ConfigurationItemInvalidateUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemBiznisMdulesUsingPOSTHook>>>,
     TError,
-    { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams },
+    { data: ConfigurationItemInvalidateUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5245,11 +3319,11 @@ export const useInvalidateConfigurationItemBiznisMdulesUsingPOSTMutationOptions 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemBiznisMdulesUsingPOSTHook>>>,
-        { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams }
+        { data: ConfigurationItemInvalidateUiBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return invalidateConfigurationItemBiznisMdulesUsingPOST(data, params)
+        return invalidateConfigurationItemBiznisMdulesUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -5268,7 +3342,7 @@ export const useInvalidateConfigurationItemBiznisMdulesUsingPOST = <TError = unk
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemBiznisMdulesUsingPOSTHook>>>,
         TError,
-        { data: ConfigurationItemInvalidateUiBody; params?: InvalidateConfigurationItemBiznisMdulesUsingPOSTParams },
+        { data: ConfigurationItemInvalidateUiBody },
         TContext
     >
 }) => {
@@ -5283,41 +3357,22 @@ export const useInvalidateConfigurationItemBiznisMdulesUsingPOST = <TError = unk
 export const useInvalidateSetUsingPOSTHook = () => {
     const invalidateSetUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (itemSetUi: ItemSetUi, params?: InvalidateSetUsingPOSTParams) => {
-        return invalidateSetUsingPOST({
-            url: `/invalidate/list`,
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            data: itemSetUi,
-            params,
-        })
+    return (itemSetUi: ItemSetUi) => {
+        return invalidateSetUsingPOST({ url: `/invalidate/list`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: itemSetUi })
     }
 }
 
 export const useInvalidateSetUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>,
-        TError,
-        { data: ItemSetUi; params?: InvalidateSetUsingPOSTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>,
-    TError,
-    { data: ItemSetUi; params?: InvalidateSetUsingPOSTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>, TError, { data: ItemSetUi }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>, TError, { data: ItemSetUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const invalidateSetUsingPOST = useInvalidateSetUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>,
-        { data: ItemSetUi; params?: InvalidateSetUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>, { data: ItemSetUi }> = (props) => {
+        const { data } = props ?? {}
 
-        return invalidateSetUsingPOST(data, params)
+        return invalidateSetUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -5331,12 +3386,7 @@ export type InvalidateSetUsingPOSTMutationError = unknown
  * @summary invalidateSet
  */
 export const useInvalidateSetUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>,
-        TError,
-        { data: ItemSetUi; params?: InvalidateSetUsingPOSTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInvalidateSetUsingPOSTHook>>>, TError, { data: ItemSetUi }, TContext>
 }) => {
     const mutationOptions = useInvalidateSetUsingPOSTMutationOptions(options)
 
@@ -5463,7 +3513,7 @@ export const useGetMetricsUsingGET = <TData = Awaited<ReturnType<ReturnType<type
  * @summary readNotificationsWithFilter
  */
 export const useReadNotificationsWithFilterUsingGETHook = () => {
-    const readNotificationsWithFilterUsingGET = useCmdbSwaggerClient<ReadNotificationsWithFilterUsingGET200>()
+    const readNotificationsWithFilterUsingGET = useCmdbSwaggerClient<NotificationsList>()
 
     return (params?: ReadNotificationsWithFilterUsingGETParams, signal?: AbortSignal) => {
         return readNotificationsWithFilterUsingGET({ url: `/notification`, method: 'get', params, signal })
@@ -5522,13 +3572,12 @@ export const useReadNotificationsWithFilterUsingGET = <
 export const useStoreNotificationsUsingPOSTHook = () => {
     const storeNotificationsUsingPOST = useCmdbSwaggerClient<boolean | void>()
 
-    return (notification: Notification[], params?: StoreNotificationsUsingPOSTParams) => {
+    return (notification: Notification[]) => {
         return storeNotificationsUsingPOST({
             url: `/notification`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: notification,
-            params,
         })
     }
 }
@@ -5537,26 +3586,20 @@ export const useStoreNotificationsUsingPOSTMutationOptions = <TError = unknown, 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNotificationsUsingPOSTHook>>>,
         TError,
-        { data: Notification[]; params?: StoreNotificationsUsingPOSTParams },
+        { data: Notification[] },
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreNotificationsUsingPOSTHook>>>,
-    TError,
-    { data: Notification[]; params?: StoreNotificationsUsingPOSTParams },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNotificationsUsingPOSTHook>>>, TError, { data: Notification[] }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeNotificationsUsingPOST = useStoreNotificationsUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreNotificationsUsingPOSTHook>>>,
-        { data: Notification[]; params?: StoreNotificationsUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreNotificationsUsingPOSTHook>>>, { data: Notification[] }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return storeNotificationsUsingPOST(data, params)
+        return storeNotificationsUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -5573,7 +3616,7 @@ export const useStoreNotificationsUsingPOST = <TError = unknown, TContext = unkn
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNotificationsUsingPOSTHook>>>,
         TError,
-        { data: Notification[]; params?: StoreNotificationsUsingPOSTParams },
+        { data: Notification[] },
         TContext
     >
 }) => {
@@ -5588,13 +3631,12 @@ export const useStoreNotificationsUsingPOST = <TError = unknown, TContext = unkn
 export const useUpdateNotificationsUsingPUTHook = () => {
     const updateNotificationsUsingPUT = useCmdbSwaggerClient<void>()
 
-    return (notificationUpdateHolderUi: NotificationUpdateHolderUi, params?: UpdateNotificationsUsingPUTParams) => {
+    return (notificationUpdateHolderUi: NotificationUpdateHolderUi) => {
         return updateNotificationsUsingPUT({
             url: `/notification`,
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             data: notificationUpdateHolderUi,
-            params,
         })
     }
 }
@@ -5603,13 +3645,13 @@ export const useUpdateNotificationsUsingPUTMutationOptions = <TError = unknown, 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateNotificationsUsingPUTHook>>>,
         TError,
-        { data: NotificationUpdateHolderUi; params?: UpdateNotificationsUsingPUTParams },
+        { data: NotificationUpdateHolderUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useUpdateNotificationsUsingPUTHook>>>,
     TError,
-    { data: NotificationUpdateHolderUi; params?: UpdateNotificationsUsingPUTParams },
+    { data: NotificationUpdateHolderUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5618,11 +3660,11 @@ export const useUpdateNotificationsUsingPUTMutationOptions = <TError = unknown, 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useUpdateNotificationsUsingPUTHook>>>,
-        { data: NotificationUpdateHolderUi; params?: UpdateNotificationsUsingPUTParams }
+        { data: NotificationUpdateHolderUi }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return updateNotificationsUsingPUT(data, params)
+        return updateNotificationsUsingPUT(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -5639,7 +3681,7 @@ export const useUpdateNotificationsUsingPUT = <TError = unknown, TContext = unkn
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateNotificationsUsingPUTHook>>>,
         TError,
-        { data: NotificationUpdateHolderUi; params?: UpdateNotificationsUsingPUTParams },
+        { data: NotificationUpdateHolderUi },
         TContext
     >
 }) => {
@@ -5654,13 +3696,12 @@ export const useUpdateNotificationsUsingPUT = <TError = unknown, TContext = unkn
 export const useStorePoUsingPOSTHook = () => {
     const storePoUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (poId: string, configurationItemUiBody: ConfigurationItemUiBody, params?: StorePoUsingPOSTParams) => {
+    return (poId: string, configurationItemUiBody: ConfigurationItemUiBody) => {
         return storePoUsingPOST({
             url: `/po/${poId}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: configurationItemUiBody,
-            params,
         })
     }
 }
@@ -5669,13 +3710,13 @@ export const useStorePoUsingPOSTMutationOptions = <TError = unknown, TContext = 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoUsingPOSTHook>>>,
         TError,
-        { poId: string; data: ConfigurationItemUiBody; params?: StorePoUsingPOSTParams },
+        { poId: string; data: ConfigurationItemUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStorePoUsingPOSTHook>>>,
     TError,
-    { poId: string; data: ConfigurationItemUiBody; params?: StorePoUsingPOSTParams },
+    { poId: string; data: ConfigurationItemUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5684,11 +3725,11 @@ export const useStorePoUsingPOSTMutationOptions = <TError = unknown, TContext = 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStorePoUsingPOSTHook>>>,
-        { poId: string; data: ConfigurationItemUiBody; params?: StorePoUsingPOSTParams }
+        { poId: string; data: ConfigurationItemUiBody }
     > = (props) => {
-        const { poId, data, params } = props ?? {}
+        const { poId, data } = props ?? {}
 
-        return storePoUsingPOST(poId, data, params)
+        return storePoUsingPOST(poId, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -5705,7 +3746,7 @@ export const useStorePoUsingPOST = <TError = unknown, TContext = unknown>(option
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoUsingPOSTHook>>>,
         TError,
-        { poId: string; data: ConfigurationItemUiBody; params?: StorePoUsingPOSTParams },
+        { poId: string; data: ConfigurationItemUiBody },
         TContext
     >
 }) => {
@@ -5720,13 +3761,12 @@ export const useStorePoUsingPOST = <TError = unknown, TContext = unknown>(option
 export const useStorePoWithHierarchyRelUsingPOSTHook = () => {
     const storePoWithHierarchyRelUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (poId: string, relId: string, poWithHierarchyUiBody: PoWithHierarchyUiBody, params?: StorePoWithHierarchyRelUsingPOSTParams) => {
+    return (poId: string, relId: string, poWithHierarchyUiBody: PoWithHierarchyUiBody) => {
         return storePoWithHierarchyRelUsingPOST({
             url: `/poWithHierarchy/${poId}/${relId}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: poWithHierarchyUiBody,
-            params,
         })
     }
 }
@@ -5735,13 +3775,13 @@ export const useStorePoWithHierarchyRelUsingPOSTMutationOptions = <TError = unkn
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoWithHierarchyRelUsingPOSTHook>>>,
         TError,
-        { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: StorePoWithHierarchyRelUsingPOSTParams },
+        { poId: string; relId: string; data: PoWithHierarchyUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStorePoWithHierarchyRelUsingPOSTHook>>>,
     TError,
-    { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: StorePoWithHierarchyRelUsingPOSTParams },
+    { poId: string; relId: string; data: PoWithHierarchyUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5750,11 +3790,11 @@ export const useStorePoWithHierarchyRelUsingPOSTMutationOptions = <TError = unkn
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStorePoWithHierarchyRelUsingPOSTHook>>>,
-        { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: StorePoWithHierarchyRelUsingPOSTParams }
+        { poId: string; relId: string; data: PoWithHierarchyUiBody }
     > = (props) => {
-        const { poId, relId, data, params } = props ?? {}
+        const { poId, relId, data } = props ?? {}
 
-        return storePoWithHierarchyRelUsingPOST(poId, relId, data, params)
+        return storePoWithHierarchyRelUsingPOST(poId, relId, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -5773,7 +3813,7 @@ export const useStorePoWithHierarchyRelUsingPOST = <TError = unknown, TContext =
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoWithHierarchyRelUsingPOSTHook>>>,
         TError,
-        { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: StorePoWithHierarchyRelUsingPOSTParams },
+        { poId: string; relId: string; data: PoWithHierarchyUiBody },
         TContext
     >
 }) => {
@@ -5841,32 +3881,30 @@ export const useGetCountCiTypesByOwnerUsingGET = <
  * @summary readConfigurationItem
  */
 export const useReadConfigurationItemUsingGETHook = () => {
-    const readConfigurationItemUsingGET = useCmdbSwaggerClientForReadConfigurationItemUsingGET<ReadConfigurationItemUsingGET200>()
+    const readConfigurationItemUsingGET = useClientForReadConfigurationItemUsingGET<ConfigurationItemUi>()
 
-    return (uuid: string, params?: ReadConfigurationItemUsingGETParams, signal?: AbortSignal) => {
-        return readConfigurationItemUsingGET({ url: `/read/ci/${uuid}`, method: 'get', params, signal })
+    return (uuid: string, signal?: AbortSignal) => {
+        return readConfigurationItemUsingGET({ url: `/read/ci/${uuid}`, method: 'get', signal })
     }
 }
 
-export const getReadConfigurationItemUsingGETQueryKey = (uuid: string, params?: ReadConfigurationItemUsingGETParams) =>
-    [`/read/ci/${uuid}`, ...(params ? [params] : [])] as const
+export const getReadConfigurationItemUsingGETQueryKey = (uuid: string) => [`/read/ci/${uuid}`] as const
 
 export const useReadConfigurationItemUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemUsingGETHook>>>,
     TError = void,
 >(
     uuid: string,
-    params?: ReadConfigurationItemUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getReadConfigurationItemUsingGETQueryKey(uuid, params)
+    const queryKey = queryOptions?.queryKey ?? getReadConfigurationItemUsingGETQueryKey(uuid)
 
     const readConfigurationItemUsingGET = useReadConfigurationItemUsingGETHook()
 
     const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemUsingGETHook>>>> = ({ signal }) =>
-        readConfigurationItemUsingGET(uuid, params, signal)
+        readConfigurationItemUsingGET(uuid, signal)
 
     return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
 }
@@ -5879,10 +3917,9 @@ export type ReadConfigurationItemUsingGETQueryError = void
  */
 export const useReadConfigurationItemUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemUsingGETHook>>>, TError = void>(
     uuid: string,
-    params?: ReadConfigurationItemUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useReadConfigurationItemUsingGETQueryOptions(uuid, params, options)
+    const queryOptions = useReadConfigurationItemUsingGETQueryOptions(uuid, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -5895,7 +3932,7 @@ export const useReadConfigurationItemUsingGET = <TData = Awaited<ReturnType<Retu
  * @summary readNeighboursConfigurationItems
  */
 export const useReadNeighboursConfigurationItemsUsingGETHook = () => {
-    const readNeighboursConfigurationItemsUsingGET = useCmdbSwaggerClient<ReadNeighboursConfigurationItemsUsingGET200>()
+    const readNeighboursConfigurationItemsUsingGET = useCmdbSwaggerClient<ConfigurationItemNeighbourSetUi>()
 
     return (uuid: string, params?: ReadNeighboursConfigurationItemsUsingGETParams, signal?: AbortSignal) => {
         return readNeighboursConfigurationItemsUsingGET({ url: `/read/ci/${uuid}/neighbours`, method: 'get', params, signal })
@@ -6023,7 +4060,7 @@ export const useReadNeighboursConfigurationItemsCountUsingGET = <
  * @summary readRelationships
  */
 export const useReadRelationshipsUsingGETHook = () => {
-    const readRelationshipsUsingGET = useCmdbSwaggerClient<ReadRelationshipsUsingGET200>()
+    const readRelationshipsUsingGET = useCmdbSwaggerClient<IncidentRelationshipSetUi>()
 
     return (uuid: string, params?: ReadRelationshipsUsingGETParams, signal?: AbortSignal) => {
         return readRelationshipsUsingGET({ url: `/read/ci/${uuid}/relations`, method: 'get', params, signal })
@@ -6077,7 +4114,7 @@ export const useReadRelationshipsUsingGET = <TData = Awaited<ReturnType<ReturnTy
  * @summary readCiList
  */
 export const useReadCiListUsingGETHook = () => {
-    const readCiListUsingGET = useCmdbSwaggerClient<ReadCiListUsingGET200>()
+    const readCiListUsingGET = useCmdbSwaggerClient<ConfigurationItemSetUi>()
 
     return (params?: ReadCiListUsingGETParams, signal?: AbortSignal) => {
         return readCiListUsingGET({ url: `/read/cilist`, method: 'get', params, signal })
@@ -6125,15 +4162,14 @@ export const useReadCiListUsingGET = <TData = Awaited<ReturnType<ReturnType<type
  * @summary readCiList
  */
 export const useReadCiListUsingPOSTHook = () => {
-    const readCiListUsingPOST = useCmdbSwaggerClient<ReadCiListUsingPOST200 | void>()
+    const readCiListUsingPOST = useCmdbSwaggerClient<ConfigurationItemSetUi | void>()
 
-    return (ciListFilterContainerUiBody: CiListFilterContainerUiBody, params?: ReadCiListUsingPOSTParams) => {
+    return (ciListFilterContainerUiBody: CiListFilterContainerUiBody) => {
         return readCiListUsingPOST({
             url: `/read/cilistfiltered`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: ciListFilterContainerUiBody,
-            params,
         })
     }
 }
@@ -6142,26 +4178,25 @@ export const useReadCiListUsingPOSTMutationOptions = <TError = unknown, TContext
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
         TError,
-        { data: CiListFilterContainerUiBody; params?: ReadCiListUsingPOSTParams },
+        { data: CiListFilterContainerUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
     TError,
-    { data: CiListFilterContainerUiBody; params?: ReadCiListUsingPOSTParams },
+    { data: CiListFilterContainerUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
 
     const readCiListUsingPOST = useReadCiListUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
-        { data: CiListFilterContainerUiBody; params?: ReadCiListUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, { data: CiListFilterContainerUiBody }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return readCiListUsingPOST(data, params)
+        return readCiListUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -6178,7 +4213,7 @@ export const useReadCiListUsingPOST = <TError = unknown, TContext = unknown>(opt
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
         TError,
-        { data: CiListFilterContainerUiBody; params?: ReadCiListUsingPOSTParams },
+        { data: CiListFilterContainerUiBody },
         TContext
     >
 }) => {
@@ -6191,15 +4226,14 @@ export const useReadCiListUsingPOST = <TError = unknown, TContext = unknown>(opt
  * @summary readCiRelationshipCiList
  */
 export const useReadCiRelationshipCiListUsingPOSTHook = () => {
-    const readCiRelationshipCiListUsingPOST = useCmdbSwaggerClient<ReadCiRelationshipCiListUsingPOST200 | void>()
+    const readCiRelationshipCiListUsingPOST = useCmdbSwaggerClient<CiRelationshipCiPreviewHolderListUi | void>()
 
-    return (relListFilterContainerUiBody: RelListFilterContainerUiBody, params?: ReadCiRelationshipCiListUsingPOSTParams) => {
+    return (relListFilterContainerUiBody: RelListFilterContainerUiBody) => {
         return readCiRelationshipCiListUsingPOST({
             url: `/read/cirelationshipcilistfiltered`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: relListFilterContainerUiBody,
-            params,
         })
     }
 }
@@ -6208,13 +4242,13 @@ export const useReadCiRelationshipCiListUsingPOSTMutationOptions = <TError = unk
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListUsingPOSTHook>>>,
         TError,
-        { data: RelListFilterContainerUiBody; params?: ReadCiRelationshipCiListUsingPOSTParams },
+        { data: RelListFilterContainerUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListUsingPOSTHook>>>,
     TError,
-    { data: RelListFilterContainerUiBody; params?: ReadCiRelationshipCiListUsingPOSTParams },
+    { data: RelListFilterContainerUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6223,11 +4257,11 @@ export const useReadCiRelationshipCiListUsingPOSTMutationOptions = <TError = unk
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListUsingPOSTHook>>>,
-        { data: RelListFilterContainerUiBody; params?: ReadCiRelationshipCiListUsingPOSTParams }
+        { data: RelListFilterContainerUiBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return readCiRelationshipCiListUsingPOST(data, params)
+        return readCiRelationshipCiListUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -6246,7 +4280,7 @@ export const useReadCiRelationshipCiListUsingPOST = <TError = unknown, TContext 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListUsingPOSTHook>>>,
         TError,
-        { data: RelListFilterContainerUiBody; params?: ReadCiRelationshipCiListUsingPOSTParams },
+        { data: RelListFilterContainerUiBody },
         TContext
     >
 }) => {
@@ -6259,15 +4293,14 @@ export const useReadCiRelationshipCiListUsingPOST = <TError = unknown, TContext 
  * @summary readCiUuidSet
  */
 export const useReadCiUuidSetUsingPOSTHook = () => {
-    const readCiUuidSetUsingPOST = useCmdbSwaggerClient<ReadCiUuidSetUsingPOST200 | void>()
+    const readCiUuidSetUsingPOST = useCmdbSwaggerClient<CiUuidSetUi | void>()
 
-    return (ciListFilterContainerUiBody: CiListFilterContainerUiBody, params?: ReadCiUuidSetUsingPOSTParams) => {
+    return (ciListFilterContainerUiBody: CiListFilterContainerUiBody) => {
         return readCiUuidSetUsingPOST({
             url: `/read/ciuuidsetfiltered`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: ciListFilterContainerUiBody,
-            params,
         })
     }
 }
@@ -6276,13 +4309,13 @@ export const useReadCiUuidSetUsingPOSTMutationOptions = <TError = unknown, TCont
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetUsingPOSTHook>>>,
         TError,
-        { data: CiListFilterContainerUiBody; params?: ReadCiUuidSetUsingPOSTParams },
+        { data: CiListFilterContainerUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetUsingPOSTHook>>>,
     TError,
-    { data: CiListFilterContainerUiBody; params?: ReadCiUuidSetUsingPOSTParams },
+    { data: CiListFilterContainerUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6291,11 +4324,11 @@ export const useReadCiUuidSetUsingPOSTMutationOptions = <TError = unknown, TCont
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetUsingPOSTHook>>>,
-        { data: CiListFilterContainerUiBody; params?: ReadCiUuidSetUsingPOSTParams }
+        { data: CiListFilterContainerUiBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return readCiUuidSetUsingPOST(data, params)
+        return readCiUuidSetUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -6312,7 +4345,7 @@ export const useReadCiUuidSetUsingPOST = <TError = unknown, TContext = unknown>(
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetUsingPOSTHook>>>,
         TError,
-        { data: CiListFilterContainerUiBody; params?: ReadCiUuidSetUsingPOSTParams },
+        { data: CiListFilterContainerUiBody },
         TContext
     >
 }) => {
@@ -6327,13 +4360,12 @@ export const useReadCiUuidSetUsingPOST = <TError = unknown, TContext = unknown>(
 export const useReadIncidentRelationshipsUsingPOSTHook = () => {
     const readIncidentRelationshipsUsingPOST = useCmdbSwaggerClient<RelationshipSetUi | void>()
 
-    return (incidentRelationshipsFilterUi: IncidentRelationshipsFilterUi, params?: ReadIncidentRelationshipsUsingPOSTParams) => {
+    return (incidentRelationshipsFilterUi: IncidentRelationshipsFilterUi) => {
         return readIncidentRelationshipsUsingPOST({
             url: `/read/incidentrelationships`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: incidentRelationshipsFilterUi,
-            params,
         })
     }
 }
@@ -6342,13 +4374,13 @@ export const useReadIncidentRelationshipsUsingPOSTMutationOptions = <TError = un
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsUsingPOSTHook>>>,
         TError,
-        { data: IncidentRelationshipsFilterUi; params?: ReadIncidentRelationshipsUsingPOSTParams },
+        { data: IncidentRelationshipsFilterUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsUsingPOSTHook>>>,
     TError,
-    { data: IncidentRelationshipsFilterUi; params?: ReadIncidentRelationshipsUsingPOSTParams },
+    { data: IncidentRelationshipsFilterUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6357,11 +4389,11 @@ export const useReadIncidentRelationshipsUsingPOSTMutationOptions = <TError = un
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsUsingPOSTHook>>>,
-        { data: IncidentRelationshipsFilterUi; params?: ReadIncidentRelationshipsUsingPOSTParams }
+        { data: IncidentRelationshipsFilterUi }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return readIncidentRelationshipsUsingPOST(data, params)
+        return readIncidentRelationshipsUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -6380,7 +4412,7 @@ export const useReadIncidentRelationshipsUsingPOST = <TError = unknown, TContext
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsUsingPOSTHook>>>,
         TError,
-        { data: IncidentRelationshipsFilterUi; params?: ReadIncidentRelationshipsUsingPOSTParams },
+        { data: IncidentRelationshipsFilterUi },
         TContext
     >
 }) => {
@@ -6395,31 +4427,29 @@ export const useReadIncidentRelationshipsUsingPOST = <TError = unknown, TContext
 export const useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook = () => {
     const getKSSpravcaVerejnaMocAktivnaFZCUsingGET = useCmdbSwaggerClient<QueryResultTableUi>()
 
-    return (params?: GetKSSpravcaVerejnaMocAktivnaFZCUsingGETParams, signal?: AbortSignal) => {
-        return getKSSpravcaVerejnaMocAktivnaFZCUsingGET({ url: `/read/ksSpVmFazaZivCyklu`, method: 'get', params, signal })
+    return (signal?: AbortSignal) => {
+        return getKSSpravcaVerejnaMocAktivnaFZCUsingGET({ url: `/read/ksSpVmFazaZivCyklu`, method: 'get', signal })
     }
 }
 
-export const getGetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryKey = (params?: GetKSSpravcaVerejnaMocAktivnaFZCUsingGETParams) =>
-    [`/read/ksSpVmFazaZivCyklu`, ...(params ? [params] : [])] as const
+export const getGetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryKey = () => [`/read/ksSpVmFazaZivCyklu`] as const
 
 export const useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>,
     TError = void,
->(
-    params?: GetKSSpravcaVerejnaMocAktivnaFZCUsingGETParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>, TError, TData> },
-): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>, TError, TData> & {
+>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>, TError, TData>
+}): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>, TError, TData> & {
     queryKey: QueryKey
 } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryKey(params)
+    const queryKey = queryOptions?.queryKey ?? getGetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryKey()
 
     const getKSSpravcaVerejnaMocAktivnaFZCUsingGET = useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook()
 
     const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>> = ({ signal }) =>
-        getKSSpravcaVerejnaMocAktivnaFZCUsingGET(params, signal)
+        getKSSpravcaVerejnaMocAktivnaFZCUsingGET(signal)
 
     return { queryKey, queryFn, ...queryOptions }
 }
@@ -6435,11 +4465,10 @@ export type GetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryError = void
 export const useGetKSSpravcaVerejnaMocAktivnaFZCUsingGET = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>,
     TError = void,
->(
-    params?: GetKSSpravcaVerejnaMocAktivnaFZCUsingGETParams,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>, TError, TData> },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryOptions(params, options)
+>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETHook>>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetKSSpravcaVerejnaMocAktivnaFZCUsingGETQueryOptions(options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -6454,35 +4483,22 @@ export const useGetKSSpravcaVerejnaMocAktivnaFZCUsingGET = <
 export const useReadQueryUsingPOSTHook = () => {
     const readQueryUsingPOST = useCmdbSwaggerClient<QueryResultTableUi | void>()
 
-    return (queryUi: QueryUi, params?: ReadQueryUsingPOSTParams) => {
-        return readQueryUsingPOST({ url: `/read/query`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: queryUi, params })
+    return (queryUi: QueryUi) => {
+        return readQueryUsingPOST({ url: `/read/query`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: queryUi })
     }
 }
 
 export const useReadQueryUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>,
-        TError,
-        { data: QueryUi; params?: ReadQueryUsingPOSTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>,
-    TError,
-    { data: QueryUi; params?: ReadQueryUsingPOSTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>, TError, { data: QueryUi }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>, TError, { data: QueryUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const readQueryUsingPOST = useReadQueryUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>,
-        { data: QueryUi; params?: ReadQueryUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>, { data: QueryUi }> = (props) => {
+        const { data } = props ?? {}
 
-        return readQueryUsingPOST(data, params)
+        return readQueryUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -6496,12 +4512,7 @@ export type ReadQueryUsingPOSTMutationError = unknown
  * @summary readQuery
  */
 export const useReadQueryUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>,
-        TError,
-        { data: QueryUi; params?: ReadQueryUsingPOSTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadQueryUsingPOSTHook>>>, TError, { data: QueryUi }, TContext>
 }) => {
     const mutationOptions = useReadQueryUsingPOSTMutationOptions(options)
 
@@ -6512,32 +4523,30 @@ export const useReadQueryUsingPOST = <TError = unknown, TContext = unknown>(opti
  * @summary readRelationship
  */
 export const useReadRelationshipUsingGETHook = () => {
-    const readRelationshipUsingGET = useCmdbSwaggerClient<ReadRelationshipUsingGET200>()
+    const readRelationshipUsingGET = useCmdbSwaggerClient<RelationshipUi>()
 
-    return (uuid: string, params?: ReadRelationshipUsingGETParams, signal?: AbortSignal) => {
-        return readRelationshipUsingGET({ url: `/read/relation/${uuid}`, method: 'get', params, signal })
+    return (uuid: string, signal?: AbortSignal) => {
+        return readRelationshipUsingGET({ url: `/read/relation/${uuid}`, method: 'get', signal })
     }
 }
 
-export const getReadRelationshipUsingGETQueryKey = (uuid: string, params?: ReadRelationshipUsingGETParams) =>
-    [`/read/relation/${uuid}`, ...(params ? [params] : [])] as const
+export const getReadRelationshipUsingGETQueryKey = (uuid: string) => [`/read/relation/${uuid}`] as const
 
 export const useReadRelationshipUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipUsingGETHook>>>,
     TError = void,
 >(
     uuid: string,
-    params?: ReadRelationshipUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelationshipUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelationshipUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getReadRelationshipUsingGETQueryKey(uuid, params)
+    const queryKey = queryOptions?.queryKey ?? getReadRelationshipUsingGETQueryKey(uuid)
 
     const readRelationshipUsingGET = useReadRelationshipUsingGETHook()
 
     const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadRelationshipUsingGETHook>>>> = ({ signal }) =>
-        readRelationshipUsingGET(uuid, params, signal)
+        readRelationshipUsingGET(uuid, signal)
 
     return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
 }
@@ -6550,10 +4559,9 @@ export type ReadRelationshipUsingGETQueryError = void
  */
 export const useReadRelationshipUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipUsingGETHook>>>, TError = void>(
     uuid: string,
-    params?: ReadRelationshipUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelationshipUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useReadRelationshipUsingGETQueryOptions(uuid, params, options)
+    const queryOptions = useReadRelationshipUsingGETQueryOptions(uuid, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -6566,24 +4574,20 @@ export const useReadRelationshipUsingGET = <TData = Awaited<ReturnType<ReturnTyp
  * @summary readCiNeighbours
  */
 export const useReadCiNeighboursUsingPOSTHook = () => {
-    const readCiNeighboursUsingPOST = useCmdbSwaggerClient<ReadCiNeighboursUsingPOST200 | void>()
+    const readCiNeighboursUsingPOST = useCmdbSwaggerClient<NeighbourSetUi | void>()
 
-    return (uuid: string, neighboursFilterContainerUi: NeighboursFilterContainerUi, params?: ReadCiNeighboursUsingPOSTParams) => {
+    return (uuid: string, neighboursFilterContainerUi: NeighboursFilterContainerUi) => {
         return readCiNeighboursUsingPOST({
             url: `/read/relations/neighbours/${uuid}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: neighboursFilterContainerUi,
-            params,
         })
     }
 }
 
-export const getReadCiNeighboursUsingPOSTQueryKey = (
-    uuid: string,
-    neighboursFilterContainerUi: NeighboursFilterContainerUi,
-    params?: ReadCiNeighboursUsingPOSTParams,
-) => [`/read/relations/neighbours/${uuid}`, ...(params ? [params] : []), neighboursFilterContainerUi] as const
+export const getReadCiNeighboursUsingPOSTQueryKey = (uuid: string, neighboursFilterContainerUi: NeighboursFilterContainerUi) =>
+    [`/read/relations/neighbours/${uuid}`, neighboursFilterContainerUi] as const
 
 export const useReadCiNeighboursUsingPOSTQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursUsingPOSTHook>>>,
@@ -6591,17 +4595,16 @@ export const useReadCiNeighboursUsingPOSTQueryOptions = <
 >(
     uuid: string,
     neighboursFilterContainerUi: NeighboursFilterContainerUi,
-    params?: ReadCiNeighboursUsingPOSTParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursUsingPOSTHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursUsingPOSTHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getReadCiNeighboursUsingPOSTQueryKey(uuid, neighboursFilterContainerUi, params)
+    const queryKey = queryOptions?.queryKey ?? getReadCiNeighboursUsingPOSTQueryKey(uuid, neighboursFilterContainerUi)
 
     const readCiNeighboursUsingPOST = useReadCiNeighboursUsingPOSTHook()
 
     const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursUsingPOSTHook>>>> = () =>
-        readCiNeighboursUsingPOST(uuid, neighboursFilterContainerUi, params)
+        readCiNeighboursUsingPOST(uuid, neighboursFilterContainerUi)
 
     return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
 }
@@ -6615,10 +4618,9 @@ export type ReadCiNeighboursUsingPOSTQueryError = unknown
 export const useReadCiNeighboursUsingPOST = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursUsingPOSTHook>>>, TError = unknown>(
     uuid: string,
     neighboursFilterContainerUi: NeighboursFilterContainerUi,
-    params?: ReadCiNeighboursUsingPOSTParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursUsingPOSTHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useReadCiNeighboursUsingPOSTQueryOptions(uuid, neighboursFilterContainerUi, params, options)
+    const queryOptions = useReadCiNeighboursUsingPOSTQueryOptions(uuid, neighboursFilterContainerUi, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -6631,7 +4633,7 @@ export const useReadCiNeighboursUsingPOST = <TData = Awaited<ReturnType<ReturnTy
  * @summary readCiNeighboursWithAllRels
  */
 export const useReadCiNeighboursWithAllRelsUsingGETHook = () => {
-    const readCiNeighboursWithAllRelsUsingGET = useCmdbSwaggerClientForReadCiNeighboursWithAllRelsUsingGET<ReadCiNeighboursWithAllRelsUsingGET200>()
+    const readCiNeighboursWithAllRelsUsingGET = useClientForReadCiNeighboursWithAllRelsUsingGET<CiWithRelsResultUi>()
 
     return (uuid: string, params?: ReadCiNeighboursWithAllRelsUsingGETParams, signal?: AbortSignal) => {
         return readCiNeighboursWithAllRelsUsingGET({ url: `/read/relations/neighbourswithallrels/${uuid}`, method: 'get', params, signal })
@@ -6690,15 +4692,14 @@ export const useReadCiNeighboursWithAllRelsUsingGET = <
  * @summary readRelationshipList
  */
 export const useReadRelationshipListUsingPOSTHook = () => {
-    const readRelationshipListUsingPOST = useCmdbSwaggerClient<ReadRelationshipListUsingPOST200 | void>()
+    const readRelationshipListUsingPOST = useCmdbSwaggerClient<RelationshipListUi | void>()
 
-    return (relListFilterContainerUiBody: RelListFilterContainerUiBody, params?: ReadRelationshipListUsingPOSTParams) => {
+    return (relListFilterContainerUiBody: RelListFilterContainerUiBody) => {
         return readRelationshipListUsingPOST({
             url: `/read/relationshiplistfiltered`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: relListFilterContainerUiBody,
-            params,
         })
     }
 }
@@ -6707,13 +4708,13 @@ export const useReadRelationshipListUsingPOSTMutationOptions = <TError = unknown
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadRelationshipListUsingPOSTHook>>>,
         TError,
-        { data: RelListFilterContainerUiBody; params?: ReadRelationshipListUsingPOSTParams },
+        { data: RelListFilterContainerUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadRelationshipListUsingPOSTHook>>>,
     TError,
-    { data: RelListFilterContainerUiBody; params?: ReadRelationshipListUsingPOSTParams },
+    { data: RelListFilterContainerUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6722,11 +4723,11 @@ export const useReadRelationshipListUsingPOSTMutationOptions = <TError = unknown
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadRelationshipListUsingPOSTHook>>>,
-        { data: RelListFilterContainerUiBody; params?: ReadRelationshipListUsingPOSTParams }
+        { data: RelListFilterContainerUiBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return readRelationshipListUsingPOST(data, params)
+        return readRelationshipListUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -6743,7 +4744,7 @@ export const useReadRelationshipListUsingPOST = <TError = unknown, TContext = un
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadRelationshipListUsingPOSTHook>>>,
         TError,
-        { data: RelListFilterContainerUiBody; params?: ReadRelationshipListUsingPOSTParams },
+        { data: RelListFilterContainerUiBody },
         TContext
     >
 }) => {
@@ -6758,13 +4759,12 @@ export const useReadRelationshipListUsingPOST = <TError = unknown, TContext = un
 export const useReadPoSuperiorPoRelationshipUsingPOSTHook = () => {
     const readPoSuperiorPoRelationshipUsingPOST = useCmdbSwaggerClient<ReadPoSuperiorPoRelationshipUsingPOST200 | void>()
 
-    return (uuidSetUi: UuidSetUi, params?: ReadPoSuperiorPoRelationshipUsingPOSTParams) => {
+    return (uuidSetUi: UuidSetUi) => {
         return readPoSuperiorPoRelationshipUsingPOST({
             url: `/read/relationspo`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: uuidSetUi,
-            params,
         })
     }
 }
@@ -6773,26 +4773,25 @@ export const useReadPoSuperiorPoRelationshipUsingPOSTMutationOptions = <TError =
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipUsingPOSTHook>>>,
         TError,
-        { data: UuidSetUi; params?: ReadPoSuperiorPoRelationshipUsingPOSTParams },
+        { data: UuidSetUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipUsingPOSTHook>>>,
     TError,
-    { data: UuidSetUi; params?: ReadPoSuperiorPoRelationshipUsingPOSTParams },
+    { data: UuidSetUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
 
     const readPoSuperiorPoRelationshipUsingPOST = useReadPoSuperiorPoRelationshipUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipUsingPOSTHook>>>,
-        { data: UuidSetUi; params?: ReadPoSuperiorPoRelationshipUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipUsingPOSTHook>>>, { data: UuidSetUi }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return readPoSuperiorPoRelationshipUsingPOST(data, params)
+        return readPoSuperiorPoRelationshipUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -6811,7 +4810,7 @@ export const useReadPoSuperiorPoRelationshipUsingPOST = <TError = unknown, TCont
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipUsingPOSTHook>>>,
         TError,
-        { data: UuidSetUi; params?: ReadPoSuperiorPoRelationshipUsingPOSTParams },
+        { data: UuidSetUi },
         TContext
     >
 }) => {
@@ -6824,43 +4823,29 @@ export const useReadPoSuperiorPoRelationshipUsingPOST = <TError = unknown, TCont
  * @summary readRelList
  */
 export const useReadRelListUsingPOSTHook = () => {
-    const readRelListUsingPOST = useCmdbSwaggerClient<ReadRelListUsingPOST200 | void>()
+    const readRelListUsingPOST = useCmdbSwaggerClient<RelationshipElasticPreviewHolderUi | void>()
 
-    return (relFilterSmallUi: RelFilterSmallUi, params?: ReadRelListUsingPOSTParams) => {
+    return (relFilterSmallUi: RelFilterSmallUi) => {
         return readRelListUsingPOST({
             url: `/read/rellistfiltered`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: relFilterSmallUi,
-            params,
         })
     }
 }
 
 export const useReadRelListUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>,
-        TError,
-        { data: RelFilterSmallUi; params?: ReadRelListUsingPOSTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>,
-    TError,
-    { data: RelFilterSmallUi; params?: ReadRelListUsingPOSTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>, TError, { data: RelFilterSmallUi }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>, TError, { data: RelFilterSmallUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const readRelListUsingPOST = useReadRelListUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>,
-        { data: RelFilterSmallUi; params?: ReadRelListUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>, { data: RelFilterSmallUi }> = (props) => {
+        const { data } = props ?? {}
 
-        return readRelListUsingPOST(data, params)
+        return readRelListUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -6874,12 +4859,7 @@ export type ReadRelListUsingPOSTMutationError = unknown
  * @summary readRelList
  */
 export const useReadRelListUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>,
-        TError,
-        { data: RelFilterSmallUi; params?: ReadRelListUsingPOSTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadRelListUsingPOSTHook>>>, TError, { data: RelFilterSmallUi }, TContext>
 }) => {
     const mutationOptions = useReadRelListUsingPOSTMutationOptions(options)
 
@@ -6892,13 +4872,12 @@ export const useReadRelListUsingPOST = <TError = unknown, TContext = unknown>(op
 export const useGetRoleParticipantBulkUsingPOSTHook = () => {
     const getRoleParticipantBulkUsingPOST = useCmdbSwaggerClient<RoleParticipantUI[] | void>()
 
-    return (gidSetUi: GidSetUi, params?: GetRoleParticipantBulkUsingPOSTParams) => {
+    return (gidSetUi: GidSetUi) => {
         return getRoleParticipantBulkUsingPOST({
             url: `/read/roleParticipant`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: gidSetUi,
-            params,
         })
     }
 }
@@ -6907,26 +4886,20 @@ export const useGetRoleParticipantBulkUsingPOSTMutationOptions = <TError = unkno
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkUsingPOSTHook>>>,
         TError,
-        { data: GidSetUi; params?: GetRoleParticipantBulkUsingPOSTParams },
+        { data: GidSetUi },
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkUsingPOSTHook>>>,
-    TError,
-    { data: GidSetUi; params?: GetRoleParticipantBulkUsingPOSTParams },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkUsingPOSTHook>>>, TError, { data: GidSetUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const getRoleParticipantBulkUsingPOST = useGetRoleParticipantBulkUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkUsingPOSTHook>>>,
-        { data: GidSetUi; params?: GetRoleParticipantBulkUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkUsingPOSTHook>>>, { data: GidSetUi }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return getRoleParticipantBulkUsingPOST(data, params)
+        return getRoleParticipantBulkUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -6945,7 +4918,7 @@ export const useGetRoleParticipantBulkUsingPOST = <TError = unknown, TContext = 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkUsingPOSTHook>>>,
         TError,
-        { data: GidSetUi; params?: GetRoleParticipantBulkUsingPOSTParams },
+        { data: GidSetUi },
         TContext
     >
 }) => {
@@ -6958,32 +4931,30 @@ export const useGetRoleParticipantBulkUsingPOST = <TError = unknown, TContext = 
  * @summary getRoleParticipant
  */
 export const useGetRoleParticipantUsingGETHook = () => {
-    const getRoleParticipantUsingGET = useCmdbSwaggerClientForGetRoleParticipantUsingGET<RoleParticipantUI>()
+    const getRoleParticipantUsingGET = useClientForGetRoleParticipantUsingGET<RoleParticipantUI>()
 
-    return (gid: string, params?: GetRoleParticipantUsingGETParams, signal?: AbortSignal) => {
-        return getRoleParticipantUsingGET({ url: `/read/roleParticipant/${gid}`, method: 'get', params, signal })
+    return (gid: string, signal?: AbortSignal) => {
+        return getRoleParticipantUsingGET({ url: `/read/roleParticipant/${gid}`, method: 'get', signal })
     }
 }
 
-export const getGetRoleParticipantUsingGETQueryKey = (gid: string, params?: GetRoleParticipantUsingGETParams) =>
-    [`/read/roleParticipant/${gid}`, ...(params ? [params] : [])] as const
+export const getGetRoleParticipantUsingGETQueryKey = (gid: string) => [`/read/roleParticipant/${gid}`] as const
 
 export const useGetRoleParticipantUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantUsingGETHook>>>,
     TError = void,
 >(
     gid: string,
-    params?: GetRoleParticipantUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGetRoleParticipantUsingGETQueryKey(gid, params)
+    const queryKey = queryOptions?.queryKey ?? getGetRoleParticipantUsingGETQueryKey(gid)
 
     const getRoleParticipantUsingGET = useGetRoleParticipantUsingGETHook()
 
     const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantUsingGETHook>>>> = ({ signal }) =>
-        getRoleParticipantUsingGET(gid, params, signal)
+        getRoleParticipantUsingGET(gid, signal)
 
     return { queryKey, queryFn, enabled: !!gid, ...queryOptions }
 }
@@ -6996,10 +4967,9 @@ export type GetRoleParticipantUsingGETQueryError = void
  */
 export const useGetRoleParticipantUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantUsingGETHook>>>, TError = void>(
     gid: string,
-    params?: GetRoleParticipantUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useGetRoleParticipantUsingGETQueryOptions(gid, params, options)
+    const queryOptions = useGetRoleParticipantUsingGETQueryOptions(gid, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -7012,7 +4982,7 @@ export const useGetRoleParticipantUsingGET = <TData = Awaited<ReturnType<ReturnT
  * @summary searchAll
  */
 export const useSearchAllUsingGETHook = () => {
-    const searchAllUsingGET = useCmdbSwaggerClient<SearchAllUsingGET200>()
+    const searchAllUsingGET = useCmdbSwaggerClient<GeneralElasticItemSet>()
 
     return (params?: SearchAllUsingGETParams, signal?: AbortSignal) => {
         return searchAllUsingGET({ url: `/read/search`, method: 'get', params, signal })
@@ -7059,15 +5029,14 @@ export const useSearchAllUsingGET = <TData = Awaited<ReturnType<ReturnType<typeo
  * @summary readConfigurationItemsByMetaIsCodes
  */
 export const useReadConfigurationItemsByMetaIsCodesUsingPOSTHook = () => {
-    const readConfigurationItemsByMetaIsCodesUsingPOST = useCmdbSwaggerClient<ReadConfigurationItemsByMetaIsCodesUsingPOST200 | void>()
+    const readConfigurationItemsByMetaIsCodesUsingPOST = useCmdbSwaggerClient<ConfigurationItemsListUi | void>()
 
-    return (metaIsCodesListUi: MetaIsCodesListUi, params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams) => {
+    return (metaIsCodesListUi: MetaIsCodesListUi) => {
         return readConfigurationItemsByMetaIsCodesUsingPOST({
             url: `/readByMetaIsCode/ci`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: metaIsCodesListUi,
-            params,
         })
     }
 }
@@ -7076,13 +5045,13 @@ export const useReadConfigurationItemsByMetaIsCodesUsingPOSTMutationOptions = <T
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesUsingPOSTHook>>>,
         TError,
-        { data: MetaIsCodesListUi; params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams },
+        { data: MetaIsCodesListUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesUsingPOSTHook>>>,
     TError,
-    { data: MetaIsCodesListUi; params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams },
+    { data: MetaIsCodesListUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7091,11 +5060,11 @@ export const useReadConfigurationItemsByMetaIsCodesUsingPOSTMutationOptions = <T
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesUsingPOSTHook>>>,
-        { data: MetaIsCodesListUi; params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams }
+        { data: MetaIsCodesListUi }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return readConfigurationItemsByMetaIsCodesUsingPOST(data, params)
+        return readConfigurationItemsByMetaIsCodesUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -7114,7 +5083,7 @@ export const useReadConfigurationItemsByMetaIsCodesUsingPOST = <TError = unknown
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesUsingPOSTHook>>>,
         TError,
-        { data: MetaIsCodesListUi; params?: ReadConfigurationItemsByMetaIsCodesUsingPOSTParams },
+        { data: MetaIsCodesListUi },
         TContext
     >
 }) => {
@@ -7127,34 +5096,32 @@ export const useReadConfigurationItemsByMetaIsCodesUsingPOST = <TError = unknown
  * @summary readConfigurationItemByMetaIsCode
  */
 export const useReadConfigurationItemByMetaIsCodeUsingGETHook = () => {
-    const readConfigurationItemByMetaIsCodeUsingGET = useCmdbSwaggerClient<ReadConfigurationItemByMetaIsCodeUsingGET200>()
+    const readConfigurationItemByMetaIsCodeUsingGET = useCmdbSwaggerClient<ConfigurationItemUi>()
 
-    return (metaIsCode: string, params?: ReadConfigurationItemByMetaIsCodeUsingGETParams, signal?: AbortSignal) => {
-        return readConfigurationItemByMetaIsCodeUsingGET({ url: `/readByMetaIsCode/ci/${metaIsCode}`, method: 'get', params, signal })
+    return (metaIsCode: string, signal?: AbortSignal) => {
+        return readConfigurationItemByMetaIsCodeUsingGET({ url: `/readByMetaIsCode/ci/${metaIsCode}`, method: 'get', signal })
     }
 }
 
-export const getReadConfigurationItemByMetaIsCodeUsingGETQueryKey = (metaIsCode: string, params?: ReadConfigurationItemByMetaIsCodeUsingGETParams) =>
-    [`/readByMetaIsCode/ci/${metaIsCode}`, ...(params ? [params] : [])] as const
+export const getReadConfigurationItemByMetaIsCodeUsingGETQueryKey = (metaIsCode: string) => [`/readByMetaIsCode/ci/${metaIsCode}`] as const
 
 export const useReadConfigurationItemByMetaIsCodeUsingGETQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeUsingGETHook>>>,
     TError = void,
 >(
     metaIsCode: string,
-    params?: ReadConfigurationItemByMetaIsCodeUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeUsingGETHook>>>, TError, TData> & {
     queryKey: QueryKey
 } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getReadConfigurationItemByMetaIsCodeUsingGETQueryKey(metaIsCode, params)
+    const queryKey = queryOptions?.queryKey ?? getReadConfigurationItemByMetaIsCodeUsingGETQueryKey(metaIsCode)
 
     const readConfigurationItemByMetaIsCodeUsingGET = useReadConfigurationItemByMetaIsCodeUsingGETHook()
 
     const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeUsingGETHook>>>> = ({ signal }) =>
-        readConfigurationItemByMetaIsCodeUsingGET(metaIsCode, params, signal)
+        readConfigurationItemByMetaIsCodeUsingGET(metaIsCode, signal)
 
     return { queryKey, queryFn, enabled: !!metaIsCode, ...queryOptions }
 }
@@ -7172,10 +5139,9 @@ export const useReadConfigurationItemByMetaIsCodeUsingGET = <
     TError = void,
 >(
     metaIsCode: string,
-    params?: ReadConfigurationItemByMetaIsCodeUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useReadConfigurationItemByMetaIsCodeUsingGETQueryOptions(metaIsCode, params, options)
+    const queryOptions = useReadConfigurationItemByMetaIsCodeUsingGETQueryOptions(metaIsCode, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -7190,13 +5156,12 @@ export const useReadConfigurationItemByMetaIsCodeUsingGET = <
 export const useReadConfigurationItemByRefIDUsingPOSTHook = () => {
     const readConfigurationItemByRefIDUsingPOST = useCmdbSwaggerClient<ReadConfigurationItemByRefIDUsingPOST200 | void>()
 
-    return (readConfigurationItemByRefIDUsingPOSTBody: string, params?: ReadConfigurationItemByRefIDUsingPOSTParams) => {
+    return (readConfigurationItemByRefIDUsingPOSTBody: string) => {
         return readConfigurationItemByRefIDUsingPOST({
             url: `/readByRefID/ci`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: readConfigurationItemByRefIDUsingPOSTBody,
-            params,
         })
     }
 }
@@ -7205,26 +5170,20 @@ export const useReadConfigurationItemByRefIDUsingPOSTMutationOptions = <TError =
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDUsingPOSTHook>>>,
         TError,
-        { data: string; params?: ReadConfigurationItemByRefIDUsingPOSTParams },
+        { data: string },
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDUsingPOSTHook>>>,
-    TError,
-    { data: string; params?: ReadConfigurationItemByRefIDUsingPOSTParams },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDUsingPOSTHook>>>, TError, { data: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const readConfigurationItemByRefIDUsingPOST = useReadConfigurationItemByRefIDUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDUsingPOSTHook>>>,
-        { data: string; params?: ReadConfigurationItemByRefIDUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDUsingPOSTHook>>>, { data: string }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return readConfigurationItemByRefIDUsingPOST(data, params)
+        return readConfigurationItemByRefIDUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -7243,7 +5202,7 @@ export const useReadConfigurationItemByRefIDUsingPOST = <TError = unknown, TCont
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDUsingPOSTHook>>>,
         TError,
-        { data: string; params?: ReadConfigurationItemByRefIDUsingPOSTParams },
+        { data: string },
         TContext
     >
 }) => {
@@ -7256,15 +5215,14 @@ export const useReadConfigurationItemByRefIDUsingPOST = <TError = unknown, TCont
  * @summary readGroupItems
  */
 export const useReadGroupItemsUsingPOSTHook = () => {
-    const readGroupItemsUsingPOST = useCmdbSwaggerClient<ReadGroupItemsUsingPOST200 | void>()
+    const readGroupItemsUsingPOST = useCmdbSwaggerClient<ItemSetUi | void>()
 
-    return (uuid: string, groupMembersFilterUi: GroupMembersFilterUi, params?: ReadGroupItemsUsingPOSTParams) => {
+    return (uuid: string, groupMembersFilterUi: GroupMembersFilterUi) => {
         return readGroupItemsUsingPOST({
             url: `/readmembers/group/${uuid}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: groupMembersFilterUi,
-            params,
         })
     }
 }
@@ -7273,13 +5231,13 @@ export const useReadGroupItemsUsingPOSTMutationOptions = <TError = unknown, TCon
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadGroupItemsUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: GroupMembersFilterUi; params?: ReadGroupItemsUsingPOSTParams },
+        { uuid: string; data: GroupMembersFilterUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useReadGroupItemsUsingPOSTHook>>>,
     TError,
-    { uuid: string; data: GroupMembersFilterUi; params?: ReadGroupItemsUsingPOSTParams },
+    { uuid: string; data: GroupMembersFilterUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7288,11 +5246,11 @@ export const useReadGroupItemsUsingPOSTMutationOptions = <TError = unknown, TCon
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useReadGroupItemsUsingPOSTHook>>>,
-        { uuid: string; data: GroupMembersFilterUi; params?: ReadGroupItemsUsingPOSTParams }
+        { uuid: string; data: GroupMembersFilterUi }
     > = (props) => {
-        const { uuid, data, params } = props ?? {}
+        const { uuid, data } = props ?? {}
 
-        return readGroupItemsUsingPOST(uuid, data, params)
+        return readGroupItemsUsingPOST(uuid, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -7309,7 +5267,7 @@ export const useReadGroupItemsUsingPOST = <TError = unknown, TContext = unknown>
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadGroupItemsUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: GroupMembersFilterUi; params?: ReadGroupItemsUsingPOSTParams },
+        { uuid: string; data: GroupMembersFilterUi },
         TContext
     >
 }) => {
@@ -7324,13 +5282,12 @@ export const useReadGroupItemsUsingPOST = <TError = unknown, TContext = unknown>
 export const useRecycleInvalidatedCisUsingPOSTHook = () => {
     const recycleInvalidatedCisUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (recycleCisUiBody: RecycleCisUiBody, params?: RecycleInvalidatedCisUsingPOSTParams) => {
+    return (recycleCisUiBody: RecycleCisUiBody) => {
         return recycleInvalidatedCisUsingPOST({
             url: `/recycle/cis`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: recycleCisUiBody,
-            params,
         })
     }
 }
@@ -7339,26 +5296,25 @@ export const useRecycleInvalidatedCisUsingPOSTMutationOptions = <TError = unknow
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisUsingPOSTHook>>>,
         TError,
-        { data: RecycleCisUiBody; params?: RecycleInvalidatedCisUsingPOSTParams },
+        { data: RecycleCisUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisUsingPOSTHook>>>,
     TError,
-    { data: RecycleCisUiBody; params?: RecycleInvalidatedCisUsingPOSTParams },
+    { data: RecycleCisUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
 
     const recycleInvalidatedCisUsingPOST = useRecycleInvalidatedCisUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisUsingPOSTHook>>>,
-        { data: RecycleCisUiBody; params?: RecycleInvalidatedCisUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisUsingPOSTHook>>>, { data: RecycleCisUiBody }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return recycleInvalidatedCisUsingPOST(data, params)
+        return recycleInvalidatedCisUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -7375,7 +5331,7 @@ export const useRecycleInvalidatedCisUsingPOST = <TError = unknown, TContext = u
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisUsingPOSTHook>>>,
         TError,
-        { data: RecycleCisUiBody; params?: RecycleInvalidatedCisUsingPOSTParams },
+        { data: RecycleCisUiBody },
         TContext
     >
 }) => {
@@ -7390,13 +5346,12 @@ export const useRecycleInvalidatedCisUsingPOST = <TError = unknown, TContext = u
 export const useRecycleInvalidatedCisBiznisUsingPOSTHook = () => {
     const recycleInvalidatedCisBiznisUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (recycleCisUiBody: RecycleCisUiBody, params?: RecycleInvalidatedCisBiznisUsingPOSTParams) => {
+    return (recycleCisUiBody: RecycleCisUiBody) => {
         return recycleInvalidatedCisBiznisUsingPOST({
             url: `/recycle/cis/biznis`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: recycleCisUiBody,
-            params,
         })
     }
 }
@@ -7405,13 +5360,13 @@ export const useRecycleInvalidatedCisBiznisUsingPOSTMutationOptions = <TError = 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisBiznisUsingPOSTHook>>>,
         TError,
-        { data: RecycleCisUiBody; params?: RecycleInvalidatedCisBiznisUsingPOSTParams },
+        { data: RecycleCisUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisBiznisUsingPOSTHook>>>,
     TError,
-    { data: RecycleCisUiBody; params?: RecycleInvalidatedCisBiznisUsingPOSTParams },
+    { data: RecycleCisUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7420,11 +5375,11 @@ export const useRecycleInvalidatedCisBiznisUsingPOSTMutationOptions = <TError = 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisBiznisUsingPOSTHook>>>,
-        { data: RecycleCisUiBody; params?: RecycleInvalidatedCisBiznisUsingPOSTParams }
+        { data: RecycleCisUiBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return recycleInvalidatedCisBiznisUsingPOST(data, params)
+        return recycleInvalidatedCisBiznisUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -7443,7 +5398,7 @@ export const useRecycleInvalidatedCisBiznisUsingPOST = <TError = unknown, TConte
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisBiznisUsingPOSTHook>>>,
         TError,
-        { data: RecycleCisUiBody; params?: RecycleInvalidatedCisBiznisUsingPOSTParams },
+        { data: RecycleCisUiBody },
         TContext
     >
 }) => {
@@ -7458,13 +5413,12 @@ export const useRecycleInvalidatedCisBiznisUsingPOST = <TError = unknown, TConte
 export const useRecyclePoWithHierarchyUsingPOSTHook = () => {
     const recyclePoWithHierarchyUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (poId: string, relId: string, poWithHierarchyUiBody: PoWithHierarchyUiBody, params?: RecyclePoWithHierarchyUsingPOSTParams) => {
+    return (poId: string, relId: string, poWithHierarchyUiBody: PoWithHierarchyUiBody) => {
         return recyclePoWithHierarchyUsingPOST({
             url: `/recycle/poWithHierarchy/${poId}/${relId}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: poWithHierarchyUiBody,
-            params,
         })
     }
 }
@@ -7473,13 +5427,13 @@ export const useRecyclePoWithHierarchyUsingPOSTMutationOptions = <TError = unkno
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecyclePoWithHierarchyUsingPOSTHook>>>,
         TError,
-        { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: RecyclePoWithHierarchyUsingPOSTParams },
+        { poId: string; relId: string; data: PoWithHierarchyUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRecyclePoWithHierarchyUsingPOSTHook>>>,
     TError,
-    { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: RecyclePoWithHierarchyUsingPOSTParams },
+    { poId: string; relId: string; data: PoWithHierarchyUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7488,11 +5442,11 @@ export const useRecyclePoWithHierarchyUsingPOSTMutationOptions = <TError = unkno
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useRecyclePoWithHierarchyUsingPOSTHook>>>,
-        { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: RecyclePoWithHierarchyUsingPOSTParams }
+        { poId: string; relId: string; data: PoWithHierarchyUiBody }
     > = (props) => {
-        const { poId, relId, data, params } = props ?? {}
+        const { poId, relId, data } = props ?? {}
 
-        return recyclePoWithHierarchyUsingPOST(poId, relId, data, params)
+        return recyclePoWithHierarchyUsingPOST(poId, relId, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -7511,7 +5465,7 @@ export const useRecyclePoWithHierarchyUsingPOST = <TError = unknown, TContext = 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecyclePoWithHierarchyUsingPOSTHook>>>,
         TError,
-        { poId: string; relId: string; data: PoWithHierarchyUiBody; params?: RecyclePoWithHierarchyUsingPOSTParams },
+        { poId: string; relId: string; data: PoWithHierarchyUiBody },
         TContext
     >
 }) => {
@@ -7526,13 +5480,12 @@ export const useRecyclePoWithHierarchyUsingPOST = <TError = unknown, TContext = 
 export const useRecycleInvalidatedRelsUsingPOSTHook = () => {
     const recycleInvalidatedRelsUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (recycleRelsUiBody: RecycleRelsUiBody, params?: RecycleInvalidatedRelsUsingPOSTParams) => {
+    return (recycleRelsUiBody: RecycleRelsUiBody) => {
         return recycleInvalidatedRelsUsingPOST({
             url: `/recycle/rels`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: recycleRelsUiBody,
-            params,
         })
     }
 }
@@ -7541,13 +5494,13 @@ export const useRecycleInvalidatedRelsUsingPOSTMutationOptions = <TError = unkno
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsUsingPOSTHook>>>,
         TError,
-        { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsUsingPOSTParams },
+        { data: RecycleRelsUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsUsingPOSTHook>>>,
     TError,
-    { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsUsingPOSTParams },
+    { data: RecycleRelsUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7556,11 +5509,11 @@ export const useRecycleInvalidatedRelsUsingPOSTMutationOptions = <TError = unkno
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsUsingPOSTHook>>>,
-        { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsUsingPOSTParams }
+        { data: RecycleRelsUiBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return recycleInvalidatedRelsUsingPOST(data, params)
+        return recycleInvalidatedRelsUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -7579,7 +5532,7 @@ export const useRecycleInvalidatedRelsUsingPOST = <TError = unknown, TContext = 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsUsingPOSTHook>>>,
         TError,
-        { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsUsingPOSTParams },
+        { data: RecycleRelsUiBody },
         TContext
     >
 }) => {
@@ -7594,13 +5547,12 @@ export const useRecycleInvalidatedRelsUsingPOST = <TError = unknown, TContext = 
 export const useRecycleInvalidatedRelsBiznisUsingPOSTHook = () => {
     const recycleInvalidatedRelsBiznisUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (recycleRelsUiBody: RecycleRelsUiBody, params?: RecycleInvalidatedRelsBiznisUsingPOSTParams) => {
+    return (recycleRelsUiBody: RecycleRelsUiBody) => {
         return recycleInvalidatedRelsBiznisUsingPOST({
             url: `/recycle/rels/biznis`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: recycleRelsUiBody,
-            params,
         })
     }
 }
@@ -7609,13 +5561,13 @@ export const useRecycleInvalidatedRelsBiznisUsingPOSTMutationOptions = <TError =
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsBiznisUsingPOSTHook>>>,
         TError,
-        { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsBiznisUsingPOSTParams },
+        { data: RecycleRelsUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsBiznisUsingPOSTHook>>>,
     TError,
-    { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsBiznisUsingPOSTParams },
+    { data: RecycleRelsUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7624,11 +5576,11 @@ export const useRecycleInvalidatedRelsBiznisUsingPOSTMutationOptions = <TError =
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsBiznisUsingPOSTHook>>>,
-        { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsBiznisUsingPOSTParams }
+        { data: RecycleRelsUiBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return recycleInvalidatedRelsBiznisUsingPOST(data, params)
+        return recycleInvalidatedRelsBiznisUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -7647,7 +5599,7 @@ export const useRecycleInvalidatedRelsBiznisUsingPOST = <TError = unknown, TCont
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsBiznisUsingPOSTHook>>>,
         TError,
-        { data: RecycleRelsUiBody; params?: RecycleInvalidatedRelsBiznisUsingPOSTParams },
+        { data: RecycleRelsUiBody },
         TContext
     >
 }) => {
@@ -7662,35 +5614,22 @@ export const useRecycleInvalidatedRelsBiznisUsingPOST = <TError = unknown, TCont
 export const useRemoveGroupUsingPOSTHook = () => {
     const removeGroupUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (uuid: string, params?: RemoveGroupUsingPOSTParams) => {
-        return removeGroupUsingPOST({ url: `/remove/group/${uuid}`, method: 'post', params })
+    return (uuid: string) => {
+        return removeGroupUsingPOST({ url: `/remove/group/${uuid}`, method: 'post' })
     }
 }
 
 export const useRemoveGroupUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useRemoveGroupUsingPOSTHook>>>,
-        TError,
-        { uuid: string; params?: RemoveGroupUsingPOSTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useRemoveGroupUsingPOSTHook>>>,
-    TError,
-    { uuid: string; params?: RemoveGroupUsingPOSTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRemoveGroupUsingPOSTHook>>>, TError, { uuid: string }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRemoveGroupUsingPOSTHook>>>, TError, { uuid: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const removeGroupUsingPOST = useRemoveGroupUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useRemoveGroupUsingPOSTHook>>>,
-        { uuid: string; params?: RemoveGroupUsingPOSTParams }
-    > = (props) => {
-        const { uuid, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useRemoveGroupUsingPOSTHook>>>, { uuid: string }> = (props) => {
+        const { uuid } = props ?? {}
 
-        return removeGroupUsingPOST(uuid, params)
+        return removeGroupUsingPOST(uuid)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -7704,12 +5643,7 @@ export type RemoveGroupUsingPOSTMutationError = unknown
  * @summary removeGroup
  */
 export const useRemoveGroupUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useRemoveGroupUsingPOSTHook>>>,
-        TError,
-        { uuid: string; params?: RemoveGroupUsingPOSTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRemoveGroupUsingPOSTHook>>>, TError, { uuid: string }, TContext>
 }) => {
     const mutationOptions = useRemoveGroupUsingPOSTMutationOptions(options)
 
@@ -7722,13 +5656,12 @@ export const useRemoveGroupUsingPOST = <TError = unknown, TContext = unknown>(op
 export const useRemoveCiFromGroupUsingPOSTHook = () => {
     const removeCiFromGroupUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (uuid: string, removeCiFromGroupUsingPOSTBody: string[], params?: RemoveCiFromGroupUsingPOSTParams) => {
+    return (uuid: string, removeCiFromGroupUsingPOSTBody: string[]) => {
         return removeCiFromGroupUsingPOST({
             url: `/removemembers/group/${uuid}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: removeCiFromGroupUsingPOSTBody,
-            params,
         })
     }
 }
@@ -7737,13 +5670,13 @@ export const useRemoveCiFromGroupUsingPOSTMutationOptions = <TError = unknown, T
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveCiFromGroupUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: string[]; params?: RemoveCiFromGroupUsingPOSTParams },
+        { uuid: string; data: string[] },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRemoveCiFromGroupUsingPOSTHook>>>,
     TError,
-    { uuid: string; data: string[]; params?: RemoveCiFromGroupUsingPOSTParams },
+    { uuid: string; data: string[] },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -7752,11 +5685,11 @@ export const useRemoveCiFromGroupUsingPOSTMutationOptions = <TError = unknown, T
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useRemoveCiFromGroupUsingPOSTHook>>>,
-        { uuid: string; data: string[]; params?: RemoveCiFromGroupUsingPOSTParams }
+        { uuid: string; data: string[] }
     > = (props) => {
-        const { uuid, data, params } = props ?? {}
+        const { uuid, data } = props ?? {}
 
-        return removeCiFromGroupUsingPOST(uuid, data, params)
+        return removeCiFromGroupUsingPOST(uuid, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -7773,7 +5706,7 @@ export const useRemoveCiFromGroupUsingPOST = <TError = unknown, TContext = unkno
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveCiFromGroupUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: string[]; params?: RemoveCiFromGroupUsingPOSTParams },
+        { uuid: string; data: string[] },
         TContext
     >
 }) => {
@@ -7786,7 +5719,7 @@ export const useRemoveCiFromGroupUsingPOST = <TError = unknown, TContext = unkno
  * @summary readReportsWithFilter
  */
 export const useReadReportsWithFilterUsingGETHook = () => {
-    const readReportsWithFilterUsingGET = useCmdbSwaggerClient<ReadReportsWithFilterUsingGET200>()
+    const readReportsWithFilterUsingGET = useCmdbSwaggerClient<ReportHolderUi>()
 
     return (params?: ReadReportsWithFilterUsingGETParams, signal?: AbortSignal) => {
         return readReportsWithFilterUsingGET({ url: `/reports`, method: 'get', params, signal })
@@ -7889,15 +5822,14 @@ export const useGetRequestStatusUsingGET = <TData = Awaited<ReturnType<ReturnTyp
  * @summary readCiList
  */
 export const useReadCiListUsingPOST1Hook = () => {
-    const readCiListUsingPOST1 = useCmdbSwaggerClient<ReadCiListUsingPOST1200 | void>()
+    const readCiListUsingPOST1 = useCmdbSwaggerClient<HierarchyRightsResultUi | void>()
 
-    return (hierarchyPOFilterUi: HierarchyPOFilterUi, params?: ReadCiListUsingPOST1Params) => {
+    return (hierarchyPOFilterUi: HierarchyPOFilterUi) => {
         return readCiListUsingPOST1({
             url: `/rights/implicitHierarchy`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: hierarchyPOFilterUi,
-            params,
         })
     }
 }
@@ -7906,26 +5838,20 @@ export const useReadCiListUsingPOST1MutationOptions = <TError = unknown, TContex
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOST1Hook>>>,
         TError,
-        { data: HierarchyPOFilterUi; params?: ReadCiListUsingPOST1Params },
+        { data: HierarchyPOFilterUi },
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOST1Hook>>>,
-    TError,
-    { data: HierarchyPOFilterUi; params?: ReadCiListUsingPOST1Params },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOST1Hook>>>, TError, { data: HierarchyPOFilterUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const readCiListUsingPOST1 = useReadCiListUsingPOST1Hook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOST1Hook>>>,
-        { data: HierarchyPOFilterUi; params?: ReadCiListUsingPOST1Params }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOST1Hook>>>, { data: HierarchyPOFilterUi }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return readCiListUsingPOST1(data, params)
+        return readCiListUsingPOST1(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -7942,7 +5868,7 @@ export const useReadCiListUsingPOST1 = <TError = unknown, TContext = unknown>(op
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOST1Hook>>>,
         TError,
-        { data: HierarchyPOFilterUi; params?: ReadCiListUsingPOST1Params },
+        { data: HierarchyPOFilterUi },
         TContext
     >
 }) => {
@@ -7957,35 +5883,20 @@ export const useReadCiListUsingPOST1 = <TError = unknown, TContext = unknown>(op
 export const useDeleteStandardUsingDELETEHook = () => {
     const deleteStandardUsingDELETE = useCmdbSwaggerClient<void>()
 
-    return (params?: DeleteStandardUsingDELETEParams) => {
-        return deleteStandardUsingDELETE({ url: `/standard`, method: 'delete', params })
+    return () => {
+        return deleteStandardUsingDELETE({ url: `/standard`, method: 'delete' })
     }
 }
 
-export const useDeleteStandardUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useDeleteStandardUsingDELETEHook>>>,
-        TError,
-        { params?: DeleteStandardUsingDELETEParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useDeleteStandardUsingDELETEHook>>>,
-    TError,
-    { params?: DeleteStandardUsingDELETEParams },
-    TContext
-> => {
+export const useDeleteStandardUsingDELETEMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardUsingDELETEHook>>>, TError, TVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardUsingDELETEHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const deleteStandardUsingDELETE = useDeleteStandardUsingDELETEHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useDeleteStandardUsingDELETEHook>>>,
-        { params?: DeleteStandardUsingDELETEParams }
-    > = (props) => {
-        const { params } = props ?? {}
-
-        return deleteStandardUsingDELETE(params)
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useDeleteStandardUsingDELETEHook>>>, TVariables> = () => {
+        return deleteStandardUsingDELETE()
     }
 
     return { mutationFn, ...mutationOptions }
@@ -7998,13 +5909,8 @@ export type DeleteStandardUsingDELETEMutationError = unknown
 /**
  * @summary deleteStandard
  */
-export const useDeleteStandardUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useDeleteStandardUsingDELETEHook>>>,
-        TError,
-        { params?: DeleteStandardUsingDELETEParams },
-        TContext
-    >
+export const useDeleteStandardUsingDELETE = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardUsingDELETEHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useDeleteStandardUsingDELETEMutationOptions(options)
 
@@ -8076,13 +5982,12 @@ export const useReadMeetingRequestsFromStandardUsingGET = <
 export const useStoreStandardMeetingRequestsUsingPOSTHook = () => {
     const storeStandardMeetingRequestsUsingPOST = useCmdbSwaggerClient<void>()
 
-    return (meetingRequestListUi: MeetingRequestListUi, params?: StoreStandardMeetingRequestsUsingPOSTParams) => {
+    return (meetingRequestListUi: MeetingRequestListUi) => {
         return storeStandardMeetingRequestsUsingPOST({
             url: `/standard/meetingRequests`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: meetingRequestListUi,
-            params,
         })
     }
 }
@@ -8091,13 +5996,13 @@ export const useStoreStandardMeetingRequestsUsingPOSTMutationOptions = <TError =
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardMeetingRequestsUsingPOSTHook>>>,
         TError,
-        { data: MeetingRequestListUi; params?: StoreStandardMeetingRequestsUsingPOSTParams },
+        { data: MeetingRequestListUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreStandardMeetingRequestsUsingPOSTHook>>>,
     TError,
-    { data: MeetingRequestListUi; params?: StoreStandardMeetingRequestsUsingPOSTParams },
+    { data: MeetingRequestListUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8106,11 +6011,11 @@ export const useStoreStandardMeetingRequestsUsingPOSTMutationOptions = <TError =
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardMeetingRequestsUsingPOSTHook>>>,
-        { data: MeetingRequestListUi; params?: StoreStandardMeetingRequestsUsingPOSTParams }
+        { data: MeetingRequestListUi }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return storeStandardMeetingRequestsUsingPOST(data, params)
+        return storeStandardMeetingRequestsUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -8129,7 +6034,7 @@ export const useStoreStandardMeetingRequestsUsingPOST = <TError = unknown, TCont
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardMeetingRequestsUsingPOSTHook>>>,
         TError,
-        { data: MeetingRequestListUi; params?: StoreStandardMeetingRequestsUsingPOSTParams },
+        { data: MeetingRequestListUi },
         TContext
     >
 }) => {
@@ -8144,35 +6049,25 @@ export const useStoreStandardMeetingRequestsUsingPOST = <TError = unknown, TCont
 export const useDeleteStandardMeetingRequestsUsingDELETEHook = () => {
     const deleteStandardMeetingRequestsUsingDELETE = useCmdbSwaggerClient<void>()
 
-    return (params?: DeleteStandardMeetingRequestsUsingDELETEParams) => {
-        return deleteStandardMeetingRequestsUsingDELETE({ url: `/standard/meetingRequests`, method: 'delete', params })
+    return () => {
+        return deleteStandardMeetingRequestsUsingDELETE({ url: `/standard/meetingRequests`, method: 'delete' })
     }
 }
 
-export const useDeleteStandardMeetingRequestsUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteStandardMeetingRequestsUsingDELETEMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingDELETEHook>>>,
         TError,
-        { params?: DeleteStandardMeetingRequestsUsingDELETEParams },
+        TVariables,
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingDELETEHook>>>,
-    TError,
-    { params?: DeleteStandardMeetingRequestsUsingDELETEParams },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingDELETEHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const deleteStandardMeetingRequestsUsingDELETE = useDeleteStandardMeetingRequestsUsingDELETEHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingDELETEHook>>>,
-        { params?: DeleteStandardMeetingRequestsUsingDELETEParams }
-    > = (props) => {
-        const { params } = props ?? {}
-
-        return deleteStandardMeetingRequestsUsingDELETE(params)
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingDELETEHook>>>, TVariables> = () => {
+        return deleteStandardMeetingRequestsUsingDELETE()
     }
 
     return { mutationFn, ...mutationOptions }
@@ -8187,11 +6082,11 @@ export type DeleteStandardMeetingRequestsUsingDELETEMutationError = unknown
 /**
  * @summary deleteStandardMeetingRequests
  */
-export const useDeleteStandardMeetingRequestsUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteStandardMeetingRequestsUsingDELETE = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingDELETEHook>>>,
         TError,
-        { params?: DeleteStandardMeetingRequestsUsingDELETEParams },
+        TVariables,
         TContext
     >
 }) => {
@@ -8206,16 +6101,12 @@ export const useDeleteStandardMeetingRequestsUsingDELETE = <TError = unknown, TC
 export const useDeleteStandardMeetingRequestsUsingPOSTHook = () => {
     const deleteStandardMeetingRequestsUsingPOST = useCmdbSwaggerClient<void>()
 
-    return (
-        deleteStandardMeetingRequestsUsingPOSTDeleteidsBody: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody,
-        params?: DeleteStandardMeetingRequestsUsingPOSTParams,
-    ) => {
+    return (deleteStandardMeetingRequestsUsingPOSTDeleteidsBody: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody) => {
         return deleteStandardMeetingRequestsUsingPOST({
             url: `/standard/meetingRequests/delete`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: deleteStandardMeetingRequestsUsingPOSTDeleteidsBody,
-            params,
         })
     }
 }
@@ -8224,13 +6115,13 @@ export const useDeleteStandardMeetingRequestsUsingPOSTMutationOptions = <TError 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingPOSTHook>>>,
         TError,
-        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardMeetingRequestsUsingPOSTParams },
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingPOSTHook>>>,
     TError,
-    { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardMeetingRequestsUsingPOSTParams },
+    { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8239,11 +6130,11 @@ export const useDeleteStandardMeetingRequestsUsingPOSTMutationOptions = <TError 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingPOSTHook>>>,
-        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardMeetingRequestsUsingPOSTParams }
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return deleteStandardMeetingRequestsUsingPOST(data, params)
+        return deleteStandardMeetingRequestsUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -8262,7 +6153,7 @@ export const useDeleteStandardMeetingRequestsUsingPOST = <TError = unknown, TCon
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsUsingPOSTHook>>>,
         TError,
-        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardMeetingRequestsUsingPOSTParams },
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody },
         TContext
     >
 }) => {
@@ -8336,13 +6227,12 @@ export const useReadStandardRequestsFromStandardUsingGET = <
 export const useStoreStandardStandardRequestsUsingPOSTHook = () => {
     const storeStandardStandardRequestsUsingPOST = useCmdbSwaggerClient<void>()
 
-    return (standardRequestListUi: StandardRequestListUi, params?: StoreStandardStandardRequestsUsingPOSTParams) => {
+    return (standardRequestListUi: StandardRequestListUi) => {
         return storeStandardStandardRequestsUsingPOST({
             url: `/standard/standardRequests`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: standardRequestListUi,
-            params,
         })
     }
 }
@@ -8351,13 +6241,13 @@ export const useStoreStandardStandardRequestsUsingPOSTMutationOptions = <TError 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardStandardRequestsUsingPOSTHook>>>,
         TError,
-        { data: StandardRequestListUi; params?: StoreStandardStandardRequestsUsingPOSTParams },
+        { data: StandardRequestListUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreStandardStandardRequestsUsingPOSTHook>>>,
     TError,
-    { data: StandardRequestListUi; params?: StoreStandardStandardRequestsUsingPOSTParams },
+    { data: StandardRequestListUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8366,11 +6256,11 @@ export const useStoreStandardStandardRequestsUsingPOSTMutationOptions = <TError 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardStandardRequestsUsingPOSTHook>>>,
-        { data: StandardRequestListUi; params?: StoreStandardStandardRequestsUsingPOSTParams }
+        { data: StandardRequestListUi }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return storeStandardStandardRequestsUsingPOST(data, params)
+        return storeStandardStandardRequestsUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -8389,7 +6279,7 @@ export const useStoreStandardStandardRequestsUsingPOST = <TError = unknown, TCon
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardStandardRequestsUsingPOSTHook>>>,
         TError,
-        { data: StandardRequestListUi; params?: StoreStandardStandardRequestsUsingPOSTParams },
+        { data: StandardRequestListUi },
         TContext
     >
 }) => {
@@ -8404,35 +6294,20 @@ export const useStoreStandardStandardRequestsUsingPOST = <TError = unknown, TCon
 export const useDeleteStandardStandardUsingDELETEHook = () => {
     const deleteStandardStandardUsingDELETE = useCmdbSwaggerClient<void>()
 
-    return (params?: DeleteStandardStandardUsingDELETEParams) => {
-        return deleteStandardStandardUsingDELETE({ url: `/standard/standardRequests`, method: 'delete', params })
+    return () => {
+        return deleteStandardStandardUsingDELETE({ url: `/standard/standardRequests`, method: 'delete' })
     }
 }
 
-export const useDeleteStandardStandardUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardUsingDELETEHook>>>,
-        TError,
-        { params?: DeleteStandardStandardUsingDELETEParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardUsingDELETEHook>>>,
-    TError,
-    { params?: DeleteStandardStandardUsingDELETEParams },
-    TContext
-> => {
+export const useDeleteStandardStandardUsingDELETEMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardUsingDELETEHook>>>, TError, TVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardUsingDELETEHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const deleteStandardStandardUsingDELETE = useDeleteStandardStandardUsingDELETEHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardUsingDELETEHook>>>,
-        { params?: DeleteStandardStandardUsingDELETEParams }
-    > = (props) => {
-        const { params } = props ?? {}
-
-        return deleteStandardStandardUsingDELETE(params)
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardUsingDELETEHook>>>, TVariables> = () => {
+        return deleteStandardStandardUsingDELETE()
     }
 
     return { mutationFn, ...mutationOptions }
@@ -8447,13 +6322,8 @@ export type DeleteStandardStandardUsingDELETEMutationError = unknown
 /**
  * @summary deleteStandardStandard
  */
-export const useDeleteStandardStandardUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardUsingDELETEHook>>>,
-        TError,
-        { params?: DeleteStandardStandardUsingDELETEParams },
-        TContext
-    >
+export const useDeleteStandardStandardUsingDELETE = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardUsingDELETEHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useDeleteStandardStandardUsingDELETEMutationOptions(options)
 
@@ -8466,16 +6336,12 @@ export const useDeleteStandardStandardUsingDELETE = <TError = unknown, TContext 
 export const useDeleteStandardStandardRequestsUsingPOSTHook = () => {
     const deleteStandardStandardRequestsUsingPOST = useCmdbSwaggerClient<void>()
 
-    return (
-        deleteStandardMeetingRequestsUsingPOSTDeleteidsBody: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody,
-        params?: DeleteStandardStandardRequestsUsingPOSTParams,
-    ) => {
+    return (deleteStandardMeetingRequestsUsingPOSTDeleteidsBody: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody) => {
         return deleteStandardStandardRequestsUsingPOST({
             url: `/standard/standardRequests/delete`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: deleteStandardMeetingRequestsUsingPOSTDeleteidsBody,
-            params,
         })
     }
 }
@@ -8484,13 +6350,13 @@ export const useDeleteStandardStandardRequestsUsingPOSTMutationOptions = <TError
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsUsingPOSTHook>>>,
         TError,
-        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardStandardRequestsUsingPOSTParams },
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsUsingPOSTHook>>>,
     TError,
-    { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardStandardRequestsUsingPOSTParams },
+    { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8499,11 +6365,11 @@ export const useDeleteStandardStandardRequestsUsingPOSTMutationOptions = <TError
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsUsingPOSTHook>>>,
-        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardStandardRequestsUsingPOSTParams }
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return deleteStandardStandardRequestsUsingPOST(data, params)
+        return deleteStandardStandardRequestsUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -8522,7 +6388,7 @@ export const useDeleteStandardStandardRequestsUsingPOST = <TError = unknown, TCo
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsUsingPOSTHook>>>,
         TError,
-        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardStandardRequestsUsingPOSTParams },
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody },
         TContext
     >
 }) => {
@@ -8589,41 +6455,29 @@ export const useReadVotesFromStandardUsingGET = <TData = Awaited<ReturnType<Retu
 export const useStoreStandardVotesUsingPOSTHook = () => {
     const storeStandardVotesUsingPOST = useCmdbSwaggerClient<void>()
 
-    return (voteListUi: VoteListUi, params?: StoreStandardVotesUsingPOSTParams) => {
+    return (voteListUi: VoteListUi) => {
         return storeStandardVotesUsingPOST({
             url: `/standard/votes`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: voteListUi,
-            params,
         })
     }
 }
 
 export const useStoreStandardVotesUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>,
-        TError,
-        { data: VoteListUi; params?: StoreStandardVotesUsingPOSTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>,
-    TError,
-    { data: VoteListUi; params?: StoreStandardVotesUsingPOSTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>, TError, { data: VoteListUi }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>, TError, { data: VoteListUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeStandardVotesUsingPOST = useStoreStandardVotesUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>,
-        { data: VoteListUi; params?: StoreStandardVotesUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>, { data: VoteListUi }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return storeStandardVotesUsingPOST(data, params)
+        return storeStandardVotesUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -8637,12 +6491,7 @@ export type StoreStandardVotesUsingPOSTMutationError = unknown
  * @summary storeStandardVotes
  */
 export const useStoreStandardVotesUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>,
-        TError,
-        { data: VoteListUi; params?: StoreStandardVotesUsingPOSTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesUsingPOSTHook>>>, TError, { data: VoteListUi }, TContext>
 }) => {
     const mutationOptions = useStoreStandardVotesUsingPOSTMutationOptions(options)
 
@@ -8655,35 +6504,20 @@ export const useStoreStandardVotesUsingPOST = <TError = unknown, TContext = unkn
 export const useDeleteStandardVotesUsingDELETEHook = () => {
     const deleteStandardVotesUsingDELETE = useCmdbSwaggerClient<void>()
 
-    return (params?: DeleteStandardVotesUsingDELETEParams) => {
-        return deleteStandardVotesUsingDELETE({ url: `/standard/votes`, method: 'delete', params })
+    return () => {
+        return deleteStandardVotesUsingDELETE({ url: `/standard/votes`, method: 'delete' })
     }
 }
 
-export const useDeleteStandardVotesUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingDELETEHook>>>,
-        TError,
-        { params?: DeleteStandardVotesUsingDELETEParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingDELETEHook>>>,
-    TError,
-    { params?: DeleteStandardVotesUsingDELETEParams },
-    TContext
-> => {
+export const useDeleteStandardVotesUsingDELETEMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingDELETEHook>>>, TError, TVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingDELETEHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const deleteStandardVotesUsingDELETE = useDeleteStandardVotesUsingDELETEHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingDELETEHook>>>,
-        { params?: DeleteStandardVotesUsingDELETEParams }
-    > = (props) => {
-        const { params } = props ?? {}
-
-        return deleteStandardVotesUsingDELETE(params)
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingDELETEHook>>>, TVariables> = () => {
+        return deleteStandardVotesUsingDELETE()
     }
 
     return { mutationFn, ...mutationOptions }
@@ -8696,13 +6530,8 @@ export type DeleteStandardVotesUsingDELETEMutationError = unknown
 /**
  * @summary deleteStandardVotes
  */
-export const useDeleteStandardVotesUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingDELETEHook>>>,
-        TError,
-        { params?: DeleteStandardVotesUsingDELETEParams },
-        TContext
-    >
+export const useDeleteStandardVotesUsingDELETE = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingDELETEHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useDeleteStandardVotesUsingDELETEMutationOptions(options)
 
@@ -8715,16 +6544,12 @@ export const useDeleteStandardVotesUsingDELETE = <TError = unknown, TContext = u
 export const useDeleteStandardVotesUsingPOSTHook = () => {
     const deleteStandardVotesUsingPOST = useCmdbSwaggerClient<void>()
 
-    return (
-        deleteStandardMeetingRequestsUsingPOSTDeleteidsBody: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody,
-        params?: DeleteStandardVotesUsingPOSTParams,
-    ) => {
+    return (deleteStandardMeetingRequestsUsingPOSTDeleteidsBody: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody) => {
         return deleteStandardVotesUsingPOST({
             url: `/standard/votes/delete`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: deleteStandardMeetingRequestsUsingPOSTDeleteidsBody,
-            params,
         })
     }
 }
@@ -8733,13 +6558,13 @@ export const useDeleteStandardVotesUsingPOSTMutationOptions = <TError = unknown,
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingPOSTHook>>>,
         TError,
-        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardVotesUsingPOSTParams },
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingPOSTHook>>>,
     TError,
-    { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardVotesUsingPOSTParams },
+    { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8748,11 +6573,11 @@ export const useDeleteStandardVotesUsingPOSTMutationOptions = <TError = unknown,
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingPOSTHook>>>,
-        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardVotesUsingPOSTParams }
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return deleteStandardVotesUsingPOST(data, params)
+        return deleteStandardVotesUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -8769,7 +6594,7 @@ export const useDeleteStandardVotesUsingPOST = <TError = unknown, TContext = unk
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesUsingPOSTHook>>>,
         TError,
-        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody; params?: DeleteStandardVotesUsingPOSTParams },
+        { data: DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody },
         TContext
     >
 }) => {
@@ -8784,13 +6609,12 @@ export const useDeleteStandardVotesUsingPOST = <TError = unknown, TContext = unk
 export const useStoreConfigurationItemUsingPOSTHook = () => {
     const storeConfigurationItemUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (configurationItemUiBody: ConfigurationItemUiBody, params?: StoreConfigurationItemUsingPOSTParams) => {
+    return (configurationItemUiBody: ConfigurationItemUiBody) => {
         return storeConfigurationItemUsingPOST({
             url: `/store/ci`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: configurationItemUiBody,
-            params,
         })
     }
 }
@@ -8799,13 +6623,13 @@ export const useStoreConfigurationItemUsingPOSTMutationOptions = <TError = unkno
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemUsingPOSTHook>>>,
         TError,
-        { data: ConfigurationItemUiBody; params?: StoreConfigurationItemUsingPOSTParams },
+        { data: ConfigurationItemUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemUsingPOSTHook>>>,
     TError,
-    { data: ConfigurationItemUiBody; params?: StoreConfigurationItemUsingPOSTParams },
+    { data: ConfigurationItemUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8814,11 +6638,11 @@ export const useStoreConfigurationItemUsingPOSTMutationOptions = <TError = unkno
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemUsingPOSTHook>>>,
-        { data: ConfigurationItemUiBody; params?: StoreConfigurationItemUsingPOSTParams }
+        { data: ConfigurationItemUiBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return storeConfigurationItemUsingPOST(data, params)
+        return storeConfigurationItemUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -8837,7 +6661,7 @@ export const useStoreConfigurationItemUsingPOST = <TError = unknown, TContext = 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemUsingPOSTHook>>>,
         TError,
-        { data: ConfigurationItemUiBody; params?: StoreConfigurationItemUsingPOSTParams },
+        { data: ConfigurationItemUiBody },
         TContext
     >
 }) => {
@@ -8852,13 +6676,12 @@ export const useStoreConfigurationItemUsingPOST = <TError = unknown, TContext = 
 export const useStoreConfigurationItemBiznisUsingPOSTHook = () => {
     const storeConfigurationItemBiznisUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (configurationItemUiBody: ConfigurationItemUiBody, params?: StoreConfigurationItemBiznisUsingPOSTParams) => {
+    return (configurationItemUiBody: ConfigurationItemUiBody) => {
         return storeConfigurationItemBiznisUsingPOST({
             url: `/store/ci/biznis`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: configurationItemUiBody,
-            params,
         })
     }
 }
@@ -8867,13 +6690,13 @@ export const useStoreConfigurationItemBiznisUsingPOSTMutationOptions = <TError =
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemBiznisUsingPOSTHook>>>,
         TError,
-        { data: ConfigurationItemUiBody; params?: StoreConfigurationItemBiznisUsingPOSTParams },
+        { data: ConfigurationItemUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemBiznisUsingPOSTHook>>>,
     TError,
-    { data: ConfigurationItemUiBody; params?: StoreConfigurationItemBiznisUsingPOSTParams },
+    { data: ConfigurationItemUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -8882,11 +6705,11 @@ export const useStoreConfigurationItemBiznisUsingPOSTMutationOptions = <TError =
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemBiznisUsingPOSTHook>>>,
-        { data: ConfigurationItemUiBody; params?: StoreConfigurationItemBiznisUsingPOSTParams }
+        { data: ConfigurationItemUiBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return storeConfigurationItemBiznisUsingPOST(data, params)
+        return storeConfigurationItemBiznisUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -8905,7 +6728,7 @@ export const useStoreConfigurationItemBiznisUsingPOST = <TError = unknown, TCont
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemBiznisUsingPOSTHook>>>,
         TError,
-        { data: ConfigurationItemUiBody; params?: StoreConfigurationItemBiznisUsingPOSTParams },
+        { data: ConfigurationItemUiBody },
         TContext
     >
 }) => {
@@ -8920,41 +6743,24 @@ export const useStoreConfigurationItemBiznisUsingPOST = <TError = unknown, TCont
 export const useStoreGraphUsingPOSTHook = () => {
     const storeGraphUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (graphRequestUiBody: GraphRequestUiBody, params?: StoreGraphUsingPOSTParams) => {
-        return storeGraphUsingPOST({
-            url: `/store/graph`,
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            data: graphRequestUiBody,
-            params,
-        })
+    return (graphRequestUiBody: GraphRequestUiBody) => {
+        return storeGraphUsingPOST({ url: `/store/graph`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: graphRequestUiBody })
     }
 }
 
 export const useStoreGraphUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>,
-        TError,
-        { data: GraphRequestUiBody; params?: StoreGraphUsingPOSTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>,
-    TError,
-    { data: GraphRequestUiBody; params?: StoreGraphUsingPOSTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>, TError, { data: GraphRequestUiBody }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>, TError, { data: GraphRequestUiBody }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeGraphUsingPOST = useStoreGraphUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>,
-        { data: GraphRequestUiBody; params?: StoreGraphUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>, { data: GraphRequestUiBody }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return storeGraphUsingPOST(data, params)
+        return storeGraphUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -8968,12 +6774,7 @@ export type StoreGraphUsingPOSTMutationError = unknown
  * @summary storeGraph
  */
 export const useStoreGraphUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>,
-        TError,
-        { data: GraphRequestUiBody; params?: StoreGraphUsingPOSTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGraphUsingPOSTHook>>>, TError, { data: GraphRequestUiBody }, TContext>
 }) => {
     const mutationOptions = useStoreGraphUsingPOSTMutationOptions(options)
 
@@ -8986,13 +6787,12 @@ export const useStoreGraphUsingPOST = <TError = unknown, TContext = unknown>(opt
 export const useStoreGraphBiznisUsingPOSTHook = () => {
     const storeGraphBiznisUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (graphRequestUiBody: GraphRequestUiBody, params?: StoreGraphBiznisUsingPOSTParams) => {
+    return (graphRequestUiBody: GraphRequestUiBody) => {
         return storeGraphBiznisUsingPOST({
             url: `/store/graph/biznis`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: graphRequestUiBody,
-            params,
         })
     }
 }
@@ -9001,26 +6801,20 @@ export const useStoreGraphBiznisUsingPOSTMutationOptions = <TError = unknown, TC
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisUsingPOSTHook>>>,
         TError,
-        { data: GraphRequestUiBody; params?: StoreGraphBiznisUsingPOSTParams },
+        { data: GraphRequestUiBody },
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisUsingPOSTHook>>>,
-    TError,
-    { data: GraphRequestUiBody; params?: StoreGraphBiznisUsingPOSTParams },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisUsingPOSTHook>>>, TError, { data: GraphRequestUiBody }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeGraphBiznisUsingPOST = useStoreGraphBiznisUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisUsingPOSTHook>>>,
-        { data: GraphRequestUiBody; params?: StoreGraphBiznisUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisUsingPOSTHook>>>, { data: GraphRequestUiBody }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return storeGraphBiznisUsingPOST(data, params)
+        return storeGraphBiznisUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -9037,7 +6831,7 @@ export const useStoreGraphBiznisUsingPOST = <TError = unknown, TContext = unknow
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisUsingPOSTHook>>>,
         TError,
-        { data: GraphRequestUiBody; params?: StoreGraphBiznisUsingPOSTParams },
+        { data: GraphRequestUiBody },
         TContext
     >
 }) => {
@@ -9052,35 +6846,22 @@ export const useStoreGraphBiznisUsingPOST = <TError = unknown, TContext = unknow
 export const useStoreGroupUsingPOSTHook = () => {
     const storeGroupUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (groupUi: GroupUi, params?: StoreGroupUsingPOSTParams) => {
-        return storeGroupUsingPOST({ url: `/store/group`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: groupUi, params })
+    return (groupUi: GroupUi) => {
+        return storeGroupUsingPOST({ url: `/store/group`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: groupUi })
     }
 }
 
 export const useStoreGroupUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>,
-        TError,
-        { data: GroupUi; params?: StoreGroupUsingPOSTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>,
-    TError,
-    { data: GroupUi; params?: StoreGroupUsingPOSTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>, TError, { data: GroupUi }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>, TError, { data: GroupUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeGroupUsingPOST = useStoreGroupUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>,
-        { data: GroupUi; params?: StoreGroupUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>, { data: GroupUi }> = (props) => {
+        const { data } = props ?? {}
 
-        return storeGroupUsingPOST(data, params)
+        return storeGroupUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -9094,12 +6875,7 @@ export type StoreGroupUsingPOSTMutationError = unknown
  * @summary storeGroup
  */
 export const useStoreGroupUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>,
-        TError,
-        { data: GroupUi; params?: StoreGroupUsingPOSTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGroupUsingPOSTHook>>>, TError, { data: GroupUi }, TContext>
 }) => {
     const mutationOptions = useStoreGroupUsingPOSTMutationOptions(options)
 
@@ -9112,8 +6888,8 @@ export const useStoreGroupUsingPOST = <TError = unknown, TContext = unknown>(opt
 export const useStoreManagerToGroupUsingPOSTHook = () => {
     const storeManagerToGroupUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (group: string, uuid: string, params?: StoreManagerToGroupUsingPOSTParams) => {
-        return storeManagerToGroupUsingPOST({ url: `/store/group/${group}/add/${uuid}`, method: 'post', params })
+    return (group: string, uuid: string) => {
+        return storeManagerToGroupUsingPOST({ url: `/store/group/${group}/add/${uuid}`, method: 'post' })
     }
 }
 
@@ -9121,13 +6897,13 @@ export const useStoreManagerToGroupUsingPOSTMutationOptions = <TError = unknown,
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreManagerToGroupUsingPOSTHook>>>,
         TError,
-        { group: string; uuid: string; params?: StoreManagerToGroupUsingPOSTParams },
+        { group: string; uuid: string },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreManagerToGroupUsingPOSTHook>>>,
     TError,
-    { group: string; uuid: string; params?: StoreManagerToGroupUsingPOSTParams },
+    { group: string; uuid: string },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -9136,11 +6912,11 @@ export const useStoreManagerToGroupUsingPOSTMutationOptions = <TError = unknown,
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreManagerToGroupUsingPOSTHook>>>,
-        { group: string; uuid: string; params?: StoreManagerToGroupUsingPOSTParams }
+        { group: string; uuid: string }
     > = (props) => {
-        const { group, uuid, params } = props ?? {}
+        const { group, uuid } = props ?? {}
 
-        return storeManagerToGroupUsingPOST(group, uuid, params)
+        return storeManagerToGroupUsingPOST(group, uuid)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -9157,7 +6933,7 @@ export const useStoreManagerToGroupUsingPOST = <TError = unknown, TContext = unk
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreManagerToGroupUsingPOSTHook>>>,
         TError,
-        { group: string; uuid: string; params?: StoreManagerToGroupUsingPOSTParams },
+        { group: string; uuid: string },
         TContext
     >
 }) => {
@@ -9172,8 +6948,8 @@ export const useStoreManagerToGroupUsingPOST = <TError = unknown, TContext = unk
 export const useRemoveManagerFromGroupUsingPOSTHook = () => {
     const removeManagerFromGroupUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (group: string, uuid: string, params?: RemoveManagerFromGroupUsingPOSTParams) => {
-        return removeManagerFromGroupUsingPOST({ url: `/store/group/${group}/remove/${uuid}`, method: 'post', params })
+    return (group: string, uuid: string) => {
+        return removeManagerFromGroupUsingPOST({ url: `/store/group/${group}/remove/${uuid}`, method: 'post' })
     }
 }
 
@@ -9181,13 +6957,13 @@ export const useRemoveManagerFromGroupUsingPOSTMutationOptions = <TError = unkno
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveManagerFromGroupUsingPOSTHook>>>,
         TError,
-        { group: string; uuid: string; params?: RemoveManagerFromGroupUsingPOSTParams },
+        { group: string; uuid: string },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useRemoveManagerFromGroupUsingPOSTHook>>>,
     TError,
-    { group: string; uuid: string; params?: RemoveManagerFromGroupUsingPOSTParams },
+    { group: string; uuid: string },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -9196,11 +6972,11 @@ export const useRemoveManagerFromGroupUsingPOSTMutationOptions = <TError = unkno
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useRemoveManagerFromGroupUsingPOSTHook>>>,
-        { group: string; uuid: string; params?: RemoveManagerFromGroupUsingPOSTParams }
+        { group: string; uuid: string }
     > = (props) => {
-        const { group, uuid, params } = props ?? {}
+        const { group, uuid } = props ?? {}
 
-        return removeManagerFromGroupUsingPOST(group, uuid, params)
+        return removeManagerFromGroupUsingPOST(group, uuid)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -9219,7 +6995,7 @@ export const useRemoveManagerFromGroupUsingPOST = <TError = unknown, TContext = 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveManagerFromGroupUsingPOSTHook>>>,
         TError,
-        { group: string; uuid: string; params?: RemoveManagerFromGroupUsingPOSTParams },
+        { group: string; uuid: string },
         TContext
     >
 }) => {
@@ -9234,8 +7010,8 @@ export const useRemoveManagerFromGroupUsingPOST = <TError = unknown, TContext = 
 export const useStoreCiNeighboursSUUsingPOSTHook = () => {
     const storeCiNeighboursSUUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (programMetaCode: string, params?: StoreCiNeighboursSUUsingPOSTParams) => {
-        return storeCiNeighboursSUUsingPOST({ url: `/store/projects/programRelations/${programMetaCode}`, method: 'post', params })
+    return (programMetaCode: string) => {
+        return storeCiNeighboursSUUsingPOST({ url: `/store/projects/programRelations/${programMetaCode}`, method: 'post' })
     }
 }
 
@@ -9243,26 +7019,25 @@ export const useStoreCiNeighboursSUUsingPOSTMutationOptions = <TError = unknown,
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreCiNeighboursSUUsingPOSTHook>>>,
         TError,
-        { programMetaCode: string; params?: StoreCiNeighboursSUUsingPOSTParams },
+        { programMetaCode: string },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreCiNeighboursSUUsingPOSTHook>>>,
     TError,
-    { programMetaCode: string; params?: StoreCiNeighboursSUUsingPOSTParams },
+    { programMetaCode: string },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeCiNeighboursSUUsingPOST = useStoreCiNeighboursSUUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreCiNeighboursSUUsingPOSTHook>>>,
-        { programMetaCode: string; params?: StoreCiNeighboursSUUsingPOSTParams }
-    > = (props) => {
-        const { programMetaCode, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreCiNeighboursSUUsingPOSTHook>>>, { programMetaCode: string }> = (
+        props,
+    ) => {
+        const { programMetaCode } = props ?? {}
 
-        return storeCiNeighboursSUUsingPOST(programMetaCode, params)
+        return storeCiNeighboursSUUsingPOST(programMetaCode)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -9279,7 +7054,7 @@ export const useStoreCiNeighboursSUUsingPOST = <TError = unknown, TContext = unk
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreCiNeighboursSUUsingPOSTHook>>>,
         TError,
-        { programMetaCode: string; params?: StoreCiNeighboursSUUsingPOSTParams },
+        { programMetaCode: string },
         TContext
     >
 }) => {
@@ -9294,13 +7069,12 @@ export const useStoreCiNeighboursSUUsingPOST = <TError = unknown, TContext = unk
 export const useStoreRelationshipUsingPOSTHook = () => {
     const storeRelationshipUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (relationshipUiBody: RelationshipUiBody, params?: StoreRelationshipUsingPOSTParams) => {
+    return (relationshipUiBody: RelationshipUiBody) => {
         return storeRelationshipUsingPOST({
             url: `/store/relation`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: relationshipUiBody,
-            params,
         })
     }
 }
@@ -9309,26 +7083,20 @@ export const useStoreRelationshipUsingPOSTMutationOptions = <TError = unknown, T
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreRelationshipUsingPOSTHook>>>,
         TError,
-        { data: RelationshipUiBody; params?: StoreRelationshipUsingPOSTParams },
+        { data: RelationshipUiBody },
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreRelationshipUsingPOSTHook>>>,
-    TError,
-    { data: RelationshipUiBody; params?: StoreRelationshipUsingPOSTParams },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreRelationshipUsingPOSTHook>>>, TError, { data: RelationshipUiBody }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeRelationshipUsingPOST = useStoreRelationshipUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreRelationshipUsingPOSTHook>>>,
-        { data: RelationshipUiBody; params?: StoreRelationshipUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreRelationshipUsingPOSTHook>>>, { data: RelationshipUiBody }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return storeRelationshipUsingPOST(data, params)
+        return storeRelationshipUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -9345,7 +7113,7 @@ export const useStoreRelationshipUsingPOST = <TError = unknown, TContext = unkno
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreRelationshipUsingPOSTHook>>>,
         TError,
-        { data: RelationshipUiBody; params?: StoreRelationshipUsingPOSTParams },
+        { data: RelationshipUiBody },
         TContext
     >
 }) => {
@@ -9360,13 +7128,12 @@ export const useStoreRelationshipUsingPOST = <TError = unknown, TContext = unkno
 export const useStoreGroupItemsUsingPOSTHook = () => {
     const storeGroupItemsUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (uuid: string, storeGroupMembersSetUi: StoreGroupMembersSetUi, params?: StoreGroupItemsUsingPOSTParams) => {
+    return (uuid: string, storeGroupMembersSetUi: StoreGroupMembersSetUi) => {
         return storeGroupItemsUsingPOST({
             url: `/storemembers/group/${uuid}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: storeGroupMembersSetUi,
-            params,
         })
     }
 }
@@ -9375,13 +7142,13 @@ export const useStoreGroupItemsUsingPOSTMutationOptions = <TError = unknown, TCo
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGroupItemsUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: StoreGroupMembersSetUi; params?: StoreGroupItemsUsingPOSTParams },
+        { uuid: string; data: StoreGroupMembersSetUi },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreGroupItemsUsingPOSTHook>>>,
     TError,
-    { uuid: string; data: StoreGroupMembersSetUi; params?: StoreGroupItemsUsingPOSTParams },
+    { uuid: string; data: StoreGroupMembersSetUi },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -9390,11 +7157,11 @@ export const useStoreGroupItemsUsingPOSTMutationOptions = <TError = unknown, TCo
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreGroupItemsUsingPOSTHook>>>,
-        { uuid: string; data: StoreGroupMembersSetUi; params?: StoreGroupItemsUsingPOSTParams }
+        { uuid: string; data: StoreGroupMembersSetUi }
     > = (props) => {
-        const { uuid, data, params } = props ?? {}
+        const { uuid, data } = props ?? {}
 
-        return storeGroupItemsUsingPOST(uuid, data, params)
+        return storeGroupItemsUsingPOST(uuid, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -9411,7 +7178,7 @@ export const useStoreGroupItemsUsingPOST = <TError = unknown, TContext = unknown
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGroupItemsUsingPOSTHook>>>,
         TError,
-        { uuid: string; data: StoreGroupMembersSetUi; params?: StoreGroupItemsUsingPOSTParams },
+        { uuid: string; data: StoreGroupMembersSetUi },
         TContext
     >
 }) => {
@@ -9637,35 +7404,20 @@ export const useGetDocumentUsingGET = <TData = Awaited<ReturnType<ReturnType<typ
 export const useReindexHierarchyUsingPOSTHook = () => {
     const reindexHierarchyUsingPOST = useCmdbSwaggerClient<string | void>()
 
-    return (params?: ReindexHierarchyUsingPOSTParams) => {
-        return reindexHierarchyUsingPOST({ url: `/util/hierarchypo`, method: 'post', params })
+    return () => {
+        return reindexHierarchyUsingPOST({ url: `/util/hierarchypo`, method: 'post' })
     }
 }
 
-export const useReindexHierarchyUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReindexHierarchyUsingPOSTHook>>>,
-        TError,
-        { params?: ReindexHierarchyUsingPOSTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useReindexHierarchyUsingPOSTHook>>>,
-    TError,
-    { params?: ReindexHierarchyUsingPOSTParams },
-    TContext
-> => {
+export const useReindexHierarchyUsingPOSTMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHierarchyUsingPOSTHook>>>, TError, TVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHierarchyUsingPOSTHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const reindexHierarchyUsingPOST = useReindexHierarchyUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useReindexHierarchyUsingPOSTHook>>>,
-        { params?: ReindexHierarchyUsingPOSTParams }
-    > = (props) => {
-        const { params } = props ?? {}
-
-        return reindexHierarchyUsingPOST(params)
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReindexHierarchyUsingPOSTHook>>>, TVariables> = () => {
+        return reindexHierarchyUsingPOST()
     }
 
     return { mutationFn, ...mutationOptions }
@@ -9678,13 +7430,8 @@ export type ReindexHierarchyUsingPOSTMutationError = unknown
 /**
  * @summary reindexHierarchy
  */
-export const useReindexHierarchyUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReindexHierarchyUsingPOSTHook>>>,
-        TError,
-        { params?: ReindexHierarchyUsingPOSTParams },
-        TContext
-    >
+export const useReindexHierarchyUsingPOST = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHierarchyUsingPOSTHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useReindexHierarchyUsingPOSTMutationOptions(options)
 
@@ -9961,35 +7708,20 @@ export const useReindexRelationshipsUsingPOST = <TError = unknown, TContext = un
 export const useReindexReportsUsingDELETEHook = () => {
     const reindexReportsUsingDELETE = useCmdbSwaggerClient<void>()
 
-    return (params?: ReindexReportsUsingDELETEParams) => {
-        return reindexReportsUsingDELETE({ url: `/util/reports`, method: 'delete', params })
+    return () => {
+        return reindexReportsUsingDELETE({ url: `/util/reports`, method: 'delete' })
     }
 }
 
-export const useReindexReportsUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReindexReportsUsingDELETEHook>>>,
-        TError,
-        { params?: ReindexReportsUsingDELETEParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useReindexReportsUsingDELETEHook>>>,
-    TError,
-    { params?: ReindexReportsUsingDELETEParams },
-    TContext
-> => {
+export const useReindexReportsUsingDELETEMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexReportsUsingDELETEHook>>>, TError, TVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexReportsUsingDELETEHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const reindexReportsUsingDELETE = useReindexReportsUsingDELETEHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useReindexReportsUsingDELETEHook>>>,
-        { params?: ReindexReportsUsingDELETEParams }
-    > = (props) => {
-        const { params } = props ?? {}
-
-        return reindexReportsUsingDELETE(params)
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReindexReportsUsingDELETEHook>>>, TVariables> = () => {
+        return reindexReportsUsingDELETE()
     }
 
     return { mutationFn, ...mutationOptions }
@@ -10002,13 +7734,8 @@ export type ReindexReportsUsingDELETEMutationError = unknown
 /**
  * @summary reindexReports
  */
-export const useReindexReportsUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReindexReportsUsingDELETEHook>>>,
-        TError,
-        { params?: ReindexReportsUsingDELETEParams },
-        TContext
-    >
+export const useReindexReportsUsingDELETE = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexReportsUsingDELETEHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useReindexReportsUsingDELETEMutationOptions(options)
 
@@ -10021,13 +7748,12 @@ export const useReindexReportsUsingDELETE = <TError = unknown, TContext = unknow
 export const useUpdateConfluenceUsingPOSTHook = () => {
     const updateConfluenceUsingPOST = useCmdbSwaggerClient<RequestIdUi | void>()
 
-    return (docUuid: string, version: Version, params?: UpdateConfluenceUsingPOSTParams) => {
+    return (docUuid: string, version: Version) => {
         return updateConfluenceUsingPOST({
             url: `/util/update/docConfluence/${docUuid}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: version,
-            params,
         })
     }
 }
@@ -10036,13 +7762,13 @@ export const useUpdateConfluenceUsingPOSTMutationOptions = <TError = unknown, TC
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateConfluenceUsingPOSTHook>>>,
         TError,
-        { docUuid: string; data: Version; params?: UpdateConfluenceUsingPOSTParams },
+        { docUuid: string; data: Version },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useUpdateConfluenceUsingPOSTHook>>>,
     TError,
-    { docUuid: string; data: Version; params?: UpdateConfluenceUsingPOSTParams },
+    { docUuid: string; data: Version },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -10051,11 +7777,11 @@ export const useUpdateConfluenceUsingPOSTMutationOptions = <TError = unknown, TC
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useUpdateConfluenceUsingPOSTHook>>>,
-        { docUuid: string; data: Version; params?: UpdateConfluenceUsingPOSTParams }
+        { docUuid: string; data: Version }
     > = (props) => {
-        const { docUuid, data, params } = props ?? {}
+        const { docUuid, data } = props ?? {}
 
-        return updateConfluenceUsingPOST(docUuid, data, params)
+        return updateConfluenceUsingPOST(docUuid, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -10072,7 +7798,7 @@ export const useUpdateConfluenceUsingPOST = <TError = unknown, TContext = unknow
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateConfluenceUsingPOSTHook>>>,
         TError,
-        { docUuid: string; data: Version; params?: UpdateConfluenceUsingPOSTParams },
+        { docUuid: string; data: Version },
         TContext
     >
 }) => {
@@ -10087,13 +7813,12 @@ export const useUpdateConfluenceUsingPOST = <TError = unknown, TContext = unknow
 export const useValidateStoreGraphUsingPOSTHook = () => {
     const validateStoreGraphUsingPOST = useCmdbSwaggerClient<ErrorMessageHolderUi | void>()
 
-    return (graphRequestUiBody: GraphRequestUiBody, params?: ValidateStoreGraphUsingPOSTParams) => {
+    return (graphRequestUiBody: GraphRequestUiBody) => {
         return validateStoreGraphUsingPOST({
             url: `/validate/graph`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: graphRequestUiBody,
-            params,
         })
     }
 }
@@ -10102,26 +7827,25 @@ export const useValidateStoreGraphUsingPOSTMutationOptions = <TError = unknown, 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphUsingPOSTHook>>>,
         TError,
-        { data: GraphRequestUiBody; params?: ValidateStoreGraphUsingPOSTParams },
+        { data: GraphRequestUiBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphUsingPOSTHook>>>,
     TError,
-    { data: GraphRequestUiBody; params?: ValidateStoreGraphUsingPOSTParams },
+    { data: GraphRequestUiBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
 
     const validateStoreGraphUsingPOST = useValidateStoreGraphUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphUsingPOSTHook>>>,
-        { data: GraphRequestUiBody; params?: ValidateStoreGraphUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphUsingPOSTHook>>>, { data: GraphRequestUiBody }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return validateStoreGraphUsingPOST(data, params)
+        return validateStoreGraphUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -10138,7 +7862,7 @@ export const useValidateStoreGraphUsingPOST = <TError = unknown, TContext = unkn
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphUsingPOSTHook>>>,
         TError,
-        { data: GraphRequestUiBody; params?: ValidateStoreGraphUsingPOSTParams },
+        { data: GraphRequestUiBody },
         TContext
     >
 }) => {

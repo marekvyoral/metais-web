@@ -1,19 +1,12 @@
 import React from 'react'
 
-import {
-    ReadConfigurationItemUsingGET200,
-    useReadConfigurationItemUsingGET,
-    EnumType,
-    AttributeConstraintEnumAllOf,
-    CiType,
-    useGetCiTypeUsingGET,
-} from '@/api'
+import { ConfigurationItemUi, useReadConfigurationItemUsingGET, EnumType, AttributeConstraintEnumAllOf, CiType, useGetCiTypeUsingGET } from '@/api'
 import { useHowToDisplayConstraints } from '@/hooks/useHowToDisplay'
 
 export interface ICiContainerView {
     data: {
         ciTypeData: CiType | undefined
-        ciItemData: ReadConfigurationItemUsingGET200 | undefined
+        ciItemData: ConfigurationItemUi | undefined
         constraintsData: (EnumType | undefined)[]
         unitsData?: EnumType | undefined
     }

@@ -12,6 +12,7 @@
 # production
 /app/*/build
 /app/*/dist
+/app/metais-portal/scripts
 
 # misc
 .DS_Store

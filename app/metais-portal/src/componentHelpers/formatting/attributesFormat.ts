@@ -1,6 +1,6 @@
 import { TFunction } from 'i18next'
 
-import { Attribute, AttributeConstraintEnum, EnumType, ReadConfigurationItemUsingGET200 } from '@/api'
+import { Attribute, AttributeConstraintEnum, EnumType, ConfigurationItemUi } from '@/api'
 
 const formatRowValueByRowType = (attribute: Attribute, rowValue: string, t: TFunction<'translation', undefined, 'translation'>) => {
     switch (attribute?.type) {
@@ -16,7 +16,7 @@ const formatRowValueByRowType = (attribute: Attribute, rowValue: string, t: TFun
 
 export const pairEnumsToEnumValues = (
     attribute: Attribute,
-    ciItemData: ReadConfigurationItemUsingGET200 | undefined,
+    ciItemData: ConfigurationItemUi | undefined,
     constraintsData: (EnumType | undefined)[],
     t: TFunction<'translation', undefined, 'translation'>,
 ) => {

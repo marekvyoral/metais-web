@@ -1,12 +1,12 @@
 import React, { SetStateAction, useState } from 'react'
 
 import { IPageConfig, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@/hooks/useEntityRelations'
-import { ReadCiNeighboursWithAllRelsUsingGET200, ReadNeighboursConfigurationItemsCountUsingGET200 } from '@/api/generated/cmdb-swagger'
+import { CiWithRelsResultUi, ReadNeighboursConfigurationItemsCountUsingGET200 } from '@/api/generated/cmdb-swagger'
 
 export interface IRelationsView {
     data: {
         entityTypes: ReadNeighboursConfigurationItemsCountUsingGET200 | undefined
-        relationsList: ReadCiNeighboursWithAllRelsUsingGET200 | undefined
+        relationsList: CiWithRelsResultUi | undefined
         keysToDisplay: string[]
     }
     filterCallback: {

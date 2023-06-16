@@ -16,675 +16,11 @@ export type ListRelationshipTypesUsingGET1Params = {
     roles: string[]
 }
 
-export type DeleteAttributeTextationUsingDELETE1Params = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreAttributeTextationUsingPUT1Params = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type UnvalidRelationshipTypeUsingDELETEParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type ValidRelationshipTypeUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreExistRelationshipTypeUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreNewRelationshipTypeUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreAdminEntityUsingPOST1Params = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type GetLastCodeUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
 export type GenerateCodeAndURLUsingGETParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
     /**
      * count
      */
     count: number
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type GenerateCodeAndURLUsingGET1Params = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreAttributeTextationUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreUnvalidUsingDELETE1Params = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreValidUsingPUT2Params = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreExistCiTypeUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreNewCiTypeUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreAdminEntityUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreExistsCiTypeRelationshipTypeMapUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreNewCiTypeRelationshipTypeMapUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreUnValidUsingDELETEParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreValidUsingPUT1Params = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreExistGenericAttrProfileUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreExistAttrProfileUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreNewAttrProfileUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreUnvalidUsingDELETEParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreValidUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreNewAttributeUsingPOSTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreExistAttributeUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreInvisibleUsingDELETEParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
-}
-
-export type StoreVisibleUsingPUTParams = {
-    'OAuth2Request.approved'?: boolean
-    'OAuth2Request.authorities[0].authority'?: string
-    'OAuth2Request.grantType'?: string
-    'OAuth2Request.redirectUri'?: string
-    'OAuth2Request.refresh'?: boolean
-    'OAuth2Request.refreshTokenRequest.grantType'?: string
-    'OAuth2Request.resourceIds'?: string[]
-    'OAuth2Request.responseTypes'?: string[]
-    authenticated?: boolean
-    'authorities[0].authority'?: string
-    clientOnly?: boolean
-    credentials?: { [key: string]: any }
-    details?: { [key: string]: any }
-    name?: string
-    principal?: { [key: string]: any }
-    'userAuthentication.authenticated'?: boolean
-    'userAuthentication.authorities[0].authority'?: string
-    'userAuthentication.credentials'?: { [key: string]: any }
-    'userAuthentication.details'?: { [key: string]: any }
-    'userAuthentication.principal'?: { [key: string]: any }
 }
 
 /**
@@ -711,11 +47,6 @@ export type AttributeProfileBody = AttributeProfile
  * attribute
  */
 export type AttributeBody = Attribute
-
-/**
- * filter
- */
-export type CiTypeFilterBody = CiTypeFilter
 
 /**
  * ciTypeRelationshipTypeMap
@@ -877,6 +208,11 @@ export interface CiTypeFilter {
     role?: string
     roles?: string[]
 }
+
+/**
+ * filter
+ */
+export type CiTypeFilterBody = CiTypeFilter
 
 export type CiTypeType = (typeof CiTypeType)[keyof typeof CiTypeType]
 
@@ -1068,8 +404,8 @@ type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
 export const useStoreVisibleUsingPUTHook = () => {
     const storeVisibleUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (attrProfileTechnicalName: string, technicalName: string, params?: StoreVisibleUsingPUTParams) => {
-        return storeVisibleUsingPUT({ url: `/attributes/attribute/invisible/${attrProfileTechnicalName}/${technicalName}`, method: 'put', params })
+    return (attrProfileTechnicalName: string, technicalName: string) => {
+        return storeVisibleUsingPUT({ url: `/attributes/attribute/invisible/${attrProfileTechnicalName}/${technicalName}`, method: 'put' })
     }
 }
 
@@ -1077,13 +413,13 @@ export const useStoreVisibleUsingPUTMutationOptions = <TError = unknown, TContex
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreVisibleUsingPUTHook>>>,
         TError,
-        { attrProfileTechnicalName: string; technicalName: string; params?: StoreVisibleUsingPUTParams },
+        { attrProfileTechnicalName: string; technicalName: string },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreVisibleUsingPUTHook>>>,
     TError,
-    { attrProfileTechnicalName: string; technicalName: string; params?: StoreVisibleUsingPUTParams },
+    { attrProfileTechnicalName: string; technicalName: string },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1092,11 +428,11 @@ export const useStoreVisibleUsingPUTMutationOptions = <TError = unknown, TContex
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreVisibleUsingPUTHook>>>,
-        { attrProfileTechnicalName: string; technicalName: string; params?: StoreVisibleUsingPUTParams }
+        { attrProfileTechnicalName: string; technicalName: string }
     > = (props) => {
-        const { attrProfileTechnicalName, technicalName, params } = props ?? {}
+        const { attrProfileTechnicalName, technicalName } = props ?? {}
 
-        return storeVisibleUsingPUT(attrProfileTechnicalName, technicalName, params)
+        return storeVisibleUsingPUT(attrProfileTechnicalName, technicalName)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -1113,7 +449,7 @@ export const useStoreVisibleUsingPUT = <TError = unknown, TContext = unknown>(op
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreVisibleUsingPUTHook>>>,
         TError,
-        { attrProfileTechnicalName: string; technicalName: string; params?: StoreVisibleUsingPUTParams },
+        { attrProfileTechnicalName: string; technicalName: string },
         TContext
     >
 }) => {
@@ -1128,12 +464,8 @@ export const useStoreVisibleUsingPUT = <TError = unknown, TContext = unknown>(op
 export const useStoreInvisibleUsingDELETEHook = () => {
     const storeInvisibleUsingDELETE = useTypesRepoSwaggerClient<void>()
 
-    return (attrProfileTechnicalName: string, technicalName: string, params?: StoreInvisibleUsingDELETEParams) => {
-        return storeInvisibleUsingDELETE({
-            url: `/attributes/attribute/invisible/${attrProfileTechnicalName}/${technicalName}`,
-            method: 'delete',
-            params,
-        })
+    return (attrProfileTechnicalName: string, technicalName: string) => {
+        return storeInvisibleUsingDELETE({ url: `/attributes/attribute/invisible/${attrProfileTechnicalName}/${technicalName}`, method: 'delete' })
     }
 }
 
@@ -1141,13 +473,13 @@ export const useStoreInvisibleUsingDELETEMutationOptions = <TError = unknown, TC
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreInvisibleUsingDELETEHook>>>,
         TError,
-        { attrProfileTechnicalName: string; technicalName: string; params?: StoreInvisibleUsingDELETEParams },
+        { attrProfileTechnicalName: string; technicalName: string },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreInvisibleUsingDELETEHook>>>,
     TError,
-    { attrProfileTechnicalName: string; technicalName: string; params?: StoreInvisibleUsingDELETEParams },
+    { attrProfileTechnicalName: string; technicalName: string },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1156,11 +488,11 @@ export const useStoreInvisibleUsingDELETEMutationOptions = <TError = unknown, TC
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreInvisibleUsingDELETEHook>>>,
-        { attrProfileTechnicalName: string; technicalName: string; params?: StoreInvisibleUsingDELETEParams }
+        { attrProfileTechnicalName: string; technicalName: string }
     > = (props) => {
-        const { attrProfileTechnicalName, technicalName, params } = props ?? {}
+        const { attrProfileTechnicalName, technicalName } = props ?? {}
 
-        return storeInvisibleUsingDELETE(attrProfileTechnicalName, technicalName, params)
+        return storeInvisibleUsingDELETE(attrProfileTechnicalName, technicalName)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -1177,7 +509,7 @@ export const useStoreInvisibleUsingDELETE = <TError = unknown, TContext = unknow
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreInvisibleUsingDELETEHook>>>,
         TError,
-        { attrProfileTechnicalName: string; technicalName: string; params?: StoreInvisibleUsingDELETEParams },
+        { attrProfileTechnicalName: string; technicalName: string },
         TContext
     >
 }) => {
@@ -1192,13 +524,12 @@ export const useStoreInvisibleUsingDELETE = <TError = unknown, TContext = unknow
 export const useStoreExistAttributeUsingPUTHook = () => {
     const storeExistAttributeUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (attributeBody: AttributeBody, params?: StoreExistAttributeUsingPUTParams) => {
+    return (attributeBody: AttributeBody) => {
         return storeExistAttributeUsingPUT({
             url: `/attributes/attribute/store`,
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             data: attributeBody,
-            params,
         })
     }
 }
@@ -1207,26 +538,20 @@ export const useStoreExistAttributeUsingPUTMutationOptions = <TError = unknown, 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeUsingPUTHook>>>,
         TError,
-        { data: AttributeBody; params?: StoreExistAttributeUsingPUTParams },
+        { data: AttributeBody },
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeUsingPUTHook>>>,
-    TError,
-    { data: AttributeBody; params?: StoreExistAttributeUsingPUTParams },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeUsingPUTHook>>>, TError, { data: AttributeBody }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeExistAttributeUsingPUT = useStoreExistAttributeUsingPUTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeUsingPUTHook>>>,
-        { data: AttributeBody; params?: StoreExistAttributeUsingPUTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeUsingPUTHook>>>, { data: AttributeBody }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return storeExistAttributeUsingPUT(data, params)
+        return storeExistAttributeUsingPUT(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -1243,7 +568,7 @@ export const useStoreExistAttributeUsingPUT = <TError = unknown, TContext = unkn
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeUsingPUTHook>>>,
         TError,
-        { data: AttributeBody; params?: StoreExistAttributeUsingPUTParams },
+        { data: AttributeBody },
         TContext
     >
 }) => {
@@ -1258,13 +583,12 @@ export const useStoreExistAttributeUsingPUT = <TError = unknown, TContext = unkn
 export const useStoreNewAttributeUsingPOSTHook = () => {
     const storeNewAttributeUsingPOST = useTypesRepoSwaggerClient<void>()
 
-    return (atrProfTechnicalName: string, attributeBody: AttributeBody, params?: StoreNewAttributeUsingPOSTParams) => {
+    return (atrProfTechnicalName: string, attributeBody: AttributeBody) => {
         return storeNewAttributeUsingPOST({
             url: `/attributes/attribute/store/${atrProfTechnicalName}`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: attributeBody,
-            params,
         })
     }
 }
@@ -1273,13 +597,13 @@ export const useStoreNewAttributeUsingPOSTMutationOptions = <TError = unknown, T
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttributeUsingPOSTHook>>>,
         TError,
-        { atrProfTechnicalName: string; data: AttributeBody; params?: StoreNewAttributeUsingPOSTParams },
+        { atrProfTechnicalName: string; data: AttributeBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreNewAttributeUsingPOSTHook>>>,
     TError,
-    { atrProfTechnicalName: string; data: AttributeBody; params?: StoreNewAttributeUsingPOSTParams },
+    { atrProfTechnicalName: string; data: AttributeBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1288,11 +612,11 @@ export const useStoreNewAttributeUsingPOSTMutationOptions = <TError = unknown, T
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttributeUsingPOSTHook>>>,
-        { atrProfTechnicalName: string; data: AttributeBody; params?: StoreNewAttributeUsingPOSTParams }
+        { atrProfTechnicalName: string; data: AttributeBody }
     > = (props) => {
-        const { atrProfTechnicalName, data, params } = props ?? {}
+        const { atrProfTechnicalName, data } = props ?? {}
 
-        return storeNewAttributeUsingPOST(atrProfTechnicalName, data, params)
+        return storeNewAttributeUsingPOST(atrProfTechnicalName, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -1309,7 +633,7 @@ export const useStoreNewAttributeUsingPOST = <TError = unknown, TContext = unkno
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttributeUsingPOSTHook>>>,
         TError,
-        { atrProfTechnicalName: string; data: AttributeBody; params?: StoreNewAttributeUsingPOSTParams },
+        { atrProfTechnicalName: string; data: AttributeBody },
         TContext
     >
 }) => {
@@ -1324,8 +648,8 @@ export const useStoreNewAttributeUsingPOST = <TError = unknown, TContext = unkno
 export const useStoreValidUsingPUTHook = () => {
     const storeValidUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (attrProfileTechnicalName: string, technicalName: string, params?: StoreValidUsingPUTParams) => {
-        return storeValidUsingPUT({ url: `/attributes/attribute/valid/${attrProfileTechnicalName}/${technicalName}`, method: 'put', params })
+    return (attrProfileTechnicalName: string, technicalName: string) => {
+        return storeValidUsingPUT({ url: `/attributes/attribute/valid/${attrProfileTechnicalName}/${technicalName}`, method: 'put' })
     }
 }
 
@@ -1333,13 +657,13 @@ export const useStoreValidUsingPUTMutationOptions = <TError = unknown, TContext 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUTHook>>>,
         TError,
-        { attrProfileTechnicalName: string; technicalName: string; params?: StoreValidUsingPUTParams },
+        { attrProfileTechnicalName: string; technicalName: string },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUTHook>>>,
     TError,
-    { attrProfileTechnicalName: string; technicalName: string; params?: StoreValidUsingPUTParams },
+    { attrProfileTechnicalName: string; technicalName: string },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1348,11 +672,11 @@ export const useStoreValidUsingPUTMutationOptions = <TError = unknown, TContext 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUTHook>>>,
-        { attrProfileTechnicalName: string; technicalName: string; params?: StoreValidUsingPUTParams }
+        { attrProfileTechnicalName: string; technicalName: string }
     > = (props) => {
-        const { attrProfileTechnicalName, technicalName, params } = props ?? {}
+        const { attrProfileTechnicalName, technicalName } = props ?? {}
 
-        return storeValidUsingPUT(attrProfileTechnicalName, technicalName, params)
+        return storeValidUsingPUT(attrProfileTechnicalName, technicalName)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -1369,7 +693,7 @@ export const useStoreValidUsingPUT = <TError = unknown, TContext = unknown>(opti
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUTHook>>>,
         TError,
-        { attrProfileTechnicalName: string; technicalName: string; params?: StoreValidUsingPUTParams },
+        { attrProfileTechnicalName: string; technicalName: string },
         TContext
     >
 }) => {
@@ -1384,8 +708,8 @@ export const useStoreValidUsingPUT = <TError = unknown, TContext = unknown>(opti
 export const useStoreUnvalidUsingDELETEHook = () => {
     const storeUnvalidUsingDELETE = useTypesRepoSwaggerClient<void>()
 
-    return (attrProfileTechnicalName: string, technicalName: string, params?: StoreUnvalidUsingDELETEParams) => {
-        return storeUnvalidUsingDELETE({ url: `/attributes/attribute/valid/${attrProfileTechnicalName}/${technicalName}`, method: 'delete', params })
+    return (attrProfileTechnicalName: string, technicalName: string) => {
+        return storeUnvalidUsingDELETE({ url: `/attributes/attribute/valid/${attrProfileTechnicalName}/${technicalName}`, method: 'delete' })
     }
 }
 
@@ -1393,13 +717,13 @@ export const useStoreUnvalidUsingDELETEMutationOptions = <TError = unknown, TCon
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETEHook>>>,
         TError,
-        { attrProfileTechnicalName: string; technicalName: string; params?: StoreUnvalidUsingDELETEParams },
+        { attrProfileTechnicalName: string; technicalName: string },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETEHook>>>,
     TError,
-    { attrProfileTechnicalName: string; technicalName: string; params?: StoreUnvalidUsingDELETEParams },
+    { attrProfileTechnicalName: string; technicalName: string },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1408,11 +732,11 @@ export const useStoreUnvalidUsingDELETEMutationOptions = <TError = unknown, TCon
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETEHook>>>,
-        { attrProfileTechnicalName: string; technicalName: string; params?: StoreUnvalidUsingDELETEParams }
+        { attrProfileTechnicalName: string; technicalName: string }
     > = (props) => {
-        const { attrProfileTechnicalName, technicalName, params } = props ?? {}
+        const { attrProfileTechnicalName, technicalName } = props ?? {}
 
-        return storeUnvalidUsingDELETE(attrProfileTechnicalName, technicalName, params)
+        return storeUnvalidUsingDELETE(attrProfileTechnicalName, technicalName)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -1429,7 +753,7 @@ export const useStoreUnvalidUsingDELETE = <TError = unknown, TContext = unknown>
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETEHook>>>,
         TError,
-        { attrProfileTechnicalName: string; technicalName: string; params?: StoreUnvalidUsingDELETEParams },
+        { attrProfileTechnicalName: string; technicalName: string },
         TContext
     >
 }) => {
@@ -1444,13 +768,12 @@ export const useStoreUnvalidUsingDELETE = <TError = unknown, TContext = unknown>
 export const useStoreNewAttrProfileUsingPOSTHook = () => {
     const storeNewAttrProfileUsingPOST = useTypesRepoSwaggerClient<void>()
 
-    return (attributeProfileBody: AttributeProfileBody, params?: StoreNewAttrProfileUsingPOSTParams) => {
+    return (attributeProfileBody: AttributeProfileBody) => {
         return storeNewAttrProfileUsingPOST({
             url: `/attrprofiles/attrprofile/store`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: attributeProfileBody,
-            params,
         })
     }
 }
@@ -1459,13 +782,13 @@ export const useStoreNewAttrProfileUsingPOSTMutationOptions = <TError = unknown,
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileUsingPOSTHook>>>,
         TError,
-        { data: AttributeProfileBody; params?: StoreNewAttrProfileUsingPOSTParams },
+        { data: AttributeProfileBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileUsingPOSTHook>>>,
     TError,
-    { data: AttributeProfileBody; params?: StoreNewAttrProfileUsingPOSTParams },
+    { data: AttributeProfileBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1474,11 +797,11 @@ export const useStoreNewAttrProfileUsingPOSTMutationOptions = <TError = unknown,
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileUsingPOSTHook>>>,
-        { data: AttributeProfileBody; params?: StoreNewAttrProfileUsingPOSTParams }
+        { data: AttributeProfileBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return storeNewAttrProfileUsingPOST(data, params)
+        return storeNewAttrProfileUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -1495,7 +818,7 @@ export const useStoreNewAttrProfileUsingPOST = <TError = unknown, TContext = unk
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileUsingPOSTHook>>>,
         TError,
-        { data: AttributeProfileBody; params?: StoreNewAttrProfileUsingPOSTParams },
+        { data: AttributeProfileBody },
         TContext
     >
 }) => {
@@ -1510,13 +833,12 @@ export const useStoreNewAttrProfileUsingPOST = <TError = unknown, TContext = unk
 export const useStoreExistAttrProfileUsingPUTHook = () => {
     const storeExistAttrProfileUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (attributeProfileBody: AttributeProfileBody, params?: StoreExistAttrProfileUsingPUTParams) => {
+    return (attributeProfileBody: AttributeProfileBody) => {
         return storeExistAttrProfileUsingPUT({
             url: `/attrprofiles/attrprofile/store`,
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             data: attributeProfileBody,
-            params,
         })
     }
 }
@@ -1525,13 +847,13 @@ export const useStoreExistAttrProfileUsingPUTMutationOptions = <TError = unknown
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileUsingPUTHook>>>,
         TError,
-        { data: AttributeProfileBody; params?: StoreExistAttrProfileUsingPUTParams },
+        { data: AttributeProfileBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileUsingPUTHook>>>,
     TError,
-    { data: AttributeProfileBody; params?: StoreExistAttrProfileUsingPUTParams },
+    { data: AttributeProfileBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1540,11 +862,11 @@ export const useStoreExistAttrProfileUsingPUTMutationOptions = <TError = unknown
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileUsingPUTHook>>>,
-        { data: AttributeProfileBody; params?: StoreExistAttrProfileUsingPUTParams }
+        { data: AttributeProfileBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return storeExistAttrProfileUsingPUT(data, params)
+        return storeExistAttrProfileUsingPUT(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -1561,7 +883,7 @@ export const useStoreExistAttrProfileUsingPUT = <TError = unknown, TContext = un
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileUsingPUTHook>>>,
         TError,
-        { data: AttributeProfileBody; params?: StoreExistAttrProfileUsingPUTParams },
+        { data: AttributeProfileBody },
         TContext
     >
 }) => {
@@ -1576,13 +898,12 @@ export const useStoreExistAttrProfileUsingPUT = <TError = unknown, TContext = un
 export const useStoreExistGenericAttrProfileUsingPUTHook = () => {
     const storeExistGenericAttrProfileUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (attributeProfileBody: AttributeProfileBody, params?: StoreExistGenericAttrProfileUsingPUTParams) => {
+    return (attributeProfileBody: AttributeProfileBody) => {
         return storeExistGenericAttrProfileUsingPUT({
             url: `/attrprofiles/attrprofile/store/generic`,
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             data: attributeProfileBody,
-            params,
         })
     }
 }
@@ -1591,13 +912,13 @@ export const useStoreExistGenericAttrProfileUsingPUTMutationOptions = <TError = 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistGenericAttrProfileUsingPUTHook>>>,
         TError,
-        { data: AttributeProfileBody; params?: StoreExistGenericAttrProfileUsingPUTParams },
+        { data: AttributeProfileBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreExistGenericAttrProfileUsingPUTHook>>>,
     TError,
-    { data: AttributeProfileBody; params?: StoreExistGenericAttrProfileUsingPUTParams },
+    { data: AttributeProfileBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1606,11 +927,11 @@ export const useStoreExistGenericAttrProfileUsingPUTMutationOptions = <TError = 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreExistGenericAttrProfileUsingPUTHook>>>,
-        { data: AttributeProfileBody; params?: StoreExistGenericAttrProfileUsingPUTParams }
+        { data: AttributeProfileBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return storeExistGenericAttrProfileUsingPUT(data, params)
+        return storeExistGenericAttrProfileUsingPUT(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -1629,7 +950,7 @@ export const useStoreExistGenericAttrProfileUsingPUT = <TError = unknown, TConte
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistGenericAttrProfileUsingPUTHook>>>,
         TError,
-        { data: AttributeProfileBody; params?: StoreExistGenericAttrProfileUsingPUTParams },
+        { data: AttributeProfileBody },
         TContext
     >
 }) => {
@@ -1644,35 +965,22 @@ export const useStoreExistGenericAttrProfileUsingPUT = <TError = unknown, TConte
 export const useStoreValidUsingPUT1Hook = () => {
     const storeValidUsingPUT1 = useTypesRepoSwaggerClient<void>()
 
-    return (technicalName: string, params?: StoreValidUsingPUT1Params) => {
-        return storeValidUsingPUT1({ url: `/attrprofiles/attrprofile/valid/${technicalName}`, method: 'put', params })
+    return (technicalName: string) => {
+        return storeValidUsingPUT1({ url: `/attrprofiles/attrprofile/valid/${technicalName}`, method: 'put' })
     }
 }
 
 export const useStoreValidUsingPUT1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT1Hook>>>,
-        TError,
-        { technicalName: string; params?: StoreValidUsingPUT1Params },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT1Hook>>>,
-    TError,
-    { technicalName: string; params?: StoreValidUsingPUT1Params },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT1Hook>>>, TError, { technicalName: string }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT1Hook>>>, TError, { technicalName: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeValidUsingPUT1 = useStoreValidUsingPUT1Hook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT1Hook>>>,
-        { technicalName: string; params?: StoreValidUsingPUT1Params }
-    > = (props) => {
-        const { technicalName, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT1Hook>>>, { technicalName: string }> = (props) => {
+        const { technicalName } = props ?? {}
 
-        return storeValidUsingPUT1(technicalName, params)
+        return storeValidUsingPUT1(technicalName)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -1686,12 +994,7 @@ export type StoreValidUsingPUT1MutationError = unknown
  * @summary storeValid
  */
 export const useStoreValidUsingPUT1 = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT1Hook>>>,
-        TError,
-        { technicalName: string; params?: StoreValidUsingPUT1Params },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT1Hook>>>, TError, { technicalName: string }, TContext>
 }) => {
     const mutationOptions = useStoreValidUsingPUT1MutationOptions(options)
 
@@ -1704,35 +1007,24 @@ export const useStoreValidUsingPUT1 = <TError = unknown, TContext = unknown>(opt
 export const useStoreUnValidUsingDELETEHook = () => {
     const storeUnValidUsingDELETE = useTypesRepoSwaggerClient<void>()
 
-    return (technicalName: string, params?: StoreUnValidUsingDELETEParams) => {
-        return storeUnValidUsingDELETE({ url: `/attrprofiles/attrprofile/valid/${technicalName}`, method: 'delete', params })
+    return (technicalName: string) => {
+        return storeUnValidUsingDELETE({ url: `/attrprofiles/attrprofile/valid/${technicalName}`, method: 'delete' })
     }
 }
 
 export const useStoreUnValidUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreUnValidUsingDELETEHook>>>,
-        TError,
-        { technicalName: string; params?: StoreUnValidUsingDELETEParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreUnValidUsingDELETEHook>>>,
-    TError,
-    { technicalName: string; params?: StoreUnValidUsingDELETEParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreUnValidUsingDELETEHook>>>, TError, { technicalName: string }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreUnValidUsingDELETEHook>>>, TError, { technicalName: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeUnValidUsingDELETE = useStoreUnValidUsingDELETEHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreUnValidUsingDELETEHook>>>,
-        { technicalName: string; params?: StoreUnValidUsingDELETEParams }
-    > = (props) => {
-        const { technicalName, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreUnValidUsingDELETEHook>>>, { technicalName: string }> = (
+        props,
+    ) => {
+        const { technicalName } = props ?? {}
 
-        return storeUnValidUsingDELETE(technicalName, params)
+        return storeUnValidUsingDELETE(technicalName)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -1746,12 +1038,7 @@ export type StoreUnValidUsingDELETEMutationError = unknown
  * @summary storeUnValid
  */
 export const useStoreUnValidUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreUnValidUsingDELETEHook>>>,
-        TError,
-        { technicalName: string; params?: StoreUnValidUsingDELETEParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreUnValidUsingDELETEHook>>>, TError, { technicalName: string }, TContext>
 }) => {
     const mutationOptions = useStoreUnValidUsingDELETEMutationOptions(options)
 
@@ -2041,13 +1328,12 @@ export const useListAttrProfileLMUsingGET = <
 export const useStoreNewCiTypeRelationshipTypeMapUsingPOSTHook = () => {
     const storeNewCiTypeRelationshipTypeMapUsingPOST = useTypesRepoSwaggerClient<void>()
 
-    return (ciTypeRelationshipTypeMapBody: CiTypeRelationshipTypeMapBody, params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams) => {
+    return (ciTypeRelationshipTypeMapBody: CiTypeRelationshipTypeMapBody) => {
         return storeNewCiTypeRelationshipTypeMapUsingPOST({
             url: `/cityperelationshiptypemaps/cityperelationshiptypemap/store`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: ciTypeRelationshipTypeMapBody,
-            params,
         })
     }
 }
@@ -2056,13 +1342,13 @@ export const useStoreNewCiTypeRelationshipTypeMapUsingPOSTMutationOptions = <TEr
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeRelationshipTypeMapUsingPOSTHook>>>,
         TError,
-        { data: CiTypeRelationshipTypeMapBody; params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams },
+        { data: CiTypeRelationshipTypeMapBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeRelationshipTypeMapUsingPOSTHook>>>,
     TError,
-    { data: CiTypeRelationshipTypeMapBody; params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams },
+    { data: CiTypeRelationshipTypeMapBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2071,11 +1357,11 @@ export const useStoreNewCiTypeRelationshipTypeMapUsingPOSTMutationOptions = <TEr
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeRelationshipTypeMapUsingPOSTHook>>>,
-        { data: CiTypeRelationshipTypeMapBody; params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams }
+        { data: CiTypeRelationshipTypeMapBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return storeNewCiTypeRelationshipTypeMapUsingPOST(data, params)
+        return storeNewCiTypeRelationshipTypeMapUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -2094,7 +1380,7 @@ export const useStoreNewCiTypeRelationshipTypeMapUsingPOST = <TError = unknown, 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeRelationshipTypeMapUsingPOSTHook>>>,
         TError,
-        { data: CiTypeRelationshipTypeMapBody; params?: StoreNewCiTypeRelationshipTypeMapUsingPOSTParams },
+        { data: CiTypeRelationshipTypeMapBody },
         TContext
     >
 }) => {
@@ -2109,13 +1395,12 @@ export const useStoreNewCiTypeRelationshipTypeMapUsingPOST = <TError = unknown, 
 export const useStoreExistsCiTypeRelationshipTypeMapUsingPUTHook = () => {
     const storeExistsCiTypeRelationshipTypeMapUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (ciTypeRelationshipTypeMapBody: CiTypeRelationshipTypeMapBody, params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams) => {
+    return (ciTypeRelationshipTypeMapBody: CiTypeRelationshipTypeMapBody) => {
         return storeExistsCiTypeRelationshipTypeMapUsingPUT({
             url: `/cityperelationshiptypemaps/cityperelationshiptypemap/store`,
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             data: ciTypeRelationshipTypeMapBody,
-            params,
         })
     }
 }
@@ -2124,13 +1409,13 @@ export const useStoreExistsCiTypeRelationshipTypeMapUsingPUTMutationOptions = <T
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistsCiTypeRelationshipTypeMapUsingPUTHook>>>,
         TError,
-        { data: CiTypeRelationshipTypeMapBody; params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams },
+        { data: CiTypeRelationshipTypeMapBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreExistsCiTypeRelationshipTypeMapUsingPUTHook>>>,
     TError,
-    { data: CiTypeRelationshipTypeMapBody; params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams },
+    { data: CiTypeRelationshipTypeMapBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2139,11 +1424,11 @@ export const useStoreExistsCiTypeRelationshipTypeMapUsingPUTMutationOptions = <T
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreExistsCiTypeRelationshipTypeMapUsingPUTHook>>>,
-        { data: CiTypeRelationshipTypeMapBody; params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams }
+        { data: CiTypeRelationshipTypeMapBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return storeExistsCiTypeRelationshipTypeMapUsingPUT(data, params)
+        return storeExistsCiTypeRelationshipTypeMapUsingPUT(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -2162,7 +1447,7 @@ export const useStoreExistsCiTypeRelationshipTypeMapUsingPUT = <TError = unknown
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistsCiTypeRelationshipTypeMapUsingPUTHook>>>,
         TError,
-        { data: CiTypeRelationshipTypeMapBody; params?: StoreExistsCiTypeRelationshipTypeMapUsingPUTParams },
+        { data: CiTypeRelationshipTypeMapBody },
         TContext
     >
 }) => {
@@ -2177,41 +1462,27 @@ export const useStoreExistsCiTypeRelationshipTypeMapUsingPUT = <TError = unknown
 export const useStoreAdminEntityUsingPOSTHook = () => {
     const storeAdminEntityUsingPOST = useTypesRepoSwaggerClient<void>()
 
-    return (ciTypeBody: CiTypeBody, params?: StoreAdminEntityUsingPOSTParams) => {
+    return (ciTypeBody: CiTypeBody) => {
         return storeAdminEntityUsingPOST({
             url: `/citypes/adminentity/store`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: ciTypeBody,
-            params,
         })
     }
 }
 
 export const useStoreAdminEntityUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>,
-        TError,
-        { data: CiTypeBody; params?: StoreAdminEntityUsingPOSTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>,
-    TError,
-    { data: CiTypeBody; params?: StoreAdminEntityUsingPOSTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>, TError, { data: CiTypeBody }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>, TError, { data: CiTypeBody }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeAdminEntityUsingPOST = useStoreAdminEntityUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>,
-        { data: CiTypeBody; params?: StoreAdminEntityUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>, { data: CiTypeBody }> = (props) => {
+        const { data } = props ?? {}
 
-        return storeAdminEntityUsingPOST(data, params)
+        return storeAdminEntityUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -2225,12 +1496,7 @@ export type StoreAdminEntityUsingPOSTMutationError = unknown
  * @summary storeAdminEntity
  */
 export const useStoreAdminEntityUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>,
-        TError,
-        { data: CiTypeBody; params?: StoreAdminEntityUsingPOSTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOSTHook>>>, TError, { data: CiTypeBody }, TContext>
 }) => {
     const mutationOptions = useStoreAdminEntityUsingPOSTMutationOptions(options)
 
@@ -2243,41 +1509,27 @@ export const useStoreAdminEntityUsingPOST = <TError = unknown, TContext = unknow
 export const useStoreNewCiTypeUsingPOSTHook = () => {
     const storeNewCiTypeUsingPOST = useTypesRepoSwaggerClient<void>()
 
-    return (ciTypeBody: CiTypeBody, params?: StoreNewCiTypeUsingPOSTParams) => {
+    return (ciTypeBody: CiTypeBody) => {
         return storeNewCiTypeUsingPOST({
             url: `/citypes/citype/store`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: ciTypeBody,
-            params,
         })
     }
 }
 
 export const useStoreNewCiTypeUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>,
-        TError,
-        { data: CiTypeBody; params?: StoreNewCiTypeUsingPOSTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>,
-    TError,
-    { data: CiTypeBody; params?: StoreNewCiTypeUsingPOSTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>, TError, { data: CiTypeBody }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>, TError, { data: CiTypeBody }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeNewCiTypeUsingPOST = useStoreNewCiTypeUsingPOSTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>,
-        { data: CiTypeBody; params?: StoreNewCiTypeUsingPOSTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>, { data: CiTypeBody }> = (props) => {
+        const { data } = props ?? {}
 
-        return storeNewCiTypeUsingPOST(data, params)
+        return storeNewCiTypeUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -2291,12 +1543,7 @@ export type StoreNewCiTypeUsingPOSTMutationError = unknown
  * @summary storeNewCiType
  */
 export const useStoreNewCiTypeUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>,
-        TError,
-        { data: CiTypeBody; params?: StoreNewCiTypeUsingPOSTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeUsingPOSTHook>>>, TError, { data: CiTypeBody }, TContext>
 }) => {
     const mutationOptions = useStoreNewCiTypeUsingPOSTMutationOptions(options)
 
@@ -2309,41 +1556,27 @@ export const useStoreNewCiTypeUsingPOST = <TError = unknown, TContext = unknown>
 export const useStoreExistCiTypeUsingPUTHook = () => {
     const storeExistCiTypeUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (ciTypeBody: CiTypeBody, params?: StoreExistCiTypeUsingPUTParams) => {
+    return (ciTypeBody: CiTypeBody) => {
         return storeExistCiTypeUsingPUT({
             url: `/citypes/citype/store`,
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             data: ciTypeBody,
-            params,
         })
     }
 }
 
 export const useStoreExistCiTypeUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>,
-        TError,
-        { data: CiTypeBody; params?: StoreExistCiTypeUsingPUTParams },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>,
-    TError,
-    { data: CiTypeBody; params?: StoreExistCiTypeUsingPUTParams },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>, TError, { data: CiTypeBody }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>, TError, { data: CiTypeBody }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeExistCiTypeUsingPUT = useStoreExistCiTypeUsingPUTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>,
-        { data: CiTypeBody; params?: StoreExistCiTypeUsingPUTParams }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>, { data: CiTypeBody }> = (props) => {
+        const { data } = props ?? {}
 
-        return storeExistCiTypeUsingPUT(data, params)
+        return storeExistCiTypeUsingPUT(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -2357,12 +1590,7 @@ export type StoreExistCiTypeUsingPUTMutationError = unknown
  * @summary storeExistCiType
  */
 export const useStoreExistCiTypeUsingPUT = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>,
-        TError,
-        { data: CiTypeBody; params?: StoreExistCiTypeUsingPUTParams },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeUsingPUTHook>>>, TError, { data: CiTypeBody }, TContext>
 }) => {
     const mutationOptions = useStoreExistCiTypeUsingPUTMutationOptions(options)
 
@@ -2375,35 +1603,22 @@ export const useStoreExistCiTypeUsingPUT = <TError = unknown, TContext = unknown
 export const useStoreValidUsingPUT2Hook = () => {
     const storeValidUsingPUT2 = useTypesRepoSwaggerClient<void>()
 
-    return (technicalName: string, params?: StoreValidUsingPUT2Params) => {
-        return storeValidUsingPUT2({ url: `/citypes/citype/valid/${technicalName}`, method: 'put', params })
+    return (technicalName: string) => {
+        return storeValidUsingPUT2({ url: `/citypes/citype/valid/${technicalName}`, method: 'put' })
     }
 }
 
 export const useStoreValidUsingPUT2MutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT2Hook>>>,
-        TError,
-        { technicalName: string; params?: StoreValidUsingPUT2Params },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT2Hook>>>,
-    TError,
-    { technicalName: string; params?: StoreValidUsingPUT2Params },
-    TContext
-> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT2Hook>>>, TError, { technicalName: string }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT2Hook>>>, TError, { technicalName: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeValidUsingPUT2 = useStoreValidUsingPUT2Hook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT2Hook>>>,
-        { technicalName: string; params?: StoreValidUsingPUT2Params }
-    > = (props) => {
-        const { technicalName, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT2Hook>>>, { technicalName: string }> = (props) => {
+        const { technicalName } = props ?? {}
 
-        return storeValidUsingPUT2(technicalName, params)
+        return storeValidUsingPUT2(technicalName)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -2417,12 +1632,7 @@ export type StoreValidUsingPUT2MutationError = unknown
  * @summary storeValid
  */
 export const useStoreValidUsingPUT2 = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT2Hook>>>,
-        TError,
-        { technicalName: string; params?: StoreValidUsingPUT2Params },
-        TContext
-    >
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreValidUsingPUT2Hook>>>, TError, { technicalName: string }, TContext>
 }) => {
     const mutationOptions = useStoreValidUsingPUT2MutationOptions(options)
 
@@ -2435,8 +1645,8 @@ export const useStoreValidUsingPUT2 = <TError = unknown, TContext = unknown>(opt
 export const useStoreUnvalidUsingDELETE1Hook = () => {
     const storeUnvalidUsingDELETE1 = useTypesRepoSwaggerClient<void>()
 
-    return (technicalName: string, params?: StoreUnvalidUsingDELETE1Params) => {
-        return storeUnvalidUsingDELETE1({ url: `/citypes/citype/valid/${technicalName}`, method: 'delete', params })
+    return (technicalName: string) => {
+        return storeUnvalidUsingDELETE1({ url: `/citypes/citype/valid/${technicalName}`, method: 'delete' })
     }
 }
 
@@ -2444,26 +1654,20 @@ export const useStoreUnvalidUsingDELETE1MutationOptions = <TError = unknown, TCo
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETE1Hook>>>,
         TError,
-        { technicalName: string; params?: StoreUnvalidUsingDELETE1Params },
+        { technicalName: string },
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETE1Hook>>>,
-    TError,
-    { technicalName: string; params?: StoreUnvalidUsingDELETE1Params },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETE1Hook>>>, TError, { technicalName: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeUnvalidUsingDELETE1 = useStoreUnvalidUsingDELETE1Hook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETE1Hook>>>,
-        { technicalName: string; params?: StoreUnvalidUsingDELETE1Params }
-    > = (props) => {
-        const { technicalName, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETE1Hook>>>, { technicalName: string }> = (
+        props,
+    ) => {
+        const { technicalName } = props ?? {}
 
-        return storeUnvalidUsingDELETE1(technicalName, params)
+        return storeUnvalidUsingDELETE1(technicalName)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -2480,7 +1684,7 @@ export const useStoreUnvalidUsingDELETE1 = <TError = unknown, TContext = unknown
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreUnvalidUsingDELETE1Hook>>>,
         TError,
-        { technicalName: string; params?: StoreUnvalidUsingDELETE1Params },
+        { technicalName: string },
         TContext
     >
 }) => {
@@ -2543,13 +1747,12 @@ export const useGetCiTypeUsingGET = <TData = Awaited<ReturnType<ReturnType<typeo
 export const useStoreAttributeTextationUsingPUTHook = () => {
     const storeAttributeTextationUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (technicalName: string, attTecName: string, attributeBody: AttributeBody, params?: StoreAttributeTextationUsingPUTParams) => {
+    return (technicalName: string, attTecName: string, attributeBody: AttributeBody) => {
         return storeAttributeTextationUsingPUT({
             url: `/citypes/citype/${technicalName}/attribute/${attTecName}`,
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             data: attributeBody,
-            params,
         })
     }
 }
@@ -2558,13 +1761,13 @@ export const useStoreAttributeTextationUsingPUTMutationOptions = <TError = unkno
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUTHook>>>,
         TError,
-        { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUTParams },
+        { technicalName: string; attTecName: string; data: AttributeBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUTHook>>>,
     TError,
-    { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUTParams },
+    { technicalName: string; attTecName: string; data: AttributeBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2573,11 +1776,11 @@ export const useStoreAttributeTextationUsingPUTMutationOptions = <TError = unkno
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUTHook>>>,
-        { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUTParams }
+        { technicalName: string; attTecName: string; data: AttributeBody }
     > = (props) => {
-        const { technicalName, attTecName, data, params } = props ?? {}
+        const { technicalName, attTecName, data } = props ?? {}
 
-        return storeAttributeTextationUsingPUT(technicalName, attTecName, data, params)
+        return storeAttributeTextationUsingPUT(technicalName, attTecName, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -2596,7 +1799,7 @@ export const useStoreAttributeTextationUsingPUT = <TError = unknown, TContext = 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUTHook>>>,
         TError,
-        { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUTParams },
+        { technicalName: string; attTecName: string; data: AttributeBody },
         TContext
     >
 }) => {
@@ -2952,30 +2155,28 @@ export const useDeleteSummarizingCardUsingDELETE = <TError = unknown, TContext =
 export const useGenerateCodeAndURLUsingGET1Hook = () => {
     const generateCodeAndURLUsingGET1 = useTypesRepoSwaggerClient<CiCode>()
 
-    return (technicalName: string, params?: GenerateCodeAndURLUsingGET1Params, signal?: AbortSignal) => {
-        return generateCodeAndURLUsingGET1({ url: `/citypes/generate/${technicalName}`, method: 'get', params, signal })
+    return (technicalName: string, signal?: AbortSignal) => {
+        return generateCodeAndURLUsingGET1({ url: `/citypes/generate/${technicalName}`, method: 'get', signal })
     }
 }
 
-export const getGenerateCodeAndURLUsingGET1QueryKey = (technicalName: string, params?: GenerateCodeAndURLUsingGET1Params) =>
-    [`/citypes/generate/${technicalName}`, ...(params ? [params] : [])] as const
+export const getGenerateCodeAndURLUsingGET1QueryKey = (technicalName: string) => [`/citypes/generate/${technicalName}`] as const
 
 export const useGenerateCodeAndURLUsingGET1QueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGET1Hook>>>,
     TError = void,
 >(
     technicalName: string,
-    params?: GenerateCodeAndURLUsingGET1Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGET1Hook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGET1Hook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGenerateCodeAndURLUsingGET1QueryKey(technicalName, params)
+    const queryKey = queryOptions?.queryKey ?? getGenerateCodeAndURLUsingGET1QueryKey(technicalName)
 
     const generateCodeAndURLUsingGET1 = useGenerateCodeAndURLUsingGET1Hook()
 
     const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGET1Hook>>>> = ({ signal }) =>
-        generateCodeAndURLUsingGET1(technicalName, params, signal)
+        generateCodeAndURLUsingGET1(technicalName, signal)
 
     return { queryKey, queryFn, enabled: !!technicalName, ...queryOptions }
 }
@@ -2988,10 +2189,9 @@ export type GenerateCodeAndURLUsingGET1QueryError = void
  */
 export const useGenerateCodeAndURLUsingGET1 = <TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGET1Hook>>>, TError = void>(
     technicalName: string,
-    params?: GenerateCodeAndURLUsingGET1Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLUsingGET1Hook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useGenerateCodeAndURLUsingGET1QueryOptions(technicalName, params, options)
+    const queryOptions = useGenerateCodeAndURLUsingGET1QueryOptions(technicalName, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -3060,27 +2260,25 @@ export const useGenerateCodeAndURLUsingGET = <TData = Awaited<ReturnType<ReturnT
 export const useGetLastCodeUsingGETHook = () => {
     const getLastCodeUsingGET = useTypesRepoSwaggerClient<CiCode>()
 
-    return (technicalName: string, params?: GetLastCodeUsingGETParams, signal?: AbortSignal) => {
-        return getLastCodeUsingGET({ url: `/citypes/getLastCode/${technicalName}`, method: 'get', params, signal })
+    return (technicalName: string, signal?: AbortSignal) => {
+        return getLastCodeUsingGET({ url: `/citypes/getLastCode/${technicalName}`, method: 'get', signal })
     }
 }
 
-export const getGetLastCodeUsingGETQueryKey = (technicalName: string, params?: GetLastCodeUsingGETParams) =>
-    [`/citypes/getLastCode/${technicalName}`, ...(params ? [params] : [])] as const
+export const getGetLastCodeUsingGETQueryKey = (technicalName: string) => [`/citypes/getLastCode/${technicalName}`] as const
 
 export const useGetLastCodeUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>, TError = void>(
     technicalName: string,
-    params?: GetLastCodeUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGetLastCodeUsingGETQueryKey(technicalName, params)
+    const queryKey = queryOptions?.queryKey ?? getGetLastCodeUsingGETQueryKey(technicalName)
 
     const getLastCodeUsingGET = useGetLastCodeUsingGETHook()
 
     const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>> = ({ signal }) =>
-        getLastCodeUsingGET(technicalName, params, signal)
+        getLastCodeUsingGET(technicalName, signal)
 
     return { queryKey, queryFn, enabled: !!technicalName, ...queryOptions }
 }
@@ -3093,10 +2291,9 @@ export type GetLastCodeUsingGETQueryError = void
  */
 export const useGetLastCodeUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>, TError = void>(
     technicalName: string,
-    params?: GetLastCodeUsingGETParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetLastCodeUsingGETHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useGetLastCodeUsingGETQueryOptions(technicalName, params, options)
+    const queryOptions = useGetLastCodeUsingGETQueryOptions(technicalName, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -3248,13 +2445,12 @@ export const useListTypesUsingPOST = <TError = unknown, TContext = unknown>(opti
 export const useStoreAdminEntityUsingPOST1Hook = () => {
     const storeAdminEntityUsingPOST1 = useTypesRepoSwaggerClient<void>()
 
-    return (relationshipType: RelationshipType, params?: StoreAdminEntityUsingPOST1Params) => {
+    return (relationshipType: RelationshipType) => {
         return storeAdminEntityUsingPOST1({
             url: `/relationshiptypes/adminentity/store`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: relationshipType,
-            params,
         })
     }
 }
@@ -3263,26 +2459,20 @@ export const useStoreAdminEntityUsingPOST1MutationOptions = <TError = unknown, T
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOST1Hook>>>,
         TError,
-        { data: RelationshipType; params?: StoreAdminEntityUsingPOST1Params },
+        { data: RelationshipType },
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOST1Hook>>>,
-    TError,
-    { data: RelationshipType; params?: StoreAdminEntityUsingPOST1Params },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOST1Hook>>>, TError, { data: RelationshipType }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const storeAdminEntityUsingPOST1 = useStoreAdminEntityUsingPOST1Hook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOST1Hook>>>,
-        { data: RelationshipType; params?: StoreAdminEntityUsingPOST1Params }
-    > = (props) => {
-        const { data, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOST1Hook>>>, { data: RelationshipType }> = (
+        props,
+    ) => {
+        const { data } = props ?? {}
 
-        return storeAdminEntityUsingPOST1(data, params)
+        return storeAdminEntityUsingPOST1(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -3299,7 +2489,7 @@ export const useStoreAdminEntityUsingPOST1 = <TError = unknown, TContext = unkno
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityUsingPOST1Hook>>>,
         TError,
-        { data: RelationshipType; params?: StoreAdminEntityUsingPOST1Params },
+        { data: RelationshipType },
         TContext
     >
 }) => {
@@ -3436,13 +2626,12 @@ export const useListRelationshipTypesUsingPOST = <TError = unknown, TContext = u
 export const useStoreNewRelationshipTypeUsingPOSTHook = () => {
     const storeNewRelationshipTypeUsingPOST = useTypesRepoSwaggerClient<RelationshipType | void>()
 
-    return (relationshipTypeBody: RelationshipTypeBody, params?: StoreNewRelationshipTypeUsingPOSTParams) => {
+    return (relationshipTypeBody: RelationshipTypeBody) => {
         return storeNewRelationshipTypeUsingPOST({
             url: `/relationshiptypes/relationshiptype/store`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             data: relationshipTypeBody,
-            params,
         })
     }
 }
@@ -3451,13 +2640,13 @@ export const useStoreNewRelationshipTypeUsingPOSTMutationOptions = <TError = unk
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewRelationshipTypeUsingPOSTHook>>>,
         TError,
-        { data: RelationshipTypeBody; params?: StoreNewRelationshipTypeUsingPOSTParams },
+        { data: RelationshipTypeBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreNewRelationshipTypeUsingPOSTHook>>>,
     TError,
-    { data: RelationshipTypeBody; params?: StoreNewRelationshipTypeUsingPOSTParams },
+    { data: RelationshipTypeBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3466,11 +2655,11 @@ export const useStoreNewRelationshipTypeUsingPOSTMutationOptions = <TError = unk
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreNewRelationshipTypeUsingPOSTHook>>>,
-        { data: RelationshipTypeBody; params?: StoreNewRelationshipTypeUsingPOSTParams }
+        { data: RelationshipTypeBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return storeNewRelationshipTypeUsingPOST(data, params)
+        return storeNewRelationshipTypeUsingPOST(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -3489,7 +2678,7 @@ export const useStoreNewRelationshipTypeUsingPOST = <TError = unknown, TContext 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewRelationshipTypeUsingPOSTHook>>>,
         TError,
-        { data: RelationshipTypeBody; params?: StoreNewRelationshipTypeUsingPOSTParams },
+        { data: RelationshipTypeBody },
         TContext
     >
 }) => {
@@ -3504,13 +2693,12 @@ export const useStoreNewRelationshipTypeUsingPOST = <TError = unknown, TContext 
 export const useStoreExistRelationshipTypeUsingPUTHook = () => {
     const storeExistRelationshipTypeUsingPUT = useTypesRepoSwaggerClient<RelationshipType | void>()
 
-    return (relationshipTypeBody: RelationshipTypeBody, params?: StoreExistRelationshipTypeUsingPUTParams) => {
+    return (relationshipTypeBody: RelationshipTypeBody) => {
         return storeExistRelationshipTypeUsingPUT({
             url: `/relationshiptypes/relationshiptype/store`,
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             data: relationshipTypeBody,
-            params,
         })
     }
 }
@@ -3519,13 +2707,13 @@ export const useStoreExistRelationshipTypeUsingPUTMutationOptions = <TError = un
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistRelationshipTypeUsingPUTHook>>>,
         TError,
-        { data: RelationshipTypeBody; params?: StoreExistRelationshipTypeUsingPUTParams },
+        { data: RelationshipTypeBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreExistRelationshipTypeUsingPUTHook>>>,
     TError,
-    { data: RelationshipTypeBody; params?: StoreExistRelationshipTypeUsingPUTParams },
+    { data: RelationshipTypeBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3534,11 +2722,11 @@ export const useStoreExistRelationshipTypeUsingPUTMutationOptions = <TError = un
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreExistRelationshipTypeUsingPUTHook>>>,
-        { data: RelationshipTypeBody; params?: StoreExistRelationshipTypeUsingPUTParams }
+        { data: RelationshipTypeBody }
     > = (props) => {
-        const { data, params } = props ?? {}
+        const { data } = props ?? {}
 
-        return storeExistRelationshipTypeUsingPUT(data, params)
+        return storeExistRelationshipTypeUsingPUT(data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -3557,7 +2745,7 @@ export const useStoreExistRelationshipTypeUsingPUT = <TError = unknown, TContext
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistRelationshipTypeUsingPUTHook>>>,
         TError,
-        { data: RelationshipTypeBody; params?: StoreExistRelationshipTypeUsingPUTParams },
+        { data: RelationshipTypeBody },
         TContext
     >
 }) => {
@@ -3572,8 +2760,8 @@ export const useStoreExistRelationshipTypeUsingPUT = <TError = unknown, TContext
 export const useValidRelationshipTypeUsingPUTHook = () => {
     const validRelationshipTypeUsingPUT = useTypesRepoSwaggerClient<void>()
 
-    return (technicalName: string, params?: ValidRelationshipTypeUsingPUTParams) => {
-        return validRelationshipTypeUsingPUT({ url: `/relationshiptypes/relationshiptype/valid/${technicalName}`, method: 'put', params })
+    return (technicalName: string) => {
+        return validRelationshipTypeUsingPUT({ url: `/relationshiptypes/relationshiptype/valid/${technicalName}`, method: 'put' })
     }
 }
 
@@ -3581,26 +2769,20 @@ export const useValidRelationshipTypeUsingPUTMutationOptions = <TError = unknown
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeUsingPUTHook>>>,
         TError,
-        { technicalName: string; params?: ValidRelationshipTypeUsingPUTParams },
+        { technicalName: string },
         TContext
     >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeUsingPUTHook>>>,
-    TError,
-    { technicalName: string; params?: ValidRelationshipTypeUsingPUTParams },
-    TContext
-> => {
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeUsingPUTHook>>>, TError, { technicalName: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const validRelationshipTypeUsingPUT = useValidRelationshipTypeUsingPUTHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeUsingPUTHook>>>,
-        { technicalName: string; params?: ValidRelationshipTypeUsingPUTParams }
-    > = (props) => {
-        const { technicalName, params } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeUsingPUTHook>>>, { technicalName: string }> = (
+        props,
+    ) => {
+        const { technicalName } = props ?? {}
 
-        return validRelationshipTypeUsingPUT(technicalName, params)
+        return validRelationshipTypeUsingPUT(technicalName)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -3617,7 +2799,7 @@ export const useValidRelationshipTypeUsingPUT = <TError = unknown, TContext = un
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeUsingPUTHook>>>,
         TError,
-        { technicalName: string; params?: ValidRelationshipTypeUsingPUTParams },
+        { technicalName: string },
         TContext
     >
 }) => {
@@ -3632,8 +2814,8 @@ export const useValidRelationshipTypeUsingPUT = <TError = unknown, TContext = un
 export const useUnvalidRelationshipTypeUsingDELETEHook = () => {
     const unvalidRelationshipTypeUsingDELETE = useTypesRepoSwaggerClient<void>()
 
-    return (technicalName: string, params?: UnvalidRelationshipTypeUsingDELETEParams) => {
-        return unvalidRelationshipTypeUsingDELETE({ url: `/relationshiptypes/relationshiptype/valid/${technicalName}`, method: 'delete', params })
+    return (technicalName: string) => {
+        return unvalidRelationshipTypeUsingDELETE({ url: `/relationshiptypes/relationshiptype/valid/${technicalName}`, method: 'delete' })
     }
 }
 
@@ -3641,13 +2823,13 @@ export const useUnvalidRelationshipTypeUsingDELETEMutationOptions = <TError = un
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUnvalidRelationshipTypeUsingDELETEHook>>>,
         TError,
-        { technicalName: string; params?: UnvalidRelationshipTypeUsingDELETEParams },
+        { technicalName: string },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useUnvalidRelationshipTypeUsingDELETEHook>>>,
     TError,
-    { technicalName: string; params?: UnvalidRelationshipTypeUsingDELETEParams },
+    { technicalName: string },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3656,11 +2838,11 @@ export const useUnvalidRelationshipTypeUsingDELETEMutationOptions = <TError = un
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useUnvalidRelationshipTypeUsingDELETEHook>>>,
-        { technicalName: string; params?: UnvalidRelationshipTypeUsingDELETEParams }
+        { technicalName: string }
     > = (props) => {
-        const { technicalName, params } = props ?? {}
+        const { technicalName } = props ?? {}
 
-        return unvalidRelationshipTypeUsingDELETE(technicalName, params)
+        return unvalidRelationshipTypeUsingDELETE(technicalName)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -3679,7 +2861,7 @@ export const useUnvalidRelationshipTypeUsingDELETE = <TError = unknown, TContext
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUnvalidRelationshipTypeUsingDELETEHook>>>,
         TError,
-        { technicalName: string; params?: UnvalidRelationshipTypeUsingDELETEParams },
+        { technicalName: string },
         TContext
     >
 }) => {
@@ -3745,13 +2927,12 @@ export const useGetRelationshipTypeUsingGET = <TData = Awaited<ReturnType<Return
 export const useStoreAttributeTextationUsingPUT1Hook = () => {
     const storeAttributeTextationUsingPUT1 = useTypesRepoSwaggerClient<void>()
 
-    return (technicalName: string, attTecName: string, attributeBody: AttributeBody, params?: StoreAttributeTextationUsingPUT1Params) => {
+    return (technicalName: string, attTecName: string, attributeBody: AttributeBody) => {
         return storeAttributeTextationUsingPUT1({
             url: `/relationshiptypes/relationshiptype/${technicalName}/attribute/${attTecName}`,
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             data: attributeBody,
-            params,
         })
     }
 }
@@ -3760,13 +2941,13 @@ export const useStoreAttributeTextationUsingPUT1MutationOptions = <TError = unkn
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUT1Hook>>>,
         TError,
-        { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUT1Params },
+        { technicalName: string; attTecName: string; data: AttributeBody },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUT1Hook>>>,
     TError,
-    { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUT1Params },
+    { technicalName: string; attTecName: string; data: AttributeBody },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3775,11 +2956,11 @@ export const useStoreAttributeTextationUsingPUT1MutationOptions = <TError = unkn
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUT1Hook>>>,
-        { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUT1Params }
+        { technicalName: string; attTecName: string; data: AttributeBody }
     > = (props) => {
-        const { technicalName, attTecName, data, params } = props ?? {}
+        const { technicalName, attTecName, data } = props ?? {}
 
-        return storeAttributeTextationUsingPUT1(technicalName, attTecName, data, params)
+        return storeAttributeTextationUsingPUT1(technicalName, attTecName, data)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -3798,7 +2979,7 @@ export const useStoreAttributeTextationUsingPUT1 = <TError = unknown, TContext =
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationUsingPUT1Hook>>>,
         TError,
-        { technicalName: string; attTecName: string; data: AttributeBody; params?: StoreAttributeTextationUsingPUT1Params },
+        { technicalName: string; attTecName: string; data: AttributeBody },
         TContext
     >
 }) => {
@@ -3813,11 +2994,10 @@ export const useStoreAttributeTextationUsingPUT1 = <TError = unknown, TContext =
 export const useDeleteAttributeTextationUsingDELETE1Hook = () => {
     const deleteAttributeTextationUsingDELETE1 = useTypesRepoSwaggerClient<void>()
 
-    return (technicalName: string, attTecName: string, params?: DeleteAttributeTextationUsingDELETE1Params) => {
+    return (technicalName: string, attTecName: string) => {
         return deleteAttributeTextationUsingDELETE1({
             url: `/relationshiptypes/relationshiptype/${technicalName}/attribute/${attTecName}`,
             method: 'delete',
-            params,
         })
     }
 }
@@ -3826,13 +3006,13 @@ export const useDeleteAttributeTextationUsingDELETE1MutationOptions = <TError = 
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationUsingDELETE1Hook>>>,
         TError,
-        { technicalName: string; attTecName: string; params?: DeleteAttributeTextationUsingDELETE1Params },
+        { technicalName: string; attTecName: string },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationUsingDELETE1Hook>>>,
     TError,
-    { technicalName: string; attTecName: string; params?: DeleteAttributeTextationUsingDELETE1Params },
+    { technicalName: string; attTecName: string },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3841,11 +3021,11 @@ export const useDeleteAttributeTextationUsingDELETE1MutationOptions = <TError = 
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationUsingDELETE1Hook>>>,
-        { technicalName: string; attTecName: string; params?: DeleteAttributeTextationUsingDELETE1Params }
+        { technicalName: string; attTecName: string }
     > = (props) => {
-        const { technicalName, attTecName, params } = props ?? {}
+        const { technicalName, attTecName } = props ?? {}
 
-        return deleteAttributeTextationUsingDELETE1(technicalName, attTecName, params)
+        return deleteAttributeTextationUsingDELETE1(technicalName, attTecName)
     }
 
     return { mutationFn, ...mutationOptions }
@@ -3864,7 +3044,7 @@ export const useDeleteAttributeTextationUsingDELETE1 = <TError = unknown, TConte
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationUsingDELETE1Hook>>>,
         TError,
-        { technicalName: string; attTecName: string; params?: DeleteAttributeTextationUsingDELETE1Params },
+        { technicalName: string; attTecName: string },
         TContext
     >
 }) => {
