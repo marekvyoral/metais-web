@@ -2,16 +2,17 @@ import classNames from 'classnames'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import styles from './paginator.module.scss'
-import { computePageModel } from './paginatorModel'
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { DotsIcon, PaginatorEndArrowIcon, PaginatorLeftArrowIcon, PaginatorRightArrowIcon, PaginatorStartArrowIcon } from '../assets/images'
 
+import styles from './paginator.module.scss'
+import { computePageModel } from './paginatorModel'
+
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
+import { Pagination } from '@isdd/idsk-ui-kit/types'
+
 type PaginatorProps = {
-    pageNumber: number
-    dataLength: number
-    onPageChanged: (page: number, from: number, to: number) => void
-    pageSize: number
+    pagination: Pagination
+    onPageChanged: (pageNumber: number) => void
 }
 
 /**
@@ -19,10 +20,10 @@ type PaginatorProps = {
  *
  * @param pageNumber starts from 1 to Math.ceil(dataLength / pageSize)
  */
-export const Paginator: React.FC<PaginatorProps> = ({ pageNumber, dataLength, onPageChanged, pageSize }) => {
+export const Paginator: React.FC<PaginatorProps> = ({ pagination, onPageChanged }) => {
     const { t } = useTranslation()
+    const { pageNumber, pageSize, dataLength } = pagination
     const totalPageCount = Math.ceil(dataLength / pageSize)
-
     const pages = useMemo(() => {
         return computePageModel(totalPageCount, pageNumber)
     }, [pageNumber, totalPageCount])
@@ -31,9 +32,7 @@ export const Paginator: React.FC<PaginatorProps> = ({ pageNumber, dataLength, on
         if (page < 1 || page > totalPageCount) {
             return
         }
-        const dataFrom = (page - 1) * pageSize
-        const dataTo = page * pageSize - 1
-        onPageChanged(page, dataFrom, dataTo)
+        onPageChanged(page)
     }
 
     const jumpToFirstPage = () => selectPage(1)

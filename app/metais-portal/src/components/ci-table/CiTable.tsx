@@ -21,9 +21,6 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
     const pageNumber = data?.tableData?.pagination.page ?? BASE_PAGE_NUMBER
     const pageSize = data?.tableData?.pagination.perPage ?? BASE_PAGE_SIZE
 
-    const [start, setStart] = useState<number>(1)
-    const [end, setEnd] = useState<number>(pageSize)
-
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const mapTableData = (tableData: any) => {
         return tableData?.configurationItemSet.map((item: any) => {
@@ -38,20 +35,18 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
     }
     const mappedTableData = mapTableData(data?.tableData) ?? []
 
-    const handlePageChange = (page: number, from: number, to: number) => {
+    const handlePageChange = (page?: number) => {
         filterCallbacks.setListQueryArgs((prev) => ({
             ...prev,
             //when page: page in api changes perPage, BE mistake?
             perpage: page,
         }))
-        setStart(from + 1)
-        setEnd(to + 1 > dataLength ? dataLength : to + 1)
     }
 
     return (
         <>
             <Table columns={columns} data={mappedTableData} />
-            <PaginatorWrapper paginator={{ pageNumber, pageSize, dataLength, handlePageChange }} text={{ start, end, total: dataLength }} />
+            <PaginatorWrapper pagination={{ pageNumber, pageSize, dataLength }} handlePageChange={handlePageChange} />
         </>
     )
 }

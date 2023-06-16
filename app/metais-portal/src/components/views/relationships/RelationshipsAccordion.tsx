@@ -53,6 +53,8 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                                             columns={targetTableColumns(t)}
                                             isLoading={props.isLoading}
                                             isError={props.isError}
+                                            pagination={props.pagination}
+                                            handleFilterChange={props.handleFilterChange}
                                         />
                                     )
                                 }}
@@ -76,6 +78,8 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                                             columns={sourceTableColumns(t)}
                                             isLoading={props.isLoading}
                                             isError={props.isError}
+                                            pagination={props.pagination}
+                                            handleFilterChange={props.handleFilterChange}
                                         />
                                     )
                                 }}

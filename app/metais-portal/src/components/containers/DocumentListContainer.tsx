@@ -1,4 +1,5 @@
-import React, { SetStateAction, useState } from 'react'
+import React, { useState } from 'react'
+import { Pagination } from '@isdd/idsk-ui-kit/types'
 
 import { IPageConfig } from '@/hooks/useEntityRelations'
 import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
@@ -7,7 +8,8 @@ import { mapCiDataFrom } from '@/componentHelpers'
 
 export interface IView {
     data?: NeighbourPairsEntityMapped[]
-    setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
+    pagination: Pagination
+    handleFilterChange: (pageNumber?: number, pageSize?: number, sortBy?: string, sortSource?: string, sortType?: string) => void
     isLoading: boolean
     isError: boolean
 }
@@ -22,7 +24,6 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
         page: 1,
         perPage: 100,
     }
-    const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
 
     const defaultFilter: NeighboursFilterContainerUi = {
         neighboursFilter: {
@@ -31,14 +32,23 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
             relType: ['CI_HAS_DOCUMENT', 'Dokument_sa_tyka_KRIS', 'CONTROL_HAS_DOCUMENT', 'PROJECT_HAS_DOCUMENT'],
             usageType: ['system', 'application'],
         },
-        ...pageConfig,
+        ...defaultPageConfig,
     }
 
+    const [pageFilter, setPageFilter] = useState<NeighboursFilterContainerUi>(defaultFilter)
+    const handleFilterChange = (pageNumber?: number, pageSize?: number, sortBy?: string, sortSource?: string, sortType?: string) => {
+        setPageFilter({ ...pageFilter, page: pageNumber, perpage: pageSize, sortBy, sortSource, sortType })
+    }
     const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', defaultFilter, {})
 
-    if (!configurationItemId) return <View setPageConfig={setPageConfig} isLoading={false} isError />
+    const pagination: Pagination = {
+        pageNumber: pageFilter.page ?? defaultPageConfig.page,
+        pageSize: pageFilter.perpage ?? defaultPageConfig.perPage,
+        dataLength: documentCiData?.fromNodes?.pagination?.totaltems,
+    }
+    if (!configurationItemId) return <View pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
 
     const data = mapCiDataFrom(documentCiData as ReadCiNeighboursUsingPOST200_GeneratedType)
 
-    return <View data={data} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />
+    return <View data={data} pagination={pagination} handleFilterChange={handleFilterChange} isLoading={isLoading} isError={isError} />
 }
