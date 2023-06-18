@@ -9,6 +9,7 @@ import styles from './ciTable.module.scss'
 //placeholders
 interface Table {
     /* eslint-disable @typescript-eslint/no-explicit-any */
+    uuid: string
     attributes: any
     metaAttributes: any
     checked: string
@@ -26,7 +27,7 @@ export const columns: Array<ColumnDef<Table>> = [
         accessorFn: (row) => row?.attributes?.Gen_Profil_nazov,
         header: 'Name',
         id: '1',
-        cell: (row) => <Link to={'#'}>{row.getValue() as string}</Link>,
+        cell: (ctx) => <Link to={'./' + ctx?.row?.original?.uuid}>{ctx?.getValue?.() as string}</Link>,
     },
     {
         accessorFn: (row) => row?.attributes?.Gen_Profil_kod_metais,

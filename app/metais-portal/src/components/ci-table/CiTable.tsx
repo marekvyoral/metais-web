@@ -33,7 +33,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
             })
             const attributes = Object.fromEntries(keyValue)
 
-            return { attributes, metaAttributes: { ...item.metaAttributes } }
+            return { uuid: item.uuid, attributes, metaAttributes: { ...item.metaAttributes } }
         })
     }
     const mappedTableData = mapTableData(data?.tableData) ?? []
