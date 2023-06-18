@@ -150,6 +150,37 @@
     "relationType": {
         "as": "Application service"
     },
+    "documentsTab": {
+        "table": {
+            "name": "Name",
+            "note": "Note",
+            "evidenceStatus": "Evidence status",
+            "createdAt": "Created",
+            "lastModifiedAt": "Last change"
+        }
+    },
+    "relationshipsTab": {
+        "relationshipsVisualization": "Relationships visualization",
+        "tableViewSelectedItemSource": "Table view (Selected item {{selectedItem}} is a source)",
+        "tableViewSelectedItemTarget": "Table view (Selected item {{selectedItem}} is a target)",
+        "table": {
+            "target": "Target (Type)",
+            "targetItemName": "Target item name",
+            "relationshipType": "Relationship type",
+            "evidenceStatus": "Evidence status",
+            "source": "Source (Type)",
+            "sourceItemName": "Source item name"
+        }
+    },
+    "metaAttributes": {
+        "state": {
+            "DRAFT": "Created",
+            "INVALIDATED": "Invalidated",
+            "DELETED": "Invalidated",
+            "UNKNOW": "Unknown",
+            "": ""
+        }
+    },
     "loading": {
         "loadingSubPage": "Loading sub-page"
     }

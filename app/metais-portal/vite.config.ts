@@ -21,13 +21,18 @@ export default defineConfig(({ mode }) => {
                 origin: '*',
             },
             proxy: {
-                '^/citypes/.*': {
-                    target: process.env.VITE_REST_CLIENT_TYPES_REPO_BASE_URL,
+                '^/read/.*': {
+                    target: process.env.VITE_REST_CLIENT_CMDB_TARGET_URL,
                     changeOrigin: true,
                     secure: false,
                 },
-                '^/read/.*': {
-                    target: process.env.VITE_REST_CLIENT_CMDB_BASE_URL,
+                '^/citypes/.*': {
+                    target: process.env.VITE_REST_CLIENT_TYPES_REPO_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
+                },
+                '^/enumsrepository/.*': {
+                    target: process.env.VITE_REST_CLIENT_ENUMS_REPO_TARGET_URL,
                     changeOrigin: true,
                     secure: false,
                 },
