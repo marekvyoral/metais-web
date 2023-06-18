@@ -3,42 +3,38 @@ import React, { SetStateAction, useState } from 'react'
 import { IPageConfig } from '@/hooks/useEntityRelations'
 import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
 import { ReadCiNeighboursUsingPOST200_GeneratedType, NeighbourPairsEntityMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
-import { mapCiDataFrom } from '@/componentHelpers'
 
-export interface IView {
+interface IView {
     data?: NeighbourPairsEntityMapped[]
     setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
     isLoading: boolean
     isError: boolean
 }
 
-interface IDocumentsListContainer {
+interface IRelationshipsTableContainer {
     configurationItemId?: string
     View: React.FC<IView>
+    defaultFilter: NeighboursFilterContainerUi
+    mapData: (data: ReadCiNeighboursUsingPOST200_GeneratedType | void) => NeighbourPairsEntityMapped[] | undefined
 }
 
-export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ configurationItemId, View }) => {
+export const RelationshipsTableContainer: React.FC<IRelationshipsTableContainer> = ({ configurationItemId, View, defaultFilter, mapData }) => {
     const defaultPageConfig: IPageConfig = {
         page: 1,
         perPage: 100,
     }
     const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
 
-    const defaultFilter: NeighboursFilterContainerUi = {
-        neighboursFilter: {
-            ciType: ['Dokument'],
-            metaAttributes: { state: ['DRAFT'] },
-            relType: ['CI_HAS_DOCUMENT', 'Dokument_sa_tyka_KRIS', 'CONTROL_HAS_DOCUMENT', 'PROJECT_HAS_DOCUMENT'],
-            usageType: ['system', 'application'],
-        },
+    const preSetFilter: NeighboursFilterContainerUi = {
+        ...defaultFilter,
         ...pageConfig,
     }
 
-    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', defaultFilter, {})
+    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', preSetFilter, {})
 
     if (!configurationItemId) return <View setPageConfig={setPageConfig} isLoading={false} isError />
 
-    const data = mapCiDataFrom(documentCiData as ReadCiNeighboursUsingPOST200_GeneratedType)
+    const data = mapData(documentCiData as ReadCiNeighboursUsingPOST200_GeneratedType)
 
     return <View data={data} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />
 }
