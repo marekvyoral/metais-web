@@ -1,11 +1,10 @@
-import { AttributeConstraintEnumAllOf, useGetCiTypeUsingGET } from '../api/generated/types-repo-swagger'
+import { useHowToDisplayConstraints } from './useHowToDisplay'
 
-import { useHowToDisplayConstraints, useHowToDisplayUnits } from './useHowToDisplay'
+import { AttributeConstraintEnumAllOf, useGetCiTypeUsingGET } from '@/api'
 
 export const useEntityStructure = (entityName: string) => {
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeUsingGET(entityName)
 
-    const units = ciTypeData?.attributes?.some((attribute) => attribute.units !== null) ?? false
     const constraintsAttributes =
         ciTypeData?.attributes
             ?.map((attribute) =>
@@ -28,18 +27,18 @@ export const useEntityStructure = (entityName: string) => {
 
     const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
-    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useHowToDisplayUnits(units)
+    // const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnumUsingGET(MEASURE_UNIT)
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
     const constraintsData = resultList.map((item) => item.data)
-    const isLoading = [isCiTypeDataLoading, isUnitsLoading, isConstraintLoading].some((item) => item)
-    const isError = [isCiTypeDataError, isUnitsError, isConstraintError].some((item) => item)
+    const isLoading = [isCiTypeDataLoading, isConstraintLoading].some((item) => item) //isUnitsLoading,
+    const isError = [isCiTypeDataError, isConstraintError].some((item) => item) //isUnitsError,
 
     return {
         isLoading,
         isError,
         ciTypeData,
-        unitsData,
         constraintsData,
+        unitsData: undefined,
     }
 }

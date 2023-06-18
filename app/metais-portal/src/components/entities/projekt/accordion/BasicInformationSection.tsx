@@ -22,6 +22,7 @@ export const BasicInformationSection: React.FC<IBasicInformationSectionProps> = 
     description,
 }) => {
     const { t } = useTranslation()
+
     return (
         <>
             <div className={styles.attributeGridRowBox}>
