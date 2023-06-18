@@ -5,9 +5,8 @@ import { PaginatorWrapper } from '../paginatorWrapper/PaginatorWrapper'
 
 import { columns } from './ciTableColumns'
 
-import { IListData, IListFilterCallbacks } from '@/pages/projekt/index'
-import { CiListFilterContainerUi } from '@/api/generated/cmdb-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api/constants'
+import { CiListFilterContainerUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api'
+import { IListData, IListFilterCallbacks } from '@/types/list'
 
 interface ICiTable {
     data: IListData
@@ -17,9 +16,9 @@ interface ICiTable {
 
 export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
     //they have spelling mistakes here in data
-    const dataLength = data?.tableData?.pagination.totaltems ?? BASE_PAGE_SIZE
-    const pageNumber = data?.tableData?.pagination.page ?? BASE_PAGE_NUMBER
-    const pageSize = data?.tableData?.pagination.perPage ?? BASE_PAGE_SIZE
+    const dataLength = data?.tableData?.pagination?.totaltems ?? BASE_PAGE_SIZE
+    const pageNumber = data?.tableData?.pagination?.page ?? BASE_PAGE_NUMBER
+    const pageSize = data?.tableData?.pagination?.perPage ?? BASE_PAGE_SIZE
 
     const [start, setStart] = useState<number>(1)
     const [end, setEnd] = useState<number>(pageSize)
@@ -39,7 +38,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
     const mappedTableData = mapTableData(data?.tableData) ?? []
 
     const handlePageChange = (page: number, from: number, to: number) => {
-        filterCallbacks.setListQueryArgs((prev) => ({
+        filterCallbacks.setListQueryArgs((prev: CiListFilterContainerUi) => ({
             ...prev,
             //when page: page in api changes perPage, BE mistake?
             perpage: page,

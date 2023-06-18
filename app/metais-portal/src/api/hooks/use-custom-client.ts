@@ -2,7 +2,7 @@ export type BodyType<BodyData> = BodyData & { headers?: object }
 
 export type ErrorType<ErrorData> = ErrorData
 
-type CustomClient<T> = (data: {
+export type CustomClient<T> = (data: {
     url: string
     method: 'get' | 'post' | 'put' | 'delete' | 'patch'
     params?: Record<string, string>
@@ -11,7 +11,7 @@ type CustomClient<T> = (data: {
     signal?: AbortSignal
 }) => Promise<T>
 
-export const useCustomClient = <T>(baseURL: string): CustomClient<T> => {
+export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T) => void): CustomClient<T> => {
     return async ({ url, method, params, data }) => {
         const searchParams = params ? `?${new URLSearchParams(params)}` : ''
         const response = await fetch(`${baseURL}${url}` + searchParams, {
@@ -24,6 +24,9 @@ export const useCustomClient = <T>(baseURL: string): CustomClient<T> => {
             ...(data ? { body: JSON.stringify(data) } : {}),
         })
 
-        return response.json()
+        const responseBody = await response.json()
+
+        if (callback) callback(responseBody)
+        return responseBody
     }
 }

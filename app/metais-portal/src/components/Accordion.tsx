@@ -50,7 +50,7 @@ export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ section
                             <div className="govuk-accordion__section-summary govuk-body">{section.summary}</div>
                         </div>
                         <div className="govuk-accordion__section-content" aria-labelledby={buttonId}>
-                            <p className="govuk-body">{section.content}</p>
+                            <div className="govuk-body">{section.content}</div>
                         </div>
                     </div>
                 )

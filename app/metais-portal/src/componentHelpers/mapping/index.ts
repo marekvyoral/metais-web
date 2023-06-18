@@ -25,7 +25,7 @@ export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_Generat
     return documentCiData?.toNodes?.neighbourPairs?.map((nP: NeighbourPairsEntity) => {
         //this should be changed after orval keyValue changes
         const keyValue = new Map<string, AttributeValue>()
-        nP?.configurationItem?.attributes?.forEach((attribute: AttributesEntity) => {
+        nP?.configurationItem?.attributes?.forEach?.((attribute: AttributesEntity) => {
             keyValue.set(attribute?.name, attribute?.value)
         })
         const attributes = Object.fromEntries(keyValue)
@@ -37,7 +37,7 @@ export const mapCiDataTo = (documentCiData: ReadCiNeighboursUsingPOST200_Generat
 export const mapCiData = (documentCiData: ConfigurationItem | void) => {
     const keyValue = new Map<string, AttributeValue>()
 
-    documentCiData?.attributes?.forEach((attribute: AttributesEntity) => {
+    documentCiData?.attributes?.forEach?.((attribute: AttributesEntity) => {
         keyValue.set(attribute?.name, attribute?.value)
     })
     const attributes = Object.fromEntries(keyValue)
