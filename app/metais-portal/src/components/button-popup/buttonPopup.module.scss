@@ -2,7 +2,9 @@ $govuk-global-styles: true;
 @import '@id-sk/frontend/idsk/all';
 
 .whiteBackground {
-    background-color: govuk-colour("white");
+    background-color: govuk-colour('white');
+    border: 1px solid govuk-colour('grey-2');
+    padding: 10px;
 }
 
 .buttonLabel {

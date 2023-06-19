@@ -42,7 +42,7 @@ export const Paginator: React.FC<PaginatorProps> = ({ pagination, onPageChanged 
     const hidePaginator = totalPageCount < 2
 
     return (
-        <nav className={classNames(styles.pagination, { hidden: hidePaginator })} role="navigation" aria-label={t('table.pagination')}>
+        <nav className={classNames(styles.pagination, { hidden: hidePaginator })} role="navigation" aria-label={t('table.pagination') ?? undefined}>
             <Button
                 variant="secondary"
                 label={<img src={PaginatorStartArrowIcon} alt="start-icon" />}

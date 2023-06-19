@@ -150,6 +150,13 @@
     "relationType": {
         "as": "Application service"
     },
+    "tableSelectColumns": {
+        "searchPlaceholder": "Search column name",
+        "refreshButton": "Refresh",
+        "cancelButton": "Cancel",
+        "viewButton": "View",
+        "search": "Search"
+    },
     "documentsTab": {
         "table": {
             "name": "Name",

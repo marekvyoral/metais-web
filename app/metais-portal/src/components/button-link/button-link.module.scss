@@ -7,13 +7,6 @@
     @include govuk-typography-responsive(19);
     cursor: pointer;
 
-    &:link,
-    &:visited,
-    &:hover,
-    &:active {
-        color: $govuk-error-colour;
-    }
-
     &:focus {
         @include govuk-focused-text;
     }

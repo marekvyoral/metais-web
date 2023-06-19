@@ -7,8 +7,7 @@ import { ReadCiNeighboursUsingPOST200_GeneratedType, NeighbourPairsEntityMapped 
 
 interface IView {
     data?: NeighbourPairsEntityMapped[]
-    pagination: Pagination
-    handleFilterChange: (pageNumber?: number, pageSize?: number, sortBy?: string, sortSource?: string, sortType?: string) => void
+    setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
     isLoading: boolean
     isError: boolean
 }
