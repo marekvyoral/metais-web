@@ -44,7 +44,7 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
     const pagination: Pagination = {
         pageNumber: pageFilter.page ?? defaultPageConfig.page,
         pageSize: pageFilter.perpage ?? defaultPageConfig.perPage,
-        dataLength: documentCiData?.fromNodes?.pagination?.totaltems,
+        dataLength: documentCiData?.fromNodes?.pagination?.totaltems ?? 0,
     }
     if (!configurationItemId) return <View pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
 

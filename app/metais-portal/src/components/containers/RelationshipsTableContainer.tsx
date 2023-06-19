@@ -7,7 +7,8 @@ import { ReadCiNeighboursUsingPOST200_GeneratedType, NeighbourPairsEntityMapped 
 
 interface IView {
     data?: NeighbourPairsEntityMapped[]
-    setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
+    pagination: Pagination
+    handleFilterChange: (pageNumber?: number, pageSize?: number, sortBy?: string, sortSource?: string, sortType?: string) => void
     isLoading: boolean
     isError: boolean
 }
@@ -40,7 +41,7 @@ export const RelationshipsTableContainer: React.FC<IRelationshipsTableContainer>
     const pagination: Pagination = {
         pageNumber: pageFilter.page ?? defaultPageConfig.page,
         pageSize: pageFilter.perpage ?? defaultPageConfig.perPage,
-        dataLength: documentCiData?.fromNodes?.pagination?.totaltems,
+        dataLength: documentCiData?.fromNodes?.pagination?.totaltems ?? 0,
     }
 
     if (!configurationItemId) return <View pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
