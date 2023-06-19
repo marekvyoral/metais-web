@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ConfigurationItemUi, useReadConfigurationItemUsingGET, EnumType, AttributeConstraintEnumAllOf, CiType, useGetCiTypeUsingGET } from '@/api'
+import { ConfigurationItemUi, useReadConfigurationItemUsingGET } from '@/api'
 
 export interface ICiContainerView {
     data: {

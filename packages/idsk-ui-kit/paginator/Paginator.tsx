@@ -2,10 +2,12 @@ import classNames from 'classnames'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { DotsIcon, PaginatorEndArrowIcon, PaginatorLeftArrowIcon, PaginatorRightArrowIcon, PaginatorStartArrowIcon } from '../assets/images'
+
 import styles from './paginator.module.scss'
 import { computePageModel } from './paginatorModel'
+
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
-import { DotsIcon, PaginatorEndArrowIcon, PaginatorLeftArrowIcon, PaginatorRightArrowIcon, PaginatorStartArrowIcon } from '../assets/images'
 
 type PaginatorProps = {
     pageNumber: number
@@ -43,7 +45,7 @@ export const Paginator: React.FC<PaginatorProps> = ({ pageNumber, dataLength, on
     const hidePaginator = totalPageCount < 2
 
     return (
-        <nav className={classNames(styles.pagination, { hidden: hidePaginator })} role="navigation" aria-label={t('table.pagination')}>
+        <nav className={classNames(styles.pagination, { hidden: hidePaginator })} role="navigation" aria-label={t('table.pagination') ?? undefined}>
             <Button
                 variant="secondary"
                 label={<img src={PaginatorStartArrowIcon} alt="start-icon" />}

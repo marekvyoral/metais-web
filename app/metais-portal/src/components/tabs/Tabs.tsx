@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react'
+import React, { PropsWithChildren } from 'react'
 import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, matchPath, useLocation } from 'react-router-dom'
@@ -68,6 +68,7 @@ interface ITabs extends PropsWithChildren {
 export const Tabs: React.FC<ITabs> = ({ tabList }) => {
     const { t } = useTranslation()
     const { pathname } = useLocation()
+    const navigate = useNavigate()
 
     const activeTab = tabList.find((tab) => {
         const match = matchPath(
@@ -80,8 +81,6 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
         )
         return match !== null
     })
-
-    const navigate = useNavigate()
 
     const handleSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: string) => {
         event.preventDefault()
