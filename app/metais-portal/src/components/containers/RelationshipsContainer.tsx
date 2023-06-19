@@ -15,7 +15,7 @@ interface IRelationshipsContainer {
 }
 
 export const RelationshipsAccordionContainer: React.FC<IRelationshipsContainer> = ({ configurationItemId, View }) => {
-    const { isLoading, isError, data: documentCiData } = useReadConfigurationItemUsingGET(configurationItemId ?? '', {}, {})
+    const { isLoading, isError, data: documentCiData } = useReadConfigurationItemUsingGET(configurationItemId ?? '')
     if (!configurationItemId) return <View isLoading={false} isError />
     const data = mapCiData(documentCiData as ConfigurationItem)
 

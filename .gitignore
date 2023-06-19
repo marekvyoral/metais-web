@@ -4,6 +4,7 @@
 /app/*/node_modules
 /app/*/.pnp
 .pnp.js
+.yarn
 
 # testing
 /app/*/coverage
@@ -11,6 +12,7 @@
 # production
 /app/*/build
 /app/*/dist
+/app/metais-portal/scripts
 
 # misc
 .DS_Store

@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 
 import { useEntityStructure } from '@/hooks/useEntityStructure'
-import { IListView } from '@/pages/projekt/index'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api/constants'
-import { CiListFilterContainerUi } from '@/api/generated/cmdb-swagger'
+import { CiListFilterContainerUi, useGetDefaultColumnsUsingGET, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api'
 import { useCiQuery } from '@/hooks/useCiQuery'
-import { useGetDefaultColumnsUsingGET } from '@/api'
+import { IListView } from '@/types/list'
 
 interface ICiListContainer {
     entityName: string

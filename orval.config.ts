@@ -18,6 +18,9 @@ const defaultOutputOptions: object = {
 export default defineConfig({
     cmdbSwagger: {
         input: {
+            override: {
+                transformer: './app/metais-portal/scripts/attributesTypesTransformer.js',
+            },
             target: process.env.VITE_REST_CLIENT_CMDB_SWAGGER_SWAGGER_URL ?? '',
             filters: {
                 tags: [
@@ -50,18 +53,28 @@ export default defineConfig({
                             useQuery: true,
                         },
                     },
-                    readCiListUsingPOST: {
-                        query: {
-                            useQuery: true,
+                    readConfigurationItemUsingGET: {
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForReadConfigurationItemUsingGET',
+                        },
+                    },
+                    getRoleParticipantUsingGET: {
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForGetRoleParticipantUsingGET',
+                        },
+                    },
+                    readCiNeighboursWithAllRelsUsingGET: {
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForReadCiNeighboursWithAllRelsUsingGET',
                         },
                     },
                 },
                 mutator: {
                     path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClient.ts',
                     name: 'useCmdbSwaggerClient',
-                },
-                query: {
-                    useQuery: true,
                 },
             },
             ...defaultOutputOptions,
@@ -123,7 +136,7 @@ export default defineConfig({
         input: {
             target: process.env.VITE_REST_CLIENT_ENUMS_REPO_SWAGGER_URL ?? '',
             filters: {
-                tags: ['scheduled-jobs-controller'], // NOT WORKING 'enums-controller', 'enums-item-controller'
+                tags: ['scheduled-jobs-controller', 'enums-controller', 'enums-item-controller'],
             },
         },
         output: {

@@ -1,7 +1,6 @@
-import { UseQueryResult, useQueries, useQuery } from '@tanstack/react-query'
+import { UseQueryResult, useQueries } from '@tanstack/react-query'
 
-import { getHowToDisplayConstraints, getHowToDisplayUnits } from '@/api/HowToDisplay'
-import { EnumType } from '@/api/generated/enums-repo-swagger'
+import { EnumType, getHowToDisplayConstraints } from '@/api'
 
 export const useHowToDisplayConstraints = (constraintsList: (string | undefined)[]) => {
     const resultList: UseQueryResult<EnumType, unknown>[] = useQueries({
@@ -21,21 +20,5 @@ export const useHowToDisplayConstraints = (constraintsList: (string | undefined)
         isLoading,
         isError,
         resultList,
-    }
-}
-
-export const useHowToDisplayUnits = (enabled: boolean) => {
-    const units: UseQueryResult<EnumType, unknown> = useQuery({
-        queryKey: ['displayUnits'],
-        queryFn: () => getHowToDisplayUnits(),
-        enabled: enabled,
-    })
-
-    const { isLoading, isError, data } = units
-
-    return {
-        isLoading,
-        isError,
-        data,
     }
 }

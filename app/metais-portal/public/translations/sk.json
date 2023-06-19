@@ -146,7 +146,8 @@
     },
     "ciType": {
         "informations": "Informácie",
-        "documents": "Dokumenty"
+        "documents": "Dokumenty",
+        "relationships": "Vzťahy"
     },
     "relationType": {
         "as": "Aplikačná služba"
