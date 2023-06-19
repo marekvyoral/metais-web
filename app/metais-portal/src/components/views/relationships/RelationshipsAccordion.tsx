@@ -6,8 +6,8 @@ import { targetTableColumns } from './RelationshipsTargetTableColumns'
 import { sourceTableColumns } from './RelationshipsSourceTableColumns'
 
 import { AccordionContainer } from '@/components/Accordion'
-import { RelationshipsTableContainer } from '@/components/containers/RelationshipsTableContainer'
-import { sourceTableDefaultFilter, targetTableDefualtFilter } from '@/components/containers/RelationshipFilters'
+import { CiNeighboursListContainer } from '@/components/containers/CiNeighboursListContainer'
+import { defaultTargetRelationshipTabFilter, defaultSourceRelationshipTabFilter } from '@/components/containers/RelationshipFilters'
 import { ConfigurationItemUi } from '@/api'
 
 interface RelationshipsAccordion {
@@ -41,9 +41,9 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                             selectedItem: data?.attributes?.Gen_Profil_nazov,
                         }),
                         content: (
-                            <RelationshipsTableContainer
+                            <CiNeighboursListContainer
                                 configurationItemId={configurationItemId}
-                                defaultFilter={targetTableDefualtFilter}
+                                defaultFilter={defaultSourceRelationshipTabFilter}
                                 View={(props) => {
                                     return (
                                         <RelationshipsTable
@@ -63,9 +63,9 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                             selectedItem: data?.attributes?.Gen_Profil_nazov,
                         }),
                         content: (
-                            <RelationshipsTableContainer
+                            <CiNeighboursListContainer
                                 configurationItemId={configurationItemId}
-                                defaultFilter={sourceTableDefaultFilter}
+                                defaultFilter={defaultTargetRelationshipTabFilter}
                                 View={(props) => {
                                     return (
                                         <RelationshipsTable
