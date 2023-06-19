@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 
 import { useEntityStructure } from '@/hooks/useEntityStructure'
-import { useColumnList } from '@/hooks/useColumnList'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api/constants'
-import { CiListFilterContainerUi } from '@/api/generated/cmdb-swagger'
+import { CiListFilterContainerUi, useGetDefaultColumnsUsingGET, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api'
 import { useCiQuery } from '@/hooks/useCiQuery'
 import { IListView } from '@/types/list'
 
@@ -14,7 +12,7 @@ interface ICiListContainer {
 
 export const CiListContainer: React.FC<ICiListContainer> = ({ entityName, ListComponent }) => {
     const { ciTypeData: entityStructure, unitsData, constraintsData } = useEntityStructure(entityName)
-    const { data: columnListData } = useColumnList(entityName)
+    const { data: columnListData } = useGetDefaultColumnsUsingGET(entityName)
 
     const defaultListQueryArgs: CiListFilterContainerUi = {
         filter: {

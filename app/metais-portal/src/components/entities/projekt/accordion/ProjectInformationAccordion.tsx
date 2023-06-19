@@ -5,10 +5,19 @@ import styles from './basicInformationSection.module.scss'
 import { InformationGridRow } from './InformationGridRow'
 
 import { AccordionContainer } from '@/components/Accordion'
-import { ICiContainerView } from '@/components/containers/CiContainer'
 import { pairEnumsToEnumValues } from '@/componentHelpers'
+import { CiType, ConfigurationItemUi, EnumType } from '@/api'
 
-export const ProjectInformationAccordion: React.FC<ICiContainerView> = ({ data: { ciItemData, ciTypeData, constraintsData } }) => {
+interface ProjectInformationData {
+    data: {
+        ciItemData: ConfigurationItemUi | undefined
+        ciTypeData: CiType | undefined
+        constraintsData: (EnumType | undefined)[]
+        unitsData?: EnumType | undefined
+    }
+}
+
+export const ProjectInformationAccordion: React.FC<ProjectInformationData> = ({ data: { ciItemData, ciTypeData, constraintsData } }) => {
     const { t } = useTranslation()
     return (
         <>

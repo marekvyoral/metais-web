@@ -5,13 +5,13 @@ import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 import { useTranslation } from 'react-i18next'
 
 import { CheckBox } from '@/components/CheckBox'
-import { NeighbourPairsEntityMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
+import { NeighbourPairUi } from '@/api'
 
-export interface TableCols extends NeighbourPairsEntityMapped {
+export interface TableCols extends NeighbourPairUi {
     selected?: boolean
 }
 interface DocumentsTable {
-    data?: TableCols[] //missing return types from orval, types should come from backend, not from _GeneratedType file
+    data?: TableCols[]
     isLoading: boolean
     isError: boolean
     additionalColumns?: Array<ColumnDef<TableCols>>
@@ -30,7 +30,6 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColum
 
     if (isLoading) return <Loading />
     if (isError) return <Error />
-
     const additionalColumnsNullsafe = additionalColumns ?? []
     const columns: Array<ColumnDef<TableCols>> = [
         {
@@ -44,31 +43,31 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColum
             cell: (row) => <CheckBox label={row.getValue() as string} name="hi" id="hi" value="hi" />,
         },
         {
-            accessorFn: (row) => row?.configurationItem.attributes?.Gen_Profil_nazov,
+            accessorFn: (row) => row?.configurationItem?.attributes?.Gen_Profil_nazov,
             header: t('documentsTab.table.name'),
             id: '1',
             cell: (row) => row.getValue() as string,
         },
         {
-            accessorFn: (row) => row?.configurationItem.attributes?.Gen_Profil_poznamka,
+            accessorFn: (row) => row?.configurationItem?.attributes?.Gen_Profil_poznamka,
             header: t('documentsTab.table.note'),
             id: '2',
             cell: (row) => row.getValue() as string,
         },
         {
-            accessorFn: (row) => row?.configurationItem.metaAttributes?.state,
+            accessorFn: (row) => row?.configurationItem?.metaAttributes?.state,
             header: t('documentsTab.table.evidenceStatus'),
             id: '3',
             cell: (row) => t(`metaAttributes.state.${row.getValue()}`) as string,
         },
         {
-            accessorFn: (row) => row?.configurationItem.metaAttributes?.createdAt,
+            accessorFn: (row) => row?.configurationItem?.metaAttributes?.createdAt,
             header: t('documentsTab.table.createdAt'),
             id: '4',
             cell: (row) => row.getValue() as string,
         },
         {
-            accessorFn: (row) => row?.configurationItem.metaAttributes?.lastModifiedAt,
+            accessorFn: (row) => row?.configurationItem?.metaAttributes?.lastModifiedAt,
             header: t('documentsTab.table.lastModifiedAt'),
             id: '5',
             cell: (row) => row.getValue() as string,

@@ -8,11 +8,10 @@ import { sourceTableColumns } from './RelationshipsSourceTableColumns'
 import { AccordionContainer } from '@/components/Accordion'
 import { RelationshipsTableContainer } from '@/components/containers/RelationshipsTableContainer'
 import { sourceTableDefaultFilter, targetTableDefualtFilter } from '@/components/containers/RelationshipFilters'
-import { mapCiDataFrom, mapCiDataTo } from '@/componentHelpers'
-import { ConfigurationItemMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
+import { ConfigurationItemUi } from '@/api'
 
 interface RelationshipsAccordion {
-    data?: ConfigurationItemMapped //missing return types from orval, types should come from backend, not from _GeneratedType file
+    data?: ConfigurationItemUi
     isLoading: boolean
     isError: boolean
     configurationItemId?: string
@@ -45,11 +44,10 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                             <RelationshipsTableContainer
                                 configurationItemId={configurationItemId}
                                 defaultFilter={targetTableDefualtFilter}
-                                mapData={mapCiDataFrom} //this is temporary, KV mapping should be done by orval
                                 View={(props) => {
                                     return (
                                         <RelationshipsTable
-                                            data={props?.data}
+                                            data={props?.data?.fromNodes?.neighbourPairs}
                                             columns={targetTableColumns(t)}
                                             isLoading={props.isLoading}
                                             isError={props.isError}
@@ -68,11 +66,10 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                             <RelationshipsTableContainer
                                 configurationItemId={configurationItemId}
                                 defaultFilter={sourceTableDefaultFilter}
-                                mapData={mapCiDataTo} //this is temporary, KV mapping should be done by orval
                                 View={(props) => {
                                     return (
                                         <RelationshipsTable
-                                            data={props?.data}
+                                            data={props?.data?.toNodes?.neighbourPairs}
                                             columns={sourceTableColumns(t)}
                                             isLoading={props.isLoading}
                                             isError={props.isError}

@@ -1,12 +1,10 @@
 import React, { SetStateAction, useState } from 'react'
 
 import { IPageConfig } from '@/hooks/useEntityRelations'
-import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
-import { ReadCiNeighboursUsingPOST200_GeneratedType, NeighbourPairsEntityMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
-import { mapCiDataFrom } from '@/componentHelpers'
+import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST, NeighbourPairUi } from '@/api'
 
 export interface IView {
-    data?: NeighbourPairsEntityMapped[]
+    data?: NeighbourPairUi[]
     setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
     isLoading: boolean
     isError: boolean
@@ -35,10 +33,9 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
     }
 
     const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', defaultFilter, {})
-
     if (!configurationItemId) return <View setPageConfig={setPageConfig} isLoading={false} isError />
 
-    const data = mapCiDataFrom(documentCiData as ReadCiNeighboursUsingPOST200_GeneratedType)
-
-    return <View data={data} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />
+    return (
+        <View data={documentCiData?.fromNodes?.neighbourPairs ?? undefined} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />
+    )
 }

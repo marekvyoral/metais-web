@@ -28,8 +28,8 @@ export const Main: Story = {
         ),
     ],
     args: {
-        entityId: '0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e',
-        entityName: 'KRIS',
+        configurationItemId: '0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e',
         View: View,
     },
+    //entityName: 'KRIS',
 }

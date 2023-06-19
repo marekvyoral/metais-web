@@ -45,6 +45,11 @@ export default defineConfig(({ mode }) => {
                     changeOrigin: true,
                     secure: false,
                 },
+                '^/columns/.*': {
+                    target: process.env.VITE_REST_CLIENT_USER_CONFIG_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
+                },
             },
         },
     }

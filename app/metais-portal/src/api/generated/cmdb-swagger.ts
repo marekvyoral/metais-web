@@ -9,6 +9,7 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useCmdbSwaggerClient } from '../hooks/useCmdbSwaggerClient'
 import { useClientForReadConfigurationItemUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForreadCiNeighboursUsingPOST } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForReadCiNeighboursWithAllRelsUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForGetRoleParticipantBulkUsingPOST } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForGetRoleParticipantUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
@@ -4574,7 +4575,7 @@ export const useReadRelationshipUsingGET = <TData = Awaited<ReturnType<ReturnTyp
  * @summary readCiNeighbours
  */
 export const useReadCiNeighboursUsingPOSTHook = () => {
-    const readCiNeighboursUsingPOST = useCmdbSwaggerClient<NeighbourSetUi | void>()
+    const readCiNeighboursUsingPOST = useClientForreadCiNeighboursUsingPOST<NeighbourSetUi | void>()
 
     return (uuid: string, neighboursFilterContainerUi: NeighboursFilterContainerUi) => {
         return readCiNeighboursUsingPOST({

@@ -1,3 +1,5 @@
+import { AttributeUi } from '@/api'
+
 export type AttributeValue = string | number | boolean | string[]
 interface TransformedInterface {
     [key: string]: AttributeValue
@@ -8,7 +10,7 @@ export type Attributes = {
     value: AttributeValue
 }
 export interface AttributesParent {
-    attributes?: Attributes[] | TransformedInterface
+    attributes?: Attributes[] | TransformedInterface | AttributeUi[]
 }
 
 /**
