@@ -7,7 +7,10 @@ export interface IRelationsView {
     data: {
         entityTypes: ReadNeighboursConfigurationItemsCountUsingGET200 | undefined
         relationsList: CiWithRelsResultUi | undefined
-        keysToDisplay: string[]
+        keysToDisplay: {
+            tabName: string
+            technicalName: string
+        }[]
     }
     filterCallback: {
         setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
@@ -17,11 +20,12 @@ export interface IRelationsView {
 
 interface IRelationsListContainer {
     entityId: string
+    technicalName: string
     View: React.FC<IRelationsView>
 }
 
-export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ entityId, View }) => {
-    const { keysToDisplay, data: entityTypes } = useEntityRelationsTypesCount(entityId)
+export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ entityId, technicalName, View }) => {
+    const { keysToDisplay, data: entityTypes } = useEntityRelationsTypesCount(entityId, technicalName)
 
     const defaultPageConfig: IPageConfig = {
         page: 1,

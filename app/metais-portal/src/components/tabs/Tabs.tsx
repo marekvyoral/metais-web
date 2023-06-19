@@ -54,7 +54,7 @@ const TabItemMobile: React.FC<ITabItemMobile> = ({ id, handleMobileSelect, title
     )
 }
 
-interface Tab {
+export interface Tab {
     id: string
     title: string
     content: React.ReactNode

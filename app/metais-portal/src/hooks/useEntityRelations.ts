@@ -1,13 +1,24 @@
-import { useReadCiNeighboursWithAllRelsUsingGET, useReadNeighboursConfigurationItemsCountUsingGET } from '@/api/generated/cmdb-swagger'
+import { useReadCiNeighboursWithAllRelsUsingGET, useListRelatedCiTypesUsingGET, useReadNeighboursConfigurationItemsCountUsingGET } from '@/api'
 
-export const useEntityRelationsTypesCount = (id: string) => {
+export const useEntityRelationsTypesCount = (id: string, technicalName: string) => {
     const { isLoading, isError, data } = useReadNeighboursConfigurationItemsCountUsingGET(id)
+    const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypesUsingGET(technicalName)
+    console.log(data, relatedData)
 
-    const keysToDisplay = (data && Object.keys(data).filter((item) => data[item] > 0)) ?? []
+    const tabs = ['AS', 'Projekt', 'InfraSluzba', 'PO', 'osobitny_postup_ITVS', 'ISVS']
+    const allRelation = [...(relatedData?.cisAsTargets ?? []), ...(relatedData?.cisAsSources ?? [])]
+    const keysToDisplay = tabs?.map((tab) => {
+        const typeName = allRelation.find((relation) => relation?.ciTypeTechnicalName === tab)?.ciTypeName
+        const count = data?.[tab] ?? 0
+        return {
+            tabName: `${typeName} (${count})`,
+            technicalName: tab,
+        }
+    })
 
     return {
-        isLoading,
-        isError,
+        isLoading: isLoading || isRelatedLoading,
+        isError: isError || isRelatedError,
         data,
         keysToDisplay,
     }

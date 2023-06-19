@@ -3,10 +3,12 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
 
-import { Tabs } from '@/components/tabs/Tabs'
+import { Tab, Tabs } from '@/components/tabs/Tabs'
 import { ApplicationServiceRelations } from '@/components/entities/projekt/ApplicationServiceRelations'
 import { ProjectInformationAccordion } from '@/components/entities/projekt/accordion/ProjectInformationAccordion'
 import { CiContainer } from '@/components/containers/CiContainer'
+import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
+import { CiWithRelsResultUi, ReadNeighboursConfigurationItemsCountUsingGET200 } from '@/api'
 
 const ProjektEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -29,24 +31,37 @@ const ProjektEntityDetailPage: React.FC = () => {
         },
     ]
 
-    const tabListRelations = [
-        {
-            id: '1',
-            title: `${t('relationType.as')} (1)`,
+    const tabListRelations = (data: {
+        entityTypes?: ReadNeighboursConfigurationItemsCountUsingGET200
+        relationsList?: CiWithRelsResultUi
+        keysToDisplay: {
+            tabName: string;
+            technicalName: string;
+        }[]
+    }): Tab[] =>
+        data.keysToDisplay.map((key, index) => ({
+            id: index.toString(),
+            title: key.tabName,
             content: (
                 <>
-                    <ApplicationServiceRelations />
+                    <ApplicationServiceRelations entityId={projektId ?? ''} ciType={key.technicalName}/>
                 </>
             ),
-        },
-    ]
+        }))
 
     return (
         <>
             <TextHeading size={'L'}>Elektronický národný register informácií dopravy</TextHeading>
             <Tabs tabList={tabList} />
             <TextHeading size={'M'}>Vzťahy na súvisiace položky</TextHeading>
-            <Tabs tabList={tabListRelations} />
+            <RelationsListContainer
+                entityId={projektId ?? ''}
+                technicalName={entityName ?? ''}
+                View={({ data, filterCallback, setClickedEntityName }) => {
+                    console.log(data)
+                    return <Tabs tabList={tabListRelations(data)} />
+                }}
+            />
         </>
     )
 }

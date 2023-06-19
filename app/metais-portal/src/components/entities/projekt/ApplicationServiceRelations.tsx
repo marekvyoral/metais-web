@@ -8,7 +8,15 @@ import { CardColumnList } from './cards/CardColumnList'
 import { ListActions } from './lists/ListActions'
 import styles from './applicationServiceRelations.module.scss'
 
-export const ApplicationServiceRelations: React.FC = () => {
+import { useReadCiNeighboursWithAllRelsUsingGET } from '@/api'
+
+interface ApplicationServiceRelationsProps {
+    entityId: string
+    ciType: string
+}
+
+export const ApplicationServiceRelations: React.FC<ApplicationServiceRelationsProps> = ({ entityId, ciType }) => {
+    const { isLoading, isError, data } = useReadCiNeighboursWithAllRelsUsingGET(entityId, { ciTypes: [ciType] })
     const { t } = useTranslation()
     return (
         <>
@@ -25,34 +33,23 @@ export const ApplicationServiceRelations: React.FC = () => {
                 />
             </ListActions>
             <CardColumnList>
-                <RelationCard
-                    status={'Zneplatnené'}
-                    codeMetaIS={'as_97125'}
-                    label={<TextLinkExternal title={'ISVS Matka'} href={'#'} textLink={'ISVS Matka'} />}
-                    name={'Administračné služby API'}
-                    admin={'Publikovanie informácií na webovom sídle'}
-                    relations={
-                        <TextLinkExternal
-                            title={'ISVS modul patrí pod materský ISVS : Vytvorené'}
-                            href={'#'}
-                            textLink={'ISVS modul patrí pod materský ISVS : Vytvorené'}
-                        />
-                    }
-                />
-                <RelationCard
-                    status={'Vytvorené'}
-                    codeMetaIS={'as_97125'}
-                    label={<TextLinkExternal title={'ISVS Matka'} href={'#'} textLink={'ISVS Matka'} />}
-                    name={'Administračné služby API'}
-                    admin={'Publikovanie informácií na webovom sídle'}
-                    relations={
-                        <TextLinkExternal
-                            title={'ISVS modul patrí pod materský ISVS : Vytvorené'}
-                            href={'#'}
-                            textLink={'ISVS modul patrí pod materský ISVS : Vytvorené'}
-                        />
-                    }
-                />
+                {data?.ciWithRels?.map((rel, index) => (
+                    <RelationCard
+                        key={index}
+                        status={'Vytvorené'}
+                        codeMetaIS={'as_97125'}
+                        label={<TextLinkExternal title={'ISVS Matka'} href={'#'} textLink={'ISVS Matka'} />}
+                        name={'Administračné služby API'}
+                        admin={'Publikovanie informácií na webovom sídle'}
+                        relations={
+                            <TextLinkExternal
+                                title={'ISVS modul patrí pod materský ISVS : Vytvorené'}
+                                href={'#'}
+                                textLink={'ISVS modul patrí pod materský ISVS : Vytvorené'}
+                            />
+                        }
+                    />
+                ))}
             </CardColumnList>
         </>
     )
