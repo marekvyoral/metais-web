@@ -53,6 +53,15 @@ export default defineConfig({
                             useQuery: true,
                         },
                     },
+                    getRoleParticipantBulkUsingPOST: {
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForGetRoleParticipantBulkUsingPOST',
+                        },
+                        query: {
+                            useQuery: true,
+                        },
+                    },
                     readConfigurationItemUsingGET: {
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',

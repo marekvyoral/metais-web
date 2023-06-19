@@ -1,15 +1,15 @@
 import { useReadCiNeighboursWithAllRelsUsingGET, useListRelatedCiTypesUsingGET, useReadNeighboursConfigurationItemsCountUsingGET } from '@/api'
 
 export const useEntityRelationsTypesCount = (id: string, technicalName: string) => {
-    const { isLoading, isError, data } = useReadNeighboursConfigurationItemsCountUsingGET(id)
+    const { isLoading, isError, data: countData } = useReadNeighboursConfigurationItemsCountUsingGET(id)
     const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypesUsingGET(technicalName)
-    console.log(data, relatedData)
+    console.log(countData, relatedData)
 
     const tabs = ['AS', 'Projekt', 'InfraSluzba', 'PO', 'osobitny_postup_ITVS', 'ISVS']
     const allRelation = [...(relatedData?.cisAsTargets ?? []), ...(relatedData?.cisAsSources ?? [])]
     const keysToDisplay = tabs?.map((tab) => {
         const typeName = allRelation.find((relation) => relation?.ciTypeTechnicalName === tab)?.ciTypeName
-        const count = data?.[tab] ?? 0
+        const count = countData?.[tab] ?? 0
         return {
             tabName: `${typeName} (${count})`,
             technicalName: tab,
@@ -19,7 +19,7 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string) 
     return {
         isLoading: isLoading || isRelatedLoading,
         isError: isError || isRelatedError,
-        data,
+        data: allRelation,
         keysToDisplay,
     }
 }

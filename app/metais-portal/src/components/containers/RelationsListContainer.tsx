@@ -1,11 +1,11 @@
 import React, { SetStateAction, useState } from 'react'
 
 import { IPageConfig, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@/hooks/useEntityRelations'
-import { CiWithRelsResultUi, ReadNeighboursConfigurationItemsCountUsingGET200 } from '@/api/generated/cmdb-swagger'
+import { CiWithRelsResultUi, RelatedCiTypePreview } from '@/api'
 
 export interface IRelationsView {
     data: {
-        entityTypes: ReadNeighboursConfigurationItemsCountUsingGET200 | undefined
+        entityTypes: RelatedCiTypePreview[] | undefined
         relationsList: CiWithRelsResultUi | undefined
         keysToDisplay: {
             tabName: string

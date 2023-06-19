@@ -11,7 +11,7 @@ import { GridCol } from '@/components/grid/GridCol'
 
 interface IRelationCardProps extends PropsWithChildren {
     label: React.ReactNode
-    status: 'Zneplatnené' | 'Vytvorené'
+    status?: string
     codeMetaIS: string
 
     name: string
@@ -23,7 +23,7 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
     const { t } = useTranslation()
     return (
         <>
-            <div className={classNames([styles.itemBox], { [styles.errorItemBox]: status === 'Zneplatnené' })}>
+            <div className={classNames([styles.itemBox], { [styles.errorItemBox]: status === 'INVALIDATED' })}>
                 <GridRow className={styles.heading}>
                     <GridCol setWidth="one-third">
                         <p className={styles.withoutMargin}>{label}</p>
@@ -37,7 +37,7 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
 
                             <TextBody size="S" className={styles.headingItem}>
                                 <span className="govuk-!-font-weight-bold">{t('relationCard.status') + ' '}</span>
-                                <span className={classNames({ [styles.errorItemText]: status === 'Zneplatnené' })}>{status}</span>
+                                <span className={classNames({ [styles.errorItemText]: status === 'INVALIDATED' })}>{status}</span>
                             </TextBody>
                         </div>
                     </GridCol>

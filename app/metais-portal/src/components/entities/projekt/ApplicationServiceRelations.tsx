@@ -8,16 +8,19 @@ import { CardColumnList } from './cards/CardColumnList'
 import { ListActions } from './lists/ListActions'
 import styles from './applicationServiceRelations.module.scss'
 
-import { useReadCiNeighboursWithAllRelsUsingGET } from '@/api'
+import { RelatedCiTypePreview, useGetRoleParticipantBulkUsingPOST, useReadCiNeighboursWithAllRelsUsingGET } from '@/api'
 
 interface ApplicationServiceRelationsProps {
     entityId: string
     ciType: string
+    entityTypes: RelatedCiTypePreview[]
 }
 
-export const ApplicationServiceRelations: React.FC<ApplicationServiceRelationsProps> = ({ entityId, ciType }) => {
+export const ApplicationServiceRelations: React.FC<ApplicationServiceRelationsProps> = ({ entityId, ciType, entityTypes }) => {
     const { isLoading, isError, data } = useReadCiNeighboursWithAllRelsUsingGET(entityId, { ciTypes: [ciType] })
     const { t } = useTranslation()
+    const owners = [...new Set(data?.ciWithRels?.map((rel) => rel?.ci?.metaAttributes?.owner).filter(Boolean))] as string[]
+    const { isLoading: isOwnersLoading, isError: isOwnersError, data: ownersData } = useGetRoleParticipantBulkUsingPOST({ gids: owners })
     return (
         <>
             <ListActions>
@@ -33,23 +36,44 @@ export const ApplicationServiceRelations: React.FC<ApplicationServiceRelationsPr
                 />
             </ListActions>
             <CardColumnList>
-                {data?.ciWithRels?.map((rel, index) => (
-                    <RelationCard
-                        key={index}
-                        status={'Vytvorené'}
-                        codeMetaIS={'as_97125'}
-                        label={<TextLinkExternal title={'ISVS Matka'} href={'#'} textLink={'ISVS Matka'} />}
-                        name={'Administračné služby API'}
-                        admin={'Publikovanie informácií na webovom sídle'}
-                        relations={
-                            <TextLinkExternal
-                                title={'ISVS modul patrí pod materský ISVS : Vytvorené'}
-                                href={'#'}
-                                textLink={'ISVS modul patrí pod materský ISVS : Vytvorené'}
-                            />
-                        }
-                    />
-                ))}
+                {data?.ciWithRels?.map((ciWithRel, index) => {
+                    const ci = ciWithRel?.ci
+                    const attributes = ci?.attributes
+                    const owner = ownersData?.find((ownerData) => ownerData?.gid === ci?.metaAttributes?.owner)
+                    const ownerName = owner?.configurationItemUi?.attributes?.Gen_Profil_nazov
+                    const rels = ciWithRel?.rels?.map((rel) => {
+                        const entityType = entityTypes.find((et) => et?.relationshipTypeTechnicalName === rel?.type)
+                        return { ...rel, attributes: entityType }
+                    })
+                    return (
+                        <RelationCard
+                            key={index}
+                            status={ci?.metaAttributes?.state}
+                            codeMetaIS={attributes?.Gen_Profil_kod_metais}
+                            label={
+                                <TextLinkExternal
+                                    title={attributes?.Gen_Profil_nazov}
+                                    href={`/ci/redirect/${ci?.type}/${ci?.uuid}`}
+                                    textLink={attributes?.Gen_Profil_nazov}
+                                />
+                            }
+                            name={attributes?.Gen_Profil_nazov}
+                            admin={ownerName}
+                            relations={
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                    {rels?.map((rel) => (
+                                        <TextLinkExternal
+                                            key={rel?.attributes?.ciTypeTechnicalName}
+                                            title={`${rel?.attributes?.relationshipTypeName} : ${rel?.metaAttributes?.state}`} // state needs to be translated
+                                            href={`/relation/redirect/${ci?.type}/${ci?.uuid}/${rel?.uuid}`}
+                                            textLink={`${rel?.attributes?.relationshipTypeName} : ${rel?.metaAttributes?.state}`}
+                                        />
+                                    ))}
+                                </div>
+                            }
+                        />
+                    )
+                })}
             </CardColumnList>
         </>
     )

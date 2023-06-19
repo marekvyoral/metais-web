@@ -8,7 +8,7 @@ import { ApplicationServiceRelations } from '@/components/entities/projekt/Appli
 import { ProjectInformationAccordion } from '@/components/entities/projekt/accordion/ProjectInformationAccordion'
 import { CiContainer } from '@/components/containers/CiContainer'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
-import { CiWithRelsResultUi, ReadNeighboursConfigurationItemsCountUsingGET200 } from '@/api'
+import { CiWithRelsResultUi, RelatedCiTypePreview } from '@/api'
 
 const ProjektEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -31,20 +31,23 @@ const ProjektEntityDetailPage: React.FC = () => {
         },
     ]
 
-    const tabListRelations = (data: {
-        entityTypes?: ReadNeighboursConfigurationItemsCountUsingGET200
+    const tabListRelations = ({
+        keysToDisplay,
+        entityTypes,
+    }: {
+        entityTypes?: RelatedCiTypePreview[]
         relationsList?: CiWithRelsResultUi
         keysToDisplay: {
-            tabName: string;
-            technicalName: string;
+            tabName: string
+            technicalName: string
         }[]
     }): Tab[] =>
-        data.keysToDisplay.map((key, index) => ({
+        keysToDisplay.map((key, index) => ({
             id: index.toString(),
             title: key.tabName,
             content: (
                 <>
-                    <ApplicationServiceRelations entityId={projektId ?? ''} ciType={key.technicalName}/>
+                    <ApplicationServiceRelations entityId={projektId ?? ''} ciType={key.technicalName} entityTypes={entityTypes} />
                 </>
             ),
         }))
