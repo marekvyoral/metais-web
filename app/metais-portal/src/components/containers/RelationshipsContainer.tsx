@@ -1,11 +1,9 @@
 import React from 'react'
 
-import { useReadConfigurationItemUsingGET } from '@/api'
-import { ConfigurationItem, ConfigurationItemMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
-import { mapCiData } from '@/componentHelpers'
+import { ConfigurationItemUi, useReadConfigurationItemUsingGET } from '@/api'
 
 interface IView {
-    data?: ConfigurationItemMapped
+    data?: ConfigurationItemUi
     isLoading: boolean
     isError: boolean
 }
@@ -17,7 +15,5 @@ interface IRelationshipsContainer {
 export const RelationshipsAccordionContainer: React.FC<IRelationshipsContainer> = ({ configurationItemId, View }) => {
     const { isLoading, isError, data: documentCiData } = useReadConfigurationItemUsingGET(configurationItemId ?? '')
     if (!configurationItemId) return <View isLoading={false} isError />
-    const data = mapCiData(documentCiData as ConfigurationItem)
-
-    return <View data={data} isLoading={isLoading} isError={isError} />
+    return <View data={documentCiData} isLoading={isLoading} isError={isError} />
 }

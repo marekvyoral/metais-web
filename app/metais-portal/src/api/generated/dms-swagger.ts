@@ -6,6 +6,11 @@
  * Api Documentation
  * OpenAPI spec version: 3.0-SNAPSHOT
  */
+export type UpdateContentUsingPOSTBody = {
+    /** file */
+    file: Blob
+}
+
 export type UrlContent = { [key: string]: any }
 
 export interface Url {

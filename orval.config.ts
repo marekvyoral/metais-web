@@ -52,6 +52,10 @@ export default defineConfig({
                         query: {
                             useQuery: true,
                         },
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForreadCiNeighboursUsingPOST',
+                        },
                     },
                     readConfigurationItemUsingGET: {
                         mutator: {
