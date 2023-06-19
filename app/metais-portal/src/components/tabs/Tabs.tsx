@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react'
 import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
+import { useNavigate, matchPath, useLocation } from 'react-router-dom'
 
 interface ITabItemDesktop {
     handleSelect: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: string) => void
@@ -66,10 +67,26 @@ interface ITabs extends PropsWithChildren {
 
 export const Tabs: React.FC<ITabs> = ({ tabList }) => {
     const { t } = useTranslation()
-    const [selected, setSelected] = useState<string>(tabList[0].id)
+    const { pathname } = useLocation()
+
+    const activeTab = tabList.find((tab) => {
+        const match = matchPath(
+            {
+                path: tab.id,
+                caseSensitive: false,
+                end: true,
+            },
+            pathname,
+        )
+        return match !== null
+    })
+
+    const [selected, setSelected] = useState<string>(activeTab?.id ?? '')
+    const navigate = useNavigate()
 
     const handleSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: string) => {
         event.preventDefault()
+        navigate(value)
         setSelected(value)
     }
 
@@ -79,6 +96,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
         } else {
             setSelected(value)
         }
+        navigate(value)
     }
 
     return (
@@ -89,7 +107,6 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
                     <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={selected === tab.id} id={tab.id} title={tab.title} />
                 ))}
             </ul>
-
             <ul className="idsk-tabs__list--mobile" role="tablist">
                 {tabList.map((tab) => (
                     <TabItemMobile
