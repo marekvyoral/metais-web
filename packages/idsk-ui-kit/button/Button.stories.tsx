@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 
-import { HomeIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { Button } from './Button'
+
+import { HomeIcon } from '@isdd/idsk-ui-kit/assets/images'
 
 const meta: Meta<typeof Button> = {
     title: 'Components/Button',
