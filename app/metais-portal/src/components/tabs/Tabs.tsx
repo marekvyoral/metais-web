@@ -81,21 +81,14 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
         return match !== null
     })
 
-    const [selected, setSelected] = useState<string>(activeTab?.id ?? '')
     const navigate = useNavigate()
 
     const handleSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: string) => {
         event.preventDefault()
         navigate(value)
-        setSelected(value)
     }
 
     const handleMobileSelect = (value: string) => {
-        if (value === selected) {
-            setSelected('')
-        } else {
-            setSelected(value)
-        }
         navigate(value)
     }
 
@@ -104,18 +97,24 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
             <h2 className="idsk-tabs__title">{t('tab.contents')}</h2>
             <ul className="idsk-tabs__list">
                 {tabList.map((tab) => (
-                    <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={selected === tab.id} id={tab.id} title={tab.title} />
+                    <TabItemDesktop
+                        key={tab?.id}
+                        handleSelect={handleSelect}
+                        isSelected={activeTab?.id === tab?.id}
+                        id={tab?.id}
+                        title={tab?.title}
+                    />
                 ))}
             </ul>
             <ul className="idsk-tabs__list--mobile" role="tablist">
                 {tabList.map((tab) => (
                     <TabItemMobile
-                        key={tab.id}
+                        key={tab?.id}
                         handleMobileSelect={handleMobileSelect}
-                        id={tab.id}
-                        title={tab.title}
-                        content={tab.content}
-                        isSelected={selected === tab.id}
+                        id={tab?.id}
+                        title={tab?.title}
+                        content={tab?.content}
+                        isSelected={activeTab?.id === tab?.id}
                     />
                 ))}
             </ul>
