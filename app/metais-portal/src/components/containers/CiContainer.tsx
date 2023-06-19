@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ConfigurationItemUi, useReadConfigurationItemUsingGET } from '@/api'
 
-interface ICiContainerView {
+export interface ICiContainerView {
     data?: ConfigurationItemUi
     isLoading: boolean
     isError: boolean

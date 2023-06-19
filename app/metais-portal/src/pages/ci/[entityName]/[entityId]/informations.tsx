@@ -10,8 +10,8 @@ const Informations = () => {
 
     return (
         <CiContainer
-            entityId={entityId ?? ''}
-            View={({ data: { ciItemData } }) => {
+            configurationItemId={entityId ?? ''}
+            View={({ data: ciItemData }) => {
                 return (
                     <AttributesContainer
                         entityName={entityName ?? ''}
