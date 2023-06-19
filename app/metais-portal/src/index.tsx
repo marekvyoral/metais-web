@@ -4,6 +4,8 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
 import { i18nInstance } from '@isdd/metais-common/localization/i18next'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
 
 import { App } from '@/App'
 import { reportWebVitals } from '@/reportWebVitals'
@@ -19,7 +21,9 @@ root.render(
         <BrowserRouter>
             <QueryClientProvider client={queryClient}>
                 <I18nextProvider i18n={i18nInstance}>
-                    <App />
+                    <DndProvider backend={HTML5Backend}>
+                        <App />
+                    </DndProvider>
                 </I18nextProvider>
             </QueryClientProvider>
         </BrowserRouter>

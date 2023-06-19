@@ -12,14 +12,12 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React from 'react'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableRow } from './TableRow'
 
 interface ITableProps<T> {
-    data: Array<T>
+    data?: Array<T>
     columns: Array<ColumnDef<T>>
     canDrag?: boolean
     sorting?: SortingState
@@ -48,7 +46,7 @@ export const Table = <T,>({
     getSubRows,
 }: ITableProps<T>): JSX.Element => {
     const table = useReactTable({
-        data,
+        data: data ?? [],
         columns,
         state: {
             ...(pagination && { pagination }),
@@ -71,15 +69,13 @@ export const Table = <T,>({
     return (
         <table className="idsk-table">
             <thead className="idsk-table__head">
-                <DndProvider backend={HTML5Backend}>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                        <tr className="idsk-table__row" key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => (
-                                <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
-                            ))}
-                        </tr>
-                    ))}
-                </DndProvider>
+                {table.getHeaderGroups().map((headerGroup) => (
+                    <tr className="idsk-table__row" key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => (
+                            <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
+                        ))}
+                    </tr>
+                ))}
             </thead>
             <tbody className="idsk-table__body">
                 {table.getRowModel().rows.map((row) => (
