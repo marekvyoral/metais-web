@@ -84,12 +84,6 @@
       "sk": "Slovenčina",
       "en": "English"
   },
-  "tab": {
-      "contents": "Contents"
-  },
-  "errors": {
-      "fixLink": "Correct"
-  },
   "mutationFeedback": {
       "successfulUpdated": "The item was successfully changed"
   },
@@ -194,5 +188,5 @@
     "buttonAddNewRelation": "Add a new relation",
     "buttonAddNewRelationCard": "Add a new item and relation",
     "selectView": "View"
-}
+    }
 }

@@ -85,12 +85,6 @@
       "en": "English",
       "ge": "German"
   },
-  "tab": {
-      "contents": "Obsah"
-  },
-  "errors": {
-      "fixLink": "Opraviť"
-  },
   "mutationFeedback": {
       "successfulUpdated": "Položka bola úspešne zmenená"
   },

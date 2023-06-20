@@ -1,12 +1,4 @@
 {
-    "languageSelector": {
-        "open": "Open language menu",
-        "close": "Close language menu"
-    },
-    "language": {
-        "sk": "Slovenčina",
-        "en": "English"
-    },
     "table": {
         "title": "Cities",
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
@@ -28,5 +20,11 @@
         "resetOrder": "Reset order",
         "pagination": "Page navigation",
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov"
+    },
+    "errors": {
+        "fixLink": "Correct"
+    },
+    "tab": {
+        "contents": "Contents"
     }
 }

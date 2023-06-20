@@ -29,5 +29,11 @@
         "resetOrder": "Resetovať poradie",
         "pagination": "Tabuľková navigácia",
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov"
+    },
+    "errors": {
+        "fixLink": "Opraviť"
+    },
+    "tab": {
+        "contents": "Obsah"
     }
 }
