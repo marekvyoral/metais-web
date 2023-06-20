@@ -1,7 +1,7 @@
 import { NeighboursFilterContainerUi } from '@/api'
 import { IFilter } from '@/types/filter'
 
-export const spreadFilter = (originalFilter: NeighboursFilterContainerUi, filterChanges: IFilter): NeighboursFilterContainerUi => {
+export const mapFilterToNeighborsApi = (originalFilter: NeighboursFilterContainerUi, filterChanges: IFilter): NeighboursFilterContainerUi => {
     const { pageNumber, pageSize, sortBy, sortSource, sortType } = filterChanges
 
     return {

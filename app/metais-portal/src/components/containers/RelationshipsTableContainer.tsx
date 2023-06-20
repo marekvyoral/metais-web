@@ -4,7 +4,7 @@ import { Pagination } from '@isdd/idsk-ui-kit/types'
 import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
 import { ReadCiNeighboursUsingPOST200_GeneratedType, NeighbourPairsEntityMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 import { IFilter as IFilter } from '@/types/filter'
-import { spreadFilter } from '@/componentHelpers'
+import { mapFilterToNeighborsApi } from '@/componentHelpers'
 
 interface IView {
     data?: NeighbourPairsEntityMapped[]
@@ -22,23 +22,23 @@ interface IRelationshipsTableContainer {
 }
 
 export const RelationshipsTableContainer: React.FC<IRelationshipsTableContainer> = ({ configurationItemId, View, defaultFilter, mapData }) => {
-    const preSetFilter: NeighboursFilterContainerUi = {
+    const defaultApiRequest: NeighboursFilterContainerUi = {
         ...defaultFilter,
         page: 1,
         perpage: 10,
     }
 
-    const [pageFilter, setPageFilter] = useState<NeighboursFilterContainerUi>(preSetFilter)
+    const [apiRequest, setApiRequest] = useState<NeighboursFilterContainerUi>(defaultApiRequest)
 
     const handleFilterChange = (filter: IFilter) => {
-        setPageFilter(spreadFilter(pageFilter, filter))
+        setApiRequest(mapFilterToNeighborsApi(apiRequest, filter))
     }
 
-    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', pageFilter, {})
+    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', apiRequest, {})
 
     const pagination: Pagination = {
-        pageNumber: pageFilter.page ?? 1,
-        pageSize: pageFilter.perpage ?? 10,
+        pageNumber: apiRequest.page ?? 1,
+        pageSize: apiRequest.perpage ?? 10,
         dataLength: documentCiData?.fromNodes?.pagination?.totaltems ?? 0,
     }
 

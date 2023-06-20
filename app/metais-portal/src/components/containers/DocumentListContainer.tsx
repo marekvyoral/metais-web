@@ -3,7 +3,7 @@ import { Pagination } from '@isdd/idsk-ui-kit/types'
 
 import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
 import { ReadCiNeighboursUsingPOST200_GeneratedType, NeighbourPairsEntityMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
-import { mapCiDataFrom, spreadFilter } from '@/componentHelpers'
+import { mapCiDataFrom, mapFilterToNeighborsApi } from '@/componentHelpers'
 import { IFilter } from '@/types/filter'
 
 export interface IView {
@@ -20,7 +20,7 @@ interface IDocumentsListContainer {
 }
 
 export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ configurationItemId, View }) => {
-    const defaultFilter: NeighboursFilterContainerUi = {
+    const defaultApiRequest: NeighboursFilterContainerUi = {
         neighboursFilter: {
             ciType: ['Dokument'],
             metaAttributes: { state: ['DRAFT'] },
@@ -31,15 +31,15 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
         perpage: 10,
     }
 
-    const [pageFilter, setPageFilter] = useState<NeighboursFilterContainerUi>(defaultFilter)
+    const [apiRequest, setApiRequest] = useState<NeighboursFilterContainerUi>(defaultApiRequest)
     const handleFilterChange = (filter: IFilter) => {
-        setPageFilter(spreadFilter(pageFilter, filter))
+        setApiRequest(mapFilterToNeighborsApi(apiRequest, filter))
     }
-    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', pageFilter, {})
+    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', apiRequest, {})
 
     const pagination: Pagination = {
-        pageNumber: pageFilter.page ?? 1,
-        pageSize: pageFilter.perpage ?? 10,
+        pageNumber: apiRequest.page ?? 1,
+        pageSize: apiRequest.perpage ?? 10,
         dataLength: documentCiData?.fromNodes?.pagination?.totaltems ?? 0,
     }
     if (!configurationItemId) return <View pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
