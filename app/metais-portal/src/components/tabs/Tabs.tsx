@@ -2,9 +2,9 @@ import React, { PropsWithChildren, ReactNode, useEffect, useState } from 'react'
 import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
 
-import { ButtonPopup } from '../button-popup/ButtonPopup'
-
 import styles from './tabs.module.scss'
+
+import { ButtonPopup } from '@/components/button-popup/ButtonPopup'
 
 interface ITabItemDesktop {
     handleSelect: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: string) => void
