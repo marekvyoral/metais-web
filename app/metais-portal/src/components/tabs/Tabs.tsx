@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react'
+import React, { useState } from 'react'
 import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, matchPath, useLocation } from 'react-router-dom'
@@ -8,10 +8,6 @@ export interface Tab {
     path?: string
     title: string
     content: React.ReactNode
-}
-
-interface ITabs extends PropsWithChildren {
-    tabList: Tab[]
 }
 
 interface ITabItemDesktop {
@@ -63,7 +59,12 @@ const TabItemMobile: React.FC<ITabItemMobile> = ({ tab, handleMobileSelect, isSe
     )
 }
 
-export const Tabs: React.FC<ITabs> = ({ tabList }) => {
+interface ITabs {
+    tabList: Tab[]
+    onSelect?: (selected: Tab) => void
+}
+
+export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     const { t } = useTranslation()
     const { pathname } = useLocation()
     const navigate = useNavigate()
@@ -89,6 +90,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
         if (value.path) {
             navigate(value.path)
         } else {
+            onSelected?.(value)
             setSelected(value)
         }
     }
@@ -100,24 +102,27 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
             if (value === selected) {
                 setSelected(null)
             } else {
+                onSelected?.(value)
                 setSelected(value)
             }
         }
     }
 
     return (
-        <div className="idsk-tabs" data-module="idsk-tabs">
-            <h2 className="idsk-tabs__title">{t('tab.contents')}</h2>
-            <ul className="idsk-tabs__list">
-                {tabList.map((tab) => (
-                    <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={activeTab?.id === tab.id} tab={tab} />
-                ))}
-            </ul>
-            <ul className="idsk-tabs__list--mobile" role="tablist">
-                {tabList.map((tab) => (
-                    <TabItemMobile key={tab.id} handleMobileSelect={handleMobileSelect} tab={tab} isSelected={activeTab?.id === tab.id} />
-                ))}
-            </ul>
-        </div>
+        <>
+            <div className="idsk-tabs" data-module="idsk-tabs">
+                <h2 className="idsk-tabs__title">{t('tab.contents')}</h2>
+                <ul className="idsk-tabs__list">
+                    {tabList.map((tab) => (
+                        <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={activeTab?.id === tab.id} tab={tab} />
+                    ))}
+                </ul>
+                <ul className="idsk-tabs__list--mobile" role="tablist">
+                    {tabList.map((tab) => (
+                        <TabItemMobile key={tab.id} handleMobileSelect={handleMobileSelect} tab={tab} isSelected={activeTab?.id === tab.id} />
+                    ))}
+                </ul>
+            </div>
+        </>
     )
 }

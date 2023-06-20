@@ -13,27 +13,25 @@ export const useClientForGetRoleParticipantUsingGET = <T extends RoleParticipant
 
 export const useClientForReadCiNeighboursWithAllRelsUsingGET = <T extends CiWithRelsResultUi>() =>
     useCustomClient<T>(baseURL, (body) => {
-        if (body.ciWithRels) {
-            body.ciWithRels.forEach((rel) => {
-                transformAttributesKeyValue(rel.ci)
-            })
-        }
+        body?.ciWithRels?.forEach?.((rel) => {
+            transformAttributesKeyValue(rel.ci)
+        })
     })
 
 export const useClientForGetRoleParticipantBulkUsingPOST = <T extends RoleParticipantUI[]>() =>
     useCustomClient<T>(baseURL, (body) => {
-        if (body) {
-            body.forEach((rel) => {
-                transformAttributesKeyValue(rel.configurationItemUi)
-            })
-        }
+        body?.forEach?.((rel) => {
+            transformAttributesKeyValue(rel.configurationItemUi)
+        })
+    })
+
 export const useClientForreadCiNeighboursUsingPOST = <T extends NeighbourSetUi>() =>
     useCustomClient<T>(baseURL, (body) => {
-        body.fromNodes?.neighbourPairs?.forEach((nP) => {
+        body.fromNodes?.neighbourPairs?.forEach?.((nP) => {
             transformAttributesKeyValue(nP.configurationItem)
             transformAttributesKeyValue(nP.relationship)
         })
-        body.toNodes?.neighbourPairs?.forEach((nP) => {
+        body.toNodes?.neighbourPairs?.forEach?.((nP) => {
             transformAttributesKeyValue(nP.configurationItem)
             transformAttributesKeyValue(nP.relationship)
         })

@@ -1,16 +1,16 @@
 import React, { SetStateAction, useState } from 'react'
 
-import { IPageConfig, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@/hooks/useEntityRelations'
-import { CiWithRelsResultUi, RelatedCiTypePreview } from '@/api'
+import { IKeyToDisplay, IPageConfig, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@/hooks/useEntityRelations'
+import { CiWithRelsResultUi, RelatedCiTypePreview, RoleParticipantUI } from '@/api'
 
 export interface IRelationsView {
+    isLoading: boolean
+    isError: boolean
     data: {
-        entityTypes: RelatedCiTypePreview[] | undefined
-        relationsList: CiWithRelsResultUi | undefined
-        keysToDisplay: {
-            tabName: string
-            technicalName: string
-        }[]
+        entityTypes?: RelatedCiTypePreview[]
+        relationsList?: CiWithRelsResultUi
+        owners?: void | RoleParticipantUI[] | undefined
+        keysToDisplay: IKeyToDisplay[]
     }
     filterCallback: {
         setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
@@ -25,23 +25,41 @@ interface IRelationsListContainer {
 }
 
 export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ entityId, technicalName, View }) => {
-    const { keysToDisplay, data: entityTypes } = useEntityRelationsTypesCount(entityId, technicalName)
-
     const defaultPageConfig: IPageConfig = {
         page: 1,
         perPage: 5,
     }
 
     const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
-    const [clickedEntityName, setClickedEntityName] = useState<string>('')
+    const {
+        isLoading: areTypesLoading,
+        isError: areTypesError,
+        keysToDisplay,
+        data: entityTypes,
+    } = useEntityRelationsTypesCount(entityId, technicalName)
+    const [clickedEntityName, setClickedEntityName] = useState<string>(keysToDisplay[0].technicalName)
+    const {
+        isLoading: areRelationsLoading,
+        isError: areRelationsError,
+        relationsList,
+        owners,
+    } = useEntityRelationsDataList(entityId, pageConfig, clickedEntityName)
 
-    const { data: relationsList } = useEntityRelationsDataList(entityId, pageConfig, clickedEntityName)
+    if (areTypesLoading) {
+        return <div>Loading...</div>
+    }
+    if (areTypesError) {
+        return <div>Error</div>
+    }
 
     return (
         <View
+            isLoading={areRelationsLoading}
+            isError={areRelationsError}
             data={{
                 entityTypes,
                 relationsList,
+                owners,
                 keysToDisplay,
             }}
             filterCallback={{ setPageConfig }}

@@ -5,6 +5,7 @@ export enum RouteNames {
     PROJEKT_ENTITY_DETAIL = '/ci/Projekt/:projektId',
     CONFIGURATION_ITEM_LIST = '/ci/:entityName',
     CONFIGURATION_ITEM_DETAIL = '/ci/:entityName/:entityId',
+    CONFIGURATION_ITEM_DETAIL_RELATIONS = '/ci/:entityName/:entityId/informations/:relationshipType',
     DOCUMENTS_LIST_TAB = '/ci/:entityName/:entityId/documents',
     RELATIONSHIPS_LIST_TAB = '/ci/:entityName/:entityId/relationships',
 }

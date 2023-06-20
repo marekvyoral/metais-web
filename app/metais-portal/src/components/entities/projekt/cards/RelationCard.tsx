@@ -16,7 +16,7 @@ interface IRelationCardProps extends PropsWithChildren {
 
     name: string
     admin: React.ReactNode
-    relations: React.ReactNode
+    relations: React.ReactNode[]
 }
 
 export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status, label, name, admin, relations }) => {
@@ -37,7 +37,9 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
 
                             <TextBody size="S" className={styles.headingItem}>
                                 <span className="govuk-!-font-weight-bold">{t('relationCard.status') + ' '}</span>
-                                <span className={classNames({ [styles.errorItemText]: status === 'INVALIDATED' })}>{status}</span>
+                                <span className={classNames({ [styles.errorItemText]: status === 'INVALIDATED' })}>
+                                    {t(`metaAttributes.state.${status}`)}
+                                </span>
                             </TextBody>
                         </div>
                     </GridCol>
@@ -46,7 +48,11 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
                 <RelationAttribute name={t('relationCard.name')} value={name} />
                 <RelationAttribute name={t('relationCard.codeMetaIS')} value={codeMetaIS} />
                 <RelationAttribute name={t('relationCard.admin')} value={admin} />
-                <RelationAttribute name={t('relationCard.relations')} value={relations} />
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {relations.map((relation, index) => (
+                        <RelationAttribute key={index} name={t('relationCard.relations')} value={relation} />
+                    ))}
+                </div>
             </div>
         </>
     )

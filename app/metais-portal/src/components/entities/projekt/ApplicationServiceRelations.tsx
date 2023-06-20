@@ -8,19 +8,16 @@ import { CardColumnList } from './cards/CardColumnList'
 import { ListActions } from './lists/ListActions'
 import styles from './applicationServiceRelations.module.scss'
 
-import { RelatedCiTypePreview, useGetRoleParticipantBulkUsingPOST, useReadCiNeighboursWithAllRelsUsingGET } from '@/api'
+import { CiWithRelsResultUi, RelatedCiTypePreview, RoleParticipantUI } from '@/api'
 
 interface ApplicationServiceRelationsProps {
-    entityId: string
-    ciType: string
-    entityTypes: RelatedCiTypePreview[]
+    entityTypes?: RelatedCiTypePreview[]
+    relationsList?: CiWithRelsResultUi
+    owners?: void | RoleParticipantUI[] | undefined
 }
 
-export const ApplicationServiceRelations: React.FC<ApplicationServiceRelationsProps> = ({ entityId, ciType, entityTypes }) => {
-    const { isLoading, isError, data } = useReadCiNeighboursWithAllRelsUsingGET(entityId, { ciTypes: [ciType] })
+export const ApplicationServiceRelations: React.FC<ApplicationServiceRelationsProps> = ({ entityTypes, relationsList, owners }) => {
     const { t } = useTranslation()
-    const owners = [...new Set(data?.ciWithRels?.map((rel) => rel?.ci?.metaAttributes?.owner).filter(Boolean))] as string[]
-    const { isLoading: isOwnersLoading, isError: isOwnersError, data: ownersData } = useGetRoleParticipantBulkUsingPOST({ gids: owners })
     return (
         <>
             <ListActions>
@@ -36,13 +33,13 @@ export const ApplicationServiceRelations: React.FC<ApplicationServiceRelationsPr
                 />
             </ListActions>
             <CardColumnList>
-                {data?.ciWithRels?.map((ciWithRel, index) => {
+                {relationsList?.ciWithRels?.map((ciWithRel, index) => {
                     const ci = ciWithRel?.ci
                     const attributes = ci?.attributes
-                    const owner = ownersData?.find((ownerData) => ownerData?.gid === ci?.metaAttributes?.owner)
+                    const owner = owners?.find((o) => o?.gid === ci?.metaAttributes?.owner)
                     const ownerName = owner?.configurationItemUi?.attributes?.Gen_Profil_nazov
                     const rels = ciWithRel?.rels?.map((rel) => {
-                        const entityType = entityTypes.find((et) => et?.relationshipTypeTechnicalName === rel?.type)
+                        const entityType = entityTypes?.find((et) => et?.relationshipTypeTechnicalName === rel?.type)
                         return { ...rel, attributes: entityType }
                     })
                     return (
@@ -60,16 +57,19 @@ export const ApplicationServiceRelations: React.FC<ApplicationServiceRelationsPr
                             name={attributes?.Gen_Profil_nazov}
                             admin={ownerName}
                             relations={
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    {rels?.map((rel) => (
+                                rels?.map((rel, i) => {
+                                    const title = `${rel?.attributes?.relationshipTypeName} : ${t(
+                                        `metaAttributes.state.${rel?.metaAttributes?.state}`,
+                                    )}`
+                                    return (
                                         <TextLinkExternal
-                                            key={rel?.attributes?.ciTypeTechnicalName}
-                                            title={`${rel?.attributes?.relationshipTypeName} : ${rel?.metaAttributes?.state}`} // state needs to be translated
+                                            key={rel?.attributes?.ciTypeTechnicalName ?? i}
+                                            title={title}
                                             href={`/relation/redirect/${ci?.type}/${ci?.uuid}/${rel?.uuid}`}
-                                            textLink={`${rel?.attributes?.relationshipTypeName} : ${rel?.metaAttributes?.state}`}
+                                            textLink={title}
                                         />
-                                    ))}
-                                </div>
+                                    )
+                                }) ?? []
                             }
                         />
                     )

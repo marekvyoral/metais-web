@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Route, Routes } from 'react-router'
+import { Navigate } from 'react-router-dom'
 
 import DocumentsListPage from '../pages/ci/[entityName]/[entityId]/documents'
 import RelationshipsAccordionPage from '../pages/ci/[entityName]/[entityId]/relationships'
@@ -13,6 +14,7 @@ import ProjektListPage from '@/pages/projekt'
 import ProjektEntityDetailPage from '@/pages/projekt/[id]'
 import ConfigurationItemListPage from '@/pages/ci/[entityName]/index'
 import ConfigurationItemDetailPage from '@/pages/ci/[entityName]/[entityId]'
+import ItemRelationshipPage from '@/pages/ci/[entityName]/[entityId]/[relationshipType]'
 
 export const Router: React.FC = () => {
     return (
