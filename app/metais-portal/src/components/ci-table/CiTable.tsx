@@ -1,13 +1,13 @@
 import React from 'react'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { PaginatorWrapper } from '@isdd/metais-common/paginatorWrapper/PaginatorWrapper'
+import { IFilter } from '@isdd/idsk-ui-kit/types'
 
 import { columns } from './ciTableColumns'
 
 import { CiListFilterContainerUi } from '@/api/generated/cmdb-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api/constants'
 import { IListData, IListFilterCallbacks } from '@/types/list'
-import { IFilter } from '@/types/filter'
 
 interface ICiTable {
     data: IListData

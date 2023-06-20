@@ -1,12 +1,10 @@
 import React from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
-import { Pagination } from '@isdd/idsk-ui-kit/types'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { PaginatorWrapper } from '@isdd/metais-common/paginatorWrapper/PaginatorWrapper'
 
 import { TableCols } from '../documents'
-
-import { PaginatorWrapper } from '@/components/paginatorWrapper/PaginatorWrapper'
-import { IFilter } from '@/types/filter'
 
 interface RelationshipsTable {
     data?: TableCols[] //missing return types from orval, types should come from backend, not from _GeneratedType file

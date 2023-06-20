@@ -2,12 +2,11 @@ import React from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
-import { Pagination } from '@isdd/idsk-ui-kit/types'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { PaginatorWrapper } from '@isdd/metais-common/paginatorWrapper/PaginatorWrapper'
 
 import { NeighbourPairsEntityMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
-import { IFilter } from '@/types/filter'
 
 export interface TableCols extends NeighbourPairsEntityMapped {
     selected?: boolean

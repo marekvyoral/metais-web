@@ -1,5 +1,6 @@
+import { IFilter } from '@isdd/idsk-ui-kit/types'
+
 import { NeighboursFilterContainerUi } from '@/api'
-import { IFilter } from '@/types/filter'
 
 export const mapFilterToNeighborsApi = (originalFilter: NeighboursFilterContainerUi, filterChanges: IFilter): NeighboursFilterContainerUi => {
     const { pageNumber, pageSize, sortBy, sortSource, sortType } = filterChanges

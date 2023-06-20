@@ -2,11 +2,9 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
 import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
-import { Pagination } from '@isdd/idsk-ui-kit/types'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 
 import styles from './paginatorWrapper.module.scss'
-
-import { IFilter } from '@/types/filter'
 
 interface IPaginatorWrapper {
     pagination: Pagination
