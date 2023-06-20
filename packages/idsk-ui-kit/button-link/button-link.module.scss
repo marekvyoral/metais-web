@@ -1,0 +1,13 @@
+@import '@id-sk/frontend/idsk/all';
+
+.buttonLink {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    @include govuk-typography-responsive(19);
+    cursor: pointer;
+
+    &:focus {
+        @include govuk-focused-text;
+    }
+}

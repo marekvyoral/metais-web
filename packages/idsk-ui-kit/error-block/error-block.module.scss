@@ -1,0 +1,12 @@
+@import '@id-sk/frontend/idsk/all';
+
+.redColor {
+    color: $govuk-error-colour;
+
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+        color: $govuk-error-colour;
+    }
+}
