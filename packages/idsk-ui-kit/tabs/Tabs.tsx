@@ -1,10 +1,9 @@
 import React, { PropsWithChildren, ReactNode, useEffect, useState } from 'react'
 import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
+import { ButtonPopup } from '@isdd/metais-common/button-popup/ButtonPopup'
 
 import styles from './tabs.module.scss'
-
-import { ButtonPopup } from '@/components/button-popup/ButtonPopup'
 
 interface ITabItemDesktop {
     handleSelect: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: string) => void
@@ -130,7 +129,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
                         <ButtonPopup
                             popupPosition="right"
                             buttonLabel={t('tab.moreTabs')}
-                            popupContent={(closePopup): ReactNode => {
+                            popupContent={(closePopup) => {
                                 return (
                                     <ul className={styles.subList}>
                                         {tabList.slice(MAX_SHOWN_TABS, tabList.length).map((tab) => (
