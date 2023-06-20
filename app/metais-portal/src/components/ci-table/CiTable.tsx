@@ -1,7 +1,6 @@
 import React from 'react'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
-
-import { PaginatorWrapper } from '../paginatorWrapper/PaginatorWrapper'
+import { PaginatorWrapper } from '@isdd/metais-common/paginatorWrapper/PaginatorWrapper'
 
 import { columns } from './ciTableColumns'
 

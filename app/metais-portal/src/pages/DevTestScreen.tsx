@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
+import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
+import { ButtonPopup } from '@isdd/metais-common/button-popup/ButtonPopup'
+import { TableSelectColumns } from '@isdd/metais-common/table-select-columns/TableSelectColumns'
 
-import { AccordionContainer } from '@/components/Accordion'
-import { ButtonPopup } from '@/components/button-popup/ButtonPopup'
 import { CiContainer } from '@/components/containers/CiContainer'
 import { View } from '@/components/containers/CiContainer.stories'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 import { RelationsView } from '@/components/containers/RelationsListContainer.stories'
 import { DocumentsListContainer } from '@/components/containers/DocumentListContainer'
 import { DocsView } from '@/components/containers/DocumentListContainer.stories'
-import { TableSelectColumns } from '@/components/table-select-columns/TableSelectColumns'
 
 export const DevTestScreen: React.FC = () => {
     const [page, setPage] = useState(5)

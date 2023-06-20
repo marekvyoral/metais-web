@@ -115,7 +115,7 @@ export default defineConfig({
         input: {
             target: process.env.VITE_REST_CLIENT_DMS_SWAGGER_URL ?? '',
             filters: {
-                tags: [], //NOT WORKING! 'file-controller' , 'utils-controller'
+                tags: [], //NOT WORKING! 'file-controller' , 'utils-controller'  (Patchable) parameter.type is mandatory for non-body parameters
             },
         },
         output: {
