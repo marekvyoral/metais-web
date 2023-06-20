@@ -35,7 +35,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
             const newAttributes: { [attributeName: string]: string } = {}
             Object.keys(confItem?.attributes ?? {})?.map((attributeName: string) => {
                 const foundAttrWithTypes = allAttributes?.find((attr) => attr?.technicalName === attributeName)
-                const newRowValue = pairEnumsToEnumValues(foundAttrWithTypes, confItem, data?.constraintsData, t, false)
+                const newRowValue = pairEnumsToEnumValues(foundAttrWithTypes, confItem, data?.constraintsData ?? [], t, false)
                 newAttributes[attributeName] = newRowValue
             })
 
