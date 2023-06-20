@@ -29,7 +29,7 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
             usageType: ['system', 'application'],
         },
         page: 1,
-        perpage: 2,
+        perpage: 10,
     }
 
     const [pageFilter, setPageFilter] = useState<NeighboursFilterContainerUi>(defaultFilter)
