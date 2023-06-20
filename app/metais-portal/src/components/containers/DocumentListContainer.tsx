@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Pagination } from '@isdd/idsk-ui-kit/types'
 
-import { IPageConfig } from '@/hooks/useEntityRelations'
 import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
 import { ReadCiNeighboursUsingPOST200_GeneratedType, NeighbourPairsEntityMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 import { mapCiDataFrom, spreadFilter } from '@/componentHelpers'
