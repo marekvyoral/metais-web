@@ -7,4 +7,5 @@ export enum RouteNames {
     CONFIGURATION_ITEM_DETAIL = '/ci/:entityName/:entityId',
     DOCUMENTS_LIST_TAB = '/ci/:entityName/:entityId/documents',
     RELATIONSHIPS_LIST_TAB = '/ci/:entityName/:entityId/relationships',
+    LOGIN = 'login',
 }

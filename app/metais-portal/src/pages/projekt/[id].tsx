@@ -1,8 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
+import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 
-import { Tabs } from '@/components/tabs/Tabs'
 import { ApplicationServiceRelations } from '@/components/entities/projekt/ApplicationServiceRelations'
 
 const ProjektEntityDetailPage: React.FC = () => {

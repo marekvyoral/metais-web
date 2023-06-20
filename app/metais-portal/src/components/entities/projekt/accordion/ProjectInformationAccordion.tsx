@@ -1,10 +1,10 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 
 import styles from './basicInformationSection.module.scss'
 import { InformationGridRow } from './InformationGridRow'
 
-import { AccordionContainer } from '@/components/Accordion'
 import { pairEnumsToEnumValues } from '@/componentHelpers'
 import { CiType, ConfigurationItemUi, EnumType } from '@/api'
 

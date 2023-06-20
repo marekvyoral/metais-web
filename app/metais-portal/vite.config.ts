@@ -24,6 +24,13 @@ export default defineConfig(({ mode }) => {
                 parseNative: false,
             }),
         ],
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    quietDeps: true,
+                },
+            },
+        },
         server: {
             port: 3000,
             cors: {
@@ -49,6 +56,12 @@ export default defineConfig(({ mode }) => {
                     target: process.env.VITE_REST_CLIENT_USER_CONFIG_TARGET_URL,
                     changeOrigin: true,
                     secure: false,
+                },
+                '^/metaisiam/.*': {
+                    target: process.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL,
+                    changeOrigin: true,
+                    secure: false,
+                    rewrite: (p) => p.replace(/^\/metaisiam/, ''),
                 },
             },
         },

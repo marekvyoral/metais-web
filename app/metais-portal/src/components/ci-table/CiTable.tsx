@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
-
-import { PaginatorWrapper } from '../paginatorWrapper/PaginatorWrapper'
+import { PaginatorWrapper } from '@isdd/metais-common/paginatorWrapper/PaginatorWrapper'
 
 import { ColumnsOutputDefinition, createColumnsData } from './ciTableColumns'
 

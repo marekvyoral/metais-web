@@ -1,9 +1,8 @@
 import React, { PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
+import { SimpleSelect } from '@isdd/idsk-ui-kit/simple-select/SimpleSelect'
 
 import styles from './listActions.module.scss'
-
-import { SimpleSelect } from '@/components/SimpleSelect'
 
 interface IListActionsProps extends PropsWithChildren {
     pagingOptions?: { value: string; label: string; disabled?: boolean }[]

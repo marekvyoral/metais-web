@@ -10,6 +10,13 @@ export default defineConfig({
             parseNative: false,
         }),
     ],
+    css: {
+        preprocessorOptions: {
+            scss: {
+                quietDeps: true,
+            },
+        },
+    },
     server: {
         port: 3001,
     },

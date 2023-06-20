@@ -1,8 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useParams } from 'react-router-dom'
-
-import { Tab, Tabs } from '@/components/tabs/Tabs'
+import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 
 const ProjektEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()

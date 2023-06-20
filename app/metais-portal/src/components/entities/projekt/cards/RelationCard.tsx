@@ -2,12 +2,11 @@ import React, { PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
+import { GridRow } from '@isdd/idsk-ui-kit/grid/GridRow'
+import { GridCol } from '@isdd/idsk-ui-kit/grid/GridCol'
 
 import styles from './relationCard.module.scss'
 import { RelationAttribute } from './RelationAttribute'
-
-import { GridRow } from '@/components/grid/GridRow'
-import { GridCol } from '@/components/grid/GridCol'
 
 interface IRelationCardProps extends PropsWithChildren {
     label: React.ReactNode
