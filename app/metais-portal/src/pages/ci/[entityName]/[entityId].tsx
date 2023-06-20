@@ -3,6 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { Outlet, useParams } from 'react-router-dom'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 
+import Informations from '@/pages/ci/[entityName]/[entityId]/informations'
+
+export const INDEX_ROUTE = Informations
+
 const ProjektEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
     const { entityId, entityName } = useParams()

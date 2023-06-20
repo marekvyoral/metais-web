@@ -19,10 +19,6 @@ export type FileBasedPages = {
 export interface RouteConstructOptions {
     slug: string
     Component: React.FC
-    subPageWithParamsObject: {
-        isSubPageWithParams: boolean
-        paramsPatternMatch: string | undefined
-    }
     ParentComponent?: React.FC
     parentFilePath?: string
 }
@@ -76,30 +72,17 @@ export const reduceAllFilePathsByNumberOfSlash = (filePaths: string[]) => {
     return groupBySlashCount
 }
 
-export const getIndexFilePaths = (filePaths: string[]) => {
-    return filePaths?.filter((filePath) => filePath?.includes(INDEX_ROUTE)) ?? ''
+export const getIndexFilePaths = (filePaths: string[], globExports?: FileBasedPages) => {
+    const globExportsKeys = Object.keys(globExports ?? {})
+    return globExportsKeys?.filter((globExportKey) => globExports?.[globExportKey].indexComponent !== undefined) ?? ''
 }
 
 // for ex. /ci/:entityName/:entityId, /ci/:entityName/:entityId/*, ...
-export const isFilePathSubPageWithParamsRoute = (slug: string, tsxFilePaths: string[]) => {
-    const paramsPatternMatch = slug.match(PARAMS_REGEXP)
-    const matchesWithMoreDoubleDotNotation = tsxFilePaths?.filter((tsxFilePath) => {
-        const newFilePath = tsxFilePath.replace(ARRAY_REGEXP, SUBSTITUTE_ARRAY_REGEXP)
-        const filePathIncludesParamsPattern = newFilePath.includes(paramsPatternMatch?.[0] ?? '')
-        const hasAnyRouteMoreParamsNotation = newFilePath.split(':')?.length > slug?.split(':')?.length
-        if (filePathIncludesParamsPattern && hasAnyRouteMoreParamsNotation) return newFilePath
-    })
-    const isMatchedParamsPattern = paramsPatternMatch !== null && paramsPatternMatch?.length > 0
-    return {
-        isSubPageWithParams: isMatchedParamsPattern && (!matchesWithMoreDoubleDotNotation || !matchesWithMoreDoubleDotNotation?.length),
-        paramsPatternMatch: paramsPatternMatch?.[0],
-    }
-}
-
-export const computeNestedPathForNonIndexRoutes = (isSubPageWithParams: boolean | null, slug: string, paramsPatternMatch: string) => {
-    const nestedPath = isSubPageWithParams ? slug.substring(slug.indexOf(paramsPatternMatch) + paramsPatternMatch?.length) : slug
-    const isNestedPathWithParam = nestedPath?.match(PARAMS_REGEXP)
-    return isNestedPathWithParam && isNestedPathWithParam?.length > 0 ? slug : nestedPath
+export const calcNestedPath = (slug: string, filePathsOnLevelBefore: string[]) => {
+    const splittedSlug = slug?.split('/')
+    const fileParent = splittedSlug?.[splittedSlug?.length - 2]
+    const fileExistsInLevelBefore = filePathsOnLevelBefore?.some((filePath) => parseSlugFromFilePath(filePath)?.includes(fileParent))
+    return fileExistsInLevelBefore ? splittedSlug[splittedSlug?.length - 1] : slug
 }
 
 const isModuleExportReactFC = (globExports: unknown, slug: string) => {
