@@ -71,6 +71,15 @@ export default defineConfig({
                             name: 'useClientForReadCiNeighboursWithAllRelsUsingGET',
                         },
                     },
+                    readCiListUsingPOST: {
+                        query: {
+                            useQuery: true,
+                        },
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForReadCiListUsingPOST',
+                        },
+                    },
                 },
                 mutator: {
                     path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClient.ts',
@@ -115,7 +124,7 @@ export default defineConfig({
         input: {
             target: process.env.VITE_REST_CLIENT_DMS_SWAGGER_URL ?? '',
             filters: {
-                tags: [], //NOT WORKING! 'file-controller' , 'utils-controller'
+                tags: ['file-controller', 'utils-controller'],
             },
         },
         output: {

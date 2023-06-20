@@ -5,6 +5,7 @@ import { CiListContainer } from '@/components/containers/CiListContainer'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { IColumn } from '@/hooks/useColumnList'
 import { CiListFilterContainerUi, ConfigurationItemSetUi, EnumType, CiType } from '@/api'
+import { AttributesContainer } from '@/components/containers/AttributesContainer'
 
 export interface IListData {
     entityStructure: CiType | undefined
@@ -27,17 +28,28 @@ export interface IListView {
 const ProjektListPage: React.FC = () => {
     const { entityName } = useParams()
     return (
-        <CiListContainer
+        <AttributesContainer
             entityName={entityName ?? ''}
-            ListComponent={({ data, filterCallbacks, filter }) => (
-                <>
-                    {/* 
+            View={({ data: { constraintsData, unitsData, ciTypeData } }) => {
+                return (
+                    <CiListContainer
+                        entityName={entityName ?? ''}
+                        ListComponent={({ data: { columnListData, tableData }, filterCallbacks, filter }) => (
+                            <>
+                                {/* 
             Filter
             Actions
             */}
-                    <CiTable data={data} filterCallbacks={filterCallbacks} filter={filter} />
-                </>
-            )}
+                                <CiTable
+                                    data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData }}
+                                    filterCallbacks={filterCallbacks}
+                                    filter={filter}
+                                />
+                            </>
+                        )}
+                    />
+                )
+            }}
         />
     )
 }

@@ -27,13 +27,16 @@ export const ProjectInformationAccordion: React.FC<ProjectInformationData> = ({ 
                         title: t('projectInformationAccordion.basicInformation'),
                         content: (
                             <div className={styles.attributeGridRowBox}>
-                                {ciTypeData?.attributes?.map((attribute) => (
-                                    <InformationGridRow
-                                        key={attribute?.technicalName}
-                                        label={attribute.name ?? ''}
-                                        value={pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t)}
-                                    />
-                                ))}
+                                {ciTypeData?.attributes?.map((attribute) => {
+                                    const withDescription = true
+                                    return (
+                                        <InformationGridRow
+                                            key={attribute?.technicalName}
+                                            label={attribute.name ?? ''}
+                                            value={pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, withDescription)}
+                                        />
+                                    )
+                                })}
                             </div>
                         ),
                     },
@@ -49,7 +52,8 @@ export const ProjectInformationAccordion: React.FC<ProjectInformationData> = ({ 
                                 content: (
                                     <div className={styles.attributeGridRowBox}>
                                         {attributesProfile?.attributes?.map((attribute) => {
-                                            const rowValue = pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t)
+                                            const withDescription = true
+                                            const rowValue = pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, withDescription)
                                             return (
                                                 !attribute?.invisible && (
                                                     <InformationGridRow

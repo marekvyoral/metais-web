@@ -10,6 +10,7 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useCmdbSwaggerClient } from '../hooks/useCmdbSwaggerClient'
 import { useClientForReadConfigurationItemUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForReadCiListUsingPOST } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForReadCiNeighboursWithAllRelsUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForGetRoleParticipantUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 export type ValidateCIsByTypesAndOwnerUsingGETParams = {
@@ -4162,7 +4163,7 @@ export const useReadCiListUsingGET = <TData = Awaited<ReturnType<ReturnType<type
  * @summary readCiList
  */
 export const useReadCiListUsingPOSTHook = () => {
-    const readCiListUsingPOST = useCmdbSwaggerClient<ConfigurationItemSetUi | void>()
+    const readCiListUsingPOST = useClientForReadCiListUsingPOST<ConfigurationItemSetUi | void>()
 
     return (ciListFilterContainerUiBody: CiListFilterContainerUiBody) => {
         return readCiListUsingPOST({
@@ -4174,52 +4175,42 @@ export const useReadCiListUsingPOSTHook = () => {
     }
 }
 
-export const useReadCiListUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
-        TError,
-        { data: CiListFilterContainerUiBody },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
-    TError,
-    { data: CiListFilterContainerUiBody },
-    TContext
-> => {
-    const { mutation: mutationOptions } = options ?? {}
+export const getReadCiListUsingPOSTQueryKey = (ciListFilterContainerUiBody: CiListFilterContainerUiBody) =>
+    [`/read/cilistfiltered`, ciListFilterContainerUiBody] as const
+
+export const useReadCiListUsingPOSTQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError = unknown>(
+    ciListFilterContainerUiBody: CiListFilterContainerUiBody,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getReadCiListUsingPOSTQueryKey(ciListFilterContainerUiBody)
 
     const readCiListUsingPOST = useReadCiListUsingPOSTHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, { data: CiListFilterContainerUiBody }> = (
-        props,
-    ) => {
-        const { data } = props ?? {}
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>> = () =>
+        readCiListUsingPOST(ciListFilterContainerUiBody)
 
-        return readCiListUsingPOST(data)
-    }
-
-    return { mutationFn, ...mutationOptions }
+    return { queryKey, queryFn, ...queryOptions }
 }
 
-export type ReadCiListUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>>
-export type ReadCiListUsingPOSTMutationBody = CiListFilterContainerUiBody
-export type ReadCiListUsingPOSTMutationError = unknown
+export type ReadCiListUsingPOSTQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>>
+export type ReadCiListUsingPOSTQueryError = unknown
 
 /**
  * @summary readCiList
  */
-export const useReadCiListUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
-        TError,
-        { data: CiListFilterContainerUiBody },
-        TContext
-    >
-}) => {
-    const mutationOptions = useReadCiListUsingPOSTMutationOptions(options)
+export const useReadCiListUsingPOST = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError = unknown>(
+    ciListFilterContainerUiBody: CiListFilterContainerUiBody,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useReadCiListUsingPOSTQueryOptions(ciListFilterContainerUiBody, options)
 
-    return useMutation(mutationOptions)
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
 }
 
 /**

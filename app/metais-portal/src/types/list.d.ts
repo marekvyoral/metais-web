@@ -1,15 +1,15 @@
-import { CiType, IColumn, EnumType, ReadCiListUsingPOST200, CiListFilterContainerUi } from '@/api'
+import { CiType, IColumn, EnumType, ConfigurationItemSetUi, CiListFilterContainerUi } from '@/api'
 
 export interface IListFilterCallbacks {
     setListQueryArgs: React.Dispatch<SetStateAction<CiListFilterContainerUi>>
 }
 
 export interface IListData {
-    entityStructure: CiType | undefined
+    entityStructure?: CiType | undefined
     columnListData: IColumn | undefined
     unitsData?: EnumType | undefined
-    constraintsData: (EnumType | undefined)[]
-    tableData: void | ReadCiListUsingPOST200 | undefined
+    constraintsData?: (EnumType | undefined)[]
+    tableData: void | ConfigurationItemSetUi | undefined
 }
 
 export interface IListView {
