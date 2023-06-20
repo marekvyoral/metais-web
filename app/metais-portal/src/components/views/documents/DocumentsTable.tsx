@@ -7,6 +7,7 @@ import { Pagination } from '@isdd/idsk-ui-kit/types'
 import { CheckBox } from '@/components/CheckBox'
 import { NeighbourPairsEntityMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
 import { PaginatorWrapper } from '@/components/paginatorWrapper/PaginatorWrapper'
+import { IFilter } from '@/types/filter'
 
 export interface TableCols extends NeighbourPairsEntityMapped {
     selected?: boolean
@@ -17,7 +18,7 @@ interface DocumentsTable {
     isError: boolean
     additionalColumns?: Array<ColumnDef<TableCols>>
     pagination: Pagination
-    handleFilterChange: (pageNumber?: number, pageSize?: number, sortBy?: string, sortSource?: string, sortType?: string) => void
+    handleFilterChange: (filter: IFilter) => void
 }
 
 const Loading: React.FC = () => {

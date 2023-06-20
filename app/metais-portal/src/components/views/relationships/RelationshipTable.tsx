@@ -6,6 +6,7 @@ import { Pagination } from '@isdd/idsk-ui-kit/types'
 import { TableCols } from '../documents'
 
 import { PaginatorWrapper } from '@/components/paginatorWrapper/PaginatorWrapper'
+import { IFilter } from '@/types/filter'
 
 interface RelationshipsTable {
     data?: TableCols[] //missing return types from orval, types should come from backend, not from _GeneratedType file
@@ -13,7 +14,7 @@ interface RelationshipsTable {
     isError: boolean
     columns: Array<ColumnDef<TableCols>>
     pagination: Pagination
-    handleFilterChange: (pageNumber?: number, pageSize?: number, sortBy?: string, sortSource?: string, sortType?: string) => void
+    handleFilterChange: (filter: IFilter) => void
 }
 
 const Loading: React.FC = () => {

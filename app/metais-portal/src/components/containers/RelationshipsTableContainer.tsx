@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { Pagination } from '@isdd/idsk-ui-kit/types'
 
-import { IPageConfig } from '@/hooks/useEntityRelations'
 import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
 import { ReadCiNeighboursUsingPOST200_GeneratedType, NeighbourPairsEntityMapped } from '@/api/types/ReadCiNeighboursUsingPOST200_GeneratedType'
+import { IFilter as IFilter } from '@/types/filter'
+import { spreadFilter } from '@/componentHelpers'
 
 interface IView {
     data?: NeighbourPairsEntityMapped[]
     pagination: Pagination
-    handleFilterChange: (pageNumber?: number, pageSize?: number, sortBy?: string, sortSource?: string, sortType?: string) => void
+    handleFilterChange: (filter: IFilter) => void
     isLoading: boolean
     isError: boolean
 }
@@ -21,26 +22,23 @@ interface IRelationshipsTableContainer {
 }
 
 export const RelationshipsTableContainer: React.FC<IRelationshipsTableContainer> = ({ configurationItemId, View, defaultFilter, mapData }) => {
-    const defaultPageConfig: IPageConfig = {
-        page: 1,
-        perPage: 100,
-    }
-
     const preSetFilter: NeighboursFilterContainerUi = {
         ...defaultFilter,
-        ...defaultPageConfig,
+        page: 1,
+        perpage: 10,
     }
 
     const [pageFilter, setPageFilter] = useState<NeighboursFilterContainerUi>(preSetFilter)
-    const handleFilterChange = (pageNumber?: number, pageSize?: number, sortBy?: string, sortSource?: string, sortType?: string) => {
-        setPageFilter({ ...pageFilter, page: pageNumber, perpage: pageSize, sortBy, sortSource, sortType })
+
+    const handleFilterChange = (filter: IFilter) => {
+        setPageFilter(spreadFilter(pageFilter, filter))
     }
 
-    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', preSetFilter, {})
+    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', pageFilter, {})
 
     const pagination: Pagination = {
-        pageNumber: pageFilter.page ?? defaultPageConfig.page,
-        pageSize: pageFilter.perpage ?? defaultPageConfig.perPage,
+        pageNumber: pageFilter.page ?? 1,
+        pageSize: pageFilter.perpage ?? 10,
         dataLength: documentCiData?.fromNodes?.pagination?.totaltems ?? 0,
     }
 

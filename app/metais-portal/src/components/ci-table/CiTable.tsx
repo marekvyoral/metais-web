@@ -8,6 +8,7 @@ import { columns } from './ciTableColumns'
 import { CiListFilterContainerUi } from '@/api/generated/cmdb-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api/constants'
 import { IListData, IListFilterCallbacks } from '@/types/list'
+import { IFilter } from '@/types/filter'
 
 interface ICiTable {
     data: IListData
@@ -35,11 +36,11 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
     }
     const mappedTableData = mapTableData(data?.tableData) ?? []
 
-    const handlePageChange = (page?: number) => {
+    const handlePageChange = (filter: IFilter) => {
         filterCallbacks.setListQueryArgs((prev: CiListFilterContainerUi) => ({
             ...prev,
             //when page: page in api changes perPage, BE mistake?
-            perpage: page,
+            perpage: filter.pageNumber,
         }))
     }
 

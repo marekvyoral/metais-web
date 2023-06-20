@@ -6,9 +6,11 @@ import { Pagination } from '@isdd/idsk-ui-kit/types'
 
 import styles from './paginatorWrapper.module.scss'
 
+import { IFilter } from '@/types/filter'
+
 interface IPaginatorWrapper {
     pagination: Pagination
-    handlePageChange: (pageNumber?: number) => void
+    handlePageChange: (filter: IFilter) => void
 }
 
 export const PaginatorWrapper: React.FC<IPaginatorWrapper> = ({ pagination, handlePageChange }) => {
@@ -19,7 +21,7 @@ export const PaginatorWrapper: React.FC<IPaginatorWrapper> = ({ pagination, hand
 
     return (
         <div className={styles.paginationDiv}>
-            <Paginator pagination={pagination} onPageChanged={(page) => handlePageChange(page)} />
+            <Paginator pagination={pagination} onPageChanged={(page) => handlePageChange({ pageNumber: page })} />
             <p className={classnames('govuk-body-s', styles.text)}>
                 {t('table.paginationSummary', {
                     start,
