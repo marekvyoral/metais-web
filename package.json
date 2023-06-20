@@ -63,6 +63,7 @@
         "lint-fix:admin": "cd app/metais-admin && eslint . --fix",
         "lint-fix:idsk-ui-kit": "cd packages/idsk-ui-kit && eslint . --fix",
         "lint-fix:common": "cd packages/metais-common && eslint . --fix",
+        "test": "vitest",
         "prepare": "yarn prepare:portal && yarn prepare:admin",
         "prepare:portal": "recursive-copy -w node_modules/@id-sk/frontend/govuk/assets app/metais-portal/public/assets && recursive-copy -w node_modules/@id-sk/frontend/idsk/assets app/metais-portal/public/assets",
         "prepare:admin": "recursive-copy -w node_modules/@id-sk/frontend/govuk/assets app/metais-admin/public/assets && recursive-copy -w node_modules/@id-sk/frontend/idsk/assets app/metais-admin/public/assets",
@@ -124,6 +125,7 @@
         "sass": "^1.62.1",
         "storybook": "^7.0.12",
         "vite": "^4.3.5",
-        "vite-tsconfig-paths": "^4.2.0"
+        "vite-tsconfig-paths": "^4.2.0",
+        "vitest": "^0.32.0"
     }
 }
