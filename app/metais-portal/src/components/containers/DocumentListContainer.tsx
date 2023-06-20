@@ -19,7 +19,7 @@ interface IDocumentsListContainer {
 }
 
 export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ configurationItemId, View }) => {
-    const defaultApiRequest: NeighboursFilterContainerUi = {
+    const defaultRequestApi: NeighboursFilterContainerUi = {
         neighboursFilter: {
             ciType: ['Dokument'],
             metaAttributes: { state: ['DRAFT'] },
@@ -30,15 +30,15 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
         perpage: 10,
     }
 
-    const [apiRequest, setApiRequest] = useState<NeighboursFilterContainerUi>(defaultApiRequest)
+    const [requestApi, setRequestApi] = useState<NeighboursFilterContainerUi>(defaultRequestApi)
     const handleFilterChange = (filter: IFilter) => {
-        setApiRequest(mapFilterToNeighborsApi(apiRequest, filter))
+        setRequestApi(mapFilterToNeighborsApi(requestApi, filter))
     }
-    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', apiRequest, {})
+    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', requestApi, {})
 
     const pagination: Pagination = {
-        pageNumber: apiRequest.page ?? 1,
-        pageSize: apiRequest.perpage ?? 10,
+        pageNumber: requestApi.page ?? 1,
+        pageSize: requestApi.perpage ?? 10,
         dataLength: documentCiData?.fromNodes?.pagination?.totaltems ?? 0,
     }
     if (!configurationItemId) return <View pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
