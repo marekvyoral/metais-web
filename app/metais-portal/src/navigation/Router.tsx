@@ -9,6 +9,7 @@ import ProjektListPage from '@/pages/projekt'
 import ProjektEntityDetailPage from '@/pages/ci/[entityName]/[id]'
 import RelationshipsAccordionPage from '@/pages/ci/[entityName]/[entityId]/relationships'
 import DocumentsListPage from '@/pages/ci/[entityName]/[entityId]/documents'
+import { Login } from '@/pages/Login'
 
 export const Router: React.FC = () => {
     return (
@@ -19,6 +20,7 @@ export const Router: React.FC = () => {
                 <Route path={RouteNames.PROJEKT_LIST_PAGE} element={<ProjektListPage />} />
                 <Route path={RouteNames.DOCUMENTS_LIST_TAB} element={<DocumentsListPage />} />
                 <Route path={RouteNames.RELATIONSHIPS_LIST_TAB} element={<RelationshipsAccordionPage />} />
+                <Route path={RouteNames.LOGIN} element={<Login />} />
             </Route>
             <Route path={RouteNames.DEV_TEST_SCREEN} element={<DevTestScreen />} />
         </Routes>
