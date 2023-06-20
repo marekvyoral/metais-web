@@ -1,3 +1,39 @@
+diff --git a/node_modules/@id-sk/frontend/govuk/components/checkboxes/_checkboxes.scss b/node_modules/@id-sk/frontend/govuk/components/checkboxes/_checkboxes.scss
+index 44da08f..e8ef6b7 100644
+--- a/node_modules/@id-sk/frontend/govuk/components/checkboxes/_checkboxes.scss
++++ b/node_modules/@id-sk/frontend/govuk/components/checkboxes/_checkboxes.scss
+@@ -184,10 +184,13 @@
+     $input-offset: ($govuk-touch-target-size - $govuk-small-checkboxes-size) / 2;
+     $label-offset: $govuk-touch-target-size - $input-offset;
+ 
++    $govuk-hover-width-small: $govuk-hover-width / 2;
++
+     .govuk-checkboxes__item {
+       @include govuk-clearfix;
+       min-height: 0;
+       margin-bottom: 0;
++      margin-left: $govuk-hover-width-small;
+       padding-left: $label-offset;
+       float: left;
+     }
+@@ -275,7 +278,7 @@
+     // feedback to the user as to which checkbox they will select when their
+     // cursor is outside of the visible area.
+     .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before {
+-      box-shadow: 0 0 0 $govuk-hover-width $govuk-hover-colour;
++      box-shadow: 0 0 0 $govuk-hover-width-small $govuk-hover-colour;
+     }
+ 
+     // Because we've overridden the border-shadow provided by the focus state,
+@@ -286,7 +289,7 @@
+     .govuk-checkboxes__item:hover .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
+       // sass-lint:disable indentation
+       box-shadow: 0 0 0 $govuk-focus-width $govuk-focus-colour, // 1
+-                  0 0 0 $govuk-hover-width $govuk-hover-colour; // 2
++                  0 0 0 $govuk-hover-width-small $govuk-hover-colour; // 2
+     }
+ 
+     // For devices that explicitly don't support hover, don't provide a hover
 diff --git a/node_modules/@id-sk/frontend/idsk/components/header-extended/_header-extended.scss b/node_modules/@id-sk/frontend/idsk/components/header-extended/_header-extended.scss
 index e61867e..8d13f26 100644
 --- a/node_modules/@id-sk/frontend/idsk/components/header-extended/_header-extended.scss

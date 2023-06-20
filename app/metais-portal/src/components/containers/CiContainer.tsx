@@ -1,17 +1,14 @@
 import React from 'react'
 
-import { AttributeConstraintEnumAllOf, CiType, useGetCiTypeUsingGET } from '../../api/generated/types-repo-swagger'
-
-import { ReadConfigurationItemUsingGET200, useReadConfigurationItemUsingGET } from '@/api/generated/cmdb-swagger'
-import { useHowToDisplayConstraints, useHowToDisplayUnits } from '@/hooks/useHowToDisplay'
-import { EnumType } from '@/api/generated/enums-repo-swagger'
+import { ConfigurationItemUi, useReadConfigurationItemUsingGET, EnumType, AttributeConstraintEnumAllOf, CiType, useGetCiTypeUsingGET } from '@/api'
+import { useHowToDisplayConstraints } from '@/hooks/useHowToDisplay'
 
 export interface ICiContainerView {
     data: {
         ciTypeData: CiType | undefined
-        ciItemData: ReadConfigurationItemUsingGET200 | undefined
+        ciItemData: ConfigurationItemUi | undefined
         constraintsData: (EnumType | undefined)[]
-        unitsData: EnumType | undefined
+        unitsData?: EnumType | undefined
     }
 }
 
@@ -25,7 +22,6 @@ export const CiContainer: React.FC<ICiContainer> = ({ entityId, entityName, View
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeUsingGET(entityName)
     const { data: ciItemData, isLoading: isCiItemLoading, isError: isCiItemError } = useReadConfigurationItemUsingGET(entityId)
 
-    const units = ciTypeData?.attributes?.some((attribute) => attribute.units !== null) ?? false
     const constraintsAttributes =
         ciTypeData?.attributes
             ?.map((attribute) =>
@@ -48,12 +44,12 @@ export const CiContainer: React.FC<ICiContainer> = ({ entityId, entityName, View
 
     const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
-    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useHowToDisplayUnits(units)
+    // const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnumUsingGET(MEASURE_UNIT)
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
     const constraintsData = resultList.map((item) => item.data)
-    const isLoading = [isCiTypeDataLoading, isCiItemLoading, isUnitsLoading, isConstraintLoading].some((item) => item)
-    const isError = [isCiTypeDataError, isCiItemError, isUnitsError, isConstraintError].some((item) => item)
+    const isLoading = [isCiTypeDataLoading, isCiItemLoading, isConstraintLoading].some((item) => item) //isUnitsLoading,
+    const isError = [isCiTypeDataError, isCiItemError, isConstraintError].some((item) => item) //isUnitsError,
 
     if (isLoading) {
         return <div>Loading</div>
@@ -62,5 +58,5 @@ export const CiContainer: React.FC<ICiContainer> = ({ entityId, entityName, View
         return <div>Error</div>
     }
 
-    return <View data={{ ciTypeData, ciItemData, constraintsData, unitsData }} />
+    return <View data={{ ciTypeData, ciItemData, constraintsData, unitsData: undefined }} />
 }

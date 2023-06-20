@@ -1,8 +1,12 @@
+import { useNavigate } from 'react-router-dom'
+
+import { AuthActions, useAuth } from '@/contexts/auth/authContext'
+
 export type BodyType<BodyData> = BodyData & { headers?: object }
 
 export type ErrorType<ErrorData> = ErrorData
 
-type CustomClient<T> = (data: {
+export type CustomClient<T> = (data: {
     url: string
     method: 'get' | 'post' | 'put' | 'delete' | 'patch'
     params?: Record<string, string>
@@ -11,21 +15,31 @@ type CustomClient<T> = (data: {
     signal?: AbortSignal
 }) => Promise<T>
 
-export const useCustomClient = <T>(baseURL: string): CustomClient<T> => {
-    //vite proxy not working?
-    const proxyUrl = 'https://corsproxy.io/?'
+export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T) => void): CustomClient<T> => {
+    const {
+        state: { accessToken },
+        dispatch,
+    } = useAuth()
 
+    const navigate = useNavigate()
     return async ({ url, method, params, data }) => {
         const searchParams = params ? `?${new URLSearchParams(params)}` : ''
-        const response = await fetch(`${proxyUrl}${baseURL}${url}` + searchParams, {
+        const response = await fetch(`${baseURL}${url}` + searchParams, {
+            method,
             headers: {
-                method,
+                'Content-Type': 'application/json',
                 ...data?.headers,
-                // accessToken: `Bearer ${accessToken}`,
+                accessToken: `Bearer ${accessToken}`,
             },
             ...(data ? { body: JSON.stringify(data) } : {}),
         })
 
-        return response.json()
+        const responseBody = await response.json()
+        if (response.status == 401) {
+            dispatch({ type: AuthActions.LOGOUT })
+            navigate('/?token_expired=true')
+        }
+        if (callback) callback(responseBody)
+        return responseBody
     }
 }

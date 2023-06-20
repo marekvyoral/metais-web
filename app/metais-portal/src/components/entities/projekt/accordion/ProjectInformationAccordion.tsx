@@ -1,45 +1,63 @@
 import React from 'react'
-import { TextLinkExternal } from '@isdd/idsk-ui-kit/typography/TextLinkExternal'
+import { useTranslation } from 'react-i18next'
+import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 
-import { BasicInformationSection } from './BasicInformationSection'
+import styles from './basicInformationSection.module.scss'
+import { InformationGridRow } from './InformationGridRow'
 
-import { AccordionContainer } from '@/components/Accordion'
+import { ICiContainerView } from '@/components/containers/CiContainer'
+import { pairEnumsToEnumValues } from '@/componentHelpers'
 
-export const ProjectInformationAccordion: React.FC = () => {
+export const ProjectInformationAccordion: React.FC<ICiContainerView> = ({ data: { ciItemData, ciTypeData, constraintsData } }) => {
+    const { t } = useTranslation()
     return (
         <>
             <AccordionContainer
                 sections={[
                     {
-                        title: 'Základné informácie',
-
+                        title: t('projectInformationAccordion.basicInformation'),
                         content: (
-                            <BasicInformationSection
-                                codeMetaIS={'isvs_11775'}
-                                admin={
-                                    <TextLinkExternal
-                                        title={'Ministerstvo dopravy Slovenskej republiky'}
-                                        href={'#'}
-                                        textLink={'Ministerstvo dopravy Slovenskej republiky'}
+                            <div className={styles.attributeGridRowBox}>
+                                {ciTypeData?.attributes?.map((attribute) => (
+                                    <InformationGridRow
+                                        key={attribute?.technicalName}
+                                        label={attribute.name ?? ''}
+                                        value={pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t)}
                                     />
-                                }
-                                informationSystemName={'Elektronický národný register informácií dopravy'}
-                                referenceIdentifier={
-                                    <TextLinkExternal
-                                        title={'https://data.gov.sk/id/egov/isvs/11775'}
-                                        href={'https://data.gov.sk/id/egov/isvs/11775'}
-                                        textLink={'https://data.gov.sk/id/egov/isvs/11775'}
-                                    />
-                                }
-                                note={'skratka – „eNRI DOP“'}
-                                description={
-                                    'Zámerom projektu je vybudovať komplexný informačný systém, ktorý bude slúžiť najmä ako: a) národný prístupový bod pre služby viazané na EÚ Smernicu a Delegované nariadenia: Smernica 2010/40/EÚ (o rámci na zavedenie inteligentných dopravných systémov v oblasti cestnej dopravy a na rozhrania s inými druhmi dopravy), Delegované nariadenia č. 2017/1926 (poskytovanie informačných služieb o multimodálnom cestovaní v celej EÚ), č. 885/2013 (poskytovanie informačných služieb pre bezpečné a chránené parkovacie miesta pre nákladné a úžitkové vozidlá), č. 886/2013 (poskytovanie bezplatných minimálnych univerzálnych dopravných informácií týkajúcich sa bezpečnosti cestnej premávky užívateľom) a č. 2015/962 (poskytovanie informačných služieb o doprave v reálnom čase v celej EÚ), b) register informácií z dopravy, ktoré majú podporiť cestovanie verejnou dopravou, a využívanie ekologických dopravných módov, c) báza pre inteligentný dopravný systém, ktorý zabezpečí vyššiu atraktívnosť ekologických dopravných módov.'
-                                }
-                            />
+                                ))}
+                            </div>
                         ),
                     },
                 ]}
             />
+            {ciTypeData?.attributeProfiles?.map((attributesProfile) => {
+                return (
+                    <AccordionContainer
+                        key={attributesProfile?.description}
+                        sections={[
+                            {
+                                title: attributesProfile?.description ?? '',
+                                content: (
+                                    <div className={styles.attributeGridRowBox}>
+                                        {attributesProfile?.attributes?.map((attribute) => {
+                                            const rowValue = pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t)
+                                            return (
+                                                !attribute?.invisible && (
+                                                    <InformationGridRow
+                                                        key={attribute?.technicalName}
+                                                        label={attribute.name ?? ''}
+                                                        value={rowValue}
+                                                    />
+                                                )
+                                            )
+                                        })}
+                                    </div>
+                                ),
+                            },
+                        ]}
+                    />
+                )
+            })}
         </>
     )
 }
