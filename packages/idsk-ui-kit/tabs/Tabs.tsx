@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode, useEffect, useState } from 'react'
+import React, { PropsWithChildren, useEffect, useState } from 'react'
 import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { ButtonPopup } from '@isdd/metais-common/button-popup/ButtonPopup'
@@ -72,7 +72,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
     const { t } = useTranslation()
     const [selected, setSelected] = useState<string>(tabList[0].id)
     const [showOthersButton, setShowOthersButton] = useState(false)
-
+    const [newTabList, setNewTabList] = useState(tabList)
     const MAX_SHOWN_TABS = 5
 
     useEffect(() => {
@@ -83,19 +83,15 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
         }
     }, [tabList.length])
 
-    const array_insert = <T,>(arr: T[], element: T, index: number): T[] => {
-        if (index < 0 || index >= arr.length) {
-            return arr
+    const array_insert = (element: Tab, index: number): Tab[] => {
+        const localTablist = [...newTabList]
+        if (index < 0 || index >= localTablist.length) {
+            return localTablist
         }
-        arr.splice(arr.indexOf(element), 1)
-        arr.push(element)
+        localTablist.splice(localTablist.indexOf(element), 1)
+        localTablist.splice(index, 0, element)
 
-        for (let i = arr.length - 1; i > index; i--) {
-            arr[i] = arr[i - 1]
-        }
-
-        arr[index] = element
-        return arr
+        return localTablist
     }
 
     const handleSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: string) => {
@@ -105,7 +101,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
 
     const handleSubListSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: string, tab: Tab) => {
         event.preventDefault()
-        array_insert<Tab>(tabList, tab, MAX_SHOWN_TABS - 1)
+        setNewTabList(array_insert(tab, MAX_SHOWN_TABS - 1))
         setSelected(value)
     }
 
@@ -121,7 +117,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
         <div className="idsk-tabs" data-module="idsk-tabs">
             <h2 className="idsk-tabs__title">{t('tab.contents')}</h2>
             <ul className={classnames('idsk-tabs__list', styles.list)}>
-                {tabList.slice(0, MAX_SHOWN_TABS).map((tab) => (
+                {newTabList.slice(0, MAX_SHOWN_TABS).map((tab) => (
                     <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={selected === tab.id} id={tab.id} title={tab.title} />
                 ))}
                 {showOthersButton && (
@@ -132,7 +128,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
                             popupContent={(closePopup) => {
                                 return (
                                     <ul className={styles.subList}>
-                                        {tabList.slice(MAX_SHOWN_TABS, tabList.length).map((tab) => (
+                                        {newTabList.slice(MAX_SHOWN_TABS, tabList.length).map((tab) => (
                                             <TabItemDesktop
                                                 key={tab.id}
                                                 handleSelect={(event, value) => {
