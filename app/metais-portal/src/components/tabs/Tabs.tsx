@@ -1,62 +1,11 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useState } from 'react'
 import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, matchPath, useLocation } from 'react-router-dom'
 
-interface ITabItemDesktop {
-    handleSelect: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: string) => void
-    title: string
+export interface Tab {
     id: string
-    isSelected: boolean
-}
-
-const TabItemDesktop: React.FC<ITabItemDesktop> = ({ handleSelect, title, id, isSelected }) => {
-    return (
-        <li key={id} className={classnames('idsk-tabs__list-item', { 'idsk-tabs__list-item--selected': isSelected })}>
-            <a className="idsk-tabs__tab" href={`#${id}`} title={id} onClick={(event) => handleSelect(event, id)}>
-                {title}
-            </a>
-        </li>
-    )
-}
-
-interface ITabItemMobile {
-    id: string
-    handleMobileSelect: (value: string) => void
-    title: string
-    isSelected: boolean
-    content: React.ReactNode
-}
-
-const TabItemMobile: React.FC<ITabItemMobile> = ({ id, handleMobileSelect, title, isSelected, content }) => {
-    return (
-        <li key={id} className="idsk-tabs__list-item--mobile" role="presentation">
-            <button
-                className={classnames('govuk-caption-l', 'idsk-tabs__mobile-tab', isSelected && 'idsk-tabs__mobile-tab--selected')}
-                role="tab"
-                aria-controls={id}
-                aria-selected={isSelected}
-                onClick={() => handleMobileSelect(id)}
-            >
-                {title}
-                <span className="idsk-tabs__tab-arrow-mobile" />
-            </button>
-            <section className={classnames('idsk-tabs__panel', { 'idsk-tabs__panel--hidden': !isSelected })} id={id}>
-                <div className="idsk-tabs__panel-content">{content}</div>
-                <div
-                    className={classnames('idsk-tabs__mobile-tab-content', {
-                        'idsk-tabs__mobile-tab-content--hidden': !isSelected,
-                    })}
-                >
-                    {content}
-                </div>
-            </section>
-        </li>
-    )
-}
-
-interface Tab {
-    id: string
+    path?: string
     title: string
     content: React.ReactNode
 }
@@ -65,30 +14,95 @@ interface ITabs extends PropsWithChildren {
     tabList: Tab[]
 }
 
+interface ITabItemDesktop {
+    tab: Tab
+    handleSelect: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: Tab) => void
+    isSelected: boolean
+}
+
+const TabItemDesktop: React.FC<ITabItemDesktop> = ({ handleSelect, tab, isSelected }) => {
+    return (
+        <li key={tab.id} className={classnames('idsk-tabs__list-item', { 'idsk-tabs__list-item--selected': isSelected })}>
+            <a className="idsk-tabs__tab" href={`#${tab.id}`} title={tab.id} onClick={(event) => handleSelect(event, tab)}>
+                {tab.title}
+            </a>
+        </li>
+    )
+}
+
+interface ITabItemMobile {
+    tab: Tab
+    handleMobileSelect: (value: Tab) => void
+    isSelected: boolean
+}
+
+const TabItemMobile: React.FC<ITabItemMobile> = ({ tab, handleMobileSelect, isSelected }) => {
+    return (
+        <li key={tab.id} className="idsk-tabs__list-item--mobile" role="presentation">
+            <button
+                className={classnames('govuk-caption-l', 'idsk-tabs__mobile-tab', isSelected && 'idsk-tabs__mobile-tab--selected')}
+                role="tab"
+                aria-controls={tab.id}
+                aria-selected={isSelected}
+                onClick={() => handleMobileSelect(tab)}
+            >
+                {tab.title}
+                <span className="idsk-tabs__tab-arrow-mobile" />
+            </button>
+            <section className={classnames('idsk-tabs__panel', { 'idsk-tabs__panel--hidden': !isSelected })} id={tab.id}>
+                <div className="idsk-tabs__panel-content">{tab.content}</div>
+                <div
+                    className={classnames('idsk-tabs__mobile-tab-content', {
+                        'idsk-tabs__mobile-tab-content--hidden': !isSelected,
+                    })}
+                >
+                    {tab.content}
+                </div>
+            </section>
+        </li>
+    )
+}
+
 export const Tabs: React.FC<ITabs> = ({ tabList }) => {
     const { t } = useTranslation()
     const { pathname } = useLocation()
     const navigate = useNavigate()
+    const [selected, setSelected] = useState<Tab | null>(tabList[0])
+    const shouldNavigate = !!tabList[0]?.path
 
-    const activeTab = tabList.find((tab) => {
-        const match = matchPath(
-            {
-                path: tab.id,
-                caseSensitive: false,
-                end: true,
-            },
-            pathname,
-        )
-        return match !== null
-    })
+    const activeTab = shouldNavigate
+        ? tabList.find((tab) => {
+              const match = matchPath(
+                  {
+                      path: tab.path ?? '',
+                      caseSensitive: false,
+                      end: true,
+                  },
+                  pathname,
+              )
+              return match !== null
+          })
+        : selected
 
-    const handleSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: string) => {
+    const handleSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: Tab) => {
         event.preventDefault()
-        navigate(value)
+        if (value.path) {
+            navigate(value.path)
+        } else {
+            setSelected(value)
+        }
     }
 
-    const handleMobileSelect = (value: string) => {
-        navigate(value)
+    const handleMobileSelect = (value: Tab) => {
+        if (value.path) {
+            navigate(value.path)
+        } else {
+            if (value === selected) {
+                setSelected(null)
+            } else {
+                setSelected(value)
+            }
+        }
     }
 
     return (
@@ -96,25 +110,12 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
             <h2 className="idsk-tabs__title">{t('tab.contents')}</h2>
             <ul className="idsk-tabs__list">
                 {tabList.map((tab) => (
-                    <TabItemDesktop
-                        key={tab?.id}
-                        handleSelect={handleSelect}
-                        isSelected={activeTab?.id === tab?.id}
-                        id={tab?.id}
-                        title={tab?.title}
-                    />
+                    <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={activeTab?.id === tab.id} tab={tab} />
                 ))}
             </ul>
             <ul className="idsk-tabs__list--mobile" role="tablist">
                 {tabList.map((tab) => (
-                    <TabItemMobile
-                        key={tab?.id}
-                        handleMobileSelect={handleMobileSelect}
-                        id={tab?.id}
-                        title={tab?.title}
-                        content={tab?.content}
-                        isSelected={activeTab?.id === tab?.id}
-                    />
+                    <TabItemMobile key={tab.id} handleMobileSelect={handleMobileSelect} tab={tab} isSelected={activeTab?.id === tab.id} />
                 ))}
             </ul>
         </div>
