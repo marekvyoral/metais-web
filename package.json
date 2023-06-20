@@ -80,7 +80,8 @@
         ]
     },
     "engines": {
-        "node": ">=16.0"
+        "node": ">=16.0",
+        "yarn": "=1"
     },
     "devDependencies": {
         "@storybook/addon-essentials": "^7.0.12",
