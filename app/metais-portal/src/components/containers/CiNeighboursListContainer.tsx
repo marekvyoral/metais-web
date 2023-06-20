@@ -3,20 +3,20 @@ import React, { SetStateAction, useState } from 'react'
 import { IPageConfig } from '@/hooks/useEntityRelations'
 import { NeighbourSetUi, NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
 
-interface IView {
+interface ICiNeighboursListContainerView {
     data?: NeighbourSetUi
     setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
     isLoading: boolean
     isError: boolean
 }
 
-interface IRelationshipsTableContainer {
+interface ICiNeighboursListContainer {
     configurationItemId?: string
-    View: React.FC<IView>
+    View: React.FC<ICiNeighboursListContainerView>
     defaultFilter: NeighboursFilterContainerUi
 }
 
-export const RelationshipsTableContainer: React.FC<IRelationshipsTableContainer> = ({ configurationItemId, View, defaultFilter }) => {
+export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = ({ configurationItemId, View, defaultFilter }) => {
     const defaultPageConfig: IPageConfig = {
         page: 1,
         perPage: 100,
