@@ -1,8 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { Link } from 'react-router-dom'
-
-import { CheckBox } from '../CheckBox'
+import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 
 import styles from './ciTable.module.scss'
 
