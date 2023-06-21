@@ -1,11 +1,11 @@
 import React from 'react'
-import { Outlet, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 
 import { CiContainer } from '@/components/containers/CiContainer'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { ProjectInformationAccordion } from '@/components/entities/projekt/accordion/ProjectInformationAccordion'
 import { IRelationsView, RelationsListContainer } from '@/components/containers/RelationsListContainer'
-import { Tab, Tabs } from '@/components/tabs/Tabs'
 import { ApplicationServiceRelations } from '@/components/entities/projekt/ApplicationServiceRelations'
 interface IRelationTablist {
     isLoading: boolean
