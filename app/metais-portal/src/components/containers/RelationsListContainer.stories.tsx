@@ -4,13 +4,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { RelationsListContainer, IRelationsView } from './RelationsListContainer'
 
-export const RelationsView: React.FC<IRelationsView> = ({ data, setClickedEntityName }) => {
+export const RelationsView: React.FC<IRelationsView> = ({ data, setPageConfig }) => {
     return (
         <div>
             <p>shows that it only start calls api when clicked on entity</p>
             {data.keysToDisplay.map((key) => (
-                <button key={key} onClick={() => setClickedEntityName(key)}>
-                    {key}
+                <button key={key.technicalName} onClick={() => setPageConfig((pageConfig) => ({ ...pageConfig, ciTypes: [key.technicalName] }))}>
+                    {key.technicalName}
                 </button>
             ))}
             <p>status</p>

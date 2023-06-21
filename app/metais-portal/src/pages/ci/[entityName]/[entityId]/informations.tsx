@@ -17,29 +17,29 @@ interface IRelationTablist {
     handleFilterChange: (filter: IFilter) => void
 }
 
+const relationTablist = ({ isLoading, isError, data, pagination, handleFilterChange }: IRelationTablist): Tab[] =>
+    data.keysToDisplay.map((key) => {
+        let content = (
+            <>
+                <ApplicationServiceRelations entityTypes={data.entityTypes} relationsList={data.relationsList} owners={data.owners} />
+                <PaginatorWrapper pagination={pagination} handlePageChange={handleFilterChange} />
+            </>
+        )
+        if (isLoading && !data.relationsList?.pagination) {
+            content = <div>Loading...</div>
+        }
+        if (isError) {
+            content = <div>Error</div>
+        }
+        return {
+            id: key.technicalName,
+            title: key.tabName,
+            content,
+        }
+    })
+
 const Informations = () => {
     const { entityName, entityId } = useParams()
-
-    const relationTablist = ({ isLoading, isError, data, pagination, handleFilterChange }: IRelationTablist): Tab[] =>
-        data.keysToDisplay.map((key) => {
-            let content = (
-                <>
-                    <ApplicationServiceRelations entityTypes={data.entityTypes} relationsList={data.relationsList} owners={data.owners} />
-                    <PaginatorWrapper pagination={pagination} handlePageChange={handleFilterChange} />
-                </>
-            )
-            if (isLoading && !data.relationsList?.pagination) {
-                content = <div>Loading...</div>
-            }
-            if (isError) {
-                content = <div>Error</div>
-            }
-            return {
-                id: key.technicalName,
-                title: key.tabName,
-                content,
-            }
-        })
 
     return (
         <>
