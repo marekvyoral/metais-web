@@ -151,6 +151,15 @@
     "relationType": {
         "as": "Application service"
     },
+    "exportItemsOrRelations": {
+        "header": "Export items or relations",
+        "items": "Items",
+        "relations": "Relations",
+        "buttonRDF": "RDF",
+        "buttonXML": "XML",
+        "buttonCSV": "CSV",
+        "buttonXLSX": "XLSX"
+    },
     "tableSelectColumns": {
         "searchPlaceholder": "Search column name",
         "refreshButton": "Refresh",

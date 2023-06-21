@@ -36,11 +36,11 @@ export const useClientForReadCiListUsingPOST = <T extends ConfigurationItemSetUi
 
 export const useClientForreadCiNeighboursUsingPOST = <T extends NeighbourSetUi>() =>
     useCustomClient<T>(baseURL, (body) => {
-        body.fromNodes?.neighbourPairs?.forEach?.((nP) => {
+        body.fromNodes?.neighbourPairs?.forEach((nP) => {
             transformAttributesKeyValue(nP.configurationItem)
             transformAttributesKeyValue(nP.relationship)
         })
-        body.toNodes?.neighbourPairs?.forEach?.((nP) => {
+        body.toNodes?.neighbourPairs?.forEach((nP) => {
             transformAttributesKeyValue(nP.configurationItem)
             transformAttributesKeyValue(nP.relationship)
         })

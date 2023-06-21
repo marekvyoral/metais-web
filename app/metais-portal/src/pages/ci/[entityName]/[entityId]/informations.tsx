@@ -64,7 +64,7 @@ const Informations = () => {
                         <Tabs
                             tabList={relationTablist({ isLoading, isError, data, pagination, handleFilterChange })}
                             onSelect={(selected) => {
-                                setPageConfig((pageConfig) => ({ ...pageConfig, ciTypes: [selected.id ?? ''] }))
+                                setPageConfig((pageConfig) => ({ ...pageConfig, ciTypes: [selected.id ?? ''], page: 1 }))
                             }}
                         />
                     )

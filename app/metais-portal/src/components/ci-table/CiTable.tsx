@@ -1,14 +1,16 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { PaginatorWrapper } from '@isdd/metais-common/paginatorWrapper/PaginatorWrapper'
+import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
+import { CellContext, ColumnDef } from '@tanstack/react-table'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 
-import { ColumnsOutputDefinition, createColumnsData } from './ciTableColumns'
+import { ColumnsOutputDefinition, mapTableData, reduceAttributesByTechnicalName, sortAndMergeCiColumns } from './ciTableHelpers'
 
-import { CiListFilterContainerUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, ConfigurationItemUi, ConfigurationItemSetUi } from '@/api'
 import { IListData, IListFilterCallbacks } from '@/types/list'
-import { pairEnumsToEnumValues } from '@/componentHelpers'
+import { CiListFilterContainerUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api'
 
 interface ICiTable {
     data: IListData
@@ -28,19 +30,8 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
         allAttributes = [...allAttributes, ...(attribute?.attributes ?? [])]
     })
 
-    const mapTableData = (tableData: ConfigurationItemSetUi | undefined | void) => {
-        return (tableData?.configurationItemSet?.map((confItem: ConfigurationItemUi) => {
-            const newAttributes: { [attributeName: string]: string } = {}
-            Object.keys(confItem?.attributes ?? {})?.map((attributeName: string) => {
-                const foundAttrWithTypes = allAttributes?.find((attr) => attr?.technicalName === attributeName)
-                const newRowValue = pairEnumsToEnumValues(foundAttrWithTypes, confItem, data?.constraintsData ?? [], t, false)
-                newAttributes[attributeName] = newRowValue
-            })
-
-            return { ...confItem, attributes: newAttributes }
-        }) ?? []) as ColumnsOutputDefinition[]
-    }
-    const mappedTableData = mapTableData(data?.tableData) ?? []
+    const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
+    const tableData = mapTableData(data?.tableData, schemaAttributes, t, data?.constraintsData) ?? []
 
     const handlePageChange = (filter: IFilter) => {
         filterCallbacks.setListQueryArgs((prev: CiListFilterContainerUi) => ({
@@ -50,13 +41,38 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
         }))
     }
 
-    const columnsAttributes = data?.columnListData?.attributes
-    const columnsMetaAttributes = data?.columnListData?.metaAttributes
-    const newColums = createColumnsData(columnsAttributes, columnsMetaAttributes, allAttributes)
+    const columnsAttributes = sortAndMergeCiColumns(data?.columnListData)
+
+    const columnsFromApi =
+        columnsAttributes?.map((attribute, index) => {
+            const technicalName = attribute?.name ?? ''
+            const attributeHeader = schemaAttributes[technicalName]?.name
+            return {
+                accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],
+                header: attributeHeader ?? technicalName,
+                id: technicalName ?? '',
+                cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) =>
+                    !index ? (
+                        <Link to={'./' + ctx?.row?.original?.uuid}>{ctx?.getValue?.() as string}</Link>
+                    ) : (
+                        <strong>{ctx.getValue() as string}</strong>
+                    ),
+            }
+        }) ?? []
+
+    const columns: Array<ColumnDef<ColumnsOutputDefinition>> = [
+        {
+            accessorFn: (row) => row?.checked,
+            header: () => <></>,
+            id: '0',
+            cell: (row) => <CheckBox label={row.getValue() as string} name="checkbox" id={row.getValue() as string} value="true" />,
+        },
+        ...columnsFromApi,
+    ]
 
     return (
         <>
-            <Table columns={newColums} data={mappedTableData} />
+            <Table columns={columns} data={tableData} />
             <PaginatorWrapper pagination={{ pageNumber, pageSize, dataLength }} handlePageChange={handlePageChange} />
         </>
     )

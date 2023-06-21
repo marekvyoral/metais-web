@@ -34,6 +34,43 @@ index 44da08f..e8ef6b7 100644
      }
  
      // For devices that explicitly don't support hover, don't provide a hover
+diff --git a/node_modules/@id-sk/frontend/govuk/components/radios/_radios.scss b/node_modules/@id-sk/frontend/govuk/components/radios/_radios.scss
+index a8abdd7..0b29ee6 100644
+--- a/node_modules/@id-sk/frontend/govuk/components/radios/_radios.scss
++++ b/node_modules/@id-sk/frontend/govuk/components/radios/_radios.scss
+@@ -213,11 +213,14 @@
+   // Small checkboxes
+   // =========================================================
+ 
++  
+   .govuk-radios--small {
+     
+     $input-offset: ($govuk-touch-target-size - $govuk-small-radios-size) / 2;
+     $label-offset: $govuk-touch-target-size - $input-offset;
+     
++    $govuk-hover-width-small: $govuk-hover-width / 2;
++    
+     .govuk-radios__item {
+       @include govuk-clearfix;
+       min-height: 0;
+@@ -313,7 +316,7 @@
+     // feedback to the user as to which radio they will select when their
+     // cursor is outside of the visible area.
+     .govuk-radios__item:hover .govuk-radios__input:not(:disabled) + .govuk-radios__label::before {
+-      box-shadow: 0 0 0 $govuk-hover-width $govuk-hover-colour;
++      box-shadow: 0 0 0 $govuk-hover-width-small $govuk-hover-colour;
+     }
+ 
+     // Because we've overridden the border-shadow provided by the focus state,
+@@ -324,7 +327,7 @@
+     .govuk-radios__item:hover .govuk-radios__input:focus + .govuk-radios__label::before {
+       // sass-lint:disable indentation
+       box-shadow: 0 0 0 $govuk-radios-focus-width $govuk-focus-colour, // 1
+-                  0 0 0 $govuk-hover-width        $govuk-hover-colour; // 2
++                  0 0 0 $govuk-hover-width-small        $govuk-hover-colour; // 2
+     }
+ 
+     // For devices that explicitly don't support hover, don't provide a hover
 diff --git a/node_modules/@id-sk/frontend/idsk/components/header-extended/_header-extended.scss b/node_modules/@id-sk/frontend/idsk/components/header-extended/_header-extended.scss
 index e61867e..8d13f26 100644
 --- a/node_modules/@id-sk/frontend/idsk/components/header-extended/_header-extended.scss

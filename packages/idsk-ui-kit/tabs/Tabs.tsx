@@ -109,20 +109,18 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     }
 
     return (
-        <>
-            <div className="idsk-tabs" data-module="idsk-tabs">
-                <h2 className="idsk-tabs__title">{t('tab.contents')}</h2>
-                <ul className="idsk-tabs__list">
-                    {tabList.map((tab) => (
-                        <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={activeTab?.id === tab.id} tab={tab} />
-                    ))}
-                </ul>
-                <ul className="idsk-tabs__list--mobile" role="tablist">
-                    {tabList.map((tab) => (
-                        <TabItemMobile key={tab.id} handleMobileSelect={handleMobileSelect} tab={tab} isSelected={activeTab?.id === tab.id} />
-                    ))}
-                </ul>
-            </div>
-        </>
+        <div className="idsk-tabs" data-module="idsk-tabs">
+            <h2 className="idsk-tabs__title">{t('tab.contents')}</h2>
+            <ul className="idsk-tabs__list">
+                {tabList.map((tab) => (
+                    <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={activeTab?.id === tab.id} tab={tab} />
+                ))}
+            </ul>
+            <ul className="idsk-tabs__list--mobile" role="tablist">
+                {tabList.map((tab) => (
+                    <TabItemMobile key={tab.id} handleMobileSelect={handleMobileSelect} tab={tab} isSelected={activeTab?.id === tab.id} />
+                ))}
+            </ul>
+        </div>
     )
 }

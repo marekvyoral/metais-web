@@ -152,6 +152,15 @@
     "relationType": {
         "as": "Aplikačná služba"
     },
+    "exportItemsOrRelations": {
+        "header": "Export položiek alebo vzťahov",
+        "items": "Položky",
+        "relations": "Vzťahy",
+        "buttonRDF": "RDF",
+        "buttonXML": "XML",
+        "buttonCSV": "CSV",
+        "buttonXLSX": "XLSX"
+    },
     "tableSelectColumns": {
         "searchPlaceholder": "Názov hľadaného stĺpca",
         "refreshButton": "Obnoviť",

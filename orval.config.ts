@@ -1,10 +1,10 @@
 import path from 'path'
 
-import dotenv from 'dotenv'
+import { config } from 'dotenv'
 import { defineConfig } from 'orval'
 
 if (process.env.DOTENV_CONFIG_PATH) {
-    dotenv.config({
+    config({
         path: path.resolve(__dirname, process.env.DOTENV_CONFIG_PATH),
     })
 }

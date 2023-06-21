@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 
 import { NeighbourSetUi, NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
-import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
 import { mapFilterToNeighborsApi } from '@/componentHelpers'
 
 interface ICiNeighboursListContainerView {
