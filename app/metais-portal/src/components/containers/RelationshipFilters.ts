@@ -1,5 +1,10 @@
 import { NeighboursFilterContainerUi } from '@/api'
 
+export enum NeighboursApiType {
+    source,
+    target,
+}
+
 export const defaultSourceRelationshipTabFilter: NeighboursFilterContainerUi = {
     neighboursFilter: {
         ciType: ['ISVS', 'AS', 'InfraSluzba', 'osobitny_postup_ITVS'],
@@ -20,14 +25,5 @@ export const defaultTargetRelationshipTabFilter: NeighboursFilterContainerUi = {
             'PO_je_prevadzkovatel_ISVS',
             'Sluzba_sluzi_ISVS',
         ],
-    },
-}
-
-export const defaultDocumentsTabFilter: NeighboursFilterContainerUi = {
-    neighboursFilter: {
-        ciType: ['Dokument'],
-        metaAttributes: { state: ['DRAFT'] },
-        relType: ['CI_HAS_DOCUMENT', 'Dokument_sa_tyka_KRIS', 'CONTROL_HAS_DOCUMENT', 'PROJECT_HAS_DOCUMENT'],
-        usageType: ['system', 'application'],
     },
 }

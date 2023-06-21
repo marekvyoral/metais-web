@@ -3,8 +3,8 @@ import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { ColumnDef } from '@tanstack/react-table'
 import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 import { useTranslation } from 'react-i18next'
+import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 
-import { CheckBox } from '@/components/CheckBox'
 import { NeighbourPairUi } from '@/api'
 
 export interface TableCols extends NeighbourPairUi {

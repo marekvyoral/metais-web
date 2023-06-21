@@ -9,21 +9,29 @@ import { DndProvider } from 'react-dnd'
 
 import { App } from '@/App'
 import { reportWebVitals } from '@/reportWebVitals'
-
 import '@/index.scss'
+import { AuthContextProvider } from '@/contexts/auth/authContext'
 
 document.body.classList.add('js-enabled')
 const root = createRoot(document.getElementById('root') as HTMLElement)
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+        },
+    },
+})
 
 root.render(
     <React.StrictMode>
         <BrowserRouter>
             <QueryClientProvider client={queryClient}>
                 <I18nextProvider i18n={i18nInstance}>
-                    <DndProvider backend={HTML5Backend}>
-                        <App />
-                    </DndProvider>
+                    <AuthContextProvider>
+                        <DndProvider backend={HTML5Backend}>
+                            <App />
+                        </DndProvider>
+                    </AuthContextProvider>
                 </I18nextProvider>
             </QueryClientProvider>
         </BrowserRouter>

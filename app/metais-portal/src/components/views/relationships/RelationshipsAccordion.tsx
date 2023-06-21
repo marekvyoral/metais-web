@@ -1,14 +1,14 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 
 import { RelationshipsTable } from './RelationshipTable'
 import { targetTableColumns } from './RelationshipsTargetTableColumns'
 import { sourceTableColumns } from './RelationshipsSourceTableColumns'
 
-import { AccordionContainer } from '@/components/Accordion'
 import { CiNeighboursListContainer } from '@/components/containers/CiNeighboursListContainer'
-import { defaultTargetRelationshipTabFilter, defaultSourceRelationshipTabFilter } from '@/components/containers/RelationshipFilters'
 import { ConfigurationItemUi } from '@/api'
+import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
 
 interface RelationshipsAccordion {
     data?: ConfigurationItemUi
@@ -43,7 +43,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                         content: (
                             <CiNeighboursListContainer
                                 configurationItemId={configurationItemId}
-                                defaultFilter={defaultSourceRelationshipTabFilter}
+                                apiType={NeighboursApiType.source}
                                 View={(props) => {
                                     return (
                                         <RelationshipsTable
@@ -65,7 +65,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                         content: (
                             <CiNeighboursListContainer
                                 configurationItemId={configurationItemId}
-                                defaultFilter={defaultTargetRelationshipTabFilter}
+                                apiType={NeighboursApiType.target}
                                 View={(props) => {
                                     return (
                                         <RelationshipsTable

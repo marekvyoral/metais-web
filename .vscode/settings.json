@@ -1,6 +1,4 @@
 {
-    "eslint.workingDirectories": [
-        "app/metais-portal",
-        "app/metais-admin"
-    ]
+    "eslint.workingDirectories": ["app/metais-portal", "app/metais-admin", "packages/idsk-ui-kit", "packages/metais-common"],
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

@@ -1,8 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
-import { Tabs } from '../tabs/Tabs'
+import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 
 import { DocumentsListContainer, IView } from './DocumentListContainer'
 

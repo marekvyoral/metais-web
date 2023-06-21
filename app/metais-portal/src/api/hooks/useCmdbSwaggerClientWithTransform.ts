@@ -1,4 +1,4 @@
-import { CiWithRelsResultUi, ConfigurationItemUi, NeighbourSetUi, RoleParticipantUI } from '../generated/cmdb-swagger'
+import { CiWithRelsResultUi, ConfigurationItemUi, NeighbourSetUi, RoleParticipantUI, ConfigurationItemSetUi } from '../generated/cmdb-swagger'
 
 import { transformAttributesKeyValue } from './transform'
 import { useCustomClient } from './use-custom-client'
@@ -23,6 +23,15 @@ export const useClientForGetRoleParticipantBulkUsingPOST = <T extends RolePartic
         body?.forEach?.((rel) => {
             transformAttributesKeyValue(rel.configurationItemUi)
         })
+    })
+
+export const useClientForReadCiListUsingPOST = <T extends ConfigurationItemSetUi>() =>
+    useCustomClient<T>(baseURL, (body) => {
+        if (body.configurationItemSet) {
+            body.configurationItemSet.forEach((configurationItem) => {
+                transformAttributesKeyValue(configurationItem)
+            })
+        }
     })
 
 export const useClientForreadCiNeighboursUsingPOST = <T extends NeighbourSetUi>() =>

@@ -1,10 +1,10 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 
 import styles from './basicInformationSection.module.scss'
 import { InformationGridRow } from './InformationGridRow'
 
-import { AccordionContainer } from '@/components/Accordion'
 import { pairEnumsToEnumValues } from '@/componentHelpers'
 import { CiType, ConfigurationItemUi, EnumType } from '@/api'
 
@@ -27,13 +27,16 @@ export const ProjectInformationAccordion: React.FC<ProjectInformationData> = ({ 
                         title: t('projectInformationAccordion.basicInformation'),
                         content: (
                             <div className={styles.attributeGridRowBox}>
-                                {ciTypeData?.attributes?.map((attribute) => (
-                                    <InformationGridRow
-                                        key={attribute?.technicalName}
-                                        label={attribute.name ?? ''}
-                                        value={pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t)}
-                                    />
-                                ))}
+                                {ciTypeData?.attributes?.map((attribute) => {
+                                    const withDescription = true
+                                    return (
+                                        <InformationGridRow
+                                            key={attribute?.technicalName}
+                                            label={attribute.name ?? ''}
+                                            value={pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, withDescription)}
+                                        />
+                                    )
+                                })}
                             </div>
                         ),
                     },
@@ -49,7 +52,8 @@ export const ProjectInformationAccordion: React.FC<ProjectInformationData> = ({ 
                                 content: (
                                     <div className={styles.attributeGridRowBox}>
                                         {attributesProfile?.attributes?.map((attribute) => {
-                                            const rowValue = pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t)
+                                            const withDescription = true
+                                            const rowValue = pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, withDescription)
                                             return (
                                                 !attribute?.invisible && (
                                                     <InformationGridRow

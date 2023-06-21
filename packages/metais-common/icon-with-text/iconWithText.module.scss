@@ -1,0 +1,9 @@
+@import '@id-sk/frontend/idsk/all';
+
+.container {
+    align-items: center;
+    display: flex;
+    padding: govuk-spacing(2) 0;
+    margin-bottom: govuk-spacing(6);
+    gap: govuk-spacing(3);
+}
