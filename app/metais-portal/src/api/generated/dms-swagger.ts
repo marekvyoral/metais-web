@@ -6,6 +6,56 @@
  * Api Documentation
  * OpenAPI spec version: 3.0-SNAPSHOT
  */
+import { useQuery, useMutation } from '@tanstack/react-query'
+import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
+import { useDmsSwaggerClient } from '../hooks/useDmsSwaggerClient'
+export type PrintUsingGETParams = {
+    /**
+     * full
+     */
+    full?: boolean
+    name?: string
+    /**
+     * prop
+     */
+    prop?: boolean
+}
+
+export type DeleteContentUsingDELETEParams = {
+    name?: string
+}
+
+export type UpdateContentUsingPUTParams = {
+    name?: string
+}
+
+export type UpdateContentUsingPOSTParams = {
+    name?: string
+}
+
+export type GetContentUsingGETParams = {
+    /**
+     * version
+     */
+    version?: string
+}
+
+export type GetMetaUsingGETParams = {
+    /**
+     * version
+     */
+    version?: string
+}
+
+export type DeleteDocumentsUsingPOSTParams = {
+    name?: string
+}
+
+export type UpdateContentUsingPOSTBody = {
+    /** file */
+    file: Blob
+}
+
 export type UrlContent = { [key: string]: any }
 
 export interface Url {
@@ -117,4 +167,513 @@ export interface File {
     path?: string
     totalSpace?: number
     usableSpace?: number
+}
+
+type AwaitedInput<T> = PromiseLike<T> | T
+
+type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
+
+/**
+ * @summary deleteDocuments
+ */
+export const useDeleteDocumentsUsingPOSTHook = () => {
+    const deleteDocumentsUsingPOST = useDmsSwaggerClient<void>()
+
+    return (fileSetUi: FileSetUi, params?: DeleteDocumentsUsingPOSTParams) => {
+        return deleteDocumentsUsingPOST({
+            url: `/file/delete/list`,
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            data: fileSetUi,
+            params,
+        })
+    }
+}
+
+export const useDeleteDocumentsUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useDeleteDocumentsUsingPOSTHook>>>,
+        TError,
+        { data: FileSetUi; params?: DeleteDocumentsUsingPOSTParams },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useDeleteDocumentsUsingPOSTHook>>>,
+    TError,
+    { data: FileSetUi; params?: DeleteDocumentsUsingPOSTParams },
+    TContext
+> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const deleteDocumentsUsingPOST = useDeleteDocumentsUsingPOSTHook()
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<ReturnType<typeof useDeleteDocumentsUsingPOSTHook>>>,
+        { data: FileSetUi; params?: DeleteDocumentsUsingPOSTParams }
+    > = (props) => {
+        const { data, params } = props ?? {}
+
+        return deleteDocumentsUsingPOST(data, params)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type DeleteDocumentsUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteDocumentsUsingPOSTHook>>>>
+export type DeleteDocumentsUsingPOSTMutationBody = FileSetUi
+export type DeleteDocumentsUsingPOSTMutationError = unknown
+
+/**
+ * @summary deleteDocuments
+ */
+export const useDeleteDocumentsUsingPOST = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useDeleteDocumentsUsingPOSTHook>>>,
+        TError,
+        { data: FileSetUi; params?: DeleteDocumentsUsingPOSTParams },
+        TContext
+    >
+}) => {
+    const mutationOptions = useDeleteDocumentsUsingPOSTMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+/**
+ * @summary getHistory
+ */
+export const useGetHistoryUsingGETHook = () => {
+    const getHistoryUsingGET = useDmsSwaggerClient<History>()
+
+    return (uuid: string, signal?: AbortSignal) => {
+        return getHistoryUsingGET({ url: `/file/history/${uuid}`, method: 'get', signal })
+    }
+}
+
+export const getGetHistoryUsingGETQueryKey = (uuid: string) => [`/file/history/${uuid}`] as const
+
+export const useGetHistoryUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetHistoryUsingGETHook>>>, TError = void>(
+    uuid: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetHistoryUsingGETHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetHistoryUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetHistoryUsingGETQueryKey(uuid)
+
+    const getHistoryUsingGET = useGetHistoryUsingGETHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetHistoryUsingGETHook>>>> = ({ signal }) => getHistoryUsingGET(uuid, signal)
+
+    return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
+}
+
+export type GetHistoryUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetHistoryUsingGETHook>>>>
+export type GetHistoryUsingGETQueryError = void
+
+/**
+ * @summary getHistory
+ */
+export const useGetHistoryUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetHistoryUsingGETHook>>>, TError = void>(
+    uuid: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetHistoryUsingGETHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetHistoryUsingGETQueryOptions(uuid, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+/**
+ * @summary getMeta
+ */
+export const useGetMetaUsingGETHook = () => {
+    const getMetaUsingGET = useDmsSwaggerClient<Metadata>()
+
+    return (uuid: string, params?: GetMetaUsingGETParams, signal?: AbortSignal) => {
+        return getMetaUsingGET({ url: `/file/meta/${uuid}`, method: 'get', params, signal })
+    }
+}
+
+export const getGetMetaUsingGETQueryKey = (uuid: string, params?: GetMetaUsingGETParams) =>
+    [`/file/meta/${uuid}`, ...(params ? [params] : [])] as const
+
+export const useGetMetaUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetaUsingGETHook>>>, TError = void>(
+    uuid: string,
+    params?: GetMetaUsingGETParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetaUsingGETHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetaUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetMetaUsingGETQueryKey(uuid, params)
+
+    const getMetaUsingGET = useGetMetaUsingGETHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetMetaUsingGETHook>>>> = ({ signal }) =>
+        getMetaUsingGET(uuid, params, signal)
+
+    return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
+}
+
+export type GetMetaUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetMetaUsingGETHook>>>>
+export type GetMetaUsingGETQueryError = void
+
+/**
+ * @summary getMeta
+ */
+export const useGetMetaUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetaUsingGETHook>>>, TError = void>(
+    uuid: string,
+    params?: GetMetaUsingGETParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetaUsingGETHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetMetaUsingGETQueryOptions(uuid, params, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+/**
+ * @summary getContent
+ */
+export const useGetContentUsingGETHook = () => {
+    const getContentUsingGET = useDmsSwaggerClient<InputStreamResource>()
+
+    return (uuid: string, params?: GetContentUsingGETParams, signal?: AbortSignal) => {
+        return getContentUsingGET({ url: `/file/${uuid}`, method: 'get', params, signal })
+    }
+}
+
+export const getGetContentUsingGETQueryKey = (uuid: string, params?: GetContentUsingGETParams) =>
+    [`/file/${uuid}`, ...(params ? [params] : [])] as const
+
+export const useGetContentUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetContentUsingGETHook>>>, TError = void>(
+    uuid: string,
+    params?: GetContentUsingGETParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetContentUsingGETHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetContentUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetContentUsingGETQueryKey(uuid, params)
+
+    const getContentUsingGET = useGetContentUsingGETHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetContentUsingGETHook>>>> = ({ signal }) =>
+        getContentUsingGET(uuid, params, signal)
+
+    return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
+}
+
+export type GetContentUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetContentUsingGETHook>>>>
+export type GetContentUsingGETQueryError = void
+
+/**
+ * @summary getContent
+ */
+export const useGetContentUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useGetContentUsingGETHook>>>, TError = void>(
+    uuid: string,
+    params?: GetContentUsingGETParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetContentUsingGETHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetContentUsingGETQueryOptions(uuid, params, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+/**
+ * @summary updateContent
+ */
+export const useUpdateContentUsingPOSTHook = () => {
+    const updateContentUsingPOST = useDmsSwaggerClient<Metadata | void>()
+
+    return (uuid: string, updateContentUsingPOSTBody: UpdateContentUsingPOSTBody, params?: UpdateContentUsingPOSTParams) => {
+        const formData = new FormData()
+        formData.append('file', updateContentUsingPOSTBody.file)
+
+        return updateContentUsingPOST({
+            url: `/file/${uuid}`,
+            method: 'post',
+            headers: { 'Content-Type': 'multipart/form-data' },
+            data: formData,
+            params,
+        })
+    }
+}
+
+export const useUpdateContentUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useUpdateContentUsingPOSTHook>>>,
+        TError,
+        { uuid: string; data: UpdateContentUsingPOSTBody; params?: UpdateContentUsingPOSTParams },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useUpdateContentUsingPOSTHook>>>,
+    TError,
+    { uuid: string; data: UpdateContentUsingPOSTBody; params?: UpdateContentUsingPOSTParams },
+    TContext
+> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const updateContentUsingPOST = useUpdateContentUsingPOSTHook()
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<ReturnType<typeof useUpdateContentUsingPOSTHook>>>,
+        { uuid: string; data: UpdateContentUsingPOSTBody; params?: UpdateContentUsingPOSTParams }
+    > = (props) => {
+        const { uuid, data, params } = props ?? {}
+
+        return updateContentUsingPOST(uuid, data, params)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type UpdateContentUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateContentUsingPOSTHook>>>>
+export type UpdateContentUsingPOSTMutationBody = UpdateContentUsingPOSTBody
+export type UpdateContentUsingPOSTMutationError = unknown
+
+/**
+ * @summary updateContent
+ */
+export const useUpdateContentUsingPOST = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useUpdateContentUsingPOSTHook>>>,
+        TError,
+        { uuid: string; data: UpdateContentUsingPOSTBody; params?: UpdateContentUsingPOSTParams },
+        TContext
+    >
+}) => {
+    const mutationOptions = useUpdateContentUsingPOSTMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+/**
+ * @summary updateContent
+ */
+export const useUpdateContentUsingPUTHook = () => {
+    const updateContentUsingPUT = useDmsSwaggerClient<Metadata | void>()
+
+    return (uuid: string, updateContentUsingPOSTBody: UpdateContentUsingPOSTBody, params?: UpdateContentUsingPUTParams) => {
+        const formData = new FormData()
+        formData.append('file', updateContentUsingPOSTBody.file)
+
+        return updateContentUsingPUT({
+            url: `/file/${uuid}`,
+            method: 'put',
+            headers: { 'Content-Type': 'multipart/form-data' },
+            data: formData,
+            params,
+        })
+    }
+}
+
+export const useUpdateContentUsingPUTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useUpdateContentUsingPUTHook>>>,
+        TError,
+        { uuid: string; data: UpdateContentUsingPOSTBody; params?: UpdateContentUsingPUTParams },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useUpdateContentUsingPUTHook>>>,
+    TError,
+    { uuid: string; data: UpdateContentUsingPOSTBody; params?: UpdateContentUsingPUTParams },
+    TContext
+> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const updateContentUsingPUT = useUpdateContentUsingPUTHook()
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<ReturnType<typeof useUpdateContentUsingPUTHook>>>,
+        { uuid: string; data: UpdateContentUsingPOSTBody; params?: UpdateContentUsingPUTParams }
+    > = (props) => {
+        const { uuid, data, params } = props ?? {}
+
+        return updateContentUsingPUT(uuid, data, params)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type UpdateContentUsingPUTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateContentUsingPUTHook>>>>
+export type UpdateContentUsingPUTMutationBody = UpdateContentUsingPOSTBody
+export type UpdateContentUsingPUTMutationError = unknown
+
+/**
+ * @summary updateContent
+ */
+export const useUpdateContentUsingPUT = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useUpdateContentUsingPUTHook>>>,
+        TError,
+        { uuid: string; data: UpdateContentUsingPOSTBody; params?: UpdateContentUsingPUTParams },
+        TContext
+    >
+}) => {
+    const mutationOptions = useUpdateContentUsingPUTMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+/**
+ * @summary deleteContent
+ */
+export const useDeleteContentUsingDELETEHook = () => {
+    const deleteContentUsingDELETE = useDmsSwaggerClient<void>()
+
+    return (uuid: string, params?: DeleteContentUsingDELETEParams) => {
+        return deleteContentUsingDELETE({ url: `/file/${uuid}`, method: 'delete', params })
+    }
+}
+
+export const useDeleteContentUsingDELETEMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useDeleteContentUsingDELETEHook>>>,
+        TError,
+        { uuid: string; params?: DeleteContentUsingDELETEParams },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useDeleteContentUsingDELETEHook>>>,
+    TError,
+    { uuid: string; params?: DeleteContentUsingDELETEParams },
+    TContext
+> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const deleteContentUsingDELETE = useDeleteContentUsingDELETEHook()
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<ReturnType<typeof useDeleteContentUsingDELETEHook>>>,
+        { uuid: string; params?: DeleteContentUsingDELETEParams }
+    > = (props) => {
+        const { uuid, params } = props ?? {}
+
+        return deleteContentUsingDELETE(uuid, params)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type DeleteContentUsingDELETEMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteContentUsingDELETEHook>>>>
+
+export type DeleteContentUsingDELETEMutationError = unknown
+
+/**
+ * @summary deleteContent
+ */
+export const useDeleteContentUsingDELETE = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useDeleteContentUsingDELETEHook>>>,
+        TError,
+        { uuid: string; params?: DeleteContentUsingDELETEParams },
+        TContext
+    >
+}) => {
+    const mutationOptions = useDeleteContentUsingDELETEMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+/**
+ * @summary print
+ */
+export const usePrintUsingGETHook = () => {
+    const printUsingGET = useDmsSwaggerClient<void>()
+
+    return (params?: PrintUsingGETParams, signal?: AbortSignal) => {
+        return printUsingGET({ url: `/utils/print`, method: 'get', params, signal })
+    }
+}
+
+export const getPrintUsingGETQueryKey = (params?: PrintUsingGETParams) => [`/utils/print`, ...(params ? [params] : [])] as const
+
+export const usePrintUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof usePrintUsingGETHook>>>, TError = unknown>(
+    params?: PrintUsingGETParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof usePrintUsingGETHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof usePrintUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getPrintUsingGETQueryKey(params)
+
+    const printUsingGET = usePrintUsingGETHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof usePrintUsingGETHook>>>> = ({ signal }) => printUsingGET(params, signal)
+
+    return { queryKey, queryFn, ...queryOptions }
+}
+
+export type PrintUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof usePrintUsingGETHook>>>>
+export type PrintUsingGETQueryError = unknown
+
+/**
+ * @summary print
+ */
+export const usePrintUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof usePrintUsingGETHook>>>, TError = unknown>(
+    params?: PrintUsingGETParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof usePrintUsingGETHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = usePrintUsingGETQueryOptions(params, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+/**
+ * @summary reindex
+ */
+export const useReindexUsingGETHook = () => {
+    const reindexUsingGET = useDmsSwaggerClient<void>()
+
+    return (signal?: AbortSignal) => {
+        return reindexUsingGET({ url: `/utils/reindex`, method: 'get', signal })
+    }
+}
+
+export const getReindexUsingGETQueryKey = () => [`/utils/reindex`] as const
+
+export const useReindexUsingGETQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReindexUsingGETHook>>>, TError = unknown>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReindexUsingGETHook>>>, TError, TData>
+}): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReindexUsingGETHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getReindexUsingGETQueryKey()
+
+    const reindexUsingGET = useReindexUsingGETHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReindexUsingGETHook>>>> = ({ signal }) => reindexUsingGET(signal)
+
+    return { queryKey, queryFn, ...queryOptions }
+}
+
+export type ReindexUsingGETQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexUsingGETHook>>>>
+export type ReindexUsingGETQueryError = unknown
+
+/**
+ * @summary reindex
+ */
+export const useReindexUsingGET = <TData = Awaited<ReturnType<ReturnType<typeof useReindexUsingGETHook>>>, TError = unknown>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReindexUsingGETHook>>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useReindexUsingGETQueryOptions(options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
 }

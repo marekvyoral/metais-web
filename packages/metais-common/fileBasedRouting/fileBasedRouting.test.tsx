@@ -2,7 +2,7 @@ import React from 'react'
 import { test, expect } from 'vitest'
 import { Route } from 'react-router-dom'
 
-import { isFilePathSubPageWithParamsRoute, parseSlugFromFilePath, reduceAllFilePathsByNumberOfSlash } from './fileBasedRoutesHelpers'
+import { calcNestedPath, parseSlugFromFilePath, reduceAllFilePathsByNumberOfSlash } from './fileBasedRoutesHelpers'
 import { constructRouteWithParent, constructRouteObject } from './fileBasedRouting'
 
 const globExports = {
@@ -117,86 +117,6 @@ test('reduce all file paths by number of slashes', () => {
     expect(groupedFilePathBySlash).toEqual(expectedmap)
 })
 
-test('is current path detail Route', () => {
-    const paths = [
-        '../pages/DevTestScreen.tsx',
-        '../pages/Home.tsx',
-        '../pages/ci/[entityName]/[entityId].tsx',
-        '../pages/ci/[entityName]/[entityId]/form.tsx',
-        '../pages/ci/[entityName]/[entityId]/index.tsx',
-        '../pages/ci/[entityName]/index.tsx',
-        '../pages/ci/[entityName]/list.tsx',
-        '../pages/ci/[entityName]/test.tsx',
-        '../pages/ci/index.tsx',
-        '../pages/project/[id].tsx',
-        '../pages/projekt/index.tsx',
-    ]
-    const path = 'ci/:entityName/:entityId'
-
-    const isDetailRoute = isFilePathSubPageWithParamsRoute(path, paths)
-
-    const expectedOutput = { isSubPageWithParams: true, paramsPatternMatch: ':entityName/' }
-
-    expect(isDetailRoute).toEqual(expectedOutput)
-})
-
-test('is not current path detail Route', () => {
-    const paths = [
-        '../pages/DevTestScreen.tsx',
-        '../pages/Home.tsx',
-        '../pages/ci/[entityName]/[entityId].tsx',
-        '../pages/ci/[entityName]/[entityId]/form.tsx',
-        '../pages/ci/[entityName]/[entityId]/index.tsx',
-        '../pages/ci/[entityName]/index.tsx',
-        '../pages/ci/[entityName]/list.tsx',
-        '../pages/ci/[entityName]/test.tsx',
-        '../pages/ci/index.tsx',
-        '../pages/project/[id].tsx',
-        '../pages/projekt/index.tsx',
-    ]
-    const path = 'ci/:entityName'
-
-    const isDetailRoute = isFilePathSubPageWithParamsRoute(path, paths)
-
-    const expectedOutput = { isSubPageWithParams: false, paramsPatternMatch: undefined }
-
-    expect(isDetailRoute).toEqual(expectedOutput)
-})
-
-test('is not current path detail Route', () => {
-    const paths = [
-        '../pages/DevTestScreen.tsx',
-        '../pages/Home.tsx',
-        '../pages/ci/[entityName]/[entityId].tsx',
-        '../pages/ci/[entityName]/[entityId]/form.tsx',
-        '../pages/ci/[entityName]/[entityId]/index.tsx',
-        '../pages/ci/[entityName]/index.tsx',
-        '../pages/ci/[entityName]/list.tsx',
-        '../pages/ci/[entityName]/test.tsx',
-        '../pages/ci/index.tsx',
-        '../pages/project/[id].tsx',
-        '../pages/projekt/index.tsx',
-    ]
-    const path = ''
-
-    const isDetailRoute = isFilePathSubPageWithParamsRoute(path, paths)
-
-    const expectedOutput = { isSubPageWithParams: false, paramsPatternMatch: undefined }
-
-    expect(isDetailRoute).toEqual(expectedOutput)
-})
-
-test('is not current path detail Route', () => {
-    const paths: never[] | string[] = []
-    const path = 'ci/:entityName'
-
-    const isDetailRoute = isFilePathSubPageWithParamsRoute(path, paths)
-
-    const expectedOutput = { isSubPageWithParams: false, paramsPatternMatch: undefined }
-
-    expect(isDetailRoute).toEqual(expectedOutput)
-})
-
 test('construct route object', () => {
     const filePath = '../pages/project/[id].tsx'
     const slug = '/project/:id'
@@ -204,14 +124,14 @@ test('construct route object', () => {
     const globExport = pages[filePath]
     const Component = globExport?.Component
     const paths = Object.keys(globExports)?.filter((key) => key?.endsWith('.tsx'))
-
-    const subPageWithParamsObject = isFilePathSubPageWithParamsRoute(slug, paths)
+    const pathsGroupedByLevel = reduceAllFilePathsByNumberOfSlash(paths)
+    const parentFilePathsOnUpperLevels = pathsGroupedByLevel?.get(2)
+    const routePath = calcNestedPath(slug, parentFilePathsOnUpperLevels ?? [])
     const constructedRouteObject = constructRouteObject({
-        slug,
+        slug: routePath,
         Component,
         ParentComponent: undefined,
         parentFilePath: undefined,
-        subPageWithParamsObject,
     })
 
     const expectedOutput = <Route key={slug} path={'/project/:id'} element={<Component />} />
@@ -227,14 +147,14 @@ test('construct route with parent', () => {
 
     const globExport = pages[filePath]
     const Component = globExport?.Component
-    const subPageWithParamsObject = isFilePathSubPageWithParamsRoute(slug, paths)
+    const parentFilePathsOnUpperLevels = pathsGroupedByLevel?.get(2)
+    const routePath = calcNestedPath(slug, parentFilePathsOnUpperLevels ?? [])
 
     const constructedRouteObject = constructRouteObject({
-        slug,
+        slug: routePath,
         Component,
         ParentComponent: undefined,
         parentFilePath: undefined,
-        subPageWithParamsObject,
     })
 
     const finalRouteElement = constructRouteWithParent({
@@ -245,7 +165,7 @@ test('construct route with parent', () => {
         constructedRouteObject,
     })
 
-    const expectedOutput = <Route key={slug} path={':entityId'} element={<Component />} />
+    const expectedOutput = <Route key={slug} path={'/ci/:entityName/:entityId'} element={<Component />} />
 
     expect(finalRouteElement).toEqual(expectedOutput)
 })
@@ -258,25 +178,23 @@ test('construct route with parent 2', () => {
 
     const globExport = pages[filePath]
     const Component = globExport?.Component
-    const subPageWithParamsObject = isFilePathSubPageWithParamsRoute(slug, paths)
-
+    const parentFilePathsOnUpperLevels = pathsGroupedByLevel?.get(4)
+    const routePath = calcNestedPath(slug, parentFilePathsOnUpperLevels ?? [])
     const constructedRouteObject = constructRouteObject({
-        slug,
+        slug: routePath,
         Component,
         ParentComponent: undefined,
         parentFilePath: undefined,
-        subPageWithParamsObject,
     })
-
     const finalRouteElement = constructRouteWithParent({
-        level: 4,
+        level: 5,
         pathsGroupedByLevel,
         slug,
         globExports: pages,
         constructedRouteObject,
     })
 
-    const expectedOutput = <Route key={slug} path={'form'} element={<Component />} />
+    const expectedOutput = <Route key={'form'} path={'form'} element={<Component />} />
 
     expect(finalRouteElement).toEqual(expectedOutput)
 })

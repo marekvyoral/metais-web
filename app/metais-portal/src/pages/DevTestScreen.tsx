@@ -11,6 +11,7 @@ import { RelationsListContainer } from '@/components/containers/RelationsListCon
 import { RelationsView } from '@/components/containers/RelationsListContainer.stories'
 import { DocumentsListContainer } from '@/components/containers/DocumentListContainer'
 import { DocsView } from '@/components/containers/DocumentListContainer.stories'
+import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { ExportItemsOrRelations } from '@/components/export-items-or-relations/ExportItemsOrRelations'
 
 export const DevTestScreen: React.FC = () => {
@@ -29,6 +30,12 @@ export const DevTestScreen: React.FC = () => {
     return (
         <>
             <h4>Obrazovka na testovanie komponentov</h4>
+            <AttributesContainer
+                entityName="KRIS"
+                View={() => {
+                    return <CiContainer configurationItemId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={View} />
+                }}
+            />
             <Button label={'Modal open'} onClick={openModal} />
             <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />
 
@@ -63,7 +70,6 @@ export const DevTestScreen: React.FC = () => {
                 }}
             />
 
-            <CiContainer entityName="KRIS" entityId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={View} />
             <RelationsListContainer entityId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={RelationsView} />
             <DocumentsListContainer configurationItemId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={DocsView} />
             <Paginator dataLength={100} pageNumber={page} onPageChanged={setPage} pageSize={10} />

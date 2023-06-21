@@ -1,6 +1,11 @@
 import { NeighboursFilterContainerUi } from '@/api'
 
-export const targetTableDefualtFilter: NeighboursFilterContainerUi = {
+export enum NeighboursApiType {
+    source,
+    target,
+}
+
+export const defaultSourceRelationshipTabFilter: NeighboursFilterContainerUi = {
     neighboursFilter: {
         ciType: ['ISVS', 'AS', 'InfraSluzba', 'osobitny_postup_ITVS'],
         metaAttributes: { state: ['DRAFT'] },
@@ -8,7 +13,7 @@ export const targetTableDefualtFilter: NeighboursFilterContainerUi = {
     },
 }
 
-export const sourceTableDefaultFilter: NeighboursFilterContainerUi = {
+export const defaultTargetRelationshipTabFilter: NeighboursFilterContainerUi = {
     neighboursFilter: {
         ciType: ['InfraSluzba', 'ISVS', 'PO', 'ISVS'],
         metaAttributes: { state: ['DRAFT'] },

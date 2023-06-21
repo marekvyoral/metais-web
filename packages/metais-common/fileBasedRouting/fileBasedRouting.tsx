@@ -9,14 +9,13 @@ import {
     globImportedComponent,
     parseSlugFromFilePath,
     RouteConstructOptions,
-    isFilePathSubPageWithParamsRoute,
-    computeNestedPathForNonIndexRoutes,
     ConstructRouteWithParentInputs,
     RouteLevelConstruction,
     FileBasedPages,
     getIndexRouteComponent,
     ModuleExport,
     checkIfExportOnFilePathIsReactComponent,
+    calcNestedPath,
 } from './fileBasedRoutesHelpers'
 
 export const constructRouteWithParent = ({
@@ -38,56 +37,50 @@ export const constructRouteWithParent = ({
         if (foundParentFilePath) {
             const path = parseSlugFromFilePath(foundParentFilePath)
             const Component = globImportedComponent(globExports[foundParentFilePath], 'Component')
-            constructedRouteObject = (
-                <Route path={path} key={path} element={<Component />}>
-                    {constructedRouteObject}
-                </Route>
-            )
+            if (constructedRouteObject?.key !== path)
+                constructedRouteObject = (
+                    <Route path={path} key={path} element={<Component />}>
+                        {constructedRouteObject}
+                    </Route>
+                )
         }
     }
     return constructedRouteObject
 }
-export const constructRouteObject = ({ slug, Component, subPageWithParamsObject, ParentComponent, parentFilePath }: RouteConstructOptions) => {
-    // for ex. /ci/:entityName/:entityId, /ci/:entityName/:entityId/*, ...
-    const { isSubPageWithParams, paramsPatternMatch } = subPageWithParamsObject
+export const constructRouteObject = ({ slug, Component, ParentComponent, parentFilePath }: RouteConstructOptions) => {
     if (ParentComponent) {
-        if (isSubPageWithParams) {
-            return <Route element={<Component />} key={slug} index />
-        } else {
-            const parentSlug = parseSlugFromFilePath(parentFilePath ?? '')
-            return (
-                <Route path={parentSlug} key={parentSlug} element={<ParentComponent />}>
-                    <Route element={<Component />} key={slug} index />
-                </Route>
-            )
-        }
+        const parentSlug = parseSlugFromFilePath(parentFilePath ?? '')
+        return (
+            <Route path={parentSlug} key={parentSlug} element={<ParentComponent />}>
+                <Route element={<Component />} key={slug} index />
+            </Route>
+        )
     } else {
-        const nestedPath = computeNestedPathForNonIndexRoutes(isSubPageWithParams, slug, paramsPatternMatch ?? '')
-        return <Route path={nestedPath === '' ? INDEX_ROUTE : nestedPath} element={<Component />} key={slug} />
+        return <Route path={slug === '' ? INDEX_ROUTE : slug} element={<Component />} key={slug} />
     }
 }
 
 const constructAllRoutesPerSlashLevel = ({ pathsGroupedByLevel, globExports, level }: RouteLevelConstruction) => {
     const filePathsOnLevel = pathsGroupedByLevel.get(level) ?? []
-    const indexFilePathsOnLevel = getIndexFilePaths(filePathsOnLevel)
+    const indexFilePathsOnLevel = getIndexFilePaths(filePathsOnLevel, globExports)
+
     const indexRouteComponentsOnLevel = getIndexRouteComponents(globExports, indexFilePathsOnLevel)
-    const tsxFilePaths = Object.keys(globExports)
 
     return filePathsOnLevel?.map((filePath: string) => {
         const slug = parseSlugFromFilePath(filePath)
-        const Component = globExports[filePath].Component
-        const subPageWithParamsObject = isFilePathSubPageWithParamsRoute(slug, tsxFilePaths)
+        const parentFilePathsOnUpperLevels = pathsGroupedByLevel?.get(level - 1)
+        const routePath = calcNestedPath(slug, parentFilePathsOnUpperLevels ?? [])
 
+        const Component = globExports[filePath].Component
         const indexOfParentComponent = indexRouteComponentsOnLevel?.indexOf(Component)
         const ParentComponent = globExports[indexFilePathsOnLevel[indexOfParentComponent]]?.Component
         const parentFilePath = indexFilePathsOnLevel[indexOfParentComponent]
 
         const constructedRouteObject = constructRouteObject({
-            slug,
+            slug: routePath,
             Component,
             ParentComponent,
             parentFilePath,
-            subPageWithParamsObject,
         })
 
         const constructedRouteWithParents = constructRouteWithParent({
