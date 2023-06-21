@@ -4,6 +4,7 @@ import {
     useReadNeighboursConfigurationItemsCountUsingGET,
     useGetRoleParticipantBulkUsingPOST,
     RelatedCiTypePreview,
+    ReadCiNeighboursWithAllRelsUsingGETParams,
 } from '@/api'
 
 export interface IKeyToDisplay {
@@ -49,25 +50,16 @@ export interface IPageConfig {
     perPage: number
 }
 
-export const useEntityRelationsDataList = (id: string, pageConfig: IPageConfig, name: string) => {
+export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighboursWithAllRelsUsingGETParams) => {
     const {
         isLoading,
         isError,
         data: relationsList,
-    } = useReadCiNeighboursWithAllRelsUsingGET(
-        id,
-        {
-            ciTypes: [name ?? ''],
-            page: pageConfig.page,
-            perPage: pageConfig.perPage,
-            state: ['DRAFT'],
+    } = useReadCiNeighboursWithAllRelsUsingGET(id, pageConfig, {
+        query: {
+            enabled: !!pageConfig?.ciTypes?.length,
         },
-        {
-            query: {
-                enabled: !!name,
-            },
-        },
-    )
+    })
 
     const owners = ([...new Set(relationsList?.ciWithRels?.map((rel) => rel?.ci?.metaAttributes?.owner).filter(Boolean))] as string[]) ?? []
     const {

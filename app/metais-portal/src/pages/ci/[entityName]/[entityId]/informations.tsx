@@ -1,6 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { PaginatorWrapper } from '@isdd/metais-common/paginatorWrapper/PaginatorWrapper'
 
 import { CiContainer } from '@/components/containers/CiContainer'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
@@ -11,14 +13,21 @@ interface IRelationTablist {
     isLoading: boolean
     isError: boolean
     data: IRelationsView['data']
+    pagination: Pagination
+    handleFilterChange: (filter: IFilter) => void
 }
 
 const Informations = () => {
     const { entityName, entityId } = useParams()
 
-    const relationTablist = ({ isLoading, isError, data }: IRelationTablist): Tab[] =>
+    const relationTablist = ({ isLoading, isError, data, pagination, handleFilterChange }: IRelationTablist): Tab[] =>
         data.keysToDisplay.map((key) => {
-            let content = <ApplicationServiceRelations entityTypes={data.entityTypes} relationsList={data.relationsList} owners={data.owners} />
+            let content = (
+                <>
+                    <ApplicationServiceRelations entityTypes={data.entityTypes} relationsList={data.relationsList} owners={data.owners} />
+                    <PaginatorWrapper pagination={pagination} handlePageChange={handleFilterChange} />
+                </>
+            )
             if (isLoading && !data.relationsList?.pagination) {
                 content = <div>Loading...</div>
             }
@@ -50,12 +59,12 @@ const Informations = () => {
             <RelationsListContainer
                 entityId={entityId ?? ''}
                 technicalName={entityName ?? ''}
-                View={({ isLoading, isError, data, setClickedEntityName }) => {
+                View={({ isLoading, isError, data, pagination, handleFilterChange, setPageConfig }) => {
                     return (
                         <Tabs
-                            tabList={relationTablist({ isLoading, isError, data })}
+                            tabList={relationTablist({ isLoading, isError, data, pagination, handleFilterChange })}
                             onSelect={(selected) => {
-                                setClickedEntityName(selected.id ?? '')
+                                setPageConfig((pageConfig) => ({ ...pageConfig, ciTypes: [selected.id ?? ''] }))
                             }}
                         />
                     )
