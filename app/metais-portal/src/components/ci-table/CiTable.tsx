@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { PaginatorWrapper } from '@isdd/metais-common/paginatorWrapper/PaginatorWrapper'
+import { IFilter } from '@isdd/idsk-ui-kit/types'
 
 import { ColumnsOutputDefinition, createColumnsData } from './ciTableColumns'
 
@@ -22,8 +23,6 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
     const pageNumber = data?.tableData?.pagination?.page ?? BASE_PAGE_NUMBER
     const pageSize = data?.tableData?.pagination?.perPage ?? BASE_PAGE_SIZE
 
-    const [start, setStart] = useState<number>(1)
-    const [end, setEnd] = useState<number>(pageSize)
     let allAttributes = [...(data?.entityStructure?.attributes ?? [])]
     data?.entityStructure?.attributeProfiles?.map((attribute) => {
         allAttributes = [...allAttributes, ...(attribute?.attributes ?? [])]
@@ -43,14 +42,12 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
     }
     const mappedTableData = mapTableData(data?.tableData) ?? []
 
-    const handlePageChange = (page: number, from: number, to: number) => {
+    const handlePageChange = (filter: IFilter) => {
         filterCallbacks.setListQueryArgs((prev: CiListFilterContainerUi) => ({
             ...prev,
             //when page: page in api changes perPage, BE mistake?
-            page,
+            perpage: filter.pageNumber,
         }))
-        setStart(from + 1)
-        setEnd(to + 1 > dataLength ? dataLength : to + 1)
     }
 
     const columnsAttributes = data?.columnListData?.attributes
@@ -60,7 +57,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, filterCallbacks }) => {
     return (
         <>
             <Table columns={newColums} data={mappedTableData} />
-            <PaginatorWrapper paginator={{ pageNumber, pageSize, dataLength, handlePageChange }} text={{ start, end, total: dataLength }} />
+            <PaginatorWrapper pagination={{ pageNumber, pageSize, dataLength }} handlePageChange={handlePageChange} />
         </>
     )
 }

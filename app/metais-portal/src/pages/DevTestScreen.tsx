@@ -57,7 +57,7 @@ export const DevTestScreen: React.FC = () => {
 
             <RelationsListContainer entityId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={RelationsView} />
             <DocumentsListContainer configurationItemId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={DocsView} />
-            <Paginator dataLength={100} pageNumber={page} onPageChanged={setPage} pageSize={10} />
+            <Paginator pagination={{ dataLength: 100, pageNumber: page, pageSize: 10 }} onPageChanged={setPage} />
             <AccordionContainer
                 sections={[
                     { title: 'Title1', summary: 'Summary1', content: 'content-1' },

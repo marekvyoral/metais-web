@@ -13,13 +13,13 @@ export default meta
 type Story = StoryObj<typeof Paginator>
 
 export const Interactive: Story = {
-    render: ({ pageNumber, ...args }) => {
+    render: ({ pagination, ...args }) => {
         const Wrapper = () => {
-            const [page, setPage] = useState(pageNumber)
+            const [page, setPage] = useState(pagination.pageNumber)
             return (
                 <Paginator
                     {...args}
-                    pageNumber={page}
+                    pagination={{ ...pagination, pageNumber: page }}
                     onPageChanged={(index) => {
                         setPage(index)
                     }}
@@ -29,9 +29,11 @@ export const Interactive: Story = {
         return <Wrapper />
     },
     args: {
-        dataLength: 100,
-        pageNumber: 5,
+        pagination: {
+            dataLength: 100,
+            pageNumber: 5,
+            pageSize: 10,
+        },
         onPageChanged: () => null,
-        pageSize: 10,
     },
 }
