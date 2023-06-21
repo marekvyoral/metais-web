@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 import { ButtonPopup } from '@isdd/metais-common/button-popup/ButtonPopup'
 import { TableSelectColumns } from '@isdd/metais-common/table-select-columns/TableSelectColumns'
@@ -10,12 +11,26 @@ import { RelationsListContainer } from '@/components/containers/RelationsListCon
 import { RelationsView } from '@/components/containers/RelationsListContainer.stories'
 import { DocumentsListContainer } from '@/components/containers/DocumentListContainer'
 import { DocsView } from '@/components/containers/DocumentListContainer.stories'
+import { ExportItemsOrRelations } from '@/components/export-items-or-relations/ExportItemsOrRelations'
 
 export const DevTestScreen: React.FC = () => {
     const [page, setPage] = useState(5)
+    const [modalOpen, setModalOpen] = useState(false)
+    const openModal = () => {
+        setModalOpen(true)
+    }
+    const onClose = () => {
+        setModalOpen(false)
+    }
+    const onExportStart = (exportValue: string, extension: string) => {
+        // eslint-disable-next-line no-console
+        console.log(exportValue, extension)
+    }
     return (
         <>
             <h4>Obrazovka na testovanie komponentov</h4>
+            <Button label={'Modal open'} onClick={openModal} />
+            <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />
 
             <ButtonPopup
                 buttonLabel={'buttonLabel'}
