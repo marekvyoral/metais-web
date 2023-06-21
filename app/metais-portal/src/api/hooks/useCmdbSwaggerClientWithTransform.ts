@@ -1,4 +1,4 @@
-import { CiWithRelsResultUi, ConfigurationItemUi, RoleParticipantUI } from '../generated/cmdb-swagger'
+import { CiWithRelsResultUi, ConfigurationItemUi, NeighbourSetUi, RoleParticipantUI, ConfigurationItemSetUi } from '../generated/cmdb-swagger'
 
 import { transformAttributesKeyValue } from './transform'
 import { useCustomClient } from './use-custom-client'
@@ -18,4 +18,25 @@ export const useClientForReadCiNeighboursWithAllRelsUsingGET = <T extends CiWith
                 transformAttributesKeyValue(rel.ci)
             })
         }
+    })
+
+export const useClientForReadCiListUsingPOST = <T extends ConfigurationItemSetUi>() =>
+    useCustomClient<T>(baseURL, (body) => {
+        if (body.configurationItemSet) {
+            body.configurationItemSet.forEach((configurationItem) => {
+                transformAttributesKeyValue(configurationItem)
+            })
+        }
+    })
+
+export const useClientForreadCiNeighboursUsingPOST = <T extends NeighbourSetUi>() =>
+    useCustomClient<T>(baseURL, (body) => {
+        body.fromNodes?.neighbourPairs?.forEach((nP) => {
+            transformAttributesKeyValue(nP.configurationItem)
+            transformAttributesKeyValue(nP.relationship)
+        })
+        body.toNodes?.neighbourPairs?.forEach((nP) => {
+            transformAttributesKeyValue(nP.configurationItem)
+            transformAttributesKeyValue(nP.relationship)
+        })
     })

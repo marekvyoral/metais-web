@@ -145,7 +145,8 @@
     },
     "ciType": {
         "informations": "Information",
-        "documents": "Documents"
+        "documents": "Documents",
+        "relationships": "Relationships"
     },
     "relationType": {
         "as": "Application service"

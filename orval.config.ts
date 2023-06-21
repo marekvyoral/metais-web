@@ -52,6 +52,10 @@ export default defineConfig({
                         query: {
                             useQuery: true,
                         },
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForreadCiNeighboursUsingPOST',
+                        },
                     },
                     readConfigurationItemUsingGET: {
                         mutator: {
@@ -69,6 +73,15 @@ export default defineConfig({
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useClientForReadCiNeighboursWithAllRelsUsingGET',
+                        },
+                    },
+                    readCiListUsingPOST: {
+                        query: {
+                            useQuery: true,
+                        },
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForReadCiListUsingPOST',
                         },
                     },
                 },
@@ -115,7 +128,7 @@ export default defineConfig({
         input: {
             target: process.env.VITE_REST_CLIENT_DMS_SWAGGER_URL ?? '',
             filters: {
-                tags: [], //NOT WORKING! 'file-controller' , 'utils-controller'  (Patchable) parameter.type is mandatory for non-body parameters
+                tags: ['file-controller', 'utils-controller'],
             },
         },
         output: {
@@ -145,6 +158,27 @@ export default defineConfig({
                 mutator: {
                     path: './app/metais-portal/src/api/hooks/useEnumsRepoSwaggerClient.ts',
                     name: 'useEnumsRepoSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    userConfig: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_USER_CONFIG_REPO_SWAGGER_URL ?? '',
+            filters: {
+                tags: ['favorites-columns-controller'],
+            },
+        },
+        output: {
+            target: `./app/metais-portal/src/api/generated/user-config-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './app/metais-portal/src/api/hooks/useUserConfigSwaggerClient.ts',
+                    name: 'useUserConfigSwaggerClient',
                 },
             },
             ...defaultOutputOptions,

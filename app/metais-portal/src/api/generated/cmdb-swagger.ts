@@ -10,6 +10,8 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useCmdbSwaggerClient } from '../hooks/useCmdbSwaggerClient'
 import { useClientForReadConfigurationItemUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForReadCiListUsingPOST } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForreadCiNeighboursUsingPOST } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForReadCiNeighboursWithAllRelsUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForGetRoleParticipantUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 export type ValidateCIsByTypesAndOwnerUsingGETParams = {
@@ -579,36 +581,6 @@ export type RecycleCisUiBody = RecycleCisUi
  */
 export type DeleteStandardMeetingRequestsUsingPOSTDeleteidsBody = number[]
 
-export interface MapStringObject {
-    [key: string]: { [key: string]: any }
-}
-
-export interface HistoryVersionUiRelationshipUi {
-    actionBy?: string
-    actionTime?: string
-    actions?: string[]
-    item?: RelationshipUi
-    versionId?: string
-}
-
-export interface HistoryVersionsListUiRelationshipUi {
-    historyVersions?: HistoryVersionUiRelationshipUi[]
-    pagination?: PaginationUi
-}
-
-export interface HistoryVersionUiConfigurationItemUi {
-    actionBy?: string
-    actionTime?: string
-    actions?: string[]
-    item?: ConfigurationItemUi
-    versionId?: string
-}
-
-export interface HistoryVersionsListUiConfigurationItemUi {
-    historyVersions?: HistoryVersionUiConfigurationItemUi[]
-    pagination?: PaginationUi
-}
-
 export type WriteSetUiAllOf = {
     configurationItemSet?: ConfigurationItemUi[]
     invalidateReason?: InvalidateReason
@@ -677,17 +649,6 @@ export interface UsageTypeFilterUi {
 export interface StoreSetUi {
     configurationItemSet?: ConfigurationItemUi[]
     invalidateReason?: InvalidateReason
-    relationshipSet?: RelationshipUi[]
-}
-
-export interface StoreGroupMembersSetUi {
-    configurationItemSet?: ConfigurationItemUi[]
-    doNotInvalidateIncomming?: boolean
-    doNotInvalidateOutgoing?: boolean
-    invalidateReason?: InvalidateReason
-    newComtool?: string
-    processedRelTypesEndingInGroup?: string[]
-    processedRelTypesStartingInGroup?: string[]
     relationshipSet?: RelationshipUi[]
 }
 
@@ -876,6 +837,17 @@ export interface RelationshipUi {
     uuid?: string
 }
 
+export interface StoreGroupMembersSetUi {
+    configurationItemSet?: ConfigurationItemUi[]
+    doNotInvalidateIncomming?: boolean
+    doNotInvalidateOutgoing?: boolean
+    invalidateReason?: InvalidateReason
+    newComtool?: string
+    processedRelTypesEndingInGroup?: string[]
+    processedRelTypesStartingInGroup?: string[]
+    relationshipSet?: RelationshipUi[]
+}
+
 export interface RelationshipSetUi {
     pagination?: PaginationUi
     relationshipSet?: RelationshipUi[]
@@ -1008,7 +980,7 @@ export interface QueryUi {
 export type QueryResultTableUiTypes = { [key: string]: string }
 
 export interface QueryResultTableUi {
-    data?: MapStringObject[]
+    data?: MapOfstringAndobject[]
     types?: QueryResultTableUiTypes
 }
 
@@ -1074,6 +1046,11 @@ export interface NotificationsList {
     pagination?: PaginationData
 }
 
+export interface NeighboursResultUi {
+    neighbourPairs?: NeighbourPairUi[]
+    pagination?: PaginationUi
+}
+
 export interface NeighboursFilterUi {
     ciType?: string[]
     excludedCiUuids?: string[]
@@ -1105,11 +1082,6 @@ export interface NeighbourPairUi {
     relationship?: RelationshipUi
 }
 
-export interface NeighboursResultUi {
-    neighbourPairs?: NeighbourPairUi[]
-    pagination?: PaginationUi
-}
-
 export interface MissingAttributesHolderUi {
     lastModification?: string
     missingAttributes?: string[]
@@ -1139,6 +1111,10 @@ export interface MeetingRequestUi {
 export interface MeetingRequestListUi {
     meetingRequests?: MeetingRequestUi[]
     pagination?: PaginationUi
+}
+
+export interface MapOfstringAndobject {
+    [key: string]: { [key: string]: any }
 }
 
 export interface Links {
@@ -1194,6 +1170,32 @@ export interface IncidentRelationshipsFilterUi {
 export interface IncidentRelationshipSetUi {
     endRelationshipSet?: RelationshipUi[]
     startRelationshipSet?: RelationshipUi[]
+}
+
+export interface HistoryVersionsListUiOfRelationshipUi {
+    historyVersions?: HistoryVersionUiOfRelationshipUi[]
+    pagination?: PaginationUi
+}
+
+export interface HistoryVersionsListUiOfConfigurationItemUi {
+    historyVersions?: HistoryVersionUiOfConfigurationItemUi[]
+    pagination?: PaginationUi
+}
+
+export interface HistoryVersionUiOfRelationshipUi {
+    actionBy?: string
+    actionTime?: string
+    actions?: string[]
+    item?: RelationshipUi
+    versionId?: string
+}
+
+export interface HistoryVersionUiOfConfigurationItemUi {
+    actionBy?: string
+    actionTime?: string
+    actions?: string[]
+    item?: ConfigurationItemUi
+    versionId?: string
 }
 
 export interface HighlightResult {
@@ -1496,8 +1498,8 @@ export interface CiRelationshipCiPreviewHolderUi {
 }
 
 export interface CiHistoryVersionsIncidentRelationshipsUi {
-    historyVersions?: HistoryVersionUiRelationshipUi[]
-    incidentCis?: HistoryVersionUiConfigurationItemUi[]
+    historyVersions?: HistoryVersionUiOfRelationshipUi[]
+    incidentCis?: HistoryVersionUiOfConfigurationItemUi[]
     pagination?: PaginationUi
 }
 
@@ -2724,7 +2726,7 @@ export const useStorePoHierarchyRelUsingPOST = <TError = unknown, TContext = unk
  * @summary readAllCiHistoryVersions
  */
 export const useReadAllCiHistoryVersionsUsingGETHook = () => {
-    const readAllCiHistoryVersionsUsingGET = useCmdbSwaggerClient<HistoryVersionsListUiConfigurationItemUi>()
+    const readAllCiHistoryVersionsUsingGET = useCmdbSwaggerClient<HistoryVersionsListUiOfConfigurationItemUi>()
 
     return (params: ReadAllCiHistoryVersionsUsingGETParams, signal?: AbortSignal) => {
         return readAllCiHistoryVersionsUsingGET({ url: `/history/read/ci/list`, method: 'get', params, signal })
@@ -2779,7 +2781,7 @@ export const useReadAllCiHistoryVersionsUsingGET = <
  * @summary readCiHistoryVersion
  */
 export const useReadCiHistoryVersionUsingGETHook = () => {
-    const readCiHistoryVersionUsingGET = useCmdbSwaggerClient<HistoryVersionUiConfigurationItemUi>()
+    const readCiHistoryVersionUsingGET = useCmdbSwaggerClient<HistoryVersionUiOfConfigurationItemUi>()
 
     return (uuid: string, params?: ReadCiHistoryVersionUsingGETParams, signal?: AbortSignal) => {
         return readCiHistoryVersionUsingGET({ url: `/history/read/ci/${uuid}`, method: 'get', params, signal })
@@ -2833,7 +2835,7 @@ export const useReadCiHistoryVersionUsingGET = <TData = Awaited<ReturnType<Retur
  * @summary readCiHistoryVersions
  */
 export const useReadCiHistoryVersionsUsingGETHook = () => {
-    const readCiHistoryVersionsUsingGET = useCmdbSwaggerClient<HistoryVersionsListUiConfigurationItemUi>()
+    const readCiHistoryVersionsUsingGET = useCmdbSwaggerClient<HistoryVersionsListUiOfConfigurationItemUi>()
 
     return (uuid: string, params: ReadCiHistoryVersionsUsingGETParams, signal?: AbortSignal) => {
         return readCiHistoryVersionsUsingGET({ url: `/history/read/ci/${uuid}/list`, method: 'get', params, signal })
@@ -3110,7 +3112,7 @@ export const useGdprHistoryUsingGET = <TData = Awaited<ReturnType<ReturnType<typ
  * @summary readRelHistoryVersion
  */
 export const useReadRelHistoryVersionUsingGETHook = () => {
-    const readRelHistoryVersionUsingGET = useCmdbSwaggerClient<HistoryVersionUiRelationshipUi>()
+    const readRelHistoryVersionUsingGET = useCmdbSwaggerClient<HistoryVersionUiOfRelationshipUi>()
 
     return (uuid: string, params?: ReadRelHistoryVersionUsingGETParams, signal?: AbortSignal) => {
         return readRelHistoryVersionUsingGET({ url: `/history/read/rel/${uuid}`, method: 'get', params, signal })
@@ -3164,7 +3166,7 @@ export const useReadRelHistoryVersionUsingGET = <TData = Awaited<ReturnType<Retu
  * @summary readRelHistoryVersions
  */
 export const useReadRelHistoryVersionsUsingGETHook = () => {
-    const readRelHistoryVersionsUsingGET = useCmdbSwaggerClient<HistoryVersionsListUiRelationshipUi>()
+    const readRelHistoryVersionsUsingGET = useCmdbSwaggerClient<HistoryVersionsListUiOfRelationshipUi>()
 
     return (uuid: string, params: ReadRelHistoryVersionsUsingGETParams, signal?: AbortSignal) => {
         return readRelHistoryVersionsUsingGET({ url: `/history/read/rel/${uuid}/list`, method: 'get', params, signal })
@@ -4162,7 +4164,7 @@ export const useReadCiListUsingGET = <TData = Awaited<ReturnType<ReturnType<type
  * @summary readCiList
  */
 export const useReadCiListUsingPOSTHook = () => {
-    const readCiListUsingPOST = useCmdbSwaggerClient<ConfigurationItemSetUi | void>()
+    const readCiListUsingPOST = useClientForReadCiListUsingPOST<ConfigurationItemSetUi | void>()
 
     return (ciListFilterContainerUiBody: CiListFilterContainerUiBody) => {
         return readCiListUsingPOST({
@@ -4174,52 +4176,42 @@ export const useReadCiListUsingPOSTHook = () => {
     }
 }
 
-export const useReadCiListUsingPOSTMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
-        TError,
-        { data: CiListFilterContainerUiBody },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
-    TError,
-    { data: CiListFilterContainerUiBody },
-    TContext
-> => {
-    const { mutation: mutationOptions } = options ?? {}
+export const getReadCiListUsingPOSTQueryKey = (ciListFilterContainerUiBody: CiListFilterContainerUiBody) =>
+    [`/read/cilistfiltered`, ciListFilterContainerUiBody] as const
+
+export const useReadCiListUsingPOSTQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError = unknown>(
+    ciListFilterContainerUiBody: CiListFilterContainerUiBody,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getReadCiListUsingPOSTQueryKey(ciListFilterContainerUiBody)
 
     const readCiListUsingPOST = useReadCiListUsingPOSTHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, { data: CiListFilterContainerUiBody }> = (
-        props,
-    ) => {
-        const { data } = props ?? {}
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>> = () =>
+        readCiListUsingPOST(ciListFilterContainerUiBody)
 
-        return readCiListUsingPOST(data)
-    }
-
-    return { mutationFn, ...mutationOptions }
+    return { queryKey, queryFn, ...queryOptions }
 }
 
-export type ReadCiListUsingPOSTMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>>
-export type ReadCiListUsingPOSTMutationBody = CiListFilterContainerUiBody
-export type ReadCiListUsingPOSTMutationError = unknown
+export type ReadCiListUsingPOSTQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>>
+export type ReadCiListUsingPOSTQueryError = unknown
 
 /**
  * @summary readCiList
  */
-export const useReadCiListUsingPOST = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>,
-        TError,
-        { data: CiListFilterContainerUiBody },
-        TContext
-    >
-}) => {
-    const mutationOptions = useReadCiListUsingPOSTMutationOptions(options)
+export const useReadCiListUsingPOST = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError = unknown>(
+    ciListFilterContainerUiBody: CiListFilterContainerUiBody,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListUsingPOSTHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useReadCiListUsingPOSTQueryOptions(ciListFilterContainerUiBody, options)
 
-    return useMutation(mutationOptions)
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
 }
 
 /**
@@ -4574,7 +4566,7 @@ export const useReadRelationshipUsingGET = <TData = Awaited<ReturnType<ReturnTyp
  * @summary readCiNeighbours
  */
 export const useReadCiNeighboursUsingPOSTHook = () => {
-    const readCiNeighboursUsingPOST = useCmdbSwaggerClient<NeighbourSetUi | void>()
+    const readCiNeighboursUsingPOST = useClientForreadCiNeighboursUsingPOST<NeighbourSetUi | void>()
 
     return (uuid: string, neighboursFilterContainerUi: NeighboursFilterContainerUi) => {
         return readCiNeighboursUsingPOST({

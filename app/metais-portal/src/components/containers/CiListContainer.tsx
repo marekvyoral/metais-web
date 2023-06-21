@@ -1,10 +1,6 @@
 import React, { useState } from 'react'
 
-import { useEntityStructure } from '@/hooks/useEntityStructure'
-import { useColumnList } from '@/hooks/useColumnList'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api/constants'
-import { CiListFilterContainerUi } from '@/api/generated/cmdb-swagger'
-import { useCiQuery } from '@/hooks/useCiQuery'
+import { CiListFilterContainerUi, useGetDefaultColumnsUsingGET, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, useReadCiListUsingPOST } from '@/api'
 import { IListView } from '@/types/list'
 
 interface ICiListContainer {
@@ -13,8 +9,7 @@ interface ICiListContainer {
 }
 
 export const CiListContainer: React.FC<ICiListContainer> = ({ entityName, ListComponent }) => {
-    const { ciTypeData: entityStructure, unitsData, constraintsData } = useEntityStructure(entityName)
-    const { data: columnListData } = useColumnList(entityName)
+    const { data: columnListData } = useGetDefaultColumnsUsingGET(entityName)
 
     const defaultListQueryArgs: CiListFilterContainerUi = {
         filter: {
@@ -26,20 +21,13 @@ export const CiListContainer: React.FC<ICiListContainer> = ({ entityName, ListCo
         sortBy: 'Gen_Profil_nazov',
         sortType: 'ASC',
         //they have it switched in api?
-        page: BASE_PAGE_SIZE,
-        perpage: BASE_PAGE_NUMBER,
+        page: BASE_PAGE_NUMBER,
+        perpage: BASE_PAGE_SIZE,
     }
 
     const [listQueryArgs, setListQueryArgs] = useState<CiListFilterContainerUi>(defaultListQueryArgs)
 
-    // const { data: tableData, isLoading, isError } = useReadCiListUsingPOST(listQueryArgs, {}, {})
-    const { data: tableData } = useCiQuery(entityName, listQueryArgs)
+    const { data: tableData } = useReadCiListUsingPOST(listQueryArgs)
 
-    return (
-        <ListComponent
-            data={{ entityStructure, unitsData, constraintsData, columnListData, tableData }}
-            filterCallbacks={{ setListQueryArgs }}
-            filter={listQueryArgs}
-        />
-    )
+    return <ListComponent data={{ columnListData, tableData }} filterCallbacks={{ setListQueryArgs }} filter={listQueryArgs} />
 }

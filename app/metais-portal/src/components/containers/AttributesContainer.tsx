@@ -1,8 +1,22 @@
-import { useHowToDisplayConstraints } from './useHowToDisplay'
+import React from 'react'
 
-import { AttributeConstraintEnumAllOf, useGetCiTypeUsingGET } from '@/api'
+import { EnumType, AttributeConstraintEnumAllOf, useGetCiTypeUsingGET, CiType } from '@/api'
+import { useHowToDisplayConstraints } from '@/hooks/useHowToDisplay'
 
-export const useEntityStructure = (entityName: string) => {
+export interface IAtrributesContainerView {
+    data: {
+        ciTypeData: CiType | undefined
+        constraintsData: (EnumType | undefined)[]
+        unitsData?: EnumType | undefined
+    }
+}
+
+interface AttributesContainer {
+    entityName: string
+    View: React.FC<IAtrributesContainerView>
+}
+
+export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeUsingGET(entityName)
 
     const constraintsAttributes =
@@ -34,11 +48,12 @@ export const useEntityStructure = (entityName: string) => {
     const isLoading = [isCiTypeDataLoading, isConstraintLoading].some((item) => item) //isUnitsLoading,
     const isError = [isCiTypeDataError, isConstraintError].some((item) => item) //isUnitsError,
 
-    return {
-        isLoading,
-        isError,
-        ciTypeData,
-        constraintsData,
-        unitsData: undefined,
+    if (isLoading) {
+        return <div>Loading</div>
     }
+    if (isError) {
+        return <div>Error</div>
+    }
+
+    return <View data={{ ciTypeData, constraintsData, unitsData: undefined }} />
 }

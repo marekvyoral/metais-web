@@ -1,12 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { MultiValue, OptionProps, components } from 'react-select'
 import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
 import { BreadCrumbs } from '@isdd/idsk-ui-kit/bread-crumbs/BreadCrumbs'
 import { SelectLazyLoading } from '@isdd/metais-common/select-lazy-loading/SelectLazyLoading'
 
-import { RouteNames } from '@/navigation/routeNames'
 import { HomeIcon } from '@/assets/images'
 
 type OptionType = {
@@ -87,7 +85,6 @@ export const Home: React.FC = () => {
                     { label: 'Second', href: '/second' },
                 ]}
             />
-            <Link to={RouteNames.DEV_TEST_SCREEN}>Testovacia obrazovka</Link>
             <div>
                 <form action="/" method="post">
                     <RadioButton id="id" name="account" value="Hraško" label={'RadioButton 1'} />
