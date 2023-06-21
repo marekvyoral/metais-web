@@ -8,7 +8,7 @@ import { sourceTableColumns } from './RelationshipsSourceTableColumns'
 
 import { CiNeighboursListContainer } from '@/components/containers/CiNeighboursListContainer'
 import { ConfigurationItemUi } from '@/api'
-import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
+import { defaultSourceRelationshipTabFilter, defaultTargetRelationshipTabFilter } from '@/components/containers/RelationshipFilters'
 
 interface RelationshipsAccordion {
     data?: ConfigurationItemUi
@@ -43,7 +43,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                         content: (
                             <CiNeighboursListContainer
                                 configurationItemId={configurationItemId}
-                                apiType={NeighboursApiType.source}
+                                defaultFilter={defaultSourceRelationshipTabFilter}
                                 View={(props) => {
                                     return (
                                         <RelationshipsTable
@@ -67,7 +67,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                         content: (
                             <CiNeighboursListContainer
                                 configurationItemId={configurationItemId}
-                                apiType={NeighboursApiType.target}
+                                defaultFilter={defaultTargetRelationshipTabFilter}
                                 View={(props) => {
                                     return (
                                         <RelationshipsTable
