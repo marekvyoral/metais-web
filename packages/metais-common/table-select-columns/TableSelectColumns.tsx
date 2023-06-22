@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, ChangeEvent } from 'react'
 import classNames from 'classnames'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
@@ -30,8 +30,8 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({ onClose
     const [selectedColumns, setSelectedColumns] = useState([...columns])
     const [search, setSearch] = useState('')
 
-    const handleChange = (value: string) => {
-        setSearch(value)
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value)
     }
 
     const updateSelectedValue = (key: string, checked: boolean) => {
