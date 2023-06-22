@@ -5,8 +5,8 @@ import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { useTranslation } from 'react-i18next'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
+import { SearchInput } from '@isdd/idsk-ui-kit/searchInput'
 
-import { Searchbar } from './Searchbar'
 import styles from './tableSelectColumns.module.scss'
 
 interface IColumnType {
@@ -51,7 +51,7 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({ onClose
     return (
         <>
             <div>
-                <Searchbar className={styles.searchbar} onChange={handleChange} />
+                <SearchInput id="search" name="search" className={styles.searchbar} onChange={handleChange} />
                 <TextBody size="S" className={classNames('govuk-!-font-weight-bold', styles.textHeader)}>
                     {header}
                 </TextBody>
