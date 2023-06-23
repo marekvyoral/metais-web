@@ -11,7 +11,15 @@ const DocumentsListPage: React.FC = () => {
         <DocumentsListContainer
             configurationItemId={entityId}
             View={(props) => {
-                return <DocumentsTable data={props?.data} isLoading={props.isLoading} isError={props.isError} />
+                return (
+                    <DocumentsTable
+                        data={props?.data}
+                        handleFilterChange={props.handleFilterChange}
+                        isLoading={props.isLoading}
+                        isError={props.isError}
+                        pagination={props.pagination}
+                    />
+                )
             }}
         />
     )
