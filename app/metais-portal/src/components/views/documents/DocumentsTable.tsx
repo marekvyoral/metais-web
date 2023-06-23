@@ -81,8 +81,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColum
     return (
         <>
             <Table columns={columns} data={data} />
-            <PaginatorWrapper pagination={pagination} handlePageChange={handleFilterChange} />
+            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
     )
-    //temporary paginator component, should be replaced by pagnator wrapper
 }

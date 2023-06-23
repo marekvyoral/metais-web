@@ -1,7 +1,7 @@
 export interface IFilter {
     pageNumber?: number
     pageSize?: number
-    sortBy?: string
-    sortSource?: string
-    sortType?: string
+    //FIX ME: sortBy?: string {name}
+    //FIX ME: sortSource?: string {CI}
+    //FIX ME: sortDirection?: enum {ASC,DESC...}
 }

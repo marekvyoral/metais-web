@@ -22,7 +22,7 @@ const relationTablist = ({ isLoading, isError, data, pagination, handleFilterCha
         let content = (
             <>
                 <ApplicationServiceRelations entityTypes={data.entityTypes} relationsList={data.relationsList} owners={data.owners} />
-                <PaginatorWrapper pagination={pagination} handlePageChange={handleFilterChange} />
+                <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
             </>
         )
         if (isLoading && !data.relationsList?.pagination) {

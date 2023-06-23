@@ -29,7 +29,7 @@ export const RelationshipsTable: React.FC<RelationshipsTable> = ({ data, columns
     return (
         <>
             <Table columns={columns} data={data} />
-            <PaginatorWrapper pagination={pagination} handlePageChange={handleFilterChange} />
+            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
-    ) //temporary paginator component, should be replaced by pagnator wrapper
+    )
 }

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 
-import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST, NeighbourPairUi } from '@/api'
-import { mapFilterToNeighborsApi } from '@/componentHelpers/filter'
+import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST, NeighbourPairUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api'
+import { mapFilterToNeighborsApi } from '@/componentHelpers'
+import { mapNeighboursSetSourceToPagination } from '@/componentHelpers/pagination'
 
 export interface IView {
     data?: NeighbourPairUi[]
@@ -25,8 +26,8 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
             relType: ['CI_HAS_DOCUMENT', 'Dokument_sa_tyka_KRIS', 'CONTROL_HAS_DOCUMENT', 'PROJECT_HAS_DOCUMENT'],
             usageType: ['system', 'application'],
         },
-        page: 1,
-        perpage: 10,
+        page: BASE_PAGE_NUMBER,
+        perpage: BASE_PAGE_SIZE,
     }
 
     const [requestApi, setRequestApi] = useState<NeighboursFilterContainerUi>(defaultRequestApi)
@@ -35,11 +36,8 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
     }
     const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', requestApi, {})
 
-    const pagination: Pagination = {
-        pageNumber: requestApi.page ?? 1,
-        pageSize: requestApi.perpage ?? 10,
-        dataLength: documentCiData?.fromNodes?.pagination?.totaltems ?? 0,
-    }
+    const pagination = mapNeighboursSetSourceToPagination(requestApi, documentCiData)
+
     if (!configurationItemId) return <View pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
 
     return (

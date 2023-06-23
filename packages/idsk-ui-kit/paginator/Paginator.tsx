@@ -8,10 +8,11 @@ import styles from './paginator.module.scss'
 import { computePageModel } from './paginatorModel'
 
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
-import { Pagination } from '@isdd/idsk-ui-kit/types'
 
 type PaginatorProps = {
-    pagination: Pagination
+    pageNumber: number
+    pageSize: number
+    dataLength: number
     onPageChanged: (pageNumber: number) => void
 }
 
@@ -20,9 +21,8 @@ type PaginatorProps = {
  *
  * @param pageNumber starts from 1 to Math.ceil(dataLength / pageSize)
  */
-export const Paginator: React.FC<PaginatorProps> = ({ pagination, onPageChanged }) => {
+export const Paginator: React.FC<PaginatorProps> = ({ pageNumber, pageSize, dataLength, onPageChanged }) => {
     const { t } = useTranslation()
-    const { pageNumber, pageSize, dataLength } = pagination
     const totalPageCount = Math.ceil(dataLength / pageSize)
     const pages = useMemo(() => {
         return computePageModel(totalPageCount, pageNumber)

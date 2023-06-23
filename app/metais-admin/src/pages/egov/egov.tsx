@@ -96,7 +96,7 @@ const Egov: React.FC = () => {
             <Table data={mockData} columns={columns} sorting={sorting} onSortingChange={setSorting} />
 
             <div>
-                <Paginator pagination={{ pageNumber: page, pageSize: 10, dataLength: 100 }} onPageChanged={(p) => setPage(p)} />
+                <Paginator pageNumber={page} pageSize={10} dataLength={100} onPageChanged={(p) => setPage(p)} />
             </div>
         </div>
     )

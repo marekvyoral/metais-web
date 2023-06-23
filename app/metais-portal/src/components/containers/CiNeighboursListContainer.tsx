@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 
-import { NeighbourSetUi, NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourSetUi, NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
+import {
+    defaultTargetRelationshipTabFilter,
+    defaultSourceRelationshipTabFilter,
+    NeighboursApiType,
+} from '@/components/containers/RelationshipFilters'
 import { mapFilterToNeighborsApi } from '@/componentHelpers'
+import { mapNeighboursSetSourceToPagination, mapNeighboursSetTargetToPagination } from '@/componentHelpers/pagination'
 
 interface ICiNeighboursListContainerView {
     data?: NeighbourSetUi
@@ -15,14 +21,19 @@ interface ICiNeighboursListContainerView {
 interface ICiNeighboursListContainer {
     configurationItemId?: string
     View: React.FC<ICiNeighboursListContainerView>
-    defaultFilter: NeighboursFilterContainerUi
+    apiType?: NeighboursApiType
 }
 
-export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = ({ configurationItemId, View, defaultFilter }) => {
+export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = ({
+    configurationItemId,
+    View,
+    apiType = NeighboursApiType.source,
+}) => {
+    const selectedRequestApi = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter
     const defaultRequestApi: NeighboursFilterContainerUi = {
-        ...defaultFilter,
-        page: 1,
-        perpage: 10,
+        ...selectedRequestApi,
+        page: BASE_PAGE_NUMBER,
+        perpage: BASE_PAGE_SIZE,
     }
 
     const [requestApi, setRequestApi] = useState<NeighboursFilterContainerUi>(defaultRequestApi)
@@ -33,11 +44,10 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
 
     const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', requestApi, {})
 
-    const pagination: Pagination = {
-        pageNumber: requestApi.page ?? 1,
-        pageSize: requestApi.perpage ?? 10,
-        dataLength: documentCiData?.fromNodes?.pagination?.totaltems ?? 0,
-    }
+    const pagination =
+        apiType === NeighboursApiType.source
+            ? mapNeighboursSetSourceToPagination(requestApi, documentCiData)
+            : mapNeighboursSetTargetToPagination(requestApi, documentCiData)
 
     if (!configurationItemId) return <View pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
     return (

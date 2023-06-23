@@ -7,13 +7,13 @@ const ProjektListPage: React.FC = () => {
     return (
         <CiListContainer
             entityName="Projekt"
-            ListComponent={({ data, filterCallbacks, filter }) => (
+            ListComponent={({ data, handleFilterChange, pagination }) => (
                 <>
                     {/* 
             ProjektFilter
             ProjektActions
             */}
-                    <CiTable data={data} filterCallbacks={filterCallbacks} filter={filter} />
+                    <CiTable data={data} handleFilterChange={handleFilterChange} pagination={pagination} />
                 </>
             )}
         />
