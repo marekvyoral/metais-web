@@ -52,7 +52,7 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
                 <RelationAttribute name={t('relationCard.codeMetaIS')} value={codeMetaIS} />
                 <RelationAttribute name={t('relationCard.admin')} value={admin} />
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    {relations?.map((relation, index) => (
+                    {relations?.map((relation) => (
                         <RelationAttribute
                             key={relation.title}
                             name={t('relationCard.relations')}
