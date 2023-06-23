@@ -19,8 +19,12 @@ export const DefaultRelationCard: Story = {
         codeMetaIS: 'as_97125',
         name: 'Administračné služby API',
         admin: 'Univerzita Pavla Jozefa Šafárika v Košiciach',
-        relations: ['ISVS modul patrí pod materský ISVS : Vytvorené', 'ISVS modul patrí pod materský ISVS : Vytvorené'],
-        label: <TextLinkExternal title={'ISVS Matka'} href={'#'} textLink={'ISVS Matka'} />,
+        relations: [
+            { title: 'ISVS modul patrí pod materský ISVS : Vytvorené', href: '#' },
+            { title: 'ISVS modul patrí pod materský ISVS : Vytvorené', href: '#' },
+        ],
+        label: 'ISVS Matka',
+        labelHref: '#',
     },
 }
 
@@ -37,20 +41,11 @@ export const RelationCardWithLinks: Story = {
             />
         ),
         relations: [
-            <TextLinkExternal
-                key={'modul_1'}
-                title={'ISVS modul patrí pod materský ISVS : Vytvorené'}
-                href={'#'}
-                textLink={'ISVS modul patrí pod materský ISVS : Vytvorené'}
-            />,
-            <TextLinkExternal
-                key={'modul_2'}
-                title={'ISVS modul patrí pod materský ISVS : Vytvorené'}
-                href={'#'}
-                textLink={'ISVS modul patrí pod materský ISVS : Vytvorené'}
-            />,
+            { title: 'ISVS modul patrí pod materský ISVS : Vytvorené', href: '#' },
+            { title: 'ISVS modul patrí pod materský ISVS : Vytvorené', href: '#' },
         ],
-        label: <TextLinkExternal title={'ISVS Matka'} href={'#'} textLink={'ISVS Matka'} />,
+        label: 'ISVS Matka',
+        labelHref: '#',
     },
 }
 
@@ -60,8 +55,12 @@ export const ErrorRelationCard: Story = {
         codeMetaIS: 'as_97125',
         name: 'Administračné služby API',
         admin: 'Univerzita Pavla Jozefa Šafárika v Košiciach',
-        relations: ['ISVS modul patrí pod materský ISVS : Vytvorené'],
-        label: <TextLinkExternal title={'ISVS Matka'} href={'#'} textLink={'ISVS Matka'} />,
+        relations: [
+            { title: 'ISVS modul patrí pod materský ISVS : Vytvorené', href: '#' },
+            { title: 'ISVS modul patrí pod materský ISVS : Vytvorené', href: '#' },
+        ],
+        label: 'ISVS Matka',
+        labelHref: '#',
     },
 }
 
@@ -78,13 +77,10 @@ export const ErrorRelationCardWithLinks: Story = {
             />
         ),
         relations: [
-            <TextLinkExternal
-                key={'modul_1'}
-                title={'ISVS modul patrí pod materský ISVS : Vytvorené'}
-                href={'#'}
-                textLink={'ISVS modul patrí pod materský ISVS : Vytvorené'}
-            />,
+            { title: 'ISVS modul patrí pod materský ISVS : Vytvorené', href: '#' },
+            { title: 'ISVS modul patrí pod materský ISVS : Vytvorené', href: '#' },
         ],
-        label: <TextLinkExternal title={'ISVS Matka'} href={'#'} textLink={'ISVS Matka'} />,
+        label: 'ISVS Matka',
+        labelHref: '#',
     },
 }

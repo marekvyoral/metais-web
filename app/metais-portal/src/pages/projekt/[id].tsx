@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
 import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 
-import { ApplicationServiceRelations } from '@/components/entities/projekt/ApplicationServiceRelations'
-
 const ProjektEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
 
@@ -25,11 +23,7 @@ const ProjektEntityDetailPage: React.FC = () => {
         {
             id: '1',
             title: `${t('relationType.as')} (1)`,
-            content: (
-                <>
-                    <ApplicationServiceRelations />
-                </>
-            ),
+            content: <>{/* <ApplicationServiceRelations /> */}</>,
         },
     ]
 

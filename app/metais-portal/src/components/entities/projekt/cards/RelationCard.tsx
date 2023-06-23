@@ -4,28 +4,32 @@ import { useTranslation } from 'react-i18next'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { GridRow } from '@isdd/idsk-ui-kit/grid/GridRow'
 import { GridCol } from '@isdd/idsk-ui-kit/grid/GridCol'
+import { TextLinkExternal } from '@isdd/idsk-ui-kit/typography/TextLinkExternal'
 
 import styles from './relationCard.module.scss'
 import { RelationAttribute } from './RelationAttribute'
 
 interface IRelationCardProps extends PropsWithChildren {
-    label: React.ReactNode
+    label: string
+    labelHref: string
     status?: string
     codeMetaIS: string
 
     name: string
     admin: React.ReactNode
-    relations: React.ReactNode[]
+    relations?: { title: string; href: string }[]
 }
 
-export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status, label, name, admin, relations }) => {
+export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status, label, labelHref, name, admin, relations }) => {
     const { t } = useTranslation()
     return (
         <>
             <div className={classNames([styles.itemBox], { [styles.errorItemBox]: status === 'INVALIDATED' })}>
                 <GridRow className={styles.heading}>
                     <GridCol setWidth="one-third">
-                        <p className={styles.withoutMargin}>{label}</p>
+                        <p className={styles.withoutMargin}>
+                            <TextLinkExternal title={label} href={labelHref} textLink={label} />
+                        </p>
                     </GridCol>
                     <GridCol setWidth="two-thirds">
                         <div className={styles.itemContent}>
@@ -48,8 +52,12 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
                 <RelationAttribute name={t('relationCard.codeMetaIS')} value={codeMetaIS} />
                 <RelationAttribute name={t('relationCard.admin')} value={admin} />
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    {relations.map((relation, index) => (
-                        <RelationAttribute key={index} name={t('relationCard.relations')} value={relation} />
+                    {relations?.map((relation, index) => (
+                        <RelationAttribute
+                            key={relation.title}
+                            name={t('relationCard.relations')}
+                            value={<TextLinkExternal title={relation.title} href={relation.href} textLink={relation.title} />}
+                        />
                     ))}
                 </div>
             </div>
