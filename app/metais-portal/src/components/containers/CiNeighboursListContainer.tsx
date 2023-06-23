@@ -1,16 +1,19 @@
-import React, { SetStateAction, useState } from 'react'
+import React, { useState } from 'react'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 
-import { IPageConfig } from '@/hooks/useEntityRelations'
-import { NeighbourSetUi, NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourSetUi, NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@/api'
 import {
     defaultTargetRelationshipTabFilter,
     defaultSourceRelationshipTabFilter,
     NeighboursApiType,
 } from '@/components/containers/RelationshipFilters'
+import { mapFilterToNeighborsApi } from '@/componentHelpers'
+import { mapNeighboursSetSourceToPagination, mapNeighboursSetTargetToPagination } from '@/componentHelpers/pagination'
 
 interface ICiNeighboursListContainerView {
     data?: NeighbourSetUi
-    setPageConfig: React.Dispatch<SetStateAction<IPageConfig>>
+    pagination: Pagination
+    handleFilterChange: (filter: IFilter) => void
     isLoading: boolean
     isError: boolean
 }
@@ -26,20 +29,34 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
     View,
     apiType = NeighboursApiType.source,
 }) => {
-    const defaultPageConfig: IPageConfig = {
-        page: 1,
-        perPage: 100,
-    }
-    const [pageConfig, setPageConfig] = useState<IPageConfig>(defaultPageConfig)
-
-    const requestApi = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter
-    const preSetFilter: NeighboursFilterContainerUi = {
-        ...requestApi,
-        ...pageConfig,
+    const selectedRequestApi = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter
+    const defaultRequestApi: NeighboursFilterContainerUi = {
+        ...selectedRequestApi,
+        page: BASE_PAGE_NUMBER,
+        perpage: BASE_PAGE_SIZE,
     }
 
-    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', preSetFilter, {})
+    const [requestApi, setRequestApi] = useState<NeighboursFilterContainerUi>(defaultRequestApi)
 
-    if (!configurationItemId) return <View setPageConfig={setPageConfig} isLoading={false} isError />
-    return <View data={documentCiData ?? undefined} setPageConfig={setPageConfig} isLoading={isLoading} isError={isError} />
+    const handleFilterChange = (filter: IFilter) => {
+        setRequestApi(mapFilterToNeighborsApi(requestApi, filter))
+    }
+
+    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', requestApi, {})
+
+    const pagination =
+        apiType === NeighboursApiType.source
+            ? mapNeighboursSetSourceToPagination(requestApi, documentCiData)
+            : mapNeighboursSetTargetToPagination(requestApi, documentCiData)
+
+    if (!configurationItemId) return <View pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
+    return (
+        <View
+            data={documentCiData ?? undefined}
+            pagination={pagination}
+            handleFilterChange={handleFilterChange}
+            isLoading={isLoading}
+            isError={isError}
+        />
+    )
 }

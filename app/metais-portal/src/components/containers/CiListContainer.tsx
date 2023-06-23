@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
+import { IFilter } from '@isdd/idsk-ui-kit/types'
 
 import { CiListFilterContainerUi, useGetDefaultColumnsUsingGET, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, useReadCiListUsingPOST } from '@/api'
 import { IListView } from '@/types/list'
+import { mapFilterToNeighborsApi } from '@/componentHelpers'
+import { mapConfigurationItemSetToPagination } from '@/componentHelpers/pagination'
 
 interface ICiListContainer {
     entityName: string
@@ -11,7 +14,7 @@ interface ICiListContainer {
 export const CiListContainer: React.FC<ICiListContainer> = ({ entityName, ListComponent }) => {
     const { data: columnListData } = useGetDefaultColumnsUsingGET(entityName)
 
-    const defaultListQueryArgs: CiListFilterContainerUi = {
+    const defaultRequestApi: CiListFilterContainerUi = {
         filter: {
             type: [entityName],
             metaAttributes: {
@@ -25,9 +28,15 @@ export const CiListContainer: React.FC<ICiListContainer> = ({ entityName, ListCo
         perpage: BASE_PAGE_SIZE,
     }
 
-    const [listQueryArgs, setListQueryArgs] = useState<CiListFilterContainerUi>(defaultListQueryArgs)
+    const [requestApi, setRequestApi] = useState<CiListFilterContainerUi>(defaultRequestApi)
 
-    const { data: tableData } = useReadCiListUsingPOST(listQueryArgs)
+    const handleFilterChange = (filter: IFilter) => {
+        setRequestApi(mapFilterToNeighborsApi(requestApi, filter))
+    }
 
-    return <ListComponent data={{ columnListData, tableData }} filterCallbacks={{ setListQueryArgs }} filter={listQueryArgs} />
+    const { data: tableData } = useReadCiListUsingPOST(requestApi)
+
+    const pagination = mapConfigurationItemSetToPagination(requestApi, tableData)
+
+    return <ListComponent data={{ columnListData, tableData }} pagination={pagination} handleFilterChange={handleFilterChange} />
 }

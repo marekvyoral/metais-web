@@ -15,7 +15,7 @@ const ProjektListPage = () => {
                 return (
                     <CiListContainer
                         entityName={entityName ?? ''}
-                        ListComponent={({ data: { columnListData, tableData }, filterCallbacks, filter }) => (
+                        ListComponent={({ data: { columnListData, tableData }, handleFilterChange, pagination }) => (
                             <>
                                 {/* 
             Filter
@@ -23,8 +23,8 @@ const ProjektListPage = () => {
             */}
                                 <CiTable
                                     data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData }}
-                                    filterCallbacks={filterCallbacks}
-                                    filter={filter}
+                                    handleFilterChange={handleFilterChange}
+                                    pagination={pagination}
                                 />
                             </>
                         )}
