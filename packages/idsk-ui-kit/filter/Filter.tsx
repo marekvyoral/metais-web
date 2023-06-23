@@ -27,7 +27,7 @@ export const Filter: FC<FilterProps> = ({ form, heading, onSubmit }) => {
                 </button>
 
                 <form
-                    className={classNames('idsk-table-filter__content', { 'idsk-table-filter__content--expanded': isOpen })}
+                    className={classNames('', { 'idsk-table-filter__content--expanded': isOpen, 'idsk-table-filter__content': !isOpen })}
                     action="#"
                     onSubmit={(e) => onSubmit(e)}
                 >
