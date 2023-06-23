@@ -14,6 +14,6 @@ export interface IListData {
 
 export interface IListView {
     data: IListData
-    filterCallbacks: IListFilterCallbacks
-    filter: CiListFilterContainerUi
+    pagination: Pagination
+    handleFilterChange: (filter: IFilter) => void
 }

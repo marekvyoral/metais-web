@@ -1,9 +1,10 @@
 import React from 'react'
-import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { ColumnDef } from '@tanstack/react-table'
-import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 import { useTranslation } from 'react-i18next'
+import { Table } from '@isdd/idsk-ui-kit/table/Table'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
+import { PaginatorWrapper } from '@isdd/metais-common/paginatorWrapper/PaginatorWrapper'
 
 import { NeighbourPairUi } from '@/api'
 
@@ -15,6 +16,8 @@ interface DocumentsTable {
     isLoading: boolean
     isError: boolean
     additionalColumns?: Array<ColumnDef<TableCols>>
+    pagination: Pagination
+    handleFilterChange: (filter: IFilter) => void
 }
 
 const Loading: React.FC = () => {
@@ -25,7 +28,7 @@ const Error: React.FC = () => {
     return <div>error</div>
 }
 
-export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColumns, isLoading, isError }) => {
+export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColumns, isLoading, isError, pagination, handleFilterChange }) => {
     const { t } = useTranslation()
 
     if (isLoading) return <Loading />
@@ -78,15 +81,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColum
     return (
         <>
             <Table columns={columns} data={data} />
-            <Paginator
-                dataLength={100}
-                pageNumber={1}
-                onPageChanged={() => {
-                    //this is a dummy method
-                }}
-                pageSize={10}
-            />
+            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
     )
-    //temporary paginator component, should be replaced by pagnator wrapper
 }
