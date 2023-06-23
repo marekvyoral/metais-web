@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React, { FC, useState } from 'react'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from 'react-i18next'
 
 type FilterProps = {
     heading: React.ReactNode
@@ -26,7 +26,11 @@ export const Filter: FC<FilterProps> = ({ form, heading, onSubmit }) => {
                     {isOpen ? t('filter.collapse') : t('filter.expand')}
                 </button>
 
-                <form className={classNames('idsk-table-filter__content', { 'idsk-table-filter__content--expanded': isOpen })} action="#" onSubmit={(e) => onSubmit(e)}>
+                <form
+                    className={classNames('idsk-table-filter__content', { 'idsk-table-filter__content--expanded': isOpen })}
+                    action="#"
+                    onSubmit={(e) => onSubmit(e)}
+                >
                     {form}
                 </form>
             </div>
