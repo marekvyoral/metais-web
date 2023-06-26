@@ -5,6 +5,10 @@ cache:
 
 variables:
   APP_PATH: '$CI_PROJECT_DIR'
+  BRANCH_NAME: "develop"
+  #treba nastavit korektnu url adresu. Pre kazdu feature vlastnu url adresu. Ak uz nasadzujem finalne riesenie tak hodnoty v OKD_HELM_OPTS su ignorovane. OKD_HELM_OPTS je len pre feature branch
+  OKD_HELM_OPTS: "--set metaisUi.ingress.tls[0].hosts[0]=test.isdd.sk --set metaisUi.ingress.hosts[0].host=test.isdd.sk --set metaisUi.ingress.hosts[0].paths[0].path=/ --set metaisUiAdmin.ingress.tls[0].hosts[0]=test.isdd.sk --set metaisUiAdmin.ingress.hosts[0].host=test-admin.isdd.sk --set metaisUiAdmin.ingress.hosts[0].paths[0].path=/"
+
 
 stages:
     - run-checks
@@ -64,7 +68,7 @@ deploy-okd-feature:
     script:
         - curl -X POST --fail -F token=$CD_REPO_TOKEN -F ref=$BRANCH_NAME --form "variables[HELM_RELEASE_NAME]=$RELEASE_NAME" --form "variables[OKD_HELM_OPTS]=$OKD_HELM_OPTS" https://gitlab.isdd.sk/api/v4/projects/967/trigger/pipeline
     rules:
-        - if: $CI_COMMIT_REF_NAME =~ /^feature-.+$/
+        - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/
           when: manual
 
 deploy-okd-develop:
@@ -76,22 +80,3 @@ deploy-okd-develop:
         - if: $CI_COMMIT_REF_NAME =~ /^develop+$/
           when: manual
 
-deploy-azure-portal:
-    image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
-    variables:
-        API_TOKEN: $PORTAL_DEPLOYMENT_TOKEN
-        OUTPUT_PATH: '$CI_PROJECT_DIR/app/metais-portal/dist/'
-    stage: deploy
-    script:
-        - echo "MetaIS Portal deployed successfully."
-    when: manual
-    
-deploy-azure-admin:
-    image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
-    variables:
-        API_TOKEN: $ADMIN_DEPLOYMENT_TOKEN
-        OUTPUT_PATH: '$CI_PROJECT_DIR/app/metais-admin/dist/'
-    stage: deploy
-    script:
-        - echo "MetaIS Admin deployed successfully."
-    when: manual
