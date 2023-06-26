@@ -39,6 +39,11 @@ build-node:
 build-docker:
     image: nexus.isdd.sk:8490/docker:20.10-git
     stage: build-docker
+    services:
+        - name: nexus.isdd.sk:8490/docker:dind
+          alias: docker
+    variables:
+        DOCKER_HOST: tcp://docker:2375
     script:
         - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
         # build portal
