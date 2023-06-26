@@ -8,11 +8,12 @@ variables:
 
 stages:
     - run-checks
-    - build
+    - build-node
+    - build-docker
     - deploy
 
 checks:
-    image: node:latest
+    image: nexus.isdd.sk:8490/node:latest
     stage: run-checks
     before_script:
         - echo "running yarn install"
@@ -21,9 +22,10 @@ checks:
         - yarn run typescript-check
         - yarn run lint
 
-build:
-    image: node:latest
-    stage: build
+
+build-node:
+    image: nexus.isdd.sk:8490/node:latest
+    stage: build-node
     script:
         - yarn run build
     artifacts:
@@ -33,7 +35,24 @@ build:
             - 'app/metais-admin/dist/'
     when: manual
 
-deploy-portal:
+
+build-docker:
+    image: nexus.isdd.sk:8490/docker:20.10-git
+    stage: build-docker
+    script:
+        - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+        # build portal
+        - docker build -f docker/Dockerfile --build-arg BUILD_DIR=app/metais-portal/dist/ -t ${CI_REGISTRY_IMAGE}/portal .
+        #- docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG#v}
+        - docker push ${CI_REGISTRY_IMAGE}/portal:latest
+        # build admin
+        - docker build -f docker/Dockerfile --build-arg BUILD_DIR=app/metais-admin/dist/ -t ${CI_REGISTRY_IMAGE}/admin .
+        #- docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG#v}
+        - docker push ${CI_REGISTRY_IMAGE}/portal:latest
+    when: manual
+
+
+deploy-azure-portal:
     image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
     variables:
         API_TOKEN: $PORTAL_DEPLOYMENT_TOKEN
@@ -43,7 +62,7 @@ deploy-portal:
         - echo "MetaIS Portal deployed successfully."
     when: manual
     
-deploy-admin:
+deploy-azure-admin:
     image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
     variables:
         API_TOKEN: $ADMIN_DEPLOYMENT_TOKEN
