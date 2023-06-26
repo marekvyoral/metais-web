@@ -218,7 +218,9 @@
         "searchPlaceholder": "Search column name",
         "refreshButton": "Refresh",
         "cancelButton": "Cancel",
-        "viewButton": "View",
+        "viewButton": "View"
+    },
+    "searchInput":{
         "search": "Search"
     },
     "documentsTab": {

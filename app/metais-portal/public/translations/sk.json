@@ -219,8 +219,10 @@
         "searchPlaceholder": "Názov hľadaného stĺpca",
         "refreshButton": "Obnoviť",
         "cancelButton": "Zrušiť",
-        "viewButton": "Zobraziť",
-        "search": "Search"
+        "viewButton": "Zobraziť"
+    },
+    "searchInput":{
+        "search": "Hľadať"
     },
     "documentsTab": {
         "table": {

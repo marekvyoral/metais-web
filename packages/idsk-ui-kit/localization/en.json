@@ -3,6 +3,9 @@
         "open": "Open language menu",
         "close": "Close language menu"
     },
+    "searchInput":{
+        "search": "Search"
+    },
     "language": {
         "sk": "Slovenčina",
         "en": "English"

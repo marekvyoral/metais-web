@@ -32,7 +32,7 @@ export const SearchInput = forwardRef<HTMLInputElement, IInputProps>(
                     disabled={disabled}
                 />
                 <button className="govuk-button" onClick={onSearchButtonClick}>
-                    <span className="govuk-visually-hidden">{t('tableSelectColumns.search')}</span>
+                    <span className="govuk-visually-hidden">{t('searchInput.search')}</span>
                     <i aria-hidden="true" className="fas fa-search" />
                 </button>
             </div>
