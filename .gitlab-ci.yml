@@ -54,12 +54,10 @@ build-docker:
         - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
         # build portal
         - docker build -f docker/Dockerfile --build-arg BUILD_DIR=app/metais-portal/dist/ -t ${CI_REGISTRY_IMAGE}/portal .
-        #- docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG#v}
         - docker push ${CI_REGISTRY_IMAGE}/portal:latest
         # build admin
         - docker build -f docker/Dockerfile --build-arg BUILD_DIR=app/metais-admin/dist/ -t ${CI_REGISTRY_IMAGE}/admin .
-        #- docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG#v}
-        - docker push ${CI_REGISTRY_IMAGE}/portal:latest
+        - docker push ${CI_REGISTRY_IMAGE}/admin:latest
     when: manual
 
 deploy-okd-feature:
