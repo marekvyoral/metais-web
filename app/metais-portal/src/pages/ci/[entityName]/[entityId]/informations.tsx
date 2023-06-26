@@ -5,7 +5,7 @@ import { CiContainer } from '@/components/containers/CiContainer'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { ProjectInformationAccordion } from '@/components/entities/projekt/accordion/ProjectInformationAccordion'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
-import { RelationItems } from '@/components/entities/projekt/RelationItems'
+import { NeighboursCardList } from '@/components/entities/projekt/NeighboursCardList'
 
 const Informations = () => {
     const { entityName, entityId } = useParams()
@@ -25,7 +25,7 @@ const Informations = () => {
                     )
                 }}
             />
-            <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} View={RelationItems} />
+            <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} View={NeighboursCardList} />
         </>
     )
 }

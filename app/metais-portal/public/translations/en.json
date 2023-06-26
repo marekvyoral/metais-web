@@ -182,7 +182,7 @@
         "note": "Note",
         "description": "Description"
     },
-    "applicationServiceRelations": {
+    "neighboursCardList": {
         "buttonAddNewRelation": "Add a new relation",
         "buttonAddNewRelationCard": "Add a new item and relationship"
     },
