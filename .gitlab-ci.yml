@@ -10,6 +10,8 @@ stages:
     - run-checks
     - build-node
     - build-docker
+    - deploy-okd-feature
+    - deploy-okd-develop
     - deploy
 
 checks:
@@ -56,6 +58,23 @@ build-docker:
         - docker push ${CI_REGISTRY_IMAGE}/portal:latest
     when: manual
 
+deploy-okd-feature:
+    stage: deploy-okd-feature
+    image: gitlab.isdd.sk:4567/isdd-docker/okd/alpine:1-2-0
+    script:
+        - curl -X POST --fail -F token=$CD_REPO_TOKEN -F ref=$BRANCH_NAME --form "variables[HELM_RELEASE_NAME]=$RELEASE_NAME" --form "variables[OKD_HELM_OPTS]=$OKD_HELM_OPTS" https://gitlab.isdd.sk/api/v4/projects/967/trigger/pipeline
+    rules:
+        - if: $CI_COMMIT_REF_NAME =~ /^feature-.+$/
+          when: manual
+
+deploy-okd-develop:
+    stage: deploy-okd-develop
+    image: gitlab.isdd.sk:4567/isdd-docker/okd/alpine:1-2-0
+    script:
+        - curl -X POST --fail -F token=$CD_REPO_TOKEN -F ref=$BRANCH_NAME --form "variables[HELM_RELEASE_NAME]=$RELEASE_NAME" https://gitlab.isdd.sk/api/v4/projects/967/trigger/pipeline
+    rules:
+        - if: $CI_COMMIT_REF_NAME =~ /^develop+$/
+          when: manual
 
 deploy-azure-portal:
     image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
