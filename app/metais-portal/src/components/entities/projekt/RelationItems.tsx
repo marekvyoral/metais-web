@@ -4,13 +4,18 @@ import { Pagination, IFilter } from '@isdd/idsk-ui-kit/types'
 
 import { ApplicationServiceRelations } from './ApplicationServiceRelations'
 
-import { IRelationsView } from '@/components/containers/RelationsListContainer'
-import { ReadCiNeighboursWithAllRelsUsingGETParams } from '@/api'
+import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsUsingGETParams, RelatedCiTypePreview, RoleParticipantUI } from '@/api'
+import { IKeyToDisplay } from '@/hooks/useEntityRelations'
 
 interface RelationItemsProps {
     isLoading: boolean
     isError: boolean
-    data: IRelationsView['data']
+    data: {
+        entityTypes?: RelatedCiTypePreview[]
+        relationsList?: CiWithRelsResultUi
+        owners?: void | RoleParticipantUI[] | undefined
+        keysToDisplay: IKeyToDisplay[]
+    }
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
     setPageConfig: (value: React.SetStateAction<ReadCiNeighboursWithAllRelsUsingGETParams>) => void
