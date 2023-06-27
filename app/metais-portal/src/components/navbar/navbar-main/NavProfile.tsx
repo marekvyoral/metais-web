@@ -7,6 +7,7 @@ import styles from './../navbar.module.scss'
 
 import { userEntityMock } from '@/mock/userEntityMock'
 import { ProfileIcon } from '@/assets/images'
+import { AuthActions, useAuth } from '@/contexts/auth/authContext'
 
 interface INavProfile {
     loggedIn: boolean
@@ -15,6 +16,10 @@ interface INavProfile {
 
 export const NavProfile: React.FC<INavProfile> = ({ loggedIn, handleLogout }) => {
     const { t } = useTranslation()
+    const {
+        state: { accessToken, user },
+        dispatch,
+    } = useAuth()
 
     return (
         <div
@@ -25,10 +30,10 @@ export const NavProfile: React.FC<INavProfile> = ({ loggedIn, handleLogout }) =>
         >
             <img className="idsk-header-web__main--login-action-profile-img" src={ProfileIcon} alt="Profile image" />
             <div className="idsk-header-web__main--login-action-text">
-                <span className="govuk-body-s idsk-header-web__main--login-action-text-user-name">{userEntityMock.displayName}</span>
+                <span className="govuk-body-s idsk-header-web__main--login-action-text-user-name">{user?.displayName}</span>
                 <div className="govuk-!-margin-bottom-1">
                     <Link
-                        onClick={(event) => handleLogout(event)}
+                        onClick={() => dispatch({ type: AuthActions.LOGOUT })}
                         className={classnames(
                             'govuk-link',
                             'idsk-header-web__main--login-action-text-logout',

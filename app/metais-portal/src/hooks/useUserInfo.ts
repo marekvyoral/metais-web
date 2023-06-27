@@ -26,10 +26,10 @@ export const useUserInfo = () => {
     }, [data?.statusCode, dispatch, navigate])
 
     useEffect(() => {
-        if (userInfo && !user && data?.statusCode === 200) {
+        if (userInfo && data?.statusCode === 200) {
             dispatch({ type: AuthActions.SET_USER_INFO, value: userInfo })
         }
-    }, [user, userInfo, dispatch, data?.statusCode])
+    }, [userInfo, dispatch, data?.statusCode])
 
     return {
         userInfo,
