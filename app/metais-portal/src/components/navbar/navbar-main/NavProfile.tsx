@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 
 import styles from './../navbar.module.scss'
 
-import { userEntityMock } from '@/mock/userEntityMock'
 import { ProfileIcon } from '@/assets/images'
 import { AuthActions, useAuth } from '@/contexts/auth/authContext'
 
