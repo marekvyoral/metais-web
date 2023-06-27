@@ -1,19 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { NavMenu } from './navmenu/NavMenu'
 import { NavBarHeader } from './navbar-header/NavBarHeader'
 import { NavBarMain } from './navbar-main/NavBarMain'
 
+import { AuthActions, useAuth } from '@/contexts/auth/authContext'
+
 export const Navbar: React.FC = () => {
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
     const [showDropDown, setShowDropDown] = useState<boolean>(false)
-
-    const [loggedIn, setLoggedIn] = useState<boolean>(false)
+    const {
+        state: { accessToken },
+        dispatch,
+    } = useAuth()
+    const [loggedIn, setLoggedIn] = useState<boolean>(!!accessToken)
 
     const handleLogout = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault()
         setLoggedIn(false)
+        dispatch({ type: AuthActions.LOGOUT })
     }
+    useEffect(() => {
+        setLoggedIn(!!accessToken)
+    }, [accessToken])
 
     return (
         <>

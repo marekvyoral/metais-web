@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 import { ProfileIcon } from '@/assets/images'
-import { AuthActions, useAuth } from '@/contexts/auth/authContext'
+import { useAuth } from '@/contexts/auth/authContext'
 import styles from '@/components/navbar/navbar.module.scss'
 
 interface INavProfile {
@@ -15,8 +15,7 @@ interface INavProfile {
 export const NavProfile: React.FC<INavProfile> = ({ loggedIn, handleLogout }) => {
     const { t } = useTranslation()
     const {
-        state: { accessToken, user },
-        dispatch,
+        state: { user },
     } = useAuth()
 
     return (
@@ -28,10 +27,10 @@ export const NavProfile: React.FC<INavProfile> = ({ loggedIn, handleLogout }) =>
         >
             <img className="idsk-header-web__main--login-action-profile-img" src={ProfileIcon} alt="Profile image" />
             <div className="idsk-header-web__main--login-action-text">
-                <span className="govuk-body-s idsk-header-web__main--login-action-text-user-name">{user?.displayName}</span>
+                <span className="govuk-body-s idsk-header-web__main--login-action-text-user-name">{user?.displayName ?? ''}</span>
                 <div className="govuk-!-margin-bottom-1">
                     <Link
-                        onClick={() => dispatch({ type: AuthActions.LOGOUT })}
+                        onClick={handleLogout}
                         className={classnames(
                             'govuk-link',
                             'idsk-header-web__main--login-action-text-logout',
