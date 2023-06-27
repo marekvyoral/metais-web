@@ -14,7 +14,6 @@ import { RouteNames } from '@/navigation/routeNames'
 interface INavMenu {
     isMenuExpanded: boolean
     loggedIn: boolean
-    setLoggedIn: React.Dispatch<SetStateAction<boolean>>
     setIsMenuExpanded: React.Dispatch<SetStateAction<boolean>>
     handleLogout: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
 }
@@ -26,7 +25,7 @@ export const navItems = [
     RouteNames.HOW_TO_STANDARDIZATION,
 ]
 
-export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, handleLogout, setIsMenuExpanded, loggedIn, setLoggedIn }) => {
+export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, handleLogout, setIsMenuExpanded, loggedIn }) => {
     const { t } = useTranslation()
     const location = useLocation()
 
@@ -80,7 +79,7 @@ export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, handleLogout, setI
                                 </div>
                             )}
 
-                            <NavLogin loggedIn={loggedIn} setLoggedIn={setLoggedIn} handleLogout={handleLogout} />
+                            <NavLogin loggedIn={loggedIn} handleLogout={handleLogout} />
                         </div>
                     </div>
                 </div>

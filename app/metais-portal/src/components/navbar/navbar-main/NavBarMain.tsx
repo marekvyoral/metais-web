@@ -15,10 +15,9 @@ interface INavBarMain {
     isMenuExpanded: boolean
     setIsMenuExpanded: React.Dispatch<SetStateAction<boolean>>
     handleLogout: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
-    setLoggedIn: React.Dispatch<SetStateAction<boolean>>
 }
 
-export const NavBarMain: React.FC<INavBarMain> = ({ loggedIn, setIsMenuExpanded, isMenuExpanded, handleLogout, setLoggedIn }) => {
+export const NavBarMain: React.FC<INavBarMain> = ({ loggedIn, setIsMenuExpanded, isMenuExpanded, handleLogout }) => {
     const { t } = useTranslation()
 
     return (
@@ -63,7 +62,7 @@ export const NavBarMain: React.FC<INavBarMain> = ({ loggedIn, setIsMenuExpanded,
                                 )}
                             </div>
                             <div className="idsk-header-web__main--buttons">
-                                <NavLogin loggedIn={loggedIn} setLoggedIn={setLoggedIn} handleLogout={handleLogout} />
+                                <NavLogin loggedIn={loggedIn} handleLogout={handleLogout} />
                             </div>
                         </div>
                     </div>
