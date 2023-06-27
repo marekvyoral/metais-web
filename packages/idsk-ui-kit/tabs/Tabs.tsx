@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react'
+import React, { useState } from 'react'
 import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, matchPath, useLocation } from 'react-router-dom'
@@ -8,10 +8,6 @@ export interface Tab {
     path?: string
     title: string
     content: React.ReactNode
-}
-
-interface ITabs extends PropsWithChildren {
-    tabList: Tab[]
 }
 
 interface ITabItemDesktop {
@@ -63,7 +59,12 @@ const TabItemMobile: React.FC<ITabItemMobile> = ({ tab, handleMobileSelect, isSe
     )
 }
 
-export const Tabs: React.FC<ITabs> = ({ tabList }) => {
+interface ITabs {
+    tabList: Tab[]
+    onSelect?: (selected: Tab) => void
+}
+
+export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     const { t } = useTranslation()
     const { pathname } = useLocation()
     const navigate = useNavigate()
@@ -89,6 +90,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
         if (value.path) {
             navigate(value.path)
         } else {
+            onSelected?.(value)
             setSelected(value)
         }
     }
@@ -100,6 +102,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList }) => {
             if (value === selected) {
                 setSelected(null)
             } else {
+                onSelected?.(value)
                 setSelected(value)
             }
         }

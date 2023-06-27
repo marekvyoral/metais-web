@@ -13,11 +13,16 @@ export const useClientForGetRoleParticipantUsingGET = <T extends RoleParticipant
 
 export const useClientForReadCiNeighboursWithAllRelsUsingGET = <T extends CiWithRelsResultUi>() =>
     useCustomClient<T>(baseURL, (body) => {
-        if (body.ciWithRels) {
-            body.ciWithRels.forEach((rel) => {
-                transformAttributesKeyValue(rel.ci)
-            })
-        }
+        body?.ciWithRels?.forEach?.((rel) => {
+            transformAttributesKeyValue(rel.ci)
+        })
+    })
+
+export const useClientForGetRoleParticipantBulkUsingPOST = <T extends RoleParticipantUI[]>() =>
+    useCustomClient<T>(baseURL, (body) => {
+        body?.forEach?.((rel) => {
+            transformAttributesKeyValue(rel.configurationItemUi)
+        })
     })
 
 export const useClientForReadCiListUsingPOST = <T extends ConfigurationItemSetUi>() =>
