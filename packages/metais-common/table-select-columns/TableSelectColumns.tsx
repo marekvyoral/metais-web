@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, ChangeEvent } from 'react'
 import classNames from 'classnames'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { useTranslation } from 'react-i18next'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
+import { SearchInput } from '@isdd/idsk-ui-kit/searchInput'
 
-import { Searchbar } from './Searchbar'
 import styles from './tableSelectColumns.module.scss'
 
 interface IColumnType {
@@ -30,8 +30,8 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({ onClose
     const [selectedColumns, setSelectedColumns] = useState([...columns])
     const [search, setSearch] = useState('')
 
-    const handleChange = (value: string) => {
-        setSearch(value)
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value)
     }
 
     const updateSelectedValue = (key: string, checked: boolean) => {
@@ -51,7 +51,7 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({ onClose
     return (
         <>
             <div>
-                <Searchbar className={styles.searchbar} onChange={handleChange} />
+                <SearchInput id="search" name="search" className={styles.searchbar} onChange={handleChange} />
                 <TextBody size="S" className={classNames('govuk-!-font-weight-bold', styles.textHeader)}>
                     {header}
                 </TextBody>

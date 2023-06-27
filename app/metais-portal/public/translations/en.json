@@ -116,6 +116,10 @@
         "yes": "Yes",
         "no": "No"
     },
+    "filter": {
+        "expand": "Expand content of filter",
+        "collapse": "Collapse content of filter"
+    },
     "form": {
         "userFirstName": "First name of user",
         "userSurName": "Surname of user",
@@ -192,7 +196,9 @@
         "searchPlaceholder": "Search column name",
         "refreshButton": "Refresh",
         "cancelButton": "Cancel",
-        "viewButton": "View",
+        "viewButton": "View"
+    },
+    "searchInput":{
         "search": "Search"
     },
     "documentsTab": {
