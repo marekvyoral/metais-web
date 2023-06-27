@@ -3,8 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
-import styles from './../navbar.module.scss'
-
+import styles from '@/components/navbar/navbar.module.scss'
 import { userEntityMock } from '@/mock/userEntityMock'
 import { ProfileIcon } from '@/assets/images'
 

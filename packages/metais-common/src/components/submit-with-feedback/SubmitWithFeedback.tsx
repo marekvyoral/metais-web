@@ -2,11 +2,10 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { LoadingArrowIcon } from '@isdd/idsk-ui-kit/assets/images'
+import { IconWithText } from '@isdd/idsk-ui-kit/icon-with-text/IconWithText'
+import { ButtonGroupRow } from '@isdd/idsk-ui-kit/button-group-row/ButtonGroupRow'
 
 import styles from './submitWithFeedback.module.scss'
-
-import { IconWithText } from '@isdd/metais-common/icon-with-text/IconWithText'
-import { ButtonGroupRow } from '@isdd/metais-common/layouts/button-group-row/ButtonGroupRow'
 
 interface ISubmitWithFeedbackProps {
     additionalButtons?: React.ReactNode[]

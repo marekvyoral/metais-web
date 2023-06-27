@@ -1,9 +1,10 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
-import { Input } from '@isdd/idsk-ui-kit/input/Input'
 
 import { ButtonPopup } from './ButtonPopup'
+
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
+import { Input } from '@isdd/idsk-ui-kit/input/Input'
 
 const meta: Meta<typeof ButtonPopup> = {
     title: 'Components/ButtonPopup',

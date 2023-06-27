@@ -2,9 +2,9 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { I18nextProvider } from 'react-i18next'
 
-import { i18nInstance } from '../localization/i18next'
-
 import { LanguageSelector } from './LanguageSelector'
+
+import { i18nInstance } from '@/localization/i18next'
 
 const meta: Meta<typeof LanguageSelector> = {
     title: 'Components/LanguageSelectorAdmin',
