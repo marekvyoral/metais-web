@@ -160,6 +160,58 @@ export const MinimalTable: Story = {
     },
 }
 
+export const NoRowsTable: Story = {
+    render: ({ ...args }) => {
+        const StateWrapper = () => {
+            return <Table<Person> {...args} />
+        }
+        return <StateWrapper />
+    },
+    args: {
+        columns: minimalColumnsSpec,
+    },
+}
+
+export const LoadingNoRows: Story = {
+    render: ({ ...args }) => {
+        const StateWrapper = () => {
+            return <Table<Person> {...args} />
+        }
+        return <StateWrapper />
+    },
+    args: {
+        isLoading: true,
+        columns: minimalColumnsSpec,
+    },
+}
+
+export const LoadingWithPreviousData: Story = {
+    render: ({ ...args }) => {
+        const StateWrapper = () => {
+            return <Table<Person> {...args} />
+        }
+        return <StateWrapper />
+    },
+    args: {
+        data: testTableData,
+        isLoading: true,
+        columns: minimalColumnsSpec,
+    },
+}
+
+export const ErrorTable: Story = {
+    render: ({ ...args }) => {
+        const StateWrapper = () => {
+            return <Table<Person> {...args} />
+        }
+        return <StateWrapper />
+    },
+    args: {
+        columns: minimalColumnsSpec,
+        error: true,
+    },
+}
+
 export const DraggableColumns: Story = {
     render: ({ ...args }) => {
         const StateWrapper = () => {
