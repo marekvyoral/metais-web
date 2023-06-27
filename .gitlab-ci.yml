@@ -16,7 +16,6 @@ stages:
     - build-docker
     - deploy-okd-feature
     - deploy-okd-develop
-    - deploy
 
 checks:
     image: nexus.isdd.sk:8490/node:latest
