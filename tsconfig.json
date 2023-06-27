@@ -18,8 +18,8 @@
         "baseUrl": "./",
         "paths": {
             "@/*": ["src/*"],
-            "@isdd/idsk-ui-kit/*": ["../../packages/idsk-ui-kit/*"],
-            "@isdd/metais-common/*": ["../../packages/metais-common/*"]
+            "@isdd/idsk-ui-kit/*": ["../../packages/idsk-ui-kit/src/*"],
+            "@isdd/metais-common/*": ["../../packages/metais-common/src/*"]
         },
         "types": ["vite/client"]
     }

@@ -1,13 +1,14 @@
 import React, { useState, ChangeEvent } from 'react'
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
+
+import styles from './tableSelectColumns.module.scss'
+
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
-import { useTranslation } from 'react-i18next'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { SearchInput } from '@isdd/idsk-ui-kit/searchInput'
-
-import styles from './tableSelectColumns.module.scss'
 
 interface IColumnType {
     technicalName: string

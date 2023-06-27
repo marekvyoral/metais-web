@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
 
 import { IconWithNotification } from './IconWithNotification'
-import styles from './../navbar.module.scss'
 
+import styles from '@/components/navbar/navbar.module.scss'
 import { FactCheckIcon, NotificationIcon } from '@/assets/images'
 
 interface INavIconGroup {

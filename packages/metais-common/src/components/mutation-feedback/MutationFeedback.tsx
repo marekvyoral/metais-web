@@ -2,8 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ErrorBlock } from '@isdd/idsk-ui-kit/error-block/ErrorBlock'
 import { RoundCheckGreenIcon } from '@isdd/idsk-ui-kit/assets/images'
-
-import { IconWithText } from '../icon-with-text/IconWithText'
+import { IconWithText } from '@isdd/idsk-ui-kit/icon-with-text/IconWithText'
 
 import styles from './mutationFeedback.module.scss'
 

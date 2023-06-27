@@ -1,10 +1,10 @@
-import React from 'react'
-import { ColumnDef } from '@tanstack/react-table'
-import { useTranslation } from 'react-i18next'
+import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
+import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
-import { PaginatorWrapper } from '@isdd/metais-common/paginatorWrapper/PaginatorWrapper'
+import { ColumnDef } from '@tanstack/react-table'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { NeighbourPairUi } from '@/api'
 

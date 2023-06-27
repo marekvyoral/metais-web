@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 
-import styles from './../navbar.module.scss'
 import { NavIconGroup } from './NavIconGroup'
 import { NavSearchBar } from './NavSearchBar'
 import { NavLogin } from './NavLogin'
 
+import styles from '@/components/navbar/navbar.module.scss'
 import { LogoMirri } from '@/assets/images'
 
 interface INavBarMain {

@@ -2,7 +2,7 @@ import React from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { PaginatorWrapper } from '@isdd/metais-common/paginatorWrapper/PaginatorWrapper'
+import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 
 import { TableCols } from '../documents'
 

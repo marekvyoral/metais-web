@@ -23,7 +23,7 @@
             "jsx": true
         }
     },
-    "plugins": ["react", "import", "@typescript-eslint", "react-hooks", "import", "prettier"],
+    "plugins": ["react", "@typescript-eslint", "react-hooks", "import", "prettier"],
     "rules": {
         /**
          * Base rules
@@ -104,6 +104,12 @@
             {
                 "patterns": ["*.svg"]
             }
+        ],
+        "import/no-useless-path-segments": [
+            "warn",
+            {
+                "noUselessIndex": true
+            }
         ]
     },
     "settings": {
@@ -112,10 +118,11 @@
             "alias": {
                 "map": [
                     ["@", "src"],
-                    ["@isdd/metais-common", "../../packages/metais-common"],
-                    ["@isdd/idsk-ui-kit", "../../packages/idsk-ui-kit"]
+                    ["@isdd/metais-common", "../../packages/metais-common/src"],
+                    ["@isdd/idsk-ui-kit", "../../packages/idsk-ui-kit/src"]
                 ]
             }
-        }
+        },
+        "import/extensions": [".js", ".jsx", ".ts", ".tsx"]
     }
 }
