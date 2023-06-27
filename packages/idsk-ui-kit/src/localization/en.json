@@ -3,15 +3,13 @@
         "open": "Open language menu",
         "close": "Close language menu"
     },
-    "searchInput":{
-        "search": "Search"
-    },
     "language": {
         "sk": "Slovenčina",
         "en": "English"
     },
-    "loading": {
-        "loadingSubPage": "Loading sub-page"
+    "radioButton": {
+        "yes": "Yes",
+        "no": "No"
     },
     "table": {
         "title": "Cities",
@@ -32,9 +30,6 @@
         "wrapActiveFilter": "Pack active filter",
         "unorderedColumn": "Unsorted column - will use ascending sorting.",
         "resetOrder": "Reset order",
-        "pagination": "Page navigation",
-        "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
-        "noRowsFound": "No rows found",
-        "noDataLoaded": "No data loaded"
+        "pagination": "Page navigation"
     }
 }

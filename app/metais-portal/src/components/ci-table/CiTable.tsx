@@ -2,10 +2,10 @@ import React from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { Table } from '@isdd/idsk-ui-kit/table/Table'
-import { PaginatorWrapper } from '@isdd/metais-common/paginatorWrapper/PaginatorWrapper'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
+import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
+import { Table } from '@isdd/idsk-ui-kit'
 
 import { ColumnsOutputDefinition, mapTableData, reduceAttributesByTechnicalName, sortAndMergeCiColumns } from './ciTableHelpers'
 

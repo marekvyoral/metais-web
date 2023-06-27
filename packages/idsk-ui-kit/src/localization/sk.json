@@ -3,16 +3,14 @@
         "open": "Rozbaliť jazykové menu",
         "close": "Skryť jazykové menu"
     },
-    "searchInput":{
-        "search": "Hľadať"
-    },
     "language": {
         "sk": "Slovenčina",
         "en": "English",
         "ge": "German"
     },
-    "loading": {
-        "loadingSubPage": "Načítavám podstránku"
+    "radioButton": {
+        "yes": "Áno",
+        "no": "Nie"
     },
     "table": {
         "title": "Mestá",
@@ -33,9 +31,6 @@
         "wrapActiveFilter": "Zbaliť aktívny filter",
         "unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie.",
         "resetOrder": "Resetovať poradie",
-        "pagination": "Tabuľková navigácia",
-        "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
-        "noRowsFound": "Nenašli sa žiadne záznamy",
-        "noDataLoaded": "Nenačítali sa žiadne záznamy"
+        "pagination": "Tabuľková navigácia"
     }
 }

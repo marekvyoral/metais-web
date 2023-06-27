@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
-import { ButtonPopup } from '@isdd/metais-common/button-popup/ButtonPopup'
-import { TableSelectColumns } from '@isdd/metais-common/table-select-columns/TableSelectColumns'
+import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
+import { TableSelectColumns } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
 
 import { CiContainer } from '@/components/containers/CiContainer'
 import { View } from '@/components/containers/CiContainer.stories'
@@ -38,7 +38,6 @@ export const DevTestScreen: React.FC = () => {
             />
             <Button label={'Modal open'} onClick={openModal} />
             <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />
-
             <ButtonPopup
                 buttonLabel={'buttonLabel'}
                 popupContent={function (): React.ReactNode {

@@ -3,10 +3,9 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
-import styles from './../navbar.module.scss'
-
 import { ProfileIcon } from '@/assets/images'
 import { AuthActions, useAuth } from '@/contexts/auth/authContext'
+import styles from '@/components/navbar/navbar.module.scss'
 
 interface INavProfile {
     loggedIn: boolean

@@ -5,10 +5,10 @@ import { Link, matchPath, useLocation } from 'react-router-dom'
 
 import { NavLogin } from '../navbar-main/NavLogin'
 
-import styles from './../navbar.module.scss'
 import { NavMenuList } from './NavMenuList'
 import { closeOnClickOutside, closeOnEscapeKey } from './navMenuUtils'
 
+import styles from '@/components/navbar/navbar.module.scss'
 import { RouteNames } from '@/navigation/routeNames'
 
 interface INavMenu {
