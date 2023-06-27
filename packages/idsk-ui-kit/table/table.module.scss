@@ -1,0 +1,18 @@
+@import '@id-sk/frontend/idsk/all';
+.displayFlex {
+    display: flex;
+    justify-content: center;
+    margin-top: govuk-spacing(2);
+}
+
+.redColor {
+    color: govuk-colour('red');
+}
+
+.positionRelative {
+    position: relative;
+}
+
+.minHeight400 {
+    min-height: 400px;
+}

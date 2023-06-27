@@ -1,9 +1,10 @@
 import classNames from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { CircleLoadingArrowIcon } from '@isdd/idsk-ui-kit/assets/images'
 
 import styles from './loadingIndicator.module.scss'
+
+import { CircleLoadingArrowIcon } from '@isdd/idsk-ui-kit/assets/images'
 
 export interface ILoadingIndicatorProps {
     label?: string

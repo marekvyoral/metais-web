@@ -12,9 +12,14 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import React from 'react'
+import classNames from 'classnames'
 
 import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableRow } from './TableRow'
+import styles from './table.module.scss'
+import { TableInfoMessage } from './TableInfoMessage'
+
+import { LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
 
 interface ITableProps<T> {
     data?: Array<T>
@@ -29,6 +34,8 @@ interface ITableProps<T> {
     expandedRowsState?: ExpandedState
     onExpandedChange?: React.Dispatch<React.SetStateAction<ExpandedState>>
     getSubRows?: (row: T) => T[] | undefined
+    isLoading?: boolean
+    error?: boolean
 }
 
 export const Table = <T,>({
@@ -44,6 +51,8 @@ export const Table = <T,>({
     expandedRowsState,
     onExpandedChange,
     getSubRows,
+    isLoading = false,
+    error = false,
 }: ITableProps<T>): JSX.Element => {
     const table = useReactTable({
         data: data ?? [],
@@ -66,6 +75,8 @@ export const Table = <T,>({
         enableMultiSort: true,
     })
 
+    const isEmptyRows = table.getRowModel().rows.length === 0
+
     return (
         <table className="idsk-table">
             <thead className="idsk-table__head">
@@ -77,7 +88,13 @@ export const Table = <T,>({
                     </tr>
                 ))}
             </thead>
-            <tbody className="idsk-table__body">
+            <div className={styles.displayFlex}>
+                <TableInfoMessage error={error} isEmptyRows={isEmptyRows} />
+            </div>
+            <tbody
+                className={classNames('idsk-table__body', { [styles.positionRelative]: isLoading, [styles.minHeight400]: isEmptyRows && isLoading })}
+            >
+                {isLoading && <LoadingIndicator />}
                 {table.getRowModel().rows.map((row) => (
                     <TableRow<T> row={row} key={row.id} />
                 ))}

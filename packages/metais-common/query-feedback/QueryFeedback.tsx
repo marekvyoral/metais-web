@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { ErrorBlock, ErrorBlockProps } from '@isdd/idsk-ui-kit/error-block/ErrorBlock'
-
-import { ILoadingIndicatorProps, LoadingIndicator } from '../loading-indicator/LoadingIndicator'
+import { ILoadingIndicatorProps, LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
 
 interface IQueryFeedbackProps extends PropsWithChildren {
     loading: boolean
