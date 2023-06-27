@@ -183,7 +183,7 @@
         "note": "Poznámka",
         "description": "Popis"
     },
-    "applicationServiceRelations": {
+    "neighboursCardList": {
         "buttonAddNewRelation": "Pridať nový vzťah",
         "buttonAddNewRelationCard": "Pridať novú položku a vzťah"
     },
