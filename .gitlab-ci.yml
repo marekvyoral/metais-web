@@ -42,7 +42,7 @@ build-node:
     when: manual
 
 
-build-docker:
+.build_docker_template:
     image: nexus.isdd.sk:8490/docker:20.10-git
     stage: build-docker
     services:
@@ -51,14 +51,33 @@ build-docker:
     variables:
         DOCKER_HOST: tcp://docker:2375
     script:
+        - apk update && apk add jq
+        - APPVERSION=$(jq -r '.version' package.json) && echo "APPVERSION ${APPVERSION}"
+        - echo "IMAGE_TAG=${IMAGE_TAG}"
         - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
         # build portal
-        - docker build -f docker/Dockerfile --build-arg BUILD_DIR=app/metais-portal/dist/ -t ${CI_REGISTRY_IMAGE}/portal .
-        - docker push ${CI_REGISTRY_IMAGE}/portal:latest
+        - docker build -f docker/Dockerfile --build-arg BUILD_DIR=app/metais-portal/dist/ -t ${CI_REGISTRY_IMAGE}/portal:${IMAGE_TAG} .
+        - docker push ${CI_REGISTRY_IMAGE}/portal:${IMAGE_TAG}
         # build admin
-        - docker build -f docker/Dockerfile --build-arg BUILD_DIR=app/metais-admin/dist/ -t ${CI_REGISTRY_IMAGE}/admin .
-        - docker push ${CI_REGISTRY_IMAGE}/admin:latest
+        - docker build -f docker/Dockerfile --build-arg BUILD_DIR=app/metais-admin/dist/ -t ${CI_REGISTRY_IMAGE}/admin:${IMAGE_TAG} .
+        - docker push ${CI_REGISTRY_IMAGE}/admin:${IMAGE_TAG}
     when: manual
+    
+build-docker-feature:
+    extends: .build_docker_template
+    variables: 
+        IMAGE_TAG: ${CI_COMMIT_REF_SLUG}
+    only:
+        variables:
+          - ($CI_COMMIT_BRANCH != "main" && $CI_COMMIT_BRANCH != "develop")
+
+build-docker-latest:
+    extends: .build_docker_template
+    variables: 
+        IMAGE_TAG: latest
+    only:
+        variables:
+          - ($CI_COMMIT_BRANCH == "main" && $CI_COMMIT_BRANCH == "develop")
 
 deploy-okd-feature:
     stage: deploy-okd-feature
