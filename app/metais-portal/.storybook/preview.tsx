@@ -3,7 +3,7 @@ import type { Preview } from '@storybook/react'
 
 import '../src/index.scss'
 import { I18nextProvider } from 'react-i18next'
-import { i18nInstance } from '@isdd/metais-common/localization/i18next'
+import { i18nInstance } from '@isdd/idsk-ui-kit/localization/i18next'
 
 document.body.classList.add('js-enabled')
 
