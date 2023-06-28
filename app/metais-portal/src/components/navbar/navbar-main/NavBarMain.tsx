@@ -9,17 +9,18 @@ import { NavLogin } from './NavLogin'
 
 import styles from '@/components/navbar/navbar.module.scss'
 import { LogoMirri } from '@/assets/images'
+import { useAuth } from '@/contexts/auth/authContext'
 
 interface INavBarMain {
-    loggedIn: boolean
     isMenuExpanded: boolean
     setIsMenuExpanded: React.Dispatch<SetStateAction<boolean>>
-    handleLogout: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
-    setLoggedIn: React.Dispatch<SetStateAction<boolean>>
 }
 
-export const NavBarMain: React.FC<INavBarMain> = ({ loggedIn, setIsMenuExpanded, isMenuExpanded, handleLogout, setLoggedIn }) => {
+export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExpanded }) => {
     const { t } = useTranslation()
+    const {
+        state: { user },
+    } = useAuth()
 
     return (
         <div className="idsk-header-web__main">
@@ -31,7 +32,7 @@ export const NavBarMain: React.FC<INavBarMain> = ({ loggedIn, setIsMenuExpanded,
                                 <img src={LogoMirri} alt={t('navbar.ministryName')} className="idsk-header-web__main-headline-logo" />
                             </Link>
 
-                            <NavIconGroup loggedIn={loggedIn} isMobile />
+                            <NavIconGroup isMobile />
 
                             <button
                                 onClick={() => setIsMenuExpanded((prev) => !prev)}
@@ -51,10 +52,10 @@ export const NavBarMain: React.FC<INavBarMain> = ({ loggedIn, setIsMenuExpanded,
                     <div className="govuk-grid-column-full">
                         <div className="idsk-header-web__main-action">
                             <NavSearchBar />
-                            <NavIconGroup loggedIn={loggedIn} isMobile={false} />
+                            <NavIconGroup isMobile={false} />
 
                             <div className="idsk-header-web__main--buttons">
-                                {loggedIn ? (
+                                {user ? (
                                     <button className={classnames('idsk-button idsk-button--secondary', styles.noWrap)}>{t('navbar.newItem')}</button>
                                 ) : (
                                     <Link className="govuk-link" to="#" onClick={(e) => e.preventDefault()} style={{ marginLeft: 10 }}>
@@ -63,7 +64,7 @@ export const NavBarMain: React.FC<INavBarMain> = ({ loggedIn, setIsMenuExpanded,
                                 )}
                             </div>
                             <div className="idsk-header-web__main--buttons">
-                                <NavLogin loggedIn={loggedIn} setLoggedIn={setLoggedIn} handleLogout={handleLogout} />
+                                <NavLogin />
                             </div>
                         </div>
                     </div>

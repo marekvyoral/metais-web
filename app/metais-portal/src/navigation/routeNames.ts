@@ -11,7 +11,6 @@ export enum RouteNames {
     PREHLADY_A_POSTUPY = '',
     DOCUMENTS_LIST_TAB = '/ci/:entityName/:entityId/documents',
     RELATIONSHIPS_LIST_TAB = '/ci/:entityName/:entityId/relationships',
-    LOGIN = 'login',
 }
 
 export enum NavigationSubRoutes {

@@ -6,18 +6,21 @@ import { IconWithNotification } from './IconWithNotification'
 
 import styles from '@/components/navbar/navbar.module.scss'
 import { FactCheckIcon, NotificationIcon } from '@/assets/images'
+import { useAuth } from '@/contexts/auth/authContext'
 
 interface INavIconGroup {
-    loggedIn: boolean
     isMobile: boolean
 }
 
-export const NavIconGroup: React.FC<INavIconGroup> = ({ loggedIn, isMobile }) => {
+export const NavIconGroup: React.FC<INavIconGroup> = ({ isMobile }) => {
     const { t } = useTranslation()
+    const {
+        state: { user },
+    } = useAuth()
 
     return (
         <>
-            {loggedIn && (
+            {user && (
                 <div className={classnames(isMobile ? styles.iconGroupMobile : styles.iconGroupDesktop)}>
                     <ul className={styles.notificationIconList}>
                         <li className={styles.notificationListItem}>
