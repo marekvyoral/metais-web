@@ -4,9 +4,9 @@ import type { Preview } from '@storybook/react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
 
-import './index.scss'
+import '../src/index.scss'
 import { I18nextProvider } from 'react-i18next'
-import { i18nInstance } from '@isdd/idsk-ui-kit/localization/i18next';
+import { i18nInstance } from '../localization/i18next'
 
 document.body.classList.add('js-enabled')
 
