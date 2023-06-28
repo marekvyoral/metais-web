@@ -69,7 +69,7 @@ build-docker-feature:
         IMAGE_TAG: ${CI_COMMIT_REF_SLUG}
     only:
         variables:
-          - ($CI_COMMIT_BRANCH != "main" && $CI_COMMIT_BRANCH != "develop")
+          - ($CI_COMMIT_BRANCH != "main" || $CI_COMMIT_BRANCH != "develop")
 
 build-docker-latest:
     extends: .build_docker_template
@@ -77,7 +77,7 @@ build-docker-latest:
         IMAGE_TAG: latest
     only:
         variables:
-          - ($CI_COMMIT_BRANCH == "main" && $CI_COMMIT_BRANCH == "develop")
+          - ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop")
 
 deploy-okd-feature:
     stage: deploy-okd-feature
