@@ -6,7 +6,6 @@ cache:
 variables:
   APP_PATH: '$CI_PROJECT_DIR'
   BRANCH_NAME: "develop"
-  RELEASE_NAME: "met-315-authnavbar"
   #treba nastavit korektnu url adresu. Pre kazdu feature vlastnu url adresu. Ak uz nasadzujem finalne riesenie tak hodnoty v OKD_HELM_OPTS su ignorovane. OKD_HELM_OPTS je len pre feature branch
   OKD_HELM_OPTS: "--set metaisPortal.ingress.tls[0].hosts[0]=feature-name-315-metais3.apps.dev.isdd.sk --set metaisPortal.ingress.hosts[0].host=feature-name-315-metais3.apps.dev.isdd.sk --set metaisPortal.ingress.hosts[0].paths[0].path=/ --set metaisAdmin.ingress.tls[0].hosts[0]=feature-name-315-metais3admin.apps.dev.isdd.sk --set metaisAdmin.ingress.hosts[0].host=feature-name-315-metais3admin.apps.dev.isdd.sk --set metaisAdmin.ingress.hosts[0].paths[0].path=/ --set image.AppVersion=1-4-0"
 
