@@ -92,7 +92,10 @@ export const Table = <T,>({
                 <TableInfoMessage error={error} isEmptyRows={isEmptyRows} />
             </div>
             <tbody
-                className={classNames('idsk-table__body', { [styles.positionRelative]: isLoading, [styles.minHeight400]: isEmptyRows && isLoading })}
+                className={classNames('idsk-table__body', styles.body, {
+                    [styles.positionRelative]: isLoading,
+                    [styles.minHeight400]: isEmptyRows && isLoading,
+                })}
             >
                 {isLoading && <LoadingIndicator />}
                 {table.getRowModel().rows.map((row) => (

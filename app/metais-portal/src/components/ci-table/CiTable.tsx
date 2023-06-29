@@ -8,8 +8,10 @@ import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWr
 import { Table } from '@isdd/idsk-ui-kit'
 
 import { ColumnsOutputDefinition, mapTableData, reduceAttributesByTechnicalName, sortAndMergeCiColumns } from './ciTableHelpers'
+import styles from './ciTable.module.scss'
 
 import { IListData } from '@/types/list'
+import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 
 interface ICiTable {
     data: IListData
@@ -46,8 +48,16 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
         {
             accessorFn: (row) => row?.checked,
             header: () => <></>,
-            id: '0',
-            cell: (row) => <CheckBox label={row.getValue() as string} name="checkbox" id={row.getValue() as string} value="true" />,
+            id: CHECKBOX_CELL,
+            cell: (row) => (
+                <CheckBox
+                    label={row.getValue() as string}
+                    name="checkbox"
+                    id={row.getValue() as string}
+                    value="true"
+                    containerClassName={styles.smallerCheckBox}
+                />
+            ),
         },
         ...columnsFromApi,
     ]
