@@ -11,9 +11,10 @@ interface IButtonPopupProps {
     popupPosition?: 'left' | 'right'
     buttonLabel: string
     popupContent: (closePopup: () => void) => ReactNode
+    buttonClassname?: string
 }
 
-export const ButtonPopup: React.FC<IButtonPopupProps> = ({ buttonLabel, popupContent, popupPosition = 'left' }) => {
+export const ButtonPopup: React.FC<IButtonPopupProps> = ({ buttonLabel, popupContent, popupPosition = 'left', buttonClassname }) => {
     const popupRef = useRef<PopupActions>(null)
     const label = (
         <div className={styles.buttonLabel}>
@@ -22,7 +23,7 @@ export const ButtonPopup: React.FC<IButtonPopupProps> = ({ buttonLabel, popupCon
     )
     return (
         <Popup
-            trigger={<Button label={label} variant="secondary" />}
+            trigger={<Button label={label} variant="secondary" className={buttonClassname} />}
             position={`bottom ${popupPosition}`}
             arrow={false}
             keepTooltipInside
