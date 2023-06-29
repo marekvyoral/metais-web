@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
-import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
+import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { TableSelectColumns } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
+import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
 
 import { CiContainer } from '@/components/containers/CiContainer'
 import { View } from '@/components/containers/CiContainer.stories'
@@ -13,6 +14,7 @@ import { DocumentsListContainer } from '@/components/containers/DocumentListCont
 import { DocsView } from '@/components/containers/DocumentListContainer.stories'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { ExportItemsOrRelations } from '@/components/export-items-or-relations/ExportItemsOrRelations'
+import { ActionsOverTable } from '@/components/actions-over-table/ActionsOverTable'
 
 export const DevTestScreen: React.FC = () => {
     const [page, setPage] = useState(5)
@@ -30,6 +32,7 @@ export const DevTestScreen: React.FC = () => {
     return (
         <>
             <h4>Obrazovka na testovanie komponentov</h4>
+            <ActionsOverTable entityName={'abc'} />
             <AttributesContainer
                 entityName="KRIS"
                 View={() => {
@@ -38,6 +41,7 @@ export const DevTestScreen: React.FC = () => {
             />
             <Button label={'Modal open'} onClick={openModal} />
             <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />
+            <ButtonLink label="ButtonLink" />
             <ButtonPopup
                 buttonLabel={'buttonLabel'}
                 popupContent={function (): React.ReactNode {

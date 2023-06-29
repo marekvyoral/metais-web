@@ -8,12 +8,14 @@ interface ButtonLinkProps {
     label?: string
     onClick?: () => void
     className?: string
+    icon?: React.ReactNode
 }
 
-export const ButtonLink: React.FC<ButtonLinkProps> = ({ onClick, label, className }) => {
+export const ButtonLink: React.FC<ButtonLinkProps> = ({ onClick, label, className, icon }) => {
     const { t } = useTranslation()
     return (
         <button className={classNames(styles.buttonLink, className)} onClick={onClick}>
+            {icon}
             {label ?? t('errors.fixLink')}
         </button>
     )

@@ -8,22 +8,26 @@ interface ITextLinkProps extends PropsWithChildren {
     inverse?: boolean
     noUnderline?: boolean
     to: string
+    className?: string
 }
 
-export const TextLink = forwardRef<HTMLAnchorElement, ITextLinkProps>(({ children, linkBack, noVisitedState, inverse, noUnderline, to }, ref) => {
-    return (
-        <Link
-            ref={ref}
-            className={classNames(
-                'govuk-link',
-                { 'govuk-link--no-visited-state': !!noVisitedState },
-                { 'govuk-link--inverse': !!inverse },
-                { 'govuk-link--no-underline': !!noUnderline },
-                { 'link-back': !!linkBack },
-            )}
-            to={to}
-        >
-            {children}
-        </Link>
-    )
-})
+export const TextLink = forwardRef<HTMLAnchorElement, ITextLinkProps>(
+    ({ children, className, linkBack, noVisitedState, inverse, noUnderline, to }, ref) => {
+        return (
+            <Link
+                ref={ref}
+                className={classNames(
+                    'govuk-link',
+                    { 'govuk-link--no-visited-state': !!noVisitedState },
+                    { 'govuk-link--inverse': !!inverse },
+                    { 'govuk-link--no-underline': !!noUnderline },
+                    { 'link-back': !!linkBack },
+                    className,
+                )}
+                to={to}
+            >
+                {children}
+            </Link>
+        )
+    },
+)

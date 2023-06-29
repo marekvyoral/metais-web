@@ -198,7 +198,7 @@
         "cancelButton": "Cancel",
         "viewButton": "View"
     },
-    "searchInput":{
+    "searchInput": {
         "search": "Search"
     },
     "documentsTab": {
@@ -231,5 +231,19 @@
             "UNKNOW": "Unknown",
             "": ""
         }
+    },
+    "loading": {
+        "loadingSubPage": "Loading sub-page"
+    },
+    "actionOverTable": {
+        "import": "Import",
+        "export": "Export",
+        "addISVSitem": "Add ISVS item",
+        "selectColumn": "Columns",
+        "view": "View",
+        "actions": "Bulk actions",
+        "invalidateItems": "Invalidate items",
+        "validateItems": "Validate actions",
+        "changeOwner": "Change owner"
     }
 }

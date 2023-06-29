@@ -199,7 +199,7 @@
         "cancelButton": "Zrušiť",
         "viewButton": "Zobraziť"
     },
-    "searchInput":{
+    "searchInput": {
         "search": "Hľadať"
     },
     "documentsTab": {
@@ -232,5 +232,19 @@
             "UNKNOW": "Neznámy",
             "": ""
         }
+    },
+    "loading": {
+        "loadingSubPage": "Načítavám podstránku"
+    },
+    "actionOverTable": {
+        "import": "Import",
+        "export": "Export",
+        "addISVSitem": "Pridať ISVS položku",
+        "selectColumn": "Stĺpce",
+        "view": "Zobraziť",
+        "actions": "Hromadné úkony",
+        "invalidateItems": "Zneplatnenie položiek",
+        "validateItems": "Splatnenie položiek",
+        "changeOwner": "Zmena vlastníka"
     }
 }
