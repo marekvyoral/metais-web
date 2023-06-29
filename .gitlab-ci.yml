@@ -69,7 +69,7 @@ build-docker-feature:
         IMAGE_TAG: ${CI_COMMIT_REF_SLUG}
     only:
         variables:
-          - ($CI_COMMIT_BRANCH != "main" || $CI_COMMIT_BRANCH != "develop")
+          - ($CI_COMMIT_BRANCH != "develop")
 
 build-docker-latest:
     extends: .build_docker_template
@@ -86,7 +86,7 @@ deploy-okd-feature:
         - curl -X POST --fail -F token=$CD_REPO_TOKEN -F ref=$BRANCH_NAME --form "variables[HELM_RELEASE_NAME]=$RELEASE_NAME" --form "variables[OKD_HELM_OPTS]=$OKD_HELM_OPTS" https://gitlab.isdd.sk/api/v4/projects/967/trigger/pipeline
     rules:
         - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/
-          when: manual
+          when: on_success
 
 deploy-okd-develop:
     stage: deploy-okd-develop
@@ -95,5 +95,5 @@ deploy-okd-develop:
         - curl -X POST --fail -F token=$CD_REPO_TOKEN -F ref=$BRANCH_NAME --form "variables[HELM_RELEASE_NAME]=$RELEASE_NAME" https://gitlab.isdd.sk/api/v4/projects/967/trigger/pipeline
     rules:
         - if: $CI_COMMIT_REF_NAME =~ /^develop+$/
-          when: manual
+          when: on_success
 
