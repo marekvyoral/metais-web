@@ -1,19 +1,12 @@
 import React, { useState } from 'react'
 
-import { NavMenu } from './navmenu/NavMenu'
 import { NavBarHeader } from './navbar-header/NavBarHeader'
 import { NavBarMain } from './navbar-main/NavBarMain'
+import { NavMenu } from './navmenu/NavMenu'
 
 export const Navbar: React.FC = () => {
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
     const [showDropDown, setShowDropDown] = useState<boolean>(false)
-
-    const [loggedIn, setLoggedIn] = useState<boolean>(false)
-
-    const handleLogout = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        event.preventDefault()
-        setLoggedIn(false)
-    }
 
     return (
         <>
@@ -23,23 +16,11 @@ export const Navbar: React.FC = () => {
 
                     <NavBarHeader setShowDropDown={setShowDropDown} showDropDown={showDropDown} />
 
-                    <NavBarMain
-                        handleLogout={handleLogout}
-                        setLoggedIn={setLoggedIn}
-                        loggedIn={loggedIn}
-                        isMenuExpanded={isMenuExpanded}
-                        setIsMenuExpanded={setIsMenuExpanded}
-                    />
+                    <NavBarMain isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} />
 
                     <div className="idsk-header-web__nav--divider" />
 
-                    <NavMenu
-                        isMenuExpanded={isMenuExpanded}
-                        loggedIn={loggedIn}
-                        setLoggedIn={setLoggedIn}
-                        setIsMenuExpanded={setIsMenuExpanded}
-                        handleLogout={handleLogout}
-                    />
+                    <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} />
                 </div>
             </header>
         </>

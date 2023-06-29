@@ -116,27 +116,9 @@
         "yes": "Áno",
         "no": "Nie"
     },
-    "table": {
-        "title": "Mestá",
-        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-        "heading": "Filtrovať obsah",
-        "unpack": "Rozbaliť obsah filtra",
-        "pack": "Zbaliť obsah filtra",
-        "city": "Mesto",
-        "region": "Kraj",
-        "district": "Okres",
-        "area": "Rozloha",
-        "density": "Hustota",
-        "source": "Zdroj:",
-        "sourceUrl": "sk.wikipedia.org",
-        "filter": "Filtrovať",
-        "chooseDistrict": "Vybrať okres",
-        "activeFilter": "Aktívny filter",
-        "wrapActiveFilter": "Zbaliť aktívny filter",
-        "unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie.",
-        "resetOrder": "Resetovať poradie",
-        "pagination": "Tabuľková navigácia",
-        "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov"
+    "filter": {
+        "expand": "Rozbaliť obsah filtra",
+        "collapse": "Zbaliť obsah filtra"
     },
     "form": {
         "userFirstName": "Meno použivateľa",
@@ -183,7 +165,7 @@
         "note": "Poznámka",
         "description": "Popis"
     },
-    "applicationServiceRelations": {
+    "neighboursCardList": {
         "buttonAddNewRelation": "Pridať nový vzťah",
         "buttonAddNewRelationCard": "Pridať novú položku a vzťah"
     },
@@ -215,8 +197,10 @@
         "searchPlaceholder": "Názov hľadaného stĺpca",
         "refreshButton": "Obnoviť",
         "cancelButton": "Zrušiť",
-        "viewButton": "Zobraziť",
-        "search": "Search"
+        "viewButton": "Zobraziť"
+    },
+    "searchInput":{
+        "search": "Hľadať"
     },
     "documentsTab": {
         "table": {
@@ -248,8 +232,5 @@
             "UNKNOW": "Neznámy",
             "": ""
         }
-    },
-    "loading": {
-        "loadingSubPage": "Načítavám podstránku"
     }
 }

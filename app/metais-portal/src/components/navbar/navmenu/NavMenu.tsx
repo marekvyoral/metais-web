@@ -5,18 +5,16 @@ import { Link, matchPath, useLocation } from 'react-router-dom'
 
 import { NavLogin } from '../navbar-main/NavLogin'
 
-import styles from './../navbar.module.scss'
 import { NavMenuList } from './NavMenuList'
 import { closeOnClickOutside, closeOnEscapeKey } from './navMenuUtils'
 
+import styles from '@/components/navbar/navbar.module.scss'
 import { RouteNames } from '@/navigation/routeNames'
+import { useAuth } from '@/contexts/auth/authContext'
 
 interface INavMenu {
     isMenuExpanded: boolean
-    loggedIn: boolean
-    setLoggedIn: React.Dispatch<SetStateAction<boolean>>
     setIsMenuExpanded: React.Dispatch<SetStateAction<boolean>>
-    handleLogout: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
 }
 
 export const navItems = [
@@ -26,11 +24,14 @@ export const navItems = [
     RouteNames.HOW_TO_STANDARDIZATION,
 ]
 
-export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, handleLogout, setIsMenuExpanded, loggedIn, setLoggedIn }) => {
+export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, setIsMenuExpanded }) => {
     const { t } = useTranslation()
     const location = useLocation()
 
     const [activeTab, setActiveTab] = useState<RouteNames | undefined>()
+    const {
+        state: { user },
+    } = useAuth()
 
     useEffect(() => {
         const currentTab = navItems.find((tab) => {
@@ -70,7 +71,7 @@ export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, handleLogout, setI
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column-full">
                         <div className="idsk-header-web__main--buttons">
-                            {loggedIn ? (
+                            {user ? (
                                 <button className={classnames('idsk-button idsk-button--secondary', styles.noWrap)}>{t('navbar.newItem')}</button>
                             ) : (
                                 <div className={classnames(styles.registerLink, styles.fullWidth)}>
@@ -80,7 +81,7 @@ export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, handleLogout, setI
                                 </div>
                             )}
 
-                            <NavLogin loggedIn={loggedIn} setLoggedIn={setLoggedIn} handleLogout={handleLogout} />
+                            <NavLogin />
                         </div>
                     </div>
                 </div>

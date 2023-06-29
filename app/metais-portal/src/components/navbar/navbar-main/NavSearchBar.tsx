@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import styles from './../navbar.module.scss'
+import styles from '@/components/navbar/navbar.module.scss'
 
 export const NavSearchBar = () => {
     const { t } = useTranslation()

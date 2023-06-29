@@ -1,22 +1,23 @@
-import React, { SetStateAction } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { NavProfile } from './NavProfile'
 
-interface INavLogin {
-    loggedIn: boolean
-    setLoggedIn: React.Dispatch<SetStateAction<boolean>>
-    handleLogout: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
-}
+import { useLogin } from '@/hooks/useLogin'
+import { useAuth } from '@/contexts/auth/authContext'
 
-export const NavLogin: React.FC<INavLogin> = ({ loggedIn, setLoggedIn, handleLogout }) => {
+export const NavLogin: React.FC = () => {
     const { t } = useTranslation()
+    const { mutateAuthorize } = useLogin()
+    const {
+        state: { user },
+    } = useAuth()
 
     return (
         <div className="idsk-header-web__main--login">
-            {!loggedIn && (
+            {!user && (
                 <button
-                    onClick={() => setLoggedIn(true)}
+                    onClick={mutateAuthorize}
                     type="button"
                     className="idsk-button idsk-header-web__main--login-loginbtn"
                     data-module="idsk-button"
@@ -25,7 +26,7 @@ export const NavLogin: React.FC<INavLogin> = ({ loggedIn, setLoggedIn, handleLog
                 </button>
             )}
 
-            <NavProfile loggedIn={loggedIn} handleLogout={handleLogout} />
+            <NavProfile />
         </div>
     )
 }

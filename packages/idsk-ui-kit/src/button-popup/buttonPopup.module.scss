@@ -1,0 +1,17 @@
+@import '../index.scss';
+
+.whiteBackground {
+    background-color: govuk-colour('white');
+    border: 1px solid govuk-colour('grey-2');
+    padding: 10px;
+}
+
+.buttonLabel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .downArrow {
+        margin-left: govuk-spacing(1);
+    }
+}

@@ -1,4 +1,4 @@
-import { LanguageSelector } from '@isdd/metais-common/language-selector/LanguageSelector'
+import { LanguageSelector } from '@isdd/idsk-ui-kit/language-selector/LanguageSelector'
 import classnames from 'classnames'
 import React, { SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'

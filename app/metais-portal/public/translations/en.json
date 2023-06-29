@@ -116,27 +116,9 @@
         "yes": "Yes",
         "no": "No"
     },
-    "table": {
-        "title": "Cities",
-        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-        "heading": "Filter Content",
-        "unpack": "Unpack Filter Content",
-        "pack": "Pack Filter Content",
-        "city": "City",
-        "region": "Region",
-        "district": "District",
-        "area": "Area",
-        "density": "Density",
-        "source": "Source:",
-        "sourceUrl": "sk.wikipedia.org",
-        "filter": "Filter",
-        "chooseDistrict": "Choose district",
-        "activeFilter": "Active filter",
-        "wrapActiveFilter": "Pack active filter",
-        "unorderedColumn": "Unsorted column - will use ascending sorting.",
-        "resetOrder": "Reset order",
-        "pagination": "Page navigation",
-        "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov"
+    "filter": {
+        "expand": "Expand content of filter",
+        "collapse": "Collapse content of filter"
     },
     "form": {
         "userFirstName": "First name of user",
@@ -182,7 +164,7 @@
         "note": "Note",
         "description": "Description"
     },
-    "applicationServiceRelations": {
+    "neighboursCardList": {
         "buttonAddNewRelation": "Add a new relation",
         "buttonAddNewRelationCard": "Add a new item and relationship"
     },
@@ -214,7 +196,9 @@
         "searchPlaceholder": "Search column name",
         "refreshButton": "Refresh",
         "cancelButton": "Cancel",
-        "viewButton": "View",
+        "viewButton": "View"
+    },
+    "searchInput":{
         "search": "Search"
     },
     "documentsTab": {
@@ -247,8 +231,5 @@
             "UNKNOW": "Unknown",
             "": ""
         }
-    },
-    "loading": {
-        "loadingSubPage": "Loading sub-page"
     }
 }

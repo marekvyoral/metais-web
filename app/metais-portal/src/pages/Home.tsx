@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { MultiValue, OptionProps, components } from 'react-select'
 import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
 import { BreadCrumbs } from '@isdd/idsk-ui-kit/bread-crumbs/BreadCrumbs'
-import { SelectLazyLoading } from '@isdd/metais-common/select-lazy-loading/SelectLazyLoading'
+import { SelectLazyLoading } from '@isdd/idsk-ui-kit/select-lazy-loading/SelectLazyLoading'
 
 import { HomeIcon } from '@/assets/images'
 
