@@ -80,20 +80,30 @@ build-docker-latest:
           - ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop")
 
 deploy-okd-feature:
-    stage: deploy-okd-feature
-    image: gitlab.isdd.sk:4567/isdd-docker/okd/alpine:1-2-0
-    script:
-        - curl -X POST --fail -F token=$CD_REPO_TOKEN -F ref=$BRANCH_NAME --form "variables[HELM_RELEASE_NAME]=$RELEASE_NAME" --form "variables[OKD_HELM_OPTS]=$OKD_HELM_OPTS" https://gitlab.isdd.sk/api/v4/projects/967/trigger/pipeline
-    rules:
-        - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/
-          when: on_success
+     stage: deploy-okd-feature
+     image: gitlab.isdd.sk:4567/isdd-docker/okd/alpine:1-3-0
+     variables: 
+         IMAGE_TAG: ${CI_COMMIT_REF_SLUG}
+     script:
+         - OKD_HELM_OPTS=$OKD_HELM_OPTS
+         - CI_COMMIT_BRANCH_TEMP=$CI_COMMIT_BRANCH
+         - RELEASE_NAME="${CI_COMMIT_BRANCH_TEMP/\//-}" 
+         - OKD_HELM_OPTS="--set metaisPortal.ingress.tls[0].hosts[0]=$RELEASE_NAME-metais3.apps.dev.isdd.sk --set metaisPortal.ingress.hosts[0].host=$RELEASE_NAME-metais3.apps.dev.isdd.sk --set metaisPortal.ingress.hosts[0].paths[0].path=/ --set metaisAdmin.ingress.tls[0].hosts[0]=$RELEASE_NAME-admin-metais3.apps.dev.isdd.sk --set metaisAdmin.ingress.hosts[0].host=$RELEASE_NAME-admin-metais3.apps.dev.isdd.sk --set metaisAdmin.ingress.hosts[0].paths[0].path=/ --set image.AppVersion=${IMAGE_TAG}"
+         - echo $OKD_HELM_OPTS
+         - curl -X POST --fail -F token=$CD_REPO_TOKEN -F ref=$BRANCH_NAME --form "variables[HELM_RELEASE_NAME]=$RELEASE_NAME" --form "variables[OKD_HELM_OPTS]=$OKD_HELM_OPTS" https://gitlab.isdd.sk/api/v4/projects/967/trigger/pipeline
+         - echo "#####################################################################"
+         - echo "######http://$RELEASE_NAME-metais3.apps.dev.isdd.sk######"
+         - echo "######http://$RELEASE_NAME-admin-metais3.apps.dev.isdd.sk######"
+         - echo "###################################################3#################"
+     rules:
+         - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/
+           when: on_success
 
 deploy-okd-develop:
     stage: deploy-okd-develop
-    image: gitlab.isdd.sk:4567/isdd-docker/okd/alpine:1-2-0
+    image: gitlab.isdd.sk:4567/isdd-docker/okd/alpine:1-3-0
     script:
-        - curl -X POST --fail -F token=$CD_REPO_TOKEN -F ref=$BRANCH_NAME --form "variables[HELM_RELEASE_NAME]=$RELEASE_NAME" https://gitlab.isdd.sk/api/v4/projects/967/trigger/pipeline
+        - curl -X POST --fail -F token=$CD_REPO_TOKEN -F ref=$BRANCH_NAME https://gitlab.isdd.sk/api/v4/projects/967/trigger/pipeline
     rules:
         - if: $CI_COMMIT_REF_NAME =~ /^develop+$/
           when: on_success
-
