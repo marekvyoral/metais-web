@@ -4,6 +4,7 @@ import {
     ExpandedState,
     OnChangeFn,
     PaginationState,
+    RowSelectionState,
     SortingState,
     getCoreRowModel,
     getExpandedRowModel,
@@ -34,6 +35,8 @@ interface ITableProps<T> {
     expandedRowsState?: ExpandedState
     onExpandedChange?: React.Dispatch<React.SetStateAction<ExpandedState>>
     getSubRows?: (row: T) => T[] | undefined
+    rowSelection?: Record<string, boolean>
+    onRowSelectionChange?: OnChangeFn<RowSelectionState>
     isLoading?: boolean
     error?: boolean
 }
@@ -51,6 +54,8 @@ export const Table = <T,>({
     expandedRowsState,
     onExpandedChange,
     getSubRows,
+    rowSelection,
+    onRowSelectionChange,
     isLoading = false,
     error = false,
 }: ITableProps<T>): JSX.Element => {
@@ -58,6 +63,7 @@ export const Table = <T,>({
         data: data ?? [],
         columns,
         state: {
+            rowSelection: rowSelection ?? {},
             ...(pagination && { pagination }),
             columnOrder,
             sorting,
@@ -72,6 +78,7 @@ export const Table = <T,>({
         getExpandedRowModel: getExpandedRowModel(),
         onExpandedChange,
         getSubRows,
+        onRowSelectionChange,
         enableMultiSort: true,
     })
 

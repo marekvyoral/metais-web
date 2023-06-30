@@ -13,7 +13,13 @@ export const TableRow = <T,>({ row }: ITableRowProps<T>): JSX.Element => {
     return (
         <tr className="idsk-table__row">
             {row.getVisibleCells().map((cell) => (
-                <td className={classNames('idsk-table__cell', { [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL })} key={cell.id}>
+                <td
+                    className={classNames('idsk-table__cell', {
+                        [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
+                        [styles.rowSelected]: row.getIsSelected(),
+                    })}
+                    key={cell.id}
+                >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
             ))}

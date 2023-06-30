@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -21,7 +21,7 @@ interface ICiTable {
 
 export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChange }) => {
     const { t } = useTranslation()
-
+    const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
     const tableData = mapTableData(data?.tableData, schemaAttributes, t, data?.constraintsData) ?? []
 
@@ -45,16 +45,29 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
 
     const columns: Array<ColumnDef<ColumnsOutputDefinition>> = [
         {
-            accessorFn: (row) => row?.checked,
-            header: () => <></>,
-            id: CHECKBOX_CELL,
-            cell: (row) => (
+            header: ({ table }) => (
                 <div className="govuk-checkboxes govuk-checkboxes--small">
                     <CheckBox
-                        label={row.getValue() as string}
+                        label=""
                         name="checkbox"
-                        id={row.getValue() as string}
+                        id="checkbox-all"
+                        value="checkbox-all"
+                        onChange={table.getToggleAllRowsSelectedHandler()}
+                        checked={table.getIsAllPageRowsSelected()}
+                        containerClassName={styles.marginBottom15}
+                    />
+                </div>
+            ),
+            id: CHECKBOX_CELL,
+            cell: ({ row }) => (
+                <div className="govuk-checkboxes govuk-checkboxes--small">
+                    <CheckBox
+                        label=""
+                        name="checkbox"
+                        id={`checkbox_${row.id}`}
                         value="true"
+                        onChange={row.getToggleSelectedHandler()}
+                        checked={row.getIsSelected()}
                         containerClassName={styles.marginBottom15}
                     />
                 </div>
@@ -65,7 +78,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
 
     return (
         <>
-            <Table columns={columns} data={tableData} />
+            <Table columns={columns} data={tableData} onRowSelectionChange={setRowSelection} rowSelection={rowSelection} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
     )
