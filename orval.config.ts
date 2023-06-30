@@ -278,12 +278,25 @@ export default defineConfig({
                     'ci-type-relationship-type-map-controller',
                     'relationship-type-controller',
                     'rights-type-controller',
+                    'query',
                 ],
             },
         },
         output: {
             target: `./app/metais-admin/src/api/generated/types-repo-swagger.ts`,
             override: {
+                operations: {
+                    listAttrProfileUsingPOST: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
+                    listTypesUsingPOST: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
+                },
                 mutator: {
                     path: './app/metais-admin/src/api/hooks/useTypesRepoSwaggerClient.ts',
                     name: 'useTypesRepoSwaggerClient',

@@ -1,0 +1,7 @@
+@import '@id-sk/frontend/idsk/core';
+
+.attributeGridRowBox {
+    display: flex;
+    gap: govuk-spacing(4);
+    flex-direction: column;
+}

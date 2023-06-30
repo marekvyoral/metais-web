@@ -111,5 +111,28 @@
         "buttonAddNewRelation": "Pridať nový vzťah",
         "buttonAddNewRelationCard": "Pridať novú položku a vzťah",
         "selectView": "Zobraziť"
+    },
+    "egov": {
+        "name": "Meno",
+        "technicalName": "Technické meno",
+        "type": "Typ",
+        "state": "Stav",
+        "engName": "Anglický názov",
+        "codePrefix": "Prefix metais kódu",
+        "uriPrefix": "URI prefix",
+        "valid": "Stav",
+        "description": "Popis",
+        "color": "Farebné označenie",
+        "roles": "Opravnené role"
+    },
+    "state": {
+        "true": "Platný",
+        "false": "Neplatný",
+        "undefined": "Neplatný"
+    },
+    "type": {
+        "application": "Aplikačný",
+        "system": "Systémový",
+        "custom": "Vlastný"
     }
 }

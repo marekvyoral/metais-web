@@ -110,5 +110,29 @@
         "buttonAddNewRelation": "Add a new relation",
         "buttonAddNewRelationCard": "Add a new item and relation",
         "selectView": "View"
+    },
+    "egov": {
+        "name": "Name",
+        "technicalName": "Technical Name",
+        "type": "Type",
+        "state": "State",
+        "engName": "English name",
+        "codePrefix": "Prefix metais code",
+        "uriPrefix": "URI prefix",
+        "valid": "State",
+        "description": "Description",
+        "color": "Color",
+        "roles": "Allowed Roles"
+    },
+
+    "state": {
+        "true": "Valid",
+        "false": "Invalid",
+        "undefined": "Invalid"
+    },
+    "type": {
+        "application": "Application",
+        "system": "System",
+        "custom": "Custom"
     }
 }

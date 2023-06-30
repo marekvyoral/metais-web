@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
             },
         },
         server: {
-            port: 3001,
+            port: 3000,
             cors: {
                 origin: '*',
             },
@@ -53,6 +53,16 @@ export default defineConfig(({ mode }) => {
                     changeOrigin: true,
                     secure: false,
                     rewrite: (p) => p.replace(/^\/metaisiam/, ''),
+                },
+                '^/attrprofiles/.*': {
+                    target: process.env.VITE_REST_CLIENT_TYPES_REPO_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
+                },
+                '^/relationshiptypes/.*': {
+                    target: process.env.VITE_REST_CLIENT_TYPES_REPO_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
                 },
             },
         },

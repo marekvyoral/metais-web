@@ -1,14 +1,13 @@
-import { Column, ColumnOrderState, Header, Table as ReactTable, flexRender } from '@tanstack/react-table'
-import { useDrag, useDrop } from 'react-dnd'
 import React from 'react'
+import { Header, Table as ReactTable, flexRender } from '@tanstack/react-table'
 
-const reorderColumn = (draggedColumnId: string, targetColumnId: string, columnOrder: string[]): ColumnOrderState => {
-    const newColumnOrder = columnOrder
-    const startSplicing = newColumnOrder.indexOf(targetColumnId)
-    const items = newColumnOrder.splice(newColumnOrder.indexOf(draggedColumnId), 1)[0]
-    newColumnOrder.splice(startSplicing, 0, items)
-    return [...newColumnOrder]
-}
+// const reorderColumn = (draggedColumnId: string, targetColumnId: string, columnOrder: string[]): ColumnOrderState => {
+//     const newColumnOrder = columnOrder
+//     const startSplicing = newColumnOrder.indexOf(targetColumnId)
+//     const items = newColumnOrder.splice(newColumnOrder.indexOf(draggedColumnId), 1)[0]
+//     newColumnOrder.splice(startSplicing, 0, items)
+//     return [...newColumnOrder]
+// }
 
 type TableHeaderProps<T> = {
     header: Header<T, unknown>
@@ -16,9 +15,9 @@ type TableHeaderProps<T> = {
     canDrag: boolean
 }
 
-export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeaderProps<T>): JSX.Element => {
-    const { getState, setColumnOrder } = table
-    const { columnOrder } = getState()
+export const DraggableColumnHeader = <T,>({ header }: TableHeaderProps<T>): JSX.Element => {
+    // const { getState } = table
+    // const { columnOrder } = getState()
     const { column, colSpan, getContext, isPlaceholder } = header
 
     const columnHeader = column.columnDef.header
@@ -43,8 +42,8 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
 
     return (
         <th className="idsk-table__header" colSpan={colSpan} style={{ opacity: 1 }}>
-            <div >
-                <div  className="th-span">
+            <div>
+                <div className="th-span">
                     {isPlaceholder ? null : flexRender(columnHeader, getContext())}
                     {column.getCanSort() && columnEnabledSorting && (
                         <button

@@ -20,7 +20,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
         state: { accessToken },
         dispatch,
     } = useAuth()
-    console.log(baseURL)
+
     const navigate = useNavigate()
     return async ({ url, method, params, data }) => {
         const searchParams = params ? `?${new URLSearchParams(params)}` : ''

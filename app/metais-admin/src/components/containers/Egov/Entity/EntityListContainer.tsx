@@ -8,17 +8,17 @@ export interface IView {
     isError: boolean
 }
 
-interface IEgovListContainer {
+interface IEntityListContainer {
     View: React.FC<IView>
 }
 
-export const EgovListContainer: React.FC<IEgovListContainer> = ({ View }) => {
+export const EntityListContainer: React.FC<IEntityListContainer> = ({ View }) => {
     const defaultListQueryArgs: CiTypeFilter = {
         role: 'admin',
         roles: [],
     }
 
-    const [listQueryArgs, setListQueryArgs] = useState<CiTypeFilter>(defaultListQueryArgs)
+    const [listQueryArgs] = useState<CiTypeFilter>(defaultListQueryArgs)
 
     const { data, isLoading, isError } = useListCiTypesUsingGET(listQueryArgs)
 
