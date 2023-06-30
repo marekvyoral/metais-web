@@ -7,12 +7,12 @@ import { CellContext, ColumnDef } from '@tanstack/react-table'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Table, TextBody } from '@isdd/idsk-ui-kit'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
+import classNames from 'classnames'
 
 import { ColumnsOutputDefinition, mapTableData, reduceAttributesByTechnicalName, sortAndMergeCiColumns } from './ciTableHelpers'
 import styles from './ciTable.module.scss'
 
 import { IListData } from '@/types/list'
-import classNames from 'classnames'
 
 interface ICiTable {
     data: IListData
