@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
-import { Table } from '@isdd/idsk-ui-kit'
+import { Table, TextBody } from '@isdd/idsk-ui-kit'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 
 import { ColumnsOutputDefinition, mapTableData, reduceAttributesByTechnicalName, sortAndMergeCiColumns } from './ciTableHelpers'
+import styles from './ciTable.module.scss'
 
 import { IListData } from '@/types/list'
 
@@ -34,8 +35,11 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],
                 header: attributeHeader ?? technicalName,
                 id: technicalName ?? '',
-                cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) =>
-                    !index ? <Link to={'./' + ctx?.row?.original?.uuid}>{ctx?.getValue?.() as string}</Link> : (ctx.getValue() as string),
+                cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
+                    <TextBody size="S" className={styles.marginBottom0}>
+                        {!index ? <Link to={'./' + ctx?.row?.original?.uuid}>{ctx?.getValue?.() as string}</Link> : (ctx.getValue() as string)}
+                    </TextBody>
+                ),
             }
         }) ?? []
 

@@ -5,6 +5,7 @@ import classNames from 'classnames'
 
 import styles from './table.module.scss'
 import { CHECKBOX_CELL } from './constants'
+import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 
 const reorderColumn = (draggedColumnId: string, targetColumnId: string, columnOrder: string[]): ColumnOrderState => {
     const newColumnOrder = columnOrder
@@ -54,14 +55,18 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
         >
             <div ref={previewRef}>
                 <div ref={dragRef} className="th-span">
-                    {isPlaceholder ? null : flexRender(columnHeader, getContext())}
-                    {column.getCanSort() && columnEnabledSorting && (
-                        <button
-                            className="arrowBtn"
-                            onClick={column.getToggleSortingHandler()}
-                            style={{ opacity: column.getIsSorted() === false ? 0.1 : 1 }}
-                        />
-                    )}
+                    <TextBody size="S" className={styles.marginBottom0}>
+                        <strong>
+                            {isPlaceholder ? null : flexRender(columnHeader, getContext())}
+                            {column.getCanSort() && columnEnabledSorting && (
+                                <button
+                                    className="arrowBtn"
+                                    onClick={column.getToggleSortingHandler()}
+                                    style={{ opacity: column.getIsSorted() === false ? 0.1 : 1 }}
+                                />
+                            )}
+                        </strong>
+                    </TextBody>
                 </div>
             </div>
         </th>
