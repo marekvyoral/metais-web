@@ -79,7 +79,7 @@ export const Table = <T,>({
 
     return (
         <table className="idsk-table">
-            <thead className="idsk-table__head">
+            <thead className={classNames('idsk-table__head', [styles.head])}>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <tr className="idsk-table__row" key={headerGroup.id}>
                         {headerGroup.headers.map((header) => (
