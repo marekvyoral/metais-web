@@ -6,12 +6,11 @@ import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Table } from '@isdd/idsk-ui-kit'
+import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 
 import { ColumnsOutputDefinition, mapTableData, reduceAttributesByTechnicalName, sortAndMergeCiColumns } from './ciTableHelpers'
-import styles from './ciTable.module.scss'
 
 import { IListData } from '@/types/list'
-import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 
 interface ICiTable {
     data: IListData
@@ -36,11 +35,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 header: attributeHeader ?? technicalName,
                 id: technicalName ?? '',
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) =>
-                    !index ? (
-                        <Link to={'./' + ctx?.row?.original?.uuid}>{ctx?.getValue?.() as string}</Link>
-                    ) : (
-                        <strong>{ctx.getValue() as string}</strong>
-                    ),
+                    !index ? <Link to={'./' + ctx?.row?.original?.uuid}>{ctx?.getValue?.() as string}</Link> : (ctx.getValue() as string),
             }
         }) ?? []
 
@@ -50,13 +45,9 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
             header: () => <></>,
             id: CHECKBOX_CELL,
             cell: (row) => (
-                <CheckBox
-                    label={row.getValue() as string}
-                    name="checkbox"
-                    id={row.getValue() as string}
-                    value="true"
-                    containerClassName={styles.smallerCheckBox}
-                />
+                <div className="govuk-checkboxes--small">
+                    <CheckBox label={row.getValue() as string} name="checkbox" id={row.getValue() as string} value="true" />
+                </div>
             ),
         },
         ...columnsFromApi,
