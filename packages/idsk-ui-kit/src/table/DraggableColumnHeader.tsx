@@ -5,6 +5,7 @@ import classNames from 'classnames'
 
 import styles from './table.module.scss'
 import { CHECKBOX_CELL } from './constants'
+
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 
 const reorderColumn = (draggedColumnId: string, targetColumnId: string, columnOrder: string[]): ColumnOrderState => {
