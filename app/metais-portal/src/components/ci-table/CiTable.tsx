@@ -49,8 +49,14 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
             header: () => <></>,
             id: CHECKBOX_CELL,
             cell: (row) => (
-                <div className="govuk-checkboxes--small">
-                    <CheckBox label={row.getValue() as string} name="checkbox" id={row.getValue() as string} value="true" />
+                <div className="govuk-checkboxes govuk-checkboxes--small">
+                    <CheckBox
+                        label={row.getValue() as string}
+                        name="checkbox"
+                        id={row.getValue() as string}
+                        value="true"
+                        containerClassName={styles.marginBottom15}
+                    />
                 </div>
             ),
         },
