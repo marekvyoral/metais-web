@@ -24,27 +24,27 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
     const columnHeader = column.columnDef.header
     const columnEnabledSorting = header.column.columnDef.enableSorting
 
-    const [, dropRef] = useDrop({
-        accept: 'column',
-        drop: (draggedColumn: Column<T>) => {
-            const newColumnOrder = reorderColumn(draggedColumn.id, column.id, columnOrder)
-            setColumnOrder(newColumnOrder)
-        },
-    })
+    // const [, dropRef] = useDrop({
+    //     accept: 'column',
+    //     drop: (draggedColumn: Column<T>) => {
+    //         const newColumnOrder = reorderColumn(draggedColumn.id, column.id, columnOrder)
+    //         setColumnOrder(newColumnOrder)
+    //     },
+    // })
 
-    const [{ isDragging }, dragRef, previewRef] = useDrag({
-        canDrag,
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
-        item: () => column,
-        type: 'column',
-    })
+    // const [{ isDragging }, dragRef, previewRef] = useDrag({
+    //     canDrag,
+    //     collect: (monitor) => ({
+    //         isDragging: monitor.isDragging(),
+    //     }),
+    //     item: () => column,
+    //     type: 'column',
+    // })
 
     return (
-        <th ref={dropRef} className="idsk-table__header" colSpan={colSpan} style={{ opacity: isDragging ? 0.5 : 1 }}>
-            <div ref={previewRef}>
-                <div ref={dragRef} className="th-span">
+        <th className="idsk-table__header" colSpan={colSpan} style={{ opacity: 1 }}>
+            <div >
+                <div  className="th-span">
                     {isPlaceholder ? null : flexRender(columnHeader, getContext())}
                     {column.getCanSort() && columnEnabledSorting && (
                         <button

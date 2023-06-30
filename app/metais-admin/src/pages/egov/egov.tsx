@@ -3,68 +3,7 @@ import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { SortingState } from '@tanstack/react-table'
 import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 
-const mockData = [
-    {
-        name: 'Genericky profil IKT',
-        techName: 'Gen_Profil-IKT',
-        type: 'Aplikacny',
-        status: 'Platny',
-    },
-    {
-        name: 'CMDB_HISTORY_REL_PROFIL',
-        techName: 'CMDB_HISTORY_REL_PROFI',
-        type: 'Systemovy',
-        status: 'Platny',
-    },
-    {
-        name: 'CMDB_HISTORY_CI_PROFIL',
-        techName: 'CMDB_HISTORY_CI_PROFIL',
-        type: 'Systemovy',
-        status: 'Platny',
-    },
-    {
-        name: 'Genericky profil IKT',
-        techName: 'Gen_Profil-IKT',
-        type: 'Aplikacny',
-        status: 'Platny',
-    },
-    {
-        name: 'Genericky profil IKT',
-        techName: 'Gen_Profil-IKT',
-        type: 'Aplikacny',
-        status: 'Platny',
-    },
-    {
-        name: 'Genericky profil IKT',
-        techName: 'Gen_Profil-IKT',
-        type: 'Aplikacny',
-        status: 'Platny',
-    },
-    {
-        name: 'Genericky profil IKT',
-        techName: 'Gen_Profil-IKT',
-        type: 'Aplikacny',
-        status: 'Platny',
-    },
-    {
-        name: 'Genericky profil IKT',
-        techName: 'Gen_Profil-IKT',
-        type: 'Aplikacny',
-        status: 'Platny',
-    },
-    {
-        name: 'Genericky profil IKT',
-        techName: 'Gen_Profil-IKT',
-        type: 'Aplikacny',
-        status: 'Platny',
-    },
-    {
-        name: 'Genericky profil IKT',
-        techName: 'Gen_Profil-IKT',
-        type: 'Aplikacny',
-        status: 'Platny',
-    },
-]
+import { EgovListContainer } from '@/components/containers/EgovListContainer'
 
 const Egov: React.FC = () => {
     const columns = [
@@ -92,13 +31,14 @@ const Egov: React.FC = () => {
     const [sorting, setSorting] = useState<SortingState>([])
     const [page, setPage] = useState(1)
     return (
-        <div>
-            <Table data={mockData} columns={columns} sorting={sorting} onSortingChange={setSorting} />
-
-            <div>
-                <Paginator pageNumber={page} pageSize={10} dataLength={100} onPageChanged={(p) => setPage(p)} />
-            </div>
-        </div>
+        <EgovListContainer
+            View={(data) => (
+                <div>
+                    <Table data={data} columns={columns} sorting={sorting} onSortingChange={setSorting} />
+                    <Paginator pageNumber={page} pageSize={10} dataLength={100} onPageChanged={(p) => setPage(p)} />
+                </div>
+            )}
+        />
     )
 }
 
