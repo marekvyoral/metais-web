@@ -7,6 +7,9 @@ import { TableMetaBlock } from './TableMetaBlock'
 import { ExpandableHeaderCellWrapper } from './ExpandableHeaderCellWrapper'
 import { ExpandableRowCellWrapper } from './ExpandableRowCellWrapper'
 import { resetColumnOrder } from './tableUtils'
+import { CHECKBOX_CELL } from './constants'
+
+import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 
 const meta: Meta<typeof Table> = {
     title: 'Components/Table',
@@ -18,6 +21,7 @@ export type Person = {
     lastName: string
     age: number
     subRows?: Person[]
+    check?: boolean
 }
 
 const testTableData: Person[] = [
@@ -117,6 +121,52 @@ const sortableColumnsSpec: ColumnDef<Person>[] = [
         id: 'age',
         header: 'Age',
         enableSorting: true,
+    },
+]
+
+const SelectableColumnsSpec: ColumnDef<Person>[] = [
+    {
+        accessorFn: (row) => row.check,
+        header: ({ table }) => (
+            <div className="govuk-checkboxes govuk-checkboxes--small">
+                <CheckBox
+                    label=""
+                    name="checkbox"
+                    id="checkbox_all"
+                    value="true"
+                    onChange={table.getToggleAllRowsSelectedHandler()}
+                    checked={table.getIsAllPageRowsSelected()}
+                />
+            </div>
+        ),
+        id: CHECKBOX_CELL,
+        cell: ({ row }) => (
+            <div className="govuk-checkboxes govuk-checkboxes--small">
+                <CheckBox
+                    label=""
+                    name="checkbox"
+                    id={`checkbox_${row.id}`}
+                    value="true"
+                    onChange={row.getToggleSelectedHandler()}
+                    checked={row.getIsSelected()}
+                />
+            </div>
+        ),
+    },
+    {
+        accessorFn: (row) => row.firstName,
+        id: 'firstName',
+        header: 'First Name',
+    },
+    {
+        id: 'lastName',
+        accessorKey: 'lastName',
+        header: 'Last Name',
+    },
+    {
+        accessorKey: 'age',
+        id: 'age',
+        header: 'Age',
     },
 ]
 
@@ -244,6 +294,20 @@ export const DraggableColumns: Story = {
         data: testTableData,
         columns: sortableColumnsSpec,
         canDrag: true,
+    },
+}
+
+export const SelectableRows: Story = {
+    render: ({ ...args }) => {
+        const StateWrapper = () => {
+            const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
+            return <Table<Person> {...args} onRowSelectionChange={setRowSelection} rowSelection={rowSelection} />
+        }
+        return <StateWrapper />
+    },
+    args: {
+        data: testTableData,
+        columns: SelectableColumnsSpec,
     },
 }
 
