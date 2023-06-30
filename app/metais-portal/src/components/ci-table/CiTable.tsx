@@ -12,6 +12,7 @@ import { ColumnsOutputDefinition, mapTableData, reduceAttributesByTechnicalName,
 import styles from './ciTable.module.scss'
 
 import { IListData } from '@/types/list'
+import classNames from 'classnames'
 
 interface ICiTable {
     data: IListData
@@ -37,7 +38,13 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 id: technicalName ?? '',
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
                     <TextBody size="S" className={styles.marginBottom0}>
-                        {!index ? <Link to={'./' + ctx?.row?.original?.uuid}>{ctx?.getValue?.() as string}</Link> : (ctx.getValue() as string)}
+                        {!index ? (
+                            <Link to={'./' + ctx?.row?.original?.uuid} className={classNames({ [styles.bold]: ctx.row.getIsSelected() })}>
+                                {ctx?.getValue?.() as string}
+                            </Link>
+                        ) : (
+                            (ctx.getValue() as string)
+                        )}
                     </TextBody>
                 ),
             }
