@@ -29,7 +29,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
             headers: {
                 'Content-Type': 'application/json',
                 ...data?.headers,
-                accessToken: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${accessToken}`,
             },
             ...(data ? { body: JSON.stringify(data) } : {}),
         })
