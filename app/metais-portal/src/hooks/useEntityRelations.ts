@@ -30,12 +30,18 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string) 
     const keysToDisplay: IKeyToDisplay[] = PREDEFINED_TABS?.map((tab) => {
         const typeName = allRelation.find((relation) => relation?.ciTypeTechnicalName === tab)?.ciTypeName
         const count = countData?.[tab] ?? 0
+        if (typeName)
+            return {
+                tabName: `${typeName} (${count})`,
+                technicalName: tab,
+                count,
+            }
         return {
-            tabName: `${typeName} (${count})`,
+            tabName: '',
             technicalName: tab,
             count,
         }
-    })
+    })?.filter((tab) => tab?.tabName !== '')
 
     return {
         isLoading: isLoading || isRelatedLoading,

@@ -28,7 +28,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
     const columnsFromApi =
         columnsAttributes?.map((attribute, index) => {
             const technicalName = attribute?.name ?? ''
-            const attributeHeader = schemaAttributes[technicalName]?.name
+            const attributeHeader = schemaAttributes[technicalName]?.name ?? t(`${technicalName}`)
             return {
                 accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],
                 header: attributeHeader ?? technicalName,
@@ -37,7 +37,9 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                     !index ? (
                         <Link to={'./' + ctx?.row?.original?.uuid}>{ctx?.getValue?.() as string}</Link>
                     ) : (
-                        <strong>{ctx.getValue() as string}</strong>
+                        <strong>
+                            {schemaAttributes[technicalName]?.name ? (ctx.getValue() as string) : t(`metaAttributes.state.${ctx.getValue()}`)}
+                        </strong>
                     ),
             }
         }) ?? []
