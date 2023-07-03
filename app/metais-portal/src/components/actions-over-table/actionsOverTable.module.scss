@@ -1,0 +1,115 @@
+@import '../../index.scss';
+
+.buttonLinkWithIcon {
+    display: flex;
+    align-items: center;
+    padding-top: govuk-spacing(2);
+    padding-bottom: govuk-spacing(2);
+    color: govuk-colour('blue');
+}
+
+.buttonWithIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.withoutMarginBottom {
+    margin-bottom: govuk-spacing(0) !important;
+}
+
+.selectGroup {
+    display: flex;
+    align-items: center;
+    margin-bottom: govuk-spacing(0) !important;
+
+    label:first-child {
+        margin-right: govuk-spacing(3);
+        margin-bottom: govuk-spacing(0) !important;
+    }
+}
+
+.buttonGroup {
+    display: flex;
+    flex-direction: row;
+    gap: govuk-spacing(2);
+
+    @include mq($until: tablet) {
+        flex-direction: column;
+    }
+}
+
+.buttonGroupSelect {
+    display: flex;
+    flex-direction: row;
+    gap: govuk-spacing(2);
+}
+
+.whiteText {
+    color: govuk-colour('white') !important;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: govuk-spacing(2);
+    margin-bottom: govuk-spacing(7);
+    justify-content: space-between;
+
+    @include mq($until: tablet) {
+        flex-direction: column;
+        gap: govuk-spacing(6);
+    }
+}
+
+.iconExportImport {
+    margin-right: 4px;
+}
+
+.iconAddItems {
+    margin-right: govuk-spacing(2);
+}
+
+.iconInPopup {
+    width: 17px;
+    height: 17px;
+    margin-right: 12px;
+}
+
+.popupActions {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+
+.buttonImportExport {
+    display: flex;
+    flex-direction: row;
+    gap: govuk-spacing(2);
+    @include mq($until: tablet) {
+        gap: govuk-spacing(3);
+    }
+}
+
+.mobileOrder1 {
+    @include mq($until: tablet) {
+        order: 1;
+    }
+}
+
+.mobileOrder2 {
+    @include mq($until: tablet) {
+        order: 2;
+    }
+}
+
+.mobileOrder3 {
+    @include mq($until: tablet) {
+        order: 3;
+    }
+}
+
+.buttonPopup {
+    display: flex !important;
+}

@@ -5,14 +5,21 @@ cache:
 
 variables:
   APP_PATH: '$CI_PROJECT_DIR'
+  BRANCH_NAME: "develop"
+  #treba nastavit korektnu url adresu. Pre kazdu feature vlastnu url adresu. Ak uz nasadzujem finalne riesenie tak hodnoty v OKD_HELM_OPTS su ignorovane. OKD_HELM_OPTS je len pre feature branch
+  OKD_HELM_OPTS: "--set metaisPortal.ingress.tls[0].hosts[0]=test.isdd.sk --set metaisPortal.ingress.hosts[0].host=test.isdd.sk --set metaisPortal.ingress.hosts[0].paths[0].path=/ --set metaisAdmin.ingress.tls[0].hosts[0]=test.isdd.sk --set metaisAdmin.ingress.hosts[0].host=test-admin.isdd.sk --set metaisAdmin.ingress.hosts[0].paths[0].path=/"
+
 
 stages:
     - run-checks
-    - build
+    - build-node
+    - build-docker
+    - deploy-okd-feature
+    - deploy-okd-develop
     - deploy
 
 checks:
-    image: node:latest
+    image: nexus.isdd.sk:8490/node:latest
     stage: run-checks
     before_script:
         - echo "running yarn install"
@@ -21,9 +28,10 @@ checks:
         - yarn run typescript-check
         - yarn run lint
 
-build:
-    image: node:latest
-    stage: build
+
+build-node:
+    image: nexus.isdd.sk:8490/node:latest
+    stage: build-node
     script:
         - yarn run build
     artifacts:
@@ -31,24 +39,72 @@ build:
         paths:
             - 'app/metais-portal/dist/'
             - 'app/metais-admin/dist/'
-    when: manual
+    when: on_success
 
-deploy-portal:
-    image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
+
+.build_docker_template:
+    image: nexus.isdd.sk:8490/docker:20.10-git
+    stage: build-docker
+    services:
+        - name: nexus.isdd.sk:8490/docker:dind
+          alias: docker
     variables:
-        API_TOKEN: $PORTAL_DEPLOYMENT_TOKEN
-        OUTPUT_PATH: '$CI_PROJECT_DIR/app/metais-portal/dist/'
-    stage: deploy
+        DOCKER_HOST: tcp://docker:2375
     script:
-        - echo "MetaIS Portal deployed successfully."
-    when: manual
+        - apk update && apk add jq
+        - APPVERSION=$(jq -r '.version' package.json) && echo "APPVERSION ${APPVERSION}"
+        - echo "IMAGE_TAG=${IMAGE_TAG}"
+        - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+        # build portal
+        - docker build -f docker/Dockerfile --build-arg BUILD_DIR=app/metais-portal/dist/ -t ${CI_REGISTRY_IMAGE}/portal:${IMAGE_TAG} .
+        - docker push ${CI_REGISTRY_IMAGE}/portal:${IMAGE_TAG}
+        # build admin
+        - docker build -f docker/Dockerfile --build-arg BUILD_DIR=app/metais-admin/dist/ -t ${CI_REGISTRY_IMAGE}/admin:${IMAGE_TAG} .
+        - docker push ${CI_REGISTRY_IMAGE}/admin:${IMAGE_TAG}
+    when: on_success
     
-deploy-admin:
-    image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
-    variables:
-        API_TOKEN: $ADMIN_DEPLOYMENT_TOKEN
-        OUTPUT_PATH: '$CI_PROJECT_DIR/app/metais-admin/dist/'
-    stage: deploy
+build-docker-feature:
+    extends: .build_docker_template
+    variables: 
+        IMAGE_TAG: ${CI_COMMIT_REF_SLUG}
+    only:
+        variables:
+          - ($CI_COMMIT_BRANCH != "develop")
+
+build-docker-latest:
+    extends: .build_docker_template
+    variables: 
+        IMAGE_TAG: latest
+    only:
+        variables:
+          - ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop")
+
+deploy-okd-feature:
+     stage: deploy-okd-feature
+     image: gitlab.isdd.sk:4567/isdd-docker/okd/alpine:1-3-0
+     variables: 
+         IMAGE_TAG: ${CI_COMMIT_REF_SLUG}
+     script:
+         - OKD_HELM_OPTS=$OKD_HELM_OPTS
+         - CI_COMMIT_BRANCH_TEMP=$CI_COMMIT_BRANCH
+         - RELEASE_NAME="${CI_COMMIT_BRANCH_TEMP/\//-}" 
+         - RELEASE_NAME=$(echo "$RELEASE_NAME" | tr '[:upper:]' '[:lower:]')
+         - OKD_HELM_OPTS="--set metaisPortal.ingress.tls[0].hosts[0]=$RELEASE_NAME-metais3.apps.dev.isdd.sk --set metaisPortal.ingress.hosts[0].host=$RELEASE_NAME-metais3.apps.dev.isdd.sk --set metaisPortal.ingress.hosts[0].paths[0].path=/ --set metaisAdmin.ingress.tls[0].hosts[0]=$RELEASE_NAME-admin-metais3.apps.dev.isdd.sk --set metaisAdmin.ingress.hosts[0].host=$RELEASE_NAME-admin-metais3.apps.dev.isdd.sk --set metaisAdmin.ingress.hosts[0].paths[0].path=/ --set image.AppVersion=${IMAGE_TAG}"
+         - echo $OKD_HELM_OPTS
+         - curl -X POST --fail -F token=$CD_REPO_TOKEN -F ref=$BRANCH_NAME --form "variables[HELM_RELEASE_NAME]=$RELEASE_NAME" --form "variables[OKD_HELM_OPTS]=$OKD_HELM_OPTS" https://gitlab.isdd.sk/api/v4/projects/967/trigger/pipeline
+         - echo "#####################################################################"
+         - echo "######http://$RELEASE_NAME-metais3.apps.dev.isdd.sk######"
+         - echo "######http://$RELEASE_NAME-admin-metais3.apps.dev.isdd.sk######"
+         - echo "###################################################3#################"
+     rules:
+         - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/
+           when: on_success
+
+deploy-okd-develop:
+    stage: deploy-okd-develop
+    image: gitlab.isdd.sk:4567/isdd-docker/okd/alpine:1-3-0
     script:
-        - echo "MetaIS Admin deployed successfully."
-    when: manual
+        - curl -X POST --fail -F token=$CD_REPO_TOKEN -F ref=$BRANCH_NAME https://gitlab.isdd.sk/api/v4/projects/967/trigger/pipeline
+    rules:
+        - if: $CI_COMMIT_REF_NAME =~ /^develop+$/
+          when: on_success

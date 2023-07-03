@@ -89,7 +89,9 @@
         "mainNav": "Main navigation",
         "lists": {
             "goals": "Objectives, principles and KRIT",
-            "programs": "Programs and projects",
+            "programs": "Programs",
+            "projects": "Projects",
+            "process": "Process",
             "endServices": "End services",
             "applicationServices": "Application services",
             "isvs": "ISVS",
@@ -101,42 +103,34 @@
             "commission": "ITVS Standardization Commission",
             "groups": "Working groups of the commission",
             "concept": "Concept creation",
+            "concepts": "Concepts",
+            "votes": "Votes",
+            "meetings": "Meetings",
             "registers": "Reference registers",
             "counters": "Numerals",
             "centralModel": "Central data model",
-            "prud": "PRUD",
-            "sdg": "SDG",
+            "licenses": "Licenses",
+            "prud": "Register of data permissions and responsibilities",
+            "sdg": "Uniform digital gate",
             "overviews": "Overviews",
             "monitoringEnd": "Monitoring of end services",
             "monitoringApp": "Monitoring application services",
-            "monitoringSet": "Set of monitoring parameters"
+            "monitoringSet": "Set of monitoring parameters",
+            "evidenceObjects": "Evidence objects",
+            "attributesEvidenceObjects": "Attributes of evidence objects",
+            "servers": "Servers",
+            "virtualMachines": "Virtual machines",
+            "operationPlace": "Operation place",
+            "notInOVM": "Operators, which are not in OVM"
         }
     },
     "radioButton": {
         "yes": "Yes",
         "no": "No"
     },
-    "table": {
-        "title": "Cities",
-        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-        "heading": "Filter Content",
-        "unpack": "Unpack Filter Content",
-        "pack": "Pack Filter Content",
-        "city": "City",
-        "region": "Region",
-        "district": "District",
-        "area": "Area",
-        "density": "Density",
-        "source": "Source:",
-        "sourceUrl": "sk.wikipedia.org",
-        "filter": "Filter",
-        "chooseDistrict": "Choose district",
-        "activeFilter": "Active filter",
-        "wrapActiveFilter": "Pack active filter",
-        "unorderedColumn": "Unsorted column - will use ascending sorting.",
-        "resetOrder": "Reset order",
-        "pagination": "Page navigation",
-        "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov"
+    "filter": {
+        "expand": "Expand content of filter",
+        "collapse": "Collapse content of filter"
     },
     "form": {
         "userFirstName": "First name of user",
@@ -182,7 +176,7 @@
         "note": "Note",
         "description": "Description"
     },
-    "applicationServiceRelations": {
+    "neighboursCardList": {
         "buttonAddNewRelation": "Add a new relation",
         "buttonAddNewRelationCard": "Add a new item and relationship"
     },
@@ -214,7 +208,9 @@
         "searchPlaceholder": "Search column name",
         "refreshButton": "Refresh",
         "cancelButton": "Cancel",
-        "viewButton": "View",
+        "viewButton": "View"
+    },
+    "searchInput": {
         "search": "Search"
     },
     "documentsTab": {
@@ -248,7 +244,25 @@
             "": ""
         }
     },
+    "table": {
+        "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
+        "noRowsFound": "No rows found",
+        "pagination": "Page navigation"
+    },
+    "state": "Evidence status",
+    "group": "Group",
     "loading": {
         "loadingSubPage": "Loading sub-page"
+    },
+    "actionOverTable": {
+        "import": "Import",
+        "export": "Export",
+        "addISVSitem": "Add ISVS item",
+        "selectColumn": "Columns",
+        "view": "View",
+        "actions": "Bulk actions",
+        "invalidateItems": "Invalidate items",
+        "validateItems": "Validate actions",
+        "changeOwner": "Change owner"
     }
 }

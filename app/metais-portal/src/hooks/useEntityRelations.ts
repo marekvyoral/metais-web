@@ -1,14 +1,52 @@
-import { useReadCiNeighboursWithAllRelsUsingGET, useReadNeighboursConfigurationItemsCountUsingGET } from '@/api/generated/cmdb-swagger'
+import {
+    useReadCiNeighboursWithAllRelsUsingGET,
+    useListRelatedCiTypesUsingGET,
+    useReadNeighboursConfigurationItemsCountUsingGET,
+    useGetRoleParticipantBulkUsingPOST,
+    RelatedCiTypePreview,
+    ReadCiNeighboursWithAllRelsUsingGETParams,
+} from '@/api'
 
-export const useEntityRelationsTypesCount = (id: string) => {
-    const { isLoading, isError, data } = useReadNeighboursConfigurationItemsCountUsingGET(id)
+export interface IKeyToDisplay {
+    tabName: string
+    technicalName: string
+    count: number
+}
 
-    const keysToDisplay = (data && Object.keys(data).filter((item) => data[item] > 0)) ?? []
+export interface IEntityRelationsTypesCount {
+    isLoading: boolean
+    isError: boolean
+    data: RelatedCiTypePreview[]
+    keysToDisplay: IKeyToDisplay[]
+}
+
+const PREDEFINED_TABS = ['AS', 'Projekt', 'InfraSluzba', 'PO', 'osobitny_postup_ITVS', 'ISVS'] // toto je len zatial, mal by byť config na frontende podla docs
+
+export const useEntityRelationsTypesCount = (id: string, technicalName: string) => {
+    const { isLoading, isError, data: countData } = useReadNeighboursConfigurationItemsCountUsingGET(id)
+    const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypesUsingGET(technicalName)
+
+    const allRelation = [...(relatedData?.cisAsTargets ?? []), ...(relatedData?.cisAsSources ?? [])]
+    const keysToDisplay: IKeyToDisplay[] = PREDEFINED_TABS?.map((tab) => {
+        const typeName = allRelation.find((relation) => relation?.ciTypeTechnicalName === tab)?.ciTypeName
+        const count = countData?.[tab] ?? 0
+        if (typeName)
+            return {
+                tabName: `${typeName} (${count})`,
+                technicalName: tab,
+                count,
+            }
+        return {
+            tabName: '',
+            technicalName: tab,
+            count,
+        }
+    })?.filter((tab) => tab?.tabName !== '')
 
     return {
-        isLoading,
-        isError,
-        data,
+        isLoading: isLoading || isRelatedLoading,
+        isError: isError || isRelatedError,
+        data: allRelation,
         keysToDisplay,
     }
 }
@@ -18,25 +56,28 @@ export interface IPageConfig {
     perPage: number
 }
 
-export const useEntityRelationsDataList = (id: string, pageConfig: IPageConfig, name: string) => {
-    const { data, isLoading, isError } = useReadCiNeighboursWithAllRelsUsingGET(
-        id,
-        {
-            ciTypes: [name],
-            page: pageConfig.page,
-            perPage: pageConfig.perPage,
-            state: ['DRAFT'],
-        },
-        {
-            query: {
-                enabled: !!name,
-            },
-        },
-    )
-
-    return {
+export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighboursWithAllRelsUsingGETParams) => {
+    const {
         isLoading,
         isError,
-        data,
+        data: relationsList,
+    } = useReadCiNeighboursWithAllRelsUsingGET(id, pageConfig, {
+        query: {
+            enabled: !!pageConfig?.ciTypes?.length,
+        },
+    })
+
+    const owners = ([...new Set(relationsList?.ciWithRels?.map((rel) => rel?.ci?.metaAttributes?.owner).filter(Boolean))] as string[]) ?? []
+    const {
+        isLoading: isOwnersLoading,
+        isError: isOwnersError,
+        data: ownersData,
+    } = useGetRoleParticipantBulkUsingPOST({ gids: owners }, { query: { enabled: !!owners?.length } })
+
+    return {
+        isLoading: isLoading || isOwnersLoading,
+        isError: isError || isOwnersError,
+        relationsList,
+        owners: ownersData,
     }
 }

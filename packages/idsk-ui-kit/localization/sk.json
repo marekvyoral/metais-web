@@ -3,9 +3,39 @@
         "open": "Rozbaliť jazykové menu",
         "close": "Skryť jazykové menu"
     },
+    "searchInput": {
+        "search": "Hľadať"
+    },
     "language": {
         "sk": "Slovenčina",
         "en": "English",
         "ge": "German"
+    },
+    "loading": {
+        "loadingSubPage": "Načítavám podstránku"
+    },
+    "table": {
+        "title": "Mestá",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+        "heading": "Filtrovať obsah",
+        "unpack": "Rozbaliť obsah filtra",
+        "pack": "Zbaliť obsah filtra",
+        "city": "Mesto",
+        "region": "Kraj",
+        "district": "Okres",
+        "area": "Rozloha",
+        "density": "Hustota",
+        "source": "Zdroj:",
+        "sourceUrl": "sk.wikipedia.org",
+        "filter": "Filtrovať",
+        "chooseDistrict": "Vybrať okres",
+        "activeFilter": "Aktívny filter",
+        "wrapActiveFilter": "Zbaliť aktívny filter",
+        "unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie.",
+        "resetOrder": "Resetovať poradie",
+        "pagination": "Tabuľková navigácia",
+        "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
+        "noRowsFound": "Nenašli sa žiadne záznamy",
+        "noDataLoaded": "Nenačítali sa žiadne záznamy"
     }
 }

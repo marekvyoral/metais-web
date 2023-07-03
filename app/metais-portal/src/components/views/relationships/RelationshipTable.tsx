@@ -1,7 +1,8 @@
 import React from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
-import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 
 import { TableCols } from '../documents'
 
@@ -10,6 +11,8 @@ interface RelationshipsTable {
     isLoading: boolean
     isError: boolean
     columns: Array<ColumnDef<TableCols>>
+    pagination: Pagination
+    handleFilterChange: (filter: IFilter) => void
 }
 
 const Loading: React.FC = () => {
@@ -20,20 +23,13 @@ const Error: React.FC = () => {
     return <div>error</div>
 }
 
-export const RelationshipsTable: React.FC<RelationshipsTable> = ({ data, columns, isLoading, isError }) => {
+export const RelationshipsTable: React.FC<RelationshipsTable> = ({ data, columns, isLoading, isError, pagination, handleFilterChange }) => {
     if (isLoading) return <Loading />
     if (isError) return <Error />
     return (
         <>
             <Table columns={columns} data={data} />
-            <Paginator
-                dataLength={100}
-                pageNumber={1}
-                onPageChanged={() => {
-                    //dummy method
-                }}
-                pageSize={10}
-            />
+            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
-    ) //temporary paginator component, should be replaced by pagnator wrapper
+    )
 }

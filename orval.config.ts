@@ -1,10 +1,10 @@
 import path from 'path'
 
-import dotenv from 'dotenv'
+import { config } from 'dotenv'
 import { defineConfig } from 'orval'
 
 if (process.env.DOTENV_CONFIG_PATH) {
-    dotenv.config({
+    config({
         path: path.resolve(__dirname, process.env.DOTENV_CONFIG_PATH),
     })
 }
@@ -55,6 +55,15 @@ export default defineConfig({
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useClientForreadCiNeighboursUsingPOST',
+                        },
+                    },
+                    getRoleParticipantBulkUsingPOST: {
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForGetRoleParticipantBulkUsingPOST',
+                        },
+                        query: {
+                            useQuery: true,
                         },
                     },
                     readConfigurationItemUsingGET: {
