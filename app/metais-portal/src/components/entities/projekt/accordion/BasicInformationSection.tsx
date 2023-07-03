@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
-import { InformationGridRow } from '@isdd/metais-common/info-grid-row/InformationGridRow'
+import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
 
 import styles from './basicInformationSection.module.scss'
 

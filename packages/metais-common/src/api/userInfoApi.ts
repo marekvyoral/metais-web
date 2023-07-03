@@ -1,4 +1,4 @@
-import { User } from '@/contexts/auth/authContext'
+import { User } from '../contexts/auth/authContext'
 
 export const getUserInfo = async (token: string): Promise<{ data: User; statusCode: number }> => {
     const url = `/metaisiam/userinfo`

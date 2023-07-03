@@ -1,10 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useLogin } from '@isdd/metais-common/hooks/useLogin'
 
 import { NavProfile } from './NavProfile'
-
-import { useLogin } from '@/hooks/useLogin'
-import { useAuth } from '@/contexts/auth/authContext'
 
 export const NavLogin: React.FC = () => {
     const { t } = useTranslation()

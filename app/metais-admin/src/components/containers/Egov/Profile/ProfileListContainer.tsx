@@ -1,6 +1,6 @@
 import React from 'react'
+import { AttributeProfilePreview, useListAttrProfileUsingPOST } from '@isdd/metais-common/api'
 
-import { AttributeProfilePreview, useListAttrProfileUsingPOST } from '@/api'
 export interface IView {
     data?: void | AttributeProfilePreview | undefined
     isLoading: boolean

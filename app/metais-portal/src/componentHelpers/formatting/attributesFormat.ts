@@ -1,6 +1,5 @@
 import { TFunction } from 'i18next'
-
-import { Attribute, AttributeConstraintEnum, EnumType, ConfigurationItemUi } from '@/api'
+import { Attribute, AttributeConstraintEnum, EnumType, ConfigurationItemUi } from '@isdd/metais-common/api'
 
 const formatRowValueByRowType = (attribute: Attribute | undefined, rowValue: string, t: TFunction<'translation', undefined, 'translation'>) => {
     switch (attribute?.type) {

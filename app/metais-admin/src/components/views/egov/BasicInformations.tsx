@@ -1,11 +1,10 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { InformationGridRow } from '@isdd/metais-common/info-grid-row/InformationGridRow'
+import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
+import { CiType, EnumType } from '@isdd/metais-common/api'
 
 import styles from './basicInformationSection.module.scss'
 import ColorRow from './ColorRow'
-
-import { CiType, EnumType } from '@/api'
 
 interface ProjectInformationData {
     data: {

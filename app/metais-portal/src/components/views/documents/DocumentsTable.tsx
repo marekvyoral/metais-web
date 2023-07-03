@@ -5,8 +5,7 @@ import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-
-import { NeighbourPairUi } from '@/api'
+import { NeighbourPairUi } from '@isdd/metais-common/api'
 
 export interface TableCols extends NeighbourPairUi {
     selected?: boolean

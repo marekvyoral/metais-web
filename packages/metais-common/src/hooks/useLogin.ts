@@ -1,4 +1,4 @@
-import { getAuthorizeToken } from '@/api/authorizeApi'
+import { getAuthorizeToken } from '../api/authorizeApi'
 
 export const useLogin = () => {
     // this will relocate with access_token in query

@@ -1,6 +1,5 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-
-import { NeighboursFilterContainerUi, ReadCiNeighboursWithAllRelsUsingGETParams } from '@/api'
+import { NeighboursFilterContainerUi, ReadCiNeighboursWithAllRelsUsingGETParams } from '@isdd/metais-common/api'
 
 export const mapFilterToNeighborsApi = (originalFilter: NeighboursFilterContainerUi, filterChanges: IFilter): NeighboursFilterContainerUi => {
     const { pageNumber, pageSize } = filterChanges

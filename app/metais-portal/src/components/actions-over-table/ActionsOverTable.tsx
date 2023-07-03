@@ -9,12 +9,12 @@ import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
 import { TableSelectColumns } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useNavigate } from 'react-router-dom'
+import { BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 
 import { ExportItemsOrRelations } from '../export-items-or-relations/ExportItemsOrRelations'
 
 import styles from './actionsOverTable.module.scss'
 
-import { BASE_PAGE_SIZE } from '@/api'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@/assets/images'
 
 interface IActionsOverTableProps {

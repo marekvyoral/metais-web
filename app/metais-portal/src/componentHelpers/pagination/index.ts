@@ -1,6 +1,12 @@
 import { Pagination } from '@isdd/idsk-ui-kit/types'
-
-import { NeighbourSetUi, NeighboursFilterContainerUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, CiListFilterContainerUi, ConfigurationItemSetUi } from '@/api'
+import {
+    NeighbourSetUi,
+    NeighboursFilterContainerUi,
+    BASE_PAGE_NUMBER,
+    BASE_PAGE_SIZE,
+    CiListFilterContainerUi,
+    ConfigurationItemSetUi,
+} from '@isdd/metais-common/api'
 
 export const mapNeighboursSetSourceToPagination = (requestApi: NeighboursFilterContainerUi, data?: NeighbourSetUi | void): Pagination => {
     return {

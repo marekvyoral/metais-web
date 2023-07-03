@@ -1,9 +1,9 @@
+import { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
 
-import { AuthActions, useAuth } from '@/contexts/auth/authContext'
-import { getUserInfo } from '@/api/userInfoApi'
+import { AuthActions, useAuth } from '../contexts/auth/authContext'
+import { getUserInfo } from '../api/userInfoApi'
 
 export const useUserInfo = () => {
     const {

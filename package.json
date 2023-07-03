@@ -44,7 +44,7 @@
         "start:admin": "vite app/metais-admin",
         "build": "yarn build:portal && yarn build:admin",
         "build:portal": "vite build app/metais-portal",
-        "build:script:transform": "tsc app/metais-portal/src/api/hooks/transform/attributesTypesTransformer.ts --outDir app/metais-portal/scripts/ && tsc app/metais-admin/src/api/hooks/transform/attributesTypesTransformer.ts --outDir app/metais-admin/scripts/",
+        "build:script:transform": "tsc packages/metais-common/src/api/hooks/transform/attributesTypesTransformer.ts --outDir packages/metais-common/scripts",
         "build:admin": "vite build app/metais-admin",
         "preview": "yarn preview:portal & yarn preview:admin && fg",
         "preview:portal": "vite preview app/metais-portal",

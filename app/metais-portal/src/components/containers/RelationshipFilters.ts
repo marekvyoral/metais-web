@@ -1,4 +1,4 @@
-import { NeighboursFilterContainerUi } from '@/api'
+import { NeighboursFilterContainerUi } from '@isdd/metais-common/api'
 
 export enum NeighboursApiType {
     source,

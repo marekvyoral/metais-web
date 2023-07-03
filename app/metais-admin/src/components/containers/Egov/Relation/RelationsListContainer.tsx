@@ -1,6 +1,6 @@
 import React from 'react'
+import { RelationshipTypePreviewList, useListRelationshipTypesUsingGET } from '@isdd/metais-common/api'
 
-import { RelationshipTypePreviewList, useListRelationshipTypesUsingGET } from '@/api'
 export interface IView {
     data?: RelationshipTypePreviewList | undefined
     isLoading: boolean

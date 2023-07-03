@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-import { AuthActions, useAuth } from '@/contexts/auth/authContext'
+import { AuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export type BodyType<BodyData> = BodyData & { headers?: object }
 

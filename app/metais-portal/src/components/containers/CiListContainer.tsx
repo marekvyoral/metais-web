@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
+import {
+    CiListFilterContainerUi,
+    useGetDefaultColumnsUsingGET,
+    BASE_PAGE_NUMBER,
+    BASE_PAGE_SIZE,
+    useReadCiListUsingPOST,
+} from '@isdd/metais-common/api'
 
-import { CiListFilterContainerUi, useGetDefaultColumnsUsingGET, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, useReadCiListUsingPOST } from '@/api'
 import { IListView } from '@/types/list'
 import { mapFilterToNeighborsApi } from '@/componentHelpers'
 import { mapConfigurationItemSetToPagination } from '@/componentHelpers/pagination'

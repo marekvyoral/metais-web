@@ -1,7 +1,6 @@
 import React from 'react'
-
-import { EnumType, AttributeConstraintEnumAllOf, useGetRelationshipTypeUsingGET, RelationshipType } from '@/api'
-import { useHowToDisplayConstraints } from '@/api/useHowToDisplay'
+import { EnumType, AttributeConstraintEnumAllOf, useGetRelationshipTypeUsingGET, RelationshipType } from '@isdd/metais-common/api'
+import { useHowToDisplayConstraints } from '@isdd/metais-common/hooks/useHowToDisplay'
 
 export interface IAtrributesContainerView {
     data: {

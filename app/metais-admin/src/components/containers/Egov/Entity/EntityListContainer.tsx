@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-
-import { CiTypeFilter, CiTypePreviewList, useListCiTypesUsingGET } from '@/api/generated/types-repo-swagger'
+import { CiTypeFilter, CiTypePreviewList, useListCiTypesUsingGET } from '@isdd/metais-common/api'
 
 export interface IView {
     data?: CiTypePreviewList

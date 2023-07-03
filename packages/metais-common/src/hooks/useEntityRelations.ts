@@ -5,7 +5,7 @@ import {
     useGetRoleParticipantBulkUsingPOST,
     RelatedCiTypePreview,
     ReadCiNeighboursWithAllRelsUsingGETParams,
-} from '@/api'
+} from '../api'
 
 export interface IKeyToDisplay {
     tabName: string
