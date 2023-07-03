@@ -38,7 +38,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 id: technicalName ?? '',
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
                     <TextBody size="S" className={styles.marginBottom0}>
-                        {!index ? (
+                        {index === 0 ? (
                             <Link to={'./' + ctx?.row?.original?.uuid} className={classNames({ [styles.bold]: ctx.row.getIsSelected() })}>
                                 {ctx?.getValue?.() as string}
                             </Link>
