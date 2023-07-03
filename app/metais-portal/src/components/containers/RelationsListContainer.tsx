@@ -33,7 +33,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
         data: entityTypes,
     } = useEntityRelationsTypesCount(entityId, technicalName)
     const defaultPageConfig: ReadCiNeighboursWithAllRelsUsingGETParams = {
-        ciTypes: [keysToDisplay[0].technicalName],
+        ciTypes: [keysToDisplay?.[0]?.technicalName],
         page: 1,
         perPage: 10,
         state: ['DRAFT'],
