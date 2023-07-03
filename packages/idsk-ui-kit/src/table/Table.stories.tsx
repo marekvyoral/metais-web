@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { ColumnDef, ColumnOrderState, PaginationState, SortingState, ExpandedState } from '@tanstack/react-table'
+import { ColumnDef, ColumnOrderState, PaginationState, SortingState, ExpandedState, Row } from '@tanstack/react-table'
 import React, { useState } from 'react'
 
 import { Table } from './Table'
@@ -17,6 +17,7 @@ const meta: Meta<typeof Table> = {
 }
 
 export type Person = {
+    id: string
     firstName: string
     lastName: string
     age: number
@@ -26,16 +27,19 @@ export type Person = {
 
 const testTableData: Person[] = [
     {
+        id: '1',
         firstName: 'tanner',
         lastName: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
         age: 18,
         subRows: [
             {
+                id: '1-1',
                 firstName: 'tanner-first-subchild',
                 lastName: 'linsley-first-subchild',
                 age: 25,
                 subRows: [
                     {
+                        id: '1-1-1',
                         firstName: 'tanner-second-subchild',
                         lastName: 'linsley-second-subchild',
                         age: 48,
@@ -45,11 +49,13 @@ const testTableData: Person[] = [
         ],
     },
     {
+        id: '2',
         firstName: 'tandy',
         lastName: 'miller',
         age: 20,
         subRows: [
             {
+                id: '2-1',
                 firstName: 'tanner-1',
                 lastName: 'linsley',
                 age: 18,
@@ -57,11 +63,13 @@ const testTableData: Person[] = [
         ],
     },
     {
+        id: '3',
         firstName: 'joe',
         lastName: 'dirte',
         age: 20,
         subRows: [
             {
+                id: '3-1',
                 firstName: 'tanner-2',
                 lastName: 'linsley',
                 age: 10,
@@ -69,16 +77,19 @@ const testTableData: Person[] = [
         ],
     },
     {
+        id: '4',
         firstName: 'tanner',
         lastName: 'linsley',
         age: 20,
     },
     {
+        id: '5',
         firstName: 'tandy',
         lastName: 'miller',
         age: 45,
     },
     {
+        id: '6',
         firstName: 'joe',
         lastName: 'dirte',
         age: 65,
@@ -124,21 +135,31 @@ const sortableColumnsSpec: ColumnDef<Person>[] = [
     },
 ]
 
-const SelectableColumnsSpec: ColumnDef<Person>[] = [
+const SelectableColumnsSpec = (
+    rowSelection: Record<string, boolean>,
+    setRowSelection: (val: Record<string, boolean>) => void,
+): ColumnDef<Person>[] => [
     {
         accessorFn: (row) => row.check,
-        header: ({ table }) => (
-            <div className="govuk-checkboxes govuk-checkboxes--small">
-                <CheckBox
-                    label=""
-                    name="checkbox"
-                    id="checkbox_all"
-                    value="true"
-                    onChange={table.getToggleAllRowsSelectedHandler()}
-                    checked={table.getIsAllPageRowsSelected()}
-                />
-            </div>
-        ),
+        header: ({ table }) => {
+            const checked = table.getRowModel().rows.every((row) => rowSelection[row.original.id])
+            return (
+                <div className="govuk-checkboxes govuk-checkboxes--small">
+                    <CheckBox
+                        label=""
+                        name="checkbox"
+                        id="checkbox_all"
+                        value="true"
+                        onChange={() => {
+                            const result: Record<string, boolean> = {}
+                            table.getRowModel().rows.forEach((row) => (result[row.original.id] = !checked))
+                            setRowSelection(result)
+                        }}
+                        checked={checked}
+                    />
+                </div>
+            )
+        },
         id: CHECKBOX_CELL,
         cell: ({ row }) => (
             <div className="govuk-checkboxes govuk-checkboxes--small">
@@ -147,8 +168,8 @@ const SelectableColumnsSpec: ColumnDef<Person>[] = [
                     name="checkbox"
                     id={`checkbox_${row.id}`}
                     value="true"
-                    onChange={row.getToggleSelectedHandler()}
-                    checked={row.getIsSelected()}
+                    onChange={() => setRowSelection({ ...rowSelection, [row.original.id]: !rowSelection[row.original.id] })}
+                    checked={rowSelection[row.original.id]}
                 />
             </div>
         ),
@@ -301,13 +322,16 @@ export const SelectableRows: Story = {
     render: ({ ...args }) => {
         const StateWrapper = () => {
             const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
-            return <Table<Person> {...args} onRowSelectionChange={setRowSelection} rowSelection={rowSelection} />
+            const isRowSelected = (row: Row<Person>) => {
+                return rowSelection[row.original.id]
+            }
+
+            return <Table<Person> {...args} columns={SelectableColumnsSpec(rowSelection, setRowSelection)} isRowSelected={isRowSelected} />
         }
         return <StateWrapper />
     },
     args: {
         data: testTableData,
-        columns: SelectableColumnsSpec,
     },
 }
 

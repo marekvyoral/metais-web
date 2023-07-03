@@ -29,10 +29,10 @@
 .head {
     position: sticky;
     top: 0px;
-    z-index: 1;
+    z-index: 2;
 
     @include mq($until: desktop) {
-        top: 135px;
+        top: 122.5px;
     }
 }
 

@@ -4,7 +4,7 @@ import {
     ExpandedState,
     OnChangeFn,
     PaginationState,
-    RowSelectionState,
+    Row,
     SortingState,
     getCoreRowModel,
     getExpandedRowModel,
@@ -12,13 +12,13 @@ import {
     getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table'
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
 
 import { DraggableColumnHeader } from './DraggableColumnHeader'
+import { TableInfoMessage } from './TableInfoMessage'
 import { TableRow } from './TableRow'
 import styles from './table.module.scss'
-import { TableInfoMessage } from './TableInfoMessage'
 
 import { LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
 
@@ -35,8 +35,7 @@ interface ITableProps<T> {
     expandedRowsState?: ExpandedState
     onExpandedChange?: React.Dispatch<React.SetStateAction<ExpandedState>>
     getSubRows?: (row: T) => T[] | undefined
-    rowSelection?: Record<string, boolean>
-    onRowSelectionChange?: OnChangeFn<RowSelectionState>
+    isRowSelected?: (row: Row<T>) => boolean
     isLoading?: boolean
     error?: boolean
 }
@@ -54,8 +53,7 @@ export const Table = <T,>({
     expandedRowsState,
     onExpandedChange,
     getSubRows,
-    rowSelection,
-    onRowSelectionChange,
+    isRowSelected,
     isLoading = false,
     error = false,
 }: ITableProps<T>): JSX.Element => {
@@ -63,7 +61,6 @@ export const Table = <T,>({
         data: data ?? [],
         columns,
         state: {
-            rowSelection: rowSelection ?? {},
             ...(pagination && { pagination }),
             columnOrder,
             sorting,
@@ -78,7 +75,6 @@ export const Table = <T,>({
         getExpandedRowModel: getExpandedRowModel(),
         onExpandedChange,
         getSubRows,
-        onRowSelectionChange,
         enableMultiSort: true,
     })
 
@@ -106,7 +102,7 @@ export const Table = <T,>({
             >
                 {isLoading && <LoadingIndicator />}
                 {table.getRowModel().rows.map((row) => (
-                    <TableRow<T> row={row} key={row.id} />
+                    <TableRow<T> row={row} key={row.id} isRowSelected={isRowSelected} />
                 ))}
             </tbody>
         </table>
