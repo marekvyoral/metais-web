@@ -129,7 +129,19 @@
             "profileAttributesHeading": "Detail attributes profile",
             "profileAttributes": "Attributes",
             "entityHeading": "Entity detail",
-            "profiles": "Profiles"
+            "profiles": "Profiles",
+            "source": "Sources",
+            "target": "Target",
+            "summarizingCard": "Summarizing card",
+            "genericProfile": "Generic profile",
+            "connections": "Connections",
+            "showOwner": {
+                "heading": "Show owner",
+                "true": "Allowed",
+                "false": "Forbidden",
+                "undefined": "Forbidden",
+                "": "Forbidden"
+            }
         }
     },
 

@@ -1,4 +1,4 @@
-import { AttributeProfile, useGetCiTypeUsingGET, useGetSummarizingCardUsingGET } from '@/api'
+import { AttributeProfile, useGetCiTypeUsingGET, useGetSummarizingCardUsingGET } from '../api'
 
 export const useEntityProfiles = (technicalName: string) => {
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeUsingGET(technicalName)

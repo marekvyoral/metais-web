@@ -1,5 +1,5 @@
 import React from 'react'
-import { EnumType, AttributeConstraintEnumAllOf, useGetRelationshipTypeUsingGET, RelationshipType } from '@isdd/metais-common/api'
+import { EnumType, AttributeConstraintEnumAllOf, useGetRelationshipTypeUsingGET, RelationshipType, AttributeProfile } from '@isdd/metais-common/api'
 import { useHowToDisplayConstraints } from '@isdd/metais-common/hooks/useHowToDisplay'
 
 export interface IAtrributesContainerView {
@@ -7,6 +7,7 @@ export interface IAtrributesContainerView {
         ciTypeData: RelationshipType | undefined
         constraintsData: (EnumType | undefined)[]
         unitsData?: EnumType | undefined
+        keysToDisplay: Map<string, AttributeProfile | undefined>
     }
 }
 
@@ -39,7 +40,10 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
             .flat(2) ?? []
 
     const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
-
+    const keysToDisplay = new Map<string, AttributeProfile | undefined>()
+    ciTypeData?.attributeProfiles?.map((attribute) => {
+        keysToDisplay.set(attribute?.name ?? '', attribute)
+    })
     // const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnumUsingGET(MEASURE_UNIT)
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
@@ -54,5 +58,5 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
         return <div>Error</div>
     }
 
-    return <View data={{ ciTypeData, constraintsData, unitsData: undefined }} />
+    return <View data={{ ciTypeData, constraintsData, unitsData: undefined, keysToDisplay }} />
 }

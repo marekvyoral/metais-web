@@ -65,7 +65,11 @@ export const SummarizingCard = ({ data }: SummCardProps) => {
         <>
             <div className={styles.basicInformationSpace}>
                 <div className={styles.attributeGridRowBox}>
-                    <InformationGridRow key={'showOwner'} label={t('egov.showOwner')} value={data?.showOwner} />
+                    <InformationGridRow
+                        key={'showOwner'}
+                        label={t('egov.detail.showOwner.heading')}
+                        value={t(`egov.detail.showOwner.${data?.showOwner ?? false}`)}
+                    />
                 </div>
             </div>
             <h3 className="govuk-heading-m">{t('egov.detail.profileAttributes')}</h3>

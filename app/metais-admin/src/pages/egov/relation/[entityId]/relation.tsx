@@ -6,15 +6,7 @@ import { RelationDetailView } from '@/components/views/egov/relation-detail-view
 
 const Profile = () => {
     const { entityId } = useParams()
-    return (
-        <RelationDetailContainer
-            entityName={entityId ?? ''}
-            View={
-                (data) => <RelationDetailView data={data?.data} />
-                // return <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
-            }
-        />
-    )
+    return <RelationDetailContainer entityName={entityId ?? ''} View={(data) => <RelationDetailView data={data?.data} />} />
 }
 
 export default Profile

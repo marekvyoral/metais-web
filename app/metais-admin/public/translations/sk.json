@@ -130,7 +130,19 @@
             "profileAttributesHeading": "Detail profilu atribútov",
             "profileAttributes": "Atribúty",
             "entityHeading": "Detail entity",
-            "profiles": "Profily"
+            "profiles": "Profily",
+            "source": "Zdroje",
+            "target": "Ciele",
+            "summarizingCard": "Summarizačná karta",
+            "genericProfile": "Generický profil",
+            "connections": "Prepojenia",
+            "showOwner": {
+                "heading": "Zobrazovanie vlastníka",
+                "true": "Povolené",
+                "false": "Zakazané",
+                "undefined": "Zakazané",
+                "": "Zakazané"
+            }
         }
     },
     "state": {

@@ -26,8 +26,8 @@ export const EntityDetailView = ({
     })
 
     const tabList: Tab[] = [
-        { id: 'summarizingCard', title: 'summarizingCard', content: <SummarizingCard data={summarizingCardData} /> },
-        { id: 'genericProfile', title: 'genericProfile', content: <EntityDetailViewAttributes data={ciTypeData} /> },
+        { id: 'summarizingCard', title: t('egov.detail.summarizingCard'), content: <SummarizingCard data={summarizingCardData} /> },
+        { id: 'genericProfile', title: t('egov.detail.genericProfile'), content: <EntityDetailViewAttributes data={ciTypeData} /> },
         ...tabsFromApi,
     ]
 

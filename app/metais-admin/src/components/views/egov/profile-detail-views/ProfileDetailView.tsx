@@ -7,7 +7,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import BasicInformations from '../BasicInformations'
 import styles from '../detailViews.module.scss'
 
-import { IAtrributesContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'
+import { IAtrributesContainerView } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
 
 export const ProfileDetailView = ({ data: { ciTypeData, constraintsData, unitsData } }: IAtrributesContainerView) => {
     const { t } = useTranslation()

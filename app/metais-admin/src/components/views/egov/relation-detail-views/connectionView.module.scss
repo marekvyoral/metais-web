@@ -1,0 +1,11 @@
+@import '@id-sk/frontend/idsk/core';
+
+.connectionBox {
+    display: flex;
+    gap: govuk-spacing(4);
+    justify-content: space-evenly;
+
+    a {
+        padding-left: govuk-spacing(4);
+    }
+}

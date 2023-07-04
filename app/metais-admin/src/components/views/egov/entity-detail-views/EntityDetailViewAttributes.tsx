@@ -7,11 +7,11 @@ import { useTranslation } from 'react-i18next'
 
 import styles from '../detailViews.module.scss'
 
-interface EntityDetailViewAttributes {
+interface IEntityDetailViewAttributes {
     data: CiType | AttributeProfile | undefined
 }
 
-export const EntityDetailViewAttributes = ({ data }: EntityDetailViewAttributes) => {
+export const EntityDetailViewAttributes = ({ data }: IEntityDetailViewAttributes) => {
     const { t } = useTranslation()
 
     const columns: Array<ColumnDef<Attribute>> = [

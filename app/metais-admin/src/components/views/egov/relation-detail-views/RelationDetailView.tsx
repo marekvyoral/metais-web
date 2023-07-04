@@ -10,23 +10,27 @@ import ConnectionView from './ConnectionView'
 
 import { IAtrributesContainerView } from '@/components/containers/Egov/Relation/RelationsDetailContainer'
 
-export const RelationDetailView = ({ data: { ciTypeData, constraintsData, unitsData } }: IAtrributesContainerView) => {
+export const RelationDetailView = ({ data: { ciTypeData, constraintsData, unitsData, keysToDisplay } }: IAtrributesContainerView) => {
     const { t } = useTranslation()
-    // const tabsNames = Array.from(keysToDisplay?.keys() ?? new Map())
+    const tabsNames = Array.from(keysToDisplay?.keys() ?? new Map())
 
-    // const tabsFromApi = tabsNames?.map((key) => {
-    //     const tabData = keysToDisplay?.get(key)
-    //     return {
-    //         id: key,
-    //         title: key,
-    //         content: <EntityDetailViewAttributes data={tabData} />,
-    //     }
-    // })
+    const tabsFromApi = tabsNames?.map((key) => {
+        const tabData = keysToDisplay?.get(key)
+        return {
+            id: key,
+            title: key,
+            content: <EntityDetailViewAttributes data={tabData} />,
+        }
+    })
 
     const tabList: Tab[] = [
-        { id: 'connections', title: 'Connections', content: <ConnectionView sources={ciTypeData?.sources} targets={ciTypeData?.targets} /> },
-        { id: 'genericProfile', title: 'genericProfile', content: <EntityDetailViewAttributes data={ciTypeData} /> },
-        // ...tabsFromApi,
+        {
+            id: 'connections',
+            title: t('egov.detail.connections'),
+            content: <ConnectionView sources={ciTypeData?.sources} targets={ciTypeData?.targets} />,
+        },
+        { id: 'genericProfile', title: t('egov.detail.genericProfile'), content: <EntityDetailViewAttributes data={ciTypeData} /> },
+        ...tabsFromApi,
     ]
 
     return (

@@ -1,10 +1,10 @@
 import React from 'react'
-import { EnumType, AttributeConstraintEnumAllOf, CiType, useGetAttributeProfileUsingGET } from '@isdd/metais-common/api'
+import { EnumType, AttributeConstraintEnumAllOf, useGetAttributeProfileUsingGET, AttributeProfile } from '@isdd/metais-common/api'
 import { useHowToDisplayConstraints } from '@isdd/metais-common/hooks/useHowToDisplay'
 
 export interface IAtrributesContainerView {
     data: {
-        ciTypeData: CiType | undefined
+        ciTypeData: AttributeProfile | undefined
         constraintsData: (EnumType | undefined)[]
         unitsData?: EnumType | undefined
     }
