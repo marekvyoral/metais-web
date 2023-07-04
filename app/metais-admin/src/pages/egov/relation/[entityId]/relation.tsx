@@ -2,16 +2,17 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 
 import { RelationDetailContainer } from '@/components/containers/Egov/Relation/RelationsDetailContainer'
-import BasicInformations from '@/components/views/egov/BasicInformations'
+import { RelationDetailView } from '@/components/views/egov/relation-detail-views/RelationDetailView'
 
 const Profile = () => {
     const { entityId } = useParams()
     return (
         <RelationDetailContainer
             entityName={entityId ?? ''}
-            View={({ data: { ciTypeData, constraintsData, unitsData } }) => {
-                return <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
-            }}
+            View={
+                (data) => <RelationDetailView data={data?.data} />
+                // return <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
+            }
         />
     )
 }

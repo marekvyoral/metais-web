@@ -1,12 +1,15 @@
 import React from 'react'
-import { EnumType, AttributeConstraintEnumAllOf, useGetCiTypeUsingGET, CiType } from '@isdd/metais-common/api'
+import { EnumType, AttributeConstraintEnumAllOf, CiType, SummarizingCardUi, Attribute, AttributeProfile } from '@isdd/metais-common/api'
 import { useHowToDisplayConstraints } from '@isdd/metais-common/hooks/useHowToDisplay'
+import { useEntityProfiles } from '@isdd/metais-common/hooks/useEntityProfiles'
 
 export interface IAtrributesContainerView {
     data: {
         ciTypeData: CiType | undefined
         constraintsData: (EnumType | undefined)[]
         unitsData?: EnumType | undefined
+        summarizingCardData?: SummarizingCardUi | undefined
+        keysToDisplay: Map<string, CiType | AttributeProfile | undefined>
     }
 }
 
@@ -16,11 +19,17 @@ interface AttributesContainer {
 }
 
 export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeUsingGET(entityName)
+    const {
+        ciTypeData,
+        isLoading: isCiTypeDataLoading,
+        isError: isCiTypeDataError,
+        summarizingCardData,
+        keysToDisplay,
+    } = useEntityProfiles(entityName)
 
     const constraintsAttributes =
         ciTypeData?.attributes
-            ?.map((attribute) =>
+            ?.map((attribute: Attribute) =>
                 attribute?.constraints
                     ?.filter((item) => item.type === 'enum')
                     .map((constraint: AttributeConstraintEnumAllOf) => constraint?.enumCode),
@@ -29,7 +38,7 @@ export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityNam
 
     const constraintsAttributesProfiles =
         ciTypeData?.attributeProfiles
-            ?.map((profile) =>
+            ?.map((profile: AttributeProfile) =>
                 profile?.attributes?.map((attribute) =>
                     attribute?.constraints
                         ?.filter((item) => item.type === 'enum')
@@ -54,5 +63,5 @@ export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityNam
         return <div>Error</div>
     }
 
-    return <View data={{ ciTypeData, constraintsData, unitsData: undefined }} />
+    return <View data={{ ciTypeData, constraintsData, unitsData: undefined, summarizingCardData, keysToDisplay }} />
 }

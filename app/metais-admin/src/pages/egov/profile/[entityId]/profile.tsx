@@ -2,19 +2,12 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 
 import { ProfileDetailContainer } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
-import BasicInformations from '@/components/views/egov/BasicInformations'
+import { ProfileDetailView } from '@/components/views/egov/profile-detail-views/ProfileDetailView'
 
 const Profile = () => {
     const { entityId } = useParams()
 
-    return (
-        <ProfileDetailContainer
-            entityName={entityId ?? ''}
-            View={({ data: { ciTypeData, constraintsData, unitsData } }) => {
-                return <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
-            }}
-        />
-    )
+    return <ProfileDetailContainer entityName={entityId ?? ''} View={(data) => <ProfileDetailView data={data?.data} />} />
 }
 
 export default Profile

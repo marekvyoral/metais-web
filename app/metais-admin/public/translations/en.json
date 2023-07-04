@@ -122,7 +122,15 @@
         "valid": "State",
         "description": "Description",
         "color": "Color",
-        "roles": "Allowed Roles"
+        "roles": "Allowed Roles",
+        "order": "Order",
+        "invisible": "Visibility",
+        "detail": {
+            "profileAttributesHeading": "Detail attributes profile",
+            "profileAttributes": "Attributes",
+            "entityHeading": "Entity detail",
+            "profiles": "Profiles"
+        }
     },
 
     "state": {

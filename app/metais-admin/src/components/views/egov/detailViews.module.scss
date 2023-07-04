@@ -1,0 +1,11 @@
+@import '@id-sk/frontend/idsk/core';
+
+.basicInformationSpace {
+    margin-bottom: govuk-spacing(4);
+}
+
+.attributeGridRowBox {
+    display: flex;
+    gap: govuk-spacing(4);
+    flex-direction: column;
+}

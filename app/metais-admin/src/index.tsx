@@ -9,6 +9,7 @@ import { App } from '@/App'
 import { reportWebVitals } from '@/reportWebVitals'
 import './index.scss'
 
+document.body.classList.add('js-enabled')
 const root = createRoot(document.getElementById('root') as HTMLElement)
 const queryClient = new QueryClient({
     defaultOptions: {
