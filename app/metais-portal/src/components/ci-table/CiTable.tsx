@@ -101,13 +101,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
     return (
         <>
             <Table columns={columns} data={tableData} isRowSelected={isRowSelected} />
-            <PaginatorWrapper
-                {...pagination}
-                handlePageChange={(filter) => {
-                    setRowSelection({})
-                    handleFilterChange(filter)
-                }}
-            />
+            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
     )
 }
