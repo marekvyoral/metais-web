@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
-import { SortingState } from '@tanstack/react-table'
 import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
+import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 
 const mockData = [
     {
@@ -89,11 +89,11 @@ const Egov: React.FC = () => {
             enableSorting: true,
         },
     ]
-    const [sorting, setSorting] = useState<SortingState>([])
+    const [sort] = useState<ColumnSort[]>([])
     const [page, setPage] = useState(1)
     return (
         <div>
-            <Table data={mockData} columns={columns} sorting={sorting} onSortingChange={setSorting} />
+            <Table data={mockData} columns={columns} sort={sort} />
 
             <div>
                 <Paginator pageNumber={page} pageSize={10} dataLength={100} onPageChanged={(p) => setPage(p)} />

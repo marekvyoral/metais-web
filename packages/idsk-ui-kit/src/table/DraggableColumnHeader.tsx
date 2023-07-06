@@ -1,7 +1,6 @@
+import React from 'react'
 import { Column, ColumnOrderState, Header, Table as ReactTable, flexRender } from '@tanstack/react-table'
 import { useDrag, useDrop } from 'react-dnd'
-import React from 'react'
-
 const reorderColumn = (draggedColumnId: string, targetColumnId: string, columnOrder: string[]): ColumnOrderState => {
     const newColumnOrder = columnOrder
     const startSplicing = newColumnOrder.indexOf(targetColumnId)
