@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Preview } from '@storybook/react'
 
-import './index.scss'
+import '../src/index.scss'
 
 document.body.classList.add('js-enabled')
 
