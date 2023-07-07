@@ -1,7 +1,10 @@
-@import '@id-sk/frontend/idsk/core';
+@import '../../../utils.scss';
 
 .basicInformationSpace {
     margin-bottom: govuk-spacing(4);
+    .removeButton {
+        float: right;
+    }
 }
 
 .attributeGridRowBox {

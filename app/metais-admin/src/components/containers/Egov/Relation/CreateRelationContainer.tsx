@@ -1,6 +1,6 @@
 import React from 'react'
 import { useFindByNameUsingGET1 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { CiType, Role, useStoreAdminEntityUsingPOST } from '@isdd/metais-common/api'
+import { RelationshipType, Role, useStoreAdminEntityUsingPOST1 } from '@isdd/metais-common/api'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
 
 import { HiddenInputs } from '@/types/inputs'
@@ -13,7 +13,7 @@ export interface ICreateEntityView {
         void,
         unknown,
         {
-            data: CiType
+            data: RelationshipType
         },
         unknown
     >
@@ -24,13 +24,12 @@ interface ICreateEntity {
     View: React.FC<ICreateEntityView>
 }
 
-const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
+export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
     const defaultOptions = {
         name: '',
     }
-
     const { data, isLoading, isError } = useFindByNameUsingGET1(defaultOptions)
-    const mutationObject = useStoreAdminEntityUsingPOST()
+    const mutationObject = useStoreAdminEntityUsingPOST1()
 
     return (
         <View
@@ -38,9 +37,7 @@ const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity)
                 roles: (data as Role[]) ?? [],
             }}
             mutate={mutationObject?.mutateAsync}
-            hiddenInputs={{ SOURCES: true, TARGETS: true, ENG_DESCRIPTION: true }}
+            hiddenInputs={{ CODE_PREFIX: true, URI_PREFIX: true }}
         />
     )
 }
-
-export default CreateEntityContainer

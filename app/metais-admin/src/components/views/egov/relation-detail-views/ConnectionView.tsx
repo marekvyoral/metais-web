@@ -1,6 +1,7 @@
 import React from 'react'
 import { CiTypePreview } from '@isdd/metais-common/api'
 
+import styles from './connectionView.module.scss'
 import ConnectionItem from './ConnectionItem'
 
 interface ConnectionViewProps {
@@ -9,19 +10,18 @@ interface ConnectionViewProps {
 }
 
 const ConnectionView = ({ sources, targets }: ConnectionViewProps) => {
-    const arrayWithPreviews = sources && sources?.length > 0 ? sources : targets
-
     return (
-        <div>
-            {arrayWithPreviews?.map((previewType, index) => {
-                return (
-                    <ConnectionItem
-                        source={sources && sources?.length > 0 ? previewType : undefined}
-                        target={targets?.[index]}
-                        key={previewType?.id}
-                    />
-                )
-            })}
+        <div className={styles.connectionBox}>
+            <div>
+                {sources?.map((previewType) => {
+                    return <ConnectionItem item={previewType} type="source" key={previewType?.id} />
+                })}
+            </div>
+            <div>
+                {targets?.map((previewType) => {
+                    return <ConnectionItem item={previewType} type="target" key={previewType?.id} />
+                })}
+            </div>
         </div>
     )
 }

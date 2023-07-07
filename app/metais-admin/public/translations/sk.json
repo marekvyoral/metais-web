@@ -122,6 +122,7 @@
         "uriPrefix": "URI prefix",
         "valid": "Stav",
         "description": "Popis",
+        "engDescription": "Anglický popis",
         "color": "Farebné označenie",
         "roles": "Opravnené role",
         "order": "Poradie",
@@ -143,6 +144,14 @@
                 "undefined": "Zakazané",
                 "": "Zakazané"
             }
+        },
+        "create": {
+            "requiredField": "Toto pole je povinné",
+            "codePrefixRegex": "Povolenými znakmi pre prefix sú 'a'..'z', a oddelovač '_'.",
+            "technicalNameRegex": "Technické meno môže byť len z písmen abecedy",
+            "addProfile": "Pridať profil",
+            "removeProfile": "Odstrániť profil",
+            "addConnection": "Pridať prepojenie"
         }
     },
     "state": {

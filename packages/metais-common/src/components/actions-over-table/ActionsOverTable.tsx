@@ -12,10 +12,9 @@ import { IFilter } from '@isdd/idsk-ui-kit/types'
 
 import { BASE_PAGE_SIZE } from '../../api'
 import { ExportItemsOrRelations } from '../export-items-or-relations/ExportItemsOrRelations'
+import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '../../assets/images'
 
 import styles from './actionsOverTable.module.scss'
-
-import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@/assets/images'
 
 export enum ActionNames {
     IMPORT = 'IMPORT',

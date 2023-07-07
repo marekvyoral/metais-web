@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
+import { Tab } from '@isdd/idsk-ui-kit/tabs/Tabs'
+import { getTabsFromApi } from '@isdd/metais-common'
 
 import styles from '../detailViews.module.scss'
 import BasicInformations from '../BasicInformations'
@@ -9,21 +10,14 @@ import { EntityDetailViewAttributes } from './EntityDetailViewAttributes'
 import { SummarizingCard } from './SummarizingCard'
 
 import { IAtrributesContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'
+import { ProfileTabs } from '@/components/ProfileTabs'
 
 export const EntityDetailView = ({
     data: { ciTypeData, constraintsData, unitsData, keysToDisplay, summarizingCardData },
 }: IAtrributesContainerView) => {
     const { t } = useTranslation()
-    const tabsNames = Array.from(keysToDisplay?.keys())
 
-    const tabsFromApi = tabsNames?.map((key) => {
-        const tabData = keysToDisplay?.get(key)
-        return {
-            id: key,
-            title: key,
-            content: <EntityDetailViewAttributes data={tabData} />,
-        }
-    })
+    const tabsFromApi = getTabsFromApi(keysToDisplay, EntityDetailViewAttributes)
 
     const tabList: Tab[] = [
         { id: 'summarizingCard', title: t('egov.detail.summarizingCard'), content: <SummarizingCard data={summarizingCardData} /> },
@@ -37,10 +31,7 @@ export const EntityDetailView = ({
                 <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
                 <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
             </div>
-            <div>
-                <h3 className="govuk-heading-m">{t('egov.detail.profiles')}</h3>
-                <Tabs tabList={tabList} />
-            </div>
+            <ProfileTabs tabList={tabList} />
         </>
     )
 }

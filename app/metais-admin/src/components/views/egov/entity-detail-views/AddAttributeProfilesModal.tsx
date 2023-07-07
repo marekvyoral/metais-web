@@ -1,15 +1,49 @@
 import React from 'react'
 import { BaseModal, SimpleSelect } from '@isdd/idsk-ui-kit'
+import { AttributeProfile, Cardinality, CiTypePreview } from '@isdd/metais-common/api'
 import { useTranslation } from 'react-i18next'
-import { Controller } from 'react-hook-form'
+import { Control, Controller, UseFormSetValue } from 'react-hook-form'
 
 import { ProfileListContainer } from '@/components/containers/Egov/Profile/ProfileListContainer'
 
 interface AttributesModal {
     open: boolean
     onClose: () => void
-    setValue: any
-    control: any
+    setValue: UseFormSetValue<{
+        name: string
+        engName: string
+        technicalName: string
+        codePrefix: string | undefined
+        uriPrefix: string | undefined
+        description: string
+        engDescription: string | undefined
+        attributeProfiles: AttributeProfile[] | undefined
+        roleList: (string | undefined)[]
+        type: string
+        sources: CiTypePreview[] | undefined
+        sourceCardinality: Cardinality | undefined
+        targets: CiTypePreview[] | undefined
+        targetCardinality: Cardinality | undefined
+    }>
+    control: Control<
+        {
+            name: string
+            engName: string
+            technicalName: string
+            codePrefix: string | undefined
+            uriPrefix: string | undefined
+            description: string
+            engDescription: string | undefined
+            attributeProfiles: AttributeProfile[] | undefined
+            roleList: (string | undefined)[]
+            type: string
+            sources: CiTypePreview[] | undefined
+            sourceCardinality: Cardinality | undefined
+            targets: CiTypePreview[] | undefined
+            targetCardinality: Cardinality | undefined
+        },
+        unknown
+    >
 }
 
 export const AddAttributeProfilesModal = ({ open, onClose, setValue, control }: AttributesModal) => {
@@ -38,15 +72,13 @@ export const AddAttributeProfilesModal = ({ open, onClose, setValue, control }: 
                                     options={listOptions}
                                     onChange={(event) => {
                                         if (value) {
-                                            if (Array.isArray(value)) setValue('attributeProfiles', [...value, JSON.parse(event?.target?.value)])
-                                            else setValue('attributeProfiles', [value, JSON.parse(event?.target?.value)])
+                                            setValue('attributeProfiles', [...value, JSON.parse(event?.target?.value)])
                                         } else {
-                                            setValue('attributeProfiles', JSON.parse(event?.target?.value))
+                                            setValue('attributeProfiles', [JSON.parse(event?.target?.value)])
                                         }
                                         onClose()
                                     }}
                                     onBlur={onBlur}
-                                    value={value}
                                     name={name}
                                     ref={ref}
                                 />

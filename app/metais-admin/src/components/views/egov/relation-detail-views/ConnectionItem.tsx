@@ -7,32 +7,21 @@ import { useTranslation } from 'react-i18next'
 import styles from './connectionView.module.scss'
 
 interface ConnectionItem {
-    source?: CiTypePreview
-    target?: CiTypePreview
+    item?: CiTypePreview
+    type?: 'source' | 'target'
 }
 
-const ConnectionItem = ({ source, target }: ConnectionItem) => {
+const ConnectionItem = ({ item, type }: ConnectionItem) => {
     const { t } = useTranslation()
     return (
-        <div className={styles.connectionBox}>
+        <div className={styles.connectionItemsGap}>
             <InformationGridRow
-                key={`source.${source?.id}`}
-                label={t('egov.detail.source')}
+                key={`${type}.${item?.id}`}
+                label={t(`egov.detail.${type}`)}
                 value={
-                    source && (
-                        <Link to={'/egov/entity/' + source?.technicalName} target="_blank">
-                            {source?.name}
-                        </Link>
-                    )
-                }
-            />
-            <InformationGridRow
-                key={`target.${target?.id}`}
-                label={t('egov.detail.target')}
-                value={
-                    target && (
-                        <Link to={'/egov/entity/' + target?.technicalName} target="_blank">
-                            {target?.name}
+                    item && (
+                        <Link to={'/egov/entity/' + item?.technicalName} target="_blank">
+                            {item?.name}
                         </Link>
                     )
                 }

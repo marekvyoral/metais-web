@@ -121,6 +121,7 @@
         "uriPrefix": "URI prefix",
         "valid": "State",
         "description": "Description",
+        "engDescription": "English description",
         "color": "Color",
         "roles": "Allowed Roles",
         "order": "Order",
@@ -142,6 +143,13 @@
                 "undefined": "Forbidden",
                 "": "Forbidden"
             }
+        },
+        "create": {
+            "requiredField": "This field is required",
+            "codePrefixRegex": "Accepted character are only 'a'..'z' and underscore '_'.",
+            "technicalNameRegex": "Technical name could only consists of alphabet character",
+            "addProfile": "Add profile",
+            "removeProfile": "Remove profile"
         }
     },
 

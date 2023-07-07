@@ -1,7 +1,7 @@
 import React from 'react'
 import { Attribute, AttributeProfile, CiType } from '@isdd/metais-common/api'
 import { ColumnDef } from '@tanstack/react-table'
-import { Table } from '@isdd/idsk-ui-kit'
+import { Button, Table } from '@isdd/idsk-ui-kit'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
 
@@ -9,9 +9,10 @@ import styles from '../detailViews.module.scss'
 
 interface IEntityDetailViewAttributes {
     data: CiType | AttributeProfile | undefined
+    removeProfileAttribute?: (technicalName: string) => void
 }
 
-export const EntityDetailViewAttributes = ({ data }: IEntityDetailViewAttributes) => {
+export const EntityDetailViewAttributes = ({ data, removeProfileAttribute }: IEntityDetailViewAttributes) => {
     const { t } = useTranslation()
 
     const columns: Array<ColumnDef<Attribute>> = [
@@ -57,6 +58,13 @@ export const EntityDetailViewAttributes = ({ data }: IEntityDetailViewAttributes
     return (
         <>
             <div className={styles.basicInformationSpace}>
+                {removeProfileAttribute && (
+                    <Button
+                        label={t('egov.create.removeProfile')}
+                        className={styles.removeButton}
+                        onClick={() => removeProfileAttribute(data?.technicalName ?? '')}
+                    />
+                )}
                 <div className={styles.attributeGridRowBox}>
                     <InformationGridRow key={'name'} label={t('egov.name')} value={data?.name} />
                     <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={data?.technicalName} />
