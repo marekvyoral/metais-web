@@ -31,6 +31,9 @@ export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View }: ICrea
     const { data, isLoading, isError } = useFindByNameUsingGET1(defaultOptions)
     const mutationObject = useStoreAdminEntityUsingPOST1()
 
+    if (isLoading) return <div>isLoading</div>
+    if (isError) return <div>error</div>
+
     return (
         <View
             data={{

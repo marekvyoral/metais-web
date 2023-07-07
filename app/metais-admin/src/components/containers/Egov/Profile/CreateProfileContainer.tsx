@@ -31,6 +31,9 @@ export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreat
     const { data, isLoading, isError } = useFindByNameUsingGET1(defaultOptions)
     const mutationObject = useStoreNewAttrProfileUsingPOST()
 
+    if (isLoading) return <div>isLoading</div>
+    if (isError) return <div>error</div>
+
     return (
         <View
             data={{
