@@ -1,12 +1,6 @@
 import React, { useState } from 'react'
-import { IFilter } from '@isdd/idsk-ui-kit/types'
-import {
-    CiListFilterContainerUi,
-    useGetDefaultColumnsUsingGET,
-    BASE_PAGE_NUMBER,
-    BASE_PAGE_SIZE,
-    useReadCiListUsingPOST,
-} from '@isdd/metais-common/api'
+import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
+import { useGetDefaultColumnsUsingGET, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, useReadCiListUsingPOST } from '@isdd/metais-common/api'
 
 import { IListView } from '@/types/list'
 import { mapFilterToNeighborsApi } from '@/componentHelpers'
@@ -20,29 +14,38 @@ interface ICiListContainer {
 export const CiListContainer: React.FC<ICiListContainer> = ({ entityName, ListComponent }) => {
     const { data: columnListData } = useGetDefaultColumnsUsingGET(entityName)
 
-    const defaultRequestApi: CiListFilterContainerUi = {
+    const [uiFilterState, setUiFilterState] = useState<IFilter>({
+        sort: [{ orderBy: 'Gen_Profil_nazov', sortDirection: SortType.ASC }],
+        pageNumber: BASE_PAGE_NUMBER,
+        pageSize: BASE_PAGE_SIZE,
+    })
+
+    const defaultRequestApi = {
         filter: {
             type: [entityName],
             metaAttributes: {
                 state: ['DRAFT'],
             },
         },
-        sortBy: 'Gen_Profil_nazov',
-        sortType: 'ASC',
-        //they have it switched in api?
-        page: BASE_PAGE_NUMBER,
-        perpage: BASE_PAGE_SIZE,
     }
-
-    const [requestApi, setRequestApi] = useState<CiListFilterContainerUi>(defaultRequestApi)
 
     const handleFilterChange = (filter: IFilter) => {
-        setRequestApi(mapFilterToNeighborsApi(requestApi, filter))
+        setUiFilterState({
+            ...uiFilterState,
+            ...filter,
+        })
     }
 
-    const { data: tableData } = useReadCiListUsingPOST(requestApi)
+    const { data: tableData } = useReadCiListUsingPOST(mapFilterToNeighborsApi(uiFilterState, defaultRequestApi))
 
-    const pagination = mapConfigurationItemSetToPagination(requestApi, tableData)
+    const pagination = mapConfigurationItemSetToPagination(uiFilterState, tableData)
 
-    return <ListComponent data={{ columnListData, tableData }} pagination={pagination} handleFilterChange={handleFilterChange} />
+    return (
+        <ListComponent
+            data={{ columnListData, tableData }}
+            pagination={pagination}
+            handleFilterChange={handleFilterChange}
+            sort={uiFilterState?.sort ?? []}
+        />
+    )
 }

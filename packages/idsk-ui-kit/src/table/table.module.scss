@@ -1,4 +1,5 @@
-@import '@id-sk/frontend/idsk/all';
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
 .displayFlex {
     display: flex;
     justify-content: center;
@@ -15,4 +16,35 @@
 
 .minHeight400 {
     min-height: 400px;
+}
+
+.checkBoxCell {
+    width: 40px;
+}
+
+.marginBottom0 {
+    margin-bottom: 0px !important;
+}
+
+.head {
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+
+    @include mq($until: desktop) {
+        top: 122.5px;
+    }
+}
+
+.header {
+    background-color: govuk-colour('grey-4');
+}
+
+.rowSelected {
+    background-color: govuk-colour('grey-4');
+    padding-left: govuk-spacing(1) !important;
+}
+
+.body {
+    max-height: 800px;
 }

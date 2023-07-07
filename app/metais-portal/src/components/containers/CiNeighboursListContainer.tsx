@@ -30,24 +30,34 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
     apiType = NeighboursApiType.source,
 }) => {
     const selectedRequestApi = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter
-    const defaultRequestApi: NeighboursFilterContainerUi = {
-        ...selectedRequestApi,
-        page: BASE_PAGE_NUMBER,
-        perpage: BASE_PAGE_SIZE,
-    }
 
-    const [requestApi, setRequestApi] = useState<NeighboursFilterContainerUi>(defaultRequestApi)
+    const [uiFilterState, setUiFilterState] = useState<IFilter>({
+        pageNumber: BASE_PAGE_NUMBER,
+        pageSize: BASE_PAGE_SIZE,
+        sort: [],
+    })
 
     const handleFilterChange = (filter: IFilter) => {
-        setRequestApi(mapFilterToNeighborsApi(requestApi, filter))
+        setUiFilterState({
+            ...uiFilterState,
+            ...filter,
+        })
     }
 
-    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', requestApi, {})
+    const {
+        isLoading,
+        isError,
+        data: documentCiData,
+    } = useReadCiNeighboursUsingPOST(
+        configurationItemId ?? '',
+        mapFilterToNeighborsApi<NeighboursFilterContainerUi>(uiFilterState, selectedRequestApi),
+        {},
+    )
 
     const pagination =
         apiType === NeighboursApiType.source
-            ? mapNeighboursSetSourceToPagination(requestApi, documentCiData)
-            : mapNeighboursSetTargetToPagination(requestApi, documentCiData)
+            ? mapNeighboursSetSourceToPagination(uiFilterState, documentCiData)
+            : mapNeighboursSetTargetToPagination(uiFilterState, documentCiData)
 
     if (!configurationItemId) return <View pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
     return (

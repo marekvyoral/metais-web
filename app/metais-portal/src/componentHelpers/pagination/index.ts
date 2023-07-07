@@ -1,32 +1,25 @@
-import { Pagination } from '@isdd/idsk-ui-kit/types'
-import {
-    NeighbourSetUi,
-    NeighboursFilterContainerUi,
-    BASE_PAGE_NUMBER,
-    BASE_PAGE_SIZE,
-    CiListFilterContainerUi,
-    ConfigurationItemSetUi,
-} from '@isdd/metais-common/api'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { NeighbourSetUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, ConfigurationItemSetUi } from '@isdd/metais-common/api'
 
-export const mapNeighboursSetSourceToPagination = (requestApi: NeighboursFilterContainerUi, data?: NeighbourSetUi | void): Pagination => {
+export const mapNeighboursSetSourceToPagination = (uiFilter?: IFilter, data?: NeighbourSetUi | void): Pagination => {
     return {
-        pageNumber: requestApi.page ?? BASE_PAGE_NUMBER,
-        pageSize: requestApi.perpage ?? BASE_PAGE_SIZE,
+        pageNumber: uiFilter?.pageNumber ?? BASE_PAGE_NUMBER,
+        pageSize: uiFilter?.pageSize ?? BASE_PAGE_SIZE,
         dataLength: data?.fromNodes?.pagination?.totaltems ?? 0,
     }
 }
 
-export const mapNeighboursSetTargetToPagination = (requestApi: NeighboursFilterContainerUi, data: NeighbourSetUi | void): Pagination => {
+export const mapNeighboursSetTargetToPagination = (uiFilter?: IFilter, data?: NeighbourSetUi | void): Pagination => {
     return {
-        pageNumber: requestApi.page ?? BASE_PAGE_NUMBER,
-        pageSize: requestApi.perpage ?? BASE_PAGE_SIZE,
+        pageNumber: uiFilter?.pageNumber ?? BASE_PAGE_NUMBER,
+        pageSize: uiFilter?.pageSize ?? BASE_PAGE_SIZE,
         dataLength: data?.toNodes?.pagination?.totaltems ?? 0,
     }
 }
-export const mapConfigurationItemSetToPagination = (requestApi: CiListFilterContainerUi, data: ConfigurationItemSetUi | void): Pagination => {
+export const mapConfigurationItemSetToPagination = (uiFilter?: IFilter, data?: ConfigurationItemSetUi | void): Pagination => {
     return {
-        pageNumber: requestApi.page ?? BASE_PAGE_NUMBER,
-        pageSize: requestApi.perpage ?? BASE_PAGE_SIZE,
+        pageNumber: uiFilter?.pageNumber ?? BASE_PAGE_NUMBER,
+        pageSize: uiFilter?.pageSize ?? BASE_PAGE_SIZE,
         dataLength: data?.pagination?.totaltems ?? 0,
     }
 }

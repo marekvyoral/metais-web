@@ -1,3 +1,4 @@
+import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 import { CiType, IColumn, EnumType, ConfigurationItemSetUi, CiListFilterContainerUi } from '@isdd/metais-common/api'
 
 export interface IListFilterCallbacks {
@@ -16,4 +17,5 @@ export interface IListView {
     data: IListData
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
+    sort: ColumnSort[]
 }

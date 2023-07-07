@@ -4,7 +4,6 @@ import {
     ExpandedState,
     OnChangeFn,
     PaginationState,
-    SortingState,
     getCoreRowModel,
     getExpandedRowModel,
     getPaginationRowModel,
@@ -14,10 +13,13 @@ import {
 import React from 'react'
 import classNames from 'classnames'
 
+import { ColumnSort } from '../types'
+
 import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableRow } from './TableRow'
 import styles from './table.module.scss'
 import { TableInfoMessage } from './TableInfoMessage'
+import { transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
 
 import { LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
 
@@ -25,8 +27,8 @@ interface ITableProps<T> {
     data?: Array<T>
     columns: Array<ColumnDef<T>>
     canDrag?: boolean
-    sorting?: SortingState
-    onSortingChange?: OnChangeFn<SortingState> | undefined
+    sort?: ColumnSort[]
+    onSortingChange?: (sort: ColumnSort[]) => void
     columnOrder?: ColumnOrderState
     onColumnOrderChange?: React.Dispatch<React.SetStateAction<ColumnOrderState>>
     pagination?: PaginationState
@@ -42,7 +44,7 @@ export const Table = <T,>({
     data,
     columns,
     canDrag = false,
-    sorting,
+    sort,
     onSortingChange,
     columnOrder,
     onColumnOrderChange,
@@ -54,16 +56,22 @@ export const Table = <T,>({
     isLoading = false,
     error = false,
 }: ITableProps<T>): JSX.Element => {
+    const transformedSort = transformColumnSortToSortingState(sort)
     const table = useReactTable({
         data: data ?? [],
         columns,
         state: {
             ...(pagination && { pagination }),
             columnOrder,
-            sorting,
+            sorting: transformedSort,
             expanded: expandedRowsState,
         },
-        onSortingChange,
+        onSortingChange: (sortUpdater) => {
+            if (typeof sortUpdater === 'function') {
+                const columnSort = transformSortingStateToColumnSort(sortUpdater, transformedSort)
+                onSortingChange?.(columnSort)
+            }
+        },
         getSortedRowModel: getSortedRowModel(),
         onColumnOrderChange,
         getCoreRowModel: getCoreRowModel(),

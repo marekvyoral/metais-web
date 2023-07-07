@@ -1,13 +1,14 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { NeighboursFilterContainerUi, ReadCiNeighboursWithAllRelsUsingGETParams } from '@isdd/metais-common/api'
+import { CiListFilterContainerUi, ReadCiNeighboursWithAllRelsUsingGETParams } from '@isdd/metais-common/api'
 
-export const mapFilterToNeighborsApi = (originalFilter: NeighboursFilterContainerUi, filterChanges: IFilter): NeighboursFilterContainerUi => {
-    const { pageNumber, pageSize } = filterChanges
-
+export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: { [filterName: string]: T } | T): CiListFilterContainerUi => {
+    const { pageNumber, pageSize, sort } = filter
     return {
-        ...originalFilter,
-        page: pageNumber === undefined ? originalFilter.page : pageNumber,
-        perpage: pageSize === undefined ? originalFilter.perpage : pageSize,
+        ...defaultApiFilter,
+        page: pageNumber,
+        perpage: pageSize,
+        sortBy: sort?.[0]?.orderBy ?? '',
+        sortType: sort?.[0]?.sortDirection,
     }
 }
 

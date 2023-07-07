@@ -5,6 +5,7 @@ import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-ta
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@/components/constants'
 
 const ProjektListPage = () => {
     const { entityName } = useParams()
@@ -16,7 +17,7 @@ const ProjektListPage = () => {
                 return (
                     <CiListContainer
                         entityName={entityName ?? ''}
-                        ListComponent={({ data: { columnListData, tableData }, handleFilterChange, pagination }) => (
+                        ListComponent={({ data: { columnListData, tableData }, handleFilterChange, pagination, sort }) => (
                             <>
                                 {/* 
             Filter
@@ -24,6 +25,7 @@ const ProjektListPage = () => {
             */}
                                 <ActionsOverTable
                                     handleFilterChange={handleFilterChange}
+                                    pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                                     //storeUserSelectedColumns={storeUserSelectedColumns}
                                     // resetUserSelectedColumns={resetUserSelectedColumns}
                                     //  pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
@@ -33,6 +35,7 @@ const ProjektListPage = () => {
                                     data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData }}
                                     handleFilterChange={handleFilterChange}
                                     pagination={pagination}
+                                    sort={sort}
                                 />
                             </>
                         )}
