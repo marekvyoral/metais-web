@@ -1,4 +1,7 @@
+import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
+
+import { NavigationCloseIcon } from '..'
 
 import { ButtonLink } from './ButtonLink'
 
@@ -13,6 +16,18 @@ type Story = StoryObj<typeof ButtonLink>
 export const Basic: Story = {
     args: {
         label: 'Opraviť',
+        onClick: () => null,
+    },
+}
+
+export const BasicWithIcon: Story = {
+    args: {
+        label: 'button link with icon',
+        icon: (
+            <>
+                <img src={NavigationCloseIcon} />
+            </>
+        ),
         onClick: () => null,
     },
 }

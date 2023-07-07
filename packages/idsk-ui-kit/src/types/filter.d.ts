@@ -1,7 +1,15 @@
+export enum SortType {
+    ASC = 'ASC',
+    DESC = 'DESC',
+}
+
+export interface ColumnSort {
+    orderBy: string
+    sortDirection: SortType
+}
+
 export interface IFilter {
     pageNumber?: number
     pageSize?: number
-    //FIX ME: sortBy?: string {name}
-    //FIX ME: sortSource?: string {CI}
-    //FIX ME: sortDirection?: enum {ASC,DESC...}
+    sort?: ColumnSort[]
 }

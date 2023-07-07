@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 
-import { NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST, NeighbourPairUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api'
+import { useReadCiNeighboursUsingPOST, NeighbourPairUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api'
 import { mapFilterToNeighborsApi } from '@/componentHelpers'
 import { mapNeighboursSetSourceToPagination } from '@/componentHelpers/pagination'
 
@@ -19,24 +19,33 @@ interface IDocumentsListContainer {
 }
 
 export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ configurationItemId, View }) => {
-    const defaultRequestApi: NeighboursFilterContainerUi = {
+    const defaultRequestApi = {
         neighboursFilter: {
             ciType: ['Dokument'],
             metaAttributes: { state: ['DRAFT'] },
             relType: ['CI_HAS_DOCUMENT', 'Dokument_sa_tyka_KRIS', 'CONTROL_HAS_DOCUMENT', 'PROJECT_HAS_DOCUMENT'],
             usageType: ['system', 'application'],
         },
-        page: BASE_PAGE_NUMBER,
-        perpage: BASE_PAGE_SIZE,
     }
 
-    const [requestApi, setRequestApi] = useState<NeighboursFilterContainerUi>(defaultRequestApi)
+    const [uiFilterState, setUiFilterState] = useState<IFilter>({
+        sort: [],
+        pageNumber: BASE_PAGE_NUMBER,
+        pageSize: BASE_PAGE_SIZE,
+    })
     const handleFilterChange = (filter: IFilter) => {
-        setRequestApi(mapFilterToNeighborsApi(requestApi, filter))
+        setUiFilterState({
+            ...uiFilterState,
+            ...filter,
+        })
     }
-    const { isLoading, isError, data: documentCiData } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', requestApi, {})
+    const {
+        isLoading,
+        isError,
+        data: documentCiData,
+    } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', mapFilterToNeighborsApi(uiFilterState, defaultRequestApi), {})
 
-    const pagination = mapNeighboursSetSourceToPagination(requestApi, documentCiData)
+    const pagination = mapNeighboursSetSourceToPagination(uiFilterState, documentCiData)
 
     if (!configurationItemId) return <View pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
 

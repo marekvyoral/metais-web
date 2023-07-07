@@ -30,9 +30,11 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
             <div className={styles.modalContainer}>
                 <div className={styles.content}>
                     <div className={styles.icon}>
-                        <img src={ExportIcon} alt="export-icon" />
+                        <img className={styles.iconWidth} src={ExportIcon} alt="export-icon" />
                     </div>
-                    <TextHeading size={'L'}>{t('exportItemsOrRelations.header')}</TextHeading>
+                    <TextHeading size={'L'} className={styles.heading}>
+                        {t('exportItemsOrRelations.header')}
+                    </TextHeading>
                     <div className="govuk-radios--small">
                         <RadioButtonGroup inline>
                             <RadioButton

@@ -89,7 +89,9 @@
         "mainNav": "Hlavná navigácia",
         "lists": {
             "goals": "Ciele, princípy a KRIT",
-            "programs": "Programy a projekty",
+            "programs": "Programy",
+            "projects": "Projekty",
+            "process": "Proces",
             "endServices": "Koncové služby",
             "applicationServices": "Aplikačné služby",
             "isvs": "ISVS",
@@ -99,17 +101,27 @@
             "standards": "Štandardy ITVS",
             "procedures": "Osobitné postupy",
             "commission": "Komisia na štandardizáciu ITVS",
-            "groups": "Pracovné skupiny komisie",
+            "groups": "Pracovné skupiny komisie v pôsobnosti komisie pre štandardizáciu ITVS",
             "concept": "Tvorba návrhu",
+            "concepts": "Zoznam návrhov predložených prostredníctvom MetaIS",
+            "votes": "Zoznam hlasov",
+            "meetings": "Zoznam zasadnutí",
             "registers": "Referenčné registre",
             "counters": "Číselníky",
             "centralModel": "Centrálny dátový model",
-            "prud": "PRUD",
-            "sdg": "SDG",
+            "licenses": "Licencie",
+            "prud": "Register dátových oprávnení a povinností",
+            "sdg": "Jednotná digitálna brána",
             "overviews": "Prehľady",
             "monitoringEnd": "Monitoring koncových služieb",
             "monitoringApp": "Monitoring aplikačných služieb",
-            "monitoringSet": "Zostava monitorovacích parametrov"
+            "monitoringSet": "Zostava monitorovacích parametrov",
+            "evidenceObjects": "Objekty evidencie",
+            "attributesEvidenceObjects": "Atribúty objektov evidencie",
+            "servers": "Servery",
+            "virtualMachines": "Virtuálne stroje",
+            "operationPlace": "Miesto prevádzky",
+            "notInOVM": "Prevádzkovatelia, ktorí nie sú OVM"
         }
     },
     "radioButton": {
@@ -199,7 +211,7 @@
         "cancelButton": "Zrušiť",
         "viewButton": "Zobraziť"
     },
-    "searchInput":{
+    "searchInput": {
         "search": "Hľadať"
     },
     "documentsTab": {
@@ -232,5 +244,26 @@
             "UNKNOW": "Neznámy",
             "": ""
         }
+    },
+    "table": {
+        "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
+        "noRowsFound": "Nenašli sa žiadne záznamy",
+        "pagination": "Tabuľková navigácia"
+    },
+    "state": "Stav evidencie",
+    "group": "Skupina",
+    "loading": {
+        "loadingSubPage": "Načítavám podstránku"
+    },
+    "actionOverTable": {
+        "import": "Import",
+        "export": "Export",
+        "addISVSitem": "Pridať ISVS položku",
+        "selectColumn": "Stĺpce",
+        "view": "Zobraziť",
+        "actions": "Hromadné úkony",
+        "invalidateItems": "Zneplatnenie položiek",
+        "validateItems": "Splatnenie položiek",
+        "changeOwner": "Zmena vlastníka"
     }
 }

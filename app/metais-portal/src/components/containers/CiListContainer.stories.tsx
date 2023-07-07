@@ -22,9 +22,9 @@ export const Main: Story = {
         <QueryClientProvider client={queryClient}>
             <CiListContainer
                 entityName="Projekt"
-                ListComponent={({ data, handleFilterChange, pagination }) => (
+                ListComponent={({ data, handleFilterChange, pagination, sort }) => (
                     <>
-                        <CiTable data={data} handleFilterChange={handleFilterChange} pagination={pagination} />
+                        <CiTable data={data} handleFilterChange={handleFilterChange} pagination={pagination} sort={sort} />
                     </>
                 )}
             />

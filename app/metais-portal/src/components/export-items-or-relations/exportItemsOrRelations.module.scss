@@ -1,9 +1,11 @@
-@import '@id-sk/frontend/idsk/all';
+@import '../../utils.scss';
 
 .buttonGroup {
     display: flex;
     gap: govuk-spacing(6);
     margin-top: govuk-spacing(7);
+    flex-wrap: wrap;
+    justify-content: center;
 
     @include mq($until: tablet) {
         flex-direction: column;
@@ -40,4 +42,12 @@
 
 .icon {
     margin-bottom: govuk-spacing(2);
+}
+
+.iconWidth {
+    width: 48px;
+}
+
+.heading {
+    text-align: center;
 }

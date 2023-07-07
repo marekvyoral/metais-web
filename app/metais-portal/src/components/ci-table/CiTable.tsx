@@ -1,5 +1,5 @@
 import React from 'react'
-import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
@@ -15,9 +15,10 @@ interface ICiTable {
     data: IListData
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
+    sort: ColumnSort[]
 }
 
-export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChange }) => {
+export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChange, sort }) => {
     const { t } = useTranslation()
 
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
@@ -28,7 +29,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
     const columnsFromApi =
         columnsAttributes?.map((attribute, index) => {
             const technicalName = attribute?.name ?? ''
-            const attributeHeader = schemaAttributes[technicalName]?.name
+            const attributeHeader = schemaAttributes[technicalName]?.name ?? t(`${technicalName}`)
             return {
                 accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],
                 header: attributeHeader ?? technicalName,
@@ -37,8 +38,11 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                     !index ? (
                         <Link to={'./' + ctx?.row?.original?.uuid}>{ctx?.getValue?.() as string}</Link>
                     ) : (
-                        <strong>{ctx.getValue() as string}</strong>
+                        <strong>
+                            {schemaAttributes[technicalName]?.name ? (ctx.getValue() as string) : t(`metaAttributes.state.${ctx.getValue()}`)}
+                        </strong>
                     ),
+                enableSorting: true,
             }
         }) ?? []
 
@@ -54,7 +58,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
 
     return (
         <>
-            <Table columns={columns} data={tableData} />
+            <Table columns={columns} data={tableData} onSortingChange={(newSort) => handleFilterChange({ sort: newSort })} sort={sort} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
     )
