@@ -154,5 +154,16 @@
         "application": "Aplikačný",
         "system": "Systémový",
         "custom": "Vlastný"
+    },
+    "actionOverTable": {
+        "import": "Import",
+        "export": "Export",
+        "addISVSitem": "Pridať ISVS položku",
+        "selectColumn": "Stĺpce",
+        "view": "Zobraziť",
+        "actions": "Hromadné úkony",
+        "invalidateItems": "Zneplatnenie položiek",
+        "validateItems": "Splatnenie položiek",
+        "changeOwner": "Zmena vlastníka"
     }
 }

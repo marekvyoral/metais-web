@@ -1,10 +1,10 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
-import { ActionsOverTable } from '@/components/actions-over-table/ActionsOverTable'
 
 const ProjektListPage = () => {
     const { entityName } = useParams()

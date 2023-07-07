@@ -5,6 +5,7 @@ import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { TableSelectColumns } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
 import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
+import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 
 import { CiContainer } from '@/components/containers/CiContainer'
 import { View } from '@/components/containers/CiContainer.stories'
@@ -14,7 +15,6 @@ import { DocumentsListContainer } from '@/components/containers/DocumentListCont
 import { DocsView } from '@/components/containers/DocumentListContainer.stories'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { ExportItemsOrRelations } from '@/components/export-items-or-relations/ExportItemsOrRelations'
-import { ActionsOverTable } from '@/components/actions-over-table/ActionsOverTable'
 
 export const DevTestScreen: React.FC = () => {
     const [page, setPage] = useState(5)

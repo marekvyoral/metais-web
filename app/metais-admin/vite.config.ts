@@ -64,6 +64,11 @@ export default defineConfig(({ mode }) => {
                     changeOrigin: true,
                     secure: false,
                 },
+                '^/roles': {
+                    target: process.env.VITE_REST_CLIENT_IAM_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
+                },
             },
         },
     }

@@ -4,6 +4,7 @@ export * from './generated/types-repo-swagger'
 export * from './generated/enums-repo-swagger'
 export * from './generated/user-config-swagger'
 export * from './generated/dms-swagger'
+// export * from './generated/iam-swagger'
 
 export * from './constants'
 export * from './HowToDisplay'

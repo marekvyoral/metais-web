@@ -7,7 +7,11 @@ const Entity: React.FC = () => {
     return (
         <EntityListContainer
             View={(props) => {
-                return <EgovTable data={props?.data?.results} />
+                return (
+                    <>
+                        <EgovTable data={props?.data?.results} />
+                    </>
+                )
             }}
         />
     )

@@ -154,5 +154,16 @@
         "application": "Application",
         "system": "System",
         "custom": "Custom"
+    },
+    "actionOverTable": {
+        "import": "Import",
+        "export": "Export",
+        "addISVSitem": "Add ISVS item",
+        "selectColumn": "Columns",
+        "view": "View",
+        "actions": "Bulk actions",
+        "invalidateItems": "Invalidate items",
+        "validateItems": "Validate actions",
+        "changeOwner": "Change owner"
     }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, matchPath, useLocation } from 'react-router-dom'
@@ -111,7 +111,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     return (
         <div className="idsk-tabs" data-module="idsk-tabs">
             <h2 className="idsk-tabs__title">{t('tab.contents')}</h2>
-            <ul className="idsk-tabs__list">
+            <ul className="idsk-tabs__list" style={{ maxWidth: '100%', overflow: 'scroll' }}>
                 {tabList.map((tab) => (
                     <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={activeTab?.id === tab.id} tab={tab} />
                 ))}

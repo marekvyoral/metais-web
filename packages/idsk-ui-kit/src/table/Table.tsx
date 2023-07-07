@@ -73,6 +73,7 @@ export const Table = <T,>({
         onExpandedChange,
         getSubRows,
         enableMultiSort: true,
+        manualPagination: true,
     })
 
     const isEmptyRows = table.getRowModel().rows.length === 0

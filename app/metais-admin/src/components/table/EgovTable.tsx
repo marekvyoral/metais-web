@@ -5,7 +5,8 @@ import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { ColumnDef } from '@tanstack/react-table'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { CiTypePreview } from '@isdd/metais-common/api'
+import { BASE_PAGE_SIZE, CiTypePreview } from '@isdd/metais-common/api'
+import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 
 type IListData = {
     data?: CiTypePreview[] | undefined
@@ -46,7 +47,7 @@ export const EgovTable = ({ data }: IListData) => {
         },
     ]
 
-    const [pageSize] = useState<number>(10)
+    const [pageSize, setPageSize] = useState<number>(10)
     const [start, setStart] = useState<number>(0)
     const [end, setEnd] = useState<number>(pageSize)
     const [pageNumber, setPageNumber] = useState<number>(1)
@@ -57,9 +58,30 @@ export const EgovTable = ({ data }: IListData) => {
         setEnd((filter?.pageNumber ?? 0) * pageSize)
     }
 
+    const handleSetPageSize = (filter: IFilter) => {
+        setPageSize(filter?.pageSize ?? BASE_PAGE_SIZE)
+        setStart((pageNumber ?? 0) * (filter?.pageSize ?? 0) - (filter?.pageSize ?? 0))
+        setEnd((pageNumber ?? 0) * (filter?.pageSize ?? 0))
+    }
+
     return (
         <div>
-            <Table data={data?.slice(start, end)} columns={columns} />
+            <ActionsOverTable
+                handleFilterChange={handleSetPageSize}
+                pagingOptions={[
+                    { value: '10', label: '10' },
+                    { value: '20', label: '20' },
+                    { value: '50', label: '50' },
+                    { value: '100', label: '100' },
+                ]}
+                //storeUserSelectedColumns={storeUserSelectedColumns}
+                // resetUserSelectedColumns={resetUserSelectedColumns}
+                //  pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                hiddenButtons={{ IMPORT: true }}
+                createPageHref={'/egov/entity/create'}
+                entityName={'entity'}
+            />
+            <Table data={data?.slice(start, end)} columns={columns} pagination={{ pageIndex: pageNumber, pageSize }} />
             <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={dataLength} handlePageChange={handlePageChange} />
         </div>
     )
