@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { ColumnDef, ColumnOrderState, PaginationState, ExpandedState, Row } from '@tanstack/react-table'
 
-import { reduceTableDataToObject } from '../../../../app/metais-portal/src/components/ci-table/ciTableHelpers'
-
 import { Table } from './Table'
 import { TableMetaBlock } from './TableMetaBlock'
 import { ExpandableHeaderCellWrapper } from './ExpandableHeaderCellWrapper'
@@ -26,6 +24,15 @@ export type Person = {
     age: number
     subRows?: Person[]
     check?: boolean
+}
+
+const reduceTableDataToObject = <T extends { uuid?: string }>(array: T[]): Record<string, T> => {
+    return array.reduce<Record<string, T>>((result, item) => {
+        if (item.uuid) {
+            result[item.uuid] = item
+        }
+        return result
+    }, {})
 }
 
 const testTableData: Person[] = [

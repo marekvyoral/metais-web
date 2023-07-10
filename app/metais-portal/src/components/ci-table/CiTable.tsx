@@ -58,7 +58,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 rows.forEach(({ uuid }) => uuid && delete newRowSelection[uuid])
                 setRowSelection(newRowSelection)
             } else {
-                setRowSelection((prevRowSelection) => ({ ...prevRowSelection, ...reduceTableDataToObject<ColumnsOutputDefinition>(rows) }))
+                setRowSelection((prevRowSelection) => ({ ...prevRowSelection, ...reduceTableDataToObject(rows) }))
             }
         },
         [rowSelection],
