@@ -56,18 +56,22 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
         >
             <div ref={previewRef}>
                 <div ref={dragRef} className="th-span">
-                    <TextBody size="S" className={styles.marginBottom0}>
-                        <strong>
-                            {isPlaceholder ? null : flexRender(columnHeader, getContext())}
-                            {column.getCanSort() && columnEnabledSorting && (
-                                <button
-                                    className="arrowBtn"
-                                    onClick={column.getToggleSortingHandler()}
-                                    style={{ opacity: column.getIsSorted() === false ? 0.1 : 1 }}
-                                />
-                            )}
-                        </strong>
-                    </TextBody>
+                    {id === CHECKBOX_CELL ? (
+                        flexRender(columnHeader, getContext())
+                    ) : (
+                        <TextBody size="S" className={styles.marginBottom0}>
+                            <strong>
+                                {isPlaceholder ? null : flexRender(columnHeader, getContext())}
+                                {column.getCanSort() && columnEnabledSorting && (
+                                    <button
+                                        className="arrowBtn"
+                                        onClick={column.getToggleSortingHandler()}
+                                        style={{ opacity: column.getIsSorted() === false ? 0.1 : 1 }}
+                                    />
+                                )}
+                            </strong>
+                        </TextBody>
+                    )}
                 </div>
             </div>
         </th>
