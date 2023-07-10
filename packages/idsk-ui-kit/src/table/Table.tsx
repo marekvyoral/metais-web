@@ -5,7 +5,6 @@ import {
     OnChangeFn,
     PaginationState,
     Row,
-    SortingState,
     getCoreRowModel,
     getExpandedRowModel,
     getPaginationRowModel,
@@ -15,10 +14,13 @@ import {
 import classNames from 'classnames'
 import React from 'react'
 
+import { ColumnSort } from '../types'
+
 import { DraggableColumnHeader } from './DraggableColumnHeader'
-import { TableInfoMessage } from './TableInfoMessage'
 import { TableRow } from './TableRow'
 import styles from './table.module.scss'
+import { TableInfoMessage } from './TableInfoMessage'
+import { transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
 
 import { LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
 
@@ -26,8 +28,8 @@ interface ITableProps<T> {
     data?: Array<T>
     columns: Array<ColumnDef<T>>
     canDrag?: boolean
-    sorting?: SortingState
-    onSortingChange?: OnChangeFn<SortingState> | undefined
+    sort?: ColumnSort[]
+    onSortingChange?: (sort: ColumnSort[]) => void
     columnOrder?: ColumnOrderState
     onColumnOrderChange?: React.Dispatch<React.SetStateAction<ColumnOrderState>>
     pagination?: PaginationState
@@ -44,7 +46,7 @@ export const Table = <T,>({
     data,
     columns,
     canDrag = false,
-    sorting,
+    sort,
     onSortingChange,
     columnOrder,
     onColumnOrderChange,
@@ -57,16 +59,22 @@ export const Table = <T,>({
     isLoading = false,
     error = false,
 }: ITableProps<T>): JSX.Element => {
+    const transformedSort = transformColumnSortToSortingState(sort)
     const table = useReactTable({
         data: data ?? [],
         columns,
         state: {
             ...(pagination && { pagination }),
             columnOrder,
-            sorting,
+            sorting: transformedSort,
             expanded: expandedRowsState,
         },
-        onSortingChange,
+        onSortingChange: (sortUpdater) => {
+            if (typeof sortUpdater === 'function') {
+                const columnSort = transformSortingStateToColumnSort(sortUpdater, transformedSort)
+                onSortingChange?.(columnSort)
+            }
+        },
         getSortedRowModel: getSortedRowModel(),
         onColumnOrderChange,
         getCoreRowModel: getCoreRowModel(),
@@ -76,6 +84,7 @@ export const Table = <T,>({
         onExpandedChange,
         getSubRows,
         enableMultiSort: true,
+        manualPagination: true,
     })
 
     const isEmptyRows = table.getRowModel().rows.length === 0

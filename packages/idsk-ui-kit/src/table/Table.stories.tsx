@@ -1,6 +1,6 @@
-import { Meta, StoryObj } from '@storybook/react'
-import { ColumnDef, ColumnOrderState, PaginationState, SortingState, ExpandedState, Row } from '@tanstack/react-table'
 import React, { useState } from 'react'
+import { Meta, StoryObj } from '@storybook/react'
+import { ColumnDef, ColumnOrderState, PaginationState, ExpandedState, Row } from '@tanstack/react-table'
 
 import { Table } from './Table'
 import { TableMetaBlock } from './TableMetaBlock'
@@ -10,6 +10,7 @@ import { resetColumnOrder } from './tableUtils'
 import { CHECKBOX_CELL } from './constants'
 
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
+import { ColumnSort } from '@/types'
 
 const meta: Meta<typeof Table> = {
     title: 'Components/Table',
@@ -286,7 +287,7 @@ export const ErrorTable: Story = {
 export const DraggableColumns: Story = {
     render: ({ ...args }) => {
         const StateWrapper = () => {
-            const [sorting, setSorting] = useState<SortingState>([])
+            const [sort] = useState<ColumnSort[]>([])
             const [columnOrder, setColumnOrder] = useState<ColumnOrderState>(sortableColumnsSpec.map((d) => d.id || ''))
             const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 10 })
             const isOrderModified = JSON.stringify(columnOrder) !== JSON.stringify(sortableColumnsSpec.map((d) => d.id || ''))
@@ -294,8 +295,7 @@ export const DraggableColumns: Story = {
                 <>
                     <Table<Person>
                         {...args}
-                        sorting={sorting}
-                        onSortingChange={setSorting}
+                        sort={sort}
                         pagination={pagination}
                         onPaginationChange={setPagination}
                         onColumnOrderChange={setColumnOrder}
@@ -338,7 +338,7 @@ export const SelectableRows: Story = {
 export const ExpandableRows: Story = {
     render: ({ ...args }) => {
         const StateWrapper = () => {
-            const [sorting, setSorting] = useState<SortingState>([])
+            const [sort] = useState<ColumnSort[]>([])
             const [columnOrder, setColumnOrder] = useState<ColumnOrderState>(expandableColumnsSpec.map((d) => d.id || ''))
             const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 100 })
             const [expanded, setExpanded] = useState<ExpandedState>({})
@@ -348,8 +348,7 @@ export const ExpandableRows: Story = {
                     expandedRowsState={expanded}
                     onExpandedChange={setExpanded}
                     getSubRows={(row: Person) => row.subRows}
-                    sorting={sorting}
-                    onSortingChange={setSorting}
+                    sort={sort}
                     pagination={pagination}
                     onPaginationChange={setPagination}
                     onColumnOrderChange={setColumnOrder}

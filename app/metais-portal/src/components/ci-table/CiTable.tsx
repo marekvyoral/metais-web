@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
@@ -18,9 +18,10 @@ interface ICiTable {
     data: IListData
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
+    sort: ColumnSort[]
 }
 
-export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChange }) => {
+export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChange, sort }) => {
     const { t } = useTranslation()
     const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
@@ -49,6 +50,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                         )}
                     </TextBody>
                 ),
+                enableSorting: true,
             }
         }) ?? []
 
@@ -100,7 +102,13 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
 
     return (
         <>
-            <Table columns={columns} data={tableData} isRowSelected={isRowSelected} />
+            <Table
+                columns={columns}
+                data={tableData}
+                onSortingChange={(newSort) => handleFilterChange({ sort: newSort })}
+                sort={sort}
+                isRowSelected={isRowSelected}
+            />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
     )

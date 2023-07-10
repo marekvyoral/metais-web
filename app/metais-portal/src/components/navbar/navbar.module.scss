@@ -1,4 +1,4 @@
-@import '../../index.scss';
+@import '../../utils.scss';
 
 .notificationIcon {
     position: absolute;
@@ -39,14 +39,14 @@
     justify-content: center;
     align-items: center;
     white-space: nowrap;
-    margin-left: govuk-spacing(2)
+    margin-left: govuk-spacing(2);
 }
 
-.displayFlex{
-    display: flex
+.displayFlex {
+    display: flex;
 }
 
-.displayNone{
+.displayNone {
     display: none;
 }
 

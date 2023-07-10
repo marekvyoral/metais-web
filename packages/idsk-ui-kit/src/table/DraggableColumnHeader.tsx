@@ -1,6 +1,6 @@
+import React from 'react'
 import { Column, ColumnOrderState, Header, Table as ReactTable, flexRender } from '@tanstack/react-table'
 import { useDrag, useDrop } from 'react-dnd'
-import React from 'react'
 import classNames from 'classnames'
 
 import styles from './table.module.scss'
