@@ -342,7 +342,6 @@ export const SelectableRows: Story = {
             const isRowSelected = (row: Row<Person>) => {
                 return row.original.uuid ? !!rowSelection[row.original.uuid] : false
             }
-            console.log('rowSelection', rowSelection)
             return <Table<Person> {...args} columns={SelectableColumnsSpec(rowSelection, setRowSelection, args.data)} isRowSelected={isRowSelected} />
         }
         return <StateWrapper />
