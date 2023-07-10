@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { ColumnDef, ColumnOrderState, PaginationState, ExpandedState, Row } from '@tanstack/react-table'
 
+import { reduceTableDataToObject } from '../../../../app/metais-portal/src/components/ci-table/ciTableHelpers'
+
 import { Table } from './Table'
 import { TableMetaBlock } from './TableMetaBlock'
 import { ExpandableHeaderCellWrapper } from './ExpandableHeaderCellWrapper'
@@ -18,7 +20,7 @@ const meta: Meta<typeof Table> = {
 }
 
 export type Person = {
-    id: string
+    uuid?: string
     firstName: string
     lastName: string
     age: number
@@ -28,19 +30,19 @@ export type Person = {
 
 const testTableData: Person[] = [
     {
-        id: '1',
+        uuid: '1',
         firstName: 'tanner',
         lastName: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
         age: 18,
         subRows: [
             {
-                id: '1-1',
+                uuid: '1-1',
                 firstName: 'tanner-first-subchild',
                 lastName: 'linsley-first-subchild',
                 age: 25,
                 subRows: [
                     {
-                        id: '1-1-1',
+                        uuid: '1-1-1',
                         firstName: 'tanner-second-subchild',
                         lastName: 'linsley-second-subchild',
                         age: 48,
@@ -50,13 +52,13 @@ const testTableData: Person[] = [
         ],
     },
     {
-        id: '2',
+        uuid: '2',
         firstName: 'tandy',
         lastName: 'miller',
         age: 20,
         subRows: [
             {
-                id: '2-1',
+                uuid: '2-1',
                 firstName: 'tanner-1',
                 lastName: 'linsley',
                 age: 18,
@@ -64,13 +66,13 @@ const testTableData: Person[] = [
         ],
     },
     {
-        id: '3',
+        uuid: '3',
         firstName: 'joe',
         lastName: 'dirte',
         age: 20,
         subRows: [
             {
-                id: '3-1',
+                uuid: '3-1',
                 firstName: 'tanner-2',
                 lastName: 'linsley',
                 age: 10,
@@ -78,19 +80,19 @@ const testTableData: Person[] = [
         ],
     },
     {
-        id: '4',
+        uuid: '4',
         firstName: 'tanner',
         lastName: 'linsley',
         age: 20,
     },
     {
-        id: '5',
+        uuid: '5',
         firstName: 'tandy',
         lastName: 'miller',
         age: 45,
     },
     {
-        id: '6',
+        uuid: '6',
         firstName: 'joe',
         lastName: 'dirte',
         age: 65,
@@ -137,13 +139,13 @@ const sortableColumnsSpec: ColumnDef<Person>[] = [
 ]
 
 const SelectableColumnsSpec = (
-    rowSelection: Record<string, boolean>,
-    setRowSelection: (val: Record<string, boolean>) => void,
+    rowSelection: Record<string, Person>,
+    setRowSelection: (value: React.SetStateAction<Record<string, Person>>) => void,
+    tableData?: Person[],
 ): ColumnDef<Person>[] => [
     {
         accessorFn: (row) => row.check,
         header: ({ table }) => {
-            const checked = table.getRowModel().rows.every((row) => rowSelection[row.original.id])
             return (
                 <div className="govuk-checkboxes govuk-checkboxes--small">
                     <CheckBox
@@ -152,11 +154,16 @@ const SelectableColumnsSpec = (
                         id="checkbox_all"
                         value="true"
                         onChange={() => {
-                            const result: Record<string, boolean> = {}
-                            table.getRowModel().rows.forEach((row) => (result[row.original.id] = !checked))
-                            setRowSelection(result)
+                            const checked = table.getRowModel().rows.every((row) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false))
+                            const newRowSelection = { ...rowSelection }
+                            if (checked) {
+                                table.getRowModel().rows.forEach((row) => row.original.uuid && delete newRowSelection[row.original.uuid])
+                                setRowSelection(newRowSelection)
+                            } else {
+                                setRowSelection((val) => ({ ...val, ...reduceTableDataToObject<Person>(tableData || []) }))
+                            }
                         }}
-                        checked={checked}
+                        checked={table.getRowModel().rows.every((row) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false))}
                     />
                 </div>
             )
@@ -169,8 +176,18 @@ const SelectableColumnsSpec = (
                     name="checkbox"
                     id={`checkbox_${row.id}`}
                     value="true"
-                    onChange={() => setRowSelection({ ...rowSelection, [row.original.id]: !rowSelection[row.original.id] })}
-                    checked={rowSelection[row.original.id]}
+                    onChange={() => {
+                        if (row.original.uuid) {
+                            const newRowSelection = { ...rowSelection }
+                            if (rowSelection[row.original.uuid]) {
+                                delete newRowSelection[row.original.uuid]
+                            } else {
+                                newRowSelection[row.original.uuid] = row.original
+                            }
+                            setRowSelection(newRowSelection)
+                        }
+                    }}
+                    checked={row.original.uuid ? !!rowSelection[row.original.uuid] : false}
                 />
             </div>
         ),
@@ -321,12 +338,12 @@ export const DraggableColumns: Story = {
 export const SelectableRows: Story = {
     render: ({ ...args }) => {
         const StateWrapper = () => {
-            const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
+            const [rowSelection, setRowSelection] = useState<Record<string, Person>>({})
             const isRowSelected = (row: Row<Person>) => {
-                return rowSelection[row.original.id]
+                return row.original.uuid ? !!rowSelection[row.original.uuid] : false
             }
-
-            return <Table<Person> {...args} columns={SelectableColumnsSpec(rowSelection, setRowSelection)} isRowSelected={isRowSelected} />
+            console.log('rowSelection', rowSelection)
+            return <Table<Person> {...args} columns={SelectableColumnsSpec(rowSelection, setRowSelection, args.data)} isRowSelected={isRowSelected} />
         }
         return <StateWrapper />
     },
