@@ -24,13 +24,16 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
     const navigate = useNavigate()
     return async ({ url, method, params, data }) => {
         const searchParams = params ? `?${new URLSearchParams(params)}` : ''
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+            ...data?.headers,
+        }
+        if (accessToken) {
+            headers['Authorization'] = `Bearer ${accessToken}`
+        }
         const response = await fetch(`${baseURL}${url}` + searchParams, {
             method,
-            headers: {
-                'Content-Type': 'application/json',
-                ...data?.headers,
-                accessToken: `Bearer ${accessToken}`,
-            },
+            headers,
             ...(data ? { body: JSON.stringify(data) } : {}),
         })
 

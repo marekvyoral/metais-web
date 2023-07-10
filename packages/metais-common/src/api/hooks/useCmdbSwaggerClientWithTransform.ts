@@ -3,7 +3,7 @@ import { CiWithRelsResultUi, ConfigurationItemUi, NeighbourSetUi, RoleParticipan
 import { transformAttributesKeyValue } from './transform'
 import { useCustomClient } from './use-custom-client'
 
-const baseURL = import.meta.env.VITE_REST_CLIENT_CMDB_BASE_URL
+const baseURL = import.meta.env.VITE_BASE_URL
 
 export const useClientForReadConfigurationItemUsingGET = <T extends ConfigurationItemUi>() =>
     useCustomClient<T>(baseURL, (body) => transformAttributesKeyValue(body))
