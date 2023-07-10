@@ -116,7 +116,7 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
                                     className={styles.addConnection}
                                 />
                                 <AddConnectionModal open={connectionsOpen} onClose={() => setConnectionsOpen(false)} />
-                                <ConnectionView sources={sourcesFromForm} targets={targetsFromForm} />
+                                <ConnectionView sources={sourcesFromForm ?? []} targets={targetsFromForm ?? []} />
                                 {(formState?.errors?.sources || formState?.errors?.targets) && (
                                     <ErrorBlock errorMessage={t('egov.create.requiredField')} />
                                 )}

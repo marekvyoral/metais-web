@@ -15,7 +15,7 @@ enum Direction {
 
 export const AddConnectionView = ({ listOptions, onClose }: IAddConnection) => {
     const [direction, setDirection] = useState<Direction>(Direction.SOURCE)
-    const { setValue, getValues, register } = useFormContext()
+    const { setValue, getValues } = useFormContext()
     const { t } = useTranslation()
     const optionsWithDefault = [{ label: t('egov.detail.selectOption'), disabled: true, value: '' }, ...listOptions]
 
@@ -38,8 +38,7 @@ export const AddConnectionView = ({ listOptions, onClose }: IAddConnection) => {
                 id={direction}
                 label={t('egov.detail.connections')}
                 options={optionsWithDefault}
-                {...register(`${direction}s`)}
-                defaultValue={0}
+                defaultValue={optionsWithDefault?.[0]?.value}
                 onChange={() => {
                     const existingValueInForm = getValues(`${direction}s`)
                     if (existingValueInForm) {
