@@ -1,5 +1,11 @@
 import React from 'react'
-import { EnumType, useGetRelationshipTypeUsingGET, RelationshipType, AttributeProfile } from '@isdd/metais-common/api'
+import {
+    EnumType,
+    useGetRelationshipTypeUsingGET,
+    RelationshipType,
+    AttributeProfile,
+    useUnvalidRelationshipTypeUsingDELETE,
+} from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 
 export interface IAtrributesContainerView {
@@ -9,6 +15,7 @@ export interface IAtrributesContainerView {
         unitsData?: EnumType | undefined
         keysToDisplay: Map<string, AttributeProfile | undefined>
     }
+    unValidRelationShipTypeMutation?: (technicalName?: string) => void
 }
 
 interface AttributesContainer {
@@ -30,6 +37,16 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
         isEntityStructureError: isCiTypeDataError,
     })
 
+    const { mutateAsync } = useUnvalidRelationshipTypeUsingDELETE()
+
+    const unValidRelationShipTypeMutation = async (technicalName?: string) => {
+        await mutateAsync({
+            technicalName: technicalName ?? '',
+        }).then((values) => {
+            console.log('VALUES: ', values)
+        })
+    }
+
     if (isLoading) {
         return <div>Loading</div>
     }
@@ -37,5 +54,10 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
         return <div>Error</div>
     }
 
-    return <View data={{ ciTypeData, constraintsData, unitsData: undefined, keysToDisplay }} />
+    return (
+        <View
+            data={{ ciTypeData, constraintsData, unitsData: undefined, keysToDisplay }}
+            unValidRelationShipTypeMutation={unValidRelationShipTypeMutation}
+        />
+    )
 }

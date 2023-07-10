@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
+import { Button, Tab, Tabs } from '@isdd/idsk-ui-kit'
 
 import styles from '../detailViews.module.scss'
 import BasicInformations from '../BasicInformations'
@@ -10,7 +10,10 @@ import ConnectionView from './ConnectionView'
 
 import { IAtrributesContainerView } from '@/components/containers/Egov/Relation/RelationsDetailContainer'
 
-export const RelationDetailView = ({ data: { ciTypeData, constraintsData, unitsData, keysToDisplay } }: IAtrributesContainerView) => {
+export const RelationDetailView = ({
+    data: { ciTypeData, constraintsData, unitsData, keysToDisplay },
+    unValidRelationShipTypeMutation,
+}: IAtrributesContainerView) => {
     const { t } = useTranslation()
     const tabsNames = Array.from(keysToDisplay?.keys() ?? new Map())
 
@@ -36,7 +39,10 @@ export const RelationDetailView = ({ data: { ciTypeData, constraintsData, unitsD
     return (
         <>
             <div className={styles.basicInformationSpace}>
-                <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
+                    <Button label="zneplatnit" onClick={() => unValidRelationShipTypeMutation?.(ciTypeData?.technicalName)} />
+                </div>
                 <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
             </div>
             <div>

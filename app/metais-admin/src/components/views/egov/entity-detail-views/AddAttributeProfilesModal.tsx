@@ -33,7 +33,8 @@ export const AddAttributeProfilesModal = ({ open, onClose }: AttributesModal) =>
                                 <SimpleSelect
                                     id="attributeProfiles"
                                     label={t('egov.detail.profiles')}
-                                    options={listOptions}
+                                    options={[{ label: t('egov.detail.selectOption'), value: '', disabled: true }, ...listOptions]}
+                                    defaultValue={''}
                                     onChange={(event) => {
                                         if (value) {
                                             setValue('attributeProfiles', [...value, JSON.parse(event?.target?.value)])

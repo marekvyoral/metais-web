@@ -26,7 +26,8 @@ interface ICreateEntity {
 
 export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
     const defaultOptions = {}
-    const { data, isLoading, isError } = useFindByNameUsingGET1(defaultOptions)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, isLoading, isError } = useFindByNameUsingGET1(defaultOptions as any)
     const mutationObject = useStoreAdminEntityUsingPOST1()
 
     if (isLoading) return <div>isLoading</div>

@@ -101,7 +101,8 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
                             <SimpleSelect
                                 id="roleList"
                                 label={t('egov.roles')}
-                                options={rolesToSelect}
+                                options={[{ label: t('egov.detail.selectOption'), value: '', disabled: true }, ...rolesToSelect]}
+                                defaultValue={''}
                                 {...register('roleList', {
                                     setValueAs: (val) => [val],
                                 })}

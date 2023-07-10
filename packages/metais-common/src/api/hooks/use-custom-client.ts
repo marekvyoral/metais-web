@@ -43,6 +43,6 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
             navigate('/?token_expired=true')
         }
         if (callback) callback(responseBody)
-        return responseBody
+        return responseBody ?? ''
     }
 }

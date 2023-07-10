@@ -39,7 +39,7 @@ export const AddConnectionView = ({ listOptions, onClose }: IAddConnection) => {
                 label={t('egov.detail.connections')}
                 options={optionsWithDefault}
                 defaultValue={optionsWithDefault?.[0]?.value}
-                onChange={() => {
+                onChange={(event) => {
                     const existingValueInForm = getValues(`${direction}s`)
                     if (existingValueInForm) {
                         setValue(`${direction}s`, [...existingValueInForm, JSON.parse(event?.target?.value)])

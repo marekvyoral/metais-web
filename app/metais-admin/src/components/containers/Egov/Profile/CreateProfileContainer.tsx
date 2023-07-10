@@ -25,10 +25,9 @@ interface ICreateEntity {
 }
 
 export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
-    const defaultOptions = {
-        name: '',
-    }
-    const { data, isLoading, isError } = useFindByNameUsingGET1(defaultOptions)
+    const defaultOptions = {}
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, isLoading, isError } = useFindByNameUsingGET1(defaultOptions as any)
     const mutationObject = useStoreNewAttrProfileUsingPOST()
 
     if (isLoading) return <div>isLoading</div>

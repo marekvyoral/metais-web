@@ -27,7 +27,8 @@ interface ICreateEntity {
 const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
     const defaultOptions = {}
 
-    const { data, isLoading, isError } = useFindByNameUsingGET1(defaultOptions)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, isLoading, isError } = useFindByNameUsingGET1(defaultOptions as any) // API obsahuje iba vyhladavanie podla name, ale v pripade ak sa neposle ziadne meno tak sa dotiahnu vsetky role(takto sa to pouziva aj na starom systeme).
     const mutationObject = useStoreAdminEntityUsingPOST()
 
     if (isLoading) return <div>isLoading</div>

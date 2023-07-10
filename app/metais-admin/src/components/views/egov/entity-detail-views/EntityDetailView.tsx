@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tab } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { getTabsFromApi } from '@isdd/metais-common'
+import { Button } from '@isdd/idsk-ui-kit'
 
 import styles from '../detailViews.module.scss'
 import BasicInformations from '../BasicInformations'
@@ -28,7 +29,10 @@ export const EntityDetailView = ({
     return (
         <>
             <div className={styles.basicInformationSpace}>
-                <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
+                    <Button label="zneplatnit" />
+                </div>
                 <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
             </div>
             <ProfileTabs tabList={tabList} />
