@@ -97,9 +97,11 @@ export const Table = <T,>({
                     </tr>
                 ))}
             </thead>
-            <div className={styles.displayFlex}>
-                <TableInfoMessage error={error} isEmptyRows={isEmptyRows} />
-            </div>
+            {isEmptyRows && (
+                <div className={styles.displayFlex}>
+                    <TableInfoMessage error={error} isEmptyRows={isEmptyRows} />
+                </div>
+            )}
             <tbody
                 className={classNames('idsk-table__body', { [styles.positionRelative]: isLoading, [styles.minHeight400]: isEmptyRows && isLoading })}
             >

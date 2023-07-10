@@ -74,9 +74,6 @@ export const EgovTable = ({ data }: IListData) => {
                     { value: '50', label: '50' },
                     { value: '100', label: '100' },
                 ]}
-                //storeUserSelectedColumns={storeUserSelectedColumns}
-                // resetUserSelectedColumns={resetUserSelectedColumns}
-                //  pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 hiddenButtons={{ IMPORT: true }}
                 createPageHref={'/egov/entity/create'}
                 entityName={'entity'}
