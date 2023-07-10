@@ -42,9 +42,13 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
     const unValidRelationShipTypeMutation = async (technicalName?: string) => {
         await mutateAsync({
             technicalName: technicalName ?? '',
-        }).then((values) => {
-            console.log('VALUES: ', values)
         })
+            .then(() => {
+                // ON SUCCESS
+            })
+            .catch(() => {
+                // ON ERRRO
+            })
     }
 
     if (isLoading) {

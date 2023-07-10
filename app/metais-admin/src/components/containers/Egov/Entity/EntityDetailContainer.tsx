@@ -1,5 +1,5 @@
 import React from 'react'
-import { EnumType, CiType, SummarizingCardUi, AttributeProfile, useUnvalidRelationshipTypeUsingDELETE } from '@isdd/metais-common/api'
+import { EnumType, CiType, SummarizingCardUi, AttributeProfile } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { useEntityProfiles } from '@isdd/metais-common/hooks/useEntityProfiles'
 
