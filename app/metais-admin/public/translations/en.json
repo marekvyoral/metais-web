@@ -136,6 +136,8 @@
             "summarizingCard": "Summarizing card",
             "genericProfile": "Generic profile",
             "connections": "Connections",
+            "direction": { "heading": "Type of connection", "source": "Source", "target": "Target" },
+            "selectOption": "Select option",
             "showOwner": {
                 "heading": "Show owner",
                 "true": "Allowed",

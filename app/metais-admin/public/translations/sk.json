@@ -137,6 +137,8 @@
             "summarizingCard": "Summarizačná karta",
             "genericProfile": "Generický profil",
             "connections": "Prepojenia",
+            "direction": { "heading": "Typ prepojenia", "source": "Zdroj", "target": "Cieľ" },
+            "selectOption": "Vyberte možnosť",
             "showOwner": {
                 "heading": "Zobrazovanie vlastníka",
                 "true": "Povolené",

@@ -25,9 +25,7 @@ interface ICreateEntity {
 }
 
 const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
-    const defaultOptions = {
-        name: '',
-    }
+    const defaultOptions = {}
 
     const { data, isLoading, isError } = useFindByNameUsingGET1(defaultOptions)
     const mutationObject = useStoreAdminEntityUsingPOST()
