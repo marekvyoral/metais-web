@@ -19,6 +19,17 @@ export const NavMenuList: React.FC<INavMenuList> = ({ activeTab, setActiveTab })
             <NavMenuItem
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
+                path={RouteNames.HOW_TO_PUBLIC_AUTHORITIES}
+                title={t('navMenu.publicAuthorities')}
+                list={[
+                    { title: t('navMenu.lists.processorsOfITDevelopmentConcepts'), path: NavigationSubRoutes.PROCESSORS_OF_IT_DEVELOPMENT_CONCEPTS },
+                    { title: t('navMenu.lists.subordinates'), path: NavigationSubRoutes.SUBORDINATES },
+                    { title: t('navMenu.lists.ISoperators'), path: NavigationSubRoutes.IS_OPERATORS },
+                ]}
+            />
+            <NavMenuItem
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
                 path={RouteNames.HOW_TO_EGOV_COMPONENTS}
                 title={t('navMenu.egovComponents')}
                 list={[

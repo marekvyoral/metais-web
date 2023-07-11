@@ -78,6 +78,7 @@
         "closeMenu": "Close menu"
     },
     "navMenu": {
+        "publicAuthorities": "Public authorities",
         "egovComponents": "E-gov Components",
         "standardization": "Standardization",
         "dataObjects": "Data objects",
@@ -88,6 +89,9 @@
         "innerNav": "Inner navigation",
         "mainNav": "Main navigation",
         "lists": {
+            "processorsOfITDevelopmentConcepts": "Processors of IT development concepts",
+            "subordinates": "Subordinates",
+            "ISoperators": "IS operators",
             "goals": "Objectives, principles and KRIT",
             "programs": "Programs",
             "projects": "Projects",

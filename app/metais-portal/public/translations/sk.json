@@ -78,6 +78,7 @@
         "closeMenu": "Skry menu"
     },
     "navMenu": {
+        "publicAuthorities": "Orgány verejnej moci",
         "egovComponents": "E-gov Komponenty",
         "standardization": "Štandardizácia",
         "dataObjects": "Dátové objekty",
@@ -88,6 +89,9 @@
         "innerNav": "Vnútorná navigácia",
         "mainNav": "Hlavná navigácia",
         "lists": {
+            "processorsOfITDevelopmentConcepts": "Spracovatelia koncepcií rozvoja IT",
+            "subordinates": "Podriadené osoby",
+            "ISoperators": "Prevádzkovatelia IS",
             "goals": "Ciele, princípy a KRIT",
             "programs": "Programy",
             "projects": "Projekty",

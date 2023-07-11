@@ -18,6 +18,7 @@ interface INavMenu {
 }
 
 export const navItems = [
+    RouteNames.HOW_TO_PUBLIC_AUTHORITIES,
     RouteNames.HOW_TO_EGOV_COMPONENTS,
     RouteNames.HOW_TO_DATA_OBJECTS,
     RouteNames.HOW_TO_MONITORING,
