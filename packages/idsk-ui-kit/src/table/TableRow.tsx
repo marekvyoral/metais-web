@@ -16,6 +16,7 @@ export const TableRow = <T,>({ row, isRowSelected }: ITableRowProps<T>): JSX.Ele
             {row.getVisibleCells().map((cell) => (
                 <td
                     className={classNames('idsk-table__cell', {
+                        [styles.width]: cell.column.id !== CHECKBOX_CELL,
                         [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
                         [styles.rowSelected]: isRowSelected && isRowSelected(row),
                     })}

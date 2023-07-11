@@ -135,6 +135,8 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
             ),
         },
         ...columnsFromApi,
+        ...columnsFromApi,
+        ...columnsFromApi,
     ]
 
     return (

@@ -24,12 +24,15 @@
 
 .marginBottom0 {
     margin-bottom: 0px !important;
+    width: 150px;
 }
 
 .head {
     position: sticky;
     top: 0px;
     z-index: 2;
+    width: 900px !important;
+
 
     @include mq($until: desktop) {
         top: 122.5px;
@@ -44,6 +47,17 @@
     background-color: govuk-colour('grey-4');
 }
 
+.width {
+    width: 150px;
+}
+
 .body {
     max-height: 800px;
+    width: 900px !important;
+}
+
+.row {
+    width: 900px !important;
+    display: block !important;
+    overflow: auto;
 }

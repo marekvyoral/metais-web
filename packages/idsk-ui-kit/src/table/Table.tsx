@@ -12,7 +12,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import classNames from 'classnames'
-import React from 'react'
+import React, { useRef } from 'react'
 
 import { ColumnSort } from '../types'
 
@@ -59,6 +59,8 @@ export const Table = <T,>({
     isLoading = false,
     error = false,
 }: ITableProps<T>): JSX.Element => {
+    const wrapper1Ref = useRef<HTMLTableSectionElement>(null)
+    const wrapper2Ref = useRef<HTMLTableRowElement>(null)
     const transformedSort = transformColumnSortToSortingState(sort)
     const table = useReactTable({
         data: data ?? [],
@@ -89,11 +91,23 @@ export const Table = <T,>({
 
     const isEmptyRows = table.getRowModel().rows.length === 0
 
+    const handleWrapper1Scroll = () => {
+        if (wrapper1Ref.current && wrapper2Ref.current) {
+            wrapper2Ref.current.scrollLeft = wrapper1Ref.current.scrollLeft
+        }
+    }
+
+    const handleWrapper2Scroll = () => {
+        if (wrapper1Ref.current && wrapper2Ref.current) {
+            wrapper1Ref.current.scrollLeft = wrapper2Ref.current.scrollLeft
+        }
+    }
+
     return (
         <table className="idsk-table">
             <thead className={classNames('idsk-table__head', [styles.head])}>
                 {table.getHeaderGroups().map((headerGroup) => (
-                    <tr className="idsk-table__row" key={headerGroup.id}>
+                    <tr className={`idsk-table__row ${styles.row}`} key={headerGroup.id} onScroll={handleWrapper2Scroll} ref={wrapper2Ref}>
                         {headerGroup.headers.map((header) => (
                             <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
                         ))}
@@ -108,6 +122,8 @@ export const Table = <T,>({
                     [styles.positionRelative]: isLoading,
                     [styles.minHeight400]: isEmptyRows && isLoading,
                 })}
+                onScroll={handleWrapper1Scroll}
+                ref={wrapper1Ref}
             >
                 {isLoading && <LoadingIndicator />}
                 {table.getRowModel().rows.map((row) => (
