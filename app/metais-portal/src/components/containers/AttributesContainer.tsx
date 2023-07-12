@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { EnumType, AttributeConstraintEnumAllOf, useGetCiTypeUsingGET, CiType } from '@/api'
+import { EnumType, AttributeConstraintEnumAllOf, useGetCiTypeUsingGET, CiType, AttributeProfile, Attribute } from '@/api'
 import { useHowToDisplayConstraints } from '@/hooks/useHowToDisplay'
 
 export interface IAtrributesContainerView {
@@ -8,6 +8,8 @@ export interface IAtrributesContainerView {
         ciTypeData: CiType | undefined
         constraintsData: (EnumType | undefined)[]
         unitsData?: EnumType | undefined
+        attributeProfiles: AttributeProfile[] | undefined
+        attributes: Attribute[] | undefined
     }
 }
 
@@ -18,6 +20,9 @@ interface AttributesContainer {
 
 export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeUsingGET(entityName)
+
+    const attributeProfiles = ciTypeData?.attributeProfiles
+    const attributes = ciTypeData?.attributes
 
     const constraintsAttributes =
         ciTypeData?.attributes
@@ -55,5 +60,5 @@ export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName,
         return <div>Error</div>
     }
 
-    return <View data={{ ciTypeData, constraintsData, unitsData: undefined }} />
+    return <View data={{ attributeProfiles, ciTypeData, constraintsData, unitsData: undefined, attributes }} />
 }

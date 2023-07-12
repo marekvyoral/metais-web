@@ -3,10 +3,19 @@ import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFil
 import { FieldValues } from 'react-hook-form'
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 
-import { useGetDefaultColumnsUsingGET, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, useReadCiListUsingPOST } from '@/api'
+import {
+    BASE_PAGE_NUMBER,
+    BASE_PAGE_SIZE,
+    useReadCiListUsingPOST,
+    useResetUserColumnsUsingDELETE,
+    useGetUserColumnsUsingGET,
+    useGetDefaultColumnsUsingGET,
+    useInsertUserColumnsUsingPOST,
+} from '@/api'
 import { IListView } from '@/types/list'
 import { mapFilterParamsToApi, mapFilterToNeighborsApi } from '@/componentHelpers'
 import { mapConfigurationItemSetToPagination } from '@/componentHelpers/pagination'
+import { useAuth } from '@/contexts/auth/authContext'
 
 interface ICiListContainer<T> {
     entityName: string
@@ -15,8 +24,38 @@ interface ICiListContainer<T> {
 }
 
 export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityName, ListComponent, defaultFilterValues }: ICiListContainer<T>) => {
-    const { data: columnListData } = useGetDefaultColumnsUsingGET(entityName)
     const [filterParams] = useFilterParams<T>(defaultFilterValues)
+
+    const {
+        state: { user },
+    } = useAuth()
+    const isUserLogged = !!user
+
+    const getUserColumns = useGetUserColumnsUsingGET(entityName, { query: { enabled: isUserLogged } })
+    const getDefaultColumns = useGetDefaultColumnsUsingGET(entityName, { query: { enabled: !isUserLogged } })
+
+    const { data: columnListData, refetch: refetchColumnData } = isUserLogged ? getUserColumns : getDefaultColumns
+
+    const storeUserSelectedColumns = useInsertUserColumnsUsingPOST()
+    const saveColumnSelection = async (columnSelection: {
+        attributes: { name: string; order: number }[]
+        metaAttributes: { name: string; order: number }[]
+    }) => {
+        await storeUserSelectedColumns.mutateAsync({
+            data: {
+                attributes: columnSelection.attributes,
+                ciType: entityName ?? '',
+                metaAttributes: columnSelection.metaAttributes,
+            },
+        })
+        await refetchColumnData()
+    }
+
+    const resetUserSelectedColumns = useResetUserColumnsUsingDELETE()
+    const resetColumns = async () => {
+        await resetUserSelectedColumns.mutateAsync({ citype: entityName || '' })
+        await refetchColumnData()
+    }
 
     const [uiFilterState, setUiFilterState] = useState<IFilter>({
         sort: [{ orderBy: 'Gen_Profil_nazov', sortDirection: SortType.ASC }],
@@ -56,6 +95,8 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityN
             data={{ columnListData, tableData }}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
+            resetUserSelectedColumns={resetColumns}
+            storeUserSelectedColumns={saveColumnSelection}
             sort={uiFilterState?.sort ?? []}
         />
     )

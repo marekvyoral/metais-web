@@ -300,6 +300,12 @@
         "actions": "Bulk actions",
         "invalidateItems": "Invalidate items",
         "validateItems": "Validate actions",
-        "changeOwner": "Change owner"
+        "changeOwner": "Change owner",
+        "metaColumnName": {
+            "state": "Evidence status",
+            "group": "Manager",
+            "createdAt": "Created",
+            "lastModifiedAt": " Last change"
+        }
     }
 }

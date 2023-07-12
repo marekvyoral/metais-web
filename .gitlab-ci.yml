@@ -18,6 +18,11 @@ stages:
     - deploy-okd-develop
     - deploy
 
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    #- if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
 checks:
     image: nexus.isdd.sk:8490/node:latest
     stage: run-checks
