@@ -40,7 +40,7 @@ export default defineConfig({
                     'cmdb-store-controller',
                     'cmdb-user-feedback-controller',
                     'cmdb-util-controller',
-                    'health-controller',
+                    //'health-controller',
                 ],
             },
         },
@@ -188,6 +188,24 @@ export default defineConfig({
                 mutator: {
                     path: './app/metais-portal/src/api/hooks/useUserConfigSwaggerClient.ts',
                     name: 'useUserConfigSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    impexpCmdb: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_IMPEXP_CMDB_SWAGGER_URL ?? '',
+        },
+        output: {
+            target: `./app/metais-portal/src/api/generated/impexp-cmdb-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './app/metais-portal/src/api/hooks/useImpexpCmdbSwaggerClient.ts',
+                    name: 'useImpexpCmdbSwaggerClient',
                 },
             },
             ...defaultOutputOptions,

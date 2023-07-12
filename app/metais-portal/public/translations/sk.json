@@ -301,6 +301,12 @@
         "actions": "Hromadné úkony",
         "invalidateItems": "Zneplatnenie položiek",
         "validateItems": "Splatnenie položiek",
-        "changeOwner": "Zmena vlastníka"
+        "changeOwner": "Zmena vlastníka",
+        "metaColumnName": {
+            "state": "Stav evidencie",
+            "group": "Správca",
+            "createdAt": "Vytvorené",
+            "lastModifiedAt": "Posledná zmena"
+        }
     }
 }

@@ -17,19 +17,26 @@ interface KSFilterData extends IFilterParams {
     Gen_Profil_kod_metais?: string
 }
 const ProjektListPage = () => {
-    const { entityName } = useParams()
+    const { entityName: ciType } = useParams()
     const { t } = useTranslation()
     const defaultFilterValues: KSFilterData = { Gen_Profil_nazov: '', Gen_Profil_kod_metais: '' }
 
     return (
         <AttributesContainer
-            entityName={entityName ?? ''}
-            View={({ data: { constraintsData, unitsData, ciTypeData } }) => {
+            entityName={ciType ?? ''}
+            View={({ data: { attributeProfiles, constraintsData, unitsData, ciTypeData, attributes } }) => {
                 return (
                     <CiListContainer<KSFilterData>
-                        entityName={entityName ?? ''}
+                        entityName={ciType ?? ''}
                         defaultFilterValues={defaultFilterValues}
-                        ListComponent={({ data: { columnListData, tableData }, handleFilterChange, pagination, sort }) => (
+                        ListComponent={({
+                            data: { columnListData, tableData },
+                            handleFilterChange,
+                            storeUserSelectedColumns,
+                            resetUserSelectedColumns,
+                            pagination,
+                            sort,
+                        }) => (
                             <>
                                 <Filter<KSFilterData>
                                     defaultFilterValues={defaultFilterValues}
@@ -37,7 +44,7 @@ const ProjektListPage = () => {
                                         <div>
                                             <Input
                                                 id="name"
-                                                label={t(`filter.${entityName}.name`)}
+                                                label={t(`filter.${ciType}.name`)}
                                                 placeholder={t(`filter.namePlaceholder`)}
                                                 {...register('Gen_Profil_nazov')}
                                             />
@@ -57,11 +64,14 @@ const ProjektListPage = () => {
                                 />
                                 <ActionsOverTable
                                     handleFilterChange={handleFilterChange}
+                                    storeUserSelectedColumns={storeUserSelectedColumns}
+                                    resetUserSelectedColumns={resetUserSelectedColumns}
                                     pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                                    //storeUserSelectedColumns={storeUserSelectedColumns}
-                                    // resetUserSelectedColumns={resetUserSelectedColumns}
-                                    //  pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                                    entityName={entityName ?? ''}
+                                    ciType={ciType ?? ''}
+                                    entityName={ciTypeData?.name ?? ''}
+                                    attributeProfiles={attributeProfiles ?? []}
+                                    attributes={attributes ?? []}
+                                    columnListData={columnListData}
                                 />
                                 <CiTable
                                     data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData }}
