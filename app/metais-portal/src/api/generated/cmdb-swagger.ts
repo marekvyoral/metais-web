@@ -1280,11 +1280,9 @@ export interface GeneralElasticItemSet {
     pagination?: PaginationUi
 }
 
-export type FilterValueUiValue = { [key: string]: any }
-
 export interface FilterValueUi {
     equality?: string
-    value?: FilterValueUiValue
+    value?: any
 }
 
 export interface FilterMetaAttributesUi {
