@@ -4,14 +4,15 @@ import {
     ExpandedState,
     OnChangeFn,
     PaginationState,
+    Row,
     getCoreRowModel,
     getExpandedRowModel,
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table'
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
 
 import { ColumnSort } from '../types'
 
@@ -36,6 +37,7 @@ interface ITableProps<T> {
     expandedRowsState?: ExpandedState
     onExpandedChange?: React.Dispatch<React.SetStateAction<ExpandedState>>
     getSubRows?: (row: T) => T[] | undefined
+    isRowSelected?: (row: Row<T>) => boolean
     isLoading?: boolean
     error?: boolean
 }
@@ -53,6 +55,7 @@ export const Table = <T,>({
     expandedRowsState,
     onExpandedChange,
     getSubRows,
+    isRowSelected,
     isLoading = false,
     error = false,
 }: ITableProps<T>): JSX.Element => {
@@ -88,7 +91,7 @@ export const Table = <T,>({
 
     return (
         <table className="idsk-table">
-            <thead className="idsk-table__head">
+            <thead className={classNames('idsk-table__head', [styles.head])}>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <tr className="idsk-table__row" key={headerGroup.id}>
                         {headerGroup.headers.map((header) => (
@@ -101,11 +104,14 @@ export const Table = <T,>({
                 <TableInfoMessage error={error} isEmptyRows={isEmptyRows} />
             </div>
             <tbody
-                className={classNames('idsk-table__body', { [styles.positionRelative]: isLoading, [styles.minHeight400]: isEmptyRows && isLoading })}
+                className={classNames('idsk-table__body', styles.body, {
+                    [styles.positionRelative]: isLoading,
+                    [styles.minHeight400]: isEmptyRows && isLoading,
+                })}
             >
                 {isLoading && <LoadingIndicator />}
                 {table.getRowModel().rows.map((row) => (
-                    <TableRow<T> row={row} key={row.id} />
+                    <TableRow<T> row={row} key={row.id} isRowSelected={isRowSelected} />
                 ))}
             </tbody>
         </table>

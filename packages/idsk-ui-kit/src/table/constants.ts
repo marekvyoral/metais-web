@@ -1,0 +1,1 @@
+export const CHECKBOX_CELL = 'CHECKBOX_CELL'
