@@ -11,6 +11,10 @@
         "en": "English",
         "ge": "German"
     },
+    "tab": {
+        "contents": "Obsah",
+        "moreTabs": "Dalsie zalozky"
+    },
     "loading": {
         "loadingSubPage": "Načítavám podstránku"
     },
