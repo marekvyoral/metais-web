@@ -129,10 +129,47 @@
         "no": "Nie"
     },
     "filter": {
-        "expand": "Rozbaliť obsah filtra",
-        "collapse": "Zbaliť obsah filtra"
+        "expand": "Rozbaliť filter",
+        "collapse": "Zbaliť filter",
+        "namePlaceholder": "Zadajte názov",
+        "searchPlaceholder": "Vyhľadajte v tabuľke",
+        "KS": {
+            "name": "Názov koncovej služby"
+        },
+        "ISVS": {
+            "name": "Názov informačného systému"
+        },
+        "metaisCode": {
+            "label": "Kód MetaIS",
+            "placeholder": "ks_"
+        },
+        "reset": "Vyčistiť kritéria filtrovania",
+        "submit": "Vyfiltrovať"
+    },
+    "customAttributeFilter": {
+        "add": "+ Pridať filter",
+        "remove": "Vymazat",
+        "value": {
+            "label": "Hodnota",
+            "placeholder": "Zadajte"
+        },
+        "operator": {
+            "label": "Podmienka",
+            "placeholder": "Vyberte",
+            "FULLTEXT": "Obsahuje",
+            "EQUAL": "=",
+            "GREATER": ">",
+            "LOWER": "<",
+            "EQUAL_OR_GREATER": "=<",
+            "EQUAL_OR_LOWER": "=>"
+        },
+        "attribute": {
+            "label": "Atribút",
+            "placeholder": "Vyberte"
+        }
     },
     "form": {
+        "search": "Hľadať",
         "userFirstName": "Meno použivateľa",
         "userSurName": "Priezvisko použivateľa",
         "select": {
