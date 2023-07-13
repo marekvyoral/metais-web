@@ -17,7 +17,7 @@ export type CustomClient<T> = (data: {
 
 export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T) => void): CustomClient<T> => {
     const {
-        state: { user, accessToken },
+        state: { accessToken },
         dispatch,
     } = useAuth()
 
@@ -28,7 +28,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
             'Content-Type': 'application/json',
             ...data?.headers,
         }
-        if (user) {
+        if (accessToken) {
             headers['Authorization'] = `Bearer ${accessToken}`
         }
         const response = await fetch(`${baseURL}${url}` + searchParams, {
