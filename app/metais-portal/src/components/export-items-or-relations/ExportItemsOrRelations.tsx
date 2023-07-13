@@ -19,7 +19,7 @@ interface IExportItemsOrRelationsProps {
 
 export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({ isOpen, close, onExportStart }) => {
     const { t } = useTranslation()
-    const [exportValue, setExportValue] = useState('')
+    const [exportValue, setExportValue] = useState<string>('')
     const startExport = (extension: string) => {
         if (!exportValue) return
         onExportStart(exportValue, extension)

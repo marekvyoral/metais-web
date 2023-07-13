@@ -57,3 +57,12 @@ export const sortAndMergeCiColumns = (columnsList: FavoriteCiType) => {
     mergedCiColumns?.sort((a, b) => (a?.order ?? 0) - (b?.order ?? 0))
     return mergedCiColumns
 }
+
+export const reduceTableDataToObject = <T extends { uuid?: string }>(array: T[]): Record<string, T> => {
+    return array.reduce<Record<string, T>>((result, item) => {
+        if (item.uuid) {
+            result[item.uuid] = item
+        }
+        return result
+    }, {})
+}
