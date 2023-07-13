@@ -21,6 +21,7 @@ import { TableRow } from './TableRow'
 import styles from './table.module.scss'
 import { TableInfoMessage } from './TableInfoMessage'
 import { transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
+import { TableRowExpanded } from './TableRowExpanded'
 
 import { LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
 
@@ -40,6 +41,7 @@ interface ITableProps<T> {
     isRowSelected?: (row: Row<T>) => boolean
     isLoading?: boolean
     error?: boolean
+    getExpandedRow?: (row: Row<T>) => JSX.Element | null
 }
 
 export const Table = <T,>({
@@ -58,6 +60,7 @@ export const Table = <T,>({
     isRowSelected,
     isLoading = false,
     error = false,
+    getExpandedRow,
 }: ITableProps<T>): JSX.Element => {
     const transformedSort = transformColumnSortToSortingState(sort)
     const table = useReactTable({
@@ -82,9 +85,10 @@ export const Table = <T,>({
         onPaginationChange,
         getExpandedRowModel: getExpandedRowModel(),
         onExpandedChange,
-        getSubRows,
+        getSubRows: getSubRows,
         enableMultiSort: true,
         manualPagination: true,
+        getRowCanExpand: getExpandedRow ? (row) => !!getExpandedRow(row) : undefined,
     })
 
     const isEmptyRows = table.getRowModel().rows.length === 0
@@ -111,7 +115,10 @@ export const Table = <T,>({
             >
                 {isLoading && <LoadingIndicator />}
                 {table.getRowModel().rows.map((row) => (
-                    <TableRow<T> row={row} key={row.id} isRowSelected={isRowSelected} />
+                    <>
+                        <TableRow<T> row={row} key={row.id} isRowSelected={isRowSelected} />
+                        {row.getIsExpanded() && getExpandedRow && <TableRowExpanded row={row} getExpandedRow={getExpandedRow} />}
+                    </>
                 ))}
             </tbody>
         </table>
