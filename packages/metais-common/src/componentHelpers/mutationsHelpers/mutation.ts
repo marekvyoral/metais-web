@@ -20,25 +20,21 @@ export const setValidity = async (
         await setInvalidMutation?.({
             technicalName: technicalName ?? '',
         })
-            .then((value) => {
+            .then(() => {
                 refetch?.()
-                console.log('INVALID VALUE: ', value)
             })
-            .catch((error) => {
+            .catch(() => {
                 refetch?.()
-                console.log('INVALID ERROR: ', error)
             })
     } else {
         await setValidMutation?.({
             technicalName: technicalName ?? '',
         })
-            .then((value) => {
+            .then(() => {
                 refetch?.()
-                console.log('VALID: ', value)
             })
-            .catch((error) => {
+            .catch(() => {
                 refetch?.()
-                console.log('VALID ERROR: ', error)
             })
     }
 }

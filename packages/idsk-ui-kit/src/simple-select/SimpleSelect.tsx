@@ -15,6 +15,11 @@ export const SimpleSelect = forwardRef<HTMLSelectElement, SelectProps>(({ id, la
                 {label}
             </label>
             <select className="govuk-select" id={id} ref={ref} {...rest} disabled={disabled}>
+                {rest.placeholder ? (
+                    <option disabled value="">
+                        {rest.placeholder}
+                    </option>
+                ) : null}
                 {options.map((item) => (
                     <option value={item.value} key={item.value} disabled={item.disabled} selected={item?.selected}>
                         {item.label}

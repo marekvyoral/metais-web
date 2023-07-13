@@ -1,17 +1,26 @@
 import React, { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
-import { useNavigate } from 'react-router-dom'
 import { SimpleSelect } from '@isdd/idsk-ui-kit/simple-select/SimpleSelect'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import classnames from 'classnames'
 import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
-import { TableSelectColumns } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
+import { IColumnSectionType, TableSelectColumns } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
+import { useNavigate } from 'react-router-dom'
 
-import { BASE_PAGE_SIZE } from '../../api'
 import { ExportItemsOrRelations } from '../export-items-or-relations/ExportItemsOrRelations'
+import { Attribute, AttributeProfile, BASE_PAGE_SIZE } from '../../api'
+import {
+    useExportCsvUsingGETHook,
+    useExportXmlUsingGETHook,
+    useExportExcelUsingGETHook,
+    useExportRelCsvUsingGETHook,
+    useExportRelExcelUsingGETHook,
+    useExportRelXmlUsingGETHook,
+} from '../../api/generated/impexp-cmdb-swagger'
+import { IColumn } from '../../hooks/useColumnList'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '../../assets/images'
 
 import styles from './actionsOverTable.module.scss'
@@ -26,12 +35,19 @@ export enum ActionNames {
 export type HiddenButtons = {
     [name in ActionNames]: boolean
 }
-
 interface IActionsOverTableProps {
     pagingOptions?: { value: string; label: string; disabled?: boolean }[]
     handleFilterChange?: (filter: IFilter) => void
-    entityName?: string
-    createPageHref?: string
+    ciType: string
+    entityName: string
+    storeUserSelectedColumns?: (columnSelection: {
+        attributes: { name: string; order: number }[]
+        metaAttributes: { name: string; order: number }[]
+    }) => void
+    resetUserSelectedColumns?: () => Promise<void>
+    attributeProfiles?: AttributeProfile[]
+    columnListData?: IColumn | undefined
+    attributes?: Attribute[]
     hiddenButtons?: Partial<HiddenButtons>
 }
 
@@ -42,9 +58,14 @@ const defaultPagingOptions = [
 
 export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     pagingOptions,
+    ciType,
     entityName,
     handleFilterChange,
-    createPageHref,
+    resetUserSelectedColumns,
+    storeUserSelectedColumns,
+    attributeProfiles,
+    columnListData,
+    attributes,
     hiddenButtons,
 }) => {
     const [modalOpen, setModalOpen] = useState(false)
@@ -59,10 +80,93 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     const onClose = () => {
         setModalOpen(false)
     }
+
+    const exportCsv = useExportCsvUsingGETHook()
+    const exportXml = useExportXmlUsingGETHook()
+    const exportExcel = useExportExcelUsingGETHook()
+
+    const exportRelXml = useExportRelXmlUsingGETHook()
+    const exportRelCsv = useExportRelCsvUsingGETHook()
+    const exportRelExcel = useExportRelExcelUsingGETHook()
+
     const onExportStart = (exportValue: string, extension: string) => {
         // eslint-disable-next-line no-console
         console.log(exportValue, extension)
+        if (exportValue === 'items') {
+            if (extension === 'XML') {
+                exportXml({})
+                return
+            }
+            if (extension === 'CSV') {
+                exportCsv({})
+                return
+            }
+            if (extension === 'XLSX') {
+                exportExcel({})
+                return
+            }
+        }
+        if (exportValue === 'relations') {
+            if (extension === 'XML') {
+                exportRelXml({})
+                return
+            }
+            if (extension === 'CSV') {
+                exportRelCsv({})
+                return
+            }
+            if (extension === 'XLSX') {
+                exportRelExcel({})
+                return
+            }
+        }
     }
+
+    const attributeProfilesColumnSections: IColumnSectionType[] =
+        attributeProfiles?.map((attributeProfile) => ({
+            name: attributeProfile.name || '',
+            attributes:
+                attributeProfile.attributes
+                    ?.filter((attribute) => attribute.invisible === false)
+                    .map((attribute) => ({
+                        name: attribute.name || '',
+                        technicalName: attribute.technicalName || '',
+                    })) || [],
+        })) ?? []
+
+    const attributesColumnSection: IColumnSectionType = {
+        name: entityName || '',
+        attributes:
+            attributes
+                ?.filter((attribute) => attribute.invisible === false)
+                ?.map((attribute) => ({
+                    name: attribute.name || '',
+                    technicalName: attribute.technicalName || '',
+                })) ?? [],
+    }
+
+    const metaAttributesColumnSection: IColumnSectionType = {
+        name: 'Metainformácie položky',
+        attributes: [
+            {
+                name: t('actionOverTable.metaColumnName.state'),
+                technicalName: 'state',
+            },
+            {
+                name: t('actionOverTable.metaColumnName.group'),
+                technicalName: 'group',
+            },
+            {
+                name: t('actionOverTable.metaColumnName.createdAt'),
+                technicalName: 'createdAt',
+            },
+            {
+                name: t('actionOverTable.metaColumnName.lastModifiedAt'),
+                technicalName: 'lastModifiedAt',
+            },
+        ],
+    }
+
     return (
         <div className={styles.buttonContainer}>
             <div className={styles.buttonGroup}>
@@ -126,7 +230,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                     <Button
                         className={classnames(styles.withoutMarginBottom, styles.mobileOrder1)}
                         onClick={() => {
-                            navigate(createPageHref ?? `/ci/${entityName}/create`)
+                            navigate(`/ci/${ciType}/create`)
                         }}
                         label={
                             <div className={styles.buttonWithIcon}>
@@ -142,30 +246,16 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                     <ButtonPopup
                         buttonLabel={t('actionOverTable.selectColumn')}
                         buttonClassname={styles.withoutMarginBottom}
-                        popupContent={() => {
+                        popupContent={(closePopup) => {
                             return (
                                 <TableSelectColumns
-                                    onClose={function (): void {
-                                        throw new Error('Function not implemented.')
-                                    }}
-                                    resetDefaultOrder={function (): void {
-                                        throw new Error('Function not implemented.')
-                                    }}
-                                    showSelectedColumns={function (): void {
-                                        throw new Error('Function not implemented.')
-                                    }}
-                                    columns={[
-                                        { technicalName: 'Tname', name: 'name', selected: false },
-                                        { technicalName: 'Tname2', name: 'name2', selected: false },
-                                        { technicalName: 'Tname3', name: 'name3', selected: false },
-                                        { technicalName: 'Tname4', name: 'name4', selected: false },
-                                        { technicalName: 'Tname5', name: 'name5', selected: false },
-                                        { technicalName: 'Tname6', name: 'name6', selected: false },
-                                        { technicalName: 'Tname7', name: 'name7', selected: false },
-                                        { technicalName: 'Tname8', name: 'name8', selected: false },
-                                        { technicalName: 'Tname9', name: 'name9', selected: false },
-                                    ]}
-                                    header={'header'}
+                                    onClose={closePopup}
+                                    resetDefaultOrder={resetUserSelectedColumns}
+                                    showSelectedColumns={storeUserSelectedColumns}
+                                    attributeProfilesColumnSections={attributeProfilesColumnSections}
+                                    columnListData={columnListData}
+                                    attributesColumnSection={attributesColumnSection}
+                                    metaAttributesColumnSection={metaAttributesColumnSection}
                                 />
                             )
                         }}

@@ -11,11 +11,10 @@ interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<
     error?: FieldError
     disabled?: boolean
 }
-export const Input = forwardRef<HTMLInputElement, IInputProps>(({ id, label, name, hint, error, disabled, ...rest }, ref) => {
+export const Input = forwardRef<HTMLInputElement, IInputProps>(({ id, label, name, hint, error, disabled, className, ...rest }, ref) => {
     const hintId = `${id}-hint`
-
     return (
-        <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!error })}>
+        <div className={classNames(className, 'govuk-form-group', { 'govuk-form-group--error': !!error })}>
             <label className="govuk-label" htmlFor={id}>
                 {label}
             </label>

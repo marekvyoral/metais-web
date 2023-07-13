@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
 import { CiTable } from '../ci-table/CiTable'
 
@@ -16,11 +17,14 @@ const meta: Meta<typeof CiListContainer> = {
 
 export default meta
 type Story = StoryObj<typeof CiListContainer>
-
+interface FilterData extends IFilterParams {
+    name?: string
+}
 export const Main: Story = {
     render: () => (
         <QueryClientProvider client={queryClient}>
-            <CiListContainer
+            <CiListContainer<FilterData>
+                defaultFilterValues={{}}
                 entityName="Projekt"
                 ListComponent={({ data, handleFilterChange, pagination, sort }) => (
                     <>

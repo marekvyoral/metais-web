@@ -3,6 +3,11 @@ import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, matchPath, useLocation } from 'react-router-dom'
 
+import { ButtonPopup } from '..'
+
+import styles from './tabs.module.scss'
+import { changeTabOrder } from './tabsUtils'
+
 export interface Tab {
     id: string
     path?: string
@@ -14,12 +19,13 @@ interface ITabItemDesktop {
     tab: Tab
     handleSelect: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: Tab) => void
     isSelected: boolean
+    className?: string
 }
 
-const TabItemDesktop: React.FC<ITabItemDesktop> = ({ handleSelect, tab, isSelected }) => {
+const TabItemDesktop: React.FC<ITabItemDesktop> = ({ handleSelect, tab, isSelected, className }) => {
     return (
-        <li key={tab.id} className={classnames('idsk-tabs__list-item', { 'idsk-tabs__list-item--selected': isSelected })}>
-            <a className="idsk-tabs__tab" href={`#${tab.id}`} title={tab.id} onClick={(event) => handleSelect(event, tab)}>
+        <li key={tab.id} className={classnames(className, 'idsk-tabs__list-item', { 'idsk-tabs__list-item--selected': isSelected })}>
+            <a className={classnames('idsk-tabs__tab')} href={`#${tab.id}`} title={tab.id} onClick={(event) => handleSelect(event, tab)}>
                 {tab.title}
             </a>
         </li>
@@ -70,6 +76,8 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     const navigate = useNavigate()
     const [selected, setSelected] = useState<Tab | null>(tabList[0])
     const shouldNavigate = !!tabList[0]?.path
+    const [newTabList, setNewTabList] = useState(tabList)
+    const MAX_SHOWN_TABS = 5
 
     const activeTab = shouldNavigate
         ? tabList.find((tab) => {
@@ -95,6 +103,16 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
         }
     }
 
+    const handleSubListSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: Tab) => {
+        event.preventDefault()
+        changeTabOrder(value, MAX_SHOWN_TABS - 1, newTabList, setNewTabList)
+        if (value.path) {
+            navigate(value.path)
+        } else {
+            setSelected(value)
+        }
+    }
+
     const handleMobileSelect = (value: Tab) => {
         if (value.path) {
             navigate(value.path)
@@ -111,10 +129,36 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     return (
         <div className="idsk-tabs" data-module="idsk-tabs">
             <h2 className="idsk-tabs__title">{t('tab.contents')}</h2>
-            <ul className="idsk-tabs__list" style={{ maxWidth: '100%', overflow: 'scroll' }}>
-                {tabList.map((tab) => (
+            <ul className={classnames('idsk-tabs__list')}>
+                {newTabList.slice(0, MAX_SHOWN_TABS).map((tab) => (
                     <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={activeTab?.id === tab.id} tab={tab} />
                 ))}
+                {tabList.length > MAX_SHOWN_TABS && (
+                    <li className={styles.subListButton}>
+                        <ButtonPopup
+                            popupPosition="right"
+                            buttonLabel={t('tab.moreTabs')}
+                            popupContent={(closePopup) => {
+                                return (
+                                    <ul className={styles.subList}>
+                                        {newTabList.slice(MAX_SHOWN_TABS, tabList.length).map((tab) => (
+                                            <TabItemDesktop
+                                                key={tab.id}
+                                                handleSelect={(event) => {
+                                                    handleSubListSelect(event, tab)
+                                                    closePopup()
+                                                }}
+                                                isSelected={selected === tab}
+                                                tab={tab}
+                                                className={styles.subListItem}
+                                            />
+                                        ))}
+                                    </ul>
+                                )
+                            }}
+                        />
+                    </li>
+                )}
             </ul>
             <ul className="idsk-tabs__list--mobile" role="tablist">
                 {tabList.map((tab) => (

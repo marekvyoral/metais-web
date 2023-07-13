@@ -1,5 +1,6 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { CiListFilterContainerUi, ReadCiNeighboursWithAllRelsUsingGETParams } from '@isdd/metais-common/api'
+import { CiListFilterContainerUi, ReadCiNeighboursWithAllRelsUsingGETParams, FilterAttributesUi } from '@isdd/metais-common/api'
+import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
 export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: { [filterName: string]: T } | T): CiListFilterContainerUi => {
     const { pageNumber, pageSize, sort } = filter
@@ -20,7 +21,39 @@ export const mapFilterToNeighboursWithAllRelsApi = (
 
     return {
         ...originalFilter,
-        page: pageNumber === undefined ? originalFilter.page : pageNumber,
-        perPage: pageSize === undefined ? originalFilter.perPage : pageSize,
+        page: pageNumber ?? originalFilter.page,
+        perPage: pageSize ?? originalFilter.perPage,
     }
+}
+
+export const mapFilterParamsToApi = <T extends IFilterParams>(filterParams: T): FilterAttributesUi[] => {
+    const attributes: FilterAttributesUi[] = []
+    const keysToSkip = new Set(['fullTextSearch', 'attributeFilters'])
+    for (const [key, value] of Object.entries(filterParams)) {
+        if (keysToSkip.has(key)) continue
+        if (value) {
+            attributes.push({
+                name: key,
+                filterValue: [
+                    {
+                        value,
+                        equality: 'FULLTEXT',
+                    },
+                ],
+            })
+        }
+    }
+
+    for (const [key, attrs] of Object.entries(filterParams?.attributeFilters || {})) {
+        if (!key) continue
+        const combinedAttrs: FilterAttributesUi = {
+            name: key,
+            filterValue: attrs.filter((attr) => attr.value && attr.operator).map((attr) => ({ value: attr.value, equality: attr.operator })),
+        }
+        if (combinedAttrs.filterValue && combinedAttrs.filterValue.length > 0) {
+            attributes.push(combinedAttrs)
+        }
+    }
+
+    return attributes
 }

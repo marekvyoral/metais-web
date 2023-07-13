@@ -3,9 +3,6 @@ import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
-import { TableSelectColumns } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
-import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
-import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 
 import { CiContainer } from '@/components/containers/CiContainer'
 import { View } from '@/components/containers/CiContainer.stories'
@@ -29,10 +26,13 @@ export const DevTestScreen: React.FC = () => {
         // eslint-disable-next-line no-console
         console.log(exportValue, extension)
     }
+
+    // const { data: ciItemData, isLoading, isError } = useReadConfigurationItemUsingGET(configurationItemId ?? '')
+
     return (
         <>
             <h4>Obrazovka na testovanie komponentov</h4>
-            <ActionsOverTable entityName={'abc'} />
+            {/* <ActionsOverTable entityName={'abc'} /> */}
             <AttributesContainer
                 entityName="KRIS"
                 View={() => {
@@ -42,36 +42,6 @@ export const DevTestScreen: React.FC = () => {
             <Button label={'Modal open'} onClick={openModal} />
             <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />
             <ButtonLink label="ButtonLink" />
-            <ButtonPopup
-                buttonLabel={'buttonLabel'}
-                popupContent={function (): React.ReactNode {
-                    return (
-                        <TableSelectColumns
-                            onClose={function (): void {
-                                throw new Error('Function not implemented.')
-                            }}
-                            resetDefaultOrder={function (): void {
-                                throw new Error('Function not implemented.')
-                            }}
-                            showSelectedColumns={function (): void {
-                                throw new Error('Function not implemented.')
-                            }}
-                            columns={[
-                                { technicalName: 'Tname', name: 'name', selected: false },
-                                { technicalName: 'Tname2', name: 'name2', selected: false },
-                                { technicalName: 'Tname3', name: 'name3', selected: false },
-                                { technicalName: 'Tname4', name: 'name4', selected: false },
-                                { technicalName: 'Tname5', name: 'name5', selected: false },
-                                { technicalName: 'Tname6', name: 'name6', selected: false },
-                                { technicalName: 'Tname7', name: 'name7', selected: false },
-                                { technicalName: 'Tname8', name: 'name8', selected: false },
-                                { technicalName: 'Tname9', name: 'name9', selected: false },
-                            ]}
-                            header={'header'}
-                        />
-                    )
-                }}
-            />
 
             <RelationsListContainer entityId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" technicalName="Dokument" View={RelationsView} />
             <DocumentsListContainer configurationItemId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={DocsView} />

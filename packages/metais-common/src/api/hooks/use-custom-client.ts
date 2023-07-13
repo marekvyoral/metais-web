@@ -37,12 +37,16 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
             ...(data ? { body: JSON.stringify(data) } : {}),
         })
 
+        const responseBodyText = await response.text()
+
+        const responseBody = responseBodyText.length > 0 && JSON.parse(responseBodyText)
+
         if (response.status == 401) {
             dispatch({ type: AuthActions.LOGOUT })
             navigate('/?token_expired=true')
         }
-        const responseBody = response ? await response?.json() : ''
         if (callback) callback(responseBody)
-        return responseBody ?? ''
+
+        return responseBody
     }
 }

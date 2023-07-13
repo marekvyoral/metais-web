@@ -76,8 +76,8 @@ export const EgovTable = ({ data, entityName }: IListData) => {
                     { value: '100', label: '100' },
                 ]}
                 hiddenButtons={{ IMPORT: true }}
-                createPageHref={`/egov/${entityName}/create`}
-                entityName={entityName}
+                entityName={entityName ?? ''}
+                ciType={entityName ?? ''}
             />
             <Table data={data?.slice(start, end)} columns={columns} pagination={{ pageIndex: pageNumber, pageSize }} />
             <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={dataLength} handlePageChange={handlePageChange} />

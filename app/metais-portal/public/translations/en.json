@@ -129,10 +129,47 @@
         "no": "No"
     },
     "filter": {
-        "expand": "Expand content of filter",
-        "collapse": "Collapse content of filter"
+        "expand": "Expand filter",
+        "collapse": "Collapse filter",
+        "namePlaceholder": "Enter a name",
+        "searchPlaceholder": "Search in table",
+        "ks": {
+            "name": "Name of end service"
+        },
+        "isvs": {
+            "name": "Name of information system"
+        },
+        "metaisCode": {
+            "label": "Code MetaIS",
+            "placeholder": "ks_"
+        },
+        "reset": "Clear Filter",
+        "submit": "Filter"
+    },
+    "customAttributeFilter": {
+        "add": "+ Add filter",
+        "remove": "Remove",
+        "value": {
+            "label": "Value",
+            "placeholder": "Enter the value"
+        },
+        "operator": {
+            "label": "Condition",
+            "placeholder": "Pick",
+            "FULLTEXT": "Contains",
+            "EQUAL": "=",
+            "GREATER": ">",
+            "LOWER": "<",
+            "EQUAL_OR_GREATER": "=<",
+            "EQUAL_OR_LOWER": "=>"
+        },
+        "attribute": {
+            "label": "Attribute",
+            "placeholder": "Pick"
+        }
     },
     "form": {
+        "search": "Search",
         "userFirstName": "First name of user",
         "userSurName": "Surname of user",
         "select": {
@@ -263,6 +300,12 @@
         "actions": "Bulk actions",
         "invalidateItems": "Invalidate items",
         "validateItems": "Validate actions",
-        "changeOwner": "Change owner"
+        "changeOwner": "Change owner",
+        "metaColumnName": {
+            "state": "Evidence status",
+            "group": "Manager",
+            "createdAt": "Created",
+            "lastModifiedAt": " Last change"
+        }
     }
 }

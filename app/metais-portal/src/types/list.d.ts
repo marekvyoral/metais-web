@@ -11,11 +11,18 @@ export interface IListData {
     unitsData?: EnumType | undefined
     constraintsData?: (EnumType | undefined)[]
     tableData: void | ConfigurationItemSetUi | undefined
+    attributeProfiles?: AttributeProfile[]
+    attributes?: Attribute[]
 }
 
 export interface IListView {
     data: IListData
     pagination: Pagination
-    handleFilterChange: (filter: IFilter) => void
     sort: ColumnSort[]
+    handleFilterChange: (filter: IFilter) => void
+    storeUserSelectedColumns: (columnSelection: {
+        attributes: { name: string; order: number }[]
+        metaAttributes: { name: string; order: number }[]
+    }) => void
+    resetUserSelectedColumns: () => Promise<void>
 }
