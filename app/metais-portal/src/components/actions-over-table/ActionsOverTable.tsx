@@ -28,6 +28,12 @@ import {
     useExportRelXmlUsingGET,
     useExportRelCsvUsingGET,
     useExportRelExcelUsingGET,
+    useExportXmlUsingPUT,
+    useExportCsvUsingPUT,
+    useExportExcelUsingPUT,
+    useExportRelXmlUsingPUT,
+    useExportRelCsvUsingPUT,
+    useExportRelExcelUsingPUT,
 } from '@/api/generated/impexp-cmdb-swagger'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@/assets/images'
 import { IColumn } from '@/hooks/useColumnList'
@@ -76,13 +82,13 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
         setModalOpen(false)
     }
 
-    const exportCsv = useExportCsvUsingGET
-    const exportXml = useExportXmlUsingGET
-    const exportExcel = useExportExcelUsingGET
+    const exportCsv = useExportCsvUsingPUT()
+    const exportXml = useExportXmlUsingPUT()
+    const exportExcel = useExportExcelUsingPUT()
 
-    const exportRelXml = useExportRelXmlUsingGET
-    const exportRelCsv = useExportRelCsvUsingGET
-    const exportRelExcel = useExportRelExcelUsingGET
+    const exportRelXml = useExportRelXmlUsingPUT()
+    const exportRelCsv = useExportRelCsvUsingPUT()
+    const exportRelExcel = useExportRelExcelUsingPUT()
 
     const exportData = (exportFunction: any) => {
         const { data } = exportFunction({
@@ -101,29 +107,83 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
 
         if (exportValue === 'items') {
             if (extension === 'XML') {
-                exportData(exportXml)
+                exportXml.mutateAsync({
+                    data: {
+                        filter: {
+                            type: [ciType],
+                            // metaAttributes: {
+                            //     state: ['DRAFT'],
+                            // },
+                        },
+                    },
+                })
                 return
             }
             if (extension === 'CSV') {
-                exportCsv({})
+                exportCsv.mutateAsync({
+                    data: {
+                        filter: {
+                            type: [ciType],
+                            // metaAttributes: {
+                            //     state: ['DRAFT'],
+                            // },
+                        },
+                    },
+                })
                 return
             }
             if (extension === 'XLSX') {
-                exportExcel({})
+                exportExcel.mutateAsync({
+                    data: {
+                        filter: {
+                            type: [ciType],
+                            // metaAttributes: {
+                            //     state: ['DRAFT'],
+                            // },
+                        },
+                    },
+                })
                 return
             }
         }
         if (exportValue === 'relations') {
             if (extension === 'XML') {
-                exportRelXml({})
+                exportRelXml.mutateAsync({
+                    data: {
+                        filter: {
+                            type: [ciType],
+                            // metaAttributes: {
+                            //     state: ['DRAFT'],
+                            // },
+                        },
+                    },
+                })
                 return
             }
             if (extension === 'CSV') {
-                exportRelCsv({})
+                exportRelCsv.mutateAsync({
+                    data: {
+                        filter: {
+                            type: [ciType],
+                            // metaAttributes: {
+                            //     state: ['DRAFT'],
+                            // },
+                        },
+                    },
+                })
                 return
             }
             if (extension === 'XLSX') {
-                exportRelExcel({})
+                exportRelExcel.mutateAsync({
+                    data: {
+                        filter: {
+                            type: [ciType],
+                            // metaAttributes: {
+                            //     state: ['DRAFT'],
+                            // },
+                        },
+                    },
+                })
                 return
             }
         }
