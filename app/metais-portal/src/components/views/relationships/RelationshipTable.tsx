@@ -3,6 +3,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
+import { QueryFeedback } from '@isdd/metais-common/index'
 
 import { TableCols } from '../documents'
 
@@ -15,21 +16,11 @@ interface RelationshipsTable {
     handleFilterChange: (filter: IFilter) => void
 }
 
-const Loading: React.FC = () => {
-    return <div>loading</div>
-}
-
-const Error: React.FC = () => {
-    return <div>error</div>
-}
-
 export const RelationshipsTable: React.FC<RelationshipsTable> = ({ data, columns, isLoading, isError, pagination, handleFilterChange }) => {
-    if (isLoading) return <Loading />
-    if (isError) return <Error />
     return (
-        <>
+        <QueryFeedback loading={isLoading} error={isError}>
             <Table columns={columns} data={data} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
-        </>
+        </QueryFeedback>
     )
 }

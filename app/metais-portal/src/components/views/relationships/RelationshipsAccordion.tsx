@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
+import { QueryFeedback } from '@isdd/metais-common/index'
 
 import { RelationshipsTable } from './RelationshipTable'
 import { targetTableColumns } from './RelationshipsTargetTableColumns'
@@ -17,21 +18,11 @@ interface RelationshipsAccordion {
     configurationItemId?: string
 }
 
-const Loading: React.FC = () => {
-    return <div>loading</div>
-}
-
-const Error: React.FC = () => {
-    return <div>error</div>
-}
-
 export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data, isLoading, isError, configurationItemId }) => {
     const { t } = useTranslation()
-    if (isLoading) return <Loading />
-    if (isError) return <Error />
 
     return (
-        <>
+        <QueryFeedback loading={isLoading} error={isError}>
             <AccordionContainer
                 sections={[
                     { title: t('relationshipsTab.relationshipsVisualization'), content: 'todo: graph' },
@@ -85,6 +76,6 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                     },
                 ]}
             />
-        </>
+        </QueryFeedback>
     )
 }

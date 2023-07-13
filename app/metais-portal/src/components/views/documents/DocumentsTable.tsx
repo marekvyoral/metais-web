@@ -5,6 +5,7 @@ import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { QueryFeedback } from '@isdd/metais-common/index'
 
 import { NeighbourPairUi } from '@/api'
 
@@ -20,19 +21,9 @@ interface DocumentsTable {
     handleFilterChange: (filter: IFilter) => void
 }
 
-const Loading: React.FC = () => {
-    return <div>loading</div>
-}
-
-const Error: React.FC = () => {
-    return <div>error</div>
-}
-
 export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColumns, isLoading, isError, pagination, handleFilterChange }) => {
     const { t } = useTranslation()
 
-    if (isLoading) return <Loading />
-    if (isError) return <Error />
     const additionalColumnsNullsafe = additionalColumns ?? []
     const columns: Array<ColumnDef<TableCols>> = [
         {
@@ -79,9 +70,9 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColum
     ]
 
     return (
-        <>
+        <QueryFeedback loading={isLoading} error={isError}>
             <Table columns={columns} data={data} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
-        </>
+        </QueryFeedback>
     )
 }

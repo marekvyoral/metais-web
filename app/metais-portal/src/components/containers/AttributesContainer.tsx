@@ -1,4 +1,5 @@
 import React from 'react'
+import { QueryFeedback } from '@isdd/metais-common/index'
 
 import { EnumType, AttributeConstraintEnumAllOf, useGetCiTypeUsingGET, CiType, AttributeProfile, Attribute } from '@/api'
 import { useHowToDisplayConstraints } from '@/hooks/useHowToDisplay'
@@ -53,12 +54,9 @@ export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName,
     const isLoading = [isCiTypeDataLoading, isConstraintLoading].some((item) => item) //isUnitsLoading,
     const isError = [isCiTypeDataError, isConstraintError].some((item) => item) //isUnitsError,
 
-    if (isLoading) {
-        return <div>Loading</div>
-    }
-    if (isError) {
-        return <div>Error</div>
-    }
-
-    return <View data={{ attributeProfiles, ciTypeData, constraintsData, unitsData: undefined, attributes }} />
+    return (
+        <QueryFeedback loading={isLoading} error={isError}>
+            <View data={{ attributeProfiles, ciTypeData, constraintsData, unitsData: undefined, attributes }} />
+        </QueryFeedback>
+    )
 }
