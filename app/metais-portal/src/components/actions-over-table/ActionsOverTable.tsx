@@ -22,6 +22,12 @@ import {
     useExportRelCsvUsingGETHook,
     useExportRelExcelUsingGETHook,
     useExportRelXmlUsingGETHook,
+    useExportXmlUsingGET,
+    useExportCsvUsingGET,
+    useExportExcelUsingGET,
+    useExportRelXmlUsingGET,
+    useExportRelCsvUsingGET,
+    useExportRelExcelUsingGET,
 } from '@/api/generated/impexp-cmdb-swagger'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@/assets/images'
 import { IColumn } from '@/hooks/useColumnList'
@@ -70,20 +76,32 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
         setModalOpen(false)
     }
 
-    const exportCsv = useExportCsvUsingGETHook()
-    const exportXml = useExportXmlUsingGETHook()
-    const exportExcel = useExportExcelUsingGETHook()
+    const exportCsv = useExportCsvUsingGET
+    const exportXml = useExportXmlUsingGET
+    const exportExcel = useExportExcelUsingGET
 
-    const exportRelXml = useExportRelXmlUsingGETHook()
-    const exportRelCsv = useExportRelCsvUsingGETHook()
-    const exportRelExcel = useExportRelExcelUsingGETHook()
+    const exportRelXml = useExportRelXmlUsingGET
+    const exportRelCsv = useExportRelCsvUsingGET
+    const exportRelExcel = useExportRelExcelUsingGET
 
+    const exportData = (exportFunction: any) => {
+        const { data } = exportFunction({
+            filter: {
+                type: [ciType],
+                // metaAttributes: {
+                //     state: ['DRAFT'],
+                // },
+            },
+        })
+        console.log(data)
+    }
     const onExportStart = (exportValue: string, extension: string) => {
         // eslint-disable-next-line no-console
         console.log(exportValue, extension)
+
         if (exportValue === 'items') {
             if (extension === 'XML') {
-                exportXml({})
+                exportData(exportXml)
                 return
             }
             if (extension === 'CSV') {
