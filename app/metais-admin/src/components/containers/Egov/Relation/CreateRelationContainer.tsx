@@ -1,5 +1,5 @@
 import React from 'react'
-import { useFindByNameUsingGET1 } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useFindAllUsingGET14 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { RelationshipType, Role, useStoreAdminEntityUsingPOST1 } from '@isdd/metais-common/api'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
 
@@ -25,9 +25,10 @@ interface ICreateEntity {
 }
 
 export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
-    const defaultOptions = {}
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, isLoading, isError } = useFindByNameUsingGET1(defaultOptions as any)
+    const page = 1
+    const limit = 200
+
+    const { data, isLoading, isError } = useFindAllUsingGET14(page, limit, { direction: 'ASC', orderBy: 'name' })
     const mutationObject = useStoreAdminEntityUsingPOST1()
 
     if (isLoading) return <div>isLoading</div>

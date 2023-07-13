@@ -1,20 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, Tab, Tabs } from '@isdd/idsk-ui-kit'
+import { useNavigate } from 'react-router-dom'
 
 import styles from '../detailViews.module.scss'
+import createEntityStyles from '../entity-detail-views/createEntityView.module.scss'
 import BasicInformations from '../BasicInformations'
 import { EntityDetailViewAttributes } from '../entity-detail-views/EntityDetailViewAttributes'
 
 import ConnectionView from './ConnectionView'
+import { AddConnectionModal } from './AddConnectionModal'
 
 import { IAtrributesContainerView } from '@/components/containers/Egov/Relation/RelationsDetailContainer'
 
 export const RelationDetailView = ({
-    data: { ciTypeData, constraintsData, unitsData, keysToDisplay },
+    data: { ciTypeData, constraintsData, unitsData, keysToDisplay, attributeOverridesData },
     unValidRelationShipTypeMutation,
+    addNewConnectionToExistingRelation,
 }: IAtrributesContainerView) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
+    const [connectionsOpen, setConnectionsOpen] = useState(false)
+
     const tabsNames = Array.from(keysToDisplay?.keys() ?? new Map())
 
     const tabsFromApi = tabsNames?.map((key) => {
@@ -22,7 +29,7 @@ export const RelationDetailView = ({
         return {
             id: key,
             title: key,
-            content: <EntityDetailViewAttributes data={tabData} />,
+            content: <EntityDetailViewAttributes data={tabData} attributesOverridesData={attributeOverridesData} />,
         }
     })
 
@@ -32,7 +39,11 @@ export const RelationDetailView = ({
             title: t('egov.detail.connections'),
             content: <ConnectionView sources={ciTypeData?.sources} targets={ciTypeData?.targets} />,
         },
-        { id: 'genericProfile', title: t('egov.detail.genericProfile'), content: <EntityDetailViewAttributes data={ciTypeData} /> },
+        {
+            id: 'genericProfile',
+            title: t('egov.detail.genericProfile'),
+            content: <EntityDetailViewAttributes data={ciTypeData} attributesOverridesData={attributeOverridesData} />,
+        },
         ...tabsFromApi,
     ]
 
@@ -41,10 +52,25 @@ export const RelationDetailView = ({
             <div className={styles.basicInformationSpace}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
-                    <Button label="zneplatnit" onClick={() => unValidRelationShipTypeMutation?.(ciTypeData?.technicalName)} />
+                    <div>
+                        <Button
+                            label="zmenit"
+                            onClick={() => {
+                                navigate('/egov/relation/' + ciTypeData?.technicalName + '/edit')
+                            }}
+                        />
+                        <Button
+                            label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
+                            onClick={() => unValidRelationShipTypeMutation?.(ciTypeData?.technicalName)}
+                        />
+                    </div>
                 </div>
                 <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
             </div>
+            <div className={createEntityStyles.addConnection}>
+                <Button label={t('egov.create.addConnection')} onClick={() => setConnectionsOpen(true)} className={styles.addConnection} />
+            </div>
+            <AddConnectionModal open={connectionsOpen} onClose={() => setConnectionsOpen(false)} addConnection={addNewConnectionToExistingRelation} />
             <div>
                 <h3 className="govuk-heading-m">{t('egov.detail.profiles')}</h3>
                 <Tabs tabList={tabList} />

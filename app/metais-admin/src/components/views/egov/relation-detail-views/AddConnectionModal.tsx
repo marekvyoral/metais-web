@@ -1,5 +1,6 @@
 import React from 'react'
 import { BaseModal } from '@isdd/idsk-ui-kit'
+import { CiTypePreview } from '@isdd/metais-common/api'
 
 import { AddConnectionView } from './AddConnectionView'
 
@@ -8,9 +9,10 @@ import { EntityListContainer } from '@/components/containers/Egov/Entity/EntityL
 interface ConnectionModal {
     open: boolean
     onClose: () => void
+    addConnection?: (selectedConnection: CiTypePreview, ciTypeRoleEnum: 'TARGET' | 'SOURCE') => void
 }
 
-export const AddConnectionModal = ({ onClose, open }: ConnectionModal) => {
+export const AddConnectionModal = ({ onClose, open, addConnection }: ConnectionModal) => {
     return (
         <BaseModal isOpen={open} close={onClose}>
             <EntityListContainer
@@ -23,7 +25,7 @@ export const AddConnectionModal = ({ onClose, open }: ConnectionModal) => {
                                 label: data?.name ?? '',
                             }
                         }) ?? []
-                    return <AddConnectionView listOptions={listOptions} onClose={onClose} />
+                    return <AddConnectionView listOptions={listOptions} onClose={onClose} addConnection={addConnection} />
                 }}
             />
         </BaseModal>

@@ -7,7 +7,7 @@ const Relation = () => {
     return (
         <RelationListContainer
             View={(props) => {
-                return <EgovTable data={props?.data?.results} />
+                return <EgovTable data={props?.data?.results} entityName={'relation'} />
             }}
         />
     )

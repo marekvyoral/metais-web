@@ -7,7 +7,12 @@ import { ProfileDetailView } from '@/components/views/egov/profile-detail-views/
 const Profile = () => {
     const { entityId } = useParams()
 
-    return <ProfileDetailContainer entityName={entityId ?? ''} View={(data) => <ProfileDetailView data={data?.data} />} />
+    return (
+        <ProfileDetailContainer
+            entityName={entityId ?? ''}
+            View={(props) => <ProfileDetailView data={props?.data} setValidityOfProfile={props?.setValidityOfProfile} entityName={entityId ?? ''} />}
+        />
+    )
 }
 
 export default Profile

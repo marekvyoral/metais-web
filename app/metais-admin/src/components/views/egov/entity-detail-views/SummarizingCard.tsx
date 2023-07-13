@@ -1,7 +1,7 @@
 import React from 'react'
 import { SummarizingCardItemUi, SummarizingCardUi } from '@isdd/metais-common/api'
 import { ColumnDef } from '@tanstack/react-table'
-import { Table } from '@isdd/idsk-ui-kit'
+import { Button, Table } from '@isdd/idsk-ui-kit'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
 
@@ -9,11 +9,11 @@ import styles from '../detailViews.module.scss'
 
 interface SummCardProps {
     data: SummarizingCardUi | undefined
+    setSummarizingCardData: (technicalName?: string, summarizingCardData?: SummarizingCardUi) => void
 }
 
-export const SummarizingCard = ({ data }: SummCardProps) => {
+export const SummarizingCard = ({ data, setSummarizingCardData }: SummCardProps) => {
     const { t } = useTranslation()
-
     const columns: Array<ColumnDef<SummarizingCardItemUi>> = [
         {
             header: t('egov.order'),
@@ -65,11 +65,24 @@ export const SummarizingCard = ({ data }: SummCardProps) => {
         <>
             <div className={styles.basicInformationSpace}>
                 <div className={styles.attributeGridRowBox}>
-                    <InformationGridRow
-                        key={'showOwner'}
-                        label={t('egov.detail.showOwner.heading')}
-                        value={t(`egov.detail.showOwner.${data?.showOwner ?? false}`)}
-                    />
+                    <div className={styles.showOwner}>
+                        <div className={styles.showOwnerBox}>
+                            <InformationGridRow
+                                key={'showOwner'}
+                                label={t('egov.detail.showOwner.heading')}
+                                value={t(`egov.detail.showOwner.${data?.showOwner ?? false}`)}
+                            />
+                        </div>
+                        <Button
+                            label={t(`egov.detail.showOwnerChange.${!data?.showOwner}`)}
+                            onClick={() =>
+                                setSummarizingCardData(data?.ciType, {
+                                    ...data,
+                                    showOwner: !data?.showOwner ?? false,
+                                })
+                            }
+                        />
+                    </div>
                 </div>
             </div>
             <h3 className="govuk-heading-m">{t('egov.detail.profileAttributes')}</h3>

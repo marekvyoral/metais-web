@@ -8,7 +8,11 @@ export const generateFormValidationSchema = (t: TFunction<'translation', undefin
     return yup.object().shape(
         {
             name: yup.string().required(t('egov.create.requiredField')),
-            engName: yup.string().required(t('egov.create.requiredField')),
+            engName: yup.string().when('engName', {
+                is: () => !hiddenInputs?.ENG_NAME,
+                then: () => yup.string().required(t('egov.create.requiredField')),
+                otherwise: () => yup.string(),
+            }),
             technicalName: yup
                 .string()
                 .required(t('egov.create.requiredField'))
@@ -53,6 +57,28 @@ export const generateFormValidationSchema = (t: TFunction<'translation', undefin
             ['sources', 'sources'],
             ['targets', 'targets'],
             ['engDescription', 'engDescription'],
+            ['engName', 'engName'],
         ],
     )
+}
+
+export const generateSchemaForCreateAttribute = (t: TFunction<'translation', undefined, 'translation'>) => {
+    return yup.object().shape({
+        name: yup.string().required(t('egov.create.requiredField')),
+        engName: yup.string().required(),
+        technicalName: yup
+            .string()
+            .required(t('egov.create.requiredField'))
+            .min(2)
+            .matches(/^[a-z-A-Z]+$/, t('egov.create.technicalNameRegex')),
+        order: yup.number(),
+        description: yup.string().required(t('egov.create.requiredField')),
+        engDescription: yup.string(),
+        attributeProfiles: yup.mixed<AttributeProfile[]>(),
+        type: yup.string(),
+        units: yup.string(),
+        defaultValue: yup.mixed<boolean | string | number>(),
+        constraints: yup.mixed(),
+        roleList: yup.array().of(yup.string()).required(t('egov.create.requiredField')),
+    })
 }

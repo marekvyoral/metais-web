@@ -1,16 +1,25 @@
-import React from 'react'
-import { CheckBox, Table } from '@isdd/idsk-ui-kit'
+import React, { useState } from 'react'
+import { Button, CheckBox, Table } from '@isdd/idsk-ui-kit'
 import { Attribute } from '@isdd/metais-common/api'
 import { useTranslation } from 'react-i18next'
 import { ColumnDef } from '@tanstack/react-table'
+import { useNavigate } from 'react-router-dom'
 
 import BasicInformations from '../BasicInformations'
 import styles from '../detailViews.module.scss'
 
+import AddAttributeModal from './AddAttributeModal'
+
 import { IAtrributesContainerView } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
 
-export const ProfileDetailView = ({ data: { ciTypeData, constraintsData, unitsData } }: IAtrributesContainerView) => {
+export const ProfileDetailView = ({
+    data: { ciTypeData, constraintsData, unitsData },
+    setValidityOfProfile,
+    entityName,
+}: IAtrributesContainerView) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
+    const [openAddAttributeModal, setOpenAddAttributeModal] = useState(false)
     const columns: Array<ColumnDef<Attribute>> = [
         {
             header: t('egov.name'),
@@ -90,12 +99,28 @@ export const ProfileDetailView = ({ data: { ciTypeData, constraintsData, unitsDa
     return (
         <>
             <div className={styles.basicInformationSpace}>
-                <h2 className="govuk-heading-l">{t('egov.detail.profileAttributesHeading')}</h2>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <h2 className="govuk-heading-l">{t('egov.detail.profileAttributesHeading')}</h2>
+                    <div>
+                        <Button
+                            label="zmenit"
+                            onClick={() => {
+                                navigate('/egov/profile/' + ciTypeData?.technicalName + '/edit')
+                            }}
+                        />
+                        <Button
+                            label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
+                            onClick={() => setValidityOfProfile(ciTypeData?.technicalName)}
+                        />
+                    </div>
+                </div>
                 <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
             </div>
             <div>
                 <h3 className="govuk-heading-m">{t('egov.detail.profileAttributes')}</h3>
                 <Table columns={columns} data={ciTypeData?.attributes ?? []} />
+                <Button label="pridanie attributu" onClick={() => setOpenAddAttributeModal(true)} />
+                <AddAttributeModal open={openAddAttributeModal} onClose={() => setOpenAddAttributeModal(false)} entityName={entityName ?? ''} />
             </div>
         </>
     )

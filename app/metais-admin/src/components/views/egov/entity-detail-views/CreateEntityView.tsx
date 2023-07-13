@@ -12,8 +12,7 @@ import useCreateView from './useCreateView'
 
 import { ProfileTabs } from '@/components/ProfileTabs'
 import { ICreateEntityView } from '@/components/containers/Egov/Entity/CreateEntityContainer'
-
-export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityView) => {
+export const CreateEntityView = ({ data, mutate, hiddenInputs, existingEntityData }: ICreateEntityView) => {
     const {
         formMethods,
         rolesToSelect,
@@ -25,10 +24,9 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
         mutationErrorResponse: { error, setError },
         connectionsDialog: { connectionsOpen, setConnectionsOpen },
         profileAttributesDialog: { open, setOpen },
-    } = useCreateView({ data, hiddenInputs })
+    } = useCreateView({ data, hiddenInputs, existingData: existingEntityData })
 
     const { register, handleSubmit, formState } = formMethods
-
     const onSubmit = useCallback(
         async (formData: FieldValues) => {
             await mutate({

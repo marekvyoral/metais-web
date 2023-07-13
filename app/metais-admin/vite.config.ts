@@ -69,6 +69,16 @@ export default defineConfig(({ mode }) => {
                     changeOrigin: true,
                     secure: false,
                 },
+                '^/attributes': {
+                    target: process.env.VITE_REST_CLIENT_TYPES_REPO_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
+                },
+                '^/cityperelationshiptypemaps/.*': {
+                    target: process.env.VITE_REST_CLIENT_TYPES_REPO_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
+                },
             },
         },
     }

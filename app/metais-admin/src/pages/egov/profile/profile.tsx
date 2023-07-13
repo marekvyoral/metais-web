@@ -7,7 +7,7 @@ const Profile = () => {
     return (
         <ProfileListContainer
             View={(props) => {
-                return <EgovTable data={props?.data?.attributeProfileList} />
+                return <EgovTable data={props?.data?.attributeProfileList} entityName={'profile'} />
             }}
         />
     )

@@ -136,7 +136,15 @@
             "summarizingCard": "Summarizing card",
             "genericProfile": "Generic profile",
             "connections": "Connections",
-            "direction": { "heading": "Type of connection", "source": "Source", "target": "Target" },
+            "direction": {
+                "heading": "Type of connection",
+                "source": "Source",
+                "target": "Target"
+            },
+            "validityChange": {
+                "setValid": "Set valid",
+                "setInvalid": "Set invalid"
+            },
             "selectOption": "Select option",
             "showOwner": {
                 "heading": "Show owner",

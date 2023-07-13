@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { createTabNamesAndValuesMap } from '@isdd/metais-common/hooks/useEntityProfiles'
-import { Role } from '@isdd/metais-common/api'
+import { CiType, Role } from '@isdd/metais-common/api'
 
 import { generateFormValidationSchema } from './createViewHelpers'
 import { EntityDetailViewAttributes } from './EntityDetailViewAttributes'
@@ -16,9 +16,10 @@ interface IUseCreateView {
         roles?: Role[]
     }
     hiddenInputs?: Partial<HiddenInputs>
+    existingData?: CiType
 }
 
-const useCreateView = ({ data, hiddenInputs }: IUseCreateView) => {
+const useCreateView = ({ data, hiddenInputs, existingData }: IUseCreateView) => {
     const { t } = useTranslation()
     const [open, setOpen] = useState<boolean>(false)
     const [connectionsOpen, setConnectionsOpen] = useState<boolean>(false)
@@ -30,6 +31,7 @@ const useCreateView = ({ data, hiddenInputs }: IUseCreateView) => {
         resolver: yupResolver(schema),
         defaultValues: {
             type: 'custom',
+            ...existingData,
         },
     })
 
@@ -49,7 +51,7 @@ const useCreateView = ({ data, hiddenInputs }: IUseCreateView) => {
     const removeProfileAttribute = (technicalName: string) => {
         setValue('attributeProfiles', attributesProfiles?.filter((attrProfile) => attrProfile?.technicalName !== technicalName) ?? [])
     }
-    const tabsFromForm = getTabsFromApi(keysToDisplay, EntityDetailViewAttributes, removeProfileAttribute)
+    const tabsFromForm = getTabsFromApi(keysToDisplay, EntityDetailViewAttributes, undefined, removeProfileAttribute)
 
     const sourcesFromForm = watch('sources')
     const targetsFromForm = watch('targets')

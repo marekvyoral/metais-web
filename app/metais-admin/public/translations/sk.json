@@ -127,6 +127,12 @@
         "roles": "Opravnené role",
         "order": "Poradie",
         "invisible": "Viditeľnosť",
+        "clarification": "Spresnenie",
+        "defaultValue": "Prednastavená hodnota",
+        "constraints": "Typ obmedzenia",
+        "minValue": "Minimálna hodnota",
+        "maxValue": "Maximálna hodnota",
+        "units": "Merná jednotka",
         "detail": {
             "profileAttributesHeading": "Detail profilu atribútov",
             "profileAttributes": "Atribúty",
@@ -137,7 +143,21 @@
             "summarizingCard": "Summarizačná karta",
             "genericProfile": "Generický profil",
             "connections": "Prepojenia",
-            "direction": { "heading": "Typ prepojenia", "source": "Zdroj", "target": "Cieľ" },
+            "direction": {
+                "heading": "Typ prepojenia",
+                "source": "Zdroj",
+                "target": "Cieľ"
+            },
+            "validityChange": {
+                "setValid": "Splatniť",
+                "setInvalid": "Zneplatniť"
+            },
+            "showOwnerChange": {
+                "true": "Povoliť",
+                "false": "Zakázať",
+                "": "Zakázať",
+                "undefined": "Zakázať"
+            },
             "selectOption": "Vyberte možnosť",
             "showOwner": {
                 "heading": "Zobrazovanie vlastníka",
@@ -176,5 +196,12 @@
         "invalidateItems": "Zneplatnenie položiek",
         "validateItems": "Splatnenie položiek",
         "changeOwner": "Zmena vlastníka"
+    },
+    "actionsInTable": {
+        "actions": "Akcie",
+        "edit": "Upraviť",
+        "reset": "Resetovať",
+        "save": "Uložiť",
+        "cancel": "Zrušiť"
     }
 }

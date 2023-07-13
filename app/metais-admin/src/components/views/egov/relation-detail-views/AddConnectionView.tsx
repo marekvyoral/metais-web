@@ -2,20 +2,22 @@ import React, { useState } from 'react'
 import { SimpleSelect } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
 import { useFormContext } from 'react-hook-form'
-
-interface IAddConnection {
-    listOptions: { label: string; value: string; disabled?: boolean; selected?: boolean }[]
-    onClose: () => void
-}
+import { CiTypePreview } from '@isdd/metais-common/api'
 
 enum Direction {
     SOURCE = 'source',
     TARGET = 'target',
 }
 
-export const AddConnectionView = ({ listOptions, onClose }: IAddConnection) => {
+interface IAddConnection {
+    listOptions: { label: string; value: string; disabled?: boolean; selected?: boolean }[]
+    onClose: () => void
+    addConnection?: (selectedConnection: CiTypePreview, ciTypeRoleEnum: 'TARGET' | 'SOURCE') => void
+}
+
+export const AddConnectionView = ({ listOptions, onClose, addConnection }: IAddConnection) => {
     const [direction, setDirection] = useState<Direction>(Direction.SOURCE)
-    const { setValue, getValues } = useFormContext()
+    const methods = useFormContext()
     const { t } = useTranslation()
     const optionsWithDefault = [{ label: t('egov.detail.selectOption'), disabled: true, value: '' }, ...listOptions]
 
@@ -40,13 +42,17 @@ export const AddConnectionView = ({ listOptions, onClose }: IAddConnection) => {
                 options={optionsWithDefault}
                 defaultValue={optionsWithDefault?.[0]?.value}
                 onChange={(event) => {
-                    const existingValueInForm = getValues(`${direction}s`)
-                    if (existingValueInForm) {
-                        setValue(`${direction}s`, [...existingValueInForm, JSON.parse(event?.target?.value)])
+                    if (!addConnection) {
+                        const existingValueInForm = methods?.getValues(`${direction}s`)
+                        if (existingValueInForm) {
+                            methods?.setValue(`${direction}s`, [...existingValueInForm, JSON.parse(event?.target?.value)])
+                        } else {
+                            methods?.setValue(`${direction}s`, [JSON.parse(event?.target?.value)])
+                        }
+                        methods?.setValue(`${direction}Cardinality`, { min: 0, max: undefined })
                     } else {
-                        setValue(`${direction}s`, [JSON.parse(event?.target?.value)])
+                        addConnection(JSON.parse(event?.target?.value), direction === Direction.SOURCE ? 'SOURCE' : 'TARGET')
                     }
-                    setValue(`${direction}Cardinality`, { min: 0, max: undefined })
                     onClose()
                 }}
             />

@@ -10,9 +10,10 @@ import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-ta
 
 type IListData = {
     data?: CiTypePreview[] | undefined
+    entityName?: string
 }
 
-export const EgovTable = ({ data }: IListData) => {
+export const EgovTable = ({ data, entityName }: IListData) => {
     const { t } = useTranslation()
     const dataLength = data?.length ?? 0
 
@@ -75,8 +76,8 @@ export const EgovTable = ({ data }: IListData) => {
                     { value: '100', label: '100' },
                 ]}
                 hiddenButtons={{ IMPORT: true }}
-                createPageHref={'/egov/entity/create'}
-                entityName={'entity'}
+                createPageHref={`/egov/${entityName}/create`}
+                entityName={entityName}
             />
             <Table data={data?.slice(start, end)} columns={columns} pagination={{ pageIndex: pageNumber, pageSize }} />
             <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={dataLength} handlePageChange={handlePageChange} />

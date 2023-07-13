@@ -1,5 +1,5 @@
 import React from 'react'
-import { useFindByNameUsingGET1 } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useFindAllUsingGET14 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { CiType, Role, useStoreAdminEntityUsingPOST } from '@isdd/metais-common/api'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
 
@@ -18,6 +18,7 @@ export interface ICreateEntityView {
         unknown
     >
     hiddenInputs?: Partial<HiddenInputs>
+    existingEntityData?: CiType
 }
 
 interface ICreateEntity {
@@ -25,10 +26,11 @@ interface ICreateEntity {
 }
 
 const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
-    const defaultOptions = {}
+    const page = 1
+    const limit = 200
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, isLoading, isError } = useFindByNameUsingGET1(defaultOptions as any) // API obsahuje iba vyhladavanie podla name, ale v pripade ak sa neposle ziadne meno tak sa dotiahnu vsetky role(takto sa to pouziva aj na starom systeme).
+    const { data, isLoading, isError } = useFindAllUsingGET14(page, limit, { direction: 'ASC', orderBy: 'name' })
+
     const mutationObject = useStoreAdminEntityUsingPOST()
 
     if (isLoading) return <div>isLoading</div>

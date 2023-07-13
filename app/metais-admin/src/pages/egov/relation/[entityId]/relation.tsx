@@ -9,7 +9,14 @@ const Profile = () => {
     return (
         <RelationDetailContainer
             entityName={entityId ?? ''}
-            View={(data) => <RelationDetailView data={data?.data} unValidRelationShipTypeMutation={data?.unValidRelationShipTypeMutation} />}
+            View={(props) => (
+                <RelationDetailView
+                    data={props?.data}
+                    unValidRelationShipTypeMutation={props?.unValidRelationShipTypeMutation}
+                    addNewConnectionToExistingRelation={props?.addNewConnectionToExistingRelation}
+                    editExistingAttribute={props?.editExistingAttribute}
+                />
+            )}
         />
     )
 }

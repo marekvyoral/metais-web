@@ -9,7 +9,7 @@ const Entity: React.FC = () => {
             View={(props) => {
                 return (
                     <>
-                        <EgovTable data={props?.data?.results} />
+                        <EgovTable data={props?.data?.results} entityName={'entity'} />
                     </>
                 )
             }}

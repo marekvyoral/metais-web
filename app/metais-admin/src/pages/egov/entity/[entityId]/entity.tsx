@@ -6,7 +6,20 @@ import { EntityDetailView } from '@/components/views/egov/entity-detail-views/En
 
 const Entity = () => {
     const { entityId } = useParams()
-    return <EntityDetailContainer entityName={entityId ?? ''} View={(data) => <EntityDetailView data={data?.data} />} />
+    return (
+        <EntityDetailContainer
+            entityName={entityId ?? ''}
+            View={(props) => (
+                <EntityDetailView
+                    data={props?.data}
+                    setValidityOfEntity={props?.setValidityOfEntity}
+                    setSummarizingCardData={props?.setSummarizingCardData}
+                    saveExistingAttribute={props?.saveExistingAttribute}
+                    resetExistingAttribute={props?.resetExistingAttribute}
+                />
+            )}
+        />
+    )
 }
 
 export default Entity
