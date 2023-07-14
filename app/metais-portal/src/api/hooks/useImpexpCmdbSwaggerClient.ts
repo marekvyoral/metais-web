@@ -1,3 +1,3 @@
 import { useCustomClient } from './use-custom-client'
-const baseURL = 'http://impexpcmdb-metais3.apps.dev.isdd.sk/export'
+const baseURL = import.meta.env.VITE_REST_CLIENT_IMPEXP_CMDB_TARGET_URL
 export const useImpexpCmdbSwaggerClient = <T>() => useCustomClient<T>(baseURL)
