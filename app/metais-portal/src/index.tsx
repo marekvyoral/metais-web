@@ -25,15 +25,15 @@ const queryClient = new QueryClient({
 root.render(
     <React.StrictMode>
         <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-                <I18nextProvider i18n={i18nInstance}>
+            <I18nextProvider i18n={i18nInstance}>
+                <QueryClientProvider client={queryClient}>
                     <AuthContextProvider>
                         <DndProvider backend={HTML5Backend}>
                             <App />
                         </DndProvider>
                     </AuthContextProvider>
-                </I18nextProvider>
-            </QueryClientProvider>
+                </QueryClientProvider>
+            </I18nextProvider>
         </BrowserRouter>
     </React.StrictMode>,
 )
