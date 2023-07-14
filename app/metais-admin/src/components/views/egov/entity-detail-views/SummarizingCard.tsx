@@ -57,7 +57,7 @@ export const SummarizingCard = ({ data, setSummarizingCardData }: SummCardProps)
             accessorFn: (row) => row?.attribute?.valid,
             enableSorting: true,
             id: 'state',
-            cell: (ctx) => <span>{t(`state.${ctx.row?.original?.attribute?.valid}`)}</span>,
+            cell: (ctx) => <span>{t(`validity.${ctx.row?.original?.attribute?.valid}`)}</span>,
         },
     ]
 

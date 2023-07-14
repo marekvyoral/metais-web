@@ -93,7 +93,7 @@ export const EntityDetailViewAttributes = ({
             accessorFn: (row) => row?.valid,
             enableSorting: true,
             id: 'state',
-            cell: (ctx) => <span>{t(`state.${ctx.row?.original?.valid}`)}</span>,
+            cell: (ctx) => <span>{t(`validity.${ctx.row?.original?.valid}`)}</span>,
         },
         {
             header: t('actionsInTable.actions'),
@@ -134,7 +134,7 @@ export const EntityDetailViewAttributes = ({
                     <InformationGridRow key={'name'} label={t('egov.name')} value={data?.name} />
                     <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={data?.technicalName} />
                     <InformationGridRow key={'type'} label={t('egov.type')} value={t(`type.${data?.type}`)} />
-                    <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`state.${data?.valid}`)} />
+                    <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`validity.${data?.valid}`)} />
                     <InformationGridRow key={'description'} label={t('egov.description')} value={data?.description} />
                     <InformationGridRow key={'roles'} label={t('egov.roles')} value={data?.roleList} />
                 </div>

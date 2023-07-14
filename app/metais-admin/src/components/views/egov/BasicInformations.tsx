@@ -24,7 +24,7 @@ const BasicInformations = ({ data: { ciTypeData } }: ProjectInformationData) => 
             <InformationGridRow key={'codePrefix'} label={t('egov.codePrefix')} value={ciTypeData?.codePrefix} />
             <InformationGridRow key={'uriPrefix'} label={t('egov.uriPrefix')} value={ciTypeData?.uriPrefix} />
             <InformationGridRow key={'type'} label={t('egov.type')} value={t(`type.${ciTypeData?.type}`)} />
-            <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`state.${ciTypeData?.valid}`)} />
+            <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`validity.${ciTypeData?.valid}`)} />
             <InformationGridRow key={'description'} label={t('egov.description')} value={ciTypeData?.description} />
             {ciTypeData?.color && <InformationGridRow key={'color'} label={t('egov.color')} value={<ColorRow color={ciTypeData?.color} />} />}
             <InformationGridRow key={'roles'} label={t('egov.roles')} value={ciTypeData?.roleList} />

@@ -4,7 +4,7 @@ import { FieldError } from 'react-hook-form'
 import classNames from 'classnames'
 
 interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
-    id: string
+    id?: string
     label?: string
     name: string
     hint?: string

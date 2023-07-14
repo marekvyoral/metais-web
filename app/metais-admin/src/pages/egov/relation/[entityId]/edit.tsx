@@ -14,8 +14,10 @@ const EditRelation = () => {
                 <CreateRelationContainer
                     View={(createProps) => (
                         <CreateEntityView
-                            existingEntityData={props?.data?.ciTypeData}
-                            data={createProps?.data}
+                            data={{
+                                roles: createProps?.data?.roles,
+                                existingEntityData: props?.data?.ciTypeData,
+                            }}
                             mutate={createProps?.mutate}
                             hiddenInputs={createProps?.hiddenInputs}
                         />

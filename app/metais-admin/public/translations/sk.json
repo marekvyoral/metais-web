@@ -176,7 +176,7 @@
             "addConnection": "Pridať prepojenie"
         }
     },
-    "state": {
+    "validity": {
         "true": "Platný",
         "false": "Neplatný",
         "undefined": "Neplatný"

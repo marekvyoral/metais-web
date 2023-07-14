@@ -1,24 +1,16 @@
 import React from 'react'
 import { useFindAllUsingGET14 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { CiType, Role, useStoreAdminEntityUsingPOST } from '@isdd/metais-common/api'
-import { UseMutateAsyncFunction } from '@tanstack/react-query'
+import { AttributeProfileBody, CiType, Role, useStoreAdminEntityUsingPOST } from '@isdd/metais-common/api'
 
 import { HiddenInputs } from '@/types/inputs'
 
 export interface ICreateEntityView {
     data: {
         roles?: Role[]
+        existingEntityData?: CiType
     }
-    mutate: UseMutateAsyncFunction<
-        void,
-        unknown,
-        {
-            data: CiType
-        },
-        unknown
-    >
+    mutate: (formData: CiType) => Promise<void>
     hiddenInputs?: Partial<HiddenInputs>
-    existingEntityData?: CiType
 }
 
 interface ICreateEntity {
@@ -26,12 +18,20 @@ interface ICreateEntity {
 }
 
 const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
-    const page = 1
-    const limit = 200
+    const pageNumber = 1
+    const pageSize = 200
 
-    const { data, isLoading, isError } = useFindAllUsingGET14(page, limit, { direction: 'ASC', orderBy: 'name' })
+    const { data, isLoading, isError } = useFindAllUsingGET14(pageNumber, pageSize, { direction: 'ASC', orderBy: 'name' })
 
-    const mutationObject = useStoreAdminEntityUsingPOST()
+    const { mutateAsync } = useStoreAdminEntityUsingPOST()
+
+    const storeEntity = async (formData: CiType) => {
+        await mutateAsync({
+            data: {
+                ...formData,
+            },
+        })
+    }
 
     if (isLoading) return <div>isLoading</div>
     if (isError) return <div>error</div>
@@ -39,9 +39,9 @@ const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity)
     return (
         <View
             data={{
-                roles: (data as Role[]) ?? [],
+                roles: data ?? [],
             }}
-            mutate={mutationObject?.mutateAsync}
+            mutate={storeEntity}
             hiddenInputs={{ SOURCES: true, TARGETS: true, ENG_DESCRIPTION: true }}
         />
     )

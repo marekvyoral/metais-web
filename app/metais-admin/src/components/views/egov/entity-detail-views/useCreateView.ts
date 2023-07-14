@@ -14,12 +14,12 @@ import { HiddenInputs } from '@/types/inputs'
 interface IUseCreateView {
     data?: {
         roles?: Role[]
+        existingEntityData?: CiType
     }
     hiddenInputs?: Partial<HiddenInputs>
-    existingData?: CiType
 }
 
-const useCreateView = ({ data, hiddenInputs, existingData }: IUseCreateView) => {
+const useCreateView = ({ data, hiddenInputs }: IUseCreateView) => {
     const { t } = useTranslation()
     const [open, setOpen] = useState<boolean>(false)
     const [connectionsOpen, setConnectionsOpen] = useState<boolean>(false)
@@ -31,7 +31,7 @@ const useCreateView = ({ data, hiddenInputs, existingData }: IUseCreateView) => 
         resolver: yupResolver(schema),
         defaultValues: {
             type: 'custom',
-            ...existingData,
+            ...data?.existingEntityData,
         },
     })
 

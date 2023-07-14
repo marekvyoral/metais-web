@@ -12,7 +12,7 @@ import useCreateView from './useCreateView'
 
 import { ProfileTabs } from '@/components/ProfileTabs'
 import { ICreateEntityView } from '@/components/containers/Egov/Entity/CreateEntityContainer'
-export const CreateEntityView = ({ data, mutate, hiddenInputs, existingEntityData }: ICreateEntityView) => {
+export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityView) => {
     const {
         formMethods,
         rolesToSelect,
@@ -23,17 +23,13 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, existingEntityDat
         mutationSuccessResponse: { successedMutation, setSuccessedMutation },
         mutationErrorResponse: { error, setError },
         connectionsDialog: { connectionsOpen, setConnectionsOpen },
-        profileAttributesDialog: { open, setOpen },
-    } = useCreateView({ data, hiddenInputs, existingData: existingEntityData })
+        profileAttributesDialog,
+    } = useCreateView({ data, hiddenInputs })
 
     const { register, handleSubmit, formState } = formMethods
     const onSubmit = useCallback(
         async (formData: FieldValues) => {
-            await mutate({
-                data: {
-                    ...formData,
-                },
-            })
+            await mutate(formData)
                 .then(() => {
                     setSuccessedMutation(true)
                 })
@@ -50,37 +46,23 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, existingEntityDat
                 {(successedMutation || error) && <MutationFeedback success={successedMutation} error={error} />}
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <>
-                        {!hiddenInputs?.NAME && <Input label={t('egov.name')} id="name" {...register('name')} error={formState?.errors?.name} />}
-                        {!hiddenInputs?.ENG_NAME && (
-                            <Input label={t('egov.engName')} id="engName" {...register('engName')} error={formState?.errors?.engName} />
-                        )}
+                        {!hiddenInputs?.NAME && <Input label={t('egov.name')} {...register('name')} error={formState?.errors?.name} />}
+                        {!hiddenInputs?.ENG_NAME && <Input label={t('egov.engName')} {...register('engName')} error={formState?.errors?.engName} />}
                         {!hiddenInputs?.TECHNICAL_NAME && (
-                            <Input
-                                label={t('egov.technicalName')}
-                                id="technicalName"
-                                {...register('technicalName')}
-                                error={formState?.errors?.technicalName}
-                            />
+                            <Input label={t('egov.technicalName')} {...register('technicalName')} error={formState?.errors?.technicalName} />
                         )}
                         {!hiddenInputs?.CODE_PREFIX && (
-                            <Input label={t('egov.codePrefix')} id="codePrefix" {...register('codePrefix')} error={formState?.errors?.codePrefix} />
+                            <Input label={t('egov.codePrefix')} {...register('codePrefix')} error={formState?.errors?.codePrefix} />
                         )}
                         {!hiddenInputs?.URI_PREFIX && (
-                            <Input label={t('egov.uriPrefix')} id="uriPrefix" {...register('uriPrefix')} error={formState?.errors?.uriPrefix} />
+                            <Input label={t('egov.uriPrefix')} {...register('uriPrefix')} error={formState?.errors?.uriPrefix} />
                         )}
                         {!hiddenInputs?.DESCRIPTION && (
-                            <TextArea
-                                label={t('egov.description')}
-                                id="description"
-                                rows={3}
-                                {...register('description')}
-                                error={formState?.errors?.description}
-                            />
+                            <TextArea label={t('egov.description')} rows={3} {...register('description')} error={formState?.errors?.description} />
                         )}
                         {!hiddenInputs?.ENG_DESCRIPTION && (
                             <TextArea
                                 label={t('egov.engDescription')}
-                                id="engDescription"
                                 rows={3}
                                 {...register('engDescription')}
                                 error={formState?.errors?.engDescription}
@@ -88,7 +70,6 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, existingEntityDat
                         )}
                         {!hiddenInputs?.TYPE && (
                             <SimpleSelect
-                                id="type"
                                 label={t('egov.type')}
                                 options={[{ label: t('type.custom'), value: 'custom' }]}
                                 {...register('type')}
@@ -97,7 +78,6 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, existingEntityDat
                         )}
                         {!hiddenInputs?.ROLE_LIST && (
                             <SimpleSelect
-                                id="roleList"
                                 label={t('egov.roles')}
                                 options={[{ label: t('egov.detail.selectOption'), value: '', disabled: true }, ...rolesToSelect]}
                                 defaultValue={''}
@@ -128,8 +108,8 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, existingEntityDat
                     {!hiddenInputs?.ATTRIBUTE_PROFILES && (
                         <div>
                             <h3 className="govuk-heading-m">{t('egov.detail.profiles')}</h3>
-                            <AddAttributeProfilesModal open={open} onClose={() => setOpen(false)} />
-                            <Button label={t('egov.create.addProfile')} onClick={() => setOpen(true)} />
+                            <AddAttributeProfilesModal open={profileAttributesDialog.open} onClose={() => profileAttributesDialog.setOpen(false)} />
+                            <Button label={t('egov.create.addProfile')} onClick={() => profileAttributesDialog.setOpen(true)} />
                             <ProfileTabs tabList={tabsFromForm} withoutHeading />
                         </div>
                     )}

@@ -75,7 +75,7 @@ export const ProfileDetailView = ({
             accessorFn: (row) => row?.valid,
             enableSorting: true,
             id: 'state',
-            cell: (ctx) => <span>{t(`state.${ctx.row?.original?.valid}`)}</span>,
+            cell: (ctx) => <span>{t(`validity.${ctx.row?.original?.valid}`)}</span>,
         },
         {
             header: t('egov.invisible'),

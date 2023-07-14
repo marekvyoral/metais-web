@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import React, { DetailedHTMLProps, forwardRef } from 'react'
 
 interface SelectProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
-    id: string
+    id?: string
     label: string
     options: { value: string; label: string; disabled?: boolean; selected?: boolean }[]
     disabled?: boolean

@@ -9,14 +9,7 @@ export interface ICreateEntityView {
     data: {
         roles?: Role[]
     }
-    mutate: UseMutateAsyncFunction<
-        void,
-        unknown,
-        {
-            data: RelationshipType
-        },
-        unknown
-    >
+    mutate: (formData: RelationshipType) => Promise<void>
     hiddenInputs?: Partial<HiddenInputs>
 }
 
@@ -29,17 +22,25 @@ export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View }: ICrea
     const limit = 200
 
     const { data, isLoading, isError } = useFindAllUsingGET14(page, limit, { direction: 'ASC', orderBy: 'name' })
-    const mutationObject = useStoreAdminEntityUsingPOST1()
+    const { mutateAsync } = useStoreAdminEntityUsingPOST1()
 
     if (isLoading) return <div>isLoading</div>
     if (isError) return <div>error</div>
+
+    const storeRelation = async (formData: RelationshipType) => {
+        await mutateAsync({
+            data: {
+                ...formData,
+            },
+        })
+    }
 
     return (
         <View
             data={{
                 roles: (data as Role[]) ?? [],
             }}
-            mutate={mutationObject?.mutateAsync}
+            mutate={storeRelation}
             hiddenInputs={{ CODE_PREFIX: true, URI_PREFIX: true }}
         />
     )

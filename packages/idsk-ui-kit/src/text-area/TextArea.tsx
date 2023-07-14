@@ -4,7 +4,7 @@ import { forwardRef } from 'react'
 import { FieldError } from 'react-hook-form'
 
 interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
-    id: string
+    id?: string
     label?: string
     name: string
     rows: number
