@@ -1,7 +1,6 @@
 import React from 'react'
 import { useFindAllUsingGET14 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { RelationshipType, Role, useStoreAdminEntityUsingPOST1 } from '@isdd/metais-common/api'
-import { UseMutateAsyncFunction } from '@tanstack/react-query'
 
 import { HiddenInputs } from '@/types/inputs'
 

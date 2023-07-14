@@ -1,6 +1,6 @@
 import React from 'react'
 import { useFindAllUsingGET14 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { AttributeProfileBody, CiType, Role, useStoreNewAttrProfileUsingPOST } from '@isdd/metais-common/api'
+import { AttributeProfileBody, Role, useStoreNewAttrProfileUsingPOST } from '@isdd/metais-common/api'
 
 import { HiddenInputs } from '@/types/inputs'
 
