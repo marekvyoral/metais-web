@@ -11,7 +11,10 @@ import {
     UseFormSetValue,
 } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
-import { BaseSyntheticEvent } from 'react'
+import { BaseSyntheticEvent, useState } from 'react'
+import { IFilter } from '@isdd/idsk-ui-kit/types'
+
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 
 export enum OPERATOR_OPTIONS {
     FULLTEXT = 'FULLTEXT',
@@ -77,10 +80,28 @@ const parseCustomAttributes = (urlParams: URLSearchParams): undefined | IAttribu
     return attributeFilters
 }
 
-export function useFilterParams<T extends FieldValues & IFilterParams>(defaults: T): [T, URLSearchParams] {
-    const [urlParams] = useSearchParams()
+interface ReturnUseFilterParamas<T> {
+    filter: T
+    urlParams: URLSearchParams
+    handleFilterChange: (changedFilter: IFilter) => void
+}
 
-    const filter: T & IFilterParams = {
+export function useFilterParams<T extends FieldValues & IFilterParams>(defaults: T & IFilter): ReturnUseFilterParamas<T> {
+    const [urlParams] = useSearchParams()
+    const [uiFilterState, setUiFilterState] = useState<IFilter>({
+        sort: defaults?.sort ?? [],
+        pageNumber: defaults?.pageNumber ?? BASE_PAGE_NUMBER,
+        pageSize: defaults?.pageSize ?? BASE_PAGE_SIZE,
+    })
+    const handleFilterChange = (changedFilter: IFilter) => {
+        setUiFilterState({
+            ...uiFilterState,
+            ...changedFilter,
+        })
+    }
+
+    const filter: T & IFilterParams & IFilter = {
+        ...uiFilterState,
         ...defaults,
         fullTextSearch: '',
     }
@@ -93,11 +114,12 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
         }
     })
     filter.attributeFilters = parseCustomAttributes(urlParams)
-    return [filter, urlParams]
+
+    return { filter, urlParams, handleFilterChange }
 }
 
 export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): ReturnUseFilter<T> {
-    const [filter] = useFilterParams<T>(defaults)
+    const { filter } = useFilterParams<T>(defaults)
     const methods = useForm<T & IFilterParams>({ defaultValues: filter as DeepPartial<T> })
     const [, setSearchParams] = useSearchParams()
 
