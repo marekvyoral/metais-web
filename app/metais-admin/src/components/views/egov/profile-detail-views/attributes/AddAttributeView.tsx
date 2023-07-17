@@ -1,57 +1,30 @@
 import React, { useCallback } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
+import { FieldValues } from 'react-hook-form'
 import { Button, Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
-import { yupResolver } from '@hookform/resolvers/yup'
-
-import { generateSchemaForCreateAttribute } from '../../entity-detail-views/createViewHelpers'
 
 import { IAddAttributeView } from './AddAttributeContainer'
+import { useCreateAttribute } from './useCreateAttribute'
 
 const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, storeAttribute }: IAddAttributeView) => {
-    const { t } = useTranslation()
-    const { handleSubmit, formState, register, watch } = useForm({
-        shouldUnregister: true,
-        resolver: yupResolver(generateSchemaForCreateAttribute(t)),
+    const {
+        formMethods,
+        t,
+        attributeTypes,
+        showUnit,
+        measureUnits,
+        selectedConstraint,
+        selectedType,
+        showConstaint,
+        stringConstraints,
+        integerConstraints,
+        allEnumsSelectOptions,
+        getTypeForDefaultValue,
+    } = useCreateAttribute({
+        measureUnit,
+        allEnumsData,
     })
 
-    const attributeTypes = [
-        { label: t('egov.detail.selectOption'), value: '', disabled: true },
-        { label: 'Integer', value: 'INTEGER' },
-        { label: 'Long', value: 'LONG' },
-        { label: 'Double', value: 'DOUBLE' },
-        { label: 'String', value: 'STRING' },
-        { label: 'Boolean', value: 'BOOLEAN' },
-        { label: 'Date', value: 'DATE' },
-    ]
-
-    const measureUnits = [
-        { label: t('egov.detail.selectOption'), value: '', disabled: true },
-        ...(measureUnit?.enumItems?.map((enumItem) => ({
-            label: [enumItem?.description, `(${enumItem?.value})`].join(' '),
-            value: enumItem?.code ?? '',
-        })) ?? []),
-    ]
-
-    const allEnumsSelectOptions = [
-        { label: t('egov.detail.selectOption'), value: '', disabled: true },
-        ...(allEnumsData?.results?.map((allEnumsEnumItem) => ({
-            label: allEnumsEnumItem?.name ?? '',
-            value: allEnumsEnumItem?.code ?? '',
-        })) ?? []),
-    ]
-
-    const stringConstraints = [
-        { label: t('egov.detail.selectOption'), value: '', disabled: true },
-        { label: 'Interný čiselník', value: 'enum' },
-        { label: 'Regularny vyraz', value: 'regex' },
-        { label: 'Intervalove rozlozenie', value: 'interval' },
-    ]
-
-    const integerConstraints = [
-        { label: t('egov.detail.selectOption'), value: '', disabled: true },
-        { label: 'Intervalove rozlozenie', value: 'interval' },
-    ]
+    const { register, formState, handleSubmit } = formMethods
 
     const onSubmit = useCallback(
         async (formValues: FieldValues) => {
@@ -64,18 +37,6 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
         },
         [entityName, storeAttribute],
     )
-
-    const selectedType = watch('type') ?? ''
-    const isSelectedTypeNumber = (newSelectedType: string) =>
-        newSelectedType === 'INTEGER' || newSelectedType === 'LONG' || newSelectedType === 'DOUBLE'
-    const showUnit = isSelectedTypeNumber(selectedType)
-    const showConstaint = selectedType === 'INTEGER' || selectedType === 'STRING'
-    const getTypeForDefaultValue = (newSelectedType: string) => {
-        if (isSelectedTypeNumber(newSelectedType)) return 'number'
-        else if (newSelectedType === 'DATE') return 'date'
-    }
-
-    const selectedConstraint = watch('constraints.[0].type')
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -135,25 +96,11 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                     defaultValue={stringConstraints?.[0].value}
                 />
             )}
-            {selectedConstraint === 'regex' && (
-                <Input label={t('egov.clarification')} id="regex" {...register('constraints.[0].regex')} error={formState?.errors?.technicalName} />
-            )}
+            {selectedConstraint === 'regex' && <Input label={t('egov.clarification')} id="regex" {...register('constraints.[0].regex')} />}
             {selectedConstraint === 'interval' && (
                 <>
-                    <Input
-                        label={t('egov.minValue')}
-                        type="number"
-                        id="order"
-                        {...register('constraints.[0].minValue')}
-                        error={formState?.errors?.order}
-                    />
-                    <Input
-                        label={t('egov.maxValue')}
-                        type="number"
-                        id="order"
-                        {...register('constraints.[0].maxValue')}
-                        error={formState?.errors?.order}
-                    />
+                    <Input label={t('egov.minValue')} type="number" id="order" {...register('constraints.[0].minValue')} />
+                    <Input label={t('egov.maxValue')} type="number" id="order" {...register('constraints.[0].maxValue')} />
                 </>
             )}
             {selectedType !== '' && selectedType !== 'BOOLEAN' && selectedConstraint !== 'enum' && (
