@@ -71,7 +71,7 @@ export const generateSchemaForCreateAttribute = (t: TFunction<'translation', und
             .required(t('egov.create.requiredField'))
             .min(2)
             .matches(/^[a-z-A-Z]+$/, t('egov.create.technicalNameRegex')),
-        order: yup.number(),
+        order: yup.number().required(t('egov.create.mustBeNumber')),
         description: yup.string().required(t('egov.create.requiredField')),
         engDescription: yup.string(),
         attributeProfiles: yup.mixed<AttributeProfile[]>(),
@@ -79,6 +79,6 @@ export const generateSchemaForCreateAttribute = (t: TFunction<'translation', und
         units: yup.string(),
         defaultValue: yup.mixed<boolean | string | number>(),
         constraints: yup.mixed(),
-        roleList: yup.array().of(yup.string()).required(t('egov.create.requiredField')),
+        // roleList: yup.array().of(yup.string()).required(t('egov.create.requiredField')),
     })
 }
