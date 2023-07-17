@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
+import { useNavigate } from 'react-router-dom'
 import { Languages } from '@isdd/metais-common/localization/languages'
-
 interface ILanguageItem {
     handleClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, lng: Languages) => void
     value: Languages
@@ -29,13 +29,14 @@ export const LanguageItem: React.FC<ILanguageItem> = ({ handleClick, value }) =>
 
 export const LanguageSelector: React.FC = () => {
     const { i18n, t } = useTranslation()
+    const navigate = useNavigate()
 
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
 
     const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, lng: Languages) => {
         event.preventDefault()
-        i18n.changeLanguage(lng)
         setIsMenuExpanded(false)
+        i18n.changeLanguage(lng, () => navigate(window.location))
     }
 
     const handleWrapperBlur = (event: React.FocusEvent<HTMLDivElement, Element>) => {

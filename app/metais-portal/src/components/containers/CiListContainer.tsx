@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { FieldValues } from 'react-hook-form'
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import {
     useGetDefaultColumnsUsingGET,
-    BASE_PAGE_NUMBER,
-    BASE_PAGE_SIZE,
     useReadCiListUsingPOST,
     useResetUserColumnsUsingDELETE,
     useGetUserColumnsUsingGET,
@@ -24,7 +22,10 @@ interface ICiListContainer<T> {
 }
 
 export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityName, ListComponent, defaultFilterValues }: ICiListContainer<T>) => {
-    const [filterParams] = useFilterParams<T>(defaultFilterValues)
+    const { filter: filterParams, handleFilterChange } = useFilterParams<T & IFilter>({
+        sort: [{ orderBy: 'Gen_Profil_nazov', sortDirection: SortType.ASC }],
+        ...defaultFilterValues,
+    })
 
     const {
         state: { user },
@@ -57,12 +58,6 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityN
         await refetchColumnData()
     }
 
-    const [uiFilterState, setUiFilterState] = useState<IFilter>({
-        sort: [{ orderBy: 'Gen_Profil_nazov', sortDirection: SortType.ASC }],
-        pageNumber: BASE_PAGE_NUMBER,
-        pageSize: BASE_PAGE_SIZE,
-    })
-
     const defaultRequestApi = {
         filter: {
             type: [entityName],
@@ -71,14 +66,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityN
             },
         },
     }
-
-    const handleFilterChange = (filter: IFilter) => {
-        setUiFilterState({
-            ...uiFilterState,
-            ...filter,
-        })
-    }
-    const filterToNeighborsApi = mapFilterToNeighborsApi(uiFilterState, defaultRequestApi)
+    const filterToNeighborsApi = mapFilterToNeighborsApi(filterParams, defaultRequestApi)
     const { data: tableData } = useReadCiListUsingPOST({
         ...filterToNeighborsApi,
         filter: {
@@ -88,7 +76,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityN
         },
     })
 
-    const pagination = mapConfigurationItemSetToPagination(uiFilterState, tableData)
+    const pagination = mapConfigurationItemSetToPagination(filterParams, tableData)
 
     return (
         <ListComponent
@@ -97,7 +85,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityN
             handleFilterChange={handleFilterChange}
             resetUserSelectedColumns={resetColumns}
             storeUserSelectedColumns={saveColumnSelection}
-            sort={uiFilterState?.sort ?? []}
+            sort={filterParams?.sort ?? []}
         />
     )
 }

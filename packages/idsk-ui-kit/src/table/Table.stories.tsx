@@ -11,6 +11,7 @@ import { CHECKBOX_CELL } from './constants'
 
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { ColumnSort } from '@/types'
+import { Button } from '@/button/Button'
 
 const meta: Meta<typeof Table> = {
     title: 'Components/Table',
@@ -376,6 +377,48 @@ export const ExpandableRows: Story = {
                     onPaginationChange={setPagination}
                     onColumnOrderChange={setColumnOrder}
                     columnOrder={columnOrder}
+                />
+            )
+        }
+        return <StateWrapper />
+    },
+    args: {
+        data: testTableData,
+        columns: expandableColumnsSpec,
+        canDrag: false,
+    },
+}
+
+export const ExpandableRowsWithSubComponents: Story = {
+    render: ({ ...args }) => {
+        const StateWrapper = () => {
+            const [sort] = useState<ColumnSort[]>([])
+            const [columnOrder, setColumnOrder] = useState<ColumnOrderState>(expandableColumnsSpec.map((d) => d.id || ''))
+            const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 100 })
+            const [expanded, setExpanded] = useState<ExpandedState>({})
+            return (
+                <Table<Person>
+                    {...args}
+                    expandedRowsState={expanded}
+                    onExpandedChange={setExpanded}
+                    sort={sort}
+                    pagination={pagination}
+                    onPaginationChange={setPagination}
+                    onColumnOrderChange={setColumnOrder}
+                    columnOrder={columnOrder}
+                    getExpandedRow={(row: Row<Person>) => {
+                        if (Number(row.id) % 2 === 0) return null
+                        return (
+                            <>
+                                <pre style={{ fontSize: '10px' }}>
+                                    <code>{JSON.stringify(row.original, null, 2)}</code>
+                                </pre>
+                                <div style={{ textAlign: 'center' }}>
+                                    <Button label={row.original.lastName} />
+                                </div>
+                            </>
+                        )
+                    }}
                 />
             )
         }

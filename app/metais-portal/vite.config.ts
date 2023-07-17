@@ -28,26 +28,6 @@ export default defineConfig(({ mode }) => {
                 origin: '*',
             },
             proxy: {
-                '^/read/.*': {
-                    target: process.env.VITE_REST_CLIENT_CMDB_TARGET_URL,
-                    changeOrigin: true,
-                    secure: false,
-                },
-                '^/citypes/.*': {
-                    target: process.env.VITE_REST_CLIENT_TYPES_REPO_TARGET_URL,
-                    changeOrigin: true,
-                    secure: false,
-                },
-                '^/enums/.*': {
-                    target: process.env.VITE_REST_CLIENT_ENUMS_REPO_TARGET_URL,
-                    changeOrigin: true,
-                    secure: false,
-                },
-                '^/columns/.*': {
-                    target: process.env.VITE_REST_CLIENT_USER_CONFIG_TARGET_URL,
-                    changeOrigin: true,
-                    secure: false,
-                },
                 '^/metaisiam/.*': {
                     target: process.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL,
                     changeOrigin: true,

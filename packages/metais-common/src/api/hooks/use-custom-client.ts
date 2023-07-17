@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { AuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
@@ -20,18 +21,24 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
         state: { accessToken },
         dispatch,
     } = useAuth()
-
     const navigate = useNavigate()
-    return async ({ url, method, params, data }) => {
-        const searchParams = params ? `?${new URLSearchParams(params)}` : ''
+    const { i18n } = useTranslation()
+
+    return async ({ url, method, params: searchParams, data }) => {
+        const allParams = {
+            ...searchParams,
+            lang: i18n.language,
+        }
+        const params = `?${new URLSearchParams(allParams)}`
         const headers: Record<string, string> = {
             'Content-Type': 'application/json',
+            'Accept-Language': i18n.language,
             ...data?.headers,
         }
         if (accessToken) {
             headers['Authorization'] = `Bearer ${accessToken}`
         }
-        const response = await fetch(`${baseURL}${url}` + searchParams, {
+        const response = await fetch(`${baseURL}${url}${params}`, {
             method,
             headers,
             ...(data ? { body: JSON.stringify(data) } : {}),

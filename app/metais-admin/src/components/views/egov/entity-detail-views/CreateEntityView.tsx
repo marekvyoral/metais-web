@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Button, ErrorBlock, Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
+import { Button, ErrorBlock, Input, MultiSelect, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
 import { FieldName, FieldValues, FormProvider, RegisterOptions } from 'react-hook-form'
 import { MutationFeedback } from '@isdd/metais-common'
 
@@ -76,13 +76,16 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
                             />
                         )}
                         {!hiddenInputs?.ROLE_LIST && (
-                            <SimpleSelect
+                            <MultiSelect
                                 label={t('egov.roles')}
-                                options={[{ label: t('egov.detail.selectOption'), value: '', disabled: true }, ...rolesToSelect]}
-                                defaultValue={''}
-                                {...register('roleList', {
-                                    setValueAs: (val) => [val],
-                                })}
+                                options={rolesToSelect}
+                                {...register('roleList')}
+                                onChange={(newValue) => {
+                                    formMethods?.setValue(
+                                        'roleList',
+                                        newValue?.map((v) => v?.value),
+                                    )
+                                }}
                             />
                         )}
                         {!hiddenInputs?.SOURCES && !hiddenInputs?.TARGETS && (

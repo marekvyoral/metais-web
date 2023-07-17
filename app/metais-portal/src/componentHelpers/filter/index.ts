@@ -28,7 +28,7 @@ export const mapFilterToNeighboursWithAllRelsApi = (
 
 export const mapFilterParamsToApi = <T extends IFilterParams>(filterParams: T): FilterAttributesUi[] => {
     const attributes: FilterAttributesUi[] = []
-    const keysToSkip = new Set(['fullTextSearch', 'attributeFilters'])
+    const keysToSkip = new Set(['fullTextSearch', 'attributeFilters', 'sort', 'pageSize', 'pageNumber'])
     for (const [key, value] of Object.entries(filterParams)) {
         if (keysToSkip.has(key)) continue
         if (value) {
