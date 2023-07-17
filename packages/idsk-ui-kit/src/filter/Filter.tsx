@@ -28,6 +28,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, d
     } = useFilter<T & IFilterParams>(defaultFilterValues)
     const { t } = useTranslation()
     const [isOpen, setOpen] = useState(shouldBeFilterOpen)
+    console.log('defaultFilterValues:', defaultFilterValues)
     if (!heading) {
         heading = (
             <form onSubmit={onSubmit}>

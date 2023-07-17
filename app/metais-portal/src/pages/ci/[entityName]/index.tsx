@@ -54,10 +54,16 @@ const ProjektListPage = () => {
                                                 placeholder={t('filter.metaisCode.placeholder')}
                                                 {...register('Gen_Profil_kod_metais')}
                                             />
+                                            {console.log('filter.attributeFilters', filter)}
+                                            {console.log('columnListData', columnListData)}
+                                            {console.log('attributes', attributes)}
                                             <DynamicFilterAttributes
                                                 setValue={setValue}
                                                 data={filter.attributeFilters}
-                                                availableAttributes={columnListData?.attributes}
+                                                availableAttributes={attributes?.map((attr) => ({
+                                                    name: attr.name || '',
+                                                    technicalName: attr.technicalName || '',
+                                                }))}
                                             />
                                         </div>
                                     )}
