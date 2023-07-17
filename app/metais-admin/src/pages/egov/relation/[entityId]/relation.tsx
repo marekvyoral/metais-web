@@ -14,7 +14,8 @@ const Profile = () => {
                     data={props?.data}
                     unValidRelationShipTypeMutation={props?.unValidRelationShipTypeMutation}
                     addNewConnectionToExistingRelation={props?.addNewConnectionToExistingRelation}
-                    editExistingAttribute={props?.editExistingAttribute}
+                    saveExistingAttribute={props?.saveExistingAttribute}
+                    resetExistingAttribute={props?.resetExistingAttribute}
                 />
             )}
         />

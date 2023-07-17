@@ -17,6 +17,8 @@ export const RelationDetailView = ({
     data: { ciTypeData, constraintsData, unitsData, keysToDisplay, attributeOverridesData },
     unValidRelationShipTypeMutation,
     addNewConnectionToExistingRelation,
+    saveExistingAttribute,
+    resetExistingAttribute,
 }: IAtrributesContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -29,7 +31,14 @@ export const RelationDetailView = ({
         return {
             id: key,
             title: key,
-            content: <EntityDetailViewAttributes data={tabData} attributesOverridesData={attributeOverridesData} />,
+            content: (
+                <EntityDetailViewAttributes
+                    data={tabData}
+                    attributesOverridesData={attributeOverridesData}
+                    saveExistingAttribute={saveExistingAttribute}
+                    resetExistingAttribute={resetExistingAttribute}
+                />
+            ),
         }
     })
 
@@ -42,7 +51,14 @@ export const RelationDetailView = ({
         {
             id: 'genericProfile',
             title: t('egov.detail.genericProfile'),
-            content: <EntityDetailViewAttributes data={ciTypeData} attributesOverridesData={attributeOverridesData} />,
+            content: (
+                <EntityDetailViewAttributes
+                    data={ciTypeData}
+                    attributesOverridesData={attributeOverridesData}
+                    saveExistingAttribute={saveExistingAttribute}
+                    resetExistingAttribute={resetExistingAttribute}
+                />
+            ),
         },
         ...tabsFromApi,
     ]

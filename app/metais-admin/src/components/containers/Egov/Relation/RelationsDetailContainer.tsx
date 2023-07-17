@@ -11,6 +11,7 @@ import {
     useGetAttributeOverridesUsingGET1,
     Attribute,
     useStoreAttributeTextationUsingPUT1,
+    useDeleteAttributeTextationUsingDELETE1,
 } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
@@ -27,7 +28,8 @@ export interface IAtrributesContainerView {
     }
     unValidRelationShipTypeMutation?: (technicalName?: string) => void
     addNewConnectionToExistingRelation?: (selectedConnection: CiTypePreview, ciTypeRoleEnum: 'TARGET' | 'SOURCE') => void
-    editExistingAttribute?: (attributeTechnicalName?: string, attribute?: Attribute) => void
+    saveExistingAttribute?: (attributeTechnicalName?: string, attribute?: Attribute) => void
+    resetExistingAttribute?: (attributeTechnicalName?: string) => void
 }
 
 interface AttributesContainer {
@@ -55,7 +57,8 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
     const { mutateAsync: setRelationAsValid } = useUnvalidRelationshipTypeUsingDELETE()
     const { mutateAsync: setRelationAsInvalid } = useValidRelationshipTypeUsingPUT()
     const { mutateAsync: addConnection } = useStoreExistsCiTypeRelationshipTypeMapUsingPUT()
-    const { mutateAsync: editAttribute } = useStoreAttributeTextationUsingPUT1()
+    const { mutateAsync: saveAttribute } = useStoreAttributeTextationUsingPUT1()
+    const { mutateAsync: resetAttribute } = useDeleteAttributeTextationUsingDELETE1()
 
     const unValidRelationShipTypeMutation = async (technicalName?: string) => {
         setValidity(technicalName, ciTypeData?.valid, setRelationAsValid, setRelationAsInvalid, refetch)
@@ -78,8 +81,8 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
             })
     }
 
-    const editExistingAttribute = (attributeTechnicalName?: string, attribute?: Attribute) => {
-        editAttribute({
+    const saveExistingAttribute = (attributeTechnicalName?: string, attribute?: Attribute) => {
+        saveAttribute({
             technicalName: ciTypeData?.technicalName ?? '',
             attTecName: attributeTechnicalName ?? '',
             data: {
@@ -87,9 +90,26 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
             },
         })
             .then(() => {
+                refetch()
                 refetchAttributes()
             })
             .catch(() => {
+                refetch()
+                refetchAttributes()
+            })
+    }
+
+    const resetExistingAttribute = (attributeTechnicalName?: string) => {
+        resetAttribute({
+            technicalName: ciTypeData?.technicalName ?? '',
+            attTecName: attributeTechnicalName ?? '',
+        })
+            .then(() => {
+                refetch()
+                refetchAttributes()
+            })
+            .catch(() => {
+                refetch()
                 refetchAttributes()
             })
     }
@@ -100,7 +120,8 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
                 data={{ ciTypeData, constraintsData, unitsData: undefined, keysToDisplay, attributeOverridesData }}
                 unValidRelationShipTypeMutation={unValidRelationShipTypeMutation}
                 addNewConnectionToExistingRelation={addNewConnectionToExistingRelation}
-                editExistingAttribute={editExistingAttribute}
+                saveExistingAttribute={saveExistingAttribute}
+                resetExistingAttribute={resetExistingAttribute}
             />
         </QueryFeedback>
     )

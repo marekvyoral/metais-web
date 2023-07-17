@@ -97,7 +97,6 @@ export const EntityDetailViewAttributes = ({
         },
         {
             header: t('actionsInTable.actions'),
-            accessorFn: (row) => row?.valid,
             enableSorting: true,
             id: 'actions',
             cell: (ctx) => {
