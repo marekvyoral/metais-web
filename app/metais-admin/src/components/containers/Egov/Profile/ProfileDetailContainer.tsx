@@ -8,6 +8,7 @@ import {
 } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
+import { QueryFeedback } from '@isdd/metais-common'
 
 export interface IAtrributesContainerView {
     data: {
@@ -40,12 +41,9 @@ export const ProfileDetailContainer: React.FC<AttributesContainer> = ({ entityNa
         await setValidity(technicalName, ciTypeData?.valid, setProfileAsValid, setProfileAsInvalid, refetch)
     }
 
-    if (isLoading) {
-        return <div>Loading</div>
-    }
-    if (isError) {
-        return <div>Error</div>
-    }
-
-    return <View data={{ ciTypeData, constraintsData, unitsData: undefined }} setValidityOfProfile={setValidityOfProfile} />
+    return (
+        <QueryFeedback loading={isLoading} error={isError}>
+            <View data={{ ciTypeData, constraintsData, unitsData: undefined }} setValidityOfProfile={setValidityOfProfile} />
+        </QueryFeedback>
+    )
 }

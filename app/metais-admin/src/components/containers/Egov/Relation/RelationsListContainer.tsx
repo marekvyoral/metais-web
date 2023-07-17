@@ -1,10 +1,9 @@
 import React from 'react'
 import { RelationshipTypePreviewList, useListRelationshipTypesUsingGET } from '@isdd/metais-common/api'
+import { QueryFeedback } from '@isdd/metais-common'
 
 export interface IView {
     data?: RelationshipTypePreviewList | undefined
-    isLoading: boolean
-    isError: boolean
 }
 
 interface IRelationListContainer {
@@ -12,20 +11,11 @@ interface IRelationListContainer {
 }
 
 export const RelationListContainer: React.FC<IRelationListContainer> = ({ View }) => {
-    // const defaultListQueryArgs: CiTypeFilter = {
-    //     role: '',
-    // }
-
-    // const [listQueryArgs, setListQueryArgs] = useState<CiTypeFilter>(defaultListQueryArgs)
-
     const { data, isLoading, isError } = useListRelationshipTypesUsingGET({})
 
-    if (isLoading) {
-        return <div>Loading</div>
-    }
-    if (isError) {
-        return <div>Error</div>
-    }
-
-    return <View data={data} isLoading={isLoading} isError={isError} />
+    return (
+        <QueryFeedback loading={isLoading} error={isError}>
+            <View data={data} />
+        </QueryFeedback>
+    )
 }

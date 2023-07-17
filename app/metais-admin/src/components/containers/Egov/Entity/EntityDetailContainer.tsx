@@ -14,6 +14,7 @@ import {
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { useEntityProfiles } from '@isdd/metais-common/hooks/useEntityProfiles'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
+import { QueryFeedback } from '@isdd/metais-common'
 export interface IAtrributesContainerView {
     data: {
         ciTypeData: CiType | undefined
@@ -104,20 +105,16 @@ export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityNam
         isEntityStructureLoading: isCiTypeDataLoading,
         isEntityStructureError: isCiTypeDataError,
     })
-    if (isLoading) {
-        return <div>Loading</div>
-    }
-    if (isError) {
-        return <div>Error</div>
-    }
 
     return (
-        <View
-            data={{ ciTypeData, constraintsData, unitsData: undefined, summarizingCardData, keysToDisplay, attributesOverridesData }}
-            setValidityOfEntity={setValidityOfEntity}
-            setSummarizingCardData={setSummarizingCardData}
-            saveExistingAttribute={saveExistingAttribute}
-            resetExistingAttribute={resetExistingAttribute}
-        />
+        <QueryFeedback loading={isLoading} error={isError}>
+            <View
+                data={{ ciTypeData, constraintsData, unitsData: undefined, summarizingCardData, keysToDisplay, attributesOverridesData }}
+                setValidityOfEntity={setValidityOfEntity}
+                setSummarizingCardData={setSummarizingCardData}
+                saveExistingAttribute={saveExistingAttribute}
+                resetExistingAttribute={resetExistingAttribute}
+            />
+        </QueryFeedback>
     )
 }

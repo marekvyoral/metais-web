@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { Button, ErrorBlock, Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
-import { FieldValues, FormProvider } from 'react-hook-form'
+import { FieldName, FieldValues, FormProvider, RegisterOptions } from 'react-hook-form'
 import { MutationFeedback } from '@isdd/metais-common'
 
 import ConnectionView from '../relation-detail-views/ConnectionView'
@@ -12,6 +12,7 @@ import useCreateView from './useCreateView'
 
 import { ProfileTabs } from '@/components/ProfileTabs'
 import { ICreateEntityView } from '@/components/containers/Egov/Entity/CreateEntityContainer'
+
 export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityView) => {
     const {
         formMethods,
@@ -26,7 +27,20 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
         profileAttributesDialog,
     } = useCreateView({ data, hiddenInputs })
 
-    const { register, handleSubmit, formState } = formMethods
+    const { handleSubmit, formState } = formMethods
+
+    // Need todo typesafe, probably override useForm hook with custom register typesafe...
+    const register = (inputName: string, options?: RegisterOptions<FieldValues, FieldName<FieldValues>>) => {
+        return {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            ...formMethods?.register(inputName, options),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            error: formMethods?.formState?.errors?.[inputName],
+        }
+    }
+
     const onSubmit = useCallback(
         async (formData: FieldValues) => {
             await mutate(formData)
@@ -46,28 +60,13 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
                 {(successedMutation || error) && <MutationFeedback success={successedMutation} error={error} />}
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <>
-                        {!hiddenInputs?.NAME && <Input label={t('egov.name')} {...register('name')} error={formState?.errors?.name} />}
-                        {!hiddenInputs?.ENG_NAME && <Input label={t('egov.engName')} {...register('engName')} error={formState?.errors?.engName} />}
-                        {!hiddenInputs?.TECHNICAL_NAME && (
-                            <Input label={t('egov.technicalName')} {...register('technicalName')} error={formState?.errors?.technicalName} />
-                        )}
-                        {!hiddenInputs?.CODE_PREFIX && (
-                            <Input label={t('egov.codePrefix')} {...register('codePrefix')} error={formState?.errors?.codePrefix} />
-                        )}
-                        {!hiddenInputs?.URI_PREFIX && (
-                            <Input label={t('egov.uriPrefix')} {...register('uriPrefix')} error={formState?.errors?.uriPrefix} />
-                        )}
-                        {!hiddenInputs?.DESCRIPTION && (
-                            <TextArea label={t('egov.description')} rows={3} {...register('description')} error={formState?.errors?.description} />
-                        )}
-                        {!hiddenInputs?.ENG_DESCRIPTION && (
-                            <TextArea
-                                label={t('egov.engDescription')}
-                                rows={3}
-                                {...register('engDescription')}
-                                error={formState?.errors?.engDescription}
-                            />
-                        )}
+                        {!hiddenInputs?.NAME && <Input label={t('egov.name')} {...register('name')} />}
+                        {!hiddenInputs?.ENG_NAME && <Input label={t('egov.engName')} {...register('engName')} />}
+                        {!hiddenInputs?.TECHNICAL_NAME && <Input label={t('egov.technicalName')} {...register('technicalName')} />}
+                        {!hiddenInputs?.CODE_PREFIX && <Input label={t('egov.codePrefix')} {...register('codePrefix')} />}
+                        {!hiddenInputs?.URI_PREFIX && <Input label={t('egov.uriPrefix')} {...register('uriPrefix')} />}
+                        {!hiddenInputs?.DESCRIPTION && <TextArea label={t('egov.description')} rows={3} {...register('description')} />}
+                        {!hiddenInputs?.ENG_DESCRIPTION && <TextArea label={t('egov.engDescription')} rows={3} {...register('engDescription')} />}
                         {!hiddenInputs?.TYPE && (
                             <SimpleSelect
                                 label={t('egov.type')}

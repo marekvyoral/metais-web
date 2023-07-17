@@ -1,6 +1,7 @@
 import React from 'react'
 import { useFindAllUsingGET14 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { AttributeProfileBody, Role, useStoreNewAttrProfileUsingPOST } from '@isdd/metais-common/api'
+import { QueryFeedback } from '@isdd/metais-common'
 
 import { HiddenInputs } from '@/types/inputs'
 
@@ -23,9 +24,6 @@ export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreat
     const { data, isLoading, isError } = useFindAllUsingGET14(page, limit, { direction: 'ASC', orderBy: 'name' })
     const { mutateAsync } = useStoreNewAttrProfileUsingPOST()
 
-    if (isLoading) return <div>isLoading</div>
-    if (isError) return <div>error</div>
-
     const storeProfile = async (formData: AttributeProfileBody) => {
         await mutateAsync({
             data: {
@@ -35,12 +33,14 @@ export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreat
     }
 
     return (
-        <View
-            data={{
-                roles: (data as Role[]) ?? [],
-            }}
-            mutate={storeProfile}
-            hiddenInputs={{ ENG_NAME: true, CODE_PREFIX: true, URI_PREFIX: true, ATTRIBUTE_PROFILES: true, SOURCES: true, TARGETS: true }}
-        />
+        <QueryFeedback loading={isLoading} error={isError}>
+            <View
+                data={{
+                    roles: (data as Role[]) ?? [],
+                }}
+                mutate={storeProfile}
+                hiddenInputs={{ ENG_NAME: true, CODE_PREFIX: true, URI_PREFIX: true, ATTRIBUTE_PROFILES: true, SOURCES: true, TARGETS: true }}
+            />
+        </QueryFeedback>
     )
 }

@@ -14,6 +14,8 @@ import {
 } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
+import { QueryFeedback } from '@isdd/metais-common'
+import { createTabNamesAndValuesMap } from '@isdd/metais-common/hooks/useEntityProfiles'
 
 export interface IAtrributesContainerView {
     data: {
@@ -42,11 +44,7 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
         refetch: refetchAttributes,
     } = useGetAttributeOverridesUsingGET1(entityName)
 
-    const keysToDisplay = new Map<string, AttributeProfile | undefined>()
-
-    ciTypeData?.attributeProfiles?.map((attribute) => {
-        keysToDisplay.set(attribute?.name ?? '', attribute)
-    })
+    const keysToDisplay = createTabNamesAndValuesMap(ciTypeData?.attributeProfiles)
 
     const { isLoading, isError, constraintsData } = useDetailData({
         entityStructure: ciTypeData,
@@ -96,19 +94,14 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
             })
     }
 
-    if (isLoading || isAttributesOverridesLoading) {
-        return <div>Loading</div>
-    }
-    if (isError || isAttributesOverridesError) {
-        return <div>Error</div>
-    }
-
     return (
-        <View
-            data={{ ciTypeData, constraintsData, unitsData: undefined, keysToDisplay, attributeOverridesData }}
-            unValidRelationShipTypeMutation={unValidRelationShipTypeMutation}
-            addNewConnectionToExistingRelation={addNewConnectionToExistingRelation}
-            editExistingAttribute={editExistingAttribute}
-        />
+        <QueryFeedback loading={isLoading || isAttributesOverridesLoading} error={isError || isAttributesOverridesError}>
+            <View
+                data={{ ciTypeData, constraintsData, unitsData: undefined, keysToDisplay, attributeOverridesData }}
+                unValidRelationShipTypeMutation={unValidRelationShipTypeMutation}
+                addNewConnectionToExistingRelation={addNewConnectionToExistingRelation}
+                editExistingAttribute={editExistingAttribute}
+            />
+        </QueryFeedback>
     )
 }

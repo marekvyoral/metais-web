@@ -1,6 +1,7 @@
 import React from 'react'
 import { useFindAllUsingGET14 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { CiType, Role, useStoreAdminEntityUsingPOST } from '@isdd/metais-common/api'
+import { QueryFeedback } from '@isdd/metais-common'
 
 import { HiddenInputs } from '@/types/inputs'
 
@@ -33,17 +34,16 @@ const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity)
         })
     }
 
-    if (isLoading) return <div>isLoading</div>
-    if (isError) return <div>error</div>
-
     return (
-        <View
-            data={{
-                roles: data ?? [],
-            }}
-            mutate={storeEntity}
-            hiddenInputs={{ SOURCES: true, TARGETS: true, ENG_DESCRIPTION: true }}
-        />
+        <QueryFeedback loading={isLoading} error={isError}>
+            <View
+                data={{
+                    roles: data ?? [],
+                }}
+                mutate={storeEntity}
+                hiddenInputs={{ SOURCES: true, TARGETS: true, ENG_DESCRIPTION: true }}
+            />
+        </QueryFeedback>
     )
 }
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useFindAllUsingGET14 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { RelationshipType, Role, useStoreAdminEntityUsingPOST1 } from '@isdd/metais-common/api'
+import { QueryFeedback } from '@isdd/metais-common'
 
 import { HiddenInputs } from '@/types/inputs'
 
@@ -17,14 +18,11 @@ interface ICreateEntity {
 }
 
 export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
-    const page = 1
-    const limit = 200
+    const pageNumber = 1
+    const pageSize = 200
 
-    const { data, isLoading, isError } = useFindAllUsingGET14(page, limit, { direction: 'ASC', orderBy: 'name' })
+    const { data, isLoading, isError } = useFindAllUsingGET14(pageNumber, pageSize, { direction: 'ASC', orderBy: 'name' })
     const { mutateAsync } = useStoreAdminEntityUsingPOST1()
-
-    if (isLoading) return <div>isLoading</div>
-    if (isError) return <div>error</div>
 
     const storeRelation = async (formData: RelationshipType) => {
         await mutateAsync({
@@ -35,12 +33,14 @@ export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View }: ICrea
     }
 
     return (
-        <View
-            data={{
-                roles: (data as Role[]) ?? [],
-            }}
-            mutate={storeRelation}
-            hiddenInputs={{ CODE_PREFIX: true, URI_PREFIX: true }}
-        />
+        <QueryFeedback loading={isLoading} error={isError}>
+            <View
+                data={{
+                    roles: (data as Role[]) ?? [],
+                }}
+                mutate={storeRelation}
+                hiddenInputs={{ CODE_PREFIX: true, URI_PREFIX: true }}
+            />
+        </QueryFeedback>
     )
 }

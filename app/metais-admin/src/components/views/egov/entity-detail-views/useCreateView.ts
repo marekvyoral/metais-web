@@ -1,7 +1,7 @@
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { MutationFeedbackError, getTabsFromApi } from '@isdd/metais-common'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { createTabNamesAndValuesMap } from '@isdd/metais-common/hooks/useEntityProfiles'
 import { CiType, Role } from '@isdd/metais-common/api'

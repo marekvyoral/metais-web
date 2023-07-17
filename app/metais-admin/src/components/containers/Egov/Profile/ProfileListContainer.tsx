@@ -1,10 +1,9 @@
 import React from 'react'
 import { AttributeProfilePreview, useListAttrProfileUsingPOST } from '@isdd/metais-common/api'
+import { QueryFeedback } from '@isdd/metais-common'
 
 export interface IView {
     data?: void | AttributeProfilePreview | undefined
-    isLoading: boolean
-    isError: boolean
 }
 
 interface IProfileListContainer {
@@ -12,20 +11,11 @@ interface IProfileListContainer {
 }
 
 export const ProfileListContainer: React.FC<IProfileListContainer> = ({ View }) => {
-    // const defaultListQueryArgs: CiTypeFilter = {
-    //     role: '',
-    // }
-
-    // const [listQueryArgs, setListQueryArgs] = useState<CiTypeFilter>(defaultListQueryArgs)
-    // listQueryArgs
     const { data, isLoading, isError } = useListAttrProfileUsingPOST({})
 
-    if (isLoading) {
-        return <div>Loading</div>
-    }
-    if (isError) {
-        return <div>Error</div>
-    }
-
-    return <View data={data} isLoading={isLoading} isError={isError} />
+    return (
+        <QueryFeedback loading={isLoading} error={isError}>
+            <View data={data} />
+        </QueryFeedback>
+    )
 }
