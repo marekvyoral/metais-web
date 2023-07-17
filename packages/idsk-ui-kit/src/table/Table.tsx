@@ -25,7 +25,7 @@ import { TableRowExpanded } from './TableRowExpanded'
 
 import { LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
 
-interface ITableProps<T> {
+export interface ITableProps<T> {
     data?: Array<T>
     columns: Array<ColumnDef<T>>
     canDrag?: boolean
