@@ -18,6 +18,11 @@ stages:
     - deploy-okd-develop
     - deploy
 
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    #- if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
 checks:
     image: nexus.isdd.sk:8490/node:latest
     stage: run-checks
@@ -27,7 +32,8 @@ checks:
     script:
         - yarn run typescript-check
         - yarn run lint
-
+    rules:
+        - when: always
 
 build-node:
     image: nexus.isdd.sk:8490/node:latest
@@ -39,8 +45,8 @@ build-node:
         paths:
             - 'app/metais-portal/dist/'
             - 'app/metais-admin/dist/'
-    when: on_success
-
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH =~ /^feature\/.+$/'
 
 .build_docker_template:
     image: nexus.isdd.sk:8490/docker:20.10-git
@@ -61,23 +67,20 @@ build-node:
         # build admin
         - docker build -f docker/Dockerfile --build-arg BUILD_DIR=app/metais-admin/dist/ -t ${CI_REGISTRY_IMAGE}/admin:${IMAGE_TAG} .
         - docker push ${CI_REGISTRY_IMAGE}/admin:${IMAGE_TAG}
-    when: on_success
     
 build-docker-feature:
     extends: .build_docker_template
     variables: 
         IMAGE_TAG: ${CI_COMMIT_REF_SLUG}
-    only:
-        variables:
-          - ($CI_COMMIT_BRANCH != "develop")
+    rules:
+        - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/
 
 build-docker-latest:
     extends: .build_docker_template
     variables: 
         IMAGE_TAG: latest
-    only:
-        variables:
-          - ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop")
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "main"'
 
 deploy-okd-feature:
      stage: deploy-okd-feature

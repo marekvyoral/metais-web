@@ -1,0 +1,13 @@
+@import '@isdd/metais-common/src/utils.scss';
+
+.addButton {
+    color: govuk-colour("blue");
+    display: inline-block;
+    
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+        color: govuk-colour("dark-blue");
+    }
+}

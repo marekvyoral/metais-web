@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { AuthActions, useAuth } from '@/contexts/auth/authContext'
 
@@ -20,26 +21,39 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
         state: { accessToken },
         dispatch,
     } = useAuth()
-
     const navigate = useNavigate()
-    return async ({ url, method, params, data }) => {
-        const searchParams = params ? `?${new URLSearchParams(params)}` : ''
-        const response = await fetch(`${baseURL}${url}` + searchParams, {
+    const { i18n } = useTranslation()
+
+    return async ({ url, method, params: searchParams, data }) => {
+        const allParams = {
+            ...searchParams,
+            lang: i18n.language,
+        }
+        const params = `?${new URLSearchParams(allParams)}`
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+            'Accept-Language': i18n.language,
+            ...data?.headers,
+        }
+        if (accessToken) {
+            headers['Authorization'] = `Bearer ${accessToken}`
+        }
+        const response = await fetch(`${baseURL}${url}${params}`, {
             method,
-            headers: {
-                'Content-Type': 'application/json',
-                ...data?.headers,
-                accessToken: `Bearer ${accessToken}`,
-            },
+            headers,
             ...(data ? { body: JSON.stringify(data) } : {}),
         })
 
-        const responseBody = await response.json()
+        const responseBodyText = await response.text()
+
+        const responseBody = responseBodyText.length > 0 && JSON.parse(responseBodyText)
+
         if (response.status == 401) {
             dispatch({ type: AuthActions.LOGOUT })
             navigate('/?token_expired=true')
         }
         if (callback) callback(responseBody)
+
         return responseBody
     }
 }

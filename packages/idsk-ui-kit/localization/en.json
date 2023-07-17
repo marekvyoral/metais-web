@@ -3,12 +3,16 @@
         "open": "Open language menu",
         "close": "Close language menu"
     },
-    "searchInput":{
+    "searchInput": {
         "search": "Search"
     },
     "language": {
         "sk": "Slovenčina",
         "en": "English"
+    },
+    "tab": {
+        "contents": "Contents",
+        "moreTabs": "More tabs"
     },
     "loading": {
         "loadingSubPage": "Loading sub-page"

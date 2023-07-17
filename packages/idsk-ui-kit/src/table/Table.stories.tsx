@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
 import { Meta, StoryObj } from '@storybook/react'
-import { ColumnDef, ColumnOrderState, PaginationState, ExpandedState } from '@tanstack/react-table'
+import { ColumnDef, ColumnOrderState, PaginationState, ExpandedState, Row } from '@tanstack/react-table'
 
 import { Table } from './Table'
 import { TableMetaBlock } from './TableMetaBlock'
 import { ExpandableHeaderCellWrapper } from './ExpandableHeaderCellWrapper'
 import { ExpandableRowCellWrapper } from './ExpandableRowCellWrapper'
 import { resetColumnOrder } from './tableUtils'
+import { CHECKBOX_CELL } from './constants'
 
+import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { ColumnSort } from '@/types'
+import { Button } from '@/button/Button'
 
 const meta: Meta<typeof Table> = {
     title: 'Components/Table',
@@ -16,24 +19,38 @@ const meta: Meta<typeof Table> = {
 }
 
 export type Person = {
+    uuid?: string
     firstName: string
     lastName: string
     age: number
     subRows?: Person[]
+    check?: boolean
+}
+
+const reduceTableDataToObject = <T extends { uuid?: string }>(array: T[]): Record<string, T> => {
+    return array.reduce<Record<string, T>>((result, item) => {
+        if (item.uuid) {
+            result[item.uuid] = item
+        }
+        return result
+    }, {})
 }
 
 const testTableData: Person[] = [
     {
+        uuid: '1',
         firstName: 'tanner',
         lastName: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
         age: 18,
         subRows: [
             {
+                uuid: '1-1',
                 firstName: 'tanner-first-subchild',
                 lastName: 'linsley-first-subchild',
                 age: 25,
                 subRows: [
                     {
+                        uuid: '1-1-1',
                         firstName: 'tanner-second-subchild',
                         lastName: 'linsley-second-subchild',
                         age: 48,
@@ -43,11 +60,13 @@ const testTableData: Person[] = [
         ],
     },
     {
+        uuid: '2',
         firstName: 'tandy',
         lastName: 'miller',
         age: 20,
         subRows: [
             {
+                uuid: '2-1',
                 firstName: 'tanner-1',
                 lastName: 'linsley',
                 age: 18,
@@ -55,11 +74,13 @@ const testTableData: Person[] = [
         ],
     },
     {
+        uuid: '3',
         firstName: 'joe',
         lastName: 'dirte',
         age: 20,
         subRows: [
             {
+                uuid: '3-1',
                 firstName: 'tanner-2',
                 lastName: 'linsley',
                 age: 10,
@@ -67,16 +88,19 @@ const testTableData: Person[] = [
         ],
     },
     {
+        uuid: '4',
         firstName: 'tanner',
         lastName: 'linsley',
         age: 20,
     },
     {
+        uuid: '5',
         firstName: 'tandy',
         lastName: 'miller',
         age: 45,
     },
     {
+        uuid: '6',
         firstName: 'joe',
         lastName: 'dirte',
         age: 65,
@@ -119,6 +143,77 @@ const sortableColumnsSpec: ColumnDef<Person>[] = [
         id: 'age',
         header: 'Age',
         enableSorting: true,
+    },
+]
+
+const SelectableColumnsSpec = (
+    rowSelection: Record<string, Person>,
+    setRowSelection: (value: React.SetStateAction<Record<string, Person>>) => void,
+    tableData?: Person[],
+): ColumnDef<Person>[] => [
+    {
+        accessorFn: (row) => row.check,
+        header: ({ table }) => {
+            return (
+                <div className="govuk-checkboxes govuk-checkboxes--small">
+                    <CheckBox
+                        label=""
+                        name="checkbox"
+                        id="checkbox_all"
+                        value="true"
+                        onChange={() => {
+                            const checked = table.getRowModel().rows.every((row) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false))
+                            const newRowSelection = { ...rowSelection }
+                            if (checked) {
+                                table.getRowModel().rows.forEach((row) => row.original.uuid && delete newRowSelection[row.original.uuid])
+                                setRowSelection(newRowSelection)
+                            } else {
+                                setRowSelection((val) => ({ ...val, ...reduceTableDataToObject<Person>(tableData || []) }))
+                            }
+                        }}
+                        checked={table.getRowModel().rows.every((row) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false))}
+                    />
+                </div>
+            )
+        },
+        id: CHECKBOX_CELL,
+        cell: ({ row }) => (
+            <div className="govuk-checkboxes govuk-checkboxes--small">
+                <CheckBox
+                    label=""
+                    name="checkbox"
+                    id={`checkbox_${row.id}`}
+                    value="true"
+                    onChange={() => {
+                        if (row.original.uuid) {
+                            const newRowSelection = { ...rowSelection }
+                            if (rowSelection[row.original.uuid]) {
+                                delete newRowSelection[row.original.uuid]
+                            } else {
+                                newRowSelection[row.original.uuid] = row.original
+                            }
+                            setRowSelection(newRowSelection)
+                        }
+                    }}
+                    checked={row.original.uuid ? !!rowSelection[row.original.uuid] : false}
+                />
+            </div>
+        ),
+    },
+    {
+        accessorFn: (row) => row.firstName,
+        id: 'firstName',
+        header: 'First Name',
+    },
+    {
+        id: 'lastName',
+        accessorKey: 'lastName',
+        header: 'Last Name',
+    },
+    {
+        accessorKey: 'age',
+        id: 'age',
+        header: 'Age',
     },
 ]
 
@@ -248,6 +343,22 @@ export const DraggableColumns: Story = {
     },
 }
 
+export const SelectableRows: Story = {
+    render: ({ ...args }) => {
+        const StateWrapper = () => {
+            const [rowSelection, setRowSelection] = useState<Record<string, Person>>({})
+            const isRowSelected = (row: Row<Person>) => {
+                return row.original.uuid ? !!rowSelection[row.original.uuid] : false
+            }
+            return <Table<Person> {...args} columns={SelectableColumnsSpec(rowSelection, setRowSelection, args.data)} isRowSelected={isRowSelected} />
+        }
+        return <StateWrapper />
+    },
+    args: {
+        data: testTableData,
+    },
+}
+
 export const ExpandableRows: Story = {
     render: ({ ...args }) => {
         const StateWrapper = () => {
@@ -266,6 +377,48 @@ export const ExpandableRows: Story = {
                     onPaginationChange={setPagination}
                     onColumnOrderChange={setColumnOrder}
                     columnOrder={columnOrder}
+                />
+            )
+        }
+        return <StateWrapper />
+    },
+    args: {
+        data: testTableData,
+        columns: expandableColumnsSpec,
+        canDrag: false,
+    },
+}
+
+export const ExpandableRowsWithSubComponents: Story = {
+    render: ({ ...args }) => {
+        const StateWrapper = () => {
+            const [sort] = useState<ColumnSort[]>([])
+            const [columnOrder, setColumnOrder] = useState<ColumnOrderState>(expandableColumnsSpec.map((d) => d.id || ''))
+            const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 100 })
+            const [expanded, setExpanded] = useState<ExpandedState>({})
+            return (
+                <Table<Person>
+                    {...args}
+                    expandedRowsState={expanded}
+                    onExpandedChange={setExpanded}
+                    sort={sort}
+                    pagination={pagination}
+                    onPaginationChange={setPagination}
+                    onColumnOrderChange={setColumnOrder}
+                    columnOrder={columnOrder}
+                    getExpandedRow={(row: Row<Person>) => {
+                        if (Number(row.id) % 2 === 0) return null
+                        return (
+                            <>
+                                <pre style={{ fontSize: '10px' }}>
+                                    <code>{JSON.stringify(row.original, null, 2)}</code>
+                                </pre>
+                                <div style={{ textAlign: 'center' }}>
+                                    <Button label={row.original.lastName} />
+                                </div>
+                            </>
+                        )
+                    }}
                 />
             )
         }

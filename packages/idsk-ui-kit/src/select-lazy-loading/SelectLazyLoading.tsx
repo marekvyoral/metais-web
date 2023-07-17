@@ -1,9 +1,11 @@
 import React from 'react'
-import { ControlProps, GroupBase, MenuProps, MultiValue, OptionProps, OptionsOrGroups, components } from 'react-select'
+import { GroupBase, MultiValue, OptionProps, OptionsOrGroups, components } from 'react-select'
 import { AsyncPaginate } from 'react-select-async-paginate'
 import classNames from 'classnames'
 
 import styles from './selectLazyLoading.module.scss'
+
+import { Control, Menu, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
 
 export interface ILoadOptionsResponse<T> {
     options: T[]
@@ -42,20 +44,8 @@ export const SelectLazyLoading = <T,>({
     isMulti = false,
     loadOptions,
 }: ISelectProps<T>): JSX.Element => {
-    const Menu = (props: MenuProps<T, true, GroupBase<T>>) => {
-        return (
-            <components.Menu {...props} className={styles.menu}>
-                {props.children}
-            </components.Menu>
-        )
-    }
-
     const Option = (props: OptionProps<T>) => {
         return option ? option(props) : <components.Option {...props} className={styles.selectOption} />
-    }
-
-    const Control = (props: ControlProps<T>) => {
-        return <components.Control {...props} className={styles.control} />
     }
 
     return (
@@ -71,6 +61,7 @@ export const SelectLazyLoading = <T,>({
                 components={{ Option, Menu, Control }}
                 isMulti={isMulti}
                 className={classNames('govuk-select', styles.selectLazyLoading)}
+                styles={selectStyles<T>()}
                 name={name}
                 id={name}
                 openMenuOnFocus

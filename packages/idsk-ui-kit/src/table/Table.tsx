@@ -4,14 +4,15 @@ import {
     ExpandedState,
     OnChangeFn,
     PaginationState,
+    Row,
     getCoreRowModel,
     getExpandedRowModel,
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table'
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
 
 import { ColumnSort } from '../types'
 
@@ -20,6 +21,7 @@ import { TableRow } from './TableRow'
 import styles from './table.module.scss'
 import { TableInfoMessage } from './TableInfoMessage'
 import { transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
+import { TableRowExpanded } from './TableRowExpanded'
 
 import { LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
 
@@ -36,8 +38,10 @@ interface ITableProps<T> {
     expandedRowsState?: ExpandedState
     onExpandedChange?: React.Dispatch<React.SetStateAction<ExpandedState>>
     getSubRows?: (row: T) => T[] | undefined
+    isRowSelected?: (row: Row<T>) => boolean
     isLoading?: boolean
     error?: boolean
+    getExpandedRow?: (row: Row<T>) => JSX.Element | null
 }
 
 export const Table = <T,>({
@@ -53,8 +57,10 @@ export const Table = <T,>({
     expandedRowsState,
     onExpandedChange,
     getSubRows,
+    isRowSelected,
     isLoading = false,
     error = false,
+    getExpandedRow,
 }: ITableProps<T>): JSX.Element => {
     const transformedSort = transformColumnSortToSortingState(sort)
     const table = useReactTable({
@@ -79,16 +85,17 @@ export const Table = <T,>({
         onPaginationChange,
         getExpandedRowModel: getExpandedRowModel(),
         onExpandedChange,
-        getSubRows,
+        getSubRows: getSubRows,
         enableMultiSort: true,
         manualPagination: true,
+        getRowCanExpand: getExpandedRow ? (row) => !!getExpandedRow(row) : undefined,
     })
 
     const isEmptyRows = table.getRowModel().rows.length === 0
 
     return (
         <table className="idsk-table">
-            <thead className="idsk-table__head">
+            <thead className={classNames('idsk-table__head', [styles.head])}>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <tr className="idsk-table__row" key={headerGroup.id}>
                         {headerGroup.headers.map((header) => (
@@ -101,11 +108,17 @@ export const Table = <T,>({
                 <TableInfoMessage error={error} isEmptyRows={isEmptyRows} />
             </div>
             <tbody
-                className={classNames('idsk-table__body', { [styles.positionRelative]: isLoading, [styles.minHeight400]: isEmptyRows && isLoading })}
+                className={classNames('idsk-table__body', styles.body, {
+                    [styles.positionRelative]: isLoading,
+                    [styles.minHeight400]: isEmptyRows && isLoading,
+                })}
             >
                 {isLoading && <LoadingIndicator />}
                 {table.getRowModel().rows.map((row) => (
-                    <TableRow<T> row={row} key={row.id} />
+                    <>
+                        <TableRow<T> row={row} key={row.id} isRowSelected={isRowSelected} />
+                        {row.getIsExpanded() && getExpandedRow && <TableRowExpanded row={row} getExpandedRow={getExpandedRow} />}
+                    </>
                 ))}
             </tbody>
         </table>
