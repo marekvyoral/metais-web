@@ -1,3 +1,4 @@
+import React from 'react'
 import {
     Attribute,
     EnumType,
@@ -7,7 +8,6 @@ import {
     useStoreNewAttributeUsingPOST,
 } from '@isdd/metais-common/api'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
-import React from 'react'
 
 export interface IAddAttributeView {
     data: {

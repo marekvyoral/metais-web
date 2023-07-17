@@ -7,7 +7,7 @@ import { createTabNamesAndValuesMap } from '@isdd/metais-common/hooks/useEntityP
 import { CiType, Role } from '@isdd/metais-common/api'
 
 import { generateFormValidationSchema } from './createViewHelpers'
-import { EntityDetailViewAttributes } from './EntityDetailViewAttributes'
+import { EntityDetailViewAttributes } from './attributes/EntityDetailViewAttributes'
 
 import { HiddenInputs } from '@/types/inputs'
 

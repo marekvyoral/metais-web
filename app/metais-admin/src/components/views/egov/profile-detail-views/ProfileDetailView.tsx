@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import BasicInformations from '../BasicInformations'
 import styles from '../detailViews.module.scss'
 
-import AddAttributeModal from './AddAttributeModal'
+import AddAttributeModal from './attributes/AddAttributeModal'
 
 import { IAtrributesContainerView } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
 

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import styles from '../detailViews.module.scss'
 import BasicInformations from '../BasicInformations'
 
-import { EntityDetailViewAttributes } from './EntityDetailViewAttributes'
+import { EntityDetailViewAttributes } from './attributes/EntityDetailViewAttributes'
 import { SummarizingCard } from './SummarizingCard'
 
 import { IAtrributesContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'

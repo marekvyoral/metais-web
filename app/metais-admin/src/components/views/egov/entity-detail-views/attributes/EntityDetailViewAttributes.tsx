@@ -6,7 +6,7 @@ import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 
-import styles from '../detailViews.module.scss'
+import styles from '../../detailViews.module.scss'
 
 export const EntityDetailViewAttributes = ({
     data,

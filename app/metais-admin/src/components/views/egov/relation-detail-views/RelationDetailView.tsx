@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom'
 import styles from '../detailViews.module.scss'
 import createEntityStyles from '../entity-detail-views/createEntityView.module.scss'
 import BasicInformations from '../BasicInformations'
-import { EntityDetailViewAttributes } from '../entity-detail-views/EntityDetailViewAttributes'
+import { EntityDetailViewAttributes } from '../entity-detail-views/attributes/EntityDetailViewAttributes'
 
-import ConnectionView from './ConnectionView'
-import { AddConnectionModal } from './AddConnectionModal'
+import ConnectionView from './connections/ConnectionView'
+import { AddConnectionModal } from './connections/AddConnectionModal'
 
 import { IAtrributesContainerView } from '@/components/containers/Egov/Relation/RelationsDetailContainer'
 

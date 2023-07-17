@@ -3,10 +3,10 @@ import { Button, ErrorBlock, Input, MultiSelect, SimpleSelect, TextArea } from '
 import { FieldName, FieldValues, FormProvider, RegisterOptions } from 'react-hook-form'
 import { MutationFeedback } from '@isdd/metais-common'
 
-import ConnectionView from '../relation-detail-views/ConnectionView'
-import { AddConnectionModal } from '../relation-detail-views/AddConnectionModal'
+import ConnectionView from '../relation-detail-views/connections/ConnectionView'
+import { AddConnectionModal } from '../relation-detail-views/connections/AddConnectionModal'
 
-import { AddAttributeProfilesModal } from './AddAttributeProfilesModal'
+import { AddAttributeProfilesModal } from './attributes/AddAttributeProfilesModal'
 import styles from './createEntityView.module.scss'
 import useCreateView from './useCreateView'
 

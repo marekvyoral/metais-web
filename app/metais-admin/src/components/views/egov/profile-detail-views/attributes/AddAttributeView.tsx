@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Button, Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { generateSchemaForCreateAttribute } from '../entity-detail-views/createViewHelpers'
+import { generateSchemaForCreateAttribute } from '../../entity-detail-views/createViewHelpers'
 
 import { IAddAttributeView } from './AddAttributeContainer'
 
