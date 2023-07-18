@@ -233,6 +233,19 @@
     "relationType": {
         "as": "Aplikačná služba"
     },
+    "fileImport": {
+        "uploadFailed": "Upload action failed. Are you online?",
+        "retry": "Skúsiť znova",
+        "header": "Import položiek alebo vzťahov",
+        "onlyExisting": "Upraviť len existujúce položky",
+        "existingAndNew": "Upraviť existujúce a pridať nové",
+        "dropHere": "Potiahnite a pustite súbory sem",
+        "or": "Alebo",
+        "chooseFile": "Vybrať súbor",
+        "browse": "Nie je vybratý žiadny súbor (Max. veľkosť súboru 20MB)",
+        "import": "Importovať",
+        "cancel": "Zrušiť"
+    },
     "exportItemsOrRelations": {
         "header": "Export položiek alebo vzťahov",
         "items": "Položky",
