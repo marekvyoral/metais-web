@@ -8,7 +8,7 @@ import { InformationGridRow } from './InformationGridRow'
 import { pairEnumsToEnumValues } from '@/componentHelpers'
 import { CiType, ConfigurationItemUi, EnumType } from '@/api'
 
-interface ProjectInformationData {
+interface CiInformationData {
     data: {
         ciItemData: ConfigurationItemUi | undefined
         ciTypeData: CiType | undefined
@@ -17,7 +17,7 @@ interface ProjectInformationData {
     }
 }
 
-export const ProjectInformationAccordion: React.FC<ProjectInformationData> = ({ data: { ciItemData, ciTypeData, constraintsData } }) => {
+export const CiInformationAccordion: React.FC<CiInformationData> = ({ data: { ciItemData, ciTypeData, constraintsData } }) => {
     const { t } = useTranslation()
 
     const tabsFromApi =
@@ -26,15 +26,23 @@ export const ProjectInformationAccordion: React.FC<ProjectInformationData> = ({ 
                 title: attributesProfile?.description ?? '',
                 content: (
                     <div className={styles.attributeGridRowBox}>
-                        {attributesProfile?.attributes?.map((attribute) => {
-                            const withDescription = true
-                            const rowValue = pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, withDescription)
-                            return (
-                                !attribute?.invisible && (
-                                    <InformationGridRow key={attribute?.technicalName} label={attribute.name ?? ''} value={rowValue} />
+                        {attributesProfile?.attributes
+                            ?.filter((atr) => atr.valid === true && atr.invisible !== true)
+                            .sort((atr1, atr2) => (atr1.order || 0) - (atr2.order || 0))
+                            .map((attribute) => {
+                                const withDescription = true
+                                const rowValue = pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, withDescription)
+                                return (
+                                    !attribute?.invisible && (
+                                        <InformationGridRow
+                                            key={attribute?.technicalName}
+                                            label={attribute?.name ?? ''}
+                                            value={rowValue}
+                                            tooltip={attribute?.description}
+                                        />
+                                    )
                                 )
-                            )
-                        })}
+                            })}
                     </div>
                 ),
             }
@@ -45,7 +53,7 @@ export const ProjectInformationAccordion: React.FC<ProjectInformationData> = ({ 
             <AccordionContainer
                 sections={[
                     {
-                        title: t('projectInformationAccordion.basicInformation'),
+                        title: t('ciInformationAccordion.basicInformation'),
                         content: (
                             <div className={styles.attributeGridRowBox}>
                                 {ciTypeData?.attributes?.map((attribute) => {
@@ -55,6 +63,7 @@ export const ProjectInformationAccordion: React.FC<ProjectInformationData> = ({ 
                                             key={attribute?.technicalName}
                                             label={attribute.name ?? ''}
                                             value={pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, withDescription)}
+                                            tooltip={attribute?.description}
                                         />
                                     )
                                 })}

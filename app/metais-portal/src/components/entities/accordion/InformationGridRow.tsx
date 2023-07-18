@@ -9,13 +9,14 @@ import styles from './informationGridRow.module.scss'
 interface IInformationGridRowProps extends PropsWithChildren {
     label: string
     value: React.ReactNode
+    tooltip?: string
 }
 
-export const InformationGridRow: React.FC<IInformationGridRowProps> = ({ label, value }) => {
+export const InformationGridRow: React.FC<IInformationGridRowProps> = ({ label, value, tooltip }) => {
     return (
         <GridRow className={styles.groupRow}>
             <GridCol setWidth="one-third">
-                <InfoIconWithText>{label}</InfoIconWithText>
+                <InfoIconWithText tooltip={tooltip}>{label}</InfoIconWithText>
             </GridCol>
             <GridCol setWidth="two-thirds">
                 <TextBody size="S" className={styles.textRow}>

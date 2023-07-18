@@ -220,7 +220,7 @@
     "listActions": {
         "selectView": "View"
     },
-    "projectInformationAccordion": {
+    "ciInformationAccordion": {
         "info": "Information",
         "basicInformation": "Basic information"
     },
@@ -231,6 +231,19 @@
     },
     "relationType": {
         "as": "Application service"
+    },
+    "fileImport": {
+        "uploadFailed": "Upload action failed. Are you online?",
+        "retry": "Retry",
+        "header": "Import items or relationships",
+        "onlyExisting": "Edit only existing items",
+        "existingAndNew": "Edit existing and add new",
+        "dropHere": "Drag and drop items here",
+        "or": "Or",
+        "chooseFile": "Choose file",
+        "browse": "No file is selected (Max. file size 20MB)",
+        "import": "Import",
+        "cancel": "Cancel"
     },
     "exportItemsOrRelations": {
         "header": "Export items or relations",
