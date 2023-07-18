@@ -7,7 +7,7 @@ import Informations from '@/pages/ci/[entityName]/[entityId]/informations'
 
 export const INDEX_ROUTE = Informations
 
-const ProjektEntityDetailPage: React.FC = () => {
+const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
     const { entityId, entityName } = useParams()
 
@@ -39,4 +39,4 @@ const ProjektEntityDetailPage: React.FC = () => {
     )
 }
 
-export default ProjektEntityDetailPage
+export default EntityDetailPage
