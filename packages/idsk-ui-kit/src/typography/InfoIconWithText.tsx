@@ -3,20 +3,17 @@ import React, { PropsWithChildren, forwardRef } from 'react'
 
 import styles from './infoIcon.module.scss'
 
+import { InfoIcon } from '@isdd/idsk-ui-kit/assets/images'
+
 interface IInfoIconWithTextProps extends PropsWithChildren {
-    assistive?: string
+    tooltip?: string
 }
 
-export const InfoIconWithText = forwardRef<HTMLDivElement, IInfoIconWithTextProps>(({ children, assistive }, ref) => {
+export const InfoIconWithText = forwardRef<HTMLDivElement, IInfoIconWithTextProps>(({ children, tooltip }, ref) => {
     return (
-        <div className={classNames('govuk-warning-text', [styles.infoIconGroup])} ref={ref}>
-            <span className={classNames('govuk-warning-text__icon', [styles.infoIcon])} aria-hidden="true">
-                i
-            </span>
-            <strong className={classNames('govuk-warning-text__text', [styles.infoText])}>
-                <span className="govuk-warning-text__assistive">{assistive}</span>
-                {children}
-            </strong>
+        <div className={classNames(styles.infoIconGroup)} ref={ref}>
+            <img src={InfoIcon} className={classNames(styles.infoIcon)} alt="info-icon" title={tooltip} />
+            <strong className={classNames(styles.infoText)}>{children}</strong>
         </div>
     )
 })

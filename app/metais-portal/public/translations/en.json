@@ -220,7 +220,7 @@
     "listActions": {
         "selectView": "View"
     },
-    "projectInformationAccordion": {
+    "ciInformationAccordion": {
         "info": "Information",
         "basicInformation": "Basic information"
     },
