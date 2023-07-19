@@ -1,0 +1,50 @@
+import { AttributeProfile, useGetAttributeOverridesUsingGET, useGetCiTypeUsingGET, useGetSummarizingCardUsingGET } from '../api'
+
+export const createTabNamesAndValuesMap = (profileAttributes: AttributeProfile[] | undefined) => {
+    const keysToDisplay = new Map<string, AttributeProfile | undefined>()
+    profileAttributes?.map((attribute) => {
+        keysToDisplay.set(attribute?.name ?? '', attribute)
+    })
+    return keysToDisplay
+}
+
+export const useEntityProfiles = (technicalName: string) => {
+    const {
+        data: ciTypeData,
+        isLoading: isCiTypeDataLoading,
+        isError: isCiTypeDataError,
+        refetch: ciTypeDataRefetch,
+    } = useGetCiTypeUsingGET(technicalName)
+
+    const {
+        data: summarizingCardData,
+        isLoading: isSummarizingCardLoading,
+        isError: isSummarizingCardError,
+        refetch: summarizingCardRefetch,
+    } = useGetSummarizingCardUsingGET(technicalName)
+
+    const {
+        data: attributesOverridesData,
+        isLoading: attributesOverridesLoading,
+        isError: attributesOverridesError,
+        refetch: attributesOverridesRefetch,
+    } = useGetAttributeOverridesUsingGET(technicalName)
+
+    const refetch = () => {
+        ciTypeDataRefetch()
+        summarizingCardRefetch()
+        attributesOverridesRefetch()
+    }
+
+    const keysToDisplay = createTabNamesAndValuesMap(ciTypeData?.attributeProfiles)
+
+    return {
+        isLoading: isCiTypeDataLoading || isSummarizingCardLoading || attributesOverridesLoading,
+        isError: isCiTypeDataError || isSummarizingCardError || attributesOverridesError,
+        ciTypeData,
+        summarizingCardData,
+        attributesOverridesData,
+        keysToDisplay,
+        refetch,
+    }
+}

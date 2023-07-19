@@ -110,5 +110,78 @@
         "buttonAddNewRelation": "Add a new relation",
         "buttonAddNewRelationCard": "Add a new item and relation",
         "selectView": "View"
+    },
+    "egov": {
+        "name": "Name",
+        "technicalName": "Technical Name",
+        "type": "Type",
+        "state": "State",
+        "engName": "English name",
+        "codePrefix": "Prefix metais code",
+        "uriPrefix": "URI prefix",
+        "valid": "State",
+        "description": "Description",
+        "engDescription": "English description",
+        "color": "Color",
+        "roles": "Allowed Roles",
+        "order": "Order",
+        "invisible": "Visibility",
+        "detail": {
+            "profileAttributesHeading": "Detail attributes profile",
+            "profileAttributes": "Attributes",
+            "entityHeading": "Entity detail",
+            "profiles": "Profiles",
+            "source": "Sources",
+            "target": "Target",
+            "summarizingCard": "Summarizing card",
+            "genericProfile": "Generic profile",
+            "connections": "Connections",
+            "direction": {
+                "heading": "Type of connection",
+                "source": "Source",
+                "target": "Target"
+            },
+            "validityChange": {
+                "setValid": "Set valid",
+                "setInvalid": "Set invalid"
+            },
+            "selectOption": "Select option",
+            "showOwner": {
+                "heading": "Show owner",
+                "true": "Allowed",
+                "false": "Forbidden",
+                "undefined": "Forbidden",
+                "": "Forbidden"
+            }
+        },
+        "create": {
+            "requiredField": "This field is required",
+            "codePrefixRegex": "Accepted character are only 'a'..'z' and underscore '_'.",
+            "technicalNameRegex": "Technical name could only consists of alphabet character",
+            "addProfile": "Add profile",
+            "removeProfile": "Remove profile"
+        }
+    },
+
+    "state": {
+        "true": "Valid",
+        "false": "Invalid",
+        "undefined": "Invalid"
+    },
+    "type": {
+        "application": "Application",
+        "system": "System",
+        "custom": "Custom"
+    },
+    "actionOverTable": {
+        "import": "Import",
+        "export": "Export",
+        "addISVSitem": "Add ISVS item",
+        "selectColumn": "Columns",
+        "view": "View",
+        "actions": "Bulk actions",
+        "invalidateItems": "Invalidate items",
+        "validateItems": "Validate actions",
+        "changeOwner": "Change owner"
     }
 }

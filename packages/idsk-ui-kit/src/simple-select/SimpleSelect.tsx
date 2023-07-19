@@ -2,9 +2,9 @@ import classNames from 'classnames'
 import React, { DetailedHTMLProps, forwardRef } from 'react'
 
 interface SelectProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
-    id: string
+    id?: string
     label: string
-    options: { value: string; label: string; disabled?: boolean }[]
+    options: { value: string; label: string; disabled?: boolean; selected?: boolean }[]
     disabled?: boolean
 }
 
@@ -21,7 +21,7 @@ export const SimpleSelect = forwardRef<HTMLSelectElement, SelectProps>(({ id, la
                     </option>
                 ) : null}
                 {options.map((item) => (
-                    <option value={item.value} key={item.value} disabled={item.disabled}>
+                    <option value={item.value} key={item.value} disabled={item.disabled} selected={item?.selected}>
                         {item.label}
                     </option>
                 ))}

@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
+import { useUserInfo } from '@isdd/metais-common/hooks/useUserInfo'
 
 import { Router } from '@/navigation/Router'
-import { useUserInfo } from '@/hooks/useUserInfo'
 
 export const App: React.FC = () => {
     useUserInfo()

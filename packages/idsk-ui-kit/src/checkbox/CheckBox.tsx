@@ -5,7 +5,7 @@ interface ICheckBoxProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTM
     id: string
     label: string
     name: string
-    value: string
+    value?: string
     disabled?: boolean
     labelClassName?: string
     containerClassName?: string

@@ -21,6 +21,6 @@
             "@isdd/idsk-ui-kit/*": ["../../packages/idsk-ui-kit/src/*"],
             "@isdd/metais-common/*": ["../../packages/metais-common/src/*"]
         },
-        "types": ["vite/client"]
+        "types": ["vite/client", "node"]
     }
 }

@@ -1,0 +1,26 @@
+@import '../../../utils.scss';
+
+.basicInformationSpace {
+    margin-bottom: govuk-spacing(4);
+    .removeButton {
+        float: right;
+    }
+}
+
+.attributeGridRowBox {
+    display: flex;
+    gap: govuk-spacing(4);
+    flex-direction: column;
+    .showOwner {
+        display: flex;
+        gap: govuk-spacing(2);
+        .showOwnerBox {
+            flex: 1;
+        }
+    }
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+}

@@ -2,18 +2,18 @@ import React from 'react'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { FieldValues } from 'react-hook-form'
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
-
 import {
+    useGetDefaultColumnsUsingGET,
     useReadCiListUsingPOST,
     useResetUserColumnsUsingDELETE,
     useGetUserColumnsUsingGET,
-    useGetDefaultColumnsUsingGET,
     useInsertUserColumnsUsingPOST,
-} from '@/api'
+} from '@isdd/metais-common/api'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+
 import { IListView } from '@/types/list'
 import { mapFilterParamsToApi, mapFilterToNeighborsApi } from '@/componentHelpers'
 import { mapConfigurationItemSetToPagination } from '@/componentHelpers/pagination'
-import { useAuth } from '@/contexts/auth/authContext'
 
 interface ICiListContainer<T> {
     entityName: string

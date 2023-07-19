@@ -73,15 +73,15 @@ const ColumnSection: React.FC<IColumnSectionProps> = ({ sectionName, columns, up
 
 interface ITableSelectColumnsProps {
     onClose: () => void
-    resetDefaultOrder: () => Promise<void>
-    showSelectedColumns: (columnSelection: {
+    resetDefaultOrder?: () => Promise<void>
+    showSelectedColumns?: (columnSelection: {
         attributes: { name: string; order: number }[]
         metaAttributes: { name: string; order: number }[]
     }) => void
-    attributeProfilesColumnSections: IColumnSectionType[]
-    columnListData: IColumn | undefined
-    attributesColumnSection: IColumnSectionType
-    metaAttributesColumnSection: IColumnSectionType
+    attributeProfilesColumnSections?: IColumnSectionType[]
+    columnListData?: IColumn | undefined
+    attributesColumnSection?: IColumnSectionType
+    metaAttributesColumnSection?: IColumnSectionType
 }
 
 // const MAX_SELECTED_COLUMNS = 8
@@ -138,7 +138,7 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({
     }
 
     const saveSelection = () => {
-        showSelectedColumns({
+        showSelectedColumns?.({
             attributes: selectedColumns.map((x) => ({ name: x.name || '', order: x.order || 1 })),
             metaAttributes: selectedMetaColumns.map((x) => ({ name: x.name || '', order: x.order || 1 })),
         })
@@ -154,13 +154,13 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({
                 <SearchInput id="search" name="search" className={styles.searchbar} onChange={handleChange} />
                 <div className={styles.scroll}>
                     <ColumnSection
-                        sectionName={attributesColumnSection.name}
-                        columns={filterColumnsByNameSearch(attributesColumnSection.attributes)}
+                        sectionName={attributesColumnSection?.name ?? ''}
+                        columns={filterColumnsByNameSearch(attributesColumnSection?.attributes ?? [])}
                         updateSelectedValue={updateSelectedValue}
                         getIsColumnChecked={getIsColumnChecked}
                     />
 
-                    {attributeProfilesColumnSections.map((section) => {
+                    {attributeProfilesColumnSections?.map((section) => {
                         const filteredAttributes = filterColumnsByNameSearch(section.attributes)
                         return (
                             <ColumnSection
@@ -173,8 +173,8 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({
                         )
                     })}
                     <ColumnSection
-                        sectionName={metaAttributesColumnSection.name}
-                        columns={filterColumnsByNameSearch(metaAttributesColumnSection.attributes)}
+                        sectionName={metaAttributesColumnSection?.name ?? ''}
+                        columns={filterColumnsByNameSearch(metaAttributesColumnSection?.attributes ?? [])}
                         updateSelectedValue={updateMetaSelectedValue}
                         getIsColumnChecked={getIsMetaColumnChecked}
                     />
@@ -183,7 +183,7 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({
                     <ButtonLink
                         label={t('tableSelectColumns.refreshButton')}
                         onClick={() => {
-                            resetDefaultOrder()
+                            resetDefaultOrder?.()
                             onClose()
                         }}
                         className={styles.resetDefaultOrderButton}
