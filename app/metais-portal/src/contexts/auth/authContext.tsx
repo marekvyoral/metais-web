@@ -7,6 +7,19 @@ export enum AuthActions {
     LOGOUT,
 }
 
+export interface Role {
+    gid: string
+    roleDescription: string
+    roleName: string
+    roleUuid: string
+    roleWeight: number
+}
+
+interface Group {
+    orgId: string
+    roles: Role[]
+}
+
 export interface User {
     login: string
     displayName: string
@@ -21,7 +34,7 @@ export interface User {
     email: string
     phone: string
     roles: string[]
-    groupData: string[]
+    groupData: Group[]
 }
 
 interface AuthContextState {
