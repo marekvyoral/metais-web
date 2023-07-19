@@ -17,24 +17,15 @@ import styles from './actionsOverTable.module.scss'
 
 import { Attribute, AttributeProfile, BASE_PAGE_SIZE } from '@/api'
 import {
-    useExportCsvUsingGETHook,
-    useExportXmlUsingGETHook,
-    useExportExcelUsingGETHook,
-    useExportRelCsvUsingGETHook,
-    useExportRelExcelUsingGETHook,
-    useExportRelXmlUsingGETHook,
-    useExportXmlUsingGET,
-    useExportCsvUsingGET,
-    useExportExcelUsingGET,
-    useExportRelXmlUsingGET,
-    useExportRelCsvUsingGET,
-    useExportRelExcelUsingGET,
     useExportXmlUsingPUT,
     useExportCsvUsingPUT,
     useExportExcelUsingPUT,
     useExportRelXmlUsingPUT,
     useExportRelCsvUsingPUT,
     useExportRelExcelUsingPUT,
+    useReadProgressUsingGET,
+    useValidateContentUsingPOST,
+    useUpdateContentUsingPOST,
 } from '@/api/generated/impexp-cmdb-swagger'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@/assets/images'
 import { IColumn } from '@/hooks/useColumnList'
@@ -98,6 +89,10 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     const exportRelXml = useExportRelXmlUsingPUT()
     const exportRelCsv = useExportRelCsvUsingPUT()
     const exportRelExcel = useExportRelExcelUsingPUT()
+
+    const importValidate = useValidateContentUsingPOST
+    const importProgress = useReadProgressUsingGET
+    const importUpdate = useUpdateContentUsingPOST
 
     const exportData = (exportFunction: any) => {
         const { data } = exportFunction({
