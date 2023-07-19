@@ -11,6 +11,7 @@ import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useNavigate } from 'react-router-dom'
 
 import { ExportItemsOrRelations } from '../export-items-or-relations/ExportItemsOrRelations'
+import { FileImport } from '../file-import/FileImport'
 
 import styles from './actionsOverTable.module.scss'
 
@@ -70,6 +71,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     attributes,
 }) => {
     const [modalOpen, setModalOpen] = useState(false)
+    const [modalImportOpen, setModalImportOpen] = useState(false)
 
     const { t } = useTranslation()
     const pagingSelectId = useId()
@@ -80,6 +82,13 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     }
     const onClose = () => {
         setModalOpen(false)
+    }
+
+    const openImportModal = () => {
+        setModalImportOpen(true)
+    }
+    const onImportClose = () => {
+        setModalImportOpen(false)
     }
 
     const exportCsv = useExportCsvUsingPUT()
@@ -265,6 +274,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                 <div className={classnames(styles.buttonImportExport, styles.mobileOrder2)}>
                     <Button
                         className={classnames(styles.withoutMarginBottom)}
+                        onClick={openImportModal}
                         label={
                             <div className={styles.buttonWithIcon}>
                                 <img className={styles.iconExportImport} src={ImportIcon} />
@@ -273,6 +283,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                         }
                         variant="secondary"
                     />
+                    <FileImport allowedFileTypes={[]} multiple={false} endpointUrl={''} isOpen={modalImportOpen} close={onImportClose} />
                     <Button
                         className={classnames(styles.withoutMarginBottom)}
                         onClick={openModal}

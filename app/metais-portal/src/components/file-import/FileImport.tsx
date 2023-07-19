@@ -7,6 +7,7 @@ import '@uppy/status-bar/dist/style.min.css'
 import { useTranslation } from 'react-i18next'
 import sk_SK from '@uppy/locales/lib/sk_SK'
 import en_US from '@uppy/locales/lib/en_US'
+import { BaseModal } from '@isdd/idsk-ui-kit/index'
 
 import { ProgressInfoList } from './FileImportList'
 import { FileImportView } from './FileImportView'
@@ -25,9 +26,11 @@ interface IFileImport {
     endpointUrl: string
     //in bytes
     maxFileSize?: number
+    isOpen: boolean
+    close: () => void
 }
 
-export const FileImport: React.FC<IFileImport> = ({ allowedFileTypes, multiple, endpointUrl, maxFileSize = 20_971_520 }) => {
+export const FileImport: React.FC<IFileImport> = ({ allowedFileTypes, isOpen, close, multiple, endpointUrl, maxFileSize = 20_971_520 }) => {
     const { i18n, t } = useTranslation()
 
     const [errorMessages, setErrorMessages] = useState<string[]>([])
@@ -126,16 +129,18 @@ export const FileImport: React.FC<IFileImport> = ({ allowedFileTypes, multiple, 
     }
 
     return (
-        <FileImportView
-            uppy={uppy}
-            currentFiles={currentFiles}
-            handleUpload={handleUpload}
-            uploadFileProgressInfo={uploadFileProgressInfo}
-            handleCancelImport={handleCancelImport}
-            handleRemoveFile={handleRemoveFile}
-            setRadioButtonMetaData={setRadioButtonMetaData}
-            setErrorMessages={setErrorMessages}
-            errorMessages={errorMessages}
-        />
+        <BaseModal isOpen={isOpen} close={close}>
+            <FileImportView
+                uppy={uppy}
+                currentFiles={currentFiles}
+                handleUpload={handleUpload}
+                uploadFileProgressInfo={uploadFileProgressInfo}
+                handleCancelImport={handleCancelImport}
+                handleRemoveFile={handleRemoveFile}
+                setRadioButtonMetaData={setRadioButtonMetaData}
+                setErrorMessages={setErrorMessages}
+                errorMessages={errorMessages}
+            />
+        </BaseModal>
     )
 }
