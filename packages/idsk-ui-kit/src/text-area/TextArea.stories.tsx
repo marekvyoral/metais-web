@@ -42,7 +42,7 @@ export const HasError: Story = {
         label: 'Area With Error',
         name: 'area-with-error',
         rows: 5,
-        error: { type: 'required', message: 'This value is required' },
+        error: 'This value is required',
     },
 }
 
@@ -53,7 +53,7 @@ export const HasErrorWithHint: Story = {
         hint: 'Area With Error and Hint',
         name: 'area-with-error-hint',
         rows: 5,
-        error: { type: 'required' },
+        error: 'required',
     },
 }
 

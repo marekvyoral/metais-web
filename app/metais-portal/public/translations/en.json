@@ -190,6 +190,11 @@
     "tab": {
         "contents": "Contents"
     },
+    "button": {
+        "saveAndContinue": "Save and continue",
+        "cancel": "Cancel",
+        "saveChanges": "Save changes"
+    },
     "errors": {
         "fixLink": "Correct"
     },
@@ -293,6 +298,25 @@
             "UNKNOW": "Unknown",
             "": ""
         }
+    },
+    "validation": {
+        "required": "This field is required",
+        "invalidEmail": "Enter a valid email",
+        "invalidPhone": "Enter a valid phone number",
+        "wrongRegex": "Value must match {{regexFormat}}",
+        "minValue": "Value must be at least",
+        "maxValue": "Value can not be greater than",
+        "character": "Only one character can be inserted",
+        "canNotBeDecimal": "This number can not be decimal"
+    },
+    "createEntity": {
+        "required": "required",
+        "errorTitle": "Error occured",
+        "errorMessage": "We apologize, but a technical error occurred while editing the item. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
+        "select": "Select...",
+        "email": "metais@mirri.gov.sk",
+        "publicAuthority": "Public Authority",
+        "role": "Role"
     },
     "table": {
         "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
