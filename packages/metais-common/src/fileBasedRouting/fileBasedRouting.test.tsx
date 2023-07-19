@@ -16,6 +16,11 @@ const globExports = {
             return <></>
         },
     },
+    '../pages/roles/index.tsx': {
+        ManageRoles: () => {
+            return <></>
+        },
+    },
     '../pages/project/[id].tsx': {
         default: () => {
             return <></>
@@ -51,6 +56,12 @@ const pages = {
         },
         indexComponent: undefined,
     },
+    '../pages/roles/index.tsx': {
+        Component: () => {
+            return <></>
+        },
+        indexComponent: undefined,
+    },
     '../pages/project/[id].tsx': {
         Component: () => {
             return <></>
@@ -81,6 +92,7 @@ test('reduce all file paths by number of slashes', () => {
     const paths = [
         '../pages/DevTestScreen.tsx',
         '../pages/Home.tsx',
+        '../pages/roles/index.tsx',
         '../pages/project/[id].tsx',
         '../pages/project/project-dashboard/[projektId].tsx',
         '../pages/project/project-dashboard/index.tsx',
@@ -92,7 +104,7 @@ test('reduce all file paths by number of slashes', () => {
 
     const expectedmap = new Map([
         [2, ['../pages/DevTestScreen.tsx', '../pages/Home.tsx']],
-        [3, ['../pages/project/[id].tsx', '../pages/projekt/index.tsx']],
+        [3, ['../pages/roles/index.tsx', '../pages/project/[id].tsx', '../pages/projekt/index.tsx']],
         [4, ['../pages/project/project-dashboard/[projektId].tsx', '../pages/project/project-dashboard/index.tsx']],
         [5, ['../pages/project/project-dashboard/project-dashboard-help/[projektId].tsx']],
     ])
