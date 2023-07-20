@@ -1,0 +1,12 @@
+@import '../../utils.scss';
+
+.halfWidth {
+    width: 50%;
+    @include mq($until: tablet) {
+        width: 100%;
+    }
+}
+
+.buttonWithMargin {
+    margin-right: govuk-spacing(4);
+}

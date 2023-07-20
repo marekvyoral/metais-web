@@ -1,0 +1,25 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.inputWrapper {
+    position: relative;
+}
+
+.labelDiv {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+}
+.isCorrect {
+    position: absolute;
+    right: 11px;
+    top: 12px;
+}
+.isCorrectWithIcon {
+    position: absolute;
+    right: 31px;
+    top: 12px;
+}
+.fullWidth {
+    width: 100%;
+}

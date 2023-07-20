@@ -91,6 +91,7 @@
                 "newlines-between": "always"
             }
         ],
+        "import/namespace": "off",
         "prettier/prettier": ["warn"],
         "no-console": "warn",
         "@typescript-eslint/no-explicit-any": "warn",

@@ -6,7 +6,7 @@ import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 
 export interface ErrorBlockProps {
     errorTitle?: string
-    errorMessage?: string
+    errorMessage?: React.ReactNode
     buttons?: { label: string; onClick: () => void }[]
 }
 

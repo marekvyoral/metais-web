@@ -197,6 +197,11 @@
     "mutationFeedback": {
         "successfulUpdated": "Položka bola úspešne zmenená"
     },
+    "button": {
+        "saveAndContinue": "Uložiť a pokračovať",
+        "cancel": "Zrušiť",
+        "saveChanges": "Uložiť zmeny"
+    },
     "relationCard": {
         "name": "Názov",
         "codeMetaIS": "Kód MetaIS",
@@ -221,7 +226,7 @@
     "listActions": {
         "selectView": "Zobraziť"
     },
-    "projectInformationAccordion": {
+    "ciInformationAccordion": {
         "info": "Informácie",
         "basicInformation": "Základné informácie"
     },
@@ -232,6 +237,19 @@
     },
     "relationType": {
         "as": "Aplikačná služba"
+    },
+    "fileImport": {
+        "uploadFailed": "Upload action failed. Are you online?",
+        "retry": "Skúsiť znova",
+        "header": "Import položiek alebo vzťahov",
+        "onlyExisting": "Upraviť len existujúce položky",
+        "existingAndNew": "Upraviť existujúce a pridať nové",
+        "dropHere": "Potiahnite a pustite súbory sem",
+        "or": "Alebo",
+        "chooseFile": "Vybrať súbor",
+        "browse": "Nie je vybratý žiadny súbor (Max. veľkosť súboru 20MB)",
+        "import": "Importovať",
+        "cancel": "Zrušiť"
     },
     "exportItemsOrRelations": {
         "header": "Export položiek alebo vzťahov",
@@ -281,6 +299,25 @@
             "UNKNOW": "Neznámy",
             "": ""
         }
+    },
+    "validation": {
+        "required": "Toto pole je povinné",
+        "invalidEmail": "Zadajte platný e-mail",
+        "invalidPhone": "Zadajte platné telefónne číslo",
+        "wrongRegex": "Formát sa musí zhodovať s {{regexFormat}}",
+        "minValue": "Hodnota musí byť aspoň",
+        "maxValue": "Hodnota nesmie byť väčšia ako",
+        "character": "Zadaný môže byť len jeden znak",
+        "canNotBeDecimal": "Toto číslo nemôže byť desatinné"
+    },
+    "createEntity": {
+        "required": "povinné",
+        "errorTitle": "Nastala chyba",
+        "errorMessage": "Ospravedlňujeme sa, ale pri úprave položky nastala technická chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na ",
+        "select": "Vyber...",
+        "email": "metais@mirri.gov.sk",
+        "publicAuthority": "Povinná osoba",
+        "role": "Rola"
     },
     "table": {
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
