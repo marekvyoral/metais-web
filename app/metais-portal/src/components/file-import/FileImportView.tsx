@@ -6,10 +6,12 @@ import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { useTranslation } from 'react-i18next'
 
 import { FileImportHeader } from './FileImportHeader'
+import { FileImportItemsSelect } from './FileImportItemsSelect'
 import { FileImportDragDrop } from './FileImportDragDrop'
 import styles from './FileImport.module.scss'
 import { FileImportList, ProgressInfoList } from './FileImportList'
 
+import { FileImportStepEnum } from '@/components/actions-over-table/ActionsOverTable'
 import { CloseIcon, ErrorTriangleIcon } from '@/assets/images'
 
 interface IFileImportView {
@@ -22,6 +24,8 @@ interface IFileImportView {
     handleUpload: () => Promise<void>
     uploadFileProgressInfo: ProgressInfoList[]
     currentFiles: UppyFile[]
+    fileImportStep: FileImportStepEnum
+    radioButtonMetaData: string
 }
 
 export const FileImportView: React.FC<IFileImportView> = ({
@@ -34,11 +38,14 @@ export const FileImportView: React.FC<IFileImportView> = ({
     handleUpload,
     uploadFileProgressInfo,
     currentFiles,
+    fileImportStep,
+    radioButtonMetaData,
 }) => {
     const { t } = useTranslation()
     return (
         <>
             <FileImportHeader setRadioButtonMetaData={setRadioButtonMetaData} />
+            {radioButtonMetaData === 'existing-and-new' && <FileImportItemsSelect />}
             <FileImportDragDrop uppy={uppy} />
 
             {errorMessages.length > 0 && (
@@ -71,7 +78,11 @@ export const FileImportView: React.FC<IFileImportView> = ({
             </div>
             <div className={styles.centeredButtons}>
                 <Button onClick={handleCancelImport} label={t('fileImport.cancel')} variant="secondary" />
-                <Button onClick={handleUpload} label={t('fileImport.import')} disabled={currentFiles.length === 0} />
+                <Button
+                    onClick={handleUpload}
+                    label={fileImportStep === FileImportStepEnum.VALIDATE ? t('fileImport.validate') : t('fileImport.import')}
+                    disabled={currentFiles.length === 0}
+                />
             </div>
         </>
     )

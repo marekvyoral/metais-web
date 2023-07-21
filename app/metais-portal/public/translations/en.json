@@ -243,7 +243,8 @@
         "chooseFile": "Choose file",
         "browse": "No file is selected (Max. file size 20MB)",
         "import": "Import",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "validate": "Validate"
     },
     "exportItemsOrRelations": {
         "header": "Export items or relations",

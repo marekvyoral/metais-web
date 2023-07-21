@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { UppyFile, Uppy } from '@uppy/core'
 import XHRUpload from '@uppy/xhr-upload'
 import '@uppy/core/dist/style.min.css'
@@ -11,6 +11,9 @@ import { BaseModal } from '@isdd/idsk-ui-kit/index'
 
 import { ProgressInfoList } from './FileImportList'
 import { FileImportView } from './FileImportView'
+
+import { FileImportStepEnum } from '@/components/actions-over-table/ActionsOverTable'
+import { useAuth } from '@/contexts/auth/authContext'
 
 const uppy = new Uppy({
     autoProceed: false,
@@ -28,9 +31,25 @@ interface IFileImport {
     maxFileSize?: number
     isOpen: boolean
     close: () => void
+    fileImportStep: FileImportStepEnum
+    setFileImportStep: (value: FileImportStepEnum) => void
+    ciType: string
 }
 
-export const FileImport: React.FC<IFileImport> = ({ allowedFileTypes, isOpen, close, multiple, endpointUrl, maxFileSize = 20_971_520 }) => {
+export const FileImport: React.FC<IFileImport> = ({
+    allowedFileTypes,
+    isOpen,
+    close,
+    multiple,
+    endpointUrl,
+    fileImportStep,
+    setFileImportStep,
+    maxFileSize = 20_971_520,
+    ciType,
+}) => {
+    const {
+        state: { accessToken },
+    } = useAuth()
     const { i18n, t } = useTranslation()
 
     const [errorMessages, setErrorMessages] = useState<string[]>([])
@@ -39,7 +58,8 @@ export const FileImport: React.FC<IFileImport> = ({ allowedFileTypes, isOpen, cl
     const [radioButtonMetaData, setRadioButtonMetaData] = useState<string>('existing-only')
 
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>([])
-
+    console.log('fileImportStep', fileImportStep)
+    console.log('endpointUrl', endpointUrl)
     useEffect(() => {
         //it works for some strings but f.e. some errors are still en when should be sk
         //did not find the cause, object names fits
@@ -65,8 +85,8 @@ export const FileImport: React.FC<IFileImport> = ({ allowedFileTypes, isOpen, cl
     }, [allowedFileTypes, i18n.language, maxFileSize, multiple])
 
     useEffect(() => {
-        uppy.getPlugin('XHRUpload')?.setOptions({ endpoint: endpointUrl })
-    }, [endpointUrl])
+        uppy.getPlugin('XHRUpload')?.setOptions({ endpoint: endpointUrl, headers: { Authorization: `Bearer ${accessToken}` } })
+    }, [accessToken, endpointUrl, fileImportStep])
 
     useEffect(() => {
         const fileErrorCallback = (_file: UppyFile | undefined, error: Error) => {
@@ -74,6 +94,10 @@ export const FileImport: React.FC<IFileImport> = ({ allowedFileTypes, isOpen, cl
         }
         const updateFiles = () => {
             setCurrentFiles(() => uppy.getFiles())
+            const files = uppy.getFiles()
+            if (!files.length) {
+                setFileImportStep(FileImportStepEnum.VALIDATE)
+            }
         }
 
         uppy.on('file-added', updateFiles)
@@ -86,12 +110,13 @@ export const FileImport: React.FC<IFileImport> = ({ allowedFileTypes, isOpen, cl
         }
     }, [])
 
-    const handleUpload = async () => {
-        uppy.setMeta({ ['editType']: radioButtonMetaData })
-
+    const handleValidate = useCallback(async () => {
+        uppy.setMeta({ ['editType']: radioButtonMetaData, type: ciType })
+        console.log('fileImportStep', fileImportStep)
         try {
             uppy.upload().then((result) => {
                 if (result.successful.length > 0) {
+                    setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
                     setUploadFileProgressInfo(
                         result.successful.map((item) => ({
                             ['id']: item.id,
@@ -111,7 +136,25 @@ export const FileImport: React.FC<IFileImport> = ({ allowedFileTypes, isOpen, cl
             })
         } catch (error) {
             setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
+            console.log(error)
         }
+    }, [fileImportStep, radioButtonMetaData, setFileImportStep, t])
+
+    const handleUpload = async () => {
+        // console.log('uppy.getFiles()', uppy.getFiles())
+        uppy.getFiles().forEach((file) => {
+            uppy.setFileState(file.id, {
+                progress: { uploadComplete: false, uploadStarted: false },
+            })
+        })
+        uppy.retryAll()
+            .then((result) => {
+                console.log("uppy.getPlugin('XHRUpload')", uppy.getPlugin('XHRUpload'))
+                console.log('result', result)
+            })
+            .catch((error) => {
+                console.log('error', error)
+            })
     }
 
     const handleRemoveFile = (fileId: string) => {
@@ -126,20 +169,23 @@ export const FileImport: React.FC<IFileImport> = ({ allowedFileTypes, isOpen, cl
         setUploadFileProgressInfo([])
         uppy.resetProgress()
         uppy.setState({ files: {} })
+        close()
     }
 
     return (
-        <BaseModal isOpen={isOpen} close={close}>
+        <BaseModal isOpen={isOpen} close={handleCancelImport}>
             <FileImportView
                 uppy={uppy}
                 currentFiles={currentFiles}
-                handleUpload={handleUpload}
+                handleUpload={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : handleUpload}
                 uploadFileProgressInfo={uploadFileProgressInfo}
                 handleCancelImport={handleCancelImport}
                 handleRemoveFile={handleRemoveFile}
                 setRadioButtonMetaData={setRadioButtonMetaData}
                 setErrorMessages={setErrorMessages}
                 errorMessages={errorMessages}
+                fileImportStep={fileImportStep}
+                radioButtonMetaData={radioButtonMetaData}
             />
         </BaseModal>
     )

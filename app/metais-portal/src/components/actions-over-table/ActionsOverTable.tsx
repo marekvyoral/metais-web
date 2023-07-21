@@ -23,9 +23,6 @@ import {
     useExportRelXmlUsingPUT,
     useExportRelCsvUsingPUT,
     useExportRelExcelUsingPUT,
-    useReadProgressUsingGET,
-    useValidateContentUsingPOST,
-    useUpdateContentUsingPOST,
 } from '@/api/generated/impexp-cmdb-swagger'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@/assets/images'
 import { IColumn } from '@/hooks/useColumnList'
@@ -50,6 +47,11 @@ const defaultPagingOptions = [
     { value: '100000', label: '1000000' },
 ]
 
+export enum FileImportStepEnum {
+    VALIDATE = 'validate',
+    IMPORT = 'import',
+}
+
 export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     pagingOptions,
     ciType,
@@ -61,6 +63,9 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     columnListData,
     attributes,
 }) => {
+    const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
+    const baseURL = import.meta.env.VITE_REST_CLIENT_IMPEXP_CMDB_TARGET_URL
+    const fileImportURL = `${baseURL}${fileImportStep === FileImportStepEnum.VALIDATE ? '/import/validate' : '/import'}`
     const [modalOpen, setModalOpen] = useState(false)
     const [modalImportOpen, setModalImportOpen] = useState(false)
 
@@ -79,6 +84,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
         setModalImportOpen(true)
     }
     const onImportClose = () => {
+        setFileImportStep(FileImportStepEnum.VALIDATE)
         setModalImportOpen(false)
     }
 
@@ -90,9 +96,9 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     const exportRelCsv = useExportRelCsvUsingPUT()
     const exportRelExcel = useExportRelExcelUsingPUT()
 
-    const importValidate = useValidateContentUsingPOST
-    const importProgress = useReadProgressUsingGET
-    const importUpdate = useUpdateContentUsingPOST
+    // const importValidate = useValidateContentUsingPOST()
+    // const importProgress = useReadProgressUsingGET('')
+    // const importUpdate = useUpdateContentUsingPOST()
 
     const exportData = (exportFunction: any) => {
         const { data } = exportFunction({
@@ -278,7 +284,16 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                         }
                         variant="secondary"
                     />
-                    <FileImport allowedFileTypes={[]} multiple={false} endpointUrl={''} isOpen={modalImportOpen} close={onImportClose} />
+                    <FileImport
+                        allowedFileTypes={['.xml', '.csv', '.xlsx']}
+                        multiple
+                        endpointUrl={fileImportURL}
+                        isOpen={modalImportOpen}
+                        close={onImportClose}
+                        fileImportStep={fileImportStep}
+                        setFileImportStep={setFileImportStep}
+                        ciType={ciType}
+                    />
                     <Button
                         className={classnames(styles.withoutMarginBottom)}
                         onClick={openModal}
