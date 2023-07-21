@@ -1,7 +1,7 @@
 import React, { SetStateAction, useEffect, useState } from 'react'
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 
-import { CiCode, HierarchyRightsResultUi, HierarchyRightsUi, useGenerateCodeAndURLUsingGET1 } from '@/api'
+import { CiCode, ReadCiList200, HierarchyRightsUi, useGenerateCodeAndURL } from '@/api'
 import { Role, useAuth } from '@/contexts/auth/authContext'
 import { useGetRightForPO } from '@/hooks/useGetRightForPO'
 import { useGetImplicitHierarchy } from '@/hooks/useGetImplicitHierarchy'
@@ -19,7 +19,7 @@ export interface GetImplicitHierarchyFilter {
 }
 
 export interface CiCreateEntityContainerData {
-    implicitHierarchyData: HierarchyRightsResultUi | undefined
+    implicitHierarchyData: ReadCiList200 | undefined
     rightsForPOData: Role[] | undefined
     generatedEntityId: CiCode | undefined
 }
@@ -72,7 +72,7 @@ export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ Vi
     }, [implicitHierarchyData, selectedOrg])
 
     const { rightsForPOData } = useGetRightForPO(userId, selectedOrg?.poUUID ?? '', accessToken)
-    const { data: generatedEntityId } = useGenerateCodeAndURLUsingGET1(entityName)
+    const { data: generatedEntityId } = useGenerateCodeAndURL(entityName)
 
     return (
         <View

@@ -3,13 +3,7 @@ import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFil
 import { FieldValues } from 'react-hook-form'
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 
-import {
-    useReadCiListUsingPOST,
-    useResetUserColumnsUsingDELETE,
-    useGetUserColumnsUsingGET,
-    useGetDefaultColumnsUsingGET,
-    useInsertUserColumnsUsingPOST,
-} from '@/api'
+import { useReadCiList1, useResetUserColumns, useGetUserColumns, useGetDefaultColumns, useInsertUserColumns } from '@/api'
 import { IListView } from '@/types/list'
 import { mapFilterParamsToApi, mapFilterToNeighborsApi } from '@/componentHelpers'
 import { mapConfigurationItemSetToPagination } from '@/componentHelpers/pagination'
@@ -32,12 +26,12 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityN
     } = useAuth()
     const isUserLogged = !!user
 
-    const getUserColumns = useGetUserColumnsUsingGET(entityName, { query: { enabled: isUserLogged } })
-    const getDefaultColumns = useGetDefaultColumnsUsingGET(entityName, { query: { enabled: !isUserLogged } })
+    const getUserColumns = useGetUserColumns(entityName, { query: { enabled: isUserLogged } })
+    const getDefaultColumns = useGetDefaultColumns(entityName, { query: { enabled: !isUserLogged } })
 
     const { data: columnListData, refetch: refetchColumnData } = isUserLogged ? getUserColumns : getDefaultColumns
 
-    const storeUserSelectedColumns = useInsertUserColumnsUsingPOST()
+    const storeUserSelectedColumns = useInsertUserColumns()
     const saveColumnSelection = async (columnSelection: {
         attributes: { name: string; order: number }[]
         metaAttributes: { name: string; order: number }[]
@@ -52,7 +46,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityN
         await refetchColumnData()
     }
 
-    const resetUserSelectedColumns = useResetUserColumnsUsingDELETE()
+    const resetUserSelectedColumns = useResetUserColumns()
     const resetColumns = async () => {
         await resetUserSelectedColumns.mutateAsync({ citype: entityName || '' })
         await refetchColumnData()
@@ -67,7 +61,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityN
         },
     }
     const filterToNeighborsApi = mapFilterToNeighborsApi(filterParams, defaultRequestApi)
-    const { data: tableData } = useReadCiListUsingPOST({
+    const { data: tableData } = useReadCiList1({
         ...filterToNeighborsApi,
         filter: {
             ...filterToNeighborsApi.filter,

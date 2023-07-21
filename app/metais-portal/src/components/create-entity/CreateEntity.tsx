@@ -7,7 +7,7 @@ import { CiCreateEntityContainerData, GetImplicitHierarchyFilter, ISelectedOrg }
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { CreateCiEntitySelect } from './CreateCiEntitySelect'
 
-import { CiType, EnumType, useStoreConfigurationItemUsingPOST } from '@/api'
+import { CiType, EnumType, useStoreConfigurationItem } from '@/api'
 
 export interface AttrributesData {
     ciTypeData: CiType | undefined
@@ -45,7 +45,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({ data, selectedOrgState, 
 
     const [uploadError, setUploadError] = useState(false)
 
-    const storeConfigurationItem = useStoreConfigurationItemUsingPOST()
+    const storeConfigurationItem = useStoreConfigurationItem()
 
     const onSubmit = (formAttributes: FieldValues) => {
         setUploadError(false)

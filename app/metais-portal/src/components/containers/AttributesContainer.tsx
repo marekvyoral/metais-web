@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { EnumType, AttributeConstraintEnumAllOf, useGetCiTypeUsingGET, CiType, AttributeProfile, Attribute, useGetEnumUsingGET } from '@/api'
+import { EnumType, AttributeConstraintEnumAllOf, useGetCiType, CiType, AttributeProfile, Attribute, useGetEnum } from '@/api'
 import { useHowToDisplayConstraints } from '@/hooks/useHowToDisplay'
 import { MEASURE_UNIT } from '@/hooks/constants'
 
@@ -20,7 +20,7 @@ interface AttributesContainer {
 }
 
 export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiTypeUsingGET(entityName)
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName)
 
     const attributeProfiles = ciTypeData?.attributeProfiles
     const attributes = ciTypeData?.attributes
@@ -30,6 +30,8 @@ export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName,
             ?.map((attribute) =>
                 attribute?.constraints
                     ?.filter((item) => item.type === 'enum')
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    //@ts-ignore
                     .map((constraint: AttributeConstraintEnumAllOf) => constraint?.enumCode),
             )
             .flat() ?? []
@@ -40,6 +42,8 @@ export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName,
                 profile?.attributes?.map((attribute) =>
                     attribute?.constraints
                         ?.filter((item) => item.type === 'enum')
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        //@ts-ignore
                         .map((constraint: AttributeConstraintEnumAllOf) => constraint?.enumCode),
                 ),
             )
@@ -47,7 +51,7 @@ export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName,
 
     const constraints = [...constraintsAttributes, ...constraintsAttributesProfiles]
 
-    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnumUsingGET(MEASURE_UNIT)
+    const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnum(MEASURE_UNIT)
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
     const constraintsData = resultList.map((item) => item.data)
