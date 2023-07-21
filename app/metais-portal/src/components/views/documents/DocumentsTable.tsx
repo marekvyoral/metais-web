@@ -6,9 +6,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { NeighbourPairUi } from '@/api'
+import { ReadCiNeighbours200 } from '@/api'
 
-export interface TableCols extends NeighbourPairUi {
+export interface TableCols extends ReadCiNeighbours200 {
     selected?: boolean
 }
 interface DocumentsTable {

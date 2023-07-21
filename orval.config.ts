@@ -48,7 +48,7 @@ export default defineConfig({
             target: `./app/metais-portal/src/api/generated/cmdb-swagger.ts`,
             override: {
                 operations: {
-                    readCiNeighboursUsingPOST: {
+                    readCiNeighbours: {
                         query: {
                             useQuery: true,
                         },
@@ -57,7 +57,7 @@ export default defineConfig({
                             name: 'useClientForreadCiNeighboursUsingPOST',
                         },
                     },
-                    getRoleParticipantBulkUsingPOST: {
+                    getRoleParticipantBulk: {
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useClientForGetRoleParticipantBulkUsingPOST',
@@ -66,25 +66,25 @@ export default defineConfig({
                             useQuery: true,
                         },
                     },
-                    readConfigurationItemUsingGET: {
+                    readConfigurationItem: {
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useClientForReadConfigurationItemUsingGET',
                         },
                     },
-                    getRoleParticipantUsingGET: {
+                    getRoleParticipant: {
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useClientForGetRoleParticipantUsingGET',
                         },
                     },
-                    readCiNeighboursWithAllRelsUsingGET: {
+                    readCiNeighboursWithAllRels: {
                         mutator: {
                             path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useClientForReadCiNeighboursWithAllRelsUsingGET',
                         },
                     },
-                    readCiListUsingPOST: {
+                    readCiList_1: {
                         query: {
                             useQuery: true,
                         },
@@ -137,7 +137,7 @@ export default defineConfig({
         input: {
             target: process.env.VITE_REST_CLIENT_DMS_SWAGGER_URL ?? '',
             filters: {
-                tags: ['file-controller', 'utils-controller'],
+                tags: ['file-controller'], //'utils-controller'
             },
         },
         output: {
