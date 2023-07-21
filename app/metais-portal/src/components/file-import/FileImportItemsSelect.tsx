@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { SimpleSelect } from '@isdd/idsk-ui-kit/index'
 
 import styles from './FileImport.module.scss'
-import { useReadCiListUsingPOST1 } from '@/api'
+import { useReadCiListHook } from '@/api'
 
 interface IFileImportItemsSelect {
     setRadioButtonMetaData?: React.Dispatch<React.SetStateAction<string>>
@@ -11,8 +11,8 @@ interface IFileImportItemsSelect {
 
 export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ setRadioButtonMetaData }) => {
     const { t } = useTranslation()
-    const getImplicitHierarchy = useReadCiListUsingPOST1()
-    const implicitHierarchy = getImplicitHierarchy.mutateAsync({ data: {} })
+    const getImplicitHierarchy = useReadCiListHook()
+    const implicitHierarchy = getImplicitHierarchy({})
     console.log(implicitHierarchy)
     return (
         <div>
