@@ -1,8 +1,9 @@
 import { TFunction } from 'i18next'
-import { CiWithRelsUi, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
+
+import { ReadCiNeighboursWithAllRels200, RelatedCiTypePreview, RoleParticipantUI } from '@/api'
 
 export const formatRelationAttributes = (
-    ciWithRel: CiWithRelsUi,
+    ciWithRel: ReadCiNeighboursWithAllRels200,
     entityTypes: RelatedCiTypePreview[] | undefined,
     owners: void | RoleParticipantUI[] | undefined,
     t: TFunction<'translation', undefined, 'translation'>,
@@ -10,7 +11,7 @@ export const formatRelationAttributes = (
     const ci = ciWithRel?.ci
     const attributes = ci?.attributes
     const owner = owners?.find((o) => o?.gid === ci?.metaAttributes?.owner)
-    const relations = ciWithRel?.rels?.map((rel) => {
+    const relations = ciWithRel?.rels?.map((rel: { type: string | undefined; metaAttributes: { state: string }; uuid: string }) => {
         const entityType = entityTypes?.find((et) => et?.relationshipTypeTechnicalName === rel?.type)
         return {
             title: `${entityType?.relationshipTypeName} : ${t(`metaAttributes.state.${rel?.metaAttributes?.state}`)}`,

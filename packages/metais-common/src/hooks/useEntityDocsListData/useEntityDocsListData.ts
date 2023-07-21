@@ -28,7 +28,7 @@ export const useDocumentData = (idList: string[]) => {
 
 export const useDocumentsListData = (id: string, entityName: string, pageConfig: NeighboursFilterContainerUi) => {
     //orval hook throwing error
-    /*  const documentListData = useReadCiNeighboursUsingPOST(
+    /*  const documentListData = useReadCiNeighbours(
         id,
         pageConfig,
         {},

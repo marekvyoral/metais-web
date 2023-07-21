@@ -5,9 +5,10 @@ import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { NeighbourPairUi } from '@isdd/metais-common/api'
 
-export interface TableCols extends NeighbourPairUi {
+import { ReadCiNeighbours200 } from '@/api'
+
+export interface TableCols extends ReadCiNeighbours200 {
     selected?: boolean
 }
 interface DocumentsTable {

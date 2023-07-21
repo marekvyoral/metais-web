@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { useReadCiNeighboursUsingPOST, NeighbourPairUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 
+import { useReadCiNeighbours, ReadCiNeighbours200, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@/api'
 import { mapFilterToNeighborsApi } from '@/componentHelpers'
 import { mapNeighboursSetSourceToPagination } from '@/componentHelpers/pagination'
 
 export interface IView {
-    data?: NeighbourPairUi[]
+    data?: ReadCiNeighbours200[]
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
     isLoading: boolean
@@ -43,7 +43,7 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
         isLoading,
         isError,
         data: documentCiData,
-    } = useReadCiNeighboursUsingPOST(configurationItemId ?? '', mapFilterToNeighborsApi(uiFilterState, defaultRequestApi), {})
+    } = useReadCiNeighbours(configurationItemId ?? '', mapFilterToNeighborsApi(uiFilterState, defaultRequestApi), {})
 
     const pagination = mapNeighboursSetSourceToPagination(uiFilterState, documentCiData)
 

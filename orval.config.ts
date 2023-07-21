@@ -16,209 +16,87 @@ const defaultOutputOptions: object = {
 }
 
 export default defineConfig({
-    // cmdbSwagger: {
-    //     input: {
-    //         override: {
-    //             transformer: './packages/metais-common/scripts/attributesTypesTransformer.js',
-    //         },
-    //         target: process.env.VITE_REST_CLIENT_CMDB_SWAGGER_SWAGGER_URL ?? '',
-    //         filters: {
-    //             tags: [
-    //                 'cmdb-cache-controller',
-    //                 'cmdb-change-owner-controller',
-    //                 'cmdb-elastic-delete-controller',
-    //                 'cmdb-elastic-read-controller',
-    //                 'cmdb-elastic-store-controller',
-    //                 'cmdb-history-read-controller',
-    //                 'cmdb-invalidate-controller',
-    //                 'cmdb-metrics-controller',
-    //                 'cmdb-po-controller',
-    //                 'cmdb-read-controller',
-    //                 'cmdb-recycle-controller',
-    //                 'cmdb-request-tracking-controller',
-    //                 'cmdb-rights-controller',
-    //                 'cmdb-store-controller',
-    //                 'cmdb-user-feedback-controller',
-    //                 'cmdb-util-controller',
-    //                 //'health-controller',
-    //             ],
-    //         },
-    //     },
-    //     output: {
-    //         target: `./packages/metais-common/src/api/generated/cmdb-swagger.ts`,
-    //         override: {
-    //             operations: {
-    //                 readCiNeighboursUsingPOST: {
-    //                     query: {
-    //                         useQuery: true,
-    //                     },
-    //                     mutator: {
-    //                         path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
-    //                         name: 'useClientForreadCiNeighboursUsingPOST',
-    //                     },
-    //                 },
-    //                 getRoleParticipantBulkUsingPOST: {
-    //                     mutator: {
-    //                         path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
-    //                         name: 'useClientForGetRoleParticipantBulkUsingPOST',
-    //                     },
-    //                     query: {
-    //                         useQuery: true,
-    //                     },
-    //                 },
-    //                 readConfigurationItemUsingGET: {
-    //                     mutator: {
-    //                         path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
-    //                         name: 'useClientForReadConfigurationItemUsingGET',
-    //                     },
-    //                 },
-    //                 getRoleParticipantUsingGET: {
-    //                     mutator: {
-    //                         path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
-    //                         name: 'useClientForGetRoleParticipantUsingGET',
-    //                     },
-    //                 },
-    //                 readCiNeighboursWithAllRelsUsingGET: {
-    //                     mutator: {
-    //                         path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
-    //                         name: 'useClientForReadCiNeighboursWithAllRelsUsingGET',
-    //                     },
-    //                 },
-    //                 readCiListUsingPOST: {
-    //                     query: {
-    //                         useQuery: true,
-    //                     },
-    //                     mutator: {
-    //                         path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
-    //                         name: 'useClientForReadCiListUsingPOST',
-    //                     },
-    //                 },
-    //             },
-    //             mutator: {
-    //                 path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClient.ts',
-    //                 name: 'useCmdbSwaggerClient',
-    //             },
-    //         },
-    //         ...defaultOutputOptions,
-    //     },
-    //     hooks: {
-    //         afterAllFilesWrite: 'prettier --write',
-    //     },
-    // },
-    // typesRepo: {
-    //     input: {
-    //         target: process.env.VITE_REST_CLIENT_TYPES_REPO_SWAGGER_URL ?? '',
-    //         filters: {
-    //             tags: [
-    //                 'attribute-controller',
-    //                 'attribute-profile-controller',
-    //                 'ci-type-controller',
-    //                 'ci-type-relationship-type-map-controller',
-    //                 'relationship-type-controller',
-    //                 'rights-type-controller',
-    //                 'query',
-    //             ],
-    //         },
-    //     },
-    //     output: {
-    //         target: `./packages/metais-common/src/api/generated/types-repo-swagger.ts`,
-    //         override: {
-    //             operations: {
-    //                 listAttrProfileUsingPOST: {
-    //                     query: {
-    //                         useQuery: true,
-    //                     },
-    //                 },
-    //                 listTypesUsingPOST: {
-    //                     query: {
-    //                         useQuery: true,
-    //                     },
-    //                 },
-    //             },
-    //             mutator: {
-    //                 path: './packages/metais-common/src/api/hooks/useTypesRepoSwaggerClient.ts',
-    //                 name: 'useTypesRepoSwaggerClient',
-    //             },
-    //         },
-    //         ...defaultOutputOptions,
-    //     },
-    //     hooks: {
-    //         afterAllFilesWrite: 'prettier --write',
-    //     },
-    // },
-    // dms: {
-    //     input: {
-    //         target: process.env.VITE_REST_CLIENT_DMS_SWAGGER_URL ?? '',
-    //         filters: {
-    //             tags: ['file-controller', 'utils-controller'],
-    //         },
-    //     },
-    //     output: {
-    //         target: `./packages/metais-common/src/api/generated/dms-swagger.ts`,
-    //         override: {
-    //             mutator: {
-    //                 path: './packages/metais-common/src/api/hooks/useDmsSwaggerClient.ts',
-    //                 name: 'useDmsSwaggerClient',
-    //             },
-    //         },
-    //         ...defaultOutputOptions,
-    //     },
-    //     hooks: {
-    //         afterAllFilesWrite: 'prettier --write',
-    //     },
-    // },
-    // enumsRepo: {
-    //     input: {
-    //         target: process.env.VITE_REST_CLIENT_ENUMS_REPO_SWAGGER_URL ?? '',
-    //         filters: {
-    //             tags: ['scheduled-jobs-controller', 'enums-controller', 'enums-item-controller'],
-    //         },
-    //     },
-    //     output: {
-    //         target: `./packages/metais-common/src/api/generated/enums-repo-swagger.ts`,
-    //         override: {
-    //             mutator: {
-    //                 path: './packages/metais-common/src/api/hooks/useEnumsRepoSwaggerClient.ts',
-    //                 name: 'useEnumsRepoSwaggerClient',
-    //             },
-    //         },
-    //         ...defaultOutputOptions,
-    //     },
-    //     hooks: {
-    //         afterAllFilesWrite: 'prettier --write',
-    //     },
-    // },
-    // userConfig: {
-    //     input: {
-    //         target: process.env.VITE_REST_CLIENT_USER_CONFIG_REPO_SWAGGER_URL ?? '',
-    //         filters: {
-    //             tags: ['favorites-columns-controller'],
-    //         },
-    //     },
-    //     output: {
-    //         target: `./packages/metais-common/src/api/generated/user-config-swagger.ts`,
-    //         override: {
-    //             mutator: {
-    //                 path: './packages/metais-common/src/api/hooks/useUserConfigSwaggerClient.ts',
-    //                 name: 'useUserConfigSwaggerClient',
-    //             },
-    //         },
-    //         ...defaultOutputOptions,
-    //     },
-    //     hooks: {
-    //         afterAllFilesWrite: 'prettier --write',
-    //     },
-    // },
-    iam: {
+    cmdbSwagger: {
         input: {
-            target: process.env.VITE_REST_CLIENT_IAM_SWAGGER_URL ?? '',
+            override: {
+                transformer: './packages/metais-common/scripts/attributesTypesTransformer.js',
+            },
+            target: process.env.VITE_REST_CLIENT_CMDB_SWAGGER_SWAGGER_URL ?? '',
+            filters: {
+                tags: [
+                    'cmdb-cache-controller',
+                    'cmdb-change-owner-controller',
+                    'cmdb-elastic-delete-controller',
+                    'cmdb-elastic-read-controller',
+                    'cmdb-elastic-store-controller',
+                    'cmdb-history-read-controller',
+                    'cmdb-invalidate-controller',
+                    'cmdb-metrics-controller',
+                    'cmdb-po-controller',
+                    'cmdb-read-controller',
+                    'cmdb-recycle-controller',
+                    'cmdb-request-tracking-controller',
+                    'cmdb-rights-controller',
+                    'cmdb-store-controller',
+                    'cmdb-user-feedback-controller',
+                    'cmdb-util-controller',
+                    //'health-controller',
+                ],
+            },
         },
         output: {
-            target: `./packages/metais-common/src/api/generated/iam-swagger.ts`,
+            target: `./packages/metais-common/src/api/generated/cmdb-swagger.ts`,
             override: {
+                operations: {
+                    readCiNeighboursUsingPOST: {
+                        query: {
+                            useQuery: true,
+                        },
+                        mutator: {
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForreadCiNeighboursUsingPOST',
+                        },
+                    },
+                    getRoleParticipantBulkUsingPOST: {
+                        mutator: {
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForGetRoleParticipantBulkUsingPOST',
+                        },
+                        query: {
+                            useQuery: true,
+                        },
+                    },
+                    readConfigurationItemUsingGET: {
+                        mutator: {
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForReadConfigurationItemUsingGET',
+                        },
+                    },
+                    getRoleParticipantUsingGET: {
+                        mutator: {
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForGetRoleParticipantUsingGET',
+                        },
+                    },
+                    readCiNeighboursWithAllRelsUsingGET: {
+                        mutator: {
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForReadCiNeighboursWithAllRelsUsingGET',
+                        },
+                    },
+                    readCiListUsingPOST: {
+                        query: {
+                            useQuery: true,
+                        },
+                        mutator: {
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForReadCiListUsingPOST',
+                        },
+                    },
+                },
                 mutator: {
-                    path: './packages/metais-common/src/api/hooks/useIAmSwaggerClient.ts',
-                    name: 'useIAmSwaggerClient',
+                    path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClient.ts',
+                    name: 'useCmdbSwaggerClient',
                 },
             },
             ...defaultOutputOptions,
@@ -227,22 +105,179 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
-    // impexpCmdb: {
-    //     input: {
-    //         target: process.env.VITE_REST_CLIENT_IMPEXP_CMDB_SWAGGER_URL ?? '',
-    //     },
-    //     output: {
-    //         target: `./packages/metais-common/src/api/generated/impexp-cmdb-swagger.ts`,
-    //         override: {
-    //             mutator: {
-    //                 path: './packages/metais-common/src/api/hooks/useImpexpCmdbSwaggerClient.ts',
-    //                 name: 'useImpexpCmdbSwaggerClient',
-    //             },
-    //         },
-    //         ...defaultOutputOptions,
-    //     },
-    //     hooks: {
-    //         afterAllFilesWrite: 'prettier --write',
-    //     },
-    // },
+
+    iam: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_IAM_SWAGGER_URL ?? '',
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/iam-swagger.ts`,
+            override: {
+                operations: {
+                    readCiNeighbours: {
+                        query: {
+                            useQuery: true,
+                        },
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForreadCiNeighboursUsingPOST',
+                        },
+                    },
+                    getRoleParticipantBulk: {
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForGetRoleParticipantBulkUsingPOST',
+                        },
+                        query: {
+                            useQuery: true,
+                        },
+                    },
+                    readConfigurationItem: {
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForReadConfigurationItemUsingGET',
+                        },
+                    },
+                    getRoleParticipant: {
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForGetRoleParticipantUsingGET',
+                        },
+                    },
+                    readCiNeighboursWithAllRels: {
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForReadCiNeighboursWithAllRelsUsingGET',
+                        },
+                    },
+                    readCiList_1: {
+                        query: {
+                            useQuery: true,
+                        },
+                        mutator: {
+                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForReadCiListUsingPOST',
+                        },
+                    },
+                },
+                mutator: {
+                    path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClient.ts',
+                    name: 'useCmdbSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    typesRepo: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_TYPES_REPO_SWAGGER_URL ?? '',
+            filters: {
+                tags: [
+                    'attribute-controller',
+                    'attribute-profile-controller',
+                    'ci-type-controller',
+                    'ci-type-relationship-type-map-controller',
+                    'relationship-type-controller',
+                    'rights-type-controller',
+                ],
+            },
+        },
+        output: {
+            target: `./app/metais-portal/src/api/generated/types-repo-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './app/metais-portal/src/api/hooks/useTypesRepoSwaggerClient.ts',
+                    name: 'useTypesRepoSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    dms: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_DMS_SWAGGER_URL ?? '',
+            filters: {
+                tags: ['file-controller'], //'utils-controller'
+            },
+        },
+        output: {
+            target: `./app/metais-portal/src/api/generated/dms-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './app/metais-portal/src/api/hooks/useDmsSwaggerClient.ts',
+                    name: 'useDmsSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    enumsRepo: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_ENUMS_REPO_SWAGGER_URL ?? '',
+            filters: {
+                tags: ['scheduled-jobs-controller', 'enums-controller', 'enums-item-controller'],
+            },
+        },
+        output: {
+            target: `./app/metais-portal/src/api/generated/enums-repo-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './app/metais-portal/src/api/hooks/useEnumsRepoSwaggerClient.ts',
+                    name: 'useEnumsRepoSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    userConfig: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_USER_CONFIG_REPO_SWAGGER_URL ?? '',
+            filters: {
+                tags: ['favorites-columns-controller'],
+            },
+        },
+        output: {
+            target: `./app/metais-portal/src/api/generated/user-config-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './app/metais-portal/src/api/hooks/useUserConfigSwaggerClient.ts',
+                    name: 'useUserConfigSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    impexpCmdb: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_IMPEXP_CMDB_SWAGGER_URL ?? '',
+        },
+        output: {
+            target: `./app/metais-portal/src/api/generated/impexp-cmdb-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './app/metais-portal/src/api/hooks/useImpexpCmdbSwaggerClient.ts',
+                    name: 'useImpexpCmdbSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
 })

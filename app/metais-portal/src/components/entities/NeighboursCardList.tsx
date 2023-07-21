@@ -14,6 +14,7 @@ import styles from './neighboursCardList.module.scss'
 
 import { IRelationsView } from '@/components/containers/RelationsListContainer'
 import { formatRelationAttributes } from '@/componentHelpers'
+import { ReadCiNeighboursWithAllRels200, ReadCiNeighboursWithAllRelsParams } from '@/api'
 
 interface NeighboursCardListProps {
     isLoading: boolean
@@ -21,7 +22,7 @@ interface NeighboursCardListProps {
     data: IRelationsView['data']
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
-    setPageConfig: (value: React.SetStateAction<ReadCiNeighboursWithAllRelsUsingGETParams>) => void
+    setPageConfig: (value: React.SetStateAction<ReadCiNeighboursWithAllRelsParams>) => void
 }
 
 export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
@@ -55,7 +56,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                             />
                         </ListActions>
                         <CardColumnList>
-                            {relationsList?.ciWithRels?.map((ciWithRel) => {
+                            {relationsList?.ciWithRels?.map((ciWithRel: ReadCiNeighboursWithAllRels200) => {
                                 const formatedCiWithRel = formatRelationAttributes(ciWithRel, entityTypes, owners, t)
                                 return <RelationCard {...formatedCiWithRel} key={formatedCiWithRel?.name} />
                             })}

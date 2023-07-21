@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourSetUi, NeighboursFilterContainerUi, useReadCiNeighboursUsingPOST } from '@isdd/metais-common/api'
 
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, ReadCiNeighbours200, NeighboursFilterContainerUi, useReadCiNeighbours } from '@/api'
 import {
     defaultTargetRelationshipTabFilter,
     defaultSourceRelationshipTabFilter,
@@ -11,7 +11,7 @@ import { mapFilterToNeighborsApi } from '@/componentHelpers'
 import { mapNeighboursSetSourceToPagination, mapNeighboursSetTargetToPagination } from '@/componentHelpers/pagination'
 
 interface ICiNeighboursListContainerView {
-    data?: NeighbourSetUi
+    data?: ReadCiNeighbours200
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
     isLoading: boolean
@@ -48,11 +48,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         isLoading,
         isError,
         data: documentCiData,
-    } = useReadCiNeighboursUsingPOST(
-        configurationItemId ?? '',
-        mapFilterToNeighborsApi<NeighboursFilterContainerUi>(uiFilterState, selectedRequestApi),
-        {},
-    )
+    } = useReadCiNeighbours(configurationItemId ?? '', mapFilterToNeighborsApi<NeighboursFilterContainerUi>(uiFilterState, selectedRequestApi), {})
 
     const pagination =
         apiType === NeighboursApiType.source

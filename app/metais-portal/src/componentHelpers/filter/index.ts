@@ -1,6 +1,7 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { CiListFilterContainerUi, ReadCiNeighboursWithAllRelsUsingGETParams, FilterAttributesUi } from '@isdd/metais-common/api'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
+
+import { FilterAttributesUi, CiListFilterContainerUi, ReadCiNeighboursWithAllRelsParams } from '@/api'
 
 export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: { [filterName: string]: T } | T): CiListFilterContainerUi => {
     const { pageNumber, pageSize, sort } = filter
@@ -14,9 +15,9 @@ export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: {
 }
 
 export const mapFilterToNeighboursWithAllRelsApi = (
-    originalFilter: ReadCiNeighboursWithAllRelsUsingGETParams,
+    originalFilter: ReadCiNeighboursWithAllRelsParams,
     filterChanges: IFilter,
-): ReadCiNeighboursWithAllRelsUsingGETParams => {
+): ReadCiNeighboursWithAllRelsParams => {
     const { pageNumber, pageSize } = filterChanges
 
     return {
@@ -46,6 +47,7 @@ export const mapFilterParamsToApi = <T extends IFilterParams>(filterParams: T): 
 
     for (const [key, attrs] of Object.entries(filterParams?.attributeFilters || {})) {
         if (!key) continue
+
         const combinedAttrs: FilterAttributesUi = {
             name: key,
             filterValue: attrs.filter((attr) => attr.value && attr.operator).map((attr) => ({ value: attr.value, equality: attr.operator })),
