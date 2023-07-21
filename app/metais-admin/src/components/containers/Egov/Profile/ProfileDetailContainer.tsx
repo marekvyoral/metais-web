@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-    EnumType,
-    useGetAttributeProfileUsingGET,
-    AttributeProfile,
-    useStoreUnValidUsingDELETE,
-    useStoreValidUsingPUT1,
-} from '@isdd/metais-common/api'
+import { EnumType, useGetAttributeProfile, AttributeProfile, useStoreUnValid, useStoreValid } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
 import { QueryFeedback } from '@isdd/metais-common'
@@ -26,7 +20,7 @@ interface AttributesContainer {
 }
 
 export const ProfileDetailContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError, refetch } = useGetAttributeProfileUsingGET(entityName)
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError, refetch } = useGetAttributeProfile(entityName)
 
     const { isLoading, isError, constraintsData } = useDetailData({
         entityStructure: ciTypeData,
@@ -34,8 +28,8 @@ export const ProfileDetailContainer: React.FC<AttributesContainer> = ({ entityNa
         isEntityStructureError: isCiTypeDataError,
     })
 
-    const { mutateAsync: setProfileAsInvalid } = useStoreUnValidUsingDELETE()
-    const { mutateAsync: setProfileAsValid } = useStoreValidUsingPUT1()
+    const { mutateAsync: setProfileAsInvalid } = useStoreUnValid()
+    const { mutateAsync: setProfileAsValid } = useStoreValid()
 
     const setValidityOfProfile = async (technicalName?: string) => {
         await setValidity(technicalName, ciTypeData?.valid, setProfileAsValid, setProfileAsInvalid, refetch)

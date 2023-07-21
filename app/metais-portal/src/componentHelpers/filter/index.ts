@@ -1,7 +1,7 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
-import { FilterAttributesUi, CiListFilterContainerUi, ReadCiNeighboursWithAllRelsParams } from '@/api'
+import { FilterAttributesUi, CiListFilterContainerUi, ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
 
 export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: { [filterName: string]: T } | T): CiListFilterContainerUi => {
     const { pageNumber, pageSize, sort } = filter

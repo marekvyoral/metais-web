@@ -1,17 +1,17 @@
 import React from 'react'
 import {
     EnumType,
-    useGetRelationshipTypeUsingGET,
+    useGetRelationshipType,
     RelationshipType,
     AttributeProfile,
-    useUnvalidRelationshipTypeUsingDELETE,
-    useValidRelationshipTypeUsingPUT,
-    useStoreExistsCiTypeRelationshipTypeMapUsingPUT,
+    useUnvalidRelationshipType,
+    useValidRelationshipType,
+    useStoreExistsCiTypeRelationshipTypeMap,
     CiTypePreview,
-    useGetAttributeOverridesUsingGET1,
+    useGetAttributeOverrides,
     Attribute,
-    useStoreAttributeTextationUsingPUT1,
-    useDeleteAttributeTextationUsingDELETE1,
+    useStoreAttributeTextation,
+    useDeleteAttributeTextation,
 } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
@@ -38,13 +38,13 @@ interface AttributesContainer {
 }
 
 export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError, refetch } = useGetRelationshipTypeUsingGET(entityName)
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError, refetch } = useGetRelationshipType(entityName)
     const {
         data: attributeOverridesData,
         isLoading: isAttributesOverridesLoading,
         isError: isAttributesOverridesError,
         refetch: refetchAttributes,
-    } = useGetAttributeOverridesUsingGET1(entityName)
+    } = useGetAttributeOverrides(entityName)
 
     const keysToDisplay = createTabNamesAndValuesMap(ciTypeData?.attributeProfiles)
 
@@ -54,11 +54,11 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
         isEntityStructureError: isCiTypeDataError,
     })
 
-    const { mutateAsync: setRelationAsValid } = useUnvalidRelationshipTypeUsingDELETE()
-    const { mutateAsync: setRelationAsInvalid } = useValidRelationshipTypeUsingPUT()
-    const { mutateAsync: addConnection } = useStoreExistsCiTypeRelationshipTypeMapUsingPUT()
-    const { mutateAsync: saveAttribute } = useStoreAttributeTextationUsingPUT1()
-    const { mutateAsync: resetAttribute } = useDeleteAttributeTextationUsingDELETE1()
+    const { mutateAsync: setRelationAsValid } = useUnvalidRelationshipType()
+    const { mutateAsync: setRelationAsInvalid } = useValidRelationshipType()
+    const { mutateAsync: addConnection } = useStoreExistsCiTypeRelationshipTypeMap()
+    const { mutateAsync: saveAttribute } = useStoreAttributeTextation()
+    const { mutateAsync: resetAttribute } = useDeleteAttributeTextation()
 
     const unValidRelationShipTypeMutation = async (technicalName?: string) => {
         setValidity(technicalName, ciTypeData?.valid, setRelationAsValid, setRelationAsInvalid, refetch)

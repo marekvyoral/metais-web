@@ -1,5 +1,5 @@
 import React from 'react'
-import { RelationshipTypePreviewList, useListRelationshipTypesUsingGET } from '@isdd/metais-common/api'
+import { RelationshipTypePreviewList, useListRelationshipTypes } from '@isdd/metais-common/api'
 import { QueryFeedback } from '@isdd/metais-common'
 
 export interface IView {
@@ -11,7 +11,7 @@ interface IRelationListContainer {
 }
 
 export const RelationListContainer: React.FC<IRelationListContainer> = ({ View }) => {
-    const { data, isLoading, isError } = useListRelationshipTypesUsingGET({})
+    const { data, isLoading, isError } = useListRelationshipTypes({ filter: {} })
 
     return (
         <QueryFeedback loading={isLoading} error={isError}>

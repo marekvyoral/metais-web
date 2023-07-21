@@ -1,6 +1,6 @@
 import React from 'react'
 import { useFindAllUsingGET14 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { AttributeProfileBody, Role, useStoreNewAttrProfileUsingPOST } from '@isdd/metais-common/api'
+import { AttributeProfile, Role, useStoreNewAttrProfile } from '@isdd/metais-common/api'
 import { QueryFeedback } from '@isdd/metais-common'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 
@@ -10,7 +10,7 @@ export interface ICreateEntityView {
     data: {
         roles?: Role[]
     }
-    mutate: (data: AttributeProfileBody) => Promise<void>
+    mutate: (data: AttributeProfile) => Promise<void>
     hiddenInputs?: Partial<HiddenInputs>
 }
 
@@ -23,9 +23,9 @@ export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreat
     const limit = 200
 
     const { data, isLoading, isError } = useFindAllUsingGET14(page, limit, { direction: SortType.ASC, orderBy: 'name' })
-    const { mutateAsync } = useStoreNewAttrProfileUsingPOST()
+    const { mutateAsync } = useStoreNewAttrProfile()
 
-    const storeProfile = async (formData: AttributeProfileBody) => {
+    const storeProfile = async (formData: AttributeProfile) => {
         await mutateAsync({
             data: {
                 ...formData,

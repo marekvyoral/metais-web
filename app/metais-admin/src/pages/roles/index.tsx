@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Button, Filter, Table, TextHeading } from '@isdd/idsk-ui-kit'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useFindByNameWithParamsUsingGET, FindByNameWithParamsUsingGETParams, Role } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useGetValidEnumUsingGET } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ColumnDef } from '@tanstack/react-table'
 
 import styles from './roles.module.scss'
@@ -18,7 +18,7 @@ const defaultFilterValues: FilterData = {
 }
 
 const ManageRoles: React.FC = () => {
-    const { data: roleGroups } = useGetValidEnumUsingGET('SKUPINA_ROL')
+    const { data: roleGroups } = useGetValidEnum('SKUPINA_ROL')
     const roleGroupsList = roleGroups?.enumItems
     const listRolesParams: FindByNameWithParamsUsingGETParams = {
         name: '',

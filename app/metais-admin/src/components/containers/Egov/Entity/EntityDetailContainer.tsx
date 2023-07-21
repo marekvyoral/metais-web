@@ -4,12 +4,12 @@ import {
     CiType,
     SummarizingCardUi,
     AttributeProfile,
-    useStoreUnvalidUsingDELETE1,
-    useStoreValidUsingPUT2,
-    useSetSummarizingCardUsingPUT,
-    useStoreAttributeTextationUsingPUT,
+    useStoreUnvalid,
+    useStoreValid,
+    useSetSummarizingCard,
+    useStoreAttributeTextation,
     Attribute,
-    useDeleteAttributeTextationUsingDELETE,
+    useDeleteAttributeTextation,
 } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { useEntityProfiles } from '@isdd/metais-common/hooks/useEntityProfiles'
@@ -46,11 +46,11 @@ export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityNam
         refetch,
     } = useEntityProfiles(entityName)
 
-    const { mutateAsync: setEntityAsInvalid } = useStoreUnvalidUsingDELETE1()
-    const { mutateAsync: setEntityAsValid } = useStoreValidUsingPUT2()
-    const { mutateAsync: setShowOwner } = useSetSummarizingCardUsingPUT()
-    const { mutateAsync: saveAttribute } = useStoreAttributeTextationUsingPUT()
-    const { mutateAsync: resetAttribute } = useDeleteAttributeTextationUsingDELETE()
+    const { mutateAsync: setEntityAsInvalid } = useStoreUnvalid()
+    const { mutateAsync: setEntityAsValid } = useStoreValid()
+    const { mutateAsync: setShowOwner } = useSetSummarizingCard()
+    const { mutateAsync: saveAttribute } = useStoreAttributeTextation()
+    const { mutateAsync: resetAttribute } = useDeleteAttributeTextation()
 
     const setValidityOfEntity = async (technicalName?: string) => {
         setValidity(technicalName, ciTypeData?.valid, setEntityAsValid, setEntityAsInvalid, refetch)

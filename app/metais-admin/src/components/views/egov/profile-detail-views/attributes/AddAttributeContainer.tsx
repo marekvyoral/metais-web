@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-    Attribute,
-    EnumType,
-    EnumTypePreviewList,
-    useGetEnumUsingGET,
-    useListEnumsUsingGET,
-    useStoreNewAttributeUsingPOST,
-} from '@isdd/metais-common/api'
+import { Attribute, EnumType, EnumTypePreviewList, useGetEnum, useListEnums, useStoreNewAttribute } from '@isdd/metais-common/api'
 import { UseMutateAsyncFunction } from '@tanstack/react-query'
 
 export interface IAddAttributeView {
@@ -31,10 +24,10 @@ export interface IAddAttributeContainer {
 }
 
 const AddAttributeContainer = ({ View }: IAddAttributeContainer) => {
-    const { data } = useGetEnumUsingGET('MERNA_JEDNOTKA')
-    const { data: allEnumsData } = useListEnumsUsingGET()
+    const { data } = useGetEnum('MERNA_JEDNOTKA')
+    const { data: allEnumsData } = useListEnums()
 
-    const { mutateAsync: storeAttribute } = useStoreNewAttributeUsingPOST()
+    const { mutateAsync: storeAttribute } = useStoreNewAttribute()
     return (
         <View
             data={{

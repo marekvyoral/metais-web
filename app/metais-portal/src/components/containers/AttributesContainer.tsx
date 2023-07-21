@@ -1,9 +1,8 @@
 import React from 'react'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
-
-import { EnumType, AttributeConstraintEnumAllOf, useGetCiType, CiType, AttributeProfile, Attribute, useGetEnum } from '@/api'
-import { useHowToDisplayConstraints } from '@/hooks/useHowToDisplay'
-import { MEASURE_UNIT } from '@/hooks/constants'
+import { EnumType, AttributeConstraintEnumAllOf, useGetCiType, CiType, AttributeProfile, Attribute, useGetEnum } from '@isdd/metais-common/api'
+import { useHowToDisplayConstraints } from '@isdd/metais-common/src/hooks/useHowToDisplay'
+import { MEASURE_UNIT } from '@isdd/metais-common/src/hooks/constants'
 
 export interface IAtrributesContainerView {
     data: {
@@ -61,9 +60,9 @@ export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName,
     const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnum(MEASURE_UNIT)
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
-    const constraintsData = resultList.map((item) => item.data)
-    const isLoading = [isCiTypeDataLoading, isConstraintLoading, isUnitsLoading, isUnitsError].some((item) => item) //isUnitsLoading,
-    const isError = [isCiTypeDataError, isConstraintError].some((item) => item) //isUnitsError,
+    // const constraintsData = resultList.map((item) => item.data)
+    // const isLoading = [isCiTypeDataLoading, isConstraintLoading, isUnitsLoading, isUnitsError].some((item) => item) //isUnitsLoading,
+    // const isError = [isCiTypeDataError, isConstraintError].some((item) => item) //isUnitsError,
 
     if (isLoading) {
         return <div>Loading</div>
