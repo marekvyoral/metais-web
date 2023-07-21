@@ -6,10 +6,23 @@ import { useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-sw
 import { ColumnDef } from '@tanstack/react-table'
 
 import styles from './roles.module.scss'
+import { RoleType } from '@isdd/metais-common/api'
 
 interface FilterData extends IFilterParams {
     name: string
     isSystemRole?: false
+}
+
+interface GroupRoles {
+    value: string
+    code: string
+}
+
+interface TableData {
+    name: string
+    description: string
+    group: string
+    isSystem: string
 }
 
 const defaultFilterValues: FilterData = {
@@ -19,7 +32,14 @@ const defaultFilterValues: FilterData = {
 
 const ManageRoles: React.FC = () => {
     const { data: roleGroups } = useGetValidEnum('SKUPINA_ROL')
-    const roleGroupsList = roleGroups?.enumItems
+    console.log('ROLESGROPULOADED')
+
+    const roleGroupsList: GroupRoles[] =
+        roleGroups?.enumItems?.map((item) => ({
+            value: item.value ?? '',
+            code: item.code ?? '',
+        })) ?? []
+
     const listRolesParams: FindByNameWithParamsUsingGETParams = {
         name: '',
         group: 'all',
@@ -37,7 +57,7 @@ const ManageRoles: React.FC = () => {
             { technicalName: 'name', name: 'Name' },
             { technicalName: 'description', name: 'Description' },
             { technicalName: 'assignedGroup', name: 'Group' },
-            { technicalName: 'type', name: 'Type' },
+            { technicalName: 'type', name: 'Systemova' },
         ].map((e) => ({ id: e.name, header: e.name, accessorKey: e.technicalName, enableSorting: true }))
         return list
     }, [])
@@ -73,18 +93,26 @@ const ManageRoles: React.FC = () => {
         },
     ]
 
-    const { data: roles, isLoading, isError } = useFindByNameWithParamsUsingGET(1, 10, listRolesParams)
+    const { data: roles, isLoading, isError } = useFindByNameWithParamsUsingGET(1, 10, listRolesParams, { query: { enabled: !!roleGroups } })
+
     const [tableData, setTableData] = useState(roles)
-    useEffect(() => {
-        setTableData(roles)
-    }, [roles])
+
     // setTableData(roles)
 
     // console.log(tableData?.map((e) => e.assignedGroup))
+    console.log('Raw table data', tableData)
 
     useEffect(() => {
         tableData?.map((e) => (e.assignedGroup = findGroupName(e.assignedGroup)))
+        console.log('MAPPED')
     }, [roleGroupsList])
+
+    const showingData: TableData[] | undefined = tableData?.map((item) => ({
+        name: item.name ?? '',
+        description: item.description ?? '',
+        group: findGroupName(item.assignedGroup),
+        isSystem: item.type === RoleType.SYSTEM ? 'ano' : 'nie',
+    }))
 
     console.log(tableData)
 
