@@ -18,6 +18,7 @@ export const TableRow = <T,>({ row, isRowSelected }: ITableRowProps<T>): JSX.Ele
                     className={classNames('idsk-table__cell', {
                         [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
                         [styles.rowSelected]: isRowSelected && isRowSelected(row),
+                        [styles.verticalAlightMiddle]: isRowSelected && isRowSelected(row),
                     })}
                     key={cell.id}
                 >

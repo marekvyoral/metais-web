@@ -16,15 +16,12 @@ export const Button = forwardRef<HTMLButtonElement, IButton>(({ label, onClick, 
             ref={ref}
             onClick={onClick}
             type={type}
-            className={classnames(
-                {
-                    'idsk-button': true,
-                    'idsk-button--disabled': disabled,
-                    'idsk-button--secondary': variant === 'secondary',
-                    'idsk-button--warning': variant === 'warning',
-                },
-                className,
-            )}
+            className={classnames(className, {
+                'idsk-button': true,
+                'idsk-button--disabled': disabled,
+                'idsk-button--secondary': variant === 'secondary',
+                'idsk-button--warning': variant === 'warning',
+            })}
             disabled={disabled}
             aria-disabled={disabled}
             data-module="idsk-button"
