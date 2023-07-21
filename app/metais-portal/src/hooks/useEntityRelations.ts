@@ -1,10 +1,10 @@
 import {
-    useReadCiNeighboursWithAllRelsUsingGET,
-    useListRelatedCiTypesUsingGET,
-    useReadNeighboursConfigurationItemsCountUsingGET,
-    useGetRoleParticipantBulkUsingPOST,
+    useReadCiNeighboursWithAllRels,
+    useListRelatedCiTypes,
+    useReadNeighboursConfigurationItemsCount,
+    useGetRoleParticipantBulk,
     RelatedCiTypePreview,
-    ReadCiNeighboursWithAllRelsUsingGETParams,
+    ReadCiNeighboursWithAllRelsParams,
 } from '@/api'
 
 export interface IKeyToDisplay {
@@ -23,8 +23,8 @@ export interface IEntityRelationsTypesCount {
 const PREDEFINED_TABS = ['AS', 'Projekt', 'InfraSluzba', 'PO', 'osobitny_postup_ITVS', 'ISVS'] // toto je len zatial, mal by byť config na frontende podla docs
 
 export const useEntityRelationsTypesCount = (id: string, technicalName: string) => {
-    const { isLoading, isError, data: countData } = useReadNeighboursConfigurationItemsCountUsingGET(id)
-    const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypesUsingGET(technicalName)
+    const { isLoading, isError, data: countData } = useReadNeighboursConfigurationItemsCount(id)
+    const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName)
 
     const allRelation = [...(relatedData?.cisAsTargets ?? []), ...(relatedData?.cisAsSources ?? [])]
     const keysToDisplay: IKeyToDisplay[] = PREDEFINED_TABS?.map((tab) => {
@@ -56,23 +56,30 @@ export interface IPageConfig {
     perPage: number
 }
 
-export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighboursWithAllRelsUsingGETParams) => {
+export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighboursWithAllRelsParams) => {
     const {
         isLoading,
         isError,
         data: relationsList,
-    } = useReadCiNeighboursWithAllRelsUsingGET(id, pageConfig, {
+    } = useReadCiNeighboursWithAllRels(id, pageConfig, {
         query: {
             enabled: !!pageConfig?.ciTypes?.length,
         },
     })
 
-    const owners = ([...new Set(relationsList?.ciWithRels?.map((rel) => rel?.ci?.metaAttributes?.owner).filter(Boolean))] as string[]) ?? []
+    const owners =
+        ([
+            ...new Set(
+                relationsList?.ciWithRels
+                    ?.map((rel: { ci: { metaAttributes: { owner: unknown } } }) => rel?.ci?.metaAttributes?.owner)
+                    .filter(Boolean),
+            ),
+        ] as string[]) ?? []
     const {
         isLoading: isOwnersLoading,
         isError: isOwnersError,
         data: ownersData,
-    } = useGetRoleParticipantBulkUsingPOST({ gids: owners }, { query: { enabled: !!owners?.length } })
+    } = useGetRoleParticipantBulk({ gids: owners }, { query: { enabled: !!owners?.length } })
 
     return {
         isLoading: isLoading || isOwnersLoading,

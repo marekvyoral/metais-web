@@ -13,3 +13,7 @@ export interface IFilter {
     pageSize?: number
     sort?: ColumnSort[]
 }
+
+export enum SortBy {
+    HIERARCHY_FROM_ROOT = 'HIERARCHY_FROM_ROOT',
+}

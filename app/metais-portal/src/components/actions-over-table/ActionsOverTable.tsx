@@ -17,12 +17,12 @@ import styles from './actionsOverTable.module.scss'
 
 import { Attribute, AttributeProfile, BASE_PAGE_SIZE } from '@/api'
 import {
-    useExportXmlUsingPUT,
-    useExportCsvUsingPUT,
-    useExportExcelUsingPUT,
-    useExportRelXmlUsingPUT,
-    useExportRelCsvUsingPUT,
-    useExportRelExcelUsingPUT,
+    useExportCsvHook,
+    useExportXmlHook,
+    useExportExcelHook,
+    useExportRelCsvHook,
+    useExportRelExcelHook,
+    useExportRelXmlHook,
 } from '@/api/generated/impexp-cmdb-swagger'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@/assets/images'
 import { IColumn } from '@/hooks/useColumnList'
@@ -88,112 +88,55 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
         setModalImportOpen(false)
     }
 
-    const exportCsv = useExportCsvUsingPUT()
-    const exportXml = useExportXmlUsingPUT()
-    const exportExcel = useExportExcelUsingPUT()
+    const exportCsv = useExportCsvHook()
+    const exportXml = useExportXmlHook()
+    const exportExcel = useExportExcelHook()
 
-    const exportRelXml = useExportRelXmlUsingPUT()
-    const exportRelCsv = useExportRelCsvUsingPUT()
-    const exportRelExcel = useExportRelExcelUsingPUT()
+    const exportRelXml = useExportRelXmlHook()
+    const exportRelCsv = useExportRelCsvHook()
+    const exportRelExcel = useExportRelExcelHook()
 
-    // const importValidate = useValidateContentUsingPOST()
-    // const importProgress = useReadProgressUsingGET('')
-    // const importUpdate = useUpdateContentUsingPOST()
-
-    const exportData = (exportFunction: any) => {
-        const { data } = exportFunction({
-            filter: {
-                type: [ciType],
-                // metaAttributes: {
-                //     state: ['DRAFT'],
-                // },
-            },
-        })
-        console.log(data)
-    }
     const onExportStart = (exportValue: string, extension: string) => {
         // eslint-disable-next-line no-console
         console.log(exportValue, extension)
 
         if (exportValue === 'items') {
             if (extension === 'XML') {
-                exportXml.mutateAsync({
-                    data: {
-                        filter: {
-                            type: [ciType],
-                            // metaAttributes: {
-                            //     state: ['DRAFT'],
-                            // },
-                        },
-                    },
+                exportXml({
+                    filter: {},
                 })
                 return
             }
             if (extension === 'CSV') {
-                exportCsv.mutateAsync({
-                    data: {
-                        filter: {
-                            type: [ciType],
-                            // metaAttributes: {
-                            //     state: ['DRAFT'],
-                            // },
-                        },
-                    },
+                exportCsv({
+                    serviceType: '',
+                    project: '',
+                    intervalStart: '',
+                    intervalEnd: '',
                 })
                 return
             }
             if (extension === 'XLSX') {
-                exportExcel.mutateAsync({
-                    data: {
-                        filter: {
-                            type: [ciType],
-                            // metaAttributes: {
-                            //     state: ['DRAFT'],
-                            // },
-                        },
-                    },
+                exportExcel({
+                    serviceType: '',
+                    project: '',
+                    intervalStart: '',
+                    intervalEnd: '',
                 })
                 return
             }
         }
         if (exportValue === 'relations') {
             if (extension === 'XML') {
-                exportRelXml.mutateAsync({
-                    data: {
-                        filter: {
-                            type: [ciType],
-                            // metaAttributes: {
-                            //     state: ['DRAFT'],
-                            // },
-                        },
-                    },
-                })
+                exportRelXml({ filter: {} })
                 return
             }
             if (extension === 'CSV') {
-                exportRelCsv.mutateAsync({
-                    data: {
-                        filter: {
-                            type: [ciType],
-                            // metaAttributes: {
-                            //     state: ['DRAFT'],
-                            // },
-                        },
-                    },
-                })
+                exportRelCsv({ filter: {} })
                 return
             }
             if (extension === 'XLSX') {
-                exportRelExcel.mutateAsync({
-                    data: {
-                        filter: {
-                            type: [ciType],
-                            // metaAttributes: {
-                            //     state: ['DRAFT'],
-                            // },
-                        },
-                    },
-                })
+                exportRelExcel({ filter: {} })
                 return
             }
         }

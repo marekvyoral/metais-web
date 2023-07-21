@@ -42,7 +42,7 @@ export const HasError: Story = {
         id: 'input-with-error',
         label: 'Input With Error',
         name: 'input-with-error',
-        error: { type: 'required', message: 'This value is required' },
+        error: 'This value is required',
     },
 }
 
@@ -52,7 +52,7 @@ export const HasErrorWithHint: Story = {
         label: 'Input With Error and Hint',
         hint: 'Input With Error and Hint',
         name: 'input-with-error-hint',
-        error: { type: 'required' },
+        error: 'required',
     },
 }
 
@@ -81,5 +81,17 @@ export const DisabledWithLabelHint: Story = {
         name: 'disabled-with-label-hint-input',
         hint: 'Disabled Input With Label and Hint',
         disabled: true,
+    },
+}
+
+export const CorrectInput: Story = {
+    args: {
+        id: 'disabled-with-label-hint-input',
+        label: 'Disabled With Label Hint Input',
+        name: 'disabled-with-label-hint-input',
+        hint: 'Disabled Input With Label and Hint',
+        disabled: false,
+        info: 'info',
+        correct: true,
     },
 }

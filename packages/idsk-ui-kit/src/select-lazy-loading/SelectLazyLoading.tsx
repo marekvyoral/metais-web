@@ -25,6 +25,7 @@ interface ISelectProps<T> {
     option?: (props: OptionProps<T>) => JSX.Element
     placeholder?: string
     isMulti?: boolean
+    error?: string
     loadOptions: (
         searchQuery: string,
         prevOptions: OptionsOrGroups<T, GroupBase<T>>,
@@ -43,13 +44,19 @@ export const SelectLazyLoading = <T,>({
     placeholder,
     isMulti = false,
     loadOptions,
+    error,
 }: ISelectProps<T>): JSX.Element => {
     const Option = (props: OptionProps<T>) => {
         return option ? option(props) : <components.Option {...props} className={styles.selectOption} />
     }
 
     return (
-        <div className="govuk-form-group">
+        <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!error })}>
+            {error && (
+                <>
+                    <span className="govuk-error-message">{error}</span>
+                </>
+            )}
             <label className="govuk-label">{label}</label>
             <AsyncPaginate
                 value={value}
