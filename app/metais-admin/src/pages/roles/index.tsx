@@ -1,16 +1,23 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Button, Filter, Table, TextHeading } from '@isdd/idsk-ui-kit'
-import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { useFindByNameWithParamsUsingGET, FindByNameWithParamsUsingGETParams, Role } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Button, Filter, Input, Paginator, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit'
+import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import {
+    useFindByNameWithParamsUsingGET,
+    FindByNameWithParamsUsingGETParams,
+    Role,
+    useFindByNameWithParamsCountUsingGET,
+} from '@isdd/metais-common/api/generated/iam-swagger'
+import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ColumnDef } from '@tanstack/react-table'
+// import { ColumnSort } from '@isdd/idsk-ui-kit/types/filter'
 
 import styles from './roles.module.scss'
-import { RoleType } from '@isdd/metais-common/api'
+import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
 
 interface FilterData extends IFilterParams {
     name: string
-    isSystemRole?: false
+    group: string
+    system: string
 }
 
 interface GroupRoles {
@@ -18,39 +25,52 @@ interface GroupRoles {
     code: string
 }
 
-interface TableData {
-    name: string
-    description: string
-    group: string
-    isSystem: string
+interface Pagination {
+    page: number
+    pageSize: number
 }
 
-const defaultFilterValues: FilterData = {
-    name: '',
-    isSystemRole: false,
+const findGroupName = (code: string | undefined, roleGroupsList: EnumItem[] | undefined) => {
+    return roleGroupsList?.find((e) => e.code == code)?.value ?? 'Ziadna'
 }
 
 const ManageRoles: React.FC = () => {
-    const { data: roleGroups } = useGetValidEnum('SKUPINA_ROL')
-    console.log('ROLESGROPULOADED')
-
-    const roleGroupsList: GroupRoles[] =
-        roleGroups?.enumItems?.map((item) => ({
-            value: item.value ?? '',
-            code: item.code ?? '',
-        })) ?? []
-
-    const listRolesParams: FindByNameWithParamsUsingGETParams = {
+    const defaultFilterValues: FilterData = {
         name: '',
-        group: 'all',
-        orderBy: 'name',
-        direction: 'asc',
         system: '',
+        group: 'all',
     }
+    const { filter } = useFilterParams<FilterData>(defaultFilterValues)
 
-    const findGroupName = (code: string | undefined) => {
-        return roleGroupsList?.find((e) => e.code == code)?.value ?? 'Ziadna'
+    const defaultPagination: Pagination = {
+        page: 1,
+        pageSize: 10,
     }
+    const [pagination, setPagination] = useState(defaultPagination)
+
+    const defaultSort: ColumnSort = {
+        orderBy: 'Name',
+        sortDirection: SortType.ASC,
+    }
+    const [sorting, setSorting] = useState<ColumnSort[]>([defaultSort])
+
+    const { data: rolesPages } = useFindByNameWithParamsCountUsingGET(filter)
+    const { data: roleGroups } = useGetValidEnum('SKUPINA_ROL')
+    const {
+        data: roles,
+        isLoading,
+        isError,
+    } = useFindByNameWithParamsUsingGET(pagination.page, pagination.pageSize, {
+        ...filter,
+        orderBy: sorting.length > 0 ? sorting[0].orderBy : 'Name',
+        direction: sorting.length > 0 ? sorting[0].sortDirection : 'asc',
+    })
+
+    const [tableRoleGroups, setTableRoleGroups] = useState(roleGroups)
+
+    useEffect(() => {
+        setTableRoleGroups(roleGroups)
+    }, [roleGroups])
 
     const columns = useMemo<ColumnDef<Role>[]>(() => {
         const list: ColumnDef<Role>[] = [
@@ -62,7 +82,7 @@ const ManageRoles: React.FC = () => {
         return list
     }, [])
 
-    const SelectableColumnsSpec = (tableData?: Role[]): ColumnDef<Role>[] => [
+    const SelectableColumnsSpec = (): ColumnDef<Role>[] => [
         ...columns,
         {
             header: ({ table }) => <></>,
@@ -93,43 +113,57 @@ const ManageRoles: React.FC = () => {
         },
     ]
 
-    const { data: roles, isLoading, isError } = useFindByNameWithParamsUsingGET(1, 10, listRolesParams, { query: { enabled: !!roleGroups } })
-
-    const [tableData, setTableData] = useState(roles)
-
-    // setTableData(roles)
-
-    // console.log(tableData?.map((e) => e.assignedGroup))
-    console.log('Raw table data', tableData)
+    const [tableRoles, setTableRoles] = useState(roles)
+    const [tableData, setTableData] = useState(tableRoles)
 
     useEffect(() => {
-        tableData?.map((e) => (e.assignedGroup = findGroupName(e.assignedGroup)))
-        console.log('MAPPED')
-    }, [roleGroupsList])
+        setTableRoles(roles)
+    }, [roles])
+    useEffect(() => {
+        setTableData(tableRoles?.map((e) => ({ ...e, assignedGroup: findGroupName(e.assignedGroup, tableRoleGroups?.enumItems) })))
+    }, [tableRoles])
 
-    const showingData: TableData[] | undefined = tableData?.map((item) => ({
-        name: item.name ?? '',
-        description: item.description ?? '',
-        group: findGroupName(item.assignedGroup),
-        isSystem: item.type === RoleType.SYSTEM ? 'ano' : 'nie',
-    }))
-
-    console.log(tableData)
+    const groups: { value: string; label: string }[] =
+        tableRoleGroups?.enumItems?.map((item) => ({ value: item.code ?? '', label: item.value ?? '' })) ?? []
 
     return (
         <>
             <TextHeading size="L">Zoznam roli</TextHeading>
-            <Filter<FilterData> form={(register) => <></>} defaultFilterValues={defaultFilterValues} />
+            <Filter<FilterData>
+                form={(register) => (
+                    <>
+                        <SimpleSelect {...register('group')} id="1" label={'Group'} options={[{ value: 'all', label: 'Vsetky' }, ...groups]} />
+                        <SimpleSelect
+                            {...register('system')}
+                            id="1"
+                            label={'System'}
+                            options={[
+                                { value: 'all', label: 'Vsetky' },
+                                { value: 'SYSTEM', label: 'Ano' },
+                                { value: 'NON_SYSTEM', label: 'Nie' },
+                            ]}
+                        />
+                        <Input {...register('name')} label="Nazov" />
+                    </>
+                )}
+                defaultFilterValues={defaultFilterValues}
+                heading={<></>}
+            />
             <Table<Role>
                 onSortingChange={(newSort) => {
-                    // setSort(newSort)
-                    // clearSelectedRows()
+                    setSorting(newSort)
                 }}
-                // sort={sort}
-                columns={SelectableColumnsSpec(tableData)}
+                sort={sorting}
+                columns={SelectableColumnsSpec()}
                 isLoading={isLoading}
                 error={isError}
                 data={tableData}
+            />
+            <Paginator
+                dataLength={rolesPages ?? 0}
+                pageNumber={pagination.page}
+                pageSize={pagination.pageSize}
+                onPageChanged={(pageNumber) => setPagination({ ...pagination, page: pageNumber })}
             />
         </>
     )
