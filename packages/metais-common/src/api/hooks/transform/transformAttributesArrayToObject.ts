@@ -1,4 +1,4 @@
-import { AttributeUi } from '@/api'
+import { AttributeUi } from '@isdd/metais-common/api'
 
 export type AttributeValue = string | number | boolean | string[]
 interface TransformedInterface {

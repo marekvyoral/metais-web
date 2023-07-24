@@ -1,8 +1,7 @@
 import React from 'react'
-
-import { EnumType, AttributeConstraintEnumAllOf, useGetCiType, CiType, AttributeProfile, Attribute, useGetEnum } from '@/api'
-import { useHowToDisplayConstraints } from '@/hooks/useHowToDisplay'
-import { MEASURE_UNIT } from '@/hooks/constants'
+import { EnumType, AttributeConstraintEnumAllOf, useGetCiType, CiType, AttributeProfile, Attribute, useGetEnum } from '@isdd/metais-common/api'
+import { useHowToDisplayConstraints } from '@isdd/metais-common/hooks/useHowToDisplay'
+import { MEASURE_UNIT } from '@isdd/metais-common/hooks/constants'
 
 export interface IAtrributesContainerView {
     data: {

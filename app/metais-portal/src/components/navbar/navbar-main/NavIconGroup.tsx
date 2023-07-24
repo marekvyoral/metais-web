@@ -1,12 +1,12 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
+import { FactCheckIcon, NotificationIcon } from '@isdd/metais-common/assets/images'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { IconWithNotification } from './IconWithNotification'
 
 import styles from '@/components/navbar/navbar.module.scss'
-import { FactCheckIcon, NotificationIcon } from '@/assets/images'
-import { useAuth } from '@/contexts/auth/authContext'
 
 interface INavIconGroup {
     isMobile: boolean

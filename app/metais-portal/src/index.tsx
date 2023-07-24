@@ -6,12 +6,12 @@ import { I18nextProvider } from 'react-i18next'
 import { i18nInstance } from '@isdd/metais-common/localization/i18next'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
+import { AuthContextProvider } from '@isdd/metais-common/contexts/auth/authContext'
+import { FilterContextProvider } from '@isdd/metais-common/contexts/filter/filterContext'
 
 import { App } from '@/App'
 import { reportWebVitals } from '@/reportWebVitals'
 import '@/index.scss'
-import { AuthContextProvider } from '@/contexts/auth/authContext'
-import { FilterContextProvider } from '@/contexts/filter/filterContext'
 
 document.body.classList.add('js-enabled')
 const root = createRoot(document.getElementById('root') as HTMLElement)

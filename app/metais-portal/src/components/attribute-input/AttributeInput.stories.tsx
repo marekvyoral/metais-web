@@ -4,12 +4,11 @@ import { FieldErrors, FieldValues, useForm } from 'react-hook-form'
 import { Button } from '@isdd/idsk-ui-kit/index'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
+import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
 
 import { generateFormSchema } from '../create-entity/createCiEntityFormSchema.ts'
 
 import { AttributeInput } from './AttributeInput'
-
-import { Attribute, AttributeAttributeTypeEnum } from '@/api'
 
 const meta: Meta<typeof AttributeInput> = {
     title: 'Components/AttributeInput',

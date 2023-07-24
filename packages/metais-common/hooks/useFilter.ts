@@ -13,8 +13,8 @@ import {
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { BaseSyntheticEvent, useCallback, useEffect, useState } from 'react'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { FilterActions, useFilterContext } from 'metais-web/src/contexts/filter/filterContext'
 
+import { FilterActions, useFilterContext } from '@isdd/metais-common/contexts/filter/filterContext'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 
 export enum OPERATOR_OPTIONS {

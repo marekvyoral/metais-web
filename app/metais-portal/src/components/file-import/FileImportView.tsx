@@ -4,13 +4,12 @@ import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { StatusBar } from '@uppy/react'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { useTranslation } from 'react-i18next'
+import { CloseIcon, ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
 
 import { FileImportHeader } from './FileImportHeader'
 import { FileImportDragDrop } from './FileImportDragDrop'
 import styles from './FileImport.module.scss'
 import { FileImportList, ProgressInfoList } from './FileImportList'
-
-import { CloseIcon, ErrorTriangleIcon } from '@/assets/images'
 
 interface IFileImportView {
     uppy: Uppy
