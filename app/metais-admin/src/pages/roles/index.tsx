@@ -76,11 +76,11 @@ const ManageRoles: React.FC = () => {
     }, [roleGroups])
 
     const columns: ColumnDef<Role>[] = [
-        { technicalName: 'name', name: 'name' },
+        { technicalName: 'name', name: t('adminRolesPage.name') },
         { technicalName: 'description', name: t('adminRolesPage.description') },
         { technicalName: 'assignedGroup', name: t('adminRolesPage.group') },
         { technicalName: 'type', name: t('adminRolesPage.systemRole') },
-    ].map((e) => ({ id: e.name, header: e.name, accessorKey: e.technicalName, enableSorting: true }))
+    ].map((e) => ({ id: e.technicalName, header: e.name, accessorKey: e.technicalName, enableSorting: true }))
 
     const [tableRoles, setTableRoles] = useState(roles)
     const [tableData, setTableData] = useState(tableRoles)

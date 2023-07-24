@@ -209,7 +209,7 @@
         "name": "Názov",
         "description": "Popis",
         "group": "Skupina",
-        "systemRole": "sSystémová rola",
+        "systemRole": "Systémová rola",
         "assignedUsers": "Priradení používatelia ",
         "edit": "Upraviť",
         "deactivate": "Zneplatniť",
