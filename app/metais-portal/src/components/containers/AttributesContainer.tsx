@@ -22,7 +22,7 @@ interface AttributesContainer {
 export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName)
 
-    const { isLoading, isError, constraintsData } = useDetailData({
+    let { isLoading, isError, constraintsData } = useDetailData({
         entityStructure: ciTypeData,
         isEntityStructureLoading: isCiTypeDataLoading,
         isEntityStructureError: isCiTypeDataError,
@@ -60,9 +60,9 @@ export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName,
     const { isLoading: isUnitsLoading, isError: isUnitsError, data: unitsData } = useGetEnum(MEASURE_UNIT)
     const { isLoading: isConstraintLoading, isError: isConstraintError, resultList } = useHowToDisplayConstraints(constraints)
 
-    // const constraintsData = resultList.map((item) => item.data)
-    // const isLoading = [isCiTypeDataLoading, isConstraintLoading, isUnitsLoading, isUnitsError].some((item) => item) //isUnitsLoading,
-    // const isError = [isCiTypeDataError, isConstraintError].some((item) => item) //isUnitsError,
+    constraintsData = resultList.map((item) => item.data)
+    isLoading = [isCiTypeDataLoading, isConstraintLoading, isUnitsLoading, isUnitsError].some((item) => item) //isUnitsLoading,
+    isError = [isCiTypeDataError, isConstraintError].some((item) => item) //isUnitsError,
 
     if (isLoading) {
         return <div>Loading</div>

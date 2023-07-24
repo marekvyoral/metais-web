@@ -1,5 +1,4 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-
 import { ReadCiNeighbours200, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, ConfigurationItemSetUi } from '@isdd/metais-common/api'
 
 export const mapNeighboursSetSourceToPagination = (uiFilter?: IFilter, data?: ReadCiNeighbours200 | void): Pagination => {
