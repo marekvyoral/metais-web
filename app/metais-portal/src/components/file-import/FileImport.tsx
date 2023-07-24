@@ -186,6 +186,7 @@ export const FileImport: React.FC<IFileImport> = ({
                 errorMessages={errorMessages}
                 fileImportStep={fileImportStep}
                 radioButtonMetaData={radioButtonMetaData}
+                ciType={ciType}
             />
         </BaseModal>
     )

@@ -26,6 +26,7 @@ interface IFileImportView {
     currentFiles: UppyFile[]
     fileImportStep: FileImportStepEnum
     radioButtonMetaData: string
+    ciType: string
 }
 
 export const FileImportView: React.FC<IFileImportView> = ({
@@ -40,12 +41,13 @@ export const FileImportView: React.FC<IFileImportView> = ({
     currentFiles,
     fileImportStep,
     radioButtonMetaData,
+    ciType,
 }) => {
     const { t } = useTranslation()
     return (
         <>
             <FileImportHeader setRadioButtonMetaData={setRadioButtonMetaData} />
-            {radioButtonMetaData === 'existing-and-new' && <FileImportItemsSelect />}
+            {radioButtonMetaData === 'existing-and-new' && <FileImportItemsSelect ciType={ciType} />}
             <FileImportDragDrop uppy={uppy} />
 
             {errorMessages.length > 0 && (

@@ -1,9 +1,8 @@
-import { SimpleSelect } from '@isdd/idsk-ui-kit/simple-select/SimpleSelect'
 import React, { SetStateAction } from 'react'
-import { SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
-import { useTranslation } from 'react-i18next'
 
 import { CiCreateEntityContainerData, GetImplicitHierarchyFilter, ISelectedOrg } from '../containers/CiCreateEntityContainer'
+
+import { SelectPublicAuthorityAndRole } from '@/common/SelectPublicAuthorityAndRole'
 
 interface ICreateCiEntitySelect {
     ciListAndRolesData: CiCreateEntityContainerData
@@ -22,33 +21,19 @@ export const CreateCiEntitySelect: React.FC<ICreateCiEntitySelect> = ({
     filter,
     selectedOrgState,
 }) => {
-    const { t } = useTranslation()
-    const { implicitHierarchyData, rightsForPOData } = ciListAndRolesData
-
     const { setSelectedOrg, selectedOrg } = selectedOrgState
-    const { setFilter } = filterCallbacks
-
-    const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
-        const page = !additional?.page ? 1 : (additional?.page || 0) + 1
-        const options = implicitHierarchyData?.rights
-        const updatedFilter = {
-            ...filter,
-            page: page + 1,
-        }
-        setFilter(updatedFilter)
-
-        return {
-            options: options || [],
-            hasMore: options?.length ? true : false,
-            additional: {
-                page: page,
-            },
-        }
-    }
 
     return (
         <>
-            <SelectLazyLoading
+            <SelectPublicAuthorityAndRole
+                onChangeAuthority={(val) => setSelectedOrg(Array.isArray(val) ? val[0] : val)}
+                onChangeRole={(e) => setSelectedRoleId(e.target.value)}
+                selectedOrg={selectedOrg}
+                filterCallbacks={filterCallbacks}
+                filter={filter}
+                ciListAndRolesData={ciListAndRolesData}
+            />
+            {/* <SelectLazyLoading
                 option={undefined}
                 value={selectedOrg}
                 getOptionLabel={(item) => item.poName ?? ''}
@@ -63,7 +48,7 @@ export const CreateCiEntitySelect: React.FC<ICreateCiEntitySelect> = ({
                 label={t('createEntity.role')}
                 id="role"
                 options={rightsForPOData?.map((role) => ({ value: role.gid ?? '', label: role.roleDescription ?? '' })) ?? [{ value: '', label: '' }]}
-            />
+            /> */}
         </>
     )
 }
