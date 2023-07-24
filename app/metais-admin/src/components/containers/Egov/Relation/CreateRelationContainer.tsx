@@ -1,5 +1,5 @@
 import React from 'react'
-import { useFindAllUsingGET14 } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { RelationshipType, Role, useStoreAdminEntity } from '@isdd/metais-common/api'
 import { QueryFeedback } from '@isdd/metais-common'
 import { SortType } from '@isdd/idsk-ui-kit/types'
@@ -22,7 +22,7 @@ export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View }: ICrea
     const pageNumber = 1
     const pageSize = 200
 
-    const { data, isLoading, isError } = useFindAllUsingGET14(pageNumber, pageSize, { direction: SortType.ASC, orderBy: 'name' })
+    const { data, isLoading, isError } = useFindAll1(pageNumber, pageSize, { direction: SortType.ASC, orderBy: 'name' })
     const { mutateAsync } = useStoreAdminEntity()
 
     const storeRelation = async (formData: RelationshipType) => {

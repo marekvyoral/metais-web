@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { BreadCrumbs, Button, Filter, HomeIcon, Input, Paginator, SimpleSelect, Table, TextHeading, TextLink } from '@isdd/idsk-ui-kit'
+import { BreadCrumbs, Button, Filter, HomeIcon, Input, Paginator, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { useFindByNameWithParamsUsingGET, Role, useFindByNameWithParamsCountUsingGET } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useFindByNameWithParams, Role, useFindByNameWithParamsCount, useDelete } from '@isdd/metais-common/api/generated/iam-swagger'
 import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ColumnDef } from '@tanstack/react-table'
 import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
@@ -28,6 +28,7 @@ const findGroupName = (code: string | undefined, roleGroupsList: EnumItem[] | un
 const ManageRoles: React.FC = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
+    const { mutate: deleteRole } = useDelete()
 
     const defaultFilterValues: FilterData = {
         name: '',
@@ -48,13 +49,13 @@ const ManageRoles: React.FC = () => {
     }
     const [sorting, setSorting] = useState<ColumnSort[]>([defaultSort])
 
-    const { data: rolesPages } = useFindByNameWithParamsCountUsingGET(filter)
+    const { data: rolesPages } = useFindByNameWithParamsCount(filter)
     const { data: roleGroups } = useGetValidEnum('SKUPINA_ROL')
     const {
         data: roles,
         isLoading,
         isError,
-    } = useFindByNameWithParamsUsingGET(pagination.page, pagination.pageSize, {
+    } = useFindByNameWithParams(pagination.page, pagination.pageSize, {
         ...filter,
         orderBy: sorting.length > 0 ? sorting[0].orderBy : 'Name',
         direction: sorting.length > 0 ? sorting[0].sortDirection : 'asc',
@@ -74,7 +75,7 @@ const ManageRoles: React.FC = () => {
             { technicalName: 'type', name: t('adminRolesPage.systemRole') },
         ].map((e) => ({ id: e.name, header: e.name, accessorKey: e.technicalName, enableSorting: true }))
         return list
-    }, [])
+    }, [t])
 
     const SelectableColumnsSpec = (): ColumnDef<Role>[] => [
         ...columns,
@@ -109,7 +110,12 @@ const ManageRoles: React.FC = () => {
             header: () => <></>,
             cell: ({ cell }) => (
                 <>
-                    <Button label={t('adminRolesPage.deactivate')} variant="warning" className={styles.widthFit} />
+                    <Button
+                        label={t('adminRolesPage.deactivate')}
+                        variant="warning"
+                        className={styles.widthFit}
+                        onClick={() => deleteRole({ uuid: cell.row.original.uuid ?? '' })}
+                    />
                 </>
             ),
             accessorKey: 'delete',
@@ -124,7 +130,7 @@ const ManageRoles: React.FC = () => {
     }, [roles])
     useEffect(() => {
         setTableData(tableRoles?.map((e) => ({ ...e, assignedGroup: findGroupName(e.assignedGroup, tableRoleGroups?.enumItems) })))
-    }, [tableRoles])
+    }, [tableRoles, tableRoleGroups?.enumItems])
 
     const groups: { value: string; label: string }[] =
         tableRoleGroups?.enumItems?.map((item) => ({ value: item.code ?? '', label: item.value ?? '' })) ?? []
@@ -152,8 +158,8 @@ const ManageRoles: React.FC = () => {
                             label={'System'}
                             options={[
                                 { value: 'all', label: t('adminRolesPage.all') },
-                                { value: 'SYSTEM', label: 'Ano' },
-                                { value: 'NON_SYSTEM', label: 'Nie' },
+                                { value: 'SYSTEM', label: t('radioButton.yes') },
+                                { value: 'NON_SYSTEM', label: t('radioButton.no') },
                             ]}
                         />
                         <Input {...register('name')} label={t('adminRolesPage.name')} />

@@ -183,5 +183,17 @@
         "invalidateItems": "Invalidate items",
         "validateItems": "Validate actions",
         "changeOwner": "Change owner"
+    },
+    "adminRolesPage": {
+        "addNewRole": "Add new role",
+        "name": "Name",
+        "description": "Description",
+        "group": "Group",
+        "systemRole": "System role",
+        "assignedUsers": "Assigned users",
+        "edit": "Edit",
+        "deactivate": "Deactivate",
+        "all": "All",
+        "rolesList": "Roles list"
     }
 }
