@@ -138,7 +138,7 @@ export const FileImport: React.FC<IFileImport> = ({
             setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
             console.log(error)
         }
-    }, [fileImportStep, radioButtonMetaData, setFileImportStep, t])
+    }, [ciType, fileImportStep, radioButtonMetaData, setFileImportStep, t])
 
     const handleUpload = async () => {
         // console.log('uppy.getFiles()', uppy.getFiles())
@@ -169,6 +169,7 @@ export const FileImport: React.FC<IFileImport> = ({
         setUploadFileProgressInfo([])
         uppy.resetProgress()
         uppy.setState({ files: {} })
+        setRadioButtonMetaData('existing-only')
         close()
     }
 
