@@ -91,7 +91,7 @@ const ManageRoles: React.FC = () => {
 
     useEffect(() => {
         setTableData(tableRoles?.map((e) => ({ ...e, assignedGroup: findGroupName(e.assignedGroup, tableRoleGroups?.enumItems) })))
-    }, [tableRoles])
+    }, [tableRoleGroups?.enumItems, tableRoles])
 
     const groups: { value: string; label: string }[] =
         tableRoleGroups?.enumItems?.map((item) => ({ value: item.code ?? '', label: item.value ?? '' })) ?? []
