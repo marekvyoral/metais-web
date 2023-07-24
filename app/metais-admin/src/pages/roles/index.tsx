@@ -135,7 +135,10 @@ const ManageRoles: React.FC = () => {
                         label={t('adminRolesPage.deactivate')}
                         variant="warning"
                         className={styles.widthFit}
-                        onClick={() => deleteRole({ uuid: cell.row.original.uuid ?? '' })}
+                        onClick={() => {
+                            deleteRole({ uuid: cell.row.original.uuid ?? '' })
+                            setSorting([defaultSort])
+                        }}
                     />
                 </>
             ),
