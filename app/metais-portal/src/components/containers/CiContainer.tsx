@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ConfigurationItemUi, useReadConfigurationItemUsingGET } from '@/api'
+import { ConfigurationItemUi, useReadConfigurationItem } from '@/api'
 
 export interface ICiContainerView {
     data?: ConfigurationItemUi
@@ -13,7 +13,7 @@ interface ICiContainer {
 }
 
 export const CiContainer: React.FC<ICiContainer> = ({ configurationItemId, View }) => {
-    const { data: ciItemData, isLoading, isError } = useReadConfigurationItemUsingGET(configurationItemId ?? '')
+    const { data: ciItemData, isLoading, isError } = useReadConfigurationItem(configurationItemId ?? '')
 
     if (!configurationItemId) return <View isLoading={false} isError />
     return <View data={ciItemData} isLoading={isLoading} isError={isError} />

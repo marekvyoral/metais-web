@@ -1,12 +1,12 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query'
 
 import { GetImplicitHierarchyFilter } from '@/components/containers/CiCreateEntityContainer'
-import { HierarchyRightsResultUi, useReadCiListUsingPOST1 } from '@/api'
+import { ReadCiList200, useReadCiList } from '@/api'
 
 export const useGetImplicitHierarchy = (filter: GetImplicitHierarchyFilter) => {
-    const implicitHierarchy = useReadCiListUsingPOST1()
+    const implicitHierarchy = useReadCiList()
 
-    const query: UseQueryResult<HierarchyRightsResultUi, unknown> = useQuery({
+    const query: UseQueryResult<ReadCiList200, unknown> = useQuery({
         queryKey: ['implicitHierarchy', filter.page, filter.perpage, filter.rights],
         queryFn: () => implicitHierarchy.mutateAsync({ data: filter }),
         keepPreviousData: true,

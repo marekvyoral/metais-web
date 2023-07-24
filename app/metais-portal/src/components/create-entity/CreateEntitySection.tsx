@@ -84,6 +84,8 @@ export const CreateEntitySection: React.FC<ISection> = ({
                         <AttributeInput
                             attribute={attribute}
                             constraints={findAttributeConstraint(
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                //@ts-ignore
                                 attribute?.constraints?.map((item: AttributeConstraintEnumAllOf) => item.enumCode ?? '') ?? [],
                             )}
                             register={register}
