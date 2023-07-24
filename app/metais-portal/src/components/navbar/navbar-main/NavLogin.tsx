@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useLogin } from '@isdd/metais-common/hooks/useLogin'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { NavProfile } from './NavProfile'
 

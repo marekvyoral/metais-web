@@ -1,19 +1,20 @@
 import {
-    useForm,
-    FieldValues,
     Control,
+    DeepPartial,
+    FieldValues,
     FormState,
+    useForm,
     UseFormHandleSubmit,
     UseFormRegister,
     UseFormReset,
     UseFormResetField,
-    DeepPartial,
     UseFormSetValue,
 } from 'react-hook-form'
-import { useSearchParams } from 'react-router-dom'
-import { BaseSyntheticEvent, useState } from 'react'
+import { useLocation, useSearchParams } from 'react-router-dom'
+import { BaseSyntheticEvent, useCallback, useEffect, useState } from 'react'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 
+import { FilterActions, useFilterContext } from '@isdd/metais-common/contexts/filter/filterContext'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 
 export enum OPERATOR_OPTIONS {
@@ -80,13 +81,13 @@ const parseCustomAttributes = (urlParams: URLSearchParams): undefined | IAttribu
     return attributeFilters
 }
 
-interface ReturnUseFilterParamas<T> {
+interface ReturnUseFilterParams<T> {
     filter: T
     urlParams: URLSearchParams
     handleFilterChange: (changedFilter: IFilter) => void
 }
 
-export function useFilterParams<T extends FieldValues & IFilterParams>(defaults: T & IFilter): ReturnUseFilterParamas<T> {
+export function useFilterParams<T extends FieldValues & IFilterParams>(defaults: T & IFilter): ReturnUseFilterParams<T> {
     const [urlParams] = useSearchParams()
     const [uiFilterState, setUiFilterState] = useState<IFilter>({
         sort: defaults?.sort ?? [],
@@ -102,34 +103,54 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
 
     const filter: T & IFilterParams & IFilter = {
         ...uiFilterState,
-        ...defaults,
         fullTextSearch: '',
-    }
+    } as T & IFilterParams & IFilter
 
-    Object.keys(filter).forEach((key) => {
-        if (urlParams.get(key)) {
-            // eslint-disable-next-line
-            // @ts-ignore
-            filter[key] = urlParams.get(key)
-        }
-    })
+    Object.keys(filter)
+        .concat(Object.keys(defaults))
+        .forEach((key) => {
+            if (urlParams.get(key)) {
+                // eslint-disable-next-line
+                // @ts-ignore
+                filter[key] = urlParams.get(key)
+            }
+        })
     filter.attributeFilters = parseCustomAttributes(urlParams)
 
     return { filter, urlParams, handleFilterChange }
 }
 
 export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): ReturnUseFilter<T> {
+    const [, setSearchParams] = useSearchParams()
+    const location = useLocation()
+    const { state, dispatch } = useFilterContext()
     const { filter } = useFilterParams<T>(defaults)
     const methods = useForm<T & IFilterParams>({ defaultValues: filter as DeepPartial<T> })
-    const [, setSearchParams] = useSearchParams()
 
-    function clearData(obj: T): T {
+    const clearData = useCallback((obj: T): T => {
         return Object.fromEntries<T>(Object.entries<T>(obj).filter(([key, v]) => !!v && key !== 'attributeFilters')) as T
-    }
+    }, [])
 
     const onSubmit = methods.handleSubmit((data: T) => {
-        setSearchParams(clearData(data))
+        const filterData = clearData(data)
+        setSearchParams(filterData)
+        dispatch({
+            type: FilterActions.SET_FILTER,
+            value: filterData,
+            path: location.pathname,
+        })
     })
+
+    useEffect(() => {
+        if (!state.filter[location.pathname] && !state.clearedFilter[location.pathname]) {
+            dispatch({
+                type: FilterActions.SET_FILTER,
+                value: defaults,
+                path: location.pathname,
+            })
+            setSearchParams(clearData(defaults))
+        }
+    }, [defaults, dispatch, location.pathname, setSearchParams, state.clearedFilter, state.filter, clearData])
 
     return {
         ...methods,
@@ -138,6 +159,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
         resetFilters: () => {
             methods.reset()
             setSearchParams({})
+            dispatch({ type: FilterActions.RESET_FILTER, path: location.pathname })
         },
         onSubmit,
     }

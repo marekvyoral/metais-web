@@ -11,10 +11,10 @@ import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useNavigate } from 'react-router-dom'
 
 import { ExportItemsOrRelations } from '../export-items-or-relations/ExportItemsOrRelations'
-import { Attribute, AttributeProfile, BASE_PAGE_SIZE } from '../../api'
 
 import styles from './actionsOverTable.module.scss'
 
+import { Attribute, AttributeProfile, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import {
     useExportCsvHook,
     useExportXmlHook,

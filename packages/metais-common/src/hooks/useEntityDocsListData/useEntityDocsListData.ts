@@ -2,8 +2,8 @@ import { UseQueryResult, useQueries, useQuery } from '@tanstack/react-query'
 
 import { IDocument } from './entityDocsListTypes'
 
-import { NeighboursFilterContainerUi } from '@/api/generated/cmdb-swagger'
-import { getDocumentsData, postDocumentParams } from '@/api/EntityDocsListApi'
+import { getDocumentsData, postDocumentParams } from '@isdd/metais-common/api/EntityDocsListApi'
+import { NeighboursFilterContainerUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 export const useDocumentData = (idList: string[]) => {
     const resultList: UseQueryResult<IDocument, unknown>[] = useQueries({
