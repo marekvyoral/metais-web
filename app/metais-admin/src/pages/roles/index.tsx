@@ -1,29 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Button, Filter, Input, Paginator, SimpleSelect, Table, TextHeading, TextLink } from '@isdd/idsk-ui-kit'
+import { BreadCrumbs, Button, Filter, HomeIcon, Input, Paginator, SimpleSelect, Table, TextHeading, TextLink } from '@isdd/idsk-ui-kit'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import {
-    useFindByNameWithParamsUsingGET,
-    FindByNameWithParamsUsingGETParams,
-    Role,
-    useFindByNameWithParamsCountUsingGET,
-} from '@isdd/metais-common/api/generated/iam-swagger'
+import { useFindByNameWithParamsUsingGET, Role, useFindByNameWithParamsCountUsingGET } from '@isdd/metais-common/api/generated/iam-swagger'
 import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ColumnDef } from '@tanstack/react-table'
-// import { ColumnSort } from '@isdd/idsk-ui-kit/types/filter'
-
-import styles from './roles.module.scss'
 import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
 import { useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
+
+import styles from './roles.module.scss'
 
 interface FilterData extends IFilterParams {
     name: string
     group: string
     system: string
-}
-
-interface GroupRoles {
-    value: string
-    code: string
 }
 
 interface Pagination {
@@ -37,10 +27,11 @@ const findGroupName = (code: string | undefined, roleGroupsList: EnumItem[] | un
 
 const ManageRoles: React.FC = () => {
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const defaultFilterValues: FilterData = {
         name: '',
-        system: '',
+        system: 'all',
         group: 'all',
     }
     const { filter } = useFilterParams<FilterData>(defaultFilterValues)
@@ -77,10 +68,10 @@ const ManageRoles: React.FC = () => {
 
     const columns = useMemo<ColumnDef<Role>[]>(() => {
         const list: ColumnDef<Role>[] = [
-            { technicalName: 'name', name: 'Name' },
-            { technicalName: 'description', name: 'Description' },
-            { technicalName: 'assignedGroup', name: 'Group' },
-            { technicalName: 'type', name: 'Systemova' },
+            { technicalName: 'name', name: t('adminRolesPage.name') },
+            { technicalName: 'description', name: t('adminRolesPage.description') },
+            { technicalName: 'assignedGroup', name: t('adminRolesPage.group') },
+            { technicalName: 'type', name: t('adminRolesPage.systemRole') },
         ].map((e) => ({ id: e.name, header: e.name, accessorKey: e.technicalName, enableSorting: true }))
         return list
     }, [])
@@ -88,11 +79,11 @@ const ManageRoles: React.FC = () => {
     const SelectableColumnsSpec = (): ColumnDef<Role>[] => [
         ...columns,
         {
-            header: ({ table }) => <></>,
+            header: () => <></>,
             cell: ({ cell }) => (
                 <>
                     <Button
-                        label="Priradeni pouzivatelia"
+                        label={t('adminRolesPage.assignedUsers')}
                         variant="secondary"
                         className={styles.widthFit}
                         onClick={() => navigate('/roles/users/' + cell.row.original.uuid)}
@@ -102,19 +93,23 @@ const ManageRoles: React.FC = () => {
             accessorKey: 'assignedUsers',
         },
         {
-            header: ({ table }) => <></>,
+            header: () => <></>,
             cell: ({ cell }) => (
                 <>
-                    <Button label="Upravit'" className={styles.widthFit} onClick={() => navigate('/roles/edit/' + cell.row.original.uuid)} />
+                    <Button
+                        label={t('adminRolesPage.edit')}
+                        className={styles.widthFit}
+                        onClick={() => navigate('/roles/edit/' + cell.row.original.uuid)}
+                    />
                 </>
             ),
             accessorKey: 'edit',
         },
         {
-            header: ({ table }) => <></>,
+            header: () => <></>,
             cell: ({ cell }) => (
                 <>
-                    <Button label="Zneplatnit'" variant="warning" className={styles.widthFit} />
+                    <Button label={t('adminRolesPage.deactivate')} variant="warning" className={styles.widthFit} />
                 </>
             ),
             accessorKey: 'delete',
@@ -135,29 +130,40 @@ const ManageRoles: React.FC = () => {
         tableRoleGroups?.enumItems?.map((item) => ({ value: item.code ?? '', label: item.value ?? '' })) ?? []
     return (
         <>
-            <TextHeading size="L">Zoznam roli</TextHeading>
+            <BreadCrumbs
+                links={[
+                    { label: t('notifications.home'), href: '/', icon: HomeIcon },
+                    { label: t('adminRolesPage.rolesList'), href: '/roles' },
+                ]}
+            />
+            <TextHeading size="L">{t('adminRolesPage.rolesList')}</TextHeading>
             <Filter<FilterData>
                 form={(register) => (
                     <>
-                        <SimpleSelect {...register('group')} id="1" label={'Group'} options={[{ value: 'all', label: 'Vsetky' }, ...groups]} />
+                        <SimpleSelect
+                            {...register('group')}
+                            id="1"
+                            label={'Group'}
+                            options={[{ value: 'all', label: t('adminRolesPage.all') }, ...groups]}
+                        />
                         <SimpleSelect
                             {...register('system')}
                             id="1"
                             label={'System'}
                             options={[
-                                { value: 'all', label: 'Vsetky' },
+                                { value: 'all', label: t('adminRolesPage.all') },
                                 { value: 'SYSTEM', label: 'Ano' },
                                 { value: 'NON_SYSTEM', label: 'Nie' },
                             ]}
                         />
-                        <Input {...register('name')} label="Nazov" />
+                        <Input {...register('name')} label={t('adminRolesPage.name')} />
                     </>
                 )}
                 defaultFilterValues={defaultFilterValues}
                 heading={<></>}
             />
             <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
-                <Button label="Pridat novu rolu" onClick={() => navigate('/roles/new')} />
+                <Button label={t('adminRolesPage.addNewRole')} onClick={() => navigate('/roles/new')} />
             </div>
             <Table<Role>
                 onSortingChange={(newSort) => {
