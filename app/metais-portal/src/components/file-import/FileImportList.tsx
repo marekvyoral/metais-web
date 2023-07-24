@@ -1,11 +1,10 @@
 import React from 'react'
 import { UppyFile, Uppy } from '@uppy/core'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
+import { ErrorTriangleIcon, ImportDeleteIcon, RoundCheckGreenIcon } from '@isdd/metais-common/assets/images'
 
 import { formatBytes } from './fileImportUtils'
 import styles from './FileImport.module.scss'
-
-import { ErrorTriangleIcon, ImportDeleteIcon, RoundCheckGreenIcon } from '@/assets/images'
 
 export interface ProgressInfoList {
     id: string

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, ReadCiNeighbours200, NeighboursFilterContainerUi, useReadCiNeighbours } from '@isdd/metais-common/api'
 
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, ReadCiNeighbours200, NeighboursFilterContainerUi, useReadCiNeighbours } from '@/api'
 import {
     defaultTargetRelationshipTabFilter,
     defaultSourceRelationshipTabFilter,

@@ -480,18 +480,6 @@ export interface QueryUi {
     params?: QueryUiParams
 }
 
-export interface NeighboursFilterUi {
-    relType?: string[]
-    ciType?: string[]
-    usageType?: string[]
-    fullTextSearch?: string
-    searchFields?: string[]
-    filterType?: string
-    metaAttributes?: FilterMetaAttributesUi
-    excludedRelTypes?: string[]
-    excludedCiUuids?: string[]
-}
-
 export interface NeighboursFilterContainerUi {
     page?: number
     perpage?: number
@@ -499,6 +487,28 @@ export interface NeighboursFilterContainerUi {
     sortType?: string
     sortSource?: string
     neighboursFilter?: NeighboursFilterUi
+}
+
+export interface RelListFilterContainerUi {
+    page?: number
+    perpage?: number
+    sortBy?: string
+    sortType?: string
+    sortSource?: string
+    sortByEndCi?: boolean
+    getIncidentRelations?: boolean
+    usageTypeFilter?: UsageTypeFilterUi
+    relFilter?: RelFilterUi
+}
+
+export interface FilterValueUi {
+    equality?: string
+    value?: string
+}
+
+export interface FilterAttributesUi {
+    name?: string
+    filterValue?: FilterValueUi[]
 }
 
 export interface RelFilterUi {
@@ -519,29 +529,6 @@ export interface RelFilterUi {
     startOrEndCiUuid?: string[]
 }
 
-export interface RelListFilterContainerUi {
-    page?: number
-    perpage?: number
-    sortBy?: string
-    sortType?: string
-    sortSource?: string
-    sortByEndCi?: boolean
-    getIncidentRelations?: boolean
-    usageTypeFilter?: UsageTypeFilterUi
-    relFilter?: RelFilterUi
-}
-
-
-export interface FilterValueUi {
-    equality?: string
-    value?: string
-}
-
-export interface FilterAttributesUi {
-    name?: string
-    filterValue?: FilterValueUi[]
-}
-
 export interface UuidSetUi {
     uuids?: string[]
 }
@@ -558,6 +545,18 @@ export interface FilterMetaAttributesUi {
     lastModifiedBy?: string[]
     lastModifiedAtFrom?: string
     lastModifiedAtTo?: string
+}
+
+export interface NeighboursFilterUi {
+    relType?: string[]
+    ciType?: string[]
+    usageType?: string[]
+    fullTextSearch?: string
+    searchFields?: string[]
+    filterType?: string
+    metaAttributes?: FilterMetaAttributesUi
+    excludedRelTypes?: string[]
+    excludedCiUuids?: string[]
 }
 
 export interface RelFilterSmallUi {
@@ -921,11 +920,25 @@ export interface StoreSetUi {
     invalidateReason?: InvalidateReason
 }
 
+export interface InvalidateSetUi {
+    configurationItemSet?: ConfigurationItemUi[]
+    relationshipSet?: RelationshipUi[]
+    invalidateReason?: InvalidateReason
+}
+
 export interface CustomMessageUi {
     messageSuccessType?: string
     successPlaceholderValues?: string[]
     messageFailType?: string
     failPlaceholderValues?: string[]
+}
+
+export interface GraphRequestUi {
+    storeSet?: StoreSetUi
+    invalidateSet?: InvalidateSetUi
+    changeOwnerSet?: ChangeOwnerSetUi
+    recycleSet?: RecycleSetUi
+    customMessage?: CustomMessageUi
 }
 
 export type ConfigurationItemUiAttributes = { [key: string]: any }
@@ -936,12 +949,6 @@ export interface ConfigurationItemUi {
     owner?: string
     attributes?: ConfigurationItemUiAttributes
     metaAttributes?: MetaAttributesUi
-}
-
-export interface InvalidateSetUi {
-    configurationItemSet?: ConfigurationItemUi[]
-    relationshipSet?: RelationshipUi[]
-    invalidateReason?: InvalidateReason
 }
 
 export type ChangeOwnerDataUiChangeType = (typeof ChangeOwnerDataUiChangeType)[keyof typeof ChangeOwnerDataUiChangeType]
@@ -967,19 +974,9 @@ export interface ChangeOwnerSetUi {
     changeOwnerData?: ChangeOwnerDataUi
 }
 
-export interface GraphRequestUi {
-    storeSet?: StoreSetUi
-    invalidateSet?: InvalidateSetUi
-    changeOwnerSet?: ChangeOwnerSetUi
-    recycleSet?: RecycleSetUi
-    customMessage?: CustomMessageUi
-}
-
-export type AttributeUiValue = { [key: string]: any }
-
 export interface AttributeUi {
     name?: string
-    value?: AttributeUiValue
+    value?: string
 }
 
 export type NotificationUpdateHolderUiTypeOfAction =

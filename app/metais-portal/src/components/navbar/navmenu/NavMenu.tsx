@@ -2,6 +2,7 @@ import React, { SetStateAction, useEffect, useState } from 'react'
 import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { Link, matchPath, useLocation } from 'react-router-dom'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { NavLogin } from '../navbar-main/NavLogin'
 
@@ -10,7 +11,6 @@ import { closeOnClickOutside, closeOnEscapeKey } from './navMenuUtils'
 
 import styles from '@/components/navbar/navbar.module.scss'
 import { RouteNames } from '@/navigation/routeNames'
-import { useAuth } from '@/contexts/auth/authContext'
 
 interface INavMenu {
     isMenuExpanded: boolean

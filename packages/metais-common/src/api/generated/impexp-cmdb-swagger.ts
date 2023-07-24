@@ -298,11 +298,9 @@ export interface RelTypeFilterUi {
     byHierarchy?: boolean
 }
 
-export type FilterValueUiValue = { [key: string]: any }
-
 export interface FilterValueUi {
     equality?: string
-    value?: FilterValueUiValue
+    value?: string
 }
 
 export interface FilterMetaAttributesUi {

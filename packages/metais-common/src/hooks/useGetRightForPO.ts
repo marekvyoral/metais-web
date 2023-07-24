@@ -1,7 +1,7 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query'
 
-import { getRightsForPO } from '@/api/getRightsForPO'
-import { Role } from '@/contexts/auth/authContext'
+import { getRightsForPO } from '@isdd/metais-common/api/getRightsForPO'
+import { Role } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useGetRightForPO = (userId: string, orgId: string, token: string) => {
     const query: UseQueryResult<Role[], unknown> = useQuery({

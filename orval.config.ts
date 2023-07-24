@@ -19,7 +19,7 @@ export default defineConfig({
     cmdbSwagger: {
         input: {
             override: {
-                transformer: './app/metais-portal/scripts/attributesTypesTransformer.js',
+                transformer: './packages/metais-common/scripts/attributesTypesTransformer.js',
             },
             target: process.env.VITE_REST_CLIENT_CMDB_SWAGGER_SWAGGER_URL ?? '',
             filters: {
@@ -45,7 +45,7 @@ export default defineConfig({
             },
         },
         output: {
-            target: `./app/metais-portal/src/api/generated/cmdb-swagger.ts`,
+            target: `./packages/metais-common/src/api/generated/cmdb-swagger.ts`,
             override: {
                 operations: {
                     readCiNeighbours: {
@@ -53,13 +53,13 @@ export default defineConfig({
                             useQuery: true,
                         },
                         mutator: {
-                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useClientForreadCiNeighboursUsingPOST',
                         },
                     },
                     getRoleParticipantBulk: {
                         mutator: {
-                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useClientForGetRoleParticipantBulkUsingPOST',
                         },
                         query: {
@@ -68,19 +68,19 @@ export default defineConfig({
                     },
                     readConfigurationItem: {
                         mutator: {
-                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useClientForReadConfigurationItemUsingGET',
                         },
                     },
                     getRoleParticipant: {
                         mutator: {
-                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useClientForGetRoleParticipantUsingGET',
                         },
                     },
                     readCiNeighboursWithAllRels: {
                         mutator: {
-                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useClientForReadCiNeighboursWithAllRelsUsingGET',
                         },
                     },
@@ -89,13 +89,13 @@ export default defineConfig({
                             useQuery: true,
                         },
                         mutator: {
-                            path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
                             name: 'useClientForReadCiListUsingPOST',
                         },
                     },
                 },
                 mutator: {
-                    path: './app/metais-portal/src/api/hooks/useCmdbSwaggerClient.ts',
+                    path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClient.ts',
                     name: 'useCmdbSwaggerClient',
                 },
             },
@@ -120,10 +120,10 @@ export default defineConfig({
             },
         },
         output: {
-            target: `./app/metais-portal/src/api/generated/types-repo-swagger.ts`,
+            target: `./packages/metais-common/src/api/generated/types-repo-swagger.ts`,
             override: {
                 mutator: {
-                    path: './app/metais-portal/src/api/hooks/useTypesRepoSwaggerClient.ts',
+                    path: './packages/metais-common/src/api/hooks/useTypesRepoSwaggerClient.ts',
                     name: 'useTypesRepoSwaggerClient',
                 },
             },
@@ -141,10 +141,10 @@ export default defineConfig({
             },
         },
         output: {
-            target: `./app/metais-portal/src/api/generated/dms-swagger.ts`,
+            target: `./packages/metais-common/src/api/generated/dms-swagger.ts`,
             override: {
                 mutator: {
-                    path: './app/metais-portal/src/api/hooks/useDmsSwaggerClient.ts',
+                    path: './packages/metais-common/src/api/hooks/useDmsSwaggerClient.ts',
                     name: 'useDmsSwaggerClient',
                 },
             },
@@ -162,10 +162,10 @@ export default defineConfig({
             },
         },
         output: {
-            target: `./app/metais-portal/src/api/generated/enums-repo-swagger.ts`,
+            target: `./packages/metais-common/src/api/generated/enums-repo-swagger.ts`,
             override: {
                 mutator: {
-                    path: './app/metais-portal/src/api/hooks/useEnumsRepoSwaggerClient.ts',
+                    path: './packages/metais-common/src/api/hooks/useEnumsRepoSwaggerClient.ts',
                     name: 'useEnumsRepoSwaggerClient',
                 },
             },
@@ -183,10 +183,10 @@ export default defineConfig({
             },
         },
         output: {
-            target: `./app/metais-portal/src/api/generated/user-config-swagger.ts`,
+            target: `./packages/metais-common/src/api/generated/user-config-swagger.ts`,
             override: {
                 mutator: {
-                    path: './app/metais-portal/src/api/hooks/useUserConfigSwaggerClient.ts',
+                    path: './packages/metais-common/src/api/hooks/useUserConfigSwaggerClient.ts',
                     name: 'useUserConfigSwaggerClient',
                 },
             },
@@ -201,10 +201,10 @@ export default defineConfig({
             target: process.env.VITE_REST_CLIENT_IMPEXP_CMDB_SWAGGER_URL ?? '',
         },
         output: {
-            target: `./app/metais-portal/src/api/generated/impexp-cmdb-swagger.ts`,
+            target: `./packages/metais-common/src/api/generated/impexp-cmdb-swagger.ts`,
             override: {
                 mutator: {
-                    path: './app/metais-portal/src/api/hooks/useImpexpCmdbSwaggerClient.ts',
+                    path: './packages/metais-common/src/api/hooks/useImpexpCmdbSwaggerClient.ts',
                     name: 'useImpexpCmdbSwaggerClient',
                 },
             },
