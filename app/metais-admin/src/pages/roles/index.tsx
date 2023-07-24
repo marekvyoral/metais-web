@@ -21,6 +21,25 @@ interface Pagination {
     pageSize: number
 }
 
+//Filter
+const defaultFilterValues: FilterData = {
+    name: '',
+    system: 'all',
+    group: 'all',
+}
+
+//Pagination
+const defaultPagination: Pagination = {
+    page: 1,
+    pageSize: 10,
+}
+
+//Sorting
+const defaultSort: ColumnSort = {
+    orderBy: 'name',
+    sortDirection: SortType.ASC,
+}
+
 const findGroupName = (code: string | undefined, roleGroupsList: EnumItem[] | undefined) => {
     return roleGroupsList?.find((e) => e.code == code)?.value ?? 'Ziadna'
 }
@@ -28,28 +47,16 @@ const findGroupName = (code: string | undefined, roleGroupsList: EnumItem[] | un
 const ManageRoles: React.FC = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
-    const { mutate: deleteRole } = useDelete()
 
-    const defaultFilterValues: FilterData = {
-        name: '',
-        system: 'all',
-        group: 'all',
-    }
     const { filter } = useFilterParams<FilterData>(defaultFilterValues)
 
-    const defaultPagination: Pagination = {
-        page: 1,
-        pageSize: 10,
-    }
     const [pagination, setPagination] = useState(defaultPagination)
 
-    const defaultSort: ColumnSort = {
-        orderBy: 'Name',
-        sortDirection: SortType.ASC,
-    }
     const [sorting, setSorting] = useState<ColumnSort[]>([defaultSort])
 
-    const { data: rolesPages } = useFindByNameWithParamsCount(filter)
+    //API Calls
+    const { mutate: deleteRole } = useDelete()
+    const { data: rolesPages } = useFindByNameWithParamsCount({ ...filter, name: filter.name ?? '' })
     const { data: roleGroups } = useGetValidEnum('SKUPINA_ROL')
     const {
         data: roles,
@@ -57,7 +64,8 @@ const ManageRoles: React.FC = () => {
         isError,
     } = useFindByNameWithParams(pagination.page, pagination.pageSize, {
         ...filter,
-        orderBy: sorting.length > 0 ? sorting[0].orderBy : 'Name',
+        name: filter.name ?? '',
+        orderBy: sorting.length > 0 ? sorting[0].orderBy : 'name',
         direction: sorting.length > 0 ? sorting[0].sortDirection : 'asc',
     })
 
@@ -67,15 +75,26 @@ const ManageRoles: React.FC = () => {
         setTableRoleGroups(roleGroups)
     }, [roleGroups])
 
-    const columns = useMemo<ColumnDef<Role>[]>(() => {
-        const list: ColumnDef<Role>[] = [
-            { technicalName: 'name', name: t('adminRolesPage.name') },
-            { technicalName: 'description', name: t('adminRolesPage.description') },
-            { technicalName: 'assignedGroup', name: t('adminRolesPage.group') },
-            { technicalName: 'type', name: t('adminRolesPage.systemRole') },
-        ].map((e) => ({ id: e.name, header: e.name, accessorKey: e.technicalName, enableSorting: true }))
-        return list
-    }, [t])
+    const columns: ColumnDef<Role>[] = [
+        { technicalName: 'name', name: 'name' },
+        { technicalName: 'description', name: t('adminRolesPage.description') },
+        { technicalName: 'assignedGroup', name: t('adminRolesPage.group') },
+        { technicalName: 'type', name: t('adminRolesPage.systemRole') },
+    ].map((e) => ({ id: e.name, header: e.name, accessorKey: e.technicalName, enableSorting: true }))
+
+    const [tableRoles, setTableRoles] = useState(roles)
+    const [tableData, setTableData] = useState(tableRoles)
+
+    useEffect(() => {
+        setTableRoles(roles)
+    }, [roles])
+
+    useEffect(() => {
+        setTableData(tableRoles?.map((e) => ({ ...e, assignedGroup: findGroupName(e.assignedGroup, tableRoleGroups?.enumItems) })))
+    }, [tableRoles])
+
+    const groups: { value: string; label: string }[] =
+        tableRoleGroups?.enumItems?.map((item) => ({ value: item.code ?? '', label: item.value ?? '' })) ?? []
 
     const SelectableColumnsSpec = (): ColumnDef<Role>[] => [
         ...columns,
@@ -122,18 +141,6 @@ const ManageRoles: React.FC = () => {
         },
     ]
 
-    const [tableRoles, setTableRoles] = useState(roles)
-    const [tableData, setTableData] = useState(tableRoles)
-
-    useEffect(() => {
-        setTableRoles(roles)
-    }, [roles])
-    useEffect(() => {
-        setTableData(tableRoles?.map((e) => ({ ...e, assignedGroup: findGroupName(e.assignedGroup, tableRoleGroups?.enumItems) })))
-    }, [tableRoles, tableRoleGroups?.enumItems])
-
-    const groups: { value: string; label: string }[] =
-        tableRoleGroups?.enumItems?.map((item) => ({ value: item.code ?? '', label: item.value ?? '' })) ?? []
     return (
         <>
             <BreadCrumbs
