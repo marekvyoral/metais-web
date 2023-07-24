@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Button, Filter, Input, Paginator, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit'
+import { Button, Filter, Input, Paginator, SimpleSelect, Table, TextHeading, TextLink } from '@isdd/idsk-ui-kit'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import {
     useFindByNameWithParamsUsingGET,
@@ -13,6 +13,7 @@ import { ColumnDef } from '@tanstack/react-table'
 
 import styles from './roles.module.scss'
 import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
+import { useNavigate } from 'react-router'
 
 interface FilterData extends IFilterParams {
     name: string
@@ -35,6 +36,8 @@ const findGroupName = (code: string | undefined, roleGroupsList: EnumItem[] | un
 }
 
 const ManageRoles: React.FC = () => {
+    const navigate = useNavigate()
+
     const defaultFilterValues: FilterData = {
         name: '',
         system: '',
@@ -88,7 +91,12 @@ const ManageRoles: React.FC = () => {
             header: ({ table }) => <></>,
             cell: ({ cell }) => (
                 <>
-                    <Button label="Priradeni pouzivatelia" variant="secondary" className={styles.widthFit} />
+                    <Button
+                        label="Priradeni pouzivatelia"
+                        variant="secondary"
+                        className={styles.widthFit}
+                        onClick={() => navigate('/roles/users/' + cell.row.original.uuid)}
+                    />
                 </>
             ),
             accessorKey: 'assignedUsers',
@@ -97,7 +105,7 @@ const ManageRoles: React.FC = () => {
             header: ({ table }) => <></>,
             cell: ({ cell }) => (
                 <>
-                    <Button label="Upravit'" className={styles.widthFit} />
+                    <Button label="Upravit'" className={styles.widthFit} onClick={() => navigate('/roles/edit/' + cell.row.original.uuid)} />
                 </>
             ),
             accessorKey: 'edit',
@@ -125,7 +133,6 @@ const ManageRoles: React.FC = () => {
 
     const groups: { value: string; label: string }[] =
         tableRoleGroups?.enumItems?.map((item) => ({ value: item.code ?? '', label: item.value ?? '' })) ?? []
-
     return (
         <>
             <TextHeading size="L">Zoznam roli</TextHeading>
@@ -149,6 +156,9 @@ const ManageRoles: React.FC = () => {
                 defaultFilterValues={defaultFilterValues}
                 heading={<></>}
             />
+            <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
+                <Button label="Pridat novu rolu" onClick={() => navigate('/roles/new')} />
+            </div>
             <Table<Role>
                 onSortingChange={(newSort) => {
                     setSorting(newSort)
