@@ -40,8 +40,8 @@ const defaultSort: ColumnSort = {
     sortDirection: SortType.ASC,
 }
 
-const findGroupName = (code: string | undefined, roleGroupsList: EnumItem[] | undefined) => {
-    return roleGroupsList?.find((e) => e.code == code)?.value ?? 'Ziadna'
+const findGroupName = (code: string | undefined, roleGroupsList: EnumItem[] | undefined, defaultString: string) => {
+    return roleGroupsList?.find((e) => e.code == code)?.value ?? defaultString
 }
 
 const ManageRoles: React.FC = () => {
@@ -90,8 +90,10 @@ const ManageRoles: React.FC = () => {
     }, [roles])
 
     useEffect(() => {
-        setTableData(tableRoles?.map((e) => ({ ...e, assignedGroup: findGroupName(e.assignedGroup, tableRoleGroups?.enumItems) })))
-    }, [tableRoleGroups?.enumItems, tableRoles])
+        setTableData(
+            tableRoles?.map((e) => ({ ...e, assignedGroup: findGroupName(e.assignedGroup, tableRoleGroups?.enumItems, t('adminRolesPage.none')) })),
+        )
+    }, [tableRoleGroups?.enumItems, tableRoles, t])
 
     const groups: { value: string; label: string }[] =
         tableRoleGroups?.enumItems?.map((item) => ({ value: item.code ?? '', label: item.value ?? '' })) ?? []

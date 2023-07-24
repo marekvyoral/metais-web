@@ -38,6 +38,7 @@
         "edit": "Edit",
         "deactivate": "Deactivate",
         "all": "All",
-        "rolesList": "Roles list"
+        "rolesList": "Roles list",
+        "none": "None"
     }
 }
