@@ -5,11 +5,10 @@ import classnames from 'classnames'
 import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { Input, SimpleSelect } from '@isdd/idsk-ui-kit/index'
+import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
-
-import { Attribute, AttributeAttributeTypeEnum } from '@/api/generated/types-repo-swagger'
-import { EnumType } from '@/api/generated/enums-repo-swagger'
 
 enum ConstraintTypes {
     REGEX = 'regex',

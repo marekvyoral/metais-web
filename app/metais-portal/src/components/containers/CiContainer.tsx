@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ConfigurationItemUi, useReadConfigurationItem } from '@/api'
+import { ConfigurationItemUi, useReadConfigurationItem } from '@isdd/metais-common/api'
 
 export interface ICiContainerView {
     data?: ConfigurationItemUi

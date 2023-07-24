@@ -24,7 +24,7 @@ export const SimpleSelect = forwardRef<HTMLSelectElement, SelectProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label}
                     </label>
-                    {info && <InfoInputIcon description={info} id={id} />}
+                    {info && <InfoInputIcon description={info} id={id ?? ''} />}
                 </div>
                 {error && (
                     <>

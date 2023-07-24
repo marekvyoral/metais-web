@@ -30,7 +30,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label}
                     </label>
-                    {info && <InfoInputIcon description={info} id={id} />}
+                    {info && <InfoInputIcon description={info} id={id ?? ''} />}
                 </div>
 
                 {hint && (

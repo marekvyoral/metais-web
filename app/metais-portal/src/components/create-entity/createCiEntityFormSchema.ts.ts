@@ -6,7 +6,7 @@ import {
     AttributeAttributeTypeEnum,
     AttributeConstraintIntervalAllOf,
     AttributeConstraintRegexAllOf,
-} from '@/api/generated/types-repo-swagger'
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 enum ByteInterval {
     MIN = -128,

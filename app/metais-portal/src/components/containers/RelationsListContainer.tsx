@@ -1,8 +1,8 @@
 import React, { SetStateAction, useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { IKeyToDisplay, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelations'
+import { ReadCiNeighboursWithAllRels200, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
 
-import { ReadCiNeighboursWithAllRels200, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@/api'
 import { mapFilterToNeighboursWithAllRelsApi } from '@/componentHelpers'
 
 export interface IRelationsView {

@@ -1,7 +1,18 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query'
 
-import { GetImplicitHierarchyFilter } from '@/components/containers/CiCreateEntityContainer'
-import { ReadCiList200, useReadCiList } from '@/api'
+import { ReadCiList200, useReadCiList } from '@isdd/metais-common/api'
+
+export interface GetImplicitHierarchyFilter {
+    fullTextSearch: ''
+    page: number
+    perpage: number
+    sortBy: string
+    sortType: string
+    rights: {
+        poUUID: string
+        roles: string[]
+    }[]
+}
 
 export const useGetImplicitHierarchy = (filter: GetImplicitHierarchyFilter) => {
     const implicitHierarchy = useReadCiList()

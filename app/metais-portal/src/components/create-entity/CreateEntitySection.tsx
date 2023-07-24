@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
 import { FieldValues, FormState, UseFormRegister } from 'react-hook-form'
 import { ErrorBlockList } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
+import { Attribute, AttributeConstraintEnumAllOf, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { EnumType } from '@isdd/metais-common/api'
 
 import { AttributeInput } from '../attribute-input/AttributeInput'
 import { AttributesConfigTechNames } from '../attribute-input/attributeDisplaySettings'
-
-import { Attribute, AttributeConstraintEnumAllOf, CiCode } from '@/api/generated/types-repo-swagger'
-import { EnumType } from '@/api'
 
 interface ISection {
     sectionId: string

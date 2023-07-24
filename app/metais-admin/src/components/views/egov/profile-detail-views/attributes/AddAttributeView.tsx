@@ -40,20 +40,31 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Input label={t('egov.name')} id="name" {...register('name')} error={formState?.errors?.name} />
-            <Input label={t('egov.engName')} id="engName" {...register('engName')} error={formState?.errors?.engName} />
+            <Input label={t('egov.name')} id="name" {...register('name')} error={formState?.errors?.name?.message} />
+            <Input label={t('egov.engName')} id="engName" {...register('engName')} error={formState?.errors?.engName?.message} />
 
-            <Input label={t('egov.technicalName')} id="technicalName" {...register('technicalName')} error={formState?.errors?.technicalName} />
-            <Input label={t('egov.order')} type="number" id="order" {...register('order')} error={formState?.errors?.order} />
+            <Input
+                label={t('egov.technicalName')}
+                id="technicalName"
+                {...register('technicalName')}
+                error={formState?.errors?.technicalName?.message}
+            />
+            <Input label={t('egov.order')} type="number" id="order" {...register('order')} error={formState?.errors?.order?.message} />
 
-            <TextArea label={t('egov.description')} id="description" rows={3} {...register('description')} error={formState?.errors?.description} />
+            <TextArea
+                label={t('egov.description')}
+                id="description"
+                rows={3}
+                {...register('description')}
+                error={formState?.errors?.description?.message}
+            />
 
             <TextArea
                 label={t('egov.engDescription')}
                 id="engDescription"
                 rows={3}
                 {...register('engDescription')}
-                error={formState?.errors?.engDescription}
+                error={formState?.errors?.engDescription?.message}
             />
 
             <SimpleSelect id="type" label={t('egov.type')} options={attributeTypes} {...register('type')} defaultValue={attributeTypes?.[0]?.value} />
@@ -109,7 +120,7 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                     id="defaultValue"
                     type={getTypeForDefaultValue(selectedType)}
                     {...register('defaultValue')}
-                    error={formState?.errors?.defaultValue}
+                    error={formState?.errors?.defaultValue?.message}
                 />
             )}
             <Button type="submit" label={t('form.submit')} />

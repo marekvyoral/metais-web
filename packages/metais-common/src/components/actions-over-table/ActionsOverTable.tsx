@@ -12,6 +12,9 @@ import { useNavigate } from 'react-router-dom'
 
 import { ExportItemsOrRelations } from '../export-items-or-relations/ExportItemsOrRelations'
 import { Attribute, AttributeProfile, BASE_PAGE_SIZE } from '../../api'
+
+import styles from './actionsOverTable.module.scss'
+
 import {
     useExportCsvHook,
     useExportXmlHook,
@@ -19,11 +22,9 @@ import {
     useExportRelCsvHook,
     useExportRelExcelHook,
     useExportRelXmlHook,
-} from '@/api/generated/impexp-cmdb-swagger'
-import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@/assets/images'
-import { IColumn } from '@/hooks/useColumnList'
-
-import styles from './actionsOverTable.module.scss'
+} from '@isdd/metais-common/api/generated/impexp-cmdb-swagger'
+import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@isdd/metais-common/assets/images'
+import { IColumn } from '@isdd/metais-common/hooks/useColumnList'
 
 export enum ActionNames {
     IMPORT = 'IMPORT',

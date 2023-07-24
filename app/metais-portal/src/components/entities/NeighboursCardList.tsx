@@ -5,6 +5,7 @@ import { Pagination, IFilter } from '@isdd/idsk-ui-kit/types'
 import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { QueryFeedback } from '@isdd/metais-common'
+import { ReadCiNeighboursWithAllRels200, ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
 
 import { RelationCard } from './cards/RelationCard'
 import { CardColumnList } from './cards/CardColumnList'
@@ -13,7 +14,6 @@ import styles from './neighboursCardList.module.scss'
 
 import { IRelationsView } from '@/components/containers/RelationsListContainer'
 import { formatRelationAttributes } from '@/componentHelpers'
-import { ReadCiNeighboursWithAllRels200, ReadCiNeighboursWithAllRelsParams } from '@/api'
 
 interface NeighboursCardListProps {
     isLoading: boolean
