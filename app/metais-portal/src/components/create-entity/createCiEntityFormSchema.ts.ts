@@ -1,4 +1,19 @@
-import { BooleanSchema, DateSchema, MixedSchema, NumberSchema, StringSchema, boolean, date, number, object, string, mixed } from 'yup'
+import {
+    BooleanSchema,
+    DateSchema,
+    MixedSchema,
+    NumberSchema,
+    StringSchema,
+    boolean,
+    date,
+    number,
+    object,
+    string,
+    mixed,
+    array,
+    ArraySchema,
+    AnyObject,
+} from 'yup'
 import { TFunction } from 'i18next'
 import {
     Attribute,
@@ -21,7 +36,16 @@ type NullableDateSchema = DateSchema<Date | null | undefined>
 type NullableNumberSchema = NumberSchema<number | null | undefined>
 
 type SchemaType = {
-    [key: string]: StringSchema | NumberSchema | BooleanSchema | DateSchema | MixedSchema | NullableDateSchema | NullableNumberSchema
+    [key: string]:
+        | StringSchema
+        | NumberSchema
+        | BooleanSchema
+        | DateSchema
+        | MixedSchema
+        | NullableDateSchema
+        | NullableNumberSchema
+        | ArraySchema<(string | undefined)[] | undefined, AnyObject, '', ''>
+        | ArraySchema<{ label?: string | undefined; value?: string | undefined }[] | undefined, AnyObject, '', ''>
 }
 
 export const generateFormSchema = (data: (Attribute | undefined)[], t: TFunction<'translation', undefined, 'translation'>) => {
@@ -40,6 +64,8 @@ export const generateFormSchema = (data: (Attribute | undefined)[], t: TFunction
 
         const isRequired = attribute?.mandatory?.type === 'critical'
 
+        const hasConstraints = attribute?.constraints && attribute.constraints.length > 0
+
         const isDate = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.DATE
         const isBoolean = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.BOOLEAN
         const isFile = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.IMAGE
@@ -51,6 +77,7 @@ export const generateFormSchema = (data: (Attribute | undefined)[], t: TFunction
         const isShort = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.SHORT
         const isDouble = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.DOUBLE
         const isInteger = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.INTEGER
+        const isArray = attribute?.array
 
         const hasNumericValue = isInteger || isDouble || isLong || isByte || isShort || isFloat
         const canBeDecimal = isDouble || isFloat
@@ -102,6 +129,30 @@ export const generateFormSchema = (data: (Attribute | undefined)[], t: TFunction
                         })
                     break
                 }
+                case isArray && hasConstraints: {
+                    schema[attribute.technicalName] = array()
+                        .of(object({ label: string(), value: string() }))
+                        .when('isRequired', (_, current) => {
+                            if (isRequired) {
+                                return current.required(t('validation.required'))
+                            }
+                            return current
+                        })
+                    break
+                }
+                // (+doplnit input pre tento typ fro createEntity = string[])
+                case isArray && !hasConstraints: {
+                    schema[attribute.technicalName] = array()
+                        .of(string())
+                        .when('isRequired', (_, current) => {
+                            if (isRequired) {
+                                return current.required(t('validation.required'))
+                            }
+                            return current
+                        })
+                    break
+                }
+
                 default: {
                     schema[attribute.technicalName] = string().when('isRequired', (_, current) => {
                         if (isRequired) {
