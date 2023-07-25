@@ -102,7 +102,8 @@ const ManageRoles: React.FC = () => {
     const { mutate: deleteRole } = useDelete({
         mutation: {
             onSuccess() {
-                setTableRoles(roles?.filter((e) => e != roleToDelete))
+                console.log('deleted')
+                setTableRoles(roles?.filter((e) => e.uuid != roleToDelete?.uuid))
                 setRoleToDelete(undefined)
             },
         },
