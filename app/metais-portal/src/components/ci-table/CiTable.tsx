@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { CellContext, ColumnDef, Row, Table as ITable } from '@tanstack/react-table'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
-import { ITableProps, Table, TextBody } from '@isdd/idsk-ui-kit'
+import { Table, TextBody } from '@isdd/idsk-ui-kit'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import classNames from 'classnames'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import {
     ColumnsOutputDefinition,
@@ -19,7 +20,6 @@ import {
 import styles from './ciTable.module.scss'
 
 import { IListData } from '@/types/list'
-import { useAuth } from '@/contexts/auth/authContext'
 
 interface ICiTable {
     data: IListData

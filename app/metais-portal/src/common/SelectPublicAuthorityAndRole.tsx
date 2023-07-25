@@ -2,9 +2,10 @@ import { SimpleSelect } from '@isdd/idsk-ui-kit/simple-select/SimpleSelect'
 import React, { SetStateAction } from 'react'
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
+import { HierarchyRightsUi } from '@isdd/metais-common/api'
+import { GetImplicitHierarchyFilter } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
 
-import { HierarchyRightsUi } from '@/api'
-import { CiCreateEntityContainerData, GetImplicitHierarchyFilter } from '@/components/containers/CiCreateEntityContainer'
+import { CiCreateEntityContainerData } from '@/components/containers/CiCreateEntityContainer'
 
 interface ISelectPublicAuthorityAndRole {
     onChangeAuthority: (e: any) => void
