@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { UppyFile, Uppy } from '@uppy/core'
 import XHRUpload from '@uppy/xhr-upload'
 import '@uppy/core/dist/style.min.css'
@@ -14,6 +14,7 @@ import { FileImportView } from './FileImportView'
 
 import { FileImportStepEnum } from '@/components/actions-over-table/ActionsOverTable'
 import { useAuth } from '@/contexts/auth/authContext'
+import { useValidateContentHook } from '@/api/generated/impexp-cmdb-swagger'
 
 const uppy = new Uppy({
     autoProceed: false,
@@ -54,8 +55,9 @@ export const FileImport: React.FC<IFileImport> = ({
 
     const [errorMessages, setErrorMessages] = useState<string[]>([])
     const [uploadFileProgressInfo, setUploadFileProgressInfo] = useState<ProgressInfoList[]>([])
-
+    const importValidate = useValidateContentHook()
     const [radioButtonMetaData, setRadioButtonMetaData] = useState<string>('existing-only')
+    const FILE_VALIDATION_BASE_URL = import.meta.env.VITE_REST_CLIENT_IMPEXP_CMDB_TARGET_URL
 
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>([])
     console.log('fileImportStep', fileImportStep)
@@ -84,8 +86,52 @@ export const FileImport: React.FC<IFileImport> = ({
         })
     }, [allowedFileTypes, i18n.language, maxFileSize, multiple])
 
+    const [file, setFile] = useState<File>()
+
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            setFile(e.target.files[0])
+        }
+    }
+
+    const prepareUpload = () => {
+        console.log('getFiles', uppy.getFiles()[0])
+        const FILE_VALIDATION_BASE_URL = import.meta.env.VITE_REST_CLIENT_IMPEXP_CMDB_TARGET_URL
+        const file = uppy.getFiles()[0]
+        // const postData = new FormData()
+
+        // postData.append('name', file.name)
+        // postData.append('type', ciType)
+        // postData.append('editType', 'existing-only')
+        // postData.append('file', file.data)
+        // console.log('file.data', file.data)
+        // importValidate( validateContentBody: {params: { type: ciType }}, file: file.data )
+        // importValidate(params: { type: ciType }, file: file.data )
+        // console.log("uppy.getFiles()[0]", uppy.getFiles()[0])
+        // importValidate({ file: file.data }, { type: ciType })
+        //     .then(() => console.log('HURAA'))
+        //     .catch((e) => console.log('chyba', e))
+        fetch(`${FILE_VALIDATION_BASE_URL}/import/validate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization:
+                    'Bearer eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJ3ZWJQb3J0YWxDbGllbnQiLCJpc3MiOiJodHRwOlwvXC9pYW0tb2lkYy1tZXRhaXMzLmFwcHMuZGV2LmlzZGQuc2s6ODBcLyIsImV4cCI6MTY5MDIyODAzNywiaWF0IjoxNjkwMTk5MjM3LCJqdGkiOiIzNzEzNmVhNy1iNWEyLTRiMmQtYjcyNi03NGIxZTQxMTBmMjYifQ.UPDni9zUx5Ol0IqpFG5Num2qOhcN63Z7XcLBJlhUzbvMGFGVM1k7daNOkj0WuxBTLWEdOrGDo3_2wIvmybk_3sMV0b4iU7EvOczqMhoX3w1j68RwL7X2wZxlUfnH9Fz6gKtCG_8SpGxy9aRVx4UOb52-B01MwiZvJJUqhtfB-7016FzGLn-JJCCLzvDkFTPnNr_MFTsNOLgznfR8E8jeU4EtW7AHtWcNyIXeRuiIb0GaZVhll27vo_nGiRVDFa0moxAOJXq23eJ1eoP_tBGGqzeNVmxACjLM2NyGLTul7k72udan80OXvzLpmoUc9CcLUFc89Jo-hlIhnJZ5m-GsYQ',
+            },
+            body: postData,
+        })
+            .then((res) => {
+                console.log('success', res)
+                res.json()
+                return true
+            })
+            .catch((e) => console.log('error', e))
+        return Promise.resolve()
+    }
+
     useEffect(() => {
         uppy.getPlugin('XHRUpload')?.setOptions({ endpoint: endpointUrl, headers: { Authorization: `Bearer ${accessToken}` } })
+        uppy.addPreProcessor(prepareUpload)
     }, [accessToken, endpointUrl, fileImportStep])
 
     useEffect(() => {
@@ -173,22 +219,39 @@ export const FileImport: React.FC<IFileImport> = ({
         close()
     }
 
+    const handleUploadClick = () => {
+        if (!file) {
+            return
+        }
+        console.log('FILE', file)
+        // 👇 Uploading the file using the fetch API to the server
+
+        //OPTION 1 - NEJDE
+        fetch(`${FILE_VALIDATION_BASE_URL}/import/validate?type='ISVS'`, {
+            method: 'POST',
+            body: file,
+            // 👇 Set headers manually for single file upload
+            headers: {
+                'content-type': 'multipart/form-data',
+                'content-length': `${file.size}`, // 👈 Headers need to be a string
+                Authorization: `Bearer ${accessToken}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((err) => console.error(err))
+
+        //OPTION 2 - NEJDE
+        // importValidate({ file: file }, { type: 'ISVS' })
+    }
+
     return (
-        <BaseModal isOpen={isOpen} close={handleCancelImport}>
-            <FileImportView
-                uppy={uppy}
-                currentFiles={currentFiles}
-                handleUpload={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : handleUpload}
-                uploadFileProgressInfo={uploadFileProgressInfo}
-                handleCancelImport={handleCancelImport}
-                handleRemoveFile={handleRemoveFile}
-                setRadioButtonMetaData={setRadioButtonMetaData}
-                setErrorMessages={setErrorMessages}
-                errorMessages={errorMessages}
-                fileImportStep={fileImportStep}
-                radioButtonMetaData={radioButtonMetaData}
-                ciType={ciType}
-            />
-        </BaseModal>
+        <div>
+            <input type="file" onChange={handleFileChange} />
+
+            <div>{file && `${file.name} - ${file.type}`}</div>
+
+            <button onClick={handleUploadClick}>Upload</button>
+        </div>
     )
 }
