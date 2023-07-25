@@ -39,6 +39,7 @@
         "deactivate": "Deactivate",
         "all": "All",
         "rolesList": "Roles list",
+        "newRole": "New role",
         "none": "None"
     }
 }
