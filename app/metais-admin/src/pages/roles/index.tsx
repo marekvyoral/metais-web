@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BreadCrumbs, Button, Filter, HomeIcon, Input, Paginator, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit'
+import { BaseModal, BreadCrumbs, Button, Filter, HomeIcon, Input, Paginator, SimpleSelect, Table, TextBody, TextHeading } from '@isdd/idsk-ui-kit'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useFindByNameWithParams, Role, useFindByNameWithParamsCount, useDelete } from '@isdd/metais-common/api/generated/iam-swagger'
 import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
@@ -51,11 +51,12 @@ const ManageRoles: React.FC = () => {
     const { filter } = useFilterParams<FilterData>(defaultFilterValues)
 
     const [pagination, setPagination] = useState(defaultPagination)
+    const [roleToDelete, setRoleToDelete] = useState<Role>()
 
     const [sorting, setSorting] = useState<ColumnSort[]>([defaultSort])
 
     //API Calls
-    const { mutate: deleteRole } = useDelete()
+
     const { data: rolesPages } = useFindByNameWithParamsCount({ ...filter, name: filter.name ?? '' })
     const { data: roleGroups } = useGetValidEnum('SKUPINA_ROL')
     const {
@@ -98,6 +99,15 @@ const ManageRoles: React.FC = () => {
     const groups: { value: string; label: string }[] =
         tableRoleGroups?.enumItems?.map((item) => ({ value: item.code ?? '', label: item.value ?? '' })) ?? []
 
+    const { mutate: deleteRole } = useDelete({
+        mutation: {
+            onSuccess() {
+                setTableRoles(roles?.filter((e) => e != roleToDelete))
+                setRoleToDelete(undefined)
+            },
+        },
+    })
+
     const SelectableColumnsSpec = (): ColumnDef<Role>[] => [
         ...columns,
         {
@@ -136,8 +146,7 @@ const ManageRoles: React.FC = () => {
                         variant="warning"
                         className={styles.widthFit}
                         onClick={() => {
-                            deleteRole({ uuid: cell.row.original.uuid ?? '' })
-                            setSorting([defaultSort])
+                            setRoleToDelete(cell.row.original)
                         }}
                     />
                 </>
@@ -148,6 +157,20 @@ const ManageRoles: React.FC = () => {
 
     return (
         <>
+            <BaseModal isOpen={!!roleToDelete} close={() => setRoleToDelete(undefined)}>
+                <>
+                    <TextHeading size="M">{t('adminRolesPage.areYouSure')}</TextHeading>
+                    <TextBody size="S">{t('adminRolesPage.deleteRoleText')}</TextBody>
+                    <TextBody size="S">{roleToDelete?.name + ': ' + roleToDelete?.description}</TextBody>
+                    <Button
+                        label={t('actionsInTable.save')}
+                        onClick={() => {
+                            deleteRole({ uuid: roleToDelete?.uuid ?? '' })
+                        }}
+                    />
+                    <Button label={t('actionsInTable.cancel')} onClick={() => setRoleToDelete(undefined)} variant="secondary" />
+                </>
+            </BaseModal>
             <BreadCrumbs
                 links={[
                     { label: t('notifications.home'), href: '/', icon: HomeIcon },
@@ -181,7 +204,7 @@ const ManageRoles: React.FC = () => {
                 heading={<></>}
             />
             <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
-                <Button label={t('adminRolesPage.addNewRole')} onClick={() => navigate('/roles/new')} />
+                <Button label={t('adminRolesPage.addNewRole')} onClick={() => navigate('/roles/newRole')} />
             </div>
             <Table<Role>
                 onSortingChange={(newSort) => {

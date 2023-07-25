@@ -195,6 +195,9 @@
         "deactivate": "Deactivate",
         "all": "All",
         "rolesList": "Roles list",
-        "none": "None"
+        "newRole": "New role",
+        "none": "None",
+        "areYouSure": "Are you sure?",
+        "deleteRoleText": "Do you want to delete the role?"
     }
 }
