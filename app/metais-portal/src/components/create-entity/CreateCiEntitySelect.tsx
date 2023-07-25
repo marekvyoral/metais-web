@@ -1,6 +1,7 @@
 import React, { SetStateAction } from 'react'
+import { GetImplicitHierarchyFilter } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
 
-import { CiCreateEntityContainerData, GetImplicitHierarchyFilter, ISelectedOrg } from '../containers/CiCreateEntityContainer'
+import { CiCreateEntityContainerData, ISelectedOrg } from '../containers/CiCreateEntityContainer'
 
 import { SelectPublicAuthorityAndRole } from '@/common/SelectPublicAuthorityAndRole'
 

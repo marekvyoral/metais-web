@@ -1,6 +1,5 @@
 import { TFunction } from 'i18next'
-
-import { ReadCiNeighboursWithAllRels200, RelatedCiTypePreview, RoleParticipantUI } from '@/api'
+import { ReadCiNeighboursWithAllRels200, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
 
 export const formatRelationAttributes = (
     ciWithRel: ReadCiNeighboursWithAllRels200,

@@ -9,13 +9,7 @@ import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
 import { IColumnSectionType, TableSelectColumns } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useNavigate } from 'react-router-dom'
-
-import { ExportItemsOrRelations } from '../export-items-or-relations/ExportItemsOrRelations'
-import { FileImport } from '../file-import/FileImport'
-
-import styles from './actionsOverTable.module.scss'
-
-import { Attribute, AttributeProfile, BASE_PAGE_SIZE } from '@/api'
+import { Attribute, AttributeProfile, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import {
     useExportCsvHook,
     useExportXmlHook,
@@ -23,9 +17,14 @@ import {
     useExportRelCsvHook,
     useExportRelExcelHook,
     useExportRelXmlHook,
-} from '@/api/generated/impexp-cmdb-swagger'
-import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@/assets/images'
-import { IColumn } from '@/hooks/useColumnList'
+} from '@isdd/metais-common/api/generated/impexp-cmdb-swagger'
+import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@isdd/metais-common/assets/images'
+import { IColumn } from '@isdd/metais-common/hooks/useColumnList'
+
+import { FileImport } from '../file-import/FileImport'
+import { ExportItemsOrRelations } from '../export-items-or-relations/ExportItemsOrRelations'
+
+import styles from './actionsOverTable.module.scss'
 
 interface IActionsOverTableProps {
     pagingOptions?: { value: string; label: string; disabled?: boolean }[]

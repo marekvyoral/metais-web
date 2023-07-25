@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 
-import { AuthActions, useAuth } from '@/contexts/auth/authContext'
-import { getUserInfo } from '@/api/userInfoApi'
+import { AuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { getUserInfo } from '@isdd/metais-common/api/userInfoApi'
 
 export const useUserInfo = () => {
     const {

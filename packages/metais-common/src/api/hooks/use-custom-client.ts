@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-import { AuthActions, useAuth } from '@/contexts/auth/authContext'
+import { AuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export type BodyType<BodyData> = BodyData & { headers?: object }
 

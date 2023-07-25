@@ -1,13 +1,13 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
+import { ConfigurationItemUi } from '@isdd/metais-common/api'
 
 import { RelationshipsTable } from './RelationshipTable'
 import { targetTableColumns } from './RelationshipsTargetTableColumns'
 import { sourceTableColumns } from './RelationshipsSourceTableColumns'
 
 import { CiNeighboursListContainer } from '@/components/containers/CiNeighboursListContainer'
-import { ConfigurationItemUi } from '@/api'
 import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
 
 interface RelationshipsAccordion {

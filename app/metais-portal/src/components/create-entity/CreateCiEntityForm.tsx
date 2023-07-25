@@ -6,14 +6,13 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { CiCode, CiType, EnumType } from '@isdd/metais-common/api'
 
 import { AttributesConfigTechNames } from '../attribute-input/attributeDisplaySettings'
 
 import styles from './createEntity.module.scss'
 import { CreateEntitySection } from './CreateEntitySection'
 import { generateFormSchema } from './createCiEntityFormSchema.ts'
-
-import { CiCode, CiType, EnumType } from '@/api'
 
 interface ICreateCiEntityForm {
     generatedEntityId: CiCode

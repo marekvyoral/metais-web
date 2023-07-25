@@ -5,7 +5,7 @@ import {
     useGetRoleParticipantBulk,
     RelatedCiTypePreview,
     ReadCiNeighboursWithAllRelsParams,
-} from '@/api'
+} from '@isdd/metais-common/api'
 
 export interface IKeyToDisplay {
     tabName: string

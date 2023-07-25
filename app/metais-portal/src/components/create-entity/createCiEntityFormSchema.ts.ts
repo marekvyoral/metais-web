@@ -1,12 +1,11 @@
 import { BooleanSchema, DateSchema, MixedSchema, NumberSchema, StringSchema, boolean, date, number, object, string, mixed } from 'yup'
 import { TFunction } from 'i18next'
-
 import {
     Attribute,
     AttributeAttributeTypeEnum,
     AttributeConstraintIntervalAllOf,
     AttributeConstraintRegexAllOf,
-} from '@/api/generated/types-repo-swagger'
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 enum ByteInterval {
     MIN = -128,
