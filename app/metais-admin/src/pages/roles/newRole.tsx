@@ -16,7 +16,7 @@ const AddRole: React.FC = () => {
     const register = methods.register
     const errors = methods.formState.errors
     const onSubmit = methods.handleSubmit((data) => {
-        createRole({ data: { name: data['name'], description: data['description'], type: 'NON_SYSTEM', assignedGroup: data['group'] } })
+        createRole({ data: { name: data['name'], description: data['description'], type: 'NON_SYSTEM', assignedGroup: data['assignedGroup'] } })
     })
     const { data: roleGroups } = useGetValidEnum('SKUPINA_ROL')
     const [tableRoleGroups, setTableRoleGroups] = useState(roleGroups)
@@ -48,7 +48,7 @@ const AddRole: React.FC = () => {
                         error={findInputError(errors, 'description')?.error?.message?.toString()}
                     />
                     <SimpleSelect
-                        {...register('group')}
+                        {...register('assignedGroup')}
                         id="1"
                         label={'Group'}
                         options={[{ value: '', label: t('adminRolesPage.none') }, ...groups]}
