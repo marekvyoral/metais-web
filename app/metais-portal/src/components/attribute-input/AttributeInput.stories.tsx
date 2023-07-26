@@ -77,6 +77,13 @@ const selectAttribute = {
     defaultValue: 'c_spolocne_moduly.1',
 }
 
+const multiSelectAttribute = {
+    ...textAttribute,
+    array: true,
+    constraints: [{ type: 'enum', enumCode: 'SPOLOCNE_MODULY' }],
+    defaultValue: 'c_spolocne_moduly.1',
+}
+
 const checkBoxAttribute = {
     ...textAttribute,
     description: 'checkbox',
@@ -383,6 +390,74 @@ export const SelectInput: Story = {
                     orderList: 1,
                     engValue: 'Autentication modul',
                     engDescription: 'Autentication modul',
+                },
+            ],
+            id: 1,
+            name: 'name',
+            valid: true,
+        },
+        hint: '',
+    },
+}
+
+export const MultiSelectInput: Story = {
+    render: ({ ...args }) => {
+        const FormWrapper = () => {
+            const { t } = useTranslation()
+            const { handleSubmit, register, formState, control } = useForm({
+                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+            })
+            const { errors, isSubmitted } = formState
+            const [data, setData] = useState('')
+
+            const onSubmit = (formData: FieldValues) => {
+                if (args.attribute.technicalName != null) {
+                    setData(formData[args.attribute.technicalName].toString())
+                }
+            }
+
+            return (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <AttributeInput
+                        {...args}
+                        register={register}
+                        error={hasAttributeInputError(args.attribute, errors)}
+                        isSubmitted={isSubmitted}
+                        control={control}
+                    />
+                    <Button label="Submit" type="submit" />
+                    <p>{data}</p>
+                </form>
+            )
+        }
+        return <FormWrapper />
+    },
+    args: {
+        attribute: multiSelectAttribute,
+        constraints: {
+            category: '',
+            code: 'CODE',
+            description: 'DESCRIPTION',
+            enumItems: [
+                {
+                    id: 10352,
+                    code: 'c_spolocne_moduly.1',
+                    value: 'Autentication modul',
+                    valid: true,
+                    description: 'Autentication modul',
+                    orderList: 1,
+                    engValue: 'Autentication modul',
+                    engDescription: 'Autentication modul',
+                },
+                {
+                    id: 10353,
+                    code: 'c_spolocne_moduly.2',
+                    value: 'Autentication modul 2',
+                    valid: true,
+                    description: 'Autentication modul 2',
+                    orderList: 2,
+                    engValue: 'Autentication modul 2',
+                    engDescription: 'Autentication modul 2',
                 },
             ],
             id: 1,

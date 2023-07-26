@@ -6,7 +6,6 @@ import {
     ButtonGroupRow,
     Filter,
     HomeIcon,
-    Input,
     Paginator,
     SimpleSelect,
     Table,
@@ -210,7 +209,6 @@ const ManageRoles: React.FC = () => {
                                 { value: 'NON_SYSTEM', label: t('radioButton.no') },
                             ]}
                         />
-                        {/* <Input {...register('name')} label={t('adminRolesPage.name')} /> */}
                     </>
                 )}
                 defaultFilterValues={defaultFilterValues}

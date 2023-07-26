@@ -77,6 +77,7 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
                         )}
                         {!hiddenInputs?.ROLE_LIST && (
                             <MultiSelect
+                                id="1"
                                 label={t('egov.roles')}
                                 options={rolesToSelect}
                                 {...register('roleList')}
