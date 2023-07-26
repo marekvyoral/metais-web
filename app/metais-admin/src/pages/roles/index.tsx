@@ -70,7 +70,7 @@ const ManageRoles: React.FC = () => {
 
     //API Calls
 
-    const { data: rolesPages } = useFindByNameWithParamsCount({ ...filter, name: filter.name ?? '' })
+    const { data: rolesPages } = useFindByNameWithParamsCount({ ...filter, name: filter.fullTextSearch ?? '' })
     const { data: roleGroups } = useGetValidEnum('SKUPINA_ROL')
     const {
         data: roles,
@@ -78,7 +78,7 @@ const ManageRoles: React.FC = () => {
         isError,
     } = useFindByNameWithParams(pagination.page, pagination.pageSize, {
         ...filter,
-        name: filter.name ?? '',
+        name: filter.fullTextSearch ?? '',
         orderBy: sorting.length > 0 ? sorting[0].orderBy : 'name',
         direction: sorting.length > 0 ? sorting[0].sortDirection : 'asc',
     })
@@ -210,11 +210,10 @@ const ManageRoles: React.FC = () => {
                                 { value: 'NON_SYSTEM', label: t('radioButton.no') },
                             ]}
                         />
-                        <Input {...register('name')} label={t('adminRolesPage.name')} />
+                        {/* <Input {...register('name')} label={t('adminRolesPage.name')} /> */}
                     </>
                 )}
                 defaultFilterValues={defaultFilterValues}
-                heading={<></>}
             />
             <ButtonGroupRow className={styles.flexEnd}>
                 <Button label={t('adminRolesPage.addNewRole')} onClick={() => navigate('/roles/newRole')} />
