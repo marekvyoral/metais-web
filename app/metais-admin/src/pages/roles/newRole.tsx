@@ -57,8 +57,8 @@ const AddRole: React.FC = () => {
                         label="Systemova rola"
                         disabled
                         options={[
-                            { value: 'SYSTEM', label: 'ano' },
                             { value: 'NON_SYSTEM', label: 'nie' },
+                            { value: 'SYSTEM', label: 'ano' },
                         ]}
                     />
                     <Button label="Submit" onClick={onSubmit} />
