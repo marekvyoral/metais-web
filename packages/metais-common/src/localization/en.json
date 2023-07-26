@@ -40,6 +40,12 @@
         "all": "All",
         "rolesList": "Roles list",
         "newRole": "New role",
-        "none": "None"
+        "none": "None",
+        "areYouSure": "Are you sure?",
+        "deleteRoleText": "Do you want to delete the role?",
+        "fullName": "Name",
+        "login": "Login",
+        "email": "Email",
+        "obligedPerson": "Obliged person"
     }
 }

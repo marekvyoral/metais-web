@@ -40,6 +40,12 @@
         "all": "Všetky",
         "rolesList": "Zoznam rolí",
         "newRole": "Pridanie roly",
-        "none": "Žiadna"
+        "none": "Žiadna",
+        "areYouSure": "Si si istý?",
+        "deleteRoleText": "Chcete odstrániť rolu?",
+        "fullName": "Meno",
+        "login": "Login",
+        "email": "Email",
+        "obligedPerson": "Povinná osoba"
     }
 }

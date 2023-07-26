@@ -218,6 +218,10 @@
         "newRole": "Pridanie roly",
         "none": "Žiadna",
         "areYouSure": "Si si istý?",
-        "deleteRoleText": "Chcete odstrániť rolu?"
+        "deleteRoleText": "Chcete odstrániť rolu?",
+        "fullName": "Meno",
+        "login": "Login",
+        "email": "Email",
+        "obligedPerson": "Povinná osoba"
     }
 }

@@ -11,7 +11,7 @@ import { findInputError } from '../formUtils'
 const EditRole: React.FC = () => {
     const { id } = useParams()
 
-    const { data: currentRole, isLoading, isError } = useFindByUuid(id ?? '')
+    const { data: currentRole, isLoading } = useFindByUuid(id ?? '')
     const { t } = useTranslation()
     const navigate = useNavigate()
     const methods = useForm({
