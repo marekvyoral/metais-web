@@ -1,5 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { BaseModal, BreadCrumbs, Button, Filter, HomeIcon, Input, Paginator, SimpleSelect, Table, TextBody, TextHeading } from '@isdd/idsk-ui-kit'
+import {
+    BaseModal,
+    BreadCrumbs,
+    Button,
+    ButtonGroupRow,
+    Filter,
+    HomeIcon,
+    Input,
+    Paginator,
+    SimpleSelect,
+    Table,
+    TextBody,
+    TextHeading,
+} from '@isdd/idsk-ui-kit'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useFindByNameWithParams, Role, useFindByNameWithParamsCount, useDelete } from '@isdd/metais-common/api/generated/iam-swagger'
 import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
@@ -203,9 +216,24 @@ const ManageRoles: React.FC = () => {
                 defaultFilterValues={defaultFilterValues}
                 heading={<></>}
             />
-            <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
+            <ButtonGroupRow className={styles.flexEnd}>
                 <Button label={t('adminRolesPage.addNewRole')} onClick={() => navigate('/roles/newRole')} />
-            </div>
+                <TextBody className={styles.marginLeftAuto}>Zobraziť</TextBody>
+                <SimpleSelect
+                    onChange={(label) => {
+                        setPagination({ ...pagination, pageSize: Number(label.target.value) })
+                    }}
+                    id="select"
+                    label=""
+                    options={[
+                        { label: '10', value: '10' },
+                        { label: '20', value: '20' },
+                        { label: '50', value: '50' },
+                        { label: '100', value: '100' },
+                    ]}
+                />
+                <TextBody className={styles.marginLeftAuto}>záznamov</TextBody>
+            </ButtonGroupRow>
             <Table<Role>
                 onSortingChange={(newSort) => {
                     setSorting(newSort)
