@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { GetImplicitHierarchyFilter, useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
 import { HierarchyRightsUi, useGenerateCodeAndURL } from '@isdd/metais-common/api'
@@ -13,8 +12,6 @@ interface IFileImportItemsSelect {
 }
 
 export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ ciType }) => {
-    const { t } = useTranslation()
-
     const user = useAuth()
     const userId = user.state.user?.uuid ?? ''
     const userDataGroups = user.state.user?.groupData ?? []

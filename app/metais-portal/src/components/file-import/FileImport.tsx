@@ -35,6 +35,10 @@ interface IFileImport {
     setFileImportStep: (value: FileImportStepEnum) => void
     ciType: string
 }
+export enum FileState {
+    VALIDATED = 'validated',
+    INVALIDATED = 'invalidated',
+}
 
 export const FileImport: React.FC<IFileImport> = ({
     allowedFileTypes,
@@ -58,6 +62,9 @@ export const FileImport: React.FC<IFileImport> = ({
     const [radioButtonMetaData, setRadioButtonMetaData] = useState<string>('existing-only')
 
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>([])
+
+    const [validateStatus, setValidateStatus] = useState<FileState>()
+
     console.log('fileImportStep', fileImportStep)
     console.log('endpointUrl', endpointUrl)
     useEffect(() => {
@@ -84,6 +91,41 @@ export const FileImport: React.FC<IFileImport> = ({
         })
     }, [allowedFileTypes, i18n.language, maxFileSize, multiple])
 
+    const prepareUpload = async (fileIDs: string[]) => {
+        console.log('WE ARE HERE fileIDs', fileIDs)
+        const FILE_VALIDATION_BASE_URL = import.meta.env.VITE_REST_CLIENT_IMPEXP_CMDB_TARGET_URL
+        const file = uppy.getFile(fileIDs[0])
+        const formData = new FormData()
+        formData.append('file', file.data)
+        formData.append('type', ciType)
+        formData.append('poId', '')
+        formData.append('roleId', '')
+
+        try {
+            await fetch(`${FILE_VALIDATION_BASE_URL}/import/validate`, {
+                method: 'POST',
+
+                body: formData,
+
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            })
+            uppy.setFileMeta(file.id, {
+                state: FileState.VALIDATED,
+            })
+            return Promise.resolve()
+        } catch (e) {
+            console.log('chyba', e)
+            uppy.setFileMeta(file.id, {
+                state: FileState.INVALIDATED,
+            })
+            return Promise.reject()
+        }
+    }
+
+    console.log('uppy.getFiles', uppy.getFiles())
+
     useEffect(() => {
         uppy.getPlugin('XHRUpload')?.setOptions({ endpoint: endpointUrl, headers: { Authorization: `Bearer ${accessToken}` } })
     }, [accessToken, endpointUrl, fileImportStep])
@@ -103,6 +145,7 @@ export const FileImport: React.FC<IFileImport> = ({
         uppy.on('file-added', updateFiles)
         uppy.on('file-removed', updateFiles)
         uppy.on('restriction-failed', fileErrorCallback)
+        // uppy.addPreProcessor((fileIDs) => prepareUpload(fileIDs))
         return () => {
             uppy.off('file-added', updateFiles)
             uppy.off('file-removed', updateFiles)
@@ -111,8 +154,63 @@ export const FileImport: React.FC<IFileImport> = ({
     }, [])
 
     const handleValidate = useCallback(async () => {
+        uppy.getFiles().forEach((file) => {
+            uppy.setFileState(file.id, {
+                progress: { uploadComplete: true, uploadStarted: false },
+            })
+        })
         uppy.setMeta({ ['editType']: radioButtonMetaData, type: ciType })
         console.log('fileImportStep', fileImportStep)
+        await prepareUpload(uppy.getFiles().map((file) => file.id))
+
+        //   if (result.successful.length > 0) {
+        setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
+        //  }
+
+        //to upload
+        // try {
+        //     uppy.upload().then((result) => {
+        //         if (result.successful.length > 0) {
+        //             setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
+        //             setUploadFileProgressInfo(
+        //                 result.successful.map((item) => ({
+        //                     ['id']: item.id,
+        //                     ['error']: false,
+        //                 })),
+        //             )
+        //         }
+
+        //         if (result.failed.length > 0) {
+        //             setUploadFileProgressInfo(
+        //                 result.failed.map((item) => ({
+        //                     ['id']: item.id,
+        //                     ['error']: true,
+        //                 })),
+        //             )
+        //         }
+        //     })
+        // } catch (error) {
+        //     setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
+        //     console.log(error)
+        // }
+    }, [ciType, fileImportStep, prepareUpload, radioButtonMetaData])
+
+    const handleUpload = async () => {
+        // console.log('uppy.getFiles()', uppy.getFiles())
+        // uppy.removeFile invalidated files
+        uppy.getFiles().forEach((file) => {
+            uppy.setFileState(file.id, {
+                progress: { uploadComplete: true, uploadStarted: false },
+            })
+        })
+        // uppy.retryAll()
+        //     .then((result) => {
+        //         console.log("uppy.getPlugin('XHRUpload')", uppy.getPlugin('XHRUpload'))
+        //         console.log('result', result)
+        //     })
+        //     .catch((error) => {
+        //         console.log('error', error)
+        //     })
         try {
             uppy.upload().then((result) => {
                 if (result.successful.length > 0) {
@@ -138,23 +236,6 @@ export const FileImport: React.FC<IFileImport> = ({
             setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
             console.log(error)
         }
-    }, [ciType, fileImportStep, radioButtonMetaData, setFileImportStep, t])
-
-    const handleUpload = async () => {
-        // console.log('uppy.getFiles()', uppy.getFiles())
-        uppy.getFiles().forEach((file) => {
-            uppy.setFileState(file.id, {
-                progress: { uploadComplete: false, uploadStarted: false },
-            })
-        })
-        uppy.retryAll()
-            .then((result) => {
-                console.log("uppy.getPlugin('XHRUpload')", uppy.getPlugin('XHRUpload'))
-                console.log('result', result)
-            })
-            .catch((error) => {
-                console.log('error', error)
-            })
     }
 
     const handleRemoveFile = (fileId: string) => {
