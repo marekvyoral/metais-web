@@ -78,8 +78,6 @@ const RoleUsers: React.FC = () => {
     }, [filter.fullTextSearch, tableData])
 
     useEffect(() => {
-        console.log(filter.obligedPerson)
-
         setFilteredTableData(tableData?.filter((item) => item.obligedPerson?.includes(filter.obligedPerson ?? '')))
     }, [filter.obligedPerson, tableData])
 
