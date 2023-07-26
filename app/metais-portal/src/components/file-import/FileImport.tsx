@@ -58,12 +58,13 @@ export const FileImport: React.FC<IFileImport> = ({
 
     const [errorMessages, setErrorMessages] = useState<string[]>([])
     const [uploadFileProgressInfo, setUploadFileProgressInfo] = useState<ProgressInfoList[]>([])
-
     const [radioButtonMetaData, setRadioButtonMetaData] = useState<string>('existing-only')
-
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>([])
 
-    const [validateStatus, setValidateStatus] = useState<FileState>()
+    // disable 'Import' button if any file is invalid
+    // show 'Validate' button if any file is not validated yet
+    // show 'Import' if all files are validated (can be success or failed)
+    // useEffect(() => {}, [currentFiles])
 
     console.log('fileImportStep', fileImportStep)
     console.log('endpointUrl', endpointUrl)
@@ -91,39 +92,6 @@ export const FileImport: React.FC<IFileImport> = ({
         })
     }, [allowedFileTypes, i18n.language, maxFileSize, multiple])
 
-    const prepareUpload = async (fileIDs: string[]) => {
-        console.log('WE ARE HERE fileIDs', fileIDs)
-        const FILE_VALIDATION_BASE_URL = import.meta.env.VITE_REST_CLIENT_IMPEXP_CMDB_TARGET_URL
-        const file = uppy.getFile(fileIDs[0])
-        const formData = new FormData()
-        formData.append('file', file.data)
-        formData.append('type', ciType)
-        formData.append('poId', '')
-        formData.append('roleId', '')
-
-        try {
-            await fetch(`${FILE_VALIDATION_BASE_URL}/import/validate`, {
-                method: 'POST',
-
-                body: formData,
-
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            })
-            uppy.setFileMeta(file.id, {
-                state: FileState.VALIDATED,
-            })
-            return Promise.resolve()
-        } catch (e) {
-            console.log('chyba', e)
-            uppy.setFileMeta(file.id, {
-                state: FileState.INVALIDATED,
-            })
-            return Promise.reject()
-        }
-    }
-
     console.log('uppy.getFiles', uppy.getFiles())
 
     useEffect(() => {
@@ -134,103 +102,87 @@ export const FileImport: React.FC<IFileImport> = ({
         const fileErrorCallback = (_file: UppyFile | undefined, error: Error) => {
             setErrorMessages((prev) => [...prev, error.message])
         }
-        const updateFiles = () => {
+        const fileAdded = () => {
             setCurrentFiles(() => uppy.getFiles())
+            setFileImportStep(FileImportStepEnum.VALIDATE)
+        }
+
+        const fileRemoved = () => {
             const files = uppy.getFiles()
+            setCurrentFiles(files)
             if (!files.length) {
                 setFileImportStep(FileImportStepEnum.VALIDATE)
             }
+            const remainingFileIds = files.map((x) => x.id)
+            setUploadFileProgressInfo((prev) => prev.filter((x) => remainingFileIds.includes(x.id)))
         }
 
-        uppy.on('file-added', updateFiles)
-        uppy.on('file-removed', updateFiles)
+        uppy.on('file-added', fileAdded)
+        uppy.on('file-removed', fileRemoved)
         uppy.on('restriction-failed', fileErrorCallback)
-        // uppy.addPreProcessor((fileIDs) => prepareUpload(fileIDs))
         return () => {
-            uppy.off('file-added', updateFiles)
-            uppy.off('file-removed', updateFiles)
+            uppy.off('file-added', fileAdded)
+            uppy.off('file-removed', fileRemoved)
             uppy.off('restriction-failed', fileErrorCallback)
         }
-    }, [])
+    }, [setFileImportStep])
 
     const handleValidate = useCallback(async () => {
-        uppy.getFiles().forEach((file) => {
-            uppy.setFileState(file.id, {
-                progress: { uploadComplete: true, uploadStarted: false },
-            })
-        })
         uppy.setMeta({ ['editType']: radioButtonMetaData, type: ciType })
         console.log('fileImportStep', fileImportStep)
-        await prepareUpload(uppy.getFiles().map((file) => file.id))
+        try {
+            uppy.upload().then((result) => {
+                console.log('uppy.upload', { result })
+                if (result.successful.length > 0) {
+                    setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
+                }
 
-        //   if (result.successful.length > 0) {
-        setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
-        //  }
+                const successfulFilesInfo = result.successful.map((item) => ({
+                    id: item.id,
+                    error: false,
+                }))
+                const failedFilesInfo = result.failed.map((item) => ({
+                    id: item.id,
+                    error: true,
+                }))
 
-        //to upload
-        // try {
-        //     uppy.upload().then((result) => {
-        //         if (result.successful.length > 0) {
-        //             setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
-        //             setUploadFileProgressInfo(
-        //                 result.successful.map((item) => ({
-        //                     ['id']: item.id,
-        //                     ['error']: false,
-        //                 })),
-        //             )
-        //         }
-
-        //         if (result.failed.length > 0) {
-        //             setUploadFileProgressInfo(
-        //                 result.failed.map((item) => ({
-        //                     ['id']: item.id,
-        //                     ['error']: true,
-        //                 })),
-        //             )
-        //         }
-        //     })
-        // } catch (error) {
-        //     setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
-        //     console.log(error)
-        // }
-    }, [ciType, fileImportStep, prepareUpload, radioButtonMetaData])
+                const updatedFileIds = [...successfulFilesInfo.map((x) => x.id), ...failedFilesInfo.map((x) => x.id)]
+                setUploadFileProgressInfo((prev) => {
+                    const notUpdated = prev.filter((x) => !updatedFileIds.includes(x.id))
+                    return [...notUpdated, ...successfulFilesInfo, ...failedFilesInfo]
+                })
+            })
+        } catch (error) {
+            setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
+            console.log(error)
+        }
+    }, [ciType, fileImportStep, radioButtonMetaData, setFileImportStep, t])
 
     const handleUpload = async () => {
-        // console.log('uppy.getFiles()', uppy.getFiles())
+        // allow import only if all files are validated
+
         // uppy.removeFile invalidated files
         uppy.getFiles().forEach((file) => {
             uppy.setFileState(file.id, {
-                progress: { uploadComplete: true, uploadStarted: false },
+                progress: { uploadComplete: false, uploadStarted: false },
             })
         })
-        // uppy.retryAll()
-        //     .then((result) => {
-        //         console.log("uppy.getPlugin('XHRUpload')", uppy.getPlugin('XHRUpload'))
-        //         console.log('result', result)
-        //     })
-        //     .catch((error) => {
-        //         console.log('error', error)
-        //     })
         try {
             uppy.upload().then((result) => {
                 if (result.successful.length > 0) {
                     setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
-                    setUploadFileProgressInfo(
-                        result.successful.map((item) => ({
-                            ['id']: item.id,
-                            ['error']: false,
-                        })),
-                    )
                 }
 
-                if (result.failed.length > 0) {
-                    setUploadFileProgressInfo(
-                        result.failed.map((item) => ({
-                            ['id']: item.id,
-                            ['error']: true,
-                        })),
-                    )
-                }
+                const successfulFilesInfo = result.successful.map((item) => ({
+                    id: item.id,
+                    error: false,
+                }))
+                const failedFilesInfo = result.failed.map((item) => ({
+                    id: item.id,
+                    error: true,
+                }))
+
+                setUploadFileProgressInfo([...successfulFilesInfo, ...failedFilesInfo])
             })
         } catch (error) {
             setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
@@ -243,7 +195,6 @@ export const FileImport: React.FC<IFileImport> = ({
     }
 
     const handleCancelImport = () => {
-        //close modal
         //uppy.reset() dont work/exist?
         setErrorMessages([])
         setCurrentFiles([])
@@ -253,6 +204,8 @@ export const FileImport: React.FC<IFileImport> = ({
         setRadioButtonMetaData('existing-only')
         close()
     }
+
+    console.log(uploadFileProgressInfo)
 
     return (
         <BaseModal isOpen={isOpen} close={handleCancelImport}>
