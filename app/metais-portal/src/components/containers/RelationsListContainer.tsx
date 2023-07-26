@@ -65,7 +65,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
             data={{
                 entityTypes,
                 relationsList,
-                owners,
+                owners: Array.isArray(owners) ? owners : [],
                 keysToDisplay,
             }}
             pagination={pagination}
