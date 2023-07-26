@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { FieldValues, FormState, UseFormRegister } from 'react-hook-form'
+import { Control, FieldValues, FormState, UseFormRegister } from 'react-hook-form'
 import { ErrorBlockList } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
 import { Attribute, AttributeConstraintEnumAllOf, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { EnumType } from '@isdd/metais-common/api'
@@ -16,6 +16,7 @@ interface ISection {
     generatedEntityId: CiCode
     constraintsData: (EnumType | undefined)[]
     unitsData: EnumType | undefined
+    control: Control
 }
 
 export const CreateEntitySection: React.FC<ISection> = ({
@@ -27,6 +28,7 @@ export const CreateEntitySection: React.FC<ISection> = ({
     formState,
     setSectionError,
     unitsData,
+    control,
 }) => {
     const { errors, isSubmitted } = formState
 
@@ -92,6 +94,7 @@ export const CreateEntitySection: React.FC<ISection> = ({
                             isSubmitted={isSubmitted}
                             hint={getHint(attribute)}
                             unitsData={attribute.units ? getAttributeUnits(attribute.units ?? '') : undefined}
+                            control={control}
                         />
                     )}
                 </React.Fragment>
