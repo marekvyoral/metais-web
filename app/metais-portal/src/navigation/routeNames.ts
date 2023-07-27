@@ -27,7 +27,7 @@ export enum NavigationSubRoutes {
     ATRIBUTY_OBJEKTY_EVIDENCIE = '',
     STANDARDY_ISVS = 'publicspace',
     OSOBITNE_POSTUPY = 'ci/osobitny_postup_ITVS',
-    KOMISIA_NA_STANDARDIZACIU = 'standardization/groupdetail/a89f40e5-7917-46d4-9ba1-0c6eae2a5e25',
+    KOMISIA_NA_STANDARDIZACIU = 'standardization/groupdetail/c552bc9b-3375-4040-b5a0-2da3cd832764',
     PRACOVNE_SKUPINY_KOMISIE = 'standardization/groupslist',
     ZOZNAM_NAVRHOV = 'standardization/draftslist',
     ZOZNAM_HLASOV = 'standardization/voteslist',
