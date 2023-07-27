@@ -7,7 +7,7 @@ import styles from '../styles/InfoAndCheckInput.module.scss'
 import { InfoInputIcon } from '../info-input-icon/InfoInputIcon'
 
 interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
-    id: string
+    id?: string
     label?: string
     name: string
     hint?: string
@@ -30,7 +30,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label}
                     </label>
-                    {info && <InfoInputIcon description={info} id={id} />}
+                    {info && <InfoInputIcon description={info} id={id ?? ''} />}
                 </div>
 
                 {hint && (

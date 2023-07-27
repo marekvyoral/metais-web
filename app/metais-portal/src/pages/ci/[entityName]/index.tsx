@@ -1,5 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { Filter } from '@isdd/idsk-ui-kit/filter/Filter'
 import { Input } from '@isdd/idsk-ui-kit/input/Input'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
@@ -9,7 +10,6 @@ import { useTranslation } from 'react-i18next'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
-import { ActionsOverTable } from '@/components/actions-over-table/ActionsOverTable'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@/components/constants'
 
 interface KSFilterData extends IFilterParams {

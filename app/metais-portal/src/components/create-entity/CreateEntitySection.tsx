@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { Control, FieldValues, FormState, UseFormRegister } from 'react-hook-form'
 import { ErrorBlockList } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
-import { Attribute, AttributeConstraintEnumAllOf, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { EnumType } from '@isdd/metais-common/api'
+import { Attribute, AttributeConstraintEnumAllOf, CiCode, EnumType } from '@isdd/metais-common'
 
 import { AttributeInput } from '../attribute-input/AttributeInput'
 import { AttributesConfigTechNames } from '../attribute-input/attributeDisplaySettings'

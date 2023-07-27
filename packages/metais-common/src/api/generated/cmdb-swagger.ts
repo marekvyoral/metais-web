@@ -160,6 +160,17 @@ export type CiRelTypesIntegrityCheck200 = { [key: string]: string[] }
 
 export type GetProperties200 = { [key: string]: string }
 
+export type GetReindexTaskStateByUuid200 = (typeof GetReindexTaskStateByUuid200)[keyof typeof GetReindexTaskStateByUuid200]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetReindexTaskStateByUuid200 = {
+    CREATED: 'CREATED',
+    IN_PROGRESS: 'IN_PROGRESS',
+    DONE: 'DONE',
+    CANCELLED: 'CANCELLED',
+    FAILED: 'FAILED',
+} as const
+
 export type ValidateCIsByTypesAndOwnerParams = {
     poUuid: string
     typeNames: string[]
@@ -243,8 +254,10 @@ export type PartialReindexParams = {
     timestamp: string
 }
 
-export type ReindexParams = {
-    limit?: number
+export type AsyncReindexParams = {
+    perPage?: number
+    ciPageFrom?: number
+    relPageFrom?: number
 }
 
 export type ReindexRelationshipsParams = {
@@ -332,6 +345,43 @@ export interface IntegrityCheckHolder {
 export interface GetResponseWrapper {
     isExist?: boolean
     sourceAsString?: string
+}
+
+export type ReindexTaskStage = (typeof ReindexTaskStage)[keyof typeof ReindexTaskStage]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReindexTaskStage = {
+    CI: 'CI',
+    RELATIONS: 'RELATIONS',
+    PO: 'PO',
+} as const
+
+export type ReindexTaskState = (typeof ReindexTaskState)[keyof typeof ReindexTaskState]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReindexTaskState = {
+    CREATED: 'CREATED',
+    IN_PROGRESS: 'IN_PROGRESS',
+    DONE: 'DONE',
+    CANCELLED: 'CANCELLED',
+    FAILED: 'FAILED',
+} as const
+
+export interface ReindexTask {
+    uuid?: string
+    state?: ReindexTaskState
+    startAt?: string
+    finishedAt?: string
+    lastElasticCallAt?: string
+    cmdbFetchTotal?: number
+    elasticIndexTotal?: number
+    stage?: ReindexTaskStage
+    perPage?: number
+    ciPageFrom?: number
+    relPageFrom?: number
+    currentPage?: number
+    canceled?: boolean
+    exception?: string
 }
 
 export interface RelationshipsProblemMessageUi {
@@ -489,18 +539,6 @@ export interface NeighboursFilterContainerUi {
     neighboursFilter?: NeighboursFilterUi
 }
 
-export interface RelListFilterContainerUi {
-    page?: number
-    perpage?: number
-    sortBy?: string
-    sortType?: string
-    sortSource?: string
-    sortByEndCi?: boolean
-    getIncidentRelations?: boolean
-    usageTypeFilter?: UsageTypeFilterUi
-    relFilter?: RelFilterUi
-}
-
 export interface FilterValueUi {
     equality?: string
     value?: string
@@ -527,6 +565,18 @@ export interface RelFilterUi {
     startCiUuid?: string[]
     endCiUuid?: string[]
     startOrEndCiUuid?: string[]
+}
+
+export interface RelListFilterContainerUi {
+    page?: number
+    perpage?: number
+    sortBy?: string
+    sortType?: string
+    sortSource?: string
+    sortByEndCi?: boolean
+    getIncidentRelations?: boolean
+    usageTypeFilter?: UsageTypeFilterUi
+    relFilter?: RelFilterUi
 }
 
 export interface UuidSetUi {
@@ -1282,38 +1332,38 @@ export const useReindexRelationships = <TError = unknown, TContext = unknown>(op
     return useMutation(mutationOptions)
 }
 
-export const useReindexHook = () => {
-    const reindex = useCmdbSwaggerClient<string>()
+export const useAsyncReindexHook = () => {
+    const asyncReindex = useCmdbSwaggerClient<string>()
 
-    return (params?: ReindexParams) => {
-        return reindex({ url: `/util/reindexelastic`, method: 'post', params })
+    return (params?: AsyncReindexParams) => {
+        return asyncReindex({ url: `/util/reindexelastic`, method: 'post', params })
     }
 }
 
-export const useReindexMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>, TError, { params?: ReindexParams }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>, TError, { params?: ReindexParams }, TContext> => {
+export const useAsyncReindexMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>, TError, { params?: AsyncReindexParams }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>, TError, { params?: AsyncReindexParams }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
-    const reindex = useReindexHook()
+    const asyncReindex = useAsyncReindexHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>, { params?: ReindexParams }> = (props) => {
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>, { params?: AsyncReindexParams }> = (props) => {
         const { params } = props ?? {}
 
-        return reindex(params)
+        return asyncReindex(params)
     }
 
     return { mutationFn, ...mutationOptions }
 }
 
-export type ReindexMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>>
+export type AsyncReindexMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>>
 
-export type ReindexMutationError = unknown
+export type AsyncReindexMutationError = unknown
 
-export const useReindex = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>, TError, { params?: ReindexParams }, TContext>
+export const useAsyncReindex = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>, TError, { params?: AsyncReindexParams }, TContext>
 }) => {
-    const mutationOptions = useReindexMutationOptions(options)
+    const mutationOptions = useAsyncReindexMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
@@ -4159,6 +4209,93 @@ export const useValidateCIsByTypesAndOwner = <TData = Awaited<ReturnType<ReturnT
     return query
 }
 
+export const useListAllReindexTasksHook = () => {
+    const listAllReindexTasks = useCmdbSwaggerClient<ReindexTask[]>()
+
+    return (signal?: AbortSignal) => {
+        return listAllReindexTasks({ url: `/util/reindexelastic/tasks`, method: 'get', signal })
+    }
+}
+
+export const getListAllReindexTasksQueryKey = () => [`/util/reindexelastic/tasks`] as const
+
+export const useListAllReindexTasksQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>,
+    TError = unknown,
+>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError, TData>
+}): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getListAllReindexTasksQueryKey()
+
+    const listAllReindexTasks = useListAllReindexTasksHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>> = ({ signal }) => listAllReindexTasks(signal)
+
+    return { queryKey, queryFn, ...queryOptions }
+}
+
+export type ListAllReindexTasksQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>>
+export type ListAllReindexTasksQueryError = unknown
+
+export const useListAllReindexTasks = <TData = Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError = unknown>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useListAllReindexTasksQueryOptions(options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useGetReindexTaskStateByUuidHook = () => {
+    const getReindexTaskStateByUuid = useCmdbSwaggerClient<GetReindexTaskStateByUuid200>()
+
+    return (uuid: string, signal?: AbortSignal) => {
+        return getReindexTaskStateByUuid({ url: `/util/reindexelastic/task/${uuid}/status`, method: 'get', signal })
+    }
+}
+
+export const getGetReindexTaskStateByUuidQueryKey = (uuid: string) => [`/util/reindexelastic/task/${uuid}/status`] as const
+
+export const useGetReindexTaskStateByUuidQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>,
+    TError = unknown,
+>(
+    uuid: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetReindexTaskStateByUuidQueryKey(uuid)
+
+    const getReindexTaskStateByUuid = useGetReindexTaskStateByUuidHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>> = ({ signal }) =>
+        getReindexTaskStateByUuid(uuid, signal)
+
+    return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
+}
+
+export type GetReindexTaskStateByUuidQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>>
+export type GetReindexTaskStateByUuidQueryError = unknown
+
+export const useGetReindexTaskStateByUuid = <TData = Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>, TError = unknown>(
+    uuid: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetReindexTaskStateByUuidQueryOptions(uuid, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
 export const useGetPropertiesHook = () => {
     const getProperties = useCmdbSwaggerClient<GetProperties200>()
 
@@ -5563,6 +5700,42 @@ export const useReindexReports = <TError = unknown, TVariables = void, TContext 
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexReportsHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useReindexReportsMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+export const useCancelReindexTaskByUuidHook = () => {
+    const cancelReindexTaskByUuid = useCmdbSwaggerClient<string>()
+
+    return (uuid: string) => {
+        return cancelReindexTaskByUuid({ url: `/util/reindexelastic/task/${uuid}/cancel`, method: 'delete' })
+    }
+}
+
+export const useCancelReindexTaskByUuidMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>, TError, { uuid: string }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>, TError, { uuid: string }, TContext> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const cancelReindexTaskByUuid = useCancelReindexTaskByUuidHook()
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>, { uuid: string }> = (props) => {
+        const { uuid } = props ?? {}
+
+        return cancelReindexTaskByUuid(uuid)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type CancelReindexTaskByUuidMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>>
+
+export type CancelReindexTaskByUuidMutationError = unknown
+
+export const useCancelReindexTaskByUuid = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>, TError, { uuid: string }, TContext>
+}) => {
+    const mutationOptions = useCancelReindexTaskByUuidMutationOptions(options)
 
     return useMutation(mutationOptions)
 }

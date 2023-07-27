@@ -4,9 +4,8 @@ import { Control, FieldValues, UseFormRegister } from 'react-hook-form'
 import classnames from 'classnames'
 import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
-import { Input, SimpleSelect, MultiSelect } from '@isdd/idsk-ui-kit/index'
-import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Input, SimpleSelect, MultiSelect } from '@isdd/idsk-ui-kit'
+import { Attribute, AttributeAttributeTypeEnum, EnumType } from '@isdd/metais-common/api'
 
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
 

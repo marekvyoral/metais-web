@@ -15,12 +15,7 @@ import {
     AnyObject,
 } from 'yup'
 import { TFunction } from 'i18next'
-import {
-    Attribute,
-    AttributeAttributeTypeEnum,
-    AttributeConstraintIntervalAllOf,
-    AttributeConstraintRegexAllOf,
-} from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Attribute, AttributeAttributeTypeEnum, AttributeConstraintIntervalAllOf, AttributeConstraintRegexAllOf } from '@isdd/metais-common'
 
 enum ByteInterval {
     MIN = -128,
