@@ -27,8 +27,6 @@ export const DevTestScreen: React.FC = () => {
         console.log(exportValue, extension)
     }
 
-    // const { data: ciItemData, isLoading, isError } = useReadConfigurationItemUsingGET(configurationItemId ?? '')
-
     return (
         <>
             <h4>Obrazovka na testovanie komponentov</h4>

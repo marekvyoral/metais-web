@@ -8,7 +8,7 @@ import { InfoInputIcon } from '../info-input-icon/InfoInputIcon'
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
 
 interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
-    id: string
+    id?: string
     label?: string
     name: string
     rows: number
@@ -30,7 +30,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label}
                     </label>
-                    {info && <InfoInputIcon description={info} id={id} />}
+                    {info && <InfoInputIcon description={info} id={id ?? ''} />}
                 </div>
 
                 {hint && (

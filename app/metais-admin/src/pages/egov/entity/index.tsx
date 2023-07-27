@@ -1,9 +1,9 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-import Egov from './egov'
+import Entity from './entity'
 
-export const indexRoute = Egov
+export const INDEX_ROUTE = Entity
 
 const index: React.FC = () => {
     return <Outlet />

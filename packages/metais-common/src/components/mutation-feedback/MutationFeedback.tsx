@@ -6,9 +6,15 @@ import { IconWithText } from '@isdd/idsk-ui-kit/icon-with-text/IconWithText'
 
 import styles from './mutationFeedback.module.scss'
 
+export interface MutationFeedbackError {
+    errorTitle: string
+    errorMessage: string
+    buttons?: { label: string; onClick: () => void }[]
+}
+
 interface MutationFeedbackProps {
     success: boolean
-    error: { errorTitle: string; errorMessage: string; buttons?: { label: string; onClick: () => void }[] }
+    error?: MutationFeedbackError
 }
 
 export const MutationFeedback: React.FC<MutationFeedbackProps> = ({ success, error }) => {
