@@ -53,7 +53,7 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
     return (
         <>
             <FormProvider {...formMethods}>
-                {(successedMutation || error) && <MutationFeedback success={successedMutation} error={error} />}
+                {(successedMutation || error) && <MutationFeedback success={successedMutation} error={error?.errorMessage} />}
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <>
                         {!hiddenInputs?.NAME && <Input label={t('egov.name')} {...register('name')} error={formState?.errors.name?.message} />}

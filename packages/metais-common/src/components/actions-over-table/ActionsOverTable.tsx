@@ -52,6 +52,7 @@ interface IActionsOverTableProps {
     attributes?: Attribute[]
     hiddenButtons?: Partial<HiddenButtons>
     createHref?: string
+    checkedRowItems?: number
 }
 
 const defaultPagingOptions = [
@@ -69,6 +70,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     attributeProfiles,
     columnListData,
     attributes,
+    checkedRowItems,
     hiddenButtons,
     createHref,
 }) => {
@@ -188,7 +190,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
             <div className={styles.buttonGroup}>
                 <div className={classnames(styles.mobileOrder3, styles.buttonPopup)}>
                     <ButtonPopup
-                        buttonLabel={`${t('actionOverTable.actions')} (2)`}
+                        buttonLabel={`${t('actionOverTable.actions')} (${checkedRowItems})`}
                         buttonClassname={styles.withoutMarginBottom}
                         popupContent={() => {
                             return (

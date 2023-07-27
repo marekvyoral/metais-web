@@ -141,6 +141,19 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
         })
     })
 
+    const handleShouldBeFilterOpen = () => {
+        if (defaults != null) {
+            const defaultKeys = Object.keys(defaults)
+            const hasDefaultValue = defaultKeys.some((item) => defaults[item])
+
+            if (filter.fullTextSearch || hasDefaultValue) {
+                return true
+            }
+        }
+
+        return false
+    }
+
     useEffect(() => {
         if (!state.filter[location.pathname] && !state.clearedFilter[location.pathname]) {
             dispatch({
@@ -155,7 +168,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
     return {
         ...methods,
         filter,
-        shouldBeFilterOpen: Object.keys(filter).some((key) => key !== 'fullTextSearch'),
+        shouldBeFilterOpen: handleShouldBeFilterOpen(),
         resetFilters: () => {
             methods.reset()
             setSearchParams({})
