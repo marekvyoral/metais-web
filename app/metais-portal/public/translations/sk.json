@@ -345,5 +345,12 @@
             "createdAt": "Vytvorené",
             "lastModifiedAt": "Posledná zmena"
         }
+    },
+    "feedback": {
+        "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím skúste znova."
+    },
+    "accordion": {
+        "openAll": "Otvoriť všetko",
+        "closeAll": "Zatvoriť všetko"
     }
 }

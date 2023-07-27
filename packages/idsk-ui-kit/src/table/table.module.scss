@@ -24,6 +24,7 @@
 
 .marginBottom0 {
     margin-bottom: 0px !important;
+    min-width: 150px;
 }
 
 .head {
@@ -44,6 +45,30 @@
     background-color: govuk-colour('grey-4');
 }
 
+.width {
+    width: 100%;
+}
+
 .body {
     max-height: 800px;
+    max-width: 960px;
+    overflow-x: scroll;
+}
+
+.columnHeaderStrong {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+}
+
+.row {
+    display: block !important;
+    max-width: 960px !important;
+    overflow: auto;
+}
+
+.headerRow {
+    display: flex !important;
+    max-width: 960px !important;
+    overflow: auto;
 }

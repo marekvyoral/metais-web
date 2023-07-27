@@ -50,7 +50,10 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
     return (
         <th
             ref={dropRef}
-            className={classNames('idsk-table__header', styles.header, { [styles.checkBoxCell]: id === CHECKBOX_CELL })}
+            className={classNames('idsk-table__header', styles.header, {
+                [styles.checkBoxCell]: id === CHECKBOX_CELL,
+                [styles.width]: id !== CHECKBOX_CELL,
+            })}
             colSpan={colSpan}
             style={{ opacity: isDragging ? 0.5 : 1 }}
         >
@@ -60,7 +63,7 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
                         flexRender(columnHeader, getContext())
                     ) : (
                         <TextBody size="S" className={styles.marginBottom0}>
-                            <strong>
+                            <strong className={styles.columnHeaderStrong}>
                                 {isPlaceholder ? null : flexRender(columnHeader, getContext())}
                                 {column.getCanSort() && columnEnabledSorting && (
                                     <button

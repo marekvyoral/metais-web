@@ -90,6 +90,8 @@ const reducer = (state: AuthContextState, action: Action) => {
 const AuthContext = createContext<{ state: AuthContextState; dispatch: React.Dispatch<Action> }>({ state: initialState, dispatch: () => null })
 
 const AuthContextProvider: React.FC<React.PropsWithChildren> = (props) => {
+    const locationCurrent = useLocation()
+
     const [state, dispatch] = useReducer<Reducer<AuthContextState, Action>>(reducer, initialState)
     const { hash } = useLocation()
     const navigate = useNavigate()
@@ -101,7 +103,7 @@ const AuthContextProvider: React.FC<React.PropsWithChildren> = (props) => {
         }
     }, [accessToken, state.accessToken])
 
-    if (accessToken) navigate('/')
+    if (accessToken) navigate(locationCurrent.pathname)
     return <AuthContext.Provider value={{ state, dispatch }}>{props.children}</AuthContext.Provider>
 }
 

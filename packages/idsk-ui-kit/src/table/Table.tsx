@@ -12,9 +12,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import classNames from 'classnames'
-import React from 'react'
-
-import { ColumnSort } from '../types'
+import React, { useRef } from 'react'
 
 import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableRow } from './TableRow'
@@ -23,7 +21,7 @@ import { TableInfoMessage } from './TableInfoMessage'
 import { transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
 import { TableRowExpanded } from './TableRowExpanded'
 
-import { LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
+import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 
 interface ITableProps<T> {
     data?: Array<T>
@@ -62,6 +60,9 @@ export const Table = <T,>({
     error = false,
     getExpandedRow,
 }: ITableProps<T>): JSX.Element => {
+    const wrapper1Ref = useRef<HTMLTableSectionElement>(null)
+    const wrapper2Ref = useRef<HTMLTableRowElement>(null)
+
     const transformedSort = transformColumnSortToSortingState(sort)
     const table = useReactTable({
         data: data ?? [],
@@ -93,29 +94,47 @@ export const Table = <T,>({
 
     const isEmptyRows = table.getRowModel().rows.length === 0
 
+    const handleWrapper1Scroll = () => {
+        if (wrapper1Ref.current && wrapper2Ref.current) {
+            wrapper2Ref.current.scrollLeft = wrapper1Ref.current.scrollLeft
+        }
+    }
+
+    const handleWrapper2Scroll = () => {
+        if (wrapper1Ref.current && wrapper2Ref.current) {
+            wrapper1Ref.current.scrollLeft = wrapper2Ref.current.scrollLeft
+        }
+    }
+
     return (
         <table className="idsk-table">
             <thead className={classNames('idsk-table__head', [styles.head])}>
                 {table.getHeaderGroups().map((headerGroup) => (
-                    <tr className="idsk-table__row" key={headerGroup.id}>
+                    <tr className={`idsk-table__row ${styles.headerRow}`} key={headerGroup.id} onScroll={handleWrapper2Scroll} ref={wrapper2Ref}>
                         {headerGroup.headers.map((header) => (
                             <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
                         ))}
                     </tr>
                 ))}
             </thead>
-            {isEmptyRows && (
-                <div className={styles.displayFlex}>
-                    <TableInfoMessage error={error} isEmptyRows={isEmptyRows} />
-                </div>
+            {!isLoading && isEmptyRows && (
+                <tbody className={styles.displayFlex}>
+                    <tr>
+                        <td>
+                            <TableInfoMessage error={error} isEmptyRows={isEmptyRows} />
+                        </td>
+                    </tr>
+                </tbody>
             )}
+
             <tbody
                 className={classNames('idsk-table__body', styles.body, {
                     [styles.positionRelative]: isLoading,
                     [styles.minHeight400]: isEmptyRows && isLoading,
                 })}
+                onScroll={handleWrapper1Scroll}
+                ref={wrapper1Ref}
             >
-                {isLoading && <LoadingIndicator />}
                 {table.getRowModel().rows.map((row) => (
                     <>
                         <TableRow<T> row={row} key={row.id} isRowSelected={isRowSelected} />
