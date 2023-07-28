@@ -349,6 +349,21 @@
             "lastModifiedAt": " Last change"
         }
     },
+    "notifications": {
+        "all": "All",
+        "INFO": "INFO",
+        "ERROR": "ERROR",
+        "onlyUnread": "Only unread",
+        "home": "Home",
+        "notifications": "Notifications",
+        "deleteSelected": "Delete selected",
+        "setAllAsRead": "Set all as read",
+        "deleteAll": "Delete all",
+        "columns": "Columns",
+        "column": "Column",
+        "eventType": "Event Type",
+        "created": "Created:"
+    },
     "feedback": {
         "failedFetch": "There was a problem with fetching data. Please try again."
     },

@@ -209,6 +209,27 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
+    notificationsApi: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_NOTIFICATION_ENGINE_SWAGGER_URL ?? '',
+            filters: {
+                tags: ['notification-engine-controller'],
+            },
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/notifications-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useNotificationsSwaggerClient.ts',
+                    name: 'useNotificationsSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
     iam: {
         input: {
             target: process.env.VITE_REST_CLIENT_IAM_SWAGGER_URL ?? '',

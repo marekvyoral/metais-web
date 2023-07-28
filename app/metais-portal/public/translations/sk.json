@@ -350,6 +350,21 @@
             "lastModifiedAt": "Posledná zmena"
         }
     },
+    "notifications": {
+        "all": "Všetky",
+        "INFO": "INFO",
+        "ERROR": "ERROR",
+        "onlyUnread": "Iba neprečítané",
+        "home": "Domov",
+        "notifications": "Upozornenia",
+        "deleteSelected": "Zmaž označené",
+        "setAllAsRead": "Nastaviť všetko ako prečítané",
+        "deleteAll": "Vymazať všetko",
+        "columns": "Stĺpce",
+        "column": "Stĺpec",
+        "eventType": "Typ notifikaci",
+        "created": "Vytvorene:"
+    },
     "feedback": {
         "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím skúste znova."
     },
