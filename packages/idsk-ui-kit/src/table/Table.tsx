@@ -4,6 +4,7 @@ import {
     ExpandedState,
     OnChangeFn,
     PaginationState,
+    RowSelectionState,
     Row,
     getCoreRowModel,
     getExpandedRowModel,
@@ -14,11 +15,11 @@ import {
 import classNames from 'classnames'
 import React, { useRef } from 'react'
 
-import { DraggableColumnHeader } from './DraggableColumnHeader'
+import { TableInfoMessage } from './TableInfoMessage'
 import { TableRow } from './TableRow'
 import styles from './table.module.scss'
-import { TableInfoMessage } from './TableInfoMessage'
 import { transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
+import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableRowExpanded } from './TableRowExpanded'
 
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
@@ -32,11 +33,14 @@ interface ITableProps<T> {
     columnOrder?: ColumnOrderState
     onColumnOrderChange?: React.Dispatch<React.SetStateAction<ColumnOrderState>>
     pagination?: PaginationState
+    rowSelection?: RowSelectionState
     onPaginationChange?: OnChangeFn<PaginationState> | undefined
     expandedRowsState?: ExpandedState
     onExpandedChange?: React.Dispatch<React.SetStateAction<ExpandedState>>
+    onRowSelectionChange?: OnChangeFn<RowSelectionState> | undefined
     getSubRows?: (row: T) => T[] | undefined
     isRowSelected?: (row: Row<T>) => boolean
+    isRowBold?: (row: Row<T>) => boolean
     isLoading?: boolean
     error?: boolean
     getExpandedRow?: (row: Row<T>) => JSX.Element | null
@@ -51,11 +55,14 @@ export const Table = <T,>({
     columnOrder,
     onColumnOrderChange,
     pagination,
+    rowSelection,
+    onRowSelectionChange,
     onPaginationChange,
     expandedRowsState,
     onExpandedChange,
     getSubRows,
     isRowSelected,
+    isRowBold,
     isLoading = false,
     error = false,
     getExpandedRow,
@@ -72,7 +79,9 @@ export const Table = <T,>({
             columnOrder,
             sorting: transformedSort,
             expanded: expandedRowsState,
+            rowSelection,
         },
+        onRowSelectionChange,
         onSortingChange: (sortUpdater) => {
             if (typeof sortUpdater === 'function') {
                 const columnSort = transformSortingStateToColumnSort(sortUpdater, transformedSort)
@@ -137,7 +146,7 @@ export const Table = <T,>({
             >
                 {table.getRowModel().rows.map((row) => (
                     <>
-                        <TableRow<T> row={row} key={row.id} isRowSelected={isRowSelected} />
+                        <TableRow<T> row={row} key={row.id} isRowSelected={isRowSelected} isRowBold={isRowBold} />
                         {row.getIsExpanded() && getExpandedRow && <TableRowExpanded row={row} getExpandedRow={getExpandedRow} />}
                     </>
                 ))}
