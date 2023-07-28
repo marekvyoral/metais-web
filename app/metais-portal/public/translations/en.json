@@ -279,6 +279,12 @@
             "evidenceStatus": "Evidence status",
             "createdAt": "Created",
             "lastModifiedAt": "Last change"
+        },
+        "card": {
+            "type": "Document type",
+            "size": "Size",
+            "fileName": "File name",
+            "version": "Version"
         }
     },
     "relationshipsTab": {
@@ -303,6 +309,7 @@
             "": ""
         }
     },
+    "download": "Download",
     "validation": {
         "required": "This field is required",
         "invalidEmail": "Enter a valid email",

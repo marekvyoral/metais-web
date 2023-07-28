@@ -51,7 +51,7 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
 
     return (
         <View
-            data={documentCiData?.fromNodes?.neighbourPairs ?? undefined}
+            data={documentCiData?.fromNodes?.neighbourPairs}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
             isLoading={isLoading}
