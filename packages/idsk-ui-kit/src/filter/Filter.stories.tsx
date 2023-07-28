@@ -46,10 +46,7 @@ export const Advanced: Story = {
                 <DynamicFilterAttributes
                     setValue={setValue}
                     data={filter.attributeFilters}
-                    availableAttributes={[
-                        { name: 'Option1', technicalName: 'Option1' },
-                        { name: 'Option2', technicalName: 'Option2' },
-                    ]}
+                    availableAttributes={[{ name: 'Option1' }, { name: 'Option2' }]}
                 />
             </div>
         ),

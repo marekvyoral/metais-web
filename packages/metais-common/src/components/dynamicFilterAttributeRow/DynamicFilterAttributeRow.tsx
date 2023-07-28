@@ -31,7 +31,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({ index, onChange, value, r
         .map((option) => ({ value: option, label: t(`customAttributeFilter.operator.${option}`) }))
     const availableAttrs =
         availableAttributes?.map((attr: ColumnAttribute) => ({
-            value: attr.technicalName,
+            value: attr.name,
             label: attr.name,
         })) || []
     return (

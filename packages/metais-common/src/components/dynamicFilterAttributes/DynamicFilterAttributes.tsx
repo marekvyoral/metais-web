@@ -17,7 +17,6 @@ export interface FilterAttribute {
 
 export interface ColumnAttribute {
     name: string
-    technicalName: string
 }
 
 interface Props {
@@ -65,7 +64,6 @@ export const DynamicFilterAttributes: FC<Props> = ({ data = {}, setValue, availa
         if (prevData?.name && prevData?.operator) {
             setValue(`${prevData.name}--${prevData.operator}`, undefined)
         }
-        console.log('attr', attr)
     }
 
     const addRow = (e: MouseEvent<HTMLButtonElement>) => {

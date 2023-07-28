@@ -9,11 +9,10 @@ import sk_SK from '@uppy/locales/lib/sk_SK'
 import en_US from '@uppy/locales/lib/en_US'
 import { BaseModal } from '@isdd/idsk-ui-kit/index'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 
 import { ProgressInfoList } from './FileImportList'
 import { FileImportView } from './FileImportView'
-
-import { FileImportStepEnum } from '@/components/actions-over-table/ActionsOverTable'
 
 const uppy = new Uppy({
     autoProceed: false,
