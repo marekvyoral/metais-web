@@ -4,11 +4,11 @@ import classnames from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useGetNotificationList } from '@isdd/metais-common/api/generated/notifications-swagger'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { IconWithNotification } from './IconWithNotification'
 
 import styles from '@/components/navbar/navbar.module.scss'
-import { NavigationSubRoutes } from '@/navigation/routeNames'
 
 interface INavIconGroup {
     isMobile: boolean
