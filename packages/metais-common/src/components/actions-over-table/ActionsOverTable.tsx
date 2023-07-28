@@ -10,7 +10,7 @@ import { IColumnSectionType, TableSelectColumns } from '@isdd/idsk-ui-kit/table-
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useNavigate } from 'react-router-dom'
 
-import { ExportItemsOrRelations } from '../export-items-or-relations/ExportItemsOrRelations'
+import { FileImport } from '../../../../../app/metais-portal/src/components/file-import/FileImport'
 
 import styles from './actionsOverTable.module.scss'
 
@@ -25,6 +25,7 @@ import {
 } from '@isdd/metais-common/api/generated/impexp-cmdb-swagger'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@isdd/metais-common/assets/images'
 import { IColumn } from '@isdd/metais-common/hooks/useColumnList'
+import { ExportItemsOrRelations } from '@isdd/metais-common/components/export-items-or-relations/ExportItemsOrRelations'
 
 export enum ActionNames {
     IMPORT = 'IMPORT',
@@ -244,6 +245,19 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                                 </div>
                             }
                             variant="secondary"
+                            onClick={openImportModal}
+                        />
+                    )}
+                    {!hiddenButtons?.IMPORT && (
+                        <FileImport
+                            allowedFileTypes={['.xml', '.csv', '.xlsx']}
+                            multiple
+                            endpointUrl={fileImportURL}
+                            isOpen={modalImportOpen}
+                            close={onImportClose}
+                            fileImportStep={fileImportStep}
+                            setFileImportStep={setFileImportStep}
+                            ciType={ciType}
                         />
                     )}
                     {!hiddenButtons?.EXPORT && (
@@ -259,7 +273,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                             variant="secondary"
                         />
                     )}
-                    {hiddenButtons?.EXPORT && <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />}
+                    {!hiddenButtons?.EXPORT && <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />}
                 </div>
 
                 {!hiddenButtons?.ADD_NEW_ITEM && (

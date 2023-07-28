@@ -60,18 +60,7 @@ export const FileImport: React.FC<IFileImport> = ({
     const [radioButtonMetaData, setRadioButtonMetaData] = useState<string>('existing-only')
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>([])
 
-    // disable 'Import' button if any file is invalid
-    // show 'Validate' button if any file is not validated yet
-    // show 'Import' if all files are validated (can be success or failed)
-    // useEffect(() => {}, [currentFiles])
-
-    console.log('fileImportStep', fileImportStep)
-    console.log('endpointUrl', endpointUrl)
     useEffect(() => {
-        //it works for some strings but f.e. some errors are still en when should be sk
-        //did not find the cause, object names fits
-        //if I set locale outside component on uppy = new Uppy it works
-        //but that way it cant be dynamic
         const language = i18n.language === 'sk' ? sk_SK : en_US
 
         uppy.setOptions({
@@ -90,8 +79,6 @@ export const FileImport: React.FC<IFileImport> = ({
             },
         })
     }, [allowedFileTypes, i18n.language, maxFileSize, multiple])
-
-    console.log('uppy.getFiles', uppy.getFiles())
 
     useEffect(() => {
         uppy.getPlugin('XHRUpload')?.setOptions({ endpoint: endpointUrl, headers: { Authorization: `Bearer ${accessToken}` } })
@@ -128,10 +115,8 @@ export const FileImport: React.FC<IFileImport> = ({
 
     const handleValidate = useCallback(async () => {
         uppy.setMeta({ ['editType']: radioButtonMetaData, type: ciType })
-        console.log('fileImportStep', fileImportStep)
         try {
             uppy.upload().then((result) => {
-                console.log('uppy.upload', { result })
                 if (result.successful.length > 0) {
                     setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
                 }
@@ -153,14 +138,10 @@ export const FileImport: React.FC<IFileImport> = ({
             })
         } catch (error) {
             setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
-            console.log(error)
         }
     }, [ciType, fileImportStep, radioButtonMetaData, setFileImportStep, t])
 
     const handleUpload = async () => {
-        // allow import only if all files are validated
-
-        // uppy.removeFile invalidated files
         uppy.getFiles().forEach((file) => {
             uppy.setFileState(file.id, {
                 progress: { uploadComplete: false, uploadStarted: false },
@@ -185,7 +166,6 @@ export const FileImport: React.FC<IFileImport> = ({
             })
         } catch (error) {
             setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
-            console.log(error)
         }
     }
 
@@ -194,7 +174,6 @@ export const FileImport: React.FC<IFileImport> = ({
     }
 
     const handleCancelImport = () => {
-        //uppy.reset() dont work/exist?
         setErrorMessages([])
         setCurrentFiles([])
         setUploadFileProgressInfo([])
@@ -203,8 +182,6 @@ export const FileImport: React.FC<IFileImport> = ({
         setRadioButtonMetaData('existing-only')
         close()
     }
-
-    console.log(uploadFileProgressInfo)
 
     return (
         <BaseModal isOpen={isOpen} close={handleCancelImport}>

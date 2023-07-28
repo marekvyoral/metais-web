@@ -28,7 +28,7 @@ export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ ciType
     const [filter, setFilter] = useState(defaultCiListPostData)
     const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
     const [selectedRoleId, setSelectedRoleId] = useState<string>('')
-    const { implicitHierarchyData, isLoading, isError } = useGetImplicitHierarchy(filter)
+    const { implicitHierarchyData } = useGetImplicitHierarchy(filter)
 
     useEffect(() => {
         if (implicitHierarchyData?.rights && selectedOrg === null) {
@@ -42,8 +42,8 @@ export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ ciType
     return (
         <>
             <SelectPublicAuthorityAndRole
-                onChangeAuthority={(val) => setSelectedOrg(Array.isArray(val) ? val[0] : val)}
-                onChangeRole={(e) => setSelectedRoleId(e.target.value)}
+                onChangeAuthority={(val: string) => setSelectedOrg(Array.isArray(val) ? val[0] : val)}
+                onChangeRole={(e: any) => setSelectedRoleId(e.target.value)}
                 selectedOrg={selectedOrg}
                 filterCallbacks={{ setFilter }}
                 filter={filter}
