@@ -128,6 +128,10 @@
         "yes": "Yes",
         "no": "No"
     },
+    "sidebar": {
+        "hide": "HIDE",
+        "unhide": "SHOW"
+    },
     "filter": {
         "expand": "Expand filter",
         "collapse": "Collapse filter",
@@ -345,5 +349,12 @@
             "createdAt": "Created",
             "lastModifiedAt": " Last change"
         }
+    },
+    "feedback": {
+        "failedFetch": "There was a problem with fetching data. Please try again."
+    },
+    "accordion": {
+        "openAll": "Open all",
+        "closeAll": "Close all"
     }
 }

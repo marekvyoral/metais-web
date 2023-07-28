@@ -52,7 +52,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     }
     const [sectionError, setSectionError] = useState<{ [x: string]: boolean }>(sectionErrorDefaultConfig)
 
-    const { register, handleSubmit, reset, formState, setValue } = useForm({ resolver: yupResolver(generateFormSchema(attributes, t)) })
+    const { register, handleSubmit, reset, formState, setValue, control } = useForm({ resolver: yupResolver(generateFormSchema(attributes, t)) })
     const referenceIdValue = generatedEntityId?.ciurl?.split('/').pop()
     const metaIsCodeValue = generatedEntityId?.cicode
     useEffect(() => {
@@ -76,6 +76,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                         constraintsData={constraintsData}
                         unitsData={unitsData}
                         generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
+                        control={control}
                     />
                 ),
             },
@@ -93,6 +94,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                         constraintsData={constraintsData}
                         generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
                         unitsData={unitsData}
+                        control={control}
                     />
                 ),
             })),

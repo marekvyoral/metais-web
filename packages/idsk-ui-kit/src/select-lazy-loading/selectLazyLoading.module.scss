@@ -1,7 +1,7 @@
 @import '@isdd/idsk-ui-kit/src/utils.scss';
 
 .selectLazyLoading {
-    height: fit-content;
+    height: fit-content !important;
     .control {
         min-height: 0px !important;
     }

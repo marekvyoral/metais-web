@@ -5,10 +5,16 @@ import { InfoInputIcon } from '../info-input-icon/InfoInputIcon'
 import { GreenCheckMarkIcon } from '../assets/images'
 import styles from '../styles/InfoAndCheckInput.module.scss'
 
+export interface SelectOption {
+    value?: string
+    label?: string
+    disabled?: boolean
+    selected?: boolean
+}
 interface SelectProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
-    id: string
+    id?: string
     label: string
-    options: { value: string; label: string; disabled?: boolean }[]
+    options: SelectOption[]
     disabled?: boolean
     error?: string
     info?: string
@@ -24,7 +30,7 @@ export const SimpleSelect = forwardRef<HTMLSelectElement, SelectProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label}
                     </label>
-                    {info && <InfoInputIcon description={info} id={id} />}
+                    {info && <InfoInputIcon description={info} id={id ?? ''} />}
                 </div>
                 {error && (
                     <>
@@ -39,7 +45,7 @@ export const SimpleSelect = forwardRef<HTMLSelectElement, SelectProps>(
                             </option>
                         ) : null}
                         {options.map((item) => (
-                            <option value={item.value} key={item.value} disabled={item.disabled}>
+                            <option value={item.value} key={item.value} disabled={item.disabled} selected={item?.selected}>
                                 {item.label}
                             </option>
                         ))}

@@ -116,12 +116,25 @@ export default defineConfig({
                     'ci-type-relationship-type-map-controller',
                     'relationship-type-controller',
                     'rights-type-controller',
+                    'query',
                 ],
             },
         },
         output: {
             target: `./packages/metais-common/src/api/generated/types-repo-swagger.ts`,
             override: {
+                operations: {
+                    listAttrProfileUsingPOST: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
+                    listTypesUsingPOST: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
+                },
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useTypesRepoSwaggerClient.ts',
                     name: 'useTypesRepoSwaggerClient',
@@ -188,6 +201,24 @@ export default defineConfig({
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useUserConfigSwaggerClient.ts',
                     name: 'useUserConfigSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    iam: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_IAM_SWAGGER_URL ?? '',
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/iam-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useIAmSwaggerClient.ts',
+                    name: 'useIAmSwaggerClient',
                 },
             },
             ...defaultOutputOptions,

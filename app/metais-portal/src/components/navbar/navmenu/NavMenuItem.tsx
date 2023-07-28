@@ -2,10 +2,9 @@ import classnames from 'classnames'
 import React, { SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { navItems } from './NavMenu'
-
-import { RouteNames } from '@/navigation/routeNames'
 
 interface INavMenuItem {
     path: string

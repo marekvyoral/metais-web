@@ -12,7 +12,13 @@ interface IBaseModalProps extends PropsWithChildren {
 
 export const BaseModal: React.FC<IBaseModalProps> = ({ isOpen, close, children }) => {
     return (
-        <Modal isOpen={isOpen} onRequestClose={close} className={styles.modalContent} overlayClassName={styles.customModalOverlay}>
+        <Modal
+            isOpen={isOpen}
+            onRequestClose={close}
+            className={styles.modalContent}
+            overlayClassName={styles.customModalOverlay}
+            ariaHideApp={false}
+        >
             <button className={styles.closeButton} onClick={close}>
                 <img src={NavigationCloseIcon} alt="navigation-close" />
             </button>

@@ -1,10 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { NavMenuItem } from './NavMenuItem'
-
-import { NavigationSubRoutes, RouteNames } from '@/navigation/routeNames'
 
 interface INavMenuList {
     activeTab: RouteNames | undefined

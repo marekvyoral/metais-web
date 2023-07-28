@@ -25,4 +25,6 @@ export interface IListView {
         metaAttributes: { name: string; order: number }[]
     }) => void
     resetUserSelectedColumns: () => Promise<void>
+    isLoading: boolean
+    isError: boolean
 }

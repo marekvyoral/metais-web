@@ -28,7 +28,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, d
     } = useFilter<T & IFilterParams>(defaultFilterValues)
     const { t } = useTranslation()
     const [isOpen, setOpen] = useState(shouldBeFilterOpen)
-    console.log('defaultFilterValues:', defaultFilterValues)
+    const [showScrollbar, setShowscrollbar] = useState(isOpen)
     if (!heading) {
         heading = (
             <form onSubmit={onSubmit}>
@@ -45,6 +45,18 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, d
             </form>
         )
     }
+
+    const handleOpenCloseForm = () => {
+        setOpen(!isOpen)
+        if (isOpen) {
+            setShowscrollbar(!isOpen)
+        } else {
+            setTimeout(() => {
+                setShowscrollbar(!isOpen)
+            }, 500)
+        }
+    }
+
     return (
         <div data-module="idsk-table-filter" className={classNames('idsk-table-filter', styles.filter)}>
             <div className={classNames('idsk-table-filter__panel idsk-table-filter__inputs', { 'idsk-table-filter--expanded': isOpen })}>
@@ -52,7 +64,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, d
                     <div className={classNames(styles.heading, 'idsk-table-filter__title govuk-heading-m')}>{heading}</div>
                     <div className={styles.expandButton}>
                         <button
-                            onClick={() => setOpen(!isOpen)}
+                            onClick={handleOpenCloseForm}
                             className="govuk-body govuk-link idsk-filter-menu__toggle"
                             tabIndex={0}
                             data-category-name=""
@@ -64,16 +76,22 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, d
                     </div>
                 </div>
 
-                <div className={styles.formWrapper}>
+                <div>
                     <form
-                        className={classNames('', { 'idsk-table-filter__content--expanded': isOpen, 'idsk-table-filter__content': !isOpen })}
+                        className={classNames(styles.animate, isOpen && styles.grow, showScrollbar && styles.form)}
                         action="#"
                         onSubmit={(e) => onSubmit(e)}
                     >
-                        {form(register, control, filter, setValue)}
-                        <div className={styles.actionRow}>
-                            <ButtonLink label={t('filter.reset')} onClick={reset} className={styles.clearButton} type="reset" />
-                            <Button label={t('filter.submit')} type="submit" />
+                        <div
+                            className={classNames({
+                                [styles.formWrapper]: true,
+                            })}
+                        >
+                            {form(register, control, filter, setValue)}
+                            <div className={styles.actionRow}>
+                                <ButtonLink label={t('filter.reset')} onClick={reset} className={styles.clearButton} type="reset" />
+                                <Button label={t('filter.submit')} type="submit" />
+                            </div>
                         </div>
                     </form>
                 </div>

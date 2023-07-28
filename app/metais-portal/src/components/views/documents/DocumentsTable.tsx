@@ -19,19 +19,9 @@ interface DocumentsTable {
     handleFilterChange: (filter: IFilter) => void
 }
 
-const Loading: React.FC = () => {
-    return <div>loading</div>
-}
-
-const Error: React.FC = () => {
-    return <div>error</div>
-}
-
 export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColumns, isLoading, isError, pagination, handleFilterChange }) => {
     const { t } = useTranslation()
 
-    if (isLoading) return <Loading />
-    if (isError) return <Error />
     const additionalColumnsNullsafe = additionalColumns ?? []
     const columns: Array<ColumnDef<TableCols>> = [
         {
@@ -79,7 +69,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColum
 
     return (
         <>
-            <Table columns={columns} data={data} />
+            <Table columns={columns} data={data} isLoading={isLoading} error={isError} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
     )

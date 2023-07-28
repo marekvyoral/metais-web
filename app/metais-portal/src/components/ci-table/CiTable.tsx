@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -21,23 +21,32 @@ import styles from './ciTable.module.scss'
 
 import { IListData } from '@/types/list'
 
+export interface IRowSelectionState {
+    rowSelection: Record<string, ColumnsOutputDefinition>
+    setRowSelection: React.Dispatch<React.SetStateAction<Record<string, ColumnsOutputDefinition>>>
+}
+
 interface ICiTable {
     data: IListData
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
     sort: ColumnSort[]
+    rowSelectionState: IRowSelectionState
+    isLoading: boolean
+    isError: boolean
 }
 
-export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChange, sort }) => {
+export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChange, sort, rowSelectionState, isLoading, isError }) => {
     const { t } = useTranslation()
     const {
         state: { user },
     } = useAuth()
     const isUserLogged = !!user
 
-    const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
+    const { rowSelection, setRowSelection } = rowSelectionState
+
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
-    const tableData = mapTableData(data?.tableData, schemaAttributes, t, data?.constraintsData) ?? []
+    const tableData = mapTableData(data.tableData, schemaAttributes, t, data.constraintsData)
 
     const columnsAttributes = sortAndMergeCiColumns(data?.columnListData)
 
@@ -53,7 +62,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 setRowSelection(newRowSelection)
             }
         },
-        [rowSelection],
+        [rowSelection, setRowSelection],
     )
 
     const handleAllCheckboxChange = useCallback(
@@ -67,7 +76,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 setRowSelection((prevRowSelection) => ({ ...prevRowSelection, ...reduceTableDataToObject(rows) }))
             }
         },
-        [rowSelection],
+        [rowSelection, setRowSelection],
     )
 
     const isRowSelected = useCallback(
@@ -77,7 +86,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
         [rowSelection],
     )
 
-    const clearSelectedRows = useCallback(() => setRowSelection({}), [])
+    const clearSelectedRows = useCallback(() => setRowSelection({}), [setRowSelection])
 
     const columnsFromApi =
         columnsAttributes?.map((attribute, index) => {
@@ -158,6 +167,8 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 }}
                 sort={sort}
                 isRowSelected={isRowSelected}
+                isLoading={isLoading}
+                error={isError}
             />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>

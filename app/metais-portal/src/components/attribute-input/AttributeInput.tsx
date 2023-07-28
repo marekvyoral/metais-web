@@ -1,12 +1,11 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { FieldValues, UseFormRegister } from 'react-hook-form'
+import { Control, FieldValues, UseFormRegister } from 'react-hook-form'
 import classnames from 'classnames'
 import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
-import { Input, SimpleSelect } from '@isdd/idsk-ui-kit/index'
-import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Input, SimpleSelect, MultiSelect } from '@isdd/idsk-ui-kit'
+import { Attribute, AttributeAttributeTypeEnum, EnumType } from '@isdd/metais-common/api'
 
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
 
@@ -32,9 +31,10 @@ interface IAttributeInput {
     hint?: string
     isSubmitted: boolean
     unitsData?: EnumType
+    control?: Control
 }
 
-export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register, error, constraints, hint, isSubmitted }) => {
+export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register, error, constraints, hint, isSubmitted, control }) => {
     const { t } = useTranslation()
     //needs to be implemented with InputWithIcon component to show icon or string based on units
     //const hasUnits = !!attribute.units && !!unitsData
@@ -125,16 +125,17 @@ export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register,
             }
             case isEnum: {
                 if (constraints) {
-                    /*if (attribute.array) {
+                    if (attribute.array) {
                         return (
                             <MultiSelect
                                 id={attribute.technicalName ?? ''}
+                                name={attribute.technicalName ?? ''}
                                 label={attribute.name + requiredLabel}
                                 options={createOptions(constraints)}
-                                {...register(attribute.technicalName ?? '')}
+                                control={control}
                             />
                         )
-                    } else */ {
+                    } else {
                         return (
                             <SimpleSelect
                                 id={attribute.technicalName ?? ''}

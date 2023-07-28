@@ -9,6 +9,11 @@ import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
 import { IColumnSectionType, TableSelectColumns } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useNavigate } from 'react-router-dom'
+
+import { ExportItemsOrRelations } from '../export-items-or-relations/ExportItemsOrRelations'
+
+import styles from './actionsOverTable.module.scss'
+
 import { Attribute, AttributeProfile, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import {
     useExportCsvHook,
@@ -21,24 +26,33 @@ import {
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@isdd/metais-common/assets/images'
 import { IColumn } from '@isdd/metais-common/hooks/useColumnList'
 
-import { FileImport } from '../file-import/FileImport'
-import { ExportItemsOrRelations } from '../export-items-or-relations/ExportItemsOrRelations'
+export enum ActionNames {
+    IMPORT = 'IMPORT',
+    EXPORT = 'EXPORT',
+    SELECT_COLUMN = 'SELECT_COLUMN',
+    ADD_NEW_ITEM = 'ADD_NEW_ITEM',
+}
 
-import styles from './actionsOverTable.module.scss'
+export type HiddenButtons = {
+    [name in ActionNames]: boolean
+}
 
 interface IActionsOverTableProps {
     pagingOptions?: { value: string; label: string; disabled?: boolean }[]
     handleFilterChange?: (filter: IFilter) => void
     ciType: string
     entityName: string
-    storeUserSelectedColumns: (columnSelection: {
+    storeUserSelectedColumns?: (columnSelection: {
         attributes: { name: string; order: number }[]
         metaAttributes: { name: string; order: number }[]
     }) => void
-    resetUserSelectedColumns: () => Promise<void>
-    attributeProfiles: AttributeProfile[]
-    columnListData: IColumn | undefined
-    attributes: Attribute[]
+    resetUserSelectedColumns?: () => Promise<void>
+    attributeProfiles?: AttributeProfile[]
+    columnListData?: IColumn | undefined
+    attributes?: Attribute[]
+    hiddenButtons?: Partial<HiddenButtons>
+    createHref?: string
+    checkedRowItems?: number
 }
 
 const defaultPagingOptions = [
@@ -61,6 +75,9 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     attributeProfiles,
     columnListData,
     attributes,
+    checkedRowItems,
+    hiddenButtons,
+    createHref,
 }) => {
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
     const baseURL = import.meta.env.VITE_REST_CLIENT_IMPEXP_CMDB_TARGET_URL
@@ -141,25 +158,27 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
         }
     }
 
-    const attributeProfilesColumnSections: IColumnSectionType[] = attributeProfiles.map((attributeProfile) => ({
-        name: attributeProfile.name || '',
-        attributes:
-            attributeProfile.attributes
-                ?.filter((attribute) => attribute.invisible === false)
-                .map((attribute) => ({
-                    name: attribute.name || '',
-                    technicalName: attribute.technicalName || '',
-                })) || [],
-    }))
+    const attributeProfilesColumnSections: IColumnSectionType[] =
+        attributeProfiles?.map((attributeProfile) => ({
+            name: attributeProfile.name || '',
+            attributes:
+                attributeProfile.attributes
+                    ?.filter((attribute) => attribute.invisible === false)
+                    .map((attribute) => ({
+                        name: attribute.name || '',
+                        technicalName: attribute.technicalName || '',
+                    })) || [],
+        })) ?? []
 
     const attributesColumnSection: IColumnSectionType = {
         name: entityName || '',
-        attributes: attributes
-            .filter((attribute) => attribute.invisible === false)
-            .map((attribute) => ({
-                name: attribute.name || '',
-                technicalName: attribute.technicalName || '',
-            })),
+        attributes:
+            attributes
+                ?.filter((attribute) => attribute.invisible === false)
+                ?.map((attribute) => ({
+                    name: attribute.name || '',
+                    technicalName: attribute.technicalName || '',
+                })) ?? [],
     }
 
     const metaAttributesColumnSection: IColumnSectionType = {
@@ -189,7 +208,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
             <div className={styles.buttonGroup}>
                 <div className={classnames(styles.mobileOrder3, styles.buttonPopup)}>
                     <ButtonPopup
-                        buttonLabel={`${t('actionOverTable.actions')} (2)`}
+                        buttonLabel={`${t('actionOverTable.actions')} (${checkedRowItems})`}
                         buttonClassname={styles.withoutMarginBottom}
                         popupContent={() => {
                             return (
@@ -215,72 +234,69 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                     />
                 </div>
                 <div className={classnames(styles.buttonImportExport, styles.mobileOrder2)}>
-                    <Button
-                        className={classnames(styles.withoutMarginBottom)}
-                        onClick={openImportModal}
-                        label={
-                            <div className={styles.buttonWithIcon}>
-                                <img className={styles.iconExportImport} src={ImportIcon} />
-                                <TextBody className={styles.withoutMarginBottom}>{t('actionOverTable.import')}</TextBody>
-                            </div>
-                        }
-                        variant="secondary"
-                    />
-                    <FileImport
-                        allowedFileTypes={['.xml', '.csv', '.xlsx']}
-                        multiple
-                        endpointUrl={fileImportURL}
-                        isOpen={modalImportOpen}
-                        close={onImportClose}
-                        fileImportStep={fileImportStep}
-                        setFileImportStep={setFileImportStep}
-                        ciType={ciType}
-                    />
-                    <Button
-                        className={classnames(styles.withoutMarginBottom)}
-                        onClick={openModal}
-                        label={
-                            <div className={styles.buttonWithIcon}>
-                                <img className={styles.iconExportImport} src={ExportIcon} />
-                                <TextBody className={styles.withoutMarginBottom}>{t('actionOverTable.export')}</TextBody>
-                            </div>
-                        }
-                        variant="secondary"
-                    />
-                    <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />
+                    {!hiddenButtons?.IMPORT && (
+                        <Button
+                            className={classnames(styles.withoutMarginBottom)}
+                            label={
+                                <div className={styles.buttonWithIcon}>
+                                    <img className={styles.iconExportImport} src={ImportIcon} />
+                                    <TextBody className={styles.withoutMarginBottom}>{t('actionOverTable.import')}</TextBody>
+                                </div>
+                            }
+                            variant="secondary"
+                        />
+                    )}
+                    {!hiddenButtons?.EXPORT && (
+                        <Button
+                            className={classnames(styles.withoutMarginBottom)}
+                            onClick={openModal}
+                            label={
+                                <div className={styles.buttonWithIcon}>
+                                    <img className={styles.iconExportImport} src={ExportIcon} />
+                                    <TextBody className={styles.withoutMarginBottom}>{t('actionOverTable.export')}</TextBody>
+                                </div>
+                            }
+                            variant="secondary"
+                        />
+                    )}
+                    {hiddenButtons?.EXPORT && <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />}
                 </div>
 
-                <Button
-                    className={classnames(styles.withoutMarginBottom, styles.mobileOrder1)}
-                    onClick={() => {
-                        navigate(`/ci/${ciType}/create`)
-                    }}
-                    label={
-                        <div className={styles.buttonWithIcon}>
-                            <img className={styles.iconAddItems} src={PlusIcon} />
-                            {t('actionOverTable.addISVSitem')}
-                        </div>
-                    }
-                />
+                {!hiddenButtons?.ADD_NEW_ITEM && (
+                    <Button
+                        className={classnames(styles.withoutMarginBottom, styles.mobileOrder1)}
+                        onClick={() => {
+                            navigate(createHref ?? `/ci/${ciType}/create`)
+                        }}
+                        label={
+                            <div className={styles.buttonWithIcon}>
+                                <img className={styles.iconAddItems} src={PlusIcon} />
+                                {t('actionOverTable.addISVSitem')}
+                            </div>
+                        }
+                    />
+                )}
             </div>
             <div className={styles.buttonGroupSelect}>
-                <ButtonPopup
-                    buttonLabel={t('actionOverTable.selectColumn')}
-                    buttonClassname={styles.withoutMarginBottom}
-                    popupContent={(closePopup) => {
-                        return (
-                            <TableSelectColumns
-                                onClose={closePopup}
-                                resetDefaultOrder={resetUserSelectedColumns}
-                                showSelectedColumns={storeUserSelectedColumns}
-                                attributeProfilesColumnSections={attributeProfilesColumnSections}
-                                columnListData={columnListData}
-                                attributesColumnSection={attributesColumnSection}
-                                metaAttributesColumnSection={metaAttributesColumnSection}
-                            />
-                        )
-                    }}
-                />
+                {!hiddenButtons?.SELECT_COLUMN && (
+                    <ButtonPopup
+                        buttonLabel={t('actionOverTable.selectColumn')}
+                        buttonClassname={styles.withoutMarginBottom}
+                        popupContent={(closePopup) => {
+                            return (
+                                <TableSelectColumns
+                                    onClose={closePopup}
+                                    resetDefaultOrder={resetUserSelectedColumns}
+                                    showSelectedColumns={storeUserSelectedColumns}
+                                    attributeProfilesColumnSections={attributeProfilesColumnSections}
+                                    columnListData={columnListData}
+                                    attributesColumnSection={attributesColumnSection}
+                                    metaAttributesColumnSection={metaAttributesColumnSection}
+                                />
+                            )
+                        }}
+                    />
+                )}
                 <SimpleSelect
                     className={styles.selectGroup}
                     label={t('actionOverTable.view')}

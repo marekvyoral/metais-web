@@ -45,23 +45,18 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
     }
     const { isLoading: areRelationsLoading, isError: areRelationsError, relationsList, owners } = useEntityRelationsDataList(entityId, pageConfig)
 
-    if (areTypesLoading) {
-        return <div>Loading...</div>
-    }
-    if (areTypesError) {
-        return <div>Error</div>
-    }
-
     const pagination: Pagination = {
         pageNumber: pageConfig.page ?? 1,
         pageSize: pageConfig.perPage ?? 10,
         dataLength: relationsList?.pagination?.totaltems ?? 0,
     }
 
+    const isLoading = areRelationsLoading || areTypesLoading
+    const isError = areTypesError || areRelationsError
     return (
         <View
-            isLoading={areRelationsLoading}
-            isError={areRelationsError}
+            isLoading={isLoading}
+            isError={isError}
             data={{
                 entityTypes,
                 relationsList,

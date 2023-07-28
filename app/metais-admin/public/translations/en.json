@@ -66,6 +66,15 @@
         "yes": "Yes",
         "no": "No"
     },
+    "searchInput": {
+        "search": "Search"
+    },
+    "tableSelectColumns": {
+        "searchPlaceholder": "Search column name",
+        "refreshButton": "Refresh",
+        "cancelButton": "Cancel",
+        "viewButton": "View"
+    },
     "table": {
         "title": "Cities",
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
@@ -110,5 +119,111 @@
         "buttonAddNewRelation": "Add a new relation",
         "buttonAddNewRelationCard": "Add a new item and relation",
         "selectView": "View"
+    },
+    "egov": {
+        "name": "Name",
+        "technicalName": "Technical Name",
+        "type": "Type",
+        "state": "State",
+        "engName": "English name",
+        "codePrefix": "Prefix metais code",
+        "uriPrefix": "URI prefix",
+        "valid": "State",
+        "description": "Description",
+        "engDescription": "English description",
+        "color": "Color",
+        "roles": "Allowed Roles",
+        "order": "Order",
+        "invisible": "Visibility",
+        "clarification": "Clarification",
+        "defaultValue": "Default value",
+        "constraints": "Constraint",
+        "minValue": "Min. value",
+        "maxValue": "Max. value",
+        "units": "Measure unit",
+        "edit": "Edit",
+        "detail": {
+            "profileAttributesHeading": "Detail attributes profile",
+            "profileAttributes": "Attributes",
+            "entityHeading": "Entity detail",
+            "profiles": "Profiles",
+            "source": "Sources",
+            "target": "Target",
+            "summarizingCard": "Summarizing card",
+            "genericProfile": "Generic profile",
+            "connections": "Connections",
+            "direction": {
+                "heading": "Type of connection",
+                "source": "Source",
+                "target": "Target"
+            },
+            "validityChange": {
+                "setValid": "Set valid",
+                "setInvalid": "Set invalid"
+            },
+            "visibilityChange": {
+                "setVisible": "Set visible",
+                "setInvisible": "Set invisible"
+            },
+            "showOwnerChange": {
+                "true": "Allow",
+                "false": "Forbid",
+                "": "Forbid",
+                "undefined": "Forbid"
+            },
+            "selectOption": "Select option",
+            "showOwner": {
+                "heading": "Show owner",
+                "true": "Allowed",
+                "false": "Forbidden",
+                "undefined": "Forbidden",
+                "": "Forbidden"
+            }
+        },
+        "create": {
+            "requiredField": "This field is required",
+            "codePrefixRegex": "Accepted character are only 'a'..'z' and underscore '_'.",
+            "technicalNameRegex": "Technical name could only consists of alphabet character",
+            "addProfile": "Add profile",
+            "removeProfile": "Remove profile",
+            "addConnection": "Add connection",
+            "addAttribute": "Add attribute"
+        }
+    },
+
+    "validity": {
+        "true": "Valid",
+        "false": "Invalid",
+        "undefined": "Invalid"
+    },
+    "type": {
+        "application": "Application",
+        "system": "System",
+        "custom": "Custom"
+    },
+    "actionOverTable": {
+        "import": "Import",
+        "export": "Export",
+        "addISVSitem": "Add ISVS item",
+        "selectColumn": "Columns",
+        "view": "View",
+        "actions": "Bulk actions",
+        "invalidateItems": "Invalidate items",
+        "validateItems": "Validate actions",
+        "changeOwner": "Change owner",
+        "metaColumnName": {
+            "state": "Evidence status",
+            "group": "Manager",
+            "createdAt": "Created",
+            "lastModifiedAt": " Last change"
+        }
+    },
+    "actionsInTable": {
+        "actions": "Actions",
+        "edit": "Edit",
+        "reset": "Reset",
+        "save": "Save",
+        "cancel": "cancel",
+        "moreActions": "More"
     }
 }
