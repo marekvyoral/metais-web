@@ -280,6 +280,12 @@
             "evidenceStatus": "Stav evidencie",
             "createdAt": "Vytvorené",
             "lastModifiedAt": "Posledná zmena"
+        },
+        "card": {
+            "type": "Typ dokumentu",
+            "size": "Veľkosť",
+            "fileName": "Názov súboru",
+            "version": "Verzia"
         }
     },
     "relationshipsTab": {
@@ -304,6 +310,7 @@
             "": ""
         }
     },
+    "download": "Stiahnuť",
     "validation": {
         "required": "Toto pole je povinné",
         "invalidEmail": "Zadajte platný e-mail",
