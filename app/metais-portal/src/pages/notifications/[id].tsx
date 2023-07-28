@@ -3,10 +3,9 @@ import React, { useEffect } from 'react'
 import { BreadCrumbs, HomeIcon, LoadingIndicator, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useGetNotificationDetail, useSetNotificationAsRead } from '@isdd/metais-common/api/generated/notifications-swagger'
 import { useTranslation } from 'react-i18next'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import styles from './notifications.module.scss'
-
-import { NavigationSubRoutes, RouteNames } from '@/navigation/routeNames'
 
 const NotificationsDetailPage = () => {
     const { id } = useParams()

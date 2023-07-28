@@ -7,12 +7,11 @@ import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFil
 import { useTranslation } from 'react-i18next'
 import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
 import { Notification, useGetNotificationListElastic } from '@isdd/metais-common/api/generated/notifications-swagger'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { ActionsGroup } from './ActionsGroup'
 import { selectedDefaultColumns } from './defaults'
 import { firstLetterToLowerCase, handleAllCheckboxChange, handleCheckboxChange } from './notificationUtils'
-
-import { NavigationSubRoutes, RouteNames } from '@/navigation/routeNames'
 
 const ALL_EVENT_TYPES = 'All'
 const NOTIFICATION_TITLE = 'messagePerex'
