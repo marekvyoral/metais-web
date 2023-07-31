@@ -4,8 +4,9 @@ import { GetImplicitHierarchyFilter, useGetImplicitHierarchy } from '@isdd/metai
 import { HierarchyRightsUi, useGenerateCodeAndURL } from '@isdd/metais-common/api'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useGetRightForPO } from '@isdd/metais-common/hooks/useGetRightForPO'
+import { MultiValue } from 'react-select'
 
-import { SelectPublicAuthorityAndRole } from '@/common/SelectPublicAuthorityAndRole'
+import { SelectPublicAuthorityAndRole } from '../../common/SelectPublicAuthorityAndRole'
 
 interface IFileImportItemsSelect {
     ciType: string
@@ -27,7 +28,7 @@ export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ ciType
 
     const [filter, setFilter] = useState(defaultCiListPostData)
     const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
-    const [selectedRoleId, setSelectedRoleId] = useState<string>('')
+    const [, setSelectedRoleId] = useState<string>('')
     const { implicitHierarchyData } = useGetImplicitHierarchy(filter)
 
     useEffect(() => {
@@ -42,7 +43,9 @@ export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ ciType
     return (
         <>
             <SelectPublicAuthorityAndRole
-                onChangeAuthority={(val: string) => setSelectedOrg(Array.isArray(val) ? val[0] : val)}
+                onChangeAuthority={(val: HierarchyRightsUi | MultiValue<HierarchyRightsUi> | null) =>
+                    setSelectedOrg(Array.isArray(val) ? val[0] : val)
+                }
                 onChangeRole={(e: any) => setSelectedRoleId(e.target.value)}
                 selectedOrg={selectedOrg}
                 filterCallbacks={{ setFilter }}
