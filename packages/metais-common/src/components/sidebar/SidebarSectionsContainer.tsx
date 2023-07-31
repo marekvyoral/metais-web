@@ -1,37 +1,32 @@
 import React, { SetStateAction, useState } from 'react'
 import classNames from 'classnames'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { useCurrentTab } from '@isdd/metais-common/hooks/useCurrentTab'
 
 import { SidebarSection } from './SidebarSection'
 
-import styles from '@/components/GridView.module.scss'
-import { navItems } from '@/components/navbar/navmenu/NavMenu'
-
-export type AccordionSection = {
-    title: string
-    content?: React.ReactNode
-    path: string
-    icon: string
-}
+import { useCurrentTab } from '@isdd/metais-common/hooks/useCurrentTab'
+import styles from '@isdd/metais-common/components/GridView.module.scss'
+import { NavigationItem } from '@isdd/metais-common/navigation/routeNames'
 
 interface Props {
-    sections: AccordionSection[]
+    sections: NavigationItem[]
     isSidebarExpanded: boolean
     setIsSidebarExpanded: React.Dispatch<SetStateAction<boolean>>
 }
 
-export const Sidebar = ({ isSidebarExpanded, setIsSidebarExpanded, sections }: Props) => {
+export const SidebarSectionsContainer = ({ isSidebarExpanded, setIsSidebarExpanded, sections }: Props) => {
     const [expandedSectionIndexes, setExpandedSectionIndexes] = useState<boolean[]>(() => Array(sections.length).fill(false))
 
-    const [activeTab, setActiveTab] = useState<RouteNames | undefined>()
+    const [activeTab, setActiveTab] = useState<string | undefined>()
 
-    useCurrentTab(navItems, setActiveTab)
+    useCurrentTab(
+        sections.map((section) => section.path),
+        setActiveTab,
+    )
 
     return (
-        <div className={classNames(styles.sectionsContainer, !isSidebarExpanded && styles.closesSectionsContainer)}>
+        <div className={classNames('govuk-!-font-size-19', styles.sectionsContainer, !isSidebarExpanded && styles.closesSectionsContainer)}>
             {sections.map((section, index) => (
-                <div key={index}>
+                <div key={index} className={styles.govukBottomMargin}>
                     <SidebarSection
                         expandedSectionIndexes={expandedSectionIndexes}
                         index={index}

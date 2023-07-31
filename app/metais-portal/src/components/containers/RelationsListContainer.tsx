@@ -1,6 +1,6 @@
 import React, { SetStateAction, useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ReadCiNeighboursWithAllRels200, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
+import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
 import { IKeyToDisplay, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelations'
 
 import { mapFilterToNeighboursWithAllRelsApi } from '@/componentHelpers'
@@ -10,7 +10,7 @@ export interface IRelationsView {
     isError: boolean
     data: {
         entityTypes?: RelatedCiTypePreview[]
-        relationsList?: ReadCiNeighboursWithAllRels200
+        relationsList?: CiWithRelsResultUi
         owners?: void | RoleParticipantUI[] | undefined
         keysToDisplay: IKeyToDisplay[]
     }

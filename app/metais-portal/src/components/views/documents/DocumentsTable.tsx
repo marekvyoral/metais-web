@@ -6,13 +6,13 @@ import { ColumnDef, ExpandedState } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { QueryFeedback } from '@isdd/metais-common/index'
-import { ConfigurationItemUi, ReadCiNeighbours200 } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, NeighbourPairUi } from '@isdd/metais-common/api'
 import { ExpandableRowCellWrapper } from '@isdd/idsk-ui-kit/index'
 
 import { DocumentMetaContainer } from '@/components/containers/DocumentMetaContainer'
 import { DocumentDownloadCard } from '@/components/entities/cards/DocumentDownloadCard'
 
-export interface TableCols extends ReadCiNeighbours200 {
+export interface TableCols extends NeighbourPairUi {
     selected?: boolean
 }
 interface DocumentsTable {

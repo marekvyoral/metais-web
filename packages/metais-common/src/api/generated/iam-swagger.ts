@@ -304,9 +304,11 @@ export interface ConfigurationItemSetUi {
     incidentRelationshipSet?: RelationshipUi[]
 }
 
+export type AttributeUiValue = { [key: string]: any }
+
 export interface AttributeUi {
     name?: string
-    value?: string
+    value?: AttributeUiValue
 }
 
 export interface ConfigurationItemUi {
@@ -458,8 +460,6 @@ export interface GetAttributeOwnershipRequest {
     attributeNames?: string[]
 }
 
-export type GetAttributeOwnershipRequestList = GetAttributeOwnershipRequest[]
-
 export interface Ownership {
     owner?: boolean
     ownerDelegate?: boolean
@@ -475,8 +475,6 @@ export interface GetOwnershipRequest {
     userLogin?: string
     itemId?: string
 }
-
-export type GetOwnershipRequestList = GetOwnershipRequest[]
 
 export interface UserPermissionAssignData {
     po?: string
@@ -3681,24 +3679,24 @@ export const useRequestPermissions = <TError = unknown, TContext = unknown>(opti
 export const useGetOwnershipHook = () => {
     const getOwnership = useIAmSwaggerClient<ResponseOwnership[]>()
 
-    return (getOwnershipRequestList: GetOwnershipRequestList) => {
+    return (getOwnershipRequest: GetOwnershipRequest[]) => {
         return getOwnership({
             url: `/access_rights/ownership`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
-            data: getOwnershipRequestList,
+            data: getOwnershipRequest,
         })
     }
 }
 
 export const useGetOwnershipMutationOptions = <TError = OperationResult, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, TError, { data: GetOwnershipRequestList }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, TError, { data: GetOwnershipRequestList }, TContext> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, TError, { data: GetOwnershipRequest[] }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, TError, { data: GetOwnershipRequest[] }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const getOwnership = useGetOwnershipHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, { data: GetOwnershipRequestList }> = (props) => {
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, { data: GetOwnershipRequest[] }> = (props) => {
         const { data } = props ?? {}
 
         return getOwnership(data)
@@ -3708,14 +3706,14 @@ export const useGetOwnershipMutationOptions = <TError = OperationResult, TContex
 }
 
 export type GetOwnershipMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>>
-export type GetOwnershipMutationBody = GetOwnershipRequestList
+export type GetOwnershipMutationBody = GetOwnershipRequest[]
 export type GetOwnershipMutationError = OperationResult
 
 /**
  * @summary getOwnership
  */
 export const useGetOwnership = <TError = OperationResult, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, TError, { data: GetOwnershipRequestList }, TContext>
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, TError, { data: GetOwnershipRequest[] }, TContext>
 }) => {
     const mutationOptions = useGetOwnershipMutationOptions(options)
 
@@ -3728,12 +3726,12 @@ export const useGetOwnership = <TError = OperationResult, TContext = unknown>(op
 export const useGetAttributeOwnershipHook = () => {
     const getAttributeOwnership = useIAmSwaggerClient<ResponseMapStringOwnership[]>()
 
-    return (getAttributeOwnershipRequestList: GetAttributeOwnershipRequestList) => {
+    return (getAttributeOwnershipRequest: GetAttributeOwnershipRequest[]) => {
         return getAttributeOwnership({
             url: `/access_rights/attribute_ownership`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
-            data: getAttributeOwnershipRequestList,
+            data: getAttributeOwnershipRequest,
         })
     }
 }
@@ -3742,13 +3740,13 @@ export const useGetAttributeOwnershipMutationOptions = <TError = OperationResult
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useGetAttributeOwnershipHook>>>,
         TError,
-        { data: GetAttributeOwnershipRequestList },
+        { data: GetAttributeOwnershipRequest[] },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useGetAttributeOwnershipHook>>>,
     TError,
-    { data: GetAttributeOwnershipRequestList },
+    { data: GetAttributeOwnershipRequest[] },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3757,7 +3755,7 @@ export const useGetAttributeOwnershipMutationOptions = <TError = OperationResult
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useGetAttributeOwnershipHook>>>,
-        { data: GetAttributeOwnershipRequestList }
+        { data: GetAttributeOwnershipRequest[] }
     > = (props) => {
         const { data } = props ?? {}
 
@@ -3768,7 +3766,7 @@ export const useGetAttributeOwnershipMutationOptions = <TError = OperationResult
 }
 
 export type GetAttributeOwnershipMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetAttributeOwnershipHook>>>>
-export type GetAttributeOwnershipMutationBody = GetAttributeOwnershipRequestList
+export type GetAttributeOwnershipMutationBody = GetAttributeOwnershipRequest[]
 export type GetAttributeOwnershipMutationError = OperationResult
 
 /**
@@ -3778,7 +3776,7 @@ export const useGetAttributeOwnership = <TError = OperationResult, TContext = un
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useGetAttributeOwnershipHook>>>,
         TError,
-        { data: GetAttributeOwnershipRequestList },
+        { data: GetAttributeOwnershipRequest[] },
         TContext
     >
 }) => {

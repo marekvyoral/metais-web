@@ -124,12 +124,12 @@ export default defineConfig({
             target: `./packages/metais-common/src/api/generated/types-repo-swagger.ts`,
             override: {
                 operations: {
-                    listAttrProfileUsingPOST: {
+                    listAttrProfile_1: {
                         query: {
                             useQuery: true,
                         },
                     },
-                    listTypesUsingPOST: {
+                    listTypes: {
                         query: {
                             useQuery: true,
                         },
