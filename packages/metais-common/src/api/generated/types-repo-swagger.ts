@@ -366,6 +366,9 @@ type AwaitedInput<T> = PromiseLike<T> | T
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
 
+/**
+ * @summary listRelationshipTypes
+ */
 export const useListRelationshipTypesHook = () => {
     const listRelationshipTypes = useTypesRepoSwaggerClient<RelationshipTypePreviewList>()
 
@@ -396,6 +399,9 @@ export const useListRelationshipTypesQueryOptions = <TData = Awaited<ReturnType<
 export type ListRelationshipTypesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesHook>>>>
 export type ListRelationshipTypesQueryError = unknown
 
+/**
+ * @summary listRelationshipTypes
+ */
 export const useListRelationshipTypes = <TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesHook>>>, TError = unknown>(
     params: ListRelationshipTypesParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesHook>>>, TError, TData> },
@@ -409,6 +415,9 @@ export const useListRelationshipTypes = <TData = Awaited<ReturnType<ReturnType<t
     return query
 }
 
+/**
+ * @summary listRelationshipTypes
+ */
 export const useListRelationshipTypes1Hook = () => {
     const listRelationshipTypes1 = useTypesRepoSwaggerClient<RelationshipTypePreviewList>()
 
@@ -449,6 +458,9 @@ export type ListRelationshipTypes1MutationResult = NonNullable<Awaited<ReturnTyp
 export type ListRelationshipTypes1MutationBody = RelationshipTypeFilter
 export type ListRelationshipTypes1MutationError = unknown
 
+/**
+ * @summary listRelationshipTypes
+ */
 export const useListRelationshipTypes1 = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useListRelationshipTypes1Hook>>>,
@@ -462,6 +474,9 @@ export const useListRelationshipTypes1 = <TError = unknown, TContext = unknown>(
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary listCiTypes
+ */
 export const useListCiTypesHook = () => {
     const listCiTypes = useTypesRepoSwaggerClient<CiTypePreviewList>()
 
@@ -490,6 +505,9 @@ export const useListCiTypesQueryOptions = <TData = Awaited<ReturnType<ReturnType
 export type ListCiTypesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListCiTypesHook>>>>
 export type ListCiTypesQueryError = unknown
 
+/**
+ * @summary listCiTypes
+ */
 export const useListCiTypes = <TData = Awaited<ReturnType<ReturnType<typeof useListCiTypesHook>>>, TError = unknown>(
     params: ListCiTypesParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypesHook>>>, TError, TData> },
@@ -503,6 +521,9 @@ export const useListCiTypes = <TData = Awaited<ReturnType<ReturnType<typeof useL
     return query
 }
 
+/**
+ * @summary listCiTypes
+ */
 export const useListCiTypes1Hook = () => {
     const listCiTypes1 = useTypesRepoSwaggerClient<CiTypePreviewList>()
 
@@ -531,6 +552,9 @@ export type ListCiTypes1MutationResult = NonNullable<Awaited<ReturnType<ReturnTy
 export type ListCiTypes1MutationBody = CiTypeFilter
 export type ListCiTypes1MutationError = unknown
 
+/**
+ * @summary listCiTypes
+ */
 export const useListCiTypes1 = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypes1Hook>>>, TError, { data: CiTypeFilter }, TContext>
 }) => {
@@ -539,6 +563,9 @@ export const useListCiTypes1 = <TError = unknown, TContext = unknown>(options?: 
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary listAttrProfile
+ */
 export const useListAttrProfileHook = () => {
     const listAttrProfile = useTypesRepoSwaggerClient<AttributeProfilePreview>()
 
@@ -567,6 +594,9 @@ export const useListAttrProfileQueryOptions = <TData = Awaited<ReturnType<Return
 export type ListAttrProfileQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListAttrProfileHook>>>>
 export type ListAttrProfileQueryError = unknown
 
+/**
+ * @summary listAttrProfile
+ */
 export const useListAttrProfile = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileHook>>>, TError = unknown>(
     params: ListAttrProfileParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileHook>>>, TError, TData> },
@@ -580,6 +610,9 @@ export const useListAttrProfile = <TData = Awaited<ReturnType<ReturnType<typeof 
     return query
 }
 
+/**
+ * @summary listAttrProfile
+ */
 export const useListAttrProfile1Hook = () => {
     const listAttrProfile1 = useTypesRepoSwaggerClient<AttributeProfilePreview>()
 
@@ -593,34 +626,40 @@ export const useListAttrProfile1Hook = () => {
     }
 }
 
-export const useListAttrProfile1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError, { data: AttributeProfileFilter }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError, { data: AttributeProfileFilter }, TContext> => {
-    const { mutation: mutationOptions } = options ?? {}
+export const getListAttrProfile1QueryKey = (attributeProfileFilter: AttributeProfileFilter) => [`/attrprofiles/list`, attributeProfileFilter] as const
+
+export const useListAttrProfile1QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError = unknown>(
+    attributeProfileFilter: AttributeProfileFilter,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getListAttrProfile1QueryKey(attributeProfileFilter)
 
     const listAttrProfile1 = useListAttrProfile1Hook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, { data: AttributeProfileFilter }> = (
-        props,
-    ) => {
-        const { data } = props ?? {}
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>> = () => listAttrProfile1(attributeProfileFilter)
 
-        return listAttrProfile1(data)
-    }
-
-    return { mutationFn, ...mutationOptions }
+    return { queryKey, queryFn, ...queryOptions }
 }
 
-export type ListAttrProfile1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>>
-export type ListAttrProfile1MutationBody = AttributeProfileFilter
-export type ListAttrProfile1MutationError = unknown
+export type ListAttrProfile1QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>>
+export type ListAttrProfile1QueryError = unknown
 
-export const useListAttrProfile1 = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError, { data: AttributeProfileFilter }, TContext>
-}) => {
-    const mutationOptions = useListAttrProfile1MutationOptions(options)
+/**
+ * @summary listAttrProfile
+ */
+export const useListAttrProfile1 = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError = unknown>(
+    attributeProfileFilter: AttributeProfileFilter,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useListAttrProfile1QueryOptions(attributeProfileFilter, options)
 
-    return useMutation(mutationOptions)
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
 }
 
 export const useStoreAttributeTextationHook = () => {
@@ -1939,6 +1978,9 @@ export const useStoreAdminEntity = <TError = unknown, TContext = unknown>(option
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary listTypes
+ */
 export const useListTypesHook = () => {
     const listTypes = useTypesRepoSwaggerClient<CiTypesRelationshipTypesList>()
 
@@ -1952,32 +1994,40 @@ export const useListTypesHook = () => {
     }
 }
 
-export const useListTypesMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>, TError, { data: TypesFilter }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>, TError, { data: TypesFilter }, TContext> => {
-    const { mutation: mutationOptions } = options ?? {}
+export const getListTypesQueryKey = (typesFilter: TypesFilter) => [`/citypes/relationshiptypes/list`, typesFilter] as const
+
+export const useListTypesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>, TError = unknown>(
+    typesFilter: TypesFilter,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getListTypesQueryKey(typesFilter)
 
     const listTypes = useListTypesHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>, { data: TypesFilter }> = (props) => {
-        const { data } = props ?? {}
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>> = () => listTypes(typesFilter)
 
-        return listTypes(data)
-    }
-
-    return { mutationFn, ...mutationOptions }
+    return { queryKey, queryFn, ...queryOptions }
 }
 
-export type ListTypesMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>>
-export type ListTypesMutationBody = TypesFilter
-export type ListTypesMutationError = unknown
+export type ListTypesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>>
+export type ListTypesQueryError = unknown
 
-export const useListTypes = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>, TError, { data: TypesFilter }, TContext>
-}) => {
-    const mutationOptions = useListTypesMutationOptions(options)
+/**
+ * @summary listTypes
+ */
+export const useListTypes = <TData = Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>, TError = unknown>(
+    typesFilter: TypesFilter,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useListTypesQueryOptions(typesFilter, options)
 
-    return useMutation(mutationOptions)
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
 }
 
 export const useStoreAdminEntity1Hook = () => {

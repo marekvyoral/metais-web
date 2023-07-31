@@ -1,18 +1,18 @@
 import React, { useId } from 'react'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
-import { AccordionSection } from './Sidebar'
 import { SidebarContentHolder } from './SidebarContentHolder'
 import { SidebarIcon } from './SidebarIcon'
+
+import { NavigationItem } from '@isdd/metais-common/navigation/routeNames'
 
 interface Props {
     expandedSectionIndexes: boolean[]
     index: number
     setExpandedSectionIndexes: React.Dispatch<React.SetStateAction<boolean[]>>
     isSidebarExpanded: boolean
-    section: AccordionSection
+    section: NavigationItem
     setIsSidebarExpanded: React.Dispatch<React.SetStateAction<boolean>>
-    activeTab: RouteNames | undefined
+    activeTab: string | undefined
 }
 
 export const SidebarSection = ({

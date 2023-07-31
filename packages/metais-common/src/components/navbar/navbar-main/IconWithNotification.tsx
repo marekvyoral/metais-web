@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import styles from '@/components/navbar/navbar.module.scss'
+import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 
 interface IIconWithNotification {
     onClick: () => void

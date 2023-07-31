@@ -125,6 +125,27 @@ const minimalColumnsSpec: ColumnDef<Person>[] = [
     },
 ]
 
+const differentColumnSizeSpec: ColumnDef<Person>[] = [
+    {
+        accessorFn: (row) => row.firstName,
+        id: 'firstName',
+        header: 'First Name',
+        size: 400,
+    },
+    {
+        id: 'lastName',
+        accessorKey: 'lastName',
+        header: 'Last Name',
+        size: 500,
+    },
+    {
+        accessorKey: 'age',
+        id: 'age',
+        header: 'Age',
+        size: 50,
+    },
+]
+
 const sortableColumnsSpec: ColumnDef<Person>[] = [
     {
         accessorFn: (row) => row.firstName,
@@ -254,6 +275,25 @@ export const MinimalTable: Story = {
     args: {
         data: testTableData,
         columns: minimalColumnsSpec,
+    },
+}
+
+export const DifferentColumnSizeTable: Story = {
+    render: ({ ...args }) => {
+        const StateWrapper = () => {
+            return <Table<Person> {...args} />
+        }
+        return <StateWrapper />
+    },
+    args: {
+        data: testTableData,
+        columns: [
+            ...differentColumnSizeSpec,
+            ...differentColumnSizeSpec,
+            ...differentColumnSizeSpec,
+            ...differentColumnSizeSpec,
+            ...differentColumnSizeSpec,
+        ],
     },
 }
 

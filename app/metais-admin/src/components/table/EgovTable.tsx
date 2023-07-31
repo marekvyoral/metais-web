@@ -76,7 +76,7 @@ export const EgovTable = ({ data, entityName }: IListData) => {
                     { value: '100', label: '100' },
                 ]}
                 hiddenButtons={{ IMPORT: true }}
-                createHref={'/egov/entity/create'}
+                createHref={`/egov/${entityName}/create`}
                 entityName={entityName ?? ''}
                 ciType={entityName ?? ''}
             />

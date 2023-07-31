@@ -11,7 +11,9 @@ interface IProfileListContainer {
 }
 
 export const ProfileListContainer: React.FC<IProfileListContainer> = ({ View }) => {
-    const { data, isLoading, isError } = useListAttrProfile1({})
+    const { data, isLoading, isError } = useListAttrProfile1({
+        // role: '',
+    })
 
     return (
         <QueryFeedback loading={isLoading} error={isError}>
