@@ -34,6 +34,11 @@ export default defineConfig(({ mode }) => {
                     secure: false,
                     rewrite: (p) => p.replace(/^\/metaisiam/, ''),
                 },
+                '^/file/.*': {
+                    target: process.env.VITE_REST_CLIENT_DMS_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
+                },
             },
         },
     }

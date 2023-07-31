@@ -42,6 +42,7 @@ export enum NavigationSubRoutes {
     MONITORING_KS = 'monitorks',
     MONITORING_AS = 'monitoras',
     MONITORING_PARAMETRE_SET = 'monitor-report',
+    NOTIFICATIONS = '/notifications',
     LICENCIE = '/howto/LICENCE.LICENCE_TITLE/LICENSE_HOWTO',
     SERVERY = '',
     VIRTUALNE_STROJE = '',
