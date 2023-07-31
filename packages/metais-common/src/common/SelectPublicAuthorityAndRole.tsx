@@ -17,7 +17,6 @@ export interface ContainerData {
 interface ISelectPublicAuthorityAndRole {
     onChangeAuthority: (e: HierarchyRightsUi | MultiValue<HierarchyRightsUi> | null) => void
     onChangeRole: ChangeEventHandler<HTMLSelectElement>
-    //onChangeRole: any
     selectedOrg: HierarchyRightsUi | null
     filterCallbacks: {
         setFilter: React.Dispatch<SetStateAction<GetImplicitHierarchyFilter>>
