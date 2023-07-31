@@ -10,7 +10,7 @@ import { IColumnSectionType, TableSelectColumns } from '@isdd/idsk-ui-kit/table-
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useNavigate } from 'react-router-dom'
 
-import { FileImport } from '../../../../../app/metais-portal/src/components/file-import/FileImport'
+import { FileImport } from '../file-import/FileImport'
 
 import styles from './actionsOverTable.module.scss'
 

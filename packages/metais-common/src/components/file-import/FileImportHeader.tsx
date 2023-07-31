@@ -1,10 +1,11 @@
 import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { ExportIcon } from '@isdd/metais-common/assets/images'
 import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
 
 import styles from './FileImport.module.scss'
+
+import { ExportIcon } from '@isdd/metais-common/assets/images'
 interface IFileImportHeader {
     setRadioButtonMetaData: React.Dispatch<React.SetStateAction<string>>
 }

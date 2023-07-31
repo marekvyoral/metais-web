@@ -1,9 +1,10 @@
 import React, { SetStateAction } from 'react'
 import { GetImplicitHierarchyFilter } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
+import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
+import { HierarchyRightsUi } from '@isdd/metais-common/api'
+import { MultiValue } from 'react-select'
 
 import { CiCreateEntityContainerData, ISelectedOrg } from '../containers/CiCreateEntityContainer'
-
-import { SelectPublicAuthorityAndRole } from '@/common/SelectPublicAuthorityAndRole'
 
 interface ICreateCiEntitySelect {
     ciListAndRolesData: CiCreateEntityContainerData
@@ -27,29 +28,15 @@ export const CreateCiEntitySelect: React.FC<ICreateCiEntitySelect> = ({
     return (
         <>
             <SelectPublicAuthorityAndRole
-                onChangeAuthority={(val) => setSelectedOrg(Array.isArray(val) ? val[0] : val)}
+                onChangeAuthority={(val: HierarchyRightsUi | MultiValue<HierarchyRightsUi> | null) =>
+                    setSelectedOrg(Array.isArray(val) ? val[0] : val)
+                }
                 onChangeRole={(e) => setSelectedRoleId(e.target.value)}
                 selectedOrg={selectedOrg}
                 filterCallbacks={filterCallbacks}
                 filter={filter}
                 ciListAndRolesData={ciListAndRolesData}
             />
-            {/* <SelectLazyLoading
-                option={undefined}
-                value={selectedOrg}
-                getOptionLabel={(item) => item.poName ?? ''}
-                getOptionValue={(item) => item.poUUID ?? ''}
-                loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
-                label={t('createEntity.publicAuthority')}
-                name="public-authority"
-                onChange={(val) => setSelectedOrg(Array.isArray(val) ? val[0] : val)}
-            />
-            <SimpleSelect
-                onChange={(e) => setSelectedRoleId(e.target.value)}
-                label={t('createEntity.role')}
-                id="role"
-                options={rightsForPOData?.map((role) => ({ value: role.gid ?? '', label: role.roleDescription ?? '' })) ?? [{ value: '', label: '' }]}
-            /> */}
         </>
     )
 }

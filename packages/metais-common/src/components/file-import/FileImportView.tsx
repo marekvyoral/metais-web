@@ -4,14 +4,15 @@ import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { StatusBar } from '@uppy/react'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { useTranslation } from 'react-i18next'
-import { CloseIcon, ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
-import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 
 import { FileImportHeader } from './FileImportHeader'
 import { FileImportItemsSelect } from './FileImportItemsSelect'
 import { FileImportDragDrop } from './FileImportDragDrop'
 import styles from './FileImport.module.scss'
 import { FileImportList, ProgressInfoList } from './FileImportList'
+
+import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
+import { CloseIcon, ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
 
 interface IFileImportView {
     uppy: Uppy
