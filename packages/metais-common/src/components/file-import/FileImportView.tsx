@@ -13,6 +13,7 @@ import { FileImportList, ProgressInfoList } from './FileImportList'
 
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { CloseIcon, ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
+import { HierarchyRightsUi } from '@/api'
 
 interface IFileImportView {
     uppy: Uppy
@@ -27,6 +28,9 @@ interface IFileImportView {
     fileImportStep: FileImportStepEnum
     radioButtonMetaData: string
     ciType: string
+    setSelectedRoleId: React.Dispatch<SetStateAction<string>>
+    setSelectedOrg: React.Dispatch<SetStateAction<HierarchyRightsUi | null>>
+    selectedOrg: HierarchyRightsUi | null
 }
 
 export const FileImportView: React.FC<IFileImportView> = ({
@@ -42,12 +46,22 @@ export const FileImportView: React.FC<IFileImportView> = ({
     fileImportStep,
     radioButtonMetaData,
     ciType,
+    setSelectedRoleId,
+    setSelectedOrg,
+    selectedOrg,
 }) => {
     const { t } = useTranslation()
     return (
         <>
             <FileImportHeader setRadioButtonMetaData={setRadioButtonMetaData} />
-            {radioButtonMetaData === 'existing-and-new' && <FileImportItemsSelect ciType={ciType} />}
+            {radioButtonMetaData === 'existing-and-new' && (
+                <FileImportItemsSelect
+                    ciType={ciType}
+                    setSelectedRoleId={setSelectedRoleId}
+                    setSelectedOrg={setSelectedOrg}
+                    selectedOrg={selectedOrg}
+                />
+            )}
             <FileImportDragDrop uppy={uppy} />
 
             {errorMessages.length > 0 && (

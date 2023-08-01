@@ -14,6 +14,7 @@ import { FileImportView } from './FileImportView'
 
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
+import { HierarchyRightsUi } from '@/api'
 
 const uppy = new Uppy({
     autoProceed: false,
@@ -60,6 +61,9 @@ export const FileImport: React.FC<IFileImport> = ({
     const [uploadFileProgressInfo, setUploadFileProgressInfo] = useState<ProgressInfoList[]>([])
     const [radioButtonMetaData, setRadioButtonMetaData] = useState<string>('existing-only')
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>([])
+
+    const [selectedRoleId, setSelectedRoleId] = useState<string>('')
+    const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
 
     useEffect(() => {
         const language = i18n.language === 'sk' ? sk_SK : en_US
@@ -115,7 +119,7 @@ export const FileImport: React.FC<IFileImport> = ({
     }, [setFileImportStep])
 
     const handleValidate = useCallback(async () => {
-        uppy.setMeta({ ['editType']: radioButtonMetaData, type: ciType })
+        uppy.setMeta({ ['editType']: radioButtonMetaData, type: ciType, ['poId']: selectedOrg?.poUUID, ['roleId']: selectedRoleId })
         try {
             uppy.upload().then((result) => {
                 if (result.successful.length > 0) {
@@ -140,7 +144,7 @@ export const FileImport: React.FC<IFileImport> = ({
         } catch (error) {
             setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
         }
-    }, [ciType, fileImportStep, radioButtonMetaData, setFileImportStep, t])
+    }, [ciType, fileImportStep, radioButtonMetaData, selectedOrg?.poUUID, selectedRoleId, setFileImportStep, t])
 
     const handleUpload = async () => {
         uppy.getFiles().forEach((file) => {
@@ -199,6 +203,9 @@ export const FileImport: React.FC<IFileImport> = ({
                 fileImportStep={fileImportStep}
                 radioButtonMetaData={radioButtonMetaData}
                 ciType={ciType}
+                setSelectedRoleId={setSelectedRoleId}
+                setSelectedOrg={setSelectedOrg}
+                selectedOrg={selectedOrg}
             />
         </BaseModal>
     )

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { SetStateAction, useEffect, useState } from 'react'
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { MultiValue } from 'react-select'
 
@@ -11,9 +11,12 @@ import { useGetRightForPO } from '@isdd/metais-common/hooks/useGetRightForPO'
 
 interface IFileImportItemsSelect {
     ciType: string
+    setSelectedRoleId: React.Dispatch<SetStateAction<string>>
+    setSelectedOrg: React.Dispatch<SetStateAction<HierarchyRightsUi | null>>
+    selectedOrg: HierarchyRightsUi | null
 }
 
-export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ ciType }) => {
+export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ ciType, setSelectedRoleId, setSelectedOrg, selectedOrg }) => {
     const user = useAuth()
     const userId = user.state.user?.uuid ?? ''
     const userDataGroups = user.state.user?.groupData ?? []
@@ -28,15 +31,13 @@ export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ ciType
     }
 
     const [filter, setFilter] = useState(defaultCiListPostData)
-    const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
-    const [, setSelectedRoleId] = useState<string>('')
     const { implicitHierarchyData } = useGetImplicitHierarchy(filter)
 
     useEffect(() => {
         if (implicitHierarchyData?.rights && selectedOrg === null) {
             setSelectedOrg(implicitHierarchyData.rights[0])
         }
-    }, [implicitHierarchyData, selectedOrg])
+    }, [implicitHierarchyData, selectedOrg, setSelectedOrg])
 
     const { rightsForPOData } = useGetRightForPO(userId, selectedOrg?.poUUID ?? '', accessToken)
     const { data: generatedEntityId } = useGenerateCodeAndURL(ciType)
@@ -47,7 +48,9 @@ export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ ciType
                 onChangeAuthority={(val: HierarchyRightsUi | MultiValue<HierarchyRightsUi> | null) =>
                     setSelectedOrg(Array.isArray(val) ? val[0] : val)
                 }
-                onChangeRole={(e) => setSelectedRoleId(e.target.value)}
+                onChangeRole={(e) => {
+                    setSelectedRoleId(e.target.value)
+                }}
                 selectedOrg={selectedOrg}
                 filterCallbacks={{ setFilter }}
                 filter={filter}
