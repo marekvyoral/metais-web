@@ -1,8 +1,7 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { NeighbourSetUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 
-import { ReadCiNeighbours200, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, ConfigurationItemSetUi } from '@/api'
-
-export const mapNeighboursSetSourceToPagination = (uiFilter?: IFilter, data?: ReadCiNeighbours200 | void): Pagination => {
+export const mapNeighboursSetSourceToPagination = (uiFilter?: IFilter, data?: NeighbourSetUi | void): Pagination => {
     return {
         pageNumber: uiFilter?.pageNumber ?? BASE_PAGE_NUMBER,
         pageSize: uiFilter?.pageSize ?? BASE_PAGE_SIZE,
@@ -10,17 +9,17 @@ export const mapNeighboursSetSourceToPagination = (uiFilter?: IFilter, data?: Re
     }
 }
 
-export const mapNeighboursSetTargetToPagination = (uiFilter?: IFilter, data?: ReadCiNeighbours200 | void): Pagination => {
+export const mapNeighboursSetTargetToPagination = (uiFilter?: IFilter, data?: NeighbourSetUi | void): Pagination => {
     return {
         pageNumber: uiFilter?.pageNumber ?? BASE_PAGE_NUMBER,
         pageSize: uiFilter?.pageSize ?? BASE_PAGE_SIZE,
         dataLength: data?.toNodes?.pagination?.totaltems ?? 0,
     }
 }
-export const mapConfigurationItemSetToPagination = (uiFilter?: IFilter, data?: ConfigurationItemSetUi | void): Pagination => {
+export const mapConfigurationItemSetToPagination = (uiFilter?: IFilter, dataLength?: number): Pagination => {
     return {
         pageNumber: uiFilter?.pageNumber ?? BASE_PAGE_NUMBER,
         pageSize: uiFilter?.pageSize ?? BASE_PAGE_SIZE,
-        dataLength: data?.pagination?.totaltems ?? 0,
+        dataLength: dataLength ?? 0,
     }
 }

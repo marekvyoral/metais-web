@@ -14,8 +14,16 @@
     position: relative;
 }
 
+.displayBlock {
+    display: block;
+}
+
 .minHeight400 {
     min-height: 400px;
+}
+
+.fontWeightBolder {
+    font-weight: bolder;
 }
 
 .checkBoxCell {
@@ -30,6 +38,8 @@
     position: sticky;
     top: 0px;
     z-index: 2;
+    display: block !important;
+    overflow: auto;
 
     @include mq($until: desktop) {
         top: 122.5px;
@@ -46,4 +56,27 @@
 
 .body {
     max-height: 800px;
+    max-width: 2500px;
+}
+
+.displayFlex {
+    display: flex;
+    max-width: 960px;
+    overflow-x: scroll;
+}
+
+.columnHeaderStrong {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+}
+
+.row {
+    display: block !important;
+    max-width: 2500px !important;
+    overflow: auto;
+}
+
+.headerRow {
+    max-width: 2500px !important;
 }

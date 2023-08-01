@@ -29,4 +29,8 @@ export const selectStyles = <T,>(): StylesConfig<T, true, GroupBase<T>> => ({
         ...base,
         cursor: 'pointer',
     }),
+    option: (provided, state) => ({
+        ...provided,
+        color: state.isDisabled ? '#949494' : provided.color,
+    }),
 })

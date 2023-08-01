@@ -1,12 +1,12 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
+import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
+import { CiType, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
 
 import styles from './basicInformationSection.module.scss'
-import { InformationGridRow } from './InformationGridRow'
 
 import { pairEnumsToEnumValues } from '@/componentHelpers'
-import { CiType, ConfigurationItemUi, EnumType } from '@/api'
 
 interface CiInformationData {
     data: {

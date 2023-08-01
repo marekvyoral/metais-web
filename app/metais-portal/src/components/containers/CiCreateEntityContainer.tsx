@@ -1,25 +1,12 @@
 import React, { SetStateAction, useEffect, useState } from 'react'
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
-
-import { CiCode, ReadCiList200, HierarchyRightsUi, useGenerateCodeAndURL } from '@/api'
-import { Role, useAuth } from '@/contexts/auth/authContext'
-import { useGetRightForPO } from '@/hooks/useGetRightForPO'
-import { useGetImplicitHierarchy } from '@/hooks/useGetImplicitHierarchy'
-
-export interface GetImplicitHierarchyFilter {
-    fullTextSearch: ''
-    page: number
-    perpage: number
-    sortBy: string
-    sortType: string
-    rights: {
-        poUUID: string
-        roles: string[]
-    }[]
-}
+import { GetImplicitHierarchyFilter, useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
+import { CiCode, HierarchyRightsResultUi, HierarchyRightsUi, useGenerateCodeAndURL } from '@isdd/metais-common/api'
+import { Role, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useGetRightForPO } from '@isdd/metais-common/hooks/useGetRightForPO'
 
 export interface CiCreateEntityContainerData {
-    implicitHierarchyData: ReadCiList200 | undefined
+    implicitHierarchyData: HierarchyRightsResultUi | undefined
     rightsForPOData: Role[] | undefined
     generatedEntityId: CiCode | undefined
 }

@@ -1,34 +1,22 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
+import { ConfigurationItemUi } from '@isdd/metais-common/api'
 
 import { RelationshipsTable } from './RelationshipTable'
 import { targetTableColumns } from './RelationshipsTargetTableColumns'
 import { sourceTableColumns } from './RelationshipsSourceTableColumns'
 
 import { CiNeighboursListContainer } from '@/components/containers/CiNeighboursListContainer'
-import { ConfigurationItemUi } from '@/api'
 import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
 
 interface RelationshipsAccordion {
     data?: ConfigurationItemUi
-    isLoading: boolean
-    isError: boolean
     configurationItemId?: string
 }
 
-const Loading: React.FC = () => {
-    return <div>loading</div>
-}
-
-const Error: React.FC = () => {
-    return <div>error</div>
-}
-
-export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data, isLoading, isError, configurationItemId }) => {
+export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data, configurationItemId }) => {
     const { t } = useTranslation()
-    if (isLoading) return <Loading />
-    if (isError) return <Error />
 
     return (
         <>

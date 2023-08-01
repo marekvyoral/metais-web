@@ -5,6 +5,7 @@ import { Pagination, IFilter } from '@isdd/idsk-ui-kit/types'
 import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { QueryFeedback } from '@isdd/metais-common'
+import { ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
 
 import { RelationCard } from './cards/RelationCard'
 import { CardColumnList } from './cards/CardColumnList'
@@ -13,7 +14,6 @@ import styles from './neighboursCardList.module.scss'
 
 import { IRelationsView } from '@/components/containers/RelationsListContainer'
 import { formatRelationAttributes } from '@/componentHelpers'
-import { ReadCiNeighboursWithAllRels200, ReadCiNeighboursWithAllRelsParams } from '@/api'
 
 interface NeighboursCardListProps {
     isLoading: boolean
@@ -37,33 +37,39 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
 
     return (
         <Tabs
-            tabList={data.keysToDisplay.map((key) => ({
-                id: key.technicalName,
-                title: key.tabName,
-                content: (
-                    <QueryFeedback loading={isLoading && !data.relationsList?.pagination} error={isError}>
-                        <ListActions>
-                            <Button
-                                className={styles.buttonWithoutMarginBottom}
-                                label={t('neighboursCardList.buttonAddNewRelation')}
-                                variant="secondary"
-                            />
-                            <Button
-                                className={styles.buttonWithoutMarginBottom}
-                                label={t('neighboursCardList.buttonAddNewRelationCard')}
-                                variant="secondary"
-                            />
-                        </ListActions>
-                        <CardColumnList>
-                            {relationsList?.ciWithRels?.map((ciWithRel: ReadCiNeighboursWithAllRels200) => {
-                                const formatedCiWithRel = formatRelationAttributes(ciWithRel, entityTypes, owners, t)
-                                return <RelationCard {...formatedCiWithRel} key={formatedCiWithRel?.name} />
-                            })}
-                        </CardColumnList>
-                        <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
-                    </QueryFeedback>
-                ),
-            }))}
+            tabList={data.keysToDisplay
+                .filter((item) => item.count > 0)
+                .map((key) => ({
+                    id: key.technicalName,
+                    title: key.tabName,
+                    content: (
+                        <QueryFeedback
+                            loading={isLoading && !data.relationsList?.pagination}
+                            error={isError}
+                            errorProps={{ errorMessage: t('feedback.failedFetch') }}
+                        >
+                            <ListActions>
+                                <Button
+                                    className={styles.buttonWithoutMarginBottom}
+                                    label={t('neighboursCardList.buttonAddNewRelation')}
+                                    variant="secondary"
+                                />
+                                <Button
+                                    className={styles.buttonWithoutMarginBottom}
+                                    label={t('neighboursCardList.buttonAddNewRelationCard')}
+                                    variant="secondary"
+                                />
+                            </ListActions>
+                            <CardColumnList>
+                                {relationsList?.ciWithRels?.map((ciWithRel) => {
+                                    const formatedCiWithRel = formatRelationAttributes(ciWithRel, entityTypes, owners, t)
+                                    return <RelationCard {...formatedCiWithRel} key={formatedCiWithRel?.name} />
+                                })}
+                            </CardColumnList>
+                            <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
+                        </QueryFeedback>
+                    ),
+                }))}
             onSelect={(selected) => {
                 setPageConfig((pageConfig) => ({ ...pageConfig, ciTypes: [selected.id ?? ''], page: 1 }))
             }}

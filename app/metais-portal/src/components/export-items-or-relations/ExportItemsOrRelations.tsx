@@ -5,10 +5,9 @@ import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
 import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
 import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
 import { RadioButtonGroup } from '@isdd/idsk-ui-kit/radio-button-group/RadioButtonGroup'
+import { ExportIcon } from '@isdd/metais-common/assets/images'
 
 import styles from './exportItemsOrRelations.module.scss'
-
-import { ExportIcon } from '@/assets/images'
 
 interface IExportItemsOrRelationsProps {
     isOpen: boolean

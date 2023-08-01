@@ -1,6 +1,14 @@
 import { TFunction } from 'i18next'
+import {
+    Attribute,
+    CiType,
+    ConfigurationItemSetUi,
+    ConfigurationItemUi,
+    ConfigurationItemUiAttributes,
+    EnumType,
+    FavoriteCiType,
+} from '@isdd/metais-common/api'
 
-import { Attribute, CiType, ConfigurationItemSetUi, ConfigurationItemUi, ConfigurationItemUiAttributes, EnumType, FavoriteCiType } from '@/api'
 import { pairEnumsToEnumValues } from '@/componentHelpers'
 
 interface ReducedAttributes {

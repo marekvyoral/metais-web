@@ -1,8 +1,8 @@
 import React, { SetStateAction, useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
+import { IKeyToDisplay, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelations'
 
-import { IKeyToDisplay, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@/hooks/useEntityRelations'
-import { ReadCiNeighboursWithAllRels200, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@/api'
 import { mapFilterToNeighboursWithAllRelsApi } from '@/componentHelpers'
 
 export interface IRelationsView {
@@ -10,7 +10,7 @@ export interface IRelationsView {
     isError: boolean
     data: {
         entityTypes?: RelatedCiTypePreview[]
-        relationsList?: ReadCiNeighboursWithAllRels200
+        relationsList?: CiWithRelsResultUi
         owners?: void | RoleParticipantUI[] | undefined
         keysToDisplay: IKeyToDisplay[]
     }
@@ -45,23 +45,18 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
     }
     const { isLoading: areRelationsLoading, isError: areRelationsError, relationsList, owners } = useEntityRelationsDataList(entityId, pageConfig)
 
-    if (areTypesLoading) {
-        return <div>Loading...</div>
-    }
-    if (areTypesError) {
-        return <div>Error</div>
-    }
-
     const pagination: Pagination = {
         pageNumber: pageConfig.page ?? 1,
         pageSize: pageConfig.perPage ?? 10,
         dataLength: relationsList?.pagination?.totaltems ?? 0,
     }
 
+    const isLoading = areRelationsLoading || areTypesLoading
+    const isError = areTypesError || areRelationsError
     return (
         <View
-            isLoading={areRelationsLoading}
-            isError={areRelationsError}
+            isLoading={isLoading}
+            isError={isError}
             data={{
                 entityTypes,
                 relationsList,

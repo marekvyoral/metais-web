@@ -1,0 +1,14 @@
+@import '../../utils.scss';
+
+.textRow {
+    margin-bottom: govuk-spacing(0) !important;
+    @include mq($until: tablet) {
+        margin-top: govuk-spacing(2) !important;
+    }
+}
+
+.groupRow {
+    @include mq($until: tablet) {
+        margin-bottom: govuk-spacing(0);
+    }
+}

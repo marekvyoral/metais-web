@@ -1,6 +1,5 @@
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
-
-import { CiType, IColumn, EnumType, ConfigurationItemSetUi, CiListFilterContainerUi } from '@/api'
+import { CiType, IColumn, EnumType, ConfigurationItemSetUi, CiListFilterContainerUi } from '@isdd/metais-common/api'
 
 export interface IListFilterCallbacks {
     setListQueryArgs: React.Dispatch<SetStateAction<CiListFilterContainerUi>>
@@ -26,4 +25,6 @@ export interface IListView {
         metaAttributes: { name: string; order: number }[]
     }) => void
     resetUserSelectedColumns: () => Promise<void>
+    isLoading: boolean
+    isError: boolean
 }
