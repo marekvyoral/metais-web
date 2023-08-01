@@ -37,11 +37,11 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
 
     return (
         <Tabs
-            tabList={data.keysToDisplay
-                .filter((item) => item.count > 0)
+            tabList={data?.keysToDisplay
+                ?.filter((item) => item?.count > 0)
                 .map((key) => ({
-                    id: key.technicalName,
-                    title: key.tabName,
+                    id: key?.technicalName,
+                    title: key?.tabName,
                     content: (
                         <QueryFeedback
                             loading={isLoading && !data.relationsList?.pagination}
@@ -63,7 +63,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                             <CardColumnList>
                                 {relationsList?.ciWithRels?.map((ciWithRel) => {
                                     const formatedCiWithRel = formatRelationAttributes(ciWithRel, entityTypes, owners, t)
-                                    return <RelationCard {...formatedCiWithRel} key={formatedCiWithRel?.name} />
+                                    return <RelationCard {...formatedCiWithRel} key={formatedCiWithRel?.codeMetaIS} />
                                 })}
                             </CardColumnList>
                             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
