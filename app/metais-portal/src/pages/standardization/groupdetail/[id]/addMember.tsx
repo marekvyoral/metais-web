@@ -1,32 +1,32 @@
-import { BaseModal, Button, SelectLazyLoading, TextHeading } from '@isdd/idsk-ui-kit/index'
-import React, { useState } from 'react'
+import { BaseModal, Button, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
+import React from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
-import { AttributeAttributeTypeEnum, useReadCiList1 } from '@isdd/metais-common/api'
 
 import styles from '../styles.module.scss'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
+import { DEFAULT_ROLES } from './defaultRoles'
 
 const textAttribute = {
-    defaultValue: 'c_spolocne_moduly.1',
     constraints: [{ type: 'enum', enumCode: 'SPOLOCNE_MODULY' }],
 }
 
-const fullNameAttr = {
+const memberAttr = {
     ...textAttribute,
     name: 'Člen',
     technicalName: 'member',
     mandatory: { type: 'critical' },
 }
 
-const shortNameAttr = {
+const organizationAttr = {
     ...textAttribute,
     name: 'Organizácia',
     technicalName: 'organization',
     mandatory: { type: 'critical' },
 }
 
-const descriptionAttribute = {
+const roleAttr = {
     ...textAttribute,
     name: 'Rola',
     technicalName: 'role',
@@ -54,25 +54,14 @@ const checkBox3Attribute = {
     attributeTypeEnum: AttributeAttributeTypeEnum.BOOLEAN,
 }
 
-const constraints = {
-    category: '',
-    code: 'CODE',
-    description: 'DESCRIPTION',
+const roleConstraints = {
+    category: 'role',
+    code: 'ROLE',
+    description: 'role',
     //get data from hwo to Display constraints
-    enumItems: [
-        {
-            id: 10352,
-            code: 'c_spolocne_moduly.1',
-            value: 'Autentication modul',
-            valid: true,
-            description: 'Autentication modul',
-            orderList: 1,
-            engValue: 'Autentication modul',
-            engDescription: 'Autentication modul',
-        },
-    ],
+    enumItems: [...DEFAULT_ROLES],
     id: 1,
-    name: 'name',
+    name: 'role',
     valid: true,
 }
 interface addMemberPopUpProps {
@@ -85,6 +74,7 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose })
     // const { data } = useReadCiList1() : Organizations - LazyLoading
     // {"filter":{"type":["PO"],"metaAttributes":{"state":["DRAFT"]}},"page":8,"perpage":20,"sortBy":"Gen_Profil_nazov","sortType":"ASC","totalPages":279}
     const onSubmit = (formData: FieldValues) => {
+        console.log('formData', formData)
         ;<></>
     }
     return (
@@ -93,27 +83,39 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose })
                 <TextHeading size="L">Pridať člena</TextHeading>
                 <FormProvider {...formMethods}>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <AttributeInput attribute={fullNameAttr} constraints={constraints} register={register} error={''} isSubmitted={false} />
-                        <AttributeInput attribute={shortNameAttr} constraints={constraints} register={register} error={''} isSubmitted={false} />
-                        {/* <SelectLazyLoading /> */}
+                        <AttributeInput attribute={memberAttr} constraints={roleConstraints} register={register} error={''} isSubmitted={false} />
                         <AttributeInput
-                            attribute={descriptionAttribute}
-                            constraints={constraints}
+                            attribute={organizationAttr}
+                            constraints={roleConstraints}
                             register={register}
                             error={''}
                             isSubmitted={false}
                         />
-                        <AttributeInput attribute={checkBox1Attribute} constraints={constraints} register={register} error={''} isSubmitted={false} />
+                        {/* <SelectLazyLoading /> */}
+                        <AttributeInput attribute={roleAttr} constraints={roleConstraints} register={register} error={''} isSubmitted={false} />
+                        <AttributeInput
+                            attribute={checkBox1Attribute}
+                            constraints={roleConstraints}
+                            register={register}
+                            error={''}
+                            isSubmitted={false}
+                        />
                         <div className={styles.marginVertical20}>
                             <AttributeInput
                                 attribute={checkBox2Attribute}
-                                constraints={constraints}
+                                constraints={roleConstraints}
                                 register={register}
                                 error={''}
                                 isSubmitted={false}
                             />
                         </div>
-                        <AttributeInput attribute={checkBox3Attribute} constraints={constraints} register={register} error={''} isSubmitted={false} />
+                        <AttributeInput
+                            attribute={checkBox3Attribute}
+                            constraints={roleConstraints}
+                            register={register}
+                            error={''}
+                            isSubmitted={false}
+                        />
                         <div style={{ display: 'flex' }}>
                             <Button label="Submit" type="submit" className={styles.marginLeftAuto} />
                         </div>
