@@ -1,1 +1,2 @@
 export const CHECKBOX_CELL = 'CHECKBOX_CELL'
+export const DELETE_CELL = 'DELETE_CELL'
