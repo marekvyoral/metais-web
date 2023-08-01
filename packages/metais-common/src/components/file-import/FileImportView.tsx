@@ -13,7 +13,7 @@ import { FileImportList, ProgressInfoList } from './FileImportList'
 
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { CloseIcon, ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
-import { HierarchyRightsUi } from '@/api'
+import { HierarchyRightsUi } from '@isdd/metais-common/api'
 
 interface IFileImportView {
     uppy: Uppy

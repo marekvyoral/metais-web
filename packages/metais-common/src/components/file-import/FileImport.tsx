@@ -14,7 +14,7 @@ import { FileImportView } from './FileImportView'
 
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { HierarchyRightsUi } from '@/api'
+import { HierarchyRightsUi } from '@isdd/metais-common/api'
 
 const uppy = new Uppy({
     autoProceed: false,
