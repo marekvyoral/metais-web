@@ -58,7 +58,7 @@ const TabItemMobile: React.FC<ITabItemMobile> = ({ tab, handleMobileSelect, isSe
                         'idsk-tabs__mobile-tab-content--hidden': !isSelected,
                     })}
                 >
-                    {tab.content}
+                    {tab?.content}
                 </div>
             </section>
         </li>
@@ -130,10 +130,10 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
         <div className="idsk-tabs" data-module="idsk-tabs">
             <h2 className="idsk-tabs__title">{t('tab.contents')}</h2>
             <ul className={classnames('idsk-tabs__list')}>
-                {newTabList.slice(0, MAX_SHOWN_TABS).map((tab) => (
+                {newTabList?.slice(0, MAX_SHOWN_TABS).map((tab) => (
                     <TabItemDesktop key={tab.id} handleSelect={handleSelect} isSelected={activeTab?.id === tab.id} tab={tab} />
                 ))}
-                {tabList.length > MAX_SHOWN_TABS && (
+                {tabList?.length > MAX_SHOWN_TABS && (
                     <li className={styles.subListButton}>
                         <ButtonPopup
                             popupPosition="right"
@@ -141,7 +141,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
                             popupContent={(closePopup) => {
                                 return (
                                     <ul className={styles.subList}>
-                                        {newTabList.slice(MAX_SHOWN_TABS, tabList.length).map((tab) => (
+                                        {newTabList?.slice(MAX_SHOWN_TABS, tabList?.length).map((tab) => (
                                             <TabItemDesktop
                                                 key={tab.id}
                                                 handleSelect={(event) => {
