@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { Controller } from 'react-hook-form'
 import Select, { MultiValue } from 'react-select'
@@ -22,20 +22,36 @@ interface ISelectProps<T extends IOptions> {
     onChange?: (newValue: MultiValue<T>) => void
     values?: MultiValue<T>
     rules?: Record<string, string>
+    error?: string
 }
 
-export const MultiSelect = <T extends IOptions>({ label, control, name, options, values, onChange, rules, id }: ISelectProps<T>): JSX.Element => {
+export const MultiSelect = <T extends IOptions>({
+    label,
+    control,
+    name,
+    options,
+    values,
+    onChange,
+    rules,
+    id,
+    error,
+}: ISelectProps<T>): JSX.Element => {
+    const [selectError, setSelectError] = useState(error)
+    useEffect(() => {
+        setSelectError(error)
+    }, [error])
     return (
-        <div className="govuk-form-group">
+        <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!selectError })}>
             <label className="govuk-label">{label}</label>
+            {!!selectError && <span className="govuk-error-message">{selectError}</span>}
             {control ? (
                 <Controller
                     name={name}
                     control={control}
                     rules={rules}
-                    render={({ field, fieldState }) => (
-                        <>
-                            {fieldState?.error && <span className="govuk-error-message">{fieldState.error.message}</span>}
+                    render={({ field, fieldState }) => {
+                        setSelectError(fieldState.error?.message)
+                        return (
                             <Select
                                 id={id}
                                 className={classNames('govuk-select', styles.selectLazyLoading)}
@@ -47,8 +63,8 @@ export const MultiSelect = <T extends IOptions>({ label, control, name, options,
                                 {...field}
                                 isOptionDisabled={(option) => !!option.disabled}
                             />
-                        </>
-                    )}
+                        )
+                    }}
                 />
             ) : (
                 <Select
