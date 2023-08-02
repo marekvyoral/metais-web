@@ -7,9 +7,9 @@ import {
     useStoreUnvalid,
     useStoreValid,
     useSetSummarizingCard,
-    useStoreAttributeTextation1,
     Attribute,
-    useDeleteAttributeTextation1,
+    useStoreAttributeTextation,
+    useDeleteAttributeTextation,
 } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { useEntityProfiles } from '@isdd/metais-common/hooks/useEntityProfiles'
@@ -49,8 +49,8 @@ export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityNam
     const { mutateAsync: setEntityAsInvalid } = useStoreUnvalid()
     const { mutateAsync: setEntityAsValid } = useStoreValid()
     const { mutateAsync: setShowOwner } = useSetSummarizingCard()
-    const { mutateAsync: saveAttribute } = useStoreAttributeTextation1()
-    const { mutateAsync: resetAttribute } = useDeleteAttributeTextation1()
+    const { mutateAsync: saveAttribute } = useStoreAttributeTextation()
+    const { mutateAsync: resetAttribute } = useDeleteAttributeTextation()
 
     const setValidityOfEntity = async (technicalName?: string) => {
         setValidity(technicalName, ciTypeData?.valid, setEntityAsValid, setEntityAsInvalid, refetch)
