@@ -1,5 +1,5 @@
 import React from 'react'
-import { AttributeProfilePreview, useListAttrProfile } from '@isdd/metais-common/api'
+import { AttributeProfilePreview, useListAttrProfile1 } from '@isdd/metais-common/api'
 import { QueryFeedback } from '@isdd/metais-common'
 
 export interface IView {
@@ -11,7 +11,9 @@ interface IProfileListContainer {
 }
 
 export const ProfileListContainer: React.FC<IProfileListContainer> = ({ View }) => {
-    const { data, isLoading, isError } = useListAttrProfile({ filter: {} })
+    const { data, isLoading, isError } = useListAttrProfile1({
+        // role: '',
+    })
 
     return (
         <QueryFeedback loading={isLoading} error={isError}>

@@ -36,6 +36,7 @@ export enum ActionNames {
 export type HiddenButtons = {
     [name in ActionNames]: boolean
 }
+
 interface IActionsOverTableProps {
     pagingOptions?: { value: string; label: string; disabled?: boolean }[]
     handleFilterChange?: (filter: IFilter) => void
@@ -50,6 +51,8 @@ interface IActionsOverTableProps {
     columnListData?: IColumn | undefined
     attributes?: Attribute[]
     hiddenButtons?: Partial<HiddenButtons>
+    createHref?: string
+    checkedRowItems?: number
 }
 
 const defaultPagingOptions = [
@@ -67,7 +70,9 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     attributeProfiles,
     columnListData,
     attributes,
+    checkedRowItems,
     hiddenButtons,
+    createHref,
 }) => {
     const [modalOpen, setModalOpen] = useState(false)
 
@@ -185,7 +190,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
             <div className={styles.buttonGroup}>
                 <div className={classnames(styles.mobileOrder3, styles.buttonPopup)}>
                     <ButtonPopup
-                        buttonLabel={`${t('actionOverTable.actions')} (2)`}
+                        buttonLabel={`${t('actionOverTable.actions')} (${checkedRowItems})`}
                         buttonClassname={styles.withoutMarginBottom}
                         popupContent={() => {
                             return (
@@ -243,7 +248,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                     <Button
                         className={classnames(styles.withoutMarginBottom, styles.mobileOrder1)}
                         onClick={() => {
-                            navigate(`/ci/${ciType}/create`)
+                            navigate(createHref ?? `/ci/${ciType}/create`)
                         }}
                         label={
                             <div className={styles.buttonWithIcon}>

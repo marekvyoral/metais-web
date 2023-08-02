@@ -14,10 +14,6 @@ import { useClientForReadCiListUsingPOST } from '../hooks/useCmdbSwaggerClientWi
 import { useClientForGetRoleParticipantUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForReadCiNeighboursWithAllRelsUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForReadConfigurationItemUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
-export type GetConfigurationItemsGroups200 = { [key: string]: any }
-
-export type GetGroupList200 = { [key: string]: any }
-
 export type ReadAllCiHistoryVersionsParams = {
     page: number
     perPage: number
@@ -73,8 +69,6 @@ export type GetCountCiTypesByOwnerParams = {
     liableEntities?: string[]
 }
 
-export type ReadNeighboursConfigurationItems200 = { [key: string]: any }
-
 export type ReadNeighboursConfigurationItemsParams = {
     nodeType?: string
     relationshipType?: string
@@ -85,7 +79,7 @@ export type ReadNeighboursConfigurationItemsParams = {
     includeInvalidated?: boolean
 }
 
-export type ReadNeighboursConfigurationItemsCount200 = { [key: string]: any }
+export type ReadNeighboursConfigurationItemsCount200 = { [key: string]: number }
 
 export type ReadNeighboursConfigurationItemsCountParams = {
     'usageType.whiteList[]'?: string[]
@@ -93,17 +87,11 @@ export type ReadNeighboursConfigurationItemsCountParams = {
     includeInvalidated?: boolean
 }
 
-export type ReadRelationships200 = { [key: string]: any }
-
 export type ReadRelationshipsParams = {
     'usageType.whiteList[]'?: string[]
     'usageType.blackList[]'?: string[]
     'types[]'?: string[]
 }
-
-export type ReadConfigurationItem200 = { [key: string]: any }
-
-export type ReadCiList2200 = { [key: string]: any }
 
 export type ReadCiList2Params = {
     page?: number
@@ -117,10 +105,6 @@ export type ReadCiList2Params = {
     sortType?: string
 }
 
-export type ReadRelationship200 = { [key: string]: any }
-
-export type ReadCiNeighboursWithAllRels200 = { [key: string]: any }
-
 export type ReadCiNeighboursWithAllRelsParams = {
     relTypes?: string[]
     ciTypes?: string[]
@@ -131,18 +115,12 @@ export type ReadCiNeighboursWithAllRelsParams = {
     'usageType.blackList[]'?: string[]
 }
 
-export type SearchAll200 = { [key: string]: any }
-
 export type SearchAllParams = {
     text?: string
     page?: number
     perPage?: number
     state?: string[]
 }
-
-export type ReadConfigurationItemByMetaIsCode200 = { [key: string]: any }
-
-export type ReadReportsWithFilter200 = { [key: string]: any }
 
 export type ReadReportsWithFilterParams = {
     fulltextSearch?: string
@@ -160,13 +138,22 @@ export type CiRelTypesIntegrityCheck200 = { [key: string]: string[] }
 
 export type GetProperties200 = { [key: string]: string }
 
+export type GetReindexTaskStateByUuid200 = (typeof GetReindexTaskStateByUuid200)[keyof typeof GetReindexTaskStateByUuid200]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetReindexTaskStateByUuid200 = {
+    CREATED: 'CREATED',
+    IN_PROGRESS: 'IN_PROGRESS',
+    DONE: 'DONE',
+    CANCELLED: 'CANCELLED',
+    FAILED: 'FAILED',
+} as const
+
 export type ValidateCIsByTypesAndOwnerParams = {
     poUuid: string
     typeNames: string[]
     validationTypes?: string[]
 }
-
-export type ReportError200 = { [key: string]: any }
 
 export type InvalidateSetBody = ItemSetUi | WriteSetUi
 
@@ -187,27 +174,11 @@ export type InvalidateRelationshipParams = {
 
 export type InvalidateSendEmail200 = { [key: string]: any }
 
-export type ReadCiList1200 = { [key: string]: any }
-
-export type ReadCiRelationshipCiList200 = { [key: string]: any }
-
-export type ReadCiUuidSet200 = { [key: string]: any }
-
-export type ReadCiNeighbours200 = { [key: string]: any }
-
-export type ReadRelationshipList200 = { [key: string]: any }
-
-export type ReadPoSuperiorPoRelationship200 = { [key: string]: any }
-
-export type ReadRelList200 = { [key: string]: any }
-
-export type ReadConfigurationItemsByMetaIsCodes200 = { [key: string]: any }
+export type ReadPoSuperiorPoRelationship200 = { [key: string]: RelationshipUi }
 
 export type ReadConfigurationItemByRefID200 = { [key: string]: any }
 
-export type ReadGroupItems200 = { [key: string]: any }
-
-export type ReadCiList200 = { [key: string]: any }
+export type ReadGroupItems200 = ItemSetUi | WriteSetUi
 
 export type ReadMeetingRequestsFromStandardParams = {
     fulltextSearch?: string
@@ -243,8 +214,10 @@ export type PartialReindexParams = {
     timestamp: string
 }
 
-export type ReindexParams = {
-    limit?: number
+export type AsyncReindexParams = {
+    perPage?: number
+    ciPageFrom?: number
+    relPageFrom?: number
 }
 
 export type ReindexRelationshipsParams = {
@@ -253,8 +226,6 @@ export type ReindexRelationshipsParams = {
     deleteIndex?: boolean
     isReindex?: boolean
 }
-
-export type ReadNotificationsWithFilter200 = { [key: string]: any }
 
 export type ReadNotificationsWithFilterParams = {
     fulltextSearch?: string
@@ -265,6 +236,10 @@ export type ReadNotificationsWithFilterParams = {
     page?: number
     perPage?: number
     unread?: boolean
+}
+
+export interface GroupSetUi {
+    groupSet?: GroupUi[]
 }
 
 export interface HistoryVersionUiConfigurationItemUi {
@@ -278,12 +253,6 @@ export interface HistoryVersionUiConfigurationItemUi {
 export interface HistoryVersionsListUiConfigurationItemUi {
     pagination?: PaginationUi
     historyVersions?: HistoryVersionUiConfigurationItemUi[]
-}
-
-export interface ConfigurationItemSetUi {
-    pagination?: PaginationUi
-    configurationItemSet?: ConfigurationItemUi[]
-    incidentRelationshipSet?: RelationshipUi[]
 }
 
 export interface HistoryVersionUiRelationshipUi {
@@ -305,9 +274,122 @@ export interface HistoryVersionsListUiRelationshipUi {
     historyVersions?: HistoryVersionUiRelationshipUi[]
 }
 
+export interface PaginationData {
+    page?: number
+    perPage?: number
+    totalPages?: number
+    totalItems?: number
+    totalUnreadedItems?: number
+}
+
+export interface NotificationsList {
+    notifications?: Notification[]
+    pagination?: PaginationData
+}
+
 export interface CountTypes {
     type?: string
     count?: number
+}
+
+export interface ConfigurationItemNeighbourSetUi {
+    fromCiSet?: ConfigurationItemUi[]
+    toCiSet?: ConfigurationItemUi[]
+}
+
+export interface IncidentRelationshipSetUi {
+    startRelationshipSet?: RelationshipUi[]
+    endRelationshipSet?: RelationshipUi[]
+}
+
+export interface CiWithRelsUi {
+    ci?: ConfigurationItemUi
+    rels?: RelationshipUi[]
+}
+
+export interface CiWithRelsResultUi {
+    pagination?: PaginationUi
+    ciWithRels?: CiWithRelsUi[]
+}
+
+export type RelElasticItemAllOf = {
+    type?: string
+    typeName?: string
+    state?: string
+    startUuid?: string
+    startType?: string
+    startName?: string
+    endUuid?: string
+    endType?: string
+    endName?: string
+    PO?: string
+}
+
+export type RelElasticItem = GeneralElasticItem & RelElasticItemAllOf
+
+export interface HighlightResult {
+    field?: string
+    highlightText?: string[]
+}
+
+export interface HighLightResultHolder {
+    attributes?: HighlightResult[]
+    metaAttributes?: HighlightResult[]
+}
+
+export type GeneralElasticItemSetGeneralElasticItemSetItem = CiElasticItem | DMSDocElasticItem | RelElasticItem
+
+export interface GeneralElasticItemSet {
+    pagination?: PaginationUi
+    generalElasticItemSet?: GeneralElasticItemSetGeneralElasticItemSetItem[]
+}
+
+export interface GeneralElasticItem {
+    itemType?: string
+    uuid?: string
+    highlight?: HighLightResultHolder
+}
+
+export type DMSDocElasticItemAllOf = {
+    fileName?: string
+    contentLength?: number
+    type?: string
+}
+
+export type DMSDocElasticItem = GeneralElasticItem & DMSDocElasticItemAllOf
+
+export type CiElasticItemAllOf = {
+    type?: string
+    typeName?: string
+    state?: string
+    name?: string
+    code?: string
+    PO?: string
+}
+
+export type CiElasticItem = GeneralElasticItem & CiElasticItemAllOf
+
+export interface ReportHolderUi {
+    reports?: ReportUi[]
+    pagination?: PaginationUi
+}
+
+export interface ReportCategoryUi {
+    id?: number
+    name?: string
+    nameEn?: string
+}
+
+export interface ReportUi {
+    id?: number
+    name?: string
+    description?: string
+    lookupKey?: string
+    publikovany?: boolean
+    reportType?: string
+    lastUpdatedTime?: string
+    language?: string
+    category?: ReportCategoryUi
 }
 
 export interface RequestStatusResultUi {
@@ -332,6 +414,43 @@ export interface IntegrityCheckHolder {
 export interface GetResponseWrapper {
     isExist?: boolean
     sourceAsString?: string
+}
+
+export type ReindexTaskStage = (typeof ReindexTaskStage)[keyof typeof ReindexTaskStage]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReindexTaskStage = {
+    CI: 'CI',
+    RELATIONS: 'RELATIONS',
+    PO: 'PO',
+} as const
+
+export type ReindexTaskState = (typeof ReindexTaskState)[keyof typeof ReindexTaskState]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReindexTaskState = {
+    CREATED: 'CREATED',
+    IN_PROGRESS: 'IN_PROGRESS',
+    DONE: 'DONE',
+    CANCELLED: 'CANCELLED',
+    FAILED: 'FAILED',
+} as const
+
+export interface ReindexTask {
+    uuid?: string
+    state?: ReindexTaskState
+    startAt?: string
+    finishedAt?: string
+    lastElasticCallAt?: string
+    cmdbFetchTotal?: number
+    elasticIndexTotal?: number
+    stage?: ReindexTaskStage
+    perPage?: number
+    ciPageFrom?: number
+    relPageFrom?: number
+    currentPage?: number
+    canceled?: boolean
+    exception?: string
 }
 
 export interface RelationshipsProblemMessageUi {
@@ -371,6 +490,10 @@ export interface ChangeHierarchyUi {
     newHierarchy?: RelationshipUi
 }
 
+export interface RequestId {
+    id?: string
+}
+
 export interface UserFeedbackErrorReportUi {
     title?: string
     description?: string
@@ -385,14 +508,6 @@ export interface ConfigurationItemInvalidateUi {
     metaAttributes?: MetaAttributesUi
     invalidateReason?: InvalidateReason
 }
-
-export interface ItemSetUi {
-    configurationItemSet?: ConfigurationItemUi[]
-    relationshipSet?: RelationshipUi[]
-    invalidateReason?: InvalidateReason
-}
-
-export type WriteSetUi = ItemSetUi
 
 export interface RelationshipInvalidateUi {
     type?: string
@@ -419,25 +534,39 @@ export interface Notification {
     notifType?: string
 }
 
+export interface ConfigurationItemSetUi {
+    pagination?: PaginationUi
+    configurationItemSet?: ConfigurationItemUi[]
+    incidentRelationshipSet?: RelationshipUi[]
+}
+
+export interface CiRelationshipCiPreviewHolderUi {
+    ciStart?: CiPreviewUi
+    rel?: RelationshipUi
+    ciEnd?: CiPreviewUi
+}
+
+export interface CiRelationshipCiPreviewHolderListUi {
+    pagination?: PaginationUi
+    ciRelCiList?: CiRelationshipCiPreviewHolderUi[]
+}
+
+export interface CiPreviewUi {
+    uuid?: string
+    metaIsCode?: string
+    genName?: string
+}
+
+export interface CiUuidSetUi {
+    pagination?: PaginationUi
+    ciUuids?: string[]
+}
+
 export interface RelTypeFilterUi {
     relType?: string
     relCiUuids?: string[]
     onlyValidRel?: boolean
     byHierarchy?: boolean
-}
-
-export interface CiFilterUi {
-    type?: string[]
-    usageType?: string[]
-    uuid?: string[]
-    attributes?: FilterAttributesUi[]
-    metaAttributes?: FilterMetaAttributesUi
-    fullTextSearch?: string
-    searchFields?: string[]
-    mustExistAttributes?: string[]
-    mustNotExistAttributes?: string[]
-    relTypeFilters?: RelTypeFilterUi[]
-    poUuid?: string
 }
 
 export interface CiListFilterContainerUi {
@@ -480,6 +609,33 @@ export interface QueryUi {
     params?: QueryUiParams
 }
 
+export interface NeighbourSetUi {
+    fromNodes?: NeighboursResultUi
+    toNodes?: NeighboursResultUi
+}
+
+export interface NeighbourPairUi {
+    relationship?: RelationshipUi
+    configurationItem?: ConfigurationItemUi
+}
+
+export interface NeighboursResultUi {
+    pagination?: PaginationUi
+    neighbourPairs?: NeighbourPairUi[]
+}
+
+export interface NeighboursFilterUi {
+    relType?: string[]
+    ciType?: string[]
+    usageType?: string[]
+    fullTextSearch?: string
+    searchFields?: string[]
+    filterType?: string
+    metaAttributes?: FilterMetaAttributesUi
+    excludedRelTypes?: string[]
+    excludedCiUuids?: string[]
+}
+
 export interface NeighboursFilterContainerUi {
     page?: number
     perpage?: number
@@ -487,6 +643,11 @@ export interface NeighboursFilterContainerUi {
     sortType?: string
     sortSource?: string
     neighboursFilter?: NeighboursFilterUi
+}
+
+export interface RelationshipListUi {
+    pagination?: PaginationUi
+    relationshipList?: RelationshipUi[]
 }
 
 export interface RelListFilterContainerUi {
@@ -533,6 +694,24 @@ export interface UuidSetUi {
     uuids?: string[]
 }
 
+export interface RelationshipElasticPreviewUi {
+    relType?: string
+    relUuid?: string
+    startCiType?: string
+    startCiUuid?: string
+    startCiName?: string
+    endCiType?: string
+    endCiUuid?: string
+    endCiName?: string
+    usageType?: string
+    relState?: string
+}
+
+export interface RelationshipElasticPreviewHolderUi {
+    pagination?: PaginationUi
+    ciRelCi?: RelationshipElasticPreviewUi[]
+}
+
 export interface FilterMetaAttributesUi {
     owner?: string[]
     liableEntity?: string[]
@@ -547,16 +726,18 @@ export interface FilterMetaAttributesUi {
     lastModifiedAtTo?: string
 }
 
-export interface NeighboursFilterUi {
-    relType?: string[]
-    ciType?: string[]
+export interface CiFilterUi {
+    type?: string[]
     usageType?: string[]
+    uuid?: string[]
+    attributes?: FilterAttributesUi[]
+    metaAttributes?: FilterMetaAttributesUi
     fullTextSearch?: string
     searchFields?: string[]
-    filterType?: string
-    metaAttributes?: FilterMetaAttributesUi
-    excludedRelTypes?: string[]
-    excludedCiUuids?: string[]
+    mustExistAttributes?: string[]
+    mustNotExistAttributes?: string[]
+    relTypeFilters?: RelTypeFilterUi[]
+    poUuid?: string
 }
 
 export interface RelFilterSmallUi {
@@ -603,9 +784,21 @@ export interface GidSetUi {
     gids?: string[]
 }
 
+export interface ConfigurationItemsListUi {
+    configurationItemSet?: ConfigurationItemUi[]
+}
+
 export interface MetaIsCodesListUi {
     metaIsCodes?: string[]
 }
+
+export interface ItemSetUi {
+    configurationItemSet?: ConfigurationItemUi[]
+    relationshipSet?: RelationshipUi[]
+    invalidateReason?: InvalidateReason
+}
+
+export type WriteSetUi = ItemSetUi
 
 export type UsageTypeFilterUiBlackListItem = (typeof UsageTypeFilterUiBlackListItem)[keyof typeof UsageTypeFilterUiBlackListItem]
 
@@ -661,6 +854,11 @@ export interface HierarchyRightsUi {
     address?: AddressObjectUi
 }
 
+export interface HierarchyRightsResultUi {
+    pagination?: PaginationUi
+    rights?: HierarchyRightsUi[]
+}
+
 export interface HierarchyPOFilterUi {
     page?: number
     perpage?: number
@@ -686,11 +884,6 @@ export interface MeetingRequestUi {
     endDate?: string
 }
 
-export interface MeetingRequestListUi {
-    meetingRequests?: MeetingRequestUi[]
-    pagination?: PaginationUi
-}
-
 export interface StandardRequestUi {
     id?: number
     srName?: string
@@ -711,6 +904,11 @@ export interface PaginationUi {
     perPage?: number
     totalPages?: number
     totaltems?: number
+}
+
+export interface MeetingRequestListUi {
+    meetingRequests?: MeetingRequestUi[]
+    pagination?: PaginationUi
 }
 
 export interface StandardRequestListUi {
@@ -920,25 +1118,11 @@ export interface StoreSetUi {
     invalidateReason?: InvalidateReason
 }
 
-export interface InvalidateSetUi {
-    configurationItemSet?: ConfigurationItemUi[]
-    relationshipSet?: RelationshipUi[]
-    invalidateReason?: InvalidateReason
-}
-
 export interface CustomMessageUi {
     messageSuccessType?: string
     successPlaceholderValues?: string[]
     messageFailType?: string
     failPlaceholderValues?: string[]
-}
-
-export interface GraphRequestUi {
-    storeSet?: StoreSetUi
-    invalidateSet?: InvalidateSetUi
-    changeOwnerSet?: ChangeOwnerSetUi
-    recycleSet?: RecycleSetUi
-    customMessage?: CustomMessageUi
 }
 
 export type ConfigurationItemUiAttributes = { [key: string]: any }
@@ -949,6 +1133,12 @@ export interface ConfigurationItemUi {
     owner?: string
     attributes?: ConfigurationItemUiAttributes
     metaAttributes?: MetaAttributesUi
+}
+
+export interface InvalidateSetUi {
+    configurationItemSet?: ConfigurationItemUi[]
+    relationshipSet?: RelationshipUi[]
+    invalidateReason?: InvalidateReason
 }
 
 export type ChangeOwnerDataUiChangeType = (typeof ChangeOwnerDataUiChangeType)[keyof typeof ChangeOwnerDataUiChangeType]
@@ -974,9 +1164,19 @@ export interface ChangeOwnerSetUi {
     changeOwnerData?: ChangeOwnerDataUi
 }
 
+export interface GraphRequestUi {
+    storeSet?: StoreSetUi
+    invalidateSet?: InvalidateSetUi
+    changeOwnerSet?: ChangeOwnerSetUi
+    recycleSet?: RecycleSetUi
+    customMessage?: CustomMessageUi
+}
+
+export type AttributeUiValue = { [key: string]: any }
+
 export interface AttributeUi {
     name?: string
-    value?: string
+    value?: AttributeUiValue
 }
 
 export type NotificationUpdateHolderUiTypeOfAction =
@@ -1000,7 +1200,7 @@ type AwaitedInput<T> = PromiseLike<T> | T
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
 
 export const useReadNotificationsWithFilterHook = () => {
-    const readNotificationsWithFilter = useCmdbSwaggerClient<ReadNotificationsWithFilter200>()
+    const readNotificationsWithFilter = useCmdbSwaggerClient<NotificationsList>()
 
     return (params?: ReadNotificationsWithFilterParams, signal?: AbortSignal) => {
         return readNotificationsWithFilter({ url: `/notification`, method: 'get', params, signal })
@@ -1139,6 +1339,9 @@ export const useStoreNotifications = <TError = unknown, TContext = unknown>(opti
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary validateStoreGraph
+ */
 export const useValidateStoreGraphHook = () => {
     const validateStoreGraph = useCmdbSwaggerClient<ErrorMessageHolderUi>()
 
@@ -1167,6 +1370,9 @@ export type ValidateStoreGraphMutationResult = NonNullable<Awaited<ReturnType<Re
 export type ValidateStoreGraphMutationBody = GraphRequestUi
 export type ValidateStoreGraphMutationError = unknown
 
+/**
+ * @summary validateStoreGraph
+ */
 export const useValidateStoreGraph = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphHook>>>, TError, { data: GraphRequestUi }, TContext>
 }) => {
@@ -1282,38 +1488,38 @@ export const useReindexRelationships = <TError = unknown, TContext = unknown>(op
     return useMutation(mutationOptions)
 }
 
-export const useReindexHook = () => {
-    const reindex = useCmdbSwaggerClient<string>()
+export const useAsyncReindexHook = () => {
+    const asyncReindex = useCmdbSwaggerClient<string>()
 
-    return (params?: ReindexParams) => {
-        return reindex({ url: `/util/reindexelastic`, method: 'post', params })
+    return (params?: AsyncReindexParams) => {
+        return asyncReindex({ url: `/util/reindexelastic`, method: 'post', params })
     }
 }
 
-export const useReindexMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>, TError, { params?: ReindexParams }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>, TError, { params?: ReindexParams }, TContext> => {
+export const useAsyncReindexMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>, TError, { params?: AsyncReindexParams }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>, TError, { params?: AsyncReindexParams }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
-    const reindex = useReindexHook()
+    const asyncReindex = useAsyncReindexHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>, { params?: ReindexParams }> = (props) => {
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>, { params?: AsyncReindexParams }> = (props) => {
         const { params } = props ?? {}
 
-        return reindex(params)
+        return asyncReindex(params)
     }
 
     return { mutationFn, ...mutationOptions }
 }
 
-export type ReindexMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>>
+export type AsyncReindexMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>>
 
-export type ReindexMutationError = unknown
+export type AsyncReindexMutationError = unknown
 
-export const useReindex = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>, TError, { params?: ReindexParams }, TContext>
+export const useAsyncReindex = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>, TError, { params?: AsyncReindexParams }, TContext>
 }) => {
-    const mutationOptions = useReindexMutationOptions(options)
+    const mutationOptions = useAsyncReindexMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
@@ -1424,6 +1630,9 @@ export const useReindexHierarchy = <TError = unknown, TVariables = void, TContex
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary confluenceDocumentResults
+ */
 export const useConfluenceDocumentResultsHook = () => {
     const confluenceDocumentResults = useCmdbSwaggerClient<Result>()
 
@@ -1465,6 +1674,9 @@ export type ConfluenceDocumentResultsMutationResult = NonNullable<Awaited<Return
 
 export type ConfluenceDocumentResultsMutationError = unknown
 
+/**
+ * @summary confluenceDocumentResults
+ */
 export const useConfluenceDocumentResults = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useConfluenceDocumentResultsHook>>>,
@@ -2447,8 +2659,11 @@ export const useDeleteStandardMeetingRequests = <TError = unknown, TContext = un
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary readCiList
+ */
 export const useReadCiListHook = () => {
-    const readCiList = useCmdbSwaggerClient<ReadCiList200>()
+    const readCiList = useCmdbSwaggerClient<HierarchyRightsResultUi>()
 
     return (hierarchyPOFilterUi: HierarchyPOFilterUi) => {
         return readCiList({
@@ -2480,6 +2695,9 @@ export type ReadCiListMutationResult = NonNullable<Awaited<ReturnType<ReturnType
 export type ReadCiListMutationBody = HierarchyPOFilterUi
 export type ReadCiListMutationError = unknown
 
+/**
+ * @summary readCiList
+ */
 export const useReadCiList = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListHook>>>, TError, { data: HierarchyPOFilterUi }, TContext>
 }) => {
@@ -2814,6 +3032,9 @@ export const useRecycleInvalidatedCisBiznis = <TError = unknown, TContext = unkn
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary readGroupItems
+ */
 export const useReadGroupItemsHook = () => {
     const readGroupItems = useCmdbSwaggerClient<ReadGroupItems200>()
 
@@ -2860,6 +3081,9 @@ export type ReadGroupItemsMutationResult = NonNullable<Awaited<ReturnType<Return
 export type ReadGroupItemsMutationBody = GroupMembersFilterUi
 export type ReadGroupItemsMutationError = unknown
 
+/**
+ * @summary readGroupItems
+ */
 export const useReadGroupItems = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadGroupItemsHook>>>,
@@ -2873,6 +3097,9 @@ export const useReadGroupItems = <TError = unknown, TContext = unknown>(options?
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary readConfigurationItemByRefID
+ */
 export const useReadConfigurationItemByRefIDHook = () => {
     const readConfigurationItemByRefID = useCmdbSwaggerClient<ReadConfigurationItemByRefID200>()
 
@@ -2906,6 +3133,9 @@ export type ReadConfigurationItemByRefIDMutationResult = NonNullable<Awaited<Ret
 export type ReadConfigurationItemByRefIDMutationBody = string
 export type ReadConfigurationItemByRefIDMutationError = unknown
 
+/**
+ * @summary readConfigurationItemByRefID
+ */
 export const useReadConfigurationItemByRefID = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDHook>>>, TError, { data: string }, TContext>
 }) => {
@@ -2914,8 +3144,11 @@ export const useReadConfigurationItemByRefID = <TError = unknown, TContext = unk
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary readConfigurationItemsByMetaIsCodes
+ */
 export const useReadConfigurationItemsByMetaIsCodesHook = () => {
-    const readConfigurationItemsByMetaIsCodes = useCmdbSwaggerClient<ReadConfigurationItemsByMetaIsCodes200>()
+    const readConfigurationItemsByMetaIsCodes = useCmdbSwaggerClient<ConfigurationItemsListUi>()
 
     return (metaIsCodesListUi: MetaIsCodesListUi) => {
         return readConfigurationItemsByMetaIsCodes({
@@ -2962,6 +3195,9 @@ export type ReadConfigurationItemsByMetaIsCodesMutationResult = NonNullable<
 export type ReadConfigurationItemsByMetaIsCodesMutationBody = MetaIsCodesListUi
 export type ReadConfigurationItemsByMetaIsCodesMutationError = unknown
 
+/**
+ * @summary readConfigurationItemsByMetaIsCodes
+ */
 export const useReadConfigurationItemsByMetaIsCodes = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesHook>>>,
@@ -2975,6 +3211,9 @@ export const useReadConfigurationItemsByMetaIsCodes = <TError = unknown, TContex
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getRoleParticipantBulk
+ */
 export const useGetRoleParticipantBulkHook = () => {
     const getRoleParticipantBulk = useClientForGetRoleParticipantBulkUsingPOST<RoleParticipantUI[]>()
 
@@ -3011,6 +3250,9 @@ export const useGetRoleParticipantBulkQueryOptions = <
 export type GetRoleParticipantBulkQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkHook>>>>
 export type GetRoleParticipantBulkQueryError = unknown
 
+/**
+ * @summary getRoleParticipantBulk
+ */
 export const useGetRoleParticipantBulk = <TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkHook>>>, TError = unknown>(
     gidSetUi: GidSetUi,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkHook>>>, TError, TData> },
@@ -3024,8 +3266,11 @@ export const useGetRoleParticipantBulk = <TData = Awaited<ReturnType<ReturnType<
     return query
 }
 
+/**
+ * @summary readRelList
+ */
 export const useReadRelListHook = () => {
-    const readRelList = useCmdbSwaggerClient<ReadRelList200>()
+    const readRelList = useCmdbSwaggerClient<RelationshipElasticPreviewHolderUi>()
 
     return (relFilterSmallUi: RelFilterSmallUi) => {
         return readRelList({ url: `/read/rellistfiltered`, method: 'post', headers: { 'Content-Type': 'application/json' }, data: relFilterSmallUi })
@@ -3052,6 +3297,9 @@ export type ReadRelListMutationResult = NonNullable<Awaited<ReturnType<ReturnTyp
 export type ReadRelListMutationBody = RelFilterSmallUi
 export type ReadRelListMutationError = unknown
 
+/**
+ * @summary readRelList
+ */
 export const useReadRelList = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadRelListHook>>>, TError, { data: RelFilterSmallUi }, TContext>
 }) => {
@@ -3060,6 +3308,9 @@ export const useReadRelList = <TError = unknown, TContext = unknown>(options?: {
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary readPoSuperiorPoRelationship
+ */
 export const useReadPoSuperiorPoRelationshipHook = () => {
     const readPoSuperiorPoRelationship = useCmdbSwaggerClient<ReadPoSuperiorPoRelationship200>()
 
@@ -3095,6 +3346,9 @@ export type ReadPoSuperiorPoRelationshipMutationResult = NonNullable<Awaited<Ret
 export type ReadPoSuperiorPoRelationshipMutationBody = UuidSetUi
 export type ReadPoSuperiorPoRelationshipMutationError = unknown
 
+/**
+ * @summary readPoSuperiorPoRelationship
+ */
 export const useReadPoSuperiorPoRelationship = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipHook>>>, TError, { data: UuidSetUi }, TContext>
 }) => {
@@ -3103,8 +3357,11 @@ export const useReadPoSuperiorPoRelationship = <TError = unknown, TContext = unk
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary readRelationshipList
+ */
 export const useReadRelationshipListHook = () => {
-    const readRelationshipList = useCmdbSwaggerClient<ReadRelationshipList200>()
+    const readRelationshipList = useCmdbSwaggerClient<RelationshipListUi>()
 
     return (relListFilterContainerUi: RelListFilterContainerUi) => {
         return readRelationshipList({
@@ -3143,6 +3400,9 @@ export type ReadRelationshipListMutationResult = NonNullable<Awaited<ReturnType<
 export type ReadRelationshipListMutationBody = RelListFilterContainerUi
 export type ReadRelationshipListMutationError = unknown
 
+/**
+ * @summary readRelationshipList
+ */
 export const useReadRelationshipList = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadRelationshipListHook>>>,
@@ -3156,8 +3416,11 @@ export const useReadRelationshipList = <TError = unknown, TContext = unknown>(op
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary readCiNeighbours
+ */
 export const useReadCiNeighboursHook = () => {
-    const readCiNeighbours = useClientForreadCiNeighboursUsingPOST<ReadCiNeighbours200>()
+    const readCiNeighbours = useClientForreadCiNeighboursUsingPOST<NeighbourSetUi>()
 
     return (uuid: string, neighboursFilterContainerUi: NeighboursFilterContainerUi) => {
         return readCiNeighbours({
@@ -3192,6 +3455,9 @@ export const useReadCiNeighboursQueryOptions = <TData = Awaited<ReturnType<Retur
 export type ReadCiNeighboursQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursHook>>>>
 export type ReadCiNeighboursQueryError = unknown
 
+/**
+ * @summary readCiNeighbours
+ */
 export const useReadCiNeighbours = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursHook>>>, TError = unknown>(
     uuid: string,
     neighboursFilterContainerUi: NeighboursFilterContainerUi,
@@ -3206,6 +3472,9 @@ export const useReadCiNeighbours = <TData = Awaited<ReturnType<ReturnType<typeof
     return query
 }
 
+/**
+ * @summary readQuery
+ */
 export const useReadQueryHook = () => {
     const readQuery = useCmdbSwaggerClient<QueryResultTableUi>()
 
@@ -3234,6 +3503,9 @@ export type ReadQueryMutationResult = NonNullable<Awaited<ReturnType<ReturnType<
 export type ReadQueryMutationBody = QueryUi
 export type ReadQueryMutationError = unknown
 
+/**
+ * @summary readQuery
+ */
 export const useReadQuery = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadQueryHook>>>, TError, { data: QueryUi }, TContext>
 }) => {
@@ -3242,6 +3514,9 @@ export const useReadQuery = <TError = unknown, TContext = unknown>(options?: {
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary readIncidentRelationships
+ */
 export const useReadIncidentRelationshipsHook = () => {
     const readIncidentRelationships = useCmdbSwaggerClient<RelationshipSetUi>()
 
@@ -3288,6 +3563,9 @@ export type ReadIncidentRelationshipsMutationResult = NonNullable<Awaited<Return
 export type ReadIncidentRelationshipsMutationBody = IncidentRelationshipsFilterUi
 export type ReadIncidentRelationshipsMutationError = unknown
 
+/**
+ * @summary readIncidentRelationships
+ */
 export const useReadIncidentRelationships = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsHook>>>,
@@ -3301,8 +3579,11 @@ export const useReadIncidentRelationships = <TError = unknown, TContext = unknow
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary readCiUuidSet
+ */
 export const useReadCiUuidSetHook = () => {
-    const readCiUuidSet = useCmdbSwaggerClient<ReadCiUuidSet200>()
+    const readCiUuidSet = useCmdbSwaggerClient<CiUuidSetUi>()
 
     return (ciListFilterContainerUi: CiListFilterContainerUi) => {
         return readCiUuidSet({
@@ -3334,6 +3615,9 @@ export type ReadCiUuidSetMutationResult = NonNullable<Awaited<ReturnType<ReturnT
 export type ReadCiUuidSetMutationBody = CiListFilterContainerUi
 export type ReadCiUuidSetMutationError = unknown
 
+/**
+ * @summary readCiUuidSet
+ */
 export const useReadCiUuidSet = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetHook>>>, TError, { data: CiListFilterContainerUi }, TContext>
 }) => {
@@ -3342,8 +3626,11 @@ export const useReadCiUuidSet = <TError = unknown, TContext = unknown>(options?:
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary readCiRelationshipCiList
+ */
 export const useReadCiRelationshipCiListHook = () => {
-    const readCiRelationshipCiList = useCmdbSwaggerClient<ReadCiRelationshipCiList200>()
+    const readCiRelationshipCiList = useCmdbSwaggerClient<CiRelationshipCiPreviewHolderListUi>()
 
     return (relListFilterContainerUi: RelListFilterContainerUi) => {
         return readCiRelationshipCiList({
@@ -3388,6 +3675,9 @@ export type ReadCiRelationshipCiListMutationResult = NonNullable<Awaited<ReturnT
 export type ReadCiRelationshipCiListMutationBody = RelListFilterContainerUi
 export type ReadCiRelationshipCiListMutationError = unknown
 
+/**
+ * @summary readCiRelationshipCiList
+ */
 export const useReadCiRelationshipCiList = <TError = unknown, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListHook>>>,
@@ -3402,7 +3692,7 @@ export const useReadCiRelationshipCiList = <TError = unknown, TContext = unknown
 }
 
 export const useReadCiList1Hook = () => {
-    const readCiList1 = useClientForReadCiListUsingPOST<ReadCiList1200>()
+    const readCiList1 = useClientForReadCiListUsingPOST<ConfigurationItemSetUi>()
 
     return (ciListFilterContainerUi: CiListFilterContainerUi) => {
         return readCiList1({
@@ -3884,7 +4174,7 @@ export const useStorePoHierarchyRel = <TError = unknown, TContext = unknown>(opt
 }
 
 export const useReportErrorHook = () => {
-    const reportError = useCmdbSwaggerClient<ReportError200>()
+    const reportError = useCmdbSwaggerClient<RequestId>()
 
     return (userFeedbackErrorReportUi: UserFeedbackErrorReportUi) => {
         return reportError({
@@ -4159,6 +4449,93 @@ export const useValidateCIsByTypesAndOwner = <TData = Awaited<ReturnType<ReturnT
     return query
 }
 
+export const useListAllReindexTasksHook = () => {
+    const listAllReindexTasks = useCmdbSwaggerClient<ReindexTask[]>()
+
+    return (signal?: AbortSignal) => {
+        return listAllReindexTasks({ url: `/util/reindexelastic/tasks`, method: 'get', signal })
+    }
+}
+
+export const getListAllReindexTasksQueryKey = () => [`/util/reindexelastic/tasks`] as const
+
+export const useListAllReindexTasksQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>,
+    TError = unknown,
+>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError, TData>
+}): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getListAllReindexTasksQueryKey()
+
+    const listAllReindexTasks = useListAllReindexTasksHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>> = ({ signal }) => listAllReindexTasks(signal)
+
+    return { queryKey, queryFn, ...queryOptions }
+}
+
+export type ListAllReindexTasksQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>>
+export type ListAllReindexTasksQueryError = unknown
+
+export const useListAllReindexTasks = <TData = Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError = unknown>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useListAllReindexTasksQueryOptions(options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useGetReindexTaskStateByUuidHook = () => {
+    const getReindexTaskStateByUuid = useCmdbSwaggerClient<GetReindexTaskStateByUuid200>()
+
+    return (uuid: string, signal?: AbortSignal) => {
+        return getReindexTaskStateByUuid({ url: `/util/reindexelastic/task/${uuid}/status`, method: 'get', signal })
+    }
+}
+
+export const getGetReindexTaskStateByUuidQueryKey = (uuid: string) => [`/util/reindexelastic/task/${uuid}/status`] as const
+
+export const useGetReindexTaskStateByUuidQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>,
+    TError = unknown,
+>(
+    uuid: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetReindexTaskStateByUuidQueryKey(uuid)
+
+    const getReindexTaskStateByUuid = useGetReindexTaskStateByUuidHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>> = ({ signal }) =>
+        getReindexTaskStateByUuid(uuid, signal)
+
+    return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
+}
+
+export type GetReindexTaskStateByUuidQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>>
+export type GetReindexTaskStateByUuidQueryError = unknown
+
+export const useGetReindexTaskStateByUuid = <TData = Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>, TError = unknown>(
+    uuid: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetReindexTaskStateByUuidQueryOptions(uuid, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
 export const useGetPropertiesHook = () => {
     const getProperties = useCmdbSwaggerClient<GetProperties200>()
 
@@ -4367,7 +4744,7 @@ export const useGetRequestStatus = <TData = Awaited<ReturnType<ReturnType<typeof
 }
 
 export const useReadReportsWithFilterHook = () => {
-    const readReportsWithFilter = useCmdbSwaggerClient<ReadReportsWithFilter200>()
+    const readReportsWithFilter = useCmdbSwaggerClient<ReportHolderUi>()
 
     return (params?: ReadReportsWithFilterParams, signal?: AbortSignal) => {
         return readReportsWithFilter({ url: `/reports`, method: 'get', params, signal })
@@ -4409,7 +4786,7 @@ export const useReadReportsWithFilter = <TData = Awaited<ReturnType<ReturnType<t
 }
 
 export const useReadConfigurationItemByMetaIsCodeHook = () => {
-    const readConfigurationItemByMetaIsCode = useCmdbSwaggerClient<ReadConfigurationItemByMetaIsCode200>()
+    const readConfigurationItemByMetaIsCode = useCmdbSwaggerClient<ConfigurationItemUi>()
 
     return (metaIsCode: string, signal?: AbortSignal) => {
         return readConfigurationItemByMetaIsCode({ url: `/readByMetaIsCode/ci/${metaIsCode}`, method: 'get', signal })
@@ -4459,7 +4836,7 @@ export const useReadConfigurationItemByMetaIsCode = <
 }
 
 export const useSearchAllHook = () => {
-    const searchAll = useCmdbSwaggerClient<SearchAll200>()
+    const searchAll = useCmdbSwaggerClient<GeneralElasticItemSet>()
 
     return (params?: SearchAllParams, signal?: AbortSignal) => {
         return searchAll({ url: `/read/search`, method: 'get', params, signal })
@@ -4541,7 +4918,7 @@ export const useGetRoleParticipant = <TData = Awaited<ReturnType<ReturnType<type
 }
 
 export const useReadCiNeighboursWithAllRelsHook = () => {
-    const readCiNeighboursWithAllRels = useClientForReadCiNeighboursWithAllRelsUsingGET<ReadCiNeighboursWithAllRels200>()
+    const readCiNeighboursWithAllRels = useClientForReadCiNeighboursWithAllRelsUsingGET<CiWithRelsResultUi>()
 
     return (uuid: string, params?: ReadCiNeighboursWithAllRelsParams, signal?: AbortSignal) => {
         return readCiNeighboursWithAllRels({ url: `/read/relations/neighbourswithallrels/${uuid}`, method: 'get', params, signal })
@@ -4589,7 +4966,7 @@ export const useReadCiNeighboursWithAllRels = <TData = Awaited<ReturnType<Return
 }
 
 export const useReadRelationshipHook = () => {
-    const readRelationship = useCmdbSwaggerClient<ReadRelationship200>()
+    const readRelationship = useCmdbSwaggerClient<RelationshipUi>()
 
     return (uuid: string, signal?: AbortSignal) => {
         return readRelationship({ url: `/read/relation/${uuid}`, method: 'get', signal })
@@ -4675,8 +5052,11 @@ export const useGetKSSpravcaVerejnaMocAktivnaFZC = <
     return query
 }
 
+/**
+ * @summary readCiList
+ */
 export const useReadCiList2Hook = () => {
-    const readCiList2 = useCmdbSwaggerClient<ReadCiList2200>()
+    const readCiList2 = useCmdbSwaggerClient<ConfigurationItemSetUi>()
 
     return (params?: ReadCiList2Params, signal?: AbortSignal) => {
         return readCiList2({ url: `/read/cilist`, method: 'get', params, signal })
@@ -4703,6 +5083,9 @@ export const useReadCiList2QueryOptions = <TData = Awaited<ReturnType<ReturnType
 export type ReadCiList2QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiList2Hook>>>>
 export type ReadCiList2QueryError = unknown
 
+/**
+ * @summary readCiList
+ */
 export const useReadCiList2 = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiList2Hook>>>, TError = unknown>(
     params?: ReadCiList2Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiList2Hook>>>, TError, TData> },
@@ -4717,7 +5100,7 @@ export const useReadCiList2 = <TData = Awaited<ReturnType<ReturnType<typeof useR
 }
 
 export const useReadConfigurationItemHook = () => {
-    const readConfigurationItem = useClientForReadConfigurationItemUsingGET<ReadConfigurationItem200>()
+    const readConfigurationItem = useClientForReadConfigurationItemUsingGET<ConfigurationItemUi>()
 
     return (uuid: string, signal?: AbortSignal) => {
         return readConfigurationItem({ url: `/read/ci/${uuid}`, method: 'get', signal })
@@ -4759,7 +5142,7 @@ export const useReadConfigurationItem = <TData = Awaited<ReturnType<ReturnType<t
 }
 
 export const useReadRelationshipsHook = () => {
-    const readRelationships = useCmdbSwaggerClient<ReadRelationships200>()
+    const readRelationships = useCmdbSwaggerClient<IncidentRelationshipSetUi>()
 
     return (uuid: string, params?: ReadRelationshipsParams, signal?: AbortSignal) => {
         return readRelationships({ url: `/read/ci/${uuid}/relations`, method: 'get', params, signal })
@@ -4857,7 +5240,7 @@ export const useReadNeighboursConfigurationItemsCount = <
 }
 
 export const useReadNeighboursConfigurationItemsHook = () => {
-    const readNeighboursConfigurationItems = useCmdbSwaggerClient<ReadNeighboursConfigurationItems200>()
+    const readNeighboursConfigurationItems = useCmdbSwaggerClient<ConfigurationItemNeighbourSetUi>()
 
     return (uuid: string, params?: ReadNeighboursConfigurationItemsParams, signal?: AbortSignal) => {
         return readNeighboursConfigurationItems({ url: `/read/ci/${uuid}/neighbours`, method: 'get', params, signal })
@@ -5411,7 +5794,7 @@ export const useReadAllCiHistoryVersions = <TData = Awaited<ReturnType<ReturnTyp
 }
 
 export const useGetGroupListHook = () => {
-    const getGroupList = useCmdbSwaggerClient<GetGroupList200>()
+    const getGroupList = useCmdbSwaggerClient<GroupSetUi>()
 
     return (signal?: AbortSignal) => {
         return getGroupList({ url: `/grouplist`, method: 'get', signal })
@@ -5450,7 +5833,7 @@ export const useGetGroupList = <TData = Awaited<ReturnType<ReturnType<typeof use
 }
 
 export const useGetConfigurationItemsGroupsHook = () => {
-    const getConfigurationItemsGroups = useCmdbSwaggerClient<GetConfigurationItemsGroups200>()
+    const getConfigurationItemsGroups = useCmdbSwaggerClient<GroupSetUi>()
 
     return (uuid: string, signal?: AbortSignal) => {
         return getConfigurationItemsGroups({ url: `/grouplist/ci/${uuid}`, method: 'get', signal })
@@ -5563,6 +5946,42 @@ export const useReindexReports = <TError = unknown, TVariables = void, TContext 
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexReportsHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useReindexReportsMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+export const useCancelReindexTaskByUuidHook = () => {
+    const cancelReindexTaskByUuid = useCmdbSwaggerClient<string>()
+
+    return (uuid: string) => {
+        return cancelReindexTaskByUuid({ url: `/util/reindexelastic/task/${uuid}/cancel`, method: 'delete' })
+    }
+}
+
+export const useCancelReindexTaskByUuidMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>, TError, { uuid: string }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>, TError, { uuid: string }, TContext> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const cancelReindexTaskByUuid = useCancelReindexTaskByUuidHook()
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>, { uuid: string }> = (props) => {
+        const { uuid } = props ?? {}
+
+        return cancelReindexTaskByUuid(uuid)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type CancelReindexTaskByUuidMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>>
+
+export type CancelReindexTaskByUuidMutationError = unknown
+
+export const useCancelReindexTaskByUuid = <TError = unknown, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>, TError, { uuid: string }, TContext>
+}) => {
+    const mutationOptions = useCancelReindexTaskByUuidMutationOptions(options)
 
     return useMutation(mutationOptions)
 }

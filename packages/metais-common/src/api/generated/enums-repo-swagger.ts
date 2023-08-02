@@ -8,14 +8,10 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useEnumsRepoSwaggerClient } from '../hooks/useEnumsRepoSwaggerClient'
-export type ListValidEnums1Params = {
+export type ListValidEnumsWithValueParams = {
     value: string
     description: string
 }
-
-export type FireJobNow200 = { [key: string]: any }
-
-export type GetJobList200 = { [key: string]: any }
 
 export interface EnumTypePreview {
     id?: number
@@ -331,7 +327,7 @@ export const useInsertEnumItem = <TError = unknown, TContext = unknown>(options?
 }
 
 export const useGetJobListHook = () => {
-    const getJobList = useEnumsRepoSwaggerClient<GetJobList200>()
+    const getJobList = useEnumsRepoSwaggerClient<string[]>()
 
     return (signal?: AbortSignal) => {
         return getJobList({ url: `/scheduler/jobList`, method: 'get', signal })
@@ -370,7 +366,7 @@ export const useGetJobList = <TData = Awaited<ReturnType<ReturnType<typeof useGe
 }
 
 export const useFireJobNowHook = () => {
-    const fireJobNow = useEnumsRepoSwaggerClient<FireJobNow200>()
+    const fireJobNow = useEnumsRepoSwaggerClient<boolean>()
 
     return (jobName: string, signal?: AbortSignal) => {
         return fireJobNow({ url: `/scheduler/fire/${jobName}`, method: 'get', signal })
@@ -527,39 +523,44 @@ export const useListValidEnums = <TData = Awaited<ReturnType<ReturnType<typeof u
     return query
 }
 
-export const useListValidEnums1Hook = () => {
-    const listValidEnums1 = useEnumsRepoSwaggerClient<EnumTypePreviewList>()
+export const useListValidEnumsWithValueHook = () => {
+    const listValidEnumsWithValue = useEnumsRepoSwaggerClient<EnumTypePreviewList>()
 
-    return (params: ListValidEnums1Params, signal?: AbortSignal) => {
-        return listValidEnums1({ url: `/enums/list/allWithValue`, method: 'get', params, signal })
+    return (params: ListValidEnumsWithValueParams, signal?: AbortSignal) => {
+        return listValidEnumsWithValue({ url: `/enums/list/allWithValue`, method: 'get', params, signal })
     }
 }
 
-export const getListValidEnums1QueryKey = (params: ListValidEnums1Params) => [`/enums/list/allWithValue`, ...(params ? [params] : [])] as const
+export const getListValidEnumsWithValueQueryKey = (params: ListValidEnumsWithValueParams) =>
+    [`/enums/list/allWithValue`, ...(params ? [params] : [])] as const
 
-export const useListValidEnums1QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListValidEnums1Hook>>>, TError = unknown>(
-    params: ListValidEnums1Params,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListValidEnums1Hook>>>, TError, TData> },
-): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListValidEnums1Hook>>>, TError, TData> & { queryKey: QueryKey } => {
+export const useListValidEnumsWithValueQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>,
+    TError = unknown,
+>(
+    params: ListValidEnumsWithValueParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getListValidEnums1QueryKey(params)
+    const queryKey = queryOptions?.queryKey ?? getListValidEnumsWithValueQueryKey(params)
 
-    const listValidEnums1 = useListValidEnums1Hook()
+    const listValidEnumsWithValue = useListValidEnumsWithValueHook()
 
-    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useListValidEnums1Hook>>>> = ({ signal }) => listValidEnums1(params, signal)
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>> = ({ signal }) =>
+        listValidEnumsWithValue(params, signal)
 
     return { queryKey, queryFn, ...queryOptions }
 }
 
-export type ListValidEnums1QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListValidEnums1Hook>>>>
-export type ListValidEnums1QueryError = unknown
+export type ListValidEnumsWithValueQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>>
+export type ListValidEnumsWithValueQueryError = unknown
 
-export const useListValidEnums1 = <TData = Awaited<ReturnType<ReturnType<typeof useListValidEnums1Hook>>>, TError = unknown>(
-    params: ListValidEnums1Params,
-    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListValidEnums1Hook>>>, TError, TData> },
+export const useListValidEnumsWithValue = <TData = Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>, TError = unknown>(
+    params: ListValidEnumsWithValueParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-    const queryOptions = useListValidEnums1QueryOptions(params, options)
+    const queryOptions = useListValidEnumsWithValueQueryOptions(params, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 

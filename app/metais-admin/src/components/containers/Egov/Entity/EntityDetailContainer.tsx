@@ -7,8 +7,8 @@ import {
     useStoreUnvalid,
     useStoreValid,
     useSetSummarizingCard,
-    useStoreAttributeTextation,
     Attribute,
+    useStoreAttributeTextation,
     useDeleteAttributeTextation,
 } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'

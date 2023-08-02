@@ -13,12 +13,19 @@ import {
     TextHeading,
 } from '@isdd/idsk-ui-kit'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { useFindByNameWithParams, Role, useFindByNameWithParamsCount, useDelete } from '@isdd/metais-common/api/generated/iam-swagger'
+import {
+    useFindByNameWithParams,
+    Role,
+    useFindByNameWithParamsCount,
+    useDelete,
+    RelatedRoleType,
+} from '@isdd/metais-common/api/generated/iam-swagger'
 import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ColumnDef } from '@tanstack/react-table'
 import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
 import { useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
+import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import styles from './roles.module.scss'
 
@@ -56,6 +63,8 @@ const findGroupName = (code: string | undefined, roleGroupsList: EnumItem[] | un
     return roleGroupsList?.find((e) => e.code == code)?.value ?? defaultString
 }
 
+const RolesGroup = 'SKUPINA_ROL'
+
 const ManageRoles: React.FC = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
@@ -67,10 +76,8 @@ const ManageRoles: React.FC = () => {
 
     const [sorting, setSorting] = useState<ColumnSort[]>([defaultSort])
 
-    //API Calls
-
     const { data: rolesPages } = useFindByNameWithParamsCount({ ...filter, name: filter.fullTextSearch ?? '' })
-    const { data: roleGroups } = useGetValidEnum('SKUPINA_ROL')
+    const { data: roleGroups } = useGetValidEnum(RolesGroup)
     const {
         data: roles,
         isLoading,
@@ -130,7 +137,7 @@ const ManageRoles: React.FC = () => {
                         label={t('adminRolesPage.assignedUsers')}
                         variant="secondary"
                         className={styles.widthFit}
-                        onClick={() => navigate('/roles/users/' + cell.row.original.uuid)}
+                        onClick={() => navigate(AdminRouteNames.ROLE_USERS + '/' + cell.row.original.uuid)}
                     />
                 </>
             ),
@@ -143,7 +150,7 @@ const ManageRoles: React.FC = () => {
                     <Button
                         label={t('adminRolesPage.edit')}
                         className={styles.widthFit}
-                        onClick={() => navigate('/roles/edit/' + cell.row.original.uuid)}
+                        onClick={() => navigate(AdminRouteNames.ROLE_EDIT + '/' + cell.row.original.uuid)}
                     />
                 </>
             ),
@@ -185,8 +192,8 @@ const ManageRoles: React.FC = () => {
             </BaseModal>
             <BreadCrumbs
                 links={[
-                    { label: t('notifications.home'), href: '/', icon: HomeIcon },
-                    { label: t('adminRolesPage.rolesList'), href: '/roles' },
+                    { label: t('notifications.home'), href: RouteNames.HOME, icon: HomeIcon },
+                    { label: t('adminRolesPage.rolesList'), href: AdminRouteNames.ROLES },
                 ]}
             />
             <TextHeading size="L">{t('adminRolesPage.rolesList')}</TextHeading>
@@ -205,8 +212,8 @@ const ManageRoles: React.FC = () => {
                             label={'System'}
                             options={[
                                 { value: 'all', label: t('adminRolesPage.all') },
-                                { value: 'SYSTEM', label: t('radioButton.yes') },
-                                { value: 'NON_SYSTEM', label: t('radioButton.no') },
+                                { value: RelatedRoleType.SYSTEM, label: t('radioButton.yes') },
+                                { value: RelatedRoleType.NON_SYSTEM, label: t('radioButton.no') },
                             ]}
                         />
                     </>
@@ -214,7 +221,7 @@ const ManageRoles: React.FC = () => {
                 defaultFilterValues={defaultFilterValues}
             />
             <ButtonGroupRow className={styles.flexEnd}>
-                <Button label={t('adminRolesPage.addNewRole')} onClick={() => navigate('/roles/newRole')} />
+                <Button label={t('adminRolesPage.addNewRole')} onClick={() => navigate(AdminRouteNames.ROLE_NEW)} />
                 <TextBody className={styles.marginLeftAuto}>Zobraziť</TextBody>
                 <SimpleSelect
                     onChange={(label) => {

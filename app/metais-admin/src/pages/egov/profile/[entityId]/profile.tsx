@@ -10,7 +10,16 @@ const Profile = () => {
     return (
         <ProfileDetailContainer
             entityName={entityId ?? ''}
-            View={(props) => <ProfileDetailView data={props?.data} setValidityOfProfile={props?.setValidityOfProfile} entityName={entityId ?? ''} />}
+            View={(props) => (
+                <ProfileDetailView
+                    data={props?.data}
+                    setValidityOfProfile={props?.setValidityOfProfile}
+                    setValidityOfAttributeProfile={props?.setValidityOfAttributeProfile}
+                    entityName={entityId ?? ''}
+                    saveAttribute={props?.saveAttribute}
+                    setVisibilityOfAttributeProfile={props?.setVisibilityOfAttributeProfile}
+                />
+            )}
         />
     )
 }

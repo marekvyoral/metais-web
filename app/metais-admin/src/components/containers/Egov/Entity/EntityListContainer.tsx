@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { CiTypeFilter, CiTypePreviewList, useListCiTypes, ListCiTypesParams } from '@isdd/metais-common/api'
+import { CiTypeFilter, CiTypePreviewList, useListCiTypes } from '@isdd/metais-common/api'
 import { QueryFeedback } from '@isdd/metais-common'
 
 export interface IView {
@@ -17,8 +17,8 @@ export const EntityListContainer: React.FC<IEntityListContainer> = ({ View }) =>
     }
 
     const [listQueryArgs] = useState<CiTypeFilter>(defaultListQueryArgs)
-    const listParams: ListCiTypesParams = { filter: listQueryArgs }
-    const { data, isLoading, isError } = useListCiTypes(listParams)
+
+    const { data, isLoading, isError } = useListCiTypes({ filter: listQueryArgs })
 
     return (
         <QueryFeedback loading={isLoading} error={isError}>

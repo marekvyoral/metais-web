@@ -5,6 +5,10 @@
     .removeButton {
         float: right;
     }
+    .generalActions {
+        display: flex;
+        gap: govuk-spacing(2);
+    }
 }
 
 .attributeGridRowBox {

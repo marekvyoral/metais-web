@@ -12,23 +12,11 @@ import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
 
 interface RelationshipsAccordion {
     data?: ConfigurationItemUi
-    isLoading: boolean
-    isError: boolean
     configurationItemId?: string
 }
 
-const Loading: React.FC = () => {
-    return <div>loading</div>
-}
-
-const Error: React.FC = () => {
-    return <div>error</div>
-}
-
-export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data, isLoading, isError, configurationItemId }) => {
+export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data, configurationItemId }) => {
     const { t } = useTranslation()
-    if (isLoading) return <Loading />
-    if (isError) return <Error />
 
     return (
         <>

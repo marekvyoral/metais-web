@@ -16,8 +16,8 @@ const globExports = {
             return <></>
         },
     },
-    '../pages/roles/index.tsx': {
-        ManageRoles: () => {
+    '../pages/notifications/index.tsx': {
+        default: () => {
             return <></>
         },
     },
@@ -45,6 +45,12 @@ const globExports = {
 
 const pages = {
     '../pages/DevTestScreen.tsx': {
+        Component: () => {
+            return <></>
+        },
+        indexComponent: undefined,
+    },
+    '../pages/notifications/index.tsx': {
         Component: () => {
             return <></>
         },
@@ -98,13 +104,14 @@ test('reduce all file paths by number of slashes', () => {
         '../pages/project/project-dashboard/index.tsx',
         '../pages/project/project-dashboard/project-dashboard-help/[projektId].tsx',
         '../pages/projekt/index.tsx',
+        '../pages/notifications/index.tsx',
     ]
 
     const groupedFilePathBySlash = reduceAllFilePathsByNumberOfSlash(paths)
 
     const expectedmap = new Map([
         [2, ['../pages/DevTestScreen.tsx', '../pages/Home.tsx']],
-        [3, ['../pages/roles/index.tsx', '../pages/project/[id].tsx', '../pages/projekt/index.tsx']],
+        [3, ['../pages/project/[id].tsx', '../pages/projekt/index.tsx', '../pages/notifications/index.tsx']],
         [4, ['../pages/project/project-dashboard/[projektId].tsx', '../pages/project/project-dashboard/index.tsx']],
         [5, ['../pages/project/project-dashboard/project-dashboard-help/[projektId].tsx']],
     ])
@@ -214,6 +221,12 @@ test('construct route with parent 2', () => {
 test('parse slug', () => {
     const slug = parseSlugFromFilePath('../pages/DevTestScreen.tsx')
     const expectedOutput = 'DevTestScreen'
+    expect(slug).toEqual(expectedOutput)
+})
+
+test('parse slug', () => {
+    const slug = parseSlugFromFilePath('../pages/notifications/index.tsx')
+    const expectedOutput = 'notifications/'
     expect(slug).toEqual(expectedOutput)
 })
 

@@ -60,7 +60,12 @@
         "development": "Regionálny rozvoj",
         "info": "Informatizácia",
         "invest": "Investície",
-        "inovations": "Inovácie"
+        "inovations": "Inovácie",
+        "newItem": "+ Nová položka",
+        "registration": "Registrácia",
+        "login": "Prihlásiť",
+        "logout": "Odhlásiť",
+        "profile": "Profil"
     },
     "radioButton": {
         "yes": "Áno",
@@ -133,6 +138,7 @@
         "minValue": "Minimálna hodnota",
         "maxValue": "Maximálna hodnota",
         "units": "Merná jednotka",
+        "edit": "Upraviť",
         "detail": {
             "profileAttributesHeading": "Detail profilu atribútov",
             "profileAttributes": "Atribúty",
@@ -151,6 +157,10 @@
             "validityChange": {
                 "setValid": "Splatniť",
                 "setInvalid": "Zneplatniť"
+            },
+            "visibilityChange": {
+                "setVisible": "Zviditeľniť",
+                "setInvisible": "Nezviditeľniť"
             },
             "showOwnerChange": {
                 "true": "Povoliť",
@@ -173,7 +183,8 @@
             "technicalNameRegex": "Technické meno môže byť len z písmen abecedy",
             "addProfile": "Pridať profil",
             "removeProfile": "Odstrániť profil",
-            "addConnection": "Pridať prepojenie"
+            "addConnection": "Pridať prepojenie",
+            "addAttribute": "Pridať atribút"
         }
     },
     "validity": {
@@ -195,14 +206,21 @@
         "actions": "Hromadné úkony",
         "invalidateItems": "Zneplatnenie položiek",
         "validateItems": "Splatnenie položiek",
-        "changeOwner": "Zmena vlastníka"
+        "changeOwner": "Zmena vlastníka",
+        "metaColumnName": {
+            "state": "Stav evidencie",
+            "group": "Správca",
+            "createdAt": "Vytvorené",
+            "lastModifiedAt": "Posledná zmena"
+        }
     },
     "actionsInTable": {
         "actions": "Akcie",
         "edit": "Upraviť",
         "reset": "Resetovať",
         "save": "Uložiť",
-        "cancel": "Zrušiť"
+        "cancel": "Zrušiť",
+        "moreActions": "Viac"
     },
     "adminRolesPage": {
         "addNewRole": "Pridať novú rolu",
@@ -223,5 +241,26 @@
         "login": "Login",
         "email": "Email",
         "obligedPerson": "Povinná osoba"
+    },
+    "tableSelectColumns": {
+        "searchPlaceholder": "Názov hľadaného stĺpca",
+        "refreshButton": "Obnoviť",
+        "cancelButton": "Zrušiť",
+        "viewButton": "Zobraziť"
+    },
+    "searchInput": {
+        "search": "Hľadať"
+    },
+    "navMenu": {
+        "dashboard": "Nástenka",
+        "assignment": "Úlohy",
+        "notifications": "Notifikácie",
+        "settings": "Nastavenia profilu",
+        "admin": "Administrácia",
+        "egov": {
+            "entity": "Entity",
+            "profiles": "Profily atribútov",
+            "relation": "Vzťahy"
+        }
     }
 }
