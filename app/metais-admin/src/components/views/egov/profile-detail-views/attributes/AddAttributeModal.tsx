@@ -10,19 +10,17 @@ interface IAddAttributeModal {
     entityName: string
 }
 
-const AddAttributeModal = ({ open, onClose, entityName }: IAddAttributeModal) => {
+export const AddAttributeModal = ({ open, onClose, entityName }: IAddAttributeModal) => {
     return (
         <BaseModal isOpen={open} close={onClose}>
             <AddAttributeContainer
                 View={(props) => (
                     <AddAttributeView
                         data={{ measureUnit: props?.data?.measureUnit, allEnumsData: props?.data?.allEnumsData, entityName }}
-                        storeAttribute={props?.storeAttribute}
+                        storeNewAttribute={props?.storeNewAttribute}
                     />
                 )}
             />
         </BaseModal>
     )
 }
-
-export default AddAttributeModal

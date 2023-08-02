@@ -60,11 +60,25 @@
         "development": "Regional Development",
         "info": "Digitization",
         "invest": "Investments",
-        "inovations": "Innovations"
+        "inovations": "Innovations",
+        "newItem": "+ New Item",
+        "registration": "Registration",
+        "login": "Login",
+        "logout": "Logout",
+        "profile": "Profile"
     },
     "radioButton": {
         "yes": "Yes",
         "no": "No"
+    },
+    "searchInput": {
+        "search": "Search"
+    },
+    "tableSelectColumns": {
+        "searchPlaceholder": "Search column name",
+        "refreshButton": "Refresh",
+        "cancelButton": "Cancel",
+        "viewButton": "View"
     },
     "table": {
         "title": "Cities",
@@ -126,6 +140,13 @@
         "roles": "Allowed Roles",
         "order": "Order",
         "invisible": "Visibility",
+        "clarification": "Clarification",
+        "defaultValue": "Default value",
+        "constraints": "Constraint",
+        "minValue": "Min. value",
+        "maxValue": "Max. value",
+        "units": "Measure unit",
+        "edit": "Edit",
         "detail": {
             "profileAttributesHeading": "Detail attributes profile",
             "profileAttributes": "Attributes",
@@ -144,6 +165,16 @@
             "validityChange": {
                 "setValid": "Set valid",
                 "setInvalid": "Set invalid"
+            },
+            "visibilityChange": {
+                "setVisible": "Set visible",
+                "setInvisible": "Set invisible"
+            },
+            "showOwnerChange": {
+                "true": "Allow",
+                "false": "Forbid",
+                "": "Forbid",
+                "undefined": "Forbid"
             },
             "selectOption": "Select option",
             "showOwner": {
@@ -164,6 +195,12 @@
     },
 
     "state": {
+        "removeProfile": "Remove profile",
+        "addConnection": "Add connection",
+        "addAttribute": "Add attribute"
+    },
+
+    "validity": {
         "true": "Valid",
         "false": "Invalid",
         "undefined": "Invalid"
@@ -182,7 +219,33 @@
         "actions": "Bulk actions",
         "invalidateItems": "Invalidate items",
         "validateItems": "Validate actions",
-        "changeOwner": "Change owner"
+        "changeOwner": "Change owner",
+        "metaColumnName": {
+            "state": "Evidence status",
+            "group": "Manager",
+            "createdAt": "Created",
+            "lastModifiedAt": " Last change"
+        }
+    },
+    "actionsInTable": {
+        "actions": "Actions",
+        "edit": "Edit",
+        "reset": "Reset",
+        "save": "Save",
+        "cancel": "cancel",
+        "moreActions": "More"
+    },
+    "navMenu": {
+        "dashboard": "Dashboard",
+        "assignment": "Assignments",
+        "notifications": "Notifications",
+        "settings": "Settings",
+        "admin": "Administration",
+        "egov": {
+            "entity": "Entities",
+            "profiles": "Attribute profiles",
+            "relation": "Relations"
+        }
     },
     "adminRolesPage": {
         "addNewRole": "Add new role",

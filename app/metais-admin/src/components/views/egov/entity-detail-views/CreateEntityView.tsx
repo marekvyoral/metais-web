@@ -1,45 +1,41 @@
 import React, { useCallback } from 'react'
 import { Button, ErrorBlock, Input, MultiSelect, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
-import { FieldName, FieldValues, FormProvider, RegisterOptions } from 'react-hook-form'
+import { FieldValues, FormProvider } from 'react-hook-form'
 import { MutationFeedback } from '@isdd/metais-common'
+import { useTranslation } from 'react-i18next'
 
 import ConnectionView from '../relation-detail-views/connections/ConnectionView'
 import { AddConnectionModal } from '../relation-detail-views/connections/AddConnectionModal'
 
 import { AddAttributeProfilesModal } from './attributes/AddAttributeProfilesModal'
 import styles from './createEntityView.module.scss'
-import useCreateView from './useCreateView'
+import { useCreateDialogs } from './hooks/useCreateDialogs'
+import { useCreateForm } from './hooks/useCreateForm'
 
 import { ProfileTabs } from '@/components/ProfileTabs'
 import { ICreateEntityView } from '@/components/containers/Egov/Entity/CreateEntityContainer'
 
 export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityView) => {
+    const { t } = useTranslation()
+
     const {
-        formMethods,
-        rolesToSelect,
-        t,
-        sourcesFromForm,
-        targetsFromForm,
-        tabsFromForm,
         mutationSuccessResponse: { successedMutation, setSuccessedMutation },
         mutationErrorResponse: { error, setError },
         connectionsDialog: { connectionsOpen, setConnectionsOpen },
         profileAttributesDialog,
-    } = useCreateView({ data, hiddenInputs })
+    } = useCreateDialogs()
 
-    const { handleSubmit, formState } = formMethods
+    const { formMethods, tabsFromForm, sourcesFromForm, targetsFromForm, selectedRoles } = useCreateForm({ data, hiddenInputs })
 
-    // Need todo typesafe, probably override useForm hook with custom register typesafe...
-    const register = (inputName: string, options?: RegisterOptions<FieldValues, FieldName<FieldValues>>) => {
-        return {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            ...formMethods?.register(inputName, options),
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            error: formMethods?.formState?.errors?.[inputName],
-        }
-    }
+    const roleList =
+        data?.roles?.map?.((role) => {
+            return {
+                value: role?.name ?? '',
+                label: role?.description ?? '',
+            }
+        }) ?? []
+
+    const { handleSubmit, formState, register } = formMethods
 
     const onSubmit = useCallback(
         async (formData: FieldValues) => {
@@ -57,16 +53,38 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
     return (
         <>
             <FormProvider {...formMethods}>
-                {(successedMutation || error) && <MutationFeedback success={successedMutation} error={error} />}
+                {(successedMutation || error) && <MutationFeedback success={successedMutation} error={error?.errorMessage} />}
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <>
-                        {!hiddenInputs?.NAME && <Input label={t('egov.name')} {...register('name')} />}
-                        {!hiddenInputs?.ENG_NAME && <Input label={t('egov.engName')} {...register('engName')} />}
-                        {!hiddenInputs?.TECHNICAL_NAME && <Input label={t('egov.technicalName')} {...register('technicalName')} />}
-                        {!hiddenInputs?.CODE_PREFIX && <Input label={t('egov.codePrefix')} {...register('codePrefix')} />}
-                        {!hiddenInputs?.URI_PREFIX && <Input label={t('egov.uriPrefix')} {...register('uriPrefix')} />}
-                        {!hiddenInputs?.DESCRIPTION && <TextArea label={t('egov.description')} rows={3} {...register('description')} />}
-                        {!hiddenInputs?.ENG_DESCRIPTION && <TextArea label={t('egov.engDescription')} rows={3} {...register('engDescription')} />}
+                        {!hiddenInputs?.NAME && <Input label={t('egov.name')} {...register('name')} error={formState?.errors.name?.message} />}
+                        {!hiddenInputs?.ENG_NAME && (
+                            <Input label={t('egov.engName')} {...register('engName')} error={formState?.errors?.engName?.message} />
+                        )}
+                        {!hiddenInputs?.TECHNICAL_NAME && (
+                            <Input label={t('egov.technicalName')} {...register('technicalName')} error={formState?.errors?.technicalName?.message} />
+                        )}
+                        {!hiddenInputs?.CODE_PREFIX && (
+                            <Input label={t('egov.codePrefix')} {...register('codePrefix')} error={formState?.errors?.codePrefix?.message} />
+                        )}
+                        {!hiddenInputs?.URI_PREFIX && (
+                            <Input label={t('egov.uriPrefix')} {...register('uriPrefix')} error={formState?.errors?.uriPrefix?.message} />
+                        )}
+                        {!hiddenInputs?.DESCRIPTION && (
+                            <TextArea
+                                label={t('egov.description')}
+                                rows={3}
+                                {...register('description')}
+                                error={formState?.errors?.description?.message}
+                            />
+                        )}
+                        {!hiddenInputs?.ENG_DESCRIPTION && (
+                            <TextArea
+                                label={t('egov.engDescription')}
+                                rows={3}
+                                {...register('engDescription')}
+                                error={formState?.errors?.engDescription?.message}
+                            />
+                        )}
                         {!hiddenInputs?.TYPE && (
                             <SimpleSelect
                                 label={t('egov.type')}
@@ -76,18 +94,21 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
                             />
                         )}
                         {!hiddenInputs?.ROLE_LIST && (
-                            <MultiSelect
-                                id="1"
-                                label={t('egov.roles')}
-                                options={rolesToSelect}
-                                {...register('roleList')}
-                                onChange={(newValue) => {
-                                    formMethods?.setValue(
-                                        'roleList',
-                                        newValue?.map((v) => v?.value),
-                                    )
-                                }}
-                            />
+                            <div>
+                                <MultiSelect
+                                    label={t('egov.roles')}
+                                    options={roleList}
+                                    values={selectedRoles ?? []}
+                                    name="roleList"
+                                    onChange={(newValue) => {
+                                        formMethods?.setValue(
+                                            'roleList',
+                                            newValue?.map((v) => v?.value),
+                                        )
+                                    }}
+                                />
+                                {formState?.errors?.roleList && <ErrorBlock errorMessage={t('egov.create.requiredField')} />}
+                            </div>
                         )}
                         {!hiddenInputs?.SOURCES && !hiddenInputs?.TARGETS && (
                             <div>

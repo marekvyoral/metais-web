@@ -13,7 +13,7 @@ interface IOptions {
 }
 
 interface ISelectProps<T extends IOptions> {
-    id: string
+    id?: string
     label: string
     name: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -128,6 +128,10 @@
         "yes": "Yes",
         "no": "No"
     },
+    "sidebar": {
+        "hide": "HIDE",
+        "unhide": "SHOW"
+    },
     "filter": {
         "expand": "Expand filter",
         "collapse": "Collapse filter",
@@ -275,6 +279,12 @@
             "evidenceStatus": "Evidence status",
             "createdAt": "Created",
             "lastModifiedAt": "Last change"
+        },
+        "card": {
+            "type": "Document type",
+            "size": "Size",
+            "fileName": "File name",
+            "version": "Version"
         }
     },
     "relationshipsTab": {
@@ -299,6 +309,7 @@
             "": ""
         }
     },
+    "download": "Download",
     "validation": {
         "required": "This field is required",
         "invalidEmail": "Enter a valid email",
@@ -344,5 +355,27 @@
             "createdAt": "Created",
             "lastModifiedAt": " Last change"
         }
+    },
+    "notifications": {
+        "all": "All",
+        "INFO": "INFO",
+        "ERROR": "ERROR",
+        "onlyUnread": "Only unread",
+        "home": "Home",
+        "notifications": "Notifications",
+        "deleteSelected": "Delete selected",
+        "setAllAsRead": "Set all as read",
+        "deleteAll": "Delete all",
+        "columns": "Columns",
+        "column": "Column",
+        "eventType": "Event Type",
+        "created": "Created:"
+    },
+    "feedback": {
+        "failedFetch": "There was a problem with fetching data. Please try again."
+    },
+    "accordion": {
+        "openAll": "Open all",
+        "closeAll": "Close all"
     }
 }

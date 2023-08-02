@@ -19,10 +19,10 @@ interface ICreateEntity {
 }
 
 export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
-    const page = 1
-    const limit = 200
+    const pageNumber = 1
+    const pageSize = 200
 
-    const { data, isLoading, isError } = useFindAll1(page, limit, { direction: SortType.ASC, orderBy: 'name' })
+    const { data, isLoading, isError } = useFindAll1(pageNumber, pageSize, { direction: SortType.ASC, orderBy: 'name' })
     const { mutateAsync } = useStoreNewAttrProfile()
 
     const storeProfile = async (formData: AttributeProfile) => {

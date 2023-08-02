@@ -1,6 +1,5 @@
 import React from 'react'
 import { Attribute, EnumType, EnumTypePreviewList, useGetEnum, useListEnums, useStoreNewAttribute } from '@isdd/metais-common/api'
-import { UseMutateAsyncFunction } from '@tanstack/react-query'
 
 export interface IAddAttributeView {
     data: {
@@ -8,15 +7,7 @@ export interface IAddAttributeView {
         allEnumsData?: EnumTypePreviewList | undefined
         entityName?: string
     }
-    storeAttribute: UseMutateAsyncFunction<
-        void,
-        unknown,
-        {
-            atrProfTechnicalName: string
-            data: Attribute
-        },
-        unknown
-    >
+    storeNewAttribute: (attributeTechnicalName?: string, newAttribute?: Attribute) => Promise<void>
 }
 
 export interface IAddAttributeContainer {
@@ -28,13 +19,23 @@ const AddAttributeContainer = ({ View }: IAddAttributeContainer) => {
     const { data: allEnumsData } = useListEnums()
 
     const { mutateAsync: storeAttribute } = useStoreNewAttribute()
+
+    const storeNewAttribute = async (attributeTechnicalName?: string, newAttribute?: Attribute) => {
+        await storeAttribute({
+            atrProfTechnicalName: attributeTechnicalName ?? '',
+            data: {
+                ...newAttribute,
+            },
+        })
+    }
+
     return (
         <View
             data={{
                 measureUnit: data,
                 allEnumsData,
             }}
-            storeAttribute={storeAttribute}
+            storeNewAttribute={storeNewAttribute}
         />
     )
 }

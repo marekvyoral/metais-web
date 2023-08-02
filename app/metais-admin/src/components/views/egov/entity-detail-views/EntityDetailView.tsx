@@ -6,7 +6,7 @@ import { Button } from '@isdd/idsk-ui-kit'
 import { useNavigate } from 'react-router-dom'
 
 import styles from '../detailViews.module.scss'
-import BasicInformations from '../BasicInformations'
+import { BasicInformations } from '../BasicInformations'
 
 import { EntityDetailViewAttributes } from './attributes/EntityDetailViewAttributes'
 import { SummarizingCard } from './SummarizingCard'
@@ -60,7 +60,7 @@ export const EntityDetailView = ({
                     <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
                     <div>
                         <Button
-                            label="zmenit"
+                            label={t('egov.edit')}
                             onClick={() => {
                                 navigate('/egov/entity/' + ciTypeData?.technicalName + '/edit')
                             }}

@@ -30,6 +30,7 @@
         "wrapActiveFilter": "Pack active filter",
         "unorderedColumn": "Unsorted column - will use ascending sorting.",
         "resetOrder": "Reset order",
-        "pagination": "Page navigation"
+        "pagination": "Page navigation",
+        "noRowsFound": "No data found"
     }
 }

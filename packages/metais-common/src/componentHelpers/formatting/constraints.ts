@@ -1,10 +1,14 @@
-import { Attribute, AttributeProfile, AttributeConstraintEnum } from '@isdd/metais-common/api'
+import { Attribute, AttributeConstraintEnumAllOf, AttributeProfile } from '../../api'
 
 export const calculateConstraintFromAttributes = (entityAttributes: Attribute[] | undefined) => {
     return (
         entityAttributes
             ?.map((attribute: Attribute) =>
-                attribute?.constraints?.filter((item) => item.type === 'enum').map((constraint: AttributeConstraintEnum) => constraint?.enumCode),
+                attribute?.constraints
+                    ?.filter((item) => item.type === 'enum')
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    //@ts-ignore
+                    .map((constraint: AttributeConstraintEnumAllOf) => constraint?.enumCode),
             )
             .flat() ?? []
     )
@@ -15,7 +19,11 @@ export const calculateConstraintFromAttributeProfiles = (entityAttributeProfiles
         entityAttributeProfiles
             ?.map((profile: AttributeProfile) =>
                 profile?.attributes?.map((attribute) =>
-                    attribute?.constraints?.filter((item) => item.type === 'enum').map((constraint: AttributeConstraintEnum) => constraint?.enumCode),
+                    attribute?.constraints
+                        ?.filter((item) => item.type === 'enum')
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        //@ts-ignore
+                        .map((constraint: AttributeConstraintEnumAllOf) => constraint?.enumCode),
                 ),
             )
             .flat(2) ?? []

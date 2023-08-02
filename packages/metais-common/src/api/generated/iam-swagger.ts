@@ -197,7 +197,7 @@ export type FindAll11200 = Role | Role[]
 export type FindAll11Params = {
     orderBy?: string
     direction?: string
-    name: string
+    name?: string
 }
 
 export interface Configuration {
@@ -304,9 +304,11 @@ export interface ConfigurationItemSetUi {
     incidentRelationshipSet?: RelationshipUi[]
 }
 
+export type AttributeUiValue = { [key: string]: any }
+
 export interface AttributeUi {
     name?: string
-    value?: string
+    value?: AttributeUiValue
 }
 
 export interface ConfigurationItemUi {
@@ -458,8 +460,6 @@ export interface GetAttributeOwnershipRequest {
     attributeNames?: string[]
 }
 
-export type GetAttributeOwnershipRequestList = GetAttributeOwnershipRequest[]
-
 export interface Ownership {
     owner?: boolean
     ownerDelegate?: boolean
@@ -475,8 +475,6 @@ export interface GetOwnershipRequest {
     userLogin?: string
     itemId?: string
 }
-
-export type GetOwnershipRequestList = GetOwnershipRequest[]
 
 export interface UserPermissionAssignData {
     po?: string
@@ -1696,15 +1694,15 @@ export const useAddSubGroup = <TError = unknown, TContext = unknown>(options?: {
 export const useFindAll11Hook = () => {
     const findAll11 = useIAmSwaggerClient<FindAll11200>()
 
-    return (params: FindAll11Params, signal?: AbortSignal) => {
+    return (params?: FindAll11Params, signal?: AbortSignal) => {
         return findAll11({ url: `/roles`, method: 'get', params, signal })
     }
 }
 
-export const getFindAll11QueryKey = (params: FindAll11Params) => [`/roles`, ...(params ? [params] : [])] as const
+export const getFindAll11QueryKey = (params?: FindAll11Params) => [`/roles`, ...(params ? [params] : [])] as const
 
 export const useFindAll11QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useFindAll11Hook>>>, TError = OperationResult>(
-    params: FindAll11Params,
+    params?: FindAll11Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFindAll11Hook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFindAll11Hook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -1722,7 +1720,7 @@ export type FindAll11QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typ
 export type FindAll11QueryError = OperationResult
 
 export const useFindAll11 = <TData = Awaited<ReturnType<ReturnType<typeof useFindAll11Hook>>>, TError = OperationResult>(
-    params: FindAll11Params,
+    params?: FindAll11Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFindAll11Hook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useFindAll11QueryOptions(params, options)
@@ -1842,6 +1840,9 @@ export const useGetNewVersionFromCsru = <TError = OperationResult, TContext = un
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary findSubOrganizationsByCmdbIdBulk
+ */
 export const useFindSubOrganizationsByCmdbIdBulkHook = () => {
     const findSubOrganizationsByCmdbIdBulk = useIAmSwaggerClient<SubOrganizationCmdbId[]>()
 
@@ -1884,6 +1885,9 @@ export type FindSubOrganizationsByCmdbIdBulkMutationResult = NonNullable<
 export type FindSubOrganizationsByCmdbIdBulkMutationBody = string[]
 export type FindSubOrganizationsByCmdbIdBulkMutationError = OperationResult
 
+/**
+ * @summary findSubOrganizationsByCmdbIdBulk
+ */
 export const useFindSubOrganizationsByCmdbIdBulk = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useFindSubOrganizationsByCmdbIdBulkHook>>>,
@@ -1897,6 +1901,9 @@ export const useFindSubOrganizationsByCmdbIdBulk = <TError = OperationResult, TC
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary findSubOrganizationsBulk
+ */
 export const useFindSubOrganizationsBulkHook = () => {
     const findSubOrganizationsBulk = useIAmSwaggerClient<SubOrganizations[]>()
 
@@ -1930,6 +1937,9 @@ export type FindSubOrganizationsBulkMutationResult = NonNullable<Awaited<ReturnT
 export type FindSubOrganizationsBulkMutationBody = string[]
 export type FindSubOrganizationsBulkMutationError = OperationResult
 
+/**
+ * @summary findSubOrganizationsBulk
+ */
 export const useFindSubOrganizationsBulk = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useFindSubOrganizationsBulkHook>>>, TError, { data: string[] }, TContext>
 }) => {
@@ -1938,6 +1948,9 @@ export const useFindSubOrganizationsBulk = <TError = OperationResult, TContext =
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getHierarchyGids
+ */
 export const useGetHierarchyGidsHook = () => {
     const getHierarchyGids = useIAmSwaggerClient<OrganizationRoleHierarchyOut>()
 
@@ -1978,6 +1991,9 @@ export type GetHierarchyGidsMutationResult = NonNullable<Awaited<ReturnType<Retu
 export type GetHierarchyGidsMutationBody = OrganizationRoleHierarchyIn
 export type GetHierarchyGidsMutationError = OperationResult
 
+/**
+ * @summary getHierarchyGids
+ */
 export const useGetHierarchyGids = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useGetHierarchyGidsHook>>>,
@@ -1991,6 +2007,9 @@ export const useGetHierarchyGids = <TError = OperationResult, TContext = unknown
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getPoRelationshipIntegrityConstraints
+ */
 export const useGetPoRelationshipIntegrityConstraintsHook = () => {
     const getPoRelationshipIntegrityConstraints = useIAmSwaggerClient<PoRelationshipIntegrityConstraints[]>()
 
@@ -2039,6 +2058,9 @@ export type GetPoRelationshipIntegrityConstraintsMutationResult = NonNullable<
 export type GetPoRelationshipIntegrityConstraintsMutationBody = PoRelationship[]
 export type GetPoRelationshipIntegrityConstraintsMutationError = OperationResult
 
+/**
+ * @summary getPoRelationshipIntegrityConstraints
+ */
 export const useGetPoRelationshipIntegrityConstraints = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useGetPoRelationshipIntegrityConstraintsHook>>>,
@@ -2052,6 +2074,9 @@ export const useGetPoRelationshipIntegrityConstraints = <TError = OperationResul
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary isOwnerByUser
+ */
 export const useIsOwnerByUserHook = () => {
     const isOwnerByUser = useIAmSwaggerClient<OwnerByUserOut>()
 
@@ -2085,6 +2110,9 @@ export type IsOwnerByUserMutationResult = NonNullable<Awaited<ReturnType<ReturnT
 export type IsOwnerByUserMutationBody = OwnerByUserIn
 export type IsOwnerByUserMutationError = OperationResult
 
+/**
+ * @summary isOwnerByUser
+ */
 export const useIsOwnerByUser = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useIsOwnerByUserHook>>>, TError, { data: OwnerByUserIn }, TContext>
 }) => {
@@ -2093,6 +2121,9 @@ export const useIsOwnerByUser = <TError = OperationResult, TContext = unknown>(o
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary isOwnerByGid
+ */
 export const useIsOwnerByGidHook = () => {
     const isOwnerByGid = useIAmSwaggerClient<OwnerByGidOutput>()
 
@@ -2126,6 +2157,9 @@ export type IsOwnerByGidMutationResult = NonNullable<Awaited<ReturnType<ReturnTy
 export type IsOwnerByGidMutationBody = OwnerByGidInput
 export type IsOwnerByGidMutationError = OperationResult
 
+/**
+ * @summary isOwnerByGid
+ */
 export const useIsOwnerByGid = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>, TError, { data: OwnerByGidInput }, TContext>
 }) => {
@@ -2134,6 +2168,9 @@ export const useIsOwnerByGid = <TError = OperationResult, TContext = unknown>(op
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary isInPoByPo
+ */
 export const useIsInPoByPoHook = () => {
     const isInPoByPo = useIAmSwaggerClient<IdentityWithOrganizationOut>()
 
@@ -2167,6 +2204,9 @@ export type IsInPoByPoMutationResult = NonNullable<Awaited<ReturnType<ReturnType
 export type IsInPoByPoMutationBody = IdentityWithOrganizationIn
 export type IsInPoByPoMutationError = OperationResult
 
+/**
+ * @summary isInPoByPo
+ */
 export const useIsInPoByPo = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useIsInPoByPoHook>>>, TError, { data: IdentityWithOrganizationIn }, TContext>
 }) => {
@@ -2175,6 +2215,9 @@ export const useIsInPoByPo = <TError = OperationResult, TContext = unknown>(opti
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary isInPoByPoAndEaGarpo
+ */
 export const useIsInPoByPoAndEaGarpoHook = () => {
     const isInPoByPoAndEaGarpo = useIAmSwaggerClient<boolean>()
 
@@ -2208,6 +2251,9 @@ export type IsInPoByPoAndEaGarpoMutationResult = NonNullable<Awaited<ReturnType<
 export type IsInPoByPoAndEaGarpoMutationBody = LoginGid
 export type IsInPoByPoAndEaGarpoMutationError = OperationResult
 
+/**
+ * @summary isInPoByPoAndEaGarpo
+ */
 export const useIsInPoByPoAndEaGarpo = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useIsInPoByPoAndEaGarpoHook>>>, TError, { data: LoginGid }, TContext>
 }) => {
@@ -2216,6 +2262,9 @@ export const useIsInPoByPoAndEaGarpo = <TError = OperationResult, TContext = unk
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary isInPoByGid
+ */
 export const useIsInPoByGidHook = () => {
     const isInPoByGid = useIAmSwaggerClient<boolean>()
 
@@ -2249,6 +2298,9 @@ export type IsInPoByGidMutationResult = NonNullable<Awaited<ReturnType<ReturnTyp
 export type IsInPoByGidMutationBody = IdentityOrganizationIn
 export type IsInPoByGidMutationError = OperationResult
 
+/**
+ * @summary isInPoByGid
+ */
 export const useIsInPoByGid = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useIsInPoByGidHook>>>, TError, { data: IdentityOrganizationIn }, TContext>
 }) => {
@@ -2257,6 +2309,9 @@ export const useIsInPoByGid = <TError = OperationResult, TContext = unknown>(opt
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getHierarchy
+ */
 export const useGetHierarchyHook = () => {
     const getHierarchy = useIAmSwaggerClient<OrganizationHierarchyOut>()
 
@@ -2290,6 +2345,9 @@ export type GetHierarchyMutationResult = NonNullable<Awaited<ReturnType<ReturnTy
 export type GetHierarchyMutationBody = OrganizationHierarchyIn
 export type GetHierarchyMutationError = OperationResult
 
+/**
+ * @summary getHierarchy
+ */
 export const useGetHierarchy = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetHierarchyHook>>>, TError, { data: OrganizationHierarchyIn }, TContext>
 }) => {
@@ -2298,6 +2356,9 @@ export const useGetHierarchy = <TError = OperationResult, TContext = unknown>(op
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getHierarchyFromCache
+ */
 export const useGetHierarchyFromCacheHook = () => {
     const getHierarchyFromCache = useIAmSwaggerClient<OrganizationHierarchyOut>()
 
@@ -2344,6 +2405,9 @@ export type GetHierarchyFromCacheMutationResult = NonNullable<Awaited<ReturnType
 export type GetHierarchyFromCacheMutationBody = OrganizationHierarchyInWithoutPagination
 export type GetHierarchyFromCacheMutationError = OperationResult
 
+/**
+ * @summary getHierarchyFromCache
+ */
 export const useGetHierarchyFromCache = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useGetHierarchyFromCacheHook>>>,
@@ -2357,6 +2421,9 @@ export const useGetHierarchyFromCache = <TError = OperationResult, TContext = un
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getRightsForPO
+ */
 export const useGetRightsForPOHook = () => {
     const getRightsForPO = useIAmSwaggerClient<GidRoleData[]>()
 
@@ -2390,6 +2457,9 @@ export type GetRightsForPOMutationResult = NonNullable<Awaited<ReturnType<Return
 export type GetRightsForPOMutationBody = IdentityOrganizationIn
 export type GetRightsForPOMutationError = OperationResult
 
+/**
+ * @summary getRightsForPO
+ */
 export const useGetRightsForPO = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>, TError, { data: IdentityOrganizationIn }, TContext>
 }) => {
@@ -2398,6 +2468,9 @@ export const useGetRightsForPO = <TError = OperationResult, TContext = unknown>(
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getRightsForPOBulk
+ */
 export const useGetRightsForPOBulkHook = () => {
     const getRightsForPOBulk = useIAmSwaggerClient<GidRoleDataHolder[]>()
 
@@ -2433,6 +2506,9 @@ export type GetRightsForPOBulkMutationResult = NonNullable<Awaited<ReturnType<Re
 export type GetRightsForPOBulkMutationBody = LoginOrganizationIn
 export type GetRightsForPOBulkMutationError = OperationResult
 
+/**
+ * @summary getRightsForPOBulk
+ */
 export const useGetRightsForPOBulk = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetRightsForPOBulkHook>>>, TError, { data: LoginOrganizationIn }, TContext>
 }) => {
@@ -2441,6 +2517,9 @@ export const useGetRightsForPOBulk = <TError = OperationResult, TContext = unkno
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getHighestOrganization
+ */
 export const useGetHighestOrganizationHook = () => {
     const getHighestOrganization = useIAmSwaggerClient<IdentityUuidWithHighestOrganization[]>()
 
@@ -2481,6 +2560,9 @@ export type GetHighestOrganizationMutationResult = NonNullable<Awaited<ReturnTyp
 export type GetHighestOrganizationMutationBody = IdentityUuidWithGid[]
 export type GetHighestOrganizationMutationError = OperationResult
 
+/**
+ * @summary getHighestOrganization
+ */
 export const useGetHighestOrganization = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useGetHighestOrganizationHook>>>,
@@ -2494,6 +2576,9 @@ export const useGetHighestOrganization = <TError = OperationResult, TContext = u
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary findOrgByGidBulk
+ */
 export const useFindOrgByGidBulkHook = () => {
     const findOrgByGidBulk = useIAmSwaggerClient<OrganizationWithGid[]>()
 
@@ -2527,6 +2612,9 @@ export type FindOrgByGidBulkMutationResult = NonNullable<Awaited<ReturnType<Retu
 export type FindOrgByGidBulkMutationBody = string[]
 export type FindOrgByGidBulkMutationError = OperationResult
 
+/**
+ * @summary findOrgByGidBulk
+ */
 export const useFindOrgByGidBulk = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useFindOrgByGidBulkHook>>>, TError, { data: string[] }, TContext>
 }) => {
@@ -2605,6 +2693,9 @@ export const useApproveChanges = <TError = OperationResult, TVariables = void, T
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getAllSubPOSet
+ */
 export const useGetAllSubPOSetHook = () => {
     const getAllSubPOSet = useIAmSwaggerClient<Organization[]>()
 
@@ -2638,6 +2729,9 @@ export type GetAllSubPOSetMutationResult = NonNullable<Awaited<ReturnType<Return
 export type GetAllSubPOSetMutationBody = string[]
 export type GetAllSubPOSetMutationError = OperationResult
 
+/**
+ * @summary getAllSubPOSet
+ */
 export const useGetAllSubPOSet = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetAllSubPOSetHook>>>, TError, { data: string[] }, TContext>
 }) => {
@@ -3011,6 +3105,9 @@ export const useLinkClarityUser = <TError = OperationResult, TContext = unknown>
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary isAdminBulk
+ */
 export const useIsAdminBulkHook = () => {
     const isAdminBulk = useIAmSwaggerClient<IdentityUuidWithState[]>()
 
@@ -3039,6 +3136,9 @@ export type IsAdminBulkMutationResult = NonNullable<Awaited<ReturnType<ReturnTyp
 export type IsAdminBulkMutationBody = string[]
 export type IsAdminBulkMutationError = OperationResult
 
+/**
+ * @summary isAdminBulk
+ */
 export const useIsAdminBulk = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useIsAdminBulkHook>>>, TError, { data: string[] }, TContext>
 }) => {
@@ -3047,6 +3147,9 @@ export const useIsAdminBulk = <TError = OperationResult, TContext = unknown>(opt
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getIdentitiesByLoginsBulk
+ */
 export const useGetIdentitiesByLoginsBulkHook = () => {
     const getIdentitiesByLoginsBulk = useIAmSwaggerClient<FindByLoginOut[]>()
 
@@ -3080,6 +3183,9 @@ export type GetIdentitiesByLoginsBulkMutationResult = NonNullable<Awaited<Return
 export type GetIdentitiesByLoginsBulkMutationBody = string[]
 export type GetIdentitiesByLoginsBulkMutationError = OperationResult
 
+/**
+ * @summary getIdentitiesByLoginsBulk
+ */
 export const useGetIdentitiesByLoginsBulk = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>, TError, { data: string[] }, TContext>
 }) => {
@@ -3088,6 +3194,9 @@ export const useGetIdentitiesByLoginsBulk = <TError = OperationResult, TContext 
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getByUuidBulk
+ */
 export const useGetByUuidBulkHook = () => {
     const getByUuidBulk = useIAmSwaggerClient<IdentityWithResult[]>()
 
@@ -3121,6 +3230,9 @@ export type GetByUuidBulkMutationResult = NonNullable<Awaited<ReturnType<ReturnT
 export type GetByUuidBulkMutationBody = string[]
 export type GetByUuidBulkMutationError = OperationResult
 
+/**
+ * @summary getByUuidBulk
+ */
 export const useGetByUuidBulk = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetByUuidBulkHook>>>, TError, { data: string[] }, TContext>
 }) => {
@@ -3129,6 +3241,9 @@ export const useGetByUuidBulk = <TError = OperationResult, TContext = unknown>(o
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary findOrganizationsForList
+ */
 export const useFindOrganizationsForListHook = () => {
     const findOrganizationsForList = useIAmSwaggerClient<StringList[]>()
 
@@ -3162,6 +3277,9 @@ export type FindOrganizationsForListMutationResult = NonNullable<Awaited<ReturnT
 export type FindOrganizationsForListMutationBody = string[]
 export type FindOrganizationsForListMutationError = OperationResult
 
+/**
+ * @summary findOrganizationsForList
+ */
 export const useFindOrganizationsForList = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useFindOrganizationsForListHook>>>, TError, { data: string[] }, TContext>
 }) => {
@@ -3424,6 +3542,9 @@ export const useIsInPoByGid1 = <TError = OperationResult, TContext = unknown>(op
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary find
+ */
 export const useFindHook = () => {
     const find = useIAmSwaggerClient<MessageGid[]>()
 
@@ -3452,6 +3573,9 @@ export type FindMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeo
 export type FindMutationBody = string[]
 export type FindMutationError = OperationResult
 
+/**
+ * @summary find
+ */
 export const useFind = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useFindHook>>>, TError, { data: string[] }, TContext>
 }) => {
@@ -3549,27 +3673,30 @@ export const useRequestPermissions = <TError = unknown, TContext = unknown>(opti
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getOwnership
+ */
 export const useGetOwnershipHook = () => {
     const getOwnership = useIAmSwaggerClient<ResponseOwnership[]>()
 
-    return (getOwnershipRequestList: GetOwnershipRequestList) => {
+    return (getOwnershipRequest: GetOwnershipRequest[]) => {
         return getOwnership({
             url: `/access_rights/ownership`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
-            data: getOwnershipRequestList,
+            data: getOwnershipRequest,
         })
     }
 }
 
 export const useGetOwnershipMutationOptions = <TError = OperationResult, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, TError, { data: GetOwnershipRequestList }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, TError, { data: GetOwnershipRequestList }, TContext> => {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, TError, { data: GetOwnershipRequest[] }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, TError, { data: GetOwnershipRequest[] }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const getOwnership = useGetOwnershipHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, { data: GetOwnershipRequestList }> = (props) => {
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, { data: GetOwnershipRequest[] }> = (props) => {
         const { data } = props ?? {}
 
         return getOwnership(data)
@@ -3579,26 +3706,32 @@ export const useGetOwnershipMutationOptions = <TError = OperationResult, TContex
 }
 
 export type GetOwnershipMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>>
-export type GetOwnershipMutationBody = GetOwnershipRequestList
+export type GetOwnershipMutationBody = GetOwnershipRequest[]
 export type GetOwnershipMutationError = OperationResult
 
+/**
+ * @summary getOwnership
+ */
 export const useGetOwnership = <TError = OperationResult, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, TError, { data: GetOwnershipRequestList }, TContext>
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetOwnershipHook>>>, TError, { data: GetOwnershipRequest[] }, TContext>
 }) => {
     const mutationOptions = useGetOwnershipMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
 
+/**
+ * @summary getAttributeOwnership
+ */
 export const useGetAttributeOwnershipHook = () => {
     const getAttributeOwnership = useIAmSwaggerClient<ResponseMapStringOwnership[]>()
 
-    return (getAttributeOwnershipRequestList: GetAttributeOwnershipRequestList) => {
+    return (getAttributeOwnershipRequest: GetAttributeOwnershipRequest[]) => {
         return getAttributeOwnership({
             url: `/access_rights/attribute_ownership`,
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
-            data: getAttributeOwnershipRequestList,
+            data: getAttributeOwnershipRequest,
         })
     }
 }
@@ -3607,13 +3740,13 @@ export const useGetAttributeOwnershipMutationOptions = <TError = OperationResult
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useGetAttributeOwnershipHook>>>,
         TError,
-        { data: GetAttributeOwnershipRequestList },
+        { data: GetAttributeOwnershipRequest[] },
         TContext
     >
 }): UseMutationOptions<
     Awaited<ReturnType<ReturnType<typeof useGetAttributeOwnershipHook>>>,
     TError,
-    { data: GetAttributeOwnershipRequestList },
+    { data: GetAttributeOwnershipRequest[] },
     TContext
 > => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3622,7 +3755,7 @@ export const useGetAttributeOwnershipMutationOptions = <TError = OperationResult
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<ReturnType<typeof useGetAttributeOwnershipHook>>>,
-        { data: GetAttributeOwnershipRequestList }
+        { data: GetAttributeOwnershipRequest[] }
     > = (props) => {
         const { data } = props ?? {}
 
@@ -3633,14 +3766,17 @@ export const useGetAttributeOwnershipMutationOptions = <TError = OperationResult
 }
 
 export type GetAttributeOwnershipMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetAttributeOwnershipHook>>>>
-export type GetAttributeOwnershipMutationBody = GetAttributeOwnershipRequestList
+export type GetAttributeOwnershipMutationBody = GetAttributeOwnershipRequest[]
 export type GetAttributeOwnershipMutationError = OperationResult
 
+/**
+ * @summary getAttributeOwnership
+ */
 export const useGetAttributeOwnership = <TError = OperationResult, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useGetAttributeOwnershipHook>>>,
         TError,
-        { data: GetAttributeOwnershipRequestList },
+        { data: GetAttributeOwnershipRequest[] },
         TContext
     >
 }) => {

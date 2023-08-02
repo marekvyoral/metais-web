@@ -8,11 +8,12 @@ import { CHECKBOX_CELL } from './constants'
 interface ITableRowProps<T> {
     row: Row<T>
     isRowSelected?: (row: Row<T>) => boolean
+    isRowBold?: (row: Row<T>) => boolean
 }
 
-export const TableRow = <T,>({ row, isRowSelected }: ITableRowProps<T>): JSX.Element => {
+export const TableRow = <T,>({ row, isRowSelected, isRowBold }: ITableRowProps<T>): JSX.Element => {
     return (
-        <tr className="idsk-table__row">
+        <tr className={classNames('idsk-table__row', { [styles.fontWeightBolder]: isRowBold && isRowBold(row) })}>
             {row.getVisibleCells().map((cell) => (
                 <td
                     className={classNames('idsk-table__cell', {
@@ -20,6 +21,7 @@ export const TableRow = <T,>({ row, isRowSelected }: ITableRowProps<T>): JSX.Ele
                         [styles.rowSelected]: isRowSelected && isRowSelected(row),
                         [styles.verticalAlightMiddle]: isRowSelected && isRowSelected(row),
                     })}
+                    style={cell.column.columnDef.size ? { width: cell.column.columnDef.size } : {}}
                     key={cell.id}
                 >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

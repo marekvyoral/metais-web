@@ -4,7 +4,7 @@ import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid
 import { CiType, EnumType } from '@isdd/metais-common/api'
 
 import styles from './basicInformationSection.module.scss'
-import ColorRow from './ColorRow'
+import { ColorRow } from './ColorRow'
 
 interface ProjectInformationData {
     data: {
@@ -14,7 +14,7 @@ interface ProjectInformationData {
     }
 }
 
-const BasicInformations = ({ data: { ciTypeData } }: ProjectInformationData) => {
+export const BasicInformations = ({ data: { ciTypeData } }: ProjectInformationData) => {
     const { t } = useTranslation()
     return (
         <div className={styles.attributeGridRowBox}>
@@ -31,5 +31,3 @@ const BasicInformations = ({ data: { ciTypeData } }: ProjectInformationData) => 
         </div>
     )
 }
-
-export default BasicInformations

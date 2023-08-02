@@ -1,41 +1,29 @@
 import React, { useCallback } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { Button, Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
+import { useTranslation } from 'react-i18next'
 
 import { IAddAttributeView } from './AddAttributeContainer'
-import { useCreateAttribute } from './useCreateAttribute'
+import { useCreateAttributeSelectOptions } from './hooks/useCreateAttributeSelectOptions'
+import { useCreateAttributeForm } from './hooks/useCreateAttributeForm'
+import { getTypeForDefaultValue } from './hooks/helpers'
 
-const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, storeAttribute }: IAddAttributeView) => {
-    const {
-        formMethods,
-        t,
-        attributeTypes,
-        showUnit,
-        measureUnits,
-        selectedConstraint,
-        selectedType,
-        showConstaint,
-        stringConstraints,
-        integerConstraints,
-        allEnumsSelectOptions,
-        getTypeForDefaultValue,
-    } = useCreateAttribute({
+const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, storeNewAttribute }: IAddAttributeView) => {
+    const { t } = useTranslation()
+    const { attributeTypes, measureUnits, stringConstraints, integerConstraints, allEnumsSelectOptions } = useCreateAttributeSelectOptions({
         measureUnit,
         allEnumsData,
     })
+
+    const { formMethods, showUnit, showConstraint, selectedConstraint, selectedType } = useCreateAttributeForm()
 
     const { register, formState, handleSubmit } = formMethods
 
     const onSubmit = useCallback(
         async (formValues: FieldValues) => {
-            await storeAttribute({
-                atrProfTechnicalName: entityName ?? '',
-                data: {
-                    ...formValues,
-                },
-            })
+            await storeNewAttribute(entityName ?? '', formValues)
         },
-        [entityName, storeAttribute],
+        [entityName, storeNewAttribute],
     )
 
     return (
@@ -89,11 +77,11 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                     ]}
                 />
             )}
-            {showConstaint && (
+            {showConstraint && (
                 <SimpleSelect
                     label={t('egov.constraints')}
                     id="constraints"
-                    {...register('constraints.[0].type')}
+                    {...register('constraints.0.type')}
                     options={selectedType === 'INTEGER' ? integerConstraints : stringConstraints}
                     defaultValue={stringConstraints?.[0].value}
                 />
@@ -102,16 +90,16 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                 <SimpleSelect
                     label={t('egov.clarification')}
                     id="constraints"
-                    {...register('constraints.[0].enumCode')}
+                    {...register('constraints.0.enumCode')}
                     options={allEnumsSelectOptions}
                     defaultValue={stringConstraints?.[0].value}
                 />
             )}
-            {selectedConstraint === 'regex' && <Input label={t('egov.clarification')} id="regex" {...register('constraints.[0].regex')} />}
+            {selectedConstraint === 'regex' && <Input label={t('egov.clarification')} id="regex" {...register('constraints.0.regex')} />}
             {selectedConstraint === 'interval' && (
                 <>
-                    <Input label={t('egov.minValue')} type="number" id="order" {...register('constraints.[0].minValue')} />
-                    <Input label={t('egov.maxValue')} type="number" id="order" {...register('constraints.[0].maxValue')} />
+                    <Input label={t('egov.minValue')} type="number" id="order" {...register('constraints.0.minValue')} />
+                    <Input label={t('egov.maxValue')} type="number" id="order" {...register('constraints.0.maxValue')} />
                 </>
             )}
             {selectedType !== '' && selectedType !== 'BOOLEAN' && selectedConstraint !== 'enum' && (

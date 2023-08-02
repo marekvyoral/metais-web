@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, ReadCiNeighbours200, NeighboursFilterContainerUi, useReadCiNeighbours } from '@isdd/metais-common/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourSetUi, NeighboursFilterContainerUi, useReadCiNeighbours } from '@isdd/metais-common/api'
 
 import {
     defaultTargetRelationshipTabFilter,
@@ -11,7 +11,7 @@ import { mapFilterToNeighborsApi } from '@/componentHelpers'
 import { mapNeighboursSetSourceToPagination, mapNeighboursSetTargetToPagination } from '@/componentHelpers/pagination'
 
 interface ICiNeighboursListContainerView {
-    data?: ReadCiNeighbours200
+    data?: NeighbourSetUi
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
     isLoading: boolean

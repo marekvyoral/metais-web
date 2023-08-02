@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import styles from '../detailViews.module.scss'
 import createEntityStyles from '../entity-detail-views/createEntityView.module.scss'
-import BasicInformations from '../BasicInformations'
+import { BasicInformations } from '../BasicInformations'
 import { EntityDetailViewAttributes } from '../entity-detail-views/attributes/EntityDetailViewAttributes'
 
 import ConnectionView from './connections/ConnectionView'
@@ -70,7 +70,7 @@ export const RelationDetailView = ({
                     <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
                     <div>
                         <Button
-                            label="zmenit"
+                            label={t('egov.edit')}
                             onClick={() => {
                                 navigate('/egov/relation/' + ciTypeData?.technicalName + '/edit')
                             }}
