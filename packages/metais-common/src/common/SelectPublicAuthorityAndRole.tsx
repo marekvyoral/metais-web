@@ -4,12 +4,12 @@ import { SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { MultiValue } from 'react-select'
 
-import { CiCode, HierarchyRightsUi, ReadCiList200 } from '@isdd/metais-common/api'
+import { CiCode, HierarchyRightsResultUi, HierarchyRightsUi } from '@isdd/metais-common/api'
 import { GetImplicitHierarchyFilter } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
 import { Role } from '@isdd/metais-common/contexts/auth/authContext'
 
 export interface ContainerData {
-    implicitHierarchyData: ReadCiList200 | undefined
+    implicitHierarchyData: HierarchyRightsResultUi | undefined
     rightsForPOData: Role[] | undefined
     generatedEntityId: CiCode | undefined
 }

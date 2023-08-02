@@ -8,7 +8,7 @@ import { RadioButtonGroup } from '@isdd/idsk-ui-kit/radio-button-group/RadioButt
 
 import styles from './exportItemsOrRelations.module.scss'
 
-import { ExportIcon } from '@/assets/images'
+import { ExportIcon } from '@isdd/metais-common/assets/images'
 
 interface IExportItemsOrRelationsProps {
     isOpen: boolean

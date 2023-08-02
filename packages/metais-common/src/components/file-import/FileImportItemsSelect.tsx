@@ -6,7 +6,7 @@ import { GetImplicitHierarchyFilter, useGetImplicitHierarchy } from '@isdd/metai
 import { HierarchyRightsUi, useGenerateCodeAndURL } from '@isdd/metais-common/api'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useGetRightForPO } from '@isdd/metais-common/hooks/useGetRightForPO'
-import { SelectPublicAuthorityAndRole } from '@/common/SelectPublicAuthorityAndRole'
+import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 
 interface IFileImportItemsSelect {
     ciType: string
