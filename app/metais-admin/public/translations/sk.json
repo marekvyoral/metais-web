@@ -240,7 +240,13 @@
         "fullName": "Meno",
         "login": "Login",
         "email": "Email",
-        "obligedPerson": "Povinná osoba"
+        "obligedPerson": "Povinná osoba",
+        "requiredName": "Povinné meno",
+        "requiredDesc": "Povinný popis",
+        "yes": "Áno",
+        "no": "Nie",
+        "show": "Zobraziť",
+        "entities": "záznamy"
     },
     "tableSelectColumns": {
         "searchPlaceholder": "Názov hľadaného stĺpca",
