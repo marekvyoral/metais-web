@@ -13,6 +13,18 @@ export enum RouteNames {
     RELATIONSHIPS_LIST_TAB = '/ci/:entityName/:entityId/relationships',
 }
 
+export enum AdminRouteNames {
+    HOME = '/',
+    DASHBOARD = '/dashboard',
+    ASSIGNMENT = '/assignment',
+    NOTIFICATIONS = '/notifications',
+    SETTINGS = '/settings',
+    EGOV = '/egov',
+    EGOV_ENTITY = '/egov/entity',
+    EGOV_PROFILE = '/egov/profile',
+    EGOV_RELATION = '/egov/relation',
+}
+
 export enum NavigationSubRoutes {
     CIEL = 'ci/Ciel',
     PROGRAM = 'ci/Program',
@@ -48,4 +60,14 @@ export enum NavigationSubRoutes {
     VIRTUALNE_STROJE = '',
     MIESTO_PREVADZKY = '',
     NIE_SU_OVM = '',
+}
+
+export interface NavigationItem {
+    title: string
+    path: string
+    icon?: string
+    subItems?: {
+        title: string
+        path: string
+    }[]
 }

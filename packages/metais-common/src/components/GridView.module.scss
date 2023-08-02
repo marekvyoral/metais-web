@@ -2,12 +2,12 @@
 
 .container {
     display: grid;
-    grid-template-columns: 125px minmax(100px, 1fr) minmax(70px, 1fr) repeat(9, minmax(0, 1fr));
+    grid-template-columns: minmax(125px, 1fr) minmax(90px, 1fr) repeat(10, minmax(0, 1fr));
 }
 
 .content {
     grid-column: 4 / 13;
-    max-width: 1200px;
+    max-width: 2500px;
     @include mq($until: desktop) {
         grid-column: 1/13;
     }
@@ -59,7 +59,6 @@
 }
 
 .arrow {
-    margin-right: govuk-spacing(2);
     margin-left: govuk-spacing(2);
     width: govuk-spacing(2);
     height: govuk-spacing(2);
@@ -80,10 +79,6 @@
     margin-left: max(30px, calc(15px + env(safe-area-inset-left)));
 }
 
-.sidebarRow {
-    margin-bottom: govuk-spacing(2);
-}
-
 .sidebarlink {
     text-decoration: none;
     color: govuk-colour('black') !important;
@@ -99,16 +94,19 @@
 
 .sectionsContainer {
     width: 80%;
+    max-width: 250px;
     display: flex;
     flex-direction: column;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
     height: max-content;
-    padding: 5px;
-    margin-bottom: govuk-spacing(4);
+    padding: govuk-spacing(3);
+    margin-right: govuk-spacing(2);
 }
 
 .closesSectionsContainer {
     width: 65%;
+    max-width: 90px;
+    padding: govuk-spacing(3) govuk-spacing(1) govuk-spacing(3) govuk-spacing(1);
 }
 
 .closeSidebarButton {
@@ -151,4 +149,12 @@
 
 .smallSidebarDivider {
     margin-bottom: govuk-spacing(2);
+}
+
+.govukBottomMargin {
+    margin-bottom: govuk-spacing(3);
+}
+
+.govukBottomTop {
+    margin-top: govuk-spacing(3);
 }

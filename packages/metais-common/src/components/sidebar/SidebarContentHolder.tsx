@@ -2,24 +2,24 @@ import React from 'react'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { ArrowDownIcon } from '@isdd/idsk-ui-kit/index'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
-import { AccordionSection } from './Sidebar'
+import { SidebarItems } from './SidebarItems'
 
-import styles from '@/components/GridView.module.scss'
+import styles from '@isdd/metais-common/components/GridView.module.scss'
+import { NavigationItem } from '@isdd/metais-common/navigation/routeNames'
 
 interface Props {
-    section: AccordionSection
+    section: NavigationItem
     onToggle: (toggle?: boolean) => void
     isExpanded: boolean
     buttonId: string
-    activeTab: RouteNames | undefined
+    activeTab: string | undefined
 }
 
 export const SidebarContentHolder = ({ section, onToggle, isExpanded, buttonId, activeTab }: Props) => {
     return (
         <>
-            <h2 className={classNames(styles.sectionHeader, styles.hover)} onClick={() => onToggle()}>
+            <div className={classNames(styles.sectionHeader, styles.hover)} onClick={() => onToggle()}>
                 <Link
                     className={classNames(
                         styles.sidebarlink,
@@ -32,10 +32,12 @@ export const SidebarContentHolder = ({ section, onToggle, isExpanded, buttonId, 
                 >
                     {section.title}
                 </Link>
-                {section.content && <img src={ArrowDownIcon} className={classNames(styles.arrow, !isExpanded && styles.rotate)} alt="arrow-down" />}
-            </h2>
+                {section.subItems && <img src={ArrowDownIcon} className={classNames(styles.arrow, !isExpanded && styles.rotate)} alt="arrow-down" />}
+            </div>
             <div className={classNames(styles.hide, isExpanded && styles.unhide)} aria-labelledby={buttonId}>
-                <div className="govuk-body">{section.content}</div>
+                <div className="govuk-body" style={{ marginBottom: '0px' }}>
+                    {<SidebarItems list={section.subItems} />}
+                </div>
             </div>
         </>
     )

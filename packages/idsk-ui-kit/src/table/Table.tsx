@@ -68,7 +68,7 @@ export const Table = <T,>({
     getExpandedRow,
 }: ITableProps<T>): JSX.Element => {
     const wrapper1Ref = useRef<HTMLTableSectionElement>(null)
-    const wrapper2Ref = useRef<HTMLTableRowElement>(null)
+    const wrapper2Ref = useRef<HTMLTableSectionElement>(null)
 
     const transformedSort = transformColumnSortToSortingState(sort)
     const table = useReactTable({
@@ -99,6 +99,9 @@ export const Table = <T,>({
         enableMultiSort: true,
         manualPagination: true,
         getRowCanExpand: getExpandedRow ? (row) => !!getExpandedRow(row) : undefined,
+        defaultColumn: {
+            size: undefined,
+        },
     })
 
     const isEmptyRows = table.getRowModel().rows.length === 0
@@ -116,10 +119,10 @@ export const Table = <T,>({
     }
 
     return (
-        <table className="idsk-table">
-            <thead className={classNames('idsk-table__head', [styles.head])}>
+        <table className={classNames('idsk-table', [styles.displayBlock])}>
+            <thead className={classNames('idsk-table__head', [styles.head])} onScroll={handleWrapper2Scroll} ref={wrapper2Ref}>
                 {table.getHeaderGroups().map((headerGroup) => (
-                    <tr className={`idsk-table__row ${styles.headerRow}`} key={headerGroup.id} onScroll={handleWrapper2Scroll} ref={wrapper2Ref}>
+                    <tr className={`idsk-table__row ${styles.headerRow}`} key={headerGroup.id}>
                         {headerGroup.headers.map((header) => (
                             <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
                         ))}

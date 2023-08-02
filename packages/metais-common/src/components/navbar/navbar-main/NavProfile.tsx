@@ -2,10 +2,10 @@ import classnames from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+
 import { AuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ProfileIcon } from '@isdd/metais-common/assets/images'
-
-import styles from '@/components/navbar/navbar.module.scss'
+import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 
 export const NavProfile: React.FC = () => {
     const { t } = useTranslation()

@@ -1,7 +1,8 @@
 import React, { SetStateAction, useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ReadCiNeighboursWithAllRels200, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
+import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
 import { IKeyToDisplay, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelations'
+import { QueryFeedback } from '@isdd/metais-common'
 
 import { mapFilterToNeighboursWithAllRelsApi } from '@/componentHelpers'
 
@@ -10,7 +11,7 @@ export interface IRelationsView {
     isError: boolean
     data: {
         entityTypes?: RelatedCiTypePreview[]
-        relationsList?: ReadCiNeighboursWithAllRels200
+        relationsList?: CiWithRelsResultUi
         owners?: void | RoleParticipantUI[] | undefined
         keysToDisplay: IKeyToDisplay[]
     }
@@ -54,18 +55,20 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
     const isLoading = areRelationsLoading || areTypesLoading
     const isError = areTypesError || areRelationsError
     return (
-        <View
-            isLoading={isLoading}
-            isError={isError}
-            data={{
-                entityTypes,
-                relationsList,
-                owners,
-                keysToDisplay,
-            }}
-            pagination={pagination}
-            handleFilterChange={handleFilterChange}
-            setPageConfig={setPageConfig}
-        />
+        <QueryFeedback loading={isLoading} error={isError}>
+            <View
+                isLoading={isLoading}
+                isError={isError}
+                data={{
+                    entityTypes,
+                    relationsList,
+                    owners,
+                    keysToDisplay,
+                }}
+                pagination={pagination}
+                handleFilterChange={handleFilterChange}
+                setPageConfig={setPageConfig}
+            />
+        </QueryFeedback>
     )
 }
