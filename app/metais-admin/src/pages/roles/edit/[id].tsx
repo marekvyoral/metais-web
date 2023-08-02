@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useFindByUuid, useUpdateOrCreate } from '@isdd/metais-common/api/generated/iam-swagger'
+import { RelatedRoleType, useFindByUuid, useUpdateOrCreate } from '@isdd/metais-common/api/generated/iam-swagger'
 import { BreadCrumbs, Button, HomeIcon, Input, LoadingIndicator, SimpleSelect } from '@isdd/idsk-ui-kit/index'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useGetValidEnum } from '@isdd/metais-common/api'
 import { useTranslation } from 'react-i18next'
+import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { findInputError } from '../formUtils'
+import { RolesGroup } from '..'
 
 const EditRole: React.FC = () => {
     const { id } = useParams()
@@ -28,10 +30,16 @@ const EditRole: React.FC = () => {
     const errors = methods.formState.errors
     const onSubmit = methods.handleSubmit((data) => {
         updateRole({
-            data: { name: data['name'], description: data['description'], type: 'NON_SYSTEM', assignedGroup: data['assignedGroup'], uuid: id },
+            data: {
+                name: data['name'],
+                description: data['description'],
+                type: RelatedRoleType.NON_SYSTEM,
+                assignedGroup: data['assignedGroup'],
+                uuid: id,
+            },
         })
     })
-    const { data: roleGroups } = useGetValidEnum('SKUPINA_ROL')
+    const { data: roleGroups } = useGetValidEnum(RolesGroup)
     const [tableRoleGroups, setTableRoleGroups] = useState(roleGroups)
     useEffect(() => {
         setTableRoleGroups(roleGroups)
@@ -44,40 +52,40 @@ const EditRole: React.FC = () => {
             {isLoading && <LoadingIndicator fullscreen />}
             <BreadCrumbs
                 links={[
-                    { label: t('notifications.home'), href: '/', icon: HomeIcon },
-                    { label: t('adminRolesPage.rolesList'), href: '/roles' },
-                    { label: t('adminRolesPage.newRole'), href: '/roles/edit/' + id },
+                    { label: t('notifications.home'), href: RouteNames.HOME, icon: HomeIcon },
+                    { label: t('adminRolesPage.rolesList'), href: AdminRouteNames.ROLES },
+                    { label: t('adminRolesPage.newRole'), href: AdminRouteNames.ROLE_EDIT + '/' + id },
                 ]}
             />
             <FormProvider {...methods}>
                 <form onSubmit={(e) => e.preventDefault()} noValidate className="container">
                     <Input
-                        label="Name"
-                        {...register('name', { required: { value: true, message: 'Required Name' } })}
+                        label={t('adminRolesPage.name')}
+                        {...register('name', { required: { value: true, message: t('adminRolesPage.requiredName') } })}
                         error={findInputError(errors, 'name')?.error?.message?.toString()}
                     />
                     <Input
-                        label="Description"
-                        {...register('description', { required: { value: true, message: 'Required description' } })}
+                        label={t('adminRolesPage.description')}
+                        {...register('description', { required: { value: true, message: t('adminRolesPage.requiredDesc') } })}
                         error={findInputError(errors, 'description')?.error?.message?.toString()}
                     />
                     <SimpleSelect
                         {...register('assignedGroup')}
                         id="1"
-                        label={'Group'}
+                        label={t('adminRolesPage.group')}
                         options={[{ value: '', label: t('adminRolesPage.none') }, ...groups]}
                     />
                     <SimpleSelect
                         {...register('type')}
-                        label="Systemova rola"
+                        label={t('adminRolesPage.systemRole')}
                         disabled
                         options={[
-                            { value: 'SYSTEM', label: 'ano' },
-                            { value: 'NON_SYSTEM', label: 'nie' },
+                            { value: RelatedRoleType.SYSTEM, label: t('adminRolesPage.yes') },
+                            { value: RelatedRoleType.NON_SYSTEM, label: t('adminRolesPage.no') },
                         ]}
                     />
                     <Button label="Submit" onClick={onSubmit} />
-                    <Button label="Cancel" onClick={() => navigate('/roles?system=all&group=all')} variant="secondary" />
+                    <Button label="Cancel" onClick={() => navigate(AdminRouteNames.ROLES + '?system=all&group=all')} variant="secondary" />
                 </form>
             </FormProvider>
         </>

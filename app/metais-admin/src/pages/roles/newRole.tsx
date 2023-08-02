@@ -4,9 +4,12 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useGetValidEnum } from '@isdd/metais-common/api'
 import { useNavigate } from 'react-router-dom'
-import { useUpdateOrCreate } from '@isdd/metais-common/api/generated/iam-swagger'
+import { RelatedRoleType, useUpdateOrCreate } from '@isdd/metais-common/api/generated/iam-swagger'
+import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { findInputError } from './formUtils'
+
+import { RolesGroup } from '.'
 
 const AddRole: React.FC = () => {
     const { t } = useTranslation()
@@ -16,9 +19,11 @@ const AddRole: React.FC = () => {
     const register = methods.register
     const errors = methods.formState.errors
     const onSubmit = methods.handleSubmit((data) => {
-        createRole({ data: { name: data['name'], description: data['description'], type: 'NON_SYSTEM', assignedGroup: data['assignedGroup'] } })
+        createRole({
+            data: { name: data['name'], description: data['description'], type: RelatedRoleType.NON_SYSTEM, assignedGroup: data['assignedGroup'] },
+        })
     })
-    const { data: roleGroups } = useGetValidEnum('SKUPINA_ROL')
+    const { data: roleGroups } = useGetValidEnum(RolesGroup)
     const [tableRoleGroups, setTableRoleGroups] = useState(roleGroups)
     useEffect(() => {
         setTableRoleGroups(roleGroups)
@@ -30,39 +35,39 @@ const AddRole: React.FC = () => {
         <>
             <BreadCrumbs
                 links={[
-                    { label: t('notifications.home'), href: '/', icon: HomeIcon },
-                    { label: t('adminRolesPage.rolesList'), href: '/roles' },
-                    { label: t('adminRolesPage.newRole'), href: '/roles/new' },
+                    { label: t('notifications.home'), href: RouteNames.HOME, icon: HomeIcon },
+                    { label: t('adminRolesPage.rolesList'), href: AdminRouteNames.ROLES },
+                    { label: t('adminRolesPage.newRole'), href: AdminRouteNames.ROLE_NEW },
                 ]}
             />
             <FormProvider {...methods}>
                 <form onSubmit={(e) => e.preventDefault()} noValidate className="container">
                     <Input
-                        label="Name"
+                        label={t('adminRolesPage.name')}
                         {...register('name', { required: { value: true, message: 'Required Name' } })}
                         error={findInputError(errors, 'name')?.error?.message?.toString()}
                     />
                     <Input
-                        label="Description"
+                        label={t('adminRolesPage.description')}
                         {...register('description', { required: { value: true, message: 'Required description' } })}
                         error={findInputError(errors, 'description')?.error?.message?.toString()}
                     />
                     <SimpleSelect
                         {...register('assignedGroup')}
                         id="1"
-                        label={'Group'}
+                        label={t('adminRolesPage.group')}
                         options={[{ value: '', label: t('adminRolesPage.none') }, ...groups]}
                     />
                     <SimpleSelect
-                        label="Systemova rola"
+                        label={t('adminRolesPage.systemRole')}
                         disabled
                         options={[
-                            { value: 'NON_SYSTEM', label: 'nie' },
-                            { value: 'SYSTEM', label: 'ano' },
+                            { value: RelatedRoleType.NON_SYSTEM, label: t('adminRolesPage.no') },
+                            { value: RelatedRoleType.SYSTEM, label: t('adminRolesPage.yes') },
                         ]}
                     />
                     <Button label="Submit" onClick={onSubmit} />
-                    <Button label="Cancel" onClick={() => navigate('/roles?system=all&group=all')} variant="secondary" />
+                    <Button label="Cancel" onClick={() => navigate(AdminRouteNames.ROLES + '?system=all&group=all')} variant="secondary" />
                 </form>
             </FormProvider>
         </>

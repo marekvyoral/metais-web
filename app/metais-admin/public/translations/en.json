@@ -265,6 +265,12 @@
         "fullName": "Name",
         "login": "Login",
         "email": "Email",
-        "obligedPerson": "Obliged person"
+        "obligedPerson": "Obliged person",
+        "requiredName": "Required name",
+        "requiredDesc": "Required description",
+        "yes": "Yes",
+        "no": "No",
+        "show": "Show",
+        "entities": "entities"
     }
 }

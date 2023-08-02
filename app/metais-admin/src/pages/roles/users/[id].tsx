@@ -8,6 +8,7 @@ import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { BreadCrumbs, HomeIcon, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
+import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 interface RelatedIdentitiesTableData {
     name?: string
@@ -92,9 +93,9 @@ const RoleUsers: React.FC = () => {
         <>
             <BreadCrumbs
                 links={[
-                    { label: t('notifications.home'), href: '/', icon: HomeIcon },
-                    { label: t('adminRolesPage.rolesList'), href: '/roles' },
-                    { label: t('adminRolesPage.newRole'), href: '/roles/users/' + id },
+                    { label: t('notifications.home'), href: RouteNames.HOME, icon: HomeIcon },
+                    { label: t('adminRolesPage.rolesList'), href: AdminRouteNames.ROLES },
+                    { label: t('adminRolesPage.newRole'), href: AdminRouteNames.ROLE_USERS + '/' + id },
                 ]}
             />
             <TextHeading size="L">{t('adminRolesPage.assignedUsers')}</TextHeading>

@@ -63,7 +63,7 @@ const findGroupName = (code: string | undefined, roleGroupsList: EnumItem[] | un
     return roleGroupsList?.find((e) => e.code == code)?.value ?? defaultString
 }
 
-const RolesGroup = 'SKUPINA_ROL'
+export const RolesGroup = 'SKUPINA_ROL'
 
 const ManageRoles: React.FC = () => {
     const navigate = useNavigate()
@@ -212,8 +212,8 @@ const ManageRoles: React.FC = () => {
                             label={'System'}
                             options={[
                                 { value: 'all', label: t('adminRolesPage.all') },
-                                { value: RelatedRoleType.SYSTEM, label: t('radioButton.yes') },
-                                { value: RelatedRoleType.NON_SYSTEM, label: t('radioButton.no') },
+                                { value: RelatedRoleType.SYSTEM, label: t('adminRolesPage.yes') },
+                                { value: RelatedRoleType.NON_SYSTEM, label: t('adminRolesPage.no') },
                             ]}
                         />
                     </>
@@ -222,7 +222,7 @@ const ManageRoles: React.FC = () => {
             />
             <ButtonGroupRow className={styles.flexEnd}>
                 <Button label={t('adminRolesPage.addNewRole')} onClick={() => navigate(AdminRouteNames.ROLE_NEW)} />
-                <TextBody className={styles.marginLeftAuto}>Zobraziť</TextBody>
+                <TextBody className={styles.marginLeftAuto}>{t('adminRolesPage.show')}</TextBody>
                 <SimpleSelect
                     onChange={(label) => {
                         setPagination({ ...pagination, pageSize: Number(label.target.value) })
@@ -236,7 +236,7 @@ const ManageRoles: React.FC = () => {
                         { label: '100', value: '100' },
                     ]}
                 />
-                <TextBody className={styles.marginLeftAuto}>záznamov</TextBody>
+                <TextBody className={styles.marginLeftAuto}>{t('adminRolesPage.entities')}</TextBody>
             </ButtonGroupRow>
             <Table<Role>
                 onSortingChange={(newSort) => {
