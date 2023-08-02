@@ -1,14 +1,14 @@
-import { FactCheckIcon, NotificationIcon } from '@isdd/metais-common/assets/images'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import classnames from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGetNotificationList } from '@isdd/metais-common/api/generated/notifications-swagger'
-import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { IconWithNotification } from './IconWithNotification'
 
-import styles from '@/components/navbar/navbar.module.scss'
+import { FactCheckIcon, NotificationIcon } from '@isdd/metais-common/assets/images'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useGetNotificationList } from '@isdd/metais-common/api/generated/notifications-swagger'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 
 interface INavIconGroup {
     isMobile: boolean

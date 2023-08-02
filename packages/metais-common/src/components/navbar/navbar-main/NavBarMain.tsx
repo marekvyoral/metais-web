@@ -2,14 +2,14 @@ import React, { SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import classnames from 'classnames'
-import { LogoMirri } from '@isdd/metais-common/assets/images'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { NavIconGroup } from './NavIconGroup'
 import { NavSearchBar } from './NavSearchBar'
 import { NavLogin } from './NavLogin'
 
-import styles from '@/components/navbar/navbar.module.scss'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { LogoMirri } from '@isdd/metais-common/assets/images'
+import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 
 interface INavBarMain {
     isMenuExpanded: boolean

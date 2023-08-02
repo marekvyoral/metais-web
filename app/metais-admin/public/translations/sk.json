@@ -60,7 +60,12 @@
         "development": "Regionálny rozvoj",
         "info": "Informatizácia",
         "invest": "Investície",
-        "inovations": "Inovácie"
+        "inovations": "Inovácie",
+        "newItem": "+ Nová položka",
+        "registration": "Registrácia",
+        "login": "Prihlásiť",
+        "logout": "Odhlásiť",
+        "profile": "Profil"
     },
     "radioButton": {
         "yes": "Áno",
@@ -225,5 +230,17 @@
     },
     "searchInput": {
         "search": "Hľadať"
+    },
+    "navMenu": {
+        "dashboard": "Nástenka",
+        "assignment": "Úlohy",
+        "notifications": "Notifikácie",
+        "settings": "Nastavenia profilu",
+        "admin": "Administrácia",
+        "egov": {
+            "entity": "Entity",
+            "profiles": "Profily atribútov",
+            "relation": "Vzťahy"
+        }
     }
 }

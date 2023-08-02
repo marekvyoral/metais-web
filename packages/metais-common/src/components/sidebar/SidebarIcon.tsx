@@ -2,12 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 
-import { AccordionSection } from './Sidebar'
-
-import styles from '@/components/GridView.module.scss'
+import styles from '@isdd/metais-common/components/GridView.module.scss'
+import { NavigationItem } from '@isdd/metais-common/navigation/routeNames'
 
 interface Props {
-    section: AccordionSection
+    section: NavigationItem
     onToggle: (toggle?: boolean) => void
     setIsSidebarExpanded: (value: React.SetStateAction<boolean>) => void
     isExpanded: boolean
