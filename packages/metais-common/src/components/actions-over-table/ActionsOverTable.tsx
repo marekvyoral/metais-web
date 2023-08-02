@@ -10,8 +10,6 @@ import { IColumnSectionType, TableSelectColumns } from '@isdd/idsk-ui-kit/table-
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useNavigate } from 'react-router-dom'
 
-import { FileImport } from '../file-import/FileImport'
-
 import styles from './actionsOverTable.module.scss'
 
 import { Attribute, AttributeProfile, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
@@ -26,6 +24,7 @@ import {
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@isdd/metais-common/assets/images'
 import { IColumn } from '@isdd/metais-common/hooks/useColumnList'
 import { ExportItemsOrRelations } from '@isdd/metais-common/components/export-items-or-relations/ExportItemsOrRelations'
+import { FileImport } from '@isdd/metais-common/components/file-import/FileImport'
 
 export enum ActionNames {
     IMPORT = 'IMPORT',

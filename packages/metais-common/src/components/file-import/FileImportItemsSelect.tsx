@@ -2,12 +2,11 @@ import React, { SetStateAction, useEffect, useState } from 'react'
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { MultiValue } from 'react-select'
 
-import { SelectPublicAuthorityAndRole } from '../../common/SelectPublicAuthorityAndRole'
-
 import { GetImplicitHierarchyFilter, useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
 import { HierarchyRightsUi, useGenerateCodeAndURL } from '@isdd/metais-common/api'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useGetRightForPO } from '@isdd/metais-common/hooks/useGetRightForPO'
+import { SelectPublicAuthorityAndRole } from '@/common/SelectPublicAuthorityAndRole'
 
 interface IFileImportItemsSelect {
     ciType: string
