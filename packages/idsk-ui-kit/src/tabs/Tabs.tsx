@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import classnames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, matchPath, useLocation } from 'react-router-dom'
@@ -102,6 +102,11 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
             setSelected(value)
         }
     }
+
+    // reload tabs when translations are loaded
+    useEffect(() => {
+        setNewTabList(tabList)
+    }, [tabList])
 
     const handleSubListSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: Tab) => {
         event.preventDefault()
