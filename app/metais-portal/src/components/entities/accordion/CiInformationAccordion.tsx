@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
 import { CiType, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
-import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 
 import styles from './basicInformationSection.module.scss'
 
