@@ -9,6 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema.ts'
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
+import { NavigationSubRoutes } from '@/navigation/routeNames'
 
 const textAttribute = {
     defaultValue: '',
@@ -42,7 +43,7 @@ const KSIVSPageEdit = () => {
         technicalName: 'description',
     }
     const goBack = () => {
-        navigate('/standardization/groupdetail/c552bc9b-3375-4040-b5a0-2da3cd832764')
+        navigate(NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU)
     }
     const formMethods = useForm({})
     const { t } = useTranslation()
@@ -94,9 +95,9 @@ const KSIVSPageEdit = () => {
                 links={[
                     { href: '/', label: 'Domov', icon: HomeIcon },
                     { href: '/howto/STANDARD.PROCESS/STD_HOWTO', label: 'Štandardizácia' },
-                    { href: '/standardization/groupdetail/c552bc9b-3375-4040-b5a0-2da3cd832764', label: 'Komisia pre štandardizáciu ITVS' },
+                    { href: NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU, label: 'Komisia pre štandardizáciu ITVS' },
                     {
-                        href: '/standardization/groupdetail/c552bc9b-3375-4040-b5a0-2da3cd832764/edit',
+                        href: NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU + '/edit',
                         label: 'Upraviť Komisiu pre štandardizáciu ITVS',
                     },
                 ]}

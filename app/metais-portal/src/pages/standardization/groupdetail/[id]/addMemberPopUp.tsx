@@ -1,12 +1,14 @@
-import { BaseModal, Button, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
-import React from 'react'
+import { BaseModal, Button, SelectLazyLoading, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { AttributeAttributeTypeEnum, useReadCiList1Hook } from '@isdd/metais-common/api'
+import React, { useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
+import { MultiValue } from 'react-select'
 
 import styles from '../styles.module.scss'
 
-import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 import { DEFAULT_ROLES } from './defaultRoles'
+
+import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 
 const textAttribute = {
     constraints: [{ type: 'enum', enumCode: 'SPOLOCNE_MODULY' }],
@@ -67,16 +69,47 @@ const roleConstraints = {
 interface addMemberPopUpProps {
     isOpen: boolean
     onClose: () => void
+    setAddedLabel: React.Dispatch<React.SetStateAction<boolean>>
 }
-const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose }) => {
+
+const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, setAddedLabel }) => {
     const formMethods = useForm()
     const { handleSubmit, register } = formMethods
-    // const { data } = useReadCiList1() : Organizations - LazyLoading
+    const loadOrgs = useReadCiList1Hook()
     // {"filter":{"type":["PO"],"metaAttributes":{"state":["DRAFT"]}},"page":8,"perpage":20,"sortBy":"Gen_Profil_nazov","sortType":"ASC","totalPages":279}
     const onSubmit = (formData: FieldValues) => {
         console.log('formData', formData)
+        setAddedLabel(true)
+        onClose()
         ;<></>
     }
+
+    const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
+        const page = searchQuery && !additional?.page ? 1 : (additional?.page || 0) + 1
+        const options = (await loadOrgs({
+            sortBy: 'Gen_Profil_nazov',
+            sortType: 'ASC',
+            perpage: 20,
+            page: page,
+            filter: {
+                fullTextSearch: searchQuery,
+                type: ['PO'],
+                metaAttributes: {
+                    state: ['DRAFT'],
+                },
+            },
+        }).then((response) => response.json())) as { name: string }[]
+        return {
+            options: options || [],
+            hasMore: options?.length ? true : false,
+            additional: {
+                page: page,
+            },
+        }
+    }
+
+    const [selectedOrganization, setSelectedOrganization] = useState<any | MultiValue<any> | null>(null)
+
     return (
         <>
             <BaseModal isOpen={isOpen} close={onClose}>
@@ -91,7 +124,19 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose })
                             error={''}
                             isSubmitted={false}
                         />
-                        {/* <SelectLazyLoading /> */}
+                        <SelectLazyLoading
+                            value={selectedOrganization}
+                            onChange={(newValue) => setSelectedOrganization(newValue)}
+                            label={'Organization'}
+                            name={'organization'}
+                            getOptionValue={function (item: unknown): string {
+                                throw new Error('Function not implemented.')
+                            }}
+                            getOptionLabel={function (item: unknown): string {
+                                throw new Error('Function not implemented.')
+                            }}
+                            loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
+                        />
                         <AttributeInput attribute={roleAttr} constraints={roleConstraints} register={register} error={''} isSubmitted={false} />
                         <AttributeInput
                             attribute={checkBox1Attribute}

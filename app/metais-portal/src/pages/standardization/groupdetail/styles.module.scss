@@ -18,6 +18,14 @@
     margin-top: 20px;
 }
 
+.displayFlex {
+    display: flex;
+}
+
+.cursorPointer {
+    cursor: pointer;
+}
+
 .greenBoldText {
     color: govuk-colour('green') !important;
     font-weight: bold !important;
