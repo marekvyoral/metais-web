@@ -15,6 +15,7 @@ import { FileImportView } from './FileImportView'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { HierarchyRightsUi } from '@isdd/metais-common/api'
+import { FileImportEditOptions } from '@isdd/metais-common/src/components/file-import/FileImportHeader'
 
 const uppy = new Uppy({
     autoProceed: false,
@@ -59,7 +60,7 @@ export const FileImport: React.FC<IFileImport> = ({
 
     const [errorMessages, setErrorMessages] = useState<string[]>([])
     const [uploadFileProgressInfo, setUploadFileProgressInfo] = useState<ProgressInfoList[]>([])
-    const [radioButtonMetaData, setRadioButtonMetaData] = useState<string>('existing-only')
+    const [radioButtonMetaData, setRadioButtonMetaData] = useState<FileImportEditOptions>(FileImportEditOptions.EXISTING_ONLY)
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>([])
 
     const [selectedRoleId, setSelectedRoleId] = useState<string>('')
@@ -184,7 +185,7 @@ export const FileImport: React.FC<IFileImport> = ({
         setUploadFileProgressInfo([])
         uppy.resetProgress()
         uppy.setState({ files: {} })
-        setRadioButtonMetaData('existing-only')
+        setRadioButtonMetaData(FileImportEditOptions.EXISTING_ONLY)
         close()
     }
 

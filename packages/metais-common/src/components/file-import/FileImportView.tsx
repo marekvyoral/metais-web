@@ -5,7 +5,7 @@ import { StatusBar } from '@uppy/react'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { useTranslation } from 'react-i18next'
 
-import { FileImportHeader } from './FileImportHeader'
+import { FileImportEditOptions, FileImportHeader } from './FileImportHeader'
 import { FileImportItemsSelect } from './FileImportItemsSelect'
 import { FileImportDragDrop } from './FileImportDragDrop'
 import styles from './FileImport.module.scss'
@@ -17,7 +17,7 @@ import { HierarchyRightsUi } from '@isdd/metais-common/api'
 
 interface IFileImportView {
     uppy: Uppy
-    setRadioButtonMetaData: React.Dispatch<SetStateAction<string>>
+    setRadioButtonMetaData: React.Dispatch<SetStateAction<FileImportEditOptions>>
     errorMessages: string[]
     setErrorMessages: React.Dispatch<SetStateAction<string[]>>
     handleRemoveFile: (fileId: string) => void
@@ -54,7 +54,7 @@ export const FileImportView: React.FC<IFileImportView> = ({
     return (
         <>
             <FileImportHeader setRadioButtonMetaData={setRadioButtonMetaData} />
-            {radioButtonMetaData === 'existing-and-new' && (
+            {radioButtonMetaData === FileImportEditOptions.EXISTING_AND_NEW && (
                 <FileImportItemsSelect
                     ciType={ciType}
                     setSelectedRoleId={setSelectedRoleId}

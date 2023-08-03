@@ -1,41 +1,25 @@
-import React, { SetStateAction } from 'react'
-import { GetImplicitHierarchyFilter } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
-import { HierarchyRightsUi } from '@isdd/metais-common/api'
-import { MultiValue } from 'react-select'
+import { Role } from '@isdd/metais-common/contexts/auth/authContext'
+import React from 'react'
 
-import { CiCreateEntityContainerData, ISelectedOrg } from '../containers/CiCreateEntityContainer'
+import { ISelectedOrg } from '../containers/CiCreateEntityContainer'
 
 interface ICreateCiEntitySelect {
-    ciListAndRolesData: CiCreateEntityContainerData
+    rightsForPOData?: Role[]
     setSelectedRoleId: React.Dispatch<React.SetStateAction<string>>
-    filterCallbacks: {
-        setFilter: React.Dispatch<SetStateAction<GetImplicitHierarchyFilter>>
-    }
     selectedOrgState: ISelectedOrg
-    filter: GetImplicitHierarchyFilter
 }
 
-export const CreateCiEntitySelect: React.FC<ICreateCiEntitySelect> = ({
-    ciListAndRolesData,
-    setSelectedRoleId,
-    filterCallbacks,
-    filter,
-    selectedOrgState,
-}) => {
+export const CreateCiEntitySelect: React.FC<ICreateCiEntitySelect> = ({ rightsForPOData, setSelectedRoleId, selectedOrgState }) => {
     const { setSelectedOrg, selectedOrg } = selectedOrgState
 
     return (
         <>
             <SelectPublicAuthorityAndRole
-                onChangeAuthority={(val: HierarchyRightsUi | MultiValue<HierarchyRightsUi> | null) =>
-                    setSelectedOrg(Array.isArray(val) ? val[0] : val)
-                }
-                onChangeRole={(e) => setSelectedRoleId(e.target.value)}
+                onChangeAuthority={setSelectedOrg}
+                onChangeRole={setSelectedRoleId}
                 selectedOrg={selectedOrg}
-                filterCallbacks={filterCallbacks}
-                filter={filter}
-                ciListAndRolesData={ciListAndRolesData}
+                rightsForPOData={rightsForPOData}
             />
         </>
     )

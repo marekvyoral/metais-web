@@ -1,12 +1,11 @@
-import React, { SetStateAction, useEffect } from 'react'
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
-import { MultiValue } from 'react-select'
+import React, { SetStateAction, useEffect } from 'react'
 
-import { GetImplicitHierarchyFilter, useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
 import { HierarchyRightsUi } from '@isdd/metais-common/api'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useGetRightForPO } from '@isdd/metais-common/hooks/useGetRightForPO'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { GetImplicitHierarchyFilter, useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
+import { useGetRightForPO } from '@isdd/metais-common/hooks/useGetRightForPO'
 
 interface IFileImportItemsSelect {
     ciType: string
@@ -42,14 +41,9 @@ export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ setSel
     return (
         <>
             <SelectPublicAuthorityAndRole
-                onChangeAuthority={(val: HierarchyRightsUi | MultiValue<HierarchyRightsUi> | null) =>
-                    setSelectedOrg(Array.isArray(val) ? val[0] : val)
-                }
-                onChangeRole={(e) => {
-                    setSelectedRoleId(e.target.value)
-                }}
+                onChangeAuthority={setSelectedOrg}
+                onChangeRole={setSelectedRoleId}
                 selectedOrg={selectedOrg}
-                defaultFilter={defaultCiListPostData}
                 rightsForPOData={rightsForPOData}
             />
         </>
