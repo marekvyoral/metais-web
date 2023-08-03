@@ -255,7 +255,8 @@
         "chooseFile": "Vybrať súbor",
         "browse": "Nie je vybratý žiadny súbor (Max. veľkosť súboru 20MB)",
         "import": "Importovať",
-        "cancel": "Zrušiť"
+        "cancel": "Zrušiť",
+        "validate": "Zvalidovať"
     },
     "exportItemsOrRelations": {
         "header": "Export položiek alebo vzťahov",

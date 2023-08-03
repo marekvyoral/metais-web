@@ -1,8 +1,7 @@
-import React, { SetStateAction, useEffect, useState } from 'react'
-import { FieldValues } from 'react-hook-form'
-import { v4 as uuidv4 } from 'uuid'
 import { CiType, EnumType, useStoreConfigurationItem } from '@isdd/metais-common/api'
-import { GetImplicitHierarchyFilter } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
+import React, { useEffect, useState } from 'react'
+import { FieldValues } from 'react-hook-form'
+import { v4 as uuidV4 } from 'uuid'
 
 import { CiCreateEntityContainerData, ISelectedOrg } from '../containers/CiCreateEntityContainer'
 
@@ -23,14 +22,10 @@ export interface CreateEntityData {
 interface ICreateEntity {
     entityName: string
     data: CreateEntityData
-    filter: GetImplicitHierarchyFilter
-    filterCallbacks: {
-        setFilter: React.Dispatch<SetStateAction<GetImplicitHierarchyFilter>>
-    }
     selectedOrgState: ISelectedOrg
 }
 
-export const CreateEntity: React.FC<ICreateEntity> = ({ data, selectedOrgState, entityName, filterCallbacks, filter }) => {
+export const CreateEntity: React.FC<ICreateEntity> = ({ data, selectedOrgState, entityName }) => {
     const { ciListAndRolesData, attributesData } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
     const { generatedEntityId } = ciListAndRolesData
@@ -54,7 +49,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({ data, selectedOrgState, 
         const formatedAttributesToSend = formAttributesKeys.map((key) => ({ name: key, value: formAttributes[key] }))
         const type = entityName
         const ownerId = selectedRoleId
-        const uuid = uuidv4()
+        const uuid = uuidV4()
         storeConfigurationItem.mutate({
             data: {
                 uuid: uuid,
@@ -74,13 +69,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({ data, selectedOrgState, 
 
     return (
         <>
-            <CreateCiEntitySelect
-                ciListAndRolesData={data.ciListAndRolesData}
-                filter={filter}
-                filterCallbacks={filterCallbacks}
-                setSelectedRoleId={setSelectedRoleId}
-                selectedOrgState={selectedOrgState}
-            />
+            <CreateCiEntitySelect rightsForPOData={rightsForPOData} setSelectedRoleId={setSelectedRoleId} selectedOrgState={selectedOrgState} />
             <CreateCiEntityForm
                 ciTypeData={ciTypeData}
                 generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
