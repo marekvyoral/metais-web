@@ -48,7 +48,6 @@ export const SelectPublicAuthorityAndRole: React.FC<ISelectPublicAuthorityAndRol
     return (
         <>
             <SelectLazyLoading
-                option={undefined}
                 value={selectedOrg}
                 getOptionLabel={(item) => item.poName ?? ''}
                 getOptionValue={(item) => item.poUUID ?? ''}
