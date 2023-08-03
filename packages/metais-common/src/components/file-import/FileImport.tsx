@@ -119,7 +119,7 @@ export const FileImport: React.FC<IFileImport> = ({
     }, [setFileImportStep])
 
     const handleValidate = useCallback(async () => {
-        uppy.setMeta({ ['editType']: radioButtonMetaData, type: ciType, ['poId']: selectedOrg?.poUUID, ['roleId']: selectedRoleId })
+        uppy.setMeta({ editType: radioButtonMetaData, type: ciType, poId: selectedOrg?.poUUID, roleId: selectedRoleId })
         try {
             uppy.upload().then((result) => {
                 if (result.successful.length > 0) {
