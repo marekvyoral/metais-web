@@ -6,10 +6,10 @@ import React, { useEffect, useState } from 'react'
 import { FieldErrors, FieldValues, Form, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema.ts'
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
-import { NavigationSubRoutes } from '@/navigation/routeNames'
 
 const textAttribute = {
     defaultValue: '',

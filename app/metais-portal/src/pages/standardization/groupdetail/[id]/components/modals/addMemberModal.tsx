@@ -1,18 +1,11 @@
 import { BaseModal, Button, ILoadOptionsResponse, SelectLazyLoading, TextHeading } from '@isdd/idsk-ui-kit/index'
-import {
-    AttributeAttributeTypeEnum,
-    CiListFilterContainerUi,
-    ConfigurationItemSetUi,
-    ConfigurationItemUi,
-    useReadCiList1Hook,
-} from '@isdd/metais-common/api'
+import { AttributeAttributeTypeEnum, CiListFilterContainerUi, ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api'
+import { Identity, useFind1Hook } from '@isdd/metais-common/api/generated/iam-swagger'
 import React, { useCallback, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
-import { MultiValue } from 'react-select'
-import { Identity, useFind1Hook, useFindAll3Hook } from '@isdd/metais-common/api/generated/iam-swagger'
 
-import styles from './styles.module.scss'
-import { DEFAULT_ROLES } from './defaultRoles'
+import { DEFAULT_ROLES } from '../../defaultRoles'
+import styles from '../../styles.module.scss'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 
