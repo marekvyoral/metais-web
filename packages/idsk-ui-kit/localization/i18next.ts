@@ -20,7 +20,7 @@ i18nInstance
             formatSeparator: ',',
         },
         react: {
-            useSuspense: false,
+            useSuspense: true,
         },
         returnNull: false,
     })
