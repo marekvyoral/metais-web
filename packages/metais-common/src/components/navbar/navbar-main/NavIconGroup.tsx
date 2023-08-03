@@ -1,12 +1,14 @@
+import classnames from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import classnames from 'classnames'
-import { FactCheckIcon, NotificationIcon } from '@isdd/metais-common/assets/images'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { IconWithNotification } from './IconWithNotification'
 
-import styles from '@/components/navbar/navbar.module.scss'
+import { FactCheckIcon, NotificationIcon } from '@isdd/metais-common/assets/images'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useGetNotificationList } from '@isdd/metais-common/api/generated/notifications-swagger'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 
 interface INavIconGroup {
     isMobile: boolean
@@ -17,6 +19,8 @@ export const NavIconGroup: React.FC<INavIconGroup> = ({ isMobile }) => {
     const {
         state: { user },
     } = useAuth()
+
+    const { data: notificationsData } = useGetNotificationList({ perPage: 1, pageNumber: 1 }, { query: { enabled: !!user } })
 
     return (
         <>
@@ -37,8 +41,8 @@ export const NavIconGroup: React.FC<INavIconGroup> = ({ isMobile }) => {
                                 onClick={() => undefined}
                                 title={t('navbar.factChecker')}
                                 src={NotificationIcon}
-                                count={3}
-                                path="#"
+                                count={notificationsData?.pagination?.totalUnreadedItems ?? 0}
+                                path={NavigationSubRoutes.NOTIFICATIONS}
                             />
                         </li>
                     </ul>

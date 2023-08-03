@@ -5,7 +5,7 @@ import { Pagination, IFilter } from '@isdd/idsk-ui-kit/types'
 import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { QueryFeedback } from '@isdd/metais-common'
-import { ReadCiNeighboursWithAllRels200, ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
+import { ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
 
 import { RelationCard } from './cards/RelationCard'
 import { CardColumnList } from './cards/CardColumnList'
@@ -37,11 +37,11 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
 
     return (
         <Tabs
-            tabList={data.keysToDisplay
-                .filter((item) => item.count > 0)
+            tabList={data?.keysToDisplay
+                ?.filter((item) => item?.count > 0)
                 .map((key) => ({
-                    id: key.technicalName,
-                    title: key.tabName,
+                    id: key?.technicalName,
+                    title: key?.tabName,
                     content: (
                         <QueryFeedback
                             loading={isLoading && !data.relationsList?.pagination}
@@ -61,9 +61,9 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                                 />
                             </ListActions>
                             <CardColumnList>
-                                {relationsList?.ciWithRels?.map((ciWithRel: ReadCiNeighboursWithAllRels200) => {
+                                {relationsList?.ciWithRels?.map((ciWithRel) => {
                                     const formatedCiWithRel = formatRelationAttributes(ciWithRel, entityTypes, owners, t)
-                                    return <RelationCard {...formatedCiWithRel} key={formatedCiWithRel?.name} />
+                                    return <RelationCard {...formatedCiWithRel} key={formatedCiWithRel?.codeMetaIS} />
                                 })}
                             </CardColumnList>
                             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />

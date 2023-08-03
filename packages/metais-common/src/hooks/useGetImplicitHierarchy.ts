@@ -1,6 +1,6 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query'
 
-import { ReadCiList200, useReadCiList } from '@isdd/metais-common/api'
+import { HierarchyRightsResultUi, useReadCiList } from '@isdd/metais-common/api'
 
 export interface GetImplicitHierarchyFilter {
     fullTextSearch: ''
@@ -17,7 +17,7 @@ export interface GetImplicitHierarchyFilter {
 export const useGetImplicitHierarchy = (filter: GetImplicitHierarchyFilter) => {
     const implicitHierarchy = useReadCiList()
 
-    const query: UseQueryResult<ReadCiList200, unknown> = useQuery({
+    const query: UseQueryResult<HierarchyRightsResultUi, unknown> = useQuery({
         queryKey: ['implicitHierarchy', filter.page, filter.perpage, filter.rights],
         queryFn: () => implicitHierarchy.mutateAsync({ data: filter }),
         keepPreviousData: true,

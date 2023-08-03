@@ -60,7 +60,12 @@
         "development": "Regional Development",
         "info": "Digitization",
         "invest": "Investments",
-        "inovations": "Innovations"
+        "inovations": "Innovations",
+        "newItem": "+ New Item",
+        "registration": "Registration",
+        "login": "Login",
+        "logout": "Logout",
+        "profile": "Profile"
     },
     "radioButton": {
         "yes": "Yes",
@@ -225,5 +230,17 @@
         "save": "Save",
         "cancel": "cancel",
         "moreActions": "More"
+    },
+    "navMenu": {
+        "dashboard": "Dashboard",
+        "assignment": "Assignments",
+        "notifications": "Notifications",
+        "settings": "Settings",
+        "admin": "Administration",
+        "egov": {
+            "entity": "Entities",
+            "profiles": "Attribute profiles",
+            "relation": "Relations"
+        }
     }
 }

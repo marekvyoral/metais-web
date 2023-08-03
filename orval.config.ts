@@ -124,12 +124,12 @@ export default defineConfig({
             target: `./packages/metais-common/src/api/generated/types-repo-swagger.ts`,
             override: {
                 operations: {
-                    listAttrProfileUsingPOST: {
+                    listAttrProfile_1: {
                         query: {
                             useQuery: true,
                         },
                     },
-                    listTypesUsingPOST: {
+                    listTypes: {
                         query: {
                             useQuery: true,
                         },
@@ -201,6 +201,27 @@ export default defineConfig({
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useUserConfigSwaggerClient.ts',
                     name: 'useUserConfigSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    notificationsApi: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_NOTIFICATION_ENGINE_SWAGGER_URL ?? '',
+            filters: {
+                tags: ['notification-engine-controller'],
+            },
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/notifications-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useNotificationsSwaggerClient.ts',
+                    name: 'useNotificationsSwaggerClient',
                 },
             },
             ...defaultOutputOptions,

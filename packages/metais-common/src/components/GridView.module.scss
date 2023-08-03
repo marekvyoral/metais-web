@@ -1,0 +1,160 @@
+@import '../../src/utils.scss';
+
+.container {
+    display: grid;
+    grid-template-columns: minmax(125px, 1fr) minmax(90px, 1fr) repeat(10, minmax(0, 1fr));
+}
+
+.content {
+    grid-column: 4 / 13;
+    max-width: 2500px;
+    @include mq($until: desktop) {
+        grid-column: 1/13;
+    }
+}
+
+.closedContent {
+    grid-column: 2 / 13;
+    @include mq($until: desktop) {
+        grid-column: 1/13;
+    }
+}
+
+.sidebarContainer {
+    grid-column: 1 / 4;
+    display: flex;
+    height: max-content;
+    max-height: 100%;
+    @include mq($until: desktop) {
+        display: none;
+    }
+}
+
+.closedSidebar {
+    grid-column: 1 / 2;
+}
+
+.hide {
+    display: none;
+}
+
+.unhide {
+    display: block;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
+.sectionHeaderButton {
+    text-decoration: none;
+    font-weight: normal;
+    margin-right: auto;
+}
+
+.arrow {
+    margin-left: govuk-spacing(2);
+    width: govuk-spacing(2);
+    height: govuk-spacing(2);
+}
+
+.expanded {
+    font-weight: bold;
+}
+
+.hover {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.safeMargin {
+    margin-right: max(30px, calc(15px + env(safe-area-inset-right)));
+    margin-left: max(30px, calc(15px + env(safe-area-inset-left)));
+}
+
+.sidebarlink {
+    text-decoration: none;
+    color: govuk-colour('black') !important;
+    display: flex;
+    flex-direction: column;
+    &:visited {
+        color: govuk-colour('black') !important;
+    }
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.sectionsContainer {
+    width: 80%;
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+    height: max-content;
+    padding: govuk-spacing(3);
+    margin-right: govuk-spacing(2);
+}
+
+.closesSectionsContainer {
+    width: 65%;
+    max-width: 90px;
+    padding: govuk-spacing(3) govuk-spacing(1) govuk-spacing(3) govuk-spacing(1);
+}
+
+.closeSidebarButton {
+    width: govuk-spacing(4);
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column-reverse;
+    gap: govuk-spacing(4);
+    padding: 0;
+    border: 0px;
+    font-size: x-small;
+    color: govuk-colour('dark-grey');
+}
+
+.rotate {
+    transform: rotate(-90deg);
+}
+
+.rotateClockWise {
+    transform: rotate(90deg);
+}
+
+.sidebarButtonIcon {
+    width: govuk-spacing(2);
+    height: govuk-spacing(2);
+}
+
+.img {
+    width: govuk-spacing(6);
+    margin: auto;
+}
+
+.smallSidebarText {
+    margin: auto;
+    font-size: x-small;
+    text-align: center;
+}
+
+.smallSidebarDivider {
+    margin-bottom: govuk-spacing(2);
+}
+
+.govukBottomMargin {
+    margin-bottom: govuk-spacing(3);
+}
+
+.govukBottomTop {
+    margin-top: govuk-spacing(3);
+}

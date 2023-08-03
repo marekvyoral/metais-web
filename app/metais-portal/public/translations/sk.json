@@ -128,6 +128,10 @@
         "yes": "Áno",
         "no": "Nie"
     },
+    "sidebar": {
+        "hide": "SKRYŤ",
+        "unhide": "ODKRYŤ"
+    },
     "filter": {
         "expand": "Rozbaliť filter",
         "collapse": "Zbaliť filter",
@@ -192,7 +196,8 @@
         "contents": "Obsah"
     },
     "errors": {
-        "fixLink": "Opraviť"
+        "fixLink": "Opraviť",
+        "invalidEntityId": "Nevalidná entita"
     },
     "mutationFeedback": {
         "successfulUpdated": "Položka bola úspešne zmenená"
@@ -233,7 +238,8 @@
     "ciType": {
         "informations": "Informácie",
         "documents": "Dokumenty",
-        "relationships": "Vzťahy"
+        "relationships": "Vzťahy",
+        "history": "História zmien"
     },
     "relationType": {
         "as": "Aplikačná služba"
@@ -276,6 +282,12 @@
             "evidenceStatus": "Stav evidencie",
             "createdAt": "Vytvorené",
             "lastModifiedAt": "Posledná zmena"
+        },
+        "card": {
+            "type": "Typ dokumentu",
+            "size": "Veľkosť",
+            "fileName": "Názov súboru",
+            "version": "Verzia"
         }
     },
     "relationshipsTab": {
@@ -291,6 +303,24 @@
             "sourceItemName": "Názov zdrojovej položky"
         }
     },
+    "historyTab": {
+        "configurationItem": " Informácie o zázname",
+        "configurationItemTable": "Historické záznamy",
+        "configurationItemView": {
+            "state": "Stav evidencie",
+            "owner": "Vlastník",
+            "createdBy": "Vytvoril",
+            "createdAt": "Vytvorené",
+            "lastModifiedBy": "Poslednú zmenu vykonal",
+            "lastModifiedAt": "Posledná zmena",
+            "source": "Zdroj"
+        },
+        "table": {
+            "actions": "Typ akcie",
+            "actionTime": "Dátum zmeny",
+            "actionBy": "Vykonal"
+        }
+    },
     "metaAttributes": {
         "state": {
             "DRAFT": "Vytvorené",
@@ -300,6 +330,21 @@
             "": ""
         }
     },
+    "history": {
+        "ACTIONS": {
+            "CREATE": "Vytvorenie položky",
+            "CREATE_INCIDENT_REL": "Vytvorenie vzťahu ku položke",
+            "UPDATE": "Aktualizácia položky",
+            "UPDATE_INCIDENT_REL": "Aktualizácia vzťahu",
+            "CHANGE_OWNER": "Zmena vlastníka položky",
+            "CHANGE_OWNER_INCIDENT_REL": "Zmena vlastníka vzťahu",
+            "INVALIDATE": "Zneplatnenie položky",
+            "INVALIDATE_INCIDENT_REL": "Zneplatnenie vzťahu",
+            "RECYCLE": "Splatnenie položky",
+            "RECYCLE_INCIDENT_REL": "Splatnenie vzťahu"
+        }
+    },
+    "download": "Stiahnuť",
     "validation": {
         "required": "Toto pole je povinné",
         "invalidEmail": "Zadajte platný e-mail",
@@ -346,11 +391,27 @@
             "lastModifiedAt": "Posledná zmena"
         }
     },
+    "notifications": {
+        "all": "Všetky",
+        "INFO": "INFO",
+        "ERROR": "ERROR",
+        "onlyUnread": "Iba neprečítané",
+        "home": "Domov",
+        "notifications": "Upozornenia",
+        "deleteSelected": "Zmaž označené",
+        "setAllAsRead": "Nastaviť všetko ako prečítané",
+        "deleteAll": "Vymazať všetko",
+        "columns": "Stĺpce",
+        "column": "Stĺpec",
+        "eventType": "Typ notifikaci",
+        "created": "Vytvorene:"
+    },
     "feedback": {
         "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím skúste znova."
     },
     "accordion": {
         "openAll": "Otvoriť všetko",
         "closeAll": "Zatvoriť všetko"
-    }
+    },
+    "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}"
 }
