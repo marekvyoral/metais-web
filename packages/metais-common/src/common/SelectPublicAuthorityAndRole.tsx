@@ -1,54 +1,41 @@
 import { SimpleSelect } from '@isdd/idsk-ui-kit/simple-select/SimpleSelect'
-import React, { ChangeEventHandler, SetStateAction } from 'react'
+import React, { ChangeEventHandler } from 'react'
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { MultiValue } from 'react-select'
 
-import { CiCode, HierarchyRightsResultUi, HierarchyRightsUi } from '@isdd/metais-common/api'
+import { HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api'
 import { GetImplicitHierarchyFilter } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
 import { Role } from '@isdd/metais-common/contexts/auth/authContext'
-
-export interface ContainerData {
-    implicitHierarchyData: HierarchyRightsResultUi | undefined
-    rightsForPOData: Role[] | undefined
-    generatedEntityId: CiCode | undefined
-}
 
 interface ISelectPublicAuthorityAndRole {
     onChangeAuthority: (e: HierarchyRightsUi | MultiValue<HierarchyRightsUi> | null) => void
     onChangeRole: ChangeEventHandler<HTMLSelectElement>
     selectedOrg: HierarchyRightsUi | null
-    filterCallbacks: {
-        setFilter: React.Dispatch<SetStateAction<GetImplicitHierarchyFilter>>
-    }
-    filter: GetImplicitHierarchyFilter
-    ciListAndRolesData: ContainerData
+    defaultFilter: GetImplicitHierarchyFilter
+    rightsForPOData?: Role[]
 }
 
 export const SelectPublicAuthorityAndRole: React.FC<ISelectPublicAuthorityAndRole> = ({
-    filterCallbacks,
-    filter,
+    defaultFilter,
     onChangeAuthority,
     onChangeRole,
     selectedOrg,
-    ciListAndRolesData,
+    rightsForPOData,
 }) => {
     const { t } = useTranslation()
-    const { implicitHierarchyData, rightsForPOData } = ciListAndRolesData
-
-    const { setFilter } = filterCallbacks
+    const implicitHierarchy = useReadCiList()
     const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
         const page = !additional?.page ? 1 : (additional?.page || 0) + 1
-        const options = implicitHierarchyData?.rights
         const updatedFilter = {
-            ...filter,
-            page: page + 1,
+            ...defaultFilter,
+            page: page,
+            fullTextSearch: searchQuery,
         }
-        setFilter(updatedFilter)
-
+        const options = await implicitHierarchy.mutateAsync({ data: updatedFilter })
         return {
-            options: options || [],
-            hasMore: options?.length ? true : false,
+            options: options.rights || [],
+            hasMore: options.rights?.length ? true : false,
             additional: {
                 page: page,
             },

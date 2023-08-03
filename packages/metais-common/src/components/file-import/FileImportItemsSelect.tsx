@@ -1,9 +1,9 @@
-import React, { SetStateAction, useEffect, useState } from 'react'
+import React, { SetStateAction, useEffect } from 'react'
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { MultiValue } from 'react-select'
 
 import { GetImplicitHierarchyFilter, useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
-import { HierarchyRightsUi, useGenerateCodeAndURL } from '@isdd/metais-common/api'
+import { HierarchyRightsUi } from '@isdd/metais-common/api'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useGetRightForPO } from '@isdd/metais-common/hooks/useGetRightForPO'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
@@ -15,7 +15,7 @@ interface IFileImportItemsSelect {
     selectedOrg: HierarchyRightsUi | null
 }
 
-export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ ciType, setSelectedRoleId, setSelectedOrg, selectedOrg }) => {
+export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ setSelectedRoleId, setSelectedOrg, selectedOrg }) => {
     const user = useAuth()
     const userId = user.state.user?.uuid ?? ''
     const userDataGroups = user.state.user?.groupData ?? []
@@ -29,17 +29,15 @@ export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ ciType
         rights: userDataGroups.map((group) => ({ poUUID: group.orgId, roles: group.roles.map((role) => role.roleUuid) })),
     }
 
-    const [filter, setFilter] = useState(defaultCiListPostData)
-    const { implicitHierarchyData } = useGetImplicitHierarchy(filter)
+    const { implicitHierarchyData } = useGetImplicitHierarchy(defaultCiListPostData)
 
     useEffect(() => {
         if (implicitHierarchyData?.rights && selectedOrg === null) {
             setSelectedOrg(implicitHierarchyData.rights[0])
         }
-    }, [implicitHierarchyData, selectedOrg, setSelectedOrg])
+    }, [implicitHierarchyData?.rights, selectedOrg, setSelectedOrg])
 
     const { rightsForPOData } = useGetRightForPO(userId, selectedOrg?.poUUID ?? '', accessToken)
-    const { data: generatedEntityId } = useGenerateCodeAndURL(ciType)
 
     return (
         <>
@@ -51,9 +49,8 @@ export const FileImportItemsSelect: React.FC<IFileImportItemsSelect> = ({ ciType
                     setSelectedRoleId(e.target.value)
                 }}
                 selectedOrg={selectedOrg}
-                filterCallbacks={{ setFilter }}
-                filter={filter}
-                ciListAndRolesData={{ rightsForPOData, generatedEntityId, implicitHierarchyData }}
+                defaultFilter={defaultCiListPostData}
+                rightsForPOData={rightsForPOData}
             />
         </>
     )
