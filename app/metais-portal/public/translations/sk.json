@@ -78,6 +78,7 @@
         "closeMenu": "Skry menu"
     },
     "navMenu": {
+        "publicAuthorities": "Orgány verejnej moci",
         "egovComponents": "E-gov Komponenty",
         "standardization": "Štandardizácia",
         "dataObjects": "Dátové objekty",
@@ -88,6 +89,9 @@
         "innerNav": "Vnútorná navigácia",
         "mainNav": "Hlavná navigácia",
         "lists": {
+            "processorsOfITDevelopmentConcepts": "Spracovatelia koncepcií rozvoja IT",
+            "subordinates": "Podriadené osoby",
+            "ISoperators": "Prevádzkovatelia IS",
             "goals": "Ciele, princípy a KRIT",
             "programs": "Programy",
             "projects": "Projekty",
@@ -126,7 +130,8 @@
     },
     "radioButton": {
         "yes": "Áno",
-        "no": "Nie"
+        "no": "Nie",
+        "nothing": "Nič"
     },
     "sidebar": {
         "hide": "SKRYŤ",
@@ -137,11 +142,20 @@
         "collapse": "Zbaliť filter",
         "namePlaceholder": "Zadajte názov",
         "searchPlaceholder": "Vyhľadajte v tabuľke",
+        "chooseState": "Vyberte stav",
+        "chooseValue": "Vyberte hodnotu",
         "KS": {
             "name": "Názov koncovej služby"
         },
         "ISVS": {
             "name": "Názov informačného systému"
+        },
+        "PO": {
+            "name": "Názov",
+            "itIsChapter": "Je kapitola",
+            "personsCategory": "Kategória osoby",
+            "publicAuthorityType": "Typ povinnej osoby",
+            "evidenceStatus": "Stav evidencie"
         },
         "metaisCode": {
             "label": "Kód MetaIS",
