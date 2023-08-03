@@ -1,0 +1,54 @@
+[
+    {
+        "value": "c_typ_osoby.13",
+        "label": "TYP_H - záujmové združenie právnických osôb DataCentrum elektronizácie územnej samosprávy\nSlovenska, ktorého jedinými členmi sú Ministerstvo financií Slovenskej republiky a Združenie miest a obcí Slovenska"
+    },
+    {
+        "value": "c_typ_osoby.a1",
+        "label": "TYP_A1 - ministerstvá"
+    },
+    {
+        "value": "c_typ_osoby.a2",
+        "label": "TYP_A2 - ostatné ústredné orgány štátnej správy"
+    },
+    {
+        "value": "c_typ_osoby.b",
+        "label": "TYP_B - Generálna prokuratúra Slovenskej republiky, Najvyšší kontrolný úrad Slovenskej republiky, Úrad pre dohľad nad zdravotnou starostlivosťou, Úrad na ochranu osobných údajov Slovenskej republiky, Telekomunikačný úrad Slovenskej republiky, Poštový regulačný úrad, Úrad pre reguláciu sieťových odvetví a iné štátne orgány,"
+    },
+    {
+        "value": "c_typ_osoby.c1",
+        "label": "TYP_C1 - obce"
+    },
+    {
+        "value": "c_typ_osoby.c2",
+        "label": "TYP_C2 - vyššie územné celky"
+    },
+    {
+        "value": "c_typ_osoby.d1",
+        "label": "TYP_D1 - Kancelária Národnej rady Slovenskej republiky, Kancelária prezidenta Slovenskej republiky, Kancelária Ústavného súdu Slovenskej republiky, Kancelária Najvyššieho súdu Slovenskej republiky, Kancelária Súdnej rady Slovenskej republiky, Kancelária verejného ochrancu práv, Ústav pamäti národa."
+    },
+    {
+        "value": "c_typ_osoby.d2",
+        "label": "TYP_D2 - Sociálna poisťovňa."
+    },
+    {
+        "value": "c_typ_osoby.d3",
+        "label": "TYP_D3 - Zdravotné poisťovne."
+    },
+    {
+        "value": "c_typ_osoby.d4",
+        "label": "TYP_D4 - Tlačová agentúra Slovenskej republiky, Slovenská televízia, Slovenský rozhlas, Rada pre vysielanie a retransmisiu."
+    },
+    {
+        "value": "c_typ_osoby.e",
+        "label": "TYP_E - právnické osoby v zriaďovateľskej alebo zakladateľskej pôsobnosti povinných osôb uvedených v písmenách a) až d),"
+    },
+    {
+        "value": "c_typ_osoby.f",
+        "label": "TYP_F - komory regulovaných profesií a komory, na ktoré je prenesený výkon verejnej moci s povinným členstvom, 2a)"
+    },
+    {
+        "value": "c_typ_osoby.g",
+        "label": "TYP_G - fyzické osoby a iné právnické osoby, ako sú uvedené v písmene e), na ktoré je prenesený výkon verejnej moci2a) alebo ktoré plnia úlohy na úseku preneseného výkonu štátnej správy podľa osobitného predpisu.2b)"
+    }
+]

@@ -48,15 +48,35 @@ export const mapFilterParamsToApi = <T extends IFilterParams>(filterParams: T): 
     for (const [key, value] of Object.entries(filterParams)) {
         if (keysToSkip.has(key)) continue
         if (value) {
-            attributes.push({
-                name: key,
-                filterValue: [
-                    {
-                        value,
-                        equality: 'FULLTEXT',
-                    },
-                ],
-            })
+            if (Array.isArray(value)) {
+                attributes.push({
+                    name: key,
+                    filterValue: value.map((val) => ({
+                        value: val,
+                        equality: 'EQUAL',
+                    })),
+                })
+            } else if (value === 'false' || value === 'true') {
+                attributes.push({
+                    name: key,
+                    filterValue: [
+                        {
+                            value: value,
+                            equality: 'EQUAL',
+                        },
+                    ],
+                })
+            } else {
+                attributes.push({
+                    name: key,
+                    filterValue: [
+                        {
+                            value,
+                            equality: 'FULLTEXT',
+                        },
+                    ],
+                })
+            }
         }
     }
 
