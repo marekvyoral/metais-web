@@ -200,7 +200,8 @@
         "saveChanges": "Save changes"
     },
     "errors": {
-        "fixLink": "Correct"
+        "fixLink": "Correct",
+        "invalidEntityId": "Invalid entity"
     },
     "mutationFeedback": {
         "successfulUpdated": "The item was successfully changed"
@@ -236,7 +237,8 @@
     "ciType": {
         "informations": "Information",
         "documents": "Documents",
-        "relationships": "Relationships"
+        "relationships": "Relationships",
+        "history": "History of changes"
     },
     "relationType": {
         "as": "Application service"
@@ -300,6 +302,24 @@
             "sourceItemName": "Source item name"
         }
     },
+    "historyTab": {
+        "configurationItem": "Information about record",
+        "configurationItemTable": "Historic records",
+        "configurationItemView": {
+            "state": "State of evidence",
+            "owner": "Owner",
+            "createdBy": "Created by",
+            "createdAt": "Created at",
+            "lastModifiedBy": "Last modified by",
+            "lastModifiedAt": "Last modified at",
+            "source": "Source"
+        },
+        "table": {
+            "actions": "Action type",
+            "actionTime": "Action time",
+            "actionBy": "Action by"
+        }
+    },
     "metaAttributes": {
         "state": {
             "DRAFT": "Created",
@@ -307,6 +327,20 @@
             "DELETED": "Invalidated",
             "UNKNOW": "Unknown",
             "": ""
+        }
+    },
+    "history": {
+        "ACTIONS": {
+            "CREATE": "Create",
+            "CREATE_INCIDENT_REL": "Create incident relation",
+            "UPDATE": "Update",
+            "UPDATE_INCIDENT_REL": "Update incident relation",
+            "CHANGE_OWNER": "Change owner",
+            "CHANGE_OWNER_INCIDENT_REL": "Change owner incident relation",
+            "INVALIDATE": "Invalidate",
+            "INVALIDATE_INCIDENT_REL": "Invalidate incident relation",
+            "RECYCLE": "Recycle",
+            "RECYCLE_INCIDENT_REL": "Recycle incident relation"
         }
     },
     "download": "Download",
@@ -377,5 +411,6 @@
     "accordion": {
         "openAll": "Open all",
         "closeAll": "Close all"
-    }
+    },
+    "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}"
 }

@@ -33,6 +33,12 @@ const EntityDetailPage: React.FC = () => {
             title: t('ciType.relationships'),
             content: <Outlet />,
         },
+        {
+            id: 'history',
+            path: `/ci/${entityName}/${entityId}/history`,
+            title: t('ciType.history'),
+            content: <Outlet />,
+        },
     ]
 
     //need to call ciItemData here to show heading

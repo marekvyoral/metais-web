@@ -1,6 +1,13 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { FilterAttributesUi, CiListFilterContainerUi, ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
+import {
+    FilterAttributesUi,
+    CiListFilterContainerUi,
+    ReadCiNeighboursWithAllRelsParams,
+    BASE_PAGE_NUMBER,
+    BASE_PAGE_SIZE,
+    ReadAllCiHistoryVersionsParams,
+} from '@isdd/metais-common/api'
 
 export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: { [filterName: string]: T } | T): CiListFilterContainerUi => {
     const { pageNumber, pageSize, sort } = filter
@@ -10,6 +17,15 @@ export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: {
         perpage: pageSize,
         sortBy: sort?.[0]?.orderBy ?? '',
         sortType: sort?.[0]?.sortDirection,
+    }
+}
+
+export const mapFilterToHistoryVersionsApi = (filter: IFilter): ReadAllCiHistoryVersionsParams => {
+    const { pageNumber, pageSize } = filter
+
+    return {
+        page: pageNumber ?? BASE_PAGE_NUMBER,
+        perPage: pageSize ?? BASE_PAGE_SIZE,
     }
 }
 
