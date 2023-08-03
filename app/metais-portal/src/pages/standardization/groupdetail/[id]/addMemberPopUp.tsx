@@ -1,11 +1,17 @@
-import { BaseModal, Button, SelectLazyLoading, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { AttributeAttributeTypeEnum, useReadCiList1Hook } from '@isdd/metais-common/api'
-import React, { useState } from 'react'
+import { BaseModal, Button, ILoadOptionsResponse, SelectLazyLoading, TextHeading } from '@isdd/idsk-ui-kit/index'
+import {
+    AttributeAttributeTypeEnum,
+    CiListFilterContainerUi,
+    ConfigurationItemSetUi,
+    ConfigurationItemUi,
+    useReadCiList1Hook,
+} from '@isdd/metais-common/api'
+import React, { useCallback, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { MultiValue } from 'react-select'
+import { Identity, useFind1Hook, useFindAll3Hook } from '@isdd/metais-common/api/generated/iam-swagger'
 
-import styles from '../styles.module.scss'
-
+import styles from './styles.module.scss'
 import { DEFAULT_ROLES } from './defaultRoles'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
@@ -74,41 +80,64 @@ interface addMemberPopUpProps {
 
 const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, setAddedLabel }) => {
     const formMethods = useForm()
-    const { handleSubmit, register } = formMethods
+    const { handleSubmit, register, formState } = formMethods
     const loadOrgs = useReadCiList1Hook()
-    // {"filter":{"type":["PO"],"metaAttributes":{"state":["DRAFT"]}},"page":8,"perpage":20,"sortBy":"Gen_Profil_nazov","sortType":"ASC","totalPages":279}
+    const loadMembers = useFind1Hook()
+    const [selectedMember, setSelectedMember] = useState<Identity>()
+    const [selectedOrganization, setSelectedOrganization] = useState<ConfigurationItemUi>()
     const onSubmit = (formData: FieldValues) => {
         console.log('formData', formData)
+        console.log('formState', formState)
         setAddedLabel(true)
         onClose()
-        ;<></>
     }
 
-    const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
-        const page = searchQuery && !additional?.page ? 1 : (additional?.page || 0) + 1
-        const options = (await loadOrgs({
-            sortBy: 'Gen_Profil_nazov',
-            sortType: 'ASC',
-            perpage: 20,
-            page: page,
-            filter: {
-                fullTextSearch: searchQuery,
-                type: ['PO'],
-                metaAttributes: {
-                    state: ['DRAFT'],
-                },
-            },
-        }).then((response) => response.json())) as { name: string }[]
-        return {
-            options: options || [],
-            hasMore: options?.length ? true : false,
-            additional: {
+    const loadMembersOptions = useCallback(
+        async (searchQuery: string, additional: { page: number } | undefined): Promise<ILoadOptionsResponse<Identity>> => {
+            const page = !additional?.page ? 1 : (additional?.page || 0) + 1
+            const queryParams = {
+                limit: 50,
                 page: page,
-            },
-        }
-    }
+            }
+            const identities = await loadMembers(queryParams.page, queryParams.limit, { expression: searchQuery })
+            return {
+                options: identities || [],
+                hasMore: identities?.length ? true : false,
+                additional: {
+                    page,
+                },
+            }
+        },
+        [loadMembers],
+    )
 
-    const [selectedOrganization, setSelectedOrganization] = useState<any | MultiValue<any> | null>(null)
+    const loadOrgOptions = useCallback(
+        async (searchQuery: string, additional: { page: number } | undefined): Promise<ILoadOptionsResponse<ConfigurationItemUi>> => {
+            const page = !additional?.page ? 1 : (additional?.page || 0) + 1
+            const queryParams: CiListFilterContainerUi = {
+                sortBy: 'Gen_Profil_nazov',
+                sortType: 'ASC',
+                perpage: 20,
+                page: page,
+                filter: {
+                    fullTextSearch: searchQuery,
+                    type: ['PO'],
+                    metaAttributes: {
+                        state: ['DRAFT'],
+                    },
+                },
+            }
+            const hierarchyData = (await loadOrgs(queryParams)).configurationItemSet
+            return {
+                options: hierarchyData || [],
+                hasMore: hierarchyData?.length ? true : false,
+                additional: {
+                    page,
+                },
+            }
+        },
+        [loadOrgs],
+    )
 
     return (
         <>
@@ -116,26 +145,25 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
                 <TextHeading size="L">Pridať člena</TextHeading>
                 <FormProvider {...formMethods}>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <AttributeInput attribute={memberAttr} constraints={roleConstraints} register={register} error={''} isSubmitted={false} />
-                        <AttributeInput
-                            attribute={organizationAttr}
-                            constraints={roleConstraints}
-                            register={register}
-                            error={''}
-                            isSubmitted={false}
+                        <SelectLazyLoading
+                            placeholder="Vyber..."
+                            value={selectedMember}
+                            onChange={(newValue) => setSelectedMember(newValue as Identity)}
+                            label={'Člen (povinné)'}
+                            name={'member'}
+                            getOptionValue={(item) => item?.uuid ?? ''}
+                            getOptionLabel={(item) => item?.firstName + ' ' + item?.lastName}
+                            loadOptions={(searchTerm, _, additional) => loadMembersOptions(searchTerm, additional)}
                         />
                         <SelectLazyLoading
+                            placeholder="Vyber..."
                             value={selectedOrganization}
-                            onChange={(newValue) => setSelectedOrganization(newValue)}
-                            label={'Organization'}
+                            onChange={(newValue) => setSelectedOrganization(newValue as ConfigurationItemUi)}
+                            label={'Organization (povinné)'}
                             name={'organization'}
-                            getOptionValue={function (item: unknown): string {
-                                throw new Error('Function not implemented.')
-                            }}
-                            getOptionLabel={function (item: unknown): string {
-                                throw new Error('Function not implemented.')
-                            }}
-                            loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
+                            getOptionLabel={(item) => (item.attributes ?? {})['Gen_Profil_nazov']}
+                            getOptionValue={(item) => item.uuid ?? ''}
+                            loadOptions={(searchTerm, _, additional) => loadOrgOptions(searchTerm, additional)}
                         />
                         <AttributeInput attribute={roleAttr} constraints={roleConstraints} register={register} error={''} isSubmitted={false} />
                         <AttributeInput
