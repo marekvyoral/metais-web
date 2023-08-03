@@ -196,7 +196,8 @@
         "contents": "Obsah"
     },
     "errors": {
-        "fixLink": "Opraviť"
+        "fixLink": "Opraviť",
+        "invalidEntityId": "Nevalidná entita"
     },
     "mutationFeedback": {
         "successfulUpdated": "Položka bola úspešne zmenená"
@@ -237,7 +238,8 @@
     "ciType": {
         "informations": "Informácie",
         "documents": "Dokumenty",
-        "relationships": "Vzťahy"
+        "relationships": "Vzťahy",
+        "history": "História zmien"
     },
     "relationType": {
         "as": "Aplikačná služba"
@@ -301,6 +303,24 @@
             "sourceItemName": "Názov zdrojovej položky"
         }
     },
+    "historyTab": {
+        "configurationItem": " Informácie o zázname",
+        "configurationItemTable": "Historické záznamy",
+        "configurationItemView": {
+            "state": "Stav evidencie",
+            "owner": "Vlastník",
+            "createdBy": "Vytvoril",
+            "createdAt": "Vytvorené",
+            "lastModifiedBy": "Poslednú zmenu vykonal",
+            "lastModifiedAt": "Posledná zmena",
+            "source": "Zdroj"
+        },
+        "table": {
+            "actions": "Typ akcie",
+            "actionTime": "Dátum zmeny",
+            "actionBy": "Vykonal"
+        }
+    },
     "metaAttributes": {
         "state": {
             "DRAFT": "Vytvorené",
@@ -308,6 +328,20 @@
             "DELETED": "Zneplatnené",
             "UNKNOW": "Neznámy",
             "": ""
+        }
+    },
+    "history": {
+        "ACTIONS": {
+            "CREATE": "Vytvorenie položky",
+            "CREATE_INCIDENT_REL": "Vytvorenie vzťahu ku položke",
+            "UPDATE": "Aktualizácia položky",
+            "UPDATE_INCIDENT_REL": "Aktualizácia vzťahu",
+            "CHANGE_OWNER": "Zmena vlastníka položky",
+            "CHANGE_OWNER_INCIDENT_REL": "Zmena vlastníka vzťahu",
+            "INVALIDATE": "Zneplatnenie položky",
+            "INVALIDATE_INCIDENT_REL": "Zneplatnenie vzťahu",
+            "RECYCLE": "Splatnenie položky",
+            "RECYCLE_INCIDENT_REL": "Splatnenie vzťahu"
         }
     },
     "download": "Stiahnuť",
@@ -378,5 +412,6 @@
     "accordion": {
         "openAll": "Otvoriť všetko",
         "closeAll": "Zatvoriť všetko"
-    }
+    },
+    "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}"
 }
