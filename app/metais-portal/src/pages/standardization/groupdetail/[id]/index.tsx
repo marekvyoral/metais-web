@@ -13,6 +13,7 @@ import {
 import { ColumnDef, Row } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
 import KSIVSFilter from './components/identitiesFilter'
 import KSIVSAddMemberPopUp from './components/modals/addMemberModal'
@@ -20,7 +21,8 @@ import KSIVSBaseInfo from './components/modals/baseInfo'
 import KSIVSDeleteMemberPopUp from './components/modals/deleteMemberModal'
 import { DEFAULT_ROLES } from './defaultRoles'
 import styles from './styles.module.scss'
-import KSIVSTableActions from './tableActions'
+import KSIVSTableActions from './components/tableActions'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 const defaultSearch: FindRelatedIdentitiesAndCountParams = {
     orderBy: 'firstName_lastName',
@@ -44,15 +46,38 @@ const defaultSort: ColumnSort = {
     sortDirection: SortType.ASC,
 }
 
+export interface FilterParams extends IFilterParams {
+    memberUuid: string
+    poUuid: string
+    role: string
+}
+
+const identitiesFilter: FilterParams = {
+    memberUuid: '',
+    poUuid: '',
+    role: '',
+}
+
 const KSIVSPage = () => {
     const { id } = useParams()
+    const {
+        state: { user },
+    } = useAuth()
+    console.log(user?.roles)
+
     // const { t } = useTranslation()
 
     const [sorting, setSorting] = useState<ColumnSort[]>([defaultSort])
     const [listParams, setListParams] = useState(defaultSearch)
+    const [listFilter, setListFilter] = useState(identitiesFilter)
     const updateGroupRequest = useUpdateRoleOnGroupOrgForIdentityHook()
     const findRoleRequest = useFindAll11Hook()
-    const { data: identitiesData, isLoading: isIdentitiesLoading } = useFindRelatedIdentitiesAndCount(id ?? '', listParams)
+    const { data: identitiesData, isLoading: isIdentitiesLoading } = useFindRelatedIdentitiesAndCount(id ?? '', {
+        ...listParams,
+        ...(listFilter.memberUuid != '' && { memberUuid: listFilter.memberUuid }),
+        ...(listFilter.poUuid != '' && { poUuid: listFilter.poUuid }),
+        ...(listFilter.role != '' && { role: listFilter.role }),
+    })
     const [successfulUpdatedData, setSuccessfulUpdatedData] = useState(false)
     const columns: ColumnDef<TableData>[] = [
         { technicalName: 'firstName_lastName', name: 'Meno' },
@@ -148,7 +173,7 @@ const KSIVSPage = () => {
             cell: ({ row }) => {
                 const StateWrapper = () => {
                     const [isSelectorShown, setSelectorShown] = useState(false)
-                    const [selectedRole, setSelectedRole] = useState(row.original.roleName)
+                    const [selectedRole, setSelectedRole] = useState<string>()
                     if (isSelectorShown) {
                         return (
                             <SimpleSelect
@@ -156,8 +181,9 @@ const KSIVSPage = () => {
                                 onChange={async (value) => {
                                     setSelectedRole(value.target.value)
                                     const oldRole: Role = (await findRoleRequest({ name: row.original.roleName })) as Role
-                                    const newRole: Role = (await findRoleRequest({ name: selectedRole })) as Role
+                                    const newRole: Role = (await findRoleRequest({ name: value.target.value })) as Role
                                     updateGroupRequest(row.original.uuid, id ?? '', oldRole.uuid ?? '', newRole.uuid ?? '', row.original.orgId)
+                                    row.original.roleName = value.target.value
                                     setSelectorShown(false)
                                 }}
                                 label=""
@@ -192,6 +218,7 @@ const KSIVSPage = () => {
                 ),
         },
     ]
+
     const [isAddModalOpen, setAddModalOpen] = useState(false)
 
     return (
@@ -202,7 +229,12 @@ const KSIVSPage = () => {
                 uuid={identityToDelete}
                 groupUuid={id ?? ''}
             />
-            <KSIVSAddMemberPopUp isOpen={isAddModalOpen} onClose={() => setAddModalOpen(false)} setAddedLabel={setSuccessfulUpdatedData} />
+            <KSIVSAddMemberPopUp
+                isOpen={isAddModalOpen}
+                onClose={() => setAddModalOpen(false)}
+                setAddedLabel={setSuccessfulUpdatedData}
+                groupId={id ?? ''}
+            />
             <BreadCrumbs
                 links={[
                     { href: RouteNames.HOME, label: 'Domov', icon: HomeIcon },
@@ -212,7 +244,7 @@ const KSIVSPage = () => {
             />
             <KSIVSBaseInfo />
             <TextHeading size="L">Zoznam osôb</TextHeading>
-            <KSIVSFilter />
+            <KSIVSFilter listFilter={listFilter} setListFilter={setListFilter} defaultFilterValues={identitiesFilter} />
             <KSIVSTableActions setAddModalOpen={setAddModalOpen} listParams={listParams} setListParams={setListParams} />
             {successfulUpdatedData && (
                 <IconWithText icon={GreenCheckOutlineIcon}>

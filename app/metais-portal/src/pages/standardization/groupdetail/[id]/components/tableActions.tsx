@@ -2,7 +2,7 @@ import { Button, ButtonGroupRow, SimpleSelect, TextBody } from '@isdd/idsk-ui-ki
 import { FindRelatedIdentitiesAndCountParams } from '@isdd/metais-common/api/generated/iam-swagger'
 import React from 'react'
 
-import styles from './styles.module.scss'
+import styles from '../styles.module.scss'
 
 interface KSIVSTAbleActionsProps {
     listParams: FindRelatedIdentitiesAndCountParams
@@ -13,8 +13,8 @@ const KSIVSTableActions: React.FC<KSIVSTAbleActionsProps> = ({ listParams, setLi
     return (
         <>
             <ButtonGroupRow>
-                <Button label="Export" variant="secondary" />
-                <Button label="Poslať email" variant="secondary" />
+                <Button label="Export" variant="secondary" disabled />
+                <Button label="Poslať email" variant="secondary" disabled />
                 <Button label="+ Pridať člena" onClick={() => setAddModalOpen(true)} />
                 <TextBody className={styles.marginLeftAuto}>Zobrazit</TextBody>
                 <SimpleSelect

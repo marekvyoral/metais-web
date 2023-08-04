@@ -1,8 +1,14 @@
-import { BaseModal, Button, ILoadOptionsResponse, SelectLazyLoading, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { AttributeAttributeTypeEnum, CiListFilterContainerUi, ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api'
-import { Identity, useFind1Hook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { BaseModal, Button, ILoadOptionsResponse, SelectLazyLoading, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { AttributeAttributeTypeEnum, Role } from '@isdd/metais-common/api'
+import {
+    Identity,
+    useAddGroupOrgRoleIdentityRelationHook,
+    useFind1Hook,
+    useFindAll11Hook,
+    useFindRelatedOrganizationsHook,
+} from '@isdd/metais-common/api/generated/iam-swagger'
 import React, { useCallback, useState } from 'react'
-import { FieldValues, FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 
 import { DEFAULT_ROLES } from '../../defaultRoles'
 import styles from '../../styles.module.scss'
@@ -11,27 +17,6 @@ import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 
 const textAttribute = {
     constraints: [{ type: 'enum', enumCode: 'SPOLOCNE_MODULY' }],
-}
-
-const memberAttr = {
-    ...textAttribute,
-    name: 'Člen',
-    technicalName: 'member',
-    mandatory: { type: 'critical' },
-}
-
-const organizationAttr = {
-    ...textAttribute,
-    name: 'Organizácia',
-    technicalName: 'organization',
-    mandatory: { type: 'critical' },
-}
-
-const roleAttr = {
-    ...textAttribute,
-    name: 'Rola',
-    technicalName: 'role',
-    mandatory: { type: 'critical' },
 }
 
 const checkBox1Attribute = {
@@ -69,20 +54,38 @@ interface addMemberPopUpProps {
     isOpen: boolean
     onClose: () => void
     setAddedLabel: React.Dispatch<React.SetStateAction<boolean>>
+    groupId: string
 }
 
-const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, setAddedLabel }) => {
+const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, setAddedLabel, groupId }) => {
     const formMethods = useForm()
-    const { handleSubmit, register, formState } = formMethods
-    const loadOrgs = useReadCiList1Hook()
+    const { handleSubmit, register } = formMethods
     const loadMembers = useFind1Hook()
+    const findRole = useFindAll11Hook()
+    const addRelation = useAddGroupOrgRoleIdentityRelationHook()
+    const getOrganizationsByUser = useFindRelatedOrganizationsHook()
     const [selectedMember, setSelectedMember] = useState<Identity>()
-    const [selectedOrganization, setSelectedOrganization] = useState<ConfigurationItemUi>()
-    const onSubmit = (formData: FieldValues) => {
-        console.log('formData', formData)
-        console.log('formState', formState)
-        setAddedLabel(true)
-        onClose()
+    const [selectedOrganization, setSelectedOrganization] = useState<string>()
+    const [selectedRole, setSelectedRole] = useState<string>()
+    const [errors, setErrors] = useState<string[]>([])
+    const [selectedMemberOrganizations, setSelectedMemberOrganizations] = useState<{ name: string; uuid: string }[]>()
+
+    const onSubmit = async () => {
+        if (selectedRole == undefined && !errors.includes('role')) {
+            setErrors([...errors, 'role'])
+        }
+        if (selectedOrganization == undefined && !errors.includes('organization')) {
+            setErrors([...errors, 'organization'])
+        }
+        if (selectedMember == undefined && !errors.includes('member')) {
+            setErrors([...errors, 'member'])
+        }
+        if (selectedMember != undefined && selectedOrganization != undefined && selectedRole != undefined) {
+            const role = (await findRole({ name: selectedRole })) as Role
+            await addRelation(selectedMember.uuid ?? '', groupId, role.uuid ?? '', selectedOrganization)
+            setAddedLabel(true)
+            onClose()
+        }
     }
 
     const loadMembersOptions = useCallback(
@@ -104,61 +107,67 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
         [loadMembers],
     )
 
-    const loadOrgOptions = useCallback(
-        async (searchQuery: string, additional: { page: number } | undefined): Promise<ILoadOptionsResponse<ConfigurationItemUi>> => {
-            const page = !additional?.page ? 1 : (additional?.page || 0) + 1
-            const queryParams: CiListFilterContainerUi = {
-                sortBy: 'Gen_Profil_nazov',
-                sortType: 'ASC',
-                perpage: 20,
-                page: page,
-                filter: {
-                    fullTextSearch: searchQuery,
-                    type: ['PO'],
-                    metaAttributes: {
-                        state: ['DRAFT'],
-                    },
-                },
-            }
-            const hierarchyData = (await loadOrgs(queryParams)).configurationItemSet
-            return {
-                options: hierarchyData || [],
-                hasMore: hierarchyData?.length ? true : false,
-                additional: {
-                    page,
-                },
-            }
-        },
-        [loadOrgs],
-    )
-
     return (
         <>
-            <BaseModal isOpen={isOpen} close={onClose}>
+            <BaseModal
+                isOpen={isOpen}
+                close={() => {
+                    onClose()
+                    setErrors([])
+                }}
+            >
                 <TextHeading size="L">Pridať člena</TextHeading>
                 <FormProvider {...formMethods}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <SelectLazyLoading
+                            error={errors.includes('member') ? 'Vyberte clena' : ''}
                             placeholder="Vyber..."
                             value={selectedMember}
-                            onChange={(newValue) => setSelectedMember(newValue as Identity)}
+                            onChange={async (newValue) => {
+                                setSelectedMember(newValue as Identity)
+                                if (selectedMember != undefined) {
+                                    const organizationsForUser: { name: string; uuid: string }[] = await getOrganizationsByUser(
+                                        selectedMember?.uuid ?? '',
+                                    ).then((response) =>
+                                        response.map((item) => ({
+                                            uuid: item.uuid ?? '',
+                                            name: (item.attributes ?? {})['Gen_Profil_nazov'],
+                                        })),
+                                    )
+                                    setSelectedMemberOrganizations([
+                                        ...organizationsForUser,
+                                        { uuid: '1734e40c-f959-4629-a699-5c0bc6ba8d55', name: 'Odborna verejnost' },
+                                    ])
+                                }
+                                setErrors(errors.filter((item) => item !== 'member'))
+                            }}
                             label={'Člen (povinné)'}
                             name={'member'}
                             getOptionValue={(item) => item?.uuid ?? ''}
                             getOptionLabel={(item) => item?.firstName + ' ' + item?.lastName}
                             loadOptions={(searchTerm, _, additional) => loadMembersOptions(searchTerm, additional)}
                         />
-                        <SelectLazyLoading
-                            placeholder="Vyber..."
-                            value={selectedOrganization}
-                            onChange={(newValue) => setSelectedOrganization(newValue as ConfigurationItemUi)}
-                            label={'Organization (povinné)'}
-                            name={'organization'}
-                            getOptionLabel={(item) => (item.attributes ?? {})['Gen_Profil_nazov']}
-                            getOptionValue={(item) => item.uuid ?? ''}
-                            loadOptions={(searchTerm, _, additional) => loadOrgOptions(searchTerm, additional)}
+                        <SimpleSelect
+                            label="Organization (povinné)"
+                            options={selectedMemberOrganizations?.map((item) => ({ label: item.name, value: item.uuid })) ?? []}
+                            disabled={selectedMember == undefined}
+                            onChange={(value) => {
+                                setSelectedOrganization(value.target.value)
+                                if (selectedOrganization != undefined) {
+                                    setErrors(errors.filter((item) => item !== 'organization'))
+                                }
+                            }}
+                            error={errors.includes('organization') ? 'Vyberte organizaciu' : ''}
                         />
-                        <AttributeInput attribute={roleAttr} constraints={roleConstraints} register={register} error={''} isSubmitted={false} />
+                        <SimpleSelect
+                            label="Rola (povinné)"
+                            options={DEFAULT_ROLES?.map((item) => ({ label: item.value, value: item.code }))}
+                            error={errors.includes('role') ? 'Vyberte rolu' : ''}
+                            onChange={(value) => {
+                                setSelectedRole(value.target.value)
+                                setErrors(errors.filter((item) => item !== 'role'))
+                            }}
+                        />
                         <AttributeInput
                             attribute={checkBox1Attribute}
                             constraints={roleConstraints}

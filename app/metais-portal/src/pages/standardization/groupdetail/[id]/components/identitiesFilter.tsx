@@ -1,16 +1,27 @@
-import { Filter, ILoadOptionsResponse, SelectLazyLoading, SimpleSelect } from '@isdd/idsk-ui-kit/index'
+import { Filter, ILoadOptionsResponse, SelectLazyLoading, SimpleSelect } from '@isdd/idsk-ui-kit/src/index'
 import { Identity, useFind1Hook } from '@isdd/metais-common/src/api/generated/iam-swagger'
-import { CiListFilterContainerUi, ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api'
+import { CiListFilterContainerUi, ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/src/api'
 import React, { useCallback, useState } from 'react'
+// import { useFilter, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
+import { FilterParams } from '..'
 import { DEFAULT_ROLES } from '../defaultRoles'
 
-const KSIVSFilter = () => {
+interface filterProps {
+    listFilter: FilterParams
+    setListFilter: React.Dispatch<React.SetStateAction<FilterParams>>
+    defaultFilterValues: FilterParams
+}
+
+const KSIVSFilter: React.FC<filterProps> = ({ listFilter, setListFilter, defaultFilterValues }) => {
     // const { t } = useTranslation()
 
     const [selectedMember, setSelectedMember] = useState<Identity>()
     const [selectedOrganization, setSelectedOrganization] = useState<ConfigurationItemUi>()
+    const [selectedRole, setSelectedRole] = useState<string>()
     const loadOrgs = useReadCiList1Hook()
+    // const { filter, handleFilterChange } = useFilterParams<FilterParams>(defaultFilterValues)
+    // const { onSubmit } = useFilter(defaultFilterValues)
     const loadMembers = useFind1Hook()
     const loadMembersOptions = useCallback(
         async (searchQuery: string, additional: { page: number } | undefined): Promise<ILoadOptionsResponse<Identity>> => {
@@ -58,35 +69,53 @@ const KSIVSFilter = () => {
         },
         [loadOrgs],
     )
+
     return (
         <>
             <Filter
-                form={() => (
+                form={(register) => (
                     <>
-                        <SelectLazyLoading
-                            placeholder="Vyber..."
+                        <SelectLazyLoading<Identity>
                             value={selectedMember}
-                            onChange={(newValue) => setSelectedMember(newValue as Identity)}
+                            // control={control}
+                            placeholder="Vyber..."
+                            onChange={(newValue) => {
+                                setListFilter({ ...listFilter, memberUuid: (newValue as Identity).uuid ?? '' })
+                                setSelectedMember(newValue as Identity)
+                            }}
                             label={'Člen (povinné)'}
-                            name={'member'}
-                            getOptionValue={(item) => item?.uuid ?? ''}
-                            getOptionLabel={(item) => item?.firstName + ' ' + item?.lastName}
+                            name={'memberUuid'}
+                            getOptionValue={(item) => item.uuid ?? ''}
+                            getOptionLabel={(item) => item.firstName + ' ' + item.lastName}
                             loadOptions={(searchTerm, _, additional) => loadMembersOptions(searchTerm, additional)}
                         />
-                        <SelectLazyLoading
+                        <SelectLazyLoading<ConfigurationItemUi>
                             placeholder="Vyber..."
                             value={selectedOrganization}
-                            onChange={(newValue) => setSelectedOrganization(newValue as ConfigurationItemUi)}
+                            onChange={(newValue) => {
+                                setListFilter({ ...listFilter, poUuid: (newValue as ConfigurationItemUi).uuid ?? '' })
+                                setSelectedOrganization(newValue as ConfigurationItemUi)
+                            }}
                             label={'Organization (povinné)'}
-                            name={'organization'}
+                            // control={control}
+                            name={'poUuid'}
                             getOptionLabel={(item) => (item.attributes ?? {})['Gen_Profil_nazov']}
                             getOptionValue={(item) => item.uuid ?? ''}
                             loadOptions={(searchTerm, _, additional) => loadOrgOptions(searchTerm, additional)}
                         />
-                        <SimpleSelect label="Rola" options={DEFAULT_ROLES.map((item) => ({ value: item.code, label: item.value }))} />
+                        <SimpleSelect
+                            {...register('defaultFilterValues.role')}
+                            label="Rola"
+                            value={selectedRole}
+                            options={DEFAULT_ROLES.map((item) => ({ value: item.code, label: item.value }))}
+                            onChange={(newValue) => {
+                                setListFilter({ ...listFilter, role: newValue.target.value })
+                                setSelectedRole(newValue.target.value)
+                            }}
+                        />
                     </>
                 )}
-                defaultFilterValues={{}}
+                defaultFilterValues={{ defaultFilterValues }}
             />
         </>
     )
