@@ -100,7 +100,7 @@ const ManageRoles: React.FC = () => {
         { technicalName: 'description', name: t('adminRolesPage.description') },
         { technicalName: 'assignedGroup', name: t('adminRolesPage.group') },
         { technicalName: 'type', name: t('adminRolesPage.systemRole') },
-    ].map((e) => ({ id: e.technicalName, header: e.name, accessorKey: e.technicalName, enableSorting: true }))
+    ].map((e) => ({ id: e.technicalName, header: e.name, accessorKey: e.technicalName, enableSorting: true, key: e.technicalName }))
 
     const [tableRoles, setTableRoles] = useState(roles)
     const [tableData, setTableData] = useState(tableRoles)
@@ -127,13 +127,15 @@ const ManageRoles: React.FC = () => {
         },
     })
 
-    const SelectableColumnsSpec = (): ColumnDef<Role>[] => [
+    const getSelectableColumnsSpec = (): ColumnDef<Role>[] => [
         ...columns,
         {
+            id: 'assignedUsers',
             header: () => <></>,
             cell: ({ cell }) => (
                 <>
                     <Button
+                        key={cell.id}
                         label={t('adminRolesPage.assignedUsers')}
                         variant="secondary"
                         className={styles.widthFit}
@@ -144,10 +146,12 @@ const ManageRoles: React.FC = () => {
             accessorKey: 'assignedUsers',
         },
         {
+            id: 'edit',
             header: () => <></>,
             cell: ({ cell }) => (
                 <>
                     <Button
+                        key={cell.id}
                         label={t('adminRolesPage.edit')}
                         className={styles.widthFit}
                         onClick={() => navigate(AdminRouteNames.ROLE_EDIT + '/' + cell.row.original.uuid)}
@@ -157,10 +161,12 @@ const ManageRoles: React.FC = () => {
             accessorKey: 'edit',
         },
         {
+            id: 'delete',
             header: () => <></>,
             cell: ({ cell }) => (
                 <>
                     <Button
+                        key={cell.id}
                         label={t('adminRolesPage.deactivate')}
                         variant="warning"
                         className={styles.widthFit}
@@ -208,7 +214,7 @@ const ManageRoles: React.FC = () => {
                         />
                         <SimpleSelect
                             {...register('system')}
-                            id="1"
+                            id="2"
                             label={'System'}
                             options={[
                                 { value: 'all', label: t('adminRolesPage.all') },
@@ -243,7 +249,7 @@ const ManageRoles: React.FC = () => {
                     setSorting(newSort)
                 }}
                 sort={sorting}
-                columns={SelectableColumnsSpec()}
+                columns={getSelectableColumnsSpec()}
                 isLoading={isLoading}
                 error={isError}
                 data={tableData}

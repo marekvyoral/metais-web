@@ -19,7 +19,7 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold }: ITableRowProps<T
                     className={classNames('idsk-table__cell', {
                         [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
                         [styles.rowSelected]: isRowSelected && isRowSelected(row),
-                        [styles.verticalAlightMiddle]: isRowSelected && isRowSelected(row),
+                        [styles.verticalAlignMiddle]: isRowSelected && isRowSelected(row),
                     })}
                     style={cell.column.columnDef.size ? { width: cell.column.columnDef.size } : {}}
                     key={cell.id}

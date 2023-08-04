@@ -320,24 +320,6 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
-    iam: {
-        input: {
-            target: process.env.VITE_REST_CLIENT_IAM_SWAGGER_URL ?? '',
-        },
-        output: {
-            target: `./packages/metais-common/src/api/generated/iam-swagger.ts`,
-            override: {
-                mutator: {
-                    path: './packages/metais-common/src/api/hooks/useIAmSwaggerClient.ts',
-                    name: 'useIAmSwaggerClient',
-                },
-            },
-            ...defaultOutputOptions,
-        },
-        hooks: {
-            afterAllFilesWrite: 'prettier --write',
-        },
-    },
     impexpCmdb: {
         input: {
             target: process.env.VITE_REST_CLIENT_IMPEXP_CMDB_SWAGGER_URL ?? '',
