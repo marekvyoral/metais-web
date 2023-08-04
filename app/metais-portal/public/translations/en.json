@@ -106,6 +106,12 @@
         "sk": "Slovenčina",
         "en": "English"
     },
+    "stepper": {
+        "openAll": "Open all",
+        "closeAll": "Close all",
+        "sections": "sections",
+        "and": "and"
+    },
     "tab": {
         "contents": "Contents"
     },
