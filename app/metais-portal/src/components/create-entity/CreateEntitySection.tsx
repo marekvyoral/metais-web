@@ -1,21 +1,18 @@
 import React, { useEffect } from 'react'
-import { Control, FieldValues, FormState, UseFormRegister } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { ErrorBlockList } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
 import { Attribute, AttributeConstraintEnumAllOf, CiCode, EnumType } from '@isdd/metais-common'
 
-import { AttributeInput } from '../attribute-input/AttributeInput'
-import { AttributesConfigTechNames } from '../attribute-input/attributeDisplaySettings'
+import { AttributeInput } from '@/components/attribute-input/AttributeInput'
+import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
 
 interface ISection {
     sectionId: string
     attributes: Attribute[]
-    register: UseFormRegister<FieldValues>
-    formState: FormState<FieldValues>
     setSectionError: React.Dispatch<React.SetStateAction<{ [x: string]: boolean }>>
     generatedEntityId: CiCode
     constraintsData: (EnumType | undefined)[]
     unitsData: EnumType | undefined
-    control: Control
 }
 
 export const CreateEntitySection: React.FC<ISection> = ({
@@ -23,12 +20,10 @@ export const CreateEntitySection: React.FC<ISection> = ({
     sectionId,
     constraintsData,
     generatedEntityId,
-    register,
-    formState,
     setSectionError,
     unitsData,
-    control,
 }) => {
+    const { register, formState, trigger, setValue, control } = useFormContext()
     const { errors, isSubmitted } = formState
 
     const errorNames = Object.keys(errors).filter((item) => item.includes(sectionId))
@@ -57,9 +52,9 @@ export const CreateEntitySection: React.FC<ISection> = ({
     const getAttributeInputErrorMessage = (attribute: Attribute) => {
         if (attribute.technicalName != null) {
             const error = Object.keys(errors).includes(attribute.technicalName)
-            return error ? errors[attribute.technicalName]?.message?.toString() ?? '' : ''
+            return error ? errors[attribute.technicalName] : undefined
         }
-        return ''
+        return undefined
     }
 
     const getAttributeUnits = (unitCode: string) => {
@@ -82,6 +77,8 @@ export const CreateEntitySection: React.FC<ISection> = ({
                 <React.Fragment key={attribute.technicalName}>
                     {!attribute.invisible && (
                         <AttributeInput
+                            trigger={trigger}
+                            setValue={setValue}
                             attribute={attribute}
                             constraints={findAttributeConstraint(
                                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -89,11 +86,11 @@ export const CreateEntitySection: React.FC<ISection> = ({
                                 attribute?.constraints?.map((item: AttributeConstraintEnumAllOf) => item.enumCode ?? '') ?? [],
                             )}
                             register={register}
+                            control={control}
                             error={getAttributeInputErrorMessage(attribute)}
                             isSubmitted={isSubmitted}
                             hint={getHint(attribute)}
                             unitsData={attribute.units ? getAttributeUnits(attribute.units ?? '') : undefined}
-                            control={control}
                         />
                     )}
                 </React.Fragment>
