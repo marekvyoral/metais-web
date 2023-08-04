@@ -382,7 +382,12 @@
         "select": "Select...",
         "email": "metais@mirri.gov.sk",
         "publicAuthority": "Public Authority",
-        "role": "Role"
+        "role": "Role",
+        "addNewRow": "Add new row",
+        "units": "(Value in {{units}})",
+        "redirectLoading": "Processing creation of new entity",
+        "redirectError": "Failed to process new entity creation",
+        "mutationError": "Error while executing your action. Please try again or contact support."
     },
     "table": {
         "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
@@ -433,5 +438,13 @@
         "openAll": "Open all",
         "closeAll": "Close all"
     },
-    "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}"
+    "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
+    "selectPublicAuthority": {
+        "error": "Error while fetching data for public authorities.",
+        "loading": "Loading public authorities"
+    },
+    "selectRole": {
+        "error": "Error while fetching data about roles.",
+        "loading": "Loading role data"
+    }
 }

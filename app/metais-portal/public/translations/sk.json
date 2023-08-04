@@ -383,7 +383,12 @@
         "select": "Vyber...",
         "email": "metais@mirri.gov.sk",
         "publicAuthority": "Povinná osoba",
-        "role": "Rola"
+        "role": "Rola",
+        "addNewRow": "Pridať nový riadok",
+        "units": "(Hodnota v {{units}})",
+        "redirectLoading": "Spracúva sa vytvorenie novej entity",
+        "redirectError": "Nepodarilo sa spracovať vytvorenie novej entity",
+        "mutationError": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
     },
     "table": {
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
@@ -434,5 +439,13 @@
         "openAll": "Otvoriť všetko",
         "closeAll": "Zatvoriť všetko"
     },
-    "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}"
+    "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
+    "selectPublicAuthority": {
+        "error": "Chyba pri načítavaní údajov pre orgány verejnej moci.",
+        "loading": "Načítavajú sa údaje pre orgány verejnej moci."
+    },
+    "selectRole": {
+        "error": "Chyba pri načítavaní údajov pre role.",
+        "loading": "Načítavajú sa údaje pre role."
+    }
 }

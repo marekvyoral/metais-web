@@ -6,7 +6,6 @@ import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { useTranslation } from 'react-i18next'
 
 import { FileImportEditOptions, FileImportHeader } from './FileImportHeader'
-import { FileImportItemsSelect } from './FileImportItemsSelect'
 import { FileImportDragDrop } from './FileImportDragDrop'
 import styles from './FileImport.module.scss'
 import { FileImportList, ProgressInfoList } from './FileImportList'
@@ -14,6 +13,7 @@ import { FileImportList, ProgressInfoList } from './FileImportList'
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { CloseIcon, ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
 import { HierarchyRightsUi } from '@isdd/metais-common/api'
+import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 
 interface IFileImportView {
     uppy: Uppy
@@ -31,6 +31,7 @@ interface IFileImportView {
     setSelectedRoleId: React.Dispatch<SetStateAction<string>>
     setSelectedOrg: React.Dispatch<SetStateAction<HierarchyRightsUi | null>>
     selectedOrg: HierarchyRightsUi | null
+    selectedRoleId: string
 }
 
 export const FileImportView: React.FC<IFileImportView> = ({
@@ -45,21 +46,21 @@ export const FileImportView: React.FC<IFileImportView> = ({
     currentFiles,
     fileImportStep,
     radioButtonMetaData,
-    ciType,
     setSelectedRoleId,
     setSelectedOrg,
     selectedOrg,
+    selectedRoleId,
 }) => {
     const { t } = useTranslation()
     return (
         <>
             <FileImportHeader setRadioButtonMetaData={setRadioButtonMetaData} />
             {radioButtonMetaData === FileImportEditOptions.EXISTING_AND_NEW && (
-                <FileImportItemsSelect
-                    ciType={ciType}
-                    setSelectedRoleId={setSelectedRoleId}
-                    setSelectedOrg={setSelectedOrg}
+                <SelectPublicAuthorityAndRole
+                    onChangeAuthority={setSelectedOrg}
+                    onChangeRole={setSelectedRoleId}
                     selectedOrg={selectedOrg}
+                    selectedRoleId={selectedRoleId}
                 />
             )}
             <FileImportDragDrop uppy={uppy} />
