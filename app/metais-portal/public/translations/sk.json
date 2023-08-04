@@ -206,6 +206,12 @@
         "en": "English",
         "ge": "German"
     },
+    "stepper": {
+        "openAll": "Zobraziť všetko",
+        "closeAll": "Zatvoriť všetko",
+        "sections": "sekcie",
+        "and": "a"
+    },
     "tab": {
         "contents": "Obsah"
     },
