@@ -4,6 +4,17 @@ import { TFunction } from 'i18next'
 
 export const getPortalNavitagionItems = (t: TFunction): NavigationItem[] => [
     {
+        title: t('navMenu.publicAuthorities'),
+        path: RouteNames.HOW_TO_PUBLIC_AUTHORITIES,
+        icon: EgovComponentsIcon,
+        subItems: [
+            { title: t('navMenu.lists.processorsOfITDevelopmentConcepts'), path: NavigationSubRoutes.PROCESSORS_OF_IT_DEVELOPMENT_CONCEPTS },
+            { title: t('navMenu.lists.subordinates'), path: NavigationSubRoutes.SUBORDINATES },
+            { title: t('navMenu.lists.ISoperators'), path: NavigationSubRoutes.IS_OPERATORS },
+        ],
+    },
+
+    {
         title: t('navMenu.egovComponents'),
         path: RouteNames.HOW_TO_EGOV_COMPONENTS,
         icon: EgovComponentsIcon,

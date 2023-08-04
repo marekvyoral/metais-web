@@ -1,9 +1,9 @@
-import React, { SetStateAction, useEffect, useState } from 'react'
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
-import { GetImplicitHierarchyFilter, useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
 import { CiCode, HierarchyRightsResultUi, HierarchyRightsUi, useGenerateCodeAndURL } from '@isdd/metais-common/api'
 import { Role, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { GetImplicitHierarchyFilter, useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
 import { useGetRightForPO } from '@isdd/metais-common/hooks/useGetRightForPO'
+import React, { SetStateAction, useEffect, useState } from 'react'
 
 export interface CiCreateEntityContainerData {
     implicitHierarchyData: HierarchyRightsResultUi | undefined
@@ -17,12 +17,6 @@ export interface ISelectedOrg {
 
 export interface ICiCreateEntityContainerView {
     data: CiCreateEntityContainerData
-
-    filter: GetImplicitHierarchyFilter
-
-    filterCallbacks: {
-        setFilter: React.Dispatch<SetStateAction<GetImplicitHierarchyFilter>>
-    }
     selectedOrgState: ISelectedOrg
     isLoading: boolean
     isError: boolean
@@ -47,9 +41,7 @@ export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ Vi
         rights: userDataGroups.map((group) => ({ poUUID: group.orgId, roles: group.roles.map((role) => role.roleUuid) })),
     }
 
-    const [filter, setFilter] = useState(defaultCiListPostData)
-
-    const { implicitHierarchyData, isLoading, isError } = useGetImplicitHierarchy(filter)
+    const { implicitHierarchyData, isLoading, isError } = useGetImplicitHierarchy(defaultCiListPostData)
     const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
 
     useEffect(() => {
@@ -64,8 +56,6 @@ export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ Vi
     return (
         <View
             data={{ rightsForPOData, implicitHierarchyData, generatedEntityId }}
-            filter={filter}
-            filterCallbacks={{ setFilter }}
             selectedOrgState={{ selectedOrg, setSelectedOrg }}
             isLoading={isLoading}
             isError={isError}

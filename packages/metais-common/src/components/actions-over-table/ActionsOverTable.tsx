@@ -10,8 +10,6 @@ import { IColumnSectionType, TableSelectColumns } from '@isdd/idsk-ui-kit/table-
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useNavigate } from 'react-router-dom'
 
-import { ExportItemsOrRelations } from '../export-items-or-relations/ExportItemsOrRelations'
-
 import styles from './actionsOverTable.module.scss'
 
 import { Attribute, AttributeProfile, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
@@ -25,6 +23,8 @@ import {
 } from '@isdd/metais-common/api/generated/impexp-cmdb-swagger'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon, ExportIcon, ImportIcon, PlusIcon } from '@isdd/metais-common/assets/images'
 import { IColumn } from '@isdd/metais-common/hooks/useColumnList'
+import { ExportItemsOrRelations } from '@isdd/metais-common/components/export-items-or-relations/ExportItemsOrRelations'
+import { FileImport } from '@isdd/metais-common/components/file-import/FileImport'
 
 export enum ActionNames {
     IMPORT = 'IMPORT',
@@ -60,6 +60,11 @@ const defaultPagingOptions = [
     { value: '100000', label: '1000000' },
 ]
 
+export enum FileImportStepEnum {
+    VALIDATE = 'validate',
+    IMPORT = 'import',
+}
+
 export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     pagingOptions,
     ciType,
@@ -74,7 +79,11 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     hiddenButtons,
     createHref,
 }) => {
+    const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
+    const baseURL = import.meta.env.VITE_REST_CLIENT_IMPEXP_CMDB_TARGET_URL
+    const fileImportURL = `${baseURL}${fileImportStep === FileImportStepEnum.VALIDATE ? '/import/validate' : '/import'}`
     const [modalOpen, setModalOpen] = useState(false)
+    const [modalImportOpen, setModalImportOpen] = useState(false)
 
     const { t } = useTranslation()
     const pagingSelectId = useId()
@@ -85,6 +94,14 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     }
     const onClose = () => {
         setModalOpen(false)
+    }
+
+    const openImportModal = () => {
+        setModalImportOpen(true)
+    }
+    const onImportClose = () => {
+        setFileImportStep(FileImportStepEnum.VALIDATE)
+        setModalImportOpen(false)
     }
 
     const exportCsv = useExportCsvHook()
@@ -98,6 +115,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     const onExportStart = (exportValue: string, extension: string) => {
         // eslint-disable-next-line no-console
         console.log(exportValue, extension)
+
         if (exportValue === 'items') {
             if (extension === 'XML') {
                 exportXml({
@@ -226,6 +244,19 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                                 </div>
                             }
                             variant="secondary"
+                            onClick={openImportModal}
+                        />
+                    )}
+                    {!hiddenButtons?.IMPORT && (
+                        <FileImport
+                            allowedFileTypes={['.xml', '.csv', '.xlsx']}
+                            multiple
+                            endpointUrl={fileImportURL}
+                            isOpen={modalImportOpen}
+                            close={onImportClose}
+                            fileImportStep={fileImportStep}
+                            setFileImportStep={setFileImportStep}
+                            ciType={ciType}
                         />
                     )}
                     {!hiddenButtons?.EXPORT && (
@@ -241,7 +272,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                             variant="secondary"
                         />
                     )}
-                    {hiddenButtons?.EXPORT && <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />}
+                    {!hiddenButtons?.EXPORT && <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />}
                 </div>
 
                 {!hiddenButtons?.ADD_NEW_ITEM && (

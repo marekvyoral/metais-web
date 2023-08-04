@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { Controller } from 'react-hook-form'
-import Select, { MultiValue } from 'react-select'
+import Select, { MultiValue, GroupBase, Props } from 'react-select'
 
 import { Control, Menu, Option, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import styles from '@isdd/idsk-ui-kit/select-lazy-loading/selectLazyLoading.module.scss'
 
 interface IOptions {
-    value: string
-    label: string
+    value: string | undefined
+    label: string | undefined
     disabled?: boolean | undefined
 }
 
-interface ISelectProps<T extends IOptions> {
+interface ISelectProps<T extends IOptions> extends Props<T, true, GroupBase<T>> {
     id?: string
     label: string
     name: string
@@ -35,6 +35,7 @@ export const MultiSelect = <T extends IOptions>({
     rules,
     id,
     error,
+    ...rest
 }: ISelectProps<T>): JSX.Element => {
     const [selectError, setSelectError] = useState(error)
     useEffect(() => {
@@ -62,6 +63,7 @@ export const MultiSelect = <T extends IOptions>({
                                 isMulti
                                 {...field}
                                 isOptionDisabled={(option) => !!option.disabled}
+                                {...rest}
                             />
                         )
                     }}
@@ -80,6 +82,7 @@ export const MultiSelect = <T extends IOptions>({
                         onChange && onChange(value)
                     }}
                     isOptionDisabled={(option) => !!option.disabled}
+                    {...rest}
                 />
             )}
         </div>

@@ -78,6 +78,7 @@
         "closeMenu": "Close menu"
     },
     "navMenu": {
+        "publicAuthorities": "Public authorities",
         "egovComponents": "E-gov Components",
         "standardization": "Standardization",
         "dataObjects": "Data objects",
@@ -88,6 +89,9 @@
         "innerNav": "Inner navigation",
         "mainNav": "Main navigation",
         "lists": {
+            "processorsOfITDevelopmentConcepts": "Processors of IT development concepts",
+            "subordinates": "Subordinates",
+            "ISoperators": "IS operators",
             "goals": "Objectives, principles and KRIT",
             "programs": "Programs",
             "projects": "Projects",
@@ -126,7 +130,8 @@
     },
     "radioButton": {
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "nothing": "Nothing"
     },
     "sidebar": {
         "hide": "HIDE",
@@ -137,11 +142,20 @@
         "collapse": "Collapse filter",
         "namePlaceholder": "Enter a name",
         "searchPlaceholder": "Search in table",
+        "chooseState": "Select status",
+        "chooseValue": "Select value",
         "ks": {
             "name": "Name of end service"
         },
         "isvs": {
             "name": "Name of information system"
+        },
+        "PO": {
+            "name": "Name",
+            "itIsChapter": "It is a chapter",
+            "personsCategory": "Persons category",
+            "publicAuthorityType": "Public authority type",
+            "evidenceStatus": "Evidence status"
         },
         "metaisCode": {
             "label": "Code MetaIS",
@@ -190,6 +204,12 @@
     "language": {
         "sk": "Slovenčina",
         "en": "English"
+    },
+    "stepper": {
+        "openAll": "Open all",
+        "closeAll": "Close all",
+        "sections": "sections",
+        "and": "and"
     },
     "tab": {
         "contents": "Contents"
@@ -254,7 +274,8 @@
         "chooseFile": "Choose file",
         "browse": "No file is selected (Max. file size 20MB)",
         "import": "Import",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "validate": "Validate"
     },
     "exportItemsOrRelations": {
         "header": "Export items or relations",
