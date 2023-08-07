@@ -24,7 +24,7 @@ import { TableRowExpanded } from './TableRowExpanded'
 
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 
-interface ITableProps<T> {
+export interface ITableProps<T> {
     data?: Array<T>
     columns: Array<ColumnDef<T>>
     canDrag?: boolean

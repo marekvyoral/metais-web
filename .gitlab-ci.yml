@@ -73,7 +73,7 @@ build-docker-feature:
     variables: 
         IMAGE_TAG: ${CI_COMMIT_REF_SLUG}
     rules:
-        - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/
+        - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/i  || $CI_COMMIT_REF_NAME =~ /^met-[^\/]+\/.+$/i || $CI_COMMIT_REF_NAME =~ /^bug\/.+$/i
 
 build-docker-latest:
     extends: .build_docker_template

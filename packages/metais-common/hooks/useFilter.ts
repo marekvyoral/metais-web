@@ -87,6 +87,10 @@ interface ReturnUseFilterParams<T> {
     handleFilterChange: (changedFilter: IFilter) => void
 }
 
+const getPropertyType = <T, K extends keyof T>(obj: T, key: K): string => {
+    return typeof obj[key]
+}
+
 export function useFilterParams<T extends FieldValues & IFilterParams>(defaults: T & IFilter): ReturnUseFilterParams<T> {
     const [urlParams] = useSearchParams()
     const [uiFilterState, setUiFilterState] = useState<IFilter>({
@@ -110,9 +114,17 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
         .concat(Object.keys(defaults))
         .forEach((key) => {
             if (urlParams.get(key)) {
-                // eslint-disable-next-line
-                // @ts-ignore
-                filter[key] = urlParams.get(key)
+                const propertyType = getPropertyType(defaults, key)
+                if (propertyType === 'object') {
+                    const value = urlParams.getAll(key)
+                    // eslint-disable-next-line
+                    // @ts-ignore
+                    filter[key] = value
+                } else {
+                    // eslint-disable-next-line
+                    // @ts-ignore
+                    filter[key] = urlParams.get(key)
+                }
             }
         })
     filter.attributeFilters = parseCustomAttributes(urlParams)

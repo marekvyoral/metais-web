@@ -1,13 +1,16 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Control, FieldValues, UseFormRegister } from 'react-hook-form'
+import { Control, FieldError, FieldErrorsImpl, FieldValues, Merge, UseFormRegister, UseFormSetValue, UseFormTrigger } from 'react-hook-form'
 import classnames from 'classnames'
 import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
-import { Input, SimpleSelect, MultiSelect } from '@isdd/idsk-ui-kit'
-import { Attribute, AttributeAttributeTypeEnum, EnumType } from '@isdd/metais-common/api'
+import { Input, SimpleSelect, MultiSelect } from '@isdd/idsk-ui-kit/index'
+import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { EnumItem, EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
+import { ArrayAttributeInput } from './ArrayAttributeInput'
+import styles from './attributeInput.module.scss'
 
 enum ConstraintTypes {
     REGEX = 'regex',
@@ -26,18 +29,47 @@ enum DisplayTextArea {
 interface IAttributeInput {
     attribute: Attribute
     register: UseFormRegister<FieldValues>
+    control: Control
     constraints?: EnumType
-    error: string
+    error: FieldError | Merge<FieldError, FieldErrorsImpl> | undefined
     hint?: string
     isSubmitted: boolean
-    unitsData?: EnumType
-    control?: Control
+    unitsData?: EnumItem
+    setValue: UseFormSetValue<FieldValues>
+    trigger: UseFormTrigger<{
+        [x: string]:
+            | string
+            | number
+            | boolean
+            | Date
+            | unknown
+            | (string | undefined)[]
+            | {
+                  label?: string | undefined
+                  value?: string | undefined
+              }[]
+            | null
+            | undefined
+    }>
 }
 
-export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register, error, constraints, hint, isSubmitted, control }) => {
+export const AttributeInput: React.FC<IAttributeInput> = ({
+    attribute,
+    trigger,
+    setValue,
+    register,
+    control,
+    error,
+    constraints,
+    hint,
+    isSubmitted,
+    unitsData,
+}) => {
     const { t } = useTranslation()
-    //needs to be implemented with InputWithIcon component to show icon or string based on units
-    //const hasUnits = !!attribute.units && !!unitsData
+
+    const hasUnits = !!attribute.units && !!unitsData
+    const unitsLabel = hasUnits ? ' ' + t('createEntity.units', { units: unitsData.value }) : ''
+
     const isCorrect = !error && isSubmitted
 
     const isRequired = attribute.mandatory?.type === MandatoryType.CRITICAL
@@ -57,6 +89,8 @@ export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register,
     const isBoolean = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.BOOLEAN
     const isFile = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.IMAGE
 
+    const isArray = attribute.array
+
     const isEnum = attribute?.constraints && attribute.constraints.length > 0 && attribute?.constraints[0].type === ConstraintTypes.ENUM
 
     const hasNumericValue = isInteger || isDouble || isFloat || isByte || isLong || isShort
@@ -65,7 +99,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register,
     const createOptions = (constraintItem: EnumType) => {
         const options =
             constraintItem?.enumItems?.map((item) => ({
-                value: item.value ?? '',
+                value: item.code ?? '',
                 label: `${item.value} - ${item.description}` ?? '',
                 disabled: !item.valid,
             })) ?? []
@@ -76,6 +110,21 @@ export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register,
     const renderContent = () => {
         if (attribute.technicalName == null) return <></>
         switch (true) {
+            case isArray && !isEnum: {
+                return (
+                    <ArrayAttributeInput
+                        isSubmitted={isSubmitted}
+                        register={register}
+                        attribute={attribute}
+                        error={error}
+                        isCorrect={isCorrect}
+                        isTextarea={isTextarea}
+                        requiredLabel={requiredLabel}
+                        setValue={setValue}
+                        trigger={trigger}
+                    />
+                )
+            }
             case isDate: {
                 return (
                     <Input
@@ -85,7 +134,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register,
                         disabled={attribute.readOnly}
                         id={attribute.technicalName}
                         label={attribute.name + requiredLabel}
-                        error={error}
+                        error={error?.message?.toString()}
                         {...register(attribute.technicalName)}
                         defaultValue={attribute.defaultValue}
                         hint={hint}
@@ -103,7 +152,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register,
                         id={attribute.technicalName}
                         disabled={attribute.readOnly}
                         label={attribute.name + requiredLabel}
-                        error={error}
+                        error={error?.message?.toString()}
                         {...register(attribute.technicalName)}
                         defaultValue={attribute.defaultValue}
                         hint={hint}
@@ -113,13 +162,14 @@ export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register,
             case isBoolean: {
                 return (
                     <CheckBox
-                        label={attribute.name + requiredLabel}
-                        error={error}
+                        label={attribute.name ?? ''}
+                        error={error?.message?.toString()}
                         id={attribute.technicalName}
                         info={attribute.description}
                         disabled={attribute.readOnly}
                         {...register(attribute.technicalName)}
                         value="true"
+                        containerClassName={styles.withInfoCheckbox}
                     />
                 )
             }
@@ -140,7 +190,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register,
                             <SimpleSelect
                                 id={attribute.technicalName ?? ''}
                                 label={attribute.name + requiredLabel}
-                                error={error}
+                                error={error?.message?.toString()}
                                 info={attribute.description}
                                 correct={isCorrect}
                                 options={createOptions(constraints)}
@@ -162,8 +212,8 @@ export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register,
                         info={attribute.description}
                         id={attribute.technicalName}
                         disabled={attribute.readOnly}
-                        label={attribute.name + requiredLabel}
-                        error={error}
+                        label={attribute.name + requiredLabel + unitsLabel}
+                        error={error?.message?.toString()}
                         {...register(attribute.technicalName)}
                         type="number"
                         defaultValue={attribute.defaultValue}
@@ -182,7 +232,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register,
                         id={attribute.technicalName}
                         disabled={attribute.readOnly}
                         label={attribute.name + requiredLabel}
-                        error={error}
+                        error={error?.message?.toString()}
                         {...register(attribute.technicalName)}
                         defaultValue={attribute.defaultValue}
                         hint={hint}
@@ -199,7 +249,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register,
                         id={attribute.technicalName}
                         disabled={attribute.technicalName === AttributesConfigTechNames.METAIS_CODE || attribute.readOnly}
                         label={attribute.name + requiredLabel}
-                        error={error}
+                        error={error?.message?.toString()}
                         {...register(attribute.technicalName)}
                         type="text"
                         defaultValue={attribute.defaultValue}
@@ -218,7 +268,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({ attribute, register,
                         id={attribute.technicalName}
                         disabled={attribute.readOnly}
                         label={attribute.name + requiredLabel}
-                        error={error}
+                        error={error?.message?.toString()}
                         {...register(attribute.technicalName)}
                         type="text"
                         defaultValue={attribute.defaultValue}

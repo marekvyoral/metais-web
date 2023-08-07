@@ -25,20 +25,22 @@ export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
                     </>
                 )}
                 <div className={classNames('govuk-checkboxes__item', containerClassName)}>
-                    <input
-                        className={classNames('govuk-checkboxes__input', className)}
-                        id={id}
-                        name={name}
-                        type="checkbox"
-                        value={value}
-                        disabled={disabled}
-                        ref={ref}
-                        {...rest}
-                    />
+                    <div>
+                        <input
+                            className={classNames('govuk-checkboxes__input', className)}
+                            id={id}
+                            name={name}
+                            type="checkbox"
+                            value={value}
+                            disabled={disabled}
+                            ref={ref}
+                            {...rest}
+                        />
 
-                    <label className={classNames('govuk-label govuk-checkboxes__label', labelClassName)} htmlFor={id}>
-                        {label}
-                    </label>
+                        <label className={classNames('govuk-label govuk-checkboxes__label', labelClassName)} htmlFor={id}>
+                            {label}
+                        </label>
+                    </div>
                     {info && <InfoInputIcon description={info} id={id} />}
                 </div>
             </div>

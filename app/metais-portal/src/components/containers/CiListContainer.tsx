@@ -4,6 +4,7 @@ import { FieldValues } from 'react-hook-form'
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useReadCiList1, useResetUserColumns, useGetUserColumns, useGetDefaultColumns, useInsertUserColumns } from '@isdd/metais-common/api'
+import { QueryFeedback } from '@isdd/metais-common'
 
 import { IListView } from '@/types/list'
 import { mapFilterParamsToApi, mapFilterToNeighborsApi } from '@/componentHelpers'
@@ -94,15 +95,17 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityN
     const isError = [isQueryError, isReadCiListError, isResetError, isStoreError].some((item) => item)
 
     return (
-        <ListComponent
-            data={{ columnListData, tableData }}
-            pagination={pagination}
-            handleFilterChange={handleFilterChange}
-            resetUserSelectedColumns={resetColumns}
-            storeUserSelectedColumns={saveColumnSelection}
-            sort={filterParams?.sort ?? []}
-            isLoading={isLoading}
-            isError={isError}
-        />
+        <QueryFeedback loading={isLoading} error={isError}>
+            <ListComponent
+                data={{ columnListData, tableData }}
+                pagination={pagination}
+                handleFilterChange={handleFilterChange}
+                resetUserSelectedColumns={resetColumns}
+                storeUserSelectedColumns={saveColumnSelection}
+                sort={filterParams?.sort ?? []}
+                isLoading={isLoading}
+                isError={isError}
+            />
+        </QueryFeedback>
     )
 }

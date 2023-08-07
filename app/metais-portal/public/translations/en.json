@@ -78,6 +78,7 @@
         "closeMenu": "Close menu"
     },
     "navMenu": {
+        "publicAuthorities": "Public authorities",
         "egovComponents": "E-gov Components",
         "standardization": "Standardization",
         "dataObjects": "Data objects",
@@ -88,6 +89,9 @@
         "innerNav": "Inner navigation",
         "mainNav": "Main navigation",
         "lists": {
+            "processorsOfITDevelopmentConcepts": "Processors of IT development concepts",
+            "subordinates": "Subordinates",
+            "ISoperators": "IS operators",
             "goals": "Objectives, principles and KRIT",
             "programs": "Programs",
             "projects": "Projects",
@@ -126,7 +130,8 @@
     },
     "radioButton": {
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "nothing": "Nothing"
     },
     "sidebar": {
         "hide": "HIDE",
@@ -137,11 +142,20 @@
         "collapse": "Collapse filter",
         "namePlaceholder": "Enter a name",
         "searchPlaceholder": "Search in table",
+        "chooseState": "Select status",
+        "chooseValue": "Select value",
         "ks": {
             "name": "Name of end service"
         },
         "isvs": {
             "name": "Name of information system"
+        },
+        "PO": {
+            "name": "Name",
+            "itIsChapter": "It is a chapter",
+            "personsCategory": "Persons category",
+            "publicAuthorityType": "Public authority type",
+            "evidenceStatus": "Evidence status"
         },
         "metaisCode": {
             "label": "Code MetaIS",
@@ -191,6 +205,12 @@
         "sk": "Slovenčina",
         "en": "English"
     },
+    "stepper": {
+        "openAll": "Open all",
+        "closeAll": "Close all",
+        "sections": "sections",
+        "and": "and"
+    },
     "tab": {
         "contents": "Contents"
     },
@@ -200,7 +220,8 @@
         "saveChanges": "Save changes"
     },
     "errors": {
-        "fixLink": "Correct"
+        "fixLink": "Correct",
+        "invalidEntityId": "Invalid entity"
     },
     "mutationFeedback": {
         "successfulUpdated": "The item was successfully changed"
@@ -236,7 +257,8 @@
     "ciType": {
         "informations": "Information",
         "documents": "Documents",
-        "relationships": "Relationships"
+        "relationships": "Relationships",
+        "history": "History of changes"
     },
     "relationType": {
         "as": "Application service"
@@ -252,7 +274,8 @@
         "chooseFile": "Choose file",
         "browse": "No file is selected (Max. file size 20MB)",
         "import": "Import",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "validate": "Validate"
     },
     "exportItemsOrRelations": {
         "header": "Export items or relations",
@@ -300,6 +323,24 @@
             "sourceItemName": "Source item name"
         }
     },
+    "historyTab": {
+        "configurationItem": "Information about record",
+        "configurationItemTable": "Historic records",
+        "configurationItemView": {
+            "state": "State of evidence",
+            "owner": "Owner",
+            "createdBy": "Created by",
+            "createdAt": "Created at",
+            "lastModifiedBy": "Last modified by",
+            "lastModifiedAt": "Last modified at",
+            "source": "Source"
+        },
+        "table": {
+            "actions": "Action type",
+            "actionTime": "Action time",
+            "actionBy": "Action by"
+        }
+    },
     "metaAttributes": {
         "state": {
             "DRAFT": "Created",
@@ -307,6 +348,20 @@
             "DELETED": "Invalidated",
             "UNKNOW": "Unknown",
             "": ""
+        }
+    },
+    "history": {
+        "ACTIONS": {
+            "CREATE": "Create",
+            "CREATE_INCIDENT_REL": "Create incident relation",
+            "UPDATE": "Update",
+            "UPDATE_INCIDENT_REL": "Update incident relation",
+            "CHANGE_OWNER": "Change owner",
+            "CHANGE_OWNER_INCIDENT_REL": "Change owner incident relation",
+            "INVALIDATE": "Invalidate",
+            "INVALIDATE_INCIDENT_REL": "Invalidate incident relation",
+            "RECYCLE": "Recycle",
+            "RECYCLE_INCIDENT_REL": "Recycle incident relation"
         }
     },
     "download": "Download",
@@ -327,7 +382,12 @@
         "select": "Select...",
         "email": "metais@mirri.gov.sk",
         "publicAuthority": "Public Authority",
-        "role": "Role"
+        "role": "Role",
+        "addNewRow": "Add new row",
+        "units": "(Value in {{units}})",
+        "redirectLoading": "Processing creation of new entity",
+        "redirectError": "Failed to process new entity creation",
+        "mutationError": "Error while executing your action. Please try again or contact support."
     },
     "table": {
         "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
@@ -377,5 +437,14 @@
     "accordion": {
         "openAll": "Open all",
         "closeAll": "Close all"
+    },
+    "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
+    "selectPublicAuthority": {
+        "error": "Error while fetching data for public authorities.",
+        "loading": "Loading public authorities"
+    },
+    "selectRole": {
+        "error": "Error while fetching data about roles.",
+        "loading": "Loading role data"
     }
 }

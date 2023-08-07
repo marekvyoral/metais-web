@@ -1,18 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { Controller } from 'react-hook-form'
-import Select, { MultiValue } from 'react-select'
+import Select, { MultiValue, GroupBase, Props } from 'react-select'
 
 import { Control, Menu, Option, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import styles from '@isdd/idsk-ui-kit/select-lazy-loading/selectLazyLoading.module.scss'
 
 interface IOptions {
-    value: string
-    label: string
+    value: string | undefined
+    label: string | undefined
     disabled?: boolean | undefined
 }
 
-interface ISelectProps<T extends IOptions> {
+interface ISelectProps<T extends IOptions> extends Props<T, true, GroupBase<T>> {
     id?: string
     label: string
     name: string
@@ -22,20 +22,37 @@ interface ISelectProps<T extends IOptions> {
     onChange?: (newValue: MultiValue<T>) => void
     values?: MultiValue<T>
     rules?: Record<string, string>
+    error?: string
 }
 
-export const MultiSelect = <T extends IOptions>({ label, control, name, options, values, onChange, rules, id }: ISelectProps<T>): JSX.Element => {
+export const MultiSelect = <T extends IOptions>({
+    label,
+    control,
+    name,
+    options,
+    values,
+    onChange,
+    rules,
+    id,
+    error,
+    ...rest
+}: ISelectProps<T>): JSX.Element => {
+    const [selectError, setSelectError] = useState(error)
+    useEffect(() => {
+        setSelectError(error)
+    }, [error])
     return (
-        <div className="govuk-form-group">
+        <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!selectError })}>
             <label className="govuk-label">{label}</label>
+            {!!selectError && <span className="govuk-error-message">{selectError}</span>}
             {control ? (
                 <Controller
                     name={name}
                     control={control}
                     rules={rules}
-                    render={({ field, fieldState }) => (
-                        <>
-                            {fieldState?.error && <span className="govuk-error-message">{fieldState.error.message}</span>}
+                    render={({ field, fieldState }) => {
+                        setSelectError(fieldState.error?.message)
+                        return (
                             <Select
                                 id={id}
                                 className={classNames('govuk-select', styles.selectLazyLoading)}
@@ -46,9 +63,10 @@ export const MultiSelect = <T extends IOptions>({ label, control, name, options,
                                 isMulti
                                 {...field}
                                 isOptionDisabled={(option) => !!option.disabled}
+                                {...rest}
                             />
-                        </>
-                    )}
+                        )
+                    }}
                 />
             ) : (
                 <Select
@@ -64,6 +82,7 @@ export const MultiSelect = <T extends IOptions>({ label, control, name, options,
                         onChange && onChange(value)
                     }}
                     isOptionDisabled={(option) => !!option.disabled}
+                    {...rest}
                 />
             )}
         </div>
