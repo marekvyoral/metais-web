@@ -27,7 +27,7 @@ import { useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
-import styles from './roles.module.scss'
+import styles from '../../components/roles/roles.module.scss'
 
 interface FilterData extends IFilterParams {
     name: string
