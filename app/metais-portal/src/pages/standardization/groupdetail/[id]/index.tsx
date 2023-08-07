@@ -14,15 +14,15 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-
-import KSIVSFilter from './components/identitiesFilter'
-import KSIVSAddMemberPopUp from './components/modals/addMemberModal'
-import KSIVSBaseInfo from './components/modals/baseInfo'
-import KSIVSDeleteMemberPopUp from './components/modals/deleteMemberModal'
-import { DEFAULT_ROLES } from './defaultRoles'
-import styles from './styles.module.scss'
-import KSIVSTableActions from './components/tableActions'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+
+import KSIVSFilter from '../../../../components/views/standartization/identitiesFilter'
+import KSIVSAddMemberPopUp from '../../../../components/views/standartization/modals/addMemberModal'
+import KSIVSBaseInfo from '../../../../components/views/standartization/modals/baseInfo'
+import KSIVSDeleteMemberPopUp from '../../../../components/views/standartization/modals/deleteMemberModal'
+import { DEFAULT_ROLES } from '../../../../components/views/standartization/defaultRoles'
+import styles from '../../../../components/views/standartization/styles.module.scss'
+import KSIVSTableActions from '../../../../components/views/standartization/tableActions'
 
 const defaultSearch: FindRelatedIdentitiesAndCountParams = {
     orderBy: 'firstName_lastName',

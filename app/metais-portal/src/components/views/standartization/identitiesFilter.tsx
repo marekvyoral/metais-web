@@ -2,10 +2,10 @@ import { Filter, ILoadOptionsResponse, SelectLazyLoading, SimpleSelect } from '@
 import { Identity, useFind1Hook } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import { CiListFilterContainerUi, ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/src/api'
 import React, { useCallback, useState } from 'react'
-// import { useFilter, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
-import { FilterParams } from '..'
-import { DEFAULT_ROLES } from '../defaultRoles'
+import { DEFAULT_ROLES } from './defaultRoles'
+
+import { FilterParams } from '@/pages/standardization/groupdetail/[id]'
 
 interface filterProps {
     listFilter: FilterParams

@@ -2,7 +2,7 @@ import { BaseModal, Button, TextBody, TextHeading } from '@isdd/idsk-ui-kit/inde
 import React from 'react'
 import { useDeleteGroupRelationHook } from '@isdd/metais-common/api/generated/iam-swagger'
 
-import styles from '../../styles.module.scss'
+import styles from '../styles.module.scss'
 interface deleteMemberPopUpProps {
     uuid?: string
     groupUuid: string
