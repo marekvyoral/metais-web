@@ -9,11 +9,11 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 
-import styles from '../../components/roles/roles.module.scss'
+import styles from '../../components/views/roles/roles.module.scss'
 
-import RolesTableActions from '@/components/roles/actionsOverTable'
-import DeleteRoleModal from '@/components/roles/deleteModal'
-import RolesFilter from '@/components/roles/rolesfilter'
+import RolesTableActions from '@/components/views/roles/actionsOverTable'
+import DeleteRoleModal from '@/components/views/roles/deleteModal'
+import RolesFilter from '@/components/views/roles/rolesfilter'
 
 export interface FilterData extends IFilterParams {
     name: string

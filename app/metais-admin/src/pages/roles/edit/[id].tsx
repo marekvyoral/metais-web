@@ -7,7 +7,7 @@ import { useGetValidEnum } from '@isdd/metais-common/api'
 import { useTranslation } from 'react-i18next'
 import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
-import { findInputError } from '../../../components/roles/formUtils'
+import { findInputError } from '../../../components/views/roles/formUtils'
 import { RolesGroup } from '..'
 
 const EditRole: React.FC = () => {

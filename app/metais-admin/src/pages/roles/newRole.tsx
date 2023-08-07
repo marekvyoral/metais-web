@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { RelatedRoleType, useUpdateOrCreate } from '@isdd/metais-common/api/generated/iam-swagger'
 import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
-import { findInputError } from '../../components/roles/formUtils'
+import { findInputError } from '../../components/views/roles/formUtils'
 
 import { RolesGroup } from '.'
 
