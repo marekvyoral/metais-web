@@ -6,9 +6,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
 import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
 
-import { generateFormSchema } from '../create-entity/createCiEntityFormSchema.ts'
-
 import { AttributeInput } from './AttributeInput'
+
+import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
 
 const meta: Meta<typeof AttributeInput> = {
     title: 'Components/AttributeInput',
@@ -144,9 +144,9 @@ const hasAttributeInputError = (
 ) => {
     if (attribute.technicalName != null) {
         const error = Object.keys(errors).includes(attribute.technicalName)
-        return error ? errors[attribute.technicalName]?.message?.toString() ?? '' : ''
+        return error ? errors[attribute.technicalName] : undefined
     }
-    return ''
+    return undefined
 }
 
 export const TextInput: Story = {

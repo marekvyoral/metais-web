@@ -78,6 +78,7 @@
         "closeMenu": "Skry menu"
     },
     "navMenu": {
+        "publicAuthorities": "Orgány verejnej moci",
         "egovComponents": "E-gov Komponenty",
         "standardization": "Štandardizácia",
         "dataObjects": "Dátové objekty",
@@ -88,6 +89,9 @@
         "innerNav": "Vnútorná navigácia",
         "mainNav": "Hlavná navigácia",
         "lists": {
+            "processorsOfITDevelopmentConcepts": "Spracovatelia koncepcií rozvoja IT",
+            "subordinates": "Podriadené osoby",
+            "ISoperators": "Prevádzkovatelia IS",
             "goals": "Ciele, princípy a KRIT",
             "programs": "Programy",
             "projects": "Projekty",
@@ -126,7 +130,8 @@
     },
     "radioButton": {
         "yes": "Áno",
-        "no": "Nie"
+        "no": "Nie",
+        "nothing": "Nič"
     },
     "sidebar": {
         "hide": "SKRYŤ",
@@ -137,11 +142,20 @@
         "collapse": "Zbaliť filter",
         "namePlaceholder": "Zadajte názov",
         "searchPlaceholder": "Vyhľadajte v tabuľke",
+        "chooseState": "Vyberte stav",
+        "chooseValue": "Vyberte hodnotu",
         "KS": {
             "name": "Názov koncovej služby"
         },
         "ISVS": {
             "name": "Názov informačného systému"
+        },
+        "PO": {
+            "name": "Názov",
+            "itIsChapter": "Je kapitola",
+            "personsCategory": "Kategória osoby",
+            "publicAuthorityType": "Typ povinnej osoby",
+            "evidenceStatus": "Stav evidencie"
         },
         "metaisCode": {
             "label": "Kód MetaIS",
@@ -192,11 +206,18 @@
         "en": "English",
         "ge": "German"
     },
+    "stepper": {
+        "openAll": "Zobraziť všetko",
+        "closeAll": "Zatvoriť všetko",
+        "sections": "sekcie",
+        "and": "a"
+    },
     "tab": {
         "contents": "Obsah"
     },
     "errors": {
-        "fixLink": "Opraviť"
+        "fixLink": "Opraviť",
+        "invalidEntityId": "Nevalidná entita"
     },
     "mutationFeedback": {
         "successfulUpdated": "Položka bola úspešne zmenená"
@@ -237,7 +258,8 @@
     "ciType": {
         "informations": "Informácie",
         "documents": "Dokumenty",
-        "relationships": "Vzťahy"
+        "relationships": "Vzťahy",
+        "history": "História zmien"
     },
     "relationType": {
         "as": "Aplikačná služba"
@@ -253,7 +275,8 @@
         "chooseFile": "Vybrať súbor",
         "browse": "Nie je vybratý žiadny súbor (Max. veľkosť súboru 20MB)",
         "import": "Importovať",
-        "cancel": "Zrušiť"
+        "cancel": "Zrušiť",
+        "validate": "Zvalidovať"
     },
     "exportItemsOrRelations": {
         "header": "Export položiek alebo vzťahov",
@@ -301,6 +324,24 @@
             "sourceItemName": "Názov zdrojovej položky"
         }
     },
+    "historyTab": {
+        "configurationItem": " Informácie o zázname",
+        "configurationItemTable": "Historické záznamy",
+        "configurationItemView": {
+            "state": "Stav evidencie",
+            "owner": "Vlastník",
+            "createdBy": "Vytvoril",
+            "createdAt": "Vytvorené",
+            "lastModifiedBy": "Poslednú zmenu vykonal",
+            "lastModifiedAt": "Posledná zmena",
+            "source": "Zdroj"
+        },
+        "table": {
+            "actions": "Typ akcie",
+            "actionTime": "Dátum zmeny",
+            "actionBy": "Vykonal"
+        }
+    },
     "metaAttributes": {
         "state": {
             "DRAFT": "Vytvorené",
@@ -308,6 +349,20 @@
             "DELETED": "Zneplatnené",
             "UNKNOW": "Neznámy",
             "": ""
+        }
+    },
+    "history": {
+        "ACTIONS": {
+            "CREATE": "Vytvorenie položky",
+            "CREATE_INCIDENT_REL": "Vytvorenie vzťahu ku položke",
+            "UPDATE": "Aktualizácia položky",
+            "UPDATE_INCIDENT_REL": "Aktualizácia vzťahu",
+            "CHANGE_OWNER": "Zmena vlastníka položky",
+            "CHANGE_OWNER_INCIDENT_REL": "Zmena vlastníka vzťahu",
+            "INVALIDATE": "Zneplatnenie položky",
+            "INVALIDATE_INCIDENT_REL": "Zneplatnenie vzťahu",
+            "RECYCLE": "Splatnenie položky",
+            "RECYCLE_INCIDENT_REL": "Splatnenie vzťahu"
         }
     },
     "download": "Stiahnuť",
@@ -328,7 +383,12 @@
         "select": "Vyber...",
         "email": "metais@mirri.gov.sk",
         "publicAuthority": "Povinná osoba",
-        "role": "Rola"
+        "role": "Rola",
+        "addNewRow": "Pridať nový riadok",
+        "units": "(Hodnota v {{units}})",
+        "redirectLoading": "Spracúva sa vytvorenie novej entity",
+        "redirectError": "Nepodarilo sa spracovať vytvorenie novej entity",
+        "mutationError": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
     },
     "table": {
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
@@ -378,5 +438,14 @@
     "accordion": {
         "openAll": "Otvoriť všetko",
         "closeAll": "Zatvoriť všetko"
+    },
+    "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
+    "selectPublicAuthority": {
+        "error": "Chyba pri načítavaní údajov pre orgány verejnej moci.",
+        "loading": "Načítavajú sa údaje pre orgány verejnej moci."
+    },
+    "selectRole": {
+        "error": "Chyba pri načítavaní údajov pre role.",
+        "loading": "Načítavajú sa údaje pre role."
     }
 }

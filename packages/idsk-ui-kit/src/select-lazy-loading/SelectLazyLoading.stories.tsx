@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 import { SelectLazyLoading } from './SelectLazyLoading'
 
@@ -61,5 +62,41 @@ export const PaginatedRemoteFetch: Story = {
         getOptionLabel: (item) => item.name,
         option: undefined,
         loadOptions: (searchTerm, _, additional) => loadOptions(searchTerm, additional),
+    },
+}
+
+interface Option {
+    name: string
+}
+
+export interface IForm {
+    selectOption: Option
+}
+
+export const UncontrolledFormHookGroup: Story = {
+    render: () => {
+        const Wrapper = () => {
+            const { control, handleSubmit } = useForm<IForm>({ defaultValues: { selectOption: { name: 'House Ashwood' } } })
+            const onSubmit = (data: IForm) => {
+                // eslint-disable-next-line no-alert
+                alert('select data: ' + data.selectOption.name)
+            }
+            return (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <SelectLazyLoading<Option>
+                        id="selectOption"
+                        control={control}
+                        name="selectOption"
+                        loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
+                        getOptionValue={(item) => item.name}
+                        getOptionLabel={(item) => item.name}
+                        label="Label test"
+                        rules={{ required: 'This field is required.' }}
+                    />
+                    <button type="submit">Submit</button>
+                </form>
+            )
+        }
+        return <Wrapper />
     },
 }

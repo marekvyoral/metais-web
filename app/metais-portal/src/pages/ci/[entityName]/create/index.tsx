@@ -14,14 +14,8 @@ const CreateEntityPage: React.FC = () => {
             View={({ data: attributesData }) => (
                 <CiCreateEntityContainer
                     entityName={entityName ?? ''}
-                    View={({ data: ciListAndRolesData, filter, selectedOrgState, filterCallbacks }) => (
-                        <CreateEntity
-                            data={{ attributesData, ciListAndRolesData }}
-                            filterCallbacks={filterCallbacks}
-                            filter={filter}
-                            selectedOrgState={selectedOrgState}
-                            entityName={entityName ?? ''}
-                        />
+                    View={({ data: generatedEntityId }) => (
+                        <CreateEntity data={{ attributesData, generatedEntityId }} entityName={entityName ?? ''} />
                     )}
                 />
             )}

@@ -1,0 +1,87 @@
+@import '../../utils.scss';
+
+.inputWithCloseIconDivTextarea {
+    display: flex;
+
+    img {
+        margin-right: govuk-spacing(2);
+    }
+    div {
+        width: 100%;
+        margin: 0;
+    }
+}
+.inputWithCloseIconDivInput {
+    display: flex;
+
+    img {
+        margin-right: govuk-spacing(2);
+    }
+    div {
+        width: 100%;
+    }
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+.buttonDiv {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+
+    Button {
+        margin: 0;
+        margin-left: govuk-spacing(2);
+    }
+
+    @include mq($until: tablet) {
+        img {
+            display: none;
+        }
+    }
+}
+
+.infoDiv {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    img {
+        margin-bottom: govuk-spacing(2);
+    }
+
+    @include mq($from: tablet) {
+        img {
+            display: none;
+        }
+    }
+}
+
+.iconAddItems {
+    color: govuk-colour('dark-grey');
+    margin-right: govuk-spacing(2);
+}
+
+.buttonWithIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fieldset {
+    margin-bottom: govuk-spacing(6);
+    border-color: govuk-colour('black');
+}
+
+.formGroup {
+    margin-bottom: govuk-spacing(2) !important;
+}
+
+.withInfoCheckbox {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-bottom: govuk-spacing(6) !important;
+}

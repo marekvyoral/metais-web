@@ -3,6 +3,7 @@ export enum RouteNames {
     DEV_TEST_SCREEN = 'DevTestScreen',
     PROJEKT_LIST_PAGE = '/projekt/list',
     PROJEKT_ENTITY_DETAIL = '/ci/:entityName/:projektId',
+    HOW_TO_PUBLIC_AUTHORITIES = 'howto/CMBD.PUBLIC_AUTHORITIES/PUBLIC_AUTHORITIES_HOWTO',
     HOW_TO_EGOV_COMPONENTS = 'howto/CMDB.EGOV_TITLE/EGOV_HOWTO',
     HOW_TO_STANDARDIZATION = 'howto/STANDARD.PROCESS/STD_HOWTO',
     HOW_TO_MONITORING = 'howto/MONITORING.MONITORING/MONITORING_HOWTO',
@@ -30,6 +31,9 @@ export enum AdminRouteNames {
 }
 
 export enum NavigationSubRoutes {
+    PROCESSORS_OF_IT_DEVELOPMENT_CONCEPTS = 'ci/PO_IS',
+    SUBORDINATES = 'ci/PO_PO',
+    IS_OPERATORS = 'ci/PO_IS_PO',
     CIEL = 'ci/Ciel',
     PROGRAM = 'ci/Program',
     PROJEKT = 'ci/Projekt',
