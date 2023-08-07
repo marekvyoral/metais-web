@@ -1,15 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { BreadCrumbs, Button, HomeIcon, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
 import { useFindByUuid3, useUpdateOrCreate2 } from '@isdd/metais-common/api/generated/iam-swagger'
-import React, { useEffect, useState } from 'react'
-import { FieldErrors, FieldValues, Form, FormProvider, useForm } from 'react-hook-form'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import React, { useEffect } from 'react'
+import { FieldErrors, FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
-import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
-import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema.ts'
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
+import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema.ts'
 
 const textAttribute = {
     defaultValue: '',

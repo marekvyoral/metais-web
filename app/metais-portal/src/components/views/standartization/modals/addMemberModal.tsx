@@ -11,7 +11,7 @@ import React, { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { DEFAULT_ROLES } from '../defaultRoles'
-import styles from '../../styles.module.scss'
+import styles from '../styles.module.scss'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 

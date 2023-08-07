@@ -8,6 +8,7 @@ import {
     Role,
     useFindAll11Hook,
     useFindRelatedIdentitiesAndCount,
+    useFindRelatedIdentitiesAndCountHook,
     useUpdateRoleOnGroupOrgForIdentityHook,
 } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import { ColumnDef, Row } from '@tanstack/react-table'
@@ -24,6 +25,8 @@ import { DEFAULT_ROLES } from '../../../../components/views/standartization/defa
 import styles from '../../../../components/views/standartization/styles.module.scss'
 import KSIVSTableActions from '../../../../components/views/standartization/tableActions'
 
+import { isUserAdmin, reduceTableDataToObjectWithUuid } from '@/components/views/standartization/standartizationUtils'
+
 const defaultSearch: FindRelatedIdentitiesAndCountParams = {
     orderBy: 'firstName_lastName',
     desc: false,
@@ -32,7 +35,7 @@ const defaultSearch: FindRelatedIdentitiesAndCountParams = {
     perPage: '10',
 }
 
-interface TableData {
+export interface TableData {
     uuid: string
     firstName_lastName: string
     organization: string
@@ -63,8 +66,11 @@ const KSIVSPage = () => {
     const {
         state: { user },
     } = useAuth()
-    console.log(user?.roles)
+    const [isAdmin, setIsAdmin] = useState(false)
 
+    useEffect(() => {
+        setIsAdmin(isUserAdmin(user?.roles) ?? false)
+    }, [user])
     // const { t } = useTranslation()
 
     const [sorting, setSorting] = useState<ColumnSort[]>([defaultSort])
@@ -72,6 +78,7 @@ const KSIVSPage = () => {
     const [listFilter, setListFilter] = useState(identitiesFilter)
     const updateGroupRequest = useUpdateRoleOnGroupOrgForIdentityHook()
     const findRoleRequest = useFindAll11Hook()
+    const fetchIdentitiesData = useFindRelatedIdentitiesAndCountHook()
     const { data: identitiesData, isLoading: isIdentitiesLoading } = useFindRelatedIdentitiesAndCount(id ?? '', {
         ...listParams,
         ...(listFilter.memberUuid != '' && { memberUuid: listFilter.memberUuid }),
@@ -83,36 +90,32 @@ const KSIVSPage = () => {
         { technicalName: 'firstName_lastName', name: 'Meno' },
         { technicalName: 'organization', name: 'Organizacia' },
     ].map((e) => ({ id: e.technicalName, header: e.name, accessorKey: e.technicalName, enableSorting: true }))
-
+    const [identities, setIdentities] = useState(identitiesData)
     const [tableData, setTableData] = useState<TableData[]>()
-
+    useEffect(() => {
+        setIdentities(identitiesData)
+    }, [identitiesData])
     useEffect(() => {
         setTableData(
-            identitiesData?.list?.map((item) => ({
+            identities?.list?.map((item) => ({
                 uuid: item.identity?.uuid ?? '',
                 firstName_lastName: item.identity?.lastName + ' ' + item.identity?.firstName,
                 organization: item.gids?.map((org) => org.orgName)?.toString() ?? '',
-                roleName: item.gids?.map((org) => org.roleName)?.toString() ?? '',
+                roleName:
+                    (item.gids?.map((org) => org.roleName)?.filter((item1) => DEFAULT_ROLES.map((role) => role.description).includes(item1 ?? '')) ??
+                        [])[0] ?? '',
                 email: item.identity?.email ?? '',
                 orgId: item.gids?.map((org) => org.orgId)?.toString() ?? '',
             })),
         )
-    }, [identitiesData])
+    }, [identities])
 
     const [rowSelection, setRowSelection] = useState<Record<string, TableData>>({})
 
     const isRowSelected = (row: Row<TableData>) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false)
 
-    const reduceTableDataToObjectWithUuid = <T extends { uuid?: string }>(array: T[]): Record<string, T> => {
-        return array.reduce<Record<string, T>>((result, item) => {
-            if (item.uuid) {
-                result[item.uuid] = item
-            }
-            return result
-        }, {})
-    }
     const [identityToDelete, setIdentityToDelete] = useState<string>()
-    const SelectableColumnsSpec = (): ColumnDef<TableData>[] => [
+    const selectableColumnsSpec: ColumnDef<TableData>[] = [
         {
             header: ({ table }) => {
                 return (
@@ -173,7 +176,7 @@ const KSIVSPage = () => {
             cell: ({ row }) => {
                 const StateWrapper = () => {
                     const [isSelectorShown, setSelectorShown] = useState(false)
-                    const [selectedRole, setSelectedRole] = useState<string>()
+                    const [selectedRole, setSelectedRole] = useState<string>(row.original.roleName)
                     if (isSelectorShown) {
                         return (
                             <SimpleSelect
@@ -182,9 +185,15 @@ const KSIVSPage = () => {
                                     setSelectedRole(value.target.value)
                                     const oldRole: Role = (await findRoleRequest({ name: row.original.roleName })) as Role
                                     const newRole: Role = (await findRoleRequest({ name: value.target.value })) as Role
-                                    updateGroupRequest(row.original.uuid, id ?? '', oldRole.uuid ?? '', newRole.uuid ?? '', row.original.orgId)
-                                    row.original.roleName = value.target.value
+                                    await updateGroupRequest(row.original.uuid, id ?? '', oldRole.uuid ?? '', newRole.uuid ?? '', row.original.orgId)
                                     setSelectorShown(false)
+                                    const refetchData = await fetchIdentitiesData(id ?? '', {
+                                        ...listParams,
+                                        ...(listFilter.memberUuid != '' && { memberUuid: listFilter.memberUuid }),
+                                        ...(listFilter.poUuid != '' && { poUuid: listFilter.poUuid }),
+                                        ...(listFilter.role != '' && { role: listFilter.role }),
+                                    })
+                                    setIdentities(refetchData)
                                 }}
                                 label=""
                                 options={DEFAULT_ROLES.map((item) => ({
@@ -209,15 +218,18 @@ const KSIVSPage = () => {
                 return <StateWrapper />
             },
         },
-        {
+    ]
+
+    if (isAdmin) {
+        selectableColumnsSpec.push({
             header: 'Akcia',
             id: DELETE_CELL,
             cell: ({ row }) =>
                 !(row.original.roleName == 'STD_KSPRE') && (
                     <img src={DeleteForeverRed} height={24} onClick={() => setIdentityToDelete(row.original.uuid)} />
                 ),
-        },
-    ]
+        })
+    }
 
     const [isAddModalOpen, setAddModalOpen] = useState(false)
 
@@ -242,10 +254,16 @@ const KSIVSPage = () => {
                     { href: NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU, label: 'Komisia pre štandardizáciu ITVS' },
                 ]}
             />
-            <KSIVSBaseInfo />
+            <KSIVSBaseInfo isAdmin={isAdmin} />
             <TextHeading size="L">Zoznam osôb</TextHeading>
-            <KSIVSFilter listFilter={listFilter} setListFilter={setListFilter} defaultFilterValues={identitiesFilter} />
-            <KSIVSTableActions setAddModalOpen={setAddModalOpen} listParams={listParams} setListParams={setListParams} />
+            {isAdmin && <KSIVSFilter listFilter={listFilter} setListFilter={setListFilter} defaultFilterValues={identitiesFilter} />}
+            <KSIVSTableActions
+                setAddModalOpen={setAddModalOpen}
+                listParams={listParams}
+                setListParams={setListParams}
+                userRoles={user?.roles}
+                selectedRows={rowSelection}
+            />
             {successfulUpdatedData && (
                 <IconWithText icon={GreenCheckOutlineIcon}>
                     <TextBody className={styles.greenBoldText}>Člen úspešne pridaný.</TextBody>
@@ -260,7 +278,7 @@ const KSIVSPage = () => {
                 }}
                 isLoading={isIdentitiesLoading}
                 sort={sorting}
-                columns={SelectableColumnsSpec()}
+                columns={selectableColumnsSpec}
                 data={tableData}
                 isRowSelected={isRowSelected}
             />

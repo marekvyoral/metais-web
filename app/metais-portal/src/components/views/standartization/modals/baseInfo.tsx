@@ -4,9 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React from 'react'
 
-import styles from '../../styles.module.scss'
+import styles from '../styles.module.scss'
 
-const KSIVSBaseInfo = () => {
+interface KSICSBaseInfoProps {
+    isAdmin: boolean
+}
+
+const KSIVSBaseInfo: React.FC<KSICSBaseInfoProps> = ({ isAdmin }) => {
     const { id } = useParams()
     // const { t } = useTranslation()
     const navigate = useNavigate()
@@ -17,7 +21,7 @@ const KSIVSBaseInfo = () => {
         <>
             <GridRow className={styles.row}>
                 <TextHeading size="XL">Komisia pre štandardizáciu ITVS</TextHeading>
-                <Button label="Upraviť položku" onClick={() => navigate(NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU + '/edit')} />
+                {isAdmin && <Button label="Upraviť položku" onClick={() => navigate(NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU + '/edit')} />}
             </GridRow>
             <table>
                 <tr>
