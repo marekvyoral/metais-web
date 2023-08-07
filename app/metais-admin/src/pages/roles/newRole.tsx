@@ -15,7 +15,13 @@ const AddRole: React.FC = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const methods = useForm()
-    const { mutate: createRole } = useUpdateOrCreate()
+    const { mutate: createRole } = useUpdateOrCreate({
+        mutation: {
+            onSuccess() {
+                navigate(AdminRouteNames.ROLES + '?system=all&group=all')
+            },
+        },
+    })
     const register = methods.register
     const errors = methods.formState.errors
     const onSubmit = methods.handleSubmit((data) => {

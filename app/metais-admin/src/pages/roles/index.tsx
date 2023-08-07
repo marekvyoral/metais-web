@@ -1,47 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import {
-    BaseModal,
-    BreadCrumbs,
-    Button,
-    ButtonGroupRow,
-    Filter,
-    HomeIcon,
-    Paginator,
-    SimpleSelect,
-    Table,
-    TextBody,
-    TextHeading,
-} from '@isdd/idsk-ui-kit'
-import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import {
-    useFindByNameWithParams,
-    Role,
-    useFindByNameWithParamsCount,
-    useDelete,
-    RelatedRoleType,
-} from '@isdd/metais-common/api/generated/iam-swagger'
-import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { ColumnDef } from '@tanstack/react-table'
+import { BreadCrumbs, Button, HomeIcon, Paginator, Table, TextHeading } from '@isdd/idsk-ui-kit'
 import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
-import { useNavigate } from 'react-router'
-import { useTranslation } from 'react-i18next'
+import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Role, useFindByNameWithParams, useFindByNameWithParamsCount } from '@isdd/metais-common/api/generated/iam-swagger'
+import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { ColumnDef } from '@tanstack/react-table'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router'
 
 import styles from '../../components/roles/roles.module.scss'
 
-interface FilterData extends IFilterParams {
+import RolesTableActions from '@/components/roles/actionsOverTable'
+import DeleteRoleModal from '@/components/roles/deleteModal'
+import RolesFilter from '@/components/roles/rolesfilter'
+
+export interface FilterData extends IFilterParams {
     name: string
     group: string
     system: string
 }
 
-interface Pagination {
+export interface Pagination {
     page: number
     pageSize: number
 }
 
 //Filter
-const defaultFilterValues: FilterData = {
+export const defaultFilterValues: FilterData = {
     name: '',
     system: 'all',
     group: 'all',
@@ -115,18 +101,6 @@ const ManageRoles: React.FC = () => {
         )
     }, [tableRoleGroups?.enumItems, tableRoles, t])
 
-    const groups: { value: string; label: string }[] =
-        tableRoleGroups?.enumItems?.map((item) => ({ value: item.code ?? '', label: item.value ?? '' })) ?? []
-
-    const { mutate: deleteRole } = useDelete({
-        mutation: {
-            onSuccess() {
-                setTableRoles(roles?.filter((e) => e.uuid != roleToDelete?.uuid))
-                setRoleToDelete(undefined)
-            },
-        },
-    })
-
     const getSelectableColumnsSpec = (): ColumnDef<Role>[] => [
         ...columns,
         {
@@ -182,20 +156,18 @@ const ManageRoles: React.FC = () => {
 
     return (
         <>
-            <BaseModal isOpen={!!roleToDelete} close={() => setRoleToDelete(undefined)}>
-                <>
-                    <TextHeading size="M">{t('adminRolesPage.areYouSure')}</TextHeading>
-                    <TextBody size="S">{t('adminRolesPage.deleteRoleText')}</TextBody>
-                    <TextBody size="S">{roleToDelete?.name + ': ' + roleToDelete?.description}</TextBody>
-                    <Button
-                        label={t('actionsInTable.save')}
-                        onClick={() => {
-                            deleteRole({ uuid: roleToDelete?.uuid ?? '' })
-                        }}
-                    />
-                    <Button label={t('actionsInTable.cancel')} onClick={() => setRoleToDelete(undefined)} variant="secondary" />
-                </>
-            </BaseModal>
+            <DeleteRoleModal
+                roleToDelete={roleToDelete}
+                setTableRoles={setTableRoles}
+                setRoleToDelete={setRoleToDelete}
+                pagination={pagination}
+                fetchParams={{
+                    ...filter,
+                    name: filter.fullTextSearch ?? '',
+                    orderBy: sorting.length > 0 ? sorting[0].orderBy : 'name',
+                    direction: sorting.length > 0 ? sorting[0].sortDirection : 'asc',
+                }}
+            />
             <BreadCrumbs
                 links={[
                     { label: t('notifications.home'), href: RouteNames.HOME, icon: HomeIcon },
@@ -203,47 +175,8 @@ const ManageRoles: React.FC = () => {
                 ]}
             />
             <TextHeading size="L">{t('adminRolesPage.rolesList')}</TextHeading>
-            <Filter<FilterData>
-                form={(register) => (
-                    <>
-                        <SimpleSelect
-                            {...register('group')}
-                            id="1"
-                            label={'Group'}
-                            options={[{ value: 'all', label: t('adminRolesPage.all') }, ...groups]}
-                        />
-                        <SimpleSelect
-                            {...register('system')}
-                            id="2"
-                            label={'System'}
-                            options={[
-                                { value: 'all', label: t('adminRolesPage.all') },
-                                { value: RelatedRoleType.SYSTEM, label: t('adminRolesPage.yes') },
-                                { value: RelatedRoleType.NON_SYSTEM, label: t('adminRolesPage.no') },
-                            ]}
-                        />
-                    </>
-                )}
-                defaultFilterValues={defaultFilterValues}
-            />
-            <ButtonGroupRow className={styles.flexEnd}>
-                <Button label={t('adminRolesPage.addNewRole')} onClick={() => navigate(AdminRouteNames.ROLE_NEW)} />
-                <TextBody className={styles.marginLeftAuto}>{t('adminRolesPage.show')}</TextBody>
-                <SimpleSelect
-                    onChange={(label) => {
-                        setPagination({ ...pagination, pageSize: Number(label.target.value) })
-                    }}
-                    id="select"
-                    label=""
-                    options={[
-                        { label: '10', value: '10' },
-                        { label: '20', value: '20' },
-                        { label: '50', value: '50' },
-                        { label: '100', value: '100' },
-                    ]}
-                />
-                <TextBody className={styles.marginLeftAuto}>{t('adminRolesPage.entities')}</TextBody>
-            </ButtonGroupRow>
+            <RolesFilter tableRoleGroups={tableRoleGroups} />
+            <RolesTableActions pagination={pagination} setPagination={setPagination} />
             <Table<Role>
                 onSortingChange={(newSort) => {
                     setSorting(newSort)
