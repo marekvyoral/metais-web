@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { GroupBase, MultiValue, OptionProps, OptionsOrGroups, components } from 'react-select'
-import { AsyncPaginate } from 'react-select-async-paginate'
+import React from 'react'
 import classNames from 'classnames'
-import { Controller } from 'react-hook-form'
+import { GroupBase, MultiValue, OptionProps, OptionsOrGroups, PropsValue, components } from 'react-select'
+import { AsyncPaginate } from 'react-select-async-paginate'
+import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
 
 import styles from './selectLazyLoading.module.scss'
 
@@ -25,12 +25,14 @@ interface ISelectProps<T> {
     getOptionValue: (item: T) => string
     getOptionLabel: (item: T) => string
     option?: (props: OptionProps<T>) => JSX.Element
-    rules?: Record<string, string>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    control?: any
     placeholder?: string
     isMulti?: boolean
     error?: string
+    defaultValue?: PropsValue<T>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    register?: UseFormRegister<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setValue?: UseFormSetValue<any>
     loadOptions: (
         searchQuery: string,
         prevOptions: OptionsOrGroups<T, GroupBase<T>>,
@@ -45,71 +47,63 @@ export const SelectLazyLoading = <T,>({
     name,
     getOptionValue,
     getOptionLabel,
+    defaultValue,
     option,
     placeholder,
-    isMulti = false,
     loadOptions,
+    isMulti = false,
     error,
-    rules,
-    control,
     id,
+    register,
+    setValue,
 }: ISelectProps<T>): JSX.Element => {
     const Option = (props: OptionProps<T>) => {
         return option ? option(props) : <components.Option {...props} className={styles.selectOption} />
     }
-    const [selectError, setSelectError] = useState(error)
-    useEffect(() => {
-        setSelectError(error)
-    }, [error])
+
+    const handleOnChange = (selectedValue: MultiValue<T> | T | null) => {
+        if (onChange) {
+            onChange(selectedValue)
+        } else if (setValue) {
+            if (isMulti) {
+                if (Array.isArray(selectedValue) && selectedValue.length) {
+                    setValue(
+                        name,
+                        selectedValue.map((val) => getOptionValue(val)),
+                    )
+                } else {
+                    setValue(name, undefined)
+                }
+            } else {
+                const val = selectedValue ? getOptionValue(Array.isArray(selectedValue) ? selectedValue[0] : selectedValue) : undefined
+                setValue(name, val)
+            }
+        }
+    }
+
     return (
-        <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!selectError })}>
+        <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!error })}>
             <label className="govuk-label">{label}</label>
-            {!!selectError && <span className="govuk-error-message">{selectError}</span>}
-            {control ? (
-                <Controller
-                    name={name}
-                    control={control}
-                    rules={rules}
-                    render={({ field, fieldState }) => {
-                        setSelectError(fieldState.error?.message)
-                        return (
-                            <AsyncPaginate
-                                id={id}
-                                loadOptions={loadOptions}
-                                getOptionValue={getOptionValue}
-                                getOptionLabel={getOptionLabel}
-                                placeholder={placeholder || ''}
-                                components={{ Option, Menu, Control }}
-                                isMulti={isMulti}
-                                className={classNames('govuk-select', styles.selectLazyLoading)}
-                                styles={selectStyles<T>()}
-                                openMenuOnFocus
-                                isClearable
-                                unstyled
-                                {...field}
-                            />
-                        )
-                    }}
-                />
-            ) : (
-                <AsyncPaginate
-                    id={id}
-                    value={value}
-                    loadOptions={loadOptions}
-                    onChange={onChange}
-                    getOptionValue={getOptionValue}
-                    getOptionLabel={getOptionLabel}
-                    placeholder={placeholder || ''}
-                    components={{ Option, Menu, Control }}
-                    isMulti={isMulti}
-                    className={classNames('govuk-select', styles.selectLazyLoading)}
-                    styles={selectStyles<T>()}
-                    name={name}
-                    isClearable
-                    openMenuOnFocus
-                    unstyled
-                />
-            )}
+            {!!error && <span className="govuk-error-message">{error}</span>}
+            <AsyncPaginate<T, GroupBase<T>, { page: number } | undefined, boolean>
+                id={id}
+                name={name}
+                value={value}
+                loadOptions={loadOptions}
+                getOptionValue={getOptionValue}
+                getOptionLabel={getOptionLabel}
+                placeholder={placeholder || ''}
+                components={{ Option, Menu, Control }}
+                isMulti={isMulti}
+                defaultValue={defaultValue}
+                className={classNames('govuk-select', styles.selectLazyLoading)}
+                styles={selectStyles<T>()}
+                openMenuOnFocus
+                isClearable={isMulti ? true : true}
+                unstyled
+                {...(register && register(name))}
+                onChange={handleOnChange}
+            />
         </div>
     )
 }
