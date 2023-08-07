@@ -9,9 +9,9 @@ import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
 import { Notification, useGetNotificationListElastic } from '@isdd/metais-common/api/generated/notifications-swagger'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
-import { ActionsGroup } from './ActionsGroup'
-import { selectedDefaultColumns } from './defaults'
-import { firstLetterToLowerCase, handleAllCheckboxChange, handleCheckboxChange } from './notificationUtils'
+import { ActionsGroup } from '../../components/views/notifications/ActionsGroup'
+import { selectedDefaultColumns } from '../../components/views/notifications/defaults'
+import { firstLetterToLowerCase, handleAllCheckboxChange, handleCheckboxChange } from '../../components/views/notifications/notificationUtils'
 
 const ALL_EVENT_TYPES = 'All'
 const NOTIFICATION_TITLE = 'messagePerex'
@@ -38,7 +38,7 @@ const NotificationsPage = () => {
     const { isLoading, isError, data } = useGetNotificationListElastic(
         {
             ...listParams,
-            onlyUnread: filter.onlyUnread,
+            onlyUnread: filter.onlyUnread ?? false,
             fulltextSearch: filter.fullTextSearch,
             ...(filter.eventType != ALL_EVENT_TYPES && { eventType: filter.eventType }),
             sortBy: sort.length > 0 ? firstLetterToLowerCase(sort[0].orderBy) : 'createdAt',

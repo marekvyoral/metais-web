@@ -5,7 +5,7 @@ import { useGetNotificationDetail, useSetNotificationAsRead } from '@isdd/metais
 import { useTranslation } from 'react-i18next'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
-import styles from './notifications.module.scss'
+import styles from '../../components/views/notifications/notifications.module.scss'
 
 const NotificationsDetailPage = () => {
     const { id } = useParams()
