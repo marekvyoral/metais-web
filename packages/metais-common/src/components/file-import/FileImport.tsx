@@ -207,6 +207,7 @@ export const FileImport: React.FC<IFileImport> = ({
                 setSelectedRoleId={setSelectedRoleId}
                 setSelectedOrg={setSelectedOrg}
                 selectedOrg={selectedOrg}
+                selectedRoleId={selectedRoleId}
             />
         </BaseModal>
     )

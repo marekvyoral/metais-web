@@ -1,12 +1,14 @@
-import { CiType, EnumType, useStoreConfigurationItem } from '@isdd/metais-common/api'
+import { CiCode, CiType, EnumType, HierarchyRightsUi, useStoreConfigurationItem } from '@isdd/metais-common/api'
 import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { v4 as uuidV4 } from 'uuid'
-
-import { CiCreateEntityContainerData, ISelectedOrg } from '../containers/CiCreateEntityContainer'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { useTranslation } from 'react-i18next'
+import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
+import { useRedirectAfterSuccess } from '@isdd/metais-common/src/hooks/useRedirectAfterSucces'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
-import { CreateCiEntitySelect } from './CreateCiEntitySelect'
+import { formatFormAttributeValue } from './createEntityHelpers'
 
 export interface AttrributesData {
     ciTypeData: CiType | undefined
@@ -16,40 +18,66 @@ export interface AttrributesData {
 
 export interface CreateEntityData {
     attributesData: AttrributesData
-    ciListAndRolesData: CiCreateEntityContainerData
+    generatedEntityId: CiCode | undefined
 }
 
 interface ICreateEntity {
     entityName: string
     data: CreateEntityData
-    selectedOrgState: ISelectedOrg
 }
 
-export const CreateEntity: React.FC<ICreateEntity> = ({ data, selectedOrgState, entityName }) => {
-    const { ciListAndRolesData, attributesData } = data
+export const CreateEntity: React.FC<ICreateEntity> = ({ data, entityName }) => {
+    const { t } = useTranslation()
+    const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
-    const { generatedEntityId } = ciListAndRolesData
-    const { rightsForPOData } = ciListAndRolesData
     const [selectedRoleId, setSelectedRoleId] = useState<string>('')
-
-    useEffect(() => {
-        if (rightsForPOData && rightsForPOData.length > 0 && selectedRoleId === '') {
-            setSelectedRoleId(rightsForPOData[0].roleUuid)
-        }
-    }, [rightsForPOData, selectedRoleId])
+    const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
 
     const [uploadError, setUploadError] = useState(false)
+    const [requestId, setRequestId] = useState<string>('')
+    const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
-    const storeConfigurationItem = useStoreConfigurationItem()
+    const storeConfigurationItem = useStoreConfigurationItem({
+        mutation: {
+            onError() {
+                setUploadError(true)
+            },
+            onSuccess(succesData) {
+                if (succesData.requestId != null) {
+                    setRequestId(succesData.requestId)
+                } else {
+                    setUploadError(true)
+                }
+            },
+        },
+    })
 
-    const onSubmit = (formAttributes: FieldValues) => {
+    const {
+        performRedirection,
+        isLoading: isRedirectLoading,
+        isError: isRedirectError,
+        isFetched: isRedirectFetched,
+    } = useRedirectAfterSuccess(requestId, configurationItemId, entityName)
+    useEffect(() => {
+        if (requestId !== null) {
+            performRedirection()
+        }
+    }, [performRedirection, requestId])
+
+    const onSubmit = async (formAttributes: FieldValues) => {
+        setRequestId('')
         setUploadError(false)
         const formAttributesKeys = Object.keys(formAttributes)
 
-        const formatedAttributesToSend = formAttributesKeys.map((key) => ({ name: key, value: formAttributes[key] }))
+        const formatedAttributesToSend = formAttributesKeys.map((key) => ({
+            name: key,
+            value: formatFormAttributeValue(formAttributes, key),
+        }))
         const type = entityName
         const ownerId = selectedRoleId
         const uuid = uuidV4()
+        setConfigurationItemId(uuid)
+
         storeConfigurationItem.mutate({
             data: {
                 uuid: uuid,
@@ -60,16 +88,28 @@ export const CreateEntity: React.FC<ICreateEntity> = ({ data, selectedOrgState, 
         })
     }
 
-    if (storeConfigurationItem.isError) {
-        setUploadError(true)
-    }
-    if (storeConfigurationItem.isSuccess) {
-        // console.log('navigate after succes')
-    }
-
     return (
         <>
-            <CreateCiEntitySelect rightsForPOData={rightsForPOData} setSelectedRoleId={setSelectedRoleId} selectedOrgState={selectedOrgState} />
+            {(storeConfigurationItem.isError || storeConfigurationItem.isSuccess) && (
+                <MutationFeedback
+                    success={storeConfigurationItem.isSuccess}
+                    error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''}
+                />
+            )}
+            {isRedirectFetched && (isRedirectLoading || isRedirectError) && (
+                <QueryFeedback
+                    loading={isRedirectLoading}
+                    error={isRedirectError}
+                    indicatorProps={{ fullscreen: true, layer: 'parent', label: t('createEntity.redirectLoading') }}
+                    errorProps={{ errorMessage: t('createEntity.redirectError') }}
+                />
+            )}
+            <SelectPublicAuthorityAndRole
+                selectedRoleId={selectedRoleId}
+                onChangeAuthority={setSelectedOrg}
+                onChangeRole={setSelectedRoleId}
+                selectedOrg={selectedOrg}
+            />
             <CreateCiEntityForm
                 ciTypeData={ciTypeData}
                 generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
