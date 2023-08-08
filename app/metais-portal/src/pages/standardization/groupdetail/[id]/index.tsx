@@ -14,8 +14,9 @@ import {
 import { ColumnDef, Row } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useTranslation } from 'react-i18next'
 
 import KSIVSFilter from '../../../../components/views/standartization/identitiesFilter'
 import KSIVSAddMemberPopUp from '../../../../components/views/standartization/modals/addMemberModal'
@@ -25,7 +26,7 @@ import { DEFAULT_ROLES } from '../../../../components/views/standartization/defa
 import styles from '../../../../components/views/standartization/styles.module.scss'
 import KSIVSTableActions from '../../../../components/views/standartization/tableActions'
 
-import { isUserAdmin, reduceTableDataToObjectWithUuid } from '@/components/views/standartization/standartizationUtils'
+import { canUserEditRoles, isUserAdmin, reduceTableDataToObjectWithUuid } from '@/components/views/standartization/standartizationUtils'
 
 const defaultSearch: FindRelatedIdentitiesAndCountParams = {
     orderBy: 'firstName_lastName',
@@ -71,24 +72,26 @@ const KSIVSPage = () => {
     useEffect(() => {
         setIsAdmin(isUserAdmin(user?.roles) ?? false)
     }, [user])
-    // const { t } = useTranslation()
+    const { t } = useTranslation()
 
     const [sorting, setSorting] = useState<ColumnSort[]>([defaultSort])
     const [listParams, setListParams] = useState(defaultSearch)
-    const [listFilter, setListFilter] = useState(identitiesFilter)
+    const { filter } = useFilterParams<FilterParams>(identitiesFilter)
+
     const updateGroupRequest = useUpdateRoleOnGroupOrgForIdentityHook()
     const findRoleRequest = useFindAll11Hook()
     const fetchIdentitiesData = useFindRelatedIdentitiesAndCountHook()
     const { data: identitiesData, isLoading: isIdentitiesLoading } = useFindRelatedIdentitiesAndCount(id ?? '', {
         ...listParams,
-        ...(listFilter.memberUuid != '' && { memberUuid: listFilter.memberUuid }),
-        ...(listFilter.poUuid != '' && { poUuid: listFilter.poUuid }),
-        ...(listFilter.role != '' && { role: listFilter.role }),
+        ...(filter.memberUuid != undefined && { memberUuid: filter.memberUuid }),
+        ...(filter.poUuid != undefined && { poUuid: filter.poUuid }),
+        ...(filter.role != 'all' && filter.role != undefined && { role: filter.role }),
+        ...(filter.fullTextSearch != undefined && { expression: filter.fullTextSearch }),
     })
     const [successfulUpdatedData, setSuccessfulUpdatedData] = useState(false)
     const columns: ColumnDef<TableData>[] = [
-        { technicalName: 'firstName_lastName', name: 'Meno' },
-        { technicalName: 'organization', name: 'Organizacia' },
+        { technicalName: 'firstName_lastName', name: t('KSIVSPage.name') },
+        { technicalName: 'organization', name: t('KSIVSPage.organization') },
     ].map((e) => ({ id: e.technicalName, header: e.name, accessorKey: e.technicalName, enableSorting: true }))
     const [identities, setIdentities] = useState(identitiesData)
     const [tableData, setTableData] = useState<TableData[]>()
@@ -167,9 +170,9 @@ const KSIVSPage = () => {
             ),
         },
         ...columns,
-        { header: 'Email', id: 'email', accessorKey: 'email', enableSorting: true },
+        { header: t('KSIVSPage.email'), id: 'email', accessorKey: 'email', enableSorting: true },
         {
-            header: 'Role',
+            header: t('KSIVSPage.role'),
             id: 'role',
             accessorKey: 'roleName',
             enableSorting: true,
@@ -189,9 +192,9 @@ const KSIVSPage = () => {
                                     setSelectorShown(false)
                                     const refetchData = await fetchIdentitiesData(id ?? '', {
                                         ...listParams,
-                                        ...(listFilter.memberUuid != '' && { memberUuid: listFilter.memberUuid }),
-                                        ...(listFilter.poUuid != '' && { poUuid: listFilter.poUuid }),
-                                        ...(listFilter.role != '' && { role: listFilter.role }),
+                                        ...(filter.memberUuid != undefined && { memberUuid: filter.memberUuid }),
+                                        ...(filter.poUuid != undefined && { poUuid: filter.poUuid }),
+                                        ...(filter.role != 'all' && filter.role != undefined && { role: filter.role }),
                                     })
                                     setIdentities(refetchData)
                                 }}
@@ -203,7 +206,7 @@ const KSIVSPage = () => {
                             />
                         )
                     } else {
-                        return (
+                        return canUserEditRoles(user?.roles) ? (
                             <a
                                 className={styles.cursorPointer}
                                 onClick={() => {
@@ -212,6 +215,8 @@ const KSIVSPage = () => {
                             >
                                 {DEFAULT_ROLES.find((role) => role.description == row.original.roleName)?.value}
                             </a>
+                        ) : (
+                            <TextBody>{DEFAULT_ROLES.find((role) => role.description == row.original.roleName)?.value}</TextBody>
                         )
                     }
                 }
@@ -222,7 +227,7 @@ const KSIVSPage = () => {
 
     if (isAdmin) {
         selectableColumnsSpec.push({
-            header: 'Akcia',
+            header: t('KSIVSPage.action'),
             id: DELETE_CELL,
             cell: ({ row }) =>
                 !(row.original.roleName == 'STD_KSPRE') && (
@@ -249,24 +254,25 @@ const KSIVSPage = () => {
             />
             <BreadCrumbs
                 links={[
-                    { href: RouteNames.HOME, label: 'Domov', icon: HomeIcon },
-                    { href: RouteNames.HOW_TO_STANDARDIZATION, label: 'Štandardizácia' },
-                    { href: NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU, label: 'Komisia pre štandardizáciu ITVS' },
+                    { href: RouteNames.HOME, label: t('notifications.home'), icon: HomeIcon },
+                    { href: RouteNames.HOW_TO_STANDARDIZATION, label: t('navMenu.standardization') },
+                    { href: NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU, label: t('KSIVSPage.title') },
                 ]}
             />
             <KSIVSBaseInfo isAdmin={isAdmin} />
-            <TextHeading size="L">Zoznam osôb</TextHeading>
-            {isAdmin && <KSIVSFilter listFilter={listFilter} setListFilter={setListFilter} defaultFilterValues={identitiesFilter} />}
+            <TextHeading size="L">{t('KSIVSPage.listOfPersons')}</TextHeading>
+            {isAdmin && <KSIVSFilter defaultFilterValues={identitiesFilter} />}
             <KSIVSTableActions
                 setAddModalOpen={setAddModalOpen}
                 listParams={listParams}
                 setListParams={setListParams}
                 userRoles={user?.roles}
                 selectedRows={rowSelection}
+                groupUuid={id}
             />
             {successfulUpdatedData && (
                 <IconWithText icon={GreenCheckOutlineIcon}>
-                    <TextBody className={styles.greenBoldText}>Člen úspešne pridaný.</TextBody>
+                    <TextBody className={styles.greenBoldText}>{t('KSIVSPage.memberSuccessfullyAdded')}</TextBody>
                 </IconWithText>
             )}
             <Table<TableData>

@@ -1,15 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { BreadCrumbs, Button, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
+import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
 import { useFindByUuid3, useUpdateOrCreate2 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect } from 'react'
-import { FieldErrors, FieldValues, FormProvider, useForm } from 'react-hook-form'
+import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
-import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema.ts'
+import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
+import { hasAttributeInputError } from '@/components/views/standartization/standartizationUtils'
 
 const textAttribute = {
     defaultValue: '',
@@ -26,20 +27,17 @@ const KSIVSPageEdit = () => {
 
     const fullNameAttr = {
         ...textAttribute,
-        name: 'Názov pracovnej skupiny',
         technicalName: 'fullName',
     }
 
     const shortNameAttr = {
         ...textAttribute,
-        name: 'Skratka pracovnej skupiny',
         technicalName: 'shortName',
     }
 
-    const descriptionAttribute = {
+    const descriptionAttr = {
         ...textAttribute,
         displayAs: 'textarea',
-        name: 'Popis',
         technicalName: 'description',
     }
     const goBack = () => {
@@ -48,7 +46,7 @@ const KSIVSPageEdit = () => {
     const formMethods = useForm({})
     const { t } = useTranslation()
     const { handleSubmit, register, formState, setValue } = useForm({
-        resolver: yupResolver(generateFormSchema([fullNameAttr, shortNameAttr, descriptionAttribute], t)),
+        resolver: yupResolver(generateFormSchema([fullNameAttr, shortNameAttr, descriptionAttr], t)),
     })
     const { errors, isSubmitted } = formState
     const { mutate: updateGroup } = useUpdateOrCreate2({
@@ -62,8 +60,8 @@ const KSIVSPageEdit = () => {
     useEffect(() => {
         setValue(fullNameAttr.technicalName, infoData?.name)
         setValue(shortNameAttr.technicalName, infoData?.shortName)
-        setValue(descriptionAttribute.technicalName, infoData?.description)
-    }, [descriptionAttribute.technicalName, fullNameAttr.technicalName, infoData, setValue, shortNameAttr.technicalName])
+        setValue(descriptionAttr.technicalName, infoData?.description)
+    }, [descriptionAttr.technicalName, fullNameAttr.technicalName, infoData, setValue, shortNameAttr.technicalName])
 
     const onSubmit = (formData: FieldValues) => {
         updateGroup({
@@ -76,55 +74,51 @@ const KSIVSPageEdit = () => {
         })
     }
 
-    const hasAttributeInputError = (
-        attribute: Attribute,
-        errorList: FieldErrors<{
-            [x: string]: string | number | boolean | Date | null | undefined
-        }>,
-    ) => {
-        if (attribute.technicalName != null) {
-            const error = Object.keys(errorList).includes(attribute.technicalName)
-            return error ? errorList[attribute.technicalName]?.message?.toString() ?? '' : ''
-        }
-        return ''
-    }
-
     return (
         <>
             <BreadCrumbs
                 links={[
-                    { href: '/', label: 'Domov', icon: HomeIcon },
-                    { href: '/howto/STANDARD.PROCESS/STD_HOWTO', label: 'Štandardizácia' },
-                    { href: NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU, label: 'Komisia pre štandardizáciu ITVS' },
+                    { href: RouteNames.HOME, label: t('notifications.home'), icon: HomeIcon },
+                    { href: RouteNames.HOW_TO_STANDARDIZATION, label: t('navMenu.standardization') },
+                    { href: NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU, label: t('KSIVSPage.title') },
                     {
-                        href: NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU + '/edit',
-                        label: 'Upraviť Komisiu pre štandardizáciu ITVS',
+                        href: NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU_EDIT,
+                        label: t('KSIVSPage.editCommission'),
                     },
                 ]}
             />
-            <TextHeading size="XL">Upraviť Komisiu pre štandardizáciu ITVS</TextHeading>
+            <TextHeading size="XL">{t('KSIVSPage.editCommission')}</TextHeading>
             <FormProvider {...formMethods}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <AttributeInput
-                        attribute={fullNameAttr}
+                        setValue={formMethods.setValue}
+                        control={formMethods.control}
+                        trigger={formMethods.trigger}
+                        attribute={{ ...fullNameAttr, name: t('KSIVSPage.groupName') }}
                         register={register}
                         error={hasAttributeInputError(fullNameAttr, errors)}
                         isSubmitted={isSubmitted}
                     />
                     <AttributeInput
-                        attribute={shortNameAttr}
+                        setValue={formMethods.setValue}
+                        control={formMethods.control}
+                        trigger={formMethods.trigger}
+                        attribute={{ ...shortNameAttr, name: t('KSIVSPage.groupShortName') }}
                         register={register}
                         error={hasAttributeInputError(shortNameAttr, errors)}
                         isSubmitted={isSubmitted}
                     />
                     <AttributeInput
-                        attribute={descriptionAttribute}
+                        setValue={formMethods.setValue}
+                        control={formMethods.control}
+                        trigger={formMethods.trigger}
+                        attribute={{ ...descriptionAttr, name: t('KSIVSPage.description') }}
                         register={register}
-                        error={hasAttributeInputError(descriptionAttribute, errors)}
+                        error={hasAttributeInputError(descriptionAttr, errors)}
                         isSubmitted={isSubmitted}
                     />
-                    <Button label="Cancel" type="reset" variant="secondary" onClick={goBack} />
-                    <Button label="Submit" type="submit" />
+                    <Button label={t('form.cancel')} type="reset" variant="secondary" onClick={goBack} />
+                    <Button label={t('form.submit')} type="submit" />
                 </form>
             </FormProvider>
         </>

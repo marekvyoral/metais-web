@@ -9,9 +9,11 @@ import {
 } from '@isdd/metais-common/api/generated/iam-swagger'
 import React, { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { DEFAULT_ROLES } from '../defaultRoles'
 import styles from '../styles.module.scss'
+import { hasAttributeInputError } from '../standartizationUtils'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 
@@ -19,21 +21,21 @@ const textAttribute = {
     constraints: [{ type: 'enum', enumCode: 'SPOLOCNE_MODULY' }],
 }
 
-const checkBox1Attribute = {
+const ongoingSessionCheckboxAttr = {
     ...textAttribute,
     name: 'Pridať do prebiehajúcich zasadnutí',
     technicalName: 'checkbox1',
     attributeTypeEnum: AttributeAttributeTypeEnum.BOOLEAN,
 }
 
-const checkBox2Attribute = {
+const ongoingPollsCheckboxAttr = {
     ...textAttribute,
     name: 'Pridať do prebiehajúcich hlasovaní',
     technicalName: 'checkbox2',
     attributeTypeEnum: AttributeAttributeTypeEnum.BOOLEAN,
 }
 
-const checkBox3Attribute = {
+const seeEmailsCheckboxAttr = {
     ...textAttribute,
     name: 'Vidí e-mailové adresy',
     technicalName: 'checkbox3',
@@ -59,7 +61,8 @@ interface addMemberPopUpProps {
 
 const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, setAddedLabel, groupId }) => {
     const formMethods = useForm()
-    const { handleSubmit, register } = formMethods
+    const { handleSubmit, register, formState, setValue, trigger, control } = useForm({})
+    const { t } = useTranslation()
     const loadMembers = useFind1Hook()
     const findRole = useFindAll11Hook()
     const addRelation = useAddGroupOrgRoleIdentityRelationHook()
@@ -67,18 +70,18 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
     const [selectedMember, setSelectedMember] = useState<Identity>()
     const [selectedOrganization, setSelectedOrganization] = useState<string>()
     const [selectedRole, setSelectedRole] = useState<string>()
-    const [errors, setErrors] = useState<string[]>([])
+    const [myErrors, setMyErrors] = useState<string[]>([])
     const [selectedMemberOrganizations, setSelectedMemberOrganizations] = useState<{ name: string; uuid: string }[]>()
 
     const onSubmit = async () => {
-        if (selectedRole == undefined && !errors.includes('role')) {
-            setErrors([...errors, 'role'])
+        if (selectedRole == undefined && !myErrors.includes('role')) {
+            setMyErrors([...myErrors, 'role'])
         }
-        if (selectedOrganization == undefined && !errors.includes('organization')) {
-            setErrors([...errors, 'organization'])
+        if (selectedOrganization == undefined && !myErrors.includes('organization')) {
+            setMyErrors([...myErrors, 'organization'])
         }
-        if (selectedMember == undefined && !errors.includes('member')) {
-            setErrors([...errors, 'member'])
+        if (selectedMember == undefined && !myErrors.includes('member')) {
+            setMyErrors([...myErrors, 'member'])
         }
         if (selectedMember != undefined && selectedOrganization != undefined && selectedRole != undefined) {
             const role = (await findRole({ name: selectedRole })) as Role
@@ -87,6 +90,7 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
             onClose()
         }
     }
+    const { errors, isSubmitted } = formState
 
     const loadMembersOptions = useCallback(
         async (searchQuery: string, additional: { page: number } | undefined): Promise<ILoadOptionsResponse<Identity>> => {
@@ -113,15 +117,15 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
                 isOpen={isOpen}
                 close={() => {
                     onClose()
-                    setErrors([])
+                    setMyErrors([])
                 }}
             >
-                <TextHeading size="L">Pridať člena</TextHeading>
+                <TextHeading size="L">{t('KSIVSPage.addMember')}</TextHeading>
                 <FormProvider {...formMethods}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <SelectLazyLoading
-                            error={errors.includes('member') ? 'Vyberte clena' : ''}
-                            placeholder="Vyber..."
+                            error={myErrors.includes('member') ? t('KSIVSPage.selectMember') : ''}
+                            placeholder={t('KSIVSPage.select')}
                             value={selectedMember}
                             onChange={async (newValue) => {
                                 setSelectedMember(newValue as Identity)
@@ -136,63 +140,72 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
                                     )
                                     setSelectedMemberOrganizations([
                                         ...organizationsForUser,
-                                        { uuid: '1734e40c-f959-4629-a699-5c0bc6ba8d55', name: 'Odborna verejnost' },
+                                        { uuid: '1734e40c-f959-4629-a699-5c0bc6ba8d55', name: t('KSIVSPage.professionals') },
                                     ])
                                 }
-                                setErrors(errors.filter((item) => item !== 'member'))
+                                setMyErrors(myErrors.filter((item) => item !== 'member'))
                             }}
-                            label={'Člen (povinné)'}
+                            label={t('KSIVSPage.memberMandatory')}
                             name={'member'}
                             getOptionValue={(item) => item?.uuid ?? ''}
                             getOptionLabel={(item) => item?.firstName + ' ' + item?.lastName}
                             loadOptions={(searchTerm, _, additional) => loadMembersOptions(searchTerm, additional)}
                         />
                         <SimpleSelect
-                            label="Organization (povinné)"
+                            label={t('KSIVSPage.organizationMandatory')}
                             options={selectedMemberOrganizations?.map((item) => ({ label: item.name, value: item.uuid })) ?? []}
                             disabled={selectedMember == undefined}
                             onChange={(value) => {
                                 setSelectedOrganization(value.target.value)
                                 if (selectedOrganization != undefined) {
-                                    setErrors(errors.filter((item) => item !== 'organization'))
+                                    setMyErrors(myErrors.filter((item) => item !== 'organization'))
                                 }
                             }}
-                            error={errors.includes('organization') ? 'Vyberte organizaciu' : ''}
+                            error={myErrors.includes('organization') ? t('KSIVSPage.selectOrganization') : ''}
                         />
                         <SimpleSelect
-                            label="Rola (povinné)"
+                            label={t('KSIVSPage.roleMandatory')}
                             options={DEFAULT_ROLES?.map((item) => ({ label: item.value, value: item.code }))}
-                            error={errors.includes('role') ? 'Vyberte rolu' : ''}
+                            error={myErrors.includes('role') ? t('KSIVSPage.selectRole') : ''}
                             onChange={(value) => {
                                 setSelectedRole(value.target.value)
-                                setErrors(errors.filter((item) => item !== 'role'))
+                                setMyErrors(myErrors.filter((item) => item !== 'role'))
                             }}
                         />
                         <AttributeInput
-                            attribute={checkBox1Attribute}
+                            control={control}
+                            trigger={trigger}
+                            setValue={setValue}
+                            attribute={{ ...ongoingSessionCheckboxAttr, name: t('KSIVSPage.addToOngoingSession') }}
                             constraints={roleConstraints}
                             register={register}
-                            error={''}
-                            isSubmitted={false}
+                            error={hasAttributeInputError(ongoingSessionCheckboxAttr, errors)}
+                            isSubmitted={isSubmitted}
                         />
                         <div className={styles.marginVertical20}>
                             <AttributeInput
-                                attribute={checkBox2Attribute}
+                                control={control}
+                                trigger={trigger}
+                                setValue={setValue}
+                                attribute={{ ...ongoingPollsCheckboxAttr, name: t('KSIVSPage.addToOngoingPolls') }}
                                 constraints={roleConstraints}
                                 register={register}
-                                error={''}
-                                isSubmitted={false}
+                                error={hasAttributeInputError(ongoingPollsCheckboxAttr, errors)}
+                                isSubmitted={isSubmitted}
                             />
                         </div>
                         <AttributeInput
-                            attribute={checkBox3Attribute}
+                            control={control}
+                            trigger={trigger}
+                            setValue={setValue}
+                            attribute={{ ...seeEmailsCheckboxAttr, name: t('KSIVSPage.seeEmailAddresses') }}
                             constraints={roleConstraints}
                             register={register}
-                            error={''}
-                            isSubmitted={false}
+                            error={hasAttributeInputError(seeEmailsCheckboxAttr, errors)}
+                            isSubmitted={isSubmitted}
                         />
                         <div style={{ display: 'flex' }}>
-                            <Button label="Submit" type="submit" className={styles.marginLeftAuto} />
+                            <Button label={t('KSIVSPage.addMember')} type="submit" className={styles.marginLeftAuto} />
                         </div>
                     </form>
                 </FormProvider>

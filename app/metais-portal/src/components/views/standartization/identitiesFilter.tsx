@@ -1,27 +1,22 @@
 import { Filter, ILoadOptionsResponse, SelectLazyLoading, SimpleSelect } from '@isdd/idsk-ui-kit/src/index'
 import { Identity, useFind1Hook } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import { CiListFilterContainerUi, ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/src/api'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
+import { useFilter } from '@isdd/metais-common/hooks/useFilter'
+import { useTranslation } from 'react-i18next'
 
 import { DEFAULT_ROLES } from './defaultRoles'
 
 import { FilterParams } from '@/pages/standardization/groupdetail/[id]'
 
-interface filterProps {
-    listFilter: FilterParams
-    setListFilter: React.Dispatch<React.SetStateAction<FilterParams>>
+interface FilterProps {
     defaultFilterValues: FilterParams
 }
 
-const KSIVSFilter: React.FC<filterProps> = ({ listFilter, setListFilter, defaultFilterValues }) => {
-    // const { t } = useTranslation()
-
-    const [selectedMember, setSelectedMember] = useState<Identity>()
-    const [selectedOrganization, setSelectedOrganization] = useState<ConfigurationItemUi>()
-    const [selectedRole, setSelectedRole] = useState<string>()
+const KSIVSFilter: React.FC<FilterProps> = ({ defaultFilterValues }) => {
+    const { t } = useTranslation()
     const loadOrgs = useReadCiList1Hook()
-    // const { filter, handleFilterChange } = useFilterParams<FilterParams>(defaultFilterValues)
-    // const { onSubmit } = useFilter(defaultFilterValues)
+    const { setValue } = useFilter(defaultFilterValues)
     const loadMembers = useFind1Hook()
     const loadMembersOptions = useCallback(
         async (searchQuery: string, additional: { page: number } | undefined): Promise<ILoadOptionsResponse<Identity>> => {
@@ -72,50 +67,57 @@ const KSIVSFilter: React.FC<filterProps> = ({ listFilter, setListFilter, default
 
     return (
         <>
-            <Filter
+            <Filter<FilterParams>
                 form={(register) => (
                     <>
+                        {/* not working select */}
                         <SelectLazyLoading<Identity>
-                            value={selectedMember}
-                            // control={control}
-                            placeholder="Vyber..."
-                            onChange={(newValue) => {
-                                setListFilter({ ...listFilter, memberUuid: (newValue as Identity).uuid ?? '' })
-                                setSelectedMember(newValue as Identity)
-                            }}
-                            label={'Člen (povinné)'}
+                            // value={selectedMember}
+                            placeholder={t('KSIVSPage.select')}
+                            // onChange={(newValue) => {
+                            //     setListFilter({ ...listFilter, memberUuid: (newValue as Identity).uuid ?? '' })
+                            //     setSelectedMember(newValue as Identity)
+                            // }}
+                            setValue={setValue}
+                            register={register}
+                            label={t('KSIVSPage.member')}
                             name={'memberUuid'}
                             getOptionValue={(item) => item.uuid ?? ''}
                             getOptionLabel={(item) => item.firstName + ' ' + item.lastName}
                             loadOptions={(searchTerm, _, additional) => loadMembersOptions(searchTerm, additional)}
                         />
+                        {/* not working select */}
                         <SelectLazyLoading<ConfigurationItemUi>
-                            placeholder="Vyber..."
-                            value={selectedOrganization}
-                            onChange={(newValue) => {
-                                setListFilter({ ...listFilter, poUuid: (newValue as ConfigurationItemUi).uuid ?? '' })
-                                setSelectedOrganization(newValue as ConfigurationItemUi)
-                            }}
-                            label={'Organization (povinné)'}
-                            // control={control}
+                            placeholder={t('KSIVSPage.select')}
+                            // value={selectedOrganization}
+                            // onChange={(newValue) => {
+                            //     setListFilter({ ...listFilter, poUuid: (newValue as ConfigurationItemUi).uuid ?? '' })
+                            //     setSelectedOrganization(newValue as ConfigurationItemUi)
+                            // }}
+                            label={t('KSIVSPage.organization')}
                             name={'poUuid'}
                             getOptionLabel={(item) => (item.attributes ?? {})['Gen_Profil_nazov']}
                             getOptionValue={(item) => item.uuid ?? ''}
                             loadOptions={(searchTerm, _, additional) => loadOrgOptions(searchTerm, additional)}
                         />
                         <SimpleSelect
-                            {...register('defaultFilterValues.role')}
-                            label="Rola"
-                            value={selectedRole}
-                            options={DEFAULT_ROLES.map((item) => ({ value: item.code, label: item.value }))}
-                            onChange={(newValue) => {
-                                setListFilter({ ...listFilter, role: newValue.target.value })
-                                setSelectedRole(newValue.target.value)
-                            }}
+                            placeholder={t('KSIVSPage.select')}
+                            {...register('role')}
+                            label={t('KSIVSPage.role')}
+                            defaultValue={'all'}
+                            // value={selectedRole}
+                            options={[
+                                { value: 'all', label: t('KSIVSPage.select') },
+                                ...DEFAULT_ROLES.map((item) => ({ value: item.code, label: item.value })),
+                            ]}
+                            // onChange={(newValue) => {
+                            //     setListFilter({ ...listFilter, role: newValue.target.value })
+                            //     setSelectedRole(newValue.target.value)
+                            // }}
                         />
                     </>
                 )}
-                defaultFilterValues={{ defaultFilterValues }}
+                defaultFilterValues={defaultFilterValues}
             />
         </>
     )
