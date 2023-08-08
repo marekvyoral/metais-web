@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import classNames from 'classnames'
-import { Controller } from 'react-hook-form'
-import Select, { MultiValue, GroupBase, Props } from 'react-select'
+import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
+import Select, { GroupBase, MultiValue, Props } from 'react-select'
 
 import { Control, Menu, Option, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import styles from '@isdd/idsk-ui-kit/select-lazy-loading/selectLazyLoading.module.scss'
@@ -17,74 +17,55 @@ interface ISelectProps<T extends IOptions> extends Props<T, true, GroupBase<T>> 
     label: string
     name: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    control?: any
     options: MultiValue<T>
     onChange?: (newValue: MultiValue<T>) => void
+    placeholder?: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    register?: UseFormRegister<any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setValue?: UseFormSetValue<any>
+    defaultValue?: MultiValue<T>
     values?: MultiValue<T>
-    rules?: Record<string, string>
     error?: string
 }
 
 export const MultiSelect = <T extends IOptions>({
     label,
-    control,
     name,
     options,
     values,
+    defaultValue,
     onChange,
-    rules,
+    placeholder,
     id,
     error,
-    ...rest
+    register,
+    setValue,
 }: ISelectProps<T>): JSX.Element => {
-    const [selectError, setSelectError] = useState(error)
-    useEffect(() => {
-        setSelectError(error)
-    }, [error])
+    const handleOnChange = (selectedValue: MultiValue<T>) => {
+        onChange ? onChange(selectedValue) : setValue && setValue(name, selectedValue)
+    }
     return (
-        <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!selectError })}>
+        <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!error })}>
             <label className="govuk-label">{label}</label>
-            {!!selectError && <span className="govuk-error-message">{selectError}</span>}
-            {control ? (
-                <Controller
-                    name={name}
-                    control={control}
-                    rules={rules}
-                    render={({ field, fieldState }) => {
-                        setSelectError(fieldState.error?.message)
-                        return (
-                            <Select
-                                id={id}
-                                className={classNames('govuk-select', styles.selectLazyLoading)}
-                                components={{ Option, Menu, Control }}
-                                options={options}
-                                styles={selectStyles<T>()}
-                                unstyled
-                                isMulti
-                                {...field}
-                                isOptionDisabled={(option) => !!option.disabled}
-                                {...rest}
-                            />
-                        )
-                    }}
-                />
-            ) : (
-                <Select
-                    id={id}
-                    className={classNames('govuk-select', styles.selectLazyLoading)}
-                    components={{ Option, Menu, Control }}
-                    options={options}
-                    styles={selectStyles<T>()}
-                    unstyled
-                    isMulti
-                    value={values}
-                    onChange={(value) => {
-                        onChange && onChange(value)
-                    }}
-                    isOptionDisabled={(option) => !!option.disabled}
-                    {...rest}
-                />
-            )}
+            {!!error && <span className="govuk-error-message">{error}</span>}
+            <Select<T, true, GroupBase<T>>
+                id={id}
+                name={name}
+                value={values}
+                defaultValue={defaultValue}
+                placeholder={placeholder || ''}
+                className={classNames('govuk-select', styles.selectLazyLoading)}
+                components={{ Option, Menu, Control }}
+                options={options}
+                styles={selectStyles<T>()}
+                unstyled
+                isMulti
+                isClearable
+                isOptionDisabled={(option) => !!option.disabled}
+                {...(register && register(name))}
+                onChange={handleOnChange}
+            />
         </div>
     )
 }

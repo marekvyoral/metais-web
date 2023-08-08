@@ -99,7 +99,7 @@ export const SelectLazyLoading = <T,>({
                 className={classNames('govuk-select', styles.selectLazyLoading)}
                 styles={selectStyles<T>()}
                 openMenuOnFocus
-                isClearable={isMulti ? true : true}
+                isClearable
                 unstyled
                 {...(register && register(name))}
                 onChange={handleOnChange}
