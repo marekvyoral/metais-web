@@ -1,15 +1,15 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { Control, FieldError, FieldErrorsImpl, FieldValues, Merge, UseFormRegister, UseFormSetValue, UseFormTrigger } from 'react-hook-form'
-import classnames from 'classnames'
-import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
-import { Input, SimpleSelect, MultiSelect } from '@isdd/idsk-ui-kit/index'
-import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Input, MultiSelect, SimpleSelect } from '@isdd/idsk-ui-kit/index'
+import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
 import { EnumItem, EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import classnames from 'classnames'
+import React from 'react'
+import { FieldError, FieldErrorsImpl, FieldValues, Merge, UseFormRegister, UseFormSetValue, UseFormTrigger } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
-import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
 import { ArrayAttributeInput } from './ArrayAttributeInput'
+import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
 import styles from './attributeInput.module.scss'
 
 enum ConstraintTypes {
@@ -29,7 +29,6 @@ enum DisplayTextArea {
 interface IAttributeInput {
     attribute: Attribute
     register: UseFormRegister<FieldValues>
-    control: Control
     constraints?: EnumType
     error: FieldError | Merge<FieldError, FieldErrorsImpl> | undefined
     hint?: string
@@ -58,7 +57,6 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     trigger,
     setValue,
     register,
-    control,
     error,
     constraints,
     hint,
@@ -182,7 +180,8 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 name={attribute.technicalName ?? ''}
                                 label={attribute.name + requiredLabel}
                                 options={createOptions(constraints)}
-                                control={control}
+                                register={register}
+                                setValue={setValue}
                             />
                         )
                     } else {

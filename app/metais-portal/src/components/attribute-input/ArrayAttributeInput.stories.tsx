@@ -52,7 +52,7 @@ export const ArrayInput: Story = {
     render: ({ ...args }) => {
         const FormWrapper = () => {
             const { t } = useTranslation()
-            const { handleSubmit, control, register, formState } = useForm({
+            const { handleSubmit, register, formState } = useForm({
                 resolver: yupResolver(generateFormSchema([args.attribute], t)),
             })
             const { errors, isSubmitted } = formState
@@ -66,13 +66,7 @@ export const ArrayInput: Story = {
 
             return (
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <AttributeInput
-                        {...args}
-                        register={register}
-                        control={control}
-                        error={hasAttributeInputError(args.attribute, errors)}
-                        isSubmitted={isSubmitted}
-                    />
+                    <AttributeInput {...args} register={register} error={hasAttributeInputError(args.attribute, errors)} isSubmitted={isSubmitted} />
                     <Button label="Submit" type="submit" />
                     <p>{data}</p>
                 </form>
