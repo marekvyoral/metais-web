@@ -1,11 +1,12 @@
 import { DeleteForeverRed, GreenCheckOutlineIcon } from '@isdd/idsk-ui-kit/assets/images'
-import { BreadCrumbs, CheckBox, HomeIcon, IconWithText, Paginator, SimpleSelect, Table, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { CHECKBOX_CELL, DELETE_CELL } from '@isdd/idsk-ui-kit/table/constants'
+import { BreadCrumbs, HomeIcon, IconWithText, Paginator, Table, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { DELETE_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import {
     FindRelatedIdentitiesAndCountParams,
-    Role,
     useFindAll11Hook,
     useFindRelatedIdentitiesAndCount,
     useFindRelatedIdentitiesAndCountHook,
@@ -13,20 +14,18 @@ import {
 } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 
+import { DEFAULT_ROLES } from '../../../../components/views/standartization/defaultRoles'
 import KSIVSFilter from '../../../../components/views/standartization/identitiesFilter'
 import KSIVSAddMemberPopUp from '../../../../components/views/standartization/modals/addMemberModal'
 import KSIVSBaseInfo from '../../../../components/views/standartization/modals/baseInfo'
 import KSIVSDeleteMemberPopUp from '../../../../components/views/standartization/modals/deleteMemberModal'
-import { DEFAULT_ROLES } from '../../../../components/views/standartization/defaultRoles'
 import styles from '../../../../components/views/standartization/styles.module.scss'
 import KSIVSTableActions from '../../../../components/views/standartization/tableActions'
 
-import { canUserEditRoles, isUserAdmin, reduceTableDataToObjectWithUuid } from '@/components/views/standartization/standartizationUtils'
+import { buildColumns, isUserAdmin } from '@/components/views/standartization/standartizationUtils'
 
 const defaultSearch: FindRelatedIdentitiesAndCountParams = {
     orderBy: 'firstName_lastName',
@@ -118,112 +117,22 @@ const KSIVSPage = () => {
     const isRowSelected = (row: Row<TableData>) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false)
 
     const [identityToDelete, setIdentityToDelete] = useState<string>()
-    const selectableColumnsSpec: ColumnDef<TableData>[] = [
-        {
-            header: ({ table }) => {
-                return (
-                    <div className="govuk-checkboxes govuk-checkboxes--small">
-                        <CheckBox
-                            label=""
-                            name="checkbox"
-                            id="checkbox_all"
-                            value="true"
-                            onChange={() => {
-                                const checked = table
-                                    .getRowModel()
-                                    .rows.every((row) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false))
-                                const newRowSelection = { ...rowSelection }
-                                if (checked) {
-                                    table.getRowModel().rows.forEach((row) => row.original.uuid && delete newRowSelection[row.original.uuid])
-                                    setRowSelection(newRowSelection)
-                                } else {
-                                    setRowSelection((val) => ({ ...val, ...reduceTableDataToObjectWithUuid<TableData>(tableData || []) }))
-                                }
-                            }}
-                            checked={table.getRowModel().rows.every((row) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false))}
-                        />
-                    </div>
-                )
-            },
-            id: CHECKBOX_CELL,
-            cell: ({ row }) => (
-                <div className="govuk-checkboxes govuk-checkboxes--small">
-                    <CheckBox
-                        label=""
-                        name="checkbox"
-                        id={`checkbox_${row.id}`}
-                        value="true"
-                        onChange={() => {
-                            if (row.original.uuid) {
-                                const newRowSelection = { ...rowSelection }
-                                if (rowSelection[row.original.uuid]) {
-                                    delete newRowSelection[row.original.uuid]
-                                } else {
-                                    newRowSelection[row.original.uuid] = row.original
-                                }
-                                setRowSelection(newRowSelection)
-                            }
-                        }}
-                        checked={row.original.uuid ? !!rowSelection[row.original.uuid] : false}
-                    />
-                </div>
-            ),
-        },
-        ...columns,
-        { header: t('KSIVSPage.email'), id: 'email', accessorKey: 'email', enableSorting: true },
-        {
-            header: t('KSIVSPage.role'),
-            id: 'role',
-            accessorKey: 'roleName',
-            enableSorting: true,
-            cell: ({ row }) => {
-                const StateWrapper = () => {
-                    const [isSelectorShown, setSelectorShown] = useState(false)
-                    const [selectedRole, setSelectedRole] = useState<string>(row.original.roleName)
-                    if (isSelectorShown) {
-                        return (
-                            <SimpleSelect
-                                value={selectedRole}
-                                onChange={async (value) => {
-                                    setSelectedRole(value.target.value)
-                                    const oldRole: Role = (await findRoleRequest({ name: row.original.roleName })) as Role
-                                    const newRole: Role = (await findRoleRequest({ name: value.target.value })) as Role
-                                    await updateGroupRequest(row.original.uuid, id ?? '', oldRole.uuid ?? '', newRole.uuid ?? '', row.original.orgId)
-                                    setSelectorShown(false)
-                                    const refetchData = await fetchIdentitiesData(id ?? '', {
-                                        ...listParams,
-                                        ...(filter.memberUuid != undefined && { memberUuid: filter.memberUuid }),
-                                        ...(filter.poUuid != undefined && { poUuid: filter.poUuid }),
-                                        ...(filter.role != 'all' && filter.role != undefined && { role: filter.role }),
-                                    })
-                                    setIdentities(refetchData)
-                                }}
-                                label=""
-                                options={DEFAULT_ROLES.map((item) => ({
-                                    value: item.code,
-                                    label: item.value,
-                                }))}
-                            />
-                        )
-                    } else {
-                        return canUserEditRoles(user?.roles) ? (
-                            <a
-                                className={styles.cursorPointer}
-                                onClick={() => {
-                                    setSelectorShown(true)
-                                }}
-                            >
-                                {DEFAULT_ROLES.find((role) => role.description == row.original.roleName)?.value}
-                            </a>
-                        ) : (
-                            <TextBody>{DEFAULT_ROLES.find((role) => role.description == row.original.roleName)?.value}</TextBody>
-                        )
-                    }
-                }
-                return <StateWrapper />
-            },
-        },
-    ]
+    const selectableColumnsSpec: ColumnDef<TableData>[] = buildColumns(
+        rowSelection,
+        setRowSelection,
+        tableData,
+        columns,
+        user?.roles,
+        t,
+        findRoleRequest,
+        updateGroupRequest,
+        fetchIdentitiesData,
+        id,
+        listParams,
+        filter,
+        setIdentities,
+        setIdentityToDelete,
+    )
 
     if (isAdmin) {
         selectableColumnsSpec.push({
