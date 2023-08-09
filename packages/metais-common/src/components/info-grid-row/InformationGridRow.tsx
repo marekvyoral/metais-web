@@ -10,13 +10,16 @@ interface IInformationGridRowProps extends PropsWithChildren {
     label: string
     value: React.ReactNode
     tooltip?: string
+    hideIcon?: boolean
 }
 
-export const InformationGridRow: React.FC<IInformationGridRowProps> = ({ label, value, tooltip }) => {
+export const InformationGridRow: React.FC<IInformationGridRowProps> = ({ label, value, tooltip, hideIcon }) => {
     return (
         <GridRow className={styles.groupRow}>
             <GridCol setWidth="one-third">
-                <InfoIconWithText tooltip={tooltip}>{label}</InfoIconWithText>
+                <InfoIconWithText tooltip={tooltip} hideIcon={hideIcon}>
+                    {label}
+                </InfoIconWithText>
             </GridCol>
             <GridCol setWidth="two-thirds">
                 <TextBody size="S" className={styles.textRow}>
