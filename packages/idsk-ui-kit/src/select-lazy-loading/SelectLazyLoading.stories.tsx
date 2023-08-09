@@ -23,7 +23,7 @@ export const Minimal: Story = {
         getOptionLabel: (item) => item.name,
         option: undefined,
         loadOptions: async () => ({
-            options: [{ name: 'Item Name 123' }, { name: 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz' }],
+            options: [{ name: 'Item Name 123' }, { name: 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz' }],
             hasMore: false,
             additional: {
                 page: 0,
