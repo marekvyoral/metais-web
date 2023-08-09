@@ -1,13 +1,10 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 
 import { SelectLazyLoading } from './SelectLazyLoading'
-import { Filter } from '@/filter/Filter'
-import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { BrowserRouter } from 'react-router-dom'
 
 const meta: Meta<typeof SelectLazyLoading> = {
     title: 'Components/SelectLazyLoading',
