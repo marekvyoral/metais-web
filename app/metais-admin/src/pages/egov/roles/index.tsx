@@ -10,11 +10,10 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { ROLES_GROUP } from '@isdd/metais-common/components/constants'
 
-import styles from '../../../components/views/egov/roles/roles.module.scss'
-
-import DeleteRoleModal from '@/components/views/egov/roles/DeleteModal'
-import RolesFilter from '@/components/views/egov/roles/Rolesfilter'
-import RolesTableActions from '@/components/views/egov/roles/ActionsOverTable'
+import styles from '@/components/views/egov/roles-detail-views/roles.module.scss'
+import DeleteRoleModal from '@/components/views/egov/roles-detail-views/components/modal/DeleteModal'
+import RolesFilter from '@/components/views/egov/roles-detail-views/components/Rolesfilter'
+import RolesTableActions from '@/components/views/egov/roles-detail-views/components/ActionsOverTable'
 
 export interface FilterData extends IFilterParams {
     name: string

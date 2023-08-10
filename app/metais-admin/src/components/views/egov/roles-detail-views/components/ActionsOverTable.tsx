@@ -5,7 +5,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 
-import styles from './roles.module.scss'
+import styles from '../roles.module.scss'
 
 import { Pagination } from '@/pages/egov/roles'
 

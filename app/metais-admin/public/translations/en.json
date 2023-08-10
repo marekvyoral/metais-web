@@ -43,6 +43,7 @@
         "rights": "© Copyright"
     },
     "navbar": {
+        "home": "Home",
         "skip": "Skip to main content",
         "official": "Official Website",
         "publicAdministration": "Public Administration",
