@@ -1,6 +1,5 @@
-import { DeleteForeverRed, GreenCheckOutlineIcon } from '@isdd/idsk-ui-kit/assets/images'
+import { GreenCheckOutlineIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { BreadCrumbs, HomeIcon, IconWithText, Paginator, Table, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { DELETE_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
@@ -20,12 +19,12 @@ import { useParams } from 'react-router-dom'
 import { DEFAULT_ROLES } from '../../../../components/views/standartization/defaultRoles'
 import KSIVSFilter from '../../../../components/views/standartization/identitiesFilter'
 import KSIVSAddMemberPopUp from '../../../../components/views/standartization/modals/addMemberModal'
-import KSIVSBaseInfo from '../../../../components/views/standartization/modals/baseInfo'
 import KSIVSDeleteMemberPopUp from '../../../../components/views/standartization/modals/deleteMemberModal'
 import styles from '../../../../components/views/standartization/styles.module.scss'
 import KSIVSTableActions from '../../../../components/views/standartization/tableActions'
 
 import { buildColumns, isUserAdmin } from '@/components/views/standartization/standartizationUtils'
+import KSIVSBaseInfo from '@/components/views/standartization/components/BaseInfo'
 
 const defaultSearch: FindRelatedIdentitiesAndCountParams = {
     orderBy: 'firstName_lastName',
@@ -133,17 +132,6 @@ const KSIVSPage = () => {
         setIdentities,
         setIdentityToDelete,
     )
-
-    if (isAdmin) {
-        selectableColumnsSpec.push({
-            header: t('KSIVSPage.action'),
-            id: DELETE_CELL,
-            cell: ({ row }) =>
-                !(row.original.roleName == 'STD_KSPRE') && (
-                    <img src={DeleteForeverRed} height={24} onClick={() => setIdentityToDelete(row.original.uuid)} />
-                ),
-        })
-    }
 
     const [isAddModalOpen, setAddModalOpen] = useState(false)
 

@@ -1,8 +1,8 @@
-import { Attribute, Role } from '@isdd/metais-common/api'
+import { Attribute } from '@isdd/metais-common/api'
 import { FieldErrors } from 'react-hook-form'
 import { ColumnDef, Row, Table } from '@tanstack/react-table'
-import React, { useState } from 'react'
-import { CheckBox, DeleteForeverRed, SimpleSelect, TextBody } from '@isdd/idsk-ui-kit/index'
+import React from 'react'
+import { CheckBox, DeleteForeverRed } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL, DELETE_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { TFunction } from 'i18next'
 import {
@@ -13,8 +13,7 @@ import {
     OperationResult,
 } from '@isdd/metais-common/api/generated/iam-swagger'
 
-import styles from './styles.module.scss'
-import { DEFAULT_ROLES } from './defaultRoles'
+import KSIVSTableRoleSelector from './components/TableRoleSelector'
 
 import { FilterParams, TableData } from '@/pages/standardization/groupdetail/[id]'
 
@@ -63,37 +62,6 @@ export const hasAttributeInputError = (
         return error ? errors[attribute.technicalName] : undefined
     }
     return undefined
-}
-
-const onChangeRole = async (
-    value: React.ChangeEvent<HTMLSelectElement>,
-    row: Row<TableData>,
-    id: string | undefined,
-    filter: FilterParams,
-    listParams: FindRelatedIdentitiesAndCountParams,
-    setSelectedRole: (value: React.SetStateAction<string>) => void,
-    findRoleRequest: (params?: FindAll11Params | undefined, signal?: AbortSignal | undefined) => Promise<FindAll11200>,
-    updateGroupRequest: (uuid: string, groupUuid: string, oldRoleUuid: string, newRoleUuid: string, orgId: string) => Promise<OperationResult>,
-    setIdentities: (value: React.SetStateAction<IdentitiesInGroupAndCount | undefined>) => void,
-    setSelectorShown: (value: React.SetStateAction<boolean>) => void,
-    fetchIdentitiesData: (
-        uuid: string,
-        params?: FindRelatedIdentitiesAndCountParams | undefined,
-        signal?: AbortSignal | undefined,
-    ) => Promise<IdentitiesInGroupAndCount>,
-) => {
-    setSelectedRole(value.target.value)
-    const oldRole: Role = (await findRoleRequest({ name: row.original.roleName })) as Role
-    const newRole: Role = (await findRoleRequest({ name: value.target.value })) as Role
-    await updateGroupRequest(row.original.uuid, id ?? '', oldRole.uuid ?? '', newRole.uuid ?? '', row.original.orgId)
-    setSelectorShown(false)
-    const refetchData = await fetchIdentitiesData(id ?? '', {
-        ...listParams,
-        ...(filter.memberUuid != undefined && { memberUuid: filter.memberUuid }),
-        ...(filter.poUuid != undefined && { poUuid: filter.poUuid }),
-        ...(filter.role != 'all' && filter.role != undefined && { role: filter.role }),
-    })
-    setIdentities(refetchData)
 }
 
 const checkRow = (
@@ -188,56 +156,12 @@ export const buildColumns = (
         id: 'role',
         accessorKey: 'roleName',
         enableSorting: true,
-        cell: ({ row }) => {
-            const StateWrapper = () => {
-                const [isSelectorShown, setSelectorShown] = useState(false)
-                const [selectedRole, setSelectedRole] = useState<string>(row.original.roleName)
-                if (isSelectorShown) {
-                    return (
-                        <SimpleSelect
-                            value={selectedRole}
-                            onChange={(value) =>
-                                onChangeRole(
-                                    value,
-                                    row,
-                                    id,
-                                    filter,
-                                    listParams,
-                                    setSelectedRole,
-                                    findRoleRequest,
-                                    updateGroupRequest,
-                                    setIdentities,
-                                    setSelectorShown,
-                                    fetchIdentitiesData,
-                                )
-                            }
-                            label=""
-                            options={DEFAULT_ROLES.map((item) => ({
-                                value: item.code,
-                                label: item.value,
-                            }))}
-                        />
-                    )
-                } else {
-                    return canUserEditRoles(userRoles) ? (
-                        <a
-                            className={styles.cursorPointer}
-                            onClick={() => {
-                                setSelectorShown(true)
-                            }}
-                        >
-                            {DEFAULT_ROLES.find((role) => role.description == row.original.roleName)?.value}
-                        </a>
-                    ) : (
-                        <TextBody>{DEFAULT_ROLES.find((role) => role.description == row.original.roleName)?.value}</TextBody>
-                    )
-                }
-            }
-            return <StateWrapper />
-        },
+        cell: ({ row }) => (
+            <KSIVSTableRoleSelector row={row} id={id} userRoles={userRoles} filter={filter} listParams={listParams} setIdentities={setIdentities} />
+        ),
     })
 
-    if (!!selectableColumnsSpec.find((column) => column.id == DELETE_CELL) && isUserAdmin(userRoles)) {
+    if (isUserAdmin(userRoles)) {
         selectableColumnsSpec.push({
             header: t('KSIVSPage.action'),
             id: DELETE_CELL,

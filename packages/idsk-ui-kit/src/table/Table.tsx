@@ -23,6 +23,7 @@ import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableRowExpanded } from './TableRowExpanded'
 
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
+import { LoadingIndicator } from '@/loading-indicator/LoadingIndicator'
 
 export interface ITableProps<T> {
     data?: Array<T>
@@ -147,6 +148,7 @@ export const Table = <T,>({
                 onScroll={handleWrapper1Scroll}
                 ref={wrapper1Ref}
             >
+                {isLoading && <LoadingIndicator />}
                 {table.getRowModel().rows.map((row) => (
                     <>
                         <TableRow<T> row={row} key={row.id} isRowSelected={isRowSelected} isRowBold={isRowBold} />
