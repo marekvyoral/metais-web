@@ -1,12 +1,13 @@
 import { Button, ButtonGroupRow, SimpleSelect, TextBody } from '@isdd/idsk-ui-kit'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/components/constants'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 
 import styles from './roles.module.scss'
 
-import { Pagination } from '@/pages/roles'
+import { Pagination } from '@/pages/egov/roles'
 
 interface RoleTableActionsProps {
     pagination: Pagination
@@ -26,12 +27,7 @@ const RolesTableActions: React.FC<RoleTableActionsProps> = ({ pagination, setPag
                 }}
                 id="select"
                 label=""
-                options={[
-                    { label: '10', value: '10' },
-                    { label: '20', value: '20' },
-                    { label: '50', value: '50' },
-                    { label: '100', value: '100' },
-                ]}
+                options={DEFAULT_PAGESIZE_OPTIONS}
             />
             <TextBody className={styles.marginLeftAuto}>{t('adminRolesPage.entities')}</TextBody>
         </ButtonGroupRow>

@@ -105,7 +105,7 @@ const RoleUsers: React.FC = () => {
                     <div>
                         <SimpleSelect
                             {...register('obligedPerson')}
-                            id="1"
+                            id="obligedPerson"
                             label={t('adminRolesPage.obligedPerson')}
                             options={[{ value: '', label: t('adminRolesPage.all') }, ...(obligedPersonList ?? [])]}
                         />

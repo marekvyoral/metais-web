@@ -6,9 +6,9 @@ import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { useTranslation } from 'react-i18next'
 import { Attribute, AttributeProfile, CiType, ConfigurationItemSetUi, EnumType } from '@isdd/metais-common/api'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/components/constants'
 
 import { CiTable } from '@/components/ci-table/CiTable'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@/components/constants'
 import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 import { KSFilterData } from '@/pages/ci/[entityName]'
 

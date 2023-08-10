@@ -3,7 +3,7 @@ import { FindByNameWithParamsParams, Role, useDelete, useFindByNameWithParamsHoo
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Pagination } from '@/pages/roles'
+import { Pagination } from '@/pages/egov/roles'
 
 interface DeleteRoleModapProps {
     setTableRoles: React.Dispatch<React.SetStateAction<Role[] | undefined>>
@@ -21,6 +21,10 @@ const DeleteRoleModal: React.FC<DeleteRoleModapProps> = ({ setTableRoles, setRol
                 const roles = await fetchRoles(pagination.page, pagination.pageSize, fetchParams)
                 setRoleToDelete(undefined)
                 setTableRoles(roles)
+            },
+            onError(error) {
+                // eslint-disable-next-line no-alert
+                alert(error)
             },
         },
     })

@@ -8,12 +8,13 @@ import { ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
+import { ROLES_GROUP } from '@isdd/metais-common/components/constants'
 
-import styles from '../../components/views/roles/roles.module.scss'
+import styles from '../../../components/views/egov/roles/roles.module.scss'
 
-import RolesTableActions from '@/components/views/roles/actionsOverTable'
-import DeleteRoleModal from '@/components/views/roles/deleteModal'
-import RolesFilter from '@/components/views/roles/rolesfilter'
+import DeleteRoleModal from '@/components/views/egov/roles/DeleteModal'
+import RolesFilter from '@/components/views/egov/roles/Rolesfilter'
+import RolesTableActions from '@/components/views/egov/roles/ActionsOverTable'
 
 export interface FilterData extends IFilterParams {
     name: string
@@ -49,8 +50,6 @@ const findGroupName = (code: string | undefined, roleGroupsList: EnumItem[] | un
     return roleGroupsList?.find((e) => e.code == code)?.value ?? defaultString
 }
 
-export const RolesGroup = 'SKUPINA_ROL'
-
 const ManageRoles: React.FC = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
@@ -63,7 +62,7 @@ const ManageRoles: React.FC = () => {
     const [sorting, setSorting] = useState<ColumnSort[]>([defaultSort])
 
     const { data: rolesPages } = useFindByNameWithParamsCount({ ...filter, name: filter.fullTextSearch ?? '' })
-    const { data: roleGroups } = useGetValidEnum(RolesGroup)
+    const { data: roleGroups } = useGetValidEnum(ROLES_GROUP)
     const {
         data: roles,
         isLoading,

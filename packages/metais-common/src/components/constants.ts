@@ -4,3 +4,5 @@ export const DEFAULT_PAGESIZE_OPTIONS = [
     { value: '50', label: '50' },
     { value: '100', label: '100' },
 ]
+
+export const ROLES_GROUP = 'SKUPINA_ROL'

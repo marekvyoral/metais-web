@@ -24,10 +24,10 @@ export enum AdminRouteNames {
     EGOV_ENTITY = '/egov/entity',
     EGOV_PROFILE = '/egov/profile',
     EGOV_RELATION = '/egov/relation',
-    ROLE_USERS = '/roles/users',
-    ROLE_EDIT = '/roles/edit',
-    ROLE_NEW = '/roles/newRole',
-    ROLES = '/roles',
+    ROLE_USERS = '/egov/roles/users',
+    ROLE_EDIT = '/egov/roles/edit',
+    ROLE_NEW = '/egov/roles/newRole',
+    ROLES = '/egov/roles',
 }
 
 export enum NavigationSubRoutes {

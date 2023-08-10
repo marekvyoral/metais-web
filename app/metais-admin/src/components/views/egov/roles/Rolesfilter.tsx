@@ -4,9 +4,7 @@ import { RelatedRoleType } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useTranslation } from 'react-i18next'
 import { EnumType } from '@isdd/metais-common/api'
 
-import { FilterData, defaultFilterValues } from '@/pages/roles'
-
-export const RolesGroup = 'SKUPINA_ROL'
+import { FilterData, defaultFilterValues } from '@/pages/egov/roles'
 
 interface RoleFilterProps {
     tableRoleGroups: EnumType | undefined
@@ -22,13 +20,13 @@ const RolesFilter: React.FC<RoleFilterProps> = ({ tableRoleGroups }) => {
                 <>
                     <SimpleSelect
                         {...register('group')}
-                        id="1"
+                        id="group"
                         label={'Group'}
                         options={[{ value: 'all', label: t('adminRolesPage.all') }, ...groups]}
                     />
                     <SimpleSelect
                         {...register('system')}
-                        id="2"
+                        id="system"
                         label={'System'}
                         options={[
                             { value: 'all', label: t('adminRolesPage.all') },
