@@ -5,7 +5,6 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { MutateOptions } from '@tanstack/react-query'
 import React from 'react'
-import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
 export interface CreateRoleViewParams {
@@ -33,7 +32,6 @@ interface ICreateRole {
 
 const CreateRoleContainer: React.FC<ICreateRole> = ({ View }) => {
     const navigate = useNavigate()
-    const methods = useForm()
     const {
         mutate: createRole,
         isLoading,
