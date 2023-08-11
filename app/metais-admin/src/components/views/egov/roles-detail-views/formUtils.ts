@@ -1,9 +1,6 @@
 import { EnumType } from '@isdd/metais-common/api'
 import { RelatedIdentityWithPo } from '@isdd/metais-common/api/generated/iam-swagger'
-import { ColumnDef } from '@tanstack/react-table'
 import { FieldErrors, FieldValues } from 'react-hook-form'
-
-import { RelatedIdentitiesTableData } from '@/components/containers/Egov/Roles/UsersContainer'
 
 export const findInputError = (errors: FieldErrors<FieldValues>, name: string): FieldErrors<FieldValues> => {
     const filtered = Object.keys(errors)
