@@ -2,14 +2,19 @@ import { Button, ButtonGroupRow, ButtonPopup, ISelectColumnType, SimpleSelect, T
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-    useRemoveNotifications,
-    useRemoveNotificationList,
-    useSetAllNotificationsAsRead,
     Notification,
+    RemoveNotificationList200,
+    RemoveNotificationListParams,
+    RemoveNotifications200,
+    RemoveNotificationsParams,
+    SetAllNotificationsAsRead200,
 } from '@isdd/metais-common/api/generated/notifications-swagger'
+import { UseMutateFunction } from '@tanstack/react-query'
 
 import styles from './notifications.module.scss'
 import { selectedDefaultColumns } from './defaults'
+
+import { DEFAULT_PAGESIZE_OPTIONS } from '@/components/constants'
 
 interface fetchParams {
     perPage: number
@@ -22,13 +27,35 @@ interface ActionsGroupParams {
     selectedColumns: ISelectColumnType[]
     setSelectedColumns: React.Dispatch<React.SetStateAction<ISelectColumnType[]>>
     rowSelection: Record<number, Notification>
+    mutateAllRead: UseMutateFunction<SetAllNotificationsAsRead200, unknown, void, unknown>
+    mutateAllDelete: UseMutateFunction<
+        RemoveNotifications200,
+        unknown,
+        {
+            params?: RemoveNotificationsParams | undefined
+        },
+        unknown
+    >
+    mutateDelete: UseMutateFunction<
+        RemoveNotificationList200,
+        unknown,
+        {
+            params?: RemoveNotificationListParams | undefined
+        },
+        unknown
+    >
 }
 
-export const ActionsGroup: React.FC<ActionsGroupParams> = ({ listParams, setListParams, selectedColumns, setSelectedColumns, rowSelection }) => {
-    const { mutate: mutateAllRead } = useSetAllNotificationsAsRead()
-    const { mutate: mutateAllDelete } = useRemoveNotifications()
-    const { mutate: mutateDelete } = useRemoveNotificationList()
-
+export const ActionsGroupView: React.FC<ActionsGroupParams> = ({
+    listParams,
+    setListParams,
+    selectedColumns,
+    setSelectedColumns,
+    rowSelection,
+    mutateAllRead,
+    mutateAllDelete,
+    mutateDelete,
+}) => {
     const { t } = useTranslation()
 
     const idArray = Object.entries(rowSelection).map((e) => e[1].id ?? 0)
@@ -66,12 +93,7 @@ export const ActionsGroup: React.FC<ActionsGroupParams> = ({ listParams, setList
                 }}
                 id="select"
                 label=""
-                options={[
-                    { label: '10', value: '10' },
-                    { label: '20', value: '20' },
-                    { label: '50', value: '50' },
-                    { label: '100', value: '100' },
-                ]}
+                options={DEFAULT_PAGESIZE_OPTIONS}
             />
         </ButtonGroupRow>
     )
