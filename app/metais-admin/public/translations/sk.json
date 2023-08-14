@@ -71,6 +71,41 @@
         "yes": "Áno",
         "no": "Nie"
     },
+    "sidebar": {
+        "hide": "SKRYŤ",
+        "unhide": "ODKRYŤ"
+    },
+    "filter": {
+        "expand": "Rozbaliť filter",
+        "collapse": "Zbaliť filter",
+        "namePlaceholder": "Zadajte názov",
+        "searchPlaceholder": "Vyhľadajte v tabuľke",
+        "chooseState": "Vyberte stav",
+        "chooseValue": "Vyberte hodnotu",
+        "organizations": {
+            "name": "Meno",
+            "ICO": "ICO"
+        },
+        "KS": {
+            "name": "Názov koncovej služby"
+        },
+        "ISVS": {
+            "name": "Názov informačného systému"
+        },
+        "PO": {
+            "name": "Názov",
+            "itIsChapter": "Je kapitola",
+            "personsCategory": "Kategória osoby",
+            "publicAuthorityType": "Typ povinnej osoby",
+            "evidenceStatus": "Stav evidencie"
+        },
+        "metaisCode": {
+            "label": "Kód MetaIS",
+            "placeholder": "ks_"
+        },
+        "reset": "Vyčistiť kritéria filtrovania",
+        "submit": "Vyfiltrovať"
+    },
     "table": {
         "title": "Mestá",
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
@@ -90,7 +125,12 @@
         "wrapActiveFilter": "Zbaliť aktívny filter",
         "unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie.",
         "resetOrder": "Resetovať poradie",
-        "pagination": "Tabuľková navigácia"
+        "pagination": "Tabuľková navigácia",
+        "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
+        "noRowsFound": "Nenašli sa žiadne záznamy",
+        "name": "Názov",
+        "ico": "ICO",
+        "adress": "Adresa"
     },
     "form": {
         "userFirstName": "Meno použivateľa",
@@ -139,6 +179,7 @@
         "maxValue": "Maximálna hodnota",
         "units": "Merná jednotka",
         "edit": "Upraviť",
+        "assigned": "Priradené povinné osoby",
         "detail": {
             "profileAttributesHeading": "Detail profilu atribútov",
             "profileAttributes": "Atribúty",
@@ -283,10 +324,59 @@
         "notifications": "Notifikácie",
         "settings": "Nastavenia profilu",
         "admin": "Administrácia",
+        "organizations": "Správa povinných osôb",
         "egov": {
             "entity": "Entity",
             "profiles": "Profily atribútov",
             "relation": "Vzťahy"
         }
+    },
+    "organizations": {
+        "detail": {
+            "title": "Detail povinnej osoby",
+            "statutoryOfficer": "Štatutár"
+        },
+        "find": {
+            "new": "Tvorba povinnej osoby",
+            "ico": "Zadajte IČO",
+            "icoPlaceholder": "Zadajte IČO povinnej osoby, ktorá sa má vyhľadať v CSRU. Správny tvar je 00000000 a 000000000000",
+            "search": "Vyhľadať",
+            "cancel": "Zrušiť",
+            "createNew": "Vytvoriť novú povinnú osobu",
+            "icoRequired": "IČO je povinné",
+            "icoRegex": "IČO je v nesprávnom tvare. Správny tvar je '00000000' a '000000000000'"
+        },
+        "create": {
+            "addNewOrganization": "Pridanie PO"
+        }
+    },
+    "PO_Attributes": {
+        "Gen_Profil_nazov": "Názov",
+        "EA_Profil_PO_kategoria_osoby": "Kategória osoby",
+        "EA_Profil_PO_typ_osoby": "Typ povinnej osoby",
+        "Gen_Profil_anglicky_nazov": "Anglický názov",
+        "Gen_Profil_popis": "Popis",
+        "Gen_Profil_anglicky_popis": "Anglický popis",
+        "Gen_Profil_zdroj": "Zdroj údaja",
+        "Gen_Profil_kod_metais": "Kód MetaIS",
+        "Gen_Profil_ref_id": "URI",
+        "EA_Profil_PO_webove_sidlo": "Webové sídlo",
+        "Gen_Profil_poznamka": "Poznámka",
+        "EA_Profil_PO_ico": "IČO",
+        "EA_Profil_PO_psc": "PSČ",
+        "EA_Profil_PO_obec": "Mesto / Obec",
+        "EA_Profil_PO_ulica": "Ulica",
+        "EA_Profil_PO_cislo": "Orientačné číslo",
+        "EA_Profil_PO_okres": "Okres",
+        "EA_Profil_PO_je_kapitola": "Je kapitola",
+        "Gen_Profil_EA_skrateny_nazov": "Skratený názov",
+        "Gen_Profil_EA_popis_referencie": "Popis referencie",
+        "Gen_Profil_EA_odkaz_na_referenciu": "Odkaz na referenciu",
+        "Gen_Profil_EA_typ_replikacie": "Typ replikácie",
+        "Gen_Profil_EA_pocet_replikacii": "Počet replikácií",
+        "Profil_PO_statutar_titul_pred_menom": "Titul pred menom",
+        "Profil_PO_statutar_meno": "Meno",
+        "Profil_PO_statutar_priezvisko": "Priezvisko",
+        "Profil_PO_statutar_titul_za_menom": "Titul za menom"
     }
 }

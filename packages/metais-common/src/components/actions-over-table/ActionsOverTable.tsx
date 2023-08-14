@@ -31,6 +31,7 @@ export enum ActionNames {
     EXPORT = 'EXPORT',
     SELECT_COLUMN = 'SELECT_COLUMN',
     ADD_NEW_ITEM = 'ADD_NEW_ITEM',
+    ACTION_OVER_TABLE = 'ACTION_OVER_TABLE',
 }
 
 export type HiddenButtons = {
@@ -206,33 +207,35 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     return (
         <div className={styles.buttonContainer}>
             <div className={styles.buttonGroup}>
-                <div className={classnames(styles.mobileOrder3, styles.buttonPopup)}>
-                    <ButtonPopup
-                        buttonLabel={`${t('actionOverTable.actions')} (${checkedRowItems})`}
-                        buttonClassname={styles.withoutMarginBottom}
-                        popupContent={() => {
-                            return (
-                                <div className={styles.popupActions}>
-                                    <ButtonLink
-                                        className={styles.buttonLinkWithIcon}
-                                        icon={<img className={styles.iconInPopup} src={CrossInACircleIcon} />}
-                                        label={t('actionOverTable.invalidateItems')}
-                                    />
-                                    <ButtonLink
-                                        className={styles.buttonLinkWithIcon}
-                                        icon={<img className={styles.iconInPopup} src={CheckInACircleIcon} />}
-                                        label={t('actionOverTable.validateItems')}
-                                    />
-                                    <ButtonLink
-                                        className={styles.buttonLinkWithIcon}
-                                        icon={<img className={styles.iconInPopup} src={ChangeIcon} />}
-                                        label={t('actionOverTable.changeOwner')}
-                                    />
-                                </div>
-                            )
-                        }}
-                    />
-                </div>
+                {!hiddenButtons?.ACTION_OVER_TABLE && (
+                    <div className={classnames(styles.mobileOrder3, styles.buttonPopup)}>
+                        <ButtonPopup
+                            buttonLabel={`${t('actionOverTable.actions')} (${checkedRowItems})`}
+                            buttonClassname={styles.withoutMarginBottom}
+                            popupContent={() => {
+                                return (
+                                    <div className={styles.popupActions}>
+                                        <ButtonLink
+                                            className={styles.buttonLinkWithIcon}
+                                            icon={<img className={styles.iconInPopup} src={CrossInACircleIcon} />}
+                                            label={t('actionOverTable.invalidateItems')}
+                                        />
+                                        <ButtonLink
+                                            className={styles.buttonLinkWithIcon}
+                                            icon={<img className={styles.iconInPopup} src={CheckInACircleIcon} />}
+                                            label={t('actionOverTable.validateItems')}
+                                        />
+                                        <ButtonLink
+                                            className={styles.buttonLinkWithIcon}
+                                            icon={<img className={styles.iconInPopup} src={ChangeIcon} />}
+                                            label={t('actionOverTable.changeOwner')}
+                                        />
+                                    </div>
+                                )
+                            }}
+                        />
+                    </div>
+                )}
                 <div className={classnames(styles.buttonImportExport, styles.mobileOrder2)}>
                     {!hiddenButtons?.IMPORT && (
                         <Button

@@ -8,6 +8,7 @@ import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWr
 import { Table, TextBody } from '@isdd/idsk-ui-kit'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import classNames from 'classnames'
+import { IListData } from '@isdd/metais-common/types/list'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import {
@@ -18,8 +19,6 @@ import {
     sortAndMergeCiColumns,
 } from './ciTableHelpers'
 import styles from './ciTable.module.scss'
-
-import { IListData } from '@/types/list'
 
 export interface IRowSelectionState {
     rowSelection: Record<string, ColumnsOutputDefinition>

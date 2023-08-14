@@ -16,6 +16,7 @@ export const mapNeighboursSetTargetToPagination = (uiFilter?: IFilter, data?: Ne
         dataLength: data?.toNodes?.pagination?.totaltems ?? 0,
     }
 }
+
 export const mapConfigurationItemSetToPagination = (uiFilter?: IFilter, dataLength?: number): Pagination => {
     return {
         pageNumber: uiFilter?.pageNumber ?? BASE_PAGE_NUMBER,

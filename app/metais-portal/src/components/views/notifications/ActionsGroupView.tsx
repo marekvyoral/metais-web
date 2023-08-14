@@ -10,11 +10,10 @@ import {
     SetAllNotificationsAsRead200,
 } from '@isdd/metais-common/api/generated/notifications-swagger'
 import { UseMutateFunction } from '@tanstack/react-query'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/components/constants'
 
 import styles from './notifications.module.scss'
 import { selectedDefaultColumns } from './defaults'
-
-import { DEFAULT_PAGESIZE_OPTIONS } from '@/components/constants'
 
 interface fetchParams {
     perPage: number
