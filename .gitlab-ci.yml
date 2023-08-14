@@ -46,7 +46,7 @@ build-node:
             - 'app/metais-portal/dist/'
             - 'app/metais-admin/dist/'
     rules:
-        - if: '$CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH =~ /^feature\/.+$/'
+        - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/i  || $CI_COMMIT_REF_NAME =~ /^met-[^\/]+\/.+$/i || $CI_COMMIT_REF_NAME =~ /^bug\/.+$/i
 
 .build_docker_template:
     image: nexus.isdd.sk:8490/docker:20.10-git
@@ -100,7 +100,7 @@ deploy-okd-feature:
          - echo "######http://$RELEASE_NAME-admin-metais3.apps.dev.isdd.sk######"
          - echo "###################################################3#################"
      rules:
-         - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/
+         - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/i  || $CI_COMMIT_REF_NAME =~ /^met-[^\/]+\/.+$/i || $CI_COMMIT_REF_NAME =~ /^bug\/.+$/i
            when: on_success
 
 deploy-okd-develop:
