@@ -14,19 +14,21 @@ interface ITableRowProps<T> {
 export const TableRow = <T,>({ row, isRowSelected, isRowBold }: ITableRowProps<T>): JSX.Element => {
     return (
         <tr className={classNames('idsk-table__row', { [styles.fontWeightBolder]: isRowBold && isRowBold(row) })}>
-            {row.getVisibleCells().map((cell) => (
-                <td
-                    className={classNames('idsk-table__cell', {
-                        [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
-                        [styles.rowSelected]: isRowSelected && isRowSelected(row),
-                        [styles.verticalAlignMiddle]: isRowSelected && isRowSelected(row),
-                    })}
-                    style={cell.column.columnDef.size ? { width: cell.column.columnDef.size } : {}}
-                    key={cell.id}
-                >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-            ))}
+            {row.getVisibleCells().map((cell) => {
+                const columnDef = cell.column.columnDef
+                return (
+                    <td
+                        className={classNames('idsk-table__cell', {
+                            [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
+                            [styles.rowSelected]: isRowSelected && isRowSelected(row),
+                        })}
+                        style={columnDef.size ? { width: columnDef.size } : {}}
+                        key={cell.id}
+                    >
+                        {flexRender(columnDef.cell, cell.getContext())}
+                    </td>
+                )
+            })}
         </tr>
     )
 }

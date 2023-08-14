@@ -416,6 +416,52 @@
             "lastModifiedAt": " Last change"
         }
     },
+    "tasks": {
+        "home": "Home",
+        "tasks": "Tasks",
+        "assignToUser": "Assign to user",
+        "assignToGroup": "Assign to group",
+        "finish": "Finish task",
+        "description": "Task description",
+        "baseInfo": "Basic informations",
+        "IN_PROGRESS": "Active",
+        "CREATED": "Active",
+        "DONE": "Done",
+        "all": "All",
+        "active": "Active",
+        "done": "Done",
+        "selectType": "Select type:",
+        "createdFrom": "Created from:",
+        "createdTo": "Created to:",
+        "state": "State",
+        "selectLogin": "Select login ",
+        "selectGroup": "Select group",
+        "assigne": "Assigne",
+        "deadline": "Due date (deadline)",
+        "showAll":"Show all tasks",
+        "youHaveTasks":"You have {{numberOfTasks}} tasks",
+        "tableHeaders": {
+            "name": "Name",
+            "type": "Type",
+            "createdAt": "Created at",
+            "state": "State",
+            "assignedTo": "Assigned to",
+            "changedAt": "Changed at",
+            "changedBy": "Changed by",
+            "action": "Action"
+        },
+        "activity": {
+           "changeOfUser": "Change of user",
+           "closingOfTask": "Closing of task" 
+        },
+        "type_app_id": {
+            "iam":"IAM",
+            "integrations":"Integrations",
+            "kris":"KRIS",
+            "standards":"Standards",
+            "statistics":"Statistics"
+        }
+    },
     "notifications": {
         "all": "All",
         "INFO": "INFO",

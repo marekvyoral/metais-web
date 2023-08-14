@@ -7,7 +7,7 @@
  */
 import { useQuery, useMutation } from '@tanstack/react-query'
 import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
-import { useIAmSwaggerClient } from '../hooks/useIAmSwaggerClient'
+import { useIAmSwaggerClient } from '../hooks/useIamSwaggerClient'
 export type FindAllWithParamsParams = {
     search?: string
 }

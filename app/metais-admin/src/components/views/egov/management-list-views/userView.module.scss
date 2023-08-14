@@ -1,0 +1,24 @@
+@import '../../../../utils.scss';
+
+.attributeGridRowBox {
+    display: flex;
+    gap: govuk-spacing(4);
+    flex-direction: column;
+    margin-bottom: govuk-spacing(8);
+}
+.formButtonsWrapper {
+    display: flex;
+    @include mq($until: tablet) {
+        display: block;
+    }
+}
+
+.cancelButton {
+    margin-left: govuk-spacing(2);
+    @include mq($until: tablet) {
+        margin-left: 0;
+    }
+}
+.backButton {
+    margin-left: auto;
+}

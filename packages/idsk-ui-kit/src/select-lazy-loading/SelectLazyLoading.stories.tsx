@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { object, string } from 'yup'
 
 import { SelectLazyLoading } from './SelectLazyLoading'
 
@@ -70,28 +72,39 @@ interface Option {
 }
 
 export interface IForm {
-    selectOption: Option
+    selectOption: string
 }
+
+const schema = object().shape({ selectOption: string().required('Povinné pole') })
 
 export const UncontrolledFormHookGroup: Story = {
     render: () => {
         const Wrapper = () => {
-            const { control, handleSubmit } = useForm<IForm>({ defaultValues: { selectOption: { name: 'House Ashwood' } } })
+            const defaultValue = 'House Ashwood'
+
+            const { handleSubmit, setValue, register, formState } = useForm<IForm>({
+                defaultValues: { selectOption: defaultValue },
+                resolver: yupResolver(schema),
+            })
             const onSubmit = (data: IForm) => {
                 // eslint-disable-next-line no-alert
-                alert('select data: ' + data.selectOption.name)
+                alert('select data: ' + data.selectOption)
             }
+
             return (
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <SelectLazyLoading<Option>
                         id="selectOption"
-                        control={control}
                         name="selectOption"
                         loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
                         getOptionValue={(item) => item.name}
                         getOptionLabel={(item) => item.name}
                         label="Label test"
-                        rules={{ required: 'This field is required.' }}
+                        defaultValue={{ name: defaultValue }}
+                        setValue={setValue}
+                        register={register}
+                        isMulti={false}
+                        error={formState.errors.selectOption?.message}
                     />
                     <button type="submit">Submit</button>
                 </form>
