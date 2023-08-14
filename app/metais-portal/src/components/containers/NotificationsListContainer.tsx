@@ -20,8 +20,7 @@ import React, { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { UseMutateFunction } from '@tanstack/react-query'
 
-import { ALL_EVENT_TYPES, NOTIFICATION_TITLE } from '../constants'
-
+import { ALL_EVENT_TYPES, NOTIFICATION_TITLE } from '@/components/constants'
 import { firstLetterToLowerCase } from '@/components/views/notifications/notificationUtils'
 import { selectedDefaultColumns } from '@/components/views/notifications/defaults'
 
