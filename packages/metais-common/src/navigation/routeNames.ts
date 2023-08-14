@@ -12,6 +12,7 @@ export enum RouteNames {
     PREHLADY_A_POSTUPY = '',
     DOCUMENTS_LIST_TAB = '/ci/:entityName/:entityId/documents',
     RELATIONSHIPS_LIST_TAB = '/ci/:entityName/:entityId/relationships',
+    TASKS = '/ulohy',
 }
 
 export enum AdminRouteNames {
@@ -27,6 +28,7 @@ export enum AdminRouteNames {
 }
 
 export enum NavigationSubRoutes {
+    TASK_DETAIL = '/ulohy/:taskId',
     PROCESSORS_OF_IT_DEVELOPMENT_CONCEPTS = 'ci/PO_IS',
     SUBORDINATES = 'ci/PO_PO',
     IS_OPERATORS = 'ci/PO_IS_PO',

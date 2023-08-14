@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { forwardRef } from 'react'
 import classNames from 'classnames'
+import { v4 as uuidV4 } from 'uuid'
 
 import { GreenCheckMarkIcon } from '../assets/images'
 import styles from '../styles/InfoAndCheckInput.module.scss'
@@ -21,7 +22,24 @@ interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<
     hasInputIcon?: boolean
 }
 export const Input = forwardRef<HTMLInputElement, IInputProps>(
-    ({ id, label, name, hint, error, disabled, info, type = 'text', correct, className, isUpload = false, hasInputIcon = false, ...rest }, ref) => {
+    (
+        {
+            id = `input_${uuidV4()}`,
+            label,
+            name,
+            hint,
+            error,
+            disabled,
+            info,
+            type = 'text',
+            correct,
+            className,
+            isUpload = false,
+            hasInputIcon = false,
+            ...rest
+        },
+        ref,
+    ) => {
         const hintId = `${id}-hint`
 
         return (
