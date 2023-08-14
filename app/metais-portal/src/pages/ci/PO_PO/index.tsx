@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/components/constants'
 
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@/components/constants'
 import { FilterPO, POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
 import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 

@@ -44,9 +44,18 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
             ...(data ? { body: JSON.stringify(data) } : {}),
         })
 
+        const responseBodyText = await response.text()
+        let responseBody
+        if (responseBodyText?.length > 0) {
+            try {
+                responseBody = JSON.parse(responseBodyText)
+            } catch (e) {
+                // eslint-disable-next-line no-console
+                console.error('Response not json')
+                responseBody = responseBodyText
+            }
+        }
         const contentType = response.headers.get('Content-Type')
-
-        const responseBody = await response.text()
 
         if (response.status === 401) {
             dispatch({ type: AuthActions.LOGOUT })
@@ -57,9 +66,14 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
         }
 
         if (contentType?.includes('application/json')) {
-            const parsedResponseBody = JSON.parse(responseBody)
-            if (callback) callback(parsedResponseBody)
-            return parsedResponseBody
+            try {
+                const parsedResponseBody = JSON.parse(responseBody)
+                if (callback) callback(parsedResponseBody)
+                return parsedResponseBody
+            } catch {
+                if (callback) callback(responseBody)
+                return responseBody
+            }
         }
 
         return responseBody

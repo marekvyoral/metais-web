@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { useReadCiNeighbours, NeighbourPairUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
+import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
 
-import { mapFilterToNeighborsApi } from '@/componentHelpers'
 import { mapNeighboursSetSourceToPagination } from '@/componentHelpers/pagination'
 
 export interface IView {
