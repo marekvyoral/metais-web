@@ -3,7 +3,7 @@ import { ControlProps, GroupBase, MenuProps, OptionProps, StylesConfig, componen
 
 import styles from '@isdd/idsk-ui-kit/select-lazy-loading/selectLazyLoading.module.scss'
 
-export const Menu = <T,>(props: MenuProps<T, true, GroupBase<T>>) => {
+export const Menu = <T,>(props: MenuProps<T, boolean, GroupBase<T>>) => {
     return (
         <components.Menu {...props} className={styles.menu}>
             {props.children}
@@ -19,7 +19,7 @@ export const Control = <T,>(props: ControlProps<T>) => {
     return <components.Control {...props} className={styles.control} />
 }
 
-export const selectStyles = <T,>(): StylesConfig<T, true, GroupBase<T>> => ({
+export const selectStyles = <T,>(): StylesConfig<T, boolean, GroupBase<T>> => ({
     multiValue: (base) => ({ ...base, border: 'solid', borderWidth: '1px', margin: '1px', padding: '2px' }),
     multiValueRemove: (base) => ({
         ...base,

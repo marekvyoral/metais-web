@@ -266,4 +266,28 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
+    bpmApi: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_BPM_ENGINE_SWAGGER_URL ?? '',
+            filters: {
+                tags: ['task-controller'],
+            },
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/tasks-swagger.ts`,
+            override: {
+                query: {
+                    useQuery: true,
+                },
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useTasksSwaggerClient.ts',
+                    name: 'useTasksSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
 })

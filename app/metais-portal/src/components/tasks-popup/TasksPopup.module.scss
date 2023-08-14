@@ -1,0 +1,23 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.tasksPopupBtn {
+    background-color: transparent !important;
+    padding: govuk-spacing(0) !important;
+    box-shadow: none !important;
+}
+
+.tasksList {
+    list-style: none;
+    padding: 0;
+    border-bottom: 1px solid govuk-colour('grey-2');
+    border-top: 1px solid govuk-colour('grey-2');
+    li {
+        padding: govuk-spacing(2);
+    }
+}
+
+.tasksPopupContent {
+    background-color: govuk-colour('white');
+    border: 1px solid govuk-colour('grey-2');
+    padding: govuk-spacing(2);
+}

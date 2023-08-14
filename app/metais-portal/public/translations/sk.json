@@ -417,6 +417,53 @@
             "lastModifiedAt": "Posledná zmena"
         }
     },
+    "tasks": {
+        "home": "Domov",
+        "tasks": "Úlohy",
+        "assignToUser": "Priradiť k používateľovi",
+        "assignToGroup": "Priradiť k skupine",
+        "finish": "Ukončiť úlohu",
+        "description": "Popis úlohy",
+        "baseInfo": "Základné informácie",
+        "IN_PROGRESS": "Aktívne",
+        "CREATED": "Aktívne",
+        "DONE": "Hotové",
+        "toMe": "Prebrať úlohu",
+        "all": "Všetky",
+        "active": "Aktívne",
+        "done": "Hotové",
+        "selectType": "Vyberte typ:",
+        "createdFrom": "Vytvorené od:",
+        "createdTo": "Vytvorené do:",
+        "state": "Stav",
+        "selectLogin": "Vyberte login používateľa",
+        "selectGroup": "Vyberte názov skupiny",
+        "assigne": "Riešiteľ",
+        "deadline": "Konečný termín (deadline):",
+        "showAll": "Zobraziť všetky úlohy",
+        "youHaveTasks":"Máte {{numberOfTasks}} úloh",
+        "tableHeaders": {
+            "name": "Názov",
+            "type": "Typ",
+            "createdAt": "Vytvorené",
+            "state": "Stav",
+            "assignedTo": "Pridelená",
+            "changedAt": "Dátum zmeny",
+            "changedBy": "Zmenu vykonal",
+            "action": "Action"
+        },
+        "activity": {
+            "changeOfUser": "Zmena použivateľa",
+            "closingOfTask": "Uzatvorenie úlohy"
+        },
+        "type_app_id": {
+            "iam":"IAM",
+            "integrations":"Integrácie",
+            "kris":"KRIS",
+            "standards":"Štandardy",
+            "statistics":"Štatistika"
+        }
+    },
     "notifications": {
         "all": "Všetky",
         "INFO": "INFO",

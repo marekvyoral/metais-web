@@ -404,7 +404,7 @@ export const MultiSelectInput: Story = {
     render: ({ ...args }) => {
         const FormWrapper = () => {
             const { t } = useTranslation()
-            const { handleSubmit, register, formState, control } = useForm({
+            const { handleSubmit, register, formState } = useForm({
                 resolver: yupResolver(generateFormSchema([args.attribute], t)),
             })
             const { errors, isSubmitted } = formState
@@ -418,13 +418,7 @@ export const MultiSelectInput: Story = {
 
             return (
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <AttributeInput
-                        {...args}
-                        register={register}
-                        error={hasAttributeInputError(args.attribute, errors)}
-                        isSubmitted={isSubmitted}
-                        control={control}
-                    />
+                    <AttributeInput {...args} register={register} error={hasAttributeInputError(args.attribute, errors)} isSubmitted={isSubmitted} />
                     <Button label="Submit" type="submit" />
                     <p>{data}</p>
                 </form>
