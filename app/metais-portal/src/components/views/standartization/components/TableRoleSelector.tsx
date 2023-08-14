@@ -14,7 +14,7 @@ import styles from '../styles.module.scss'
 import { DEFAULT_ROLES } from '../defaultRoles'
 import { canUserEditRoles } from '../standartizationUtils'
 
-import { FilterParams, TableData } from '@/pages/standardization/groupdetail/[id]'
+import { FilterParams, TableData } from '@/components/containers/KSIVSVContainer'
 
 interface KSICSTableRoleSelectorProps {
     row: Row<TableData>

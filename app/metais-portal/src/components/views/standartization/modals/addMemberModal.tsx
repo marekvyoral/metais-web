@@ -5,9 +5,10 @@ import {
     useAddGroupOrgRoleIdentityRelationHook,
     useFind1Hook,
     useFindAll11Hook,
+    useFindRelatedOrganizations,
     useFindRelatedOrganizationsHook,
 } from '@isdd/metais-common/api/generated/iam-swagger'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -61,17 +62,20 @@ interface addMemberPopUpProps {
 
 const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, setAddedLabel, groupId }) => {
     const formMethods = useForm()
-    const { handleSubmit, register, formState, setValue, trigger, control } = useForm({})
+    const { handleSubmit, register, formState, setValue, trigger } = useForm({})
     const { t } = useTranslation()
     const loadMembers = useFind1Hook()
     const findRole = useFindAll11Hook()
     const addRelation = useAddGroupOrgRoleIdentityRelationHook()
-    const getOrganizationsByUser = useFindRelatedOrganizationsHook()
     const [selectedMember, setSelectedMember] = useState<Identity>()
     const [selectedOrganization, setSelectedOrganization] = useState<string>()
     const [selectedRole, setSelectedRole] = useState<string>()
     const [myErrors, setMyErrors] = useState<string[]>([])
-    const [selectedMemberOrganizations, setSelectedMemberOrganizations] = useState<{ name: string; uuid: string }[]>()
+    const [selectedMemberOrganizations, setSelectedMemberOrganizations] = useState<{ name: string; uuid: string }[]>([
+        { uuid: '1734e40c-f959-4629-a699-5c0bc6ba8d55', name: t('KSIVSPage.professionals') },
+    ])
+    const { data: relatedOrganizations } = useFindRelatedOrganizations(selectedMember?.uuid ?? '', { query: { queryKey: [selectedMember] } })
+    console.log(relatedOrganizations)
 
     const onSubmit = async () => {
         if (selectedRole == undefined && !myErrors.includes('role')) {
@@ -111,6 +115,23 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
         [loadMembers],
     )
 
+    useEffect(() => {
+        setSelectedMemberOrganizations([
+            ...(relatedOrganizations ?? []).map((item) => ({
+                uuid: item.uuid ?? '',
+                name: (item.attributes ?? {})['Gen_Profil_nazov'],
+            })),
+            { uuid: '1734e40c-f959-4629-a699-5c0bc6ba8d55', name: t('KSIVSPage.professionals') },
+        ])
+        setSelectedOrganization('1734e40c-f959-4629-a699-5c0bc6ba8d55')
+    }, [relatedOrganizations, t])
+
+    useEffect(() => {
+        if (selectedOrganization != '1734e40c-f959-4629-a699-5c0bc6ba8d55') {
+            setSelectedRole(DEFAULT_ROLES[0].description)
+        }
+    }, [selectedOrganization])
+
     return (
         <>
             <BaseModal
@@ -118,6 +139,9 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
                 close={() => {
                     onClose()
                     setMyErrors([])
+                    setSelectedMember(undefined)
+                    setSelectedOrganization(undefined)
+                    setSelectedRole(undefined)
                 }}
             >
                 <TextHeading size="L">{t('KSIVSPage.addMember')}</TextHeading>
@@ -129,20 +153,6 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
                             value={selectedMember}
                             onChange={async (newValue) => {
                                 setSelectedMember(newValue as Identity)
-                                if (selectedMember != undefined) {
-                                    const organizationsForUser: { name: string; uuid: string }[] = await getOrganizationsByUser(
-                                        selectedMember?.uuid ?? '',
-                                    ).then((response) =>
-                                        response.map((item) => ({
-                                            uuid: item.uuid ?? '',
-                                            name: (item.attributes ?? {})['Gen_Profil_nazov'],
-                                        })),
-                                    )
-                                    setSelectedMemberOrganizations([
-                                        ...organizationsForUser,
-                                        { uuid: '1734e40c-f959-4629-a699-5c0bc6ba8d55', name: t('KSIVSPage.professionals') },
-                                    ])
-                                }
                                 setMyErrors(myErrors.filter((item) => item !== 'member'))
                             }}
                             label={t('KSIVSPage.memberMandatory')}
@@ -164,6 +174,7 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
                             error={myErrors.includes('organization') ? t('KSIVSPage.selectOrganization') : ''}
                         />
                         <SimpleSelect
+                            disabled={selectedOrganization == undefined}
                             label={t('KSIVSPage.roleMandatory')}
                             options={DEFAULT_ROLES?.map((item) => ({ label: item.value, value: item.code }))}
                             error={myErrors.includes('role') ? t('KSIVSPage.selectRole') : ''}
@@ -173,7 +184,6 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
                             }}
                         />
                         <AttributeInput
-                            control={control}
                             trigger={trigger}
                             setValue={setValue}
                             attribute={{ ...ongoingSessionCheckboxAttr, name: t('KSIVSPage.addToOngoingSession') }}
@@ -184,7 +194,6 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
                         />
                         <div className={styles.marginVertical20}>
                             <AttributeInput
-                                control={control}
                                 trigger={trigger}
                                 setValue={setValue}
                                 attribute={{ ...ongoingPollsCheckboxAttr, name: t('KSIVSPage.addToOngoingPolls') }}
@@ -195,7 +204,6 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
                             />
                         </div>
                         <AttributeInput
-                            control={control}
                             trigger={trigger}
                             setValue={setValue}
                             attribute={{ ...seeEmailsCheckboxAttr, name: t('KSIVSPage.seeEmailAddresses') }}

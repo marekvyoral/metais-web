@@ -7,7 +7,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import styles from './styles.module.scss'
 import { canUserSendEmails, isUserAdmin, sendBatchEmail } from './standartizationUtils'
 
-import { TableData } from '@/pages/standardization/groupdetail/[id]'
+import { TableData } from '@/components/containers/KSIVSVContainer'
 
 interface KSIVSTAbleActionsProps {
     listParams: FindRelatedIdentitiesAndCountParams

@@ -1,21 +1,15 @@
-import { Attribute } from '@isdd/metais-common/api'
-import { FieldErrors } from 'react-hook-form'
-import { ColumnDef, Row, Table } from '@tanstack/react-table'
-import React from 'react'
 import { CheckBox, DeleteForeverRed } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL, DELETE_CELL } from '@isdd/idsk-ui-kit/table/constants'
+import { Attribute } from '@isdd/metais-common/api'
+import { FindRelatedIdentitiesAndCountParams, IdentitiesInGroupAndCount } from '@isdd/metais-common/api/generated/iam-swagger'
+import { ColumnDef, Row, Table } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
-import {
-    FindAll11200,
-    FindAll11Params,
-    FindRelatedIdentitiesAndCountParams,
-    IdentitiesInGroupAndCount,
-    OperationResult,
-} from '@isdd/metais-common/api/generated/iam-swagger'
+import React from 'react'
+import { FieldErrors } from 'react-hook-form'
 
 import KSIVSTableRoleSelector from './components/TableRoleSelector'
 
-import { FilterParams, TableData } from '@/pages/standardization/groupdetail/[id]'
+import { FilterParams, TableData } from '@/components/containers/KSIVSVContainer'
 
 export const reduceTableDataToObjectWithUuid = <T extends { uuid?: string }>(array: T[]): Record<string, T> => {
     return array.reduce<Record<string, T>>((result, item) => {
@@ -103,13 +97,6 @@ export const buildColumns = (
     columns: ColumnDef<TableData>[],
     userRoles: string[] | undefined,
     t: TFunction<'translation', undefined, 'translation'>,
-    findRoleRequest: (params?: FindAll11Params | undefined, signal?: AbortSignal | undefined) => Promise<FindAll11200>,
-    updateGroupRequest: (uuid: string, groupUuid: string, oldRoleUuid: string, newRoleUuid: string, orgId: string) => Promise<OperationResult>,
-    fetchIdentitiesData: (
-        uuid: string,
-        params?: FindRelatedIdentitiesAndCountParams | undefined,
-        signal?: AbortSignal | undefined,
-    ) => Promise<IdentitiesInGroupAndCount>,
     id: string | undefined,
     listParams: FindRelatedIdentitiesAndCountParams,
     filter: FilterParams,
