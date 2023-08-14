@@ -20,9 +20,10 @@ import React, { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { UseMutateFunction } from '@tanstack/react-query'
 
-import { selectedDefaultColumns } from '../views/notifications/defaults'
-import { firstLetterToLowerCase } from '../views/notifications/notificationUtils'
 import { ALL_EVENT_TYPES, NOTIFICATION_TITLE } from '../constants'
+
+import { firstLetterToLowerCase } from '@/components/views/notifications/notificationUtils'
+import { selectedDefaultColumns } from '@/components/views/notifications/defaults'
 
 export interface FilterData extends IFilterParams {
     eventType: string
