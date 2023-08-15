@@ -6,16 +6,14 @@ import {
     useFind1Hook,
     useFindAll11Hook,
     useFindRelatedOrganizations,
-    useFindRelatedOrganizationsHook,
 } from '@isdd/metais-common/api/generated/iam-swagger'
 import React, { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-import { DEFAULT_ROLES } from '../defaultRoles'
-import styles from '../styles.module.scss'
-import { hasAttributeInputError } from '../standartizationUtils'
-
+import { DEFAULT_ROLES } from '@/components/views/standartization/defaultRoles'
+import styles from '@/components/views/standartization/styles.module.scss'
+import { hasAttributeInputError } from '@/components/views/standartization/standartizationUtils'
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 
 const textAttribute = {
@@ -75,7 +73,6 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
         { uuid: '1734e40c-f959-4629-a699-5c0bc6ba8d55', name: t('KSIVSPage.professionals') },
     ])
     const { data: relatedOrganizations } = useFindRelatedOrganizations(selectedMember?.uuid ?? '', { query: { queryKey: [selectedMember] } })
-    console.log(relatedOrganizations)
 
     const onSubmit = async () => {
         if (selectedRole == undefined && !myErrors.includes('role')) {
@@ -165,6 +162,7 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
                             label={t('KSIVSPage.organizationMandatory')}
                             options={selectedMemberOrganizations?.map((item) => ({ label: item.name, value: item.uuid })) ?? []}
                             disabled={selectedMember == undefined}
+                            value={selectedOrganization}
                             onChange={(value) => {
                                 setSelectedOrganization(value.target.value)
                                 if (selectedOrganization != undefined) {
@@ -175,6 +173,7 @@ const KSIVSAddMemberPopUp: React.FC<addMemberPopUpProps> = ({ isOpen, onClose, s
                         />
                         <SimpleSelect
                             disabled={selectedOrganization == undefined}
+                            value={selectedRole}
                             label={t('KSIVSPage.roleMandatory')}
                             options={DEFAULT_ROLES?.map((item) => ({ label: item.value, value: item.code }))}
                             error={myErrors.includes('role') ? t('KSIVSPage.selectRole') : ''}

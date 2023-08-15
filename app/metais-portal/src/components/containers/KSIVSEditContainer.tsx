@@ -5,7 +5,7 @@ import React from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import { KSIVSEditView } from '../views/standartization/KSIVSEditView'
+import { KSIVSEditView } from '@/components/views/standartization/KSIVSEditView'
 
 export interface KSIVSEditViewParams {
     onSubmit: (formData: FieldValues) => void

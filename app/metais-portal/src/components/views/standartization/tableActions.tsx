@@ -39,6 +39,7 @@ const KSIVSTableActions: React.FC<KSIVSTAbleActionsProps> = ({ listParams, setLi
                 {isUserAdmin(userRoles) && <Button label={'+ ' + t('KSIVSPage.addMember')} onClick={() => setAddModalOpen(true)} />}
                 <TextBody className={styles.marginLeftAuto}>{t('KSIVSPage.display')}</TextBody>
                 <SimpleSelect
+                    value={listParams.perPage}
                     onChange={(label) => {
                         setListParams({ ...listParams, perPage: label.target.value })
                     }}

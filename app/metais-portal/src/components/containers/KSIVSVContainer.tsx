@@ -11,8 +11,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { DEFAULT_ROLES } from '../views/standartization/defaultRoles'
-
+import { DEFAULT_ROLES } from '@/components/views/standartization/defaultRoles'
 import { buildColumns, isUserAdmin } from '@/components/views/standartization/standartizationUtils'
 
 const defaultSearch: FindRelatedIdentitiesAndCountParams = {
@@ -93,7 +92,8 @@ const KSIVSContainer: React.FC<IKSIVSContainer> = ({ id, View }) => {
     const {
         data: identitiesData,
         isLoading: isIdentitiesLoading,
-        isError: isIdentitesError,
+        isError: isIdentitiesError,
+        error,
     } = useFindRelatedIdentitiesAndCount(id ?? '', {
         ...listParams,
         ...(filter.memberUuid != undefined && { memberUuid: filter.memberUuid }),
@@ -146,7 +146,7 @@ const KSIVSContainer: React.FC<IKSIVSContainer> = ({ id, View }) => {
     const [isAddModalOpen, setAddModalOpen] = useState(false)
 
     return (
-        <QueryFeedback loading={isIdentitiesLoading} error={isIdentitesError}>
+        <QueryFeedback loading={false} error={isIdentitiesError} errorProps={{ errorMessage: error?.message, errorTitle: error?.type }}>
             <View
                 id={id}
                 isAdmin={isAdmin}

@@ -23,7 +23,7 @@ import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableRowExpanded } from './TableRowExpanded'
 
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
-import { LoadingIndicator } from '@/loading-indicator/LoadingIndicator'
+import { LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
 
 export interface ITableProps<T> {
     data?: Array<T>

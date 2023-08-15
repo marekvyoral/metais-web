@@ -1,9 +1,9 @@
 import { BreadCrumbs, Button, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import React, { useEffect } from 'react'
-import { FieldValues, FormProvider, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import React from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 import { KSIVSEditViewParams } from '@/components/containers/KSIVSEditContainer'
@@ -36,7 +36,6 @@ export const KSIVSEditView: React.FC<KSIVSEditViewParams> = ({ onSubmit, goBack,
     const { t } = useTranslation()
     const formMethods = useForm({})
     const { handleSubmit, register, formState } = useForm({})
-    const { setValue } = useForm<FieldValues>({})
 
     const { errors, isSubmitted } = formState
 
