@@ -1,0 +1,7 @@
+@import '../../utils.scss';
+
+.mobileOrder1 {
+    @include mq($until: tablet) {
+        order: 1;
+    }
+}

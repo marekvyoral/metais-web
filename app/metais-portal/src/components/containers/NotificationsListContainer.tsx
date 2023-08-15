@@ -19,7 +19,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import React, { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { UseMutateFunction } from '@tanstack/react-query'
-import { ALL_EVENT_TYPES, NOTIFICATION_TITLE } from '@isdd/metais-common/components/constants'
+import { ALL_EVENT_TYPES, NOTIFICATION_TITLE } from '@isdd/metais-common/constants'
 
 import { firstLetterToLowerCase } from '@/components/views/notifications/notificationUtils'
 import { selectedDefaultColumns } from '@/components/views/notifications/defaults'

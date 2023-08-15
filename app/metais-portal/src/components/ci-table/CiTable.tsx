@@ -96,7 +96,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 header: attributeHeader ?? technicalName,
                 id: technicalName ?? '',
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
-                    <TextBody size="S" className={styles.marginBottom0}>
+                    <TextBody size="S" className={'marginBottom0'}>
                         {index === 0 ? (
                             <Link
                                 to={'./' + ctx?.row?.original?.uuid}

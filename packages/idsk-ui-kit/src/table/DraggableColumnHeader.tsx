@@ -62,7 +62,7 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
                     {id === CHECKBOX_CELL ? (
                         flexRender(columnHeader, getContext())
                     ) : (
-                        <TextBody size="S" className={styles.marginBottom0}>
+                        <TextBody size="S" className={'marginBottom0'}>
                             <strong className={styles.columnHeaderStrong}>
                                 {isPlaceholder ? null : flexRender(columnHeader, getContext())}
                                 {column.getCanSort() && columnEnabledSorting && (

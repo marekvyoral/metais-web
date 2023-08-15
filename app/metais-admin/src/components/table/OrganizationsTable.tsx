@@ -7,7 +7,7 @@ import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWr
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ATTRIBUTE_NAME, ConfigurationItemSetUi, ConfigurationItemUi, FavoriteCiType } from '@isdd/metais-common/api'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/components/constants'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { createFullAdressFromAttributes } from '@isdd/metais-common/componentHelpers/formatting/attributesCombinations'
 
 import { IActions } from '../containers/Egov/Entity/OrganizationsListContainer'
@@ -75,10 +75,8 @@ export const OrganizationsTable = ({
                 storeUserSelectedColumns={storeUserSelectedColumns}
                 resetUserSelectedColumns={resetUserSelectedColumns}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                ciType={entityName ?? ''}
-                hiddenButtons={{ IMPORT: true, EXPORT: true, SELECT_COLUMN: false, ACTION_OVER_TABLE: true }}
                 entityName={entityName ?? ''}
-                createHref="/organizations/find"
+                // createHref="/organizations/find"
             />
             <Table data={data?.configurationItemSet} columns={columns} sort={sort} isLoading={isLoading} error={error} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />

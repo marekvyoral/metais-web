@@ -7,6 +7,11 @@ import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWr
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { BASE_PAGE_SIZE, CiTypePreview } from '@isdd/metais-common/api'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
+import { BulkPopup, CreateEntityButton, ExportButton } from '@isdd/metais-common/components/actions-over-table'
+import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
+import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
+import { IColumnSectionType } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 
 type IListData = {
     data?: CiTypePreview[] | undefined
@@ -65,20 +70,48 @@ export const EgovTable = ({ data, entityName }: IListData) => {
         setEnd((pageNumber ?? 0) * (filter?.pageSize ?? 0))
     }
 
+    const metaAttributesColumnSection: IColumnSectionType = {
+        name: 'Metainformácie položky',
+        attributes: [
+            {
+                name: t('egov.name'),
+                technicalName: 'name',
+            },
+            {
+                name: t('egov.technicalName'),
+                technicalName: 'technicalName',
+            },
+            {
+                name: t('egov.type'),
+                technicalName: 'type',
+            },
+            {
+                name: t('egov.state'),
+                technicalName: 'state',
+            },
+        ],
+    }
+
     return (
         <div>
             <ActionsOverTable
                 handleFilterChange={handleSetPageSize}
-                pagingOptions={[
-                    { value: '10', label: '10' },
-                    { value: '20', label: '20' },
-                    { value: '50', label: '50' },
-                    { value: '100', label: '100' },
-                ]}
-                hiddenButtons={{ IMPORT: true }}
-                createHref={`/egov/${entityName}/create`}
+                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName={entityName ?? ''}
-                ciType={entityName ?? ''}
+                createButton={<CreateEntityButton path={`/egov/${entityName}/create`} />}
+                exportButton={<ExportButton />}
+                metaAttributesColumnSection={metaAttributesColumnSection}
+                hiddenButtons={{ SELECT_COLUMNS: true }}
+                bulkPopup={
+                    <BulkPopup
+                        checkedRowItems={0}
+                        items={[
+                            <ButtonLink key={'testItem1'} icon={CrossInACircleIcon} label={t('actionOverTable.invalidateItems')} />,
+                            <ButtonLink key={'testItem2'} icon={CheckInACircleIcon} label={t('actionOverTable.validateItems')} />,
+                            <ButtonLink key={'testItem3'} icon={ChangeIcon} label={t('actionOverTable.changeOwner')} />,
+                        ]}
+                    />
+                }
             />
             <Table data={data?.slice(start, end)} columns={columns} pagination={{ pageIndex: pageNumber, pageSize }} />
             <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={dataLength} handlePageChange={handlePageChange} />
