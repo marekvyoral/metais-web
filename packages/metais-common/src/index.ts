@@ -1,6 +1,7 @@
 export * from './components/mutation-feedback/MutationFeedback'
 export { QueryFeedback } from './components/query-feedback/QueryFeedback'
 export { SubmitWithFeedback } from './components/submit-with-feedback/SubmitWithFeedback'
+export * from './components/actions-over-table'
 export * from './componentHelpers/formatting/constraints'
 export * from './componentHelpers/tabs/tabNames'
 export * from './componentHelpers/table/rowEditing'

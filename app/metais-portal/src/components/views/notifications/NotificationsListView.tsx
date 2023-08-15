@@ -4,7 +4,7 @@ import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/
 import { Row } from '@tanstack/react-table'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ALL_EVENT_TYPES } from '@isdd/metais-common/components/constants'
+import { ALL_EVENT_TYPES } from '@isdd/metais-common/constants'
 
 import { ActionsGroupView } from './ActionsGroupView'
 import { SelectableColumnsSpec } from './notificationUtils'

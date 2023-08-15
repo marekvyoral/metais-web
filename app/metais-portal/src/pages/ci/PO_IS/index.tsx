@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/components/constants'
+import { CreateEntityButton, ExportButton, ImportButton } from '@isdd/metais-common/components/actions-over-table'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { CiTable } from '@/components/ci-table/CiTable'
@@ -50,11 +51,13 @@ const ProjektListPage = () => {
                                         storeUserSelectedColumns={storeUserSelectedColumns}
                                         resetUserSelectedColumns={resetUserSelectedColumns}
                                         pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                                        ciType={PO}
                                         entityName={ciTypeData?.name ?? ''}
                                         attributeProfiles={attributeProfiles ?? []}
                                         attributes={attributes ?? []}
                                         columnListData={columnListData}
+                                        createButton={<CreateEntityButton path={`/ci/${PO}/create`} />}
+                                        exportButton={<ExportButton />}
+                                        importButton={<ImportButton ciType={PO} />}
                                     />
                                     <CiTable
                                         data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData }}

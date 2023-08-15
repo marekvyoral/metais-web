@@ -6,7 +6,12 @@ import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { useTranslation } from 'react-i18next'
 import { Attribute, AttributeProfile, CiType, ConfigurationItemSetUi, EnumType } from '@isdd/metais-common/api'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/components/constants'
+import { ImportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ImportButton'
+import { ExportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ExportButton'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { BulkPopup, CreateEntityButton } from '@isdd/metais-common/components/actions-over-table'
+import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
+import { CrossInACircleIcon, CheckInACircleIcon, ChangeIcon } from '@isdd/metais-common/assets/images'
 
 import { CiTable } from '@/components/ci-table/CiTable'
 import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
@@ -94,12 +99,23 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 storeUserSelectedColumns={storeUserSelectedColumns}
                 resetUserSelectedColumns={resetUserSelectedColumns}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                ciType={ciType ?? ''}
                 entityName={ciTypeData?.name ?? ''}
                 attributeProfiles={attributeProfiles ?? []}
                 attributes={attributes ?? []}
                 columnListData={columnListData}
-                checkedRowItems={checkedRowItems}
+                createButton={<CreateEntityButton path={`/ci/${ciType}/create`} />}
+                importButton={<ImportButton ciType={ciType ?? ''} />}
+                exportButton={<ExportButton />}
+                bulkPopup={
+                    <BulkPopup
+                        checkedRowItems={checkedRowItems}
+                        items={[
+                            <ButtonLink key={'testItem1'} icon={CrossInACircleIcon} label={t('actionOverTable.invalidateItems')} />,
+                            <ButtonLink key={'testItem2'} icon={CheckInACircleIcon} label={t('actionOverTable.validateItems')} />,
+                            <ButtonLink key={'testItem3'} icon={ChangeIcon} label={t('actionOverTable.changeOwner')} />,
+                        ]}
+                    />
+                }
             />
             <CiTable
                 data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData }}
