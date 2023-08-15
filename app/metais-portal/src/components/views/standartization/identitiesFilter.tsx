@@ -71,10 +71,8 @@ const KSIVSFilter: React.FC<FilterProps> = ({ defaultFilterValues }) => {
             <Filter<FilterParams>
                 form={(register, __, filter, setValue) => (
                     <>
-                        {console.log(filter)}
                         <SelectLazyLoading<Identity>
                             placeholder={t('KSIVSPage.select')}
-                            defaultValue={loadedIdentities.current.find((item) => item.uuid == filter.memberUuid)}
                             setValue={setValue}
                             register={register}
                             label={t('KSIVSPage.member')}

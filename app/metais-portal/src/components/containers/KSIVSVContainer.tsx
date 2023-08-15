@@ -88,9 +88,7 @@ const KSIVSContainer: React.FC<IKSIVSContainer> = ({ id, View }) => {
     const [sorting, setSorting] = useState<ColumnSort[]>([defaultSort])
     const [listParams, setListParams] = useState(defaultSearch)
     const { filter } = useFilterParams<FilterParams>(identitiesFilter)
-    useEffect(() => {
-        // console.log(filter)
-    }, [filter])
+
     const {
         data: identitiesData,
         isLoading: isIdentitiesLoading,

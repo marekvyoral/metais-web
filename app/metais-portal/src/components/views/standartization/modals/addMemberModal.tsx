@@ -45,7 +45,6 @@ const roleConstraints = {
     category: 'role',
     code: 'ROLE',
     description: 'role',
-    //get data from hwo to Display constraints
     enumItems: [...DEFAULT_ROLES],
     id: 1,
     name: 'role',

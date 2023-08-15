@@ -5,4 +5,5 @@ export const DEFAULT_ROLES = [
     { id: 4, value: 'Člen KS ISVS', code: 'STD_KSCLEN', description: 'STD_KSCLEN', valid: true },
     { id: 5, value: 'Prizvaná osoba', code: 'STD_PSPO', description: 'STD_PSPO', valid: true },
     { id: 5, value: 'Poverený zastupovaním člena PS', code: 'STD_PSZAST', description: 'STD_PSZAST', valid: true },
+    { id: 6, value: 'Odborna verejnost', code: 'STD_PSPRE', description: 'STD_PSPRE', valid: true },
 ] // hardcoded is metais2

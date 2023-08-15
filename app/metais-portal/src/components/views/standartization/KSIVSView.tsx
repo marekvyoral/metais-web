@@ -9,11 +9,11 @@ import { useTranslation } from 'react-i18next'
 import KSIVSFilter from './identitiesFilter'
 import KSIVSAddMemberPopUp from './modals/addMemberModal'
 import KSIVSDeleteMemberPopUp from './modals/deleteMemberModal'
-import KSIVSTableActions from './tableActions'
 import styles from './styles.module.scss'
+import KSIVSTableActions from './tableActions'
 
-import KSIVSBaseInfo from '@/components/views/standartization/components/BaseInfo'
 import { KSIVSViewProps, TableData, identitiesFilter } from '@/components/containers/KSIVSVContainer'
+import KSIVSBaseInfo from '@/components/views/standartization/components/BaseInfo'
 
 const KSIVSView: React.FC<KSIVSViewProps> = ({
     id,
