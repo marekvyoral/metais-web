@@ -80,6 +80,37 @@
         "cancelButton": "Cancel",
         "viewButton": "View"
     },
+    "filter": {
+        "expand": "Expand filter",
+        "collapse": "Collapse filter",
+        "namePlaceholder": "Enter a name",
+        "searchPlaceholder": "Search in table",
+        "chooseState": "Select status",
+        "chooseValue": "Select value",
+        "organizations": {
+            "name": "Name",
+            "ICO": "ICO"
+        },
+        "ks": {
+            "name": "Name of end service"
+        },
+        "isvs": {
+            "name": "Name of information system"
+        },
+        "PO": {
+            "name": "Name",
+            "itIsChapter": "It is a chapter",
+            "personsCategory": "Persons category",
+            "publicAuthorityType": "Public authority type",
+            "evidenceStatus": "Evidence status"
+        },
+        "metaisCode": {
+            "label": "Code MetaIS",
+            "placeholder": "ks_"
+        },
+        "reset": "Clear Filter",
+        "submit": "Filter"
+    },
     "table": {
         "title": "Cities",
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
@@ -99,7 +130,12 @@
         "wrapActiveFilter": "Pack active filter",
         "unorderedColumn": "Unsorted column - will use ascending sorting.",
         "resetOrder": "Reset order",
-        "pagination": "Page navigation"
+        "pagination": "Page navigation",
+        "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
+        "noRowsFound": "No rows found",
+        "name": "Name",
+        "ico": "ICO",
+        "adress": "Adress"
     },
     "form": {
         "userFirstName": "First name of user",
@@ -147,6 +183,7 @@
         "maxValue": "Max. value",
         "units": "Measure unit",
         "edit": "Edit",
+        "assigned": "Assigned liable persons",
         "detail": {
             "profileAttributesHeading": "Detail attributes profile",
             "profileAttributes": "Attributes",
@@ -237,11 +274,57 @@
         "notifications": "Notifications",
         "settings": "Settings",
         "admin": "Administration",
+        "organizations": "Organizations",
         "egov": {
             "entity": "Entities",
             "profiles": "Attribute profiles",
             "relation": "Relations"
         }
+    },
+    "organizations": {
+        "detail": {
+            "title": "Detail povinnej osoby",
+            "statutoryOfficer": "Štatutár"
+        },
+        "find": {
+            "new": "Create new organization",
+            "ico": "Enter identification number",
+            "icoPlaceholder": "Enter organization identification number, which should be searched at CSRU. Correct format is 00000000 or 000000000000",
+            "search": "Search",
+            "cancel": "Cancel",
+            "createNew": "Create new organization",
+            "icoRequired": "Identification number is required",
+            "icoRegex": "Identification number is in incorrect format. Correct format is '00000000' or '000000000000'"
+        }
+    },
+    "PO_Attributes": {
+        "Gen_Profil_nazov": "Name",
+        "EA_Profil_PO_kategoria_osoby": "Person category",
+        "EA_Profil_PO_typ_osoby": "Person type",
+        "Gen_Profil_anglicky_nazov": "English name",
+        "Gen_Profil_popis": "Description",
+        "Gen_Profil_anglicky_popis": "English description",
+        "Gen_Profil_zdroj": "Source of data",
+        "Gen_Profil_kod_metais": "MetaIS code",
+        "Gen_Profil_ref_id": "URI",
+        "EA_Profil_PO_webove_sidlo": "Web address",
+        "Gen_Profil_poznamka": "Note",
+        "EA_Profil_PO_ico": "Company ID",
+        "EA_Profil_PO_psc": "Postal code",
+        "EA_Profil_PO_obec": "City / Municipality",
+        "EA_Profil_PO_ulica": "Street",
+        "EA_Profil_PO_cislo": "House number",
+        "EA_Profil_PO_okres": "District",
+        "EA_Profil_PO_je_kapitola": "Is chapter",
+        "Gen_Profil_EA_skrateny_nazov": "Abbreviated name",
+        "Gen_Profil_EA_popis_referencie": "Reference description",
+        "Gen_Profil_EA_odkaz_na_referenciu": "Reference link",
+        "Gen_Profil_EA_typ_replikacie": "Replication type",
+        "Gen_Profil_EA_pocet_replikacii": "Number of replications",
+        "Profil_PO_statutar_titul_pred_menom": "Title before name",
+        "Profil_PO_statutar_meno": "First name",
+        "Profil_PO_statutar_priezvisko": "Last name",
+        "Profil_PO_statutar_titul_za_menom": "Title after name"
     },
     "mangementList": {
         "namePassword": "Name / Password",

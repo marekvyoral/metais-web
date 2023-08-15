@@ -1,4 +1,5 @@
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
+
 import { CiType, IColumn, EnumType, ConfigurationItemSetUi, CiListFilterContainerUi } from '@isdd/metais-common/api'
 
 export interface IListFilterCallbacks {
@@ -20,10 +21,7 @@ export interface IListView {
     pagination: Pagination
     sort: ColumnSort[]
     handleFilterChange: (filter: IFilter) => void
-    storeUserSelectedColumns: (columnSelection: {
-        attributes: { name: string; order: number }[]
-        metaAttributes: { name: string; order: number }[]
-    }) => void
+    storeUserSelectedColumns: (columnSelection: FavoriteCiType) => void
     resetUserSelectedColumns: () => Promise<void>
     isLoading: boolean
     isError: boolean

@@ -4,11 +4,11 @@ import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/
 import { Row } from '@tanstack/react-table'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ALL_EVENT_TYPES } from '@isdd/metais-common/components/constants'
 
 import { ActionsGroupView } from './ActionsGroupView'
 import { SelectableColumnsSpec } from './notificationUtils'
 
-import { ALL_EVENT_TYPES } from '@/components/constants'
 import { FilterData, NotificationsListViewParams } from '@/components/containers/NotificationsListContainer'
 
 const NotificationsListView: React.FC<NotificationsListViewParams> = ({
