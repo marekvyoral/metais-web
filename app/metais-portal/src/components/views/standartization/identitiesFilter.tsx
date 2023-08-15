@@ -1,8 +1,7 @@
 import { Filter, ILoadOptionsResponse, SelectLazyLoading, SimpleSelect } from '@isdd/idsk-ui-kit/src/index'
-import { Identity, useFind1Hook } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import { CiListFilterContainerUi, ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/src/api'
-import React, { useCallback } from 'react'
-import { useFilter } from '@isdd/metais-common/hooks/useFilter'
+import { Identity, useFind1Hook } from '@isdd/metais-common/src/api/generated/iam-swagger'
+import React, { useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { DEFAULT_ROLES } from './defaultRoles'
@@ -16,16 +15,18 @@ interface FilterProps {
 const KSIVSFilter: React.FC<FilterProps> = ({ defaultFilterValues }) => {
     const { t } = useTranslation()
     const loadOrgs = useReadCiList1Hook()
-    const { setValue } = useFilter(defaultFilterValues)
     const loadMembers = useFind1Hook()
+    const loadedIdentities = useRef<Identity[]>([])
     const loadMembersOptions = useCallback(
         async (searchQuery: string, additional: { page: number } | undefined): Promise<ILoadOptionsResponse<Identity>> => {
             const page = !additional?.page ? 1 : (additional?.page || 0) + 1
             const queryParams = {
-                limit: 50,
+                limit: 10,
                 page: page,
             }
             const identities = await loadMembers(queryParams.page, queryParams.limit, { expression: searchQuery })
+            loadedIdentities.current?.push(...identities)
+
             return {
                 options: identities || [],
                 hasMore: identities?.length ? true : false,
@@ -68,16 +69,12 @@ const KSIVSFilter: React.FC<FilterProps> = ({ defaultFilterValues }) => {
     return (
         <>
             <Filter<FilterParams>
-                form={(register) => (
+                form={(register, __, filter, setValue) => (
                     <>
-                        {/* not working select */}
+                        {console.log(filter)}
                         <SelectLazyLoading<Identity>
-                            // value={selectedMember}
                             placeholder={t('KSIVSPage.select')}
-                            // onChange={(newValue) => {
-                            //     setListFilter({ ...listFilter, memberUuid: (newValue as Identity).uuid ?? '' })
-                            //     setSelectedMember(newValue as Identity)
-                            // }}
+                            defaultValue={loadedIdentities.current.find((item) => item.uuid == filter.memberUuid)}
                             setValue={setValue}
                             register={register}
                             label={t('KSIVSPage.member')}
@@ -86,15 +83,11 @@ const KSIVSFilter: React.FC<FilterProps> = ({ defaultFilterValues }) => {
                             getOptionLabel={(item) => item.firstName + ' ' + item.lastName}
                             loadOptions={(searchTerm, _, additional) => loadMembersOptions(searchTerm, additional)}
                         />
-                        {/* not working select */}
                         <SelectLazyLoading<ConfigurationItemUi>
                             placeholder={t('KSIVSPage.select')}
-                            // value={selectedOrganization}
-                            // onChange={(newValue) => {
-                            //     setListFilter({ ...listFilter, poUuid: (newValue as ConfigurationItemUi).uuid ?? '' })
-                            //     setSelectedOrganization(newValue as ConfigurationItemUi)
-                            // }}
                             label={t('KSIVSPage.organization')}
+                            register={register}
+                            setValue={setValue}
                             name={'poUuid'}
                             getOptionLabel={(item) => (item.attributes ?? {})['Gen_Profil_nazov']}
                             getOptionValue={(item) => item.uuid ?? ''}
@@ -105,15 +98,10 @@ const KSIVSFilter: React.FC<FilterProps> = ({ defaultFilterValues }) => {
                             {...register('role')}
                             label={t('KSIVSPage.role')}
                             defaultValue={'all'}
-                            // value={selectedRole}
                             options={[
                                 { value: 'all', label: t('KSIVSPage.select') },
                                 ...DEFAULT_ROLES.map((item) => ({ value: item.code, label: item.value })),
                             ]}
-                            // onChange={(newValue) => {
-                            //     setListFilter({ ...listFilter, role: newValue.target.value })
-                            //     setSelectedRole(newValue.target.value)
-                            // }}
                         />
                     </>
                 )}
