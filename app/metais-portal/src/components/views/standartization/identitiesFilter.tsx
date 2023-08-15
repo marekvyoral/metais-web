@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 
 import { DEFAULT_ROLES } from './defaultRoles'
 
-import { FilterParams } from '@/components/containers/KSIVSVContainer'
+import { FilterParams } from '@/components/containers/KSISVSVContainer'
 
 interface FilterProps {
     defaultFilterValues: FilterParams

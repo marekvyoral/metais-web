@@ -48,7 +48,7 @@ export const identitiesFilter: FilterParams = {
     role: '',
 }
 
-export interface KSIVSViewProps {
+export interface KSISVSViewProps {
     id?: string
     isAdmin: boolean
     identityToDelete: string | undefined
@@ -71,10 +71,10 @@ export interface KSIVSViewProps {
 
 interface IKSIVSContainer {
     id?: string
-    View: React.FC<KSIVSViewProps>
+    View: React.FC<KSISVSViewProps>
 }
 
-const KSIVSContainer: React.FC<IKSIVSContainer> = ({ id, View }) => {
+const KSISVSContainer: React.FC<IKSIVSContainer> = ({ id, View }) => {
     const {
         state: { user },
     } = useAuth()
@@ -171,4 +171,4 @@ const KSIVSContainer: React.FC<IKSIVSContainer> = ({ id, View }) => {
     )
 }
 
-export default KSIVSContainer
+export default KSISVSContainer

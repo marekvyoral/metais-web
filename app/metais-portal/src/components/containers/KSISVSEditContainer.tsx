@@ -5,20 +5,20 @@ import React from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import { KSIVSEditView } from '@/components/views/standartization/KSIVSEditView'
+import { KSISVSEditView } from '@/components/views/standartization/KSISVSEditView'
 
-export interface KSIVSEditViewParams {
+export interface KSISVSEditViewParams {
     onSubmit: (formData: FieldValues) => void
     goBack: () => void
     infoData: Group | undefined
 }
 
-interface IKSIVSEditContainer {
+interface IKSISVSEditContainer {
     id?: string
-    View: React.FC<KSIVSEditViewParams>
+    View: React.FC<KSISVSEditViewParams>
 }
 
-export const KSIVSEditContainer: React.FC<IKSIVSEditContainer> = ({ id }) => {
+export const KSIVSEditContainer: React.FC<IKSISVSEditContainer> = ({ id }) => {
     const navigate = useNavigate()
     const { data: infoData, isLoading, isError } = useFindByUuid3(id ?? '')
 
@@ -46,7 +46,7 @@ export const KSIVSEditContainer: React.FC<IKSIVSEditContainer> = ({ id }) => {
 
     return (
         <QueryFeedback loading={isLoading} error={isError}>
-            <KSIVSEditView onSubmit={onSubmit} goBack={goBack} infoData={infoData} />
+            <KSISVSEditView onSubmit={onSubmit} goBack={goBack} infoData={infoData} />
         </QueryFeedback>
     )
 }

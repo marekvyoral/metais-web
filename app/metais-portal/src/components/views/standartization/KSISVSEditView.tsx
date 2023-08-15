@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
-import { KSIVSEditViewParams } from '@/components/containers/KSIVSEditContainer'
+import { KSISVSEditViewParams } from '@/components/containers/KSISVSEditContainer'
 import { hasAttributeInputError } from '@/components/views/standartization/standartizationUtils'
 
 const textAttribute = {
@@ -32,7 +32,7 @@ const descriptionAttr = {
     technicalName: 'description',
 }
 
-export const KSIVSEditView: React.FC<KSIVSEditViewParams> = ({ onSubmit, goBack, infoData }) => {
+export const KSISVSEditView: React.FC<KSISVSEditViewParams> = ({ onSubmit, goBack, infoData }) => {
     const { t } = useTranslation()
     const formMethods = useForm({})
     const { handleSubmit, register, formState } = useForm({})

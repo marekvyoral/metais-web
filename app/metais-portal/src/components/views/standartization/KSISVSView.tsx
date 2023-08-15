@@ -12,10 +12,10 @@ import KSIVSDeleteMemberPopUp from './modals/deleteMemberModal'
 import styles from './styles.module.scss'
 import KSIVSTableActions from './tableActions'
 
-import { KSIVSViewProps, TableData, identitiesFilter } from '@/components/containers/KSIVSVContainer'
+import { KSISVSViewProps, TableData, identitiesFilter } from '@/components/containers/KSISVSVContainer'
 import KSIVSBaseInfo from '@/components/views/standartization/components/BaseInfo'
 
-const KSIVSView: React.FC<KSIVSViewProps> = ({
+const KSISVSView: React.FC<KSISVSViewProps> = ({
     id,
     isAdmin,
     identityToDelete,
@@ -98,4 +98,4 @@ const KSIVSView: React.FC<KSIVSViewProps> = ({
     )
 }
 
-export default KSIVSView
+export default KSISVSView

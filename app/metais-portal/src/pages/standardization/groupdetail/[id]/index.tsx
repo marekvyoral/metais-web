@@ -1,17 +1,17 @@
 import { useParams } from 'react-router-dom'
 import React from 'react'
 
-import KSIVSContainer from '@/components/containers/KSIVSVContainer'
-import KSIVSView from '@/components/views/standartization/KSIVSView'
+import KSISVSContainer from '@/components/containers/KSISVSVContainer'
+import KSISVSView from '@/components/views/standartization/KSISVSView'
 
 const KSIVSPage = () => {
     const { id } = useParams()
 
     return (
-        <KSIVSContainer
+        <KSISVSContainer
             id={id}
             View={(props) => (
-                <KSIVSView
+                <KSISVSView
                     id={props.id}
                     isAdmin={props.isAdmin}
                     identityToDelete={props.identityToDelete}

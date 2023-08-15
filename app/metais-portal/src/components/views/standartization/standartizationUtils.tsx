@@ -9,7 +9,7 @@ import { FieldErrors } from 'react-hook-form'
 
 import KSIVSTableRoleSelector from './components/TableRoleSelector'
 
-import { FilterParams, TableData } from '@/components/containers/KSIVSVContainer'
+import { FilterParams, TableData } from '@/components/containers/KSISVSVContainer'
 
 export const reduceTableDataToObjectWithUuid = <T extends { uuid?: string }>(array: T[]): Record<string, T> => {
     return array.reduce<Record<string, T>>((result, item) => {
