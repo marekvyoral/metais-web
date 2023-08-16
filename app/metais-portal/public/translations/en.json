@@ -157,6 +157,9 @@
             "publicAuthorityType": "Public authority type",
             "evidenceStatus": "Evidence status"
         },
+        "Projekt": {
+            "name": "Name of project"
+        },
         "metaisCode": {
             "label": "Code MetaIS",
             "placeholder": "ks_"
@@ -169,22 +172,28 @@
         "remove": "Remove",
         "value": {
             "label": "Value",
-            "placeholder": "Enter the value"
+            "labelYes": "Yes",
+            "labelNo": "No",
+            "placeholder": "Enter the value",
+            "placeholderSelect": "Choose option",
+            "placeholderSelectMulti": "Choose multiple"
         },
         "operator": {
             "label": "Condition",
             "placeholder": "Pick",
-            "FULLTEXT": "Contains",
-            "EQUAL": "=",
-            "GREATER": ">",
-            "LOWER": "<",
-            "EQUAL_OR_GREATER": "=<",
-            "EQUAL_OR_LOWER": "=>"
+            "ilike": "Contains",
+            "eq": "=",
+            "gt": ">",
+            "lt": "<",
+            "gte": "=<",
+            "lte": "=>"
         },
         "attribute": {
             "label": "Attribute",
             "placeholder": "Pick"
-        }
+        },
+        "addRowErrorClose": "Close warning",
+        "addRowErrorMessage": "You can not add more than {{value}} custom filters."
     },
     "form": {
         "search": "Search",

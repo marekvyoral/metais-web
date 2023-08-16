@@ -1,5 +1,11 @@
 export const BASE_PAGE_NUMBER = 1
 export const BASE_PAGE_SIZE = 10
+
+export type OPERATOR_SEPARATOR_TYPE = '--'
+export const OPERATOR_SEPARATOR = '--'
+export const JOIN_OPERATOR = '+'
+
+export const MAX_DYNAMIC_ATTRIBUTES_LENGHT = 10
 export const DEFAULT_PAGESIZE_OPTIONS = [
     { value: '10', label: '10' },
     { value: '20', label: '20' },

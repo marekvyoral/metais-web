@@ -72,7 +72,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         <>
             <Filter<KSFilterData>
                 defaultFilterValues={defaultFilterValues}
-                form={(register, control, filter, setValue) => (
+                form={({ register, filter, setValue }) => (
                     <div>
                         <Input
                             id="name"
@@ -88,8 +88,12 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                         />
                         <DynamicFilterAttributes
                             setValue={setValue}
+                            defaults={defaultFilterValues}
                             data={filter.attributeFilters}
                             availableAttributes={columnListData?.attributes?.map((att) => ({ ...att, name: att.name ? att.name : '' }))}
+                            attributes={attributes}
+                            attributeProfiles={attributeProfiles}
+                            constraintsData={constraintsData}
                         />
                     </div>
                 )}

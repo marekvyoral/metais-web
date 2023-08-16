@@ -11,12 +11,17 @@ import {
     UseFormSetValue,
 } from 'react-hook-form'
 import { useLocation, useSearchParams } from 'react-router-dom'
-import { BaseSyntheticEvent, useCallback, useEffect, useState } from 'react'
+import { BaseSyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 
 import { FilterActions, useFilterContext } from '@isdd/metais-common/contexts/filter/filterContext'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, JOIN_OPERATOR, OPERATOR_SEPARATOR, OPERATOR_SEPARATOR_TYPE } from '@isdd/metais-common/constants'
+import { convertFilterArrayData } from '@isdd/metais-common/componentHelpers/filter/convertFilterArrayData'
+import { updateUrlParamsOnChange } from '@isdd/metais-common/componentHelpers/filter/updateUrlParamsOnChange'
+import { convertUrlArrayAttribute } from '@isdd/metais-common/componentHelpers/filter/convertUrlArrayValue'
+import { transformOperatorsToUrl } from '@isdd/metais-common/componentHelpers/filter/transformOperators'
 
+//types for API
 export enum OPERATOR_OPTIONS {
     FULLTEXT = 'FULLTEXT',
     EQUAL = 'EQUAL',
@@ -24,6 +29,16 @@ export enum OPERATOR_OPTIONS {
     LOWER = 'LOWER',
     EQUAL_OR_GREATER = 'EQUAL_OR_GREATER',
     EQUAL_OR_LOWER = 'EQUAL_OR_LOWER',
+}
+
+//types written in URL
+export enum OPERATOR_OPTIONS_URL {
+    FULLTEXT = 'ilike',
+    EQUAL = 'eq',
+    GREATER = 'gt',
+    LOWER = 'lt',
+    EQUAL_OR_GREATER = 'gte',
+    EQUAL_OR_LOWER = 'lte',
 }
 
 interface IAttributeFilterValue {
@@ -37,7 +52,7 @@ export interface IAttributeFilters {
 
 export interface IFilterParams {
     fullTextSearch?: string
-    [key: `${string}--${string}`]: string | undefined
+    [key: `${string}${OPERATOR_SEPARATOR_TYPE}${string}`]: string | undefined | string[] | Date | null
     attributeFilters?: IAttributeFilters
 }
 
@@ -60,10 +75,10 @@ interface ReturnUseFilter<TFieldValues extends FieldValues> {
 const parseCustomAttributes = (urlParams: URLSearchParams): undefined | IAttributeFilters => {
     let attributeFilters: undefined | IAttributeFilters = undefined
     for (const queryKey of urlParams.keys()) {
-        if (queryKey.includes('--')) {
+        if (queryKey.includes(OPERATOR_SEPARATOR)) {
             const value = urlParams.get(queryKey)
             if (value) {
-                const [name, operator] = queryKey.split('--')
+                const [name, operator] = queryKey.split(OPERATOR_SEPARATOR)
                 if (!name || !operator || !value) continue
                 if (!attributeFilters) attributeFilters = {}
                 if (attributeFilters && !attributeFilters[name]) {
@@ -72,8 +87,17 @@ const parseCustomAttributes = (urlParams: URLSearchParams): undefined | IAttribu
                         [name]: [],
                     }
                 }
-                if (Object.values(OPERATOR_OPTIONS).includes(operator as OPERATOR_OPTIONS)) {
-                    attributeFilters[name].push({ operator: operator as OPERATOR_OPTIONS, value })
+
+                if (Object.values(OPERATOR_OPTIONS_URL).includes(operator as OPERATOR_OPTIONS_URL)) {
+                    if (value.includes(JOIN_OPERATOR)) {
+                        const convertedArrayAttribute = convertUrlArrayAttribute(transformOperatorsToUrl(operator) as OPERATOR_OPTIONS, value)
+                        attributeFilters[name] = convertedArrayAttribute.filter((attribute) => Boolean(attribute))
+                    } else {
+                        attributeFilters[name].push({
+                            operator: transformOperatorsToUrl(operator) as OPERATOR_OPTIONS,
+                            value: value,
+                        })
+                    }
                 }
             }
         }
@@ -92,42 +116,49 @@ const getPropertyType = <T, K extends keyof T>(obj: T, key: K): string => {
 }
 
 export function useFilterParams<T extends FieldValues & IFilterParams>(defaults: T & IFilter): ReturnUseFilterParams<T> {
-    const [urlParams] = useSearchParams()
+    const [urlParams, setUrlParams] = useSearchParams()
+
     const [uiFilterState, setUiFilterState] = useState<IFilter>({
         sort: defaults?.sort ?? [],
         pageNumber: defaults?.pageNumber ?? BASE_PAGE_NUMBER,
         pageSize: defaults?.pageSize ?? BASE_PAGE_SIZE,
     })
+
     const handleFilterChange = (changedFilter: IFilter) => {
         setUiFilterState({
             ...uiFilterState,
             ...changedFilter,
         })
+        updateUrlParamsOnChange(changedFilter, setUrlParams)
     }
 
-    const filter: T & IFilterParams & IFilter = {
-        ...uiFilterState,
-        fullTextSearch: '',
-    } as T & IFilterParams & IFilter
+    const filter: T & IFilterParams & IFilter = useMemo(() => {
+        const memoFilter = {
+            ...uiFilterState,
+            fullTextSearch: '',
+        } as T & IFilterParams & IFilter
 
-    Object.keys(filter)
-        .concat(Object.keys(defaults))
-        .forEach((key) => {
-            if (urlParams.get(key)) {
-                const propertyType = getPropertyType(defaults, key)
-                if (propertyType === 'object') {
-                    const value = urlParams.getAll(key)
-                    // eslint-disable-next-line
-                    // @ts-ignore
-                    filter[key] = value
-                } else {
-                    // eslint-disable-next-line
-                    // @ts-ignore
-                    filter[key] = urlParams.get(key)
+        Object.keys(memoFilter)
+            .concat(Object.keys(defaults))
+            .forEach((key) => {
+                if (urlParams.get(key)) {
+                    const propertyType = getPropertyType(defaults, key)
+                    if (propertyType === 'object') {
+                        const value = urlParams.getAll(key)
+                        // eslint-disable-next-line
+                        // @ts-ignore
+                        memoFilter[key] = value
+                    } else {
+                        // eslint-disable-next-line
+                        // @ts-ignore
+                        memoFilter[key] = urlParams.get(key)
+                    }
                 }
-            }
-        })
-    filter.attributeFilters = parseCustomAttributes(urlParams)
+            })
+
+        memoFilter.attributeFilters = parseCustomAttributes(urlParams)
+        return memoFilter
+    }, [urlParams, uiFilterState, defaults])
 
     return { filter, urlParams, handleFilterChange }
 }
@@ -140,16 +171,25 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
 
     const methods = useForm<T & IFilterParams>({ defaultValues: filter as DeepPartial<T> })
 
+    useEffect(() => {
+        if (state.clearedFilter[location.pathname]) {
+            methods.reset(filter as DeepPartial<T>)
+        }
+    }, [filter, location.pathname, methods, state.clearedFilter])
+
     const clearData = useCallback((obj: T): T => {
         return Object.fromEntries<T>(Object.entries<T>(obj).filter(([key, v]) => !!v && key !== 'attributeFilters')) as T
     }, [])
 
     const onSubmit = methods.handleSubmit((data: T) => {
         const filterData = clearData(data)
-        setSearchParams(filterData)
+
+        const convertedArrayFilterData = convertFilterArrayData(filterData)
+        //so when user is on page 200 and filter spits out only 2 pages he can get to them
+        setSearchParams({ ...convertedArrayFilterData, pageNumber: 1 })
         dispatch({
             type: FilterActions.SET_FILTER,
-            value: filterData,
+            value: convertedArrayFilterData,
             path: location.pathname,
         })
     })

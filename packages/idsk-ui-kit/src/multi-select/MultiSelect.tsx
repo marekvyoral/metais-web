@@ -27,6 +27,7 @@ interface ISelectProps<T extends IOptions> extends Props<T, true, GroupBase<T>> 
     defaultValue?: MultiValue<T>
     values?: MultiValue<T>
     error?: string
+    className?: string
 }
 
 export const MultiSelect = <T extends IOptions>({
