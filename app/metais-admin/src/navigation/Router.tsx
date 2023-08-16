@@ -9,7 +9,7 @@ export const Router: React.FC = () => {
     return (
         <Routes>
             <Route path="/" element={<RootRouteContainer />}>
-                <Route>{computedRoutes}</Route>
+                <Route>{computedRoutes()}</Route>
             </Route>
         </Routes>
     )
