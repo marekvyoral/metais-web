@@ -2,7 +2,6 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 
 import {
-    INDEX_ROUTE,
     reduceAllFilePathsByNumberOfSlash,
     getIndexFilePaths,
     getIndexRouteComponents,
@@ -17,6 +16,7 @@ import {
     checkIfExportOnFilePathIsReactComponent,
     calcNestedPath,
 } from './fileBasedRoutesHelpers'
+import ProtectedRoute from './ProtectedRoute'
 
 export const constructRouteWithParent = ({
     level,
@@ -47,16 +47,21 @@ export const constructRouteWithParent = ({
     }
     return constructedRouteObject
 }
+
+const protectRouteObject = (element: React.ReactElement, slug: string, index: boolean) => {
+    return <Route element={<ProtectedRoute element={element} key={slug} slug={slug} />} path={slug} index={index} key={slug} />
+}
+
 export const constructRouteObject = ({ slug, Component, ParentComponent, parentFilePath }: RouteConstructOptions) => {
     if (ParentComponent) {
         const parentSlug = parseSlugFromFilePath(parentFilePath ?? '')
         return (
             <Route path={parentSlug} key={parentSlug} element={<ParentComponent />}>
-                <Route element={<Component />} key={slug} index />
+                {protectRouteObject(<Component />, slug, true)}
             </Route>
         )
     } else {
-        return <Route path={slug === '' ? INDEX_ROUTE : slug} element={<Component />} key={slug} />
+        return protectRouteObject(<Component />, slug, false)
     }
 }
 
@@ -114,6 +119,7 @@ export const computeRoutes = (globExports: FileBasedPages) => {
 export const globRoutes = (globExports: { [filePath: string]: unknown }) => {
     const tsxFilePaths = Object.keys(globExports)?.filter((key) => key?.endsWith('.tsx'))
     const pages: FileBasedPages = {}
+
     tsxFilePaths
         ?.filter((tsxFilePath) => checkIfExportOnFilePathIsReactComponent(tsxFilePath, globExports))
         ?.forEach((filePath) => {

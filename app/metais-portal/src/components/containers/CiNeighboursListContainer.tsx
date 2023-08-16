@@ -21,7 +21,7 @@ interface ICiNeighboursListContainerView {
 interface ICiNeighboursListContainer {
     configurationItemId?: string
     View: React.FC<ICiNeighboursListContainerView>
-    apiType?: NeighboursApiType
+    apiType: NeighboursApiType
 }
 
 export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = ({

@@ -43,7 +43,6 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
     const isUserLogged = !!user
 
     const { rowSelection, setRowSelection } = rowSelectionState
-
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
     const tableData = mapTableData(data.tableData, schemaAttributes, t, data.constraintsData)
 

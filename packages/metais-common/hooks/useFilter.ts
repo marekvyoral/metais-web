@@ -137,6 +137,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
     const location = useLocation()
     const { state, dispatch } = useFilterContext()
     const { filter } = useFilterParams<T>(defaults)
+
     const methods = useForm<T & IFilterParams>({ defaultValues: filter as DeepPartial<T> })
 
     const clearData = useCallback((obj: T): T => {

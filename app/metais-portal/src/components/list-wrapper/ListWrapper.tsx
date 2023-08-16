@@ -103,6 +103,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 attributeProfiles={attributeProfiles ?? []}
                 attributes={attributes ?? []}
                 columnListData={columnListData}
+                ciTypeData={ciTypeData}
                 createButton={<CreateEntityButton path={`/ci/${ciType}/create`} />}
                 importButton={<ImportButton ciType={ciType ?? ''} />}
                 exportButton={<ExportButton />}

@@ -15,7 +15,7 @@ export interface Role {
     roleWeight: number
 }
 
-interface Group {
+export interface Group {
     orgId: string
     roles: Role[]
 }
