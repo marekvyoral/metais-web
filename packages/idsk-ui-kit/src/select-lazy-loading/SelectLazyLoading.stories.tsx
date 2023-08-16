@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { object, string } from 'yup'
 
 import { SelectLazyLoading } from './SelectLazyLoading'
 
@@ -61,5 +64,52 @@ export const PaginatedRemoteFetch: Story = {
         getOptionLabel: (item) => item.name,
         option: undefined,
         loadOptions: (searchTerm, _, additional) => loadOptions(searchTerm, additional),
+    },
+}
+
+interface Option {
+    name: string
+}
+
+export interface IForm {
+    selectOption: string
+}
+
+const schema = object().shape({ selectOption: string().required('Povinné pole') })
+
+export const UncontrolledFormHookGroup: Story = {
+    render: () => {
+        const Wrapper = () => {
+            const defaultValue = 'House Ashwood'
+
+            const { handleSubmit, setValue, register, formState } = useForm<IForm>({
+                defaultValues: { selectOption: defaultValue },
+                resolver: yupResolver(schema),
+            })
+            const onSubmit = (data: IForm) => {
+                // eslint-disable-next-line no-alert
+                alert('select data: ' + data.selectOption)
+            }
+
+            return (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <SelectLazyLoading<Option>
+                        id="selectOption"
+                        name="selectOption"
+                        loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
+                        getOptionValue={(item) => item.name}
+                        getOptionLabel={(item) => item.name}
+                        label="Label test"
+                        defaultValue={{ name: defaultValue }}
+                        setValue={setValue}
+                        register={register}
+                        isMulti={false}
+                        error={formState.errors.selectOption?.message}
+                    />
+                    <button type="submit">Submit</button>
+                </form>
+            )
+        }
+        return <Wrapper />
     },
 }

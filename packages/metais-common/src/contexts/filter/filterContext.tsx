@@ -39,6 +39,7 @@ const reducer = (state: FilterContextState, action: Action) => {
         case FilterActions.SET_FILTER:
             return {
                 ...state,
+                clearedFilter: { ...state.clearedFilter, [action.path]: false },
                 filter: {
                     ...state.filter,
                     [action.path]: {

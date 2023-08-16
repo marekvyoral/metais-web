@@ -1,4 +1,4 @@
-import { AttributeProfile, useGetAttributeOverrides1, useGetCiType, useGetSummarizingCard } from '../api'
+import { AttributeProfile, useGetAttributeOverrides, useGetCiType, useGetSummarizingCard } from '@isdd/metais-common/api'
 
 export const createTabNamesAndValuesMap = (profileAttributes: AttributeProfile[] | undefined) => {
     const keysToDisplay = new Map<string, AttributeProfile | undefined>()
@@ -23,7 +23,7 @@ export const useEntityProfiles = (technicalName: string) => {
         isLoading: attributesOverridesLoading,
         isError: attributesOverridesError,
         refetch: attributesOverridesRefetch,
-    } = useGetAttributeOverrides1(technicalName)
+    } = useGetAttributeOverrides(technicalName)
 
     const refetch = () => {
         ciTypeDataRefetch()

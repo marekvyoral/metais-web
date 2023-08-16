@@ -79,7 +79,7 @@ export const Controlled: Story = {
 export const UncontrolledFormHookGroup: Story = {
     render: () => {
         const Wrapper = () => {
-            const { control, handleSubmit } = useForm<IForm>({ defaultValues })
+            const { register, handleSubmit, setValue, formState } = useForm<IForm>({ defaultValues })
             const onSubmit = (data: IForm) => {
                 // eslint-disable-next-line no-alert
                 alert('select data: ' + data.selectOption.map((option) => option.value))
@@ -88,11 +88,13 @@ export const UncontrolledFormHookGroup: Story = {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <MultiSelect<Option>
                         id="selectOption"
-                        control={control}
                         name="selectOption"
                         label="Label test"
                         options={options}
-                        rules={{ required: 'This field is required.' }}
+                        register={register}
+                        setValue={setValue}
+                        defaultValue={defaultValues.selectOption}
+                        error={formState.errors.selectOption?.message}
                     />
                     <button type="submit">Submit</button>
                 </form>

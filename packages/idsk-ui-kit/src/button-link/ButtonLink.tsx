@@ -9,14 +9,14 @@ interface ButtonLinkProps {
     onClick?: (e: MouseEvent<HTMLButtonElement>) => void
     className?: string
     type?: 'submit' | 'reset' | 'button'
-    icon?: React.ReactNode
+    icon?: string
 }
 
 export const ButtonLink: React.FC<ButtonLinkProps> = ({ onClick, label, className, icon, type }) => {
     const { t } = useTranslation()
     return (
         <button className={classNames(styles.buttonLink, className)} onClick={(e) => (onClick ? onClick(e) : null)} type={type}>
-            {icon}
+            {icon && <img className={styles.iconInButtonLink} src={icon} />}
             {label ?? t('errors.fixLink')}
         </button>
     )

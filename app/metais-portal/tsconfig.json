@@ -3,6 +3,6 @@
     "compilerOptions": {
         "baseUrl": "."
     },
-    "include": ["src", "../../packages/metais-common/src/assets"],
+    "include": ["src"],
     "exclude": ["**/api/generated/*.ts", "node_modules", "dist"]
 }

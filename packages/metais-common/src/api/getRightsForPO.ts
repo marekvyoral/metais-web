@@ -1,6 +1,6 @@
 export const getRightsForPO = (userId: string, orgId: string, token: string) => {
     const queryBody = {
-        userId: userId,
+        identityUuid: userId,
         cmdbId: orgId,
     }
 

@@ -6,21 +6,22 @@ import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
 import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
 import { RadioButtonGroup } from '@isdd/idsk-ui-kit/radio-button-group/RadioButtonGroup'
 
-import { ExportIcon } from '../../assets/images'
-
 import styles from './exportItemsOrRelations.module.scss'
+
+import { FileExtensionEnum } from '@isdd/metais-common/components/actions-over-table/actions-default/ExportButton'
+import { ExportIcon } from '@isdd/metais-common/assets/images'
 
 interface IExportItemsOrRelationsProps {
     isOpen: boolean
     className?: string
     close: () => void
-    onExportStart: (exportValue: string, extension: string) => void
+    onExportStart: (exportValue: string, extension: FileExtensionEnum) => void
 }
 
 export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({ isOpen, close, onExportStart }) => {
     const { t } = useTranslation()
     const [exportValue, setExportValue] = useState('')
-    const startExport = (extension: string) => {
+    const startExport = (extension: FileExtensionEnum) => {
         if (!exportValue) return
         onExportStart(exportValue, extension)
         close()
@@ -58,25 +59,25 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
                             label={t('exportItemsOrRelations.buttonRDF')}
                             variant="secondary"
                             className={styles.buttons}
-                            onClick={() => startExport('RDF')}
+                            onClick={() => startExport(FileExtensionEnum.RDF)}
                         />
                         <Button
                             label={t('exportItemsOrRelations.buttonXML')}
                             variant="secondary"
                             className={styles.buttons}
-                            onClick={() => startExport('XML')}
+                            onClick={() => startExport(FileExtensionEnum.XML)}
                         />
                         <Button
                             label={t('exportItemsOrRelations.buttonCSV')}
                             variant="secondary"
                             className={styles.buttons}
-                            onClick={() => startExport('CSV')}
+                            onClick={() => startExport(FileExtensionEnum.CSV)}
                         />
                         <Button
                             label={t('exportItemsOrRelations.buttonXLSX')}
                             variant="secondary"
                             className={styles.buttons}
-                            onClick={() => startExport('XLSX')}
+                            onClick={() => startExport(FileExtensionEnum.XLSX)}
                         />
                     </div>
                 </div>

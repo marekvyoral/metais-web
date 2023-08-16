@@ -62,7 +62,8 @@ export const parseSlugFromFilePath = (reactFilePath: string): string | never => 
 
 export const reduceAllFilePathsByNumberOfSlash = (filePaths: string[]) => {
     const groupBySlashCount = filePaths.reduce((map, filePath) => {
-        const numberOfSlash = filePath?.split('/')?.length - 1
+        const isProtected = filePath?.includes('/ProtectedRoute/')
+        const numberOfSlash = filePath?.split('/')?.length - (isProtected ? 2 : 1)
         let filePathsWithSlashCount = map.get(numberOfSlash) ?? []
         filePathsWithSlashCount = [...filePathsWithSlashCount, filePath]
         map.set(numberOfSlash, filePathsWithSlashCount)

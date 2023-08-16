@@ -45,17 +45,36 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
         })
 
         const responseBodyText = await response.text()
+        let responseBody
+        if (responseBodyText?.length > 0) {
+            try {
+                responseBody = JSON.parse(responseBodyText)
+            } catch (e) {
+                // eslint-disable-next-line no-console
+                console.error('Response not json')
+                responseBody = responseBodyText
+            }
+        }
+        const contentType = response.headers.get('Content-Type')
 
-        const responseBody = responseBodyText.length > 0 && JSON.parse(responseBodyText)
-
-        if (response.status == 401) {
+        if (response.status === 401) {
             dispatch({ type: AuthActions.LOGOUT })
             navigate('/?token_expired=true')
         }
         if (!response.ok) {
             throw new Error('InternalServerError')
         }
-        if (callback) callback(responseBody)
+
+        if (contentType?.includes('application/json')) {
+            try {
+                const parsedResponseBody = JSON.parse(responseBody)
+                if (callback) callback(parsedResponseBody)
+                return parsedResponseBody
+            } catch {
+                if (callback) callback(responseBody)
+                return responseBody
+            }
+        }
 
         return responseBody
     }

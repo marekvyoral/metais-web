@@ -14,9 +14,10 @@ import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 interface INavBarMain {
     isMenuExpanded: boolean
     setIsMenuExpanded: React.Dispatch<SetStateAction<boolean>>
+    iconGroupItems?: React.FC[]
 }
 
-export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExpanded }) => {
+export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExpanded, iconGroupItems }) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -52,7 +53,7 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
                     <div className="govuk-grid-column-full">
                         <div className="idsk-header-web__main-action">
                             <NavSearchBar />
-                            <NavIconGroup isMobile={false} />
+                            <NavIconGroup isMobile={false} iconGroupItems={iconGroupItems} />
 
                             <div className="idsk-header-web__main--buttons">
                                 {user ? (

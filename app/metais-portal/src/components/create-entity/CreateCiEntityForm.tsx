@@ -4,7 +4,7 @@ import { ErrorBlock } from '@isdd/idsk-ui-kit/error-block/ErrorBlock'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { FieldValues, useForm } from 'react-hook-form'
+import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { CiCode, CiType, EnumType } from '@isdd/metais-common/api'
 
@@ -12,7 +12,7 @@ import { AttributesConfigTechNames } from '../attribute-input/attributeDisplaySe
 
 import styles from './createEntity.module.scss'
 import { CreateEntitySection } from './CreateEntitySection'
-import { generateFormSchema } from './createCiEntityFormSchema.ts'
+import { generateFormSchema } from './createCiEntityFormSchema'
 
 interface ICreateCiEntityForm {
     generatedEntityId: CiCode
@@ -52,7 +52,11 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     }
     const [sectionError, setSectionError] = useState<{ [x: string]: boolean }>(sectionErrorDefaultConfig)
 
-    const { register, handleSubmit, reset, formState, setValue, control } = useForm({ resolver: yupResolver(generateFormSchema(attributes, t)) })
+    const methods = useForm({
+        resolver: yupResolver(generateFormSchema(attributes, t)),
+    })
+    const { handleSubmit, setValue, reset } = methods
+
     const referenceIdValue = generatedEntityId?.ciurl?.split('/').pop()
     const metaIsCodeValue = generatedEntityId?.cicode
     useEffect(() => {
@@ -69,14 +73,11 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                 content: (
                     <CreateEntitySection
                         sectionId={genProfilTechName}
-                        register={register}
                         attributes={ciTypeData?.attributes?.sort((a, b) => (a.order ?? -1) - (b.order ?? -1)) ?? []}
-                        formState={formState}
                         setSectionError={setSectionError}
                         constraintsData={constraintsData}
                         unitsData={unitsData}
                         generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
-                        control={control}
                     />
                 ),
             },
@@ -87,38 +88,37 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                 content: (
                     <CreateEntitySection
                         sectionId={profile.technicalName ?? ''}
-                        register={register}
                         attributes={profile.attributes?.sort((a, b) => (a.order ?? -1) - (b.order ?? -1)) ?? []}
-                        formState={formState}
                         setSectionError={setSectionError}
                         constraintsData={constraintsData}
                         generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
                         unitsData={unitsData}
-                        control={control}
                     />
                 ),
             })),
         ] ?? []
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <AccordionContainer sections={sections} />
-            {uploadError && (
-                <ErrorBlock
-                    errorTitle={t('createEntity.errorTitle')}
-                    errorMessage={
-                        <>
-                            {t('createEntity.errorMessage')}
-                            <Link className="govuk-link" to={`mailto:${metaisEmail}`}>
-                                {t('createEntity.email')}
-                            </Link>
-                        </>
-                    }
-                />
-            )}
+        <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                <AccordionContainer sections={sections} />
+                {uploadError && (
+                    <ErrorBlock
+                        errorTitle={t('createEntity.errorTitle')}
+                        errorMessage={
+                            <>
+                                {t('createEntity.errorMessage')}
+                                <Link className="govuk-link" to={`mailto:${metaisEmail}`}>
+                                    {t('createEntity.email')}
+                                </Link>
+                            </>
+                        }
+                    />
+                )}
 
-            <Button className={styles.buttonWithMargin} label={t('button.cancel')} type="reset" variant="secondary" onClick={() => reset()} />
-            <Button label={t('button.saveChanges')} type="submit" />
-        </form>
+                <Button className={styles.buttonWithMargin} label={t('button.cancel')} type="reset" variant="secondary" onClick={() => reset()} />
+                <Button label={t('button.saveChanges')} type="submit" />
+            </form>
+        </FormProvider>
     )
 }

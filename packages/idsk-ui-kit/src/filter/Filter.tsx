@@ -10,9 +10,16 @@ import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { SearchInput } from '@isdd/idsk-ui-kit/searchInput'
 
+interface FormProps<T extends FieldValues & IFilterParams> {
+    register: UseFormRegister<T>
+    control: Control<T>
+    filter: T
+    setValue: UseFormSetValue<T>
+}
+
 type FilterProps<T extends FieldValues & IFilterParams> = {
     heading?: React.ReactNode
-    form: (register: UseFormRegister<T>, control: Control<T>, filter: T, setValue: UseFormSetValue<T>) => React.ReactNode
+    form: (props: FormProps<T>) => React.ReactNode
     defaultFilterValues: T
 }
 
@@ -87,7 +94,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, d
                                 [styles.formWrapper]: true,
                             })}
                         >
-                            {form(register, control, filter, setValue)}
+                            {form({ register, control, filter, setValue })}
                             <div className={styles.actionRow}>
                                 <ButtonLink label={t('filter.reset')} onClick={reset} className={styles.clearButton} type="reset" />
                                 <Button label={t('filter.submit')} type="submit" />

@@ -5,22 +5,28 @@
     flex-direction: row;
     width: 100%;
     column-gap: govuk-spacing(5);
+    align-items: center;
 }
 
 .trashIcon {
-    color: govuk-colour("red");
+    color: govuk-colour('red');
 
     &:link,
     &:visited,
     &:hover,
     &:focus,
     &:active {
-        color: govuk-colour("dark-red");
+        color: govuk-colour('dark-red');
         background-color: transparent;
-        box-shadow: none
+        box-shadow: none;
     }
 }
 
 .rowItem {
-    flex: 1
+    flex: 1;
+}
+
+.radioButtonDiv {
+    flex: 1;
+    margin-top: govuk-spacing(4);
 }

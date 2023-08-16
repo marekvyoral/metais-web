@@ -1,6 +1,7 @@
 import React from 'react'
 import { EnumType, useGetCiType, CiType, AttributeProfile, Attribute } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
+import { QueryFeedback } from '@isdd/metais-common/index'
 
 export interface IAtrributesContainerView {
     data: {
@@ -29,12 +30,9 @@ export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName,
     const attributeProfiles = ciTypeData?.attributeProfiles
     const attributes = ciTypeData?.attributes
 
-    if (isLoading) {
-        return <div>Loading</div>
-    }
-    if (isError) {
-        return <div>Error</div>
-    }
-
-    return <View data={{ attributeProfiles, ciTypeData, constraintsData, unitsData, attributes }} />
+    return (
+        <QueryFeedback loading={isLoading} error={isError}>
+            <View data={{ attributeProfiles, ciTypeData, constraintsData, unitsData, attributes }} />
+        </QueryFeedback>
+    )
 }
