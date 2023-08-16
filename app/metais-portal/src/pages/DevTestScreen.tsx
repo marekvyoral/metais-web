@@ -12,6 +12,7 @@ import { DocumentsListContainer } from '@/components/containers/DocumentListCont
 import { DocsView } from '@/components/containers/DocumentListContainer.stories'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { ExportItemsOrRelations } from '@/components/export-items-or-relations/ExportItemsOrRelations'
+// import { ActionsOverTable } from '@/components/actions-over-table/ActionsOverTable'
 
 export const DevTestScreen: React.FC = () => {
     const [page, setPage] = useState(5)
@@ -37,6 +38,7 @@ export const DevTestScreen: React.FC = () => {
                     return <CiContainer configurationItemId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={View} />
                 }}
             />
+            {/* <ActionsOverTable /> */}
             <Button label={'Modal open'} onClick={openModal} />
             <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />
             <ButtonLink label="ButtonLink" />

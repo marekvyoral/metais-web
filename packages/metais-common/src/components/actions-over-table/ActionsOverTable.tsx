@@ -5,12 +5,14 @@ import classnames from 'classnames'
 import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
 import { IColumnSectionType, TableSelectColumns } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
+import { Can } from '@casl/react'
 
 import styles from './actionsOverTable.module.scss'
 
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { Attribute, AttributeProfile, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
+import { Attribute, AttributeProfile, BASE_PAGE_SIZE, CiType } from '@isdd/metais-common/api'
 import { IColumn } from '@isdd/metais-common/hooks/useColumnList'
+import { useCreateCiAbility } from '@isdd/metais-common/hooks/useUserAbility'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 
 export enum ActionNames {
     SELECT_COLUMNS = 'SELECT_COLUMNS',
@@ -34,6 +36,8 @@ interface IActionsOverTableProps {
     columnListData?: IColumn | undefined
     attributes?: Attribute[]
     hiddenButtons?: Partial<HiddenButtons>
+    createHref?: string
+    ciTypeData?: CiType
     createButton?: React.ReactNode
     exportButton?: React.ReactNode
     importButton?: React.ReactNode
@@ -56,12 +60,14 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     columnListData,
     metaAttributesColumnSection,
     attributes,
+    ciTypeData,
     hiddenButtons,
     createButton,
     exportButton,
     importButton,
     bulkPopup,
 }) => {
+    const ability = useCreateCiAbility(ciTypeData)
     const { t } = useTranslation()
     const pagingSelectId = useId()
 
@@ -93,30 +99,44 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
             <div className={styles.buttonGroup}>
                 {bulkPopup && <>{bulkPopup}</>}
                 <div className={classnames(styles.buttonImportExport, styles.mobileOrder2)}>
-                    {importButton && <>{importButton}</>}
-                    {exportButton && <>{exportButton}</>}
+                    {importButton && (
+                        <Can I={'import'} a={'ci'} ability={ability}>
+                            <>{importButton}</>
+                        </Can>
+                    )}
+                    {exportButton && (
+                        <Can I={'export'} a={'ci'} ability={ability}>
+                            <>{exportButton}</>
+                        </Can>
+                    )}
                 </div>
-                {createButton && <>{createButton}</>}
+                {createButton && (
+                    <Can I={'create'} a={'ci'} ability={ability}>
+                        <>{createButton}</>
+                    </Can>
+                )}
             </div>
             <div className={styles.buttonGroupSelect}>
                 {!hiddenButtons?.SELECT_COLUMNS && (
-                    <ButtonPopup
-                        buttonLabel={t('actionOverTable.selectColumn')}
-                        buttonClassName="marginBottom0"
-                        popupContent={(closePopup) => {
-                            return (
-                                <TableSelectColumns
-                                    onClose={closePopup}
-                                    resetDefaultOrder={resetUserSelectedColumns}
-                                    showSelectedColumns={storeUserSelectedColumns}
-                                    attributeProfilesColumnSections={attributeProfilesColumnSections}
-                                    columnListData={columnListData}
-                                    attributesColumnSection={attributesColumnSection}
-                                    metaAttributesColumnSection={metaAttributesColumnSection}
-                                />
-                            )
-                        }}
-                    />
+                    <Can I={'selectColumns'} a={'ci'} ability={ability}>
+                        <ButtonPopup
+                            buttonLabel={t('actionOverTable.selectColumn')}
+                            buttonClassName="marginBottom0"
+                            popupContent={(closePopup) => {
+                                return (
+                                    <TableSelectColumns
+                                        onClose={closePopup}
+                                        resetDefaultOrder={resetUserSelectedColumns}
+                                        showSelectedColumns={storeUserSelectedColumns}
+                                        attributeProfilesColumnSections={attributeProfilesColumnSections}
+                                        columnListData={columnListData}
+                                        attributesColumnSection={attributesColumnSection}
+                                        metaAttributesColumnSection={metaAttributesColumnSection}
+                                    />
+                                )
+                            }}
+                        />
+                    </Can>
                 )}
                 {!hiddenButtons?.PAGING && (
                     <SimpleSelect
