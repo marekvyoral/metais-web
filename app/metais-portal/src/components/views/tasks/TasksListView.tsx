@@ -83,7 +83,7 @@ export const TasksListView: React.FC<ITasksListView> = ({
             />
             <Filter<TasksFilter>
                 defaultFilterValues={defaultFilterValues}
-                form={(register, control, filter, setValue) => {
+                form={({ register, setValue }) => {
                     return (
                         <div>
                             <SimpleSelect

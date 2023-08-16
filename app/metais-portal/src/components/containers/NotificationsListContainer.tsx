@@ -17,7 +17,7 @@ import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFil
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ALL_EVENT_TYPES, NOTIFICATION_TITLE } from '@isdd/metais-common/constants'
 
@@ -81,6 +81,7 @@ const defaultFilterValues: FilterData = {
 }
 
 const NotificationsListContainer: React.FC<INotificationsListContainer> = ({ View }) => {
+    const location = useLocation()
     const [sort, setSort] = useState<ColumnSort[]>([{ sortDirection: SortType.DESC, orderBy: 'CreatedAt' }])
 
     const { filter } = useFilterParams<FilterData>(defaultFilterValues)
@@ -114,13 +115,17 @@ const NotificationsListContainer: React.FC<INotificationsListContainer> = ({ Vie
                           id: e.name,
                           header: e.name,
                           accessorKey: e.technicalName,
-                          cell: (row) => <Link to={NavigationSubRoutes.NOTIFICATIONS + row.row.original.id}>{row.getValue() as string}</Link>,
+                          cell: (row) => (
+                              <Link to={NavigationSubRoutes.NOTIFICATIONS + '/' + row.row.original.id} state={{ from: location }}>
+                                  {row.getValue() as string}
+                              </Link>
+                          ),
                           enableSorting: true,
                       }
                     : { id: e.name, header: e.name, accessorKey: e.technicalName, enableSorting: true },
             )
         return list
-    }, [selectedColumns])
+    }, [location, selectedColumns])
 
     return (
         <View

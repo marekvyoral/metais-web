@@ -25,6 +25,7 @@ export type HiddenButtons = {
 
 interface IActionsOverTableProps {
     pagingOptions?: { value: string; label: string; disabled?: boolean }[]
+    pageSize?: number
     handleFilterChange?: (filter: IFilter) => void
     entityName: string
     storeUserSelectedColumns?: (columnSelection: {

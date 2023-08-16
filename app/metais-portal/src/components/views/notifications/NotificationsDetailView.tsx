@@ -16,7 +16,7 @@ const NotificationsDetailView: React.FC<NotificationsDetailViewParams> = ({ data
                 links={[
                     { label: t('notifications.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('notifications.notifications'), href: NavigationSubRoutes.NOTIFICATIONS },
-                    { label: data?.messagePerex ?? '', href: NavigationSubRoutes.NOTIFICATIONS + id },
+                    { label: data?.messagePerex ?? '', href: NavigationSubRoutes.NOTIFICATIONS + '/' + id },
                 ]}
             />
             <TextHeading size="L">{data?.messagePerex}</TextHeading>

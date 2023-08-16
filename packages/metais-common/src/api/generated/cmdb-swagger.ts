@@ -664,7 +664,7 @@ export interface RelListFilterContainerUi {
 
 export interface FilterValueUi {
     equality?: string
-    value?: string
+    value?: string | Date
 }
 
 export interface FilterAttributesUi {

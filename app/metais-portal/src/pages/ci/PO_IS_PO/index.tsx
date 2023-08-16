@@ -45,6 +45,9 @@ const ProjektListPage = () => {
                                         entityName={PO}
                                         availableAttributes={columnListData?.attributes}
                                         defaultFilterValues={defaultFilterValues}
+                                        attributeProfiles={attributeProfiles}
+                                        attributes={attributes}
+                                        constraintsData={constraintsData}
                                     />
                                     <ActionsOverTable
                                         handleFilterChange={handleFilterChange}

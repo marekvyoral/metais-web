@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { useBackButtonNavigate } from '@isdd/metais-common/src/hooks/useBackButtonNavigate'
 
 import styles from './breadCrumbs.module.scss'
 
@@ -13,12 +15,22 @@ type BreadCrumbsProps = {
 }
 
 const BreadCrumbsItem: React.FC<BreadCrumbsItemProps> = ({ icon, href, label }) => {
+    const { backButtonNavigate } = useBackButtonNavigate(href)
+    //to work properly Link component must send state with location
+    // location = useLocation()
+    // <Link to={href} state={{from: location}} /> or with navigate
+    // navigate("href", { state: { from: location } });
+    const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault()
+        backButtonNavigate()
+    }
+
     return (
         <li className="govuk-breadcrumbs__list-item">
-            <a className="govuk-breadcrumbs__link" href={href}>
+            <Link className="govuk-breadcrumbs__link" to="#" onClick={(e) => handleNavigate(e)}>
                 {icon && <img src={icon} alt="icon" className={styles.linkIcon} />}
                 {label}
-            </a>
+            </Link>
         </li>
     )
 }

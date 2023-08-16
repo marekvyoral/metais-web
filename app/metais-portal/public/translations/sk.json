@@ -150,6 +150,9 @@
         "ISVS": {
             "name": "Názov informačného systému"
         },
+        "Projekt": {
+            "name": "Názov projektu"
+        },
         "PO": {
             "name": "Názov",
             "itIsChapter": "Je kapitola",
@@ -169,22 +172,28 @@
         "remove": "Vymazat",
         "value": {
             "label": "Hodnota",
-            "placeholder": "Zadajte"
+            "labelYes": "Áno",
+            "labelNo": "Nie",
+            "placeholder": "Zadajte",
+            "placeholderSelect": "Vyberte",
+            "placeholderSelectMulti": "Vyberte viacero"
         },
         "operator": {
             "label": "Podmienka",
             "placeholder": "Vyberte",
-            "FULLTEXT": "Obsahuje",
-            "EQUAL": "=",
-            "GREATER": ">",
-            "LOWER": "<",
-            "EQUAL_OR_GREATER": "=<",
-            "EQUAL_OR_LOWER": "=>"
+            "ilike": "Obsahuje",
+            "eq": "=",
+            "gt": ">",
+            "lt": "<",
+            "gte": "=<",
+            "lte": "=>"
         },
         "attribute": {
             "label": "Atribút",
             "placeholder": "Vyberte"
-        }
+        },
+        "addRowErrorClose": "Zatvoriť upozornenie",
+        "addRowErrorMessage": "Nie je možné pridať viac ako {{value}} vlastných filtrov."
     },
     "form": {
         "search": "Hľadať",

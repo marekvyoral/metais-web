@@ -5,7 +5,7 @@ import { ColumnAttribute, DynamicFilterAttributes } from '@isdd/metais-common/co
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ATTRIBUTE_NAME, GET_ENUM, useGetEnum } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME, Attribute, AttributeProfile, EnumType, GET_ENUM, useGetEnum } from '@isdd/metais-common/api'
 
 export interface POFilterData extends IFilterParams {
     Gen_Profil_nazov?: string
@@ -25,9 +25,12 @@ interface Props {
     entityName: string
     availableAttributes?: ColumnAttribute[] | undefined
     defaultFilterValues: POFilterData
+    attributes: Attribute[] | undefined
+    attributeProfiles: AttributeProfile[] | undefined
+    constraintsData: (EnumType | undefined)[]
 }
 
-export const FilterPO = ({ entityName: PO, availableAttributes, defaultFilterValues }: Props) => {
+export const FilterPO = ({ entityName: PO, availableAttributes, defaultFilterValues, attributes, attributeProfiles, constraintsData }: Props) => {
     const { t } = useTranslation()
     const { data: personCategories } = useGetEnum(GET_ENUM.KATEGORIA_OSOBA)
     const optionsPersonCategories = personCategories?.enumItems?.map((enumItem) => ({
@@ -48,7 +51,7 @@ export const FilterPO = ({ entityName: PO, availableAttributes, defaultFilterVal
     return (
         <Filter<POFilterData>
             defaultFilterValues={defaultFilterValues}
-            form={(register, control, filter, setValue) => (
+            form={({ register, control, filter, setValue }) => (
                 <div>
                     <Input label={t(`filter.${PO}.name`)} placeholder={t(`filter.namePlaceholder`)} {...register(ATTRIBUTE_NAME.Gen_Profil_nazov)} />
                     <Input
@@ -112,7 +115,15 @@ export const FilterPO = ({ entityName: PO, availableAttributes, defaultFilterVal
                             />
                         )}
                     />
-                    <DynamicFilterAttributes setValue={setValue} data={filter.attributeFilters} availableAttributes={availableAttributes} />
+                    <DynamicFilterAttributes
+                        defaults={defaultFilterValues}
+                        attributes={attributes}
+                        attributeProfiles={attributeProfiles}
+                        constraintsData={constraintsData}
+                        setValue={setValue}
+                        data={filter.attributeFilters}
+                        availableAttributes={availableAttributes}
+                    />
                 </div>
             )}
         />

@@ -9,6 +9,7 @@ export interface ColumnSort {
 }
 
 export interface IFilter {
+    [key: string]: string | boolean | undefined | string[] | Date | null | IAttributeFilters
     pageNumber?: number
     pageSize?: number
     sort?: ColumnSort[]

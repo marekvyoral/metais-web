@@ -20,7 +20,7 @@ const OrganizationFilter = ({ defaultFilterValues }: Props) => {
     return (
         <Filter<KSFilterData>
             defaultFilterValues={defaultFilterValues}
-            form={(register, control) => (
+            form={({ register, control }) => (
                 <div>
                     <Input
                         label={t(`filter.organizations.name`)}

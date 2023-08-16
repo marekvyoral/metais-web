@@ -46,7 +46,7 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
             />
             <Filter<FilterData>
                 defaultFilterValues={defaultFilterValues}
-                form={(register) => (
+                form={({ register }) => (
                     <div>
                         <SimpleSelect
                             {...register('eventType')}

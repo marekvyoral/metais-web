@@ -6,11 +6,10 @@ import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFil
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
-import { TasksListView } from '../../views/tasks/TasksListView'
-
+import { TasksListView } from '@/components/views/tasks/TasksListView'
 import { getGidsForUserOrgRoles, getUuidsForUserOrgRoles, mapPickerDateToRequestData } from '@/componentHelpers/tasks/tasks.helpers'
 
 enum TaskFilterState {
@@ -34,6 +33,7 @@ const defaultFilterValues: TasksFilter = {
 
 export const TasksListContainer: React.FC = () => {
     const { t } = useTranslation()
+    const location = useLocation()
     const {
         state: { user },
     } = useAuth()
@@ -44,7 +44,11 @@ export const TasksListContainer: React.FC = () => {
             header: t('tasks.tableHeaders.name'),
             accessorKey: 'name',
             cell: (row) => {
-                return <Link to={`${RouteNames.TASKS}/${row.row.original.id}`}>{row.getValue() as string}</Link>
+                return (
+                    <Link to={`${RouteNames.TASKS}/${row.row.original.id}`} state={{ from: location }}>
+                        {row.getValue() as string}
+                    </Link>
+                )
             },
             enableSorting: true,
         },
