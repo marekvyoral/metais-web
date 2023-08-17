@@ -1,6 +1,8 @@
 export const BASE_PAGE_NUMBER = 1
 export const BASE_PAGE_SIZE = 10
 
+export const filterKeysToSkip = new Set(['fullTextSearch', 'attributeFilters', 'sort', 'pageSize', 'pageNumber'])
+
 export type OPERATOR_SEPARATOR_TYPE = '--'
 export const OPERATOR_SEPARATOR = '--'
 export const JOIN_OPERATOR = '+'

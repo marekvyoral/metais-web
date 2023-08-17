@@ -1,21 +1,20 @@
 import React, { useState, useId, PropsWithChildren, useEffect } from 'react'
-import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 
-import styles from './accordion.module.scss'
+import { AccordionSection } from './AccordionSection'
 
-import { AlertTriangleIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 
-type AccordionSection = {
+export type IAccordionSection = {
     title: string
+    onLoadOpen?: boolean
     error?: boolean
     summary?: React.ReactNode
     content: React.ReactNode
 }
 
 interface IAccordionContainerProps extends PropsWithChildren {
-    sections: AccordionSection[]
+    sections: IAccordionSection[]
     indexOfSectionToExpand?: number
 }
 
@@ -48,41 +47,16 @@ export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ section
                     onClick={toggleAllExpanded}
                 />
             </div>
-            {sections.map((section, index) => {
-                const isExpanded = expandedSectionIndexes[index]
-                const onToggle = () =>
-                    setExpandedSectionIndexes((prev) => {
-                        const newArr = [...prev]
-                        newArr[index] = !isExpanded
-                        return newArr
-                    })
-                const buttonId = `${id}-heading-${index + 1}`
-                return (
-                    <div key={index} className={classNames('govuk-accordion__section', { 'govuk-accordion__section--expanded': isExpanded })}>
-                        <div className={classNames('govuk-accordion__section-header', styles.headerDiv)}>
-                            <h3 className="govuk-accordion__section-heading">
-                                <button
-                                    className="govuk-accordion__section-button"
-                                    type="button"
-                                    aria-expanded={isExpanded}
-                                    onClick={onToggle}
-                                    id={buttonId}
-                                >
-                                    {section.title}
-                                </button>
-
-                                <span className="govuk-accordion__icon" onClick={onToggle} />
-                            </h3>
-
-                            <div className="govuk-accordion__section-summary govuk-body">{section.summary}</div>
-                            {section.error && <img src={AlertTriangleIcon} />}
-                        </div>
-                        <div className="govuk-accordion__section-content" aria-labelledby={buttonId}>
-                            {section.content}
-                        </div>
-                    </div>
-                )
-            })}
+            {sections.map((section, index) => (
+                <AccordionSection
+                    key={index}
+                    section={section}
+                    index={index}
+                    setExpandedSectionIndexes={setExpandedSectionIndexes}
+                    expandedSectionIndexes={expandedSectionIndexes}
+                    id={id}
+                />
+            ))}
         </div>
     )
 }

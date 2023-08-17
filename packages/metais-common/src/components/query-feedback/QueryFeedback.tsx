@@ -3,6 +3,7 @@ import { ErrorBlockProps } from '@isdd/idsk-ui-kit/error-block/ErrorBlock'
 import { ILoadingIndicatorProps, LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
 import { TextWarning } from '@isdd/idsk-ui-kit/src/typography/TextWarning'
 
+import styles from './queryFeedback.module.scss'
 interface IQueryFeedbackProps extends PropsWithChildren {
     loading: boolean
     error?: boolean
@@ -14,7 +15,11 @@ export const QueryFeedback: React.FC<IQueryFeedbackProps> = ({ loading, error, c
     if (error) {
         return <TextWarning>{errorProps?.errorMessage}</TextWarning>
     } else if (loading) {
-        return <LoadingIndicator {...indicatorProps} />
+        return (
+            <div className={styles.loadingIndicator}>
+                <LoadingIndicator {...indicatorProps} />
+            </div>
+        )
     } else {
         return <>{children}</>
     }

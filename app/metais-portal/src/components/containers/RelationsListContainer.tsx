@@ -2,7 +2,6 @@ import React, { SetStateAction, useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
 import { IKeyToDisplay, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelations'
-import { QueryFeedback } from '@isdd/metais-common'
 
 import { mapFilterToNeighboursWithAllRelsApi } from '@/componentHelpers'
 
@@ -44,6 +43,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
     const handleFilterChange = (filter: IFilter) => {
         setPageConfig(mapFilterToNeighboursWithAllRelsApi(pageConfig, filter))
     }
+
     const { isLoading: areRelationsLoading, isError: areRelationsError, relationsList, owners } = useEntityRelationsDataList(entityId, pageConfig)
 
     const pagination: Pagination = {
@@ -55,20 +55,18 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
     const isLoading = areRelationsLoading || areTypesLoading
     const isError = areTypesError || areRelationsError
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View
-                isLoading={isLoading}
-                isError={isError}
-                data={{
-                    entityTypes,
-                    relationsList,
-                    owners,
-                    keysToDisplay,
-                }}
-                pagination={pagination}
-                handleFilterChange={handleFilterChange}
-                setPageConfig={setPageConfig}
-            />
-        </QueryFeedback>
+        <View
+            isLoading={isLoading}
+            isError={isError}
+            data={{
+                entityTypes,
+                relationsList,
+                owners,
+                keysToDisplay,
+            }}
+            pagination={pagination}
+            handleFilterChange={handleFilterChange}
+            setPageConfig={setPageConfig}
+        />
     )
 }

@@ -6,6 +6,7 @@ import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { QueryFeedback } from '@isdd/metais-common'
 import { ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
+import { TextHeading } from '@isdd/idsk-ui-kit/index'
 
 import { RelationCard } from './cards/RelationCard'
 import { CardColumnList } from './cards/CardColumnList'
@@ -35,10 +36,10 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
     const { entityTypes, relationsList, owners } = data
 
     return (
-        <Tabs
-            tabList={data?.keysToDisplay
-                ?.filter((item) => item?.count > 0)
-                .map((key) => ({
+        <>
+            {!!data?.keysToDisplay?.length && <TextHeading size="XL">{t('neighboursCardList.heading')}</TextHeading>}
+            <Tabs
+                tabList={data?.keysToDisplay.map((key) => ({
                     id: key?.technicalName,
                     title: key?.tabName,
                     content: (
@@ -61,9 +62,10 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                         </QueryFeedback>
                     ),
                 }))}
-            onSelect={(selected) => {
-                setPageConfig((pageConfig) => ({ ...pageConfig, ciTypes: [selected.id ?? ''], page: 1 }))
-            }}
-        />
+                onSelect={(selected) => {
+                    setPageConfig((pageConfig) => ({ ...pageConfig, ciTypes: [selected.id ?? ''], page: 1 }))
+                }}
+            />
+        </>
     )
 }

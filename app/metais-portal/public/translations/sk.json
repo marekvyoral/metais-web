@@ -254,6 +254,7 @@
         "description": "Popis"
     },
     "neighboursCardList": {
+        "heading": "Vzťahy na súvisiace položky",
         "buttonAddNewRelation": "Pridať nový vzťah",
         "buttonAddNewRelationCard": "Pridať novú položku a vzťah"
     },
@@ -450,7 +451,7 @@
         "assigne": "Riešiteľ",
         "deadline": "Konečný termín (deadline):",
         "showAll": "Zobraziť všetky úlohy",
-        "youHaveTasks":"Máte {{numberOfTasks}} úloh",
+        "youHaveTasks": "Máte {{numberOfTasks}} úloh",
         "tableHeaders": {
             "name": "Názov",
             "type": "Typ",
@@ -466,11 +467,11 @@
             "closingOfTask": "Uzatvorenie úlohy"
         },
         "type_app_id": {
-            "iam":"IAM",
-            "integrations":"Integrácie",
-            "kris":"KRIS",
-            "standards":"Štandardy",
-            "statistics":"Štatistika"
+            "iam": "IAM",
+            "integrations": "Integrácie",
+            "kris": "KRIS",
+            "standards": "Štandardy",
+            "statistics": "Štatistika"
         }
     },
     "notifications": {
@@ -496,6 +497,7 @@
         "closeAll": "Zatvoriť všetko"
     },
     "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
+    "currency": "{{val, currency}}",
     "selectPublicAuthority": {
         "error": "Chyba pri načítavaní údajov pre orgány verejnej moci.",
         "loading": "Načítavajú sa údaje pre orgány verejnej moci."

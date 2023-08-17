@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from 'react'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 import styles from './tableSelectColumns.module.scss'
 
@@ -63,6 +64,7 @@ const ColumnSection: React.FC<IColumnSectionProps> = ({ sectionName, columns, up
                             value={column.technicalName}
                             checked={getIsColumnChecked(column.technicalName)}
                             onChange={(e) => updateSelectedValue(e.target.value, e.target.checked)}
+                            disabled={column.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov}
                         />
                     )
                 })}
