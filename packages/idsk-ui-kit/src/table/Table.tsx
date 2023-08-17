@@ -44,6 +44,8 @@ export interface ITableProps<T> {
     isLoading?: boolean
     error?: boolean
     getExpandedRow?: (row: Row<T>) => JSX.Element | null
+    onRowClick?: (row: Row<T>) => void
+    rowHref?: (row: Row<T>) => string
 }
 
 export const Table = <T,>({
@@ -66,6 +68,8 @@ export const Table = <T,>({
     isLoading = false,
     error = false,
     getExpandedRow,
+    onRowClick,
+    rowHref,
 }: ITableProps<T>): JSX.Element => {
     const wrapper1Ref = useRef<HTMLTableSectionElement>(null)
     const wrapper2Ref = useRef<HTMLTableSectionElement>(null)
@@ -81,6 +85,7 @@ export const Table = <T,>({
             expanded: expandedRowsState,
             rowSelection,
         },
+
         onRowSelectionChange,
         onSortingChange: (sortUpdater) => {
             if (typeof sortUpdater === 'function') {
@@ -149,7 +154,14 @@ export const Table = <T,>({
             >
                 {table.getRowModel().rows.map((row) => (
                     <>
-                        <TableRow<T> row={row} key={row.id} isRowSelected={isRowSelected} isRowBold={isRowBold} />
+                        <TableRow<T>
+                            row={row}
+                            key={row.id}
+                            isRowSelected={isRowSelected}
+                            isRowBold={isRowBold}
+                            onRowClick={onRowClick}
+                            rowHref={rowHref}
+                        />
                         {row.getIsExpanded() && getExpandedRow && <TableRowExpanded row={row} getExpandedRow={getExpandedRow} />}
                     </>
                 ))}

@@ -14,14 +14,14 @@ export const formatRelationAttributes = (
         const entityType = entityTypes?.find((et) => et?.relationshipTypeTechnicalName === rel?.type)
         return {
             title: `${entityType?.relationshipTypeName} : ${t(`metaAttributes.state.${rel?.metaAttributes?.state}`)}`,
-            href: `/relation/redirect/${ci?.type}/${ci?.uuid}/${rel?.uuid}`,
+            href: `/relation/${ci?.type}/${ci?.uuid}/${rel?.uuid}`,
         }
     })
     return {
         status: ci?.metaAttributes?.state,
         codeMetaIS: attributes?.Gen_Profil_kod_metais as string,
         label: attributes?.Gen_Profil_nazov as string,
-        labelHref: `/ci/redirect/${ci?.type}/${ci?.uuid}`,
+        labelHref: `/ci/${ci?.type}/${ci?.uuid}`,
         name: attributes?.Gen_Profil_nazov as string,
         admin: owner?.configurationItemUi?.attributes?.Gen_Profil_nazov as string,
         relations,

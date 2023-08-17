@@ -15,6 +15,7 @@ import {
     ModuleExport,
     checkIfExportOnFilePathIsReactComponent,
     calcNestedPath,
+    INDEX_ROUTE,
 } from './fileBasedRoutesHelpers'
 import ProtectedRoute from './ProtectedRoute'
 
@@ -48,20 +49,16 @@ export const constructRouteWithParent = ({
     return constructedRouteObject
 }
 
-const protectRouteObject = (element: React.ReactElement, slug: string, index: boolean) => {
-    return <Route element={<ProtectedRoute element={element} key={slug} slug={slug} />} path={slug} index={index} key={slug} />
-}
-
 export const constructRouteObject = ({ slug, Component, ParentComponent, parentFilePath }: RouteConstructOptions) => {
     if (ParentComponent) {
         const parentSlug = parseSlugFromFilePath(parentFilePath ?? '')
         return (
             <Route path={parentSlug} key={parentSlug} element={<ParentComponent />}>
-                {protectRouteObject(<Component />, slug, true)}
+                <Route element={<ProtectedRoute element={<Component />} slug={slug} />} key={slug} index />
             </Route>
         )
     } else {
-        return protectRouteObject(<Component />, slug, false)
+        return <Route path={slug === '' ? INDEX_ROUTE : slug} element={<ProtectedRoute element={<Component />} slug={slug} />} key={slug} />
     }
 }
 
@@ -113,6 +110,7 @@ export const computeRoutes = (globExports: FileBasedPages) => {
             })
             return allConstructedRoutesInLevel
         }) ?? []
+
     return routes
 }
 

@@ -5,14 +5,16 @@ import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, useReadConfigurationItem } from '@isdd/metais-common/api'
 
-import Informations from '@/pages/ci/[entityName]/[entityId]/informations'
+import Informations from './[entityId]/informations'
+
 import NeighboursCardListWrapper from '@/components/entities/NeighboursCardListWrapper'
 
 export const INDEX_ROUTE = Informations
 
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
-    const { entityId, entityName } = useParams()
+    const { entityId } = useParams()
+    const entityName = 'PO_PO'
 
     const tabList: Tab[] = [
         {

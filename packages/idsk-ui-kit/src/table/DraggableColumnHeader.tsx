@@ -52,7 +52,6 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
             ref={dropRef}
             className={classNames('idsk-table__header', styles.header, {
                 [styles.checkBoxCell]: id === CHECKBOX_CELL,
-                [styles.width]: id !== CHECKBOX_CELL,
             })}
             colSpan={colSpan}
             style={{ opacity: isDragging ? 0.5 : 1, ...(header.column.columnDef.size ? { width: header.column.columnDef.size } : {}) }}

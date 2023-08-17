@@ -41,7 +41,7 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string) 
             technicalName: tab,
             count,
         }
-    })?.filter((tab) => tab?.tabName !== '')
+    })?.filter((tab) => tab?.tabName !== '' && tab?.count > 0)
 
     return {
         isLoading: isLoading || isRelatedLoading,
@@ -73,7 +73,7 @@ export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighbo
         isError: isOwnersError,
         data: ownersData,
     } = useGetRoleParticipantBulk({ gids: owners }, { query: { enabled: !!owners?.length } })
-
+    // debugger
     return {
         isLoading: isLoading || isOwnersLoading,
         isError: isError || isOwnersError,

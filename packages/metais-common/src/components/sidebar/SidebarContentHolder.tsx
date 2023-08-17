@@ -24,7 +24,7 @@ export const SidebarContentHolder = ({ section, onToggle, isExpanded, buttonId, 
                     className={classNames(
                         styles.sidebarlink,
                         styles.sectionHeaderButton,
-                        (isExpanded || activeTab === section.path) && styles.expanded,
+                        ((section.subItems && isExpanded) || activeTab === section.path) && styles.expanded,
                     )}
                     aria-expanded={isExpanded}
                     id={buttonId}
