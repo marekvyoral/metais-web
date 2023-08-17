@@ -15,7 +15,14 @@ import { BaseSyntheticEvent, useCallback, useEffect, useMemo, useState } from 'r
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 
 import { FilterActions, useFilterContext } from '@isdd/metais-common/contexts/filter/filterContext'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, JOIN_OPERATOR, OPERATOR_SEPARATOR, OPERATOR_SEPARATOR_TYPE } from '@isdd/metais-common/constants'
+import {
+    BASE_PAGE_NUMBER,
+    BASE_PAGE_SIZE,
+    JOIN_OPERATOR,
+    OPERATOR_SEPARATOR,
+    OPERATOR_SEPARATOR_TYPE,
+    filterKeysToSkip,
+} from '@isdd/metais-common/constants'
 import { convertFilterArrayData } from '@isdd/metais-common/componentHelpers/filter/convertFilterArrayData'
 import { updateUrlParamsOnChange } from '@isdd/metais-common/componentHelpers/filter/updateUrlParamsOnChange'
 import { convertUrlArrayAttribute } from '@isdd/metais-common/componentHelpers/filter/convertUrlArrayValue'
@@ -195,11 +202,15 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
     })
 
     const handleShouldBeFilterOpen = () => {
-        if (defaults != null) {
-            const defaultKeys = Object.keys(defaults)
-            const hasDefaultValue = defaultKeys.some((item) => defaults[item])
+        if (filter != null) {
+            const defaultKeys = Object.keys(filter)
+            const hasCurrentValue = defaultKeys.some((item) => {
+                if (filterKeysToSkip.has(item)) return false
+                return filter[item]
+            })
 
-            if (filter.fullTextSearch || hasDefaultValue) {
+            const hasAttribute = filter.attributeFilters
+            if (hasCurrentValue || hasAttribute) {
                 return true
             }
         }

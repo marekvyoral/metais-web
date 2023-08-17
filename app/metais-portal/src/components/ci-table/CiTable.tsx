@@ -44,7 +44,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
 
     const { rowSelection, setRowSelection } = rowSelectionState
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
-    const tableData = mapTableData(data.tableData, schemaAttributes, t, data.constraintsData)
+    const tableData = mapTableData(data.tableData, schemaAttributes, t, data.unitsData, data.constraintsData)
 
     const columnsAttributes = sortAndMergeCiColumns(data?.columnListData)
 
@@ -92,7 +92,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
             const attributeHeader = schemaAttributes[technicalName]?.name ?? t(`${technicalName}`)
             return {
                 accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],
-                header: attributeHeader ?? technicalName,
+                header: () => <span className={classNames({ [styles.textUnderline]: index === 0 })}>{attributeHeader ?? technicalName}</span>,
                 id: technicalName ?? '',
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
                     <TextBody size="S" className={'marginBottom0'}>
@@ -127,7 +127,11 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                                       name="checkbox"
                                       id="checkbox-all"
                                       value="checkbox-all"
-                                      onChange={() => handleAllCheckboxChange(tableData)}
+                                      onChange={(event) => {
+                                          event.stopPropagation()
+                                          handleAllCheckboxChange(tableData)
+                                      }}
+                                      onClick={(event) => event.stopPropagation()}
                                       checked={checked}
                                       containerClassName={styles.marginBottom15}
                                   />
@@ -142,7 +146,11 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                                   name="checkbox"
                                   id={`checkbox_${row.id}`}
                                   value="true"
-                                  onChange={() => handleCheckboxChange(row)}
+                                  onChange={(event) => {
+                                      event.stopPropagation()
+                                      handleCheckboxChange(row)
+                                  }}
+                                  onClick={(event) => event.stopPropagation()}
                                   checked={row.original.uuid ? !!rowSelection[row.original.uuid] : false}
                                   containerClassName={styles.marginBottom15}
                               />
@@ -159,6 +167,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
             <Table
                 columns={columns}
                 data={tableData}
+                rowHref={(row) => `./${row?.original?.uuid}`}
                 onSortingChange={(newSort) => {
                     handleFilterChange({ sort: newSort })
                     clearSelectedRows()

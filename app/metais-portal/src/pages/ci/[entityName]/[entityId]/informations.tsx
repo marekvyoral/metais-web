@@ -14,12 +14,14 @@ const Informations = () => {
                 configurationItemId={entityId ?? ''}
                 View={({ data: ciItemData }) => {
                     return (
-                        <AttributesContainer
-                            entityName={entityName ?? ''}
-                            View={({ data: { ciTypeData, constraintsData, unitsData } }) => {
-                                return <CiInformationAccordion data={{ ciItemData, constraintsData, ciTypeData, unitsData }} />
-                            }}
-                        />
+                        <>
+                            <AttributesContainer
+                                entityName={entityName ?? ''}
+                                View={({ data: { ciTypeData, constraintsData, unitsData } }) => {
+                                    return <CiInformationAccordion data={{ ciItemData, constraintsData, ciTypeData, unitsData }} />
+                                }}
+                            />
+                        </>
                     )
                 }}
             />

@@ -103,9 +103,13 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
         }
     }
 
-    // reload tabs when translations are loaded
+    // update new tabs when tabs are loaded
     useEffect(() => {
         setNewTabList(tabList)
+        setSelected((prev) => {
+            if (prev === undefined) return tabList[0]
+            return prev
+        })
     }, [tabList])
 
     const handleSubListSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: Tab) => {

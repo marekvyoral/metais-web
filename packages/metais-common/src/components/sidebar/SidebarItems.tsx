@@ -13,7 +13,6 @@ export const SidebarItems = ({ list }: Props) => {
     const [activeTab, setActiveTab] = useState<string | undefined>()
 
     useCurrentTab(list?.map((item) => item.path) || [], setActiveTab)
-
     return (
         <div className={styles.safeMargin}>
             {list?.map((item) => (

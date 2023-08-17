@@ -3,3 +3,7 @@ $govuk-global-styles: true;
 @import '@id-sk/frontend/idsk/all';
 
 @import 'utils.scss';
+
+.marginBottom0 {
+    margin-bottom: govuk-spacing(0) !important;
+}

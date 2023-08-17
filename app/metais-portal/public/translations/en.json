@@ -253,6 +253,7 @@
         "description": "Description"
     },
     "neighboursCardList": {
+        "heading": "Related item relationships",
         "buttonAddNewRelation": "Add a new relation",
         "buttonAddNewRelationCard": "Add a new item and relationship"
     },
@@ -447,8 +448,8 @@
         "selectGroup": "Select group",
         "assigne": "Assigne",
         "deadline": "Due date (deadline)",
-        "showAll":"Show all tasks",
-        "youHaveTasks":"You have {{numberOfTasks}} tasks",
+        "showAll": "Show all tasks",
+        "youHaveTasks": "You have {{numberOfTasks}} tasks",
         "tableHeaders": {
             "name": "Name",
             "type": "Type",
@@ -460,15 +461,15 @@
             "action": "Action"
         },
         "activity": {
-           "changeOfUser": "Change of user",
-           "closingOfTask": "Closing of task" 
+            "changeOfUser": "Change of user",
+            "closingOfTask": "Closing of task"
         },
         "type_app_id": {
-            "iam":"IAM",
-            "integrations":"Integrations",
-            "kris":"KRIS",
-            "standards":"Standards",
-            "statistics":"Statistics"
+            "iam": "IAM",
+            "integrations": "Integrations",
+            "kris": "KRIS",
+            "standards": "Standards",
+            "statistics": "Statistics"
         }
     },
     "notifications": {
@@ -494,6 +495,7 @@
         "closeAll": "Close all"
     },
     "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
+    "currency": "{{val, currency}}",
     "selectPublicAuthority": {
         "error": "Error while fetching data for public authorities.",
         "loading": "Loading public authorities"

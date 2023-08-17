@@ -27,7 +27,7 @@
 }
 
 .checkBoxCell {
-    width: 40px;
+    width: 20px !important;
 }
 
 .head {
@@ -44,6 +44,7 @@
 
 .header {
     background-color: govuk-colour('grey-4');
+    padding-left: govuk-spacing(1) !important;
 }
 
 .rowSelected {
@@ -75,4 +76,18 @@
 
 .headerRow {
     max-width: 2500px !important;
+}
+
+.paddingLeft {
+    padding-left: govuk-spacing(1) !important;
+}
+
+.rowHover {
+    :hover {
+        cursor: pointer;
+    }
+}
+
+tr:hover td {
+    background-color: govuk-colour('grey-4');
 }

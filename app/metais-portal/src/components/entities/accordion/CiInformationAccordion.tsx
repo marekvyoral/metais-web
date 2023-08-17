@@ -16,10 +16,9 @@ interface CiInformationData {
         unitsData?: EnumType | undefined
     }
 }
-
-export const CiInformationAccordion: React.FC<CiInformationData> = ({ data: { ciItemData, ciTypeData, constraintsData } }) => {
+// Plánované ročné prevádzkové náklady projektu v EUR
+export const CiInformationAccordion: React.FC<CiInformationData> = ({ data: { ciItemData, ciTypeData, constraintsData, unitsData } }) => {
     const { t } = useTranslation()
-
     const tabsFromApi =
         ciTypeData?.attributeProfiles?.map((attributesProfile) => {
             return {
@@ -31,7 +30,8 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({ data: { ci
                             .sort((atr1, atr2) => (atr1.order || 0) - (atr2.order || 0))
                             .map((attribute) => {
                                 const withDescription = true
-                                const rowValue = pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, withDescription)
+                                const rowValue = pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, unitsData, withDescription)
+
                                 return (
                                     !attribute?.invisible && (
                                         <InformationGridRow
@@ -54,6 +54,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({ data: { ci
                 sections={[
                     {
                         title: t('ciInformationAccordion.basicInformation'),
+                        onLoadOpen: true,
                         content: (
                             <div className={styles.attributeGridRowBox}>
                                 {ciTypeData?.attributes?.map((attribute) => {
@@ -62,7 +63,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({ data: { ci
                                         <InformationGridRow
                                             key={attribute?.technicalName}
                                             label={attribute.name ?? ''}
-                                            value={pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, withDescription)}
+                                            value={pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, unitsData, withDescription)}
                                             tooltip={attribute?.description}
                                         />
                                     )

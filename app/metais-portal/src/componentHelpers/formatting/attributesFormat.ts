@@ -1,12 +1,27 @@
 import { TFunction } from 'i18next'
 import { Attribute, AttributeConstraintEnum, EnumType, ConfigurationItemUi } from '@isdd/metais-common/api'
 
-const formatRowValueByRowType = (attribute: Attribute | undefined, rowValue: string, t: TFunction<'translation', undefined, 'translation'>) => {
+const findUnitValue = (attribute: Attribute | undefined, unitsData: EnumType | undefined) => {
+    const unit = unitsData?.enumItems?.find((item) => item.code === attribute?.units)?.value ?? ''
+    if (unit.toLowerCase().includes('eur')) return 'Eur'
+    return unit
+}
+
+const formatRowValueByRowType = (
+    attribute: Attribute | undefined,
+    rowValue: string,
+    t: TFunction<'translation', undefined, 'translation'>,
+    unitsData: EnumType | undefined,
+) => {
+    if (attribute?.units && attribute?.type && rowValue) {
+        const unitValue = findUnitValue(attribute, unitsData)
+        return t('currency', { val: rowValue, currency: unitValue })
+    }
     switch (attribute?.type) {
         case 'BOOLEAN':
             return rowValue ? t('radioButton.yes') : t('radioButton.no')
         case 'DATE':
-            if (rowValue) return new Date(rowValue).toDateString()
+            if (rowValue) return t('dateTime', { date: rowValue })
             return rowValue
         default:
             return rowValue
@@ -18,12 +33,12 @@ export const pairEnumsToEnumValues = (
     ciItemData: ConfigurationItemUi | undefined,
     constraintsData: (EnumType | undefined)[],
     t: TFunction<'translation', undefined, 'translation'>,
+    unitsData: EnumType | undefined,
     withDescription?: boolean,
 ) => {
     const rowValue = ciItemData?.attributes?.[attribute?.technicalName ?? attribute?.name ?? '']
-    const formattedRowValue = formatRowValueByRowType(attribute, rowValue, t)
+    const formattedRowValue = formatRowValueByRowType(attribute, rowValue, t, unitsData)
     if (!attribute?.constraints || !attribute?.constraints?.length) return formattedRowValue
-
     return (
         attribute?.constraints?.map((constraint) => {
             switch (constraint?.type) {

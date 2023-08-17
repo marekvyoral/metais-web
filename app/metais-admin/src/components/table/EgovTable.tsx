@@ -21,7 +21,6 @@ type IListData = {
 export const EgovTable = ({ data, entityName }: IListData) => {
     const { t } = useTranslation()
     const dataLength = data?.length ?? 0
-
     const columns: Array<ColumnDef<CiTypePreview>> = [
         {
             header: t('egov.name'),
@@ -113,7 +112,12 @@ export const EgovTable = ({ data, entityName }: IListData) => {
                     />
                 }
             />
-            <Table data={data?.slice(start, end)} columns={columns} pagination={{ pageIndex: pageNumber, pageSize }} />
+            <Table
+                rowHref={(row) => `./${row.original.technicalName}`}
+                data={data?.slice(start, end)}
+                columns={columns}
+                pagination={{ pageIndex: pageNumber, pageSize }}
+            />
             <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={dataLength} handlePageChange={handlePageChange} />
         </div>
     )
