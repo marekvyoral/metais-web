@@ -1,10 +1,10 @@
-import React, { useCallback, useState, useEffect } from 'react'
 import { ILoadOptionsResponse, SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
-import { useTranslation } from 'react-i18next'
 import { useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { OptionProps, components } from 'react-select'
-import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import { QueryFeedback } from '@isdd/metais-common/index'
+import React, { useCallback, useEffect, useState } from 'react'
+import { UseFormSetValue } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { OptionProps, components } from 'react-select'
 
 import style from './selectFilterRole.module.scss'
 
@@ -18,7 +18,6 @@ type SelectFilterRoleOptionType = {
 
 interface SelectFilterRoleProps {
     filter: UserManagementFilterData
-    register: UseFormRegister<UserManagementFilterData>
     setValue: UseFormSetValue<UserManagementFilterData>
 }
 
@@ -33,7 +32,7 @@ const formatOption = (optionProps: OptionProps<SelectFilterRoleOptionType>) => {
     )
 }
 
-export const SelectFilterRole: React.FC<SelectFilterRoleProps> = ({ filter, register, setValue }) => {
+export const SelectFilterRole: React.FC<SelectFilterRoleProps> = ({ filter, setValue }) => {
     const { t } = useTranslation()
     const [defaultValue, setDefaultValue] = useState<SelectFilterRoleOptionType | undefined>(undefined)
     const [options, setOptions] = useState<SelectFilterRoleOptionType[]>([])
@@ -80,7 +79,6 @@ export const SelectFilterRole: React.FC<SelectFilterRoleProps> = ({ filter, regi
                 label={t('userManagement.filter.role')}
                 name="roleUuid"
                 option={(ctx) => formatOption(ctx)}
-                register={register}
                 setValue={setValue}
                 defaultValue={defaultValue}
             />
