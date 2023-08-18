@@ -154,13 +154,14 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
                             value: UserManagementActionsOverRowEnum.CHANGE_PASSWORD,
                         },
                     ]}
-                    onChange={(event) =>
+                    name="actions"
+                    onChange={(value) =>
                         handleRowAction(
                             {
                                 uuid: identity.uuid || '',
                                 login: identity.login || '',
                             },
-                            event.target.value as UserManagementActionsOverRowEnum,
+                            value as UserManagementActionsOverRowEnum,
                             identity.state === IdentityState.BLOCKED,
                         )
                     }

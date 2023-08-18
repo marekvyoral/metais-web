@@ -9,6 +9,7 @@ import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { BulkPopup, CreateEntityButton, IconLabel } from '@isdd/metais-common/components/actions-over-table'
 import { CrossInACircleIcon, CheckInACircleIcon, ExportIcon } from '@isdd/metais-common/assets/images'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useNavigate } from 'react-router-dom'
 
 import { SelectFilterRole } from '@/components/views/userManagement/components/SelectFilterRole/SelectFilterRole'
 import { SelectFilterOrganization } from '@/components/views/userManagement/components/SelectFilterOrganization/SelectFilterOrganization'
@@ -39,6 +40,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
     handleExport,
 }) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const [rowSelection, setRowSelection] = useState<Record<string, UserManagementListItem>>({})
     const handleUpdateIdentitiesState = useCallback(
         (activate: boolean) =>
@@ -54,7 +56,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
             <TextHeading size="XL">{t('userManagement.title')}</TextHeading>
             <Filter<UserManagementFilterData>
                 defaultFilterValues={defaultFilterValues}
-                form={({ register, filter, setValue }) => (
+                form={({ filter, setValue }) => (
                     <>
                         <SimpleSelect
                             label={t(`userManagement.filter.state`)}
@@ -72,17 +74,24 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                                     label: t('userManagement.filter.stateLabel.activated'),
                                 },
                             ]}
-                            {...register('state')}
+                            defaultValue={filter.state}
+                            name="state"
+                            setValue={setValue}
                         />
-                        <SelectFilterRole filter={filter} register={register} setValue={setValue} />
-                        <SelectFilterOrganization filter={filter} register={register} setValue={setValue} />
+                        <SelectFilterRole filter={filter} setValue={setValue} />
+                        <SelectFilterOrganization filter={filter} setValue={setValue} />
                     </>
                 )}
             />
             <ActionsOverTable
                 handleFilterChange={handleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                createButton={<CreateEntityButton label={t('userManagement.addNewUser')} path={`${AdminRouteNames.USER_MANAGEMENT}/create`} />}
+                createButton={
+                    <CreateEntityButton
+                        label={t('userManagement.addNewUser')}
+                        onClick={() => navigate(`${AdminRouteNames.USER_MANAGEMENT}/create`, { state: { from: location } })}
+                    />
+                }
                 exportButton={
                     <Button
                         className="marginBottom0"

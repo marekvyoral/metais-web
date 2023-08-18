@@ -1,17 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { ILoadOptionsResponse, SelectLazyLoading, DEFAULT_LAZY_LOAD_PER_PAGE } from '@isdd/idsk-ui-kit/index'
-import { OptionProps, components } from 'react-select'
-import { useTranslation } from 'react-i18next'
+import { DEFAULT_LAZY_LOAD_PER_PAGE, ILoadOptionsResponse, SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
+import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { AddressObjectUi, HierarchyPOFilterUi, useReadCiList } from '@isdd/metais-common/api'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
-import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { QueryFeedback } from '@isdd/metais-common/index'
+import React, { useCallback, useEffect, useState } from 'react'
+import { UseFormSetValue } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { OptionProps, components } from 'react-select'
 
 import style from './selectFilterOrganization.module.scss'
 
-import { mapHierarchyRightsToOptions } from '@/components/views/userManagement/userManagementUtils'
 import { UserManagementFilterData } from '@/components/containers/ManagementList/UserManagementListUtils'
+import { mapHierarchyRightsToOptions } from '@/components/views/userManagement/userManagementUtils'
 
 export type SelectFilterOrganizationOptionType = {
     poUUID: string
@@ -21,7 +21,6 @@ export type SelectFilterOrganizationOptionType = {
 
 interface SelectFilterOrganizationProps {
     filter: UserManagementFilterData
-    register: UseFormRegister<UserManagementFilterData>
     setValue: UseFormSetValue<UserManagementFilterData>
 }
 
@@ -38,7 +37,7 @@ const formatOption = (optionProps: OptionProps<SelectFilterOrganizationOptionTyp
     )
 }
 
-export const SelectFilterOrganization: React.FC<SelectFilterOrganizationProps> = ({ filter, register, setValue }) => {
+export const SelectFilterOrganization: React.FC<SelectFilterOrganizationProps> = ({ filter, setValue }) => {
     const { t } = useTranslation()
     const auth = useAuth()
 
@@ -112,7 +111,6 @@ export const SelectFilterOrganization: React.FC<SelectFilterOrganizationProps> =
                 label={t('userManagement.filter.organization')}
                 name="orgId"
                 option={(ctx) => formatOption(ctx)}
-                register={register}
                 setValue={setValue}
                 defaultValue={defaultValue}
             />
