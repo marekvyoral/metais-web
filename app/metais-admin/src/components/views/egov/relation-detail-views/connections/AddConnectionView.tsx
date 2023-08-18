@@ -24,25 +24,17 @@ export const AddConnectionView = ({ listOptions, onClose, addConnection }: IAddC
     const optionsWithDefault = [{ label: t('egov.detail.selectOption'), disabled: true, value: '' }, ...listOptions]
 
     const handleOnConnectionsChange = useCallback(
-        (event: React.ChangeEvent<HTMLSelectElement>) => {
-            let newConnection
-            try {
-                newConnection = JSON.parse(event?.target?.value)
-            } catch (e) {
-                // eslint-disable-next-line no-console
-                console.error('Could not get selected connection')
-                return
-            }
+        (value?: string) => {
             if (!addConnection) {
                 const existingValueInForm = methods?.getValues(`${direction}s`)
                 if (existingValueInForm) {
-                    methods?.setValue(`${direction}s`, [...existingValueInForm, newConnection])
+                    methods?.setValue(`${direction}s`, [...existingValueInForm, JSON.parse(value ?? '{}')])
                 } else {
-                    methods?.setValue(`${direction}s`, [newConnection])
+                    methods?.setValue(`${direction}s`, [JSON.parse(value ?? '{}')])
                 }
                 methods?.setValue(`${direction}Cardinality`, { min: 0, max: undefined })
             } else {
-                addConnection(newConnection, direction === Direction.SOURCE ? 'SOURCE' : 'TARGET')
+                addConnection(value as CiTypePreview, direction === Direction.SOURCE ? 'SOURCE' : 'TARGET')
             }
             onClose()
         },
@@ -56,16 +48,17 @@ export const AddConnectionView = ({ listOptions, onClose, addConnection }: IAddC
                 label={t('egov.detail.direction.heading')}
                 name={'direction'}
                 options={[
-                    { label: t('egov.detail.direction.source'), value: 'source' },
-                    { label: t('egov.detail.direction.target'), value: 'target' },
+                    { label: t('egov.detail.direction.source'), value: Direction.SOURCE },
+                    { label: t('egov.detail.direction.target'), value: Direction.TARGET },
                 ]}
-                onChange={(event) => {
-                    if (event?.target?.value === Direction.SOURCE || event?.target?.value === Direction.TARGET) setDirection(event?.target?.value)
+                onChange={(value) => {
+                    if (value === Direction.SOURCE || value === Direction.TARGET) setDirection(value)
                 }}
             />
 
             <SimpleSelect
                 id={direction}
+                name={direction}
                 label={t('egov.detail.connections')}
                 options={optionsWithDefault}
                 defaultValue={optionsWithDefault?.[0]?.value}

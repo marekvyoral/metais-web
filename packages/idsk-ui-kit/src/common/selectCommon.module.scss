@@ -1,0 +1,28 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.reactControl {
+    min-height: 0px !important;
+}
+
+.reactSelectOption {
+    padding: govuk-spacing(1) govuk-spacing(2);
+
+    &>span {
+        color: govuk-colour('mid-grey');
+    }
+
+    &:hover {
+        background-color: govuk-colour('light-blue');
+        color: govuk-colour('white');
+    }
+}
+
+.reactMenu {
+    left: 0px;
+    top: 105% !important;
+
+    border: 0.5px solid;
+    border-color: govuk-colour('grey-5');
+    background-color: govuk-colour('white');
+    z-index: 5 !important;
+}

@@ -95,7 +95,7 @@ const NotificationsListContainer: React.FC<INotificationsListContainer> = ({ Vie
             ...listParams,
             onlyUnread: filter.onlyUnread ?? false,
             fulltextSearch: filter.fullTextSearch,
-            ...(filter.eventType != ALL_EVENT_TYPES && { eventType: filter.eventType }),
+            ...(filter.eventType && filter.eventType != ALL_EVENT_TYPES && { eventType: filter.eventType }),
             sortBy: sort.length > 0 ? firstLetterToLowerCase(sort[0].orderBy) : 'createdAt',
             ascending: sort.length > 0 ? sort[0].sortDirection == 'ASC' : false,
         },

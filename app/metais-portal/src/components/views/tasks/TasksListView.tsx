@@ -87,15 +87,16 @@ export const TasksListView: React.FC<ITasksListView> = ({
                     return (
                         <div>
                             <SimpleSelect
-                                {...register('appId')}
                                 options={[
                                     { label: t('tasks.all'), value: 'ALL' },
                                     ...(appIds?.enumItems?.map((enumItem) => {
-                                        return { value: enumItem.value, label: t(`tasks.${enumItem.code}`) }
+                                        return { value: `${enumItem.value}`, label: t(`tasks.${enumItem.code}`) }
                                     }) ?? [{ value: '', label: '' }]),
                                 ]}
                                 label={t('tasks.selectType')}
                                 id="taskTypeSelect"
+                                name="appId"
+                                setValue={setValue}
                             />
                             <GridRow>
                                 <GridCol setWidth="one-half">

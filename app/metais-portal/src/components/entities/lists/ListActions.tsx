@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
-import { SimpleSelect } from '@isdd/idsk-ui-kit/simple-select/SimpleSelect'
+import { SimpleSelect } from '@isdd/idsk-ui-kit'
 
 import styles from './listActions.module.scss'
 
@@ -23,7 +23,9 @@ export const ListActions: React.FC<IListActionsProps> = ({ children, pagingOptio
                     className={styles.selectGroup}
                     label={t('listActions.selectView')}
                     id={'1'}
+                    name={'1'}
                     options={pagingOptions ?? defaultPagingOptions}
+                    isClearable={false}
                 />
             </div>
         </>

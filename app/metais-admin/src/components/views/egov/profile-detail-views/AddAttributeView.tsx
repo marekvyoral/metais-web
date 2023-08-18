@@ -106,22 +106,16 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                 error={formState?.errors?.engDescription?.message}
             />
 
-            <SimpleSelect id="type" label={t('egov.type')} options={attributeTypes} {...register('type')} defaultValue={attributeTypes?.[0]?.value} />
+            <SimpleSelect id="type" label={t('egov.type')} options={attributeTypes} name="type" defaultValue={attributeTypes?.[0]?.value} />
             {showUnit && (
-                <SimpleSelect
-                    id="units"
-                    label={t('egov.units')}
-                    options={measureUnits}
-                    {...register('units')}
-                    defaultValue={measureUnits?.[0]?.value}
-                />
+                <SimpleSelect id="units" label={t('egov.units')} options={measureUnits} name="units" defaultValue={measureUnits?.[0]?.value} />
             )}
 
             {selectedType === 'BOOLEAN' && (
                 <SimpleSelect
                     label={t('egov.defaultValue')}
                     id="defaultValue"
-                    {...register('defaultValue')}
+                    name="defaultValue"
                     options={[
                         { label: 'Ano', value: 'true' },
                         { label: 'Nie', value: 'false' },
@@ -132,7 +126,7 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                 <SimpleSelect
                     label={t('egov.constraints')}
                     id="constraints"
-                    {...register('constraints.[0].type')}
+                    name="constraints.[0].type"
                     options={selectedType === 'INTEGER' ? integerConstraints : stringConstraints}
                     defaultValue={stringConstraints?.[0].value}
                 />
@@ -141,7 +135,7 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                 <SimpleSelect
                     label={t('egov.clarification')}
                     id="constraints"
-                    {...register('constraints.[0].enumCode')}
+                    name="constraints.[0].enumCode"
                     options={allEnumsSelectOptions}
                     defaultValue={stringConstraints?.[0].value}
                 />

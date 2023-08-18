@@ -87,12 +87,15 @@ export const ActionsGroupView: React.FC<ActionsGroupParams> = ({
             />
             <TextBody className={styles.marginLeftAuto}>Zobrazit</TextBody>
             <SimpleSelect
-                onChange={(label) => {
-                    setListParams({ ...listParams, perPage: Number(label.target.value) })
+                onChange={(val) => {
+                    setListParams({ ...listParams, perPage: Number(val) })
                 }}
                 id="select"
+                name="select"
                 label=""
+                isClearable={false}
                 options={DEFAULT_PAGESIZE_OPTIONS}
+                defaultValue={DEFAULT_PAGESIZE_OPTIONS[0].value}
             />
         </ButtonGroupRow>
     )

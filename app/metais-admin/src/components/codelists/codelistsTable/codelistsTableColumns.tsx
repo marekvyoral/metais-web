@@ -37,7 +37,7 @@ export const getCodelistsColumns = ({
     setEditableCodes,
     handleEditClick,
 }: IGetCodelistsColumns) => {
-    const { nameRefInput, codeRefInput, categoryRefInput, descriptionRefInput } = refs
+    const { nameRefInput, codeRefInput, descriptionRefInput } = refs
 
     const columns: Array<ColumnDef<CodelistsTableColumnsDefinition>> = [
         {
@@ -160,16 +160,11 @@ export const getCodelistsColumns = ({
                         label=""
                         disabled={!rowObject.editableCodes.includes(rowObject.code ?? '')}
                         id={rowObject.id?.toString() + 'category' ?? ''}
+                        name={rowObject.id?.toString() + 'category' ?? ''}
                         options={[
                             { label: '-', value: '' },
                             { label: 'LICENSE', value: 'LICENSE' },
                         ]}
-                        ref={(ref) => {
-                            if (ref != null) {
-                                const id = rowObject.id ?? -1
-                                categoryRefInput.current[id] = ref
-                            }
-                        }}
                         defaultValue={rowObject.category}
                     />
                 )

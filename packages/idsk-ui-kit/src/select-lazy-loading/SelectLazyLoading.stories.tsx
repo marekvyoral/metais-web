@@ -82,7 +82,7 @@ export const UncontrolledFormHookGroup: Story = {
         const Wrapper = () => {
             const defaultValue = 'House Ashwood'
 
-            const { handleSubmit, setValue, register, formState } = useForm<IForm>({
+            const { handleSubmit, setValue, formState } = useForm<IForm>({
                 defaultValues: { selectOption: defaultValue },
                 resolver: yupResolver(schema),
             })
@@ -102,7 +102,6 @@ export const UncontrolledFormHookGroup: Story = {
                         label="Label test"
                         defaultValue={{ name: defaultValue }}
                         setValue={setValue}
-                        register={register}
                         isMulti={false}
                         error={formState.errors.selectOption?.message}
                     />

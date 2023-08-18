@@ -9,6 +9,7 @@ import {
     UseFormReset,
     UseFormResetField,
     UseFormSetValue,
+    UseFormWatch,
 } from 'react-hook-form'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { BaseSyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react'
@@ -77,6 +78,7 @@ interface ReturnUseFilter<TFieldValues extends FieldValues> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control: Control<TFieldValues, any>
     register: UseFormRegister<TFieldValues>
+    watch: UseFormWatch<TFieldValues>
 }
 
 const parseCustomAttributes = (urlParams: URLSearchParams): undefined | IAttributeFilters => {

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { SimpleSelect } from '@isdd/idsk-ui-kit/simple-select/SimpleSelect'
+import { SimpleSelect } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 
@@ -50,8 +50,8 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
     const availableAttrs =
         availableAttributes?.map((attr) => {
             return {
-                value: attr?.technicalName,
-                label: attr?.name,
+                value: `${attr?.technicalName}`,
+                label: `${attr?.name}`,
                 disabled:
                     //create context for current names with operators
                     //!!(selectedAttributes.find((item) => item.name === attr?.technicalName) && currentAttribute.name !== attr?.technicalName) ||
@@ -78,16 +78,17 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 name={`atributeName`}
                 value={attribute.name}
                 options={availableAttrs}
-                onChange={(e) => onChange({ ...attribute, name: e.target.value }, attribute, true)}
+                onChange={(val) => onChange({ ...attribute, name: val }, attribute, true)}
             />
             <SimpleSelect
                 className={style.rowItem}
                 id={`attribute-operator-${index}`}
+                name={`attribute-operator-${index}`}
                 label={t('customAttributeFilter.operator.label')}
                 placeholder={t('customAttributeFilter.operator.placeholder')}
                 options={availableOperators}
                 value={attribute.operator}
-                onChange={(e) => onChange({ ...attribute, operator: e.target.value }, attribute)}
+                onChange={(val) => onChange({ ...attribute, operator: val }, attribute)}
             />
 
             <DynamicFilterAttributeInput
