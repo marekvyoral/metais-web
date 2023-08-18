@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { useForm } from 'react-hook-form'
-import { MultiValue } from 'react-select'
 
 import { MultiSelect } from '@isdd/idsk-ui-kit'
 
@@ -17,7 +16,7 @@ interface Option {
 }
 
 export interface IForm {
-    selectOption: Option[]
+    selectOption: string[]
 }
 
 const options: Option[] = [
@@ -62,15 +61,8 @@ type Story = StoryObj<typeof MultiSelect>
 export const Controlled: Story = {
     render: () => {
         const Wrapper = () => {
-            const [values, setValues] = useState<MultiValue<Option>>(defaultValues.selectOption)
-
-            const handleOnchange = (newValue: MultiValue<Option>) => {
-                setValues(newValue)
-            }
-
-            return (
-                <MultiSelect id="selectOption" name="selectOption" label="Label test" options={options} values={values} onChange={handleOnchange} />
-            )
+            const [values, setValues] = useState<string[] | undefined>(defaultValues.selectOption.map((opt) => opt.value))
+            return <MultiSelect id="selectOption" name="selectOption" label="Label test" options={options} value={values} onChange={setValues} />
         }
         return <Wrapper />
     },
@@ -79,21 +71,22 @@ export const Controlled: Story = {
 export const UncontrolledFormHookGroup: Story = {
     render: () => {
         const Wrapper = () => {
-            const { register, handleSubmit, setValue, formState } = useForm<IForm>({ defaultValues })
+            const { handleSubmit, setValue, formState } = useForm<IForm>({
+                defaultValues: { selectOption: defaultValues.selectOption.map((option) => option.value) },
+            })
             const onSubmit = (data: IForm) => {
                 // eslint-disable-next-line no-alert
-                alert('select data: ' + data.selectOption.map((option) => option.value))
+                alert('select data: ' + data.selectOption)
             }
             return (
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <MultiSelect<Option>
+                    <MultiSelect
                         id="selectOption"
                         name="selectOption"
                         label="Label test"
                         options={options}
-                        register={register}
                         setValue={setValue}
-                        defaultValue={defaultValues.selectOption}
+                        defaultValue={defaultValues.selectOption.map((option) => option.value)}
                         error={formState.errors.selectOption?.message}
                     />
                     <button type="submit">Submit</button>

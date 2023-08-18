@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Control, FieldValues, UseFormRegister, UseFormSetValue } from 'react-hook-form'
+import { Control, FieldValues, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { IFilterParams, useFilter } from '@isdd/metais-common/hooks/useFilter'
 
 import styles from './filter.module.scss'
@@ -15,6 +15,7 @@ interface FormProps<T extends FieldValues & IFilterParams> {
     control: Control<T>
     filter: T
     setValue: UseFormSetValue<T>
+    watch: UseFormWatch<T>
 }
 
 type FilterProps<T extends FieldValues & IFilterParams> = {
@@ -25,6 +26,7 @@ type FilterProps<T extends FieldValues & IFilterParams> = {
 
 export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, defaultFilterValues }: FilterProps<T>) => {
     const {
+        watch,
         register,
         control,
         setValue,
@@ -94,7 +96,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, d
                                 [styles.formWrapper]: true,
                             })}
                         >
-                            {form({ register, control, filter, setValue })}
+                            {form({ register, control, filter, setValue, watch })}
                             <div className={styles.actionRow}>
                                 <ButtonLink label={t('filter.reset')} onClick={reset} className={styles.clearButton} type="reset" />
                                 <Button label={t('filter.submit')} type="submit" />

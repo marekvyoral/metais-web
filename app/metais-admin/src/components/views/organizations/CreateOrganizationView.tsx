@@ -7,7 +7,7 @@ import styles from './findView.module.scss'
 
 export const CreateOrganizationView = () => {
     const { t } = useTranslation()
-    const { register } = useForm()
+    const { register, setValue } = useForm()
 
     return (
         <div>
@@ -15,13 +15,13 @@ export const CreateOrganizationView = () => {
             <div className={styles.form}>
                 <form>
                     <Input {...register('Gen_Profil_nazov')} label={t('organizations.create.name')} />
-                    <SimpleSelect {...register('EA_Profil_PO_kategoria_osoby')} label={t('organizations.create.category')} options={[]} />
-                    <SimpleSelect {...register('EA_Profil_PO_typ_osoby')} label={t('organizations.create.organizationType')} options={[]} />
+                    <SimpleSelect name="EA_Profil_PO_kategoria_osoby" setValue={setValue} label={t('organizations.create.category')} options={[]} />
+                    <SimpleSelect name="EA_Profil_PO_typ_osoby" setValue={setValue} label={t('organizations.create.organizationType')} options={[]} />
 
                     <Input {...register('Gen_Profil_anglicky_nazov')} label={t('organizations.create.engName')} />
                     <Input {...register('Gen_Profil_popis')} label={t('organizations.create.description')} />
                     <Input {...register('Gen_Profil_anglicky_popis')} label={t('organizations.create.engDescription')} />
-                    <SimpleSelect {...register('Gen_Profil_zdroj')} label={t('organizations.create.source')} options={[]} />
+                    <SimpleSelect name="Gen_Profil_zdroj" setValue={setValue} label={t('organizations.create.source')} options={[]} />
                     <Input {...register('Gen_Profil_kod_metais')} label={t('organizations.create.codeMetaIS')} />
                     <Input {...register('Gen_Profil_ref_id')} label={t('organizations.create.URI')} />
                     <Input {...register('EA_Profil_PO_webove_sidlo')} label={t('organizations.create.webResidence')} />

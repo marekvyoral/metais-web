@@ -5,7 +5,16 @@ import { EnumItem, EnumType } from '@isdd/metais-common/api/generated/enums-repo
 import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import classnames from 'classnames'
 import React from 'react'
-import { FieldError, FieldErrorsImpl, FieldValues, Merge, UseFormRegister, UseFormSetValue, UseFormTrigger } from 'react-hook-form'
+import {
+    FieldError,
+    FieldErrorsImpl,
+    FieldValues,
+    Merge,
+    UseFormClearErrors,
+    UseFormRegister,
+    UseFormSetValue,
+    UseFormTrigger,
+} from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { ArrayAttributeInput } from './ArrayAttributeInput'
@@ -29,6 +38,7 @@ enum DisplayTextArea {
 interface IAttributeInput {
     attribute: Attribute
     register: UseFormRegister<FieldValues>
+    clearErrors: UseFormClearErrors<FieldValues>
     constraints?: EnumType
     error: FieldError | Merge<FieldError, FieldErrorsImpl> | undefined
     hint?: string
@@ -62,6 +72,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     hint,
     isSubmitted,
     unitsData,
+    clearErrors,
 }) => {
     const { t } = useTranslation()
 
@@ -179,9 +190,10 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 id={attribute.technicalName ?? ''}
                                 name={attribute.technicalName ?? ''}
                                 label={attribute.name + requiredLabel}
+                                correct={isCorrect}
                                 options={createOptions(constraints)}
-                                register={register}
                                 setValue={setValue}
+                                clearErrors={clearErrors}
                             />
                         )
                     } else {
@@ -195,8 +207,9 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 options={createOptions(constraints)}
                                 disabled={attribute.readOnly}
                                 defaultValue={constraints.enumItems?.find((item) => item.code === attribute.defaultValue)?.description}
-                                {...register(attribute.technicalName ?? '')}
-                                hasInputIcon
+                                name={attribute.technicalName}
+                                setValue={setValue}
+                                clearErrors={clearErrors}
                             />
                         )
                     }

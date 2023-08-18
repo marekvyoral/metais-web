@@ -18,7 +18,13 @@ export const CANNOT_READ_ENTITY = ['ulohy', 'notifications']
 const defineAbilityForUser = (roles: string[] = [], entityName: string, create?: boolean) => {
     const { can, build } = new AbilityBuilder(createMongoAbility)
 
-    if (roles?.length > 0) {
+    if (roles.includes('R_ADMIN')) {
+        can(Actions.READ, entityName)
+        can(Actions.CREATE, entityName)
+        can(Actions.EXPORT, entityName)
+        can(Actions.IMPORT, entityName)
+        can(Actions.SELECT_COLUMNS, entityName)
+    } else if (roles?.length > 0) {
         can(Actions.READ, entityName)
         if (create) can(Actions.CREATE, entityName)
         can(Actions.EXPORT, entityName)

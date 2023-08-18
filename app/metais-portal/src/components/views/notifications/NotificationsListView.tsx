@@ -46,17 +46,19 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
             />
             <Filter<FilterData>
                 defaultFilterValues={defaultFilterValues}
-                form={({ register }) => (
+                form={({ register, setValue, filter }) => (
                     <div>
                         <SimpleSelect
-                            {...register('eventType')}
-                            id="1"
+                            id="eventType"
                             label={t('notifications.eventType')}
                             options={[
-                                { value: undefined, label: ALL_EVENT_TYPES },
+                                { value: ALL_EVENT_TYPES, label: ALL_EVENT_TYPES },
                                 { value: 'INFO', label: t('notifications.INFO') },
                                 { value: 'ERROR', label: t('notifications.ERROR') },
                             ]}
+                            setValue={setValue}
+                            defaultValue={filter.eventType || defaultFilterValues.eventType}
+                            name="eventType"
                         />
                         <CheckBox id="1" label={t('notifications.onlyUnread')} value="" {...register('onlyUnread')} />
                     </div>

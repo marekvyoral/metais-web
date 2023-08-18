@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { EnumType, EnumTypePreviewList } from '@isdd/metais-common/api'
-import { SelectOption } from '@isdd/idsk-ui-kit'
+import { IOption } from '@isdd/idsk-ui-kit'
 
 interface iUseCreateAttribute {
     measureUnit?: EnumType | undefined
@@ -8,17 +8,17 @@ interface iUseCreateAttribute {
 }
 
 interface iUseCreateAttributeOutput {
-    attributeTypes: SelectOption[]
-    measureUnits: SelectOption[]
-    allEnumsSelectOptions: SelectOption[]
-    stringConstraints: SelectOption[]
-    integerConstraints: SelectOption[]
+    attributeTypes: IOption[]
+    measureUnits: IOption[]
+    allEnumsSelectOptions: IOption[]
+    stringConstraints: IOption[]
+    integerConstraints: IOption[]
 }
 
 export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: iUseCreateAttribute): iUseCreateAttributeOutput => {
     const { t } = useTranslation()
 
-    const attributeTypes: SelectOption[] = [
+    const attributeTypes: IOption[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
         { label: 'Integer', value: 'INTEGER' },
         { label: 'Long', value: 'LONG' },
@@ -28,7 +28,7 @@ export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: i
         { label: 'Date', value: 'DATE' },
     ]
 
-    const measureUnits: SelectOption[] = [
+    const measureUnits: IOption[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
         ...(measureUnit?.enumItems?.map((enumItem) => ({
             label: [enumItem?.description, `(${enumItem?.value})`].join(' '),
@@ -36,7 +36,7 @@ export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: i
         })) ?? []),
     ]
 
-    const allEnumsSelectOptions: SelectOption[] = [
+    const allEnumsSelectOptions: IOption[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
         ...(allEnumsData?.results?.map((allEnumsEnumItem) => ({
             label: allEnumsEnumItem?.name ?? '',
@@ -44,14 +44,14 @@ export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: i
         })) ?? []),
     ]
 
-    const stringConstraints: SelectOption[] = [
+    const stringConstraints: IOption[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
         { label: 'Interný čiselník', value: 'enum' },
         { label: 'Regularny vyraz', value: 'regex' },
         { label: 'Intervalove rozlozenie', value: 'interval' },
     ]
 
-    const integerConstraints: SelectOption[] = [
+    const integerConstraints: IOption[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
         { label: 'Intervalove rozlozenie', value: 'interval' },
     ]

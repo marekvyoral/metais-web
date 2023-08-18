@@ -2,35 +2,10 @@
 
 .selectLazyLoading {
     height: fit-content !important;
-    .control {
-        min-height: 0px !important;
-    }
-
-    .selectOption {
-        padding: govuk-spacing(1) govuk-spacing(2);
-
-        & > span {
-            color: govuk-colour('mid-grey');
-        }
-
-        &:hover {
-            background-color: govuk-colour('light-blue');
-            color: govuk-colour('white');
-        }
-    }
 
     &:focus-within {
         outline: 3px solid govuk-colour('yellow');
         outline-offset: 0;
         box-shadow: inset 0 0 0 2px;
-    }
-
-    .menu {
-        left: 0px;
-        top: 105% !important;
-
-        border: 0.5px solid;
-        border-color: govuk-colour('grey-5');
-        background-color: govuk-colour('white');
     }
 }

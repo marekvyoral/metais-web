@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { SimpleSelect } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
 import { useFormContext } from 'react-hook-form'
@@ -21,6 +21,24 @@ export const AddConnectionView = ({ listOptions, onClose, addConnection }: IAddC
     const { t } = useTranslation()
     const optionsWithDefault = [{ label: t('egov.detail.selectOption'), disabled: true, value: '' }, ...listOptions]
 
+    const handleOnConnectionsChange = useCallback(
+        (value?: string) => {
+            if (!addConnection) {
+                const existingValueInForm = methods?.getValues(`${direction}s`)
+                if (existingValueInForm) {
+                    methods?.setValue(`${direction}s`, [...existingValueInForm, value])
+                } else {
+                    methods?.setValue(`${direction}s`, [value])
+                }
+                methods?.setValue(`${direction}Cardinality`, { min: 0, max: undefined })
+            } else {
+                addConnection(value as CiTypePreview, direction === Direction.SOURCE ? 'SOURCE' : 'TARGET')
+            }
+            onClose()
+        },
+        [addConnection, direction, methods, onClose],
+    )
+
     return (
         <>
             <SimpleSelect
@@ -31,30 +49,18 @@ export const AddConnectionView = ({ listOptions, onClose, addConnection }: IAddC
                     { label: t('egov.detail.direction.source'), value: 'source' },
                     { label: t('egov.detail.direction.target'), value: 'target' },
                 ]}
-                onChange={(event) => {
-                    if (event?.target?.value === Direction.SOURCE || event?.target?.value === Direction.TARGET) setDirection(event?.target?.value)
+                onChange={(value) => {
+                    if (value === Direction.SOURCE || value === Direction.TARGET) setDirection(value)
                 }}
             />
 
             <SimpleSelect
                 id={direction}
+                name={direction}
                 label={t('egov.detail.connections')}
                 options={optionsWithDefault}
                 defaultValue={optionsWithDefault?.[0]?.value}
-                onChange={(event) => {
-                    if (!addConnection) {
-                        const existingValueInForm = methods?.getValues(`${direction}s`)
-                        if (existingValueInForm) {
-                            methods?.setValue(`${direction}s`, [...existingValueInForm, JSON.parse(event?.target?.value)])
-                        } else {
-                            methods?.setValue(`${direction}s`, [JSON.parse(event?.target?.value)])
-                        }
-                        methods?.setValue(`${direction}Cardinality`, { min: 0, max: undefined })
-                    } else {
-                        addConnection(JSON.parse(event?.target?.value), direction === Direction.SOURCE ? 'SOURCE' : 'TARGET')
-                    }
-                    onClose()
-                }}
+                onChange={handleOnConnectionsChange}
             />
         </>
     )

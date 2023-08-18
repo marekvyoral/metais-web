@@ -4,9 +4,8 @@ import { useTranslation } from 'react-i18next'
 
 import style from './customFilterAttribute.module.scss'
 
-import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { AttributeAttributeTypeEnum, EnumType } from '@isdd/metais-common/api'
-import { getCurrentMultiSelectValue } from '@isdd/metais-common/componentHelpers/filter/getCurrentMultiSelectValue'
+import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 
 enum RadioInputValue {
     TRUE = 'true',
@@ -43,7 +42,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
     const hasNumericValue = isByte || isFloat || isInteger || isDouble || isLong || isShort
 
     const optionsForSelects =
-        constraints?.enumItems?.map((item) => ({ label: item.description ? item.description : item.value, value: item.code })) ?? []
+        constraints?.enumItems?.map((item) => ({ label: item.description ? `${item.description}` : `${item.value}`, value: `${item.code}` })) ?? []
 
     const renderContent = () => {
         switch (true) {
@@ -55,16 +54,12 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
                             id={`attribute-value-${index}`}
                             label={t('customAttributeFilter.value.label')}
                             name="atributeValue"
-                            value={getCurrentMultiSelectValue(
-                                Array.isArray(value.value) && value.value.length > 1 ? value.value : [value.value ? value.value.toString() : ''],
-                                optionsForSelects,
-                            )}
-                            defaultValue={getCurrentMultiSelectValue(
-                                Array.isArray(value.value) && value.value.length > 1 ? value.value : [value.value ? value.value.toString() : ''],
-                                optionsForSelects,
-                            )}
+                            value={Array.isArray(value.value) && value.value.length > 1 ? value.value : [value.value ? value.value.toString() : '']}
+                            defaultValue={
+                                Array.isArray(value.value) && value.value.length > 1 ? value.value : [value.value ? value.value.toString() : '']
+                            }
                             placeholder={t('customAttributeFilter.value.placeholderSelectMulti')}
-                            onChange={(e) => onChange({ ...value, value: e.map((item) => item.value ?? '') })}
+                            onChange={(val) => onChange({ ...value, value: val })}
                         />
                     </div>
                 )

@@ -1,22 +1,22 @@
 import React from 'react'
 import { ControlProps, GroupBase, MenuProps, OptionProps, StylesConfig, components } from 'react-select'
 
-import styles from '@isdd/idsk-ui-kit/select-lazy-loading/selectLazyLoading.module.scss'
+import styles from './selectCommon.module.scss'
 
 export const Menu = <T,>(props: MenuProps<T, boolean, GroupBase<T>>) => {
     return (
-        <components.Menu {...props} className={styles.menu}>
+        <components.Menu {...props} className={styles.reactMenu}>
             {props.children}
         </components.Menu>
     )
 }
 
 export const Option = <T,>(props: OptionProps<T>) => {
-    return <components.Option {...props} className={styles.selectOption} />
+    return <components.Option {...props} className={styles.reactSelectOption} />
 }
 
 export const Control = <T,>(props: ControlProps<T>) => {
-    return <components.Control {...props} className={styles.control} />
+    return <components.Control {...props} className={styles.reactControl} />
 }
 
 export const selectStyles = <T,>(): StylesConfig<T, boolean, GroupBase<T>> => ({
@@ -31,6 +31,10 @@ export const selectStyles = <T,>(): StylesConfig<T, boolean, GroupBase<T>> => ({
     }),
     option: (provided, state) => ({
         ...provided,
-        color: state.isDisabled ? '#949494' : provided.color,
+        color: state.isDisabled ? '#aaaaaa' : provided.color,
+    }),
+    control: (base, { isDisabled }) => ({
+        ...base,
+        color: isDisabled ? '#aaaaaa' : base.color,
     }),
 })

@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react'
-import { BaseModal, SimpleSelect } from '@isdd/idsk-ui-kit'
+import { BaseModal, MultiSelect } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
-import { Controller, useFormContext } from 'react-hook-form'
-import { AttributeProfile } from '@isdd/metais-common/api'
+import { useFormContext } from 'react-hook-form'
 
 import { ProfileListContainer } from '@/components/containers/Egov/Profile/ProfileListContainer'
 import { CreateEntityForm } from '@/types/form'
@@ -14,23 +13,18 @@ interface AttributesModal {
 
 export const AddAttributeProfilesModal = ({ open, onClose }: AttributesModal) => {
     const { t } = useTranslation()
-    const { setValue, control } = useFormContext<CreateEntityForm, unknown, undefined>()
-
+    const { setValue, getValues } = useFormContext<CreateEntityForm, unknown, undefined>()
     const handleOnAttributeProfilesChange = useCallback(
-        (event: React.ChangeEvent<HTMLSelectElement>, value?: AttributeProfile[]) => {
-            let newAttributeProfile
+        (values?: string[]) => {
+            let attributeProfiles
             try {
-                newAttributeProfile = JSON.parse(event?.target?.value)
+                attributeProfiles = values?.map((value) => JSON.parse(value))
             } catch (e) {
                 // eslint-disable-next-line no-console
                 console.log('Could not add attribute profile: ', e)
                 return
             }
-            if (value) {
-                setValue('attributeProfiles', [...value, newAttributeProfile])
-            } else {
-                setValue('attributeProfiles', [newAttributeProfile])
-            }
+            setValue('attributeProfiles', attributeProfiles)
             onClose()
         },
         [onClose, setValue],
@@ -49,22 +43,16 @@ export const AddAttributeProfilesModal = ({ open, onClose }: AttributesModal) =>
                             }
                         }) ?? []
                     return (
-                        <Controller
-                            control={control}
-                            name="attributeProfiles"
-                            render={({ field: { onBlur, value, name, ref } }) => (
-                                <SimpleSelect
-                                    id="attributeProfiles"
-                                    label={t('egov.detail.profiles')}
-                                    options={[{ label: t('egov.detail.selectOption'), value: '', disabled: true }, ...listOptions]}
-                                    defaultValue={''}
-                                    onChange={(event) => handleOnAttributeProfilesChange(event, value)}
-                                    onBlur={onBlur}
-                                    name={name}
-                                    ref={ref}
-                                />
-                            )}
-                        />
+                        <div style={{ height: 500 }}>
+                            <MultiSelect
+                                id="attributeProfiles"
+                                name="attributeProfiles"
+                                label={t('egov.detail.profiles')}
+                                options={[{ label: t('egov.detail.selectOption'), value: '', disabled: true }, ...listOptions]}
+                                defaultValue={getValues('attributeProfiles')?.map((profile) => JSON.stringify(profile))}
+                                onChange={handleOnAttributeProfilesChange}
+                            />
+                        </div>
                     )
                 }}
             />
