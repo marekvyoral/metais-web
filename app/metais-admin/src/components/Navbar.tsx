@@ -36,6 +36,10 @@ export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
         path: AdminRouteNames.EGOV,
         subItems: [
             {
+                title: t('navMenu.userManagement'),
+                path: AdminRouteNames.USER_MANAGEMENT,
+            },
+            {
                 title: t('navMenu.egov.entity'),
                 path: AdminRouteNames.EGOV_ENTITY,
             },
