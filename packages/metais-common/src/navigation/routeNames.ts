@@ -26,6 +26,7 @@ export enum AdminRouteNames {
     EGOV_PROFILE = '/egov/profile',
     EGOV_RELATION = '/egov/relation',
     ORGANIZATIONS = '/organizations',
+    CODELISTS = '/codelists-management',
 }
 
 export enum NavigationSubRoutes {

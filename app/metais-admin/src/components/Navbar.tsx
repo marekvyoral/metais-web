@@ -28,6 +28,10 @@ export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
         path: AdminRouteNames.ORGANIZATIONS,
     },
     {
+        title: t('navMenu.codelists'),
+        path: AdminRouteNames.CODELISTS,
+    },
+    {
         title: t('navMenu.admin'),
         path: AdminRouteNames.EGOV,
         subItems: [

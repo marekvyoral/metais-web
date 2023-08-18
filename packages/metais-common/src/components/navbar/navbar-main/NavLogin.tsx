@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next'
 
 import { NavProfile } from './NavProfile'
 
-import { useLogin } from '@isdd/metais-common/hooks/useLogin'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useLogin } from '@isdd/metais-common/hooks/useLogin'
 
 export const NavLogin: React.FC = () => {
     const { t } = useTranslation()

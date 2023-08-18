@@ -1,11 +1,12 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-import Entity from './entity'
+import Codelists from './codelists'
 
-export const INDEX_ROUTE = Entity
+export const INDEX_ROUTE = Codelists
 
 const index: React.FC = () => {
     return <Outlet />
 }
+
 export default index

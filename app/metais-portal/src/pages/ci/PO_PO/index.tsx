@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { CreateEntityButton, ExportButton, ImportButton } from '@isdd/metais-common/components/actions-over-table'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { useNavigate } from 'react-router-dom'
 
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { CiTable } from '@/components/ci-table/CiTable'
@@ -11,7 +12,7 @@ import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 
 const ProjektListPage = () => {
     const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
-
+    const navigate = useNavigate()
     const PO = 'PO'
     const defaultFilterValues: POFilterData = {
         Gen_Profil_nazov: '',
@@ -69,7 +70,7 @@ const ProjektListPage = () => {
                                         attributeProfiles={attributeProfiles ?? []}
                                         attributes={attributes ?? []}
                                         columnListData={columnListData}
-                                        createButton={<CreateEntityButton path={`/ci/${PO}/create`} />}
+                                        createButton={<CreateEntityButton onClick={() => navigate(`/ci/${PO}/create`)} />}
                                         exportButton={<ExportButton />}
                                         importButton={<ImportButton ciType={PO} />}
                                     />

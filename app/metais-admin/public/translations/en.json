@@ -80,37 +80,6 @@
         "cancelButton": "Cancel",
         "viewButton": "View"
     },
-    "filter": {
-        "expand": "Expand filter",
-        "collapse": "Collapse filter",
-        "namePlaceholder": "Enter a name",
-        "searchPlaceholder": "Search in table",
-        "chooseState": "Select status",
-        "chooseValue": "Select value",
-        "organizations": {
-            "name": "Name",
-            "ICO": "ICO"
-        },
-        "ks": {
-            "name": "Name of end service"
-        },
-        "isvs": {
-            "name": "Name of information system"
-        },
-        "PO": {
-            "name": "Name",
-            "itIsChapter": "It is a chapter",
-            "personsCategory": "Persons category",
-            "publicAuthorityType": "Public authority type",
-            "evidenceStatus": "Evidence status"
-        },
-        "metaisCode": {
-            "label": "Code MetaIS",
-            "placeholder": "ks_"
-        },
-        "reset": "Clear Filter",
-        "submit": "Filter"
-    },
     "table": {
         "title": "Cities",
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
@@ -252,6 +221,61 @@
         "actions": "Bulk actions",
         "invalidateItems": "Invalidate items",
         "validateItems": "Validate actions",
+        "changeOwner": "Change owner"
+    },
+    "codelists": {
+        "createNew": "Add item",
+        "code": "Code",
+        "name": "Name",
+        "description": "Description",
+        "valid": "Validity",
+        "category": "Category",
+        "link": "Items",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
+        "remove": "Remove",
+        "validate": "Validate",
+        "value": "Code",
+        "valueDescription": "Value Description",
+        "heading": "Internal codelists"
+    },
+    "filter": {
+        "expand": "Expand filter",
+        "collapse": "Collapse filter",
+        "namePlaceholder": "Enter a name",
+        "searchPlaceholder": "Search in table",
+        "ks": {
+            "name": "Name of end service"
+        },
+        "isvs": {
+            "name": "Name of information system"
+        },
+        "metaisCode": {
+            "label": "Code MetaIS",
+            "placeholder": "ks_"
+        },
+        "reset": "Clear Filter",
+        "submit": "Filter",
+
+        "chooseState": "Select status",
+        "chooseValue": "Select value",
+        "organizations": {
+            "name": "Name",
+            "ICO": "ICO"
+        },
+
+        "PO": {
+            "name": "Name",
+            "itIsChapter": "It is a chapter",
+            "personsCategory": "Persons category",
+            "publicAuthorityType": "Public authority type",
+            "evidenceStatus": "Evidence status"
+        }
+    },
+    "mutationFeedback": {
+        "successfulUpdated": "The item was successfully changed",
         "changeOwner": "Change owner",
         "metaColumnName": {
             "state": "Evidence status",
@@ -279,7 +303,14 @@
             "entity": "Entities",
             "profiles": "Attribute profiles",
             "relation": "Relations"
-        }
+        },
+        "codelists": "Internal codelists"
+    },
+    "feedback": {
+        "queryErrorTitle": "Error occured",
+        "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator by e-mail at ",
+        "mutationErrorTitle": "Action failed",
+        "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at"
     },
     "organizations": {
         "detail": {

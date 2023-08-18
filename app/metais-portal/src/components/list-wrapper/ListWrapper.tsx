@@ -12,6 +12,7 @@ import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { BulkPopup, CreateEntityButton } from '@isdd/metais-common/components/actions-over-table'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { CrossInACircleIcon, CheckInACircleIcon, ChangeIcon } from '@isdd/metais-common/assets/images'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { CiTable } from '@/components/ci-table/CiTable'
 import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
@@ -65,7 +66,8 @@ export const ListWrapper: React.FC<IListWrapper> = ({
 }) => {
     const { t } = useTranslation()
     const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
-
+    const navigate = useNavigate()
+    const location = useLocation()
     const checkedRowItems = Object.keys(rowSelection).length
 
     return (
@@ -108,7 +110,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 attributes={attributes ?? []}
                 columnListData={columnListData}
                 ciTypeData={ciTypeData}
-                createButton={<CreateEntityButton path={`/ci/${ciType}/create`} />}
+                createButton={<CreateEntityButton onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })} />}
                 importButton={<ImportButton ciType={ciType ?? ''} />}
                 exportButton={<ExportButton />}
                 bulkPopup={
