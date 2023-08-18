@@ -71,6 +71,17 @@
         "yes": "Yes",
         "no": "No"
     },
+    "mutationFeedback": {
+        "successfulUpdated": "The item was successfully changed"
+    },
+    "filter": {
+        "expand": "Expand filter",
+        "collapse": "Collapse filter",
+        "namePlaceholder": "Enter a name",
+        "searchPlaceholder": "Search in table",
+        "reset": "Clear Filter",
+        "submit": "Filter"
+    },
     "searchInput": {
         "search": "Search"
     },
@@ -201,7 +212,39 @@
             "addAttribute": "Add attribute"
         }
     },
-
+    "userManagement": {
+        "title": "Users",
+        "fullName": "Name and surname",
+        "login": "Login",
+        "phone": "Phone",
+        "mobile": "Mobile",
+        "organization": "Organization",
+        "state": "State",
+        "states": {
+            "blocked": "Blocked"
+        },
+        "block": "Block",
+        "unblock": "Unblock",
+        "edit": "Edit",
+        "changePassword": "Change password",
+        "addNewUser": "Add new user",
+        "actions": "Actions",
+        "filter": {
+            "state": "Blocked",
+            "stateLabel": {
+                "all": "All",
+                "blocked": "Blocked",
+                "activated": "Activated"
+            },
+            "role": "Role",
+            "organization": "Organization"
+        },
+        "error": {
+            "query": "Error while fetching data",
+            "mutation": "Error while performing action. Please try again or contact support.",
+            "export": "Error while preparing export"
+        }
+    },
     "validity": {
         "true": "Valid",
         "false": "Invalid",
@@ -298,6 +341,7 @@
         "notifications": "Notifications",
         "settings": "Settings",
         "admin": "Administration",
+        "userManagement": "User management",
         "organizations": "Organizations",
         "egov": {
             "entity": "Entities",
@@ -402,5 +446,9 @@
     "accordion": {
         "openAll": "Open all",
         "closeAll": "Close all"
+    },
+    "loading": {
+        "loadingSubPage": "Loading sub-page",
+        "export": "Preparing export"
     }
 }

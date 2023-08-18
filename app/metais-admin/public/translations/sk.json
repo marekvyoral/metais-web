@@ -108,6 +108,9 @@
         "reset": "Vyčistiť kritéria filtrovania",
         "submit": "Vyfiltrovať"
     },
+    "mutationFeedback": {
+        "successfulUpdated": "Položka bola úspešne zmenená"
+    },
     "table": {
         "title": "Mestá",
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
@@ -230,6 +233,39 @@
             "addAttribute": "Pridať atribút"
         }
     },
+    "userManagement": {
+        "title": "Používatelia",
+        "fullName": "Meno a priezvisko",
+        "login": "Login",
+        "phone": "Tel.č.",
+        "mobile": "Mobil",
+        "organization": "Povinná osoba",
+        "state": "Stav",
+        "states": {
+            "blocked": "Blokovaný"
+        },
+        "block": "Blokovať",
+        "unblock": "Odblokovať",
+        "edit": "Upraviť",
+        "changePassword": "Zmeniť heslo",
+        "addNewUser": "Pridať nového použivateľa",
+        "actions": "Úkony",
+        "filter": {
+            "state": "Blokovanie",
+            "stateLabel": {
+                "all": "Všetky",
+                "blocked": "Blokované",
+                "activated": "Aktivované"
+            },
+            "role": "Rola",
+            "organization": "Povinná osoba"
+        },
+        "error": {
+            "query": "Chyba pri načítavaní údajov",
+            "mutation": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.",
+            "export": "Chyba pri príprave exportu"
+        }
+    },
     "validity": {
         "true": "Platný",
         "false": "Neplatný",
@@ -350,6 +386,7 @@
         "settings": "Nastavenia profilu",
         "admin": "Administrácia",
         "organizations": "Správa povinných osôb",
+        "userManagement": "Správa používateľov",
         "egov": {
             "entity": "Entity",
             "profiles": "Profily atribútov",
@@ -410,5 +447,9 @@
         "Profil_PO_statutar_meno": "Meno",
         "Profil_PO_statutar_priezvisko": "Priezvisko",
         "Profil_PO_statutar_titul_za_menom": "Titul za menom"
+    },
+    "loading": {
+        "loadingSubPage": "Načítavám podstránku",
+        "export": "Preparing export"
     }
 }

@@ -16,6 +16,8 @@ export interface ILoadOptionsResponse<T> {
     }
 }
 
+export const DEFAULT_LAZY_LOAD_PER_PAGE = 20
+
 interface ISelectProps<T> {
     id?: string
     value?: T | MultiValue<T> | null
