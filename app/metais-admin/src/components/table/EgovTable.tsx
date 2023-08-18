@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { ColumnDef } from '@tanstack/react-table'
@@ -21,6 +21,8 @@ type IListData = {
 export const EgovTable = ({ data, entityName }: IListData) => {
     const { t } = useTranslation()
     const dataLength = data?.length ?? 0
+    const navigate = useNavigate()
+    const location = useLocation()
     const columns: Array<ColumnDef<CiTypePreview>> = [
         {
             header: t('egov.name'),
@@ -97,7 +99,7 @@ export const EgovTable = ({ data, entityName }: IListData) => {
                 handleFilterChange={handleSetPageSize}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName={entityName ?? ''}
-                createButton={<CreateEntityButton path={`/egov/${entityName}/create`} />}
+                createButton={<CreateEntityButton onClick={() => navigate(`/egov/${entityName}/create`, { state: { from: location } })} />}
                 exportButton={<ExportButton />}
                 metaAttributesColumnSection={metaAttributesColumnSection}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
