@@ -46,7 +46,7 @@ export const AccordionSection = ({ index, section, setExpandedSectionIndexes, ex
                 {section.error && <img src={AlertTriangleIcon} />}
             </div>
             <div className="govuk-accordion__section-content" aria-labelledby={buttonId}>
-                {section.content}
+                {isExpanded ? section.content : null}
             </div>
         </div>
     )

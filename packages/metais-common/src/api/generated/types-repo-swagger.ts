@@ -54,6 +54,7 @@ export interface RelatedCiTypePreview {
     ciTypeUsageType?: RelatedCiTypePreviewCiTypeUsageType
     ciTypeValid?: boolean
     ciRoleList?: string[]
+    ciColor?: string
     ciCategory?: string
     relationshipTypeTechnicalName?: string
     relationshipTypeName?: string
