@@ -9,7 +9,13 @@ const meta: Meta<typeof SimpleSelect> = {
     component: SimpleSelect,
 }
 
-const options: { value: string; label: string; disabled?: boolean }[] = [
+interface IOption {
+    value: string
+    label: string
+    disabled?: boolean
+}
+
+const options: IOption[] = [
     {
         label: 'Hi',
         value: 'hi',
@@ -43,7 +49,9 @@ export const Controlled: Story = {
     render: ({ value: initValue, ...args }) => {
         const StateWrapper = () => {
             const [selectedValue, setSelectedValue] = useState(initValue)
-            return <SimpleSelect value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)} {...args} />
+            return (
+                <SimpleSelect isClearable={false} name="test" label="test" options={args.options} value={selectedValue} onChange={setSelectedValue} />
+            )
         }
         return <StateWrapper />
     },
@@ -59,7 +67,7 @@ export const WithEmptyValue: Story = {
     render: ({ value: initValue, ...args }) => {
         const StateWrapper = () => {
             const [selectedValue, setSelectedValue] = useState(initValue)
-            return <SimpleSelect value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)} {...args} />
+            return <SimpleSelect value={selectedValue} {...args} onChange={setSelectedValue} />
         }
         return <StateWrapper />
     },
@@ -67,7 +75,7 @@ export const WithEmptyValue: Story = {
         id: 'empty-value-select',
         value: '',
         label: 'Simple select',
-        options: [{ label: 'Select... ', value: '' }, ...options],
+        options: [...options],
     },
 }
 
@@ -75,7 +83,7 @@ export const DisabledSelect: Story = {
     render: ({ value: initValue, ...args }) => {
         const StateWrapper = () => {
             const [selectedValue, setSelectedValue] = useState(initValue)
-            return <SimpleSelect value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)} {...args} />
+            return <SimpleSelect value={selectedValue} {...args} onChange={setSelectedValue} />
         }
         return <StateWrapper />
     },
@@ -92,7 +100,7 @@ export const DisabledOption: Story = {
     render: ({ value: initValue, ...args }) => {
         const StateWrapper = () => {
             const [selectedValue, setSelectedValue] = useState(initValue)
-            return <SimpleSelect value={selectedValue} onChange={(e) => setSelectedValue(e.target.value)} {...args} />
+            return <SimpleSelect value={selectedValue} {...args} onChange={setSelectedValue} />
         }
         return <StateWrapper />
     },
@@ -107,13 +115,24 @@ export const DisabledOption: Story = {
 export const UncontrolledWithInitValue: Story = {
     render: ({ value: initValue, ...args }) => {
         const StateWrapper = () => {
-            const { register, handleSubmit, watch } = useForm({ defaultValues: { select: initValue } })
+            const { handleSubmit, watch, setValue, formState } = useForm({ defaultValues: { select: initValue, test: '' } })
             const selectedValue = watch('select')
-            // eslint-disable-next-line no-alert
-            const submit = handleSubmit((formData) => alert(JSON.stringify(formData)))
+
+            const submit = handleSubmit((formData) => {
+                // eslint-disable-next-line no-alert
+                alert(JSON.stringify(formData.select))
+            })
             return (
                 <div>
-                    <SimpleSelect {...args} {...register('select')} />
+                    <SimpleSelect
+                        id="select"
+                        setValue={setValue}
+                        error={formState.errors.select?.message}
+                        defaultValue={initValue}
+                        name="select"
+                        label={args.label}
+                        options={args.options}
+                    />
                     <p>Selected value is: {JSON.stringify(selectedValue)}</p>
                     <button onClick={submit}>Sumbit</button>
                 </div>
@@ -123,6 +142,7 @@ export const UncontrolledWithInitValue: Story = {
     },
     args: {
         id: 'uncontrolled-init-select',
+        name: 'uncontrolled-init-select',
         value: 'simple',
         label: 'Uncontrolled',
         options: options,

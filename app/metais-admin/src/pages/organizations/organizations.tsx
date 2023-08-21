@@ -9,13 +9,13 @@ import OrganizationFilter from '@/components/filters/OrganizationFilter'
 
 export interface KSFilterData extends IFilterParams {
     Gen_Profil_nazov?: string
-    EA_Profil_PO_typ_osoby?: (string | undefined)[]
+    EA_Profil_PO_typ_osoby?: string[]
     EA_Profil_PO_ico?: string
 }
 
 const Organizations = () => {
     const entityName = 'PO'
-    const defaultFilterValues: KSFilterData = { Gen_Profil_nazov: '' }
+    const defaultFilterValues: KSFilterData = { Gen_Profil_nazov: '', EA_Profil_PO_typ_osoby: [], EA_Profil_PO_ico: '' }
     const { t } = useTranslation()
     return (
         <OraganizationsListContainer<KSFilterData>

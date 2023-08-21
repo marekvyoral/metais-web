@@ -76,22 +76,13 @@
         "unhide": "ODKRYŤ"
     },
     "filter": {
-        "expand": "Rozbaliť filter",
-        "collapse": "Zbaliť filter",
-        "namePlaceholder": "Zadajte názov",
-        "searchPlaceholder": "Vyhľadajte v tabuľke",
         "chooseState": "Vyberte stav",
         "chooseValue": "Vyberte hodnotu",
         "organizations": {
             "name": "Meno",
             "ICO": "ICO"
         },
-        "KS": {
-            "name": "Názov koncovej služby"
-        },
-        "ISVS": {
-            "name": "Názov informačného systému"
-        },
+
         "PO": {
             "name": "Názov",
             "itIsChapter": "Je kapitola",
@@ -99,12 +90,26 @@
             "publicAuthorityType": "Typ povinnej osoby",
             "evidenceStatus": "Stav evidencie"
         },
+
+        "expand": "Rozbaliť filter",
+        "collapse": "Zbaliť filter",
+        "namePlaceholder": "Zadajte názov",
+        "searchPlaceholder": "Vyhľadajte v tabuľke",
+        "KS": {
+            "name": "Názov koncovej služby"
+        },
+        "ISVS": {
+            "name": "Názov informačného systému"
+        },
         "metaisCode": {
             "label": "Kód MetaIS",
             "placeholder": "ks_"
         },
         "reset": "Vyčistiť kritéria filtrovania",
         "submit": "Vyfiltrovať"
+    },
+    "mutationFeedback": {
+        "successfulUpdated": "Položka bola úspešne zmenená"
     },
     "table": {
         "title": "Mestá",
@@ -228,6 +233,39 @@
             "addAttribute": "Pridať atribút"
         }
     },
+    "userManagement": {
+        "title": "Používatelia",
+        "fullName": "Meno a priezvisko",
+        "login": "Login",
+        "phone": "Tel.č.",
+        "mobile": "Mobil",
+        "organization": "Povinná osoba",
+        "state": "Stav",
+        "states": {
+            "blocked": "Blokovaný"
+        },
+        "block": "Blokovať",
+        "unblock": "Odblokovať",
+        "edit": "Upraviť",
+        "changePassword": "Zmeniť heslo",
+        "addNewUser": "Pridať nového použivateľa",
+        "actions": "Úkony",
+        "filter": {
+            "state": "Blokovanie",
+            "stateLabel": {
+                "all": "Všetky",
+                "blocked": "Blokované",
+                "activated": "Aktivované"
+            },
+            "role": "Rola",
+            "organization": "Povinná osoba"
+        },
+        "error": {
+            "query": "Chyba pri načítavaní údajov",
+            "mutation": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.",
+            "export": "Chyba pri príprave exportu"
+        }
+    },
     "validity": {
         "true": "Platný",
         "false": "Neplatný",
@@ -260,7 +298,26 @@
         "edit": "Upraviť",
         "reset": "Resetovať",
         "save": "Uložiť",
+        "cancel": "Zrušiť"
+    },
+    "codelists": {
+        "createNew": "Pridať položku",
+        "code": "Kód",
+        "name": "Názov",
+        "description": "Popis",
+        "valid": "Validita",
+        "category": "Kategória",
+        "link": "Položky",
+        "edit": "Upraviť",
+        "delete": "Vymazať",
+        "save": "Uložiť",
         "cancel": "Zrušiť",
+        "remove": "Odstrániť",
+        "validate": "Zvalidovať",
+        "value": "Kód",
+        "valueDescription": "Popis hodnoty",
+        "heading": "Interné číselníky",
+
         "moreActions": "Viac"
     },
     "tableSelectColumns": {
@@ -271,6 +328,10 @@
     },
     "searchInput": {
         "search": "Hľadať"
+    },
+
+    "mutationFeedback": {
+        "successfulUpdated": "Položka bola úspešne zmenená"
     },
     "managementList": {
         "namePassword": "Meno / Heslo",
@@ -325,11 +386,19 @@
         "settings": "Nastavenia profilu",
         "admin": "Administrácia",
         "organizations": "Správa povinných osôb",
+        "userManagement": "Správa používateľov",
         "egov": {
             "entity": "Entity",
             "profiles": "Profily atribútov",
             "relation": "Vzťahy"
-        }
+        },
+        "codelists": "Interné číselníky"
+    },
+    "feedback": {
+        "queryErrorTitle": "Nastala chyba",
+        "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní dát sa vyskytla technická chyba. Skúste stránku znova načítať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na adrese ",
+        "mutationErrorTitle": "Akcia zlyhala",
+        "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na "
     },
     "organizations": {
         "detail": {
@@ -378,5 +447,9 @@
         "Profil_PO_statutar_meno": "Meno",
         "Profil_PO_statutar_priezvisko": "Priezvisko",
         "Profil_PO_statutar_titul_za_menom": "Titul za menom"
+    },
+    "loading": {
+        "loadingSubPage": "Načítavám podstránku",
+        "export": "Preparing export"
     }
 }

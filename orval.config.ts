@@ -130,10 +130,7 @@ export default defineConfig({
                         },
                     },
                     listTypes: {
-                        query: {
-                            useQuery: true,
                         },
-                    },
                 },
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useTypesRepoSwaggerClient.ts',

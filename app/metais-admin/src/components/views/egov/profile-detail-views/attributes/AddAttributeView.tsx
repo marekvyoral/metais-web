@@ -17,7 +17,7 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
 
     const { formMethods, showUnit, showConstraint, selectedConstraint, selectedType } = useCreateAttributeForm()
 
-    const { register, formState, handleSubmit } = formMethods
+    const { register, formState, handleSubmit, setValue } = formMethods
 
     const onSubmit = useCallback(
         async (formValues: FieldValues) => {
@@ -55,14 +55,24 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                 error={formState?.errors?.engDescription?.message}
             />
 
-            <SimpleSelect id="type" label={t('egov.type')} options={attributeTypes} {...register('type')} defaultValue={attributeTypes?.[0]?.value} />
+            <SimpleSelect
+                id="type"
+                label={t('egov.type')}
+                options={attributeTypes}
+                setValue={setValue}
+                name="type"
+                defaultValue={attributeTypes?.[0]?.value}
+                error={formState.errors.type?.message}
+            />
             {showUnit && (
                 <SimpleSelect
                     id="units"
                     label={t('egov.units')}
                     options={measureUnits}
-                    {...register('units')}
+                    name="units"
+                    setValue={setValue}
                     defaultValue={measureUnits?.[0]?.value}
+                    error={formState.errors.units?.message}
                 />
             )}
 
@@ -70,18 +80,21 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                 <SimpleSelect
                     label={t('egov.defaultValue')}
                     id="defaultValue"
-                    {...register('defaultValue')}
+                    setValue={setValue}
+                    name="defaultValue"
                     options={[
                         { label: 'Ano', value: 'true' },
                         { label: 'Nie', value: 'false' },
                     ]}
+                    error={formState.errors.defaultValue?.message}
                 />
             )}
             {showConstraint && (
                 <SimpleSelect
                     label={t('egov.constraints')}
                     id="constraints"
-                    {...register('constraints.0.type')}
+                    name="constraints.0.type"
+                    setValue={setValue}
                     options={selectedType === 'INTEGER' ? integerConstraints : stringConstraints}
                     defaultValue={stringConstraints?.[0].value}
                 />
@@ -90,7 +103,8 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                 <SimpleSelect
                     label={t('egov.clarification')}
                     id="constraints"
-                    {...register('constraints.0.enumCode')}
+                    name="constraints.0.enumCode"
+                    setValue={setValue}
                     options={allEnumsSelectOptions}
                     defaultValue={stringConstraints?.[0].value}
                 />

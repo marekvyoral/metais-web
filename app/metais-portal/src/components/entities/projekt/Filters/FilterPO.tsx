@@ -3,22 +3,15 @@ import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { Input, MultiSelect, RadioButton, RadioGroupWithLabel } from '@isdd/idsk-ui-kit/index'
 import { ColumnAttribute, DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ATTRIBUTE_NAME, Attribute, AttributeProfile, EnumType, GET_ENUM, useGetEnum } from '@isdd/metais-common/api'
 
 export interface POFilterData extends IFilterParams {
     Gen_Profil_nazov?: string
     Gen_Profil_kod_metais?: string
-    EA_Profil_PO_kategoria_osoby?: (string | undefined)[]
-    EA_Profil_PO_typ_osoby?: (string | undefined)[]
+    EA_Profil_PO_kategoria_osoby?: string[]
+    EA_Profil_PO_typ_osoby?: string[]
     EA_Profil_PO_je_kapitola?: boolean
-}
-
-interface FilterPOOption {
-    value: string | undefined
-    label: string | undefined
-    disabled?: boolean
 }
 
 interface Props {
@@ -34,13 +27,13 @@ export const FilterPO = ({ entityName: PO, availableAttributes, defaultFilterVal
     const { t } = useTranslation()
     const { data: personCategories } = useGetEnum(GET_ENUM.KATEGORIA_OSOBA)
     const optionsPersonCategories = personCategories?.enumItems?.map((enumItem) => ({
-        value: enumItem.code,
+        value: `${enumItem.code}`,
         label: `${enumItem.value} - ${enumItem.description}`,
     }))
 
     const { data: personTypesCategories } = useGetEnum(GET_ENUM.TYP_OSOBY)
     const optionsPersonType = personTypesCategories?.enumItems?.map((enumItem) => ({
-        value: enumItem.code,
+        value: `${enumItem.code}`,
         label: `${enumItem.value} - ${enumItem.description}`,
     }))
     const evidenceStatus = [
@@ -51,7 +44,7 @@ export const FilterPO = ({ entityName: PO, availableAttributes, defaultFilterVal
     return (
         <Filter<POFilterData>
             defaultFilterValues={defaultFilterValues}
-            form={({ register, control, filter, setValue }) => (
+            form={({ register, filter, setValue }) => (
                 <div>
                     <Input label={t(`filter.${PO}.name`)} placeholder={t(`filter.namePlaceholder`)} {...register(ATTRIBUTE_NAME.Gen_Profil_nazov)} />
                     <Input
@@ -79,41 +72,23 @@ export const FilterPO = ({ entityName: PO, availableAttributes, defaultFilterVal
                             {...register(ATTRIBUTE_NAME.EA_Profil_PO_je_kapitola)}
                         />
                     </RadioGroupWithLabel>
-                    <Controller
-                        control={control}
+                    <MultiSelect
                         name={ATTRIBUTE_NAME.EA_Profil_PO_kategoria_osoby}
-                        render={({ field: { onChange, value } }) => (
-                            <MultiSelect<FilterPOOption>
-                                name={ATTRIBUTE_NAME.EA_Profil_PO_kategoria_osoby}
-                                id="persons-category"
-                                label={t('filter.PO.personsCategory')}
-                                placeholder={t('filter.chooseValue')}
-                                options={optionsPersonCategories ?? []}
-                                value={optionsPersonCategories?.filter((option) => option.value && value?.includes(option.value))}
-                                onChange={(categories) => onChange(categories.map((category) => category.value))}
-                            />
-                        )}
+                        id="persons-category"
+                        label={t('filter.PO.personsCategory')}
+                        placeholder={t('filter.chooseValue')}
+                        options={optionsPersonCategories ?? []}
+                        defaultValue={filter.EA_Profil_PO_kategoria_osoby}
+                        setValue={setValue}
                     />
-                    <MultiSelect<FilterPOOption>
-                        label="Evidence status"
-                        placeholder={t('filter.chooseState')}
-                        options={evidenceStatus}
-                        isOptionDisabled={(option) => !!option.disabled}
-                        name="evidence-status"
-                    />
-                    <Controller
-                        control={control}
+                    <MultiSelect label="Evidence status" placeholder={t('filter.chooseState')} options={evidenceStatus} name="evidence-status" />
+                    <MultiSelect
                         name={ATTRIBUTE_NAME.EA_Profil_PO_typ_osoby}
-                        render={({ field: { onChange, value } }) => (
-                            <MultiSelect<FilterPOOption>
-                                name={ATTRIBUTE_NAME.EA_Profil_PO_typ_osoby}
-                                label={t('filter.PO.publicAuthorityType')}
-                                placeholder={t('filter.chooseValue')}
-                                options={optionsPersonType ?? []}
-                                value={optionsPersonType?.filter((option) => option.value && value?.includes(option.value))}
-                                onChange={(personTypes) => onChange(personTypes.map((personType) => personType.value))}
-                            />
-                        )}
+                        label={t('filter.PO.publicAuthorityType')}
+                        placeholder={t('filter.chooseValue')}
+                        options={optionsPersonType ?? []}
+                        defaultValue={filter.EA_Profil_PO_typ_osoby}
+                        setValue={setValue}
                     />
                     <DynamicFilterAttributes
                         defaults={defaultFilterValues}

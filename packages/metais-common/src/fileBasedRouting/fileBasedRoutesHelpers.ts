@@ -62,8 +62,7 @@ export const parseSlugFromFilePath = (reactFilePath: string): string | never => 
 
 export const reduceAllFilePathsByNumberOfSlash = (filePaths: string[]) => {
     const groupBySlashCount = filePaths.reduce((map, filePath) => {
-        const isProtected = filePath?.includes('/ProtectedRoute/')
-        const numberOfSlash = filePath?.split('/')?.length - (isProtected ? 2 : 1)
+        const numberOfSlash = filePath?.split('/')?.length
         let filePathsWithSlashCount = map.get(numberOfSlash) ?? []
         filePathsWithSlashCount = [...filePathsWithSlashCount, filePath]
         map.set(numberOfSlash, filePathsWithSlashCount)
@@ -82,7 +81,7 @@ export const getIndexFilePaths = (filePaths: string[], globExports?: FileBasedPa
 export const calcNestedPath = (slug: string, filePathsOnLevelBefore: string[]) => {
     const splittedSlug = slug?.split('/')
     const fileParent = splittedSlug?.[splittedSlug?.length - 2]
-    const fileExistsInLevelBefore = filePathsOnLevelBefore?.some((filePath) => parseSlugFromFilePath(filePath)?.includes(fileParent))
+    const fileExistsInLevelBefore = filePathsOnLevelBefore?.some((filePath) => parseSlugFromFilePath(filePath)?.endsWith(fileParent))
     return fileExistsInLevelBefore ? splittedSlug[splittedSlug?.length - 1] : slug
 }
 

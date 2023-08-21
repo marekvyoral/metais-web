@@ -23,7 +23,7 @@ export const CreateEntitySection: React.FC<ISection> = ({
     setSectionError,
     unitsData,
 }) => {
-    const { register, formState, trigger, setValue } = useFormContext()
+    const { register, formState, trigger, setValue, clearErrors } = useFormContext()
     const { errors, isSubmitted } = formState
 
     const errorNames = Object.keys(errors).filter((item) => item.includes(sectionId))
@@ -85,6 +85,7 @@ export const CreateEntitySection: React.FC<ISection> = ({
                                 //@ts-ignore
                                 attribute?.constraints?.map((item: AttributeConstraintEnumAllOf) => item.enumCode ?? '') ?? [],
                             )}
+                            clearErrors={clearErrors}
                             register={register}
                             error={getAttributeInputErrorMessage(attribute)}
                             isSubmitted={isSubmitted}

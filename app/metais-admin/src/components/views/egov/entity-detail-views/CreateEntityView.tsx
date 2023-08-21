@@ -25,7 +25,7 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
         profileAttributesDialog,
     } = useCreateDialogs()
 
-    const { formMethods, tabsFromForm, sourcesFromForm, targetsFromForm, selectedRoles } = useCreateForm({ data, hiddenInputs })
+    const { formMethods, tabsFromForm, sourcesFromForm, targetsFromForm } = useCreateForm({ data, hiddenInputs })
 
     const roleList =
         data?.roles?.map?.((role) => {
@@ -89,7 +89,8 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
                             <SimpleSelect
                                 label={t('egov.type')}
                                 options={[{ label: t('type.custom'), value: 'custom' }]}
-                                {...register('type')}
+                                name="type"
+                                setValue={formMethods.setValue}
                                 disabled
                             />
                         )}
@@ -98,16 +99,10 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
                                 <MultiSelect
                                     label={t('egov.roles')}
                                     options={roleList}
-                                    values={selectedRoles ?? []}
                                     name="roleList"
-                                    onChange={(newValue) => {
-                                        formMethods?.setValue(
-                                            'roleList',
-                                            newValue?.map((v) => v?.value),
-                                        )
-                                    }}
+                                    setValue={formMethods.setValue}
+                                    error={formState?.errors?.roleList?.message}
                                 />
-                                {formState?.errors?.roleList && <ErrorBlock errorMessage={t('egov.create.requiredField')} />}
                             </div>
                         )}
                         {!hiddenInputs?.SOURCES && !hiddenInputs?.TARGETS && (

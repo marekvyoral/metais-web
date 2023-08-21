@@ -71,6 +71,17 @@
         "yes": "Yes",
         "no": "No"
     },
+    "mutationFeedback": {
+        "successfulUpdated": "The item was successfully changed"
+    },
+    "filter": {
+        "expand": "Expand filter",
+        "collapse": "Collapse filter",
+        "namePlaceholder": "Enter a name",
+        "searchPlaceholder": "Search in table",
+        "reset": "Clear Filter",
+        "submit": "Filter"
+    },
     "searchInput": {
         "search": "Search"
     },
@@ -79,37 +90,6 @@
         "refreshButton": "Refresh",
         "cancelButton": "Cancel",
         "viewButton": "View"
-    },
-    "filter": {
-        "expand": "Expand filter",
-        "collapse": "Collapse filter",
-        "namePlaceholder": "Enter a name",
-        "searchPlaceholder": "Search in table",
-        "chooseState": "Select status",
-        "chooseValue": "Select value",
-        "organizations": {
-            "name": "Name",
-            "ICO": "ICO"
-        },
-        "ks": {
-            "name": "Name of end service"
-        },
-        "isvs": {
-            "name": "Name of information system"
-        },
-        "PO": {
-            "name": "Name",
-            "itIsChapter": "It is a chapter",
-            "personsCategory": "Persons category",
-            "publicAuthorityType": "Public authority type",
-            "evidenceStatus": "Evidence status"
-        },
-        "metaisCode": {
-            "label": "Code MetaIS",
-            "placeholder": "ks_"
-        },
-        "reset": "Clear Filter",
-        "submit": "Filter"
     },
     "table": {
         "title": "Cities",
@@ -232,7 +212,39 @@
             "addAttribute": "Add attribute"
         }
     },
-
+    "userManagement": {
+        "title": "Users",
+        "fullName": "Name and surname",
+        "login": "Login",
+        "phone": "Phone",
+        "mobile": "Mobile",
+        "organization": "Organization",
+        "state": "State",
+        "states": {
+            "blocked": "Blocked"
+        },
+        "block": "Block",
+        "unblock": "Unblock",
+        "edit": "Edit",
+        "changePassword": "Change password",
+        "addNewUser": "Add new user",
+        "actions": "Actions",
+        "filter": {
+            "state": "Blocked",
+            "stateLabel": {
+                "all": "All",
+                "blocked": "Blocked",
+                "activated": "Activated"
+            },
+            "role": "Role",
+            "organization": "Organization"
+        },
+        "error": {
+            "query": "Error while fetching data",
+            "mutation": "Error while performing action. Please try again or contact support.",
+            "export": "Error while preparing export"
+        }
+    },
     "validity": {
         "true": "Valid",
         "false": "Invalid",
@@ -252,6 +264,61 @@
         "actions": "Bulk actions",
         "invalidateItems": "Invalidate items",
         "validateItems": "Validate actions",
+        "changeOwner": "Change owner"
+    },
+    "codelists": {
+        "createNew": "Add item",
+        "code": "Code",
+        "name": "Name",
+        "description": "Description",
+        "valid": "Validity",
+        "category": "Category",
+        "link": "Items",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
+        "remove": "Remove",
+        "validate": "Validate",
+        "value": "Code",
+        "valueDescription": "Value Description",
+        "heading": "Internal codelists"
+    },
+    "filter": {
+        "expand": "Expand filter",
+        "collapse": "Collapse filter",
+        "namePlaceholder": "Enter a name",
+        "searchPlaceholder": "Search in table",
+        "ks": {
+            "name": "Name of end service"
+        },
+        "isvs": {
+            "name": "Name of information system"
+        },
+        "metaisCode": {
+            "label": "Code MetaIS",
+            "placeholder": "ks_"
+        },
+        "reset": "Clear Filter",
+        "submit": "Filter",
+
+        "chooseState": "Select status",
+        "chooseValue": "Select value",
+        "organizations": {
+            "name": "Name",
+            "ICO": "ICO"
+        },
+
+        "PO": {
+            "name": "Name",
+            "itIsChapter": "It is a chapter",
+            "personsCategory": "Persons category",
+            "publicAuthorityType": "Public authority type",
+            "evidenceStatus": "Evidence status"
+        }
+    },
+    "mutationFeedback": {
+        "successfulUpdated": "The item was successfully changed",
         "changeOwner": "Change owner",
         "metaColumnName": {
             "state": "Evidence status",
@@ -274,12 +341,20 @@
         "notifications": "Notifications",
         "settings": "Settings",
         "admin": "Administration",
+        "userManagement": "User management",
         "organizations": "Organizations",
         "egov": {
             "entity": "Entities",
             "profiles": "Attribute profiles",
             "relation": "Relations"
-        }
+        },
+        "codelists": "Internal codelists"
+    },
+    "feedback": {
+        "queryErrorTitle": "Error occured",
+        "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator by e-mail at ",
+        "mutationErrorTitle": "Action failed",
+        "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at"
     },
     "organizations": {
         "detail": {
@@ -371,5 +446,9 @@
     "accordion": {
         "openAll": "Open all",
         "closeAll": "Close all"
+    },
+    "loading": {
+        "loadingSubPage": "Loading sub-page",
+        "export": "Preparing export"
     }
 }

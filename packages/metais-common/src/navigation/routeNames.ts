@@ -21,11 +21,13 @@ export enum AdminRouteNames {
     ASSIGNMENT = '/assignment',
     NOTIFICATIONS = '/notifications',
     SETTINGS = '/settings',
+    USER_MANAGEMENT = '/managementList',
     EGOV = '/egov',
     EGOV_ENTITY = '/egov/entity',
     EGOV_PROFILE = '/egov/profile',
     EGOV_RELATION = '/egov/relation',
     ORGANIZATIONS = '/organizations',
+    CODELISTS = '/codelists-management',
 }
 
 export enum NavigationSubRoutes {

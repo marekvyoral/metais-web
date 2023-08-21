@@ -8,5 +8,4 @@ export const INDEX_ROUTE = Entity
 const index: React.FC = () => {
     return <Outlet />
 }
-
 export default index

@@ -1,12 +1,12 @@
 import React from 'react'
 import classNames from 'classnames'
-import { GroupBase, MultiValue, OptionProps, OptionsOrGroups, PropsValue, components } from 'react-select'
+import { GroupBase, MultiValue, OptionProps, OptionsOrGroups, PropsValue } from 'react-select'
 import { AsyncPaginate } from 'react-select-async-paginate'
-import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
+import { UseFormSetValue } from 'react-hook-form'
 
 import styles from './selectLazyLoading.module.scss'
 
-import { Control, Menu, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
+import { Control, Menu, selectStyles, Option as ReactSelectDefaultOptionComponent } from '@isdd/idsk-ui-kit/common/SelectCommon'
 
 export interface ILoadOptionsResponse<T> {
     options: T[]
@@ -15,6 +15,8 @@ export interface ILoadOptionsResponse<T> {
         page: number
     }
 }
+
+export const DEFAULT_LAZY_LOAD_PER_PAGE = 20
 
 interface ISelectProps<T> {
     id?: string
@@ -29,8 +31,6 @@ interface ISelectProps<T> {
     isMulti?: boolean
     error?: string
     defaultValue?: PropsValue<T>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    register?: UseFormRegister<any>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setValue?: UseFormSetValue<any>
     loadOptions: (
@@ -54,11 +54,10 @@ export const SelectLazyLoading = <T,>({
     isMulti = false,
     error,
     id,
-    register,
     setValue,
 }: ISelectProps<T>): JSX.Element => {
     const Option = (props: OptionProps<T>) => {
-        return option ? option(props) : <components.Option {...props} className={styles.selectOption} />
+        return option ? option(props) : ReactSelectDefaultOptionComponent(props)
     }
 
     const handleOnChange = (selectedValue: MultiValue<T> | T | null) => {
@@ -101,7 +100,6 @@ export const SelectLazyLoading = <T,>({
                 openMenuOnFocus
                 isClearable
                 unstyled
-                {...(register && register(name))}
                 onChange={handleOnChange}
             />
         </div>

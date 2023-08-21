@@ -73,7 +73,7 @@ export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighbo
         isError: isOwnersError,
         data: ownersData,
     } = useGetRoleParticipantBulk({ gids: owners }, { query: { enabled: !!owners?.length } })
-    // debugger
+
     return {
         isLoading: isLoading || isOwnersLoading,
         isError: isError || isOwnersError,

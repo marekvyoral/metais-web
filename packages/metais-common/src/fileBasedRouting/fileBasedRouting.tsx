@@ -99,7 +99,7 @@ const constructAllRoutesPerSlashLevel = ({ pathsGroupedByLevel, globExports, lev
 export const computeRoutes = (globExports: FileBasedPages) => {
     const tsxFilePaths = Object.keys(globExports)
     const pathsGroupedByLevel = reduceAllFilePathsByNumberOfSlash(tsxFilePaths)
-    const levels = Array.from(pathsGroupedByLevel.keys())
+    const levels = Array.from(pathsGroupedByLevel.keys())?.sort((a, b) => a - b)
 
     const routes =
         levels?.flatMap((level) => {
