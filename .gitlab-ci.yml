@@ -39,7 +39,7 @@ build-node:
     image: nexus.isdd.sk:8490/node:latest
     stage: build-node
     script:
-        - yarn run build
+        - yarn run build:development
     artifacts:
         expire_in: 2 days
         paths:
