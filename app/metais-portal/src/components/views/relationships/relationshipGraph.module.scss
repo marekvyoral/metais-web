@@ -1,0 +1,40 @@
+@import '../../../utils.scss';
+
+.legend {
+  position: absolute;
+  right: 30px;
+  bottom: 130px;
+}
+
+.legendIcon {
+  width: govuk-spacing(2);
+  height: govuk-spacing(2);
+  display: inline-block;
+}
+
+.graphWrapper {
+  position: relative;
+}
+
+.modalContent {
+  margin: govuk-spacing(4)
+}
+
+.buttonRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: govuk-spacing(2);
+}
+
+.typeFilter {
+  display: inline-block;
+}
+
+.tooltip {
+  fill: white;
+  font-family: sans-serif;
+  padding: govuk-spacing(1);
+  border-radius: govuk-spacing(1);
+  max-width: 150px;
+  border: 1px solid govuk-colour('dark-grey');
+}
