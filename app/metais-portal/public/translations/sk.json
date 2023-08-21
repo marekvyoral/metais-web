@@ -1,4 +1,10 @@
 {
+    "graph": {
+        "zoomIn": "Priblížiť",
+        "zoomOut": "Oddialiť",
+        "exportPNG": "Ako PNG",
+        "exportPDF": "Ako PDF"
+    },
     "footer": {
         "services": {
             "title": "Služby a informácie",

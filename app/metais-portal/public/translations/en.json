@@ -1,4 +1,10 @@
 {
+    "graph": {
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out",
+        "exportPNG": "As PNG",
+        "exportPDF": "As PDF"
+    },
     "footer": {
         "services": {
             "title": "Services and Information",

@@ -9,6 +9,7 @@ import { sourceTableColumns } from './RelationshipsSourceTableColumns'
 
 import { CiNeighboursListContainer } from '@/components/containers/CiNeighboursListContainer'
 import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
+import RelationshipGraph from '@/components/views/relationships/RelationshipGraph'
 
 interface RelationshipsAccordion {
     data?: ConfigurationItemUi
@@ -22,8 +23,10 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
         <>
             <AccordionContainer
                 sections={[
-                    { title: t('relationshipsTab.relationshipsVisualization'), content: 'todo: graph' },
-
+                    {
+                        title: t('relationshipsTab.relationshipsVisualization'),
+                        content: <RelationshipGraph data={data} />,
+                    },
                     {
                         title: t('relationshipsTab.tableViewSelectedItemSource', {
                             selectedItem: data?.attributes?.Gen_Profil_nazov,
