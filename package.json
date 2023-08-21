@@ -63,6 +63,7 @@
         "start": "yarn start:portal & yarn start:admin && fg",
         "start:portal": "vite app/metais-portal",
         "start:admin": "vite app/metais-admin",
+        "build:development": "cross-env NODE_ENV=development yarn build:portal && cross-env NODE_ENV=development yarn build:admin",
         "build": "yarn build:portal && yarn build:admin",
         "build:portal": "vite build app/metais-portal",
         "build:script:transform": "tsc packages/metais-common/src/api/hooks/transform/attributesTypesTransformer.ts --outDir packages/metais-common/scripts/",
