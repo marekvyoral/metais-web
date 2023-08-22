@@ -138,7 +138,7 @@ export const Table = <T,>({
                 <tbody className={styles.displayFlex}>
                     <tr>
                         <td>
-                            <TableInfoMessage error={error} isEmptyRows={isEmptyRows} />
+                            <TableInfoMessage error={error} isEmptyRows={isEmptyRows} key="info" />
                         </td>
                     </tr>
                 </tbody>
@@ -153,7 +153,7 @@ export const Table = <T,>({
                 ref={wrapper1Ref}
             >
                 {table.getRowModel().rows.map((row) => (
-                    <>
+                    <React.Fragment key={row.id}>
                         <TableRow<T>
                             row={row}
                             key={row.id}
@@ -163,7 +163,7 @@ export const Table = <T,>({
                             rowHref={rowHref}
                         />
                         {row.getIsExpanded() && getExpandedRow && <TableRowExpanded row={row} getExpandedRow={getExpandedRow} />}
-                    </>
+                    </React.Fragment>
                 ))}
             </tbody>
         </table>
