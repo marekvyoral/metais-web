@@ -1,0 +1,28 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.tooltipBody {
+    margin: 0 !important;
+    // color: govuk-colour('white') !important;
+}
+
+.tooltip {
+    border: 1px solid govuk-colour('mid-grey') !important;
+    display: flex;
+    // justify-content: space-between;
+    align-items: center;
+}
+
+.tooltipArrow {
+    border: 1px solid govuk-colour('mid-grey') !important;
+    border-bottom: none !important;
+    border-right: none !important;
+}
+
+.closeButton {
+    // position: absolute;
+    // top: 0;
+    // right: 0;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}

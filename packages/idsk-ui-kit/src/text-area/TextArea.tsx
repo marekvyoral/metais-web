@@ -3,7 +3,7 @@ import * as React from 'react'
 import { forwardRef } from 'react'
 
 import styles from '../styles/InfoAndCheckInput.module.scss'
-import { InfoInputIcon } from '../info-input-icon/InfoInputIcon'
+import { CustomTooltip } from '../info-input-icon/CustomTooltip'
 
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
 
@@ -30,7 +30,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label}
                     </label>
-                    {info && <InfoInputIcon description={info} id={id ?? ''} />}
+                    {info && <CustomTooltip description={info} id={id ?? ''} />}
                 </div>
 
                 {hint && (
