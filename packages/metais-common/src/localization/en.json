@@ -27,5 +27,8 @@
         "unorderedColumn": "Unsorted column - will use ascending sorting.",
         "resetOrder": "Reset order",
         "pagination": "Page navigation"
+    },
+    "createEntity": {
+        "required": "Required"
     }
 }

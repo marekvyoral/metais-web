@@ -27,5 +27,8 @@
         "unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie.",
         "resetOrder": "Resetovať poradie",
         "pagination": "Tabuľková navigácia"
+    },
+    "createEntity": {
+        "required": "Povinné"
     }
 }

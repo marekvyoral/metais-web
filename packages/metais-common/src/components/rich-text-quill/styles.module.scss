@@ -1,0 +1,81 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+.customEditor > div {
+    border: 2px solid govuk-colour('black') !important;
+    border-top: none !important;
+}
+
+.customEditor .isdk-button--secondary {
+    margin-bottom: 0px;
+}
+
+.customToolbar {
+    border: 2px solid govuk-colour('black') !important;
+    border-bottom: none !important;
+    display: flex !important;
+    gap: govuk-spacing(2);
+    overflow-x: auto;
+    padding: govuk-spacing(2);
+    @include mq($until: tablet) {
+        display: block !important;
+
+        padding: govuk-spacing(0);
+    }
+}
+
+.customToolbar button {
+    padding: govuk-spacing(2);
+    background: govuk-colour('light-grey') !important;
+    margin-bottom: 0px;
+    height: 46px !important;
+    width: 46px !important;
+    @include mq($until: tablet) {
+        margin-left: govuk-spacing(1);
+        margin-top: govuk-spacing(1);
+    }
+}
+
+.customToolbar button::before {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.fieldset {
+    margin-bottom: govuk-spacing(6);
+}
+
+.formGroup {
+    margin-bottom: govuk-spacing(2) !important;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.infoDiv {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    img {
+        margin-bottom: govuk-spacing(2);
+    }
+}
+
+.buttonDiv {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+
+    Button {
+        margin: 0;
+        margin-left: govuk-spacing(2);
+    }
+
+    @include mq($until: tablet) {
+        img {
+            display: none;
+        }
+    }
+}
