@@ -1,5 +1,5 @@
-import React, { cloneElement } from 'react'
-import { ITooltip, Tooltip } from 'react-tooltip'
+import React, { PropsWithChildren, cloneElement } from 'react'
+import { Tooltip, ITooltip } from 'react-tooltip'
 
 import { InfoIcon, NavigationCloseIcon } from '../assets/images'
 import { TextBody } from '../typography/TextBody'
