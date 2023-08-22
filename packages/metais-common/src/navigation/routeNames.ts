@@ -26,6 +26,10 @@ export enum AdminRouteNames {
     EGOV_ENTITY = '/egov/entity',
     EGOV_PROFILE = '/egov/profile',
     EGOV_RELATION = '/egov/relation',
+    ROLE_USERS = '/egov/roles/users',
+    ROLE_EDIT = '/egov/roles/edit',
+    ROLE_NEW = '/egov/roles/create',
+    ROLES = '/egov/roles',
     ORGANIZATIONS = '/organizations',
     CODELISTS = '/codelists-management',
 }

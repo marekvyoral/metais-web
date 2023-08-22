@@ -43,6 +43,7 @@
         "rights": "© Autorské práva"
     },
     "navbar": {
+        "home": "Domov",
         "skip": "Preskočiť na hlavný obsah",
         "official": "Oficiálna stránka",
         "publicAdministration": "verejnej správy SR",
@@ -320,6 +321,32 @@
 
         "moreActions": "Viac"
     },
+    "adminRolesPage": {
+        "addNewRole": "Pridať novú rolu",
+        "name": "Názov",
+        "description": "Popis",
+        "group": "Skupina",
+        "systemRole": "Systémová rola",
+        "assignedUsers": "Priradení používatelia ",
+        "edit": "Upraviť",
+        "deactivate": "Zneplatniť",
+        "all": "Všetky",
+        "rolesList": "Zoznam rolí",
+        "newRole": "Pridanie roly",
+        "none": "Žiadna",
+        "areYouSure": "Ste si istý/á?",
+        "deleteRoleText": "Chcete odstrániť rolu?",
+        "fullName": "Meno",
+        "login": "Login",
+        "email": "Email",
+        "obligedPerson": "Povinná osoba",
+        "requiredName": "Povinné meno",
+        "requiredDesc": "Povinný popis",
+        "yes": "Áno",
+        "no": "Nie",
+        "show": "Zobraziť",
+        "entities": "záznamy"
+    },
     "tableSelectColumns": {
         "searchPlaceholder": "Názov hľadaného stĺpca",
         "refreshButton": "Obnoviť",
@@ -328,10 +355,6 @@
     },
     "searchInput": {
         "search": "Hľadať"
-    },
-
-    "mutationFeedback": {
-        "successfulUpdated": "Položka bola úspešne zmenená"
     },
     "managementList": {
         "namePassword": "Meno / Heslo",
@@ -390,7 +413,8 @@
         "egov": {
             "entity": "Entity",
             "profiles": "Profily atribútov",
-            "relation": "Vzťahy"
+            "relations": "Vzťahy",
+            "roleManagement": "Správa rolí"
         },
         "codelists": "Interné číselníky"
     },
