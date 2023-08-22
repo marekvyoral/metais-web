@@ -5,7 +5,7 @@ import { v4 as uuidV4 } from 'uuid'
 
 import { GreenCheckMarkIcon } from '../assets/images'
 import styles from '../styles/InfoAndCheckInput.module.scss'
-import { InfoInputIcon } from '../info-input-icon/InfoInputIcon'
+import { CustomTooltip } from '../info-input-icon/CustomTooltip'
 
 interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     id?: string
@@ -48,7 +48,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label}
                     </label>
-                    {info && <InfoInputIcon description={info} id={id ?? ''} />}
+                    {info && <CustomTooltip description={info} id={id ?? ''} />}
                 </div>
 
                 {hint && (
