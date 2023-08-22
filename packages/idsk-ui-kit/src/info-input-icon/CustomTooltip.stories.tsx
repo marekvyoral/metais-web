@@ -17,8 +17,35 @@ export const Basic: Story = {
     args: {
         description: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
         id: '1',
+    },
+}
+
+export const WithChild: Story = {
+    args: {
+        description: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
+        id: '1',
+        children: <Button label="open" />,
+    },
+}
+
+export const openOnClick: Story = {
+    args: {
+        description: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
+        id: '1',
         children: <Button label="open" />,
         openOnClick: true,
-        closeOnEsc: true,
+        // closeOnEsc: true,
+        // clickable: true,
+    },
+}
+
+export const openOnClickAndClickable: Story = {
+    args: {
+        description: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
+        id: '1',
+        children: <Button label="open" />,
+        openOnClick: true,
+        // closeOnEsc: true,
+        clickable: true,
     },
 }
