@@ -8,11 +8,15 @@ interface IButton {
     onClick?: () => void
     type?: 'button' | 'reset' | 'submit'
     className?: string
+    value?: string
+    id?: string
 }
 
-export const Button = forwardRef<HTMLButtonElement, IButton>(({ label, onClick, variant, disabled, type = 'button', className }, ref) => {
+export const Button = forwardRef<HTMLButtonElement, IButton>(({ label, onClick, variant, disabled, type = 'button', className, value, id }, ref) => {
     return (
         <button
+            id={id}
+            value={value}
             ref={ref}
             onClick={onClick}
             type={type}
