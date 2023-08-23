@@ -5,7 +5,7 @@ import { v4 as uuidV4 } from 'uuid'
 
 import { GreenCheckMarkIcon } from '../assets/images'
 import styles from '../styles/InfoAndCheckInput.module.scss'
-import { CustomTooltip } from '../info-input-icon/CustomTooltip'
+import { CustomTooltip } from '../custom-tooltip/CustomTooltip'
 
 interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     id?: string

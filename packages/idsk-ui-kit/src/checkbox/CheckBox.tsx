@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import React, { DetailedHTMLProps, forwardRef } from 'react'
 
-import { CustomTooltip } from '../info-input-icon/CustomTooltip'
+import { CustomTooltip } from '../custom-tooltip/CustomTooltip'
 
 interface ICheckBoxProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     id: string

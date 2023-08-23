@@ -6,7 +6,7 @@ import styles from './select.module.scss'
 
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
-import { CustomTooltip } from '@/info-input-icon/CustomTooltip'
+import { CustomTooltip } from '@isdd/idsk-ui-kit/custom-tooltip/CustomTooltip'
 
 export interface IOption {
     value: string

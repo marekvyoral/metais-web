@@ -3,7 +3,7 @@ import * as React from 'react'
 import { forwardRef } from 'react'
 
 import styles from '../styles/InfoAndCheckInput.module.scss'
-import { CustomTooltip } from '../info-input-icon/CustomTooltip'
+import { CustomTooltip } from '../custom-tooltip/CustomTooltip'
 
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
 

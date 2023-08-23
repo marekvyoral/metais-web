@@ -9,7 +9,7 @@ import styles from './CustomTooltip.module.scss'
 interface IInfoInputIcon extends ITooltip {
     description?: string
     id: string
-    children: React.ReactElement
+    children?: React.ReactElement
 }
 
 export const CustomTooltip: React.FC<IInfoInputIcon> = ({ description, id, children, ...props }) => {
