@@ -1,17 +1,16 @@
 import { Button } from '@isdd/idsk-ui-kit'
-import { InfoInputIcon } from '@isdd/idsk-ui-kit/src/info-input-icon/InfoInputIcon'
+import { CustomTooltip } from '@isdd/idsk-ui-kit/src/custom-tooltip/CustomTooltip'
 import classNames from 'classnames'
 import { DeltaStatic, Sources } from 'quill'
 import React, { useMemo, useRef } from 'react'
 import { UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
 
 import styles from './styles.module.scss'
 
 import { QuillBulletListIcon, QuillLinkIcon, QuillOrderedListIcon } from '@isdd/metais-common/assets/images'
-
+import 'react-quill/dist/quill.snow.css'
 export enum RichQuillButtons {
     HEADER_1,
     HEADER_2,
@@ -137,7 +136,7 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
             {error && <span className="govuk-error-message">{error}</span>}
             <div className={styles.header}>
                 {label && <div className="govuk-label">{label + requiredLabel}</div>}
-                <div className={styles.infoDiv}>{info && <InfoInputIcon description={info} id={id ?? ''} />}</div>
+                <div className={styles.infoDiv}>{info && <CustomTooltip description={info} id={id ?? ''} />}</div>
             </div>
             <div className={classNames({ 'govuk-input--error': !!error })}>
                 <CustomToolbar excludeOptions={excludeOptions} />
