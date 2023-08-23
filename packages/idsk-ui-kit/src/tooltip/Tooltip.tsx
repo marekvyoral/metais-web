@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { useState } from 'react'
+import React, { cloneElement, useState } from 'react'
 import { ITooltip as IReactTooltip, Tooltip as ReactTooltip } from 'react-tooltip'
 import { v4 as uuidV4 } from 'uuid'
 
@@ -9,7 +9,7 @@ import { TextBody } from '@/typography/TextBody'
 import { InfoIcon, NavigationCloseIcon } from '@isdd/idsk-ui-kit/assets/images'
 
 interface ITooltip extends IReactTooltip {
-    descriptionElement?: React.ReactElement | string
+    descriptionElement?: React.ReactNode
     id?: string
     children?: React.ReactElement
     className?: string
@@ -21,7 +21,7 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, id, children, 
     return (
         <>
             <ReactTooltip
-                id={tooltipId}
+                anchorSelect={`#anchor-element-${tooltipId}`}
                 variant="light"
                 className={classNames(className, styles.tooltip)}
                 classNameArrow={styles.tooltipArrow}
@@ -50,13 +50,7 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, id, children, 
                     </button>
                 )}
             </ReactTooltip>
-            {children ? (
-                <span className={styles.displayInlineBlock} data-tooltip-id={tooltipId}>
-                    {children}
-                </span>
-            ) : (
-                <img src={InfoIcon} data-tooltip-id={tooltipId} />
-            )}
+            {children ? cloneElement(children, { id: `anchor-element-${tooltipId}` }) : <img src={InfoIcon} id={`anchor-element-${tooltipId}`} />}
         </>
     )
 }
