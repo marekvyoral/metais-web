@@ -1,5 +1,5 @@
-import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
+import { defineConfig, loadEnv } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig(({ mode }) => {
@@ -27,7 +27,14 @@ export default defineConfig(({ mode }) => {
             cors: {
                 origin: '*',
             },
-            proxy: {},
+            proxy: {
+                '^/metaisiam/.*': {
+                    target: process.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL,
+                    changeOrigin: true,
+                    secure: false,
+                    rewrite: (p) => p.replace(/^\/metaisiam/, ''),
+                },
+            },
         },
     }
 })
