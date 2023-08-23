@@ -1,17 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React from 'react'
 
-import { Button } from '..'
+import { Tooltip } from './Tooltip'
 
-import { CustomTooltip } from './CustomTooltip'
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
 
-const meta: Meta<typeof CustomTooltip> = {
-    title: 'Components/CustomTooltip',
-    component: CustomTooltip,
+const meta: Meta<typeof Tooltip> = {
+    title: 'Components/Tooltip',
+    component: Tooltip,
 }
 
 export default meta
-type Story = StoryObj<typeof CustomTooltip>
+type Story = StoryObj<typeof Tooltip>
 
 export const Basic: Story = {
     args: {

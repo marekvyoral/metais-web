@@ -1,12 +1,12 @@
 import { Button, Input } from '@isdd/idsk-ui-kit/index'
 import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
 import { CloseIcon, PlusIcon } from '@isdd/metais-common/assets/images'
+import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { FieldError, FieldErrorsImpl, FieldValues, Merge, UseFormRegister, UseFormSetValue, UseFormTrigger } from 'react-hook-form'
-import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { CustomTooltip } from '@isdd/idsk-ui-kit/custom-tooltip/CustomTooltip'
 
 import styles from './attributeInput.module.scss'
 
@@ -81,7 +81,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
         <fieldset className={styles.fieldset}>
             <legend className="govuk-label">{name + requiredLabel}</legend>
             <div className={classNames('govuk-form-group', styles.formGroup)}>
-                <div className={styles.infoDiv}>{info && <CustomTooltip description={info} id={id} />}</div>
+                <div className={styles.infoDiv}>{info && <Tooltip description={info} id={id} />}</div>
                 <div className={styles.buttonDiv}>
                     <Button
                         disabled={attribute.readOnly}
@@ -93,7 +93,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                         }
                         onClick={() => setInputList((prev) => [...prev, ''])}
                     />
-                    {info && <CustomTooltip description={info} id={id} />}
+                    {info && <Tooltip description={info} id={id} />}
                 </div>
             </div>
 

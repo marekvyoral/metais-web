@@ -2,14 +2,13 @@
 
 .tooltipBody {
     margin: 0 !important;
-    // color: govuk-colour('white') !important;
 }
 
 .tooltip {
     border: 1px solid govuk-colour('mid-grey') !important;
     display: flex;
-    // justify-content: space-between;
     align-items: center;
+    z-index: 100;
 }
 
 .tooltipArrow {

@@ -3,8 +3,8 @@ import * as React from 'react'
 import { forwardRef } from 'react'
 
 import styles from '../styles/InfoAndCheckInput.module.scss'
-import { CustomTooltip } from '../custom-tooltip/CustomTooltip'
 
+import { Tooltip } from '@/tooltip/Tooltip'
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
 
 interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
@@ -30,7 +30,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label}
                     </label>
-                    {info && <CustomTooltip description={info} id={id ?? ''} />}
+                    {info && <Tooltip description={info} id={id ?? ''} />}
                 </div>
 
                 {hint && (

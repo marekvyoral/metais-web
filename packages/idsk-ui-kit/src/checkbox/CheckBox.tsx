@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import React, { DetailedHTMLProps, forwardRef } from 'react'
 
-import { CustomTooltip } from '../custom-tooltip/CustomTooltip'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 interface ICheckBoxProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     id: string
@@ -41,7 +41,7 @@ export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
                             {label}
                         </label>
                     </div>
-                    {info && <CustomTooltip description={info} id={id} />}
+                    {info && <Tooltip description={info} id={id} />}
                 </div>
             </div>
         )

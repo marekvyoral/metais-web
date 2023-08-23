@@ -6,7 +6,7 @@ import styles from './select.module.scss'
 
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
-import { CustomTooltip } from '@isdd/idsk-ui-kit/custom-tooltip/CustomTooltip'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 export interface IOption {
     value: string
@@ -61,7 +61,7 @@ export const Select: React.FC<ISelectProps> = ({
         <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
             <div className={styles.labelDiv}>
                 <label className="govuk-label">{label}</label>
-                {info && <CustomTooltip description={info} id={id ?? ''} />}
+                {info && <Tooltip description={info} id={id ?? ''} />}
             </div>
             {!!error && <span className="govuk-error-message">{error}</span>}
             <div className={styles.inputWrapper}>

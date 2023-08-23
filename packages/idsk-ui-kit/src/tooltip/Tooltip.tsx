@@ -1,22 +1,23 @@
 import React, { cloneElement, useState } from 'react'
-import { Tooltip, ITooltip } from 'react-tooltip'
+import { ITooltip as IReactTooltip, Tooltip as ReactTooltip } from 'react-tooltip'
+import { v4 as uuidV4 } from 'uuid'
 
-import { InfoIcon, NavigationCloseIcon } from '../assets/images'
-import { TextBody } from '../typography/TextBody'
+import styles from './Tooltip.module.scss'
 
-import styles from './CustomTooltip.module.scss'
+import { InfoIcon, NavigationCloseIcon } from '@isdd/idsk-ui-kit/assets/images'
+import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 
-interface ICustomTooltip extends ITooltip {
+interface ITooltip extends IReactTooltip {
     description?: string
-    id: string
+    id?: string
     children?: React.ReactElement
 }
 
-export const CustomTooltip: React.FC<ICustomTooltip> = ({ description, id, children, ...props }) => {
+export const Tooltip: React.FC<ITooltip> = ({ description, id = `input_${uuidV4()}`, children, ...props }) => {
     const [isOpen, setIsOpen] = useState(false)
     return (
         <>
-            <Tooltip
+            <ReactTooltip
                 anchorSelect={`.anchor-element-${id}`}
                 variant="light"
                 className={styles.tooltip}
@@ -41,7 +42,7 @@ export const CustomTooltip: React.FC<ICustomTooltip> = ({ description, id, child
                         <img src={NavigationCloseIcon} alt="navigation-close" />
                     </button>
                 )}
-            </Tooltip>
+            </ReactTooltip>
             {children ? cloneElement(children, { className: `anchor-element-${id}` }) : <img src={InfoIcon} className={`anchor-element-${id}`} />}
         </>
     )
