@@ -1,8 +1,9 @@
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/src/types'
-import { FieldValues } from 'react-hook-form'
 import { useEffect, useState } from 'react'
+import { FieldValues } from 'react-hook-form'
 
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
+import { ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     FavoriteCiType,
     useGetDefaultColumns,
@@ -10,10 +11,9 @@ import {
     useInsertUserColumns,
     useResetUserColumns,
 } from '@isdd/metais-common/api/generated/user-config-swagger'
-import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { mapConfigurationItemSetToPagination } from '@isdd/metais-common/componentHelpers/pagination'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
 export const useGetColumnData = (entityName: string) => {
     const {
@@ -23,7 +23,6 @@ export const useGetColumnData = (entityName: string) => {
 
     const getUserColumns = useGetUserColumns(entityName, { query: { enabled: isUserLogged } })
     const getDefaultColumns = useGetDefaultColumns(entityName, { query: { enabled: !isUserLogged } })
-
     const {
         data: columnListData,
         refetch: refetchColumnData,

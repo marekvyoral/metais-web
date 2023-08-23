@@ -1,24 +1,25 @@
-import React, { useCallback } from 'react'
+import { Table, TextBody } from '@isdd/idsk-ui-kit'
+import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
+import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
+import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { IListData } from '@isdd/metais-common/types/list'
+import { CellContext, ColumnDef, Table as ITable, Row } from '@tanstack/react-table'
+import classNames from 'classnames'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
-import { CellContext, ColumnDef, Row, Table as ITable } from '@tanstack/react-table'
-import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
-import { Table, TextBody } from '@isdd/idsk-ui-kit'
-import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
-import classNames from 'classnames'
-import { IListData } from '@isdd/metais-common/types/list'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
+import styles from './ciTable.module.scss'
+import { formatLabelByAttribute } from './ciTableFormatter'
 import {
     ColumnsOutputDefinition,
-    reduceTableDataToObject,
     mapTableData,
     reduceAttributesByTechnicalName,
+    reduceTableDataToObject,
     sortAndMergeCiColumns,
 } from './ciTableHelpers'
-import styles from './ciTable.module.scss'
 
 export interface IRowSelectionState {
     rowSelection: Record<string, ColumnsOutputDefinition>
@@ -85,7 +86,6 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
     )
 
     const clearSelectedRows = useCallback(() => setRowSelection({}), [setRowSelection])
-
     const columnsFromApi =
         columnsAttributes?.map((attribute, index) => {
             const technicalName = attribute?.name ?? ''
@@ -94,6 +94,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],
                 header: () => <span className={classNames({ [styles.textUnderline]: index === 0 })}>{attributeHeader ?? technicalName}</span>,
                 id: technicalName ?? '',
+                size: 200,
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
                     <TextBody size="S" className={'marginBottom0'}>
                         {index === 0 ? (
@@ -106,7 +107,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                         ) : schemaAttributes[technicalName]?.name ? (
                             (ctx.getValue() as string)
                         ) : (
-                            t(`metaAttributes.state.${ctx.getValue()}`)
+                            formatLabelByAttribute(ctx.getValue() as string, t(`metaAttributes.state.${ctx.getValue()}`))
                         )}
                     </TextBody>
                 ),

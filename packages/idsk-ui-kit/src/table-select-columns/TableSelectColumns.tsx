@@ -1,15 +1,15 @@
-import React, { useState, ChangeEvent } from 'react'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/src/api'
 import classNames from 'classnames'
+import React, { ChangeEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 import styles from './tableSelectColumns.module.scss'
 
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
-import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
-import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
+import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { SearchInput } from '@isdd/idsk-ui-kit/searchInput'
+import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 
 export interface IColumnType {
     technicalName: string
