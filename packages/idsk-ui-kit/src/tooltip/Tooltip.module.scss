@@ -11,37 +11,12 @@
     z-index: 100;
 }
 
+
 .tooltipArrow {
-
-    // border: 1px solid govuk-colour('mid-grey') !important;
-    // border: 1px solid govuk-colour('mid-grey') !important;
-    // border-bottom: none !important;
-    // border-right: none !important;
-
-}
-
-
-[class*='react-tooltip__place-top']>.arrow {
-    transform: rotate(45deg);
     border: 1px solid govuk-colour('mid-grey') !important;
+    border-bottom: none !important;
+    border-right: none !important;
 }
-
-[class*='react-tooltip__place-right']>.arrow {
-    transform: rotate(135deg);
-    border: 1px solid govuk-colour('mid-grey') !important;
-}
-
-[class*='react-tooltip__place-bottom']>.react-tooltip-arrow {
-    transform: rotate(225deg);
-    border: 1px solid govuk-colour('mid-grey') !important;
-}
-
-[class*='react-tooltip__place-left']>.arrow {
-    transform: rotate(315deg);
-    border: 1px solid govuk-colour('mid-grey') !important;
-}
-
-
 
 .closeButton {
     display: flex;

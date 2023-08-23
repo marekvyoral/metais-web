@@ -1,0 +1,23 @@
+.react-tooltip__place-top {
+    .react-tooltip-arrow {
+        transform: rotate(225deg);
+    }
+}
+
+.react-tooltip__place-bottom {
+    .react-tooltip-arrow {
+        transform: rotate(45deg);
+    }
+}
+
+.react-tooltip__place-left {
+    .react-tooltip-arrow {
+        transform: rotate(135deg);
+    }
+}
+
+.react-tooltip__place-right {
+    .react-tooltip-arrow {
+        transform: rotate(315deg);
+    }
+}

@@ -7,6 +7,7 @@ import styles from './Tooltip.module.scss'
 
 import { InfoIcon, NavigationCloseIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
+import './reactTooltip.scss'
 
 interface ITooltip extends IReactTooltip {
     descriptionElement?: React.ReactNode
@@ -24,8 +25,7 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, id, children, 
                 anchorSelect={`#anchor-element-${tooltipId}`}
                 variant="light"
                 className={classNames(className, styles.tooltip)}
-                // classNameArrow={styles.tooltipArrow}
-                // style={{ backgroundColor: 'blue' }}
+                classNameArrow={styles.tooltipArrow}
                 isOpen={isOpen}
                 setIsOpen={(value) => setIsOpen(value)}
                 {...props}

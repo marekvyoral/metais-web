@@ -7,6 +7,9 @@ import { Button } from '@isdd/idsk-ui-kit/button/Button'
 const meta: Meta<typeof Tooltip> = {
     title: 'Components/Tooltip',
     component: Tooltip,
+    parameters: {
+        layout: 'centered',
+    },
 }
 
 export default meta
