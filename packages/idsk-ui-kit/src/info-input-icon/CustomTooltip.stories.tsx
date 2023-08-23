@@ -24,7 +24,7 @@ export const WithChild: Story = {
     args: {
         description: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
         id: '1',
-        children: <Button label="open" />,
+        children: <Button label="Child" />,
     },
 }
 
@@ -34,8 +34,6 @@ export const openOnClick: Story = {
         id: '1',
         children: <Button label="open" />,
         openOnClick: true,
-        // closeOnEsc: true,
-        // clickable: true,
     },
 }
 
@@ -45,7 +43,7 @@ export const openOnClickAndClickable: Story = {
         id: '1',
         children: <Button label="open" />,
         openOnClick: true,
-        // closeOnEsc: true,
+        closeOnEsc: true,
         clickable: true,
     },
 }
