@@ -2,9 +2,8 @@ import classNames from 'classnames'
 import * as React from 'react'
 import { forwardRef } from 'react'
 
-import styles from '../styles/InfoAndCheckInput.module.scss'
-
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
+import styles from '@isdd/idsk-ui-kit/styles/InfoAndCheckInput.module.scss'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
