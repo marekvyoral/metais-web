@@ -33,6 +33,7 @@ export const openOnClick: Story = {
         id: '1',
         children: <Button label="open" />,
         openOnClick: true,
+        place: 'left',
     },
 }
 

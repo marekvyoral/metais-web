@@ -24,7 +24,8 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, id, children, 
                 anchorSelect={`#anchor-element-${tooltipId}`}
                 variant="light"
                 className={classNames(className, styles.tooltip)}
-                classNameArrow={styles.tooltipArrow}
+                // classNameArrow={styles.tooltipArrow}
+                // style={{ backgroundColor: 'blue' }}
                 isOpen={isOpen}
                 setIsOpen={(value) => setIsOpen(value)}
                 {...props}
