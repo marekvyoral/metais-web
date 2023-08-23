@@ -1,6 +1,7 @@
-import { CheckBox, SimpleSelect, TextBody, TextLink } from '@isdd/idsk-ui-kit/index'
+import { CheckBox, SimpleSelect, TextLink } from '@isdd/idsk-ui-kit/index'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { IdentityState } from '@isdd/metais-common/api/generated/iam-swagger'
 import { truncateWithEllipsis } from '@isdd/metais-common/componentHelpers/formatting/ellipsis'
@@ -9,7 +10,6 @@ import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Tooltip } from 'react-tooltip'
 
 import styles from './userManagementListTable.module.scss'
 
@@ -184,11 +184,7 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
                 const anchor = `anchor-element-${ctx.row.id}`
                 return (
                     <>
-                        <Tooltip anchorSelect={`.${anchor}`} place={isFirstRow ? 'bottom' : 'top'} clickable>
-                            <TextBody size="S" className={styles.tooltipBody}>
-                                {joinedNames}
-                            </TextBody>
-                        </Tooltip>
+                        <Tooltip anchorSelect={`.${anchor}`} place={isFirstRow ? 'bottom' : 'top'} clickable descriptionElement={joinedNames} />
                         <span className={anchor}>
                             {truncateWithEllipsis(joinedNames)}
                             {names.length > 1 && <> (+{names.length - 1})</>}
