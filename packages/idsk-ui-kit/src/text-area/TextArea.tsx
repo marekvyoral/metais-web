@@ -4,8 +4,8 @@ import { forwardRef } from 'react'
 
 import styles from '../styles/InfoAndCheckInput.module.scss'
 
-import { Tooltip } from '@/tooltip/Tooltip'
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
     id?: string
