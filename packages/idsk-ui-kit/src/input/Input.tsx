@@ -22,33 +22,16 @@ interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<
     hasInputIcon?: boolean
 }
 export const Input = forwardRef<HTMLInputElement, IInputProps>(
-    (
-        {
-            id = `input_${uuidV4()}`,
-            label,
-            name,
-            hint,
-            error,
-            disabled,
-            info,
-            type = 'text',
-            correct,
-            className,
-            isUpload = false,
-            hasInputIcon = false,
-            ...rest
-        },
-        ref,
-    ) => {
-        const hintId = `${id}-hint`
-
+    ({ id, label, name, hint, error, disabled, info, type = 'text', correct, className, isUpload = false, hasInputIcon = false, ...rest }, ref) => {
+        const inputId = id ?? `input_${uuidV4()}`
+        const hintId = `${inputId}-hint`
         return (
             <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
                 <div className={styles.labelDiv}>
                     <label className="govuk-label" htmlFor={id}>
                         {label}
                     </label>
-                    {info && <Tooltip description={info} id={id ?? ''} />}
+                    {info && <Tooltip description={info} />}
                 </div>
 
                 {hint && (
@@ -64,7 +47,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                 <div className={styles.inputWrapper} style={{ position: 'relative' }}>
                     <input
                         className={classNames({ 'govuk-input--error': !!error, 'govuk-input': !isUpload, 'govuk-file-upload': isUpload })}
-                        id={id}
+                        id={inputId}
                         name={name}
                         type={type}
                         ref={ref}

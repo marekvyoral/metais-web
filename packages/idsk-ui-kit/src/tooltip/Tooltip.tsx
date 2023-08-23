@@ -1,4 +1,5 @@
-import React, { cloneElement, useState } from 'react'
+import classNames from 'classnames'
+import React, { useState } from 'react'
 import { ITooltip as IReactTooltip, Tooltip as ReactTooltip } from 'react-tooltip'
 import { v4 as uuidV4 } from 'uuid'
 
@@ -11,16 +12,18 @@ interface ITooltip extends IReactTooltip {
     description?: string
     id?: string
     children?: React.ReactElement
+    className?: string
 }
 
-export const Tooltip: React.FC<ITooltip> = ({ description, id = `input_${uuidV4()}`, children, ...props }) => {
+export const Tooltip: React.FC<ITooltip> = ({ description, id, children, className, ...props }) => {
     const [isOpen, setIsOpen] = useState(false)
+    const tooltipId = id ?? `tooltip_${uuidV4()}`
     return (
         <>
             <ReactTooltip
-                anchorSelect={`.anchor-element-${id}`}
+                id={tooltipId}
                 variant="light"
-                className={styles.tooltip}
+                className={classNames(className, styles.tooltip)}
                 classNameArrow={styles.tooltipArrow}
                 isOpen={isOpen}
                 setIsOpen={(value) => setIsOpen(value)}
@@ -43,7 +46,13 @@ export const Tooltip: React.FC<ITooltip> = ({ description, id = `input_${uuidV4(
                     </button>
                 )}
             </ReactTooltip>
-            {children ? cloneElement(children, { className: `anchor-element-${id}` }) : <img src={InfoIcon} className={`anchor-element-${id}`} />}
+            {children ? (
+                <span className={styles.displayInlineBlock} data-tooltip-id={tooltipId}>
+                    {children}
+                </span>
+            ) : (
+                <img src={InfoIcon} data-tooltip-id={tooltipId} />
+            )}
         </>
     )
 }
