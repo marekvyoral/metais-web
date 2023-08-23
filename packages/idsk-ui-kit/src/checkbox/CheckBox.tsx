@@ -41,7 +41,7 @@ export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
                             {label}
                         </label>
                     </div>
-                    {info && <Tooltip description={info} id={id} />}
+                    {info && <Tooltip descriptionElement={info} />}
                 </div>
             </div>
         )

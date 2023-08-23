@@ -14,14 +14,14 @@ type Story = StoryObj<typeof Tooltip>
 
 export const Basic: Story = {
     args: {
-        description: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
+        descriptionElement: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
         id: '1',
     },
 }
 
 export const WithChild: Story = {
     args: {
-        description: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
+        descriptionElement: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
         id: '1',
         children: <Button label="Child" />,
     },
@@ -29,7 +29,7 @@ export const WithChild: Story = {
 
 export const openOnClick: Story = {
     args: {
-        description: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
+        descriptionElement: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
         id: '1',
         children: <Button label="open" />,
         openOnClick: true,
@@ -38,7 +38,18 @@ export const openOnClick: Story = {
 
 export const openOnClickAndClickable: Story = {
     args: {
-        description: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
+        descriptionElement: 'Miesto pre správu, ktorá upozorňuje, že nastal problém',
+        id: '1',
+        children: <Button label="open" />,
+        openOnClick: true,
+        closeOnEsc: true,
+        clickable: true,
+    },
+}
+
+export const WithCustomDescriptionElement: Story = {
+    args: {
+        descriptionElement: <strong>Miesto pre správu, ktorá upozorňuje, že nastal problém</strong>,
         id: '1',
         children: <Button label="open" />,
         openOnClick: true,

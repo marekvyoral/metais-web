@@ -61,7 +61,7 @@ export const Select: React.FC<ISelectProps> = ({
         <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
             <div className={styles.labelDiv}>
                 <label className="govuk-label">{label}</label>
-                {info && <Tooltip description={info} id={id ?? ''} />}
+                {info && <Tooltip descriptionElement={info} />}
             </div>
             {!!error && <span className="govuk-error-message">{error}</span>}
             <div className={styles.inputWrapper}>

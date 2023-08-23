@@ -1,26 +1,26 @@
-import React, { useCallback } from 'react'
+import { CheckBox, SimpleSelect, TextBody, TextLink } from '@isdd/idsk-ui-kit/index'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
-import { CheckBox, TextLink, SimpleSelect, TextBody } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
-import { IdentityState } from '@isdd/metais-common/api/generated/iam-swagger'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { ColumnDef, Row } from '@tanstack/react-table'
-import { Tooltip } from 'react-tooltip'
-import { useTranslation } from 'react-i18next'
-import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { IdentityState } from '@isdd/metais-common/api/generated/iam-swagger'
 import { truncateWithEllipsis } from '@isdd/metais-common/componentHelpers/formatting/ellipsis'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { ColumnDef, Row } from '@tanstack/react-table'
+import React, { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Tooltip } from 'react-tooltip'
 
 import styles from './userManagementListTable.module.scss'
 
-import { extractOrganizationNamesFromCi } from '@/components/views/userManagement/userManagementUtils'
 import {
     UserManagementActionsOverRowEnum,
+    UserManagementFilterData,
+    UserManagementListData,
     UserManagementListItem,
     reduceRowsToObject,
-    UserManagementListData,
-    UserManagementFilterData,
 } from '@/components/containers/ManagementList/UserManagementListUtils'
+import { extractOrganizationNamesFromCi } from '@/components/views/userManagement/userManagementUtils'
 
 interface UserManagementTableProps {
     data: UserManagementListData

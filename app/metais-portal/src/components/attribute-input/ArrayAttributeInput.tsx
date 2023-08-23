@@ -81,7 +81,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
         <fieldset className={styles.fieldset}>
             <legend className="govuk-label">{name + requiredLabel}</legend>
             <div className={classNames('govuk-form-group', styles.formGroup)}>
-                <div className={styles.infoDiv}>{info && <Tooltip description={info} id={id} />}</div>
+                <div className={styles.infoDiv}>{info && <Tooltip descriptionElement={info} />}</div>
                 <div className={styles.buttonDiv}>
                     <Button
                         disabled={attribute.readOnly}
@@ -93,7 +93,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                         }
                         onClick={() => setInputList((prev) => [...prev, ''])}
                     />
-                    {info && <Tooltip description={info} id={id} />}
+                    {info && <Tooltip descriptionElement={info} />}
                 </div>
             </div>
 

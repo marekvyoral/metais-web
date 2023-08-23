@@ -5,17 +5,17 @@ import { v4 as uuidV4 } from 'uuid'
 
 import styles from './Tooltip.module.scss'
 
+import { TextBody } from '@/typography/TextBody'
 import { InfoIcon, NavigationCloseIcon } from '@isdd/idsk-ui-kit/assets/images'
-import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 
 interface ITooltip extends IReactTooltip {
-    description?: string
+    descriptionElement?: React.ReactElement | string
     id?: string
     children?: React.ReactElement
     className?: string
 }
 
-export const Tooltip: React.FC<ITooltip> = ({ description, id, children, className, ...props }) => {
+export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, id, children, className, ...props }) => {
     const [isOpen, setIsOpen] = useState(false)
     const tooltipId = id ?? `tooltip_${uuidV4()}`
     return (
@@ -29,9 +29,13 @@ export const Tooltip: React.FC<ITooltip> = ({ description, id, children, classNa
                 setIsOpen={(value) => setIsOpen(value)}
                 {...props}
             >
-                <TextBody size="S" className={styles.tooltipBody}>
-                    {description}
-                </TextBody>
+                {typeof descriptionElement === 'string' ? (
+                    <TextBody size="S" className={styles.tooltipBody}>
+                        {descriptionElement}
+                    </TextBody>
+                ) : (
+                    descriptionElement
+                )}
                 {props.clickable && (
                     <button
                         className={styles.closeButton}
