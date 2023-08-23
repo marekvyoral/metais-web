@@ -5,8 +5,8 @@ import { v4 as uuidV4 } from 'uuid'
 
 import styles from './Tooltip.module.scss'
 
-import { TextBody } from '@/typography/TextBody'
 import { InfoIcon, NavigationCloseIcon } from '@isdd/idsk-ui-kit/assets/images'
+import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 
 interface ITooltip extends IReactTooltip {
     descriptionElement?: React.ReactNode
