@@ -40,7 +40,6 @@ export default defineConfig({
                     'cmdb-store-controller',
                     'cmdb-user-feedback-controller',
                     'cmdb-util-controller',
-                    //'health-controller',
                 ],
             },
         },
@@ -129,8 +128,7 @@ export default defineConfig({
                             useQuery: true,
                         },
                     },
-                    listTypes: {
-                        },
+                    listTypes: {},
                 },
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useTypesRepoSwaggerClient.ts',

@@ -43,6 +43,7 @@
         "rights": "© Copyright"
     },
     "navbar": {
+        "home": "Home",
         "skip": "Skip to main content",
         "official": "Official Website",
         "publicAdministration": "Public Administration",
@@ -71,17 +72,7 @@
         "yes": "Yes",
         "no": "No"
     },
-    "mutationFeedback": {
-        "successfulUpdated": "The item was successfully changed"
-    },
-    "filter": {
-        "expand": "Expand filter",
-        "collapse": "Collapse filter",
-        "namePlaceholder": "Enter a name",
-        "searchPlaceholder": "Search in table",
-        "reset": "Clear Filter",
-        "submit": "Filter"
-    },
+
     "searchInput": {
         "search": "Search"
     },
@@ -207,11 +198,16 @@
             "codePrefixRegex": "Accepted character are only 'a'..'z' and underscore '_'.",
             "technicalNameRegex": "Technical name could only consists of alphabet character",
             "addProfile": "Add profile",
-            "removeProfile": "Remove profile",
-            "addConnection": "Add connection",
-            "addAttribute": "Add attribute"
+            "removeProfile": "Remove profile"
         }
     },
+
+    "state": {
+        "removeProfile": "Remove profile",
+        "addConnection": "Add connection",
+        "addAttribute": "Add attribute"
+    },
+
     "userManagement": {
         "title": "Users",
         "fullName": "Name and surname",
@@ -346,7 +342,8 @@
         "egov": {
             "entity": "Entities",
             "profiles": "Attribute profiles",
-            "relation": "Relations"
+            "relations": "Relations",
+            "roleManagement": "Role management"
         },
         "codelists": "Internal codelists"
     },
@@ -355,6 +352,32 @@
         "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator by e-mail at ",
         "mutationErrorTitle": "Action failed",
         "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at"
+    },
+    "adminRolesPage": {
+        "addNewRole": "Add new role",
+        "name": "Name",
+        "description": "Description",
+        "group": "Group",
+        "systemRole": "System role",
+        "assignedUsers": "Assigned users",
+        "edit": "Edit",
+        "deactivate": "Deactivate",
+        "all": "All",
+        "rolesList": "Roles list",
+        "newRole": "New role",
+        "none": "None",
+        "areYouSure": "Are you sure?",
+        "deleteRoleText": "Do you want to delete the role?",
+        "fullName": "Name",
+        "login": "Login",
+        "email": "Email",
+        "obligedPerson": "Obliged person",
+        "requiredName": "Required name",
+        "requiredDesc": "Required description",
+        "yes": "Yes",
+        "no": "No",
+        "show": "Show",
+        "entities": "entities"
     },
     "organizations": {
         "detail": {

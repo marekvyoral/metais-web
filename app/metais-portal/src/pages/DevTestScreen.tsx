@@ -1,16 +1,14 @@
-import React, { useState } from 'react'
-import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
+import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
+import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
+import React, { useState } from 'react'
 
-import { CiContainer } from '@/components/containers/CiContainer'
-import { View } from '@/components/containers/CiContainer.stories'
-import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
-import { RelationsView } from '@/components/containers/RelationsListContainer.stories'
 import { DocumentsListContainer } from '@/components/containers/DocumentListContainer'
 import { DocsView } from '@/components/containers/DocumentListContainer.stories'
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
+import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
+import { RelationsView } from '@/components/containers/RelationsListContainer.stories'
 import { ExportItemsOrRelations } from '@/components/export-items-or-relations/ExportItemsOrRelations'
 // import { ActionsOverTable } from '@/components/actions-over-table/ActionsOverTable'
 
@@ -32,12 +30,13 @@ export const DevTestScreen: React.FC = () => {
         <>
             <h4>Obrazovka na testovanie komponentov</h4>
             {/* <ActionsOverTable entityName={'abc'} /> */}
-            <AttributesContainer
+            {/* <AttributesContainer
                 entityName="KRIS"
                 View={() => {
                     return <CiContainer configurationItemId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={View} />
                 }}
-            />
+            /> */}
+            <RichTextQuill name="rich" />
             {/* <ActionsOverTable /> */}
             <Button label={'Modal open'} onClick={openModal} />
             <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />

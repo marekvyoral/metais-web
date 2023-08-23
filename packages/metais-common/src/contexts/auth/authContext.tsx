@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, Reducer, createContext, useEffect } from 'react'
+import React, { Reducer, createContext, useContext, useEffect, useReducer } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 export enum AuthActions {
@@ -109,4 +109,4 @@ const AuthContextProvider: React.FC<React.PropsWithChildren> = (props) => {
 
 const useAuth = () => useContext(AuthContext)
 
-export { useAuth, AuthContextProvider }
+export { AuthContextProvider, useAuth }

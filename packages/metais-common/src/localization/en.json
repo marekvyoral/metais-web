@@ -27,5 +27,28 @@
         "unorderedColumn": "Unsorted column - will use ascending sorting.",
         "resetOrder": "Reset order",
         "pagination": "Page navigation"
+    },
+    "adminRolesPage": {
+        "addNewRole": "Add new role",
+        "name": "Name",
+        "description": "Description",
+        "group": "Group",
+        "systemRole": "System role",
+        "assignedUsers": "Assigned users",
+        "edit": "Edit",
+        "deactivate": "Deactivate",
+        "all": "All",
+        "rolesList": "Roles list",
+        "newRole": "New role",
+        "none": "None",
+        "areYouSure": "Are you sure?",
+        "deleteRoleText": "Do you want to delete the role?",
+        "fullName": "Name",
+        "login": "Login",
+        "email": "Email",
+        "obligedPerson": "Obliged person"
+    },
+    "createEntity": {
+        "required": "Required"
     }
 }

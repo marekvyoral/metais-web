@@ -8,23 +8,24 @@ interface IButton {
     onClick?: () => void
     type?: 'button' | 'reset' | 'submit'
     className?: string
+    value?: string
+    id?: string
 }
 
-export const Button = forwardRef<HTMLButtonElement, IButton>(({ label, onClick, variant, disabled, type = 'button', className }, ref) => {
+export const Button = forwardRef<HTMLButtonElement, IButton>(({ label, onClick, variant, disabled, type = 'button', className, value, id }, ref) => {
     return (
         <button
+            id={id}
+            value={value}
             ref={ref}
             onClick={onClick}
             type={type}
-            className={classnames(
-                {
-                    'idsk-button': true,
-                    'idsk-button--disabled': disabled,
-                    'idsk-button--secondary': variant === 'secondary',
-                    'idsk-button--warning': variant === 'warning',
-                },
-                className,
-            )}
+            className={classnames(className, {
+                'idsk-button': true,
+                'idsk-button--disabled': disabled,
+                'idsk-button--secondary': variant === 'secondary',
+                'idsk-button--warning': variant === 'warning',
+            })}
             disabled={disabled}
             aria-disabled={disabled}
             data-module="idsk-button"
