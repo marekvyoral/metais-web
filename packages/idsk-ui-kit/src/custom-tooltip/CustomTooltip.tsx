@@ -6,13 +6,13 @@ import { TextBody } from '../typography/TextBody'
 
 import styles from './CustomTooltip.module.scss'
 
-interface IInfoInputIcon extends ITooltip {
+interface ICustomTooltip extends ITooltip {
     description?: string
     id: string
     children?: React.ReactElement
 }
 
-export const CustomTooltip: React.FC<IInfoInputIcon> = ({ description, id, children, ...props }) => {
+export const CustomTooltip: React.FC<ICustomTooltip> = ({ description, id, children, ...props }) => {
     const [isOpen, setIsOpen] = useState(false)
     return (
         <>
