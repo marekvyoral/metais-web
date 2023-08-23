@@ -3,7 +3,7 @@ import React, { cloneElement, useState } from 'react'
 import { ITooltip as IReactTooltip, Tooltip as ReactTooltip } from 'react-tooltip'
 import { v4 as uuidV4 } from 'uuid'
 
-import styles from './Tooltip.module.scss'
+import styles from './tooltip.module.scss'
 
 import { InfoIcon, NavigationCloseIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
