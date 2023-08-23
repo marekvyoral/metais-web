@@ -16,7 +16,7 @@ interface ITooltip extends IReactTooltip {
     className?: string
 }
 
-export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, id, children, className, ...props }) => {
+export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, id, children, className, closeOnEsc = true, ...props }) => {
     const [isOpen, setIsOpen] = useState(false)
     const tooltipId = id ?? `tooltip_${uuidV4()}`
     return (
@@ -28,6 +28,7 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, id, children, 
                 classNameArrow={styles.tooltipArrow}
                 isOpen={isOpen}
                 setIsOpen={(value) => setIsOpen(value)}
+                closeOnEsc={closeOnEsc}
                 {...props}
             >
                 {typeof descriptionElement === 'string' ? (
@@ -51,7 +52,13 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, id, children, 
                     </button>
                 )}
             </ReactTooltip>
-            {children ? cloneElement(children, { id: `anchor-element-${tooltipId}` }) : <img src={InfoIcon} id={`anchor-element-${tooltipId}`} />}
+            {children ? (
+                cloneElement(children, { id: `anchor-element-${tooltipId}` })
+            ) : (
+                <button id={`anchor-element-${tooltipId}`} className={styles.plainButton}>
+                    <img src={InfoIcon} />
+                </button>
+            )}
         </>
     )
 }
