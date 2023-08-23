@@ -1,5 +1,5 @@
-import React, { useReducer, useContext, Reducer, createContext, useEffect } from 'react'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import React, { Reducer, createContext, useContext, useEffect, useReducer } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export enum AuthActions {
     SET_USER_INFO,
@@ -93,9 +93,10 @@ const AuthContextProvider: React.FC<React.PropsWithChildren> = (props) => {
     const locationCurrent = useLocation()
 
     const [state, dispatch] = useReducer<Reducer<AuthContextState, Action>>(reducer, initialState)
+    const { hash } = useLocation()
     const navigate = useNavigate()
-    const [urlParams] = useSearchParams()
-    const accessToken = urlParams.get('access_token')
+    const searchParams = new URLSearchParams(hash)
+    const accessToken = searchParams.get('#access_token')
     useEffect(() => {
         if (accessToken && !state.accessToken) {
             dispatch({ type: AuthActions.SET_TOKEN, value: accessToken })
@@ -108,4 +109,4 @@ const AuthContextProvider: React.FC<React.PropsWithChildren> = (props) => {
 
 const useAuth = () => useContext(AuthContext)
 
-export { useAuth, AuthContextProvider }
+export { AuthContextProvider, useAuth }
