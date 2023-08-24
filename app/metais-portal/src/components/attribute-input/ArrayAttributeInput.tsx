@@ -1,5 +1,4 @@
 import { Button, Input } from '@isdd/idsk-ui-kit/index'
-import { InfoInputIcon } from '@isdd/idsk-ui-kit/info-input-icon/InfoInputIcon'
 import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
