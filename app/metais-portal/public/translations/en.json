@@ -509,6 +509,7 @@
         "closeAll": "Close all"
     },
     "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
+    "date": "{{date, DATE_SHORT}}",
     "currency": "{{val, currency}}",
     "selectPublicAuthority": {
         "error": "Error while fetching data for public authorities.",
@@ -517,5 +518,28 @@
     "selectRole": {
         "error": "Error while fetching data about roles.",
         "loading": "Loading role data"
+    },
+    "codeList": {
+        "title": "Codelists",
+        "publicCodelistSubtitle": "List of published codelists",
+        "filter": {
+            "title": "Filter",
+            "mainAuthority": "Hlavný gestor",
+            "toDate": "Platné ku dňu",
+            "onlyBase": "Zobraziť len základné číselníky"
+        },
+        "breadcrumbs": {
+            "home": "Domov",
+            "dataObjects": "Dátové objekty",
+            "codeLists": "Codelists",
+            "publicCodeLists": "List of published codelists"
+        },
+        "table": {
+            "code": "Code",
+            "name": "Counter name",
+            "mainGestor": "Main authority",
+            "effectiveFrom": "Valid as of",
+            "isBase": "Base counter"
+        }
     }
 }

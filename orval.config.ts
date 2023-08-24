@@ -285,4 +285,22 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
+    codeListRepo: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_CODELIST_REPO_SWAGGER_URL ?? '',
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/codelist-repo-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useCodeListRepoSwaggerClient.ts',
+                    name: 'useCodeListRepoSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
 })

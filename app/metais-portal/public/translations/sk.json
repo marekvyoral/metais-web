@@ -511,6 +511,7 @@
         "closeAll": "Zatvoriť všetko"
     },
     "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
+    "date": "{{date, DATE_SHORT}}",
     "currency": "{{val, currency}}",
     "selectPublicAuthority": {
         "error": "Chyba pri načítavaní údajov pre orgány verejnej moci.",
@@ -519,5 +520,31 @@
     "selectRole": {
         "error": "Chyba pri načítavaní údajov pre role.",
         "loading": "Načítavajú sa údaje pre role."
+    },
+    "codeList": {
+        "title": "Číselníky",
+        "publicCodelistSubtitle": "Zoznam publikovaných číselníkov",
+        "filter": {
+            "title": "Filter",
+            "mainGestor": "Main authority",
+            "toDate": "Valid as of",
+            "onlyBase": "Show only base counters"
+        },
+        "breadcrumbs": {
+            "home": "Domov",
+            "dataObjects": "Dátové objekty",
+            "codeLists": "Číselníky",
+            "publicCodeLists": "Zoznam publikovaných číselníkov"
+        },
+        "table": {
+            "code": "Kód",
+            "name": "Názov číselníka",
+            "mainGestor": "Gestor číselníka",
+            "effectiveFrom": "Začiatok účinnosti",
+            "isBase": "Základný číselník"
+        },
+        "error": {
+            "selectFilterMainGestor": ""
+        }
     }
 }
