@@ -40,7 +40,7 @@
     z-index: 2;
     display: block !important;
     overflow: auto;
-
+    max-width: 2500px;
     @include mq($until: desktop) {
         top: 122.5px;
     }
@@ -48,7 +48,6 @@
 
 .header {
     background-color: govuk-colour('grey-4');
-    padding-left: govuk-spacing(1) !important;
 }
 
 .rowSelected {
@@ -58,6 +57,7 @@
 .body {
     max-height: 800px;
     max-width: 2500px;
+    overflow: auto;
 }
 
 .displayFlex {
@@ -95,3 +95,4 @@
 tr:hover td {
     background-color: govuk-colour('grey-4');
 }
+
