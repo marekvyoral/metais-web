@@ -28,7 +28,7 @@ const ProjektListPage = () => {
                             entityName={ciType ?? ''}
                             defaultFilterValues={defaultFilterValues}
                             ListComponent={({
-                                data: { columnListData, tableData },
+                                data: { columnListData, tableData, gestorsData },
                                 handleFilterChange,
                                 storeUserSelectedColumns,
                                 resetUserSelectedColumns,
@@ -41,6 +41,7 @@ const ProjektListPage = () => {
                                     defaultFilterValues={defaultFilterValues}
                                     sort={sort}
                                     columnListData={columnListData}
+                                    gestorsData={gestorsData}
                                     tableData={tableData}
                                     handleFilterChange={handleFilterChange}
                                     storeUserSelectedColumns={storeUserSelectedColumns}

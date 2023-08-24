@@ -1,7 +1,7 @@
 import React from 'react'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { FieldValues } from 'react-hook-form'
-import { useReadCiList1 } from '@isdd/metais-common/api'
+import { useGetRoleParticipantBulk, useReadCiList1 } from '@isdd/metais-common/api'
 import { IListView } from '@isdd/metais-common/types/list'
 import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers/filter'
 import { useGetColumnData, useFilterForCiList, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
@@ -30,15 +30,22 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityN
         },
     })
 
+    const ownerGids = tableData?.configurationItemSet?.map((item) => item.metaAttributes?.owner ?? '')
+    const {
+        data: gestorsData,
+        isLoading: isGestorsLoading,
+        isError: isGestorsError,
+    } = useGetRoleParticipantBulk({ gids: ownerGids }, { query: { enabled: !!tableData && !!ownerGids } })
+
     const pagination = usePagination(tableData, filterParams)
 
-    const isLoading = [isReadCiListLoading, isColumnsLoading].some((item) => item)
-    const isError = [isReadCiListError, isColumnsError].some((item) => item)
+    const isLoading = [isReadCiListLoading, isColumnsLoading, isGestorsLoading].some((item) => item)
+    const isError = [isReadCiListError, isColumnsError, isGestorsError].some((item) => item)
 
     return (
         <QueryFeedback loading={isLoading} error={isError}>
             <ListComponent
-                data={{ columnListData, tableData }}
+                data={{ columnListData, tableData, gestorsData }}
                 pagination={pagination}
                 handleFilterChange={handleFilterChange}
                 resetUserSelectedColumns={resetColumns}

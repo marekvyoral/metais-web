@@ -1,22 +1,22 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
-import * as d3 from 'd3'
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
-import { ConfigurationItemUi, ConfigurationItemUiAttributes, useListRelatedCiTypes, useReadCiNeighboursWithAllRels } from '@isdd/metais-common/api'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useTranslation } from 'react-i18next'
 import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
-import classnames from 'classnames'
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
+import { ConfigurationItemUi, ConfigurationItemUiAttributes, useListRelatedCiTypes, useReadCiNeighboursWithAllRels } from '@isdd/metais-common/api'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import classnames from 'classnames'
+import * as d3 from 'd3'
+import { FC, useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { isRelatedCiTypeCmdbView } from './typeHelper'
 import styles from './relationshipGraph.module.scss'
+import { isRelatedCiTypeCmdbView } from './typeHelper'
 
-import { exportGraph, prepareData, drawGraph, getShortName, filterCiName } from '@/components/views/relationships/graphHelpers'
-import { CiContainer } from '@/components/containers/CiContainer'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
+import { CiContainer } from '@/components/containers/CiContainer'
 import { CiInformationAccordion } from '@/components/entities/accordion/CiInformationAccordion'
+import { drawGraph, exportGraph, filterCiName, getShortName, prepareData } from '@/components/views/relationships/graphHelpers'
 
 interface RelationshipsGraphProps {
     data?: ConfigurationItemUi
@@ -236,12 +236,16 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
                     {nodeDetail && (
                         <CiContainer
                             configurationItemId={nodeDetail.uuid ?? ''}
-                            View={({ data: ciItemData }) => {
+                            View={({ data: ciData }) => {
+                                const ciItemData = ciData?.ciItemData
+                                const gestorData = ciData?.gestorData
                                 return (
                                     <AttributesContainer
                                         entityName={nodeDetail.type ?? ''}
                                         View={({ data: { ciTypeData, constraintsData, unitsData } }) => {
-                                            return <CiInformationAccordion data={{ ciItemData, constraintsData, ciTypeData, unitsData }} />
+                                            return (
+                                                <CiInformationAccordion data={{ ciItemData, gestorData, constraintsData, ciTypeData, unitsData }} />
+                                            )
                                         }}
                                     />
                                 )
