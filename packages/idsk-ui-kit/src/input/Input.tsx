@@ -1,11 +1,11 @@
+import classNames from 'classnames'
 import * as React from 'react'
 import { forwardRef } from 'react'
-import classNames from 'classnames'
 import { v4 as uuidV4 } from 'uuid'
 
-import { GreenCheckMarkIcon } from '../assets/images'
-import styles from '../styles/InfoAndCheckInput.module.scss'
-import { InfoInputIcon } from '../info-input-icon/InfoInputIcon'
+import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
+import styles from '@isdd/idsk-ui-kit/styles/InfoAndCheckInput.module.scss'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     id?: string
@@ -48,7 +48,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label}
                     </label>
-                    {info && <InfoInputIcon description={info} id={id ?? ''} />}
+                    {info && <Tooltip descriptionElement={info} />}
                 </div>
 
                 {hint && (

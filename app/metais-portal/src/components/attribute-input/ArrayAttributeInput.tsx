@@ -1,6 +1,7 @@
 import { Button, Input } from '@isdd/idsk-ui-kit/index'
 import { InfoInputIcon } from '@isdd/idsk-ui-kit/info-input-icon/InfoInputIcon'
 import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
 import { CloseIcon, PlusIcon } from '@isdd/metais-common/assets/images'
 import classNames from 'classnames'
@@ -94,7 +95,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
         <fieldset className={styles.fieldset}>
             <legend className="govuk-label">{name + requiredLabel}</legend>
             <div className={classNames('govuk-form-group', styles.formGroup)}>
-                <div className={styles.infoDiv}>{info && <InfoInputIcon description={info} id={id} />}</div>
+                <div className={styles.infoDiv}>{info && <Tooltip descriptionElement={info} />}</div>
                 <div className={styles.buttonDiv}>
                     <Button
                         disabled={attribute.readOnly}
@@ -106,7 +107,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                         }
                         onClick={() => setInputList((prev) => [...prev, ''])}
                     />
-                    {info && <InfoInputIcon description={info} id={id} />}
+                    {info && <Tooltip descriptionElement={info} />}
                 </div>
             </div>
 
