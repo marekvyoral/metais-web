@@ -14,6 +14,7 @@ export interface IListData {
     tableData: void | ConfigurationItemSetUi | undefined
     attributeProfiles?: AttributeProfile[]
     attributes?: Attribute[]
+    gestorsData?: RoleParticipantUI[]
 }
 
 export interface IListView {

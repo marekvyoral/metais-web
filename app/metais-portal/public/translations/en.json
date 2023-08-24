@@ -268,13 +268,21 @@
     },
     "ciInformationAccordion": {
         "info": "Information",
-        "basicInformation": "Basic information"
+        "basicInformation": "Basic information",
+        "owner": "Manager"
     },
     "ciType": {
         "informations": "Information",
         "documents": "Documents",
         "relationships": "Relationships",
-        "history": "History of changes"
+        "history": "History of changes",
+        "meta": {
+            "lastModifiedAt": "Last change",
+            "createdAt": "Created",
+            "owner": "Manager",
+            "state": "Evidence status",
+            "metaInformationsName": "Meta-informations"
+        }
     },
     "relationType": {
         "as": "Application service"
