@@ -8,7 +8,7 @@ import { DynamicFilterAttributeInput } from './DynamicFilterAttributeInput'
 
 import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
-import { Attribute, AttributeAttributeTypeEnum, EnumType } from '@isdd/metais-common/api'
+import { Attribute, AttributeProfile, EnumType } from '@isdd/metais-common/api'
 import { findAvailableOperators } from '@isdd/metais-common/componentHelpers/filter/findAvailableOperators'
 
 interface Props {
@@ -18,6 +18,8 @@ interface Props {
     remove: () => void
     availableAttributes?: (Attribute | undefined)[]
     selectedAttributes: FilterAttribute[]
+    attributeProfiles: AttributeProfile[] | undefined
+    attributes: Attribute[] | undefined
     attributeType: {
         isArray: boolean
         type: string
@@ -31,11 +33,12 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
     onChange,
     attribute,
     remove,
-    availableAttributes,
     attributeType,
     attributeConstraints,
     selectedAttributes,
     currentAttribute,
+    attributes,
+    attributeProfiles,
 }) => {
     const { t } = useTranslation()
 
@@ -47,20 +50,24 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
         currentAvailableOperators,
     )
 
-    const availableAttrs =
-        availableAttributes?.map((attr) => {
-            return {
-                value: `${attr?.technicalName}`,
-                label: `${attr?.name}`,
-                disabled:
-                    //create context for current names with operators
-                    //!!(selectedAttributes.find((item) => item.name === attr?.technicalName) && currentAttribute.name !== attr?.technicalName) ||
-                    attr?.attributeTypeEnum === AttributeAttributeTypeEnum.IMAGE ||
-                    //date type until bug with dates in dynamic inputs is not resolved
-                    attr?.attributeTypeEnum === AttributeAttributeTypeEnum.DATE ||
-                    attr?.attributeTypeEnum === AttributeAttributeTypeEnum.STRING_PAIR,
-            }
-        }) || []
+    const attributeProfilesColumnSections =
+        attributeProfiles?.map(
+            (attributeProfile) =>
+                attributeProfile.attributes
+                    ?.filter((attr) => attr.invisible === false)
+                    .map((attr) => ({
+                        label: attr.name ?? '',
+                        value: attr.technicalName ?? '',
+                    })) || [],
+        ) ?? []
+
+    const attributesColumnSection =
+        attributes
+            ?.filter((attr) => attr.invisible === false)
+            ?.map((attr) => ({
+                label: attr.name ?? '',
+                value: attr.technicalName ?? '',
+            })) ?? []
 
     const availableOperators = findAvailableOperators(attributeType, attributeConstraints, Object.values(OPERATOR_OPTIONS_URL)).map((option) => ({
         value: option,
@@ -77,7 +84,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 placeholder={t('customAttributeFilter.attribute.placeholder')}
                 name={`atributeName`}
                 value={attribute.name}
-                options={availableAttrs}
+                options={attributesColumnSection.concat(attributeProfilesColumnSections.flat())}
                 onChange={(val) => onChange({ ...attribute, name: val }, attribute, true)}
             />
             <SimpleSelect

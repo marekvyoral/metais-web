@@ -100,16 +100,23 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({
     const { t } = useTranslation()
     const [selectedColumns, setSelectedColumns] = useState<Attribute[]>(columnListData?.attributes || [])
     const [selectedMetaColumns, setSelectedMetaColumns] = useState<Attribute[]>(columnListData?.metaAttributes || [])
+    const saveSelection = () => {
+        showSelectedColumns?.({
+            attributes: selectedColumns.map((x) => ({ name: x.name || '', order: x.order || 1 })),
+            metaAttributes: selectedMetaColumns.map((x) => ({ name: x.name || '', order: x.order || 1 })),
+        })
+    }
 
     const updateSelectedValue = (key: string, checked: boolean) => {
         // if (checked && selectedColumns?.length >= MAX_SELECTED_COLUMNS) {
         //     return
         // }
         setSelectedColumns((prev) => {
+            const selectedPrev = prev.filter((column) => column.name !== key)
             if (checked) {
-                return [...prev.filter((column) => column.name !== key), { name: key, order: prev.length + 1 }]
+                return [...selectedPrev, { name: key, order: prev.length + 1 }]
             }
-            return prev.filter((column) => column.name !== key)
+            return selectedPrev
         })
     }
 
@@ -118,10 +125,11 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({
         //     return
         // }
         setSelectedMetaColumns((prev) => {
+            const selectedPrev = prev.filter((column) => column.name !== key)
             if (checked) {
-                return [...prev.filter((column) => column.name !== key), { name: key, order: prev.length + 1 }]
+                return [...selectedPrev, { name: key, order: prev.length + 1 }]
             }
-            return prev.filter((column) => column.name !== key)
+            return selectedPrev
         })
     }
 
@@ -137,13 +145,6 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value)
-    }
-
-    const saveSelection = () => {
-        showSelectedColumns?.({
-            attributes: selectedColumns.map((x) => ({ name: x.name || '', order: x.order || 1 })),
-            metaAttributes: selectedMetaColumns.map((x) => ({ name: x.name || '', order: x.order || 1 })),
-        })
     }
 
     const filterColumnsByNameSearch = (columns: IColumnType[]): IColumnType[] => {

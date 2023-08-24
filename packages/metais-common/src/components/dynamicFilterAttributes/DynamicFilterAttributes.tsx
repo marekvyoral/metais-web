@@ -33,21 +33,12 @@ interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     defaults: { [key: string]: any }
     setValue: UseFormSetValue<IFilterParams>
-    availableAttributes?: ColumnAttribute[]
     attributes: Attribute[] | undefined
     attributeProfiles: AttributeProfile[] | undefined
     constraintsData: (EnumType | undefined)[]
 }
 
-export const DynamicFilterAttributes: FC<Props> = ({
-    data = {},
-    setValue,
-    availableAttributes,
-    attributes,
-    attributeProfiles,
-    constraintsData,
-    defaults,
-}) => {
+export const DynamicFilterAttributes: FC<Props> = ({ data = {}, setValue, attributes, attributeProfiles, constraintsData, defaults }) => {
     const [dynamicAttributes, setDynamicAttributes] = useState<FilterAttribute[]>([])
 
     const { t } = useTranslation()
@@ -55,15 +46,11 @@ export const DynamicFilterAttributes: FC<Props> = ({
 
     const [addRowError, setAddRowError] = useState<string>('')
     const combinedAttributes = [...(attributes ?? []), ...(attributeProfiles?.map((profile) => profile.attributes?.map((att) => att)).flat() ?? [])]
-    const filteredAvailable = availableAttributes?.filter((att) => !Object.keys(defaults).find((key) => key === att.name))
-
-    const filteredAvailableWithTranslations = combinedAttributes?.reduce((acc: (Attribute | undefined)[], att) => {
-        if (filteredAvailable?.map((item) => item.name).find((item) => item === att?.technicalName)) {
-            return [...acc, att]
-        }
-        return acc
-    }, [])
-
+    const filteredAvailable = attributeProfiles?.map((profile) => {
+        const defaultKeys = Object.keys(defaults)
+        profile.attributes = profile.attributes?.filter((attr) => !defaultKeys.includes(attr.technicalName || ''))
+        return profile
+    })
     useEffect(() => {
         // this should happened only on mount is one time thing which restore params from url
         const filterAttributes: FilterAttribute[] = []
@@ -158,8 +145,9 @@ export const DynamicFilterAttributes: FC<Props> = ({
                 <DynamicFilterAttributeRow
                     key={`custom-attribute-${index}`}
                     index={index}
-                    availableAttributes={filteredAvailableWithTranslations}
                     selectedAttributes={dynamicAttributes}
+                    attributeProfiles={filteredAvailable}
+                    attributes={attributes}
                     remove={() => removeAttrRow(index, attribute)}
                     onChange={(attr, prevData, isNewName) => handleAttrChange(index, attr, prevData, isNewName)}
                     attribute={attribute}

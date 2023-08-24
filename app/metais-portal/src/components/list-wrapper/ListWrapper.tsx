@@ -92,7 +92,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                             setValue={setValue}
                             defaults={defaultFilterValues}
                             data={filter.attributeFilters}
-                            availableAttributes={columnListData?.attributes?.map((att) => ({ ...att, name: att.name ? att.name : '' }))}
                             attributes={attributes}
                             attributeProfiles={attributeProfiles}
                             constraintsData={constraintsData}

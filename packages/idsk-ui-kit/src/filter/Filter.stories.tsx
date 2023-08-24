@@ -116,7 +116,6 @@ export const Advanced: Story = {
                     }}
                     setValue={setValue}
                     data={filter.attributeFilters}
-                    availableAttributes={[{ name: 'Option1' }, { name: 'Option2' }]}
                     attributes={attributes}
                     attributeProfiles={attributeProfiles}
                     constraintsData={[]}
