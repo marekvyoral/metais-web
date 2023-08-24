@@ -8,6 +8,7 @@ import {
     ConfigurationItemUiAttributes,
     EnumType,
     FavoriteCiType,
+    RoleParticipantUI,
 } from '@isdd/metais-common/api'
 
 import { pairEnumsToEnumValues } from '@/componentHelpers'
@@ -85,4 +86,9 @@ export const reduceTableDataToObject = <T extends { uuid?: string }>(array: T[])
         }
         return result
     }, {})
+}
+
+export const getOwnerInformation = (ownerGid: string, ownerList: RoleParticipantUI[] | undefined) => {
+    const foundOwner = ownerList?.find((item) => item.gid === ownerGid)
+    return foundOwner
 }

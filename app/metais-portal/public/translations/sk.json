@@ -269,13 +269,21 @@
     },
     "ciInformationAccordion": {
         "info": "Informácie",
-        "basicInformation": "Základné informácie"
+        "basicInformation": "Základné informácie",
+        "owner": "Správca"
     },
     "ciType": {
         "informations": "Informácie",
         "documents": "Dokumenty",
         "relationships": "Vzťahy",
-        "history": "História zmien"
+        "history": "História zmien",
+        "meta": {
+            "lastModifiedAt": "Posledná zmena",
+            "createdAt": "Vytvorené",
+            "owner": "Správca",
+            "state": "Stav evidencie",
+            "metaInformationsName": "Metainformácie"
+        }
     },
     "relationType": {
         "as": "Aplikačná služba"

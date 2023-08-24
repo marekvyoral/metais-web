@@ -3,6 +3,8 @@ import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-ta
 import { CreateEntityButton, ExportButton, ImportButton } from '@isdd/metais-common/components/actions-over-table'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
+import { useTranslation } from 'react-i18next'
 
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { CiTable } from '@/components/ci-table/CiTable'
@@ -12,6 +14,7 @@ import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 
 const ProjektListPage = () => {
     const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
     const PO = 'PO'
@@ -33,7 +36,7 @@ const ProjektListPage = () => {
                             entityName={PO}
                             defaultFilterValues={defaultFilterValues}
                             ListComponent={({
-                                data: { columnListData, tableData },
+                                data: { columnListData, tableData, gestorsData },
                                 handleFilterChange,
                                 storeUserSelectedColumns,
                                 resetUserSelectedColumns,
@@ -52,6 +55,7 @@ const ProjektListPage = () => {
                                         constraintsData={constraintsData}
                                     />
                                     <ActionsOverTable
+                                        metaAttributesColumnSection={getCiDefaultMetaAttributes(t)}
                                         handleFilterChange={handleFilterChange}
                                         storeUserSelectedColumns={storeUserSelectedColumns}
                                         resetUserSelectedColumns={resetUserSelectedColumns}
@@ -67,7 +71,7 @@ const ProjektListPage = () => {
                                         importButton={<ImportButton ciType={PO} />}
                                     />
                                     <CiTable
-                                        data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData }}
+                                        data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData, gestorsData }}
                                         handleFilterChange={handleFilterChange}
                                         pagination={pagination}
                                         sort={sort}

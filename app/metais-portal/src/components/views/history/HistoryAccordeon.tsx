@@ -28,7 +28,7 @@ export const HistoryAccordion: React.FC<RelationshipsAccordion> = ({ entityId })
                                 return (
                                     <ConfigurationItemHistoryDetailContainer
                                         configurationItemId={entityId}
-                                        data={ciData?.data}
+                                        data={ciData?.data?.ciItemData}
                                         isLoading={ciData.isLoading}
                                         isError={ciData.isError}
                                     />
