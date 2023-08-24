@@ -28,6 +28,15 @@ i18nInstance
         returnNull: false,
     })
 
+i18nInstance.services.formatter?.add('DATE_SHORT', (value, lng) => {
+    try {
+        if (!lng) return value
+        return DateTime.fromJSDate(new Date(value)).setLocale(lng).toLocaleString(DateTime.DATE_SHORT)
+    } catch {
+        return value
+    }
+})
+
 i18nInstance.services.formatter?.add('DATETIME_SHORT_WITH_SECONDS', (value, lng) => {
     try {
         if (!lng) return value
