@@ -23,7 +23,7 @@ interface Props {
     constraintsData: (EnumType | undefined)[]
 }
 
-export const FilterPO = ({ entityName: PO, availableAttributes, defaultFilterValues, attributes, attributeProfiles, constraintsData }: Props) => {
+export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attributeProfiles, constraintsData }: Props) => {
     const { t } = useTranslation()
     const { data: personCategories } = useGetEnum(GET_ENUM.KATEGORIA_OSOBA)
     const optionsPersonCategories = personCategories?.enumItems?.map((enumItem) => ({
@@ -97,7 +97,6 @@ export const FilterPO = ({ entityName: PO, availableAttributes, defaultFilterVal
                         constraintsData={constraintsData}
                         setValue={setValue}
                         data={filter.attributeFilters}
-                        availableAttributes={availableAttributes}
                     />
                 </div>
             )}
