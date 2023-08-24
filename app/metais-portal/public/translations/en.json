@@ -276,6 +276,15 @@
         "documents": "Documents",
         "relationships": "Relationships",
         "history": "History of changes",
+        "editEntity": "Edit entity",
+        "chosenObject": "Chosen object(type)",
+        "editButton": "Modify",
+        "moreButton": "More actions",
+        "invalidateItem": "Invalidate",
+        "revalidateItem": "Revalidate",
+        "changeOfOwner": "Change owner",
+        "besManagement": "BES management",
+        "createEntity": "Create new entity",
         "meta": {
             "lastModifiedAt": "Last change",
             "createdAt": "Created",
@@ -518,6 +527,12 @@
     "selectRole": {
         "error": "Error while fetching data about roles.",
         "loading": "Loading role data"
+    },
+    "breadcrumbs": {
+        "home": "Home",
+        "ciEdit": "Edit of {{itemName}}",
+        "noName": "No name",
+        "ciCreate": "Create configuration item"
     },
     "codeList": {
         "title": "Codelists",

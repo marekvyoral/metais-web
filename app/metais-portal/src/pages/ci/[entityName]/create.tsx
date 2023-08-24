@@ -2,8 +2,8 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
-import { CreateEntity } from '@/components/create-entity/CreateEntity'
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
+import { CreateCiEntityView } from '@/components/views/ci/create/CreateCiEntityView'
 
 const CreateEntityPage: React.FC = () => {
     const { entityName } = useParams()
@@ -15,7 +15,7 @@ const CreateEntityPage: React.FC = () => {
                 <CiCreateEntityContainer
                     entityName={entityName ?? ''}
                     View={({ data: generatedEntityId }) => (
-                        <CreateEntity data={{ attributesData, generatedEntityId }} entityName={entityName ?? ''} />
+                        <CreateCiEntityView data={{ attributesData, generatedEntityId }} entityName={entityName ?? ''} />
                     )}
                 />
             )}

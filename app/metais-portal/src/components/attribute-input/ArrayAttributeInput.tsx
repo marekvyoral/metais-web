@@ -1,14 +1,16 @@
 import { Button, Input } from '@isdd/idsk-ui-kit/index'
+import { InfoInputIcon } from '@isdd/idsk-ui-kit/info-input-icon/InfoInputIcon'
 import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
 import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
 import { CloseIcon, PlusIcon } from '@isdd/metais-common/assets/images'
+import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { FieldError, FieldErrorsImpl, FieldValues, Merge, UseFormRegister, UseFormSetValue, UseFormTrigger } from 'react-hook-form'
-import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { InfoInputIcon } from '@isdd/idsk-ui-kit/info-input-icon/InfoInputIcon'
 
 import styles from './attributeInput.module.scss'
+
+import { HasResetState } from '@/components/create-entity/CreateCiEntityForm'
 
 interface IArrayAttributeInput {
     attribute: Attribute
@@ -34,6 +36,8 @@ interface IArrayAttributeInput {
             | null
             | undefined
     }>
+    defaultValue: string[]
+    hasResetState: HasResetState
 }
 
 export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
@@ -45,14 +49,23 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
     error,
     requiredLabel,
     trigger,
+    defaultValue,
+    hasResetState,
 }) => {
     const { t } = useTranslation()
-    const [inputList, setInputList] = useState<string[]>([])
+    const [inputList, setInputList] = useState<string[]>(defaultValue)
 
     const info = attribute.description
     const id = attribute.technicalName ?? ''
     const name = attribute.name
     const isInteger = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.INTEGER
+
+    useEffect(() => {
+        if (hasResetState.hasReset) {
+            setInputList(defaultValue)
+            hasResetState.setHasReset(false)
+        }
+    }, [defaultValue, hasResetState.hasReset, hasResetState])
 
     useEffect(() => {
         setValue(id, inputList)
@@ -97,7 +110,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                 </div>
             </div>
 
-            {inputList.map((_, index) => (
+            {inputList.map((value, index) => (
                 <React.Fragment key={index}>
                     {isTextarea && (
                         <div className={styles.inputWithCloseIconDivTextarea}>
@@ -110,6 +123,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                                 label={name + ' (' + (index + 1) + ') ' + requiredLabel}
                                 error={getArrayInputError(index)}
                                 onChange={(e) => handleInputChange(e, index)}
+                                defaultValue={value}
                             />
                         </div>
                     )}
@@ -124,6 +138,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                                 id={`${id}${index}`}
                                 type={isInteger ? 'number' : 'text'}
                                 onChange={(e) => handleInputChange(e, index)}
+                                defaultValue={value}
                             />
                         </div>
                     )}

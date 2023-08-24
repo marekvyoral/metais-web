@@ -1,4 +1,4 @@
-import { CiCode, CiType, EnumType, HierarchyRightsUi, useStoreConfigurationItem } from '@isdd/metais-common/api'
+import { CiCode, CiType, ConfigurationItemUiAttributes, EnumType, HierarchyRightsUi, useStoreConfigurationItem } from '@isdd/metais-common/api'
 import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { v4 as uuidV4 } from 'uuid'
@@ -24,9 +24,11 @@ export interface CreateEntityData {
 interface ICreateEntity {
     entityName: string
     data: CreateEntityData
+    updateCiItemId?: string
+    defaultItemAttributeValues?: ConfigurationItemUiAttributes | undefined
 }
 
-export const CreateEntity: React.FC<ICreateEntity> = ({ data, entityName }) => {
+export const CreateEntity: React.FC<ICreateEntity> = ({ data, entityName, updateCiItemId, defaultItemAttributeValues }) => {
     const { t } = useTranslation()
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
@@ -57,6 +59,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({ data, entityName }) => {
         isLoading: isRedirectLoading,
         isError: isRedirectError,
         isFetched: isRedirectFetched,
+        isProcessedError,
     } = useRedirectAfterSuccess(requestId, configurationItemId, entityName)
     useEffect(() => {
         if (requestId !== null) {
@@ -75,41 +78,51 @@ export const CreateEntity: React.FC<ICreateEntity> = ({ data, entityName }) => {
         }))
         const type = entityName
         const ownerId = selectedRoleId
-        const uuid = uuidV4()
+        const uuid = updateCiItemId ? updateCiItemId : uuidV4()
         setConfigurationItemId(uuid)
 
+        const dataToUpdate = {
+            uuid: uuid,
+            type: type,
+            attributes: formatedAttributesToSend,
+        }
+
+        const dataToCreate = {
+            ...dataToUpdate,
+            owner: ownerId,
+        }
+
         storeConfigurationItem.mutate({
-            data: {
-                uuid: uuid,
-                owner: ownerId,
-                type: type,
-                attributes: formatedAttributesToSend,
-            },
+            data: updateCiItemId ? dataToUpdate : dataToCreate,
         })
     }
 
     return (
         <>
-            {(storeConfigurationItem.isError || storeConfigurationItem.isSuccess) && (
+            {!(isRedirectError || isProcessedError) && (storeConfigurationItem.isError || storeConfigurationItem.isSuccess) && (
                 <MutationFeedback
                     success={storeConfigurationItem.isSuccess}
                     error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''}
                 />
             )}
-            {isRedirectFetched && (isRedirectLoading || isRedirectError) && (
+            {isRedirectFetched && (isRedirectLoading || isRedirectError || isProcessedError) && (
                 <QueryFeedback
                     loading={isRedirectLoading}
-                    error={isRedirectError}
+                    error={isRedirectError || isProcessedError}
                     indicatorProps={{ fullscreen: true, layer: 'parent', label: t('createEntity.redirectLoading') }}
                     errorProps={{ errorMessage: t('createEntity.redirectError') }}
                 />
             )}
-            <SelectPublicAuthorityAndRole
-                selectedRoleId={selectedRoleId}
-                onChangeAuthority={setSelectedOrg}
-                onChangeRole={setSelectedRoleId}
-                selectedOrg={selectedOrg}
-            />
+
+            {!updateCiItemId && (
+                <SelectPublicAuthorityAndRole
+                    selectedRoleId={selectedRoleId}
+                    onChangeAuthority={setSelectedOrg}
+                    onChangeRole={setSelectedRoleId}
+                    selectedOrg={selectedOrg}
+                />
+            )}
+
             <CreateCiEntityForm
                 ciTypeData={ciTypeData}
                 generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
@@ -117,6 +130,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({ data, entityName }) => {
                 unitsData={unitsData}
                 uploadError={uploadError}
                 onSubmit={onSubmit}
+                defaultItemAttributeValues={defaultItemAttributeValues}
             />
         </>
     )

@@ -1,0 +1,8 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.subHeading {
+    display: flex;
+    gap: govuk-spacing(8);
+    align-items: start;
+    justify-content: start;
+}

@@ -277,6 +277,15 @@
         "documents": "Dokumenty",
         "relationships": "Vzťahy",
         "history": "História zmien",
+        "editEntity": "Editácia entity",
+        "chosenObject": "Vybraný objekt(typ)",
+        "editButton": "Upraviť",
+        "moreButton": "Viac akcií",
+        "invalidateItem": "Invalidovať",
+        "revalidateItem": "Revalidovať",
+        "changeOfOwner": "Zmena vlastníka",
+        "besManagement": "BES management",
+        "createEntity": "Vytvorenie novej entity",
         "meta": {
             "lastModifiedAt": "Posledná zmena",
             "createdAt": "Vytvorené",
@@ -520,6 +529,12 @@
     "selectRole": {
         "error": "Chyba pri načítavaní údajov pre role.",
         "loading": "Načítavajú sa údaje pre role."
+    },
+    "breadcrumbs": {
+        "home": "Domov",
+        "ciEdit": "Editácia {{itemName}}",
+        "noName": "Bez mena",
+        "ciCreate": "Vytvorenie novej entity"
     },
     "codeList": {
         "title": "Číselníky",
