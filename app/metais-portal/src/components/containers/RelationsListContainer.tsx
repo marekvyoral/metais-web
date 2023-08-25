@@ -1,7 +1,7 @@
-import React, { SetStateAction, useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
 import { IKeyToDisplay, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelations'
+import React, { SetStateAction, useState } from 'react'
 
 import { mapFilterToNeighboursWithAllRelsApi } from '@/componentHelpers'
 
@@ -32,6 +32,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
         keysToDisplay,
         data: entityTypes,
     } = useEntityRelationsTypesCount(entityId, technicalName)
+    
     const defaultPageConfig: ReadCiNeighboursWithAllRelsParams = {
         ciTypes: [keysToDisplay?.[0]?.technicalName],
         page: 1,
