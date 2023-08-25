@@ -16,3 +16,5 @@ export const DEFAULT_PAGESIZE_OPTIONS = [
 ]
 export const ALL_EVENT_TYPES = 'All'
 export const NOTIFICATION_TITLE = 'messagePerex'
+
+export const ROLES_GROUP = 'SKUPINA_ROL'

@@ -13,6 +13,7 @@ export enum RouteNames {
     DOCUMENTS_LIST_TAB = '/ci/:entityName/:entityId/documents',
     RELATIONSHIPS_LIST_TAB = '/ci/:entityName/:entityId/relationships',
     TASKS = '/ulohy',
+    CODELISTS = '/codelists',
 }
 
 export enum AdminRouteNames {
@@ -26,6 +27,10 @@ export enum AdminRouteNames {
     EGOV_ENTITY = '/egov/entity',
     EGOV_PROFILE = '/egov/profile',
     EGOV_RELATION = '/egov/relation',
+    ROLE_USERS = '/egov/roles/users',
+    ROLE_EDIT = '/egov/roles/edit',
+    ROLE_NEW = '/egov/roles/create',
+    ROLES = '/egov/roles',
     ORGANIZATIONS = '/organizations',
     CODELISTS = '/codelists-management',
 }

@@ -1,18 +1,23 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { ErrorBlock } from '@isdd/idsk-ui-kit/error-block/ErrorBlock'
-import React, { useEffect, useState } from 'react'
+import { CiCode, CiType, ConfigurationItemUiAttributes, EnumType } from '@isdd/metais-common/api'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { FieldValues, FormProvider, useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { CiCode, CiType, EnumType } from '@isdd/metais-common/api'
 
-import { AttributesConfigTechNames } from '../attribute-input/attributeDisplaySettings'
-
-import styles from './createEntity.module.scss'
 import { CreateEntitySection } from './CreateEntitySection'
 import { generateFormSchema } from './createCiEntityFormSchema'
+import styles from './createEntity.module.scss'
+
+import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
+
+export interface HasResetState {
+    hasReset: boolean
+    setHasReset: Dispatch<SetStateAction<boolean>>
+}
 
 interface ICreateCiEntityForm {
     generatedEntityId: CiCode
@@ -21,6 +26,7 @@ interface ICreateCiEntityForm {
     uploadError: boolean
     onSubmit: (formData: FieldValues) => void
     unitsData: EnumType | undefined
+    defaultItemAttributeValues?: ConfigurationItemUiAttributes | undefined
 }
 
 export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
@@ -30,8 +36,10 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     generatedEntityId,
     uploadError,
     onSubmit,
+    defaultItemAttributeValues,
 }) => {
     const { t } = useTranslation()
+    const [hasReset, setHasReset] = useState(false)
     const genProfilTechName = 'Gen_Profil'
     const metaisEmail = 'metais@mirri.gov.sk'
 
@@ -78,6 +86,8 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                         constraintsData={constraintsData}
                         unitsData={unitsData}
                         generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
+                        defaultItemAttributeValues={defaultItemAttributeValues}
+                        hasResetState={{ hasReset, setHasReset }}
                     />
                 ),
             },
@@ -93,6 +103,8 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                         constraintsData={constraintsData}
                         generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
                         unitsData={unitsData}
+                        defaultItemAttributeValues={defaultItemAttributeValues}
+                        hasResetState={{ hasReset, setHasReset }}
                     />
                 ),
             })),
@@ -116,7 +128,16 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                     />
                 )}
 
-                <Button className={styles.buttonWithMargin} label={t('button.cancel')} type="reset" variant="secondary" onClick={() => reset()} />
+                <Button
+                    className={styles.buttonWithMargin}
+                    label={t('button.cancel')}
+                    type="reset"
+                    variant="secondary"
+                    onClick={() => {
+                        reset()
+                        setHasReset(true)
+                    }}
+                />
                 <Button label={t('button.saveChanges')} type="submit" />
             </form>
         </FormProvider>

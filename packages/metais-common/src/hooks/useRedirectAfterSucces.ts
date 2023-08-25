@@ -1,11 +1,18 @@
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useGetRequestStatus } from '@isdd/metais-common/api'
+
+enum RequestIdStatus {
+    PROCESSED = 'PROCESSED',
+    FAILED = 'FAILED',
+}
 
 export const useRedirectAfterSuccess = (requestId: string, configurationItemId: string, ciType: string) => {
     const navigate = useNavigate()
     const requestStatusQuery = useGetRequestStatus(requestId, { query: { enabled: !!requestId } })
+
+    const [isProcessedError, setIsProcessedError] = useState(false)
 
     const { isError, refetch, data, isFetched } = requestStatusQuery
 
@@ -23,15 +30,25 @@ export const useRedirectAfterSuccess = (requestId: string, configurationItemId: 
                 clearInterval(intervalId)
             }
         }
-    }, [data?.processed, refetch, requestId])
+    }, [data?.processed, data?.status, refetch, requestId])
 
     const performRedirection = () => {
         if (data?.processed) {
-            navigate(`/detail/${ciType}/${configurationItemId}`)
+            setIsProcessedError(false)
+            switch (true) {
+                case data.status === RequestIdStatus.PROCESSED: {
+                    navigate(`/ci/${ciType}/${configurationItemId}`)
+                    return
+                }
+                case data.status === RequestIdStatus.FAILED: {
+                    setIsProcessedError(true)
+                    return
+                }
+            }
         }
     }
 
     const isLoading = !isError && !data?.processed
 
-    return { isLoading, isError, performRedirection, isFetched }
+    return { isLoading, isError, performRedirection, isFetched, isProcessedError }
 }

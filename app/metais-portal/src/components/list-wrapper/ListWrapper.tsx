@@ -4,7 +4,7 @@ import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicF
 import React, { useState } from 'react'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { useTranslation } from 'react-i18next'
-import { Attribute, AttributeProfile, CiType, ConfigurationItemSetUi, EnumType } from '@isdd/metais-common/api'
+import { Attribute, AttributeProfile, CiType, ConfigurationItemSetUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { ImportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ImportButton'
 import { ExportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ExportButton'
@@ -13,6 +13,7 @@ import { BulkPopup, CreateEntityButton } from '@isdd/metais-common/components/ac
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { CrossInACircleIcon, CheckInACircleIcon, ChangeIcon } from '@isdd/metais-common/assets/images'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 
 import { CiTable } from '@/components/ci-table/CiTable'
 import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
@@ -44,6 +45,7 @@ interface IListWrapper {
     sort: ColumnSort[]
     isLoading: boolean
     isError: boolean
+    gestorsData: RoleParticipantUI[] | undefined
 }
 
 export const ListWrapper: React.FC<IListWrapper> = ({
@@ -61,6 +63,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     unitsData,
     pagination,
     sort,
+    gestorsData,
     isLoading,
     isError,
 }) => {
@@ -92,7 +95,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                             setValue={setValue}
                             defaults={defaultFilterValues}
                             data={filter.attributeFilters}
-                            availableAttributes={columnListData?.attributes?.map((att) => ({ ...att, name: att.name ? att.name : '' }))}
                             attributes={attributes}
                             attributeProfiles={attributeProfiles}
                             constraintsData={constraintsData}
@@ -101,6 +103,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 )}
             />
             <ActionsOverTable
+                metaAttributesColumnSection={getCiDefaultMetaAttributes(t)}
                 handleFilterChange={handleFilterChange}
                 storeUserSelectedColumns={storeUserSelectedColumns}
                 resetUserSelectedColumns={resetUserSelectedColumns}
@@ -125,7 +128,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 }
             />
             <CiTable
-                data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData }}
+                data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData, gestorsData }}
                 handleFilterChange={handleFilterChange}
                 pagination={pagination}
                 sort={sort}

@@ -62,6 +62,12 @@ const pages = {
         },
         indexComponent: undefined,
     },
+    '../pages/roles/index.tsx': {
+        Component: () => {
+            return <></>
+        },
+        indexComponent: undefined,
+    },
     '../pages/project/[id].tsx': {
         Component: () => {
             return <></>
@@ -92,6 +98,7 @@ test('reduce all file paths by number of slashes', () => {
     const paths = [
         '../pages/DevTestScreen.tsx',
         '../pages/Home.tsx',
+        '../pages/roles/index.tsx',
         '../pages/project/[id].tsx',
         '../pages/project/project-dashboard/[projektId].tsx',
         '../pages/project/project-dashboard/index.tsx',

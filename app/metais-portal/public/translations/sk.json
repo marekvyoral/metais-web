@@ -1,4 +1,10 @@
 {
+    "graph": {
+        "zoomIn": "Priblížiť",
+        "zoomOut": "Oddialiť",
+        "exportPNG": "Ako PNG",
+        "exportPDF": "Ako PDF"
+    },
     "footer": {
         "services": {
             "title": "Služby a informácie",
@@ -263,13 +269,30 @@
     },
     "ciInformationAccordion": {
         "info": "Informácie",
-        "basicInformation": "Základné informácie"
+        "basicInformation": "Základné informácie",
+        "owner": "Správca"
     },
     "ciType": {
         "informations": "Informácie",
         "documents": "Dokumenty",
         "relationships": "Vzťahy",
-        "history": "História zmien"
+        "history": "História zmien",
+        "editEntity": "Editácia entity",
+        "chosenObject": "Vybraný objekt(typ)",
+        "editButton": "Upraviť",
+        "moreButton": "Viac akcií",
+        "invalidateItem": "Invalidovať",
+        "revalidateItem": "Revalidovať",
+        "changeOfOwner": "Zmena vlastníka",
+        "besManagement": "BES management",
+        "createEntity": "Vytvorenie novej entity",
+        "meta": {
+            "lastModifiedAt": "Posledná zmena",
+            "createdAt": "Vytvorené",
+            "owner": "Správca",
+            "state": "Stav evidencie",
+            "metaInformationsName": "Metainformácie"
+        }
     },
     "relationType": {
         "as": "Aplikačná služba"
@@ -497,6 +520,7 @@
         "closeAll": "Zatvoriť všetko"
     },
     "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
+    "date": "{{date, DATE_SHORT}}",
     "currency": "{{val, currency}}",
     "selectPublicAuthority": {
         "error": "Chyba pri načítavaní údajov pre orgány verejnej moci.",
@@ -505,5 +529,37 @@
     "selectRole": {
         "error": "Chyba pri načítavaní údajov pre role.",
         "loading": "Načítavajú sa údaje pre role."
+    },
+    "breadcrumbs": {
+        "home": "Domov",
+        "ciEdit": "Editácia {{itemName}}",
+        "noName": "Bez mena",
+        "ciCreate": "Vytvorenie novej entity"
+    },
+    "codeList": {
+        "title": "Číselníky",
+        "publicCodelistSubtitle": "Zoznam publikovaných číselníkov",
+        "filter": {
+            "title": "Filter",
+            "mainGestor": "Main authority",
+            "toDate": "Valid as of",
+            "onlyBase": "Show only base counters"
+        },
+        "breadcrumbs": {
+            "home": "Domov",
+            "dataObjects": "Dátové objekty",
+            "codeLists": "Číselníky",
+            "publicCodeLists": "Zoznam publikovaných číselníkov"
+        },
+        "table": {
+            "code": "Kód",
+            "name": "Názov číselníka",
+            "mainGestor": "Gestor číselníka",
+            "effectiveFrom": "Začiatok účinnosti",
+            "isBase": "Základný číselník"
+        },
+        "error": {
+            "selectFilterMainGestor": ""
+        }
     }
 }

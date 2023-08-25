@@ -27,5 +27,28 @@
         "unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie.",
         "resetOrder": "Resetovať poradie",
         "pagination": "Tabuľková navigácia"
+    },
+    "adminRolesPage": {
+        "addNewRole": "Pridať novú rolu",
+        "name": "Názov",
+        "description": "Popis",
+        "group": "Skupina",
+        "systemRole": "sSystémová rola",
+        "assignedUsers": "Priradení používatelia ",
+        "edit": "Upraviť",
+        "deactivate": "Zneplatniť",
+        "all": "Všetky",
+        "rolesList": "Zoznam rolí",
+        "newRole": "Pridanie roly",
+        "none": "Žiadna",
+        "areYouSure": "Ste si istý/á?",
+        "deleteRoleText": "Chcete odstrániť rolu?",
+        "fullName": "Meno",
+        "login": "Login",
+        "email": "Email",
+        "obligedPerson": "Povinná osoba"
+    },
+    "createEntity": {
+        "required": "Povinné"
     }
 }

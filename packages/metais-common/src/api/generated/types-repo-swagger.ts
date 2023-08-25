@@ -54,6 +54,7 @@ export interface RelatedCiTypePreview {
     ciTypeUsageType?: RelatedCiTypePreviewCiTypeUsageType
     ciTypeValid?: boolean
     ciRoleList?: string[]
+    ciColor?: string
     ciCategory?: string
     relationshipTypeTechnicalName?: string
     relationshipTypeName?: string
@@ -1148,7 +1149,11 @@ export const useStoreAttributeTextation1 = <TError = unknown, TContext = unknown
 }) => {
     const mutationOptions = useStoreAttributeTextation1MutationOptions(options)
 
-    return useMutation(mutationOptions)
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
 }
 
 export const useDeleteAttributeTextation1Hook = () => {

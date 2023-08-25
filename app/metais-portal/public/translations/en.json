@@ -1,4 +1,10 @@
 {
+    "graph": {
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out",
+        "exportPNG": "As PNG",
+        "exportPDF": "As PDF"
+    },
     "footer": {
         "services": {
             "title": "Services and Information",
@@ -262,13 +268,30 @@
     },
     "ciInformationAccordion": {
         "info": "Information",
-        "basicInformation": "Basic information"
+        "basicInformation": "Basic information",
+        "owner": "Manager"
     },
     "ciType": {
         "informations": "Information",
         "documents": "Documents",
         "relationships": "Relationships",
-        "history": "History of changes"
+        "history": "History of changes",
+        "editEntity": "Edit entity",
+        "chosenObject": "Chosen object(type)",
+        "editButton": "Modify",
+        "moreButton": "More actions",
+        "invalidateItem": "Invalidate",
+        "revalidateItem": "Revalidate",
+        "changeOfOwner": "Change owner",
+        "besManagement": "BES management",
+        "createEntity": "Create new entity",
+        "meta": {
+            "lastModifiedAt": "Last change",
+            "createdAt": "Created",
+            "owner": "Manager",
+            "state": "Evidence status",
+            "metaInformationsName": "Meta-informations"
+        }
     },
     "relationType": {
         "as": "Application service"
@@ -495,6 +518,7 @@
         "closeAll": "Close all"
     },
     "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
+    "date": "{{date, DATE_SHORT}}",
     "currency": "{{val, currency}}",
     "selectPublicAuthority": {
         "error": "Error while fetching data for public authorities.",
@@ -503,5 +527,34 @@
     "selectRole": {
         "error": "Error while fetching data about roles.",
         "loading": "Loading role data"
+    },
+    "breadcrumbs": {
+        "home": "Home",
+        "ciEdit": "Edit of {{itemName}}",
+        "noName": "No name",
+        "ciCreate": "Create configuration item"
+    },
+    "codeList": {
+        "title": "Codelists",
+        "publicCodelistSubtitle": "List of published codelists",
+        "filter": {
+            "title": "Filter",
+            "mainAuthority": "Hlavný gestor",
+            "toDate": "Platné ku dňu",
+            "onlyBase": "Zobraziť len základné číselníky"
+        },
+        "breadcrumbs": {
+            "home": "Domov",
+            "dataObjects": "Dátové objekty",
+            "codeLists": "Codelists",
+            "publicCodeLists": "List of published codelists"
+        },
+        "table": {
+            "code": "Code",
+            "name": "Counter name",
+            "mainGestor": "Main authority",
+            "effectiveFrom": "Valid as of",
+            "isBase": "Base counter"
+        }
     }
 }

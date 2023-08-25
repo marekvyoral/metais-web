@@ -20,6 +20,10 @@ import { useTranslation } from 'react-i18next'
 import { ArrayAttributeInput } from './ArrayAttributeInput'
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
 import styles from './attributeInput.module.scss'
+import { getDefaultArrayValue, getDefaultValue } from './attributeInputHelpers'
+
+import { formatDateForDefaultValue } from '@/componentHelpers/attributeInput/formatDateForDefaultValue'
+import { HasResetState } from '@/components/create-entity/CreateCiEntityForm'
 
 enum ConstraintTypes {
     REGEX = 'regex',
@@ -60,6 +64,8 @@ interface IAttributeInput {
             | null
             | undefined
     }>
+    defaultValueFromCiItem?: string | boolean | string[] | number
+    hasResetState: HasResetState
 }
 
 export const AttributeInput: React.FC<IAttributeInput> = ({
@@ -72,6 +78,8 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     hint,
     isSubmitted,
     unitsData,
+    defaultValueFromCiItem,
+    hasResetState,
     clearErrors,
 }) => {
     const { t } = useTranslation()
@@ -112,10 +120,22 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                 label: `${item.value} - ${item.description}` ?? '',
                 disabled: !item.valid,
             })) ?? []
-
-        return [{ label: t('createEntity.select'), value: '' }, ...options]
+        return options
     }
 
+    const createDefaultValuesForMulti = (constraintItem: EnumType, values: string[]) => {
+        const options = values.map((value) => {
+            const foundItem = constraintItem.enumItems?.find((item) => item.code == value)
+            return foundItem?.code ?? ''
+        })
+        return options
+    }
+
+    const getDefaultValueForSimple = (constraintItem: EnumType, value: string) => {
+        const defaultValue = constraintItem.enumItems?.find((item) => item.code === value)?.code
+
+        return defaultValue
+    }
     const renderContent = () => {
         if (attribute.technicalName == null) return <></>
         switch (true) {
@@ -131,10 +151,14 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         requiredLabel={requiredLabel}
                         setValue={setValue}
                         trigger={trigger}
+                        defaultValue={getDefaultArrayValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
+                        hasResetState={hasResetState}
                     />
                 )
             }
             case isDate: {
+                const formattedDate = formatDateForDefaultValue(getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem))
+
                 return (
                     <Input
                         correct={isCorrect}
@@ -145,7 +169,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         label={attribute.name + requiredLabel}
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName)}
-                        defaultValue={attribute.defaultValue}
+                        defaultValue={formattedDate}
                         hint={hint}
                         hasInputIcon
                     />
@@ -163,8 +187,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         label={attribute.name + requiredLabel}
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName)}
-                        defaultValue={attribute.defaultValue}
-                        hint={hint}
+                        hint={defaultValueFromCiItem?.toString()}
                     />
                 )
             }
@@ -178,6 +201,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         disabled={attribute.readOnly}
                         {...register(attribute.technicalName)}
                         value="true"
+                        defaultChecked={!!defaultValueFromCiItem}
                         containerClassName={styles.withInfoCheckbox}
                     />
                 )
@@ -194,6 +218,11 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 options={createOptions(constraints)}
                                 setValue={setValue}
                                 clearErrors={clearErrors}
+                                placeholder={t('createEntity.select')}
+                                defaultValue={createDefaultValuesForMulti(
+                                    constraints,
+                                    getDefaultArrayValue(attribute.defaultValue ?? '', defaultValueFromCiItem),
+                                )}
                             />
                         )
                     } else {
@@ -206,10 +235,14 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 correct={isCorrect}
                                 options={createOptions(constraints)}
                                 disabled={attribute.readOnly}
-                                defaultValue={constraints.enumItems?.find((item) => item.code === attribute.defaultValue)?.description}
+                                defaultValue={getDefaultValueForSimple(
+                                    constraints,
+                                    getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem),
+                                )}
                                 name={attribute.technicalName}
                                 setValue={setValue}
                                 clearErrors={clearErrors}
+                                placeholder={t('createEntity.select')}
                             />
                         )
                     }
@@ -228,7 +261,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName)}
                         type="number"
-                        defaultValue={attribute.defaultValue}
+                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
                         hint={hint}
                         step={isDouble || isFloat ? 'any' : 1}
                     />
@@ -246,7 +279,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         label={attribute.name + requiredLabel}
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName)}
-                        defaultValue={attribute.defaultValue}
+                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
                         hint={hint}
                     />
                 )
@@ -264,7 +297,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName)}
                         type="text"
-                        defaultValue={attribute.defaultValue}
+                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
                         hint={hint}
                     />
                 )
@@ -283,7 +316,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName)}
                         type="text"
-                        defaultValue={attribute.defaultValue}
+                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
                         hint={hint}
                     />
                 )
