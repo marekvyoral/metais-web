@@ -1,3 +1,4 @@
+import jwt from 'jwt-decode'
 import React, { Reducer, createContext, useContext, useEffect, useReducer } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -58,9 +59,11 @@ interface EmptyAction {
 
 type Action = SetTokenAction | SetUserAction | EmptyAction
 
+const ACCESS_TOKEN = 'token'
+
 const initialState: AuthContextState = {
     user: null,
-    accessToken: localStorage.getItem('token') || null,
+    accessToken: localStorage.getItem(ACCESS_TOKEN) || null,
 }
 
 const reducer = (state: AuthContextState, action: Action) => {
@@ -74,10 +77,10 @@ const reducer = (state: AuthContextState, action: Action) => {
                 },
             }
         case AuthActions.SET_TOKEN:
-            localStorage.setItem('token', action.value)
+            localStorage.setItem(ACCESS_TOKEN, action.value)
             return { ...state, accessToken: action.value }
         case AuthActions.LOGOUT:
-            localStorage.removeItem('token')
+            localStorage.removeItem(ACCESS_TOKEN)
             return {
                 user: null,
                 accessToken: null,
@@ -87,18 +90,39 @@ const reducer = (state: AuthContextState, action: Action) => {
     }
 }
 
+const isTokenExpired = (accessToken: string | null) => {
+    if (!accessToken) {
+        return true
+    }
+    try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const decodedJwt: Record<string, any> = jwt(accessToken)
+        if (decodedJwt.exp * 1000 < new Date().getTime()) {
+            localStorage.removeItem(ACCESS_TOKEN)
+            return true
+        }
+        return false
+    } catch {
+        //invalid access token
+        localStorage.removeItem(ACCESS_TOKEN)
+        return true
+    }
+}
+
 const AuthContext = createContext<{ state: AuthContextState; dispatch: React.Dispatch<Action> }>({ state: initialState, dispatch: () => null })
 
 const AuthContextProvider: React.FC<React.PropsWithChildren> = (props) => {
     const locationCurrent = useLocation()
 
-    const [state, dispatch] = useReducer<Reducer<AuthContextState, Action>>(reducer, initialState)
+    const authInitialState = { ...initialState, accessToken: isTokenExpired(initialState.accessToken) ? null : initialState.accessToken }
+    const [state, dispatch] = useReducer<Reducer<AuthContextState, Action>>(reducer, authInitialState)
     const { hash } = useLocation()
     const navigate = useNavigate()
     const searchParams = new URLSearchParams(hash)
     const accessToken = searchParams.get('#access_token')
+
     useEffect(() => {
-        if (accessToken && !state.accessToken) {
+        if (accessToken && isTokenExpired(state.accessToken)) {
             dispatch({ type: AuthActions.SET_TOKEN, value: accessToken })
         }
     }, [accessToken, state.accessToken])
