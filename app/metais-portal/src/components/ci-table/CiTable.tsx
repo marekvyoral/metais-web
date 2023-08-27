@@ -40,6 +40,7 @@ interface ICiTable {
 
 export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChange, sort, rowSelectionState, isLoading, isError }) => {
     const { t } = useTranslation()
+
     const {
         state: { user },
     } = useAuth()

@@ -1,0 +1,12 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+.headerDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.buttonLinksDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: govuk-spacing(2);
+}

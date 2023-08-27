@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { ErrorBlockList } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
-import { Attribute, AttributeConstraintEnumAllOf, CiCode, EnumType } from '@isdd/metais-common'
+import { Attribute, AttributeConstraintEnumAllOf, CiCode, ConfigurationItemUiAttributes, EnumType } from '@isdd/metais-common'
+
+import { HasResetState } from './CreateCiEntityForm'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
@@ -13,6 +15,8 @@ interface ISection {
     generatedEntityId: CiCode
     constraintsData: (EnumType | undefined)[]
     unitsData: EnumType | undefined
+    defaultItemAttributeValues?: ConfigurationItemUiAttributes | undefined
+    hasResetState: HasResetState
 }
 
 export const CreateEntitySection: React.FC<ISection> = ({
@@ -22,6 +26,8 @@ export const CreateEntitySection: React.FC<ISection> = ({
     generatedEntityId,
     setSectionError,
     unitsData,
+    defaultItemAttributeValues,
+    hasResetState,
 }) => {
     const { register, formState, trigger, setValue, clearErrors } = useFormContext()
     const { errors, isSubmitted } = formState
@@ -91,6 +97,8 @@ export const CreateEntitySection: React.FC<ISection> = ({
                             isSubmitted={isSubmitted}
                             hint={getHint(attribute)}
                             unitsData={attribute.units ? getAttributeUnits(attribute.units ?? '') : undefined}
+                            defaultValueFromCiItem={defaultItemAttributeValues?.[attribute.technicalName ?? '']}
+                            hasResetState={hasResetState}
                         />
                     )}
                 </React.Fragment>

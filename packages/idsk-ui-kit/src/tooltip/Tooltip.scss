@@ -1,0 +1,21 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.tooltip-arrow {
+    stroke: govuk-colour('grey-2');
+    color: govuk-colour('white');
+}
+
+[role='tooltip'].tooltip-content {
+    background-color: govuk-colour('white');
+    border: 1px solid govuk-colour('grey-2');
+    padding: govuk-spacing(1);
+    border-radius: 2px;
+}
+
+.tooltip-overlay {
+    background-color: govuk-colour('white');
+}
+
+[data-popup='tooltip'].tooltip-overlay {
+    background: transparent;
+}

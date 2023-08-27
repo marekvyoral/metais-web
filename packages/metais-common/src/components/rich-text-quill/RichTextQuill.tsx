@@ -1,5 +1,5 @@
 import { Button } from '@isdd/idsk-ui-kit'
-import { InfoInputIcon } from '@isdd/idsk-ui-kit/src/info-input-icon/InfoInputIcon'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import classNames from 'classnames'
 import { DeltaStatic, Sources } from 'quill'
 import React, { useMemo, useRef } from 'react'
@@ -137,7 +137,7 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
             {error && <span className="govuk-error-message">{error}</span>}
             <div className={styles.header}>
                 {label && <div className="govuk-label">{label + requiredLabel}</div>}
-                <div className={styles.infoDiv}>{info && <InfoInputIcon description={info} id={id ?? ''} />}</div>
+                <div className={styles.infoDiv}>{info && <Tooltip descriptionElement={info} />}</div>
             </div>
             <div className={classNames({ 'govuk-input--error': !!error })}>
                 <CustomToolbar excludeOptions={excludeOptions} />
