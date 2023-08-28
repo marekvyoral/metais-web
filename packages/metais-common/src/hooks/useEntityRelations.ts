@@ -87,15 +87,9 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string) 
         .map((relation) => {
             const typeName = relation.ciTypeName
             const count = countData?.[relation?.ciTypeTechnicalName ?? ''] ?? 0
-            if (typeName)
-                return {
-                    tabName: `${typeName ?? ''} (${count})`,
-                    technicalName: relation.ciTypeTechnicalName ?? '',
-                    count,
-                }
             return {
-                tabName: '',
-                technicalName: '',
+                tabName: `${typeName ?? ''} (${count})`,
+                technicalName: relation.ciTypeTechnicalName ?? '',
                 count,
             }
         })
