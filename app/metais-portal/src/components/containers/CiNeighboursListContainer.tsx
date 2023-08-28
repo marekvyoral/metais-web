@@ -1,20 +1,12 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import {
-    BASE_PAGE_NUMBER,
-    BASE_PAGE_SIZE,
-    NeighbourSetUi,
-    NeighboursFilterContainerUi,
-    useReadCiNeighbours
-} from '@isdd/metais-common/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourSetUi, NeighboursFilterContainerUi, useReadCiNeighbours } from '@isdd/metais-common/api'
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
+import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelations'
 import React, { useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 import { mapNeighboursSetSourceToPagination, mapNeighboursSetTargetToPagination } from '@/componentHelpers/pagination'
-import {
-    NeighboursApiType,
-} from '@/components/containers/RelationshipFilters'
-import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelations'
-import { useParams } from 'react-router-dom'
+import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
 
 interface ICiNeighboursListContainerView {
     data?: NeighbourSetUi
@@ -36,7 +28,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
     apiType = NeighboursApiType.source,
 }) => {
     const { entityName } = useParams()
-    
+
     const [uiFilterState, setUiFilterState] = useState<IFilter>({
         pageNumber: BASE_PAGE_NUMBER,
         pageSize: BASE_PAGE_SIZE,
@@ -49,16 +41,16 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
             ...filter,
         })
     }
-    
+
     const {
         isLoading: isEntityRelationsLoading,
         isError: isEntityRelationsError,
         defaultSourceRelationshipTabFilter,
-        defaultTargetRelationshipTabFilter
-    } = useEntityRelationshipTabFilters(entityName)
+        defaultTargetRelationshipTabFilter,
+    } = useEntityRelationshipTabFilters(entityName ?? '')
 
     const selectedRequestApi = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter
-    
+
     const {
         isLoading,
         isError,

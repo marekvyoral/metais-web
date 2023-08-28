@@ -32,7 +32,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
         keysToDisplay,
         data: entityTypes,
     } = useEntityRelationsTypesCount(entityId, technicalName)
-    
+
     const defaultPageConfig: ReadCiNeighboursWithAllRelsParams = {
         ciTypes: keysToDisplay ? [keysToDisplay?.[0]?.technicalName] : undefined,
         page: 1,
@@ -63,7 +63,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
                 entityTypes,
                 relationsList,
                 owners,
-                keysToDisplay: keysToDisplay?? [],
+                keysToDisplay: keysToDisplay ?? [],
             }}
             pagination={pagination}
             handleFilterChange={handleFilterChange}

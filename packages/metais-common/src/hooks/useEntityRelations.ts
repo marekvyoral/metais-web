@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import {
     NeighboursFilterContainerUi,
     ReadCiNeighboursWithAllRelsParams,
@@ -9,7 +11,6 @@ import {
     useReadNeighboursConfigurationItemsCount,
 } from '@isdd/metais-common/api'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useMemo } from 'react'
 
 enum CATEGORY_ENUM {
     NOT_VISIBLE = 'NO',
@@ -46,10 +47,10 @@ export interface IEntityRelationsTypesCount {
 }
 
 const removeDuplicates = (arr: RelatedCiTypePreview[], by: string) => {
-    try{
-    const propertyList = arr.map((item) => item['ciTypeTechnicalName'])
-    const filtered = arr.filter((item, index) => !propertyList.includes(item['ciTypeTechnicalName'], index + 1))
-    return filtered
+    try {
+        const propertyList = arr.map((item) => item[by as keyof RelatedCiTypePreview])
+        const filtered = arr.filter((item, index) => !propertyList.includes(item[by as keyof RelatedCiTypePreview], index + 1))
+        return filtered
     } catch {
         return undefined
     }
@@ -73,7 +74,7 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string) 
     const allRelationRaw = [...(relatedCiTypesFilteredForView?.cisAsTargets ?? []), ...(relatedCiTypesFilteredForView?.cisAsSources ?? [])]
     const allRelation = removeDuplicates(allRelationRaw, 'ciTypeTechnicalName')
 
-    if(allRelation == undefined) {
+    if (allRelation == undefined) {
         return {
             isLoading: false,
             isError: false,
@@ -88,8 +89,8 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string) 
             const count = countData?.[relation?.ciTypeTechnicalName ?? ''] ?? 0
             if (typeName)
                 return {
-                    tabName: `${typeName} (${count})`,
-                    technicalName: relation.ciTypeTechnicalName!,
+                    tabName: `${typeName ?? ''} (${count})`,
+                    technicalName: relation.ciTypeTechnicalName ?? '',
                     count,
                 }
             return {
@@ -141,31 +142,12 @@ export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighbo
     }
 }
 
-export const useEntityRelationshipTabFilters = (technicalName: string | undefined) => {
+export const useEntityRelationshipTabFilters = (technicalName: string) => {
     const {
         state: { user },
     } = useAuth()
     const isUserLogged = !!user
-
-    if (technicalName == undefined) {
-        const emptyNeighboursFilterContainerUi: NeighboursFilterContainerUi = {
-            neighboursFilter: {
-                ciType: undefined,
-                metaAttributes: { state: ['DRAFT'] },
-                relType: undefined,
-            },
-        }
-
-        return {
-            isLoading: false,
-            isError: true,
-            defaultSourceRelationshipTabFilter: emptyNeighboursFilterContainerUi,
-            defaultTargetRelationshipTabFilter: emptyNeighboursFilterContainerUi,
-        }
-    }
-
-    const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName!)
-
+    const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName ?? '')
     const relatedCiTypesFilteredForView = useMemo((): RelatedCiTypePreviewList => {
         const filteredSources = relatedData?.cisAsSources?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged))
         const filteredTargets = relatedData?.cisAsTargets?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged))
@@ -173,8 +155,8 @@ export const useEntityRelationshipTabFilters = (technicalName: string | undefine
         if (filteredSources == undefined && filteredTargets == undefined) {
             return { cisAsSources: undefined, cisAsTargets: undefined }
         }
-        const uniqueFilteredSources = removeDuplicates(filteredSources!, 'ciTypeTechnicalName')
-        const uniqueFilteredTargets = removeDuplicates(filteredTargets!, 'ciTypeTechnicalName')
+        const uniqueFilteredSources = removeDuplicates(filteredSources ?? [], 'ciTypeTechnicalName')
+        const uniqueFilteredTargets = removeDuplicates(filteredTargets ?? [], 'ciTypeTechnicalName')
 
         const relatedCiTypesFilteredData: RelatedCiTypePreviewList = { cisAsSources: uniqueFilteredSources, cisAsTargets: uniqueFilteredTargets }
         return relatedCiTypesFilteredData
@@ -186,8 +168,8 @@ export const useEntityRelationshipTabFilters = (technicalName: string | undefine
 
         relatedCiTypePreviewArray &&
             relatedCiTypePreviewArray.forEach((relatedCiType) => {
-                ciType = ciType?.concat(relatedCiType.ciTypeTechnicalName!)
-                relType = relType?.concat(relatedCiType.relationshipTypeName!)
+                ciType = ciType?.concat(relatedCiType.ciTypeTechnicalName ?? '')
+                relType = relType?.concat(relatedCiType.relationshipTypeName ?? '')
             })
 
         return {
