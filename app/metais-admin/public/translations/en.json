@@ -424,7 +424,7 @@
         "Profil_PO_statutar_priezvisko": "Last name",
         "Profil_PO_statutar_titul_za_menom": "Title after name"
     },
-    "mangementList": {
+    "managementList": {
         "namePassword": "Name / Password",
         "eID": "eID",
         "windows": "Windows",

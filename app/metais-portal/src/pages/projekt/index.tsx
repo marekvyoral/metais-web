@@ -27,7 +27,7 @@ const ProjektListPage: React.FC = () => {
                             entityName={ENTITY_NAME}
                             defaultFilterValues={defaultFilterValues}
                             ListComponent={({
-                                data: { columnListData, tableData },
+                                data: { columnListData, tableData, gestorsData },
                                 handleFilterChange,
                                 storeUserSelectedColumns,
                                 resetUserSelectedColumns,
@@ -37,6 +37,7 @@ const ProjektListPage: React.FC = () => {
                                 isLoading,
                             }) => (
                                 <ListWrapper
+                                    gestorsData={gestorsData}
                                     defaultFilterValues={defaultFilterValues}
                                     sort={sort}
                                     columnListData={columnListData}

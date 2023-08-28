@@ -1,10 +1,15 @@
 import React from 'react'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
-import { ConfigurationItemUi, useReadConfigurationItem } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, RoleParticipantUI, useGetRoleParticipantBulk, useReadConfigurationItem } from '@isdd/metais-common/api'
+
+export interface ContainerViewData {
+    ciItemData: ConfigurationItemUi
+    gestorData: RoleParticipantUI[]
+}
 
 export interface ICiContainerView {
-    data?: ConfigurationItemUi
+    data?: ContainerViewData
     isLoading: boolean
     isError: boolean
 }
@@ -25,9 +30,21 @@ export const CiContainer: React.FC<ICiContainer> = ({ configurationItemId, View 
         },
     })
 
+    const {
+        data: gestorData,
+        isLoading: isGestorLoading,
+        isError: isGestorError,
+    } = useGetRoleParticipantBulk({ gids: [ciItemData?.metaAttributes?.owner ?? ''] }, { query: { enabled: !!ciItemData } })
+
     if (!configurationItemId) return <View isLoading={false} isError />
-    if (isLoading || isError) {
-        return <QueryFeedback loading={isLoading} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
+    if (isLoading || isError || isGestorLoading || isGestorError) {
+        return (
+            <QueryFeedback
+                loading={isLoading || isGestorLoading}
+                error={isError || isGestorError}
+                errorProps={{ errorMessage: t('feedback.failedFetch') }}
+            />
+        )
     }
-    return <View data={ciItemData} isLoading={isLoading} isError={isError} />
+    return <View data={{ ciItemData, gestorData }} isLoading={isLoading} isError={isError} />
 }
