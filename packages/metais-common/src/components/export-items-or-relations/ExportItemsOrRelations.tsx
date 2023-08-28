@@ -24,12 +24,12 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
     const startExport = (extension: FileExtensionEnum) => {
         if (!exportValue) return
         onExportStart(exportValue, extension)
-        close()
     }
     return (
         <BaseModal isOpen={isOpen} close={close}>
             <div className={styles.modalContainer}>
                 <div className={styles.content}>
+                    {/* <LoadingIndicator label={''} /> */}
                     <div className={styles.icon}>
                         <img className={styles.iconWidth} src={ExportIcon} alt="export-icon" />
                     </div>

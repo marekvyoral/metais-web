@@ -5,9 +5,15 @@ export const updateUrlParamsOnChange = (changedFilter: IFilter, setUrlParams: Se
     Object.keys(changedFilter).forEach((key) =>
         setUrlParams((prevParams) => {
             const currentParam = changedFilter[key]
+            console.log('suka', changedFilter)
             const newParams = new URLSearchParams(prevParams)
             if (currentParam) {
-                newParams.set(key, currentParam.toString())
+                if (key === 'sort') {
+                    newParams.set(key, currentParam.sort[0].toString())
+                } else {
+                    newParams.set(key, currentParam.toString())
+                }
+                console.log('suka', newParams)
                 return newParams
             }
             return newParams

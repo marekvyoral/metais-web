@@ -21,6 +21,7 @@ export const mapFilterParamsToApi = <T extends IFilterParams>(filterParams: T): 
     for (const [key, value] of Object.entries(filterParams)) {
         if (keysToSkip.has(key)) continue
         if (value) {
+            console.log('suka', value)
             if (Array.isArray(value)) {
                 attributes.push({
                     name: key,

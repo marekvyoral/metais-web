@@ -2,6 +2,7 @@ import { IFilter, SortType } from '@isdd/idsk-ui-kit/src/types'
 import { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 
+import { ATTRIBUTE_NAME } from '@/api/constants'
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
 import { ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
@@ -31,7 +32,10 @@ export const useGetColumnData = (entityName: string) => {
     } = isUserLogged ? getUserColumns : getDefaultColumns
 
     //Always show name and first in oreder
-    const mergedColumnListData = { ...columnListData, attributes: [...(columnListData?.attributes || []), { name: 'Gen_Profil_nazov', order: 1 }] }
+    const mergedColumnListData = {
+        ...columnListData,
+        attributes: [...(columnListData?.attributes || []), { name: ATTRIBUTE_NAME.Gen_Profil_nazov, order: 1 }],
+    }
 
     const storeUserSelectedColumns = useInsertUserColumns()
     const { isLoading: isStoreLoading, isError: isStoreError } = storeUserSelectedColumns
@@ -66,7 +70,7 @@ export const useGetColumnData = (entityName: string) => {
 
 export const useFilterForCiList = <T extends FieldValues & IFilterParams>(defaultFilterValues: T, entityName: string) => {
     const { filter: filterParams, handleFilterChange } = useFilterParams<T & IFilter>({
-        sort: [{ orderBy: 'Gen_Profil_nazov', sortDirection: SortType.ASC }],
+        sort: [{ orderBy: ATTRIBUTE_NAME.Gen_Profil_nazov, sortDirection: SortType.ASC }],
         ...defaultFilterValues,
     })
 

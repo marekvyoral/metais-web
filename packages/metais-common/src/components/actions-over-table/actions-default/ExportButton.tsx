@@ -54,6 +54,7 @@ export const ExportButton: React.FC = () => {
     ) => {
         const blobData = await exportFunction({ filter })
         downloadBlobAsFile(new Blob([blobData]), generateExportFileName(entity, extension))
+        onClose()
     }
 
     const onExportStart = async (exportValue: string, extension: FileExtensionEnum) => {
