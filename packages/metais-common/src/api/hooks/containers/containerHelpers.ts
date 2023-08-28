@@ -30,6 +30,9 @@ export const useGetColumnData = (entityName: string) => {
         isError: isQueryError,
     } = isUserLogged ? getUserColumns : getDefaultColumns
 
+    //Always show name and first in oreder
+    const mergedColumnListData = { ...columnListData, attributes: [...(columnListData?.attributes || []), { name: 'Gen_Profil_nazov', order: 1 }] }
+
     const storeUserSelectedColumns = useInsertUserColumns()
     const { isLoading: isStoreLoading, isError: isStoreError } = storeUserSelectedColumns
     const saveColumnSelection = async (columnSelection: FavoriteCiType) => {
@@ -53,7 +56,7 @@ export const useGetColumnData = (entityName: string) => {
     const isError = [isQueryError, isResetError, isStoreError].some((item) => item)
 
     return {
-        columnListData,
+        columnListData: mergedColumnListData,
         saveColumnSelection,
         resetColumns,
         isLoading,

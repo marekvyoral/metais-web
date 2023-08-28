@@ -1,18 +1,18 @@
+import { Button } from '@isdd/idsk-ui-kit/src/button/Button'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@isdd/idsk-ui-kit/src/button/Button'
 
-import { ExportIcon } from '@isdd/metais-common/assets/images'
-import { IconLabel } from '@isdd/metais-common/components/actions-over-table/icon-label/IconLabel'
-import { ExportItemsOrRelations } from '@isdd/metais-common/components/export-items-or-relations/ExportItemsOrRelations'
 import {
-    useExportCsvHook,
-    useExportExcelHook,
+    useExportCsv3Hook,
+    useExportExcel3Hook,
     useExportRelCsvHook,
     useExportRelExcelHook,
     useExportRelXmlHook,
-    useExportXmlHook,
+    useExportXml1Hook,
 } from '@isdd/metais-common/api/generated/impexp-cmdb-swagger'
+import { ExportIcon } from '@isdd/metais-common/assets/images'
+import { IconLabel } from '@isdd/metais-common/components/actions-over-table/icon-label/IconLabel'
+import { ExportItemsOrRelations } from '@isdd/metais-common/components/export-items-or-relations/ExportItemsOrRelations'
 
 export enum FileExtensionEnum {
     XML = 'XML',
@@ -25,9 +25,9 @@ export const ExportButton: React.FC = () => {
     const [modalOpen, setModalOpen] = useState(false)
     const { t } = useTranslation()
 
-    const exportCsv = useExportCsvHook()
-    const exportXml = useExportXmlHook()
-    const exportExcel = useExportExcelHook()
+    const exportCsv = useExportCsv3Hook()
+    const exportXml = useExportXml1Hook()
+    const exportExcel = useExportExcel3Hook()
 
     const exportRelXml = useExportRelXmlHook()
     const exportRelCsv = useExportRelCsvHook()
@@ -45,25 +45,29 @@ export const ExportButton: React.FC = () => {
         if (exportValue === 'items') {
             if (extension === FileExtensionEnum.XML) {
                 exportXml({
-                    filter: {},
+                    filter: {
+                        type: ['ISVS'],
+                        metaAttributes: { state: ['DRAFT'] },
+                    },
                 })
                 return
             }
             if (extension === FileExtensionEnum.CSV) {
                 exportCsv({
-                    serviceType: '',
-                    project: '',
-                    intervalStart: '',
-                    intervalEnd: '',
+                    filter: {
+                        type: ['ISVS'],
+                        metaAttributes: { state: ['DRAFT'] },
+                    },
                 })
+
                 return
             }
             if (extension === FileExtensionEnum.XLSX) {
                 exportExcel({
-                    serviceType: '',
-                    project: '',
-                    intervalStart: '',
-                    intervalEnd: '',
+                    filter: {
+                        type: ['ISVS'],
+                        metaAttributes: { state: ['DRAFT'] },
+                    },
                 })
                 return
             }
