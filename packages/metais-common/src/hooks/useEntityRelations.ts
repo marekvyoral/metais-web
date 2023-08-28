@@ -1,4 +1,3 @@
-import { useAuth } from '@/contexts/auth/authContext'
 import {
     NeighboursFilterContainerUi,
     ReadCiNeighboursWithAllRelsParams,
@@ -9,6 +8,7 @@ import {
     useReadCiNeighboursWithAllRels,
     useReadNeighboursConfigurationItemsCount,
 } from '@isdd/metais-common/api'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useMemo } from 'react'
 
 enum CATEGORY_ENUM {
@@ -49,8 +49,6 @@ const removeDuplicates = (arr: RelatedCiTypePreview[], by: string) => {
     try{
     const propertyList = arr.map((item) => item['ciTypeTechnicalName'])
     const filtered = arr.filter((item, index) => !propertyList.includes(item['ciTypeTechnicalName'], index + 1))
-        console.log({filtered})
-
     return filtered
     } catch {
         return undefined
