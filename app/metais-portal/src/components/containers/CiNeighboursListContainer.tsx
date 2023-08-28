@@ -13,7 +13,7 @@ import { mapNeighboursSetSourceToPagination, mapNeighboursSetTargetToPagination 
 import {
     NeighboursApiType,
 } from '@/components/containers/RelationshipFilters'
-import { useEntityRelationsTypes } from '@isdd/metais-common/hooks/useEntityRelations'
+import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelations'
 import { useParams } from 'react-router-dom'
 
 interface ICiNeighboursListContainerView {
@@ -37,7 +37,6 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
 }) => {
     const { entityName } = useParams()
     
-
     const [uiFilterState, setUiFilterState] = useState<IFilter>({
         pageNumber: BASE_PAGE_NUMBER,
         pageSize: BASE_PAGE_SIZE,
@@ -56,7 +55,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         isError: isEntityRelationsError,
         defaultSourceRelationshipTabFilter,
         defaultTargetRelationshipTabFilter
-    } = useEntityRelationsTypes(entityName)
+    } = useEntityRelationshipTabFilters(entityName)
 
     const selectedRequestApi = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter
     
@@ -65,34 +64,6 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         isError,
         data: documentCiData,
     } = useReadCiNeighbours(configurationItemId ?? '', mapFilterToNeighborsApi<NeighboursFilterContainerUi>(uiFilterState, selectedRequestApi), {})
-
-    // const { isLoading: relatedCiTypesLoading, isError: relatedCiTypesError, data: relatedCiTypesData } = useListRelatedCiTypes(entityName ?? '')
-
-    // const {
-    //     isLoading: neighboursConfigurationItemsCountLoading,
-    //     isError: neighboursConfigurationItemsError,
-    //     data: neighboursConfigurationItemsData,
-    // } = useReadNeighboursConfigurationItemsCount(configurationItemId ?? '')
-
-    // const relatedCiTypesFilteredForView = (relatedCiTypesRawData: RelatedCiTypePreviewList): RelatedCiTypePreviewList => {
-    //     let filteredSources = relatedCiTypesRawData.cisAsSources?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged))
-    //     let filteredTargets = relatedCiTypesRawData.cisAsTargets?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged))
-    //     let relatedCiTypesFilteredData: RelatedCiTypePreviewList = { cisAsSources: filteredSources, cisAsTargets: filteredTargets }
-
-    //     return relatedCiTypesFilteredData
-    // }
-
-    // useEffect(() => {
-    //     if (relatedCiTypesLoading && !!relatedCiTypesError) {
-    //         console.log(relatedCiTypesFilteredForView(relatedCiTypesData!))
-    //     }
-    // }, [relatedCiTypesLoading])
-
-    // useEffect(() => {
-    //     if (neighboursConfigurationItemsCountLoading && !!neighboursConfigurationItemsError) {
-    //         console.log(neighboursConfigurationItemsData)
-    //     }
-    // }, [neighboursConfigurationItemsCountLoading])
 
     const pagination =
         apiType === NeighboursApiType.source
@@ -105,8 +76,8 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
             data={documentCiData ?? undefined}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
-            isLoading={isLoading}
-            isError={isError}
+            isLoading={isLoading || isEntityRelationsLoading}
+            isError={isError || isEntityRelationsError}
         />
     )
 }

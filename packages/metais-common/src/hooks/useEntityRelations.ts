@@ -7,16 +7,16 @@ import {
     useGetRoleParticipantBulk,
     useListRelatedCiTypes,
     useReadCiNeighboursWithAllRels,
-    useReadNeighboursConfigurationItemsCount
+    useReadNeighboursConfigurationItemsCount,
 } from '@isdd/metais-common/api'
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 
 enum CATEGORY_ENUM {
     NOT_VISIBLE = 'NO',
     READ_ONLY_BDA = 'ROCB',
     READ_ONLY = 'RONCB',
     READ_WRITE = 'RWNCB',
-    READ_WRITE_BDA = 'RWCB',    
+    READ_WRITE_BDA = 'RWCB',
 }
 enum TYPES {
     SYSTEM = 'system',
@@ -45,11 +45,17 @@ export interface IEntityRelationsTypesCount {
     keysToDisplay: IKeyToDisplay[]
 }
 
-const removeDuplicates = (arr: RelatedCiTypePreview[]) => {
-    const propertyList = arr.map(({ ciTypeTechnicalName }) => ciTypeTechnicalName);
-    const filtered = arr.filter(({ ciTypeTechnicalName }, index) => !propertyList.includes(ciTypeTechnicalName, index + 1));
+const removeDuplicates = (arr: RelatedCiTypePreview[], by: string) => {
+    try{
+    const propertyList = arr.map((item) => item['ciTypeTechnicalName'])
+    const filtered = arr.filter((item, index) => !propertyList.includes(item['ciTypeTechnicalName'], index + 1))
+        console.log({filtered})
+
     return filtered
-  }
+    } catch {
+        return undefined
+    }
+}
 
 export const useEntityRelationsTypesCount = (id: string, technicalName: string) => {
     const {
@@ -59,35 +65,44 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string) 
     const { isLoading, isError, data: countData } = useReadNeighboursConfigurationItemsCount(id)
     const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName)
 
-    const relatedCiTypesFilteredForView = useMemo( (): RelatedCiTypePreviewList => {
+    const relatedCiTypesFilteredForView = useMemo((): RelatedCiTypePreviewList => {
         const filteredSources = relatedData?.cisAsSources?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged))
         const filteredTargets = relatedData?.cisAsTargets?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged))
         const relatedCiTypesFilteredData: RelatedCiTypePreviewList = { cisAsSources: filteredSources, cisAsTargets: filteredTargets }
         return relatedCiTypesFilteredData
-    },[relatedData, isUserLogged])
+    }, [relatedData, isUserLogged])
 
     const allRelationRaw = [...(relatedCiTypesFilteredForView?.cisAsTargets ?? []), ...(relatedCiTypesFilteredForView?.cisAsSources ?? [])]
-    const allRelation = removeDuplicates(allRelationRaw)
+    const allRelation = removeDuplicates(allRelationRaw, 'ciTypeTechnicalName')
 
-    const keysToDisplay: IKeyToDisplay[] = allRelation.map((relation) => {      
-        const typeName = relation.ciTypeName
-        const count = countData?.[relation?.ciTypeTechnicalName ?? ''] ?? 0
-        if (typeName)
+    if(allRelation == undefined) {
+        return {
+            isLoading: false,
+            isError: false,
+            data: undefined,
+            keysToDisplay: undefined,
+        }
+    }
+
+    const keysToDisplay: IKeyToDisplay[] = allRelation
+        .map((relation) => {
+            const typeName = relation.ciTypeName
+            const count = countData?.[relation?.ciTypeTechnicalName ?? ''] ?? 0
+            if (typeName)
+                return {
+                    tabName: `${typeName} (${count})`,
+                    technicalName: relation.ciTypeTechnicalName!,
+                    count,
+                }
             return {
-                tabName: `${typeName} (${count})`,
-                technicalName: relation.ciTypeTechnicalName!,
+                tabName: '',
+                technicalName: '',
                 count,
             }
-        return {
-            tabName: '',
-            technicalName: '',
-            count,
-        }
-    })?.filter((tab) => tab?.tabName !== '' && tab?.count > 0)
+        })
+        ?.filter((tab) => tab?.tabName !== '' && tab?.count > 0)
 
     const keysToDisplaySorted = keysToDisplay.sort((a, b) => (a.count > b.count ? -1 : 1))
-
-    console.log({keysToDisplaySorted})
 
     return {
         isLoading: isLoading || isRelatedLoading,
@@ -128,62 +143,77 @@ export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighbo
     }
 }
 
-export const useEntityRelationsTypes = (technicalName: string | undefined) => {
+export const useEntityRelationshipTabFilters = (technicalName: string | undefined) => {
     const {
         state: { user },
     } = useAuth()
     const isUserLogged = !!user
-    
-    if(!!technicalName) {       // mozno zla podmienka
-        
-        return {    
-                neighboursFilter: {
+
+    if (technicalName == undefined) {
+        const emptyNeighboursFilterContainerUi: NeighboursFilterContainerUi = {
+            neighboursFilter: {
                 ciType: undefined,
                 metaAttributes: { state: ['DRAFT'] },
-                relType: undefined
-            }
+                relType: undefined,
+            },
+        }
+
+        return {
+            isLoading: false,
+            isError: true,
+            defaultSourceRelationshipTabFilter: emptyNeighboursFilterContainerUi,
+            defaultTargetRelationshipTabFilter: emptyNeighboursFilterContainerUi,
         }
     }
 
-    console.log(technicalName)
-
     const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName!)
 
-    const relatedCiTypesFilteredForView = useMemo( (): RelatedCiTypePreviewList => {
+    const relatedCiTypesFilteredForView = useMemo((): RelatedCiTypePreviewList => {
         const filteredSources = relatedData?.cisAsSources?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged))
         const filteredTargets = relatedData?.cisAsTargets?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged))
-        const relatedCiTypesFilteredData: RelatedCiTypePreviewList = { cisAsSources: filteredSources, cisAsTargets: filteredTargets }
-        return relatedCiTypesFilteredData
-    },[relatedData, isUserLogged])
 
-    const mapFilterToNeighboursContainerUi = useCallback( (relatedCiTypePreviewArray: RelatedCiTypePreview[] | undefined): NeighboursFilterContainerUi => {
-        let ciType: string[] | undefined
-        let relType: string[] | undefined
-    
-        relatedCiTypePreviewArray && relatedCiTypePreviewArray.forEach((relatedCiType) => {
-            ciType = ciType?.concat(relatedCiType.ciTypeTechnicalName!)
-            relType = relType?.concat(relatedCiType.relationshipTypeName!)
-        })
-    
-        return {    
-                neighboursFilter: {
+        if (filteredSources == undefined && filteredTargets == undefined) {
+            return { cisAsSources: undefined, cisAsTargets: undefined }
+        }
+        const uniqueFilteredSources = removeDuplicates(filteredSources!, 'ciTypeTechnicalName')
+        const uniqueFilteredTargets = removeDuplicates(filteredTargets!, 'ciTypeTechnicalName')
+
+        const relatedCiTypesFilteredData: RelatedCiTypePreviewList = { cisAsSources: uniqueFilteredSources, cisAsTargets: uniqueFilteredTargets }
+        return relatedCiTypesFilteredData
+    }, [relatedData, isUserLogged])
+
+    const mapFilterToNeighboursContainerUi = (relatedCiTypePreviewArray: RelatedCiTypePreview[] | undefined): NeighboursFilterContainerUi => {
+        let ciType: string[] | undefined = []
+        let relType: string[] | undefined = []
+
+        relatedCiTypePreviewArray &&
+            relatedCiTypePreviewArray.forEach((relatedCiType) => {
+                ciType = ciType?.concat(relatedCiType.ciTypeTechnicalName!)
+                relType = relType?.concat(relatedCiType.relationshipTypeName!)
+            })
+
+        return {
+            neighboursFilter: {
                 ciType,
                 metaAttributes: { state: ['DRAFT'] },
-                relType
+                relType,
             },
         }
-    }, [relatedCiTypesFilteredForView])
+    }
 
-    const defaultSourceRelationshipTabFilter: NeighboursFilterContainerUi = mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsSources)
-    const defaultTargetRelationshipTabFilter: NeighboursFilterContainerUi = mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsTargets)
+    const defaultSourceRelationshipTabFilter: NeighboursFilterContainerUi | undefined = useMemo(
+        (): NeighboursFilterContainerUi => mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsSources),
+        [relatedCiTypesFilteredForView],
+    )
+    const defaultTargetRelationshipTabFilter: NeighboursFilterContainerUi | undefined = useMemo(
+        (): NeighboursFilterContainerUi => mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsTargets),
+        [relatedCiTypesFilteredForView],
+    )
 
-    console.log({defaultSourceRelationshipTabFilter})
-    console.log({defaultTargetRelationshipTabFilter})
-    
     return {
         isLoading: isRelatedLoading,
         isError: isRelatedError,
         defaultSourceRelationshipTabFilter,
-        defaultTargetRelationshipTabFilter
+        defaultTargetRelationshipTabFilter,
     }
 }
