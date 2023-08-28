@@ -1,13 +1,17 @@
 import { Button } from '@isdd/idsk-ui-kit/src/button/Button'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 
+import { downloadBlobAsFile, generateExportFileName } from '@/componentHelpers/download/downloadHelper'
 import {
+    CiFilterUi,
+    CiListFilterContainerUi,
     useExportCsv3Hook,
     useExportExcel3Hook,
-    useExportRelCsvHook,
-    useExportRelExcelHook,
-    useExportRelXmlHook,
+    useExportRelCsv1Hook,
+    useExportRelExcel1Hook,
+    useExportRelXml1Hook,
     useExportXml1Hook,
 } from '@isdd/metais-common/api/generated/impexp-cmdb-swagger'
 import { ExportIcon } from '@isdd/metais-common/assets/images'
@@ -24,14 +28,15 @@ export enum FileExtensionEnum {
 export const ExportButton: React.FC = () => {
     const [modalOpen, setModalOpen] = useState(false)
     const { t } = useTranslation()
+    const { entityName } = useParams()
 
     const exportCsv = useExportCsv3Hook()
     const exportXml = useExportXml1Hook()
     const exportExcel = useExportExcel3Hook()
 
-    const exportRelXml = useExportRelXmlHook()
-    const exportRelCsv = useExportRelCsvHook()
-    const exportRelExcel = useExportRelExcelHook()
+    const exportRelXml = useExportRelXml1Hook()
+    const exportRelCsv = useExportRelCsv1Hook()
+    const exportRelExcel = useExportRelExcel1Hook()
 
     const openModal = () => {
         setModalOpen(true)
@@ -41,49 +46,38 @@ export const ExportButton: React.FC = () => {
         setModalOpen(false)
     }
 
-    const onExportStart = (exportValue: string, extension: FileExtensionEnum) => {
+    const exportAndDownloadBlob = async (
+        exportFunction: (ciListFilterContainerUi: CiListFilterContainerUi) => Promise<Blob>,
+        extension: FileExtensionEnum,
+        entity: string,
+        filter: CiFilterUi,
+    ) => {
+        const blobData = await exportFunction({ filter })
+        downloadBlobAsFile(new Blob([blobData]), generateExportFileName(entity, extension))
+    }
+
+    const onExportStart = async (exportValue: string, extension: FileExtensionEnum) => {
+        if (!entityName) return
+        const filter = {
+            type: [entityName],
+            metaAttributes: { state: ['DRAFT'] },
+        }
         if (exportValue === 'items') {
             if (extension === FileExtensionEnum.XML) {
-                exportXml({
-                    filter: {
-                        type: ['ISVS'],
-                        metaAttributes: { state: ['DRAFT'] },
-                    },
-                })
-                return
-            }
-            if (extension === FileExtensionEnum.CSV) {
-                exportCsv({
-                    filter: {
-                        type: ['ISVS'],
-                        metaAttributes: { state: ['DRAFT'] },
-                    },
-                })
-
-                return
-            }
-            if (extension === FileExtensionEnum.XLSX) {
-                exportExcel({
-                    filter: {
-                        type: ['ISVS'],
-                        metaAttributes: { state: ['DRAFT'] },
-                    },
-                })
-                return
+                exportAndDownloadBlob(exportXml, FileExtensionEnum.XML, entityName, filter)
+            } else if (extension === FileExtensionEnum.CSV) {
+                exportAndDownloadBlob(exportCsv, FileExtensionEnum.XML, entityName, filter)
+            } else if (extension === FileExtensionEnum.XLSX) {
+                exportAndDownloadBlob(exportExcel, FileExtensionEnum.XML, entityName, filter)
             }
         }
         if (exportValue === 'relations') {
             if (extension === FileExtensionEnum.XML) {
-                exportRelXml({ filter: {} })
-                return
-            }
-            if (extension === FileExtensionEnum.CSV) {
-                exportRelCsv({ filter: {} })
-                return
-            }
-            if (extension === FileExtensionEnum.XLSX) {
-                exportRelExcel({ filter: {} })
-                return
+                exportAndDownloadBlob(exportRelXml, FileExtensionEnum.XML, entityName, filter)
+            } else if (extension === FileExtensionEnum.CSV) {
+                exportAndDownloadBlob(exportRelCsv, FileExtensionEnum.XML, entityName, filter)
+            } else if (extension === FileExtensionEnum.XLSX) {
+                exportAndDownloadBlob(exportRelExcel, FileExtensionEnum.XML, entityName, filter)
             }
         }
     }
