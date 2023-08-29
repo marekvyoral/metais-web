@@ -27,7 +27,7 @@ const BreadCrumbsItem: React.FC<BreadCrumbsItemProps> = ({ icon, href, label }) 
 
     return (
         <li className="govuk-breadcrumbs__list-item">
-            <Link className="govuk-breadcrumbs__link" to="#" onClick={(e) => handleNavigate(e)}>
+            <Link className="govuk-breadcrumbs__link" to={href} onClick={(e) => handleNavigate(e)}>
                 {icon && <img src={icon} alt="icon" className={styles.linkIcon} />}
                 {label}
             </Link>
