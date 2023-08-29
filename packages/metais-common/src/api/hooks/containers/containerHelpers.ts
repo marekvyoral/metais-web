@@ -2,7 +2,6 @@ import { IFilter, SortType } from '@isdd/idsk-ui-kit/src/types'
 import { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 
-import { ATTRIBUTE_NAME } from '@/api/constants'
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
 import { ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
@@ -15,6 +14,7 @@ import {
 import { mapConfigurationItemSetToPagination } from '@isdd/metais-common/componentHelpers/pagination'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/src/api'
 
 export const useGetColumnData = (entityName: string) => {
     const {

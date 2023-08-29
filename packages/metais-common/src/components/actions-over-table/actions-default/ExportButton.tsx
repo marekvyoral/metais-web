@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
-import { downloadBlobAsFile, generateExportFileName } from '@/componentHelpers/download/downloadHelper'
 import {
     CiFilterUi,
     CiListFilterContainerUi,
@@ -15,6 +14,7 @@ import {
     useExportXml1Hook,
 } from '@isdd/metais-common/api/generated/impexp-cmdb-swagger'
 import { ExportIcon } from '@isdd/metais-common/assets/images'
+import { downloadBlobAsFile, generateExportFileName } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 import { IconLabel } from '@isdd/metais-common/components/actions-over-table/icon-label/IconLabel'
 import { ExportItemsOrRelations } from '@isdd/metais-common/components/export-items-or-relations/ExportItemsOrRelations'
 
