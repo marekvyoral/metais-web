@@ -30,6 +30,8 @@ export const ExportButton: React.FC = () => {
     const { t } = useTranslation()
     const { entityName } = useParams()
 
+    const [isLoading, setLoading] = useState<boolean>(false)
+
     const exportCsv = useExportCsv3Hook()
     const exportXml = useExportXml1Hook()
     const exportExcel = useExportExcel3Hook()
@@ -54,15 +56,17 @@ export const ExportButton: React.FC = () => {
     ) => {
         const blobData = await exportFunction({ filter })
         downloadBlobAsFile(new Blob([blobData]), generateExportFileName(entity, extension))
+        setLoading(false)
         onClose()
     }
-
     const onExportStart = async (exportValue: string, extension: FileExtensionEnum) => {
         if (!entityName) return
+        setLoading(true)
         const filter = {
             type: [entityName],
             metaAttributes: { state: ['DRAFT'] },
         }
+
         if (exportValue === 'items') {
             if (extension === FileExtensionEnum.XML) {
                 exportAndDownloadBlob(exportXml, FileExtensionEnum.XML, entityName, filter)
@@ -91,7 +95,7 @@ export const ExportButton: React.FC = () => {
                 variant="secondary"
                 label={<IconLabel label={t('actionOverTable.export')} icon={ExportIcon} />}
             />
-            <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />
+            <ExportItemsOrRelations isOpen={modalOpen} close={onClose} isLoading={isLoading} onExportStart={onExportStart} />
         </>
     )
 }

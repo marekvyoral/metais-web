@@ -1,3 +1,4 @@
+import { LoadingIndicator } from '@isdd/idsk-ui-kit'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
 import { RadioButtonGroup } from '@isdd/idsk-ui-kit/radio-button-group/RadioButtonGroup'
@@ -14,11 +15,12 @@ import { FileExtensionEnum } from '@isdd/metais-common/components/actions-over-t
 interface IExportItemsOrRelationsProps {
     isOpen: boolean
     className?: string
+    isLoading?: boolean
     close: () => void
     onExportStart: (exportValue: string, extension: FileExtensionEnum) => void
 }
 
-export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({ isOpen, close, onExportStart }) => {
+export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({ isOpen, isLoading, close, onExportStart }) => {
     const { t } = useTranslation()
     const [exportValue, setExportValue] = useState('')
     const startExport = (extension: FileExtensionEnum) => {
@@ -27,9 +29,10 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
     }
     return (
         <BaseModal isOpen={isOpen} close={close}>
+            {isLoading && <LoadingIndicator label={t('exportItemsOrRelations.loading')} />}
+
             <div className={styles.modalContainer}>
                 <div className={styles.content}>
-                    {/* <LoadingIndicator label={''} /> */}
                     <div className={styles.icon}>
                         <img className={styles.iconWidth} src={ExportIcon} alt="export-icon" />
                     </div>

@@ -318,7 +318,8 @@
         "buttonRDF": "RDF",
         "buttonXML": "XML",
         "buttonCSV": "CSV",
-        "buttonXLSX": "XLSX"
+        "buttonXLSX": "XLSX",
+        "loading": "Sťahuje sa súbor"
     },
     "tableSelectColumns": {
         "searchPlaceholder": "Názov hľadaného stĺpca",
