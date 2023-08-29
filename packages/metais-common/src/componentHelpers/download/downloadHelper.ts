@@ -1,5 +1,4 @@
-import { FileExtensionEnum } from '@/components/actions-over-table'
-
+import { FileExtensionEnum } from '@isdd/metais-common/components/actions-over-table/actions-default/ExportButton'
 export const downloadBlobAsFile = (blob: Blob, filename: string) => {
     const blobURL = URL.createObjectURL(blob)
     const a = document.createElement('a')
