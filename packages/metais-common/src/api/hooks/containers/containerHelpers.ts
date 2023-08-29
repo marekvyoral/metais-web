@@ -1,5 +1,5 @@
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/src/types'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
@@ -32,10 +32,15 @@ export const useGetColumnData = (entityName: string) => {
     } = isUserLogged ? getUserColumns : getDefaultColumns
 
     //Always show name and first in oreder
-    const mergedColumnListData = {
-        ...columnListData,
-        attributes: [...(columnListData?.attributes || []), { name: ATTRIBUTE_NAME.Gen_Profil_nazov, order: 1 }],
-    }
+    const mergedColumnListData = useMemo(() => {
+        const isGenProfile = columnListData?.attributes?.find((i) => i.name === ATTRIBUTE_NAME.Gen_Profil_nazov)
+        return isGenProfile
+            ? columnListData
+            : {
+                  ...columnListData,
+                  attributes: [...(columnListData?.attributes || []), { name: ATTRIBUTE_NAME.Gen_Profil_nazov, order: 1 }],
+              }
+    }, [columnListData])
 
     const storeUserSelectedColumns = useInsertUserColumns()
     const { isLoading: isStoreLoading, isError: isStoreError } = storeUserSelectedColumns
