@@ -126,7 +126,6 @@ const getPropertyType = <T, K extends keyof T>(obj: T, key: K): string => {
 
 export function useFilterParams<T extends FieldValues & IFilterParams>(defaults: T & IFilter): ReturnUseFilterParams<T> {
     const [urlParams, setUrlParams] = useSearchParams()
-
     const [uiFilterState, setUiFilterState] = useState<IFilter>({
         sort: defaults?.sort ?? [],
         pageNumber: defaults?.pageNumber ?? BASE_PAGE_NUMBER,
@@ -154,9 +153,14 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
                     const propertyType = getPropertyType(defaults, key)
                     if (propertyType === 'object') {
                         const value = urlParams.getAll(key)
+                        if (key === 'sort') {
+                            // eslint-disable-next-line
+                            // @ts-ignore
+                            memoFilter[key] = JSON.parse(value)
+                        }
                         // eslint-disable-next-line
                         // @ts-ignore
-                        memoFilter[key] = value
+                        else memoFilter[key] = value
                     } else {
                         // eslint-disable-next-line
                         // @ts-ignore
