@@ -317,7 +317,8 @@
         "buttonRDF": "RDF",
         "buttonXML": "XML",
         "buttonCSV": "CSV",
-        "buttonXLSX": "XLSX"
+        "buttonXLSX": "XLSX",
+        "loading": "Downloading file"
     },
     "tableSelectColumns": {
         "searchPlaceholder": "Search column name",

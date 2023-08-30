@@ -7,7 +7,11 @@ export const updateUrlParamsOnChange = (changedFilter: IFilter, setUrlParams: Se
             const currentParam = changedFilter[key]
             const newParams = new URLSearchParams(prevParams)
             if (currentParam) {
-                newParams.set(key, currentParam.toString())
+                if (key === 'sort') {
+                    newParams.set(key, JSON.stringify(currentParam))
+                } else {
+                    newParams.set(key, currentParam.toString())
+                }
                 return newParams
             }
             return newParams

@@ -1,18 +1,22 @@
+import { Button } from '@isdd/idsk-ui-kit/src/button/Button'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@isdd/idsk-ui-kit/src/button/Button'
+import { useParams } from 'react-router-dom'
 
+import {
+    CiFilterUi,
+    CiListFilterContainerUi,
+    useExportCsv3Hook,
+    useExportExcel3Hook,
+    useExportRelCsv1Hook,
+    useExportRelExcel1Hook,
+    useExportRelXml1Hook,
+    useExportXml1Hook,
+} from '@isdd/metais-common/api/generated/impexp-cmdb-swagger'
 import { ExportIcon } from '@isdd/metais-common/assets/images'
+import { downloadBlobAsFile, generateExportFileName } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 import { IconLabel } from '@isdd/metais-common/components/actions-over-table/icon-label/IconLabel'
 import { ExportItemsOrRelations } from '@isdd/metais-common/components/export-items-or-relations/ExportItemsOrRelations'
-import {
-    useExportCsvHook,
-    useExportExcelHook,
-    useExportRelCsvHook,
-    useExportRelExcelHook,
-    useExportRelXmlHook,
-    useExportXmlHook,
-} from '@isdd/metais-common/api/generated/impexp-cmdb-swagger'
 
 export enum FileExtensionEnum {
     XML = 'XML',
@@ -24,14 +28,17 @@ export enum FileExtensionEnum {
 export const ExportButton: React.FC = () => {
     const [modalOpen, setModalOpen] = useState(false)
     const { t } = useTranslation()
+    const { entityName } = useParams()
 
-    const exportCsv = useExportCsvHook()
-    const exportXml = useExportXmlHook()
-    const exportExcel = useExportExcelHook()
+    const [isLoading, setLoading] = useState<boolean>(false)
 
-    const exportRelXml = useExportRelXmlHook()
-    const exportRelCsv = useExportRelCsvHook()
-    const exportRelExcel = useExportRelExcelHook()
+    const exportCsv = useExportCsv3Hook()
+    const exportXml = useExportXml1Hook()
+    const exportExcel = useExportExcel3Hook()
+
+    const exportRelXml = useExportRelXml1Hook()
+    const exportRelCsv = useExportRelCsv1Hook()
+    const exportRelExcel = useExportRelExcel1Hook()
 
     const openModal = () => {
         setModalOpen(true)
@@ -41,45 +48,41 @@ export const ExportButton: React.FC = () => {
         setModalOpen(false)
     }
 
-    const onExportStart = (exportValue: string, extension: FileExtensionEnum) => {
+    const exportAndDownloadBlob = async (
+        exportFunction: (ciListFilterContainerUi: CiListFilterContainerUi) => Promise<Blob>,
+        extension: FileExtensionEnum,
+        entity: string,
+        filter: CiFilterUi,
+    ) => {
+        const blobData = await exportFunction({ filter })
+        downloadBlobAsFile(new Blob([blobData]), generateExportFileName(entity, extension))
+        setLoading(false)
+        onClose()
+    }
+    const onExportStart = async (exportValue: string, extension: FileExtensionEnum) => {
+        if (!entityName) return
+        setLoading(true)
+        const filter = {
+            type: [entityName],
+            metaAttributes: { state: ['DRAFT'] },
+        }
+
         if (exportValue === 'items') {
             if (extension === FileExtensionEnum.XML) {
-                exportXml({
-                    filter: {},
-                })
-                return
-            }
-            if (extension === FileExtensionEnum.CSV) {
-                exportCsv({
-                    serviceType: '',
-                    project: '',
-                    intervalStart: '',
-                    intervalEnd: '',
-                })
-                return
-            }
-            if (extension === FileExtensionEnum.XLSX) {
-                exportExcel({
-                    serviceType: '',
-                    project: '',
-                    intervalStart: '',
-                    intervalEnd: '',
-                })
-                return
+                exportAndDownloadBlob(exportXml, FileExtensionEnum.XML, entityName, filter)
+            } else if (extension === FileExtensionEnum.CSV) {
+                exportAndDownloadBlob(exportCsv, FileExtensionEnum.XML, entityName, filter)
+            } else if (extension === FileExtensionEnum.XLSX) {
+                exportAndDownloadBlob(exportExcel, FileExtensionEnum.XML, entityName, filter)
             }
         }
         if (exportValue === 'relations') {
             if (extension === FileExtensionEnum.XML) {
-                exportRelXml({ filter: {} })
-                return
-            }
-            if (extension === FileExtensionEnum.CSV) {
-                exportRelCsv({ filter: {} })
-                return
-            }
-            if (extension === FileExtensionEnum.XLSX) {
-                exportRelExcel({ filter: {} })
-                return
+                exportAndDownloadBlob(exportRelXml, FileExtensionEnum.XML, entityName, filter)
+            } else if (extension === FileExtensionEnum.CSV) {
+                exportAndDownloadBlob(exportRelCsv, FileExtensionEnum.XML, entityName, filter)
+            } else if (extension === FileExtensionEnum.XLSX) {
+                exportAndDownloadBlob(exportRelExcel, FileExtensionEnum.XML, entityName, filter)
             }
         }
     }
@@ -92,7 +95,7 @@ export const ExportButton: React.FC = () => {
                 variant="secondary"
                 label={<IconLabel label={t('actionOverTable.export')} icon={ExportIcon} />}
             />
-            <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />
+            <ExportItemsOrRelations isOpen={modalOpen} close={onClose} isLoading={isLoading} onExportStart={onExportStart} />
         </>
     )
 }
