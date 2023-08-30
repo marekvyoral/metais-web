@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useTranslation } from 'react-i18next'
 import { BreadCrumbs, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 
-import { CiListContainer } from '@/components/containers/CiListContainer'
+import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
+import { CiListContainer } from '@/components/containers/CiListContainer'
 import { ListWrapper } from '@/components/list-wrapper/ListWrapper'
 
 export interface KSFilterData extends IFilterParams {
@@ -17,7 +18,7 @@ const ProjektListPage = () => {
     const { entityName: ciType } = useParams()
     const { i18n, t } = useTranslation()
     const defaultFilterValues: KSFilterData = { Gen_Profil_nazov: '', Gen_Profil_kod_metais: '' }
-
+    const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
     return (
         <AttributesContainer
             entityName={ciType ?? ''}
@@ -62,6 +63,7 @@ const ProjektListPage = () => {
                                     ciType={ciType}
                                     isLoading={isLoading}
                                     isError={isError}
+                                    rowSelectionState={{ rowSelection, setRowSelection }}
                                 />
                             )}
                         />

@@ -6,6 +6,7 @@ export enum GET_ENUM {
     KATEGORIA_OSOBA = 'KATEGORIA_OSOBA',
     TYP_OSOBY = 'TYP_OSOBY',
     ZDROJ = 'ZDROJ',
+    TYP_REPLIKACIE = 'TYP_REPLIKACIE',
 }
 
 export enum ATTRIBUTE_NAME {
@@ -40,3 +41,5 @@ export enum STATUTAR_NAME {
     Profil_PO_statutar_priezvisko = 'Profil_PO_statutar_priezvisko',
     Profil_PO_statutar_titul_za_menom = 'Profil_PO_statutar_titul_za_menom',
 }
+
+export const TOP_LEVEL_PO_ICO = '000000003001'

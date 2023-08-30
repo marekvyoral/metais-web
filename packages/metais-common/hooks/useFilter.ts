@@ -223,7 +223,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
     }
 
     useEffect(() => {
-        if (!state.filter[location.pathname] && !state.clearedFilter[location.pathname]) {
+        if (!state.filter[location.pathname] && !state.clearedFilter[location.pathname] && !filter) {
             dispatch({
                 type: FilterActions.SET_FILTER,
                 value: defaults,
@@ -231,7 +231,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
             })
             setSearchParams(clearData(defaults))
         }
-    }, [defaults, dispatch, location.pathname, setSearchParams, state.clearedFilter, state.filter, clearData])
+    }, [defaults, dispatch, location.pathname, setSearchParams, state.clearedFilter, state.filter, clearData, filter])
 
     return {
         ...methods,

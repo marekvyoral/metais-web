@@ -6,21 +6,7 @@ import OrganizationsDetailView from '@/components/views/organizations/Organizati
 
 const Organization = () => {
     const { entityId } = useParams()
-    return (
-        <OrganizationsDetailContainer
-            entityId={entityId ?? ''}
-            View={(props) => (
-                <OrganizationsDetailView
-                    {...props.data}
-
-                    // unValidRelationShipTypeMutation={props?.unValidRelationShipTypeMutation}
-                    // addNewConnectionToExistingRelation={props?.addNewConnectionToExistingRelation}
-                    // saveExistingAttribute={props?.saveExistingAttribute}
-                    // resetExistingAttribute={props?.resetExistingAttribute}
-                />
-            )}
-        />
-    )
+    return <OrganizationsDetailContainer entityId={entityId ?? ''} View={(props) => <OrganizationsDetailView {...props.data} />} />
 }
 
 export default Organization

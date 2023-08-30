@@ -15,7 +15,16 @@ interface ICiListContainer<T> {
 export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityName, ListComponent, defaultFilterValues }: ICiListContainer<T>) => {
     const { columnListData, saveColumnSelection, resetColumns, isLoading: isColumnsLoading, isError: isColumnsError } = useGetColumnData(entityName)
 
-    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, entityName)
+    const defaultRequestApi = {
+        filter: {
+            type: [entityName],
+            metaAttributes: {
+                state: ['DRAFT'],
+            },
+        },
+    }
+
+    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, entityName, defaultRequestApi)
 
     const {
         data: tableData,

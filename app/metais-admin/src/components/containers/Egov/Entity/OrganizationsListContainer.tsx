@@ -1,11 +1,11 @@
-import React from 'react'
-import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { FieldValues } from 'react-hook-form'
 import { ConfigurationItemUiAttributes, useInvalidateConfigurationItem, useReadCiList1 } from '@isdd/metais-common/api'
-import { IListView } from '@isdd/metais-common/types/list'
+import { useFilterForCiList, useGetColumnData, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers/filter'
-import { useGetColumnData, useFilterForCiList, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
+import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { QueryFeedback } from '@isdd/metais-common/index'
+import { IListView } from '@isdd/metais-common/types/list'
+import React from 'react'
+import { FieldValues } from 'react-hook-form'
 export interface IActions {
     setInvalid?: (entityId: string | undefined, configurationItem: ConfigurationItemUiAttributes | undefined) => Promise<void>
 }
@@ -14,16 +14,28 @@ interface IOraganizationsListContainer<T> {
     entityName: string
     ListComponent: React.FC<IListView & IActions>
     defaultFilterValues: T
+    entityId?: string
 }
 
 export const OraganizationsListContainer = <T extends FieldValues & IFilterParams>({
     entityName,
     ListComponent,
     defaultFilterValues,
+    entityId,
 }: IOraganizationsListContainer<T>) => {
     const { columnListData, saveColumnSelection, resetColumns, isLoading: isColumnsLoading, isError: isColumnsError } = useGetColumnData(entityName)
 
-    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, entityName)
+    const defaultRequestApi = {
+        filter: {
+            type: [entityName],
+            metaAttributes: {
+                state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'],
+            },
+            poUuid: entityId,
+        },
+    }
+
+    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, entityName, defaultRequestApi)
 
     const {
         data: tableData,

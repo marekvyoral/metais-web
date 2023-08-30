@@ -73,20 +73,12 @@ export const useGetColumnData = (entityName: string) => {
     }
 }
 
-export const useFilterForCiList = <T extends FieldValues & IFilterParams>(defaultFilterValues: T, entityName: string) => {
+export const useFilterForCiList = <T extends FieldValues & IFilterParams, V>(defaultFilterValues: T, entityName: string, defaultRequestApi?: V) => {
     const { filter: filterParams, handleFilterChange } = useFilterParams<T & IFilter>({
         sort: [{ orderBy: ATTRIBUTE_NAME.Gen_Profil_nazov, sortDirection: SortType.ASC }],
         ...defaultFilterValues,
     })
 
-    const defaultRequestApi = {
-        filter: {
-            type: [entityName],
-            metaAttributes: {
-                state: ['DRAFT'],
-            },
-        },
-    }
     const filterToNeighborsApi = mapFilterToNeighborsApi(filterParams, defaultRequestApi)
 
     return {

@@ -232,6 +232,13 @@ export default defineConfig({
         output: {
             target: `./packages/metais-common/src/api/generated/iam-swagger.ts`,
             override: {
+                operations: {
+                    getPoRelationshipIntegrityConstraints: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
+                },
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useIAmSwaggerClient.ts',
                     name: 'useIAmSwaggerClient',

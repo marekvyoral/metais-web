@@ -1,5 +1,5 @@
 import { Identity, RoleOrgIdentity } from '@isdd/metais-common/api/generated/iam-swagger'
-import { TaskHistory, useGetTaskById, useCloseTask, useReassignTask } from '@isdd/metais-common/api/generated/tasks-swagger'
+import { TaskHistory, useCloseTask, useGetTaskById, useReassignTask } from '@isdd/metais-common/api/generated/tasks-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useState } from 'react'
@@ -39,7 +39,7 @@ export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) 
     const [selectedLogin, setSelectedLogin] = useState<Identity | undefined>(undefined)
     const [selectedGroup, setSelectedGroup] = useState<RoleOrgIdentity | undefined>(undefined)
 
-    const { isLoading, isError, data: task, refetch: refetchTask } = useGetTaskById({ id: taskId ?? '' })
+    const { isLoading, isError, data: task, refetch: refetchTask } = useGetTaskById({ id: parseInt(taskId ?? '') ?? '' })
 
     const closeTaskCall = useCloseTask()
     const reassignTaskCall = useReassignTask()

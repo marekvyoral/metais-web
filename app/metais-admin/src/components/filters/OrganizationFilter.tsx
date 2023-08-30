@@ -1,14 +1,13 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { Input, MultiSelect } from '@isdd/idsk-ui-kit/index'
-import { useOptionsPersonType } from '@isdd/metais-common/api/hooks/containers/filterMultiValues'
-import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { useOptionsPersonType } from '@isdd/metais-common/api/hooks/containers/filterMultiValues'
+import { useTranslation } from 'react-i18next'
 
-import { KSFilterData } from '@/pages/organizations/organizations'
+import { OrganizationFilterData } from '@/pages/organizations/organizations'
 
 type Props = {
-    defaultFilterValues: KSFilterData
+    defaultFilterValues: OrganizationFilterData
 }
 
 const OrganizationFilter = ({ defaultFilterValues }: Props) => {
@@ -17,7 +16,7 @@ const OrganizationFilter = ({ defaultFilterValues }: Props) => {
     const { optionsPersonType } = useOptionsPersonType()
 
     return (
-        <Filter<KSFilterData>
+        <Filter<OrganizationFilterData>
             defaultFilterValues={defaultFilterValues}
             form={({ register, setValue, filter }) => (
                 <div>
@@ -33,7 +32,11 @@ const OrganizationFilter = ({ defaultFilterValues }: Props) => {
                         defaultValue={filter.EA_Profil_PO_typ_osoby}
                         setValue={setValue}
                     />
-                    <Input label={t(`filter.organizations.ICO`)} placeholder={t(`filter.nameICO`)} {...register(ATTRIBUTE_NAME.EA_Profil_PO_ico)} />
+                    <Input
+                        label={t(`filter.organizations.ICO`)}
+                        placeholder={t(`filter.organizations.ICO`)}
+                        {...register(ATTRIBUTE_NAME.EA_Profil_PO_ico)}
+                    />
                 </div>
             )}
         />
