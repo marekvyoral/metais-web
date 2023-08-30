@@ -149,7 +149,7 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
         if (filteredSources == undefined || filteredTargets == undefined) {
             return { cisAsSources: undefined, cisAsTargets: undefined }
         }
-        
+
         const uniqueFilteredSources = removeDuplicates(filteredSources ?? [], 'ciTypeTechnicalName')
         const uniqueFilteredTargets = removeDuplicates(filteredTargets ?? [], 'ciTypeTechnicalName')
 
