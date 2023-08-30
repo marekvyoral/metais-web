@@ -1,11 +1,12 @@
-import React from 'react'
-import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
+import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
+import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { ListWrapper } from '@/components/list-wrapper/ListWrapper'
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
 
 interface ProjektFilterData extends IFilterParams {
     Gen_Profil_nazov?: string
@@ -15,6 +16,7 @@ const ProjektListPage: React.FC = () => {
     const { i18n } = useTranslation()
     const ENTITY_NAME = 'Projekt'
     const defaultFilterValues: ProjektFilterData = { Gen_Profil_nazov: '', Gen_Profil_kod_metais: '' }
+    const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
 
     return (
         <AttributesContainer
@@ -54,6 +56,7 @@ const ProjektListPage: React.FC = () => {
                                     ciType={ENTITY_NAME}
                                     isLoading={isLoading}
                                     isError={isError}
+                                    rowSelectionState={{ rowSelection, setRowSelection }}
                                 />
                             )}
                         />

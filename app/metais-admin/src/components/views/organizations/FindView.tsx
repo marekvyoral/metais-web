@@ -4,6 +4,7 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useGetUuidHook } from '@isdd/metais-common/api'
 
 import styles from './findView.module.scss'
 import { generateFindIcoSchema } from './schemas/findIcoSchema'
@@ -19,6 +20,7 @@ export const FindView = ({ setIcoToSearch, data }: iFindView) => {
     const navigate = useNavigate()
     const [showCreateButton, setShowCreateButton] = useState<boolean>(false)
     const { handleSubmit, register, formState, watch } = formMethods
+    const getUUID = useGetUuidHook()
 
     const onSubmit = useCallback(
         (formValues: FieldValues) => {
@@ -31,10 +33,11 @@ export const FindView = ({ setIcoToSearch, data }: iFindView) => {
         navigate('/organizations')
     }, [navigate])
 
-    const handleOnCreateClick = useCallback(() => {
+    const handleOnCreateClick = useCallback(async () => {
         const ico = watch('ico')
-        if (data?.generatedUUID) navigate(`/organizations/${data?.generatedUUID}/${ico}/create`)
-    }, [navigate, watch, data?.generatedUUID])
+        const generatedUUID = await getUUID()
+        navigate(`/organizations/${generatedUUID}/${ico}/create`)
+    }, [navigate, watch, getUUID])
 
     useEffect(() => {
         if (data?.foundCiType?.configurationItemSet?.length == 0) setShowCreateButton(true)
