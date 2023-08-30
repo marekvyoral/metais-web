@@ -1,6 +1,5 @@
 export * from './api'
 export * from './componentHelpers/formatting/constraints'
-export * from './componentHelpers/formatting/date'
 export * from './componentHelpers/table/rowEditing'
 export * from './componentHelpers/tabs/tabNames'
 export * from './components/actions-over-table'
