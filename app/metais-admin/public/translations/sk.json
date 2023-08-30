@@ -81,7 +81,8 @@
         "chooseValue": "Vyberte hodnotu",
         "organizations": {
             "name": "Meno",
-            "ICO": "ICO"
+            "ICO": "ICO",
+            "onlyFreePO": "Iba voľné povinné osoby"
         },
 
         "PO": {
@@ -299,7 +300,9 @@
         "edit": "Upraviť",
         "reset": "Resetovať",
         "save": "Uložiť",
-        "cancel": "Zrušiť"
+        "cancel": "Zrušiť",
+        "assignment": "Priradenie",
+        "moreActions": "Viac"
     },
     "codelists": {
         "createNew": "Pridať položku",
@@ -439,8 +442,49 @@
             "icoRequired": "IČO je povinné",
             "icoRegex": "IČO je v nesprávnom tvare. Správny tvar je '00000000' a '000000000000'"
         },
+        "edit": {
+            "updateExistingOrganization": "Úprava povinnej osoby"
+        },
         "create": {
-            "addNewOrganization": "Pridanie PO"
+            "addNewOrganization": "Pridanie PO",
+            "name": "Názov",
+            "category": "Kategória osoby",
+            "organizationType": "Typ povinnej osoby",
+            "engName": "Anglický názov",
+            "description": "Popis",
+            "engDescription": "Anglický popis",
+            "source": "Zdroj údajov",
+            "codeMetaIS": "Kód MetaIS",
+            "URI": "URI",
+            "webResidence": "Webové sídlo",
+            "note": "Poznámka",
+            "ico": "IČO",
+            "psc": "PSČ",
+            "city": "Mesto / Obec",
+            "street": "Ulica",
+            "number": "Orientačné číslo",
+            "district": "Okres",
+            "isChapter": "Je kapitola",
+            "shortName": "Skrátený názov",
+            "referenceDescription": "Popis referencie",
+            "linkReference": "Odkaz na referenciu",
+            "numberOfReplication": "Počet replikácii",
+            "replicationType": "Typ replikácie",
+            "postalCodeRegex": "PSČ je v nesprávnom tvare. Správny tvar je '00000' a povolené znaky sú 0-9",
+            "officer": {
+                "titleBeforeName": "Titul pred menom",
+                "name": "Meno",
+                "lastName": "Priezvisko",
+                "titleAfterName": "Titul za menom"
+            }
+        },
+        "assigned": {
+            "heading": "Priradenie povinnej osoby nadradenej povinnej osobe",
+            "save": "Uložiť",
+            "isAssigned": "PO môže figurovať ako podriadená iba pre jednu nadriadenú PO!",
+            "isCycleInHierarchy": "V hierarchii PO nesmie vzniknúť cirkulárna referencia v rámci PO, teda PO nesmie byť nadradenou a zároveň podradenou pre tú istú PO!",
+            "warningInfo": "Nemôžete vytvoriť vzťah medzi rovnakou identitou!",
+            "topLevelOrg": "Nemôžete priradiť povinnej osobe hlavnú povinnú osobu!"
         }
     },
     "PO_Attributes": {

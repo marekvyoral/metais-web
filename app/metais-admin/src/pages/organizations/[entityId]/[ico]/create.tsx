@@ -1,11 +1,14 @@
 import React from 'react'
-// import { useParams } from 'react-router-dom'
 
 import { CreateOrganizationView } from '@/components/views/organizations/CreateOrganizationView'
+import { CreateOrganizationContainer } from '@/components/containers/organizations/CreateOrganizationContainer'
 
 const Create = () => {
-    // const { entityId, ico } = useParams()
-    return <CreateOrganizationView />
+    return (
+        <CreateOrganizationContainer
+            View={(props) => <CreateOrganizationView data={props?.data} storePO={props?.storePO} updatePO={props?.updatePO} />}
+        />
+    )
 }
 
 export default Create

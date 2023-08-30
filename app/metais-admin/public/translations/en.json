@@ -302,7 +302,8 @@
         "chooseValue": "Select value",
         "organizations": {
             "name": "Name",
-            "ICO": "ICO"
+            "ICO": "ICO",
+            "onlyFreePO": "Only free organizations"
         },
 
         "PO": {
@@ -328,8 +329,9 @@
         "edit": "Edit",
         "reset": "Reset",
         "save": "Save",
-        "cancel": "cancel",
-        "moreActions": "More"
+        "cancel": "Cancel",
+        "moreActions": "More",
+        "assignment": "Assignment"
     },
     "navMenu": {
         "dashboard": "Dashboard",
@@ -381,8 +383,8 @@
     },
     "organizations": {
         "detail": {
-            "title": "Detail povinnej osoby",
-            "statutoryOfficer": "Štatutár"
+            "title": "Detail of organization",
+            "statutoryOfficer": "Statutory officer"
         },
         "find": {
             "new": "Create new organization",
@@ -393,6 +395,50 @@
             "createNew": "Create new organization",
             "icoRequired": "Identification number is required",
             "icoRegex": "Identification number is in incorrect format. Correct format is '00000000' or '000000000000'"
+        },
+        "edit": {
+            "updateExistingOrganization": "Edit organization"
+        },
+        "create": {
+            "addNewOrganization": "Add new organization",
+            "name": "Name",
+            "category": "Category of person",
+            "organizationType": "Type of organization",
+            "engName": "English name",
+            "description": "Description",
+            "engDescription": "English description",
+            "source": "Source",
+            "codeMetaIS": "MetaIS code",
+            "URI": "URI",
+            "webResidence": "Web residence",
+            "note": "Note",
+            "ico": "Identification number",
+            "psc": "Postal code",
+            "city": "City",
+            "street": "Street",
+            "number": "Number",
+            "district": "District",
+            "isChapter": "Is chapter",
+            "shortName": "Short name",
+            "referenceDescription": "Reference description",
+            "linkReference": "Reference link",
+            "numberOfReplication": "Number of replications",
+            "replicationType": "Replication type",
+            "postalCodeRegex": "Incorrect form of postal code. Correct form is '00000' and allowed characters are 0-9",
+            "officer": {
+                "titleBeforeName": "Title before name",
+                "name": "Name",
+                "lastName": "Last name",
+                "titleAfterName": "Title after name"
+            }
+        },
+        "assigned": {
+            "heading": "Assign organization to superior organization",
+            "save": "Save",
+            "isAssigned": "Organization can figure only as subject to only one superior organization!",
+            "isCycleInHierarchy": "Organization can not be superior and subject at the same time for one organization!",
+            "warningInfo": "You can not create relationship between similar identity!",
+            "topLevelOrg": "You can not assign organization main organization!"
         }
     },
     "PO_Attributes": {

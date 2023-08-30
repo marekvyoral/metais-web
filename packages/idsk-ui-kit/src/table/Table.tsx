@@ -4,8 +4,8 @@ import {
     ExpandedState,
     OnChangeFn,
     PaginationState,
-    RowSelectionState,
     Row,
+    RowSelectionState,
     getCoreRowModel,
     getExpandedRowModel,
     getPaginationRowModel,
@@ -15,12 +15,12 @@ import {
 import classNames from 'classnames'
 import React, { useRef } from 'react'
 
+import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableInfoMessage } from './TableInfoMessage'
 import { TableRow } from './TableRow'
+import { TableRowExpanded } from './TableRowExpanded'
 import styles from './table.module.scss'
 import { transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
-import { DraggableColumnHeader } from './DraggableColumnHeader'
-import { TableRowExpanded } from './TableRowExpanded'
 
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 
@@ -41,6 +41,7 @@ export interface ITableProps<T> {
     getSubRows?: (row: T) => T[] | undefined
     isRowSelected?: (row: Row<T>) => boolean
     isRowBold?: (row: Row<T>) => boolean
+    isRowDanger?: (row: Row<T>) => boolean
     isLoading?: boolean
     error?: boolean
     getExpandedRow?: (row: Row<T>) => JSX.Element | null
@@ -65,6 +66,7 @@ export const Table = <T,>({
     getSubRows,
     isRowSelected,
     isRowBold,
+    isRowDanger,
     isLoading = false,
     error = false,
     getExpandedRow,
@@ -159,6 +161,7 @@ export const Table = <T,>({
                             key={row.id}
                             isRowSelected={isRowSelected}
                             isRowBold={isRowBold}
+                            isRowDanger={isRowDanger}
                             onRowClick={onRowClick}
                             rowHref={rowHref}
                         />
