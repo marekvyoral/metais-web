@@ -1,22 +1,21 @@
+import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { IColumn, Input } from '@isdd/idsk-ui-kit/index'
-import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
-import React, { useState } from 'react'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { useTranslation } from 'react-i18next'
 import { Attribute, AttributeProfile, CiType, ConfigurationItemSetUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
-import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { ImportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ImportButton'
-import { ExportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ExportButton'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { BulkPopup, CreateEntityButton } from '@isdd/metais-common/components/actions-over-table'
-import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
-import { CrossInACircleIcon, CheckInACircleIcon, ChangeIcon } from '@isdd/metais-common/assets/images'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
 import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
+import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
+import { ExportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ExportButton'
+import { ImportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ImportButton'
+import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { BulkPopup, CreateEntityButton } from '@isdd/metais-common/index'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-import { CiTable } from '@/components/ci-table/CiTable'
-import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
+import { CiTable, IRowSelectionState } from '@/components/ci-table/CiTable'
 import { KSFilterData } from '@/pages/ci/[entityName]'
 
 interface IListWrapper {
@@ -46,6 +45,7 @@ interface IListWrapper {
     isLoading: boolean
     isError: boolean
     gestorsData: RoleParticipantUI[] | undefined
+    rowSelectionState: IRowSelectionState
 }
 
 export const ListWrapper: React.FC<IListWrapper> = ({
@@ -66,12 +66,12 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     gestorsData,
     isLoading,
     isError,
+    rowSelectionState,
 }) => {
     const { t } = useTranslation()
-    const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
     const navigate = useNavigate()
     const location = useLocation()
-    const checkedRowItems = Object.keys(rowSelection).length
+    const checkedRowItems = Object.keys(rowSelectionState.rowSelection).length
 
     return (
         <>
@@ -132,7 +132,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 handleFilterChange={handleFilterChange}
                 pagination={pagination}
                 sort={sort}
-                rowSelectionState={{ rowSelection, setRowSelection }}
+                rowSelectionState={rowSelectionState}
                 isLoading={isLoading}
                 isError={isError}
             />

@@ -14,6 +14,10 @@
     color: govuk-colour('red');
 }
 
+.danger {
+    background-color: lighten(govuk-colour('light-pink'), 10);
+}
+
 .positionRelative {
     position: relative;
 }
@@ -95,4 +99,3 @@
 tr:hover td {
     background-color: govuk-colour('grey-4');
 }
-

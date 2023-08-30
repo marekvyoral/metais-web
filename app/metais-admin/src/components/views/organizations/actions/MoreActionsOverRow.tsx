@@ -1,7 +1,7 @@
+import React from 'react'
 import { Button, ButtonPopup } from '@isdd/idsk-ui-kit/index'
 import { ConfigurationItemUi } from '@isdd/metais-common/api'
 import { CellContext } from '@tanstack/react-table'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
