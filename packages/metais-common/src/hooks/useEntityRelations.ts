@@ -146,9 +146,10 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
         const filteredSources = relatedData?.cisAsSources?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged))
         const filteredTargets = relatedData?.cisAsTargets?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged))
 
-        if (filteredSources == undefined && filteredTargets == undefined) {
+        if (filteredSources == undefined || filteredTargets == undefined) {
             return { cisAsSources: undefined, cisAsTargets: undefined }
         }
+        
         const uniqueFilteredSources = removeDuplicates(filteredSources ?? [], 'ciTypeTechnicalName')
         const uniqueFilteredTargets = removeDuplicates(filteredTargets ?? [], 'ciTypeTechnicalName')
 
@@ -160,11 +161,10 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
         let ciType: string[] | undefined = []
         let relType: string[] | undefined = []
 
-        relatedCiTypePreviewArray &&
-            relatedCiTypePreviewArray.forEach((relatedCiType) => {
-                ciType = ciType?.concat(relatedCiType.ciTypeTechnicalName ?? '')
-                relType = relType?.concat(relatedCiType.relationshipTypeName ?? '')
-            })
+        relatedCiTypePreviewArray?.forEach((relatedCiType) => {
+            ciType = ciType?.concat(relatedCiType.ciTypeTechnicalName ?? '')
+            relType = relType?.concat(relatedCiType.relationshipTypeTechnicalName ?? '')
+        })
 
         return {
             neighboursFilter: {

@@ -65,7 +65,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
     if (!configurationItemId) return <View pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
     return (
         <View
-            data={documentCiData ?? undefined}
+            data={documentCiData}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
             isLoading={isLoading || isEntityRelationsLoading}
