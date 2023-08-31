@@ -27,4 +27,11 @@
 .actions {
     display: flex;
     flex-direction: column;
+    gap: govuk-spacing(2);
+}
+
+.underTableButton {
+    display: flex;
+    flex-direction: row;
+    gap: govuk-spacing(3);
 }

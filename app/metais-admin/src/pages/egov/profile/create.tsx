@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { CreateProfileContainer } from '@/components/containers/Egov/Profile/CreateProfileContainer'
 import { CreateEntityView } from '@/components/views/egov/entity-detail-views/CreateEntityView'
 

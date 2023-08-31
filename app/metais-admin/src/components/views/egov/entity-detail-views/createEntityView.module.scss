@@ -1,7 +1,10 @@
 @import '../../../../utils.scss';
 
 .submitButton {
+    display: flex;
+    flex-direction: row;
     margin-top: govuk-spacing(4);
+    gap: govuk-spacing(4);
 }
 
 .addConnection {

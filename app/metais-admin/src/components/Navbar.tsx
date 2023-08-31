@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
 import { NavBarHeader } from '@isdd/metais-common/components/navbar/navbar-header/NavBarHeader'
 import { NavBarMain } from '@isdd/metais-common/components/navbar/navbar-main/NavBarMain'
 import { NavMenu } from '@isdd/metais-common/components/navbar/navmenu/NavMenu'
-import { useTranslation } from 'react-i18next'
-import { TFunction } from 'i18next'
 import { AdminRouteNames, NavigationItem } from '@isdd/metais-common/navigation/routeNames'
+import { TFunction } from 'i18next'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
     {
@@ -54,6 +54,10 @@ export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
             {
                 title: t('navMenu.egov.relations'),
                 path: AdminRouteNames.EGOV_RELATION,
+            },
+            {
+                title: t('navMenu.tooltips'),
+                path: AdminRouteNames.EGOV_PROFILE,
             },
         ],
     },

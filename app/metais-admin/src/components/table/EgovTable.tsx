@@ -1,29 +1,106 @@
-import React, { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { Table } from '@isdd/idsk-ui-kit/table/Table'
-import { ColumnDef } from '@tanstack/react-table'
-import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
+import { ButtonLink, CheckBox, LoadingIndicator, PaginatorWrapper, Table, TextWarning } from '@isdd/idsk-ui-kit/index'
+import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_SIZE, CiTypePreview } from '@isdd/metais-common/api'
-import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { BulkPopup, CreateEntityButton, ExportButton } from '@isdd/metais-common/components/actions-over-table'
-import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
-import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
-import { IColumnSectionType } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
+import {
+    AttributeProfile,
+    AttributeProfilePreview,
+    AttributeProfileType,
+    BASE_PAGE_SIZE,
+    CiTypePreview,
+    useStoreUnValid,
+    useStoreValid1,
+} from '@isdd/metais-common/api'
+import { CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { ActionsOverTable, BulkPopup, CreateEntityButton } from '@isdd/metais-common/index'
+import { QueryObserverResult } from '@tanstack/react-query'
+import { ColumnDef, Row } from '@tanstack/react-table'
+import { useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 type IListData = {
-    data?: CiTypePreview[] | undefined
+    data?: AttributeProfile[] | undefined
     entityName?: string
+    refetch?: () => Promise<QueryObserverResult<AttributeProfilePreview, unknown>>
+    isFetching?: boolean
+}
+interface IEgovTable {
+    name?: string
+    technicalName?: string
+    type?: AttributeProfileType
+    valid?: boolean
 }
 
-export const EgovTable = ({ data, entityName }: IListData) => {
+export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) => {
     const { t } = useTranslation()
-    const dataLength = data?.length ?? 0
+
     const navigate = useNavigate()
     const location = useLocation()
+    const [rowSelection, setRowSelection] = useState<Array<string>>([])
+
+    const handleCheckboxChange = useCallback(
+        (row: Row<IEgovTable>) => {
+            if (row.original.technicalName) {
+                if (rowSelection.includes(row.original.technicalName)) {
+                    setRowSelection((prev) => prev.filter((tname) => tname !== row.original.technicalName))
+                } else {
+                    setRowSelection((prev) => [...prev, row.original.technicalName || ''])
+                }
+            }
+        },
+        [rowSelection, setRowSelection],
+    )
+
+    const handleAllCheckboxChange = () => {
+        if (!data) return
+        const checkedAll = data.every((row) => row.type == AttributeProfileType.custom && rowSelection.includes(row.technicalName || ''))
+        if (checkedAll) {
+            setRowSelection([])
+            return
+        }
+        const customRows = data.filter((row) => row.type == AttributeProfileType.custom).map((row) => row.technicalName || '') || []
+        setRowSelection(customRows)
+    }
     const columns: Array<ColumnDef<CiTypePreview>> = [
+        {
+            header: ({ table }) => {
+                const checked = table
+                    .getRowModel()
+                    .rows.every((row) => row.original.type == AttributeProfileType.custom && rowSelection.includes(row.original.technicalName || ''))
+                return (
+                    <div className="govuk-checkboxes govuk-checkboxes--small">
+                        <CheckBox
+                            label=""
+                            name="checkbox"
+                            id="checkbox-all"
+                            value="checkbox-all"
+                            onChange={() => handleAllCheckboxChange()}
+                            checked={checked}
+                        />
+                    </div>
+                )
+            },
+            id: CHECKBOX_CELL,
+            cell: ({ row }) =>
+                row.original.type == AttributeProfileType.custom ? (
+                    <div className="govuk-checkboxes govuk-checkboxes--small">
+                        <CheckBox
+                            label=""
+                            name="checkbox"
+                            id={`checkbox_${row.id}`}
+                            value="true"
+                            onChange={() => {
+                                handleCheckboxChange(row)
+                            }}
+                            checked={row.original.technicalName ? !!rowSelection.includes(row.original.technicalName) : false}
+                            //containerClassName={styles.marginBottom15}
+                        />
+                    </div>
+                ) : (
+                    ''
+                ),
+        },
         {
             header: t('egov.name'),
             accessorFn: (row) => row?.name,
@@ -58,69 +135,108 @@ export const EgovTable = ({ data, entityName }: IListData) => {
     const [start, setStart] = useState<number>(0)
     const [end, setEnd] = useState<number>(pageSize)
     const [pageNumber, setPageNumber] = useState<number>(1)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const handlePageChange = (filter: IFilter) => {
-        setPageNumber(filter?.pageNumber ?? 0)
-        setStart((filter?.pageNumber ?? 0) * pageSize - pageSize)
-        setEnd((filter?.pageNumber ?? 0) * pageSize)
+    const handlePageChange = (filterPage: IFilter) => {
+        setPageNumber(filterPage?.pageNumber ?? 0)
+        setStart((filterPage?.pageNumber ?? 0) * pageSize - pageSize)
+        setEnd((filterPage?.pageNumber ?? 0) * pageSize)
     }
 
-    const handleSetPageSize = (filter: IFilter) => {
-        setPageSize(filter?.pageSize ?? BASE_PAGE_SIZE)
-        setStart((pageNumber ?? 0) * (filter?.pageSize ?? 0) - (filter?.pageSize ?? 0))
-        setEnd((pageNumber ?? 0) * (filter?.pageSize ?? 0))
+    const handleSetPageSize = (filterPage: IFilter) => {
+        setPageSize(filterPage?.pageSize ?? BASE_PAGE_SIZE)
+        setStart((pageNumber ?? 0) * (filterPage?.pageSize ?? 0) - (filterPage?.pageSize ?? 0))
+        setEnd((pageNumber ?? 0) * (filterPage?.pageSize ?? 0))
     }
 
-    const metaAttributesColumnSection: IColumnSectionType = {
-        name: 'Metainformácie položky',
-        attributes: [
-            {
-                name: t('egov.name'),
-                technicalName: 'name',
-            },
-            {
-                name: t('egov.technicalName'),
-                technicalName: 'technicalName',
-            },
-            {
-                name: t('egov.type'),
-                technicalName: 'type',
-            },
-            {
-                name: t('egov.state'),
-                technicalName: 'state',
-            },
-        ],
+    const [errorMessageUnvalid, setErrorMessageUnvalid] = useState(false)
+    const [errorMessageValid, setErrorMessageValid] = useState(false)
+
+    const { mutateAsync: setAttrUnvalid } = useStoreUnValid()
+    const { mutateAsync: setAttrValid } = useStoreValid1()
+
+    const invalidateItems = async () => {
+        if (data?.some((colData) => rowSelection.includes(colData.technicalName || '') && !colData.valid)) {
+            setErrorMessageUnvalid(true)
+            setErrorMessageValid(false)
+            return
+        }
+        setErrorMessageValid(false)
+        setErrorMessageUnvalid(false)
+        setIsLoading(true)
+        await Promise.all(
+            rowSelection.map(async (tname) => {
+                await setAttrUnvalid({ technicalName: tname })
+            }),
+        )
+        refetch?.()
+        setIsLoading(false)
     }
 
+    const validateItems = async () => {
+        if (data?.some((colData) => rowSelection.includes(colData.technicalName || '') && colData.valid)) {
+            setErrorMessageValid(true)
+            setErrorMessageUnvalid(false)
+            return
+        }
+        setErrorMessageValid(false)
+        setErrorMessageUnvalid(false)
+        setIsLoading(true)
+        await Promise.all(
+            rowSelection.map(async (tname) => {
+                await setAttrValid({ technicalName: tname })
+            }),
+        )
+        refetch?.()
+        setIsLoading(false)
+    }
     return (
         <div>
-            <ActionsOverTable
-                handleFilterChange={handleSetPageSize}
-                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                entityName={entityName ?? ''}
-                createButton={<CreateEntityButton onClick={() => navigate(`/egov/${entityName}/create`, { state: { from: location } })} />}
-                exportButton={<ExportButton />}
-                metaAttributesColumnSection={metaAttributesColumnSection}
-                hiddenButtons={{ SELECT_COLUMNS: true }}
-                bulkPopup={
-                    <BulkPopup
-                        checkedRowItems={0}
-                        items={[
-                            <ButtonLink key={'testItem1'} icon={CrossInACircleIcon} label={t('actionOverTable.invalidateItems')} />,
-                            <ButtonLink key={'testItem2'} icon={CheckInACircleIcon} label={t('actionOverTable.validateItems')} />,
-                            <ButtonLink key={'testItem3'} icon={ChangeIcon} label={t('actionOverTable.changeOwner')} />,
-                        ]}
-                    />
-                }
-            />
-            <Table
-                rowHref={(row) => `./${row.original.technicalName}`}
-                data={data?.slice(start, end)}
-                columns={columns}
-                pagination={{ pageIndex: pageNumber, pageSize }}
-            />
-            <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={dataLength} handlePageChange={handlePageChange} />
+            {errorMessageUnvalid && <TextWarning>{t('tooltips.unvalidTextWarning')}</TextWarning>}
+            {errorMessageValid && <TextWarning>{t('tooltips.validTextWarning')}</TextWarning>}
+
+            <div style={{ position: 'relative' }}>
+                {(isFetching || isLoading) && <LoadingIndicator />}
+                <ActionsOverTable
+                    handleFilterChange={handleSetPageSize}
+                    pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                    entityName={entityName ?? ''}
+                    createButton={
+                        <CreateEntityButton
+                            label={t('tooltips.addNewProfile')}
+                            onClick={() => navigate(`/egov/${entityName}/create`, { state: { from: location } })}
+                        />
+                    }
+                    hiddenButtons={{ SELECT_COLUMNS: true }}
+                    bulkPopup={
+                        <BulkPopup
+                            checkedRowItems={0}
+                            items={(closePopup) => [
+                                <ButtonLink
+                                    key={'buttonBlock'}
+                                    icon={CrossInACircleIcon}
+                                    label={t('actionOverTable.invalidateItems')}
+                                    onClick={() => {
+                                        invalidateItems()
+                                        closePopup()
+                                    }}
+                                />,
+                                <ButtonLink
+                                    key={'buttonUnblock'}
+                                    icon={CheckInACircleIcon}
+                                    label={t('actionOverTable.validateItems')}
+                                    onClick={() => {
+                                        validateItems()
+                                        closePopup()
+                                    }}
+                                />,
+                            ]}
+                        />
+                    }
+                />
+                <Table data={data?.slice(start, end)} columns={columns} pagination={{ pageIndex: pageNumber, pageSize }} />
+            </div>
+            <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={data?.length || 0} handlePageChange={handlePageChange} />
         </div>
     )
 }
