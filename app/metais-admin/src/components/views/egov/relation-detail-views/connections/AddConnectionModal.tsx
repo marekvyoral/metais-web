@@ -1,4 +1,3 @@
-import React from 'react'
 import { BaseModal } from '@isdd/idsk-ui-kit'
 import { CiTypePreview } from '@isdd/metais-common/api'
 
@@ -17,7 +16,7 @@ export const AddConnectionModal = ({ onClose, open, addConnection }: ConnectionM
         <BaseModal isOpen={open} close={onClose}>
             <EntityListContainer
                 View={(props) => {
-                    const listData = props?.data?.results
+                    const listData = props?.data
                     const listOptions =
                         listData?.map((data) => {
                             return {

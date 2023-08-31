@@ -93,6 +93,13 @@
             "evidenceStatus": "Stav evidencie"
         },
 
+        "egov": {
+            "name": "Meno",
+            "technicalName": "Technické meno",
+            "type": "Typ",
+            "valid": "Stav"
+        },
+
         "expand": "Rozbaliť filter",
         "collapse": "Zbaliť filter",
         "namePlaceholder": "Zadajte názov",

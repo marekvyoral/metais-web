@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react'
 import { BaseModal, MultiSelect } from '@isdd/idsk-ui-kit'
-import { useTranslation } from 'react-i18next'
+import { useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { ProfileListContainer } from '@/components/containers/Egov/Profile/ProfileListContainer'
 import { CreateEntityForm } from '@/types/form'
@@ -34,7 +34,7 @@ export const AddAttributeProfilesModal = ({ open, onClose }: AttributesModal) =>
         <BaseModal isOpen={open} close={onClose}>
             <ProfileListContainer
                 View={(props) => {
-                    const listData = props?.data?.attributeProfileList
+                    const listData = props?.data
                     const listOptions =
                         listData?.map((data) => {
                             return {
