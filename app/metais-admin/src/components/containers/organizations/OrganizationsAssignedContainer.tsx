@@ -30,6 +30,7 @@ interface AttributesContainer<T> {
     entityId: string
     entityName: string
     defaultFilterValues: T
+    defaultFilterOperators?: T
     icoOfDetailOrg: string
     onlyFreePO: boolean
     View: React.FC<IAtrributesContainerView>
@@ -42,6 +43,7 @@ export const OrganizationsAssignedContainer = <T extends FieldValues & IFilterPa
     icoOfDetailOrg,
     onlyFreePO,
     defaultFilterValues,
+    defaultFilterOperators,
 }: AttributesContainer<T>) => {
     const { tableDataWithBlockAttribute, pagination, handleSave, handleFilterChange, sort, isLoading, isError, allOrganizations } =
         useAssignOrganizations({
@@ -50,6 +52,7 @@ export const OrganizationsAssignedContainer = <T extends FieldValues & IFilterPa
             onlyFreePO,
             orgIco: icoOfDetailOrg,
             defaultFilterValues,
+            defaultFilterOperators,
         })
 
     return (
