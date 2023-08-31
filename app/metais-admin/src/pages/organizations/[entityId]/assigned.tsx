@@ -1,5 +1,6 @@
 import { TextHeading } from '@isdd/idsk-ui-kit'
 import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { OPERATOR_OPTIONS } from '@isdd/metais-common/hooks/useFilter'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -19,8 +20,11 @@ const Assigned = () => {
     const [selectedRows, setSelectedRows] = useState<ConfigurationItemUi[]>([])
     const defaultFilterValues: OrganizationFilterData = {
         Gen_Profil_nazov: '',
-        EA_Profil_PO_kategoria_osoby: [],
+        EA_Profil_PO_kategoria_osoby: '',
         EA_Profil_PO_ico: '',
+    }
+    const defaultFilterOperators: OrganizationFilterData = {
+        EA_Profil_PO_kategoria_osoby: OPERATOR_OPTIONS.EQUAL,
     }
     return (
         <OrganizationsDetailContainer
@@ -32,6 +36,7 @@ const Assigned = () => {
                     onlyFreePO={!onlyFreePOChecked}
                     icoOfDetailOrg={getIcoFromPO(props?.data?.configurationItem) ?? ''}
                     defaultFilterValues={defaultFilterValues}
+                    defaultFilterOperators={defaultFilterOperators}
                     View={({ handleFilterChange, data, pagination, sort, isLoading, isError, onSubmit }) => (
                         <>
                             <TextHeading size="M">{`${t('organizations.assigned.heading')} - ${getNameFromPo(

@@ -10,7 +10,7 @@ export interface OrganizationFilterData extends IFilterParams {
     Gen_Profil_nazov?: string
     EA_Profil_PO_typ_osoby?: string[]
     EA_Profil_PO_ico?: string
-    EA_Profil_PO_kategoria_osoby?: string[]
+    EA_Profil_PO_kategoria_osoby?: string
 }
 
 const Organizations = () => {

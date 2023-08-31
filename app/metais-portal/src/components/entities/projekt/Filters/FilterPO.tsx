@@ -63,6 +63,7 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
                             {...register(ATTRIBUTE_NAME.EA_Profil_PO_je_kapitola)}
                         />
                     </RadioGroupWithLabel>
+
                     <SelectPersonCategory filter={filter} setValue={setValue} />
                     <MultiSelect label="Evidence status" placeholder={t('filter.chooseState')} options={evidenceStatus} name="evidence-status" />
                     <SelectPersonType filter={filter} setValue={setValue} />

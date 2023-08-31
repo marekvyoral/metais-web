@@ -1,7 +1,7 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { Input, MultiSelect } from '@isdd/idsk-ui-kit/index'
+import { Input } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
-import { useOptionsPersonType } from '@isdd/metais-common/api/hooks/containers/filterMultiValues'
+import { SelectPersonType } from '@isdd/metais-common/components/select-person-type/SelectPersonType'
 import { useTranslation } from 'react-i18next'
 
 import { OrganizationFilterData } from '@/pages/organizations/organizations'
@@ -13,8 +13,6 @@ type Props = {
 const OrganizationFilter = ({ defaultFilterValues }: Props) => {
     const { t } = useTranslation()
 
-    const { optionsPersonType } = useOptionsPersonType()
-
     return (
         <Filter<OrganizationFilterData>
             defaultFilterValues={defaultFilterValues}
@@ -25,13 +23,7 @@ const OrganizationFilter = ({ defaultFilterValues }: Props) => {
                         placeholder={t(`filter.namePlaceholder`)}
                         {...register(ATTRIBUTE_NAME.Gen_Profil_nazov)}
                     />
-                    <MultiSelect
-                        name="EA_Profil_PO_typ_osoby"
-                        label={t('filter.PO.publicAuthorityType')}
-                        options={optionsPersonType ?? []}
-                        defaultValue={filter.EA_Profil_PO_typ_osoby}
-                        setValue={setValue}
-                    />
+                    <SelectPersonType filter={filter} setValue={setValue} />
                     <Input
                         label={t(`filter.organizations.ICO`)}
                         placeholder={t(`filter.organizations.ICO`)}

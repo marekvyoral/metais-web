@@ -24,6 +24,7 @@ interface iUseAssignOrganizations<T> {
     onlyFreePO: boolean
     orgIco: string
     defaultFilterValues: T
+    defaultFilterOperators?: T
 }
 
 export const useAssignOrganizations = <T extends FieldValues & IFilterParams>({
@@ -32,6 +33,7 @@ export const useAssignOrganizations = <T extends FieldValues & IFilterParams>({
     onlyFreePO,
     orgIco,
     defaultFilterValues,
+    defaultFilterOperators,
 }: iUseAssignOrganizations<T>) => {
     const { t } = useTranslation()
 
@@ -87,7 +89,7 @@ export const useAssignOrganizations = <T extends FieldValues & IFilterParams>({
         filter: {
             ...filterToNeighborsApi.filter,
             fullTextSearch: filterParams.fullTextSearch || '',
-            attributes: mapFilterParamsToApi(filterParams),
+            attributes: mapFilterParamsToApi(filterParams, defaultFilterOperators),
         },
     })
     const pagination = usePagination(tableData, filterParams)
