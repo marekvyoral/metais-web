@@ -1,8 +1,9 @@
 import React from 'react'
 
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
-import { CreateEntity } from '@/components/create-entity/CreateEntity'
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
+import { PublicAuthorityAndRoleContainer } from '@/components/containers/PublicAuthorityAndRoleContainer'
+import { CreateEntity } from '@/components/create-entity/CreateEntity'
 
 const CreateEntityPage: React.FC = () => {
     const entityName = 'PO'
@@ -14,7 +15,16 @@ const CreateEntityPage: React.FC = () => {
                 <CiCreateEntityContainer
                     entityName={entityName ?? ''}
                     View={({ data: generatedEntityId }) => (
-                        <CreateEntity data={{ attributesData, generatedEntityId }} entityName={entityName ?? ''} />
+                        <PublicAuthorityAndRoleContainer
+                            View={({ roleState, publicAuthorityState, data: groupData }) => (
+                                <CreateEntity
+                                    roleState={roleState}
+                                    publicAuthorityState={publicAuthorityState}
+                                    data={{ attributesData, generatedEntityId, ownerId: groupData?.gid }}
+                                    entityName={entityName ?? ''}
+                                />
+                            )}
+                        />
                     )}
                 />
             )}

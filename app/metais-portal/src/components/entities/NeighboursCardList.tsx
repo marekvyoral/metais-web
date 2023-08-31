@@ -7,6 +7,7 @@ import { QueryFeedback } from '@isdd/metais-common'
 import { ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 import { CardColumnList } from './cards/CardColumnList'
 import { RelationCard } from './cards/RelationCard'
@@ -33,6 +34,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
     setPageConfig,
 }) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const { entityTypes, relationsList, owners } = data
 
     return (
@@ -49,8 +51,18 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                             errorProps={{ errorMessage: t('feedback.failedFetch') }}
                         >
                             <ListActions>
-                                <Button className={'marginBottom0'} label={t('neighboursCardList.buttonAddNewRelation')} variant="secondary" />
-                                <Button className={'marginBottom0'} label={t('neighboursCardList.buttonAddNewRelationCard')} variant="secondary" />
+                                <Button
+                                    className={'marginBottom0'}
+                                    label={t('neighboursCardList.buttonAddNewRelation')}
+                                    variant="secondary"
+                                    onClick={() => navigate(`new-relation/${key.technicalName}`)}
+                                />
+                                <Button
+                                    className={'marginBottom0'}
+                                    onClick={() => navigate(`new-ci/${key.technicalName}`)}
+                                    label={t('neighboursCardList.buttonAddNewRelationCard')}
+                                    variant="secondary"
+                                />
                             </ListActions>
                             <CardColumnList>
                                 {relationsList?.ciWithRels?.map((ciWithRel) => {

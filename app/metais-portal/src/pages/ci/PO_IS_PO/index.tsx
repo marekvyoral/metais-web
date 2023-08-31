@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
-import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { CreateEntityButton, ExportButton, ImportButton } from '@isdd/metais-common/components/actions-over-table'
+import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { useTranslation } from 'react-i18next'
 
-import { CiListContainer } from '@/components/containers/CiListContainer'
 import { CiTable } from '@/components/ci-table/CiTable'
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
-import { FilterPO, POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
 import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
+import { AttributesContainer } from '@/components/containers/AttributesContainer'
+import { CiListContainer } from '@/components/containers/CiListContainer'
+import { FilterPO, POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
 
-const ProjektListPage = () => {
+const POIsPOListPage = () => {
     const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -89,4 +89,4 @@ const ProjektListPage = () => {
     )
 }
 
-export default ProjektListPage
+export default POIsPOListPage
