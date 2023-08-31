@@ -291,6 +291,14 @@
         "isvs": {
             "name": "Name of information system"
         },
+
+        "egov": {
+            "name": "Name",
+            "technicalName": "Technical name",
+            "type": "Type",
+            "valid": "State"
+        },
+
         "metaisCode": {
             "label": "Code MetaIS",
             "placeholder": "ks_"

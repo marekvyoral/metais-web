@@ -1,13 +1,22 @@
-import React from 'react'
+import { EntityFilterData } from '@isdd/metais-common/componentHelpers/filter/feFilters'
 
 import { ProfileListContainer } from '@/components/containers/Egov/Profile/ProfileListContainer'
+import { EntityFilter } from '@/components/filters/EntityFilter'
 import { EgovTable } from '@/components/table/EgovTable'
 
 const Profile = () => {
+    const defaultFilterValues: EntityFilterData = { name: '', technicalName: '', type: '', valid: '' }
+
     return (
         <ProfileListContainer
+            defaultFilterValues={defaultFilterValues}
             View={(props) => {
-                return <EgovTable data={props?.data?.attributeProfileList} entityName={'profile'} />
+                return (
+                    <>
+                        <EntityFilter defaultFilterValues={defaultFilterValues} />
+                        <EgovTable data={props?.data} entityName={'profile'} />
+                    </>
+                )
             }}
         />
     )
