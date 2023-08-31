@@ -1,9 +1,8 @@
-import React from 'react'
 import { useParams } from 'react-router-dom'
 
-import { CreateEntityView } from '@/components/views/egov/entity-detail-views/CreateEntityView'
-import { ProfileDetailContainer } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
 import { CreateProfileContainer } from '@/components/containers/Egov/Profile/CreateProfileContainer'
+import { ProfileDetailContainer } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
+import { CreateEntityView } from '@/components/views/egov/entity-detail-views/CreateEntityView'
 
 const EditProfile = () => {
     const { entityId } = useParams()
@@ -18,7 +17,7 @@ const EditProfile = () => {
                                 roles: createProps?.data?.roles,
                                 existingEntityData: props?.data?.ciTypeData,
                             }}
-                            mutate={createProps?.mutate}
+                            mutate={props?.saveAttribute}
                             hiddenInputs={createProps?.hiddenInputs}
                         />
                     )}

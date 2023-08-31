@@ -72,7 +72,6 @@
         "yes": "Yes",
         "no": "No"
     },
-
     "searchInput": {
         "search": "Search"
     },
@@ -102,9 +101,12 @@
         "unorderedColumn": "Unsorted column - will use ascending sorting.",
         "resetOrder": "Reset order",
         "pagination": "Page navigation",
-        "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
-        "noRowsFound": "No rows found",
         "name": "Name",
+        "technicalName": "Technical name",
+        "type": "Type",
+        "valid": "State",
+        "noRowsFound": "No rows found",
+        "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
         "ico": "ICO",
         "adress": "Adress"
     },
@@ -114,7 +116,8 @@
         "select": {
             "country": "Choose country"
         },
-        "submit": "Submit form"
+        "submit": "Submit form",
+        "back": "Back"
     },
     "languageSelector": {
         "open": "Open language menu",
@@ -193,12 +196,18 @@
                 "": "Forbidden"
             }
         },
+        "routing": {
+            "home": "Home Page",
+            "attrProfile": "Attribute profiles",
+            "profileList": "Profile List"
+        },
         "create": {
             "requiredField": "This field is required",
             "codePrefixRegex": "Accepted character are only 'a'..'z' and underscore '_'.",
             "technicalNameRegex": "Technical name could only consists of alphabet character",
             "addProfile": "Add profile",
-            "removeProfile": "Remove profile"
+            "removeProfile": "Remove profile",
+            "back": "Back to the list of attribute profiles"
         }
     },
 
@@ -259,7 +268,7 @@
         "view": "View",
         "actions": "Bulk actions",
         "invalidateItems": "Invalidate items",
-        "validateItems": "Validate actions",
+        "validateItems": "Validate items",
         "changeOwner": "Change owner"
     },
     "codelists": {
@@ -355,6 +364,53 @@
             "relations": "Relations",
             "roleManagement": "Role management"
         },
+        "tooltips": "Tooltips"
+    },
+    "tooltips": {
+        "selectedEntries": "Selected entries",
+        "addNewProfile": "Add a new profile",
+        "type": {
+            "application": "Application",
+            "system": "System",
+            "custom": "Custom"
+        },
+        "valid": {
+            "true": "Valid",
+            "false": "Invalid",
+            "undefined": "Invalid"
+        },
+        "routing": {
+            "home": "Home Page",
+            "attrProfile": "Attribute profiles",
+            "newProfile": "New profile"
+        },
+        "create": {
+            "createNewAttrProfile": "Creating a new attribute profile",
+            "detailArrtProfile": "Attribute profile detail",
+            "attributes": "Attributes",
+            "name": "Name*",
+            "technicalName": "Technical name*",
+            "type": "Type",
+            "description": "Description",
+            "engDescription": "English description",
+            "changeRole": "Change role*",
+            "save": "Save",
+            "cancel": "Cancel",
+            "valid": "State"
+        },
+        "table": {
+            "name": "Name",
+            "technicalName": "Technical name",
+            "description": "Description(Tooltip)",
+            "engDescription": "English description",
+            "order": "Order",
+            "engName": "English name",
+            "invisible": "Visibility",
+            "defaultValue": "Default value",
+            "edit": "Edit"
+        },
+        "unvalidTextWarning": "Some of your selected items are already invalidated",
+        "validTextWarning": "Some of your selected items are already validated",
         "codelists": "Internal codelists"
     },
     "feedback": {

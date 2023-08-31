@@ -1,11 +1,14 @@
 import { QueryFeedback } from '@isdd/metais-common'
-import { AttributeProfile, useListAttrProfile1 } from '@isdd/metais-common/api'
+import { AttributeProfile, AttributeProfilePreview, useListAttrProfile1 } from '@isdd/metais-common/api'
 import { EntityFilterData, filterEntityData } from '@isdd/metais-common/componentHelpers/filter/feFilters'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { QueryObserverResult } from '@tanstack/react-query'
 import React from 'react'
 
 export interface IView {
     data?: AttributeProfile[] | undefined
+    refetch?: () => Promise<QueryObserverResult<AttributeProfilePreview, unknown>>
+    isFetching?: boolean
 }
 
 interface IProfileListContainer {
@@ -14,7 +17,7 @@ interface IProfileListContainer {
 }
 
 export const ProfileListContainer: React.FC<IProfileListContainer> = ({ View, defaultFilterValues }) => {
-    const { data, isLoading, isError } = useListAttrProfile1({
+    const { data, isLoading, isError, isFetching, refetch } = useListAttrProfile1({
         // role: '',
     })
 
@@ -22,7 +25,7 @@ export const ProfileListContainer: React.FC<IProfileListContainer> = ({ View, de
     const filteredData = !defaultFilterValues ? data?.attributeProfileList : filterEntityData(filter, data?.attributeProfileList)
     return (
         <QueryFeedback loading={isLoading} error={isError}>
-            <View data={filteredData} />
+            <View data={filteredData} refetch={refetch} isFetching={isFetching} />
         </QueryFeedback>
     )
 }

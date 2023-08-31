@@ -160,7 +160,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     bulkPopup={
                         <BulkPopup
                             checkedRowItems={checkedRowItems}
-                            items={[
+                            items={() => [
                                 <ButtonLink key={'testItem1'} icon={CrossInACircleIcon} label={t('actionOverTable.invalidateItems')} />,
                                 <ButtonLink key={'testItem2'} icon={CheckInACircleIcon} label={t('actionOverTable.validateItems')} />,
                                 <ButtonLink key={'testItem3'} icon={ChangeIcon} label={t('actionOverTable.changeOwner')} />,
