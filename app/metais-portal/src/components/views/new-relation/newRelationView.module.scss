@@ -1,0 +1,19 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.accordionButtonDiv {
+    padding: 0 !important;
+    margin-top: -10px;
+    Button {
+        margin-bottom: 0;
+    }
+}
+.buttonLink {
+    z-index: 100;
+}
+
+.red {
+    color: govuk-colour('red');
+}
+.blue {
+    color: govuk-colour('blue');
+}

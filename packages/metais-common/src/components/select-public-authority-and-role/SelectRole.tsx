@@ -2,10 +2,10 @@ import { SimpleSelect } from '@isdd/idsk-ui-kit'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
-import { useGetRightForPO } from '@isdd/metais-common/hooks/useGetRightForPO'
-import { Role, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { HierarchyRightsUi } from '@isdd/metais-common/api'
+import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
+import { Role, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useGetRightForPO } from '@isdd/metais-common/hooks/useGetRightForPO'
 
 interface Props {
     onChangeRole: (val: string) => void
@@ -27,13 +27,13 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
 
     useEffect(() => {
         if (rightsForPOData && rightsForPOData.length > 0 && selectedRoleId === '') {
-            const firstValue = rightsForPOData[0].gid
+            const firstValue = rightsForPOData[0].roleUuid
             onChangeRole(firstValue)
             setDefaultValue(firstValue)
         }
     }, [onChangeRole, rightsForPOData, selectedRoleId])
 
-    const roleSelectOptions = rightsForPOData?.map((role: Role) => ({ value: role.gid ?? '', label: role.roleDescription ?? '' })) ?? [
+    const roleSelectOptions = rightsForPOData?.map((role: Role) => ({ value: role.roleUuid ?? '', label: role.roleDescription ?? '' })) ?? [
         { value: '', label: '' },
     ]
 
@@ -65,6 +65,8 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
                 disabled={isRightsForPOLoading || isRightsForPOError}
                 options={roleSelectOptions}
                 defaultValue={defaultValue}
+                isClearable={false}
+                value={selectedRoleId}
             />
         </>
     )

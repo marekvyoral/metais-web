@@ -38,6 +38,7 @@ interface IArrayAttributeInput {
     }>
     defaultValue: string[]
     hasResetState: HasResetState
+    nameSufix: string
 }
 
 export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
@@ -51,12 +52,13 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
     trigger,
     defaultValue,
     hasResetState,
+    nameSufix,
 }) => {
     const { t } = useTranslation()
     const [inputList, setInputList] = useState<string[]>(defaultValue)
 
     const info = attribute.description
-    const id = attribute.technicalName ?? ''
+    const id = attribute.technicalName ?? '' + nameSufix
     const name = attribute.name
     const isInteger = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.INTEGER
 

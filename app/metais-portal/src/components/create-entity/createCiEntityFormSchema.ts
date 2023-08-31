@@ -1,21 +1,21 @@
+import { Attribute, AttributeAttributeTypeEnum, AttributeConstraintRegexAllOf } from '@isdd/metais-common'
+import { TFunction } from 'i18next'
 import {
+    AnyObject,
+    ArraySchema,
     BooleanSchema,
     DateSchema,
     MixedSchema,
     NumberSchema,
     StringSchema,
+    array,
     boolean,
     date,
+    mixed,
     number,
     object,
     string,
-    mixed,
-    array,
-    ArraySchema,
-    AnyObject,
 } from 'yup'
-import { TFunction } from 'i18next'
-import { Attribute, AttributeAttributeTypeEnum, AttributeConstraintRegexAllOf } from '@isdd/metais-common'
 
 import { numericProperties } from './createEntityHelpers'
 
@@ -100,7 +100,7 @@ export const generateFormSchema = (data: (Attribute | undefined)[], t: TFunction
                 }
                 case isArray && hasConstraints: {
                     schema[attribute.technicalName] = array()
-                        .of(object({ label: string(), value: string() }))
+                        .of(string())
                         .when('isRequired', (_, current) => {
                             if (isRequired) {
                                 return current.required(t('validation.required'))
