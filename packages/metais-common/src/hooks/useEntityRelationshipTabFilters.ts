@@ -1,10 +1,8 @@
 import { useMemo } from 'react'
 
-import { removeDuplicates } from './commonFunctions'
-import { isRelatedCiTypeCmdbView } from './constants'
-
 import { NeighboursFilterContainerUi, RelatedCiTypePreview, RelatedCiTypePreviewList, useListRelatedCiTypes } from '@isdd/metais-common/api'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { isRelatedCiTypeCmdbView, removeDuplicates } from '@isdd/metais-common/hooks/common'
 
 export const useEntityRelationshipTabFilters = (technicalName: string) => {
     const {

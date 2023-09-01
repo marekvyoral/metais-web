@@ -1,18 +1,13 @@
-import { RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CATEGORY_ENUM, NOT_PUBLIC_ENTITIES, TYPES_ENUM } from '@/hooks/common/constants'
+import { RelatedCiTypePreview } from '@isdd/metais-common/api'
 
-export const MEASURE_UNIT = 'MERNA_JEDNOTKA'
-
-export enum CATEGORY_ENUM {
-    NOT_VISIBLE = 'NO',
-    READ_ONLY_BDA = 'ROCB',
-    READ_ONLY = 'RONCB',
-    READ_WRITE = 'RWNCB',
-    READ_WRITE_BDA = 'RWCB',
+export const removeDuplicates = <T>(arr: T[], by: keyof T | undefined = undefined) => {
+    const propertyList = by && arr.map((item) => item[by])
+    const filtered = propertyList
+        ? arr.filter((item, index) => !propertyList.includes(item[by], index + 1))
+        : arr.filter((item, index, array) => !array.includes(item, index + 1))
+    return filtered
 }
-export enum TYPES_ENUM {
-    SYSTEM = 'system',
-}
-export const NOT_PUBLIC_ENTITIES = ['MiestoPrevadzky']
 
 export const isRelatedCiTypeCmdbView = (type: RelatedCiTypePreview, isLogged: boolean): boolean => {
     const isValid = type.ciTypeValid === true && type.relationshipTypeValid === true

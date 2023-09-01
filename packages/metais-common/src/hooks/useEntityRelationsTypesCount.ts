@@ -1,8 +1,5 @@
 import { useMemo } from 'react'
 
-import { removeDuplicates } from './commonFunctions'
-import { isRelatedCiTypeCmdbView } from './constants'
-
 import {
     RelatedCiTypePreview,
     RelatedCiTypePreviewList,
@@ -10,6 +7,7 @@ import {
     useReadNeighboursConfigurationItemsCount,
 } from '@isdd/metais-common/api'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { isRelatedCiTypeCmdbView, removeDuplicates } from '@isdd/metais-common/hooks/common'
 
 export interface IKeyToDisplay {
     tabName: string

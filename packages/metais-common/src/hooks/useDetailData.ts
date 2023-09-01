@@ -1,6 +1,6 @@
-import { calculateConstraintFromAttributes, calculateConstraintFromAttributeProfiles } from '../componentHelpers/formatting/constraints'
+import { calculateConstraintFromAttributeProfiles, calculateConstraintFromAttributes } from '../componentHelpers/formatting/constraints'
 
-import { MEASURE_UNIT } from './constants'
+import { MEASURE_UNIT } from './common/constants'
 import { useHowToDisplayConstraints } from './useHowToDisplay'
 
 import { CiType, useGetEnum } from '@isdd/metais-common/api'
