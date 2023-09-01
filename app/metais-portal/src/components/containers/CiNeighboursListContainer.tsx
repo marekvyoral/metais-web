@@ -1,7 +1,7 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourSetUi, NeighboursFilterContainerUi, useReadCiNeighbours } from '@isdd/metais-common/api'
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
-import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelations'
+import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelationshipTabFilters'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
