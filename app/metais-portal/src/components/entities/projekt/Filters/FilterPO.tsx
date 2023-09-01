@@ -1,10 +1,11 @@
-import React from 'react'
 import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { Input, MultiSelect, RadioButton, RadioGroupWithLabel } from '@isdd/idsk-ui-kit/index'
+import { ATTRIBUTE_NAME, Attribute, AttributeProfile, EnumType } from '@isdd/metais-common/api'
 import { ColumnAttribute, DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { SelectPersonCategory } from '@isdd/metais-common/components/select-person-category/SelectPersonCategory'
+import { SelectPersonType } from '@isdd/metais-common/components/select-person-type/SelectPersonType'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useTranslation } from 'react-i18next'
-import { ATTRIBUTE_NAME, Attribute, AttributeProfile, EnumType, GET_ENUM, useGetEnum } from '@isdd/metais-common/api'
 
 export interface POFilterData extends IFilterParams {
     Gen_Profil_nazov?: string
@@ -25,17 +26,7 @@ interface Props {
 
 export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attributeProfiles, constraintsData }: Props) => {
     const { t } = useTranslation()
-    const { data: personCategories } = useGetEnum(GET_ENUM.KATEGORIA_OSOBA)
-    const optionsPersonCategories = personCategories?.enumItems?.map((enumItem) => ({
-        value: `${enumItem.code}`,
-        label: `${enumItem.value} - ${enumItem.description}`,
-    }))
 
-    const { data: personTypesCategories } = useGetEnum(GET_ENUM.TYP_OSOBY)
-    const optionsPersonType = personTypesCategories?.enumItems?.map((enumItem) => ({
-        value: `${enumItem.code}`,
-        label: `${enumItem.value} - ${enumItem.description}`,
-    }))
     const evidenceStatus = [
         { value: 'created', label: t('metaAttributes.state.DRAFT') },
         { value: 'invalidated', label: t('metaAttributes.state.INVALIDATED'), disabled: true },
@@ -72,24 +63,10 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
                             {...register(ATTRIBUTE_NAME.EA_Profil_PO_je_kapitola)}
                         />
                     </RadioGroupWithLabel>
-                    <MultiSelect
-                        name={ATTRIBUTE_NAME.EA_Profil_PO_kategoria_osoby}
-                        id="persons-category"
-                        label={t('filter.PO.personsCategory')}
-                        placeholder={t('filter.chooseValue')}
-                        options={optionsPersonCategories ?? []}
-                        defaultValue={filter.EA_Profil_PO_kategoria_osoby}
-                        setValue={setValue}
-                    />
+
+                    <SelectPersonCategory filter={filter} setValue={setValue} />
                     <MultiSelect label="Evidence status" placeholder={t('filter.chooseState')} options={evidenceStatus} name="evidence-status" />
-                    <MultiSelect
-                        name={ATTRIBUTE_NAME.EA_Profil_PO_typ_osoby}
-                        label={t('filter.PO.publicAuthorityType')}
-                        placeholder={t('filter.chooseValue')}
-                        options={optionsPersonType ?? []}
-                        defaultValue={filter.EA_Profil_PO_typ_osoby}
-                        setValue={setValue}
-                    />
+                    <SelectPersonType filter={filter} setValue={setValue} />
                     <DynamicFilterAttributes
                         defaults={defaultFilterValues}
                         attributes={attributes}

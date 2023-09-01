@@ -1,7 +1,7 @@
-import { Attribute, AttributeConstraintIntervalAllOf, AttributeConstraintRegexAllOf } from '@isdd/metais-common/api'
-import { AnyObject, NumberSchema } from 'yup'
+import { Attribute, AttributeConstraintIntervalAllOf, AttributeConstraintRegexAllOf, EnumType } from '@isdd/metais-common/api'
 import { TFunction } from 'i18next'
-import { FieldValues } from 'react-hook-form'
+import { FieldErrors, FieldValues } from 'react-hook-form'
+import { AnyObject, NumberSchema } from 'yup'
 
 import { ByteInterval, ShortInterval } from './createCiEntityFormSchema'
 
@@ -83,4 +83,22 @@ export const formatFormAttributeValue = (formAttributes: FieldValues, key: strin
     }
 
     return formAttributes[key] === '' ? null : formAttributes[key]
+}
+
+export const getAttributeInputErrorMessage = (attribute: Attribute, errors: FieldErrors<FieldValues>) => {
+    if (attribute.technicalName != null) {
+        const error = Object.keys(errors).includes(attribute.technicalName)
+        return error ? errors[attribute.technicalName] : undefined
+    }
+    return undefined
+}
+
+export const findAttributeConstraint = (enumCodes: string[], constraintsData: (EnumType | undefined)[]) => {
+    const attributeConstraint = constraintsData.find((constraint) => constraint?.code === enumCodes[0])
+    return attributeConstraint
+}
+
+export const getAttributeUnits = (unitCode: string, unitsData: EnumType | undefined) => {
+    const attributeUnit = unitsData?.enumItems?.find((item) => item.code == unitCode)
+    return attributeUnit
 }

@@ -1,10 +1,9 @@
+import { BreadCrumbs, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, CiType, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
-import React from 'react'
-import { BreadCrumbs, TextBody, TextHeading, TextLink } from '@isdd/idsk-ui-kit/index'
-import { useTranslation } from 'react-i18next'
 import { Languages } from '@isdd/metais-common/localization/languages'
-
-import styles from './editCiEntityView.module.scss'
+import { SubHeading } from '@isdd/metais-common/src/components/sub-heading/SubHeading'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { CreateEntity } from '@/components/create-entity/CreateEntity'
 
@@ -37,18 +36,11 @@ export const EditCiEntityView: React.FC<Props> = ({ ciTypeData, ciItemData, cons
                     { label: t('breadcrumbs.home'), href: '/' },
                     { label: entityName, href: `/ci/${entityName}` },
                     { label: currentName ? currentName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
-                    { label: t('breadcrumbs.ciEdit', { itemName: currentName }), href: `/ci/${entityName}/edit/${entityId}` },
+                    { label: t('breadcrumbs.ciEdit', { itemName: currentName }), href: `/ci/${entityName}/${entityId}/edit` },
                 ]}
             />
             <TextHeading size="XL">{t('ciType.editEntity')}</TextHeading>
-            <div className={styles.subHeading}>
-                <TextBody>
-                    <strong>{t('ciType.chosenObject')} </strong>
-                </TextBody>
-                <TextBody>
-                    <TextLink to={`/ci/${entityName}/${entityId}`}>{currentName ? currentName : t('breadcrumbs.noName')}</TextLink>
-                </TextBody>
-            </div>
+            <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
             <CreateEntity
                 updateCiItemId={ciItemData?.uuid}
                 data={{ attributesData: { ciTypeData, constraintsData, unitsData }, generatedEntityId: entityIdToUpdate }}

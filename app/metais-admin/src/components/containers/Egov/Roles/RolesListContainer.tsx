@@ -1,11 +1,11 @@
 import { ColumnSort, Pagination, SortType } from '@isdd/idsk-ui-kit/types'
 import { EnumItem, EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Role, useFindByNameWithParams, useFindByNameWithParamsCount } from '@isdd/metais-common/api/generated/iam-swagger'
+import { ALL_EVENT_TYPES, ROLES_GROUP } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ALL_EVENT_TYPES, ROLES_GROUP } from '@isdd/metais-common/constants'
-import { QueryFeedback } from '@isdd/metais-common/index'
 
 export interface FilterData extends IFilterParams {
     name: string

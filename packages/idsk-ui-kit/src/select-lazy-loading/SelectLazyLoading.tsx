@@ -1,8 +1,8 @@
 import React from 'react'
 import classNames from 'classnames'
+import { UseFormSetValue } from 'react-hook-form'
 import { GroupBase, MultiValue, OptionProps, OptionsOrGroups, PropsValue } from 'react-select'
 import { AsyncPaginate } from 'react-select-async-paginate'
-import { UseFormSetValue } from 'react-hook-form'
 
 import styles from './selectLazyLoading.module.scss'
 
@@ -38,6 +38,7 @@ interface ISelectProps<T> {
         prevOptions: OptionsOrGroups<T, GroupBase<T>>,
         additional: { page: number } | undefined,
     ) => Promise<ILoadOptionsResponse<T>>
+    isClearable?: boolean
 }
 
 export const SelectLazyLoading = <T,>({
@@ -55,6 +56,7 @@ export const SelectLazyLoading = <T,>({
     error,
     id,
     setValue,
+    isClearable = true,
 }: ISelectProps<T>): JSX.Element => {
     const Option = (props: OptionProps<T>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
@@ -98,7 +100,7 @@ export const SelectLazyLoading = <T,>({
                 className={classNames('govuk-select', styles.selectLazyLoading)}
                 styles={selectStyles<T>()}
                 openMenuOnFocus
-                isClearable
+                isClearable={isClearable}
                 unstyled
                 onChange={handleOnChange}
             />

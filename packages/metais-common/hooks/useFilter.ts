@@ -1,3 +1,5 @@
+import { IFilter } from '@isdd/idsk-ui-kit/types'
+import { BaseSyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import {
     Control,
     DeepPartial,
@@ -12,22 +14,20 @@ import {
     UseFormWatch,
 } from 'react-hook-form'
 import { useLocation, useSearchParams } from 'react-router-dom'
-import { BaseSyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react'
-import { IFilter } from '@isdd/idsk-ui-kit/types'
 
-import { FilterActions, useFilterContext } from '@isdd/metais-common/contexts/filter/filterContext'
+import { convertFilterArrayData } from '@isdd/metais-common/componentHelpers/filter/convertFilterArrayData'
+import { convertUrlArrayAttribute } from '@isdd/metais-common/componentHelpers/filter/convertUrlArrayValue'
+import { transformOperatorsToUrl } from '@isdd/metais-common/componentHelpers/filter/transformOperators'
+import { updateUrlParamsOnChange } from '@isdd/metais-common/componentHelpers/filter/updateUrlParamsOnChange'
 import {
     BASE_PAGE_NUMBER,
     BASE_PAGE_SIZE,
+    filterKeysToSkip,
     JOIN_OPERATOR,
     OPERATOR_SEPARATOR,
     OPERATOR_SEPARATOR_TYPE,
-    filterKeysToSkip,
 } from '@isdd/metais-common/constants'
-import { convertFilterArrayData } from '@isdd/metais-common/componentHelpers/filter/convertFilterArrayData'
-import { updateUrlParamsOnChange } from '@isdd/metais-common/componentHelpers/filter/updateUrlParamsOnChange'
-import { convertUrlArrayAttribute } from '@isdd/metais-common/componentHelpers/filter/convertUrlArrayValue'
-import { transformOperatorsToUrl } from '@isdd/metais-common/componentHelpers/filter/transformOperators'
+import { FilterActions, useFilterContext } from '@isdd/metais-common/contexts/filter/filterContext'
 
 //types for API
 export enum OPERATOR_OPTIONS {
@@ -126,7 +126,7 @@ const getPropertyType = <T, K extends keyof T>(obj: T, key: K): string => {
 
 export function useFilterParams<T extends FieldValues & IFilterParams>(defaults: T & IFilter): ReturnUseFilterParams<T> {
     const [urlParams, setUrlParams] = useSearchParams()
-
+    const location = useLocation()
     const [uiFilterState, setUiFilterState] = useState<IFilter>({
         sort: defaults?.sort ?? [],
         pageNumber: defaults?.pageNumber ?? BASE_PAGE_NUMBER,
@@ -154,20 +154,31 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
                     const propertyType = getPropertyType(defaults, key)
                     if (propertyType === 'object') {
                         const value = urlParams.getAll(key)
+                        if (key === 'sort') {
+                            // eslint-disable-next-line
+                            // @ts-ignore
+                            memoFilter[key] = JSON.parse(value)
+                        }
                         // eslint-disable-next-line
                         // @ts-ignore
-                        memoFilter[key] = value
+                        else memoFilter[key] = value
                     } else {
                         // eslint-disable-next-line
                         // @ts-ignore
                         memoFilter[key] = urlParams.get(key)
+                    }
+                } else {
+                    if (!location.search) {
+                        // eslint-disable-next-line
+                        // @ts-ignore
+                        memoFilter[key] = defaults[key]
                     }
                 }
             })
 
         memoFilter.attributeFilters = parseCustomAttributes(urlParams)
         return memoFilter
-    }, [urlParams, uiFilterState, defaults])
+    }, [uiFilterState, defaults, urlParams, location.search])
 
     return { filter, urlParams, handleFilterChange }
 }
@@ -177,7 +188,6 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
     const location = useLocation()
     const { state, dispatch } = useFilterContext()
     const { filter } = useFilterParams<T>(defaults)
-
     const methods = useForm<T & IFilterParams>({ defaultValues: filter as DeepPartial<T> })
 
     useEffect(() => {
@@ -192,7 +202,6 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
 
     const onSubmit = methods.handleSubmit((data: T) => {
         const filterData = clearData(data)
-
         const convertedArrayFilterData = convertFilterArrayData(filterData)
         //so when user is on page 200 and filter spits out only 2 pages he can get to them
         setSearchParams({ ...convertedArrayFilterData, pageNumber: 1 })
@@ -221,15 +230,15 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
     }
 
     useEffect(() => {
-        if (!state.filter[location.pathname] && !state.clearedFilter[location.pathname]) {
+        if (!state.filter[location.pathname] && !state.clearedFilter[location.pathname] && !filter) {
             dispatch({
                 type: FilterActions.SET_FILTER,
                 value: defaults,
                 path: location.pathname,
             })
-            setSearchParams(clearData(defaults))
         }
-    }, [defaults, dispatch, location.pathname, setSearchParams, state.clearedFilter, state.filter, clearData])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return {
         ...methods,

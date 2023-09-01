@@ -1,14 +1,16 @@
-import { CiCode, CiType, ConfigurationItemUiAttributes, EnumType, HierarchyRightsUi, useStoreConfigurationItem } from '@isdd/metais-common/api'
+import { CiCode, CiType, ConfigurationItemUiAttributes, EnumType, useStoreConfigurationItem } from '@isdd/metais-common/api'
+import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { useRedirectAfterSuccess } from '@isdd/metais-common/src/hooks/useRedirectAfterSucces'
 import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
-import { v4 as uuidV4 } from 'uuid'
-import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
-import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
-import { useRedirectAfterSuccess } from '@isdd/metais-common/src/hooks/useRedirectAfterSucces'
+import { v4 as uuidV4 } from 'uuid'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
+
+import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
 
 export interface AttrributesData {
     ciTypeData: CiType | undefined
@@ -19,21 +21,33 @@ export interface AttrributesData {
 export interface CreateEntityData {
     attributesData: AttrributesData
     generatedEntityId: CiCode | undefined
+    ownerId?: string
 }
 
 interface ICreateEntity {
     entityName: string
     data: CreateEntityData
+    roleState?: RoleState
+    publicAuthorityState?: PublicAuthorityState
     updateCiItemId?: string
     defaultItemAttributeValues?: ConfigurationItemUiAttributes | undefined
 }
 
-export const CreateEntity: React.FC<ICreateEntity> = ({ data, entityName, updateCiItemId, defaultItemAttributeValues }) => {
+export const CreateEntity: React.FC<ICreateEntity> = ({
+    data,
+    entityName,
+    updateCiItemId,
+    defaultItemAttributeValues,
+    roleState,
+    publicAuthorityState,
+}) => {
     const { t } = useTranslation()
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
-    const [selectedRoleId, setSelectedRoleId] = useState<string>('')
-    const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
+    const selectedRole = roleState?.selectedRole
+    const setSelectedRole = roleState?.setSelectedRole
+    const selectedPublicAuthority = publicAuthorityState?.selectedPublicAuthority
+    const setSelectedPublicAuthority = publicAuthorityState?.setSelectedPublicAuthority
 
     const [uploadError, setUploadError] = useState(false)
     const [requestId, setRequestId] = useState<string>('')
@@ -77,7 +91,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({ data, entityName, update
             value: formatFormAttributeValue(formAttributes, key),
         }))
         const type = entityName
-        const ownerId = selectedRoleId
+        const ownerId = data.ownerId
         const uuid = updateCiItemId ? updateCiItemId : uuidV4()
         setConfigurationItemId(uuid)
 
@@ -114,12 +128,12 @@ export const CreateEntity: React.FC<ICreateEntity> = ({ data, entityName, update
                 />
             )}
 
-            {!updateCiItemId && (
+            {!updateCiItemId && selectedRole && selectedPublicAuthority && setSelectedRole && setSelectedPublicAuthority && (
                 <SelectPublicAuthorityAndRole
-                    selectedRoleId={selectedRoleId}
-                    onChangeAuthority={setSelectedOrg}
-                    onChangeRole={setSelectedRoleId}
-                    selectedOrg={selectedOrg}
+                    selectedRoleId={selectedRole}
+                    onChangeAuthority={setSelectedPublicAuthority}
+                    onChangeRole={setSelectedRole}
+                    selectedOrg={selectedPublicAuthority}
                 />
             )}
 

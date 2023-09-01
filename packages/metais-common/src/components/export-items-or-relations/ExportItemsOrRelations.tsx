@@ -1,33 +1,36 @@
-import React, { useState } from 'react'
+import { LoadingIndicator } from '@isdd/idsk-ui-kit'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
-import { useTranslation } from 'react-i18next'
-import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
 import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
-import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
 import { RadioButtonGroup } from '@isdd/idsk-ui-kit/radio-button-group/RadioButtonGroup'
+import { RadioButton } from '@isdd/idsk-ui-kit/radio-button/RadioButton'
+import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import styles from './exportItemsOrRelations.module.scss'
 
-import { FileExtensionEnum } from '@isdd/metais-common/components/actions-over-table/actions-default/ExportButton'
 import { ExportIcon } from '@isdd/metais-common/assets/images'
+import { FileExtensionEnum } from '@isdd/metais-common/components/actions-over-table/actions-default/ExportButton'
 
 interface IExportItemsOrRelationsProps {
     isOpen: boolean
     className?: string
+    isLoading?: boolean
     close: () => void
     onExportStart: (exportValue: string, extension: FileExtensionEnum) => void
 }
 
-export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({ isOpen, close, onExportStart }) => {
+export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({ isOpen, isLoading, close, onExportStart }) => {
     const { t } = useTranslation()
     const [exportValue, setExportValue] = useState('')
     const startExport = (extension: FileExtensionEnum) => {
         if (!exportValue) return
         onExportStart(exportValue, extension)
-        close()
     }
     return (
         <BaseModal isOpen={isOpen} close={close}>
+            {isLoading && <LoadingIndicator label={t('exportItemsOrRelations.loading')} />}
+
             <div className={styles.modalContainer}>
                 <div className={styles.content}>
                     <div className={styles.icon}>
@@ -55,12 +58,6 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
                         </RadioButtonGroup>
                     </div>
                     <div className={styles.buttonGroup}>
-                        <Button
-                            label={t('exportItemsOrRelations.buttonRDF')}
-                            variant="secondary"
-                            className={styles.buttons}
-                            onClick={() => startExport(FileExtensionEnum.RDF)}
-                        />
                         <Button
                             label={t('exportItemsOrRelations.buttonXML')}
                             variant="secondary"

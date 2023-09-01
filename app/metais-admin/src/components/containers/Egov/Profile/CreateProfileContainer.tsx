@@ -1,8 +1,8 @@
-import React from 'react'
-import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { AttributeProfile, Role, useStoreNewAttrProfile } from '@isdd/metais-common/api'
-import { QueryFeedback } from '@isdd/metais-common'
 import { SortType } from '@isdd/idsk-ui-kit/types'
+import { QueryFeedback } from '@isdd/metais-common'
+import { AttributeProfile, CiType, Role, useStoreNewAttrProfile } from '@isdd/metais-common/api'
+import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
+import React from 'react'
 
 import { HiddenInputs } from '@/types/inputs'
 
@@ -10,7 +10,7 @@ export interface ICreateEntityView {
     data: {
         roles?: Role[]
     }
-    mutate: (data: AttributeProfile) => Promise<void>
+    mutate: (data: CiType) => Promise<void>
     hiddenInputs?: Partial<HiddenInputs>
 }
 

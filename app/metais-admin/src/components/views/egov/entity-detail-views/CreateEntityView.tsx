@@ -1,11 +1,9 @@
-import React, { useCallback } from 'react'
 import { Button, ErrorBlock, Input, MultiSelect, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
-import { FieldValues, FormProvider } from 'react-hook-form'
 import { MutationFeedback } from '@isdd/metais-common'
+import { useCallback } from 'react'
+import { FieldValues, FormProvider } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-
-import ConnectionView from '../relation-detail-views/connections/ConnectionView'
-import { AddConnectionModal } from '../relation-detail-views/connections/AddConnectionModal'
+import { useNavigate } from 'react-router-dom'
 
 import { AddAttributeProfilesModal } from './attributes/AddAttributeProfilesModal'
 import styles from './createEntityView.module.scss'
@@ -14,9 +12,12 @@ import { useCreateForm } from './hooks/useCreateForm'
 
 import { ProfileTabs } from '@/components/ProfileTabs'
 import { ICreateEntityView } from '@/components/containers/Egov/Entity/CreateEntityContainer'
+import { AddConnectionModal } from '@/components/views/egov/relation-detail-views/connections/AddConnectionModal'
+import ConnectionView from '@/components/views/egov/relation-detail-views/connections/ConnectionView'
 
 export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityView) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
 
     const {
         mutationSuccessResponse: { successedMutation, setSuccessedMutation },
@@ -49,7 +50,6 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
         },
         [mutate, setError, setSuccessedMutation],
     )
-
     return (
         <>
             <FormProvider {...formMethods}>
@@ -88,8 +88,13 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
                         {!hiddenInputs?.TYPE && (
                             <SimpleSelect
                                 label={t('egov.type')}
-                                options={[{ label: t('type.custom'), value: 'custom' }]}
+                                options={[
+                                    { label: t('type.custom'), value: 'custom' },
+                                    { value: 'application', label: t('type.application') },
+                                    { value: 'system', label: t('type.system') },
+                                ]}
                                 name="type"
+                                defaultValue={data?.existingEntityData?.type || 'custom'}
                                 setValue={formMethods.setValue}
                                 disabled
                             />
@@ -101,6 +106,7 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
                                     options={roleList}
                                     name="roleList"
                                     setValue={formMethods.setValue}
+                                    defaultValue={data?.existingEntityData?.roleList}
                                     error={formState?.errors?.roleList?.message}
                                 />
                             </div>
@@ -122,6 +128,13 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs }: ICreateEntityVi
                         )}
                         <div className={styles.submitButton}>
                             <Button type="submit" label={t('form.submit')} />
+                            <Button
+                                label={t('form.back')}
+                                onClick={() => {
+                                    navigate(-1)
+                                }}
+                                variant="secondary"
+                            />
                         </div>
                     </>
                     {!hiddenInputs?.ATTRIBUTE_PROFILES && (
