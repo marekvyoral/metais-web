@@ -1,5 +1,5 @@
 import { RelatedCiTypePreview } from '@isdd/metais-common/api'
-import { CATEGORY_ENUM, NOT_PUBLIC_ENTITIES, TYPES_ENUM } from '@isdd/metais-common/hooks/common/constants'
+import { CATEGORY_ENUM, NOT_PUBLIC_ENTITIES, TYPES_ENUM, connectedCiTabsToRemove } from '@isdd/metais-common/hooks/common/constants'
 
 export const removeDuplicates = <T>(arr: T[], by: keyof T | undefined = undefined) => {
     const propertyList = by && arr.map((item) => item[by])
@@ -9,11 +9,19 @@ export const removeDuplicates = <T>(arr: T[], by: keyof T | undefined = undefine
     return filtered
 }
 
-export const isRelatedCiTypeCmdbView = (type: RelatedCiTypePreview, isLogged: boolean): boolean => {
-    const isValid = type.ciTypeValid === true && type.relationshipTypeValid === true
-    const isCategory = type.ciCategory !== CATEGORY_ENUM.NOT_VISIBLE && type.relationshipCategory !== CATEGORY_ENUM.NOT_VISIBLE
-    const isTypeOk = type.ciTypeUsageType !== TYPES_ENUM.SYSTEM && type.relationshipTypeUsageType !== TYPES_ENUM.SYSTEM
-    const isViewForLogged = isLogged || NOT_PUBLIC_ENTITIES.indexOf(type.ciTypeTechnicalName || '') === -1
+export const isInBlackList = (relatedCiType: RelatedCiTypePreview): boolean => {
+    if (relatedCiType.ciTypeTechnicalName == undefined) {
+        return false
+    }
+    const isContainedInBlacList = connectedCiTabsToRemove.includes(relatedCiType.ciTypeTechnicalName)
+    return isContainedInBlacList
+}
 
-    return isValid && isCategory && isTypeOk && isViewForLogged
+export const isRelatedCiTypeCmdbView = (relatedCiType: RelatedCiTypePreview, isLogged: boolean): boolean => {
+    const isValid = relatedCiType.ciTypeValid === true && relatedCiType.relationshipTypeValid === true
+    const isCategory = relatedCiType.ciCategory !== CATEGORY_ENUM.NOT_VISIBLE && relatedCiType.relationshipCategory !== CATEGORY_ENUM.NOT_VISIBLE
+    const isTypeOk = relatedCiType.ciTypeUsageType !== TYPES_ENUM.SYSTEM && relatedCiType.relationshipTypeUsageType !== TYPES_ENUM.SYSTEM
+    const isViewForLogged = isLogged || NOT_PUBLIC_ENTITIES.indexOf(relatedCiType.ciTypeTechnicalName || '') === -1
+    const isNotBlacklisted = !isInBlackList(relatedCiType)
+    return isValid && isCategory && isTypeOk && isViewForLogged && isNotBlacklisted
 }

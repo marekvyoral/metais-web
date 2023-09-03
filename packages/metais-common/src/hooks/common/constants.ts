@@ -11,3 +11,15 @@ export enum TYPES_ENUM {
     SYSTEM = 'system',
 }
 export const NOT_PUBLIC_ENTITIES = ['MiestoPrevadzky']
+
+export const connectedCiTabsToRemove = [
+    'BazaDat',
+    'Migracia',
+    'Platforma',
+    'TP_SietovyPrvok',
+    'SystemovySW',
+    'TP_SpecTechnologia',
+    'TP_Ulozisko',
+    'TP_VypoctovyZdroj',
+    'TP_Zalohovanie',
+]

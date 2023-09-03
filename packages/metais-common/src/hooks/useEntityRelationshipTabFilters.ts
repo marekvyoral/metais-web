@@ -13,10 +13,6 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
     const relatedCiTypesFilteredForView = useMemo((): RelatedCiTypePreviewList => {
         const filteredSources = relatedData?.cisAsSources?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged))
         const filteredTargets = relatedData?.cisAsTargets?.filter((relatedType) => isRelatedCiTypeCmdbView(relatedType, isUserLogged))
-
-        if (filteredSources == undefined || filteredTargets == undefined) {
-            return { cisAsSources: undefined, cisAsTargets: undefined }
-        }
         const relatedCiTypesFilteredData: RelatedCiTypePreviewList = { cisAsSources: filteredSources, cisAsTargets: filteredTargets }
         return relatedCiTypesFilteredData
     }, [relatedData, isUserLogged])
