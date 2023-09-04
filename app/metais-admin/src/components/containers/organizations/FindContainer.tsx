@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
-import { ConfigurationItemSetUi, useGetUuid, useReadCiList1 } from '@isdd/metais-common/api'
-import { QueryFeedback } from '@isdd/metais-common'
+import { ConfigurationItemSetUi, useReadCiList1 } from '@isdd/metais-common/api'
 import { CsruOrganization, useGetOrganizationFromCsru } from '@isdd/metais-common/api/generated/iam-swagger'
 
 export interface iFindView {
     data: {
         foundCiType?: ConfigurationItemSetUi
         csruData?: CsruOrganization
-        generatedUUID?: string
     }
     setIcoToSearch: React.Dispatch<React.SetStateAction<string | undefined>>
 }
@@ -38,41 +36,22 @@ export const FindContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) 
         },
     }
 
-    const {
-        data: generatedUUID,
-        // isLoading: generateUUIDIsLoading,
-        // isError: generateUUIDIsError,
-    } = useGetUuid({ query: { enabled: ico !== undefined, retry: false } })
-
-    const {
-        data,
-        isLoading: isCiLoading,
-        isError: isCiError,
-    } = useReadCiList1(
+    const { data } = useReadCiList1(
         {
             ...defaultRequestApi,
         },
         { query: { enabled: ico !== undefined, retry: false } },
     )
 
-    const {
-        data: CSRUData,
-        // isLoading: CSRUIsLoading,
-        // isError: CSRUIsError,
-    } = useGetOrganizationFromCsru(ico ?? '', { query: { enabled: ico !== undefined } })
+    const { data: CSRUData } = useGetOrganizationFromCsru(ico ?? '', { query: { enabled: ico !== undefined } })
 
-    const isLoading = isCiLoading
-    const isError = isCiError
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View
-                data={{
-                    foundCiType: data,
-                    csruData: CSRUData,
-                    generatedUUID,
-                }}
-                setIcoToSearch={setIco}
-            />
-        </QueryFeedback>
+        <View
+            data={{
+                foundCiType: data,
+                csruData: CSRUData,
+            }}
+            setIcoToSearch={setIco}
+        />
     )
 }

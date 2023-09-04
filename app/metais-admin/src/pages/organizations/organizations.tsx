@@ -1,24 +1,24 @@
-import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import React from 'react'
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
+import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useTranslation } from 'react-i18next'
 
 import { OraganizationsListContainer } from '@/components/containers/Egov/Entity/OrganizationsListContainer'
-import { OrganizationsTable } from '@/components/table/OrganizationsTable'
 import OrganizationFilter from '@/components/filters/OrganizationFilter'
+import { OrganizationsTable } from '@/components/table/OrganizationsTable'
 
-export interface KSFilterData extends IFilterParams {
+export interface OrganizationFilterData extends IFilterParams {
     Gen_Profil_nazov?: string
     EA_Profil_PO_typ_osoby?: string[]
     EA_Profil_PO_ico?: string
+    EA_Profil_PO_kategoria_osoby?: string
 }
 
 const Organizations = () => {
     const entityName = 'PO'
-    const defaultFilterValues: KSFilterData = { Gen_Profil_nazov: '', EA_Profil_PO_typ_osoby: [], EA_Profil_PO_ico: '' }
+    const defaultFilterValues: OrganizationFilterData = { Gen_Profil_nazov: '', EA_Profil_PO_typ_osoby: [], EA_Profil_PO_ico: '' }
     const { t } = useTranslation()
     return (
-        <OraganizationsListContainer<KSFilterData>
+        <OraganizationsListContainer<OrganizationFilterData>
             entityName={entityName}
             defaultFilterValues={defaultFilterValues}
             ListComponent={({

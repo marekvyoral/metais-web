@@ -1,23 +1,20 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { Input, MultiSelect } from '@isdd/idsk-ui-kit/index'
-import { useOptionsPersonType } from '@isdd/metais-common/api/hooks/containers/filterMultiValues'
-import React from 'react'
-import { useTranslation } from 'react-i18next'
+import { Input } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { SelectPersonType } from '@isdd/metais-common/components/select-person-type/SelectPersonType'
+import { useTranslation } from 'react-i18next'
 
-import { KSFilterData } from '@/pages/organizations/organizations'
+import { OrganizationFilterData } from '@/pages/organizations/organizations'
 
 type Props = {
-    defaultFilterValues: KSFilterData
+    defaultFilterValues: OrganizationFilterData
 }
 
 const OrganizationFilter = ({ defaultFilterValues }: Props) => {
     const { t } = useTranslation()
 
-    const { optionsPersonType } = useOptionsPersonType()
-
     return (
-        <Filter<KSFilterData>
+        <Filter<OrganizationFilterData>
             defaultFilterValues={defaultFilterValues}
             form={({ register, setValue, filter }) => (
                 <div>
@@ -26,14 +23,12 @@ const OrganizationFilter = ({ defaultFilterValues }: Props) => {
                         placeholder={t(`filter.namePlaceholder`)}
                         {...register(ATTRIBUTE_NAME.Gen_Profil_nazov)}
                     />
-                    <MultiSelect
-                        name="EA_Profil_PO_typ_osoby"
-                        label={t('filter.PO.publicAuthorityType')}
-                        options={optionsPersonType ?? []}
-                        defaultValue={filter.EA_Profil_PO_typ_osoby}
-                        setValue={setValue}
+                    <SelectPersonType filter={filter} setValue={setValue} />
+                    <Input
+                        label={t(`filter.organizations.ICO`)}
+                        placeholder={t(`filter.organizations.ICO`)}
+                        {...register(ATTRIBUTE_NAME.EA_Profil_PO_ico)}
                     />
-                    <Input label={t(`filter.organizations.ICO`)} placeholder={t(`filter.nameICO`)} {...register(ATTRIBUTE_NAME.EA_Profil_PO_ico)} />
                 </div>
             )}
         />

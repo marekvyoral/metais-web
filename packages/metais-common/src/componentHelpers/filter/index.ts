@@ -9,7 +9,11 @@ export enum FILTER_KEY {
     pageNumber = 'pageNumber',
 }
 
-export const mapFilterParamsToApi = <T extends IFilterParams>(filterParams: T): FilterAttributesUi[] => {
+//maps static inputs in <Filter> to their correct format needed for cilistfiltered filter
+export const mapFilterParamsToApi = <T extends IFilterParams>(
+    filterParams: T,
+    defaultFilterOperators?: { [key: string]: string },
+): FilterAttributesUi[] => {
     const attributes: FilterAttributesUi[] = []
     const keysToSkip = new Set<string>([
         FILTER_KEY.fullTextSearch,
@@ -18,15 +22,19 @@ export const mapFilterParamsToApi = <T extends IFilterParams>(filterParams: T): 
         FILTER_KEY.pageSize,
         FILTER_KEY.pageNumber,
     ])
+
     for (const [key, value] of Object.entries(filterParams)) {
         if (keysToSkip.has(key)) continue
         if (value) {
+            if (Array.isArray(value) && value.length < 1) continue
+            const defaultOperator = defaultFilterOperators?.[key]
+
             if (Array.isArray(value)) {
                 attributes.push({
                     name: key,
                     filterValue: value.map((val) => ({
                         value: val,
-                        equality: OPERATOR_OPTIONS.EQUAL,
+                        equality: defaultOperator ? defaultOperator : OPERATOR_OPTIONS.EQUAL,
                     })),
                 })
             } else if (value === 'false' || value === 'true') {
@@ -35,7 +43,7 @@ export const mapFilterParamsToApi = <T extends IFilterParams>(filterParams: T): 
                     filterValue: [
                         {
                             value: value,
-                            equality: OPERATOR_OPTIONS.EQUAL,
+                            equality: defaultOperator ? defaultOperator : OPERATOR_OPTIONS.EQUAL,
                         },
                     ],
                 })
@@ -44,8 +52,8 @@ export const mapFilterParamsToApi = <T extends IFilterParams>(filterParams: T): 
                     name: key,
                     filterValue: [
                         {
-                            value,
-                            equality: OPERATOR_OPTIONS.FULLTEXT,
+                            value: value,
+                            equality: defaultOperator ? defaultOperator : OPERATOR_OPTIONS.FULLTEXT,
                         },
                     ],
                 })

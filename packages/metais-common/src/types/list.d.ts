@@ -1,6 +1,6 @@
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 
-import { CiType, IColumn, EnumType, ConfigurationItemSetUi, CiListFilterContainerUi } from '@isdd/metais-common/api'
+import { CiListFilterContainerUi, CiType, ConfigurationItemSetUi, EnumType, IColumn } from '@isdd/metais-common/api'
 
 export interface IListFilterCallbacks {
     setListQueryArgs: React.Dispatch<SetStateAction<CiListFilterContainerUi>>
@@ -11,7 +11,7 @@ export interface IListData {
     columnListData: IColumn | undefined
     unitsData?: EnumType | undefined
     constraintsData?: (EnumType | undefined)[]
-    tableData: void | ConfigurationItemSetUi | undefined
+    tableData: void | ConfigurationItemSetUi | AttributeProfilePreview | undefined
     attributeProfiles?: AttributeProfile[]
     attributes?: Attribute[]
     gestorsData?: RoleParticipantUI[]
@@ -26,4 +26,5 @@ export interface IListView {
     resetUserSelectedColumns: () => Promise<void>
     isLoading: boolean
     isError: boolean
+    refetch?: () => Promise<QueryObserverResult<AttributeProfilePreview, unknown>>
 }

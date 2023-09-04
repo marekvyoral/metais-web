@@ -40,6 +40,7 @@ enum DisplayTextArea {
 }
 
 interface IAttributeInput {
+    nameSufix?: string
     attribute: Attribute
     register: UseFormRegister<FieldValues>
     clearErrors: UseFormClearErrors<FieldValues>
@@ -66,6 +67,7 @@ interface IAttributeInput {
     }>
     defaultValueFromCiItem?: string | boolean | string[] | number
     hasResetState: HasResetState
+    disabled?: boolean
 }
 
 export const AttributeInput: React.FC<IAttributeInput> = ({
@@ -81,6 +83,8 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     defaultValueFromCiItem,
     hasResetState,
     clearErrors,
+    disabled,
+    nameSufix = '',
 }) => {
     const { t } = useTranslation()
 
@@ -153,6 +157,8 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         trigger={trigger}
                         defaultValue={getDefaultArrayValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
                         hasResetState={hasResetState}
+                        disabled={disabled}
+                        nameSufix={nameSufix}
                     />
                 )
             }
@@ -164,11 +170,11 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         correct={isCorrect}
                         type="date"
                         info={attribute.description}
-                        disabled={attribute.readOnly}
+                        disabled={attribute.readOnly || disabled}
                         id={attribute.technicalName}
                         label={attribute.name + requiredLabel}
                         error={error?.message?.toString()}
-                        {...register(attribute.technicalName)}
+                        {...register(attribute.technicalName + nameSufix)}
                         defaultValue={formattedDate}
                         hint={hint}
                         hasInputIcon
@@ -183,10 +189,10 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         type="file"
                         info={attribute.description}
                         id={attribute.technicalName}
-                        disabled={attribute.readOnly}
+                        disabled={attribute.readOnly || disabled}
                         label={attribute.name + requiredLabel}
                         error={error?.message?.toString()}
-                        {...register(attribute.technicalName)}
+                        {...register(attribute.technicalName + nameSufix)}
                         hint={defaultValueFromCiItem?.toString()}
                     />
                 )
@@ -198,8 +204,8 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         error={error?.message?.toString()}
                         id={attribute.technicalName}
                         info={attribute.description}
-                        disabled={attribute.readOnly}
-                        {...register(attribute.technicalName)}
+                        disabled={attribute.readOnly || disabled}
+                        {...register(attribute.technicalName + nameSufix)}
                         value="true"
                         defaultChecked={!!defaultValueFromCiItem}
                         containerClassName={styles.withInfoCheckbox}
@@ -212,12 +218,13 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         return (
                             <MultiSelect
                                 id={attribute.technicalName ?? ''}
-                                name={attribute.technicalName ?? ''}
+                                name={attribute.technicalName ?? '' + nameSufix}
                                 label={attribute.name + requiredLabel}
                                 correct={isCorrect}
                                 options={createOptions(constraints)}
                                 setValue={setValue}
                                 clearErrors={clearErrors}
+                                disabled={disabled}
                                 placeholder={t('createEntity.select')}
                                 defaultValue={createDefaultValuesForMulti(
                                     constraints,
@@ -234,12 +241,12 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 info={attribute.description}
                                 correct={isCorrect}
                                 options={createOptions(constraints)}
-                                disabled={attribute.readOnly}
+                                disabled={attribute.readOnly || disabled}
                                 defaultValue={getDefaultValueForSimple(
                                     constraints,
                                     getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem),
                                 )}
-                                name={attribute.technicalName}
+                                name={attribute.technicalName + nameSufix}
                                 setValue={setValue}
                                 clearErrors={clearErrors}
                                 placeholder={t('createEntity.select')}
@@ -256,10 +263,10 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         correct={isCorrect}
                         info={attribute.description}
                         id={attribute.technicalName}
-                        disabled={attribute.readOnly}
+                        disabled={attribute.readOnly || disabled}
                         label={attribute.name + requiredLabel + unitsLabel}
                         error={error?.message?.toString()}
-                        {...register(attribute.technicalName)}
+                        {...register(attribute.technicalName + nameSufix)}
                         type="number"
                         defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
                         hint={hint}
@@ -275,10 +282,10 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         info={attribute.description}
                         correct={isCorrect}
                         id={attribute.technicalName}
-                        disabled={attribute.readOnly}
+                        disabled={attribute.readOnly || disabled}
                         label={attribute.name + requiredLabel}
                         error={error?.message?.toString()}
-                        {...register(attribute.technicalName)}
+                        {...register(attribute.technicalName + nameSufix)}
                         defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
                         hint={hint}
                     />
@@ -292,10 +299,10 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         info={attribute.description}
                         className={classnames(attClassNameConfig.attributes[attribute.technicalName]?.className || '')}
                         id={attribute.technicalName}
-                        disabled={attribute.technicalName === AttributesConfigTechNames.METAIS_CODE || attribute.readOnly}
+                        disabled={attribute.technicalName === AttributesConfigTechNames.METAIS_CODE || attribute.readOnly || disabled}
                         label={attribute.name + requiredLabel}
                         error={error?.message?.toString()}
-                        {...register(attribute.technicalName)}
+                        {...register(attribute.technicalName + nameSufix)}
                         type="text"
                         defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
                         hint={hint}
@@ -311,10 +318,10 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         correct={isCorrect}
                         info={attribute.description}
                         id={attribute.technicalName}
-                        disabled={attribute.readOnly}
+                        disabled={attribute.readOnly || disabled}
                         label={attribute.name + requiredLabel}
                         error={error?.message?.toString()}
-                        {...register(attribute.technicalName)}
+                        {...register(attribute.technicalName + nameSufix)}
                         type="text"
                         defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
                         hint={hint}

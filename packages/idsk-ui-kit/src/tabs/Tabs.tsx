@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
 import classnames from 'classnames'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, matchPath, useLocation } from 'react-router-dom'
+import { matchPath, useLocation, useNavigate } from 'react-router-dom'
 
 import { ButtonPopup } from '..'
 
@@ -107,7 +107,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     useEffect(() => {
         setNewTabList(tabList)
         setSelected((prev) => {
-            if (prev === undefined) return tabList[0]
+            if (prev === undefined || !tabList?.find((tab: Tab) => tab?.id === prev?.id)) return tabList[0]
             return prev
         })
     }, [tabList])

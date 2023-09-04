@@ -1,22 +1,22 @@
-import React from 'react'
+import { QueryFeedback } from '@isdd/metais-common'
 import {
+    AttributeProfile,
+    CiType,
     EnumType,
     useGetAttributeProfile,
-    AttributeProfile,
-    useStoreUnValid,
-    useStoreValid1,
     useStoreExistAttribute,
-    Attribute,
-    useStoreValid2,
-    useStoreUnvalid1,
-    useStoreVisible,
     useStoreInvisible,
+    useStoreUnValid,
+    useStoreUnvalid1,
+    useStoreValid1,
+    useStoreValid2,
+    useStoreVisible,
 } from '@isdd/metais-common/api'
-import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
-import { QueryFeedback } from '@isdd/metais-common'
+import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
+import React from 'react'
 
-export interface IAtrributesContainerView {
+export interface IAtrributesContainerView<T> {
     data: {
         ciTypeData: AttributeProfile | undefined
         constraintsData: (EnumType | undefined)[]
@@ -26,15 +26,15 @@ export interface IAtrributesContainerView {
     setValidityOfAttributeProfile?: (attributeTechnicalName?: string, oldAttributeValidity?: boolean) => void
     setVisibilityOfAttributeProfile?: (attributeTechnicalName?: string, oldAttributeVisibility?: boolean) => void
     entityName?: string
-    saveAttribute?: (formData: Attribute) => void
+    saveAttribute: (formData: T) => Promise<void>
 }
 
-interface AttributesContainer {
+interface AttributesContainer<T> {
     entityName: string
-    View: React.FC<IAtrributesContainerView>
+    View: React.FC<IAtrributesContainerView<T>>
 }
 
-export const ProfileDetailContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {
+export const ProfileDetailContainer: React.FC<AttributesContainer<CiType>> = ({ entityName, View }) => {
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError, refetch } = useGetAttributeProfile(entityName)
 
     const { isLoading, isError, constraintsData } = useDetailData({
@@ -57,8 +57,8 @@ export const ProfileDetailContainer: React.FC<AttributesContainer> = ({ entityNa
         await setValidity(technicalName, ciTypeData?.valid, setProfileAsValid, setProfileAsInvalid, refetch)
     }
 
-    const saveAttribute = (formData: Attribute) => {
-        saveExistingAttribute({
+    const saveAttribute = async (formData: CiType) => {
+        await saveExistingAttribute({
             data: {
                 ...formData,
             },

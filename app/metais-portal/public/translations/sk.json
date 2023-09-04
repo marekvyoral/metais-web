@@ -278,7 +278,7 @@
         "relationships": "Vzťahy",
         "history": "História zmien",
         "editEntity": "Editácia entity",
-        "chosenObject": "Vybraný objekt(typ)",
+        "chosenObject": "Vybraný objekt (typ)",
         "editButton": "Upraviť",
         "moreButton": "Viac akcií",
         "invalidateItem": "Invalidovať",
@@ -318,7 +318,8 @@
         "buttonRDF": "RDF",
         "buttonXML": "XML",
         "buttonCSV": "CSV",
-        "buttonXLSX": "XLSX"
+        "buttonXLSX": "XLSX",
+        "loading": "Sťahuje sa súbor"
     },
     "tableSelectColumns": {
         "searchPlaceholder": "Názov hľadaného stĺpca",
@@ -534,7 +535,9 @@
         "home": "Domov",
         "ciEdit": "Editácia {{itemName}}",
         "noName": "Bez mena",
-        "ciCreate": "Vytvorenie novej entity"
+        "ciCreate": "Vytvorenie novej entity",
+        "newRelation": "Pridanie nového vzťahu k {{itemName}}",
+        "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}"
     },
     "codeList": {
         "title": "Číselníky",
@@ -561,5 +564,28 @@
         "error": {
             "selectFilterMainGestor": ""
         }
+    },
+    "selectCiItem": {
+        "label": "Položky",
+        "loading": "Načítavanie konfiguračných položiek",
+        "error": "Chyba pri načítavaní údajov o konfiguračných položkách."
+    },
+    "newRelation": {
+        "detailButton": "Detail položky",
+        "deleteButton": "Odstrániť",
+        "heading": "Pridať nový vzťah {{relationEntityName}}",
+        "selectedObject": "Vybraný objekt (typ)",
+        "selectRelType": "Typ vzťahu",
+        "cancel": "Zrušiť",
+        "save": "Uložiť nový vzťah",
+        "pickItems": "Vybrať zo zoznamu",
+        "addItems": "Pridať vybrané položky",
+        "selectSource": "Zdroj (Vybraný objekt)",
+        "selectTarget": "Cieľ (Vybraný objekt)",
+        "newCiWithRelationHeading": "Pridať novú položku a vzťah",
+        "relation": "Vzťah",
+        "email": "metais@mirri.gov.sk",
+        "errorTitle": "Nastala chyba",
+        "errorMessage": "Ospravedlňujeme sa, ale pri vytváraní nového vzťahu nastala chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na "
     }
 }

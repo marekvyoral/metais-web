@@ -1,9 +1,11 @@
-import React, { useId } from 'react'
 import classnames from 'classnames'
+import React, { useId } from 'react'
 
 import { StepperArrayEnum } from './Stepper'
+import styles from './stepper.module.scss'
 
-interface IStepLabel {
+import { AlertTriangleIcon } from '@isdd/idsk-ui-kit/assets/images'
+export interface IStepLabel {
     label: string
     variant: 'circle' | 'no-outline'
 }
@@ -14,6 +16,7 @@ export interface ISection {
     isTitle?: boolean
     stepLabel?: IStepLabel
     content?: React.ReactNode
+    error?: boolean
 }
 
 interface IStepperSection {
@@ -52,8 +55,8 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                         <span
                             className={classnames({
                                 'idsk-stepper__circle': true,
-                                'idsk-stepper__circle--letter': section.stepLabel.variant === 'circle',
-                                'idsk-stepper__circle--number': section.stepLabel.variant === 'no-outline',
+                                'idsk-stepper__circle--letter': section.stepLabel.variant === 'no-outline',
+                                'idsk-stepper__circle--number': section.stepLabel.variant === 'circle',
                             })}
                         >
                             <span className="idsk-stepper__circle-inner">
@@ -63,20 +66,22 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                             </span>
                         </span>
                     )}
-
-                    <h4 className="idsk-stepper__section-heading">
-                        <button
-                            type="button"
-                            id="expand-button"
-                            aria-controls={uniqueId}
-                            className="idsk-stepper__section-button"
-                            aria-expanded={currentSection === StepperArrayEnum.EXPANDED}
-                            onClick={handleOpen}
-                        >
-                            {section.title}
-                            <span className="idsk-stepper__icon" aria-hidden={currentSection === StepperArrayEnum.CLOSED} />
-                        </button>
-                    </h4>
+                    <div className={styles.headerDiv}>
+                        <h4 className="idsk-stepper__section-heading">
+                            <button
+                                type="button"
+                                id="expand-button"
+                                aria-controls={uniqueId}
+                                className="idsk-stepper__section-button"
+                                aria-expanded={currentSection === StepperArrayEnum.EXPANDED}
+                                onClick={handleOpen}
+                            >
+                                {section.title}
+                                <span className="idsk-stepper__icon" aria-hidden={currentSection === StepperArrayEnum.CLOSED} />
+                            </button>
+                        </h4>
+                        {section.error && <img src={AlertTriangleIcon} />}
+                    </div>
                 </div>
 
                 <div id={uniqueId} className="idsk-stepper__section-content" aria-labelledby="subsection">

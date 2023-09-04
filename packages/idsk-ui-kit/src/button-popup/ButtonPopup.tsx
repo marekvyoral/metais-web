@@ -4,8 +4,8 @@ import { PopupActions } from 'reactjs-popup/dist/types'
 
 import styles from './buttonPopup.module.scss'
 
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { ArrowDownIcon } from '@isdd/idsk-ui-kit/assets/images'
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
 
 interface IButtonPopupProps {
     popupPosition?: 'left' | 'right'

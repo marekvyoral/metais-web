@@ -18,21 +18,22 @@ export enum RouteNames {
 
 export enum AdminRouteNames {
     HOME = '/',
-    DASHBOARD = '/dashboard',
-    ASSIGNMENT = '/assignment',
-    NOTIFICATIONS = '/notifications',
-    SETTINGS = '/settings',
+    DASHBOARD = 'dashboard/',
+    ASSIGNMENT = 'assignment/',
+    NOTIFICATIONS = 'notifications/',
+    SETTINGS = 'settings/',
     USER_MANAGEMENT = '/managementList',
-    EGOV = '/egov',
+    EGOV = 'egov/',
     EGOV_ENTITY = '/egov/entity',
     EGOV_PROFILE = '/egov/profile',
     EGOV_RELATION = '/egov/relation',
+    TOOLTIPS = '/tooltips',
     ROLE_USERS = '/egov/roles/users',
     ROLE_EDIT = '/egov/roles/edit',
     ROLE_NEW = '/egov/roles/create',
     ROLES = '/egov/roles',
-    ORGANIZATIONS = '/organizations',
-    CODELISTS = '/codelists-management',
+    ORGANIZATIONS = 'organizations/',
+    CODELISTS = 'codelists-management/',
 }
 
 export enum NavigationSubRoutes {

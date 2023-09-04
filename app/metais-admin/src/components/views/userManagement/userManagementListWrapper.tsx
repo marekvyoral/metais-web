@@ -1,26 +1,26 @@
-import React, { useState, useCallback } from 'react'
-import { IdentityState } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useTranslation } from 'react-i18next'
+import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
+import { Button, Filter, PaginatorWrapper, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { PaginatorWrapper, SimpleSelect, Filter, TextHeading, Button } from '@isdd/idsk-ui-kit/index'
+import { IdentityState } from '@isdd/metais-common/api/generated/iam-swagger'
+import { CheckInACircleIcon, CrossInACircleIcon, ExportIcon } from '@isdd/metais-common/assets/images'
+import { BulkPopup, CreateEntityButton, IconLabel } from '@isdd/metais-common/components/actions-over-table'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
-import { BulkPopup, CreateEntityButton, IconLabel } from '@isdd/metais-common/components/actions-over-table'
-import { CrossInACircleIcon, CheckInACircleIcon, ExportIcon } from '@isdd/metais-common/assets/images'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import React, { useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import { SelectFilterRole } from '@/components/views/userManagement/components/SelectFilterRole/SelectFilterRole'
-import { SelectFilterOrganization } from '@/components/views/userManagement/components/SelectFilterOrganization/SelectFilterOrganization'
-import { UserManagementListTable } from '@/components/views/userManagement/components/UserManagementTable/UserManagementListTable'
 import {
-    UserManagementFilterData,
     UserManagementActionsOverRowEnum,
+    UserManagementFilterData,
+    UserManagementListData,
     UserManagementListItem,
     defaultFilterValues,
-    UserManagementListData,
 } from '@/components/containers/ManagementList/UserManagementListUtils'
+import { SelectFilterOrganization } from '@/components/views/userManagement/components/SelectFilterOrganization/SelectFilterOrganization'
+import { SelectFilterRole } from '@/components/views/userManagement/components/SelectFilterRole/SelectFilterRole'
+import { UserManagementListTable } from '@/components/views/userManagement/components/UserManagementTable/UserManagementListTable'
 
 export interface UserManagementListPageViewProps {
     data: UserManagementListData
@@ -104,7 +104,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                 bulkPopup={
                     <BulkPopup
                         checkedRowItems={0}
-                        items={[
+                        items={() => [
                             <ButtonLink
                                 key={'buttonBlock'}
                                 icon={CrossInACircleIcon}

@@ -1,19 +1,20 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
-import { Pagination, IFilter } from '@isdd/idsk-ui-kit/types'
-import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
+import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
+import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { QueryFeedback } from '@isdd/metais-common'
 import { ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
-import { TextHeading } from '@isdd/idsk-ui-kit/index'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
-import { RelationCard } from './cards/RelationCard'
 import { CardColumnList } from './cards/CardColumnList'
+import { RelationCard } from './cards/RelationCard'
 import { ListActions } from './lists/ListActions'
 
-import { IRelationsView } from '@/components/containers/RelationsListContainer'
 import { formatRelationAttributes } from '@/componentHelpers'
+import { IRelationsView } from '@/components/containers/RelationsListContainer'
 
 interface NeighboursCardListProps {
     isLoading: boolean
@@ -33,6 +34,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
     setPageConfig,
 }) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const { entityTypes, relationsList, owners } = data
 
     return (
@@ -49,8 +51,18 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                             errorProps={{ errorMessage: t('feedback.failedFetch') }}
                         >
                             <ListActions>
-                                <Button className={'marginBottom0'} label={t('neighboursCardList.buttonAddNewRelation')} variant="secondary" />
-                                <Button className={'marginBottom0'} label={t('neighboursCardList.buttonAddNewRelationCard')} variant="secondary" />
+                                <Button
+                                    className={'marginBottom0'}
+                                    label={t('neighboursCardList.buttonAddNewRelation')}
+                                    variant="secondary"
+                                    onClick={() => navigate(`new-relation/${key.technicalName}`)}
+                                />
+                                <Button
+                                    className={'marginBottom0'}
+                                    onClick={() => navigate(`new-ci/${key.technicalName}`)}
+                                    label={t('neighboursCardList.buttonAddNewRelationCard')}
+                                    variant="secondary"
+                                />
                             </ListActions>
                             <CardColumnList>
                                 {relationsList?.ciWithRels?.map((ciWithRel) => {
