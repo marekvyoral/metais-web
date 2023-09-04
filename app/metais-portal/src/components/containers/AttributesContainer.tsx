@@ -1,7 +1,7 @@
-import React from 'react'
-import { EnumType, useGetCiType, CiType, AttributeProfile, Attribute } from '@isdd/metais-common/api'
+import { Attribute, AttributeProfile, CiType, EnumType, useGetCiType } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { QueryFeedback } from '@isdd/metais-common/index'
+import React from 'react'
 
 export interface IAtrributesContainerView {
     data: {

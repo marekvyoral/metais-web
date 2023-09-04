@@ -5,8 +5,8 @@
  * MetaIS Types Repo
  * OpenAPI spec version: 3.0-SNAPSHOT
  */
-import { useQuery, useMutation } from '@tanstack/react-query'
-import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
+import type { MutationFunction, QueryFunction, QueryKey, UseMutationOptions, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useTypesRepoSwaggerClient } from '../hooks/useTypesRepoSwaggerClient'
 export type GenerateCodeAndURL1Params = {
     count: number
@@ -1149,11 +1149,7 @@ export const useStoreAttributeTextation1 = <TError = unknown, TContext = unknown
 }) => {
     const mutationOptions = useStoreAttributeTextation1MutationOptions(options)
 
-    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
-
-    query.queryKey = queryOptions.queryKey
-
-    return query
+    return useMutation(mutationOptions)
 }
 
 export const useDeleteAttributeTextation1Hook = () => {

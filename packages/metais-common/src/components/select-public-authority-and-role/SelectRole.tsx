@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { HierarchyRightsUi } from '@isdd/metais-common/api'
+import { GidRoleData, useGetRightsForPO } from '@isdd/metais-common/api/generated/iam-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
-import { Role, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useGetRightForPO } from '@isdd/metais-common/hooks/useGetRightForPO'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 interface Props {
     onChangeRole: (val: string) => void
@@ -20,20 +20,22 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
     const [defaultValue, setDefaultValue] = useState<string>('')
 
     const {
-        rightsForPOData,
+        data: rightsForPOData,
         isLoading: isRightsForPOLoading,
         isError: isRightsForPOError,
-    } = useGetRightForPO(user.state.user?.uuid ?? '', selectedOrg?.poUUID ?? '')
+    } = useGetRightsForPO({ identityUuid: user.state.user?.uuid ?? '', cmdbId: selectedOrg?.poUUID ?? '' })
 
     useEffect(() => {
         if (rightsForPOData && rightsForPOData.length > 0 && selectedRoleId === '') {
-            const firstValue = rightsForPOData[0].roleUuid
-            onChangeRole(firstValue)
-            setDefaultValue(firstValue)
+            const firstValue = rightsForPOData?.[0]?.roleUuid
+            if (firstValue) {
+                onChangeRole(firstValue)
+                setDefaultValue(firstValue)
+            }
         }
     }, [onChangeRole, rightsForPOData, selectedRoleId])
 
-    const roleSelectOptions = rightsForPOData?.map((role: Role) => ({ value: role.roleUuid ?? '', label: role.roleDescription ?? '' })) ?? [
+    const roleSelectOptions = rightsForPOData?.map((role: GidRoleData) => ({ value: role.roleUuid ?? '', label: role.roleDescription ?? '' })) ?? [
         { value: '', label: '' },
     ]
 

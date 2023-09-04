@@ -4,8 +4,7 @@ import { ErrorBlock } from '@isdd/idsk-ui-kit/error-block/ErrorBlock'
 import { ButtonGroupRow } from '@isdd/idsk-ui-kit/index'
 import { Stepper } from '@isdd/idsk-ui-kit/src/stepper/Stepper'
 import { ISection, IStepLabel } from '@isdd/idsk-ui-kit/stepper/StepperSection'
-import { CiCode, CiType, ConfigurationItemUiAttributes, EnumType, RelationshipType } from '@isdd/metais-common/api'
-import { metaisEmail } from '@isdd/metais-common/constants'
+import { CiCode, CiType, ConfigurationItemUiAttributes, EnumType, Gen_Profil, RelationshipType } from '@isdd/metais-common/api'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -30,6 +29,7 @@ interface ICreateCiEntityForm {
     onSubmit: (formData: FieldValues) => void
     unitsData: EnumType | undefined
     defaultItemAttributeValues?: ConfigurationItemUiAttributes | undefined
+    updateCiItemId?: string
     relationSchema?: RelationshipType
 }
 
@@ -41,11 +41,13 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     uploadError,
     onSubmit,
     defaultItemAttributeValues,
+    updateCiItemId,
     relationSchema,
 }) => {
     const { t } = useTranslation()
     const [hasReset, setHasReset] = useState(false)
-    const genProfilTechName = 'Gen_Profil'
+    const genProfilTechName = Gen_Profil
+    const metaisEmail = 'metais@mirri.gov.sk'
 
     const attProfiles = ciTypeData?.attributeProfiles?.map((profile) => profile) ?? []
     const attributes = [...(ciTypeData?.attributes ?? []), ...attProfiles.map((profile) => profile.attributes).flat()]
@@ -93,6 +95,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                         generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
                         defaultItemAttributeValues={defaultItemAttributeValues}
                         hasResetState={{ hasReset, setHasReset }}
+                        updateCiItemId={updateCiItemId}
                     />
                 ),
             },
@@ -111,6 +114,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                         unitsData={unitsData}
                         defaultItemAttributeValues={defaultItemAttributeValues}
                         hasResetState={{ hasReset, setHasReset }}
+                        updateCiItemId={updateCiItemId}
                     />
                 ),
             })),

@@ -11,14 +11,17 @@ export enum Actions {
     SELECT_COLUMNS = 'selectColumns',
     CREATE = 'create',
     EDIT = 'edit',
+    CHANGE_OWNER = 'change_owner',
 }
+
+export const ADMIN = 'R_ADMIN'
 
 export const CANNOT_READ_ENTITY = ['ulohy', 'notifications']
 
 const defineAbilityForUser = (roles: string[] = [], entityName: string, create?: boolean) => {
     const { can, build } = new AbilityBuilder(createMongoAbility)
 
-    if (roles.includes('R_ADMIN')) {
+    if (roles.includes(ADMIN)) {
         can(Actions.READ, entityName)
         can(Actions.CREATE, entityName)
         can(Actions.EXPORT, entityName)
