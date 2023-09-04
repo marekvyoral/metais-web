@@ -145,6 +145,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                 uploadError={uploadError}
                 onSubmit={onSubmit}
                 defaultItemAttributeValues={defaultItemAttributeValues}
+                updateCiItemId={updateCiItemId}
             />
         </>
     )

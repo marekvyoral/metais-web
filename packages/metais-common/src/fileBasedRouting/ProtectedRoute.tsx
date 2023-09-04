@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { Actions, CANNOT_READ_ENTITY } from '@isdd/metais-common/hooks/useUserAbility'
+import { Actions, CANNOT_READ_ENTITY } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 
 interface iProtectedRoute {
     element: JSX.Element

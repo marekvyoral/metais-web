@@ -1,7 +1,7 @@
-import React from 'react'
-import { QueryFeedback } from '@isdd/metais-common/index'
-import { useTranslation } from 'react-i18next'
 import { ConfigurationItemUi, RoleParticipantUI, useGetRoleParticipantBulk, useReadConfigurationItem } from '@isdd/metais-common/api'
+import { QueryFeedback } from '@isdd/metais-common/index'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 export interface ContainerViewData {
     ciItemData: ConfigurationItemUi
@@ -34,7 +34,10 @@ export const CiContainer: React.FC<ICiContainer> = ({ configurationItemId, View 
         data: gestorData,
         isLoading: isGestorLoading,
         isError: isGestorError,
-    } = useGetRoleParticipantBulk({ gids: [ciItemData?.metaAttributes?.owner ?? ''] }, { query: { enabled: !!ciItemData } })
+    } = useGetRoleParticipantBulk(
+        { gids: [ciItemData?.metaAttributes?.owner ?? ''] },
+        { query: { enabled: !!ciItemData, queryKey: ['roleParticipant', ciItemData?.metaAttributes?.owner ?? ''] } },
+    )
 
     if (!configurationItemId) return <View isLoading={false} isError />
     if (isLoading || isError || isGestorLoading || isGestorError) {

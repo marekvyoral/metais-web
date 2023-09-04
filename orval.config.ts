@@ -238,6 +238,16 @@ export default defineConfig({
                             useQuery: true,
                         },
                     },
+                    getRightsForPO: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
+                    isOwnerByGid: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
                 },
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useIAmSwaggerClient.ts',

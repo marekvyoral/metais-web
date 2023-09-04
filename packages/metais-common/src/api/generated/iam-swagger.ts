@@ -5,8 +5,8 @@
  * MetaIS IAM
  * OpenAPI spec version: 3.0-SNAPSHOT
  */
-import { useQuery, useMutation } from '@tanstack/react-query'
-import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
+import type { MutationFunction, QueryFunction, QueryKey, UseMutationOptions, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useIAmSwaggerClient } from '../hooks/useIAmSwaggerClient'
 export type FindAllWithParamsParams = {
     search?: string
@@ -2132,35 +2132,40 @@ export const useIsOwnerByGidHook = () => {
     }
 }
 
-export const useIsOwnerByGidMutationOptions = <TError = OperationResult, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>, TError, { data: OwnerByGidInput }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>, TError, { data: OwnerByGidInput }, TContext> => {
-    const { mutation: mutationOptions } = options ?? {}
+export const getIsOwnerByGidQueryKey = (ownerByGidInput: OwnerByGidInput) => [`/organizations/isOwnerByGid`, ownerByGidInput] as const
+
+export const useIsOwnerByGidQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>, TError = OperationResult>(
+    ownerByGidInput: OwnerByGidInput,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getIsOwnerByGidQueryKey(ownerByGidInput)
 
     const isOwnerByGid = useIsOwnerByGidHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>, { data: OwnerByGidInput }> = (props) => {
-        const { data } = props ?? {}
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>> = () => isOwnerByGid(ownerByGidInput)
 
-        return isOwnerByGid(data)
-    }
-
-    return { mutationFn, ...mutationOptions }
+    return { queryKey, queryFn, ...queryOptions }
 }
 
-export type IsOwnerByGidMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>>
-export type IsOwnerByGidMutationBody = OwnerByGidInput
-export type IsOwnerByGidMutationError = OperationResult
+export type IsOwnerByGidQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>>
+export type IsOwnerByGidQueryError = OperationResult
 
 /**
  * @summary isOwnerByGid
  */
-export const useIsOwnerByGid = <TError = OperationResult, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>, TError, { data: OwnerByGidInput }, TContext>
-}) => {
-    const mutationOptions = useIsOwnerByGidMutationOptions(options)
+export const useIsOwnerByGid = <TData = Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>, TError = OperationResult>(
+    ownerByGidInput: OwnerByGidInput,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useIsOwnerByGidHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useIsOwnerByGidQueryOptions(ownerByGidInput, options)
 
-    return useMutation(mutationOptions)
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
 }
 
 /**
@@ -2432,35 +2437,41 @@ export const useGetRightsForPOHook = () => {
     }
 }
 
-export const useGetRightsForPOMutationOptions = <TError = OperationResult, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>, TError, { data: IdentityOrganizationIn }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>, TError, { data: IdentityOrganizationIn }, TContext> => {
-    const { mutation: mutationOptions } = options ?? {}
+export const getGetRightsForPOQueryKey = (identityOrganizationIn: IdentityOrganizationIn) =>
+    [`/organizations/getRightsForPO`, identityOrganizationIn] as const
+
+export const useGetRightsForPOQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>, TError = OperationResult>(
+    identityOrganizationIn: IdentityOrganizationIn,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetRightsForPOQueryKey(identityOrganizationIn)
 
     const getRightsForPO = useGetRightsForPOHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>, { data: IdentityOrganizationIn }> = (props) => {
-        const { data } = props ?? {}
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>> = () => getRightsForPO(identityOrganizationIn)
 
-        return getRightsForPO(data)
-    }
-
-    return { mutationFn, ...mutationOptions }
+    return { queryKey, queryFn, ...queryOptions }
 }
 
-export type GetRightsForPOMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>>
-export type GetRightsForPOMutationBody = IdentityOrganizationIn
-export type GetRightsForPOMutationError = OperationResult
+export type GetRightsForPOQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>>
+export type GetRightsForPOQueryError = OperationResult
 
 /**
  * @summary getRightsForPO
  */
-export const useGetRightsForPO = <TError = OperationResult, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>, TError, { data: IdentityOrganizationIn }, TContext>
-}) => {
-    const mutationOptions = useGetRightsForPOMutationOptions(options)
+export const useGetRightsForPO = <TData = Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>, TError = OperationResult>(
+    identityOrganizationIn: IdentityOrganizationIn,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRightsForPOHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetRightsForPOQueryOptions(identityOrganizationIn, options)
 
-    return useMutation(mutationOptions)
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
 }
 
 /**

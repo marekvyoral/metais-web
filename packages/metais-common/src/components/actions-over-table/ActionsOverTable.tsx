@@ -1,17 +1,17 @@
-import React, { useId } from 'react'
-import { useTranslation } from 'react-i18next'
-import classnames from 'classnames'
+import { Can } from '@casl/react'
 import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
+import { PageSizeSelect } from '@isdd/idsk-ui-kit/page-size-select/PageSizeSelect'
 import { IColumnSectionType, TableSelectColumns } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { Can } from '@casl/react'
-import { PageSizeSelect } from '@isdd/idsk-ui-kit/page-size-select/PageSizeSelect'
+import classnames from 'classnames'
+import React, { useId } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import styles from './actionsOverTable.module.scss'
 
 import { Attribute, AttributeProfile, BASE_PAGE_SIZE, CiType } from '@isdd/metais-common/api'
+import { Actions, useCreateCiAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { IColumn } from '@isdd/metais-common/hooks/useColumnList'
-import { useCreateCiAbility } from '@isdd/metais-common/hooks/useUserAbility'
 
 export enum ActionNames {
     SELECT_COLUMNS = 'SELECT_COLUMNS',
@@ -105,25 +105,25 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                 {bulkPopup && <>{bulkPopup}</>}
                 <div className={classnames(styles.buttonImportExport, styles.mobileOrder2)}>
                     {importButton && (
-                        <Can I={'import'} a={'ci'} ability={ability}>
+                        <Can I={Actions.IMPORT} a={'ci'} ability={ability}>
                             <>{importButton}</>
                         </Can>
                     )}
                     {exportButton && (
-                        <Can I={'export'} a={'ci'} ability={ability}>
+                        <Can I={Actions.EXPORT} a={'ci'} ability={ability}>
                             <>{exportButton}</>
                         </Can>
                     )}
                 </div>
                 {createButton && (
-                    <Can I={'create'} a={'ci'} ability={ability}>
+                    <Can I={Actions.CREATE} a={'ci'} ability={ability}>
                         <>{createButton}</>
                     </Can>
                 )}
             </div>
             <div className={styles.buttonGroupSelect}>
                 {!hiddenButtons?.SELECT_COLUMNS && (
-                    <Can I={'selectColumns'} a={'ci'} ability={ability}>
+                    <Can I={Actions.SELECT_COLUMNS} a={'ci'} ability={ability}>
                         <ButtonPopup
                             buttonLabel={t('actionOverTable.selectColumn')}
                             buttonClassName="marginBottom0"
