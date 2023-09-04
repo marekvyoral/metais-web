@@ -39,11 +39,11 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
     }
 
     const defaultSourceRelationshipTabFilter: NeighboursFilterContainerUi = useMemo(
-        (): NeighboursFilterContainerUi => mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsSources),
+        (): NeighboursFilterContainerUi => mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsTargets),
         [relatedCiTypesFilteredForView],
     )
     const defaultTargetRelationshipTabFilter: NeighboursFilterContainerUi = useMemo(
-        (): NeighboursFilterContainerUi => mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsTargets),
+        (): NeighboursFilterContainerUi => mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsSources),
         [relatedCiTypesFilteredForView],
     )
 

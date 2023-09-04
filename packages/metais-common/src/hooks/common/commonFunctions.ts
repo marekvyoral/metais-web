@@ -1,5 +1,5 @@
 import { RelatedCiTypePreview } from '@isdd/metais-common/api'
-import { CATEGORY_ENUM, NOT_PUBLIC_ENTITIES, TYPES_ENUM, connectedCiTabsToRemove } from '@isdd/metais-common/hooks/common/constants'
+import { CATEGORY_ENUM, NOT_PUBLIC_ENTITIES, TYPES_ENUM, connectedCiTabsToRemove } from '@isdd/metais-common/src/api/constants'
 
 export const removeDuplicates = <T>(arr: T[], by: keyof T | undefined = undefined) => {
     const propertyList = by && arr.map((item) => item[by])

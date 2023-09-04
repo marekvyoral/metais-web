@@ -11,7 +11,9 @@ export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighbo
         },
     })
 
-    const owners = ([...new Set(relationsList?.ciWithRels?.map((rel) => rel?.ci?.metaAttributes?.owner).filter(Boolean))] as string[]) ?? []
+    const owners: string[] = []
+    relationsList?.ciWithRels?.forEach((rel) => rel.ci?.metaAttributes?.owner && owners.push(rel.ci?.metaAttributes?.owner))
+
     const {
         isLoading: isOwnersLoading,
         isError: isOwnersError,

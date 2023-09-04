@@ -1,9 +1,10 @@
-import { calculateConstraintFromAttributeProfiles, calculateConstraintFromAttributes } from '../componentHelpers/formatting/constraints'
-
-import { MEASURE_UNIT } from './common/constants'
-import { useHowToDisplayConstraints } from './useHowToDisplay'
-
 import { CiType, useGetEnum } from '@isdd/metais-common/api'
+import {
+    calculateConstraintFromAttributeProfiles,
+    calculateConstraintFromAttributes,
+} from '@isdd/metais-common/componentHelpers/formatting/constraints'
+import { MEASURE_UNIT } from '@isdd/metais-common/src/api/constants'
+import { useHowToDisplayConstraints } from '@isdd/metais-common/src/hooks/useHowToDisplay'
 interface IDetailData {
     entityStructure: CiType | undefined
     isEntityStructureLoading: boolean
