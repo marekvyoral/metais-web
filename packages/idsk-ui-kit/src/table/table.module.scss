@@ -82,6 +82,59 @@
     overflow: auto;
 }
 
+.tableSticky {
+    thead .headerRow {
+        th:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 1;
+            padding-left: govuk-spacing(2);
+        }
+    }
+
+    thead .checkBoxHeaderRow {
+        th:first-child {
+            padding-left: govuk-spacing(2);
+            position: sticky;
+            left: 0;
+            z-index: 1;
+        }
+        th:nth-child(2) {
+            position: sticky;
+            left: 50px;
+            padding-left: govuk-spacing(2);
+            z-index: 1;
+        }
+    }
+
+    tbody .tableRow {
+        td:first-child {
+            position: sticky;
+            left: 0;
+            padding-left: govuk-spacing(2);
+            background: govuk-colour('white');
+            z-index: 1;
+        }
+    }
+
+    tbody .checkBoxRow {
+        td:first-child {
+            padding-left: govuk-spacing(2);
+            position: sticky;
+            left: 0;
+            background: govuk-colour('white');
+            z-index: 1;
+        }
+        td:nth-child(2) {
+            position: sticky;
+            left: 50px;
+            padding-left: govuk-spacing(2);
+            background: govuk-colour('white');
+            z-index: 1;
+        }
+    }
+}
+
 .headerRow {
     max-width: 2500px !important;
 }
