@@ -38,6 +38,7 @@ interface IArrayAttributeInput {
     }>
     defaultValue: string[]
     hasResetState: HasResetState
+    disabled?: boolean
     nameSufix: string
 }
 
@@ -52,6 +53,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
     trigger,
     defaultValue,
     hasResetState,
+    disabled,
     nameSufix,
 }) => {
     const { t } = useTranslation()
@@ -99,7 +101,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                 <div className={styles.infoDiv}>{info && <Tooltip descriptionElement={info} />}</div>
                 <div className={styles.buttonDiv}>
                     <Button
-                        disabled={attribute.readOnly}
+                        disabled={attribute.readOnly || disabled}
                         label={
                             <div className={styles.buttonWithIcon}>
                                 <img className={styles.iconAddItems} src={PlusIcon} />
@@ -126,6 +128,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                                 error={getArrayInputError(index)}
                                 onChange={(e) => handleInputChange(e, index)}
                                 defaultValue={value}
+                                disabled={disabled}
                             />
                         </div>
                     )}
@@ -141,6 +144,7 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                                 type={isInteger ? 'number' : 'text'}
                                 onChange={(e) => handleInputChange(e, index)}
                                 defaultValue={value}
+                                disabled={disabled}
                             />
                         </div>
                     )}

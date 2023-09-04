@@ -18,7 +18,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { AddItemsButtonGroup } from '@/components/add-items-button-group/AddItemsButtonGroup'
 import { CiTable, IRowSelectionState } from '@/components/ci-table/CiTable'
 import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
-import { KSFilterData } from '@/pages/ci/[entityName]'
+import { KSFilterData } from '@/pages/ci/[entityName]/entity'
 
 interface IListWrapper {
     isNewRelationModal?: boolean

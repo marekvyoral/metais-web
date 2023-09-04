@@ -1,5 +1,7 @@
 import { ErrorBlockList } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
 import { Attribute, AttributeConstraintEnumAllOf, CiCode, ConfigurationItemUiAttributes, EnumType } from '@isdd/metais-common'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import React, { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 
@@ -18,6 +20,7 @@ interface ISection {
     unitsData: EnumType | undefined
     defaultItemAttributeValues?: ConfigurationItemUiAttributes | undefined
     hasResetState: HasResetState
+    updateCiItemId?: string
 }
 
 export const CreateEntitySection: React.FC<ISection> = ({
@@ -29,7 +32,10 @@ export const CreateEntitySection: React.FC<ISection> = ({
     unitsData,
     defaultItemAttributeValues,
     hasResetState,
+    updateCiItemId,
 }) => {
+    const ability = useAbilityContext()
+
     const { register, formState, trigger, setValue, clearErrors } = useFormContext()
     const { errors, isSubmitted } = formState
 
@@ -62,31 +68,35 @@ export const CreateEntitySection: React.FC<ISection> = ({
     return (
         <div>
             <ErrorBlockList errorList={thisSectionErrorList} />
-            {attributes?.map?.((attribute) => (
-                <React.Fragment key={attribute.technicalName}>
-                    {!attribute.invisible && (
-                        <AttributeInput
-                            trigger={trigger}
-                            setValue={setValue}
-                            attribute={attribute}
-                            constraints={findAttributeConstraint(
-                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                //@ts-ignore
-                                attribute?.constraints?.map((item: AttributeConstraintEnumAllOf) => item.enumCode ?? '') ?? [],
-                                constraintsData,
-                            )}
-                            clearErrors={clearErrors}
-                            register={register}
-                            error={getAttributeInputErrorMessage(attribute, errors)}
-                            isSubmitted={isSubmitted}
-                            hint={getHint(attribute)}
-                            unitsData={attribute.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
-                            defaultValueFromCiItem={defaultItemAttributeValues?.[attribute.technicalName ?? '']}
-                            hasResetState={hasResetState}
-                        />
-                    )}
-                </React.Fragment>
-            ))}
+            {attributes?.map?.((attribute) => {
+                const isSectionDisabled = !ability?.can(Actions.EDIT, `ci.${updateCiItemId}.attributeProfile.${sectionId}`) // when create no uuid is required
+                return (
+                    <React.Fragment key={attribute.technicalName}>
+                        {!attribute.invisible && (
+                            <AttributeInput
+                                trigger={trigger}
+                                setValue={setValue}
+                                attribute={attribute}
+                                constraints={findAttributeConstraint(
+                                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                    //@ts-ignore
+                                    attribute?.constraints?.map((item: AttributeConstraintEnumAllOf) => item.enumCode ?? '') ?? [],
+                                    constraintsData,
+                                )}
+                                clearErrors={clearErrors}
+                                register={register}
+                                error={getAttributeInputErrorMessage(attribute, errors)}
+                                isSubmitted={isSubmitted}
+                                hint={getHint(attribute)}
+                                unitsData={attribute.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                                defaultValueFromCiItem={defaultItemAttributeValues?.[attribute.technicalName ?? '']}
+                                hasResetState={hasResetState}
+                                disabled={isSectionDisabled}
+                            />
+                        )}
+                    </React.Fragment>
+                )
+            })}
         </div>
     )
 }

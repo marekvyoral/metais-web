@@ -33,7 +33,7 @@ import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
 import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
 import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits } from '@/components/create-entity/createEntityHelpers'
-import CiListPage from '@/pages/ci/[entityName]'
+import CiListPage from '@/pages/ci/[entityName]/entity'
 
 interface Props {
     ciItemData: ConfigurationItemUi | undefined
