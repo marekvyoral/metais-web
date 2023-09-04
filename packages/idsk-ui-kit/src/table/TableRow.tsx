@@ -1,6 +1,6 @@
-import React from 'react'
 import { Row, flexRender } from '@tanstack/react-table'
 import classNames from 'classnames'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { CHECKBOX_CELL } from './constants'

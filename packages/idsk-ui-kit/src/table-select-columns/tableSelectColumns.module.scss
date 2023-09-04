@@ -36,9 +36,6 @@
 .scroll {
     height: 270px;
     overflow-y: scroll;
-    display: flex;
-    flex-direction: column;
-    max-width: 300px;
 }
 
 .customLabelCheckbox {
@@ -55,6 +52,5 @@
 }
 
 .textHeader {
-    margin-top: govuk-spacing(1) !important;
     margin-bottom: govuk-spacing(1) !important;
 }
