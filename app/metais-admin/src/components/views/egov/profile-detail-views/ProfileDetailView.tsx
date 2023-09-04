@@ -1,28 +1,29 @@
-import React, { useCallback, useState } from 'react'
-import { Button, CheckBox, Input, Table } from '@isdd/idsk-ui-kit'
-import { Attribute } from '@isdd/metais-common/api'
-import { useTranslation } from 'react-i18next'
-import { ColumnDef } from '@tanstack/react-table'
-import { useNavigate } from 'react-router-dom'
+import { BreadCrumbs, Button, CheckBox, HomeIcon, Input, Table } from '@isdd/idsk-ui-kit'
 import { isRowSelected } from '@isdd/metais-common'
+import { Attribute } from '@isdd/metais-common/api'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { ColumnDef } from '@tanstack/react-table'
+import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
-import { BasicInformations } from '../BasicInformations'
 import styles from '../detailViews.module.scss'
 
-import { AddAttributeModal } from './attributes/AddAttributeModal'
 import { MoreActionsColumn } from './actions/MoreActionsColumn'
+import { AddAttributeModal } from './attributes/AddAttributeModal'
 
 import { IAtrributesContainerView } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
+import { BasicInformations } from '@/components/views/egov/BasicInformations'
 
-export const ProfileDetailView = ({
+export const ProfileDetailView = <T,>({
     data: { ciTypeData, constraintsData, unitsData },
     setValidityOfProfile,
     entityName,
     saveAttribute,
     setValidityOfAttributeProfile,
     setVisibilityOfAttributeProfile,
-}: IAtrributesContainerView) => {
+}: IAtrributesContainerView<T>) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const [openAddAttributeModal, setOpenAddAttributeModal] = useState(false)
@@ -50,7 +51,7 @@ export const ProfileDetailView = ({
     const handleSaveAttribute = useCallback(
         (rowIndex: number) => {
             const editedData = getValues(`attributes.${rowIndex}`)
-            saveAttribute?.(editedData)
+            saveAttribute?.(editedData as T)
             cancelEditing(rowIndex)
         },
         [saveAttribute, getValues, cancelEditing],
@@ -195,6 +196,12 @@ export const ProfileDetailView = ({
 
     return (
         <>
+            <BreadCrumbs
+                links={[
+                    { label: t('egov.routing.home'), href: AdminRouteNames.HOME, icon: HomeIcon },
+                    { label: t('egov.routing.attrProfile'), href: AdminRouteNames.EGOV_PROFILE },
+                ]}
+            />
             <div className={styles.basicInformationSpace}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <h2 className="govuk-heading-l">{t('egov.detail.profileAttributesHeading')}</h2>
@@ -216,7 +223,17 @@ export const ProfileDetailView = ({
             <div>
                 <h3 className="govuk-heading-m">{t('egov.detail.profileAttributes')}</h3>
                 <Table columns={columns} data={ciTypeData?.attributes ?? []} />
-                <Button label={t('egov.create.addAttribute')} onClick={() => setOpenAddAttributeModal(true)} />
+                <div className={styles.underTableButton}>
+                    <Button
+                        label={t('egov.create.back')}
+                        onClick={() => {
+                            navigate('/egov/profile/')
+                        }}
+                        variant="secondary"
+                    />
+
+                    <Button label={t('egov.create.addAttribute')} onClick={() => setOpenAddAttributeModal(true)} />
+                </div>
                 <AddAttributeModal open={openAddAttributeModal} onClose={() => setOpenAddAttributeModal(false)} entityName={entityName ?? ''} />
             </div>
         </>

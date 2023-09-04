@@ -1,18 +1,24 @@
-import React from 'react'
-import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { FieldValues } from 'react-hook-form'
 import { useGetRoleParticipantBulk, useReadCiList1 } from '@isdd/metais-common/api'
-import { IListView } from '@isdd/metais-common/types/list'
+import { useFilterForCiList, useGetColumnData, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers/filter'
-import { useGetColumnData, useFilterForCiList, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
+import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { QueryFeedback } from '@isdd/metais-common/index'
+import { IListView } from '@isdd/metais-common/types/list'
+import React from 'react'
+import { FieldValues } from 'react-hook-form'
 interface ICiListContainer<T> {
     entityName: string
     ListComponent: React.FC<IListView>
     defaultFilterValues: T
+    defaultFilterOperators?: T
 }
 
-export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityName, ListComponent, defaultFilterValues }: ICiListContainer<T>) => {
+export const CiListContainer = <T extends FieldValues & IFilterParams>({
+    entityName,
+    ListComponent,
+    defaultFilterValues,
+    defaultFilterOperators,
+}: ICiListContainer<T>) => {
     const { columnListData, saveColumnSelection, resetColumns, isLoading: isColumnsLoading, isError: isColumnsError } = useGetColumnData(entityName)
 
     const defaultRequestApi = {
@@ -35,20 +41,22 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({ entityN
         filter: {
             ...filterToNeighborsApi.filter,
             fullTextSearch: filterParams.fullTextSearch || '',
-            attributes: mapFilterParamsToApi(filterParams),
+            attributes: mapFilterParamsToApi(filterParams, defaultFilterOperators),
         },
     })
 
-    const ownerGids = tableData?.configurationItemSet?.map((item) => item.metaAttributes?.owner ?? '')
+    const ownerGids = new Set(tableData?.configurationItemSet?.map((item) => item.metaAttributes?.owner ?? ''))
     const {
         data: gestorsData,
         isLoading: isGestorsLoading,
         isError: isGestorsError,
-    } = useGetRoleParticipantBulk({ gids: ownerGids }, { query: { enabled: !!tableData && !!ownerGids } })
+        fetchStatus,
+    } = useGetRoleParticipantBulk({ gids: [...ownerGids] }, { query: { enabled: !!tableData && ownerGids && [...ownerGids]?.length > 0 } })
 
     const pagination = usePagination(tableData, filterParams)
 
-    const isLoading = [isReadCiListLoading, isColumnsLoading, isGestorsLoading].some((item) => item)
+    const isGestorsLoadingCombined = isGestorsLoading && fetchStatus != 'idle'
+    const isLoading = [isReadCiListLoading, isColumnsLoading, isGestorsLoadingCombined].some((item) => item)
     const isError = [isReadCiListError, isColumnsError, isGestorsError].some((item) => item)
 
     return (

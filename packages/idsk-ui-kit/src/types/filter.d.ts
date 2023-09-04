@@ -17,4 +17,9 @@ export interface IFilter {
 
 export enum SortBy {
     HIERARCHY_FROM_ROOT = 'HIERARCHY_FROM_ROOT',
+    GEN_PROFIL_NAZOV = 'Gen_Profil_nazov',
+}
+
+export enum MetaAttributesState {
+    DRAFT = 'DRAFT',
 }

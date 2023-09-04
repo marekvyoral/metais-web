@@ -4,10 +4,10 @@ import React, { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MultiValue } from 'react-select'
 
-import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
-import { useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api'
+import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
 
 interface Props {
     onChangeAuthority: (e: HierarchyRightsUi | null) => void
@@ -55,6 +55,7 @@ export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, sele
                 />
             )}
             <SelectLazyLoading
+                isClearable={false}
                 value={selectedOrg}
                 error={implicitHierarchy.isError || isError ? t('selectPublicAuthority.error') : ''}
                 getOptionLabel={(item) => item.poName ?? ''}

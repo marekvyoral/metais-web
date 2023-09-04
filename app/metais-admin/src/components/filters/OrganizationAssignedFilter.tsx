@@ -35,7 +35,7 @@ export const OrganizationAssignedFilter = ({ defaultFilterValues, onlyFreePO: { 
                         setValue={setValue}
                         label={t('filter.PO.publicAuthorityType')}
                         options={optionsPersonCategories}
-                        defaultValue={filter.EA_Profil_PO_kategoria_osoby?.[0] ?? ''}
+                        defaultValue={filter.EA_Profil_PO_kategoria_osoby}
                     />
                     <Input
                         label={t(`filter.organizations.ICO`)}

@@ -126,6 +126,7 @@ const getPropertyType = <T, K extends keyof T>(obj: T, key: K): string => {
 
 export function useFilterParams<T extends FieldValues & IFilterParams>(defaults: T & IFilter): ReturnUseFilterParams<T> {
     const [urlParams, setUrlParams] = useSearchParams()
+    const location = useLocation()
     const [uiFilterState, setUiFilterState] = useState<IFilter>({
         sort: defaults?.sort ?? [],
         pageNumber: defaults?.pageNumber ?? BASE_PAGE_NUMBER,
@@ -166,12 +167,18 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
                         // @ts-ignore
                         memoFilter[key] = urlParams.get(key)
                     }
+                } else {
+                    if (!location.search) {
+                        // eslint-disable-next-line
+                        // @ts-ignore
+                        memoFilter[key] = defaults[key]
+                    }
                 }
             })
 
         memoFilter.attributeFilters = parseCustomAttributes(urlParams)
         return memoFilter
-    }, [urlParams, uiFilterState, defaults])
+    }, [uiFilterState, defaults, urlParams, location.search])
 
     return { filter, urlParams, handleFilterChange }
 }
@@ -229,9 +236,9 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
                 value: defaults,
                 path: location.pathname,
             })
-            setSearchParams(clearData(defaults))
         }
-    }, [defaults, dispatch, location.pathname, setSearchParams, state.clearedFilter, state.filter, clearData, filter])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return {
         ...methods,

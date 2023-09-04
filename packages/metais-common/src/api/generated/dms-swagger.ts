@@ -5,8 +5,8 @@
  * MetaIS DMS
  * OpenAPI spec version: 3.0-SNAPSHOT
  */
-import { useQuery, useMutation } from '@tanstack/react-query'
-import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
+import type { MutationFunction, QueryFunction, QueryKey, UseMutationOptions, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useDmsSwaggerClient } from '../hooks/useDmsSwaggerClient'
 export type GetMetaParams = {
     version?: string

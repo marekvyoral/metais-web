@@ -18,3 +18,4 @@ export const ALL_EVENT_TYPES = 'All'
 export const NOTIFICATION_TITLE = 'messagePerex'
 
 export const ROLES_GROUP = 'SKUPINA_ROL'
+export const metaisEmail = 'metais@mirri.gov.sk'

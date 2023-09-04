@@ -93,6 +93,13 @@
             "evidenceStatus": "Stav evidencie"
         },
 
+        "egov": {
+            "name": "Meno",
+            "technicalName": "Technické meno",
+            "type": "Typ",
+            "valid": "Stav"
+        },
+
         "expand": "Rozbaliť filter",
         "collapse": "Zbaliť filter",
         "namePlaceholder": "Zadajte názov",
@@ -133,9 +140,12 @@
         "unorderedColumn": "Nezoradený stĺpec - použije vzostupné zoradenie.",
         "resetOrder": "Resetovať poradie",
         "pagination": "Tabuľková navigácia",
+        "name": "Meno",
+        "technicalName": "Technické meno",
+        "type": "Typ",
+        "valid": "Stav",
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
         "noRowsFound": "Nenašli sa žiadne záznamy",
-        "name": "Názov",
         "ico": "ICO",
         "adress": "Adresa"
     },
@@ -145,7 +155,8 @@
         "select": {
             "country": "Výber krajiny"
         },
-        "submit": "Odoslať formulár"
+        "submit": "Odoslať formulár",
+        "back": "Späť"
     },
     "languageSelector": {
         "open": "Rozbaliť jazykové menu",
@@ -225,6 +236,11 @@
                 "": "Zakazané"
             }
         },
+        "routing": {
+            "home": "Hlavná stránka",
+            "attrProfile": "Profily atribútov",
+            "profileList": "Zoznam profilov"
+        },
         "create": {
             "requiredField": "Toto pole je povinné",
             "codePrefixRegex": "Povolenými znakmi pre prefix sú 'a'..'z', a oddelovač '_'.",
@@ -232,7 +248,8 @@
             "addProfile": "Pridať profil",
             "removeProfile": "Odstrániť profil",
             "addConnection": "Pridať prepojenie",
-            "addAttribute": "Pridať atribút"
+            "addAttribute": "Pridať atribút",
+            "back": "Späť na zoznam profilov atribútov"
         }
     },
     "userManagement": {
@@ -419,6 +436,53 @@
             "relations": "Vzťahy",
             "roleManagement": "Správa rolí"
         },
+        "tooltips": "Tooltipy"
+    },
+    "tooltips": {
+        "selectedEntries": "Vybrané záznamy",
+        "addNewProfile": "Pridať nový profil",
+        "type": {
+            "application": "Aplikačný",
+            "system": "Systémový",
+            "custom": "Používateľský"
+        },
+        "valid": {
+            "true": "Platný",
+            "false": "Zneplatnený",
+            "undefined": "Zneplatnený"
+        },
+        "routing": {
+            "home": "Hlavná stránka",
+            "attrProfile": "Profily atribútov",
+            "newProfile": "Nový profil"
+        },
+        "create": {
+            "createNewAttrProfile": "Vytvorenie nového profilu atribútov",
+            "detailArrtProfile": "Detail profilu atribútov",
+            "attributes": "Atribúty",
+            "name": "Názov*",
+            "technicalName": "Technický názov*",
+            "type": "Typ",
+            "description": "Popis",
+            "engDescription": "Anglický popis",
+            "changeRole": "Oprávnené role*",
+            "save": "Uložiť",
+            "cancel": "Zrušiť",
+            "valid": "Stav"
+        },
+        "table": {
+            "name": "Meno",
+            "technicalName": "Technické meno",
+            "description": "Popis(Tooltip)",
+            "engDescription": "Anglický popis",
+            "order": "Poradie",
+            "engName": "Anglický názov",
+            "invisible": "Viditeľnosť",
+            "defaultValue": "Prednastavená hodnota",
+            "edit": "Zmeniť"
+        },
+        "unvalidTextWarning": "Niektoré z vami vybraných položiek sú už zneplatnené",
+        "validTextWarning": "Niektoré z vami vybraných položiek sú už splatnené",
         "codelists": "Interné číselníky"
     },
     "feedback": {

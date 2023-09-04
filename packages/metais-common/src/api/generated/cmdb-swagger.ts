@@ -5,15 +5,17 @@
  * MetaIS CMDB
  * OpenAPI spec version: 3.0-SNAPSHOT
  */
-import { useQuery, useMutation } from '@tanstack/react-query'
-import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
+import type { MutationFunction, QueryFunction, QueryKey, UseMutationOptions, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useCmdbSwaggerClient } from '../hooks/useCmdbSwaggerClient'
-import { useClientForGetRoleParticipantBulkUsingPOST } from '../hooks/useCmdbSwaggerClientWithTransform'
-import { useClientForreadCiNeighboursUsingPOST } from '../hooks/useCmdbSwaggerClientWithTransform'
-import { useClientForReadCiListUsingPOST } from '../hooks/useCmdbSwaggerClientWithTransform'
-import { useClientForGetRoleParticipantUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
-import { useClientForReadCiNeighboursWithAllRelsUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
-import { useClientForReadConfigurationItemUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import {
+    useClientForGetRoleParticipantBulkUsingPOST,
+    useClientForGetRoleParticipantUsingGET,
+    useClientForReadCiListUsingPOST,
+    useClientForReadCiNeighboursWithAllRelsUsingGET,
+    useClientForReadConfigurationItemUsingGET,
+    useClientForreadCiNeighboursUsingPOST,
+} from '../hooks/useCmdbSwaggerClientWithTransform'
 export type ReadAllCiHistoryVersionsParams = {
     page: number
     perPage: number

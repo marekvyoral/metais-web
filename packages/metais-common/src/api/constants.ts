@@ -35,6 +35,8 @@ export enum ATTRIBUTE_NAME {
     Gen_Profil_EA_pocet_replikacii = 'Gen_Profil_EA_pocet_replikacii',
 }
 
+export const Gen_Profil = 'Gen_Profil'
+
 export enum STATUTAR_NAME {
     Profil_PO_statutar_titul_pred_menom = 'Profil_PO_statutar_titul_pred_menom',
     Profil_PO_statutar_meno = 'Profil_PO_statutar_meno',
