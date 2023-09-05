@@ -1,30 +1,33 @@
+import { IFilterParams, useFilter } from '@isdd/metais-common/hooks/useFilter'
 import classNames from 'classnames'
 import React, { useState } from 'react'
+import { Control, FieldValues, UseFormClearErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Control, FieldValues, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
-import { IFilterParams, useFilter } from '@isdd/metais-common/hooks/useFilter'
+import { ObjectSchema } from 'yup'
 
 import styles from './filter.module.scss'
 
-import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
+import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { SearchInput } from '@isdd/idsk-ui-kit/searchInput'
 
-interface FormProps<T extends FieldValues & IFilterParams> {
+export interface FormProps<T extends FieldValues & IFilterParams> {
     register: UseFormRegister<T>
     control: Control<T>
     filter: T
     setValue: UseFormSetValue<T>
     watch: UseFormWatch<T>
+    clearErrors: UseFormClearErrors<T>
 }
 
 type FilterProps<T extends FieldValues & IFilterParams> = {
     heading?: React.ReactNode
     form: (props: FormProps<T>) => React.ReactNode
     defaultFilterValues: T
+    schema?: ObjectSchema<T & IFilterParams>
 }
 
-export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, defaultFilterValues }: FilterProps<T>) => {
+export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, defaultFilterValues, schema }: FilterProps<T>) => {
     const {
         watch,
         register,
@@ -34,7 +37,8 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, d
         filter,
         shouldBeFilterOpen,
         resetFilters: reset,
-    } = useFilter<T & IFilterParams>(defaultFilterValues)
+        clearErrors,
+    } = useFilter<T & IFilterParams>(defaultFilterValues, schema)
     const { t } = useTranslation()
     const [isOpen, setOpen] = useState(shouldBeFilterOpen)
     const [showScrollbar, setShowscrollbar] = useState(isOpen)
@@ -96,7 +100,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, d
                                 [styles.formWrapper]: true,
                             })}
                         >
-                            {form({ register, control, filter, setValue, watch })}
+                            {form({ register, control, filter, setValue, watch, clearErrors })}
                             <div className={styles.actionRow}>
                                 <ButtonLink label={t('filter.reset')} onClick={reset} className={styles.clearButton} type="reset" />
                                 <Button label={t('filter.submit')} type="submit" />

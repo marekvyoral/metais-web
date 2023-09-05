@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { HistoryVersionsListUiConfigurationItemUi, useReadCiHistoryVersions } from '@isdd/metais-common/api'
+import { mapFilterToHistoryVersionsApi } from '@isdd/metais-common/componentHelpers'
 
-import { mapFilterToHistoryVersionsApi } from '@/componentHelpers'
 import { mapConfigurationItemHistoryListToPagination } from '@/componentHelpers/pagination'
 
 export interface IView {

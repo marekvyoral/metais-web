@@ -4,8 +4,7 @@ import { useEntityRelationsDataList } from '@isdd/metais-common/hooks/useEntityR
 import { IKeyToDisplay, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelationsTypesCount'
 import React, { SetStateAction, useEffect, useMemo, useState } from 'react'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
-
-import { mapFilterToNeighboursWithAllRelsApi } from '@/componentHelpers'
+import { mapFilterToNeighboursWithAllRelsApi } from '@isdd/metais-common/componentHelpers'
 
 export interface IRelationsView {
     isLoading: boolean
