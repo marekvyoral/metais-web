@@ -1,1 +1,0 @@
-export const MEASURE_UNIT = 'MERNA_JEDNOTKA'
