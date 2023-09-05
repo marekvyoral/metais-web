@@ -83,7 +83,7 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
         perPage: filter.pageSize ?? 10,
         pageNumber: filter.pageNumber ?? 1,
         onlyUnread: filter.onlyUnread ?? false,
-        fulltextSearch: filter.fullTextSearch,
+        fulltextSearch: filter.fullTextSearch ?? '',
         ...(filter.eventType && filter.eventType != ALL_EVENT_TYPES && { eventType: filter.eventType }),
         sortBy: sort.length > 0 ? firstLetterToLowerCase(sort[0].orderBy) : 'createdAt',
         ascending: sort.length > 0 ? sort[0].sortDirection == 'ASC' : false,
