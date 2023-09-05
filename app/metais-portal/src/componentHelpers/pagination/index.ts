@@ -1,5 +1,11 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { NeighbourSetUi, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, HistoryVersionsListUiConfigurationItemUi } from '@isdd/metais-common/api'
+import {
+    BASE_PAGE_NUMBER,
+    BASE_PAGE_SIZE,
+    HistoryVersionsListUiConfigurationItemUi,
+    NeighbourSetUi,
+    ReportResultObject,
+} from '@isdd/metais-common/api'
 
 export const mapNeighboursSetSourceToPagination = (uiFilter?: IFilter, data?: NeighbourSetUi | void): Pagination => {
     return {
@@ -25,6 +31,21 @@ export const mapConfigurationItemSetToPagination = (uiFilter?: IFilter, dataLeng
     }
 }
 
+export const mapGenericTypeToPagination = <T extends { totalCount?: number }>(uiFilter?: IFilter, data?: T): Pagination => {
+    return {
+        pageNumber: uiFilter?.pageNumber ?? BASE_PAGE_NUMBER,
+        pageSize: uiFilter?.pageSize ?? BASE_PAGE_SIZE,
+        dataLength: data?.totalCount ?? 0,
+    }
+}
+
+export const mapReportResultToPagination = (uiFilter?: IFilter, data?: ReportResultObject | void): Pagination => {
+    return {
+        pageNumber: uiFilter?.pageNumber ?? BASE_PAGE_NUMBER,
+        pageSize: uiFilter?.pageSize ?? BASE_PAGE_SIZE,
+        dataLength: data?.totalCount ?? 0,
+    }
+}
 export const mapConfigurationItemHistoryListToPagination = (
     uiFilter?: IFilter,
     data?: HistoryVersionsListUiConfigurationItemUi | void,

@@ -1,12 +1,12 @@
 import React from 'react'
 import classNames from 'classnames'
-import { UseFormSetValue } from 'react-hook-form'
+import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 import { GroupBase, MultiValue, OptionProps, OptionsOrGroups, PropsValue } from 'react-select'
 import { AsyncPaginate } from 'react-select-async-paginate'
 
 import styles from './selectLazyLoading.module.scss'
 
-import { Control, Menu, selectStyles, Option as ReactSelectDefaultOptionComponent } from '@isdd/idsk-ui-kit/common/SelectCommon'
+import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
 
 export interface ILoadOptionsResponse<T> {
     options: T[]
@@ -18,7 +18,7 @@ export interface ILoadOptionsResponse<T> {
 
 export const DEFAULT_LAZY_LOAD_PER_PAGE = 20
 
-interface ISelectProps<T> {
+export interface ISelectProps<T> {
     id?: string
     value?: T | MultiValue<T> | null
     onChange?: (val: T | MultiValue<T> | null) => void
@@ -38,6 +38,8 @@ interface ISelectProps<T> {
         prevOptions: OptionsOrGroups<T, GroupBase<T>>,
         additional: { page: number } | undefined,
     ) => Promise<ILoadOptionsResponse<T>>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    clearErrors?: UseFormClearErrors<any>
     isClearable?: boolean
 }
 
@@ -56,6 +58,7 @@ export const SelectLazyLoading = <T,>({
     error,
     id,
     setValue,
+    clearErrors,
     isClearable = true,
 }: ISelectProps<T>): JSX.Element => {
     const Option = (props: OptionProps<T>) => {
@@ -80,6 +83,8 @@ export const SelectLazyLoading = <T,>({
                 setValue(name, val)
             }
         }
+        const val = Array.isArray(selectedValue) ? selectedValue.length : selectedValue
+        val && clearErrors && clearErrors(name)
     }
 
     return (

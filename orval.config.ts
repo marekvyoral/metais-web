@@ -204,6 +204,30 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
+    report: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_REPORT_REPO_SWAGGER_URL ?? '',
+            filters: {
+                tags: ['category-controller', 'report-controller'],
+            },
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/report-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useReportSwaggerClient.ts',
+                    name: 'useReportSwaggerClient',
+                },
+                operations: {
+                    execute: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
+                },
+            },
+        },
+    },
     notificationsApi: {
         input: {
             target: process.env.VITE_REST_CLIENT_NOTIFICATION_ENGINE_SWAGGER_URL ?? '',

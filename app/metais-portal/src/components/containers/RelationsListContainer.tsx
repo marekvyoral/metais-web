@@ -1,9 +1,8 @@
-import React, { SetStateAction, useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
+import { mapFilterToNeighboursWithAllRelsApi } from '@isdd/metais-common/componentHelpers'
 import { IKeyToDisplay, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelations'
-
-import { mapFilterToNeighboursWithAllRelsApi } from '@/componentHelpers'
+import React, { SetStateAction, useState } from 'react'
 
 export interface IRelationsView {
     isLoading: boolean

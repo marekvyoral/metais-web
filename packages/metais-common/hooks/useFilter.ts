@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { BaseSyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import {
@@ -6,6 +7,7 @@ import {
     FieldValues,
     FormState,
     useForm,
+    UseFormClearErrors,
     UseFormHandleSubmit,
     UseFormRegister,
     UseFormReset,
@@ -14,6 +16,7 @@ import {
     UseFormWatch,
 } from 'react-hook-form'
 import { useLocation, useSearchParams } from 'react-router-dom'
+import { ObjectSchema } from 'yup'
 
 import { convertFilterArrayData } from '@isdd/metais-common/componentHelpers/filter/convertFilterArrayData'
 import { convertUrlArrayAttribute } from '@isdd/metais-common/componentHelpers/filter/convertUrlArrayValue'
@@ -79,6 +82,7 @@ interface ReturnUseFilter<TFieldValues extends FieldValues> {
     control: Control<TFieldValues, any>
     register: UseFormRegister<TFieldValues>
     watch: UseFormWatch<TFieldValues>
+    clearErrors: UseFormClearErrors<TFieldValues>
 }
 
 const parseCustomAttributes = (urlParams: URLSearchParams): undefined | IAttributeFilters => {
@@ -183,24 +187,25 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
     return { filter, urlParams, handleFilterChange }
 }
 
-export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): ReturnUseFilter<T> {
+export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, schema?: ObjectSchema<T>): ReturnUseFilter<T> {
     const [, setSearchParams] = useSearchParams()
     const location = useLocation()
     const { state, dispatch } = useFilterContext()
     const { filter } = useFilterParams<T>(defaults)
-    const methods = useForm<T & IFilterParams>({ defaultValues: filter as DeepPartial<T> })
 
+    const methods = useForm<T & IFilterParams>({ defaultValues: filter as DeepPartial<T>, resolver: schema ? yupResolver(schema) : undefined })
+    const { reset, handleSubmit, formState } = methods
     useEffect(() => {
         if (state.clearedFilter[location.pathname]) {
-            methods.reset(filter as DeepPartial<T>)
+            reset(filter as DeepPartial<T>)
         }
-    }, [filter, location.pathname, methods, state.clearedFilter])
+    }, [filter, location.pathname, reset, formState.errors, state.clearedFilter])
 
     const clearData = useCallback((obj: T): T => {
         return Object.fromEntries<T>(Object.entries<T>(obj).filter(([key, v]) => !!v && key !== 'attributeFilters')) as T
     }, [])
 
-    const onSubmit = methods.handleSubmit((data: T) => {
+    const onSubmit = handleSubmit((data: T) => {
         const filterData = clearData(data)
         const convertedArrayFilterData = convertFilterArrayData(filterData)
         //so when user is on page 200 and filter spits out only 2 pages he can get to them
@@ -230,7 +235,8 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
     }
 
     useEffect(() => {
-        if (!state.filter[location.pathname] && !state.clearedFilter[location.pathname] && !filter) {
+        if (!state.filter[location.pathname] && !state.clearedFilter[location.pathname]) {
+            //&& !filter) { TODO: WHAT ABOUT THIS
             dispatch({
                 type: FilterActions.SET_FILTER,
                 value: defaults,
@@ -245,7 +251,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
         filter,
         shouldBeFilterOpen: handleShouldBeFilterOpen(),
         resetFilters: () => {
-            methods.reset()
+            reset()
             setSearchParams({})
             dispatch({ type: FilterActions.RESET_FILTER, path: location.pathname })
         },
