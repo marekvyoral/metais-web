@@ -26,6 +26,7 @@ export const ExportItemsOrRelations: React.FC<IExportItemsOrRelationsProps> = ({
     const startExport = (extension: FileExtensionEnum) => {
         if (!exportValue) return
         onExportStart(exportValue, extension)
+        close()
     }
     return (
         <BaseModal isOpen={isOpen} close={close}>

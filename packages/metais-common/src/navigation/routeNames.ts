@@ -14,6 +14,7 @@ export enum RouteNames {
     RELATIONSHIPS_LIST_TAB = '/ci/:entityName/:entityId/relationships',
     TASKS = '/ulohy',
     CODELISTS = '/codelists',
+    REPORTS = 'reports/',
 }
 
 export enum AdminRouteNames {

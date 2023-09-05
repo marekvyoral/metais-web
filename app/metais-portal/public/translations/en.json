@@ -94,6 +94,7 @@
         "show": "Show",
         "innerNav": "Inner navigation",
         "mainNav": "Main navigation",
+        "reports": "Reports",
         "lists": {
             "processorsOfITDevelopmentConcepts": "Processors of IT development concepts",
             "subordinates": "Subordinates",
@@ -385,6 +386,19 @@
             "": ""
         }
     },
+    "reports": {
+        "table": {
+            "name": "Name",
+            "category": "Category",
+            "description": "Description"
+        },
+        "card": {
+            "basicInfo": "Basic information",
+            "reportName": "Report title",
+            "description": "Description",
+            "category": "Category"
+        }
+    },
     "history": {
         "ACTIONS": {
             "CREATE": "Create",
@@ -408,7 +422,8 @@
         "minValue": "Value must be at least",
         "maxValue": "Value can not be greater than",
         "character": "Only one character can be inserted",
-        "canNotBeDecimal": "This number can not be decimal"
+        "canNotBeDecimal": "This number can not be decimal",
+        "mustBeChecked": "This must be checked if you want to proceed"
     },
     "createEntity": {
         "required": "required",

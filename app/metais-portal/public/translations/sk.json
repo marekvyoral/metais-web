@@ -94,6 +94,7 @@
         "show": "Ukáž",
         "innerNav": "Vnútorná navigácia",
         "mainNav": "Hlavná navigácia",
+        "reports": "Reporty a zostavy",
         "lists": {
             "processorsOfITDevelopmentConcepts": "Spracovatelia koncepcií rozvoja IT",
             "subordinates": "Podriadené osoby",
@@ -385,6 +386,19 @@
             "": ""
         }
     },
+    "reports": {
+        "table": {
+            "name": "Názov",
+            "category": "Kategória",
+            "description": "Popis"
+        },
+        "card": {
+            "basicInfo": "Základné informácie",
+            "reportName": "Názov",
+            "description": "Popis",
+            "category": "Kategória"
+        }
+    },
     "history": {
         "ACTIONS": {
             "CREATE": "Vytvorenie položky",
@@ -408,7 +422,8 @@
         "minValue": "Hodnota musí byť aspoň",
         "maxValue": "Hodnota nesmie byť väčšia ako",
         "character": "Zadaný môže byť len jeden znak",
-        "canNotBeDecimal": "Toto číslo nemôže byť desatinné"
+        "canNotBeDecimal": "Toto číslo musí byť celé číslo",
+        "mustBeChecked": "Toto musí byť zaškrtnuté, ak chcete pokračovať"
     },
     "createEntity": {
         "required": "povinné",

@@ -77,6 +77,11 @@ export const getPortalNavitagionItems = (t: TFunction): NavigationItem[] => [
         ],
     },
     {
+        path: RouteNames.REPORTS,
+        title: t('navMenu.reports'),
+        icon: InstructionsIcon,
+    },
+    {
         path: RouteNames.PREHLADY_A_POSTUPY,
         title: t('navMenu.guides'),
         icon: InstructionsIcon,
