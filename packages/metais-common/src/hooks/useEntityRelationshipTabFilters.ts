@@ -26,8 +26,8 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
             relatedCiType.relationshipTypeTechnicalName && relType.push(relatedCiType.relationshipTypeTechnicalName)
         })
 
-        const uniqueCiType = removeDuplicates(ciType ?? [])
-        const uniqueRelType = removeDuplicates(relType ?? [])
+        const uniqueCiType = removeDuplicates(ciType)
+        const uniqueRelType = removeDuplicates(relType)
 
         return {
             neighboursFilter: {

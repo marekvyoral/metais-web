@@ -3,6 +3,7 @@ import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePre
 import { useEntityRelationsDataList } from '@isdd/metais-common/hooks/useEntityRelationsDataList'
 import { IKeyToDisplay, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelationsTypesCount'
 import React, { SetStateAction, useEffect, useMemo, useState } from 'react'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 
 import { mapFilterToNeighboursWithAllRelsApi } from '@/componentHelpers'
 
@@ -41,8 +42,8 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
     const defaultPageConfig: ReadCiNeighboursWithAllRelsParams = useMemo(() => {
         return {
             ciTypes: defaultCiTypes,
-            page: 1,
-            perPage: 10,
+            page: BASE_PAGE_NUMBER,
+            perPage: BASE_PAGE_SIZE,
             state: ['DRAFT'],
         }
     }, [defaultCiTypes])
