@@ -1,14 +1,12 @@
-import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourSetUi, NeighboursFilterContainerUi, useReadCiNeighbours } from '@isdd/metais-common/api'
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
+import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelationshipTabFilters'
+import React, { useState } from 'react'
+import { useParams } from 'react-router-dom'
 
-import {
-    defaultTargetRelationshipTabFilter,
-    defaultSourceRelationshipTabFilter,
-    NeighboursApiType,
-} from '@/components/containers/RelationshipFilters'
 import { mapNeighboursSetSourceToPagination, mapNeighboursSetTargetToPagination } from '@/componentHelpers/pagination'
+import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
 
 interface ICiNeighboursListContainerView {
     data?: NeighbourSetUi
@@ -29,7 +27,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
     View,
     apiType = NeighboursApiType.source,
 }) => {
-    const selectedRequestApi = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter
+    const { entityName } = useParams()
 
     const [uiFilterState, setUiFilterState] = useState<IFilter>({
         pageNumber: BASE_PAGE_NUMBER,
@@ -45,6 +43,15 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
     }
 
     const {
+        isLoading: isEntityRelationsLoading,
+        isError: isEntityRelationsError,
+        defaultSourceRelationshipTabFilter,
+        defaultTargetRelationshipTabFilter,
+    } = useEntityRelationshipTabFilters(entityName ?? '')
+
+    const selectedRequestApi = apiType === NeighboursApiType.source ? defaultSourceRelationshipTabFilter : defaultTargetRelationshipTabFilter
+
+    const {
         isLoading,
         isError,
         data: documentCiData,
@@ -58,11 +65,11 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
     if (!configurationItemId) return <View pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
     return (
         <View
-            data={documentCiData ?? undefined}
+            data={documentCiData}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
-            isLoading={isLoading}
-            isError={isError}
+            isLoading={isLoading || isEntityRelationsLoading}
+            isError={isError || isEntityRelationsError}
         />
     )
 }

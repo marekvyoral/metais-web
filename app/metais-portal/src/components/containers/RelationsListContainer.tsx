@@ -1,8 +1,10 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
+import { useEntityRelationsDataList } from '@isdd/metais-common/hooks/useEntityRelationsDataList'
+import { IKeyToDisplay, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelationsTypesCount'
+import React, { SetStateAction, useEffect, useMemo, useState } from 'react'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { mapFilterToNeighboursWithAllRelsApi } from '@isdd/metais-common/componentHelpers'
-import { IKeyToDisplay, useEntityRelationsDataList, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelations'
-import React, { SetStateAction, useState } from 'react'
 
 export interface IRelationsView {
     isLoading: boolean
@@ -31,28 +33,41 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
         keysToDisplay,
         data: entityTypes,
     } = useEntityRelationsTypesCount(entityId, technicalName)
-    const defaultPageConfig: ReadCiNeighboursWithAllRelsParams = {
-        ciTypes: [keysToDisplay?.[0]?.technicalName],
-        page: 1,
-        perPage: 10,
-        state: ['DRAFT'],
-    }
+
+    const defaultCiType = keysToDisplay?.[0]?.technicalName
+    const defaultCiTypes: string[] = useMemo((): string[] => {
+        return defaultCiType ? [defaultCiType] : []
+    }, [defaultCiType])
+    const defaultPageConfig: ReadCiNeighboursWithAllRelsParams = useMemo(() => {
+        return {
+            ciTypes: defaultCiTypes,
+            page: BASE_PAGE_NUMBER,
+            perPage: BASE_PAGE_SIZE,
+            state: ['DRAFT'],
+        }
+    }, [defaultCiTypes])
 
     const [pageConfig, setPageConfig] = useState<ReadCiNeighboursWithAllRelsParams>(defaultPageConfig)
+
+    useEffect(() => {
+        if (defaultCiType) {
+            setPageConfig(defaultPageConfig)
+        }
+    }, [defaultCiType, defaultPageConfig])
+
     const handleFilterChange = (filter: IFilter) => {
         setPageConfig(mapFilterToNeighboursWithAllRelsApi(pageConfig, filter))
     }
 
     const { isLoading: areRelationsLoading, isError: areRelationsError, relationsList, owners } = useEntityRelationsDataList(entityId, pageConfig)
-
     const pagination: Pagination = {
         pageNumber: pageConfig.page ?? 1,
         pageSize: pageConfig.perPage ?? 10,
         dataLength: relationsList?.pagination?.totaltems ?? 0,
     }
-
     const isLoading = areRelationsLoading || areTypesLoading
     const isError = areTypesError || areRelationsError
+
     return (
         <View
             isLoading={isLoading}
@@ -61,7 +76,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
                 entityTypes,
                 relationsList,
                 owners,
-                keysToDisplay,
+                keysToDisplay: keysToDisplay ?? [],
             }}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
