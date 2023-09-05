@@ -1,16 +1,16 @@
-import { BreadCrumbs, CheckBox, Filter, HomeIcon, SimpleSelect, Table } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, CheckBox, Filter, HomeIcon, SimpleSelect, Table } from '@isdd/idsk-ui-kit/index'
 import { Notification } from '@isdd/metais-common/api/generated/notifications-swagger'
+import { ALL_EVENT_TYPES } from '@isdd/metais-common/constants'
+import { ActionsOverTable } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { Row } from '@tanstack/react-table'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ALL_EVENT_TYPES } from '@isdd/metais-common/constants'
 
-import { ActionsGroupView } from './ActionsGroupView'
 import { SelectableColumnsSpec } from './notificationUtils'
+import styles from './notifications.module.scss'
 
 import { FilterData, NotificationsListViewParams } from '@/components/containers/NotificationsListContainer'
-
 const NotificationsListView: React.FC<NotificationsListViewParams> = ({
     data,
     isLoading,
@@ -19,13 +19,12 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
     columns,
     selectedColumns,
     setSelectedColumns,
-    listParams,
-    setListParams,
     sort,
     setSort,
     mutateAllDelete,
     mutateAllRead,
     mutateDelete,
+    handleFilterChange,
 }) => {
     const { t } = useTranslation()
 
@@ -35,7 +34,7 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
     const isRowBold = (row: Row<Notification>) => !row.original.readedAt
 
     const clearSelectedRows = useCallback(() => setRowSelection({}), [])
-
+    const idArray = Object.entries(rowSelection).map((e) => e[1].id ?? 0)
     return (
         <>
             <BreadCrumbs
@@ -64,17 +63,29 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
                     </div>
                 )}
             />
-            <ActionsGroupView
-                setListParams={setListParams}
-                listParams={listParams}
-                selectedColumns={selectedColumns}
-                setSelectedColumns={setSelectedColumns}
-                rowSelection={rowSelection}
-                mutateAllDelete={mutateAllDelete}
-                mutateAllRead={mutateAllRead}
-                mutateDelete={mutateDelete}
-            />
 
+            <ActionsOverTable
+                entityName="notification"
+                simpleTableColumnsSelect={{ selectedColumns, setSelectedColumns }}
+                handleFilterChange={handleFilterChange}
+            >
+                <div className={styles.buttonGroup}>
+                    <Button
+                        className={styles.marginBottom0}
+                        label={t('notifications.deleteSelected') + '(' + idArray.length + ')'}
+                        disabled={idArray.length == 0}
+                        variant="warning"
+                        onClick={() => mutateDelete({ params: { idList: idArray } })}
+                    />
+                    <Button className={styles.marginBottom0} label={t('notifications.setAllAsRead')} variant="secondary" onClick={mutateAllRead} />
+                    <Button
+                        className={styles.marginBottom0}
+                        label={t('notifications.deleteAll')}
+                        variant="warning"
+                        onClick={() => mutateAllDelete({ params: { onlyUnread: false } })}
+                    />
+                </div>
+            </ActionsOverTable>
             <Table<Notification>
                 onSortingChange={(newSort) => {
                     setSort(newSort)

@@ -7,7 +7,7 @@ import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/Que
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import classnames from 'classnames'
 import * as d3 from 'd3'
-import { FC, useEffect, useMemo, useRef, useState } from 'react'
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './relationshipGraph.module.scss'

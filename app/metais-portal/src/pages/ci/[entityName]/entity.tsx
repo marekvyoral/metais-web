@@ -1,7 +1,7 @@
 import { BreadCrumbs, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { Languages } from '@isdd/metais-common/localization/languages'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 

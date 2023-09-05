@@ -1,3 +1,4 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
 .marginLeftAuto {
     margin-left: auto;
 }
@@ -8,4 +9,18 @@
 
 .displayFlex {
     display: flex;
+}
+
+.marginBottom0 {
+    margin-bottom: 0 !important;
+}
+
+.buttonGroup {
+    display: flex;
+    flex-direction: row;
+    gap: govuk-spacing(2);
+
+    @include mq($until: tablet) {
+        flex-direction: column;
+    }
 }

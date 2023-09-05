@@ -1,0 +1,60 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.buttonGroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    align-items: center;
+
+    padding-top: govuk-spacing(1);
+    border-top: 1px solid govuk-colour('grey-2');
+}
+
+.viewButton {
+    margin-bottom: govuk-spacing(0) !important;
+}
+
+.cancelButton {
+    font-size: 19px !important;
+    color: govuk-colour('dark-grey');
+
+    @include mq($until: tablet) {
+        font-size: 16px !important;
+    }
+}
+
+.resetDefaultOrderButton {
+    font-size: 19px !important;
+    color: govuk-colour('red');
+
+    @include mq($until: tablet) {
+        font-size: 16px !important;
+    }
+}
+
+.scroll {
+    height: 270px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+}
+
+.customLabelCheckbox {
+    padding-top: govuk-spacing(2) !important;
+    padding-bottom: govuk-spacing(1) !important;
+}
+
+.searchbar {
+    margin: govuk-spacing(0) !important;
+    margin-bottom: govuk-spacing(2) !important;
+
+    width: 300px !important;
+    display: flex !important;
+}
+
+.textHeader {
+    margin-top: govuk-spacing(1) !important;
+    margin-bottom: govuk-spacing(1) !important;
+}

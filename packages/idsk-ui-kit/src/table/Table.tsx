@@ -19,6 +19,7 @@ import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableInfoMessage } from './TableInfoMessage'
 import { TableRow } from './TableRow'
 import { TableRowExpanded } from './TableRowExpanded'
+import { CHECKBOX_CELL } from './constants'
 import styles from './table.module.scss'
 import { transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
 
@@ -126,15 +127,23 @@ export const Table = <T,>({
     }
 
     return (
-        <table className={classNames('idsk-table', [styles.displayBlock])}>
+        <table className={classNames('idsk-table', [styles.displayBlock, styles.tableSticky])}>
             <thead className={classNames('idsk-table__head', [styles.head])} onScroll={handleWrapper2Scroll} ref={wrapper2Ref}>
-                {table.getHeaderGroups().map((headerGroup) => (
-                    <tr className={`idsk-table__row ${styles.headerRow}`} key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                            <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
-                        ))}
-                    </tr>
-                ))}
+                {table.getHeaderGroups().map((headerGroup) => {
+                    const hasCheckbox = headerGroup.headers.find((cell) => cell.id === CHECKBOX_CELL)
+                    return (
+                        <tr
+                            className={classNames('idsk-table__row', styles.headerRow, {
+                                [styles.checkBoxHeaderRow]: hasCheckbox,
+                            })}
+                            key={headerGroup.id}
+                        >
+                            {headerGroup.headers.map((header) => (
+                                <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
+                            ))}
+                        </tr>
+                    )
+                })}
             </thead>
             {!isLoading && isEmptyRows && (
                 <tbody className={styles.displayFlex}>
