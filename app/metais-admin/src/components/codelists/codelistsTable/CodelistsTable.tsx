@@ -1,12 +1,12 @@
 import { BaseModal, Button, ButtonPopup, CheckBox, Input, PaginatorWrapper, SimpleSelect, Table, TextArea } from '@isdd/idsk-ui-kit/index'
 import { EnumTypePreview, EnumTypePreviewList } from '@isdd/metais-common/api'
 import { BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { useLocation, Link } from 'react-router-dom'
 import { ActionsOverTable, CreateEntityButton, isRowSelected } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useCallback, useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
 
 import styles from './codelistsTable.module.scss'
 import { validateRowData } from './codelistTableActions'
@@ -44,6 +44,7 @@ export interface CodelistsTableColumnsDefinition extends EnumTypePreview {
 export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutations, isLoading, isError }) => {
     const { t } = useTranslation()
     const { createEnum, validateEnum, updateEnum, deleteEnum } = mutations
+    const location = useLocation()
 
     const { register, getValues, setValue, clearErrors } = useForm({
         defaultValues: {
@@ -140,7 +141,9 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                         {...register(`filteredData.results.${ctx.row.index + indexModificator}.code`)}
                     />
                 ) : (
-                    <Link to={`${ctx?.getValue?.()}`}>{ctx?.getValue?.() as string}</Link>
+                    <Link to={`${ctx?.getValue?.()}`} state={{ from: location }}>
+                        {ctx?.getValue?.() as string}
+                    </Link>
                 ),
         },
         {

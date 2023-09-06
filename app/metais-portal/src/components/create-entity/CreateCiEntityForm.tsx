@@ -8,7 +8,7 @@ import { CiCode, CiType, ConfigurationItemUiAttributes, EnumType, Gen_Profil, Re
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { CreateEntitySection } from './CreateEntitySection'
 import { generateFormSchema } from './createCiEntityFormSchema'
@@ -48,7 +48,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     const [hasReset, setHasReset] = useState(false)
     const genProfilTechName = Gen_Profil
     const metaisEmail = 'metais@mirri.gov.sk'
-
+    const location = useLocation()
     const attProfiles = ciTypeData?.attributeProfiles?.map((profile) => profile) ?? []
     const attributes = [...(ciTypeData?.attributes ?? []), ...attProfiles.map((profile) => profile.attributes).flat()]
 
@@ -147,7 +147,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                         errorMessage={
                             <>
                                 {t('createEntity.errorMessage')}
-                                <Link className="govuk-link" to={`mailto:${metaisEmail}`}>
+                                <Link className="govuk-link" state={{ from: location }} to={`mailto:${metaisEmail}`}>
                                     {t('createEntity.email')}
                                 </Link>
                             </>

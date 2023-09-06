@@ -1,6 +1,6 @@
 import React, { SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import classnames from 'classnames'
 
 import { NavIconGroup } from './NavIconGroup'
@@ -22,14 +22,14 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
     const {
         state: { user },
     } = useAuth()
-
+    const location = useLocation()
     return (
         <div className="idsk-header-web__main">
             <div className="govuk-width-container">
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column govuk-grid-column-one-quarter-from-desktop">
                         <div className="idsk-header-web__main-headline">
-                            <Link to="/" title={t('navbar.linkToHomePage')}>
+                            <Link to="/" title={t('navbar.linkToHomePage')} state={{ from: location }}>
                                 <img src={LogoMirri} alt={t('navbar.ministryName')} className="idsk-header-web__main-headline-logo" />
                             </Link>
 
@@ -59,7 +59,13 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
                                 {user ? (
                                     <button className={classnames('idsk-button idsk-button--secondary', styles.noWrap)}>{t('navbar.newItem')}</button>
                                 ) : (
-                                    <Link className="govuk-link" to="#" onClick={(e) => e.preventDefault()} style={{ marginLeft: 10 }}>
+                                    <Link
+                                        className="govuk-link"
+                                        to="#"
+                                        state={{ from: location }}
+                                        onClick={(e) => e.preventDefault()}
+                                        style={{ marginLeft: 10 }}
+                                    >
                                         {t('navbar.registration')}
                                     </Link>
                                 )}

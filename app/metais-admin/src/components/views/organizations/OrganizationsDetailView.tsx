@@ -20,7 +20,7 @@ const OrganizationsDetailView = ({ parsedAttributes, statutarAttributes, setInva
                         <Button
                             label={t('egov.edit')}
                             onClick={() => {
-                                navigate('/organizations/' + configurationItem?.uuid + '/edit')
+                                navigate('/organizations/' + configurationItem?.uuid + '/edit', { state: { from: location } })
                             }}
                         />
                         <Button

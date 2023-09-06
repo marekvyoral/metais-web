@@ -7,9 +7,9 @@ export const useBackButtonNavigate = (href: string) => {
     const backButtonNavigate = () => {
         if (location.state && location.state.from.pathname === href && location.state.from.search) {
             const fromHref = location.state?.from?.pathname + location.state?.from?.search
-            navigate(fromHref)
+            navigate(fromHref, { state: { from: location } })
         } else {
-            navigate(href)
+            navigate(href, { state: { from: location } })
         }
     }
 

@@ -5,7 +5,7 @@ import { useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useMutation } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useRevokeUserBatch } from '@isdd/metais-common/hooks/useRevokeUser'
@@ -30,6 +30,7 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
         state: { accessToken, user },
     } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
     const { t } = useTranslation()
     const { filter, handleFilterChange } = useFilterParams<UserManagementFilterData>({
         sort: [
@@ -150,10 +151,10 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
     const handleRowAction = useCallback(
         (identity: { uuid: string; login: string }, action: UserManagementActionsOverRowEnum, isCurrentlyBlocked?: boolean) => {
             if (action === UserManagementActionsOverRowEnum.EDIT) {
-                navigate(`${AdminRouteNames.USER_MANAGEMENT}/edit/${identity.uuid}`)
+                navigate(`${AdminRouteNames.USER_MANAGEMENT}/edit/${identity.uuid}`, { state: { from: location } })
             }
             if (action === UserManagementActionsOverRowEnum.CHANGE_PASSWORD) {
-                navigate(`${AdminRouteNames.USER_MANAGEMENT}/pass/${identity.uuid}`)
+                navigate(`${AdminRouteNames.USER_MANAGEMENT}/pass/${identity.uuid}`, { state: { from: location } })
             }
             if (action === UserManagementActionsOverRowEnum.BLOCK && isCurrentlyBlocked !== undefined) {
                 if (identity.uuid) {
@@ -164,7 +165,7 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
                 }
             }
         },
-        [navigate, revokeUserBatchMutation, updateIdentityStateBatchMutation, accessToken],
+        [navigate, revokeUserBatchMutation, updateIdentityStateBatchMutation, accessToken, location],
     )
 
     const handleExport = useCallback(() => {

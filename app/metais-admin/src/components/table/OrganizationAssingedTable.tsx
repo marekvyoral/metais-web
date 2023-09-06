@@ -8,7 +8,7 @@ import { createFullAdressFromAttributes } from '@isdd/metais-common/componentHel
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { Dispatch, FormEvent, SetStateAction, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import styles from './egovTable.module.scss'
 
@@ -41,7 +41,7 @@ export const OrganizationsAssignedTable = ({
     onSubmit,
 }: OrganizationsTableProps & IActions) => {
     const { t } = useTranslation()
-
+    const location = useLocation()
     const handleSubmit = (e: FormEvent) => {
         e?.preventDefault()
         onSubmit(selectedRows)
@@ -64,7 +64,11 @@ export const OrganizationsAssignedTable = ({
             accessorFn: (row) => row?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
             enableSorting: true,
             id: 'name',
-            cell: (ctx) => <Link to={'./' + ctx?.row?.original?.uuid}>{ctx?.getValue?.() as string}</Link>,
+            cell: (ctx) => (
+                <Link to={'./' + ctx?.row?.original?.uuid} state={{ from: location }}>
+                    {ctx?.getValue?.() as string}
+                </Link>
+            ),
         },
         {
             header: t('table.ico'),

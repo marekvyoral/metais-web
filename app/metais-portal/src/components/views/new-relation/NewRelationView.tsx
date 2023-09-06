@@ -21,7 +21,7 @@ import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { MultiValue } from 'react-select'
 import { v4 as uuidV4 } from 'uuid'
 
@@ -62,7 +62,7 @@ export const NewRelationView: React.FC<Props> = ({
     const navigate = useNavigate()
     const [hasReset, setHasReset] = useState(false)
     const [hasMutationError, setHasMutationError] = useState(false)
-
+    const location = useLocation()
     const { selectedItems, setSelectedItems, setIsListPageOpen } = useNewRelationData()
 
     const relatedListAsSources = relationData?.relatedListAsSources
@@ -103,7 +103,7 @@ export const NewRelationView: React.FC<Props> = ({
     const storeGraph = useStoreGraph({
         mutation: {
             onSuccess() {
-                navigate(`/ci/${entityName}/${entityId}`)
+                navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
                 setIsListPageOpen(false)
                 setSelectedItems(null)
             },
@@ -148,7 +148,7 @@ export const NewRelationView: React.FC<Props> = ({
     const handleReset = () => {
         setIsListPageOpen(false)
         setSelectedItems(null)
-        navigate(`/ci/${entityName}/${entityId}`)
+        navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
     }
 
     const sections: IAccordionSection[] =
@@ -160,7 +160,7 @@ export const NewRelationView: React.FC<Props> = ({
                           <ButtonLink
                               label={t('newRelation.detailButton')}
                               className={classNames(styles.buttonLink, styles.blue)}
-                              onClick={() => navigate(`/ci/${tabName}/${item.uuid}`)}
+                              onClick={() => navigate(`/ci/${tabName}/${item.uuid}`, { state: { from: location } })}
                           />
                           <ButtonLink
                               label={t('newRelation.deleteButton')}
@@ -247,7 +247,7 @@ export const NewRelationView: React.FC<Props> = ({
                         errorMessage={
                             <>
                                 {t('newRelation.errorMessage')}
-                                <Link className="govuk-link" to={`mailto:${metaisEmail}`}>
+                                <Link className="govuk-link" state={{ from: location }} to={`mailto:${metaisEmail}`}>
                                     {t('newRelation.email')}
                                 </Link>
                             </>

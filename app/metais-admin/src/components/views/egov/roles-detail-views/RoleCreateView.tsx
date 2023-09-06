@@ -63,7 +63,11 @@ export const RoleCreateView: React.FC<ICreateRoleViewParams> = ({ roleGroups, cr
                     />
                     <ButtonGroupRow>
                         <Button label="Submit" onClick={onSubmit} />
-                        <Button label="Cancel" onClick={() => navigate(AdminRouteNames.ROLES + '?system=all&group=all')} variant="secondary" />
+                        <Button
+                            label="Cancel"
+                            onClick={() => navigate(AdminRouteNames.ROLES + '?system=all&group=all', { state: { from: location } })}
+                            variant="secondary"
+                        />
                     </ButtonGroupRow>
                 </form>
             </FormProvider>

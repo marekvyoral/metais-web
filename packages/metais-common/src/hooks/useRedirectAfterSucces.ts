@@ -37,7 +37,7 @@ export const useRedirectAfterSuccess = (requestId: string, configurationItemId: 
             setIsProcessedError(false)
             switch (true) {
                 case data.status === RequestIdStatus.PROCESSED: {
-                    navigate(`/ci/${ciType}/${configurationItemId}`)
+                    navigate(`/ci/${ciType}/${configurationItemId}`, { state: { from: location } })
                     return
                 }
                 case data.status === RequestIdStatus.FAILED: {

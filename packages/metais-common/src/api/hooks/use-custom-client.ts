@@ -59,7 +59,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
 
         if (response.status === 401) {
             dispatch({ type: AuthActions.LOGOUT })
-            navigate('/?token_expired=true')
+            navigate('/?token_expired=true', { state: { from: location } })
         }
         if (!response.ok) {
             throw new Error('InternalServerError')

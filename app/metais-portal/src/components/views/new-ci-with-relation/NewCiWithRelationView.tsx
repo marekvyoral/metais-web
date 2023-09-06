@@ -90,7 +90,7 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
     const storeGraph = useStoreGraph({
         mutation: {
             onSuccess() {
-                navigate(`/ci/${entityName}/${entityId}`)
+                navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
                 setIsListPageOpen(false)
                 setSelectedItems(null)
             },

@@ -106,7 +106,11 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
             accessorFn: (row) => row?.name,
             enableSorting: true,
             id: 'name',
-            cell: (ctx) => <Link to={'./' + ctx?.row?.original?.technicalName}>{ctx?.getValue?.() as string}</Link>,
+            cell: (ctx) => (
+                <Link to={'./' + ctx?.row?.original?.technicalName} state={{ from: location }}>
+                    {ctx?.getValue?.() as string}
+                </Link>
+            ),
         },
         {
             header: t('egov.technicalName'),

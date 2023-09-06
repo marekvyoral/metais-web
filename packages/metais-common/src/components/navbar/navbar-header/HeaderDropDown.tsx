@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 interface IHeaderDropDown {
     showDropDown: boolean
@@ -9,7 +9,7 @@ interface IHeaderDropDown {
 
 export const HeaderDropDown: React.FC<IHeaderDropDown> = ({ showDropDown }) => {
     const { t } = useTranslation()
-
+    const location = useLocation()
     return (
         <div
             className={classnames({
@@ -29,6 +29,7 @@ export const HeaderDropDown: React.FC<IHeaderDropDown> = ({ showDropDown }) => {
                                 target="_blank"
                                 title={t('navbar.linksToWebs')}
                                 rel="noreferrer"
+                                state={{ from: location }}
                             >
                                 {t('navbar.link')}
                             </Link>

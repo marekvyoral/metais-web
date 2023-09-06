@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { CiTypePreview } from '@isdd/metais-common/api'
 import { useTranslation } from 'react-i18next'
@@ -13,6 +13,7 @@ interface ConnectionItem {
 
 const ConnectionItem = ({ item, type }: ConnectionItem) => {
     const { t } = useTranslation()
+    const location = useLocation()
     return (
         <div className={styles.connectionItemsGap}>
             <InformationGridRow
@@ -20,7 +21,7 @@ const ConnectionItem = ({ item, type }: ConnectionItem) => {
                 label={t(`egov.detail.${type}`)}
                 value={
                     item && (
-                        <Link to={'/egov/entity/' + item?.technicalName} target="_blank">
+                        <Link to={'/egov/entity/' + item?.technicalName} state={{ from: location }} target="_blank">
                             {item?.name}
                         </Link>
                     )

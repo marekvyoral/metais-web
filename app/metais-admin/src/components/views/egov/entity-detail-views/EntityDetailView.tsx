@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Tab } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { getTabsFromApi } from '@isdd/metais-common'
 import { Button } from '@isdd/idsk-ui-kit'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from '../detailViews.module.scss'
 import { BasicInformations } from '../BasicInformations'
@@ -23,6 +23,7 @@ export const EntityDetailView = ({
 }: IAtrributesContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
     const tabsFromApi = getTabsFromApi(
         keysToDisplay,
         EntityDetailViewAttributes,
@@ -62,7 +63,7 @@ export const EntityDetailView = ({
                         <Button
                             label={t('egov.edit')}
                             onClick={() => {
-                                navigate('/egov/entity/' + ciTypeData?.technicalName + '/edit')
+                                navigate('/egov/entity/' + ciTypeData?.technicalName + '/edit', { state: { from: location } })
                             }}
                         />
                         <Button

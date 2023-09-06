@@ -74,7 +74,9 @@ const POPOListPage = () => {
                                         attributeProfiles={attributeProfiles ?? []}
                                         attributes={attributes ?? []}
                                         columnListData={columnListData}
-                                        createButton={<CreateEntityButton onClick={() => navigate(`/ci/${PO}/create`)} />}
+                                        createButton={
+                                            <CreateEntityButton onClick={() => navigate(`/ci/${PO}/create`, { state: { from: location } })} />
+                                        }
                                         exportButton={<ExportButton />}
                                         importButton={<ImportButton ciType={PO} />}
                                     />

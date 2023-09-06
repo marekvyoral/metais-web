@@ -5,7 +5,7 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { MutateOptions } from '@tanstack/react-query'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export interface ICreateRoleViewParams {
     roleGroups: EnumType | undefined
@@ -32,6 +32,7 @@ interface ICreateRole {
 
 const CreateRoleContainer: React.FC<ICreateRole> = ({ View }) => {
     const navigate = useNavigate()
+    const location = useLocation()
     const {
         mutate: createRole,
         isLoading,
@@ -39,7 +40,7 @@ const CreateRoleContainer: React.FC<ICreateRole> = ({ View }) => {
     } = useUpdateOrCreate({
         mutation: {
             onSuccess() {
-                navigate(AdminRouteNames.ROLES + '?system=all&group=all')
+                navigate(AdminRouteNames.ROLES + '?system=all&group=all', { state: { from: location } })
             },
         },
     })

@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { AuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ProfileIcon } from '@isdd/metais-common/assets/images'
@@ -18,7 +18,7 @@ export const NavProfile: React.FC = () => {
         event.preventDefault()
         dispatch({ type: AuthActions.LOGOUT })
     }
-
+    const location = useLocation()
     return (
         <div
             className={classnames(styles.loginProfile, user ? styles.displayFlex : styles.displayNone, {
@@ -32,6 +32,7 @@ export const NavProfile: React.FC = () => {
                 <div className="govuk-!-margin-bottom-1">
                     <Link
                         onClick={handleLogout}
+                        state={{ from: location }}
                         className={classnames(
                             'govuk-link',
                             'idsk-header-web__main--login-action-text-logout',
@@ -44,6 +45,7 @@ export const NavProfile: React.FC = () => {
                     </Link>
                     <span> | </span>
                     <Link
+                        state={{ from: location }}
                         className={classnames(
                             'govuk-link',
                             'idsk-header-web__main--login-action-text-profile',

@@ -11,7 +11,7 @@ import { CellContext, ColumnDef, Table as ITable, Row } from '@tanstack/react-ta
 import classNames from 'classnames'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import styles from './ciTable.module.scss'
 import {
@@ -45,7 +45,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
         state: { user },
     } = useAuth()
     const isUserLogged = !!user
-
+    const location = useLocation()
     const { rowSelection, setRowSelection } = rowSelectionState
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
     const tableData = mapTableData(data.tableData, schemaAttributes, t, data.unitsData, data.constraintsData)
@@ -102,6 +102,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 return (
                     <Link
                         to={'./' + ctx?.row?.original?.uuid}
+                        state={{ from: location }}
                         className={classNames({ [styles.bold]: ctx?.row.original.uuid && !!rowSelection[ctx?.row.original.uuid] })}
                     >
                         {ctx?.getValue?.() as string}
