@@ -3,3 +3,10 @@
 .buttonSpacing {
     margin-right: govuk-spacing(2);
 }
+.actions {
+    display: flex;
+    flex-direction: column;
+    Button:last-child {
+        margin-bottom: 0;
+    }
+}

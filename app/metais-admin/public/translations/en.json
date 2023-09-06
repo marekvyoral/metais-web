@@ -287,7 +287,12 @@
         "validate": "Validate",
         "value": "Code",
         "valueDescription": "Value Description",
-        "heading": "Internal codelists"
+        "heading": "Internal codelists",
+        "codeError": "Code is required",
+        "nameError": "Name is required",
+        "descriptionError": "Description is required",
+        "wrongRegex": "You can use only {{letters}} and {{signs}}",
+        "actions": "Actions"
     },
     "filter": {
         "expand": "Expand filter",
@@ -364,7 +369,8 @@
             "relations": "Relations",
             "roleManagement": "Role management"
         },
-        "tooltips": "Tooltips"
+        "tooltips": "Tooltips",
+        "codelists": "Internal codelists"
     },
     "tooltips": {
         "selectedEntries": "Selected entries",

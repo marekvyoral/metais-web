@@ -335,11 +335,15 @@
         "cancel": "Zrušiť",
         "remove": "Odstrániť",
         "validate": "Zvalidovať",
-        "value": "Kód",
+        "value": "Hodnota",
         "valueDescription": "Popis hodnoty",
         "heading": "Interné číselníky",
-
-        "moreActions": "Viac"
+        "moreActions": "Viac",
+        "codeError": "Kód je povinný",
+        "nameError": "Názov je povinný",
+        "descriptionError": "Popis je povinný",
+        "wrongRegex": "Formát môže obsahovať len písmená {{letters}} a tieto znaky {{signs}}",
+        "actions": "Úkony"
     },
     "adminRolesPage": {
         "addNewRole": "Pridať novú rolu",
@@ -436,7 +440,8 @@
             "relations": "Vzťahy",
             "roleManagement": "Správa rolí"
         },
-        "tooltips": "Tooltipy"
+        "tooltips": "Tooltipy",
+        "codelists": "Interné číselníky"
     },
     "tooltips": {
         "selectedEntries": "Vybrané záznamy",
