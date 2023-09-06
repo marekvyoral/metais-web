@@ -1,5 +1,6 @@
 import { TFunction } from 'i18next'
-import { Attribute, AttributeConstraintEnum, EnumType, ConfigurationItemUi } from '@isdd/metais-common/api'
+
+import { Attribute, AttributeConstraintEnum, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
 
 const findUnitValue = (attribute: Attribute | undefined, unitsData: EnumType | undefined) => {
     const unit = unitsData?.enumItems?.find((item) => item.code === attribute?.units)?.value ?? ''

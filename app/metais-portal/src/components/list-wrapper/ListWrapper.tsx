@@ -1,19 +1,29 @@
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { IColumn, Input } from '@isdd/idsk-ui-kit/index'
+import { IColumn, Input, LoadingIndicator } from '@isdd/idsk-ui-kit/index'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { Attribute, AttributeProfile, CiType, ConfigurationItemSetUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
-import { BulkPopup, CreateEntityButton } from '@isdd/metais-common/components/actions-over-table'
+import {
+    BulkPopup,
+    ChangeOwnerBulkModal,
+    CreateEntityButton,
+    InvalidateBulkModal,
+    ReInvalidateBulkModal,
+} from '@isdd/metais-common/components/actions-over-table'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { ExportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ExportButton'
 import { ImportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ImportButton'
+import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
-import React, { useEffect } from 'react'
+import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { MutationFeedback } from '@isdd/metais-common/index'
 
 import { AddItemsButtonGroup } from '@/components/add-items-button-group/AddItemsButtonGroup'
 import { CiTable, IRowSelectionState } from '@/components/ci-table/CiTable'
@@ -37,6 +47,7 @@ interface IListWrapper {
         }[]
     }) => void
     resetUserSelectedColumns: () => Promise<void>
+    refetch: () => void
     ciTypeData: CiType | undefined
     attributeProfiles: AttributeProfile[] | undefined
     attributes: Attribute[] | undefined
@@ -66,6 +77,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     unitsData,
     pagination,
     sort,
+    refetch,
     gestorsData,
     isLoading,
     isError,
@@ -73,11 +85,29 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     rowSelectionState,
 }) => {
     const { t } = useTranslation()
+
+    const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner } = useBulkAction()
+
     const navigate = useNavigate()
     const location = useLocation()
     const { setRowSelection, rowSelection } = rowSelectionState
     const { setSelectedItems, setIsListPageOpen, selectedItems } = useNewRelationData()
     const checkedRowItems = Object.keys(rowSelectionState.rowSelection).length
+    const isDisabledBulkButton = checkedRowItems === 0
+
+    const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
+    const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
+    const [showChangeOwner, setShowChangeOwner] = useState<boolean>(false)
+
+    const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
+
+    const checkedItemList = tableData?.configurationItemSet?.filter((i) => Object.keys(rowSelectionState.rowSelection).includes(i.uuid || '')) || []
+
+    const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: (value: React.SetStateAction<boolean>) => void) => {
+        closeFunction(false)
+        refetch()
+        setBulkActionResult(actionResult)
+    }
 
     useEffect(() => {
         if (isNewRelationModal && selectedItems) {
@@ -102,6 +132,13 @@ export const ListWrapper: React.FC<IListWrapper> = ({
 
     return (
         <>
+            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
+                <MutationFeedback
+                    success={bulkActionResult?.isSuccess}
+                    successMessage={bulkActionResult?.successMessage}
+                    error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                />
+            )}
             <Filter<KSFilterData>
                 defaultFilterValues={defaultFilterValues}
                 form={({ register, filter, setValue }) => (
@@ -158,17 +195,71 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     importButton={<ImportButton ciType={ciType ?? ''} />}
                     exportButton={<ExportButton />}
                     bulkPopup={
-                        <BulkPopup
-                            checkedRowItems={checkedRowItems}
-                            items={() => [
-                                <ButtonLink key={'testItem1'} icon={CrossInACircleIcon} label={t('actionOverTable.invalidateItems')} />,
-                                <ButtonLink key={'testItem2'} icon={CheckInACircleIcon} label={t('actionOverTable.validateItems')} />,
-                                <ButtonLink key={'testItem3'} icon={ChangeIcon} label={t('actionOverTable.changeOwner')} />,
-                            ]}
+                        <Tooltip
+                            descriptionElement={errorMessage}
+                            position={'center center'}
+                            tooltipContent={(open) => (
+                                <div>
+                                    <BulkPopup
+                                        disabled={isDisabledBulkButton}
+                                        checkedRowItems={checkedRowItems}
+                                        items={() => [
+                                            <ButtonLink
+                                                key={'invalidate'}
+                                                className={styles.buttonLinkWithIcon}
+                                                onClick={() => {
+                                                    handleInvalidate(checkedItemList, setShowInvalidate, open)
+                                                }}
+                                                icon={CrossInACircleIcon}
+                                                label={t('actionOverTable.invalidateItems')}
+                                            />,
+                                            <ButtonLink
+                                                key={'reInvalidate'}
+                                                className={styles.buttonLinkWithIcon}
+                                                onClick={() => {
+                                                    handleReInvalidate(checkedItemList, setShowReInvalidate, open)
+                                                }}
+                                                icon={CheckInACircleIcon}
+                                                label={t('actionOverTable.validateItems')}
+                                            />,
+                                            <ButtonLink
+                                                key={'changeOwner'}
+                                                className={styles.buttonLinkWithIcon}
+                                                onClick={() => {
+                                                    handleChangeOwner(checkedItemList, setShowChangeOwner, open)
+                                                }}
+                                                icon={ChangeIcon}
+                                                label={t('actionOverTable.changeOwner')}
+                                            />,
+                                        ]}
+                                    />
+                                </div>
+                            )}
                         />
                     }
                 />
             )}
+
+            {isBulkLoading && <LoadingIndicator fullscreen />}
+
+            <ReInvalidateBulkModal
+                items={checkedItemList}
+                open={showReInvalidate}
+                onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowReInvalidate)}
+                onClose={() => setShowReInvalidate(false)}
+            />
+            <InvalidateBulkModal
+                items={checkedItemList}
+                open={showInvalidate}
+                onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowInvalidate)}
+                onClose={() => setShowInvalidate(false)}
+            />
+            <ChangeOwnerBulkModal
+                items={checkedItemList}
+                open={showChangeOwner}
+                onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowChangeOwner)}
+                onClose={() => setShowChangeOwner(false)}
+            />
 
             <CiTable
                 data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData, gestorsData }}

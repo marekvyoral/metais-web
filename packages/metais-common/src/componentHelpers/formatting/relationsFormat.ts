@@ -1,4 +1,5 @@
 import { TFunction } from 'i18next'
+
 import { CiWithRelsUi, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
 
 export const formatRelationAttributes = (

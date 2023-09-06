@@ -12,9 +12,10 @@ interface IButtonPopupProps {
     buttonLabel: string
     popupContent: (closePopup: () => void) => ReactNode
     buttonClassName?: string
+    disabled?: boolean
 }
 
-export const ButtonPopup: React.FC<IButtonPopupProps> = ({ buttonLabel, popupContent, popupPosition = 'left', buttonClassName }) => {
+export const ButtonPopup: React.FC<IButtonPopupProps> = ({ buttonLabel, popupContent, disabled, popupPosition = 'left', buttonClassName }) => {
     const popupRef = useRef<PopupActions>(null)
     const label = (
         <div className={styles.buttonLabel}>
@@ -26,6 +27,7 @@ export const ButtonPopup: React.FC<IButtonPopupProps> = ({ buttonLabel, popupCon
             trigger={<Button label={label} variant="secondary" className={buttonClassName} />}
             position={`bottom ${popupPosition}`}
             arrow={false}
+            disabled={disabled}
             keepTooltipInside
             ref={popupRef}
             offsetY={2} //button box shadow

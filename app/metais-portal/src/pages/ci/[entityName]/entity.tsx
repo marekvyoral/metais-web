@@ -48,6 +48,7 @@ const CiListPage: React.FC<Props> = ({ importantEntityName }) => {
                                 handleFilterChange,
                                 storeUserSelectedColumns,
                                 resetUserSelectedColumns,
+                                refetch,
                                 pagination,
                                 sort,
                                 isError,
@@ -70,6 +71,7 @@ const CiListPage: React.FC<Props> = ({ importantEntityName }) => {
                                     unitsData={unitsData}
                                     ciTypeData={ciTypeData}
                                     ciType={ciType}
+                                    refetch={refetch}
                                     isLoading={isLoading}
                                     isError={isError}
                                     rowSelectionState={{ rowSelection, setRowSelection }}

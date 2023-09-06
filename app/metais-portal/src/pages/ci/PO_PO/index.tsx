@@ -2,15 +2,15 @@ import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers
 import { CreateEntityButton, ExportButton, ImportButton } from '@isdd/metais-common/components/actions-over-table'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import { CiTable } from '@/components/ci-table/CiTable'
-import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { FilterPO, POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
+import { CiTable } from '@/components/ci-table/CiTable'
+import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 
 const POPOListPage = () => {
     const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})

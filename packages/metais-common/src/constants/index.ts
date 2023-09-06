@@ -17,6 +17,10 @@ export const DEFAULT_PAGESIZE_OPTIONS = [
 export const ALL_EVENT_TYPES = 'All'
 export const NOTIFICATION_TITLE = 'messagePerex'
 
+export const CHANGE_OWNER_CHANGE_REASON = ['architectureChange', 'personalChange', 'othersChange']
+
+export const CHANGE_OWNER_CHANGE_TYPE = ['changeCmdbItemAndRelatedCmdbItemsWithSameOwner', 'changeCmdbItemAndRelatedCmdbItems', 'changeCmdbItem']
+
 export const notificationDefaultSelectedColumns = [
     { technicalName: 'deleted', name: 'Deleted', selected: false },
     { technicalName: 'eventType', name: 'EventType', selected: false },

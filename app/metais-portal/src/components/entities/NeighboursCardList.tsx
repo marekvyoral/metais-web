@@ -3,7 +3,7 @@ import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { QueryFeedback } from '@isdd/metais-common'
+import { QueryFeedback, formatRelationAttributes } from '@isdd/metais-common'
 import { ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -13,7 +13,6 @@ import { CardColumnList } from './cards/CardColumnList'
 import { RelationCard } from './cards/RelationCard'
 import { ListActions } from './lists/ListActions'
 
-import { formatRelationAttributes } from '@/componentHelpers'
 import { IRelationsView } from '@/components/containers/RelationsListContainer'
 
 interface NeighboursCardListProps {

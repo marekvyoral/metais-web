@@ -7,6 +7,9 @@
         "expand": "Rozbaliť obsah filtra",
         "collapse": "Zbaliť obsah filtra"
     },
+    "button": {
+        "cancel": "Zrušiť"
+    },
     "table": {
         "title": "Mestá",
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",

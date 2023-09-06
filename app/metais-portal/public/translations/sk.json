@@ -546,6 +546,55 @@
         "error": "Chyba pri načítavaní údajov pre role.",
         "loading": "Načítavajú sa údaje pre role."
     },
+    "tooltip": {
+        "rights": {
+            "missingPermission": "Na vykonanie operácie vám chýbajú potrebné oprávnenia",
+            "noSelectedList": "Neboli vybrané žiadne položky, nie je možné vykonať vybranú operáciu.",
+            "invalidSelectedList": "Niektoré z vami vybraných položiek sú zneplatnené, nie je možné nad nimi vykonať vybranú operáciu.",
+            "validSelectedList": "Niektoré z vami vybraných položiek sú platné, nie je možné nad nimi vykonať vybranú operáciu.",
+            "notFoundPO": "Chyba pri získávaní informácií o právach - pre dané položke nebola nájdená povinná osoba."
+        }
+    },
+    "bulkActions": {
+        "invalidate": {
+            "title": "Zneplatnenie položiek",
+            "warningText": "Vybrané záznamy budú zneplatnené. Nebude ich možné editovať, ani nad nimi vykonávať ďalšie operácie.Ich zneplatnením sa zneplatnia aj všetky vzťahy k ostatným entitám (službám a pod.)",
+            "listText": "Chystáte sa zneplatniť tieto vybrané záznamy ({{count}}):",
+            "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
+            "reason": "Poznámka / Dôvod zneplatnenia",
+            "invalidate": "Zneplatnenie",
+            "success": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o zneplatnení."
+        },
+        "reInvalidate": {
+            "title": "Splatňovanie položiek",
+            "warningText": "Vybrané záznamy budú splatnené. Vzťahy, ktoré obsahujú, nebudú zmenené.",
+            "listText": "Chystáte sa splatniť tieto vybrané záznamy ({{count}}):",
+            "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
+            "reason": "Poznámka / Dôvod zneplatnenia:",
+            "reInvalidate": "Splatnenie",
+            "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o splatnení."
+        },
+        "changeOwner": {
+            "title": "Zmena vlastníka",
+            "reason": "Dôvod zmeny",
+            "changeDescription": "Popis zmeny",
+            "changeType": "Typ zmeny",
+            "button": "Vykonať zmenu",
+            "listText": "Chystáte sa zmeniť tieto vybrané záznamy ({{count}}):",
+            "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
+            "reasonType": {
+                "architectureChange": "Architektonická zmena",
+                "personalChange": "Personálna zmena",
+                "othersChange": "Iný dôvod"
+            },
+            "types": {
+                "changeCmdbItemAndRelatedCmdbItemsWithSameOwner": "Zmeniť všetky položky a ich relácie, kde je rovnaký vlastník (ostatné ponechá pôvodné)",
+                "changeCmdbItemAndRelatedCmdbItems": "Zmeniť všetky položky bez ohľadu na rozdieľnosť vlastníka",
+                "changeCmdbItem": "Zmeniť len vlastníka vybraných položiek, nemeniť vlastníka relácií"
+            },
+            "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o zmene vlastníka."
+        }
+    },
     "breadcrumbs": {
         "home": "Domov",
         "ciEdit": "Editácia {{itemName}}",
