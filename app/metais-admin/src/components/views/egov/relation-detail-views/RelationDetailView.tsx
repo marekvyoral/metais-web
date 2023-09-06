@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, Tab, Tabs } from '@isdd/idsk-ui-kit'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from '../detailViews.module.scss'
 import createEntityStyles from '../entity-detail-views/createEntityView.module.scss'
@@ -22,6 +22,7 @@ export const RelationDetailView = ({
 }: IAtrributesContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
     const [connectionsOpen, setConnectionsOpen] = useState(false)
 
     const tabsNames = Array.from(keysToDisplay?.keys() ?? new Map())
@@ -72,7 +73,7 @@ export const RelationDetailView = ({
                         <Button
                             label={t('egov.edit')}
                             onClick={() => {
-                                navigate('/egov/relation/' + ciTypeData?.technicalName + '/edit')
+                                navigate('/egov/relation/' + ciTypeData?.technicalName + '/edit', { state: { from: location } })
                             }}
                         />
                         <Button

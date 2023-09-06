@@ -73,6 +73,7 @@ interface ITabs {
 export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     const { t } = useTranslation()
     const { pathname } = useLocation()
+    const location = useLocation()
     const navigate = useNavigate()
     const [selected, setSelected] = useState<Tab | null>(tabList[0])
     const shouldNavigate = !!tabList[0]?.path
@@ -96,7 +97,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     const handleSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: Tab) => {
         event.preventDefault()
         if (value.path) {
-            navigate(value.path)
+            navigate(value.path, { state: { from: location } })
         } else {
             onSelected?.(value)
             setSelected(value)
@@ -116,7 +117,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
         event.preventDefault()
         changeTabOrder(value, MAX_SHOWN_TABS - 1, newTabList, setNewTabList)
         if (value.path) {
-            navigate(value.path)
+            navigate(value.path, { state: { from: location } })
         } else {
             setSelected(value)
         }
@@ -124,7 +125,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
 
     const handleMobileSelect = (value: Tab) => {
         if (value.path) {
-            navigate(value.path)
+            navigate(value.path, { state: { from: location } })
         } else {
             if (value === selected) {
                 setSelected(null)

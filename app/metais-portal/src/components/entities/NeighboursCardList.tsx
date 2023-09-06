@@ -54,11 +54,11 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                                     className={'marginBottom0'}
                                     label={t('neighboursCardList.buttonAddNewRelation')}
                                     variant="secondary"
-                                    onClick={() => navigate(`new-relation/${key.technicalName}`)}
+                                    onClick={() => navigate(`new-relation/${key.technicalName}`, { state: { from: location } })}
                                 />
                                 <Button
                                     className={'marginBottom0'}
-                                    onClick={() => navigate(`new-ci/${key.technicalName}`)}
+                                    onClick={() => navigate(`new-ci/${key.technicalName}`, { state: { from: location } })}
                                     label={t('neighboursCardList.buttonAddNewRelationCard')}
                                     variant="secondary"
                                 />

@@ -1,7 +1,7 @@
 import React, { SetStateAction, useMemo, useState } from 'react'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { NavMenuList } from './NavMenuList'
 import { closeOnClickOutside, closeOnEscapeKey } from './navMenuUtils'
@@ -25,7 +25,7 @@ export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, setIsMenuExpanded,
     const {
         state: { user },
     } = useAuth()
-
+    const location = useLocation()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const paths = useMemo(() => navItems.map((item) => item.path), [])
 
@@ -57,7 +57,7 @@ export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, setIsMenuExpanded,
                                 <button className={classNames('idsk-button idsk-button--secondary', styles.noWrap)}>{t('navbar.newItem')}</button>
                             ) : (
                                 <div className={classNames(styles.registerLink, styles.fullWidth)}>
-                                    <Link className="govuk-link" to="#" onClick={(e) => e.preventDefault()}>
+                                    <Link className="govuk-link" to="#" onClick={(e) => e.preventDefault()} state={{ from: location }}>
                                         {t('navbar.registration')}
                                     </Link>
                                 </div>

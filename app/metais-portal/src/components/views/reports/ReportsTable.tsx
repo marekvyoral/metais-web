@@ -6,7 +6,7 @@ import { ReportHeader } from '@isdd/metais-common/api'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 export interface TableCols extends ReportHeader {
     selected?: boolean
@@ -19,6 +19,7 @@ interface IReportsTable {
 
 export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handleFilterChange }) => {
     const { t } = useTranslation()
+    const location = useLocation()
     const columns: Array<ColumnDef<TableCols>> = [
         {
             accessorFn: (row) => row.selected,
@@ -33,7 +34,7 @@ export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handle
         {
             header: t('reports.table.name'),
             cell: (ctx) => (
-                <Link to={'./' + ctx.row.original.lookupKey ?? ''} className="govuk-link">
+                <Link to={'./' + ctx.row.original.lookupKey ?? ''} state={{ from: location }} className="govuk-link">
                     {ctx.row.original.name as string}
                 </Link>
             ),

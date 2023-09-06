@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import React, { SetStateAction, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 interface INavMenuItem {
@@ -27,7 +27,7 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
 
     const showMenu = `${t('navMenu.show')} ${title} menu`
     const hideMenu = `${t('navMenu.hide')} ${title} menu`
-
+    const location = useLocation()
     const handleShouldCloseOnClick = () => {
         setExpanded(!expanded)
         if (path === activeTab && activeTab !== undefined) {
@@ -65,6 +65,7 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
             <Link
                 className={classnames('govuk-link idsk-header-web__nav-list-item-link', styles.navListItemOvverride)}
                 title={title}
+                state={{ from: location }}
                 to={`/${path}`}
                 aria-label={expanded ? hideMenu : showMenu}
                 aria-expanded={expanded}
@@ -92,7 +93,12 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
                         <ul className="idsk-header-web__nav-submenu-list" aria-label={t('navMenu.innerNav')}>
                             {list.map((item) => (
                                 <li key={item.title} className="idsk-header-web__nav-submenu-list-item">
-                                    <Link className="govuk-link idsk-header-web__nav-submenu-list-item-link" to={item.path} title={item.title}>
+                                    <Link
+                                        className="govuk-link idsk-header-web__nav-submenu-list-item-link"
+                                        state={{ from: location }}
+                                        to={item.path}
+                                        title={item.title}
+                                    >
                                         <span>{item.title}</span>
                                     </Link>
                                 </li>

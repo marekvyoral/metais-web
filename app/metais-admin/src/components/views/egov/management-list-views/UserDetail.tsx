@@ -3,7 +3,7 @@ import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from './userView.module.scss'
 
@@ -15,6 +15,7 @@ interface IUserDetail {
 export const UserDetail: React.FC<IUserDetail> = ({ userData, userId }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
 
     const detailRows = [
         { label: t('managementList.firstName'), value: userData?.firstName },
@@ -35,7 +36,7 @@ export const UserDetail: React.FC<IUserDetail> = ({ userData, userId }) => {
                     <InformationGridRow key={index} label={item.label} value={item.value} hideIcon />
                 ))}
             </div>
-            <Button label={t('managementList.edit')} onClick={() => navigate('/managementlist/edit/' + userId)} />
+            <Button label={t('managementList.edit')} onClick={() => navigate('/managementlist/edit/' + userId, { state: { from: location } })} />
         </>
     )
 }

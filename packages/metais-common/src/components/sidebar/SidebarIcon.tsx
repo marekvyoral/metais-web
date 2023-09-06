@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import classNames from 'classnames'
 
 import styles from '@isdd/metais-common/components/GridView.module.scss'
@@ -14,8 +14,10 @@ interface Props {
 }
 
 export const SidebarIcon = ({ section, onToggle, setIsSidebarExpanded, isExpanded, buttonId }: Props) => {
+    const location = useLocation()
     return (
         <Link
+            state={{ from: location }}
             to={section.path}
             className={classNames(styles.sidebarlink, styles.smallSidebarDivider)}
             onClick={() => {

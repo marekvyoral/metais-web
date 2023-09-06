@@ -26,7 +26,7 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
             })}
             onClick={() => {
                 if (rowHref) {
-                    navigate(rowHref(row))
+                    navigate(rowHref(row), { state: { from: location } })
                 }
                 onRowClick?.(row)
             }}

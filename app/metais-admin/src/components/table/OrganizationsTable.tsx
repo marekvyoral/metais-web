@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { ColumnDef } from '@tanstack/react-table'
@@ -38,14 +38,18 @@ export const OrganizationsTable = ({
     setInvalid,
 }: OrganizationsTableProps & IActions) => {
     const { t } = useTranslation()
-
+    const location = useLocation()
     const columns: Array<ColumnDef<ConfigurationItemUi>> = [
         {
             header: t('table.name'),
             accessorFn: (row) => row?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
             enableSorting: true,
             id: 'name',
-            cell: (ctx) => <Link to={'./' + ctx?.row.original.uuid}>{ctx?.getValue?.() as string}</Link>,
+            cell: (ctx) => (
+                <Link to={'./' + ctx?.row.original.uuid} state={{ from: location }}>
+                    {ctx?.getValue?.() as string}
+                </Link>
+            ),
         },
         {
             header: t('table.ico'),
