@@ -16,3 +16,12 @@ export const convertFilterArrayData = <T extends FieldValues & IFilterParams>(fi
 
     return { ...filterData, ...convertedValues }
 }
+
+export const convertFilterToSearchParams = <T extends FieldValues & IFilterParams>(filterData: T): T => {
+    if (Object.prototype.hasOwnProperty.call(filterData, 'sort')) {
+        const sort = filterData.sort?.[0]
+        delete filterData.sort
+        return { ...filterData, ...sort }
+    }
+    return filterData
+}
