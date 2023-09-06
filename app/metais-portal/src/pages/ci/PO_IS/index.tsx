@@ -6,11 +6,11 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { CiTable } from '@/components/ci-table/CiTable'
-import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { FilterPO, POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
+import { CiTable } from '@/components/ci-table/CiTable'
+import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 
 const POIsListPage = () => {
     const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})

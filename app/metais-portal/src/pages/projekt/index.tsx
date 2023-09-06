@@ -3,10 +3,10 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { ListWrapper } from '@/components/list-wrapper/ListWrapper'
+import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 
 interface ProjektFilterData extends IFilterParams {
     Gen_Profil_nazov?: string
@@ -37,6 +37,7 @@ const ProjektListPage: React.FC = () => {
                                 sort,
                                 isError,
                                 isLoading,
+                                refetch,
                             }) => (
                                 <ListWrapper
                                     gestorsData={gestorsData}
@@ -44,6 +45,7 @@ const ProjektListPage: React.FC = () => {
                                     sort={sort}
                                     columnListData={columnListData}
                                     tableData={tableData}
+                                    refetch={refetch}
                                     handleFilterChange={handleFilterChange}
                                     storeUserSelectedColumns={storeUserSelectedColumns}
                                     resetUserSelectedColumns={resetUserSelectedColumns}

@@ -1,4 +1,3 @@
-import { TFunction } from 'i18next'
 import {
     ATTRIBUTE_NAME,
     Attribute,
@@ -10,8 +9,8 @@ import {
     FavoriteCiType,
     RoleParticipantUI,
 } from '@isdd/metais-common/api'
-
-import { pairEnumsToEnumValues } from '@/componentHelpers'
+import { pairEnumsToEnumValues } from '@isdd/metais-common/index'
+import { TFunction } from 'i18next'
 
 interface ReducedAttributes {
     [technicalName: string]: Attribute

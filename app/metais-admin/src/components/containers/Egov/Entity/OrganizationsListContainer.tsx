@@ -41,6 +41,7 @@ export const OraganizationsListContainer = <T extends FieldValues & IFilterParam
         data: tableData,
         isLoading: isReadCiListLoading,
         isError: isReadCiListError,
+        refetch,
     } = useReadCiList1({
         ...filterToNeighborsApi,
         filter: {
@@ -78,6 +79,7 @@ export const OraganizationsListContainer = <T extends FieldValues & IFilterParam
                 resetUserSelectedColumns={resetColumns}
                 storeUserSelectedColumns={saveColumnSelection}
                 sort={filterParams?.sort ?? []}
+                refetch={refetch}
                 isLoading={isLoading}
                 isError={isError}
                 setInvalid={InvalidateConfigurationItem}

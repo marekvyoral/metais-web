@@ -30,7 +30,6 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, tooltipContent
     return (
         <>
             <Popup
-                on={'hover'}
                 ref={popupRef}
                 arrow={props.position != 'center center'}
                 closeOnEscape

@@ -545,6 +545,55 @@
         "error": "Error while fetching data about roles.",
         "loading": "Loading role data"
     },
+    "tooltip": {
+        "rights": {
+            "missingPermission": "You are not authorized to carry out this operation",
+            "noSelectedList": "No items were selected, it is not possible to carry out selected operation.",
+            "invalidSelectedList": "Some of selected items were invalidated, it is not possible to carry out selected operation.",
+            "validSelectedList": "Some of selected items are valid, it is not possible to carry out selected operation.",
+            "notFoundPO": "Error in rights - not find public authority."
+        }
+    },
+    "bulkActions": {
+        "invalidate": {
+            "title": "Invalidate items",
+            "warningText": "Selected records will be invalidated. It would not be possible to edit them or carry out any operations with them. Upon their invalidation will all relations to other entities be invalidated (services and etc.)",
+            "listText": "Selected records will be invalidated ({{count}}):",
+            "newWindowText": "Show the whole list of instances and their relationships (in new window)",
+            "reason": "Note / Invalidity reason",
+            "invalidate": "Invalidity",
+            "success": "Item was sent for processing, please wait for invalidation notification."
+        },
+        "reInvalidate": {
+            "title": "Revalidate items",
+            "warningText": "Selected records will be validated. Relations that they contain shall remain unmodified.",
+            "listText": "Selected records will be invalidated ({{count}}):",
+            "newWindowText": "Show the whole list of instances and their relations (in new window)",
+            "reason": "Note / Invalidity reason",
+            "reInvalidate": "Validation",
+            "success": "Item was sent for processing, please wait for reinvalidation notification."
+        },
+        "changeOwner": {
+            "title": "Change of owner",
+            "reason": "Reason for change",
+            "changeDescription": "Change description",
+            "changeType": "Change type",
+            "button": "Perform change",
+            "listText": "Selected records will be modified ({{count}}):",
+            "newWindowText": "Show the whole list of instances and their relationships (in new window)",
+            "reasonType": {
+                "architectureChange": "Architecture change",
+                "personalChange": "Personal change",
+                "othersChange": "Other reason"
+            },
+            "types": {
+                "changeCmdbItemAndRelatedCmdbItemsWithSameOwner": "Change item and its relationships with identical owner (other will remain unmodified)",
+                "changeCmdbItemAndRelatedCmdbItems": "Change item and its relationships regardless of the owner",
+                "changeCmdbItem": "Change owner of item, don't change owner of relationships"
+            },
+            "success": "Item was sent for processing, please wait for owner change notification."
+        }
+    },
     "breadcrumbs": {
         "home": "Home",
         "ciEdit": "Edit of {{itemName}}",

@@ -8,14 +8,16 @@ import styles from '@isdd/metais-common/components/actions-over-table/actionsOve
 export interface IBulkPopupProps {
     checkedRowItems?: number
     label?: string
+    disabled?: boolean
     items?: (closePopup: () => void) => Array<React.ReactElement>
 }
 
-export const BulkPopup: React.FC<IBulkPopupProps> = ({ checkedRowItems, label, items = () => [] }) => {
+export const BulkPopup: React.FC<IBulkPopupProps> = ({ checkedRowItems, label, disabled, items = () => [] }) => {
     const { t } = useTranslation()
     return (
         <div className={classnames(styles.mobileOrder3, styles.buttonPopup)}>
             <ButtonPopup
+                disabled={disabled}
                 buttonLabel={`${label ? label : t('actionOverTable.actions')} ${checkedRowItems ? '(' + checkedRowItems + ')' : ''}`}
                 buttonClassName="marginBottom0"
                 popupContent={(closePopup) => (
