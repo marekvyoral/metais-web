@@ -1,10 +1,12 @@
 import { Row, flexRender } from '@tanstack/react-table'
 import classNames from 'classnames'
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import React from 'react'
 
-import { CHECKBOX_CELL } from './constants'
+import { CHECKBOX_CELL, TOOLTIP_TEXT_BREAKER } from './constants'
 import styles from './table.module.scss'
+
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 interface ITableRowProps<T> {
     row: Row<T>
@@ -33,6 +35,10 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
         >
             {row.getVisibleCells().map((cell) => {
                 const columnDef = cell.column.columnDef
+                const meta = columnDef.meta && columnDef.meta.getCellContext && columnDef.meta.getCellContext(cell.getContext())
+                const cellValue = flexRender(columnDef.cell, cell.getContext())
+                const shortString = typeof meta === 'string' && meta.length >= TOOLTIP_TEXT_BREAKER
+
                 return (
                     <td
                         className={classNames('idsk-table__cell', {
@@ -42,7 +48,22 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
                         style={columnDef.size ? { width: columnDef.size } : {}}
                         key={cell.id}
                     >
-                        {flexRender(columnDef.cell, cell.getContext())}
+                        <Tooltip
+                            position={'top center'}
+                            disabled={
+                                cell.column.id === CHECKBOX_CELL ||
+                                cell.getValue() === '' ||
+                                cell.getValue() === undefined ||
+                                cell.getValue() === null ||
+                                !shortString
+                            }
+                            descriptionElement={<div className={styles.tooltipWidth500}>{cellValue}</div>}
+                            tooltipContent={(open) => (
+                                <div className={styles.tooltipTextWrapper} onMouseOver={open}>
+                                    {cellValue}
+                                </div>
+                            )}
+                        />
                     </td>
                 )
             })}
