@@ -10,12 +10,18 @@ interface ButtonLinkProps {
     className?: string
     type?: 'submit' | 'reset' | 'button'
     icon?: string
+    disabled?: boolean
 }
 
-export const ButtonLink: React.FC<ButtonLinkProps> = ({ onClick, label, className, icon, type }) => {
+export const ButtonLink: React.FC<ButtonLinkProps> = ({ onClick, label, className, icon, type, disabled }) => {
     const { t } = useTranslation()
     return (
-        <button className={classNames(styles.buttonLink, className)} onClick={(e) => (onClick ? onClick(e) : null)} type={type}>
+        <button
+            className={classNames(styles.buttonLink, className, !!disabled && styles.cursorPointer)}
+            onClick={(e) => (onClick ? onClick(e) : null)}
+            type={type}
+            disabled={disabled}
+        >
             {icon && <img className={styles.iconInButtonLink} src={icon} />}
             {label ?? t('errors.fixLink')}
         </button>

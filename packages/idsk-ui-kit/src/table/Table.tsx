@@ -163,11 +163,11 @@ export const Table = <T,>({
                 onScroll={handleWrapper1Scroll}
                 ref={wrapper1Ref}
             >
-                {table.getRowModel().rows.map((row) => (
-                    <React.Fragment key={row.id}>
+                {table.getRowModel().rows.map((row, index) => (
+                    <React.Fragment key={index}>
                         <TableRow<T>
                             row={row}
-                            key={row.id}
+                            key={index}
                             isRowSelected={isRowSelected}
                             isRowBold={isRowBold}
                             isRowDanger={isRowDanger}

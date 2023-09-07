@@ -36,3 +36,8 @@ export const notificationDefaultSelectedColumns = [
 ]
 export const ROLES_GROUP = 'SKUPINA_ROL'
 export const metaisEmail = 'metais@mirri.gov.sk'
+
+export enum ReponseErrorCodeEnum {
+    DEFAULT = 'default',
+    GNR403 = 'gnr403',
+}

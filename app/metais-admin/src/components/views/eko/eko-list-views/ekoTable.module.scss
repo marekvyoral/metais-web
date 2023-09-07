@@ -1,0 +1,17 @@
+@import '../../../../utils.scss';
+
+.lightColor {
+    color: govuk-colour('dark-grey');
+}
+
+.marginBottom15 {
+    margin-bottom: govuk-spacing(3) !important;
+}
+
+.withoutMarginBottom {
+    margin-bottom: govuk-spacing(0) !important;
+}
+
+.bold {
+    font-weight: bold;
+}

@@ -19,10 +19,11 @@ export enum RouteNames {
 
 export enum AdminRouteNames {
     HOME = '/',
-    DASHBOARD = 'dashboard/',
-    ASSIGNMENT = 'assignment/',
-    NOTIFICATIONS = 'notifications/',
-    SETTINGS = 'settings/',
+    DASHBOARD = '/dashboard',
+    ASSIGNMENT = '/assignment',
+    NOTIFICATIONS = '/notifications',
+    SETTINGS = '/settings',
+    EKO = '/eko',
     USER_MANAGEMENT = '/managementList',
     EGOV = 'egov/',
     EGOV_ENTITY = '/egov/entity',
