@@ -77,6 +77,7 @@
 .safeMargin {
     margin-right: max(30px, calc(15px + env(safe-area-inset-right)));
     margin-left: max(30px, calc(15px + env(safe-area-inset-left)));
+    margin-top: max(15px, calc(15px + env(safe-area-inset-top)));
 }
 
 .sidebarlink {
@@ -94,7 +95,7 @@
 
 .sectionsContainer {
     width: 80%;
-    max-width: 250px;
+    max-width: 350px;
     display: flex;
     flex-direction: column;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);

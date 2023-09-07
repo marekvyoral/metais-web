@@ -2,8 +2,8 @@ import React, { SetStateAction } from 'react'
 import StickyBox from 'react-sticky-box'
 import classNames from 'classnames'
 
-import { SidebarSectionsContainer } from './SidebarSectionsContainer'
 import { SidebarButton } from './SidebarButton'
+import { SidebarSectionsContainer } from './SidebarSectionsContainer'
 
 import styles from '@isdd/metais-common/components/GridView.module.scss'
 import { NavigationItem } from '@isdd/metais-common/navigation/routeNames'

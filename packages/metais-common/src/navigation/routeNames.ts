@@ -79,12 +79,15 @@ export enum NavigationSubRoutes {
     NIE_SU_OVM = 'todo',
 }
 
+export interface NavigationSubItem {
+    title: string
+    path: string
+    subItems?: NavigationSubItem[]
+}
+
 export interface NavigationItem {
     title: string
     path: string
     icon?: string
-    subItems?: {
-        title: string
-        path: string
-    }[]
+    subItems?: NavigationSubItem[]
 }
