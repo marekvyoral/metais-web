@@ -138,12 +138,15 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],
                 header: () => <span className={classNames({ [styles.textUnderline]: index === 0 })}>{attributeHeader ?? technicalName}</span>,
                 id: technicalName ?? '',
-                size: 200,
+                size: index === 0 ? 300 : 200,
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
                     <TextBody size="S" className={'marginBottom0'}>
                         {getColumnsFromApiCellContent(index, ctx, technicalName)}
                     </TextBody>
                 ),
+                meta: {
+                    getCellContext: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => getColumnsFromApiCellContent(index, ctx, technicalName),
+                },
                 enableSorting: true,
             }
         }) ?? []

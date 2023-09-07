@@ -1,0 +1,12 @@
+diff --git a/node_modules/@tanstack/table-core/build/lib/types.d.ts b/node_modules/@tanstack/table-core/build/lib/types.d.ts
+index deaf229..44293c0 100644
+--- a/node_modules/@tanstack/table-core/build/lib/types.d.ts
++++ b/node_modules/@tanstack/table-core/build/lib/types.d.ts
+@@ -17,6 +17,7 @@ import { CoreColumn } from './core/column';
+ export interface TableMeta<TData extends RowData> {
+ }
+ export interface ColumnMeta<TData extends RowData, TValue> {
++    getCellContext?: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => any
+ }
+ export interface FilterMeta {
+ }
