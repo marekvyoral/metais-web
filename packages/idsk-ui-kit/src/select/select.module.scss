@@ -33,3 +33,10 @@
 .fullWidth {
     width: 100%;
 }
+
+.reactMenuList {
+    border: 0.5px solid;
+    border-color: govuk-colour('grey-5');
+    background-color: govuk-colour('white');
+    z-index: 5 !important;
+}

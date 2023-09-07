@@ -230,6 +230,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                     constraints,
                                     getDefaultArrayValue(attribute.defaultValue ?? '', defaultValueFromCiItem),
                                 )}
+                                menuPosition="absolute"
                             />
                         )
                     } else {
@@ -250,6 +251,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 setValue={setValue}
                                 clearErrors={clearErrors}
                                 placeholder={t('createEntity.select')}
+                                menuPosition="absolute"
                             />
                         )
                     }
