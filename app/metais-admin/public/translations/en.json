@@ -127,6 +127,9 @@
         "sk": "Slovenčina",
         "en": "English"
     },
+    "input": {
+        "requiredField": "(required)"
+    },
     "tab": {
         "contents": "Contents"
     },
@@ -369,6 +372,7 @@
             "relations": "Relations",
             "roleManagement": "Role management"
         },
+        "eko": "EKO codes management",
         "tooltips": "Tooltips",
         "codelists": "Internal codelists"
     },
@@ -418,6 +422,40 @@
         "unvalidTextWarning": "Some of your selected items are already invalidated",
         "validTextWarning": "Some of your selected items are already validated",
         "codelists": "Internal codelists"
+    },
+    "eko": {
+        "name": "Name",
+        "detailName": "Code name",
+        "ekoCode": "Code",
+        "ekoCodeState": "State",
+        "edit": "Edit item",
+        "tabTitle": "Basic information",
+        "lastModifiedAt": "Last modified: ",
+        "createdAt": "Created: ",
+        "createdCode": "Create EKO code",
+        "editCode": "Edit EKO code",
+        "selectedCode": "Selected EKO code",
+        "save": "Save",
+        "cancel": "Cancel",
+        "validation": {
+            "requiredField": "Required filed",
+            "maxLength": "Maximum length is {{length}} characters",
+            "exactLength": "The specified string must have {{length}} characters",
+            "uniqueEkoCode": "EKO code must be unique"
+        },
+        "invalidateCodes": "Invalidate codes",
+        "deleteCodes": "Delete codes",
+        "invalidateModalTitle": "Invalidate EKO codes",
+        "deleteModalTitle": "Delete EKO codes",
+        "invalidateModalContent": "Do you really wish to invalidate the given EKO code?",
+        "deleteModalContent": "Do you really wish to delete the given EKO code?",
+        "deleteModalOkButtonLabel": "Delete selected EKO codes",
+        "invalidateModalOkButtonLabel": "Invalidate selected EKO codes"
+    },
+    "ekoValidity": {
+        "ACTIVE": "Valid",
+        "INVALIDATED": "Invalidate",
+        "undefined": "Invalidate"
     },
     "feedback": {
         "queryErrorTitle": "Error occured",
@@ -586,8 +624,16 @@
         "openAll": "Open all",
         "closeAll": "Close all"
     },
+    "confirmationModal": {
+        "okButtonLabel": "OK",
+        "cancelButtonLabel": "Cancel"
+    },
     "loading": {
         "loadingSubPage": "Loading sub-page",
         "export": "Preparing export"
+    },
+    "errors": {
+        "default": "Ups, something went wrong.",
+        "gnr403": "You do not have permission to call this API."
     }
 }
