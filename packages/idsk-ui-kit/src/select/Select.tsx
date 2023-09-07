@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
-import ReactSelect, { GroupBase, MultiValue, OptionProps, SingleValue } from 'react-select'
+import ReactSelect, { GroupBase, MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select'
 
 import styles from './select.module.scss'
 
@@ -32,6 +32,7 @@ interface ISelectProps {
     disabled?: boolean
     onBlur?: React.FocusEventHandler<HTMLInputElement>
     isClearable?: boolean
+    menuPosition?: MenuPosition
 }
 
 export const Select: React.FC<ISelectProps> = ({
@@ -52,6 +53,7 @@ export const Select: React.FC<ISelectProps> = ({
     disabled,
     onBlur,
     isClearable = true,
+    menuPosition = 'fixed',
 }) => {
     const Option = (props: OptionProps<IOption>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
@@ -72,10 +74,12 @@ export const Select: React.FC<ISelectProps> = ({
                     defaultValue={defaultValue}
                     placeholder={placeholder || ''}
                     className={classNames('govuk-select', styles.reactSelect)}
+                    classNames={{ menuList: () => styles.reactMenuList }}
                     components={{ Option, Menu, Control }}
                     options={options}
                     styles={selectStyles<IOption>()}
                     unstyled
+                    menuPosition={menuPosition}
                     isDisabled={disabled}
                     isMulti={isMulti}
                     onBlur={onBlur}
