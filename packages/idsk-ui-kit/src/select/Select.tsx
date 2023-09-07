@@ -74,7 +74,7 @@ export const Select: React.FC<ISelectProps> = ({
                     defaultValue={defaultValue}
                     placeholder={placeholder || ''}
                     className={classNames('govuk-select', styles.reactSelect)}
-                    classNames={{ menuList: () => styles.reactMenuList }}
+                    classNames={{ menuList: () => styles.reactSelectMenuList }}
                     components={{ Option, Menu, Control }}
                     options={options}
                     styles={selectStyles<IOption>()}

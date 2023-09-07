@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
-import { GroupBase, MultiValue, OptionProps, OptionsOrGroups, PropsValue } from 'react-select'
+import { GroupBase, MenuPosition, MultiValue, OptionProps, OptionsOrGroups, PropsValue } from 'react-select'
 import { AsyncPaginate } from 'react-select-async-paginate'
 
 import styles from './selectLazyLoading.module.scss'
@@ -41,6 +41,7 @@ export interface ISelectProps<T> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     clearErrors?: UseFormClearErrors<any>
     isClearable?: boolean
+    menuPosition?: MenuPosition
 }
 
 export const SelectLazyLoading = <T,>({
@@ -60,6 +61,7 @@ export const SelectLazyLoading = <T,>({
     setValue,
     clearErrors,
     isClearable = true,
+    menuPosition = 'fixed',
 }: ISelectProps<T>): JSX.Element => {
     const Option = (props: OptionProps<T>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
@@ -98,9 +100,11 @@ export const SelectLazyLoading = <T,>({
                 loadOptions={loadOptions}
                 getOptionValue={getOptionValue}
                 getOptionLabel={getOptionLabel}
+                classNames={{ menuList: () => styles.reactSelectMenuList }}
                 placeholder={placeholder || ''}
                 components={{ Option, Menu, Control }}
                 isMulti={isMulti}
+                menuPosition={menuPosition}
                 defaultValue={defaultValue}
                 className={classNames('govuk-select', styles.selectLazyLoading)}
                 styles={selectStyles<T>()}

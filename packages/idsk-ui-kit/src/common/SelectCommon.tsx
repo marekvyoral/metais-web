@@ -47,7 +47,7 @@ export const selectStyles = <T,>(): StylesConfig<T, boolean, GroupBase<T>> => ({
             left,
             top,
             width,
-            zIndex: 3,
+            zIndex: 10,
         }
     },
 })
