@@ -299,6 +299,7 @@
             "lastModifiedAt": "Last change",
             "createdAt": "Created",
             "owner": "Manager",
+            "group": "Manager",
             "state": "Evidence status",
             "metaInformationsName": "Meta-informations"
         },

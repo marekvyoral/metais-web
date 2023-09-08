@@ -300,6 +300,7 @@
             "lastModifiedAt": "Posledná zmena",
             "createdAt": "Vytvorené",
             "owner": "Správca",
+            "group": "Správca",
             "state": "Stav evidencie",
             "metaInformationsName": "Metainformácie"
         },

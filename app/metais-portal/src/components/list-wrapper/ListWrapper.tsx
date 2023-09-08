@@ -5,6 +5,7 @@ import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { Attribute, AttributeProfile, CiType, ConfigurationItemSetUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
+import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import {
     BulkPopup,
     ChangeOwnerBulkModal,
@@ -19,16 +20,15 @@ import styles from '@isdd/metais-common/components/actions-over-table/actionsOve
 import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
+import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
+import { MutationFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
-import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
-import { MutationFeedback } from '@isdd/metais-common/index'
 
 import { AddItemsButtonGroup } from '@/components/add-items-button-group/AddItemsButtonGroup'
 import { CiTable } from '@/components/ci-table/CiTable'
-import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
+import { ColumnsOutputDefinition, IStoreColumnSelection } from '@/components/ci-table/ciTableHelpers'
 import { KSFilterData } from '@/pages/ci/[entityName]/entity'
 
 interface IListWrapper {
@@ -37,16 +37,7 @@ interface IListWrapper {
     ciType: string | undefined
     columnListData: IColumn | undefined
     handleFilterChange: (filter: IFilter) => void
-    storeUserSelectedColumns: (columnSelection: {
-        attributes: {
-            name: string
-            order: number
-        }[]
-        metaAttributes: {
-            name: string
-            order: number
-        }[]
-    }) => void
+    storeUserSelectedColumns: (columnSelection: IStoreColumnSelection) => void
     resetUserSelectedColumns: () => Promise<void>
     refetch: () => void
     ciTypeData: CiType | undefined
@@ -270,6 +261,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 pagination={pagination}
                 sort={sort}
                 rowSelectionState={{ rowSelection, setRowSelection }}
+                storeUserSelectedColumns={storeUserSelectedColumns}
                 isLoading={isLoading}
                 isError={isError}
             />
