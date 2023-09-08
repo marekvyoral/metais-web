@@ -33,12 +33,12 @@ interface ICiTable {
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
     sort: ColumnSort[]
-    rowSelectionState: IRowSelectionState
     isLoading: boolean
     isError: boolean
+    rowSelectionState: IRowSelectionState
 }
 
-export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChange, sort, rowSelectionState, isLoading, isError }) => {
+export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChange, sort, isLoading, isError, rowSelectionState }) => {
     const { t } = useTranslation()
 
     const {

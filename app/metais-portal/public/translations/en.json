@@ -151,10 +151,13 @@
         "searchPlaceholder": "Search in table",
         "chooseState": "Select status",
         "chooseValue": "Select value",
-        "ks": {
+        "KS": {
             "name": "Name of end service"
         },
-        "isvs": {
+        "AS": {
+            "name": "Name of application service"
+        },
+        "ISVS": {
             "name": "Name of information system"
         },
         "PO": {
@@ -167,9 +170,15 @@
         "Projekt": {
             "name": "Name of project"
         },
+        "InfraSluzba": {
+            "name": "Name"
+        },
         "metaisCode": {
             "label": "Code MetaIS",
             "placeholder": "ks_"
+        },
+        "Program": {
+            "name": "Name"
         },
         "reset": "Clear Filter",
         "submit": "Filter"
@@ -293,7 +302,10 @@
             "state": "Evidence status",
             "metaInformationsName": "Meta-informations"
         },
-        "newRelationHeading": "New relation - {{relationEntityName}}"
+        "newRelationHeading": "New relation - {{relationEntityName}}",
+        "PO_PO_Heading": "Subordinates",
+        "PO_IS_Heading": "Processors of IT development concepts",
+        "PO_IS_PO_Heading": "IS operators"
     },
     "relationType": {
         "as": "Application service"
@@ -436,8 +448,15 @@
         "addNewRow": "Add new row",
         "units": "(Value in {{units}})",
         "redirectLoading": "Processing creation of new entity",
-        "redirectError": "Failed to process new entity creation",
-        "mutationError": "Error while executing your action. Please try again or contact support."
+        "redirectLoadingEdit": "Updating data on entity",
+        "redirectError": "Failed to process new entity creation. Check notifications for more information.",
+        "redirectErrorEdit": "Failed to process updating of current entity. Check notifications for more information.",
+        "mutationError": "Error while executing your action. Please try again or contact support.",
+        "tooManyFetchesError": "There was a mistake during processing. Action took too long. Check notifications for more information.",
+        "orgAndRoleError": {
+            "title": "Missing rights for organization",
+            "message": "You are missing rights for creating entity under this organization"
+        }
     },
     "table": {
         "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
@@ -452,7 +471,7 @@
     "actionOverTable": {
         "import": "Import",
         "export": "Export",
-        "addISVSitem": "Add ISVS item",
+        "addItem": "Add {{ciType}} item",
         "selectColumn": "Columns",
         "view": "View",
         "actions": "Bulk actions",

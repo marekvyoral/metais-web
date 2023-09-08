@@ -19,14 +19,15 @@ import styles from '@isdd/metais-common/components/actions-over-table/actionsOve
 import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
-import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
+import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import { MutationFeedback } from '@isdd/metais-common/index'
 
 import { AddItemsButtonGroup } from '@/components/add-items-button-group/AddItemsButtonGroup'
-import { CiTable, IRowSelectionState } from '@/components/ci-table/CiTable'
+import { CiTable } from '@/components/ci-table/CiTable'
 import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 import { KSFilterData } from '@/pages/ci/[entityName]/entity'
 
@@ -59,7 +60,6 @@ interface IListWrapper {
     isLoading: boolean
     isError: boolean
     gestorsData: RoleParticipantUI[] | undefined
-    rowSelectionState: IRowSelectionState
 }
 
 export const ListWrapper: React.FC<IListWrapper> = ({
@@ -82,7 +82,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     isLoading,
     isError,
     isNewRelationModal,
-    rowSelectionState,
 }) => {
     const { t } = useTranslation()
 
@@ -90,9 +89,10 @@ export const ListWrapper: React.FC<IListWrapper> = ({
 
     const navigate = useNavigate()
     const location = useLocation()
-    const { setRowSelection, rowSelection } = rowSelectionState
     const { setSelectedItems, setIsListPageOpen, selectedItems } = useNewRelationData()
-    const checkedRowItems = Object.keys(rowSelectionState.rowSelection).length
+    const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
+
+    const checkedRowItems = Object.keys(rowSelection).length
     const isDisabledBulkButton = checkedRowItems === 0
 
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
@@ -101,7 +101,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
 
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
 
-    const checkedItemList = tableData?.configurationItemSet?.filter((i) => Object.keys(rowSelectionState.rowSelection).includes(i.uuid || '')) || []
+    const checkedItemList = tableData?.configurationItemSet?.filter((i) => Object.keys(rowSelection).includes(i.uuid || '')) || []
 
     const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: (value: React.SetStateAction<boolean>) => void) => {
         closeFunction(false)
@@ -152,7 +152,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                         <Input
                             id="metais-code"
                             label={t('filter.metaisCode.label')}
-                            placeholder={t('filter.metaisCode.placeholder')}
+                            placeholder={ciTypeData?.codePrefix}
                             {...register('Gen_Profil_kod_metais')}
                         />
                         <DynamicFilterAttributes
@@ -182,6 +182,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
             )}
             {!isNewRelationModal && (
                 <ActionsOverTable
+                    metaAttributesColumnSection={getCiDefaultMetaAttributes(t)}
                     handleFilterChange={handleFilterChange}
                     storeUserSelectedColumns={storeUserSelectedColumns}
                     resetUserSelectedColumns={resetUserSelectedColumns}
@@ -191,7 +192,9 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     attributes={attributes ?? []}
                     columnListData={columnListData}
                     ciTypeData={ciTypeData}
-                    createButton={<CreateEntityButton onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })} />}
+                    createButton={
+                        <CreateEntityButton ciType={ciType ?? ''} onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })} />
+                    }
                     importButton={<ImportButton ciType={ciType ?? ''} />}
                     exportButton={<ExportButton />}
                     bulkPopup={
@@ -266,7 +269,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 handleFilterChange={handleFilterChange}
                 pagination={pagination}
                 sort={sort}
-                rowSelectionState={rowSelectionState}
+                rowSelectionState={{ rowSelection, setRowSelection }}
                 isLoading={isLoading}
                 isError={isError}
             />

@@ -22,10 +22,17 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
     const hasCheckbox = row.getVisibleCells().find((cell) => cell.column.id === CHECKBOX_CELL)
     return (
         <tr
-            className={classNames('idsk-table__row', { [styles.fontWeightBolder]: isRowBold && isRowBold(row) }, styles.rowHover, styles.tableRow, {
-                [styles.danger]: isRowDanger && isRowDanger(row),
-                [styles.checkBoxRow]: hasCheckbox,
-            })}
+            className={classNames(
+                'idsk-table__row',
+                { [styles.fontWeightBolder]: isRowBold && isRowBold(row) },
+                styles.rowHover,
+                styles.tableRow,
+                styles.tableRowMinHeight,
+                {
+                    [styles.danger]: isRowDanger && isRowDanger(row),
+                    [styles.checkBoxRow]: hasCheckbox,
+                },
+            )}
             onClick={() => {
                 if (rowHref) {
                     navigate(rowHref(row), { state: { from: location } })
@@ -45,7 +52,7 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
                             [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
                             [styles.rowSelected]: isRowSelected && isRowSelected(row),
                         })}
-                        style={columnDef.size ? { width: columnDef.size } : {}}
+                        style={columnDef.size ? { width: columnDef.size } : { width: 'auto' }}
                         key={cell.id}
                     >
                         <Tooltip

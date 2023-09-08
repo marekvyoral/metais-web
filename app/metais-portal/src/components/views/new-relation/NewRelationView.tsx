@@ -24,6 +24,8 @@ import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { MultiValue } from 'react-select'
 import { v4 as uuidV4 } from 'uuid'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
 import styles from './newRelationView.module.scss'
 
@@ -60,6 +62,10 @@ export const NewRelationView: React.FC<Props> = ({
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
+
+    const ability = useAbilityContext()
+    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
+
     const [hasReset, setHasReset] = useState(false)
     const [hasMutationError, setHasMutationError] = useState(false)
     const location = useLocation()
@@ -217,12 +223,17 @@ export const NewRelationView: React.FC<Props> = ({
             />
             <TextHeading size="XL">{t('newRelation.heading', { relationEntityName: tabName })}</TextHeading>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
+
+            {!hasOrgPermission && publicAuthorityState.selectedPublicAuthority && (
+                <ErrorBlock errorTitle={t('createEntity.orgAndRoleError.title')} errorMessage={t('createEntity.orgAndRoleError.message')} />
+            )}
             <SelectPublicAuthorityAndRole
                 onChangeAuthority={(e) => publicAuthorityState.setSelectedPublicAuthority(e)}
                 onChangeRole={(val) => roleState.setSelectedRole(val)}
                 selectedRoleId={roleState.selectedRole}
                 selectedOrg={publicAuthorityState.selectedPublicAuthority}
             />
+
             <SimpleSelect
                 isClearable={false}
                 label={t('newRelation.selectRelType')}
@@ -259,7 +270,7 @@ export const NewRelationView: React.FC<Props> = ({
                     submitButtonLabel={t('newRelation.save')}
                     additionalButtons={[<Button key={1} label={t('newRelation.cancel')} type="reset" variant="secondary" onClick={handleReset} />]}
                     loading={storeGraph.isLoading}
-                    disabled={isSubmitDisabled}
+                    disabled={isSubmitDisabled || !hasOrgPermission}
                 />
             </form>
         </>

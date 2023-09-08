@@ -1,14 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { ErrorBlock } from '@isdd/idsk-ui-kit/error-block/ErrorBlock'
-import { ButtonGroupRow } from '@isdd/idsk-ui-kit/index'
 import { Stepper } from '@isdd/idsk-ui-kit/src/stepper/Stepper'
 import { ISection, IStepLabel } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { CiCode, CiType, ConfigurationItemUiAttributes, EnumType, Gen_Profil, RelationshipType } from '@isdd/metais-common/api'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { SubmitWithFeedback } from '@isdd/metais-common/index'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
 import { CreateEntitySection } from './CreateEntitySection'
 import { generateFormSchema } from './createCiEntityFormSchema'
@@ -31,6 +33,7 @@ interface ICreateCiEntityForm {
     defaultItemAttributeValues?: ConfigurationItemUiAttributes | undefined
     updateCiItemId?: string
     relationSchema?: RelationshipType
+    isProcessing: boolean
 }
 
 export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
@@ -43,8 +46,14 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     defaultItemAttributeValues,
     updateCiItemId,
     relationSchema,
+    isProcessing,
 }) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
+
+    const ability = useAbilityContext()
+    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
+
     const [hasReset, setHasReset] = useState(false)
     const genProfilTechName = Gen_Profil
     const metaisEmail = 'metais@mirri.gov.sk'
@@ -154,18 +163,26 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                         }
                     />
                 )}
-                <ButtonGroupRow className={styles.buttonGroup}>
-                    <Button
-                        label={t('button.cancel')}
-                        type="reset"
-                        variant="secondary"
-                        onClick={() => {
-                            reset()
-                            setHasReset(true)
-                        }}
-                    />
-                    <Button label={t('button.saveChanges')} disabled={formState.isValidating || formState.isSubmitting} type="submit" />
-                </ButtonGroupRow>
+                <SubmitWithFeedback
+                    className={styles.buttonGroup}
+                    additionalButtons={[
+                        <Button
+                            key={1}
+                            label={t('button.cancel')}
+                            type="reset"
+                            variant="secondary"
+                            onClick={() => {
+                                reset()
+                                setHasReset(true)
+                                //back to where we came from
+                                navigate(-1)
+                            }}
+                        />,
+                    ]}
+                    submitButtonLabel={t('button.saveChanges')}
+                    loading={isProcessing || formState.isValidating || formState.isSubmitting}
+                    disabled={!hasOrgPermission && !updateCiItemId}
+                />
             </form>
         </FormProvider>
     )

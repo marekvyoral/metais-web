@@ -154,6 +154,9 @@
         "KS": {
             "name": "Názov koncovej služby"
         },
+        "AS": {
+            "name": "Názov aplikačnej služby"
+        },
         "ISVS": {
             "name": "Názov informačného systému"
         },
@@ -170,6 +173,12 @@
         "metaisCode": {
             "label": "Kód MetaIS",
             "placeholder": "ks_"
+        },
+        "InfraSluzba": {
+            "name": "Názov"
+        },
+        "Program": {
+            "name": "Názov"
         },
         "reset": "Vyčistiť kritéria filtrovania",
         "submit": "Vyfiltrovať"
@@ -293,7 +302,10 @@
             "owner": "Správca",
             "state": "Stav evidencie",
             "metaInformationsName": "Metainformácie"
-        }
+        },
+        "PO_PO_Heading": "Podriadené osoby",
+        "PO_IS_Heading": "Spracovatelia koncepcií rozvoja IT",
+        "PO_IS_PO_Heading": "Prevádzkovatelia IS"
     },
     "relationType": {
         "as": "Aplikačná služba"
@@ -436,8 +448,15 @@
         "addNewRow": "Pridať nový riadok",
         "units": "(Hodnota v {{units}})",
         "redirectLoading": "Spracúva sa vytvorenie novej entity",
-        "redirectError": "Nepodarilo sa spracovať vytvorenie novej entity",
-        "mutationError": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
+        "redirectLoadingEdit": "Prebieha aktualizácia údajov na entite",
+        "redirectError": "Nepodarilo sa spracovať vytvorenie novej entity. Ďalšie informácie nájdete v upozorneniach.",
+        "redirectErrorEdit": "Nepodarila sa spracovať aktualizáciu novej entity. Ďalšie informácie nájdete v upozorneniach.",
+        "mutationError": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.",
+        "tooManyFetchesError": "Pri spracovaní došlo k chybe. Akcia trvala príliš dlho. Ďalšie informácie nájdete v upozorneniach.",
+        "orgAndRoleError": {
+            "title": "Chýbajúce práva pre organizáciu",
+            "message": "Chýbajú vám práva na vytvorenie entity pod touto organizáciou"
+        }
     },
     "table": {
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
@@ -447,12 +466,12 @@
     "state": "Stav evidencie",
     "group": "Skupina",
     "loading": {
-        "loadingSubPage": "Načítavám podstránku"
+        "loadingSubPage": "Načítavam podstránku"
     },
     "actionOverTable": {
         "import": "Import",
         "export": "Export",
-        "addISVSitem": "Pridať ISVS položku",
+        "addItem": "Pridať {{ciType}} položku",
         "selectColumn": "Stĺpce",
         "view": "Zobraziť",
         "actions": "Hromadné úkony",

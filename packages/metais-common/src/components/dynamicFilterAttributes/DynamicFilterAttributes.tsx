@@ -48,9 +48,11 @@ export const DynamicFilterAttributes: FC<Props> = ({ data = {}, setValue, attrib
     const combinedAttributes = [...(attributes ?? []), ...(attributeProfiles?.map((profile) => profile.attributes?.map((att) => att)).flat() ?? [])]
     const filteredAvailable = attributeProfiles?.map((profile) => {
         const defaultKeys = Object.keys(defaults)
-        profile.attributes = profile.attributes?.filter((attr) => !defaultKeys.includes(attr.technicalName || ''))
-        return profile
+        const newProfile = { ...profile }
+        newProfile.attributes = profile.attributes?.filter((attr) => !defaultKeys.includes(attr.technicalName || ''))
+        return newProfile
     })
+
     useEffect(() => {
         // this should happened only on mount is one time thing which restore params from url
         const filterAttributes: FilterAttribute[] = []

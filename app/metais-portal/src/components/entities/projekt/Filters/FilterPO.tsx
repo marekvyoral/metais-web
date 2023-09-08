@@ -22,9 +22,10 @@ interface Props {
     attributes: Attribute[] | undefined
     attributeProfiles: AttributeProfile[] | undefined
     constraintsData: (EnumType | undefined)[]
+    codePrefix?: string
 }
 
-export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attributeProfiles, constraintsData }: Props) => {
+export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attributeProfiles, constraintsData, codePrefix }: Props) => {
     const { t } = useTranslation()
 
     const evidenceStatus = [
@@ -38,11 +39,7 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
             form={({ register, filter, setValue }) => (
                 <div>
                     <Input label={t(`filter.${PO}.name`)} placeholder={t(`filter.namePlaceholder`)} {...register(ATTRIBUTE_NAME.Gen_Profil_nazov)} />
-                    <Input
-                        label={t('filter.metaisCode.label')}
-                        placeholder={t('filter.metaisCode.placeholder')}
-                        {...register('Gen_Profil_kod_metais')}
-                    />
+                    <Input label={t('filter.metaisCode.label')} placeholder={codePrefix} {...register('Gen_Profil_kod_metais')} />
                     <RadioGroupWithLabel label={t('filter.PO.itIsChapter')} className="govuk-radios--small" inline>
                         <RadioButton
                             id={'itIsChapter.yes'}

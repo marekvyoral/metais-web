@@ -53,7 +53,7 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                 <div className="idsk-stepper__section-header">
                     {section.stepLabel && (
                         <span
-                            className={classnames({
+                            className={classnames(styles.circleZIndex, {
                                 'idsk-stepper__circle': true,
                                 'idsk-stepper__circle--letter': section.stepLabel.variant === 'no-outline',
                                 'idsk-stepper__circle--number': section.stepLabel.variant === 'circle',
