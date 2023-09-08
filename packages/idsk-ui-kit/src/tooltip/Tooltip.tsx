@@ -43,7 +43,7 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, tooltipContent
                             () => popupRef.current?.close(),
                         )
                     ) : (
-                        <img src={InfoIcon} />
+                        <img src={InfoIcon} onMouseOver={popupRef.current?.open} onMouseOut={popupRef.current?.close} />
                     )
                 }
             >
