@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 import { ArrowDownIcon } from '@isdd/idsk-ui-kit'
@@ -21,6 +21,8 @@ export interface SidebarItemProps {
 }
 
 export const SidebarItem = ({ item, activeTab, isSidebarExpanded, onToggle, isExpanded }: SidebarItemProps) => {
+    const [expandedSubItemIndexes, setExpandedSubItemIndexes] = useState<boolean[]>(() => Array(item.subItems?.length).fill(false))
+
     return (
         <>
             <div className={styles.govukBottomMargin}>
@@ -29,7 +31,7 @@ export const SidebarItem = ({ item, activeTab, isSidebarExpanded, onToggle, isEx
                         className={classNames(
                             styles.sidebarlink,
                             styles.sectionHeaderButton,
-                            ((item.subItems && isExpanded) || activeTab === item.path) && styles.expanded,
+                            (isExpanded || activeTab === item.path) && styles.expanded,
                         )}
                         aria-expanded={isExpanded}
                         to={item.path}
@@ -45,16 +47,23 @@ export const SidebarItem = ({ item, activeTab, isSidebarExpanded, onToggle, isEx
                     <div className={classNames(styles.hide, isExpanded && styles.unhide)} aria-labelledby={item.title}>
                         <div className={styles.safeMargin}>
                             {item.subItems.map((subItem, indexSubItem) => {
+                                const isExpandedSub = expandedSubItemIndexes[indexSubItem]
+                                const onToggleSub = (toggle?: boolean) => {
+                                    setExpandedSubItemIndexes((prev) => {
+                                        const newArr = [...prev]
+                                        if (toggle) newArr[indexSubItem] = toggle
+                                        else newArr[indexSubItem] = !isExpanded
+                                        return newArr
+                                    })
+                                }
                                 return (
                                     <SidebarItem
                                         key={`subItem-${indexSubItem}.${subItem.title}`}
                                         item={subItem}
                                         activeTab={activeTab}
                                         isSidebarExpanded={isSidebarExpanded}
-                                        isExpanded={false}
-                                        onToggle={() => {
-                                            return
-                                        }}
+                                        isExpanded={isExpandedSub}
+                                        onToggle={onToggleSub}
                                     />
                                 )
                             })}
