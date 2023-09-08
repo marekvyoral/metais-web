@@ -2,6 +2,7 @@ import React from 'react'
 import { Column, ColumnOrderState, Header, Table as ReactTable, flexRender } from '@tanstack/react-table'
 import { useDrag, useDrop } from 'react-dnd'
 import classNames from 'classnames'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/src/api'
 
 import styles from './table.module.scss'
 import { CHECKBOX_CELL } from './constants'
@@ -9,8 +10,10 @@ import { CHECKBOX_CELL } from './constants'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 
 const reorderColumn = (draggedColumnId: string, targetColumnId: string, columnOrder: string[]): ColumnOrderState => {
+    if (draggedColumnId === ATTRIBUTE_NAME.Gen_Profil_nazov || targetColumnId === ATTRIBUTE_NAME.Gen_Profil_nazov) return columnOrder
     const newColumnOrder = columnOrder
     const startSplicing = newColumnOrder.indexOf(targetColumnId)
+    if (startSplicing === 0) return columnOrder
     const items = newColumnOrder.splice(newColumnOrder.indexOf(draggedColumnId), 1)[0]
     newColumnOrder.splice(startSplicing, 0, items)
     return [...newColumnOrder]
@@ -26,7 +29,6 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
     const { getState, setColumnOrder } = table
     const { columnOrder } = getState()
     const { column, colSpan, getContext, isPlaceholder, id } = header
-
     const columnHeader = column.columnDef.header
     const columnEnabledSorting = header.column.columnDef.enableSorting
 

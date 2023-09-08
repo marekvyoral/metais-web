@@ -13,7 +13,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import classNames from 'classnames'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableInfoMessage } from './TableInfoMessage'
@@ -32,7 +32,7 @@ export interface ITableProps<T> {
     sort?: ColumnSort[]
     onSortingChange?: (sort: ColumnSort[]) => void
     columnOrder?: ColumnOrderState
-    onColumnOrderChange?: React.Dispatch<React.SetStateAction<ColumnOrderState>>
+    onColumnOrderChange?: OnChangeFn<ColumnOrderState>
     pagination?: PaginationState
     rowSelection?: RowSelectionState
     onPaginationChange?: OnChangeFn<PaginationState> | undefined
@@ -77,13 +77,22 @@ export const Table = <T,>({
     const wrapper1Ref = useRef<HTMLTableSectionElement>(null)
     const wrapper2Ref = useRef<HTMLTableSectionElement>(null)
 
+    const [columnOrderState, setColumnOrderState] = useState<ColumnOrderState>(columnOrder || columns.map((d) => d.id || ''))
+
+    useEffect(() => {
+        if (!canDrag) return
+        if (!columnOrder) setColumnOrderState(columns.map((column) => column.id || ''))
+        else setColumnOrderState(columnOrder)
+    }, [columnOrder, columns, canDrag])
+
     const transformedSort = transformColumnSortToSortingState(sort)
+
     const table = useReactTable({
         data: data ?? [],
         columns,
         state: {
             ...(pagination && { pagination }),
-            columnOrder,
+            columnOrder: columnOrderState,
             sorting: transformedSort,
             expanded: expandedRowsState,
             rowSelection,
@@ -97,7 +106,7 @@ export const Table = <T,>({
             }
         },
         getSortedRowModel: getSortedRowModel(),
-        onColumnOrderChange,
+        onColumnOrderChange: onColumnOrderChange || setColumnOrderState,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onPaginationChange,
