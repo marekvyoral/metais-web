@@ -18,6 +18,9 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import classNames from 'classnames'
+
+import styles from './egovTable.module.scss'
 
 type IListData = {
     data?: AttributeProfile[] | undefined
@@ -54,7 +57,10 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
 
     const handleAllCheckboxChange = () => {
         if (!data) return
-        const checkedAll = data.every((row) => row.type == AttributeProfileType.custom && rowSelection.includes(row.technicalName || ''))
+        const checkedAll = data
+            .filter((row) => row.type == AttributeProfileType.custom)
+            .every((row) => row.type == AttributeProfileType.custom && rowSelection.includes(row.technicalName || ''))
+
         if (checkedAll) {
             setRowSelection([])
             return
@@ -64,10 +70,11 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
     }
     const columns: Array<ColumnDef<CiTypePreview>> = [
         {
-            header: ({ table }) => {
-                const checked = table
-                    .getRowModel()
-                    .rows.every((row) => row.original.type == AttributeProfileType.custom && rowSelection.includes(row.original.technicalName || ''))
+            header: () => {
+                const checkedAll = data
+                    ?.filter((row) => row.type == AttributeProfileType.custom)
+                    .every((row) => row.type == AttributeProfileType.custom && rowSelection.includes(row.technicalName || ''))
+
                 return (
                     <div className="govuk-checkboxes govuk-checkboxes--small">
                         <CheckBox
@@ -76,30 +83,35 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
                             id="checkbox-all"
                             value="checkbox-all"
                             onChange={() => handleAllCheckboxChange()}
-                            checked={checked}
+                            checked={checkedAll}
                         />
                     </div>
                 )
             },
             id: CHECKBOX_CELL,
-            cell: ({ row }) =>
-                row.original.type == AttributeProfileType.custom ? (
-                    <div className="govuk-checkboxes govuk-checkboxes--small">
-                        <CheckBox
-                            label=""
-                            name="checkbox"
-                            id={`checkbox_${row.id}`}
-                            value="true"
-                            onChange={() => {
-                                handleCheckboxChange(row)
-                            }}
-                            checked={row.original.technicalName ? !!rowSelection.includes(row.original.technicalName) : false}
-                            //containerClassName={styles.marginBottom15}
-                        />
-                    </div>
-                ) : (
-                    ''
-                ),
+            cell: ({ row }) => {
+                return (
+                    <>
+                        {row.original.type == AttributeProfileType.custom ? (
+                            <div className="govuk-checkboxes govuk-checkboxes--small">
+                                <CheckBox
+                                    label=""
+                                    name="checkbox"
+                                    id={`checkbox_${row.id}`}
+                                    value="true"
+                                    onChange={() => {
+                                        handleCheckboxChange(row)
+                                    }}
+                                    checked={row.original.technicalName ? !!rowSelection.includes(row.original.technicalName) : false}
+                                    //containerClassName={styles.marginBottom15}
+                                />
+                            </div>
+                        ) : (
+                            ''
+                        )}
+                    </>
+                )
+            },
         },
         {
             header: t('egov.name'),
@@ -131,7 +143,7 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
             accessorFn: (row) => row?.valid,
             enableSorting: true,
             id: 'state',
-            cell: (ctx) => <span>{t(`validity.${ctx.row?.original?.valid}`)}</span>,
+            cell: (ctx) => <span className={classNames(!ctx.row?.original?.valid && styles.red)}>{t(`validity.${ctx.row?.original?.valid}`)}</span>,
         },
     ]
 

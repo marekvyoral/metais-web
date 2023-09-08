@@ -1,11 +1,10 @@
 import { BreadCrumbs, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { Languages } from '@isdd/metais-common/localization/languages'
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
-import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { ListWrapper } from '@/components/list-wrapper/ListWrapper'
@@ -24,7 +23,6 @@ const CiListPage: React.FC<Props> = ({ importantEntityName }) => {
 
     const entityName = importantEntityName ? importantEntityName : ciType ?? ''
 
-    const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
     return (
         <AttributesContainer
             entityName={entityName}
@@ -74,7 +72,6 @@ const CiListPage: React.FC<Props> = ({ importantEntityName }) => {
                                     refetch={refetch}
                                     isLoading={isLoading}
                                     isError={isError}
-                                    rowSelectionState={{ rowSelection, setRowSelection }}
                                 />
                             )}
                         />

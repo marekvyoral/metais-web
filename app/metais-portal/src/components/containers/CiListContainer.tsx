@@ -63,7 +63,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
     const isError = [isReadCiListError, isColumnsError, isGestorsError].some((item) => item)
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
+        <QueryFeedback loading={isLoading} error={isError} withChildren>
             <ListComponent
                 data={{ columnListData, tableData, gestorsData }}
                 pagination={pagination}

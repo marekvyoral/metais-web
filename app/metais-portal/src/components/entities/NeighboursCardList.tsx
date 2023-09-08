@@ -7,7 +7,7 @@ import { QueryFeedback, formatRelationAttributes } from '@isdd/metais-common'
 import { ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { CardColumnList } from './cards/CardColumnList'
 import { RelationCard } from './cards/RelationCard'
@@ -34,6 +34,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
     const { entityTypes, relationsList, owners } = data
 
     return (

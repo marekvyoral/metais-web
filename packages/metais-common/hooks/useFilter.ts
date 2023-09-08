@@ -206,12 +206,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
     const { filter } = useFilterParams<T>(defaults)
 
     const methods = useForm<T & IFilterParams>({ defaultValues: filter as DeepPartial<T>, resolver: schema ? yupResolver(schema) : undefined })
-    const { reset, handleSubmit, formState } = methods
-    useEffect(() => {
-        if (state.clearedFilter[location.pathname]) {
-            reset(filter as DeepPartial<T>)
-        }
-    }, [filter, location.pathname, reset, formState.errors, state.clearedFilter])
+    const { reset, handleSubmit } = methods
 
     const clearData = useCallback((obj: T): T => {
         return Object.fromEntries<T>(Object.entries<T>(obj).filter(([key, v]) => !!v && key !== 'attributeFilters')) as T
@@ -247,6 +242,17 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
 
         return false
     }
+
+    useEffect(() => {
+        if (state.clearedFilter[location.pathname]) {
+            reset(filter as DeepPartial<T>)
+            dispatch({
+                type: FilterActions.SET_FILTER,
+                value: clearData(filter),
+                path: location.pathname,
+            })
+        }
+    }, [clearData, dispatch, filter, location.pathname, reset, state.clearedFilter])
 
     useEffect(() => {
         if (!state.filter[location.pathname] && !state.clearedFilter[location.pathname]) {

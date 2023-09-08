@@ -54,7 +54,7 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
                 [styles.checkBoxCell]: id === CHECKBOX_CELL,
             })}
             colSpan={colSpan}
-            style={{ opacity: isDragging ? 0.5 : 1, ...(header.column.columnDef.size ? { width: header.column.columnDef.size } : {}) }}
+            style={{ opacity: isDragging ? 0.5 : 1, ...(header.column.columnDef.size ? { width: header.column.columnDef.size } : { width: 'auto' }) }}
         >
             <div ref={previewRef}>
                 <div ref={dragRef} className="th-span">

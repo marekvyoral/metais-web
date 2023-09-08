@@ -1,4 +1,4 @@
-import { BreadCrumbs, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, ErrorBlock, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { RoleOrgGroup } from '@isdd/metais-common/api/generated/iam-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
@@ -10,6 +10,8 @@ import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
@@ -48,6 +50,9 @@ interface Props {
 export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, data, states, tabName }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
+
+    const ability = useAbilityContext()
+    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
 
     const { attributesData, generatedEntityId, relationData, groupData } = data
 
@@ -160,14 +165,20 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
             {(storeGraph.isError || storeGraph.isSuccess) && (
                 <MutationFeedback success={storeGraph.isSuccess} error={storeGraph.isError ? t('newRelation.mutationError') : ''} />
             )}
+
             <TextHeading size="XL">{t('newRelation.newCiWithRelationHeading')}</TextHeading>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
+
+            {!hasOrgPermission && selectedPublicAuthority && (
+                <ErrorBlock errorTitle={t('createEntity.orgAndRoleError.title')} errorMessage={t('createEntity.orgAndRoleError.message')} />
+            )}
             <SelectPublicAuthorityAndRole
                 selectedRoleId={selectedRole}
                 onChangeAuthority={setSelectedPublicAuthority}
                 onChangeRole={setSelectedRole}
                 selectedOrg={selectedPublicAuthority}
             />
+
             <SimpleSelect
                 isClearable={false}
                 label={t('newRelation.selectRelType')}
@@ -184,6 +195,7 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
                 uploadError={uploadError}
                 onSubmit={onSubmit}
                 relationSchema={relationSchema}
+                isProcessing={storeGraph.isLoading}
             />
         </>
     )

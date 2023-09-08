@@ -35,9 +35,10 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
         }
     }, [onChangeRole, rightsForPOData, selectedRoleId])
 
-    const roleSelectOptions = rightsForPOData?.map((role: GidRoleData) => ({ value: role.roleUuid ?? '', label: role.roleDescription ?? '' })) ?? [
-        { value: '', label: '' },
-    ]
+    const currentOrganizationsRoles = user.state.user?.groupData.find((org) => org.orgId === selectedOrg?.poUUID)?.roles
+    const roleSelectOptions = rightsForPOData
+        ?.filter((role) => currentOrganizationsRoles?.find((currentRole) => currentRole.roleUuid === role.roleUuid))
+        .map((role: GidRoleData) => ({ value: role.roleUuid ?? '', label: role.roleDescription ?? '' })) ?? [{ value: '', label: '' }]
 
     useEffect(() => {
         // SelectLazyLoading component does not rerender on defaultValue change.

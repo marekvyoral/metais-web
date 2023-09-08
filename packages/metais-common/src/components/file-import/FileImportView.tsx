@@ -4,6 +4,7 @@ import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { StatusBar } from '@uppy/react'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { useTranslation } from 'react-i18next'
+import { ErrorBlock } from '@isdd/idsk-ui-kit'
 
 import { FileImportEditOptions, FileImportHeader } from './FileImportHeader'
 import { FileImportDragDrop } from './FileImportDragDrop'
@@ -14,6 +15,8 @@ import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-
 import { CloseIcon, ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
 import { HierarchyRightsUi } from '@isdd/metais-common/api'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 
 interface IFileImportView {
     uppy: Uppy
@@ -52,16 +55,25 @@ export const FileImportView: React.FC<IFileImportView> = ({
     selectedRoleId,
 }) => {
     const { t } = useTranslation()
+    const ability = useAbilityContext()
+    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
+    const isSubmitDisabled = currentFiles.length === 0 || (radioButtonMetaData === FileImportEditOptions.EXISTING_AND_NEW && !hasOrgPermission)
+
     return (
         <>
             <FileImportHeader setRadioButtonMetaData={setRadioButtonMetaData} />
             {radioButtonMetaData === FileImportEditOptions.EXISTING_AND_NEW && (
-                <SelectPublicAuthorityAndRole
-                    onChangeAuthority={setSelectedOrg}
-                    onChangeRole={setSelectedRoleId}
-                    selectedOrg={selectedOrg}
-                    selectedRoleId={selectedRoleId}
-                />
+                <>
+                    {!hasOrgPermission && selectedOrg?.poUUID && (
+                        <ErrorBlock errorTitle={t('createEntity.orgAndRoleError.title')} errorMessage={t('createEntity.orgAndRoleError.message')} />
+                    )}
+                    <SelectPublicAuthorityAndRole
+                        onChangeAuthority={setSelectedOrg}
+                        onChangeRole={setSelectedRoleId}
+                        selectedOrg={selectedOrg}
+                        selectedRoleId={selectedRoleId}
+                    />
+                </>
             )}
             <FileImportDragDrop uppy={uppy} />
 
@@ -98,7 +110,7 @@ export const FileImportView: React.FC<IFileImportView> = ({
                 <Button
                     onClick={handleUpload}
                     label={fileImportStep === FileImportStepEnum.VALIDATE ? t('fileImport.validate') : t('fileImport.import')}
-                    disabled={currentFiles.length === 0}
+                    disabled={isSubmitDisabled}
                 />
             </div>
         </>
