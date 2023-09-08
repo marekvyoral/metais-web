@@ -58,8 +58,8 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
                                 !shortString
                             }
                             descriptionElement={<div className={styles.tooltipWidth500}>{cellValue}</div>}
-                            tooltipContent={(open) => (
-                                <div className={styles.tooltipTextWrapper} onMouseOver={open}>
+                            tooltipContent={(open, close) => (
+                                <div className={styles.tooltipTextWrapper} onMouseOver={open} onMouseOut={close}>
                                     {cellValue}
                                 </div>
                             )}
