@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import classNames from 'classnames'
 import { ArrowDownIcon } from '@isdd/idsk-ui-kit'
 
@@ -16,11 +16,11 @@ export interface SidebarItemProps {
     item: NavigationItem
     onToggle: (toggle?: boolean) => void
     isExpanded: boolean
-    activeTab?: string
     isSidebarExpanded: boolean
 }
 
-export const SidebarItem = ({ item, activeTab, isSidebarExpanded, onToggle, isExpanded }: SidebarItemProps) => {
+export const SidebarItem = ({ item, isSidebarExpanded, onToggle, isExpanded }: SidebarItemProps) => {
+    const location = useLocation()
     const [expandedSubItemIndexes, setExpandedSubItemIndexes] = useState<boolean[]>(() => Array(item.subItems?.length).fill(false))
 
     return (
@@ -31,7 +31,7 @@ export const SidebarItem = ({ item, activeTab, isSidebarExpanded, onToggle, isEx
                         className={classNames(
                             styles.sidebarlink,
                             styles.sectionHeaderButton,
-                            (isExpanded || activeTab === item.path) && styles.expanded,
+                            ((item.subItems?.length && isExpanded) || location.pathname === item.path) && styles.expanded,
                         )}
                         aria-expanded={isExpanded}
                         to={item.path}
@@ -52,7 +52,7 @@ export const SidebarItem = ({ item, activeTab, isSidebarExpanded, onToggle, isEx
                                     setExpandedSubItemIndexes((prev) => {
                                         const newArr = [...prev]
                                         if (toggle) newArr[indexSubItem] = toggle
-                                        else newArr[indexSubItem] = !isExpanded
+                                        else newArr[indexSubItem] = !isExpandedSub
                                         return newArr
                                     })
                                 }
@@ -60,7 +60,6 @@ export const SidebarItem = ({ item, activeTab, isSidebarExpanded, onToggle, isEx
                                     <SidebarItem
                                         key={`subItem-${indexSubItem}.${subItem.title}`}
                                         item={subItem}
-                                        activeTab={activeTab}
                                         isSidebarExpanded={isSidebarExpanded}
                                         isExpanded={isExpandedSub}
                                         onToggle={onToggleSub}
