@@ -1,5 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { OrgPermissionsWrapper } from '@isdd/metais-common/components/permissions/OrgPermissionsWrapper'
 
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiContainer } from '@/components/containers/CiContainer'
@@ -28,19 +29,23 @@ const CreateCiItemAndRelation: React.FC = () => {
                                     View={({ data: relationData, selectedRelationTypeState }) => (
                                         <PublicAuthorityAndRoleContainer
                                             View={({ data: groupData, publicAuthorityState, roleState }) => (
-                                                <NewCiWithRelationView
-                                                    entityName={entityName ?? ''}
-                                                    entityId={entityId ?? ''}
-                                                    tabName={tabName ?? ''}
-                                                    data={{
-                                                        attributesData,
-                                                        generatedEntityId,
-                                                        relationData,
-                                                        groupData,
-                                                        ciItemData: ciData?.ciItemData,
-                                                    }}
-                                                    states={{ selectedRelationTypeState, publicAuthorityState, roleState }}
-                                                />
+                                                <OrgPermissionsWrapper
+                                                    selectedOrganizationId={publicAuthorityState.selectedPublicAuthority?.poUUID ?? ''}
+                                                >
+                                                    <NewCiWithRelationView
+                                                        entityName={entityName ?? ''}
+                                                        entityId={entityId ?? ''}
+                                                        tabName={tabName ?? ''}
+                                                        data={{
+                                                            attributesData,
+                                                            generatedEntityId,
+                                                            relationData,
+                                                            groupData,
+                                                            ciItemData: ciData?.ciItemData,
+                                                        }}
+                                                        states={{ selectedRelationTypeState, publicAuthorityState, roleState }}
+                                                    />
+                                                </OrgPermissionsWrapper>
                                             )}
                                         />
                                     )}

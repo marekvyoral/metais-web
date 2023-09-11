@@ -4,6 +4,8 @@ import { Outlet, useParams } from 'react-router-dom'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, useReadConfigurationItem } from '@isdd/metais-common/api'
+import { MutationFeedback } from '@isdd/metais-common/index'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import Informations from './[entityId]/informations'
 
@@ -13,6 +15,7 @@ export const INDEX_ROUTE = Informations
 
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
+    const { isActionSuccess } = useActionSuccess()
     const { entityId } = useParams()
     const entityName = 'PO_PO'
 
@@ -52,6 +55,7 @@ const EntityDetailPage: React.FC = () => {
     //need to call ciItemData here to show heading
     return (
         <>
+            <MutationFeedback error={false} success={isActionSuccess.value} />
             <TextHeading size="XL">{ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}</TextHeading>
             <Tabs tabList={tabList} />
             <NeighboursCardListWrapper entityId={entityId} entityName={entityName} tabList={tabList} />

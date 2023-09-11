@@ -36,7 +36,7 @@ export const LanguageSelector: React.FC = () => {
     const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, lng: Languages) => {
         event.preventDefault()
         setIsMenuExpanded(false)
-        i18n.changeLanguage(lng, () => navigate(window.location))
+        i18n.changeLanguage(lng, () => navigate(window.location, { state: { from: location } }))
     }
 
     const handleWrapperBlur = (event: React.FocusEvent<HTMLDivElement, Element>) => {

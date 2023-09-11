@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React, { PropsWithChildren, forwardRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 interface ITextLinkProps extends PropsWithChildren {
     linkBack?: boolean
@@ -13,8 +13,10 @@ interface ITextLinkProps extends PropsWithChildren {
 
 export const TextLink = forwardRef<HTMLAnchorElement, ITextLinkProps>(
     ({ children, className, linkBack, noVisitedState, inverse, noUnderline, to }, ref) => {
+        const location = useLocation()
         return (
             <Link
+                state={{ from: location }}
                 ref={ref}
                 className={classNames(
                     'govuk-link',

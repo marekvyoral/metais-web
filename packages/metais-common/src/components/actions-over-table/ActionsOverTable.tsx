@@ -1,15 +1,17 @@
 import { Can } from '@casl/react'
+import { ISelectColumnType, TableSelectColumns } from '@isdd/idsk-ui-kit'
 import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
 import { PageSizeSelect } from '@isdd/idsk-ui-kit/page-size-select/PageSizeSelect'
-import { IColumnSectionType, TableSelectColumns } from '@isdd/idsk-ui-kit/table-select-columns/TableSelectColumns'
+import { CiTableSelectColumns, IColumnSectionType } from '@isdd/idsk-ui-kit/src/ci-table-select-columns/CiTableSelectColumns'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import classnames from 'classnames'
-import React, { useId } from 'react'
+import { PropsWithChildren, default as React, useId } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './actionsOverTable.module.scss'
 
 import { Attribute, AttributeProfile, BASE_PAGE_SIZE, CiType } from '@isdd/metais-common/api'
+import { notificationDefaultSelectedColumns } from '@isdd/metais-common/constants'
 import { Actions, useCreateCiAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { IColumn } from '@isdd/metais-common/hooks/useColumnList'
 
@@ -18,10 +20,15 @@ export enum ActionNames {
     PAGING = 'PAGING',
 }
 
+export interface ISimpleTableSelectParams {
+    selectedColumns: ISelectColumnType[]
+    setSelectedColumns: React.Dispatch<React.SetStateAction<ISelectColumnType[]>>
+}
+
 export type HiddenButtons = {
     [name in ActionNames]: boolean
 }
-interface IActionsOverTableProps {
+interface IActionsOverTableProps extends PropsWithChildren {
     pagingOptions?: { value: string; label: string; disabled?: boolean }[]
     pageSize?: number
     handleFilterChange?: (filter: IFilter) => void
@@ -43,6 +50,7 @@ interface IActionsOverTableProps {
     bulkPopup?: React.ReactNode
     metaAttributesColumnSection?: IColumnSectionType
     handlePagingSelect?: (page: string) => void
+    simpleTableColumnsSelect?: ISimpleTableSelectParams
 }
 
 export enum FileImportStepEnum {
@@ -67,6 +75,8 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     importButton,
     bulkPopup,
     handlePagingSelect,
+    simpleTableColumnsSelect,
+    children,
 }) => {
     const ability = useCreateCiAbility(ciTypeData)
     const { t } = useTranslation()
@@ -101,6 +111,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
 
     return (
         <div className={styles.buttonContainer}>
+            {children}
             <div className={styles.buttonGroup}>
                 {bulkPopup && <>{bulkPopup}</>}
                 <div className={classnames(styles.buttonImportExport, styles.mobileOrder2)}>
@@ -121,6 +132,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                     </Can>
                 )}
             </div>
+
             <div className={styles.buttonGroupSelect}>
                 {!hiddenButtons?.SELECT_COLUMNS && (
                     <Can I={Actions.SELECT_COLUMNS} a={'ci'} ability={ability}>
@@ -128,8 +140,16 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                             buttonLabel={t('actionOverTable.selectColumn')}
                             buttonClassName="marginBottom0"
                             popupContent={(closePopup) => {
-                                return (
+                                return simpleTableColumnsSelect ? (
                                     <TableSelectColumns
+                                        onClose={closePopup}
+                                        resetDefaultOrder={() => simpleTableColumnsSelect.setSelectedColumns(notificationDefaultSelectedColumns)}
+                                        showSelectedColumns={simpleTableColumnsSelect.setSelectedColumns}
+                                        columns={simpleTableColumnsSelect.selectedColumns}
+                                        header={t('notifications.column')}
+                                    />
+                                ) : (
+                                    <CiTableSelectColumns
                                         onClose={closePopup}
                                         resetDefaultOrder={resetUserSelectedColumns}
                                         showSelectedColumns={storeUserSelectedColumns}

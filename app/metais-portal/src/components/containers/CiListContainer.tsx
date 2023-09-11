@@ -1,6 +1,7 @@
 import { useGetRoleParticipantBulk, useReadCiList1 } from '@isdd/metais-common/api'
 import { useFilterForCiList, useGetColumnData, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers/filter'
+import { BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { IListView } from '@isdd/metais-common/types/list'
@@ -27,6 +28,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
             metaAttributes: {
                 state: ['DRAFT'],
             },
+            perPage: BASE_PAGE_SIZE,
         },
     }
 
@@ -36,6 +38,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
         data: tableData,
         isLoading: isReadCiListLoading,
         isError: isReadCiListError,
+        refetch,
     } = useReadCiList1({
         ...filterToNeighborsApi,
         filter: {
@@ -60,13 +63,14 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
     const isError = [isReadCiListError, isColumnsError, isGestorsError].some((item) => item)
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
+        <QueryFeedback loading={isLoading} error={isError} withChildren>
             <ListComponent
                 data={{ columnListData, tableData, gestorsData }}
                 pagination={pagination}
                 handleFilterChange={handleFilterChange}
                 resetUserSelectedColumns={resetColumns}
                 storeUserSelectedColumns={saveColumnSelection}
+                refetch={refetch}
                 sort={filterParams?.sort ?? []}
                 isLoading={isLoading}
                 isError={isError}

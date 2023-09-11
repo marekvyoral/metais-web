@@ -13,12 +13,13 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import classNames from 'classnames'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableInfoMessage } from './TableInfoMessage'
 import { TableRow } from './TableRow'
 import { TableRowExpanded } from './TableRowExpanded'
+import { CHECKBOX_CELL } from './constants'
 import styles from './table.module.scss'
 import { transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
 
@@ -31,7 +32,7 @@ export interface ITableProps<T> {
     sort?: ColumnSort[]
     onSortingChange?: (sort: ColumnSort[]) => void
     columnOrder?: ColumnOrderState
-    onColumnOrderChange?: React.Dispatch<React.SetStateAction<ColumnOrderState>>
+    onColumnOrderChange?: OnChangeFn<ColumnOrderState>
     pagination?: PaginationState
     rowSelection?: RowSelectionState
     onPaginationChange?: OnChangeFn<PaginationState> | undefined
@@ -76,13 +77,22 @@ export const Table = <T,>({
     const wrapper1Ref = useRef<HTMLTableSectionElement>(null)
     const wrapper2Ref = useRef<HTMLTableSectionElement>(null)
 
+    const [columnOrderState, setColumnOrderState] = useState<ColumnOrderState>(columnOrder || columns.map((d) => d.id || ''))
+
+    useEffect(() => {
+        if (!canDrag) return
+        if (!columnOrder) setColumnOrderState(columns.map((column) => column.id || ''))
+        else setColumnOrderState(columnOrder)
+    }, [columnOrder, columns, canDrag])
+
     const transformedSort = transformColumnSortToSortingState(sort)
+
     const table = useReactTable({
         data: data ?? [],
         columns,
         state: {
             ...(pagination && { pagination }),
-            columnOrder,
+            columnOrder: columnOrderState,
             sorting: transformedSort,
             expanded: expandedRowsState,
             rowSelection,
@@ -96,7 +106,7 @@ export const Table = <T,>({
             }
         },
         getSortedRowModel: getSortedRowModel(),
-        onColumnOrderChange,
+        onColumnOrderChange: onColumnOrderChange || setColumnOrderState,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onPaginationChange,
@@ -126,15 +136,23 @@ export const Table = <T,>({
     }
 
     return (
-        <table className={classNames('idsk-table', [styles.displayBlock])}>
+        <table className={classNames('idsk-table', [styles.displayBlock, styles.tableSticky])}>
             <thead className={classNames('idsk-table__head', [styles.head])} onScroll={handleWrapper2Scroll} ref={wrapper2Ref}>
-                {table.getHeaderGroups().map((headerGroup) => (
-                    <tr className={`idsk-table__row ${styles.headerRow}`} key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                            <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
-                        ))}
-                    </tr>
-                ))}
+                {table.getHeaderGroups().map((headerGroup) => {
+                    const hasCheckbox = headerGroup.headers.find((cell) => cell.id === CHECKBOX_CELL)
+                    return (
+                        <tr
+                            className={classNames('idsk-table__row', styles.headerRow, {
+                                [styles.checkBoxHeaderRow]: hasCheckbox,
+                            })}
+                            key={headerGroup.id}
+                        >
+                            {headerGroup.headers.map((header) => (
+                                <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
+                            ))}
+                        </tr>
+                    )
+                })}
             </thead>
             {!isLoading && isEmptyRows && (
                 <tbody className={styles.displayFlex}>
@@ -154,11 +172,11 @@ export const Table = <T,>({
                 onScroll={handleWrapper1Scroll}
                 ref={wrapper1Ref}
             >
-                {table.getRowModel().rows.map((row) => (
-                    <React.Fragment key={row.id}>
+                {table.getRowModel().rows.map((row, index) => (
+                    <React.Fragment key={index}>
                         <TableRow<T>
                             row={row}
-                            key={row.id}
+                            key={index}
                             isRowSelected={isRowSelected}
                             isRowBold={isRowBold}
                             isRowDanger={isRowDanger}

@@ -43,7 +43,7 @@ export const AddAttributeProfilesModal = ({ open, onClose }: AttributesModal) =>
                             }
                         }) ?? []
                     return (
-                        <div style={{ height: 500 }}>
+                        <div>
                             <MultiSelect
                                 id="attributeProfiles"
                                 name="attributeProfiles"

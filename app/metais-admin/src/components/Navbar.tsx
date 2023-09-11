@@ -1,3 +1,4 @@
+import { InstructionsIcon } from '@isdd/metais-common/assets/images'
 import { NavBarHeader } from '@isdd/metais-common/components/navbar/navbar-header/NavBarHeader'
 import { NavBarMain } from '@isdd/metais-common/components/navbar/navbar-main/NavBarMain'
 import { NavMenu } from '@isdd/metais-common/components/navbar/navmenu/NavMenu'
@@ -10,31 +11,42 @@ export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
     {
         title: t('navMenu.dashboard'),
         path: AdminRouteNames.DASHBOARD,
+        icon: InstructionsIcon,
     },
     {
         title: t('navMenu.assignment'),
         path: AdminRouteNames.ASSIGNMENT,
+        icon: InstructionsIcon,
     },
     {
         title: t('navMenu.notifications'),
         path: AdminRouteNames.NOTIFICATIONS,
+        icon: InstructionsIcon,
     },
     {
         title: t('navMenu.settings'),
         path: AdminRouteNames.SETTINGS,
+        icon: InstructionsIcon,
     },
     {
         title: t('navMenu.organizations'),
         path: AdminRouteNames.ORGANIZATIONS,
+        icon: InstructionsIcon,
     },
     {
         title: t('navMenu.codelists'),
         path: AdminRouteNames.CODELISTS,
+        icon: InstructionsIcon,
     },
     {
         title: t('navMenu.admin'),
         path: AdminRouteNames.EGOV,
+        icon: InstructionsIcon,
         subItems: [
+            {
+                title: t('navMenu.eko'),
+                path: AdminRouteNames.EKO,
+            },
             {
                 title: t('navMenu.userManagement'),
                 path: AdminRouteNames.USER_MANAGEMENT,

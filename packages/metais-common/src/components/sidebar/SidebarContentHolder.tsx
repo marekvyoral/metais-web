@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { ArrowDownIcon } from '@isdd/idsk-ui-kit/index'
 
 import { SidebarItems } from './SidebarItems'
@@ -17,10 +17,12 @@ interface Props {
 }
 
 export const SidebarContentHolder = ({ section, onToggle, isExpanded, buttonId, activeTab }: Props) => {
+    const location = useLocation()
     return (
         <>
             <div className={classNames(styles.sectionHeader, styles.hover)} onClick={() => onToggle()}>
                 <Link
+                    state={{ from: location }}
                     className={classNames(
                         styles.sidebarlink,
                         styles.sectionHeaderButton,

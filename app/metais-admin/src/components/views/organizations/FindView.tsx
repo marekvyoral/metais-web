@@ -30,13 +30,13 @@ export const FindView = ({ setIcoToSearch, data }: iFindView) => {
     )
 
     const handleOnCancelClick = useCallback(() => {
-        navigate('/organizations')
+        navigate('/organizations', { state: { from: location } })
     }, [navigate])
 
     const handleOnCreateClick = useCallback(async () => {
         const ico = watch('ico')
         const generatedUUID = await getUUID()
-        navigate(`/organizations/${generatedUUID}/${ico}/create`)
+        navigate(`/organizations/${generatedUUID}/${ico}/create`, { state: { from: location } })
     }, [navigate, watch, getUUID])
 
     useEffect(() => {

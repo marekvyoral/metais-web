@@ -1,6 +1,6 @@
 import React from 'react'
 import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
-import { MultiValue, OptionProps, SingleValue } from 'react-select'
+import { MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select'
 
 import { IOption, Select } from '@isdd/idsk-ui-kit/select/Select'
 
@@ -25,6 +25,7 @@ interface ISelectProps {
     disabled?: boolean
     onBlur?: React.FocusEventHandler<HTMLInputElement>
     isClearable?: boolean
+    menuPosition?: MenuPosition
 }
 
 export const MultiSelect: React.FC<ISelectProps> = ({
@@ -46,6 +47,7 @@ export const MultiSelect: React.FC<ISelectProps> = ({
     disabled,
     onBlur,
     isClearable,
+    menuPosition,
 }) => {
     const handleOnChange = (selectedOption: MultiValue<IOption> | SingleValue<IOption>) => {
         const values: string[] = Array.isArray(selectedOption) ? selectedOption?.map((opt) => opt.value) : []
@@ -81,6 +83,7 @@ export const MultiSelect: React.FC<ISelectProps> = ({
             disabled={disabled}
             onBlur={onBlur}
             isClearable={isClearable}
+            menuPosition={menuPosition}
             onChange={handleOnChange}
         />
     )

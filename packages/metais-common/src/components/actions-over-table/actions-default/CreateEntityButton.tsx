@@ -9,15 +9,16 @@ export interface ICreateEntityButtonProps {
     onClick: () => void
     icon?: string
     label?: string
+    ciType?: string
 }
 
-export const CreateEntityButton: React.FC<ICreateEntityButtonProps> = ({ onClick, label, icon = PlusIcon }) => {
+export const CreateEntityButton: React.FC<ICreateEntityButtonProps> = ({ onClick, label, icon = PlusIcon, ciType = '' }) => {
     const { t } = useTranslation()
     return (
         <Button
             className={(styles.mobileOrder1, 'marginBottom0')}
             onClick={onClick}
-            label={<IconLabel label={label ?? t('actionOverTable.addISVSitem')} icon={icon} />}
+            label={<IconLabel label={label ?? t('actionOverTable.addItem', { ciType })} icon={icon} />}
         />
     )
 }

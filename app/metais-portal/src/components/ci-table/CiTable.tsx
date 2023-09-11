@@ -7,15 +7,17 @@ import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IListData } from '@isdd/metais-common/types/list'
-import { CellContext, ColumnDef, Table as ITable, Row } from '@tanstack/react-table'
+import { CellContext, ColumnDef, ColumnOrderState, Table as ITable, Row, Updater } from '@tanstack/react-table'
 import classNames from 'classnames'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import styles from './ciTable.module.scss'
 import {
     ColumnsOutputDefinition,
+    IStoreColumnSelection,
+    getOrderCiColumns,
     getOwnerInformation,
     mapTableData,
     reduceAttributesByTechnicalName,
@@ -32,20 +34,30 @@ interface ICiTable {
     data: IListData
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
+    storeUserSelectedColumns?: (columnSelection: IStoreColumnSelection) => void
     sort: ColumnSort[]
-    rowSelectionState: IRowSelectionState
     isLoading: boolean
     isError: boolean
+    rowSelectionState: IRowSelectionState
 }
 
-export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChange, sort, rowSelectionState, isLoading, isError }) => {
+export const CiTable: React.FC<ICiTable> = ({
+    data,
+    pagination,
+    handleFilterChange,
+    storeUserSelectedColumns,
+    sort,
+    isLoading,
+    isError,
+    rowSelectionState,
+}) => {
     const { t } = useTranslation()
 
     const {
         state: { user },
     } = useAuth()
     const isUserLogged = !!user
-
+    const location = useLocation()
     const { rowSelection, setRowSelection } = rowSelectionState
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
     const tableData = mapTableData(data.tableData, schemaAttributes, t, data.unitsData, data.constraintsData)
@@ -95,6 +107,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
 
         const isState = technicalName === MetainformationColumns.STATE
         const isOwner = technicalName === MetainformationColumns.OWNER
+        const isGroup = technicalName === MetainformationColumns.GROUP
         const isDate = technicalName === MetainformationColumns.LAST_MODIFIED_AT || technicalName === MetainformationColumns.CREATED_AT
 
         switch (true) {
@@ -102,6 +115,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                 return (
                     <Link
                         to={'./' + ctx?.row?.original?.uuid}
+                        state={{ from: location }}
                         className={classNames({ [styles.bold]: ctx?.row.original.uuid && !!rowSelection[ctx?.row.original.uuid] })}
                     >
                         {ctx?.getValue?.() as string}
@@ -114,7 +128,7 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
             case isState: {
                 return t(`metaAttributes.state.${ctx.getValue()}`)
             }
-            case isOwner: {
+            case isOwner || isGroup: {
                 return getOwnerInformation(ctx.getValue() as string, data.gestorsData)?.configurationItemUi?.attributes?.[
                     ATTRIBUTE_NAME.Gen_Profil_nazov
                 ]
@@ -130,19 +144,22 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
 
     const columnsFromApi =
         columnsAttributes?.map((attribute, index) => {
-            const technicalName = attribute.name === MetainformationColumns.GROUP ? MetainformationColumns.OWNER : attribute.name ?? ''
+            const technicalName = attribute.name ?? ''
             const attributeHeader = schemaAttributes[technicalName]?.name ?? t(`ciType.meta.${technicalName}`)
 
             return {
                 accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],
                 header: () => <span className={classNames({ [styles.textUnderline]: index === 0 })}>{attributeHeader ?? technicalName}</span>,
                 id: technicalName ?? '',
-                size: 200,
+                size: index === 0 ? 300 : 200,
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
                     <TextBody size="S" className={'marginBottom0'}>
                         {getColumnsFromApiCellContent(index, ctx, technicalName)}
                     </TextBody>
                 ),
+                meta: {
+                    getCellContext: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => getColumnsFromApiCellContent(index, ctx, technicalName),
+                },
                 enableSorting: true,
             }
         }) ?? []
@@ -205,6 +222,10 @@ export const CiTable: React.FC<ICiTable> = ({ data, pagination, handleFilterChan
                     handleFilterChange({ sort: newSort })
                     clearSelectedRows()
                 }}
+                onColumnOrderChange={(updaterOrValue: Updater<ColumnOrderState>) =>
+                    storeUserSelectedColumns && storeUserSelectedColumns(getOrderCiColumns(data?.columnListData, updaterOrValue as ColumnOrderState))
+                }
+                canDrag={!!user}
                 sort={sort}
                 isRowSelected={isRowSelected}
                 isLoading={isLoading}

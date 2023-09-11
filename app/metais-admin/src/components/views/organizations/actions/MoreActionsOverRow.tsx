@@ -32,14 +32,14 @@ export const MoreActionsOverRow = ({ ctx, setInvalid }: Props & IActions) => {
                             />
                             <Button
                                 onClick={() => {
-                                    navigate(`/organizations/${ctx?.row?.original?.uuid}/edit`)
+                                    navigate(`/organizations/${ctx?.row?.original?.uuid}/edit`, { state: { from: location } })
                                     closePopup()
                                 }}
                                 label={t('egov.edit')}
                             />
                             <Button
                                 onClick={() => {
-                                    navigate(`/organizations/${ctx?.row?.original?.uuid}/assigned`)
+                                    navigate(`/organizations/${ctx?.row?.original?.uuid}/assigned`, { state: { from: location } })
                                     closePopup()
                                 }}
                                 label={t('egov.assigned')}

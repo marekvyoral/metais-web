@@ -1,10 +1,9 @@
 import { Filter, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { CodelistContainer, CodelistFilterInputs } from '@/components/containers/Codelist/CodelistContainer'
-import { CodelistsTable } from '@/components/codelists/codelistsTable/CodelistsTable'
 import { CodelistsFeedback } from '@/components/codelists/CodelistsFeedback'
+import { CodelistsTable } from '@/components/codelists/codelistsTable/CodelistsTable'
+import { CodelistContainer, CodelistFilterInputs } from '@/components/containers/Codelist/CodelistContainer'
 
 const Codelists = () => {
     const { t } = useTranslation()
@@ -35,8 +34,9 @@ const Codelists = () => {
                                 </div>
                             )}
                         />
-
-                        <CodelistsTable filteredData={filteredData} mutations={mutations} isLoading={isLoading} isError={isError} />
+                        {filteredData.results && (
+                            <CodelistsTable filteredData={filteredData} mutations={mutations} isLoading={isLoading} isError={isError} />
+                        )}
                     </>
                 )
             }}

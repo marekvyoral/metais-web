@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import classNames from 'classnames'
 
 import { ISection, StepperSection } from './StepperSection'
 import { StepperSubtitle } from './StepperSubtitle'
 import { StepperSectionTitle } from './StepperTitle'
+import styles from './stepper.module.scss'
 
 export enum StepperArrayEnum {
     CLOSED,
@@ -22,7 +24,7 @@ export const Stepper: React.FC<IStepper> = ({ description, stepperList, subtitle
     return (
         <>
             {description && <p className="idsk-stepper__caption govuk-caption-m">{description}</p>}
-            <div className="idsk-stepper" data-module="idsk-stepper" data-attribute="value">
+            <div className={classNames('idsk-stepper', styles.marginBottom)} data-module="idsk-stepper" data-attribute="value">
                 <StepperSubtitle title={subtitleTitle} setSectionArray={setSectionArray} sectionArray={sectionArray} />
                 {stepperList.map((item, index) => (
                     <React.Fragment key={index}>

@@ -74,8 +74,13 @@ export const getPortalNavitagionItems = (t: TFunction): NavigationItem[] => [
             { title: t('navMenu.lists.monitoringEnd'), path: NavigationSubRoutes.MONITORING_KS },
             { title: t('navMenu.lists.monitoringApp'), path: NavigationSubRoutes.MONITORING_AS },
             { title: t('navMenu.lists.monitoringSet'), path: NavigationSubRoutes.MONITORING_PARAMETRE_SET },
+            {
+                path: RouteNames.REPORTS,
+                title: t('navMenu.reports'),
+            },
         ],
     },
+
     {
         path: RouteNames.PREHLADY_A_POSTUPY,
         title: t('navMenu.guides'),

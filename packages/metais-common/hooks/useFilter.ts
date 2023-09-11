@@ -1,31 +1,34 @@
-import { IFilter } from '@isdd/idsk-ui-kit/types'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { ColumnSort, IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import { BaseSyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import {
     Control,
     DeepPartial,
     FieldValues,
     FormState,
-    useForm,
+    UseFormClearErrors,
     UseFormHandleSubmit,
     UseFormRegister,
     UseFormReset,
     UseFormResetField,
     UseFormSetValue,
     UseFormWatch,
+    useForm,
 } from 'react-hook-form'
 import { useLocation, useSearchParams } from 'react-router-dom'
+import { ObjectSchema } from 'yup'
 
-import { convertFilterArrayData } from '@isdd/metais-common/componentHelpers/filter/convertFilterArrayData'
+import { convertFilterArrayData, convertFilterToSearchParams } from '@isdd/metais-common/componentHelpers/filter/convertFilterArrayData'
 import { convertUrlArrayAttribute } from '@isdd/metais-common/componentHelpers/filter/convertUrlArrayValue'
 import { transformOperatorsToUrl } from '@isdd/metais-common/componentHelpers/filter/transformOperators'
 import { updateUrlParamsOnChange } from '@isdd/metais-common/componentHelpers/filter/updateUrlParamsOnChange'
 import {
     BASE_PAGE_NUMBER,
     BASE_PAGE_SIZE,
-    filterKeysToSkip,
     JOIN_OPERATOR,
     OPERATOR_SEPARATOR,
     OPERATOR_SEPARATOR_TYPE,
+    filterKeysToSkip,
 } from '@isdd/metais-common/constants'
 import { FilterActions, useFilterContext } from '@isdd/metais-common/contexts/filter/filterContext'
 
@@ -79,6 +82,22 @@ interface ReturnUseFilter<TFieldValues extends FieldValues> {
     control: Control<TFieldValues, any>
     register: UseFormRegister<TFieldValues>
     watch: UseFormWatch<TFieldValues>
+    clearErrors: UseFormClearErrors<TFieldValues>
+}
+
+const parseSortQuery = (urlParams: URLSearchParams): undefined | ColumnSort[] => {
+    const orderBy = urlParams.get('orderBy')
+    const sortDirection = urlParams.get('sortDirection')
+
+    if (orderBy && sortDirection)
+        return [
+            {
+                orderBy,
+                sortDirection: sortDirection as SortType,
+            },
+        ]
+
+    return undefined
 }
 
 const parseCustomAttributes = (urlParams: URLSearchParams): undefined | IAttributeFilters => {
@@ -154,14 +173,10 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
                     const propertyType = getPropertyType(defaults, key)
                     if (propertyType === 'object') {
                         const value = urlParams.getAll(key)
-                        if (key === 'sort') {
-                            // eslint-disable-next-line
-                            // @ts-ignore
-                            memoFilter[key] = JSON.parse(value)
-                        }
+
                         // eslint-disable-next-line
                         // @ts-ignore
-                        else memoFilter[key] = value
+                        memoFilter[key] = value
                     } else {
                         // eslint-disable-next-line
                         // @ts-ignore
@@ -176,6 +191,7 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
                 }
             })
 
+        memoFilter.sort = parseSortQuery(urlParams)
         memoFilter.attributeFilters = parseCustomAttributes(urlParams)
         return memoFilter
     }, [uiFilterState, defaults, urlParams, location.search])
@@ -183,28 +199,26 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
     return { filter, urlParams, handleFilterChange }
 }
 
-export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): ReturnUseFilter<T> {
+export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, schema?: ObjectSchema<T>): ReturnUseFilter<T> {
     const [, setSearchParams] = useSearchParams()
     const location = useLocation()
     const { state, dispatch } = useFilterContext()
     const { filter } = useFilterParams<T>(defaults)
-    const methods = useForm<T & IFilterParams>({ defaultValues: filter as DeepPartial<T> })
 
-    useEffect(() => {
-        if (state.clearedFilter[location.pathname]) {
-            methods.reset(filter as DeepPartial<T>)
-        }
-    }, [filter, location.pathname, methods, state.clearedFilter])
+    const methods = useForm<T & IFilterParams>({ defaultValues: filter as DeepPartial<T>, resolver: schema ? yupResolver(schema) : undefined })
+    const { reset, handleSubmit } = methods
 
     const clearData = useCallback((obj: T): T => {
         return Object.fromEntries<T>(Object.entries<T>(obj).filter(([key, v]) => !!v && key !== 'attributeFilters')) as T
     }, [])
 
-    const onSubmit = methods.handleSubmit((data: T) => {
+    const onSubmit = handleSubmit((data: T) => {
         const filterData = clearData(data)
+
         const convertedArrayFilterData = convertFilterArrayData(filterData)
+        const searchParamsFilterData = convertFilterToSearchParams(convertedArrayFilterData)
         //so when user is on page 200 and filter spits out only 2 pages he can get to them
-        setSearchParams({ ...convertedArrayFilterData, pageNumber: 1 })
+        setSearchParams({ ...searchParamsFilterData, pageNumber: 1 })
         dispatch({
             type: FilterActions.SET_FILTER,
             value: convertedArrayFilterData,
@@ -230,7 +244,19 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
     }
 
     useEffect(() => {
-        if (!state.filter[location.pathname] && !state.clearedFilter[location.pathname] && !filter) {
+        if (state.clearedFilter[location.pathname]) {
+            reset(filter as DeepPartial<T>)
+            dispatch({
+                type: FilterActions.SET_FILTER,
+                value: clearData(filter),
+                path: location.pathname,
+            })
+        }
+    }, [clearData, dispatch, filter, location.pathname, reset, state.clearedFilter])
+
+    useEffect(() => {
+        if (!state.filter[location.pathname] && !state.clearedFilter[location.pathname]) {
+            //&& !filter) { TODO: WHAT ABOUT THIS
             dispatch({
                 type: FilterActions.SET_FILTER,
                 value: defaults,
@@ -245,7 +271,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T): R
         filter,
         shouldBeFilterOpen: handleShouldBeFilterOpen(),
         resetFilters: () => {
-            methods.reset()
+            reset()
             setSearchParams({})
             dispatch({ type: FilterActions.RESET_FILTER, path: location.pathname })
         },

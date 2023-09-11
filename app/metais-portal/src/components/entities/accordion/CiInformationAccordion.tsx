@@ -1,12 +1,11 @@
+import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
+import { ATTRIBUTE_NAME, CiType, ConfigurationItemUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
+import { pairEnumsToEnumValues } from '@isdd/metais-common/index'
+import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
-import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
-import { ATTRIBUTE_NAME, CiType, ConfigurationItemUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
 
 import styles from './basicInformationSection.module.scss'
-
-import { pairEnumsToEnumValues } from '@/componentHelpers'
 
 interface CiInformationData {
     data: {

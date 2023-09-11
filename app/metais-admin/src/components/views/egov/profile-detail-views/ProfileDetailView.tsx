@@ -6,7 +6,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from '../detailViews.module.scss'
 
@@ -26,6 +26,7 @@ export const ProfileDetailView = <T,>({
 }: IAtrributesContainerView<T>) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
     const [openAddAttributeModal, setOpenAddAttributeModal] = useState(false)
     const [selectedRows, setSelectedRows] = useState<Array<number>>([])
     const { register, getValues } = useForm({
@@ -209,7 +210,7 @@ export const ProfileDetailView = <T,>({
                         <Button
                             label={t('egov.edit')}
                             onClick={() => {
-                                navigate('/egov/profile/' + ciTypeData?.technicalName + '/edit')
+                                navigate('/egov/profile/' + ciTypeData?.technicalName + '/edit', { state: { from: location } })
                             }}
                         />
                         <Button
@@ -227,7 +228,7 @@ export const ProfileDetailView = <T,>({
                     <Button
                         label={t('egov.create.back')}
                         onClick={() => {
-                            navigate('/egov/profile/')
+                            navigate('/egov/profile/', { state: { from: location } })
                         }}
                         variant="secondary"
                     />

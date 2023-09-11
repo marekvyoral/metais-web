@@ -1,5 +1,5 @@
 import { ISelectColumnType } from '@isdd/idsk-ui-kit/index'
-import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
+import { ColumnSort, IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import {
     Notification,
     NotificationsList,
@@ -9,22 +9,22 @@ import {
     RemoveNotificationsParams,
     SetAllNotificationsAsRead200,
     useGetNotificationListElastic,
+    useGetNotificationListElasticHook,
     useRemoveNotificationList,
     useRemoveNotifications,
     useSetAllNotificationsAsRead,
 } from '@isdd/metais-common/api/generated/notifications-swagger'
+import { ALL_EVENT_TYPES, NOTIFICATION_TITLE, notificationDefaultSelectedColumns } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { ColumnDef } from '@tanstack/react-table'
-import React, { useMemo, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
 import { UseMutateFunction } from '@tanstack/react-query'
-import { ALL_EVENT_TYPES, NOTIFICATION_TITLE } from '@isdd/metais-common/constants'
+import { ColumnDef } from '@tanstack/react-table'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
 import { firstLetterToLowerCase } from '@/components/views/notifications/notificationUtils'
-import { selectedDefaultColumns } from '@/components/views/notifications/defaults'
-
-export interface FilterData extends IFilterParams {
+export interface FilterData extends IFilterParams, IFilter {
     eventType: string
     onlyUnread: boolean
     sortBy: string
@@ -39,16 +39,6 @@ export interface NotificationsListViewParams {
     columns: ColumnDef<Notification>[]
     selectedColumns: ISelectColumnType[]
     setSelectedColumns: React.Dispatch<React.SetStateAction<ISelectColumnType[]>>
-    listParams: {
-        pageNumber: number
-        perPage: number
-    }
-    setListParams: React.Dispatch<
-        React.SetStateAction<{
-            pageNumber: number
-            perPage: number
-        }>
-    >
     sort: ColumnSort[]
     setSort: React.Dispatch<React.SetStateAction<ColumnSort[]>>
     mutateAllRead: UseMutateFunction<SetAllNotificationsAsRead200, unknown, void, unknown>
@@ -68,6 +58,7 @@ export interface NotificationsListViewParams {
         },
         unknown
     >
+    handleFilterChange: (changedFilter: IFilter) => void
 }
 
 interface INotificationsListContainer {
@@ -78,34 +69,49 @@ const defaultFilterValues: FilterData = {
     eventType: ALL_EVENT_TYPES,
     onlyUnread: false,
     sortBy: 'createdAt',
+    pageNumber: 1,
+    pageSize: 10,
 }
 
-const NotificationsListContainer: React.FC<INotificationsListContainer> = ({ View }) => {
+export const NotificationsListContainer: React.FC<INotificationsListContainer> = ({ View }) => {
     const location = useLocation()
     const [sort, setSort] = useState<ColumnSort[]>([{ sortDirection: SortType.DESC, orderBy: 'CreatedAt' }])
-
-    const { filter } = useFilterParams<FilterData>(defaultFilterValues)
-
-    const [listParams, setListParams] = useState({
-        pageNumber: 1,
-        perPage: 10,
+    const [data, setData] = useState<NotificationsList | undefined>()
+    const { filter, handleFilterChange } = useFilterParams<FilterData>(defaultFilterValues)
+    const fetchNotifications = useGetNotificationListElasticHook()
+    const fetchProps = {
+        perPage: filter.pageSize ?? 10,
+        pageNumber: filter.pageNumber ?? 1,
+        onlyUnread: filter.onlyUnread ?? false,
+        fulltextSearch: filter.fullTextSearch ?? '',
+        ...(filter.eventType && filter.eventType != ALL_EVENT_TYPES && { eventType: filter.eventType }),
+        sortBy: sort.length > 0 ? firstLetterToLowerCase(sort[0].orderBy) : 'createdAt',
+        ascending: sort.length > 0 ? sort[0].sortDirection == 'ASC' : false,
+    }
+    const {
+        isLoading: isListLoading,
+        isError,
+        data: notificationListData,
+    } = useGetNotificationListElastic(fetchProps, {
+        query: { queryKey: [filter.eventType, filter.onlyUnread, filter.fullTextSearch, sort, filter.pageNumber, filter.pageSize] },
     })
-    const { isLoading, isError, data } = useGetNotificationListElastic(
-        {
-            ...listParams,
-            onlyUnread: filter.onlyUnread ?? false,
-            fulltextSearch: filter.fullTextSearch,
-            ...(filter.eventType && filter.eventType != ALL_EVENT_TYPES && { eventType: filter.eventType }),
-            sortBy: sort.length > 0 ? firstLetterToLowerCase(sort[0].orderBy) : 'createdAt',
-            ascending: sort.length > 0 ? sort[0].sortDirection == 'ASC' : false,
-        },
-        { query: { queryKey: [filter.eventType, filter.onlyUnread, filter.fullTextSearch, sort] } },
-    )
-    const { mutate: mutateAllRead } = useSetAllNotificationsAsRead()
-    const { mutate: mutateAllDelete } = useRemoveNotifications()
-    const { mutate: mutateDelete } = useRemoveNotificationList()
-    const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>([...selectedDefaultColumns])
 
+    useEffect(() => {
+        setData(notificationListData)
+    }, [notificationListData])
+
+    const onSuccessDelete = {
+        mutation: {
+            async onSuccess() {
+                setData(await fetchNotifications(fetchProps))
+            },
+        },
+    }
+
+    const { mutate: mutateAllRead, isLoading: isSetAllAsReadLoading } = useSetAllNotificationsAsRead(onSuccessDelete)
+    const { mutate: mutateAllDelete, isLoading: isDeleteAllLoading } = useRemoveNotifications(onSuccessDelete)
+    const { mutate: mutateDelete, isLoading: isDeleteLoading } = useRemoveNotificationList(onSuccessDelete)
+    const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>([...notificationDefaultSelectedColumns])
     const columns = useMemo<ColumnDef<Notification>[]>(() => {
         const list: ColumnDef<Notification>[] = selectedColumns
             .filter((e) => e.selected)
@@ -126,25 +132,24 @@ const NotificationsListContainer: React.FC<INotificationsListContainer> = ({ Vie
             )
         return list
     }, [location, selectedColumns])
-
+    const isLoading = isListLoading || isSetAllAsReadLoading || isDeleteAllLoading || isDeleteLoading
     return (
-        <View
-            data={data}
-            isLoading={isLoading}
-            isError={isError}
-            defaultFilterValues={defaultFilterValues}
-            columns={columns}
-            selectedColumns={selectedColumns}
-            setSelectedColumns={setSelectedColumns}
-            listParams={listParams}
-            setListParams={setListParams}
-            sort={sort}
-            setSort={setSort}
-            mutateAllDelete={mutateAllDelete}
-            mutateAllRead={mutateAllRead}
-            mutateDelete={mutateDelete}
-        />
+        <QueryFeedback loading={isLoading}>
+            <View
+                handleFilterChange={handleFilterChange}
+                data={data}
+                isLoading={isListLoading}
+                isError={isError}
+                defaultFilterValues={defaultFilterValues}
+                columns={columns}
+                selectedColumns={selectedColumns}
+                setSelectedColumns={setSelectedColumns}
+                sort={sort}
+                setSort={setSort}
+                mutateAllDelete={mutateAllDelete}
+                mutateAllRead={mutateAllRead}
+                mutateDelete={mutateDelete}
+            />
+        </QueryFeedback>
     )
 }
-
-export default NotificationsListContainer

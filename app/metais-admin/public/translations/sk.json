@@ -117,9 +117,6 @@
         "reset": "Vyčistiť kritéria filtrovania",
         "submit": "Vyfiltrovať"
     },
-    "mutationFeedback": {
-        "successfulUpdated": "Položka bola úspešne zmenená"
-    },
     "table": {
         "title": "Mestá",
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
@@ -166,6 +163,9 @@
         "sk": "Slovenčina",
         "en": "English",
         "ge": "German"
+    },
+    "input": {
+        "requiredField": "(povinné)"
     },
     "tab": {
         "contents": "Obsah"
@@ -335,11 +335,15 @@
         "cancel": "Zrušiť",
         "remove": "Odstrániť",
         "validate": "Zvalidovať",
-        "value": "Kód",
+        "value": "Hodnota",
         "valueDescription": "Popis hodnoty",
         "heading": "Interné číselníky",
-
-        "moreActions": "Viac"
+        "moreActions": "Viac",
+        "codeError": "Kód je povinný",
+        "nameError": "Názov je povinný",
+        "descriptionError": "Popis je povinný",
+        "wrongRegex": "Formát môže obsahovať len písmená {{letters}} a tieto znaky {{signs}}",
+        "actions": "Úkony"
     },
     "adminRolesPage": {
         "addNewRole": "Pridať novú rolu",
@@ -375,6 +379,9 @@
     },
     "searchInput": {
         "search": "Hľadať"
+    },
+    "mutationFeedback": {
+        "successfulUpdated": "Položka bola úspešne zmenená"
     },
     "managementList": {
         "namePassword": "Meno / Heslo",
@@ -436,7 +443,9 @@
             "relations": "Vzťahy",
             "roleManagement": "Správa rolí"
         },
-        "tooltips": "Tooltipy"
+        "eko": "Správa EKO kódov",
+        "tooltips": "Tooltipy",
+        "codelists": "Interné číselníky"
     },
     "tooltips": {
         "selectedEntries": "Vybrané záznamy",
@@ -484,6 +493,35 @@
         "unvalidTextWarning": "Niektoré z vami vybraných položiek sú už zneplatnené",
         "validTextWarning": "Niektoré z vami vybraných položiek sú už splatnené",
         "codelists": "Interné číselníky"
+    },
+    "eko": {
+        "name": "Názov",
+        "detailName": "Názov kódu",
+        "ekoCode": "Kód",
+        "ekoCodeState": "Stav",
+        "edit": "Upraviť položku",
+        "tabTitle": "Základné informácie",
+        "lastModifiedAt": "Aktualizované: {{date, DATE_SHORT}}",
+        "createdAt": "Vypublikované: {{date, DATE_SHORT}}",
+        "createdCode": "Vytvoriť EKO kód",
+        "editCode": "Upraviť EKO kód",
+        "selectedCode": "Vybraný EKO kód",
+        "save": "Uložiť",
+        "cancel": "Zrušiť",
+        "validation": {
+            "requiredField": "Povinné pole",
+            "maxLength": "Maximálna dĺžka je {{length}} znakov",
+            "exactLength": "Hodnota musí mať {{length}} znakov",
+            "uniqueEkoCode": "Kód musí byť unikátny"
+        },
+        "invalidateCodes": "Invalidovať položky",
+        "deleteCodes": "Zmazanie položiek",
+        "invalidateModalTitle": "Zneplatnenie EKO kódov",
+        "deleteModalTitle": "Zmazanie EKO kódov",
+        "invalidateModalContent": "Naozaj si želáte zneplatniť uvedený EKO kód?",
+        "deleteModalContent": "Naozaj si želáte odstrániť uvedený EKO kód?",
+        "deleteModalOkButtonLabel": "Zmazať vybrané EKO kódy",
+        "invalidateModalOkButtonLabel": "Invalidovať vybrané EKO kódy"
     },
     "feedback": {
         "queryErrorTitle": "Nastala chyba",
@@ -551,6 +589,11 @@
             "topLevelOrg": "Nemôžete priradiť povinnej osobe hlavnú povinnú osobu!"
         }
     },
+    "ekoValidity": {
+        "ACTIVE": "Platný",
+        "INVALIDATED": "Neplatný",
+        "undefined": "Neplatný"
+    },
     "PO_Attributes": {
         "Gen_Profil_nazov": "Názov",
         "EA_Profil_PO_kategoria_osoby": "Kategória osoby",
@@ -580,8 +623,16 @@
         "Profil_PO_statutar_priezvisko": "Priezvisko",
         "Profil_PO_statutar_titul_za_menom": "Titul za menom"
     },
+    "confirmationModal": {
+        "okButtonLabel": "OK",
+        "cancelButtonLabel": "Zrušiť"
+    },
     "loading": {
         "loadingSubPage": "Načítavám podstránku",
         "export": "Preparing export"
+    },
+    "errors": {
+        "default": "Ups, niečo sa pokazilo.",
+        "gnr403": "Na volanie nemáte oprávnenie."
     }
 }

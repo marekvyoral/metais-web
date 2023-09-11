@@ -4,6 +4,8 @@ import { ATTRIBUTE_NAME, useReadConfigurationItem } from '@isdd/metais-common/ap
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useParams } from 'react-router-dom'
+import { MutationFeedback } from '@isdd/metais-common/index'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import NeighboursCardListWrapper from '@/components/entities/NeighboursCardListWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
@@ -14,6 +16,7 @@ export const INDEX_ROUTE = Informations
 
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
+    const { isActionSuccess } = useActionSuccess()
     const { entityId, entityName } = useParams()
 
     const tabList: Tab[] = [
@@ -63,6 +66,7 @@ const EntityDetailPage: React.FC = () => {
                             },
                         ]}
                     />
+                    <MutationFeedback error={false} success={isActionSuccess.value} />
                     <CiEntityIdHeader
                         entityName={entityName ?? ''}
                         entityId={entityId ?? ''}

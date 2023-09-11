@@ -1,5 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { OrgPermissionsWrapper } from '@isdd/metais-common/components/permissions/OrgPermissionsWrapper'
 
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
@@ -18,13 +19,15 @@ const CreateEntityPage: React.FC = () => {
                     View={({ data: generatedEntityId }) => (
                         <PublicAuthorityAndRoleContainer
                             View={({ data: groupData, roleState, publicAuthorityState }) => (
-                                <CreateCiEntityView
-                                    data={{ attributesData, generatedEntityId }}
-                                    ownerId={groupData?.gid ?? ''}
-                                    roleState={roleState}
-                                    publicAuthorityState={publicAuthorityState}
-                                    entityName={entityName ?? ''}
-                                />
+                                <OrgPermissionsWrapper selectedOrganizationId={publicAuthorityState?.selectedPublicAuthority?.poUUID ?? ''}>
+                                    <CreateCiEntityView
+                                        data={{ attributesData, generatedEntityId }}
+                                        ownerId={groupData?.gid ?? ''}
+                                        roleState={roleState}
+                                        publicAuthorityState={publicAuthorityState}
+                                        entityName={entityName ?? ''}
+                                    />
+                                </OrgPermissionsWrapper>
                             )}
                         />
                     )}

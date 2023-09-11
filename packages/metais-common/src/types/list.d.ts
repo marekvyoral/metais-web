@@ -24,6 +24,7 @@ export interface IListView {
     handleFilterChange: (filter: IFilter) => void
     storeUserSelectedColumns: (columnSelection: FavoriteCiType) => void
     resetUserSelectedColumns: () => Promise<void>
+    refetch: () => void
     isLoading: boolean
     isError: boolean
     refetch?: () => Promise<QueryObserverResult<AttributeProfilePreview, unknown>>

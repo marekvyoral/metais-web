@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 interface IArrowButton {
     label: string
@@ -7,8 +7,16 @@ interface IArrowButton {
 }
 
 export const ArrowButton: React.FC<IArrowButton> = ({ path, label }) => {
+    const location = useLocation()
     return (
-        <Link to={path} role="button" draggable="false" className="idsk-button idsk-button--start" data-module="idsk-button">
+        <Link
+            to={path}
+            state={{ from: location }}
+            role="button"
+            draggable="false"
+            className="idsk-button idsk-button--start"
+            data-module="idsk-button"
+        >
             {label}
             <svg
                 className="idsk-button__start-icon"

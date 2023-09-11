@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import type { Meta, StoryObj } from '@storybook/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { useState } from 'react'
 
-import { CiTable } from '@/components/ci-table/CiTable'
 import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
+import { CiTable } from '@/components/ci-table/CiTable'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 
 const queryClient = new QueryClient()

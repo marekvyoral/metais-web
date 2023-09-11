@@ -82,7 +82,11 @@ export const RoleEditView: React.FC<IRoleEditViewParams> = ({ currentRole, roleI
                     />
                     <ButtonGroupRow>
                         <Button label="Submit" onClick={onSubmit} />
-                        <Button label="Cancel" onClick={() => navigate(AdminRouteNames.ROLES + '?system=all&group=all')} variant="secondary" />
+                        <Button
+                            label="Cancel"
+                            onClick={() => navigate(AdminRouteNames.ROLES + '?system=all&group=all', { state: { from: location } })}
+                            variant="secondary"
+                        />
                     </ButtonGroupRow>
                 </form>
             </FormProvider>

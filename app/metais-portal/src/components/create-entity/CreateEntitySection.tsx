@@ -69,7 +69,8 @@ export const CreateEntitySection: React.FC<ISection> = ({
         <div>
             <ErrorBlockList errorList={thisSectionErrorList} />
             {attributes?.map?.((attribute) => {
-                const isSectionDisabled = !ability?.can(Actions.EDIT, `ci.${updateCiItemId}.attributeProfile.${sectionId}`) // when create no uuid is required
+                const isUpdateSectionDisabled = !!updateCiItemId && !ability?.can(Actions.EDIT, `ci.${updateCiItemId}.attributeProfile.${sectionId}`) // when create no uuid is required
+
                 return (
                     <React.Fragment key={attribute.technicalName}>
                         {!attribute.invisible && (
@@ -91,7 +92,7 @@ export const CreateEntitySection: React.FC<ISection> = ({
                                 unitsData={attribute.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
                                 defaultValueFromCiItem={defaultItemAttributeValues?.[attribute.technicalName ?? '']}
                                 hasResetState={hasResetState}
-                                disabled={isSectionDisabled}
+                                disabled={isUpdateSectionDisabled}
                             />
                         )}
                     </React.Fragment>

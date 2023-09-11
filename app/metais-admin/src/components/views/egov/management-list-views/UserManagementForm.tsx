@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useUpdateOrCreateWithGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
@@ -25,6 +25,7 @@ interface Props {
 export const UserManagementForm: React.FC<Props> = ({ detailData, managementData, isCreate = false }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
     const managementListPath = '/managementList'
     const detailPath = '/detail'
     const userIdPath = `/${detailData?.userData?.uuid}`
@@ -44,7 +45,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
         if (isCreate) {
             navigate(-1)
         } else {
-            navigate(managementListPath + detailPath + userIdPath)
+            navigate(managementListPath + detailPath + userIdPath, { state: { from: location } })
         }
     }
 
@@ -57,7 +58,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
         mutation: {
             onSuccess() {
                 if (isCreate) {
-                    navigate(managementListPath)
+                    navigate(managementListPath, { state: { from: location } })
                 }
             },
         },

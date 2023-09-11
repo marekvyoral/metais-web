@@ -3,6 +3,6 @@
     "compilerOptions": {
         "baseUrl": "."
     },
-    "include": ["src"],
+    "include": ["src", "src/components/ci-table"],
     "exclude": ["**/api/generated/*.ts", "node_modules", "dist"]
 }

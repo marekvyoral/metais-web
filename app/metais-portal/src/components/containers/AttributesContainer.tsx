@@ -3,14 +3,16 @@ import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import React from 'react'
 
+export interface AttributesContainerViewData {
+    ciTypeData: CiType | undefined
+    constraintsData: (EnumType | undefined)[]
+    unitsData?: EnumType | undefined
+    attributeProfiles: AttributeProfile[] | undefined
+    attributes: Attribute[] | undefined
+}
+
 export interface IAtrributesContainerView {
-    data: {
-        ciTypeData: CiType | undefined
-        constraintsData: (EnumType | undefined)[]
-        unitsData?: EnumType | undefined
-        attributeProfiles: AttributeProfile[] | undefined
-        attributes: Attribute[] | undefined
-    }
+    data: AttributesContainerViewData
 }
 
 interface AttributesContainer {

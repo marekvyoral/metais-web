@@ -12,11 +12,12 @@ interface ISubmitWithFeedbackProps {
     submitButtonLabel: string
     disabled?: boolean
     loading: boolean
+    className?: string
 }
-export const SubmitWithFeedback: React.FC<ISubmitWithFeedbackProps> = ({ submitButtonLabel, loading, disabled, additionalButtons }) => {
+export const SubmitWithFeedback: React.FC<ISubmitWithFeedbackProps> = ({ submitButtonLabel, className, loading, disabled, additionalButtons }) => {
     const { t } = useTranslation()
     return (
-        <ButtonGroupRow>
+        <ButtonGroupRow className={className}>
             {additionalButtons}
             <Button label={submitButtonLabel} disabled={loading || disabled} type="submit" />
             {loading && (

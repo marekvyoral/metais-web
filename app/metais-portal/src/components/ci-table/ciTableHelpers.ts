@@ -1,4 +1,3 @@
-import { TFunction } from 'i18next'
 import {
     ATTRIBUTE_NAME,
     Attribute,
@@ -10,8 +9,9 @@ import {
     FavoriteCiType,
     RoleParticipantUI,
 } from '@isdd/metais-common/api'
-
-import { pairEnumsToEnumValues } from '@/componentHelpers'
+import { pairEnumsToEnumValues } from '@isdd/metais-common/index'
+import { ColumnOrderState } from '@tanstack/react-table'
+import { TFunction } from 'i18next'
 
 interface ReducedAttributes {
     [technicalName: string]: Attribute
@@ -25,6 +25,17 @@ export interface ColumnsOutputDefinition {
     type?: string
     uuid?: string
     checked?: boolean
+}
+
+export interface IStoreColumnSelection {
+    attributes: {
+        name: string
+        order: number
+    }[]
+    metaAttributes: {
+        name: string
+        order: number
+    }[]
 }
 
 export const reduceAttributesByTechnicalName = (entityStructure: CiType | undefined) => {
@@ -77,6 +88,22 @@ export const sortAndMergeCiColumns = (columnsList: FavoriteCiType) => {
     })
 
     return mergedCiColumns
+}
+
+export const getOrderCiColumns = (columnsList: FavoriteCiType, orderList: ColumnOrderState): IStoreColumnSelection => {
+    const columnsAttributes = columnsList?.attributes ?? []
+    const columnsMetaAttributes = columnsList?.metaAttributes ?? []
+
+    const attributes: { order: number; name: string }[] = columnsAttributes.map((attribute) => {
+        const order = orderList.indexOf(attribute.name || '')
+        return { name: attribute.name || '', order }
+    })
+
+    const metaAttributes: { order: number; name: string }[] = columnsMetaAttributes.map((attribute) => {
+        const order = orderList.indexOf(attribute.name || '')
+        return { name: attribute.name || '', order }
+    })
+    return { attributes, metaAttributes }
 }
 
 export const reduceTableDataToObject = <T extends { uuid?: string }>(array: T[]): Record<string, T> => {

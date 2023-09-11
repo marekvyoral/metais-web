@@ -1,0 +1,10 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.marginBottom {
+    margin-bottom: govuk-spacing(4) !important;
+}

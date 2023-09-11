@@ -94,6 +94,7 @@
         "show": "Ukáž",
         "innerNav": "Vnútorná navigácia",
         "mainNav": "Hlavná navigácia",
+        "reports": "Reporty a zostavy",
         "lists": {
             "processorsOfITDevelopmentConcepts": "Spracovatelia koncepcií rozvoja IT",
             "subordinates": "Podriadené osoby",
@@ -153,6 +154,9 @@
         "KS": {
             "name": "Názov koncovej služby"
         },
+        "AS": {
+            "name": "Názov aplikačnej služby"
+        },
         "ISVS": {
             "name": "Názov informačného systému"
         },
@@ -169,6 +173,12 @@
         "metaisCode": {
             "label": "Kód MetaIS",
             "placeholder": "ks_"
+        },
+        "InfraSluzba": {
+            "name": "Názov"
+        },
+        "Program": {
+            "name": "Názov"
         },
         "reset": "Vyčistiť kritéria filtrovania",
         "submit": "Vyfiltrovať"
@@ -290,9 +300,13 @@
             "lastModifiedAt": "Posledná zmena",
             "createdAt": "Vytvorené",
             "owner": "Správca",
+            "group": "Správca",
             "state": "Stav evidencie",
             "metaInformationsName": "Metainformácie"
-        }
+        },
+        "PO_PO_Heading": "Podriadené osoby",
+        "PO_IS_Heading": "Spracovatelia koncepcií rozvoja IT",
+        "PO_IS_PO_Heading": "Prevádzkovatelia IS"
     },
     "relationType": {
         "as": "Aplikačná služba"
@@ -385,6 +399,19 @@
             "": ""
         }
     },
+    "reports": {
+        "table": {
+            "name": "Názov",
+            "category": "Kategória",
+            "description": "Popis"
+        },
+        "card": {
+            "basicInfo": "Základné informácie",
+            "reportName": "Názov",
+            "description": "Popis",
+            "category": "Kategória"
+        }
+    },
     "history": {
         "ACTIONS": {
             "CREATE": "Vytvorenie položky",
@@ -408,7 +435,8 @@
         "minValue": "Hodnota musí byť aspoň",
         "maxValue": "Hodnota nesmie byť väčšia ako",
         "character": "Zadaný môže byť len jeden znak",
-        "canNotBeDecimal": "Toto číslo nemôže byť desatinné"
+        "canNotBeDecimal": "Toto číslo musí byť celé číslo",
+        "mustBeChecked": "Toto musí byť zaškrtnuté, ak chcete pokračovať"
     },
     "createEntity": {
         "required": "povinné",
@@ -421,8 +449,15 @@
         "addNewRow": "Pridať nový riadok",
         "units": "(Hodnota v {{units}})",
         "redirectLoading": "Spracúva sa vytvorenie novej entity",
-        "redirectError": "Nepodarilo sa spracovať vytvorenie novej entity",
-        "mutationError": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
+        "redirectLoadingEdit": "Prebieha aktualizácia údajov na entite",
+        "redirectError": "Nepodarilo sa spracovať vytvorenie novej entity. Ďalšie informácie nájdete v upozorneniach.",
+        "redirectErrorEdit": "Nepodarila sa spracovať aktualizáciu novej entity. Ďalšie informácie nájdete v upozorneniach.",
+        "mutationError": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.",
+        "tooManyFetchesError": "Pri spracovaní došlo k chybe. Akcia trvala príliš dlho. Ďalšie informácie nájdete v upozorneniach.",
+        "orgAndRoleError": {
+            "title": "Chýbajúce práva pre organizáciu",
+            "message": "Chýbajú vám práva na vytvorenie entity pod touto organizáciou"
+        }
     },
     "table": {
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
@@ -432,12 +467,12 @@
     "state": "Stav evidencie",
     "group": "Skupina",
     "loading": {
-        "loadingSubPage": "Načítavám podstránku"
+        "loadingSubPage": "Načítavam podstránku"
     },
     "actionOverTable": {
         "import": "Import",
         "export": "Export",
-        "addISVSitem": "Pridať ISVS položku",
+        "addItem": "Pridať {{ciType}} položku",
         "selectColumn": "Stĺpce",
         "view": "Zobraziť",
         "actions": "Hromadné úkony",
@@ -530,6 +565,55 @@
     "selectRole": {
         "error": "Chyba pri načítavaní údajov pre role.",
         "loading": "Načítavajú sa údaje pre role."
+    },
+    "tooltip": {
+        "rights": {
+            "missingPermission": "Na vykonanie operácie vám chýbajú potrebné oprávnenia",
+            "noSelectedList": "Neboli vybrané žiadne položky, nie je možné vykonať vybranú operáciu.",
+            "invalidSelectedList": "Niektoré z vami vybraných položiek sú zneplatnené, nie je možné nad nimi vykonať vybranú operáciu.",
+            "validSelectedList": "Niektoré z vami vybraných položiek sú platné, nie je možné nad nimi vykonať vybranú operáciu.",
+            "notFoundPO": "Chyba pri získávaní informácií o právach - pre dané položke nebola nájdená povinná osoba."
+        }
+    },
+    "bulkActions": {
+        "invalidate": {
+            "title": "Zneplatnenie položiek",
+            "warningText": "Vybrané záznamy budú zneplatnené. Nebude ich možné editovať, ani nad nimi vykonávať ďalšie operácie.Ich zneplatnením sa zneplatnia aj všetky vzťahy k ostatným entitám (službám a pod.)",
+            "listText": "Chystáte sa zneplatniť tieto vybrané záznamy ({{count}}):",
+            "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
+            "reason": "Poznámka / Dôvod zneplatnenia",
+            "invalidate": "Zneplatnenie",
+            "success": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o zneplatnení."
+        },
+        "reInvalidate": {
+            "title": "Splatňovanie položiek",
+            "warningText": "Vybrané záznamy budú splatnené. Vzťahy, ktoré obsahujú, nebudú zmenené.",
+            "listText": "Chystáte sa splatniť tieto vybrané záznamy ({{count}}):",
+            "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
+            "reason": "Poznámka / Dôvod zneplatnenia:",
+            "reInvalidate": "Splatnenie",
+            "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o splatnení."
+        },
+        "changeOwner": {
+            "title": "Zmena vlastníka",
+            "reason": "Dôvod zmeny",
+            "changeDescription": "Popis zmeny",
+            "changeType": "Typ zmeny",
+            "button": "Vykonať zmenu",
+            "listText": "Chystáte sa zmeniť tieto vybrané záznamy ({{count}}):",
+            "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
+            "reasonType": {
+                "architectureChange": "Architektonická zmena",
+                "personalChange": "Personálna zmena",
+                "othersChange": "Iný dôvod"
+            },
+            "types": {
+                "changeCmdbItemAndRelatedCmdbItemsWithSameOwner": "Zmeniť všetky položky a ich relácie, kde je rovnaký vlastník (ostatné ponechá pôvodné)",
+                "changeCmdbItemAndRelatedCmdbItems": "Zmeniť všetky položky bez ohľadu na rozdieľnosť vlastníka",
+                "changeCmdbItem": "Zmeniť len vlastníka vybraných položiek, nemeniť vlastníka relácií"
+            },
+            "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o zmene vlastníka."
+        }
     },
     "breadcrumbs": {
         "home": "Domov",

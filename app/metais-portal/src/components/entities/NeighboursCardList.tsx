@@ -3,17 +3,16 @@ import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { QueryFeedback } from '@isdd/metais-common'
+import { QueryFeedback, formatRelationAttributes } from '@isdd/metais-common'
 import { ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { CardColumnList } from './cards/CardColumnList'
 import { RelationCard } from './cards/RelationCard'
 import { ListActions } from './lists/ListActions'
 
-import { formatRelationAttributes } from '@/componentHelpers'
 import { IRelationsView } from '@/components/containers/RelationsListContainer'
 
 interface NeighboursCardListProps {
@@ -35,6 +34,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
     const { entityTypes, relationsList, owners } = data
 
     return (
@@ -55,11 +55,11 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                                     className={'marginBottom0'}
                                     label={t('neighboursCardList.buttonAddNewRelation')}
                                     variant="secondary"
-                                    onClick={() => navigate(`new-relation/${key.technicalName}`)}
+                                    onClick={() => navigate(`new-relation/${key.technicalName}`, { state: { from: location } })}
                                 />
                                 <Button
                                     className={'marginBottom0'}
-                                    onClick={() => navigate(`new-ci/${key.technicalName}`)}
+                                    onClick={() => navigate(`new-ci/${key.technicalName}`, { state: { from: location } })}
                                     label={t('neighboursCardList.buttonAddNewRelationCard')}
                                     variant="secondary"
                                 />

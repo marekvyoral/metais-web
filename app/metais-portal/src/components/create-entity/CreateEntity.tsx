@@ -6,6 +6,9 @@ import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
+import { ErrorBlock } from '@isdd/idsk-ui-kit/index'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
@@ -44,10 +47,9 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     const { t } = useTranslation()
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
-    const selectedRole = roleState?.selectedRole
-    const setSelectedRole = roleState?.setSelectedRole
-    const selectedPublicAuthority = publicAuthorityState?.selectedPublicAuthority
-    const setSelectedPublicAuthority = publicAuthorityState?.setSelectedPublicAuthority
+
+    const ability = useAbilityContext()
+    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
 
     const [uploadError, setUploadError] = useState(false)
     const [requestId, setRequestId] = useState<string>('')
@@ -70,13 +72,16 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
 
     const {
         performRedirection,
+        reset: resetRedirect,
         isLoading: isRedirectLoading,
         isError: isRedirectError,
         isFetched: isRedirectFetched,
         isProcessedError,
+        isTooManyFetchesError,
     } = useRedirectAfterSuccess(requestId, configurationItemId, entityName)
+
     useEffect(() => {
-        if (requestId !== null) {
+        if (requestId != null) {
             performRedirection()
         }
     }, [performRedirection, requestId])
@@ -84,6 +89,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     const onSubmit = async (formAttributes: FieldValues) => {
         setRequestId('')
         setUploadError(false)
+        resetRedirect()
         const formAttributesKeys = Object.keys(formAttributes)
 
         const formatedAttributesToSend = formAttributesKeys.map((key) => ({
@@ -113,40 +119,49 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
 
     return (
         <>
-            {!(isRedirectError || isProcessedError) && (storeConfigurationItem.isError || storeConfigurationItem.isSuccess) && (
-                <MutationFeedback
-                    success={storeConfigurationItem.isSuccess}
-                    error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''}
-                />
+            {!(isRedirectError || isProcessedError || isRedirectLoading) && (
+                <MutationFeedback success={false} error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''} />
             )}
-            {isRedirectFetched && (isRedirectLoading || isRedirectError || isProcessedError) && (
-                <QueryFeedback
-                    loading={isRedirectLoading}
-                    error={isRedirectError || isProcessedError}
-                    indicatorProps={{ fullscreen: true, layer: 'parent', label: t('createEntity.redirectLoading') }}
-                    errorProps={{ errorMessage: t('createEntity.redirectError') }}
-                />
-            )}
+            <QueryFeedback
+                loading={isRedirectFetched && isRedirectLoading}
+                error={isRedirectFetched && (isRedirectError || isProcessedError || isTooManyFetchesError)}
+                indicatorProps={{
+                    label: updateCiItemId ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
+                }}
+                errorProps={{
+                    errorMessage: isTooManyFetchesError
+                        ? t('createEntity.tooManyFetchesError')
+                        : updateCiItemId
+                        ? t('createEntity.redirectErrorEdit')
+                        : t('createEntity.redirectError'),
+                }}
+                withChildren
+            >
+                {!hasOrgPermission && publicAuthorityState?.selectedPublicAuthority && (
+                    <ErrorBlock errorTitle={t('createEntity.orgAndRoleError.title')} errorMessage={t('createEntity.orgAndRoleError.message')} />
+                )}
 
-            {!updateCiItemId && selectedRole && selectedPublicAuthority && setSelectedRole && setSelectedPublicAuthority && (
-                <SelectPublicAuthorityAndRole
-                    selectedRoleId={selectedRole}
-                    onChangeAuthority={setSelectedPublicAuthority}
-                    onChangeRole={setSelectedRole}
-                    selectedOrg={selectedPublicAuthority}
-                />
-            )}
+                {!updateCiItemId && publicAuthorityState && roleState && (
+                    <SelectPublicAuthorityAndRole
+                        selectedRoleId={roleState.selectedRole}
+                        onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
+                        onChangeRole={roleState.setSelectedRole}
+                        selectedOrg={publicAuthorityState.selectedPublicAuthority}
+                    />
+                )}
 
-            <CreateCiEntityForm
-                ciTypeData={ciTypeData}
-                generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
-                constraintsData={constraintsData}
-                unitsData={unitsData}
-                uploadError={uploadError}
-                onSubmit={onSubmit}
-                defaultItemAttributeValues={defaultItemAttributeValues}
-                updateCiItemId={updateCiItemId}
-            />
+                <CreateCiEntityForm
+                    ciTypeData={ciTypeData}
+                    generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
+                    constraintsData={constraintsData}
+                    unitsData={unitsData}
+                    uploadError={uploadError}
+                    onSubmit={onSubmit}
+                    defaultItemAttributeValues={defaultItemAttributeValues}
+                    updateCiItemId={updateCiItemId}
+                    isProcessing={storeConfigurationItem.isLoading}
+                />
+            </QueryFeedback>
         </>
     )
 }

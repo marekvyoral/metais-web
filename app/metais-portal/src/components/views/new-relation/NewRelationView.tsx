@@ -21,9 +21,11 @@ import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { MultiValue } from 'react-select'
 import { v4 as uuidV4 } from 'uuid'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
 import styles from './newRelationView.module.scss'
 
@@ -60,9 +62,13 @@ export const NewRelationView: React.FC<Props> = ({
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
+
+    const ability = useAbilityContext()
+    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
+
     const [hasReset, setHasReset] = useState(false)
     const [hasMutationError, setHasMutationError] = useState(false)
-
+    const location = useLocation()
     const { selectedItems, setSelectedItems, setIsListPageOpen } = useNewRelationData()
 
     const relatedListAsSources = relationData?.relatedListAsSources
@@ -103,7 +109,7 @@ export const NewRelationView: React.FC<Props> = ({
     const storeGraph = useStoreGraph({
         mutation: {
             onSuccess() {
-                navigate(`/ci/${entityName}/${entityId}`)
+                navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
                 setIsListPageOpen(false)
                 setSelectedItems(null)
             },
@@ -148,7 +154,7 @@ export const NewRelationView: React.FC<Props> = ({
     const handleReset = () => {
         setIsListPageOpen(false)
         setSelectedItems(null)
-        navigate(`/ci/${entityName}/${entityId}`)
+        navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
     }
 
     const sections: IAccordionSection[] =
@@ -160,7 +166,7 @@ export const NewRelationView: React.FC<Props> = ({
                           <ButtonLink
                               label={t('newRelation.detailButton')}
                               className={classNames(styles.buttonLink, styles.blue)}
-                              onClick={() => navigate(`/ci/${tabName}/${item.uuid}`)}
+                              onClick={() => navigate(`/ci/${tabName}/${item.uuid}`, { state: { from: location } })}
                           />
                           <ButtonLink
                               label={t('newRelation.deleteButton')}
@@ -217,12 +223,17 @@ export const NewRelationView: React.FC<Props> = ({
             />
             <TextHeading size="XL">{t('newRelation.heading', { relationEntityName: tabName })}</TextHeading>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
+
+            {!hasOrgPermission && publicAuthorityState.selectedPublicAuthority && (
+                <ErrorBlock errorTitle={t('createEntity.orgAndRoleError.title')} errorMessage={t('createEntity.orgAndRoleError.message')} />
+            )}
             <SelectPublicAuthorityAndRole
                 onChangeAuthority={(e) => publicAuthorityState.setSelectedPublicAuthority(e)}
                 onChangeRole={(val) => roleState.setSelectedRole(val)}
                 selectedRoleId={roleState.selectedRole}
                 selectedOrg={publicAuthorityState.selectedPublicAuthority}
             />
+
             <SimpleSelect
                 isClearable={false}
                 label={t('newRelation.selectRelType')}
@@ -247,7 +258,7 @@ export const NewRelationView: React.FC<Props> = ({
                         errorMessage={
                             <>
                                 {t('newRelation.errorMessage')}
-                                <Link className="govuk-link" to={`mailto:${metaisEmail}`}>
+                                <Link className="govuk-link" state={{ from: location }} to={`mailto:${metaisEmail}`}>
                                     {t('newRelation.email')}
                                 </Link>
                             </>
@@ -259,7 +270,7 @@ export const NewRelationView: React.FC<Props> = ({
                     submitButtonLabel={t('newRelation.save')}
                     additionalButtons={[<Button key={1} label={t('newRelation.cancel')} type="reset" variant="secondary" onClick={handleReset} />]}
                     loading={storeGraph.isLoading}
-                    disabled={isSubmitDisabled}
+                    disabled={isSubmitDisabled || !hasOrgPermission}
                 />
             </form>
         </>

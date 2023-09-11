@@ -21,7 +21,7 @@ export const useUserInfo = () => {
     useEffect(() => {
         if (data?.statusCode === 401) {
             dispatch({ type: AuthActions.LOGOUT })
-            navigate('/?token_expired=true')
+            navigate('/?token_expired=true', { state: { from: location } })
         }
     }, [data?.statusCode, dispatch, navigate])
 

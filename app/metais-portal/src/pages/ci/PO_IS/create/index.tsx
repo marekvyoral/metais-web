@@ -1,9 +1,10 @@
 import React from 'react'
+import { OrgPermissionsWrapper } from '@isdd/metais-common/components/permissions/OrgPermissionsWrapper'
 
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
 import { PublicAuthorityAndRoleContainer } from '@/components/containers/PublicAuthorityAndRoleContainer'
-import { CreateEntity } from '@/components/create-entity/CreateEntity'
+import { CreateCiEntityView } from '@/components/views/ci/create/CreateCiEntityView'
 
 const CreateEntityPage: React.FC = () => {
     const entityName = 'PO'
@@ -17,12 +18,15 @@ const CreateEntityPage: React.FC = () => {
                     View={({ data: generatedEntityId }) => (
                         <PublicAuthorityAndRoleContainer
                             View={({ roleState, publicAuthorityState, data: groupData }) => (
-                                <CreateEntity
-                                    roleState={roleState}
-                                    publicAuthorityState={publicAuthorityState}
-                                    data={{ attributesData, generatedEntityId, ownerId: groupData?.gid }}
-                                    entityName={entityName ?? ''}
-                                />
+                                <OrgPermissionsWrapper selectedOrganizationId={publicAuthorityState?.selectedPublicAuthority?.poUUID ?? ''}>
+                                    <CreateCiEntityView
+                                        data={{ attributesData, generatedEntityId }}
+                                        ownerId={groupData?.gid ?? ''}
+                                        roleState={roleState}
+                                        publicAuthorityState={publicAuthorityState}
+                                        entityName={entityName ?? ''}
+                                    />
+                                </OrgPermissionsWrapper>
                             )}
                         />
                     )}

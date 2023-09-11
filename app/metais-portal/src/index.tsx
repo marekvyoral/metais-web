@@ -9,6 +9,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { createRoot } from 'react-dom/client'
 import { I18nextProvider } from 'react-i18next'
 import { BrowserRouter } from 'react-router-dom'
+import { ActionSuccessProvider } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { App } from '@/App'
 import '@/index.scss'
@@ -32,9 +33,11 @@ root.render(
                     <QueryClientProvider client={queryClient}>
                         <AuthContextProvider>
                             <FilterContextProvider>
-                                <DndProvider backend={HTML5Backend}>
-                                    <App />
-                                </DndProvider>
+                                <ActionSuccessProvider>
+                                    <DndProvider backend={HTML5Backend}>
+                                        <App />
+                                    </DndProvider>
+                                </ActionSuccessProvider>
                             </FilterContextProvider>
                         </AuthContextProvider>
                     </QueryClientProvider>

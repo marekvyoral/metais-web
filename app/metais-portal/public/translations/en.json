@@ -94,6 +94,7 @@
         "show": "Show",
         "innerNav": "Inner navigation",
         "mainNav": "Main navigation",
+        "reports": "Reports",
         "lists": {
             "processorsOfITDevelopmentConcepts": "Processors of IT development concepts",
             "subordinates": "Subordinates",
@@ -150,10 +151,13 @@
         "searchPlaceholder": "Search in table",
         "chooseState": "Select status",
         "chooseValue": "Select value",
-        "ks": {
+        "KS": {
             "name": "Name of end service"
         },
-        "isvs": {
+        "AS": {
+            "name": "Name of application service"
+        },
+        "ISVS": {
             "name": "Name of information system"
         },
         "PO": {
@@ -166,9 +170,15 @@
         "Projekt": {
             "name": "Name of project"
         },
+        "InfraSluzba": {
+            "name": "Name"
+        },
         "metaisCode": {
             "label": "Code MetaIS",
             "placeholder": "ks_"
+        },
+        "Program": {
+            "name": "Name"
         },
         "reset": "Clear Filter",
         "submit": "Filter"
@@ -289,10 +299,14 @@
             "lastModifiedAt": "Last change",
             "createdAt": "Created",
             "owner": "Manager",
+            "group": "Manager",
             "state": "Evidence status",
             "metaInformationsName": "Meta-informations"
         },
-        "newRelationHeading": "New relation - {{relationEntityName}}"
+        "newRelationHeading": "New relation - {{relationEntityName}}",
+        "PO_PO_Heading": "Subordinates",
+        "PO_IS_Heading": "Processors of IT development concepts",
+        "PO_IS_PO_Heading": "IS operators"
     },
     "relationType": {
         "as": "Application service"
@@ -385,6 +399,19 @@
             "": ""
         }
     },
+    "reports": {
+        "table": {
+            "name": "Name",
+            "category": "Category",
+            "description": "Description"
+        },
+        "card": {
+            "basicInfo": "Basic information",
+            "reportName": "Report title",
+            "description": "Description",
+            "category": "Category"
+        }
+    },
     "history": {
         "ACTIONS": {
             "CREATE": "Create",
@@ -408,7 +435,8 @@
         "minValue": "Value must be at least",
         "maxValue": "Value can not be greater than",
         "character": "Only one character can be inserted",
-        "canNotBeDecimal": "This number can not be decimal"
+        "canNotBeDecimal": "This number can not be decimal",
+        "mustBeChecked": "This must be checked if you want to proceed"
     },
     "createEntity": {
         "required": "required",
@@ -421,8 +449,15 @@
         "addNewRow": "Add new row",
         "units": "(Value in {{units}})",
         "redirectLoading": "Processing creation of new entity",
-        "redirectError": "Failed to process new entity creation",
-        "mutationError": "Error while executing your action. Please try again or contact support."
+        "redirectLoadingEdit": "Updating data on entity",
+        "redirectError": "Failed to process new entity creation. Check notifications for more information.",
+        "redirectErrorEdit": "Failed to process updating of current entity. Check notifications for more information.",
+        "mutationError": "Error while executing your action. Please try again or contact support.",
+        "tooManyFetchesError": "There was a mistake during processing. Action took too long. Check notifications for more information.",
+        "orgAndRoleError": {
+            "title": "Missing rights for organization",
+            "message": "You are missing rights for creating entity under this organization"
+        }
     },
     "table": {
         "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
@@ -437,7 +472,7 @@
     "actionOverTable": {
         "import": "Import",
         "export": "Export",
-        "addISVSitem": "Add ISVS item",
+        "addItem": "Add {{ciType}} item",
         "selectColumn": "Columns",
         "view": "View",
         "actions": "Bulk actions",
@@ -529,6 +564,55 @@
     "selectRole": {
         "error": "Error while fetching data about roles.",
         "loading": "Loading role data"
+    },
+    "tooltip": {
+        "rights": {
+            "missingPermission": "You are not authorized to carry out this operation",
+            "noSelectedList": "No items were selected, it is not possible to carry out selected operation.",
+            "invalidSelectedList": "Some of selected items were invalidated, it is not possible to carry out selected operation.",
+            "validSelectedList": "Some of selected items are valid, it is not possible to carry out selected operation.",
+            "notFoundPO": "Error in rights - not find public authority."
+        }
+    },
+    "bulkActions": {
+        "invalidate": {
+            "title": "Invalidate items",
+            "warningText": "Selected records will be invalidated. It would not be possible to edit them or carry out any operations with them. Upon their invalidation will all relations to other entities be invalidated (services and etc.)",
+            "listText": "Selected records will be invalidated ({{count}}):",
+            "newWindowText": "Show the whole list of instances and their relationships (in new window)",
+            "reason": "Note / Invalidity reason",
+            "invalidate": "Invalidity",
+            "success": "Item was sent for processing, please wait for invalidation notification."
+        },
+        "reInvalidate": {
+            "title": "Revalidate items",
+            "warningText": "Selected records will be validated. Relations that they contain shall remain unmodified.",
+            "listText": "Selected records will be invalidated ({{count}}):",
+            "newWindowText": "Show the whole list of instances and their relations (in new window)",
+            "reason": "Note / Invalidity reason",
+            "reInvalidate": "Validation",
+            "success": "Item was sent for processing, please wait for reinvalidation notification."
+        },
+        "changeOwner": {
+            "title": "Change of owner",
+            "reason": "Reason for change",
+            "changeDescription": "Change description",
+            "changeType": "Change type",
+            "button": "Perform change",
+            "listText": "Selected records will be modified ({{count}}):",
+            "newWindowText": "Show the whole list of instances and their relationships (in new window)",
+            "reasonType": {
+                "architectureChange": "Architecture change",
+                "personalChange": "Personal change",
+                "othersChange": "Other reason"
+            },
+            "types": {
+                "changeCmdbItemAndRelatedCmdbItemsWithSameOwner": "Change item and its relationships with identical owner (other will remain unmodified)",
+                "changeCmdbItemAndRelatedCmdbItems": "Change item and its relationships regardless of the owner",
+                "changeCmdbItem": "Change owner of item, don't change owner of relationships"
+            },
+            "success": "Item was sent for processing, please wait for owner change notification."
+        }
     },
     "breadcrumbs": {
         "home": "Home",

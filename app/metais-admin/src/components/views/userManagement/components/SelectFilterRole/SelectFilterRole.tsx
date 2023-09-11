@@ -4,9 +4,8 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import React, { useCallback, useEffect, useState } from 'react'
 import { UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { OptionProps, components } from 'react-select'
-
-import style from './selectFilterRole.module.scss'
+import { OptionProps } from 'react-select'
+import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 
 import { UserManagementFilterData } from '@/components/containers/ManagementList/UserManagementListUtils'
 
@@ -21,14 +20,14 @@ interface SelectFilterRoleProps {
     setValue: UseFormSetValue<UserManagementFilterData>
 }
 
-const formatOption = (optionProps: OptionProps<SelectFilterRoleOptionType>) => {
+const formatOption = (props: OptionProps<SelectFilterRoleOptionType>) => {
     return (
-        <components.Option {...optionProps} className={style.selectOption}>
-            <div>{optionProps.data.name}</div>
+        <Option {...props}>
+            <div>{props.data.name}</div>
             <span>
-                <small>{optionProps.data.description}</small>
+                <small>{props.data.description}</small>
             </span>
-        </components.Option>
+        </Option>
     )
 }
 

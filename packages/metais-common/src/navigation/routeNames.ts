@@ -14,14 +14,16 @@ export enum RouteNames {
     RELATIONSHIPS_LIST_TAB = '/ci/:entityName/:entityId/relationships',
     TASKS = '/ulohy',
     CODELISTS = '/codelists',
+    REPORTS = 'reports/',
 }
 
 export enum AdminRouteNames {
     HOME = '/',
-    DASHBOARD = 'dashboard/',
-    ASSIGNMENT = 'assignment/',
-    NOTIFICATIONS = 'notifications/',
-    SETTINGS = 'settings/',
+    DASHBOARD = '/dashboard',
+    ASSIGNMENT = '/assignment',
+    NOTIFICATIONS = '/notifications',
+    SETTINGS = '/settings',
+    EKO = '/eko',
     USER_MANAGEMENT = '/managementList',
     EGOV = 'egov/',
     EGOV_ENTITY = '/egov/entity',
@@ -77,12 +79,15 @@ export enum NavigationSubRoutes {
     NIE_SU_OVM = 'todo',
 }
 
+export interface NavigationSubItem {
+    title: string
+    path: string
+    subItems?: NavigationSubItem[]
+}
+
 export interface NavigationItem {
     title: string
     path: string
     icon?: string
-    subItems?: {
-        title: string
-        path: string
-    }[]
+    subItems?: NavigationSubItem[]
 }

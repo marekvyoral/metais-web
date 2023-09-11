@@ -12,6 +12,7 @@ import { BaseModal } from '@isdd/idsk-ui-kit/index'
 import { ProgressInfoList } from './FileImportList'
 import { FileImportView } from './FileImportView'
 
+import { OrgPermissionsWrapper } from '@isdd/metais-common/components/permissions/OrgPermissionsWrapper'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { HierarchyRightsUi } from '@isdd/metais-common/api'
@@ -191,24 +192,26 @@ export const FileImport: React.FC<IFileImport> = ({
 
     return (
         <BaseModal isOpen={isOpen} close={handleCancelImport}>
-            <FileImportView
-                uppy={uppy}
-                currentFiles={currentFiles}
-                handleUpload={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : handleUpload}
-                uploadFileProgressInfo={uploadFileProgressInfo}
-                handleCancelImport={handleCancelImport}
-                handleRemoveFile={handleRemoveFile}
-                setRadioButtonMetaData={setRadioButtonMetaData}
-                setErrorMessages={setErrorMessages}
-                errorMessages={errorMessages}
-                fileImportStep={fileImportStep}
-                radioButtonMetaData={radioButtonMetaData}
-                ciType={ciType}
-                setSelectedRoleId={setSelectedRoleId}
-                setSelectedOrg={setSelectedOrg}
-                selectedOrg={selectedOrg}
-                selectedRoleId={selectedRoleId}
-            />
+            <OrgPermissionsWrapper selectedOrganizationId={selectedOrg?.poUUID ?? ''}>
+                <FileImportView
+                    uppy={uppy}
+                    currentFiles={currentFiles}
+                    handleUpload={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : handleUpload}
+                    uploadFileProgressInfo={uploadFileProgressInfo}
+                    handleCancelImport={handleCancelImport}
+                    handleRemoveFile={handleRemoveFile}
+                    setRadioButtonMetaData={setRadioButtonMetaData}
+                    setErrorMessages={setErrorMessages}
+                    errorMessages={errorMessages}
+                    fileImportStep={fileImportStep}
+                    radioButtonMetaData={radioButtonMetaData}
+                    ciType={ciType}
+                    setSelectedRoleId={setSelectedRoleId}
+                    setSelectedOrg={setSelectedOrg}
+                    selectedOrg={selectedOrg}
+                    selectedRoleId={selectedRoleId}
+                />
+            </OrgPermissionsWrapper>
         </BaseModal>
     )
 }

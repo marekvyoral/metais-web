@@ -55,9 +55,12 @@ const RoleListView: React.FC<RoleListViewParams> = ({
                     <Button
                         label={t('adminRolesPage.assignedUsers')}
                         variant="secondary"
-                        onClick={() => navigate(AdminRouteNames.ROLE_USERS + '/' + cell.row.original.uuid)}
+                        onClick={() => navigate(AdminRouteNames.ROLE_USERS + '/' + cell.row.original.uuid, { state: { from: location } })}
                     />
-                    <Button label={t('adminRolesPage.edit')} onClick={() => navigate(AdminRouteNames.ROLE_EDIT + '/' + cell.row.original.uuid)} />
+                    <Button
+                        label={t('adminRolesPage.edit')}
+                        onClick={() => navigate(AdminRouteNames.ROLE_EDIT + '/' + cell.row.original.uuid, { state: { from: location } })}
+                    />
                     <Button
                         label={t('adminRolesPage.deactivate')}
                         variant="warning"
@@ -97,7 +100,12 @@ const RoleListView: React.FC<RoleListViewParams> = ({
                 entityName=""
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 handleFilterChange={myHandleFilterChange}
-                createButton={<CreateEntityButton label={t('adminRolesPage.addNewRole')} onClick={() => navigate(AdminRouteNames.ROLE_NEW)} />}
+                createButton={
+                    <CreateEntityButton
+                        label={t('adminRolesPage.addNewRole')}
+                        onClick={() => navigate(AdminRouteNames.ROLE_NEW, { state: { from: location } })}
+                    />
+                }
             />
             <Table<Role>
                 onSortingChange={(newSort) => {

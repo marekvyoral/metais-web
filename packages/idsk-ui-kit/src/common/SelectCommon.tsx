@@ -37,4 +37,17 @@ export const selectStyles = <T,>(): StylesConfig<T, boolean, GroupBase<T>> => ({
         ...base,
         color: isDisabled ? '#aaaaaa' : base.color,
     }),
+    menuPortal: (base, { rect, offset }) => {
+        //our input is smaller with padding; style adjustments required
+        const width = `${rect.width + 13}px`
+        const left = `${rect.left - 7}px`
+        const top = `${offset + 7}px`
+        return {
+            ...base,
+            left,
+            top,
+            width,
+            zIndex: 10,
+        }
+    },
 })
