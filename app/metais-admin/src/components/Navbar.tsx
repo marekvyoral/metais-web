@@ -48,8 +48,22 @@ export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
                 path: AdminRouteNames.EKO,
             },
             {
-                title: t('navMenu.userManagement'),
+                title: t('navMenu.userManagement.userManagement'),
                 path: AdminRouteNames.USER_MANAGEMENT,
+                subItems: [
+                    {
+                        title: t('navMenu.userManagement.requestList'),
+                        path: AdminRouteNames.REQUEST_LIST,
+                    },
+                    {
+                        title: t('navMenu.userManagement.gdprRequestList'),
+                        path: AdminRouteNames.GDPR_REQUEST_LIST,
+                    },
+                    {
+                        title: t('navMenu.userManagement.registrationRequestList'),
+                        path: AdminRouteNames.REGISTRATION_REQUEST_LIST,
+                    },
+                ],
             },
             {
                 title: t('navMenu.egov.entity'),

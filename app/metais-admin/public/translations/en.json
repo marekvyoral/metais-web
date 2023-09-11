@@ -364,8 +364,13 @@
         "notifications": "Notifications",
         "settings": "Settings",
         "admin": "Administration",
-        "userManagement": "User management",
         "organizations": "Organizations",
+        "userManagement": {
+            "userManagement": "User management",
+            "requestList": "Requests",
+            "gdprRequestList": "Requests for remove personal data",
+            "registrationRequestList": "Registrations"
+        },
         "egov": {
             "entity": "Entities",
             "profiles": "Attribute profiles",
@@ -631,6 +636,38 @@
     "loading": {
         "loadingSubPage": "Loading sub-page",
         "export": "Preparing export"
+    },
+    "requestList": {
+        "title": "Request list",
+        "registrationLitle": "List of registrations",
+        "gdprTitle": "Request list",
+        "fullName": "FullName",
+        "identityLogin": "Login",
+        "telephone": "Telephone",
+        "mobile": "Mobil",
+        "email": "Email",
+        "createdAt": "Created at",
+        "claimState": "State of claim",
+        "poName": "Obliged person",
+        "filter": {
+            "all": "Všetky",
+            "created": "Vytvorené",
+            "accepted": "Akceptovaná",
+            "rejected": "Odmietnutá"
+        },
+        "identityDetail": "Identity Detail",
+        "requestDetail": "Request detail",
+        "addRolesDetail": "List added rols to user",
+        "rolesDetail": "Add roles to user",
+        "anonymizeBtn": "Anonymize user data",
+        "backBtn": "Back",
+        "deleteBtn": "Delete user",
+        "description": "Description",
+        "decisionReason": "Reason",
+        "approve": "Approve",
+        "decline": "Decline",
+        "modalLabel": "Decline reason",
+        "modalTextPlaceHolder": "Enter reason"
     },
     "errors": {
         "default": "Ups, something went wrong.",
