@@ -1,0 +1,40 @@
+@import '../../../../../utils.scss';
+
+.attributeGridRowBox {
+    display: flex;
+    gap: govuk-spacing(4);
+    flex-direction: column;
+    .showOwner {
+        display: flex;
+        gap: govuk-spacing(2);
+        .showOwnerBox {
+            flex: 1;
+        }
+    }
+}
+
+.btnRightMargin {
+    margin-right: govuk-spacing(2);
+}
+
+.backButton {
+    margin-left: auto;
+}
+
+.formButtonsWrapper {
+    display: flex;
+    @include mq($until: tablet) {
+        display: block;
+    }
+}
+
+.basicInformationSpace {
+    margin-bottom: govuk-spacing(8);
+    .removeButton {
+        float: right;
+    }
+    .generalActions {
+        display: flex;
+        gap: govuk-spacing(2);
+    }
+}

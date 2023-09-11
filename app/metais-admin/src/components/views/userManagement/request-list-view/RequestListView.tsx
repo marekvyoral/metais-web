@@ -1,0 +1,160 @@
+import { Filter } from '@isdd/idsk-ui-kit/filter'
+import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
+import { SimpleSelect } from '@isdd/idsk-ui-kit/select/simple-select/SimpleSelect'
+import { Table } from '@isdd/idsk-ui-kit/table/Table'
+import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
+import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
+import { TextLink } from '@isdd/idsk-ui-kit/typography/TextLink'
+import { ClaimSetUi, ClaimUi } from '@isdd/metais-common/api/generated/claim-manager-swagger'
+import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, EClaimState } from '@isdd/metais-common/constants'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { ColumnDef } from '@tanstack/react-table'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { IRequestListFilterView, RequestListType } from '@/components/containers/ManagementList/RequestListContainer'
+
+export interface IRequestListView {
+    listType: RequestListType
+    data?: ClaimSetUi
+    defaultFilterParams: IRequestListFilterView
+    route: AdminRouteNames
+    handleFilterChange: (filter: IFilter) => void
+}
+
+export const RequestListView: React.FC<IRequestListView> = ({ listType, data, defaultFilterParams, handleFilterChange, route }) => {
+    const { t, i18n } = useTranslation()
+    const entityName = 'requestList'
+    const columns: Array<ColumnDef<ClaimUi>> = [
+        {
+            header: t('requestList.fullName'),
+            accessorFn: (row) => row?.identityLastName,
+            enableSorting: true,
+            id: 'identityLastName',
+            cell: (ctx) => (
+                <TextLink to={`${route}/detail/${ctx?.row?.original?.uuid}`}>
+                    {ctx?.row?.original?.identityFirstName + ' ' + ctx?.row?.original?.identityLastName}
+                </TextLink>
+            ),
+        },
+        {
+            header: t('requestList.identityLogin'),
+            accessorFn: (row) => row?.identityLogin,
+            enableSorting: true,
+            id: 'identityLogin',
+            cell: (ctx) => <span>{ctx?.row?.original?.identityLogin}</span>,
+        },
+        {
+            header: t('requestList.telephone'),
+            accessorFn: (row) => row?.telephone,
+            enableSorting: true,
+            id: 'telephone',
+            cell: (ctx) => <span>{ctx?.row?.original?.telephone}</span>,
+        },
+        {
+            header: t('requestList.mobile'),
+            accessorFn: (row) => row?.mobile,
+            enableSorting: true,
+            id: 'mobile',
+            cell: (ctx) => <span>{ctx?.row?.original?.mobile}</span>,
+        },
+        {
+            header: t('requestList.email'),
+            accessorFn: (row) => row?.email,
+            enableSorting: true,
+            id: 'email',
+            cell: (ctx) => <span>{ctx?.row?.original?.email}</span>,
+        },
+        {
+            header: t('requestList.createdAt'),
+            accessorFn: (row) => row?.createdAt,
+            enableSorting: true,
+            id: 'createdAt',
+            cell: (ctx) => (
+                <span>{ctx?.row?.original?.createdAt ? new Date(ctx?.row?.original?.createdAt).toLocaleDateString(i18n.language) : ''}</span>
+            ),
+        },
+        {
+            header: t('requestList.claimState'),
+            accessorFn: (row) => row?.claimState,
+            enableSorting: false,
+            id: 'claimState',
+            cell: (ctx) => <span>{ctx?.row?.original?.claimState}</span>,
+        },
+        {
+            header: t('requestList.poName'),
+            accessorFn: (row) => row?.poName,
+            enableSorting: false,
+            id: 'poName',
+            cell: (ctx) => <span className="govuk-body-s">{ctx?.row?.original?.poName}</span>,
+        },
+    ]
+
+    return (
+        <>
+            <TextHeading size="XL">
+                {listType === RequestListType.GDPR && t('requestList.gdprTitle')}
+                {listType === RequestListType.REGISTRATION && t('requestList.registrationLitle')}
+                {listType === RequestListType.REQUESTS && t('requestList.title')}
+            </TextHeading>
+            <Filter<IRequestListFilterView>
+                defaultFilterValues={defaultFilterParams}
+                form={({ filter, setValue }) => (
+                    <>
+                        <SimpleSelect
+                            label={t(`userManagement.filter.state`)}
+                            options={[
+                                {
+                                    value: '',
+                                    label: t('requestList.filter.all'),
+                                },
+                                {
+                                    value: EClaimState.WAITING,
+                                    label: t('requestList.filter.created'),
+                                },
+                                {
+                                    value: EClaimState.ACCEPTED,
+                                    label: t('requestList.filter.accepted'),
+                                },
+                                {
+                                    value: EClaimState.REFUSED,
+                                    label: t('requestList.filter.rejected'),
+                                },
+                            ]}
+                            defaultValue={filter?.status}
+                            name="status"
+                            setValue={setValue}
+                        />
+                    </>
+                )}
+            />
+            <ActionsOverTable
+                handleFilterChange={handleFilterChange}
+                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                entityName={entityName}
+                hiddenButtons={{ SELECT_COLUMNS: true }}
+            />
+            <Table
+                key={'requestListTable'}
+                rowHref={(row) => `./detail/${row?.original?.uuid}`}
+                data={data?.claimSet || []}
+                columns={columns}
+                sort={[{ orderBy: defaultFilterParams.sortAttribute, sortDirection: defaultFilterParams.ascending ? SortType.ASC : SortType.DESC }]}
+                pagination={{
+                    pageIndex: defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER,
+                    pageSize: defaultFilterParams.pageSize ?? BASE_PAGE_SIZE,
+                }}
+                onSortingChange={(columnSort) => {
+                    handleFilterChange({ sortAttribute: columnSort[0].orderBy, ascending: columnSort[0].sortDirection === SortType.ASC })
+                }}
+            />
+            <PaginatorWrapper
+                pageNumber={defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER}
+                pageSize={defaultFilterParams.pageSize ?? BASE_PAGE_SIZE}
+                dataLength={data?.pagination?.totalItems ?? 0}
+                handlePageChange={handleFilterChange}
+            />
+        </>
+    )
+}

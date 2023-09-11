@@ -1,6 +1,6 @@
 import { Row, flexRender } from '@tanstack/react-table'
 import classNames from 'classnames'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import React from 'react'
 
 import { CHECKBOX_CELL, TOOLTIP_TEXT_BREAKER } from './constants'
@@ -19,6 +19,7 @@ interface ITableRowProps<T> {
 
 export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRowClick, rowHref }: ITableRowProps<T>): JSX.Element => {
     const navigate = useNavigate()
+    const location = useLocation()
     const hasCheckbox = row.getVisibleCells().find((cell) => cell.column.id === CHECKBOX_CELL)
     return (
         <tr

@@ -76,6 +76,7 @@ const defaultFilterValues: FilterData = {
 export const NotificationsListContainer: React.FC<INotificationsListContainer> = ({ View }) => {
     const location = useLocation()
     const [sort, setSort] = useState<ColumnSort[]>([{ sortDirection: SortType.DESC, orderBy: 'CreatedAt' }])
+
     const [data, setData] = useState<NotificationsList | undefined>()
     const { filter, handleFilterChange } = useFilterParams<FilterData>(defaultFilterValues)
     const fetchNotifications = useGetNotificationListElasticHook()

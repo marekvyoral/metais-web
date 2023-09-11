@@ -270,7 +270,7 @@
         "addNewUser": "Pridať nového použivateľa",
         "actions": "Úkony",
         "filter": {
-            "state": "Blokovanie",
+            "state": "Stav",
             "stateLabel": {
                 "all": "Všetky",
                 "blocked": "Blokované",
@@ -436,7 +436,12 @@
         "settings": "Nastavenia profilu",
         "admin": "Administrácia",
         "organizations": "Správa povinných osôb",
-        "userManagement": "Správa používateľov",
+        "userManagement": {
+            "userManagement": "Správa používateľov",
+            "requestList": "Žiadosti",
+            "gdprRequestList": "Žiadosti na vymazanie osobných údajov",
+            "registrationRequestList": "Registrácie"
+        },
         "egov": {
             "entity": "Entity",
             "profiles": "Profily atribútov",
@@ -630,6 +635,38 @@
     "loading": {
         "loadingSubPage": "Načítavám podstránku",
         "export": "Preparing export"
+    },
+    "requestList": {
+        "title": "Zoznam žiadostí",
+        "registrationLitle": "Zoznam registrácií",
+        "gdprTitle": "Zoznam žiadostí",
+        "fullName": "Meno a priezvisko",
+        "identityLogin": "Login",
+        "telephone": "Telefón",
+        "mobile": "Mobil",
+        "email": "Email",
+        "createdAt": "Vytvorené",
+        "claimState": "Stav žiadosti",
+        "poName": "Povinná osoba",
+        "filter": {
+            "all": "Všetky",
+            "created": "Vytvorené",
+            "accepted": "Akceptovaná",
+            "rejected": "Odmietnutá"
+        },
+        "identityDetail": "Detail identity",
+        "rolesDetail": "Priradenie rolí k používateľovi",
+        "addRolesDetail": "Zoznam priradených rolí k používateľovi",
+        "requestDetail": "Detailné informácie o žiadosti",
+        "anonymizeBtn": "Anonymizovať údaje",
+        "deleteBtn": "Vymazanie používateľa",
+        "backBtn": "Späť",
+        "description": "Popis",
+        "decisionReason": "Dôvod zamietnutia",
+        "approve": "Schváliť",
+        "decline": "Zamietnuť",
+        "modalLabel": "Zamietnutie žiadosti",
+        "modalTextPlaceHolder": "Sem môžete napísať dôvod zamietnutia žiadosti"
     },
     "errors": {
         "default": "Ups, niečo sa pokazilo.",
