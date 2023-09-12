@@ -118,7 +118,8 @@
             "votes": "Zoznam hlasov",
             "meetings": "Zoznam zasadnutí",
             "registers": "Referenčné registre",
-            "counters": "Číselníky",
+            "codelists": "Číselníky",
+            "publicCodelists": "Publikované číselníky",
             "centralModel": "Centrálny dátový model",
             "licenses": "Licencie",
             "prud": "Register dátových oprávnení a povinností",
@@ -623,27 +624,53 @@
         "newRelation": "Pridanie nového vzťahu k {{itemName}}",
         "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}"
     },
-    "codeList": {
+    "codeListList": {
         "title": "Číselníky",
-        "publicCodelistSubtitle": "Zoznam publikovaných číselníkov",
+        "codeListSubtitle": "Zoznam číselníkov",
+        "publicCodeListSubtitle": "Zoznam publikovaných číselníkov",
+        "lockedModal": {
+            "text": "Momentáne nie je možné meniť vybraný číselník, pretože je uzamknutý používateľom ({{lockedBy}}).",
+            "button": {
+                "lastSavedRevision": "Zobraziť poslednú uloženú verziu",
+                "currentRevision": "Zobraziť aktuálne publikovnú verziu"
+            }
+        },
         "filter": {
             "title": "Filter",
-            "mainGestor": "Main authority",
-            "toDate": "Valid as of",
-            "onlyBase": "Show only base counters"
+            "mainGestor": "Hlavný gestor",
+            "toDate": "Platné ku dňu",
+            "onlyBase": {
+                "label": "Základný číselník",
+                "all": "Všetky",
+                "true": "Áno",
+                "false": "Nie"
+            },
+            "state": "Stav číselníka",
+            "name": "Názov číselníka",
+            "code": "Kód"
+        },
+        "state": {
+            "UPDATING": "Upravovaný",
+            "READY_TO_PUBLISH": "Pripravený na publikovanie",
+            "ISVS_PROCESSING": "Odoslaný na schválenie na KS ISVS",
+            "PUBLISHED": "Publikovaný",
+            "KS_ISVS_REJECTED": "Zamietnuté v Komisii pre štandardizáciu ISVS",
+            "KS_ISVS_ACCEPTED": "Akceptované v Komisii pre štandardizáciu ISVS"
         },
         "breadcrumbs": {
             "home": "Domov",
             "dataObjects": "Dátové objekty",
             "codeLists": "Číselníky",
-            "publicCodeLists": "Zoznam publikovaných číselníkov"
+            "codeListsList": "Zoznam číselníkov",
+            "publicCodeListsList": "Zoznam publikovaných číselníkov"
         },
         "table": {
             "code": "Kód",
             "name": "Názov číselníka",
             "mainGestor": "Gestor číselníka",
             "effectiveFrom": "Začiatok účinnosti",
-            "isBase": "Základný číselník"
+            "isBase": "Základný číselník",
+            "state": "Stav"
         },
         "error": {
             "selectFilterMainGestor": ""

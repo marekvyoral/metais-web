@@ -6,6 +6,7 @@ export enum RouteNames {
     HOW_TO_PUBLIC_AUTHORITIES = 'howto/CMBD.PUBLIC_AUTHORITIES/PUBLIC_AUTHORITIES_HOWTO',
     HOW_TO_EGOV_COMPONENTS = 'howto/CMDB.EGOV_TITLE/EGOV_HOWTO',
     HOW_TO_STANDARDIZATION = 'howto/STANDARD.PROCESS/STD_HOWTO',
+    HOW_TO_CODELIST = 'howto/CODELIST.CODELIST/CODELISTS_HOWTO',
     HOW_TO_MONITORING = 'howto/MONITORING.MONITORING/MONITORING_HOWTO',
     //not found on metais
     HOW_TO_DATA_OBJECTS = 'howto/DATA.DATA_OBJECTS/DO_HOWTO',
@@ -66,7 +67,8 @@ export enum NavigationSubRoutes {
     ZOZNAM_ZASADNUTI = 'standardization/meetingslist',
     TVORBA_NAVRHU = 'standardization/newdraft',
     REFERENCE_REGISTRE = 'refregisters/list',
-    CISELNIKY = 'codelists/publiclist',
+    CISELNIKY = 'codelists/list',
+    PUBLIKOVANE_CISELNIKY = 'codelists/publiclist',
     CENTRALNY_DATOVY_MODEL = 'todo',
     PRUD = 'todo',
     JEDNOTNA_DIGITALNA_BRANA = 'todo',
@@ -85,6 +87,7 @@ export enum NavigationSubRoutes {
 export interface NavigationSubItem {
     title: string
     path: string
+    isLoginRequired?: boolean
     subItems?: NavigationSubItem[]
 }
 

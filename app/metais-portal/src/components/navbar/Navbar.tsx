@@ -9,7 +9,7 @@ import { NotificationIcon } from '@isdd/metais-common/assets/images'
 import { IconWithNotification } from '@isdd/metais-common/components/navbar/navbar-main/IconWithNotification'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
-import { getPortalNavitagionItems } from './navigationItems'
+import { getPortalNavigationItems } from './navigationItems'
 
 import { TasksPopup } from '@/components/tasks-popup/TasksPopup'
 
@@ -46,7 +46,7 @@ export const Navbar: React.FC = () => {
 
                     <div className="idsk-header-web__nav--divider" />
 
-                    <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={getPortalNavitagionItems(t)} />
+                    <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={getPortalNavigationItems(t, !!user)} />
                 </div>
             </header>
         </>

@@ -6,6 +6,20 @@ import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFil
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+export enum CodeListFilterOnlyBase {
+    TRUE = 'TRUE',
+    FALSE = 'FALSE',
+}
+
+export enum CodeListState {
+    PUBLISHED = 'PUBLISHED',
+    UPDATING = 'UPDATING',
+    READY_TO_PUBLISH = 'READY_TO_PUBLISH',
+    ISVS_PROCESSING = 'ISVS_PROCESSING',
+    KS_ISVS_REJECTED = 'KS_ISVS_REJECTED',
+    KS_ISVS_ACCEPTED = 'KS_ISVS_ACCEPTED',
+}
+
 interface CodeListData {
     list?: ApiCodelistPreview[]
     roleParticipants?: RoleParticipantUI[]
@@ -16,6 +30,7 @@ export interface CodeListListViewProps {
     data?: CodeListData
     filter: IFilter
     handleFilterChange: (filter: IFilter) => void
+    isOnlyPublishedPage?: boolean
 }
 
 export interface CodeListListFilterData extends IFilterParams, IFilter {
@@ -23,21 +38,28 @@ export interface CodeListListFilterData extends IFilterParams, IFilter {
     sortBy?: string
     ascending?: boolean
     mainGestorPoUuid?: string
-    onlyBase?: boolean
+    onlyBase?: CodeListFilterOnlyBase
     toDate?: string
+    wfState?: string
+    code?: string
+    name?: string
 }
 
 interface CodeListContainerProps {
+    isOnlyPublishedPage?: boolean
     View: React.FC<CodeListListViewProps>
 }
 
 export const defaultFilterValues = {
+    onlyBase: undefined,
     mainGestorPoUuid: '',
-    onlyBase: false,
     toDate: '',
+    wfState: '',
+    code: '',
+    name: '',
 }
 
-export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ View }) => {
+export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ isOnlyPublishedPage, View }) => {
     const { t, i18n } = useTranslation()
 
     const { filter, handleFilterChange } = useFilterParams<CodeListListFilterData>({
@@ -55,26 +77,30 @@ export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ View }
         isError: isErrorCodelistHeaders,
         data: codelistHeadersData,
     } = useGetCodelistHeaders({
-        isBase: filter.onlyBase || false,
-        toDate: filter.toDate || '',
-        mainGestorPoUuid: filter.mainGestorPoUuid || '',
-        language: i18n.language || 'sk',
-        pageNumber: filter.pageNumber || BASE_PAGE_NUMBER,
-        perPage: filter.pageSize || BASE_PAGE_SIZE,
+        toDate: filter.toDate ?? '',
+        mainGestorPoUuid: filter.mainGestorPoUuid ?? '',
+        language: i18n.language ?? 'sk',
+        pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+        perPage: filter.pageSize ?? BASE_PAGE_SIZE,
         sortBy: filter.sort?.[0]?.orderBy ?? 'code',
         ascending: filter.sort?.[0]?.sortDirection === SortType.DESC ?? false,
-        wfState: 'PUBLISHED',
+        ...(filter.onlyBase && { isBase: filter.onlyBase === CodeListFilterOnlyBase.TRUE }),
+        ...(filter.name && { nameFilter: filter.name }),
+        ...(filter.code && { code: filter.code }),
+        ...(filter.wfState && { wfState: filter.wfState }),
+        ...(isOnlyPublishedPage && { wfState: CodeListState.PUBLISHED }),
     })
+
+    const gids = (codelistHeadersData?.codelists ?? [])
+        .filter((item) => item?.mainCodelistManagers?.length)
+        .map((item) => item.mainCodelistManagers?.[0]?.value || '')
 
     const {
         data: roleParticipantsData,
         isLoading: isLoadingRoleParticipants,
         isError: isErrorRoleParticipants,
         isFetching: isFetchingCiList,
-    } = useGetRoleParticipantBulk(
-        { gids: codelistHeadersData?.codelists?.map((item) => item.mainCodelistManagers?.[0].value).filter((item): item is string => !!item) ?? [] },
-        { query: { enabled: !!codelistHeadersData?.codelists?.length } },
-    )
+    } = useGetRoleParticipantBulk({ gids }, { query: { enabled: !!codelistHeadersData?.codelists?.length } })
 
     const isLoading = [isLoadingCodelistHeaders, isLoadingRoleParticipants && isFetchingCiList].some((item) => item)
     const isError = [isErrorCodelistHeaders, isErrorRoleParticipants].some((item) => item)

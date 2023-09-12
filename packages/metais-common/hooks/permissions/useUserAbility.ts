@@ -16,7 +16,7 @@ export enum Actions {
 
 export const ADMIN = 'R_ADMIN'
 
-export const CANNOT_READ_ENTITY = ['ulohy', 'notifications']
+export const CANNOT_READ_ENTITY = ['ulohy', 'notifications', 'codelists/list']
 
 const defineAbilityForUser = (roles: string[] = [], entityName: string, create?: boolean) => {
     const { can, build } = new AbilityBuilder(createMongoAbility)
