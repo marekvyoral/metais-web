@@ -118,7 +118,8 @@
             "votes": "Votes",
             "meetings": "Meetings",
             "registers": "Reference registers",
-            "counters": "Numerals",
+            "codelists": "Codelists",
+            "publicCodelists": "Public codelists",
             "centralModel": "Central data model",
             "licenses": "Licenses",
             "prud": "Register of data permissions and responsibilities",
@@ -622,27 +623,53 @@
         "newRelation": "Add new relation of {{itemName}}",
         "newCiAndRelation": "Add new item and relation for {{itemName}}"
     },
-    "codeList": {
+    "codeListList": {
         "title": "Codelists",
-        "publicCodelistSubtitle": "List of published codelists",
+        "codeListSubtitle": "List of codelists",
+        "publicCodeListSubtitle": "List of published codelists",
+        "lockedModal": {
+            "text": "It is currently not possible to change the selected codelists because it is locked by the user ({{lockedBy}}).",
+            "button": {
+                "lastSavedRevision": "View the last saved version",
+                "currentRevision": "View the currently published version"
+            }
+        },
         "filter": {
             "title": "Filter",
-            "mainAuthority": "Hlavný gestor",
-            "toDate": "Platné ku dňu",
-            "onlyBase": "Zobraziť len základné číselníky"
+            "mainGestor": "Main authority",
+            "toDate": "Valid as of",
+            "onlyBase": {
+                "label": "Is base counter",
+                "all": "All",
+                "true": "True",
+                "false": "False"
+            },
+            "state": "Counter status",
+            "name": "Counter name",
+            "code": "Code"
+        },
+        "state": {
+            "UPDATING": "Modified",
+            "READY_TO_PUBLISH": "Ready for publishing",
+            "ISVS_PROCESSING": "Sent for approval to the Committee for Standardization of ISPA.",
+            "PUBLISHED": "Published",
+            "KS_ISVS_REJECTED": "Rejected by Committee for Standardization ISPA",
+            "KS_ISVS_ACCEPTED": "Accepted by Committee for Standardization ISPA"
         },
         "breadcrumbs": {
-            "home": "Domov",
-            "dataObjects": "Dátové objekty",
+            "home": "Home",
+            "dataObjects": "Data objects",
             "codeLists": "Codelists",
-            "publicCodeLists": "List of published codelists"
+            "codeListsList": "List of codelists",
+            "publicCodeListsList": "List of published codelists"
         },
         "table": {
             "code": "Code",
             "name": "Counter name",
             "mainGestor": "Main authority",
             "effectiveFrom": "Valid as of",
-            "isBase": "Base counter"
+            "isBase": "Base counter",
+            "state": "State"
         }
     },
     "selectCiItem": {
