@@ -1,17 +1,24 @@
-import React, { SetStateAction, useCallback } from 'react'
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
 import { Identity, useFind1Hook, useGetPages2 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { OptionProps, components } from 'react-select'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import { MultiValue, OptionProps, components } from 'react-select'
+import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 
-import styles from './tasks.module.scss'
+import styles from './identity-select.module.scss'
 
-interface IAssignToUserSelect {
-    selectedLogin: Identity | undefined
-    setSelectedLogin: React.Dispatch<SetStateAction<Identity | undefined>>
+interface IIdentitySelect {
+    name: string
+    onChange?: (val: Identity | MultiValue<Identity> | null) => void
+    label?: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setValue?: UseFormSetValue<any>
+    error?: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    clearErrors?: UseFormClearErrors<any>
 }
 
-export const AssignToUserSelect: React.FC<IAssignToUserSelect> = ({ selectedLogin, setSelectedLogin }) => {
+export const IdentitySelect: React.FC<IIdentitySelect> = ({ label, clearErrors, setValue, name, error, onChange }) => {
     const perPage = 20
     const { t } = useTranslation()
     const { data: numberOfIdentities } = useGetPages2()
@@ -49,14 +56,17 @@ export const AssignToUserSelect: React.FC<IAssignToUserSelect> = ({ selectedLogi
 
     return (
         <SelectLazyLoading<Identity>
-            name="account"
-            label={t('tasks.selectLogin')}
-            value={selectedLogin}
-            onChange={(val) => setSelectedLogin(Array.isArray(val) ? val[0] : val)}
-            getOptionValue={(item) => item.login || ''}
+            id={name}
+            name={name}
+            label={label ? `${label}:` : `${t('tasks.selectLogin')}:`}
+            getOptionValue={(item) => item.uuid || ''}
             getOptionLabel={(item) => item.displayName || ''}
             option={(props) => selectLazyLoadingLoginOption(props)}
             loadOptions={(searchTerm, _, additional) => loadLoginOptions(searchTerm, additional)}
+            setValue={setValue}
+            error={error}
+            clearErrors={clearErrors}
+            onChange={onChange}
         />
     )
 }

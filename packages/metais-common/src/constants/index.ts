@@ -47,3 +47,20 @@ export enum ReponseErrorCodeEnum {
     DEFAULT = 'default',
     GNR403 = 'gnr403',
 }
+
+export enum GROUP_ROLES {
+    STD_PSPRE = 'STD_PSPRE',
+    STD_PSPODP = 'STD_PSPODP',
+    STD_PSCLEN = 'STD_PSCLEN',
+    STD_PSPO = 'STD_PSPO',
+    STD_PSZAST = 'STD_PSZAST',
+}
+
+export enum KSISVS_ROLES {
+    STD_KSPRE = 'STD_KSPRE',
+    STD_KSPODP = 'STD_KSPODP',
+    STD_KSTAJ = 'STD_KSTAJ',
+    STD_KSCLEN = 'STD_KSCLEN',
+}
+
+export const KSIVS_SHORT_NAME = 'KSISVS'

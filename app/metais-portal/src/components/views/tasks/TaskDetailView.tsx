@@ -1,15 +1,15 @@
-import React, { SetStateAction } from 'react'
-import { LoadingIndicator, BreadCrumbs, HomeIcon, TextHeading, Button, TextBody, Table, GridCol, GridRow } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, GridCol, GridRow, HomeIcon, LoadingIndicator, Table, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Identity, RoleOrgIdentity } from '@isdd/metais-common/api/generated/iam-swagger'
 import { Task, TaskHistory, TaskState } from '@isdd/metais-common/api/generated/tasks-swagger'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { useTranslation } from 'react-i18next'
 import { ColumnDef } from '@tanstack/react-table'
+import React, { SetStateAction } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { AssignToUserSelect } from './AssignToUserSelect'
 import { AssignToGroupSelect } from './AssignToGroupSelect'
 import styles from './tasks.module.scss'
 
+import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect'
 interface ITaskDetailView {
     task: Task | undefined
     historyColumns: ColumnDef<TaskHistory>[]
@@ -17,7 +17,6 @@ interface ITaskDetailView {
     isError: boolean
     closeTask: () => void
     reassignTask: (assignToUser: boolean) => void
-    selectedLogin: Identity | undefined
     setSelectedLogin: React.Dispatch<SetStateAction<Identity | undefined>>
     selectedGroup: RoleOrgIdentity | undefined
     setSelectedGroup: React.Dispatch<SetStateAction<RoleOrgIdentity | undefined>>
@@ -30,7 +29,6 @@ export const TaskDetailView: React.FC<ITaskDetailView> = ({
     isError,
     closeTask,
     reassignTask,
-    selectedLogin,
     setSelectedLogin,
     selectedGroup,
     setSelectedGroup,
@@ -54,7 +52,12 @@ export const TaskDetailView: React.FC<ITaskDetailView> = ({
                     <Button onClick={closeTask} label={t('tasks.finish')} className="idsk-button" />
                     <GridRow>
                         <GridCol setWidth="two-thirds">
-                            <AssignToUserSelect selectedLogin={selectedLogin} setSelectedLogin={setSelectedLogin} />
+                            <IdentitySelect
+                                name="identitySelect"
+                                onChange={(val) => {
+                                    setSelectedLogin(Array.isArray(val) ? val[0] : val)
+                                }}
+                            />
                         </GridCol>
                         <GridCol setWidth="one-third">
                             <Button

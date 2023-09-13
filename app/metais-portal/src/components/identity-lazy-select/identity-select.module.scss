@@ -1,0 +1,9 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.selectOption {
+    padding: govuk-spacing(1) !important;
+}
+
+.selectOption:hover {
+    background-color: govuk-colour('grey-4') !important;
+}
