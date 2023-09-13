@@ -6,7 +6,7 @@ const removeSubItemsForLoggedInUser = (subItems?: NavigationSubItem[]): Navigati
     return subItems?.filter((item) => !item.isLoginRequired).map((item) => ({ ...item, subItems: removeSubItemsForLoggedInUser(item.subItems) }))
 }
 
-export const getPortalNavigationItems = (t: TFunction, isAuthorized = false): NavigationItem[] => {
+export const getPortalNavigationItems = (t: TFunction, isAuthorized = false, ksisvsGroupId: string | undefined): NavigationItem[] => {
     const navigationItems: NavigationItem[] = [
         {
             title: t('navMenu.egovComponents'),
@@ -38,7 +38,7 @@ export const getPortalNavigationItems = (t: TFunction, isAuthorized = false): Na
             icon: StandartsIcon,
             subItems: [
                 { title: t('navMenu.lists.standards'), path: NavigationSubRoutes.STANDARDY_ISVS },
-                { title: t('navMenu.lists.commission'), path: NavigationSubRoutes.KOMISIA_NA_STANDARDIZACIU },
+                { title: t('navMenu.lists.commission'), path: `${NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE}/${ksisvsGroupId}` },
                 { title: t('navMenu.lists.groups'), path: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE },
                 { title: t('navMenu.lists.concepts'), path: NavigationSubRoutes.ZOZNAM_NAVRHOV },
                 { title: t('navMenu.lists.votes'), path: NavigationSubRoutes.ZOZNAM_HLASOV },

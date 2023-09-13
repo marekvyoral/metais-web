@@ -88,7 +88,6 @@ export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) 
             historyColumns={historyColumns}
             closeTask={closeTask}
             reassignTask={reassignTask}
-            selectedLogin={selectedLogin}
             setSelectedLogin={setSelectedLogin}
             selectedGroup={selectedGroup}
             setSelectedGroup={setSelectedGroup}

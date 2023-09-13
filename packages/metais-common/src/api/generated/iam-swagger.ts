@@ -40,8 +40,8 @@ export type FindRelatedIdentitiesAndCountParams = {
     role?: string
     substitutedBy?: string
     identityState?: string
-    page?: string
-    perPage?: string
+    page?: number
+    perPage?: number
 }
 
 export type FindRelatedIdentities3Params = {
@@ -177,10 +177,10 @@ export type Find2111Params = {
     organization?: string
     sortBy?: string
     ascending?: boolean
-    shortName: string
+    shortName?: string
     orderBy?: string
     direction?: string
-    name: string
+    name?: string
 }
 
 export type FindAll311200 = Identity | Identity[]

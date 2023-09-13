@@ -1,8 +1,8 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import { MultiValue, OptionProps, components } from 'react-select'
 import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { object, string } from 'yup'
 
 import { SelectLazyLoading } from './SelectLazyLoading'
@@ -40,7 +40,7 @@ const loadOptions = async (searchQuery: string, additional: { page: number } | u
 
     const options = (await fetch(`https://www.anapioficeandfire.com/api/houses?region=${searchQuery}&page=${page}&pageSize=10`).then((response) =>
         response.json(),
-    )) as { name: string }[]
+    )) as { name: string; url: string }[]
     return {
         options: options || [],
         hasMore: options?.length ? true : false,
@@ -87,6 +87,7 @@ export const PaginatedRemoteFetch: Story = {
 
 interface Option {
     name: string
+    url: string
 }
 
 export interface IForm {
@@ -115,10 +116,10 @@ export const UncontrolledFormHookGroup: Story = {
                         id="selectOption"
                         name="selectOption"
                         loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
-                        getOptionValue={(item) => item.name}
+                        getOptionValue={(item) => item.url}
                         getOptionLabel={(item) => item.name}
                         label="Label test"
-                        defaultValue={{ name: defaultValue }}
+                        defaultValue={{ name: defaultValue, url: 'defaultUrl' }}
                         setValue={setValue}
                         isMulti={false}
                         error={formState.errors.selectOption?.message}
