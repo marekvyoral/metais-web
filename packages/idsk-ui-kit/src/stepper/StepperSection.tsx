@@ -4,7 +4,7 @@ import React, { useId } from 'react'
 import { StepperArrayEnum } from './Stepper'
 import styles from './stepper.module.scss'
 
-import { AlertTriangleIcon } from '@isdd/idsk-ui-kit/assets/images'
+import { AlertTriangleIcon, InfoIcon } from '@isdd/idsk-ui-kit/assets/images'
 export interface IStepLabel {
     label: string
     variant: 'circle' | 'no-outline'
@@ -17,6 +17,7 @@ export interface ISection {
     stepLabel?: IStepLabel
     content?: React.ReactNode
     error?: boolean
+    change?: boolean
 }
 
 interface IStepperSection {
@@ -81,6 +82,7 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                             </button>
                         </h4>
                         {section.error && <img src={AlertTriangleIcon} />}
+                        {section.change && <img src={InfoIcon} />}
                     </div>
                 </div>
 
