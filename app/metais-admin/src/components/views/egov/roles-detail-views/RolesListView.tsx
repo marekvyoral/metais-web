@@ -1,4 +1,4 @@
-import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, Paginator, Table, TextHeading } from '@isdd/idsk-ui-kit'
+import { BreadCrumbs, ButtonLink, ButtonPopup, HomeIcon, Paginator, Table, TextHeading } from '@isdd/idsk-ui-kit'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { Role } from '@isdd/metais-common/api/generated/iam-swagger'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useLocation } from 'react-router-dom'
+
+import styles from './roles.module.scss'
 
 import { RoleListViewParams, defaultFilterValues } from '@/components/containers/Egov/Roles/RolesListContainer'
 import { RolesFilter } from '@/components/views/egov/roles-detail-views/components/Rolesfilter'
@@ -79,24 +81,39 @@ const RoleListView: React.FC<RoleListViewParams> = ({
             header: () => <></>,
             size: 210,
             cell: ({ cell }) => (
-                <ButtonGroupRow key={cell.id}>
-                    <Button
-                        label={t('adminRolesPage.assignedUsers')}
-                        variant="secondary"
-                        onClick={() => navigate(AdminRouteNames.ROLE_USERS + '/' + cell.row.original.uuid, { state: { from: location } })}
-                    />
-                    <Button
-                        label={t('adminRolesPage.edit')}
-                        onClick={() => navigate(AdminRouteNames.ROLE_EDIT + '/' + cell.row.original.uuid, { state: { from: location } })}
-                    />
-                    <Button
-                        label={t('adminRolesPage.deactivate')}
-                        variant="warning"
-                        onClick={() => {
-                            setRoleToDelete(cell.row.original)
-                        }}
-                    />
-                </ButtonGroupRow>
+                <ButtonPopup
+                    key={cell.id}
+                    popupPosition="right"
+                    buttonLabel={t('actionsInTable.moreActions')}
+                    popupContent={(closePopup) => (
+                        <div className={styles.buttonPopup}>
+                            <ButtonLink
+                                label={t('adminRolesPage.assignedUsers')}
+                                type="button"
+                                onClick={() => {
+                                    navigate(AdminRouteNames.ROLE_USERS + '/' + cell.row.original.uuid, { state: { from: location } })
+                                    closePopup()
+                                }}
+                            />
+                            <ButtonLink
+                                label={t('adminRolesPage.edit')}
+                                type="button"
+                                onClick={() => {
+                                    navigate(AdminRouteNames.ROLE_EDIT + '/' + cell.row.original.uuid, { state: { from: location } })
+                                    closePopup()
+                                }}
+                            />
+                            <ButtonLink
+                                label={t('adminRolesPage.deactivate')}
+                                type="button"
+                                onClick={() => {
+                                    setRoleToDelete(cell.row.original)
+                                    closePopup()
+                                }}
+                            />
+                        </div>
+                    )}
+                />
             ),
             accessorKey: 'edit',
         },

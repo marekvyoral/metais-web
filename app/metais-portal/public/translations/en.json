@@ -754,5 +754,9 @@
         "errorMessage": "We apologize, but an error occurred while creating new relation. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
         "email": "metais@mirri.gov.sk",
         "selectRelTypeError": "You are missing needed rights to create this relation type"
+    },
+    "todo": {
+        "header": "Under construction",
+        "homeButton": "Home page"
     }
 }

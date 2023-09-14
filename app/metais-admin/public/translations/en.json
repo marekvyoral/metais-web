@@ -699,6 +699,10 @@
         "default": "Ups, something went wrong.",
         "gnr403": "You do not have permission to call this API."
     },
+    "todo": {
+        "header": "Under construction",
+        "homeButton": "Home page"
+    },
     "breadcrumbs": {
         "home": "Home",
         "ciEdit": "Edit of {{itemName}}",

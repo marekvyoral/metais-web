@@ -698,6 +698,10 @@
         "default": "Ups, niečo sa pokazilo.",
         "gnr403": "Na volanie nemáte oprávnenie."
     },
+    "todo": {
+        "header": "Vo výstavbe",
+        "homeButton": "Domovská stránka"
+    },
     "breadcrumbs": {
         "home": "Domov",
         "ciEdit": "Editácia {{itemName}}",

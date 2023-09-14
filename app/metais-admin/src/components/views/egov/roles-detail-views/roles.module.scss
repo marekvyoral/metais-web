@@ -1,3 +1,11 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
 .flexEnd {
     justify-content: flex-end;
+}
+
+.buttonPopup {
+    display: flex;
+    flex-direction: column;
+    gap: govuk-spacing(4);
 }
