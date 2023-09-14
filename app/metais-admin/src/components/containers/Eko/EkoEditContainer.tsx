@@ -1,4 +1,3 @@
-import { QueryFeedback } from '@isdd/metais-common'
 import { EkoCode, GetEkoCodesParams, useEditEkoCode, useGetEkoCodes } from '@isdd/metais-common/api'
 import React from 'react'
 
@@ -26,9 +25,5 @@ export const EkoEditContainer: React.FC<IEditEkoCodeContainerProps> = ({ ekoCode
         })
     }
 
-    return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View data={editData} mutate={editEko} />
-        </QueryFeedback>
-    )
+    return <View data={editData} mutate={editEko} isLoading={isLoading} isError={isError} />
 }

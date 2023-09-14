@@ -14,6 +14,7 @@ import styles from './styles.module.scss'
 
 import { GroupDetailViewProps, identitiesFilter, TableData } from '@/components/containers/standardization/groups/GroupDetailContainer'
 import GroupDetailBaseInfo from '@/components/views/standartization/groups/components/BaseGroupInfo'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const GroupDetailView: React.FC<GroupDetailViewProps> = ({
     id,
@@ -59,47 +60,51 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                 group={group}
             />
             <BreadCrumbs
+                withWidthContainer
                 links={[
                     { href: RouteNames.HOME, label: t('notifications.home'), icon: HomeIcon },
                     { href: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE, label: t('navMenu.standardization') },
                     { href: NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL, label: group?.name ?? '' },
                 ]}
             />
-            <GroupDetailBaseInfo infoData={group} />
-            <TextHeading size="L">{t('groups.listOfMembers')}</TextHeading>
-            <GroupMembersFilter defaultFilterValues={identitiesFilter} isKsisvs={group?.shortName === 'KSISCS'} />
-            <GroupMembersTableActions
-                setAddModalOpen={setAddModalOpen}
-                listParams={listParams}
-                setListParams={setListParams}
-                selectedRows={rowSelection}
-            />
-            {successfulUpdatedData && (
-                <IconWithText icon={GreenCheckOutlineIcon}>
-                    <TextBody className={styles.greenBoldText}>{t('groups.memberSuccessfullyAdded')}</TextBody>
-                </IconWithText>
-            )}
-            <Table<TableData>
-                onSortingChange={(newSort) => {
-                    if (newSort.length > 0) {
-                        setListParams({ ...listParams, orderBy: newSort[0].orderBy, desc: newSort[0].sortDirection == SortType.DESC })
-                    }
-                    setSorting(newSort)
-                }}
-                isLoading={isIdentitiesLoading}
-                sort={sorting}
-                columns={selectableColumnsSpec}
-                data={tableData}
-                isRowSelected={isRowSelected}
-            />
-            <PaginatorWrapper
-                pageNumber={Number(listParams.page)}
-                pageSize={Number(listParams.perPage)}
-                dataLength={identitiesData?.count ?? 0}
-                handlePageChange={(pagination) => {
-                    setListParams({ ...listParams, page: pagination.pageNumber })
-                }}
-            />
+            <MainContentWrapper>
+                <GroupDetailBaseInfo infoData={group} />
+
+                <TextHeading size="L">{t('groups.listOfMembers')}</TextHeading>
+                <GroupMembersFilter defaultFilterValues={identitiesFilter} isKsisvs={group?.shortName === 'KSISCS'} />
+                <GroupMembersTableActions
+                    setAddModalOpen={setAddModalOpen}
+                    listParams={listParams}
+                    setListParams={setListParams}
+                    selectedRows={rowSelection}
+                />
+                {successfulUpdatedData && (
+                    <IconWithText icon={GreenCheckOutlineIcon}>
+                        <TextBody className={styles.greenBoldText}>{t('groups.memberSuccessfullyAdded')}</TextBody>
+                    </IconWithText>
+                )}
+                <Table<TableData>
+                    onSortingChange={(newSort) => {
+                        if (newSort.length > 0) {
+                            setListParams({ ...listParams, orderBy: newSort[0].orderBy, desc: newSort[0].sortDirection == SortType.DESC })
+                        }
+                        setSorting(newSort)
+                    }}
+                    isLoading={isIdentitiesLoading}
+                    sort={sorting}
+                    columns={selectableColumnsSpec}
+                    data={tableData}
+                    isRowSelected={isRowSelected}
+                />
+                <PaginatorWrapper
+                    pageNumber={Number(listParams.page)}
+                    pageSize={Number(listParams.perPage)}
+                    dataLength={identitiesData?.count ?? 0}
+                    handlePageChange={(pagination) => {
+                        setListParams({ ...listParams, page: pagination.pageNumber })
+                    }}
+                />
+            </MainContentWrapper>
         </>
     )
 }

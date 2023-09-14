@@ -1,7 +1,9 @@
 import React from 'react'
 
+import { MainContentWrapper } from '@/components/MainContentWrapper'
+
 const MonitoringHowTo = () => {
-    return <div>MONITORING_HOWTO</div>
+    return <MainContentWrapper>MONITORING_HOWTO</MainContentWrapper>
 }
 
 export default MonitoringHowTo

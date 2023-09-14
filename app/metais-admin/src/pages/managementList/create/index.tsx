@@ -1,14 +1,12 @@
 import React from 'react'
+import { Outlet } from 'react-router-dom'
 
-import { UserManagementForm } from '@/components/views/egov/management-list-views/UserManagementForm'
-import { UserManagementContainer } from '@/components/containers/ManagementList/UserManagementContainer'
+import CreateUserManagement from './create'
 
-const CreateUserManagement: React.FC = () => {
-    return (
-        <UserManagementContainer
-            View={({ data: managementData }) => <UserManagementForm isCreate detailData={undefined} managementData={managementData} />}
-        />
-    )
+export const INDEX_ROUTE = CreateUserManagement
+
+const index: React.FC = () => {
+    return <Outlet />
 }
 
-export default CreateUserManagement
+export default index

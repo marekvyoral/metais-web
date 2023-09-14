@@ -1,5 +1,6 @@
 import { IFilter } from '@isdd/idsk-ui-kit/src/types'
 
+import { DEFAULT_PAGESIZE_OPTIONS, FIRST_PAGE_NUMBER } from '@isdd/metais-common/constants'
 import { CiListFilterContainerUi, NeighboursFilterContainerUi, NeighboursFilterUi } from '@isdd/metais-common/api'
 
 export interface INeighboursFilter extends IFilter {
@@ -10,8 +11,8 @@ export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: {
     const { pageNumber, pageSize, sort } = filter
     return {
         ...defaultApiFilter,
-        page: pageNumber,
-        perpage: pageSize,
+        page: pageNumber ? pageNumber : FIRST_PAGE_NUMBER,
+        perpage: pageSize ? pageSize : Number(DEFAULT_PAGESIZE_OPTIONS[0].value),
         sortBy: sort?.[0]?.orderBy ?? '',
         sortType: sort?.[0]?.sortDirection,
     }

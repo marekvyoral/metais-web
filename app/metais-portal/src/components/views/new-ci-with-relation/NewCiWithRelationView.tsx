@@ -1,17 +1,27 @@
-import { BreadCrumbs, ErrorBlock, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { RoleOrgGroup } from '@isdd/metais-common/api/generated/iam-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
-import { ATTRIBUTE_NAME, CiCode, CiType, ConfigurationItemUi, EnumType, MutationFeedback, useStoreGraph } from '@isdd/metais-common/index'
+import {
+    ATTRIBUTE_NAME,
+    CiCode,
+    CiType,
+    ConfigurationItemUi,
+    EnumType,
+    MutationFeedback,
+    QueryFeedback,
+    useStoreGraph,
+} from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/src/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
@@ -45,14 +55,17 @@ interface Props {
     tabName: string
     data: NewCiWithRelationData
     states: NewCiWithRelationStates
+    isLoading: boolean
+    isError: boolean
 }
 
-export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, data, states, tabName }) => {
+export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, data, states, isError, isLoading }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
 
     const ability = useAbilityContext()
-    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
+    const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
 
     const { attributesData, generatedEntityId, relationData, groupData } = data
 
@@ -88,7 +101,7 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
 
     useEffect(() => {
         if (!selectedRelationTypeTechnicalName) {
-            setSelectedRelationTypeTechnicalName(createSelectRelationTypeOptions(relatedListAsSources, relatedListAsTargets, t)[1].value)
+            setSelectedRelationTypeTechnicalName(createSelectRelationTypeOptions(relatedListAsSources, relatedListAsTargets, t)[1]?.value)
         }
     }, [relatedListAsSources, relatedListAsTargets, selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName, t])
 
@@ -150,28 +163,16 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
     }
 
     return (
-        <>
-            <BreadCrumbs
-                links={[
-                    { label: t('breadcrumbs.home'), href: '/' },
-                    { label: entityName, href: `/ci/${entityName}` },
-                    { label: currentName ? currentName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
-                    {
-                        label: t('breadcrumbs.newCiAndRelation', { itemName: currentName }),
-                        href: `/ci/${entityName}/${entityId}/new-ci/${tabName}`,
-                    },
-                ]}
-            />
-            {(storeGraph.isError || storeGraph.isSuccess) && (
-                <MutationFeedback success={storeGraph.isSuccess} error={storeGraph.isError ? t('newRelation.mutationError') : ''} />
-            )}
-
-            <TextHeading size="XL">{t('newRelation.newCiWithRelationHeading')}</TextHeading>
+        <QueryFeedback loading={isLoading} error={false} withChildren>
+            <FlexColumnReverseWrapper>
+                <TextHeading size="XL">{t('newRelation.newCiWithRelationHeading')}</TextHeading>
+                {isError && <QueryFeedback loading={false} error={isError} />}
+                {(storeGraph.isError || storeGraph.isSuccess) && (
+                    <MutationFeedback success={storeGraph.isSuccess} error={storeGraph.isError ? t('newRelation.mutationError') : ''} />
+                )}
+            </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
 
-            {!hasOrgPermission && selectedPublicAuthority && (
-                <ErrorBlock errorTitle={t('createEntity.orgAndRoleError.title')} errorMessage={t('createEntity.orgAndRoleError.message')} />
-            )}
             <SelectPublicAuthorityAndRole
                 selectedRoleId={selectedRole}
                 onChangeAuthority={setSelectedPublicAuthority}
@@ -186,7 +187,9 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
                 options={createSelectRelationTypeOptions(relatedListAsSources, relatedListAsTargets, t)}
                 value={selectedRelationTypeTechnicalName}
                 onChange={(val) => setSelectedRelationTypeTechnicalName(val ?? '')}
+                error={!canCreateRelationType ? t('newRelation.selectRelTypeError') : ''}
             />
+
             <CreateCiEntityForm
                 ciTypeData={ciTypeData}
                 generatedEntityId={generatedEntityId ?? { cicode: '', ciurl: '' }}
@@ -196,7 +199,8 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
                 onSubmit={onSubmit}
                 relationSchema={relationSchema}
                 isProcessing={storeGraph.isLoading}
+                withRelation
             />
-        </>
+        </QueryFeedback>
     )
 }

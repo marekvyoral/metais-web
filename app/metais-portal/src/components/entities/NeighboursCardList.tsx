@@ -4,10 +4,12 @@ import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWr
 import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { QueryFeedback, formatRelationAttributes } from '@isdd/metais-common'
-import { ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
+import { CiType, ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions, useCreateCiAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 
 import { CardColumnList } from './cards/CardColumnList'
 import { RelationCard } from './cards/RelationCard'
@@ -22,6 +24,7 @@ interface NeighboursCardListProps {
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
     setPageConfig: (value: React.SetStateAction<ReadCiNeighboursWithAllRelsParams>) => void
+    ciTypeData: CiType | undefined
 }
 
 export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
@@ -31,11 +34,17 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
     pagination,
     handleFilterChange,
     setPageConfig,
+    ciTypeData,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
     const { entityTypes, relationsList, owners } = data
+
+    const ability = useAbilityContext()
+    const canCreateRelation = ability?.can(Actions.CREATE, `ci.create.newRelation`)
+    const ciAbility = useCreateCiAbility(ciTypeData)
+    const canCreateCi = ciAbility.can(Actions.CREATE, 'ci')
 
     return (
         <>
@@ -49,12 +58,14 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                             loading={isLoading && !data.relationsList?.pagination}
                             error={isError}
                             errorProps={{ errorMessage: t('feedback.failedFetch') }}
+                            withChildren
                         >
                             <ListActions>
                                 <Button
                                     className={'marginBottom0'}
                                     label={t('neighboursCardList.buttonAddNewRelation')}
                                     variant="secondary"
+                                    disabled={!canCreateRelation}
                                     onClick={() => navigate(`new-relation/${key.technicalName}`, { state: { from: location } })}
                                 />
                                 <Button
@@ -62,6 +73,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                                     onClick={() => navigate(`new-ci/${key.technicalName}`, { state: { from: location } })}
                                     label={t('neighboursCardList.buttonAddNewRelationCard')}
                                     variant="secondary"
+                                    disabled={!canCreateRelation || !canCreateCi}
                                 />
                             </ListActions>
                             <CardColumnList>

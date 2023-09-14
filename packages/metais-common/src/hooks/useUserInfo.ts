@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { AuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { getUserInfo } from '@isdd/metais-common/api/userInfoApi'
@@ -11,6 +11,7 @@ export const useUserInfo = () => {
         dispatch,
     } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
 
     const { data, isLoading, isError, error } = useQuery({
         queryFn: () => getUserInfo(accessToken || ''),
@@ -23,7 +24,7 @@ export const useUserInfo = () => {
             dispatch({ type: AuthActions.LOGOUT })
             navigate('/?token_expired=true', { state: { from: location } })
         }
-    }, [data?.statusCode, dispatch, navigate])
+    }, [data?.statusCode, dispatch, location, navigate])
 
     useEffect(() => {
         if (userInfo && data?.statusCode === 200) {

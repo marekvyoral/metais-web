@@ -115,21 +115,23 @@ export const UserRolesForm: React.FC<Props> = ({
 
             const firstUserOrg = [...uniqueUserOrg][0]
             const defaultRolesKeys = getDefaultRolesKeys(uniqueUserOrg, detailData?.userOrganizations, userRelatedRoles)
-            setSelectedOrg({
-                path: firstUserOrg.gid ?? '',
-                poName: firstUserOrg.orgName ?? '',
-                poUUID: firstUserOrg.orgId ?? '',
-                roles: [],
-                HIERARCHY_FROM_ROOT: -1,
-                address: {
-                    number: firstUserOrg.orgNumber ?? '',
-                    zipCode: firstUserOrg.orgZIP ?? '',
-                    street: firstUserOrg.orgStreet ?? '',
-                    village: firstUserOrg.orgVillage ?? '',
-                },
-            })
-            setRowSelection(defaultRolesKeys[firstUserOrg.orgId ?? ''].roles)
-            setEditedUserOrgAndRoles({ ...defaultRolesKeys })
+            if (firstUserOrg) {
+                setSelectedOrg({
+                    path: firstUserOrg?.gid ?? '',
+                    poName: firstUserOrg?.orgName ?? '',
+                    poUUID: firstUserOrg?.orgId ?? '',
+                    roles: [],
+                    HIERARCHY_FROM_ROOT: -1,
+                    address: {
+                        number: firstUserOrg?.orgNumber ?? '',
+                        zipCode: firstUserOrg?.orgZIP ?? '',
+                        street: firstUserOrg?.orgStreet ?? '',
+                        village: firstUserOrg?.orgVillage ?? '',
+                    },
+                })
+                setRowSelection(defaultRolesKeys[firstUserOrg.orgId ?? ''].roles)
+                setEditedUserOrgAndRoles({ ...defaultRolesKeys })
+            }
         }
     }, [detailData, isCreate, roleGroupsData, setEditedUserOrgAndRoles, shouldReset])
 

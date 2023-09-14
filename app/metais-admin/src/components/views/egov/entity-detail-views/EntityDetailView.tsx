@@ -1,16 +1,16 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tab } from '@isdd/idsk-ui-kit/tabs/Tabs'
-import { getTabsFromApi } from '@isdd/metais-common'
-import { Button } from '@isdd/idsk-ui-kit'
+import { getTabsFromApi, QueryFeedback } from '@isdd/metais-common'
+import { Button, ButtonGroupRow } from '@isdd/idsk-ui-kit'
 import { useLocation, useNavigate } from 'react-router-dom'
-
-import styles from '../detailViews.module.scss'
-import { BasicInformations } from '../BasicInformations'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import { EntityDetailViewAttributes } from './attributes/EntityDetailViewAttributes'
 import { SummarizingCard } from './SummarizingCard'
 
+import styles from '@/components/views/egov/detailViews.module.scss'
+import { BasicInformations } from '@/components/views/egov/BasicInformations'
 import { IAtrributesContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'
 import { ProfileTabs } from '@/components/ProfileTabs'
 
@@ -20,6 +20,8 @@ export const EntityDetailView = ({
     setSummarizingCardData,
     saveExistingAttribute,
     resetExistingAttribute,
+    isError,
+    isLoading,
 }: IAtrributesContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -55,26 +57,29 @@ export const EntityDetailView = ({
     ]
 
     return (
-        <>
+        <QueryFeedback loading={isLoading} error={false} withChildren>
             <div className={styles.basicInformationSpace}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
-                    <div>
-                        <Button
-                            label={t('egov.edit')}
-                            onClick={() => {
-                                navigate('/egov/entity/' + ciTypeData?.technicalName + '/edit', { state: { from: location } })
-                            }}
-                        />
-                        <Button
-                            label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
-                            onClick={() => setValidityOfEntity(ciTypeData?.technicalName)}
-                        />
+                <FlexColumnReverseWrapper>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
+                        <ButtonGroupRow>
+                            <Button
+                                label={t('egov.edit')}
+                                onClick={() => {
+                                    navigate('/egov/entity/' + ciTypeData?.technicalName + '/edit', { state: { from: location } })
+                                }}
+                            />
+                            <Button
+                                label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
+                                onClick={() => setValidityOfEntity(ciTypeData?.technicalName)}
+                            />
+                        </ButtonGroupRow>
                     </div>
-                </div>
+                    {isError && <QueryFeedback error loading={false} />}
+                </FlexColumnReverseWrapper>
                 <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
             </div>
             <ProfileTabs tabList={tabList} />
-        </>
+        </QueryFeedback>
     )
 }

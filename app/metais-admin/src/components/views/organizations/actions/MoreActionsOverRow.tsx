@@ -3,7 +3,7 @@ import { Button, ButtonPopup } from '@isdd/idsk-ui-kit/index'
 import { ConfigurationItemUi } from '@isdd/metais-common/api'
 import { CellContext } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { IActions } from '@/components/containers/Egov/Entity/OrganizationsListContainer'
 
@@ -14,6 +14,7 @@ type Props = {
 export const MoreActionsOverRow = ({ ctx, setInvalid }: Props & IActions) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
 
     return (
         <>

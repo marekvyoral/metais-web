@@ -1,5 +1,5 @@
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ConfigurationItemUi, QueryFeedback } from '@isdd/metais-common'
+import { ConfigurationItemUi } from '@isdd/metais-common'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { FieldValues } from 'react-hook-form'
@@ -56,19 +56,17 @@ export const OrganizationsAssignedContainer = <T extends FieldValues & IFilterPa
         })
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View
-                data={{
-                    assignedOrganizations: allOrganizations,
-                    tableData: tableDataWithBlockAttribute,
-                }}
-                pagination={pagination}
-                handleFilterChange={handleFilterChange}
-                sort={sort}
-                isLoading={isLoading}
-                isError={isError}
-                onSubmit={handleSave}
-            />
-        </QueryFeedback>
+        <View
+            data={{
+                assignedOrganizations: allOrganizations,
+                tableData: tableDataWithBlockAttribute,
+            }}
+            pagination={pagination}
+            handleFilterChange={handleFilterChange}
+            sort={sort}
+            isLoading={isLoading}
+            isError={isError}
+            onSubmit={handleSave}
+        />
     )
 }

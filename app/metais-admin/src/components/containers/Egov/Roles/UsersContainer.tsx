@@ -1,4 +1,3 @@
-import { QueryFeedback } from '@isdd/metais-common'
 import { RelatedIdentityWithPo, useFindRelatedIdentitiesWithPO } from '@isdd/metais-common/api/generated/iam-swagger'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
@@ -32,11 +31,7 @@ const RoleUsersContainer: React.FC<IEditEntity> = ({ View }: IEditEntity) => {
     const { id } = useParams()
     const { data, isLoading, isError } = useFindRelatedIdentitiesWithPO(id ?? '')
 
-    return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View roleId={id} data={data} isError={isError} isLoading={isLoading} />
-        </QueryFeedback>
-    )
+    return <View roleId={id} data={data} isError={isError} isLoading={isLoading} />
 }
 
 export default RoleUsersContainer

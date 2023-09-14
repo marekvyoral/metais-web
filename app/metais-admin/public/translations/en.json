@@ -211,6 +211,31 @@
             "addProfile": "Add profile",
             "removeProfile": "Remove profile",
             "back": "Back to the list of attribute profiles"
+        },
+        "entity": {
+            "editHeader": "Edit entity",
+            "createHeader": "Create new entity type",
+            "detailHeading": "Detail of entity"
+        },
+        "profile": {
+            "editHeader": "Edit profile",
+            "createHeader": "Create new attribute profile",
+            "detailHeading": "Detail of profile"
+        },
+        "relation": {
+            "editHeader": "Edit relation",
+            "createHeader": "Create new relation",
+            "detailHeading": "Detail of relation"
+        },
+        "rolesMain": {
+            "editHeader": "Edit roles",
+            "createHeader": "Create roles",
+            "detailHeading": "Detail of roles"
+        },
+        "addNew": {
+            "entity": "Add new entity",
+            "profile": "Add new profile",
+            "relation": "Add new relation"
         }
     },
 
@@ -672,5 +697,13 @@
     "errors": {
         "default": "Ups, something went wrong.",
         "gnr403": "You do not have permission to call this API."
+    },
+    "breadcrumbs": {
+        "home": "Home",
+        "ciEdit": "Edit of {{itemName}}",
+        "noName": "No name",
+        "ciCreate": "Create configuration item",
+        "newRelation": "Add new relation of {{itemName}}",
+        "newCiAndRelation": "Add new item and relation for {{itemName}}"
     }
 }

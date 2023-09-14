@@ -1,17 +1,13 @@
 import React, { PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SimpleSelect } from '@isdd/idsk-ui-kit'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 
 import styles from './listActions.module.scss'
 
 interface IListActionsProps extends PropsWithChildren {
     pagingOptions?: { value: string; label: string; disabled?: boolean }[]
 }
-
-const defaultPagingOptions = [
-    { value: '100', label: '100' },
-    { value: '100000', label: '1000000' },
-]
 
 export const ListActions: React.FC<IListActionsProps> = ({ children, pagingOptions }) => {
     const { t } = useTranslation()
@@ -22,9 +18,9 @@ export const ListActions: React.FC<IListActionsProps> = ({ children, pagingOptio
                 <SimpleSelect
                     className={styles.selectGroup}
                     label={t('listActions.selectView')}
-                    id={'1'}
-                    name={'1'}
-                    options={pagingOptions ?? defaultPagingOptions}
+                    id="select-view"
+                    name="select-view"
+                    options={pagingOptions ?? DEFAULT_PAGESIZE_OPTIONS}
                     isClearable={false}
                 />
             </div>

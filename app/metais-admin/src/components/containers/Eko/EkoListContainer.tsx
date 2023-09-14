@@ -1,5 +1,4 @@
 import { ColumnSort, IFilter, SortType } from '@isdd/idsk-ui-kit/types'
-import { QueryFeedback } from '@isdd/metais-common'
 import { EkoCodeList, useDeleteHrEkoCode, useGetEkoCodes, useUpdateHrEkoCode } from '@isdd/metais-common/api'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
@@ -16,6 +15,8 @@ export interface IView {
     handleFilterChange: (filter: IFilter) => void
     invalidateCodes: (ekoCodes: EkoCodeList) => Promise<void>
     deleteCodes: (ekoCodes: EkoCodeList) => Promise<void>
+    isLoading: boolean
+    isError: boolean
 }
 
 export interface IEkoListContainerProps {
@@ -59,14 +60,14 @@ export const EkoListContainer: React.FC<IEkoListContainerProps> = ({ View }) => 
     }
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View
-                data={data}
-                deleteCodes={deleteCodes}
-                invalidateCodes={invalidateCodes}
-                defaultFilterParams={filter}
-                handleFilterChange={handleFilterChange}
-            />
-        </QueryFeedback>
+        <View
+            data={data}
+            deleteCodes={deleteCodes}
+            invalidateCodes={invalidateCodes}
+            defaultFilterParams={filter}
+            handleFilterChange={handleFilterChange}
+            isLoading={isLoading}
+            isError={isError}
+        />
     )
 }

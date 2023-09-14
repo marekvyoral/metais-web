@@ -136,7 +136,7 @@ export const Table = <T,>({
     }
 
     return (
-        <table className={classNames('idsk-table', [styles.displayBlock, styles.tableSticky])}>
+        <table className={classNames('idsk-table', [styles.displayBlock, styles.tableSticky, styles.initialOverflow])}>
             <thead className={classNames('idsk-table__head', [styles.head])} onScroll={handleWrapper2Scroll} ref={wrapper2Ref}>
                 {table.getHeaderGroups().map((headerGroup) => {
                     const hasCheckbox = headerGroup.headers.find((cell) => cell.id === CHECKBOX_CELL)

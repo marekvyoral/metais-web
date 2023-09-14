@@ -1,4 +1,3 @@
-import { QueryFeedback } from '@isdd/metais-common'
 import { GetEkoCodesParams, useGetEkoCodes } from '@isdd/metais-common/api'
 import React from 'react'
 
@@ -15,9 +14,5 @@ export const EkoDetailContainer: React.FC<IEkoDetailContainerProps> = ({ ekoCode
     const { data, isLoading, isError } = useGetEkoCodes(defaultParams)
     const detailData = enrichEkoDataMaper(data?.ekoCodes || []).find((item) => item.ekoCode === ekoCode)
 
-    return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View data={detailData} />
-        </QueryFeedback>
-    )
+    return <View data={detailData} isLoading={isLoading} isError={isError} />
 }

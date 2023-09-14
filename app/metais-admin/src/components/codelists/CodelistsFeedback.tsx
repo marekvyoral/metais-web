@@ -7,10 +7,9 @@ import { CodeListsMutations } from '../containers/Codelist/CodelistContainer'
 interface ICodelistSucces {
     mutations: CodeListsMutations
     isFetchError: boolean
-    isFetchLoading: boolean
 }
 
-export const CodelistsFeedback: React.FC<ICodelistSucces> = ({ mutations, isFetchError, isFetchLoading }) => {
+export const CodelistsFeedback: React.FC<ICodelistSucces> = ({ mutations, isFetchError }) => {
     const { t } = useTranslation()
     const { updateEnum, createEnum, validateEnum, deleteEnum } = mutations
 
@@ -20,7 +19,7 @@ export const CodelistsFeedback: React.FC<ICodelistSucces> = ({ mutations, isFetc
     return (
         <>
             <MutationFeedback success={isSuccess} error={isError ? t('feedback.mutationErrorMessage') : undefined} />
-            <QueryFeedback loading={isFetchLoading} error={isFetchError} />
+            <QueryFeedback loading={false} error={isFetchError} withChildren />
         </>
     )
 }

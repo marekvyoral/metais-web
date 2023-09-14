@@ -18,6 +18,8 @@ export interface UserDetailData {
 
 export interface IUserDetailContainerView {
     data?: UserDetailData
+    isLoading: boolean
+    isError: boolean
 }
 interface IUserDetailContainer {
     userId: string
@@ -34,15 +36,6 @@ export const UserDetailContainer: React.FC<IUserDetailContainer> = ({ userId, Vi
     const isError = [isUserDataError, isRolesError, isUserOrganizationsError].some((item) => item)
 
     if (!userId) return <QueryFeedback loading={false} error errorProps={{ errorMessage: t('managementList.noUserId') }} />
-    if (isLoading || isError) {
-        return (
-            <QueryFeedback
-                loading={isLoading}
-                error={isError}
-                errorProps={{ errorMessage: t('managementList.containerQueryError') }}
-                indicatorProps={{ fullscreen: true, layer: 'parent' }}
-            />
-        )
-    }
-    return <View data={{ userData, userRelatedRoles, userOrganizations }} />
+
+    return <View data={{ userData, userRelatedRoles, userOrganizations }} isLoading={isLoading} isError={isError} />
 }

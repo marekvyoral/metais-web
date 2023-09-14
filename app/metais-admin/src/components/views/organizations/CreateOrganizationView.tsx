@@ -1,6 +1,8 @@
 import { Button, CheckBox, Input, SimpleSelect } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import { QueryFeedback } from '@isdd/metais-common/index'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import styles from './findView.module.scss'
 import { useCreateOrganization } from './hooks/useCreateOrganization'
@@ -16,8 +18,11 @@ export const CreateOrganizationView = (props: ICreateOrganizationView) => {
 
     const { formState, register, handleSubmit, setValue } = formMethods
     return (
-        <div>
-            <h1>{ico ? t('organizations.create.addNewOrganization') : t('organizations.edit.updateExistingOrganization')}</h1>
+        <QueryFeedback loading={props.isLoading} error={false} withChildren>
+            <FlexColumnReverseWrapper>
+                <h1>{ico ? t('organizations.create.addNewOrganization') : t('organizations.edit.updateExistingOrganization')}</h1>
+                {props.isError && <QueryFeedback error={props.isError} loading={false} />}
+            </FlexColumnReverseWrapper>
             <div className={styles.form}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Input
@@ -179,6 +184,6 @@ export const CreateOrganizationView = (props: ICreateOrganizationView) => {
                     </div>
                 </form>
             </div>
-        </div>
+        </QueryFeedback>
     )
 }

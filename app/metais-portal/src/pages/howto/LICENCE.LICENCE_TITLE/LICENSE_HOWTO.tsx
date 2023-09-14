@@ -1,9 +1,11 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { MainContentWrapper } from '@/components/MainContentWrapper'
+
 const LicenseHowTo = () => {
     const { t } = useTranslation()
-    return <div>{t('navMenu.lists.licenses')}</div>
+    return <MainContentWrapper>{t('navMenu.lists.licenses')}</MainContentWrapper>
 }
 
 export default LicenseHowTo

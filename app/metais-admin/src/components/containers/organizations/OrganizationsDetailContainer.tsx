@@ -5,7 +5,6 @@ import {
     EnumItem,
     EnumType,
     GET_ENUM,
-    QueryFeedback,
     STATUTAR_NAME,
     useGetEnum,
     useInvalidateConfigurationItem,
@@ -29,6 +28,8 @@ export interface IOrganizationDetail {
 }
 export interface IAtrributesContainerView {
     data: IOrganizationDetail
+    isError: boolean
+    isLoading: boolean
 }
 
 interface AttributesContainer {
@@ -102,18 +103,18 @@ export const OrganizationsDetailContainer: React.FC<AttributesContainer> = ({ en
     }
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View
-                data={{
-                    configurationItem: data?.configurationItemSet?.[0],
-                    personTypesCategories,
-                    personCategories,
-                    sources,
-                    parsedAttributes,
-                    statutarAttributes,
-                    setInvalid: InvalidateConfigurationItem,
-                }}
-            />
-        </QueryFeedback>
+        <View
+            data={{
+                configurationItem: data?.configurationItemSet?.[0],
+                personTypesCategories,
+                personCategories,
+                sources,
+                parsedAttributes,
+                statutarAttributes,
+                setInvalid: InvalidateConfigurationItem,
+            }}
+            isError={isError}
+            isLoading={isLoading}
+        />
     )
 }

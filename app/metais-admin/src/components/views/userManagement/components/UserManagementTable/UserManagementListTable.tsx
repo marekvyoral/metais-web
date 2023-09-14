@@ -123,7 +123,7 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
             }),
             cell: ({ cell }) => {
                 const { fullName, uuid } = cell.getValue() as { fullName: string; uuid: string }
-                return fullName ?? <TextLink to={`${AdminRouteNames.USER_MANAGEMENT}/detail/${uuid}`}>{fullName}</TextLink>
+                return <TextLink to={`${AdminRouteNames.USER_MANAGEMENT}/detail/${uuid}`}>{fullName}</TextLink>
             },
             enableSorting: true,
             id: 'lastName',

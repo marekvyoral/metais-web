@@ -37,6 +37,7 @@ export const notificationDefaultSelectedColumns = [
 export const ROLES_GROUP = 'SKUPINA_ROL'
 export const metaisEmail = 'metais@mirri.gov.sk'
 
+export const CAN_CREATE_GRAPH_QUERY_KEY = 'canCreateGraph'
 export enum EClaimState {
     WAITING = 'WAITING',
     ACCEPTED = 'ACCEPTED',
@@ -47,6 +48,8 @@ export enum ReponseErrorCodeEnum {
     DEFAULT = 'default',
     GNR403 = 'gnr403',
 }
+export const REPORTS = 'reports'
+export const FIRST_PAGE_NUMBER = 1
 
 export enum GROUP_ROLES {
     STD_PSPRE = 'STD_PSPRE',

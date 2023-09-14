@@ -407,6 +407,7 @@
         }
     },
     "reports": {
+        "heading": "Reporty a zostavy",
         "table": {
             "name": "Názov",
             "category": "Kategória",
@@ -474,7 +475,8 @@
     "state": "Stav evidencie",
     "group": "Skupina",
     "loading": {
-        "loadingSubPage": "Načítavam podstránku"
+        "loadingSubPage": "Načítavam podstránku",
+        "neighboursCardList": "Načítavam vzťahy na súvisiace položky"
     },
     "actionOverTable": {
         "import": "Import",
@@ -556,7 +558,8 @@
         "created": "Vytvorene:"
     },
     "feedback": {
-        "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím skúste znova."
+        "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím skúste znova.",
+        "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní údajov sa vyskytla chyba. Skúste stránku znova načítať a ak sa chyba vyskytuje opakovane, kontaktujte administrátora."
     },
     "accordion": {
         "openAll": "Otvoriť všetko",
@@ -567,11 +570,15 @@
     "currency": "{{val, currency}}",
     "selectPublicAuthority": {
         "error": "Chyba pri načítavaní údajov pre orgány verejnej moci.",
-        "loading": "Načítavajú sa údaje pre orgány verejnej moci."
+        "loading": "Načítavajú sa údaje pre orgány verejnej moci.",
+        "missingRightsError": "Chýbajú vám práva na vytváranie {{item}} pod touto organizáciou",
+        "relations": "vzťahov",
+        "entity": "entít"
     },
     "selectRole": {
         "error": "Chyba pri načítavaní údajov pre role.",
-        "loading": "Načítavajú sa údaje pre role."
+        "loading": "Načítavajú sa údaje pre role.",
+        "required": "Rola je povinná"
     },
     "groups": {
         "member": "Člen",
@@ -750,6 +757,7 @@
         "relation": "Vzťah",
         "email": "metais@mirri.gov.sk",
         "errorTitle": "Nastala chyba",
-        "errorMessage": "Ospravedlňujeme sa, ale pri vytváraní nového vzťahu nastala chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na "
+        "errorMessage": "Ospravedlňujeme sa, ale pri vytváraní nového vzťahu nastala chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na ",
+        "selectRelTypeError": "Na vytvorenie tohto typu vzťahu Vám chýbajú potrebné práva"
     }
 }

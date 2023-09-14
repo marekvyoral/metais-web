@@ -113,7 +113,11 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
         <div className={styles.buttonContainer}>
             {children}
             <div className={styles.buttonGroup}>
-                {bulkPopup && <>{bulkPopup}</>}
+                {bulkPopup && (
+                    <Can I={Actions.BULK_ACTIONS} a={'ci'} ability={ability}>
+                        <>{bulkPopup}</>
+                    </Can>
+                )}
                 <div className={classnames(styles.buttonImportExport, styles.mobileOrder2)}>
                     {importButton && (
                         <Can I={Actions.IMPORT} a={'ci'} ability={ability}>

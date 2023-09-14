@@ -17,9 +17,7 @@ interface ICiCreateEntityContainer {
 }
 
 export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ View, entityName }) => {
-    const { data: generatedEntityId, isLoading: isGenerateCodeLoading, isError: isGenerateCodeError } = useGenerateCodeAndURL(entityName)
+    const { data: generatedEntityId, isLoading, isError } = useGenerateCodeAndURL(entityName)
 
-    const isLoading = [isGenerateCodeLoading].some((loading) => loading)
-    const isError = [isGenerateCodeError].some((error) => error)
     return <View data={generatedEntityId} isLoading={isLoading} isError={isError} />
 }

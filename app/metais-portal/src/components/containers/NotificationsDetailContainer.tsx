@@ -1,7 +1,6 @@
 import { Notification, useGetNotificationDetail, useSetNotificationAsRead } from '@isdd/metais-common/api/generated/notifications-swagger'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React, { useEffect } from 'react'
-import { QueryFeedback } from '@isdd/metais-common/index'
 
 export interface FilterData extends IFilterParams {
     eventType: string
@@ -13,6 +12,8 @@ export interface FilterData extends IFilterParams {
 export interface NotificationsDetailViewParams {
     data: Notification | undefined
     id: string
+    isLoading: boolean
+    isError: boolean
 }
 
 interface INotificationsDetailContainer {
@@ -28,11 +29,7 @@ const NotificationsDetailContainer: React.FC<INotificationsDetailContainer> = ({
         setAsRead({ id: idNumber })
     }, [idNumber, setAsRead])
 
-    return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View data={data} id={id ?? ''} />
-        </QueryFeedback>
-    )
+    return <View data={data} id={id ?? ''} isLoading={isLoading} isError={isError} />
 }
 
 export default NotificationsDetailContainer

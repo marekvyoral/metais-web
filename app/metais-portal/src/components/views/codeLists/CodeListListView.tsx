@@ -16,12 +16,13 @@ import { TextLink } from '@isdd/idsk-ui-kit/typography/TextLink'
 import { RoleParticipantUI } from '@isdd/metais-common/api'
 import { ApiCodelistItemName, ApiCodelistManager, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { ActionsOverTable, QueryFeedback } from '@isdd/metais-common/index'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { ActionsOverTable } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useNavigate } from 'react-router-dom'
 
 import { SelectFilterOrganization } from './components/SelectFilterMainGestor/SelectFilterMainGestor'
@@ -34,6 +35,7 @@ import {
     CodeListState,
     defaultFilterValues,
 } from '@/components/containers/CodeListListContainer'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const selectBasedOnLanguage = (languageData: Array<ApiCodelistItemName>, appLanguage: string) => {
     const translatedName = languageData?.find((item) => item.language === appLanguage)?.value
@@ -49,7 +51,14 @@ const getMainGestor = (codeListManager: ApiCodelistManager[], roleParticipants: 
     return participant?.configurationItemUi?.attributes?.Gen_Profil_nazov
 }
 
-export const CodeListListView: React.FC<CodeListListViewProps> = ({ data, filter, handleFilterChange, isOnlyPublishedPage = false }) => {
+export const CodeListListView: React.FC<CodeListListViewProps> = ({
+    data,
+    filter,
+    handleFilterChange,
+    isOnlyPublishedPage = false,
+    isError,
+    isLoading,
+}) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
     const auth = useAuth()
@@ -124,6 +133,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({ data, filter
     return (
         <>
             <BreadCrumbs
+                withWidthContainer
                 links={[
                     { label: t('codeListList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('codeListList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
@@ -133,78 +143,87 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({ data, filter
                         : { label: t('codeListList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CISELNIKY },
                 ]}
             />
-            <TextHeading size="XL">{t('codeListList.title')}</TextHeading>
-            {isOnlyPublishedPage ? (
-                <TextHeading size="L">{t('codeListList.publicCodeListSubtitle')}</TextHeading>
-            ) : (
-                <TextHeading size="L">{t('codeListList.codeListSubtitle')}</TextHeading>
-            )}
-            <Filter<CodeListListFilterData>
-                heading={t('codeListList.filter.title')}
-                defaultFilterValues={defaultFilterValues}
-                form={({ filter: formFilter, register, setValue }) => (
-                    <div>
-                        <SelectFilterOrganization filter={formFilter} setValue={setValue} />
-                        <Input {...register('toDate')} type="date" label={t('codeListList.filter.toDate')} />
-                        <SimpleSelect
-                            id="onlyBase"
-                            name="onlyBase"
-                            label={t('codeListList.filter.onlyBase.label')}
-                            options={[
-                                { value: CodeListFilterOnlyBase.TRUE, label: t('codeListList.filter.onlyBase.true') },
-                                { value: CodeListFilterOnlyBase.FALSE, label: t('codeListList.filter.onlyBase.false') },
-                            ]}
-                            setValue={setValue}
-                            defaultValue={formFilter.onlyBase || defaultFilterValues.onlyBase}
-                        />
-                        {!isOnlyPublishedPage && (
-                            <>
-                                <SimpleSelect
-                                    id="wfState"
-                                    name="wfState"
-                                    label={t('codeListList.filter.state')}
-                                    options={Object.values(CodeListState).map((state) => ({
-                                        value: state,
-                                        label: t(`codeListList.state.${state}`),
-                                    }))}
-                                    setValue={setValue}
-                                    defaultValue={formFilter.wfState || defaultFilterValues.wfState}
-                                />
-                                <Input {...register('code')} type="text" label={t('codeListList.filter.code')} />
-                                <Input {...register('name')} type="text" label={t('codeListList.filter.name')} />
-                            </>
+            <MainContentWrapper>
+                <QueryFeedback loading={isLoading} error={false} withChildren>
+                    <FlexColumnReverseWrapper>
+                        {isOnlyPublishedPage ? (
+                            <TextHeading size="L">{t('codeListList.publicCodeListSubtitle')}</TextHeading>
+                        ) : (
+                            <TextHeading size="L">{t('codeListList.codeListSubtitle')}</TextHeading>
                         )}
-                    </div>
-                )}
-            />
-            <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
-            <Table
-                data={data?.list}
-                columns={columns}
-                sort={filter.sort ?? []}
-                onSortingChange={(columnSort) => {
-                    handleFilterChange({ sort: columnSort })
-                }}
-            />
-            <PaginatorWrapper
-                pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
-                pageSize={filter.pageSize || BASE_PAGE_SIZE}
-                dataLength={data?.dataLength || 0}
-                handlePageChange={handleFilterChange}
-            />
-            <BaseModal isOpen={lockedDialogData.isOpened} close={() => setLockedDialogData({ ...lockedDialogData, isOpened: false })}>
-                <TextBody>{t('codeListList.lockedModal.text', { lockedBy: lockedDialogData.lockedBy })}</TextBody>
-                <ButtonGroupRow>
-                    <Button
-                        label={t('codeListList.lockedModal.button.lastSavedRevision')}
-                        onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}/detail`)}
+                        <TextHeading size="XL">{t('codeList.title')}</TextHeading>
+                        {isError && <QueryFeedback error={isError} loading={false} />}
+                    </FlexColumnReverseWrapper>
+                    <TextHeading size="XL">{t('codeListList.title')}</TextHeading>
+
+                    <Filter<CodeListListFilterData>
+                        heading={t('codeListList.filter.title')}
+                        defaultFilterValues={defaultFilterValues}
+                        form={({ filter: formFilter, register, setValue }) => (
+                            <div>
+                                <SelectFilterOrganization filter={formFilter} setValue={setValue} />
+                                <Input {...register('toDate')} type="date" label={t('codeListList.filter.toDate')} />
+                                <SimpleSelect
+                                    id="onlyBase"
+                                    name="onlyBase"
+                                    label={t('codeListList.filter.onlyBase.label')}
+                                    options={[
+                                        { value: CodeListFilterOnlyBase.TRUE, label: t('codeListList.filter.onlyBase.true') },
+                                        { value: CodeListFilterOnlyBase.FALSE, label: t('codeListList.filter.onlyBase.false') },
+                                    ]}
+                                    setValue={setValue}
+                                    defaultValue={formFilter.onlyBase || defaultFilterValues.onlyBase}
+                                />
+                                {!isOnlyPublishedPage && (
+                                    <>
+                                        <SimpleSelect
+                                            id="wfState"
+                                            name="wfState"
+                                            label={t('codeListList.filter.state')}
+                                            options={Object.values(CodeListState).map((state) => ({
+                                                value: state,
+                                                label: t(`codeListList.state.${state}`),
+                                            }))}
+                                            setValue={setValue}
+                                            defaultValue={formFilter.wfState || defaultFilterValues.wfState}
+                                        />
+                                        <Input {...register('code')} type="text" label={t('codeListList.filter.code')} />
+                                        <Input {...register('name')} type="text" label={t('codeListList.filter.name')} />
+                                    </>
+                                )}
+                            </div>
+                        )}
                     />
-                    <Button
-                        label={t('codeListList.lockedModal.button.currentRevision')}
-                        onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}/detail`)}
+                    <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
+                    <Table
+                        data={data?.list}
+                        columns={columns}
+                        sort={filter.sort ?? []}
+                        onSortingChange={(columnSort) => {
+                            handleFilterChange({ sort: columnSort })
+                        }}
                     />
-                </ButtonGroupRow>
-            </BaseModal>
+                    <PaginatorWrapper
+                        pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
+                        pageSize={filter.pageSize || BASE_PAGE_SIZE}
+                        dataLength={data?.dataLength || 0}
+                        handlePageChange={handleFilterChange}
+                    />
+                    <BaseModal isOpen={lockedDialogData.isOpened} close={() => setLockedDialogData({ ...lockedDialogData, isOpened: false })}>
+                        <TextBody>{t('codeListList.lockedModal.text', { lockedBy: lockedDialogData.lockedBy })}</TextBody>
+                        <ButtonGroupRow>
+                            <Button
+                                label={t('codeListList.lockedModal.button.lastSavedRevision')}
+                                onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}/detail`)}
+                            />
+                            <Button
+                                label={t('codeListList.lockedModal.button.currentRevision')}
+                                onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}/detail`)}
+                            />
+                        </ButtonGroupRow>
+                    </BaseModal>
+                </QueryFeedback>
+            </MainContentWrapper>
         </>
     )
 }

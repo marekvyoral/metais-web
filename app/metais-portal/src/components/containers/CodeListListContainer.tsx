@@ -1,5 +1,4 @@
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
-import { QueryFeedback } from '@isdd/metais-common'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, RoleParticipantUI, useGetRoleParticipantBulk } from '@isdd/metais-common/api'
 import { ApiCodelistPreview, useGetCodelistHeaders } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
@@ -30,6 +29,8 @@ export interface CodeListListViewProps {
     data?: CodeListData
     filter: IFilter
     handleFilterChange: (filter: IFilter) => void
+    isLoading: boolean
+    isError: boolean
     isOnlyPublishedPage?: boolean
 }
 
@@ -60,7 +61,7 @@ export const defaultFilterValues = {
 }
 
 export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ isOnlyPublishedPage, View }) => {
-    const { t, i18n } = useTranslation()
+    const { i18n } = useTranslation()
 
     const { filter, handleFilterChange } = useFilterParams<CodeListListFilterData>({
         sort: [
@@ -111,14 +112,5 @@ export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ isOnly
         dataLength: codelistHeadersData?.codelistsCount,
     }
 
-    return (
-        <QueryFeedback
-            loading={isLoading}
-            error={isError}
-            indicatorProps={{ fullscreen: true }}
-            errorProps={{ errorMessage: t('feedback.failedFetch') }}
-        >
-            <View data={data} filter={filter} handleFilterChange={handleFilterChange} />
-        </QueryFeedback>
-    )
+    return <View data={data} filter={filter} handleFilterChange={handleFilterChange} isError={isError} isLoading={isLoading} />
 }

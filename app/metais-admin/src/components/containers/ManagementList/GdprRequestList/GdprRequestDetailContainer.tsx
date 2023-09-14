@@ -15,10 +15,9 @@ import {
     useUpdateIdentityState,
     useUpdateWithOnePoAndRoles,
 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { EnumType, QueryFeedback, useGetValidEnum } from '@isdd/metais-common/index'
+import { EnumType, useGetValidEnum } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { RoleItem } from '@/components/views/userManagement/request-list-view/request-detail/RequestRolesForm'
@@ -36,6 +35,7 @@ export interface IUserDetailContainerView {
     handleApproveClick: (selectedRoles: RoleItem[], request?: ClaimUi, anonymize?: boolean) => void
     handleDeleteClick: (request?: ClaimUi) => void
     handleRefuseModalClick: (text: string) => void
+    isError: boolean
 }
 interface IGdprRequestDetailContainer {
     userId: string
@@ -43,7 +43,6 @@ interface IGdprRequestDetailContainer {
 }
 
 export const GdprRequestDetailContainer: React.FC<IGdprRequestDetailContainer> = ({ userId, View }) => {
-    const { t } = useTranslation()
     const navigate = useNavigate()
     const SKUPINA_ROL = 'SKUPINA_ROL'
     const anonymizovane = 'Anonymizované'
@@ -146,22 +145,12 @@ export const GdprRequestDetailContainer: React.FC<IGdprRequestDetailContainer> =
         [mutateAsyncDelete, navigate],
     )
 
-    if (isLoading || isError) {
-        return (
-            <QueryFeedback
-                loading={isLoading}
-                error={isError}
-                errorProps={{ errorMessage: t('managementList.containerQueryError') }}
-                indicatorProps={{ fullscreen: true, layer: 'parent' }}
-            />
-        )
-    }
-
     return (
         <View
             data={data}
             roleData={{ roleGroupsData, allRolesData }}
             isLoading={isLoading || isLoadingPE || isLoadingUpdate}
+            isError={isError || isErrorPe || isErrorUpdatePo}
             handleApproveClick={handleApprove}
             handleDeleteClick={handleDelete}
             errorMessage={errorMessage}

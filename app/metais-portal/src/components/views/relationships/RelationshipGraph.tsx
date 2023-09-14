@@ -236,15 +236,23 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
                     {nodeDetail && (
                         <CiContainer
                             configurationItemId={nodeDetail.uuid ?? ''}
-                            View={({ data: ciData }) => {
+                            View={({ data: ciData, isError: isCiDataError, isLoading: isCiDataLoading }) => {
                                 const ciItemData = ciData?.ciItemData
                                 const gestorData = ciData?.gestorData
                                 return (
                                     <AttributesContainer
                                         entityName={nodeDetail.type ?? ''}
-                                        View={({ data: { ciTypeData, constraintsData, unitsData } }) => {
+                                        View={({
+                                            data: { ciTypeData, constraintsData, unitsData },
+                                            isError: isAttError,
+                                            isLoading: isAttLoading,
+                                        }) => {
                                             return (
-                                                <CiInformationAccordion data={{ ciItemData, gestorData, constraintsData, ciTypeData, unitsData }} />
+                                                <CiInformationAccordion
+                                                    data={{ ciItemData, gestorData, constraintsData, ciTypeData, unitsData }}
+                                                    isError={isAttError || isCiDataError}
+                                                    isLoading={isAttLoading || isCiDataLoading}
+                                                />
                                             )
                                         }}
                                     />

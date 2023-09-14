@@ -2,7 +2,6 @@ import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { CategoryHeaderList, ReportHeader, useListCategories, useListReport } from '@isdd/metais-common/api'
 import { mapFilterToReportsParams } from '@isdd/metais-common/componentHelpers'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { QueryFeedback } from '@isdd/metais-common/index'
 import React from 'react'
 import { FieldValues } from 'react-hook-form'
 
@@ -14,6 +13,8 @@ export interface IView {
     categories?: CategoryHeaderList
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
+    isLoading: boolean
+    isError: boolean
 }
 
 interface IReportsListContainer {
@@ -29,8 +30,13 @@ export const ReportsListContainer: React.FC<IReportsListContainer> = ({ View, de
 
     const pagination = mapGenericTypeToPagination(filterParams, data)
     return (
-        <QueryFeedback loading={isLoading || isLoadingCategories} error={isError || isErrorCategories} indicatorProps={{ layer: 'parent' }}>
-            <View data={data?.reportHeaders ?? []} categories={dataCategories} pagination={pagination} handleFilterChange={handleFilterChange} />
-        </QueryFeedback>
+        <View
+            data={data?.reportHeaders ?? []}
+            categories={dataCategories}
+            pagination={pagination}
+            handleFilterChange={handleFilterChange}
+            isLoading={isLoading || isLoadingCategories}
+            isError={isError || isErrorCategories}
+        />
     )
 }

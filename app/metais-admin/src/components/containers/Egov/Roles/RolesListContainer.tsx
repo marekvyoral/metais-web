@@ -3,7 +3,6 @@ import { EnumItem, EnumType, useGetValidEnum } from '@isdd/metais-common/api/gen
 import { Role, useFindByNameWithParams, useFindByNameWithParamsCount } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ALL_EVENT_TYPES, ROLES_GROUP } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -113,23 +112,21 @@ const RoleListContainer: React.FC<IRolesList> = ({ View }) => {
         )
     }, [tableRoleGroups?.enumItems, tableRoles, t])
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View
-                isError={isError}
-                isLoading={isLoading}
-                filter={filter}
-                tableRoleGroups={tableRoleGroups}
-                tableData={tableData}
-                rolesPages={rolesPages}
-                roleToDelete={roleToDelete}
-                setRoleToDelete={setRoleToDelete}
-                setTableRoles={setTableRoles}
-                setPagination={setPagination}
-                pagination={pagination}
-                setSorting={setSorting}
-                sorting={sorting}
-            />
-        </QueryFeedback>
+        <View
+            isError={isError}
+            isLoading={isLoading}
+            filter={filter}
+            tableRoleGroups={tableRoleGroups}
+            tableData={tableData}
+            rolesPages={rolesPages}
+            roleToDelete={roleToDelete}
+            setRoleToDelete={setRoleToDelete}
+            setTableRoles={setTableRoles}
+            setPagination={setPagination}
+            pagination={pagination}
+            setSorting={setSorting}
+            sorting={sorting}
+        />
     )
 }
 
