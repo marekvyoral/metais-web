@@ -14,6 +14,11 @@ const GroupDetailPage: React.FC = () => {
                 id={groupId ?? ''}
                 View={(props) => (
                     <GroupDetailView
+                        isIdentitiesError={props.isIdentitiesError}
+                        isLoading={props.isLoading}
+                        error={props.error}
+                        filter={props.filter}
+                        handleFilterChange={props.handleFilterChange}
                         id={props.id}
                         group={props.group}
                         identityToDelete={props.identityToDelete}
@@ -22,12 +27,8 @@ const GroupDetailPage: React.FC = () => {
                         setAddModalOpen={props.setAddModalOpen}
                         successfulUpdatedData={props.successfulUpdatedData}
                         setSuccessfulUpdatedData={props.setSuccessfulUpdatedData}
-                        listParams={props.listParams}
-                        setListParams={props.setListParams}
                         user={props.user}
                         rowSelection={props.rowSelection}
-                        sorting={props.sorting}
-                        setSorting={props.setSorting}
                         isIdentitiesLoading={props.isIdentitiesLoading}
                         selectableColumnsSpec={props.selectableColumnsSpec}
                         tableData={props.tableData}

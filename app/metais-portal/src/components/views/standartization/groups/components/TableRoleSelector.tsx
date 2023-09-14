@@ -1,28 +1,30 @@
 import { MongoAbility } from '@casl/ability'
 import { SimpleSelect, TextBody } from '@isdd/idsk-ui-kit/index'
+import { GROUP_ROLES } from '@isdd/metais-common/constants'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import {
-    FindRelatedIdentitiesAndCountParams,
+    IdentitiesInGroupAndCount,
     IdentityInGroupData,
+    OperationResult,
     Role,
     useFindAll11Hook,
-    useFindRelatedIdentitiesAndCountHook,
     useUpdateRoleOnGroupOrgForIdentityHook,
 } from '@isdd/metais-common/src/api/generated/iam-swagger'
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 import { Row } from '@tanstack/react-table'
 import React, { useState } from 'react'
-import { GROUP_ROLES } from '@isdd/metais-common/constants'
 
+import { TableData } from '@/components/containers/standardization/groups/GroupDetailContainer'
 import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standartization/groups/defaultRoles'
 import styles from '@/components/views/standartization/groups/styles.module.scss'
-import { FilterParams, TableData } from '@/components/containers/standardization/groups/GroupDetailContainer'
 
 interface GroupMemberTableRoleSelectorProps {
     row: Row<TableData>
     id?: string
-    listParams: FindRelatedIdentitiesAndCountParams
+    refetch: <TPageData>(
+        options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
+    ) => Promise<QueryObserverResult<IdentitiesInGroupAndCount, OperationResult>>
     setIdentities: (value: React.SetStateAction<IdentityInGroupData[] | undefined>) => void
-    filter: FilterParams
     ability: MongoAbility
     setMembersUpdated: React.Dispatch<React.SetStateAction<boolean>>
     isKsisvs: boolean
@@ -31,16 +33,14 @@ interface GroupMemberTableRoleSelectorProps {
 const GroupMemberTableRoleSelector: React.FC<GroupMemberTableRoleSelectorProps> = ({
     row,
     id,
-    listParams,
+    refetch,
     setIdentities,
-    filter,
     ability,
     setMembersUpdated,
     isKsisvs,
 }) => {
     const findRoleRequest = useFindAll11Hook()
     const updateGroupRequest = useUpdateRoleOnGroupOrgForIdentityHook()
-    const fetchIdentitiesData = useFindRelatedIdentitiesAndCountHook()
 
     const [isSelectorShown, setSelectorShown] = useState(false)
     const [selectedRole, setSelectedRole] = useState<string>(row.original.roleName)
@@ -52,13 +52,8 @@ const GroupMemberTableRoleSelector: React.FC<GroupMemberTableRoleSelectorProps> 
         await updateGroupRequest(row.original.uuid, id ?? '', oldRole.uuid ?? '', newRole.uuid ?? '', row.original.orgId)
         setSelectorShown(false)
         setMembersUpdated(true)
-        const refetchData = await fetchIdentitiesData(id ?? '', {
-            ...listParams,
-            ...(filter.memberUuid != undefined && { memberUuid: filter.memberUuid }),
-            ...(filter.poUuid != undefined && { poUuid: filter.poUuid }),
-            ...(filter.role != 'all' && filter.role != undefined && { role: filter.role }),
-        })
-        setIdentities(refetchData.list)
+        const refetchData = await refetch()
+        setIdentities(refetchData.data?.list)
     }
 
     if (isSelectorShown) {

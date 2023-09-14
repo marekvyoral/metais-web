@@ -12,7 +12,7 @@ import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect
 import { IGroupEditViewParams } from '@/components/containers/standardization/groups/GroupEditContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, goBack, infoData, isEdit }) => {
+export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, goBack, infoData, isEdit, id }) => {
     const { t } = useTranslation()
 
     const {
@@ -63,7 +63,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
                         { href: RouteNames.HOW_TO_STANDARDIZATION, label: t('navMenu.standardization') },
                         { href: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE, label: t('groups.groupList') },
                         {
-                            href: '/',
+                            href: NavigationSubRoutes.PRACOVNA_SKUPINA_CREATE,
                             label: t('groups.addNewGroup'),
                         },
                     ]}
@@ -78,7 +78,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
                             { href: RouteNames.HOW_TO_STANDARDIZATION, label: t('navMenu.standardization') },
                             { href: NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL, label: infoData?.name ?? '' },
                             {
-                                href: NavigationSubRoutes.PRACOVNA_SKUPINA_EDIT,
+                                href: NavigationSubRoutes.PRACOVNA_SKUPINA_EDIT + id + '/edit',
                                 label: t('groups.editGroup'),
                             },
                         ]}

@@ -20,6 +20,7 @@ export interface IGroupEditViewParams {
     goBack: () => void
     infoData: Group | undefined
     isEdit?: boolean
+    id?: string
 }
 
 interface IGroupEditContainer {
