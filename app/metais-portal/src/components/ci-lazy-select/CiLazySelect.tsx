@@ -9,9 +9,10 @@ interface ICiLazySelect {
     selectedCi: ConfigurationItemUi | undefined
     label: string
     setSelectedCi: React.Dispatch<SetStateAction<ConfigurationItemUi | undefined>>
+    placeholder?: string
 }
 
-export const CiLazySelect: React.FC<ICiLazySelect> = ({ ciType, selectedCi, setSelectedCi, label }) => {
+export const CiLazySelect: React.FC<ICiLazySelect> = ({ ciType, selectedCi, setSelectedCi, label, placeholder }) => {
     const ciOptionsHook = useReadCiList1Hook()
 
     const loadCiOptions = useCallback(
@@ -49,6 +50,7 @@ export const CiLazySelect: React.FC<ICiLazySelect> = ({ ciType, selectedCi, setS
 
     return (
         <SelectLazyLoading<ConfigurationItemUi>
+            placeholder={placeholder}
             name="account"
             label={label + ':'}
             value={selectedCi}

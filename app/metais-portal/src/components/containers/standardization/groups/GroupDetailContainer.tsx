@@ -1,32 +1,23 @@
-import { ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
+import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
+import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 import { User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { AbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/index'
 import {
-    FindRelatedIdentitiesAndCountParams,
     Group,
     IdentitiesInGroupAndCount,
     IdentityInGroupData,
+    OperationResult,
     useFindByUuid3,
     useFindRelatedIdentitiesAndCount,
-    useFindRelatedIdentitiesAndCountHook,
 } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 
 import { buildColumns } from '@/components/views/standartization/groups/groupMembersTableUtils'
-
-const defaultSearch: FindRelatedIdentitiesAndCountParams = {
-    orderBy: 'firstName_lastName',
-    desc: true,
-    identityState: 'ACTIVATED',
-    page: BASE_PAGE_NUMBER,
-    perPage: BASE_PAGE_SIZE,
-}
 
 export interface TableData {
     uuid: string
@@ -37,21 +28,28 @@ export interface TableData {
     email: string
 }
 
-const defaultSort: ColumnSort = {
-    orderBy: 'firstName_lastName',
-    sortDirection: SortType.ASC,
-}
-
-export interface FilterParams extends IFilterParams {
+export interface FilterParams extends IFilterParams, IFilter {
     memberUuid: string | undefined
     poUuid: string | undefined
     role: string | undefined
+    identityState: string
 }
+
+export const defaultSort = [
+    {
+        orderBy: 'firstName_lastName',
+        sortDirection: SortType.ASC,
+    },
+]
 
 export const identitiesFilter: FilterParams = {
     memberUuid: undefined,
     poUuid: undefined,
     role: undefined,
+    pageNumber: BASE_PAGE_NUMBER,
+    pageSize: BASE_PAGE_SIZE,
+    identityState: 'ACTIVATED',
+    sort: defaultSort,
 }
 
 export interface GroupDetailViewProps {
@@ -61,12 +59,8 @@ export interface GroupDetailViewProps {
     setAddModalOpen: React.Dispatch<React.SetStateAction<boolean>>
     successfulUpdatedData: boolean
     setSuccessfulUpdatedData: React.Dispatch<React.SetStateAction<boolean>>
-    listParams: FindRelatedIdentitiesAndCountParams
-    setListParams: React.Dispatch<React.SetStateAction<FindRelatedIdentitiesAndCountParams>>
     user: User | null
     rowSelection: Record<string, TableData>
-    sorting: ColumnSort[]
-    setSorting: React.Dispatch<React.SetStateAction<ColumnSort[]>>
     isIdentitiesLoading: boolean
     selectableColumnsSpec: ColumnDef<TableData>[]
     tableData: TableData[] | undefined
@@ -74,6 +68,11 @@ export interface GroupDetailViewProps {
     identityToDelete: string | undefined
     setIdentityToDelete: React.Dispatch<React.SetStateAction<string | undefined>>
     setMembersUpdated: React.Dispatch<React.SetStateAction<boolean>>
+    handleFilterChange: (changedFilter: IFilter) => void
+    filter: FilterParams
+    isIdentitiesError: boolean
+    error: OperationResult | null
+    isLoading: boolean
 }
 
 interface GroupDetailContainer {
@@ -91,28 +90,28 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
 
     const { t } = useTranslation()
 
-    const [sorting, setSorting] = useState<ColumnSort[]>([defaultSort])
-    const [listParams, setListParams] = useState(defaultSearch)
-    const { filter } = useFilterParams<FilterParams>(identitiesFilter)
-
+    const { filter, handleFilterChange } = useFilterParams<FilterParams>(identitiesFilter)
     const { data: group } = useFindByUuid3(groupId ?? '')
 
     const [rowSelection, setRowSelection] = useState<Record<string, TableData>>({})
 
     const [isAddModalOpen, setAddModalOpen] = useState(false)
 
-    const loadIdentitiesHook = useFindRelatedIdentitiesAndCountHook()
-
     const [identities, setIdentities] = useState<IdentityInGroupData[]>()
-    const [isIdentitiesLoading, setIsIdentitiesLoading] = useState(false)
     const {
         data: identitiesData,
         isLoading,
         isError: isIdentitiesError,
         error,
+        refetch,
     } = useFindRelatedIdentitiesAndCount(id ?? '', {
-        ...listParams,
+        page: filter.pageNumber,
+        perPage: filter.pageSize,
+        ...(filter.sort != undefined
+            ? { orderBy: filter.sort[0].orderBy, desc: filter.sort[0].sortDirection === SortType.DESC }
+            : { orderBy: defaultSort[0].orderBy, desc: defaultSort[0].sortDirection === SortType.DESC }),
         ...(filter.memberUuid != undefined && { memberUuid: filter.memberUuid }),
+        ...(filter.identityState != undefined && { identityState: filter.identityState }),
         ...(filter.poUuid != undefined && { poUuid: filter.poUuid }),
         ...(filter.role != 'all' && filter.role != undefined && { role: filter.role }),
         ...(filter.fullTextSearch != undefined && { expression: filter.fullTextSearch }),
@@ -125,11 +124,12 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     const getRoleFromIdentityGids = (identity: IdentityInGroupData) => {
         return identity?.gids ? identity.gids[0].roleName : ''
     }
-
     useEffect(() => {
-        setIsIdentitiesLoading(isLoading)
-        setIdentities(identitiesData?.list)
-    }, [identitiesData, isLoading])
+        if (identities !== identitiesData) {
+            setIdentities(identitiesData?.list)
+        }
+    }, [identities, identitiesData])
+
     useEffect(() => {
         setTableData(
             identities?.map((item) => ({
@@ -152,8 +152,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
         tableData,
         t,
         id,
-        listParams,
-        filter,
+        refetch,
         setIdentities,
         setIdentityToDelete,
         ability,
@@ -162,50 +161,33 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     )
 
     useEffect(() => {
-        const loadIdentities = async () => {
-            setIsIdentitiesLoading(true)
-            await loadIdentitiesHook(id ?? '', {
-                ...listParams,
-                ...(filter.memberUuid != undefined && { memberUuid: filter.memberUuid }),
-                ...(filter.poUuid != undefined && { poUuid: filter.poUuid }),
-                ...(filter.role != 'all' && filter.role != undefined && { role: filter.role }),
-                ...(filter.fullTextSearch != undefined && { expression: filter.fullTextSearch }),
-            }).then((res) => {
-                setIdentities(res.list)
-                setIsIdentitiesLoading(false)
-                setMembersUpdated(false)
-            })
-        }
-        if (membersUpdated) {
-            loadIdentities()
-        }
+        refetch()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filter.fullTextSearch, filter.memberUuid, filter.poUuid, filter.role, id, listParams, membersUpdated])
+    }, [filter, id, membersUpdated])
 
     return (
-        <QueryFeedback loading={false} error={isIdentitiesError} errorProps={{ errorMessage: error?.message, errorTitle: error?.type }}>
-            <View
-                id={id}
-                group={group}
-                isAddModalOpen={isAddModalOpen}
-                setAddModalOpen={setAddModalOpen}
-                successfulUpdatedData={successfulUpdatedData}
-                setSuccessfulUpdatedData={setSuccessfulUpdatedData}
-                listParams={listParams}
-                setListParams={setListParams}
-                user={user}
-                rowSelection={rowSelection}
-                sorting={sorting}
-                setSorting={setSorting}
-                isIdentitiesLoading={isIdentitiesLoading}
-                selectableColumnsSpec={selectableColumnsSpec}
-                tableData={tableData}
-                identitiesData={identitiesData}
-                identityToDelete={identityToDelete}
-                setIdentityToDelete={setIdentityToDelete}
-                setMembersUpdated={setMembersUpdated}
-            />
-        </QueryFeedback>
+        <View
+            isIdentitiesError={isIdentitiesError}
+            isLoading={isLoading}
+            error={error}
+            filter={filter}
+            handleFilterChange={handleFilterChange}
+            id={id}
+            group={group}
+            isAddModalOpen={isAddModalOpen}
+            setAddModalOpen={setAddModalOpen}
+            successfulUpdatedData={successfulUpdatedData}
+            setSuccessfulUpdatedData={setSuccessfulUpdatedData}
+            user={user}
+            rowSelection={rowSelection}
+            isIdentitiesLoading={isLoading}
+            selectableColumnsSpec={selectableColumnsSpec}
+            tableData={tableData}
+            identitiesData={identitiesData}
+            identityToDelete={identityToDelete}
+            setIdentityToDelete={setIdentityToDelete}
+            setMembersUpdated={setMembersUpdated}
+        />
     )
 }
 

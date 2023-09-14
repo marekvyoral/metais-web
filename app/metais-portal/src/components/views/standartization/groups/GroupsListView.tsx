@@ -65,13 +65,20 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
             <div className="idsk-table-filter idsk-table-filter__panel">
                 <form onSubmit={handleSubmit}>
                     <IdentitySelect
+                        placeholder={t('groups.select')}
                         name="memberSelect"
                         onChange={(val) => {
                             setSelectedIdentity(Array.isArray(val) ? val[0] : val)
                         }}
                         label={t('groups.member')}
                     />
-                    <CiLazySelect ciType="PO" selectedCi={selectedOrg} setSelectedCi={setSelectedOrg} label={t('groups.organization')} />
+                    <CiLazySelect
+                        ciType="PO"
+                        selectedCi={selectedOrg}
+                        setSelectedCi={setSelectedOrg}
+                        placeholder={t('groups.select')}
+                        label={t('groups.organization')}
+                    />
                     <Button label={t('groups.show')} className={'idsk-button'} type="submit" />
                 </form>
             </div>

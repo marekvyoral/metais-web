@@ -1,17 +1,18 @@
 import { MongoAbility } from '@casl/ability'
 import { CheckBox, DeleteForeverRed } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL, DELETE_CELL } from '@isdd/idsk-ui-kit/table/constants'
-import { FindRelatedIdentitiesAndCountParams, IdentityInGroupData } from '@isdd/metais-common/api/generated/iam-swagger'
+import { IdentitiesInGroupAndCount, IdentityInGroupData, OperationResult } from '@isdd/metais-common/api/generated/iam-swagger'
+import { GROUP_ROLES, KSISVS_ROLES } from '@isdd/metais-common/constants'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 import { ColumnDef, Row, Table } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
 import React from 'react'
-import { GROUP_ROLES, KSISVS_ROLES } from '@isdd/metais-common/constants'
 
 import GroupMemberTableRoleSelector from './components/TableRoleSelector'
 
-import { FilterParams, TableData } from '@/components/containers/standardization/groups/GroupDetailContainer'
+import { TableData } from '@/components/containers/standardization/groups/GroupDetailContainer'
 
 const reduceTableDataToObjectWithUuid = <T extends { uuid?: string }>(array: T[]): Record<string, T> => {
     return array.reduce<Record<string, T>>((result, item) => {
@@ -68,8 +69,9 @@ export const buildColumns = (
     tableData: TableData[] | undefined,
     t: TFunction<'translation', undefined, 'translation'>,
     id: string | undefined,
-    listParams: FindRelatedIdentitiesAndCountParams,
-    filter: FilterParams,
+    refetch: <TPageData>(
+        options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
+    ) => Promise<QueryObserverResult<IdentitiesInGroupAndCount, OperationResult>>,
     setIdentities: (value: React.SetStateAction<IdentityInGroupData[] | undefined>) => void,
     setIdentityToDelete: React.Dispatch<React.SetStateAction<string | undefined>>,
     ability: MongoAbility,
@@ -128,8 +130,7 @@ export const buildColumns = (
             <GroupMemberTableRoleSelector
                 row={row}
                 id={id}
-                filter={filter}
-                listParams={listParams}
+                refetch={refetch}
                 setIdentities={setIdentities}
                 ability={ability}
                 setMembersUpdated={setMembersUpdated}

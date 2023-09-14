@@ -16,9 +16,10 @@ interface IIdentitySelect {
     error?: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     clearErrors?: UseFormClearErrors<any>
+    placeholder?: string
 }
 
-export const IdentitySelect: React.FC<IIdentitySelect> = ({ label, clearErrors, setValue, name, error, onChange }) => {
+export const IdentitySelect: React.FC<IIdentitySelect> = ({ label, clearErrors, setValue, name, error, onChange, placeholder }) => {
     const perPage = 20
     const { t } = useTranslation()
     const { data: numberOfIdentities } = useGetPages2()
@@ -56,6 +57,7 @@ export const IdentitySelect: React.FC<IIdentitySelect> = ({ label, clearErrors, 
 
     return (
         <SelectLazyLoading<Identity>
+            placeholder={placeholder}
             id={name}
             name={name}
             label={label ? `${label}:` : `${t('tasks.selectLogin')}:`}
