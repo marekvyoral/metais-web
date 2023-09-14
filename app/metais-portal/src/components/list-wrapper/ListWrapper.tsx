@@ -31,11 +31,11 @@ import { Languages } from '@isdd/metais-common/localization/languages'
 import { AddItemsButtonGroup } from '@/components/add-items-button-group/AddItemsButtonGroup'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { ColumnsOutputDefinition, IStoreColumnSelection } from '@/components/ci-table/ciTableHelpers'
-import { KSFilterData } from '@/pages/ci/[entityName]/entity'
+import { CIFilterData } from '@/pages/ci/[entityName]/entity'
 
 interface IListWrapper {
     isNewRelationModal?: boolean
-    defaultFilterValues: KSFilterData
+    defaultFilterValues: CIFilterData
     ciType: string | undefined
     columnListData: IColumn | undefined
     handleFilterChange: (filter: IFilter) => void
@@ -137,7 +137,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 )}
             </FlexColumnReverseWrapper>
 
-            <Filter<KSFilterData>
+            <Filter<CIFilterData>
                 defaultFilterValues={defaultFilterValues}
                 form={({ register, filter, setValue }) => (
                     <div>

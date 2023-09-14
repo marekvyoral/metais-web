@@ -25,11 +25,10 @@ export const getPortalNavigationItems = (t: TFunction, isAuthorized = false, ksi
                 { title: t('navMenu.lists.servers'), path: NavigationSubRoutes.SERVERY },
                 { title: t('navMenu.lists.virtualMachines'), path: NavigationSubRoutes.VIRTUALNE_STROJE },
                 { title: t('navMenu.lists.operationPlace'), path: NavigationSubRoutes.MIESTO_PREVADZKY },
-                { title: t('navMenu.lists.notInOVM'), path: NavigationSubRoutes.NIE_SU_OVM },
+                { title: t('navMenu.lists.notInOVM'), path: NavigationSubRoutes.NOT_OVM },
                 { title: t('navMenu.lists.licenses'), path: NavigationSubRoutes.LICENCIE },
                 { title: t('navMenu.lists.processorsOfITDevelopmentConcepts'), path: NavigationSubRoutes.PROCESSORS_OF_IT_DEVELOPMENT_CONCEPTS },
                 { title: t('navMenu.lists.subordinates'), path: NavigationSubRoutes.SUBORDINATES },
-                { title: t('navMenu.lists.ISoperators'), path: NavigationSubRoutes.IS_OPERATORS },
             ],
         },
         {

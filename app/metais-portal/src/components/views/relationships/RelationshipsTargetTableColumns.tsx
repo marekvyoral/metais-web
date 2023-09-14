@@ -9,24 +9,36 @@ export const targetTableColumns = (t: TFunction<'translation', undefined, 'trans
             accessorFn: (row) => row?.configurationItem?.type,
             header: t('relationshipsTab.table.target'),
             id: '0',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (row) => row.getValue() as string,
         },
         {
             accessorFn: (row) => row?.configurationItem?.attributes?.Gen_Profil_nazov,
             header: t('relationshipsTab.table.targetItemName'),
             id: '1',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (row) => row.getValue() as string,
         },
         {
             accessorFn: (row) => row?.relationship?.type,
             header: t('relationshipsTab.table.relationshipType'),
             id: '3',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (row) => row.getValue() as string,
         },
         {
             accessorFn: (row) => row?.configurationItem?.metaAttributes?.state,
             header: t('relationshipsTab.table.evidenceStatus'),
             id: '4',
+            meta: {
+                getCellContext: (ctx) => t(`metaAttributes.state.${ctx?.getValue?.()}`),
+            },
             cell: (row) => t(`metaAttributes.state.${row.getValue()}`) as string,
         },
     ]

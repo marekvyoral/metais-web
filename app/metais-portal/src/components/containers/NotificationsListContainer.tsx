@@ -139,6 +139,9 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
                           id: e.name,
                           header: e.name,
                           accessorKey: e.technicalName,
+                          meta: {
+                              getCellContext: (ctx) => ctx?.getValue?.(),
+                          },
                           cell: (row) => (
                               <Link to={NavigationSubRoutes.NOTIFICATIONS + '/' + row.row.original.id} state={{ from: location }}>
                                   {row.getValue() as string}
@@ -146,7 +149,15 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
                           ),
                           enableSorting: true,
                       }
-                    : { id: e.name, header: e.name, accessorKey: e.technicalName, enableSorting: true },
+                    : {
+                          id: e.name,
+                          header: e.name,
+                          accessorKey: e.technicalName,
+                          enableSorting: true,
+                          meta: {
+                              getCellContext: (ctx) => ctx?.getValue?.(),
+                          },
+                      },
             )
         return list
     }, [location, selectedColumns])

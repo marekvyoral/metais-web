@@ -24,8 +24,22 @@ export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) 
         state: { user },
     } = useAuth()
     const historyColumns: ColumnDef<TaskHistory>[] = [
-        { id: 'activity', header: t('tasks.tableHeaders.action'), accessorKey: 'activity' },
-        { id: 'assignedTo', header: t('tasks.tableHeaders.assignedTo'), accessorKey: 'assignedTo' },
+        {
+            id: 'activity',
+            header: t('tasks.tableHeaders.action'),
+            accessorKey: 'activity',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
+        },
+        {
+            id: 'assignedTo',
+            header: t('tasks.tableHeaders.assignedTo'),
+            accessorKey: 'assignedTo',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
+        },
         {
             id: 'changedAt',
             header: t('tasks.tableHeaders.changedAt'),
@@ -34,7 +48,14 @@ export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) 
                 return <span>{t('dateTime', { date: row.getValue() })}</span>
             },
         },
-        { id: 'changedBy', header: t('tasks.tableHeaders.changedBy'), accessorKey: 'changedBy' },
+        {
+            id: 'changedBy',
+            header: t('tasks.tableHeaders.changedBy'),
+            accessorKey: 'changedBy',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
+        },
     ]
     const [selectedLogin, setSelectedLogin] = useState<Identity | undefined>(undefined)
     const [selectedGroup, setSelectedGroup] = useState<RoleOrgIdentity | undefined>(undefined)

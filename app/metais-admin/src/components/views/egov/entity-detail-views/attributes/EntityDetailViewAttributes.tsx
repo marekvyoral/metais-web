@@ -54,6 +54,9 @@ export const EntityDetailViewAttributes = ({
             accessorFn: (row) => row?.name,
             enableSorting: true,
             id: 'name',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
                     <Input id="name" {...register(`attributes.${ctx?.row?.index}.name`)} />
@@ -66,6 +69,9 @@ export const EntityDetailViewAttributes = ({
             accessorFn: (row) => row?.description,
             enableSorting: true,
             id: 'description',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
                     <Input id="name" {...register(`attributes.${ctx?.row?.index}.description`)} />
@@ -79,6 +85,9 @@ export const EntityDetailViewAttributes = ({
             accessorFn: (row) => row?.technicalName,
             enableSorting: true,
             id: 'technicalName',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
         {

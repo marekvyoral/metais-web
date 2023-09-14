@@ -3,6 +3,7 @@ import { Column, ColumnOrderState, Header, Table as ReactTable, flexRender } fro
 import { useDrag, useDrop } from 'react-dnd'
 import classNames from 'classnames'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/src/api'
+import './header.scss'
 
 import styles from './table.module.scss'
 import { CHECKBOX_CELL } from './constants'
@@ -68,7 +69,11 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
                                 {isPlaceholder ? null : flexRender(columnHeader, getContext())}
                                 {column.getCanSort() && columnEnabledSorting && (
                                     <button
-                                        className="arrowBtn"
+                                        className={classNames(
+                                            'arrowBtn',
+                                            { arrowBtnDesc: column.getIsSorted() === 'desc' },
+                                            { arrowBtnAsc: column.getIsSorted() === 'asc' },
+                                        )}
                                         onClick={column.getToggleSortingHandler()}
                                         style={{ opacity: column.getIsSorted() === false ? 0.1 : 1 }}
                                     />

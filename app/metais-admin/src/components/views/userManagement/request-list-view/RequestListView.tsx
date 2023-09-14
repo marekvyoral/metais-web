@@ -32,6 +32,9 @@ export const RequestListView: React.FC<IRequestListView> = ({ listType, data, de
             accessorFn: (row) => row?.identityLastName,
             enableSorting: true,
             id: 'identityLastName',
+            meta: {
+                getCellContext: (ctx) => ctx?.row?.original?.identityFirstName + ' ' + ctx?.row?.original?.identityLastName,
+            },
             cell: (ctx) => (
                 <TextLink to={`${route}/detail/${ctx?.row?.original?.uuid}`}>
                     {ctx?.row?.original?.identityFirstName + ' ' + ctx?.row?.original?.identityLastName}
@@ -43,6 +46,9 @@ export const RequestListView: React.FC<IRequestListView> = ({ listType, data, de
             accessorFn: (row) => row?.identityLogin,
             enableSorting: true,
             id: 'identityLogin',
+            meta: {
+                getCellContext: (ctx) => ctx?.row?.original?.identityLogin,
+            },
             cell: (ctx) => <span>{ctx?.row?.original?.identityLogin}</span>,
         },
         {
@@ -50,6 +56,9 @@ export const RequestListView: React.FC<IRequestListView> = ({ listType, data, de
             accessorFn: (row) => row?.telephone,
             enableSorting: true,
             id: 'telephone',
+            meta: {
+                getCellContext: (ctx) => ctx?.row?.original?.telephone,
+            },
             cell: (ctx) => <span>{ctx?.row?.original?.telephone}</span>,
         },
         {
@@ -57,6 +66,9 @@ export const RequestListView: React.FC<IRequestListView> = ({ listType, data, de
             accessorFn: (row) => row?.mobile,
             enableSorting: true,
             id: 'mobile',
+            meta: {
+                getCellContext: (ctx) => ctx?.row?.original?.mobile,
+            },
             cell: (ctx) => <span>{ctx?.row?.original?.mobile}</span>,
         },
         {
@@ -64,6 +76,9 @@ export const RequestListView: React.FC<IRequestListView> = ({ listType, data, de
             accessorFn: (row) => row?.email,
             enableSorting: true,
             id: 'email',
+            meta: {
+                getCellContext: (ctx) => ctx?.row?.original?.email,
+            },
             cell: (ctx) => <span>{ctx?.row?.original?.email}</span>,
         },
         {
@@ -87,6 +102,9 @@ export const RequestListView: React.FC<IRequestListView> = ({ listType, data, de
             accessorFn: (row) => row?.poName,
             enableSorting: false,
             id: 'poName',
+            meta: {
+                getCellContext: (ctx) => ctx?.row?.original?.poName,
+            },
             cell: (ctx) => <span className="govuk-body-s">{ctx?.row?.original?.poName}</span>,
         },
     ]

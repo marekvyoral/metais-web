@@ -12,14 +12,14 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 interface Props {
     importantEntityName?: string
 }
-export interface KSFilterData extends IFilterParams {
+export interface CIFilterData extends IFilterParams {
     Gen_Profil_nazov?: string
     Gen_Profil_kod_metais?: string
 }
 const CiListPage: React.FC<Props> = ({ importantEntityName }) => {
     const { entityName: ciType } = useParams()
     const { t } = useTranslation()
-    const defaultFilterValues: KSFilterData = { Gen_Profil_nazov: '', Gen_Profil_kod_metais: '' }
+    const defaultFilterValues: CIFilterData = { Gen_Profil_nazov: '', Gen_Profil_kod_metais: '' }
 
     const entityName = importantEntityName ? importantEntityName : ciType ?? ''
     return (
@@ -44,7 +44,7 @@ const CiListPage: React.FC<Props> = ({ importantEntityName }) => {
                     }) => {
                         return (
                             <>
-                                <CiListContainer<KSFilterData>
+                                <CiListContainer<CIFilterData>
                                     entityName={entityName}
                                     defaultFilterValues={defaultFilterValues}
                                     ListComponent={({

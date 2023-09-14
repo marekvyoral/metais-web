@@ -467,11 +467,12 @@
             "gdprRequestList": "Žiadosti na vymazanie osobných údajov",
             "registrationRequestList": "Registrácie"
         },
+        "roleManagement": "Správa rolí",
         "egov": {
+            "egov": "Správa eGov komponentov",
             "entity": "Entity",
             "profiles": "Profily atribútov",
-            "relations": "Vzťahy",
-            "roleManagement": "Správa rolí"
+            "relations": "Vzťahy"
         },
         "eko": "Správa EKO kódov",
         "tooltips": "Tooltipy",

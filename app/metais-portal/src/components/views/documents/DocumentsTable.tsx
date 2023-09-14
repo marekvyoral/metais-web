@@ -45,6 +45,9 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColum
             accessorFn: (row) => row?.configurationItem,
             header: t('documentsTab.table.name'),
             id: 'documentsTab.table.name',
+            meta: {
+                getCellContext: (ctx) => (ctx?.getValue?.() as ConfigurationItemUi).attributes?.Gen_Profil_nazo,
+            },
             cell: (row) => {
                 const ci = row.getValue() as ConfigurationItemUi
                 return <a href={`${DMS_DOWNLOAD_FILE}${ci?.uuid}`}>{ci?.attributes?.Gen_Profil_nazov}</a>
@@ -54,12 +57,18 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColum
             accessorFn: (row) => row?.configurationItem?.attributes?.Gen_Profil_poznamka,
             header: t('documentsTab.table.note'),
             id: 'documentsTab.table.note',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (row) => row.getValue() as string,
         },
         {
             accessorFn: (row) => row?.configurationItem?.metaAttributes?.state,
             header: t('documentsTab.table.evidenceStatus'),
             id: 'documentsTab.table.evidenceStatus',
+            meta: {
+                getCellContext: (ctx) => t(`metaAttributes.state.${ctx.getValue()}`),
+            },
             cell: (row) => t(`metaAttributes.state.${row.getValue()}`) as string,
         },
         {

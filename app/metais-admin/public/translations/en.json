@@ -396,11 +396,12 @@
             "gdprRequestList": "Requests for remove personal data",
             "registrationRequestList": "Registrations"
         },
+        "roleManagement": "Role management",
         "egov": {
+            "egov": "Management of eGov components",
             "entity": "Entities",
             "profiles": "Attribute profiles",
-            "relations": "Relations",
-            "roleManagement": "Role management"
+            "relations": "Relations"
         },
         "eko": "EKO codes management",
         "tooltips": "Tooltips",
