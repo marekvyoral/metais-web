@@ -71,6 +71,9 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
             header: t('codeListList.table.name'),
             accessorFn: (row) => row.codelistNames,
             enableSorting: true,
+            meta: {
+                getCellContext: (ctx) => selectBasedOnLanguage(ctx.getValue() as ApiCodelistItemName[], i18n.language),
+            },
             cell: (row) => {
                 const { id, locked, lockedBy } = row.row.original
                 const name = selectBasedOnLanguage(row.getValue() as ApiCodelistItemName[], i18n.language)
@@ -92,12 +95,18 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
             id: 'code',
             header: t('codeListList.table.code'),
             accessorFn: (row) => row.code,
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             enableSorting: true,
         },
         {
             id: 'mainGestor',
             header: t('codeListList.table.mainGestor'),
             accessorFn: (row) => row.mainCodelistManagers,
+            meta: {
+                getCellContext: (ctx) => getMainGestor(ctx.getValue() as ApiCodelistManager[], data?.roleParticipants || []),
+            },
             cell: (row) => getMainGestor(row.getValue() as ApiCodelistManager[], data?.roleParticipants || []),
         },
         {
@@ -105,6 +114,9 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
             header: t('codeListList.table.effectiveFrom'),
             accessorFn: (row) => row.effectiveFrom,
             enableSorting: true,
+            meta: {
+                getCellContext: (ctx) => t('date', { date: ctx.getValue() as string }),
+            },
             cell: (row) => t('date', { date: row.getValue() as string }),
         },
         {

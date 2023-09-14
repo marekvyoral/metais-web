@@ -133,6 +133,9 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             accessorFn: (row) => row?.code,
             enableSorting: true,
             id: 'code',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
                     <Input
@@ -151,6 +154,9 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             accessorFn: (row) => row?.name,
             enableSorting: true,
             id: 'name',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
                     <Input
@@ -166,6 +172,9 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             accessorFn: (row) => row?.description,
             enableSorting: true,
             id: 'description',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
                     <TextArea

@@ -87,11 +87,17 @@ export const getColumns = (
             accessorFn: (row) => row.name,
             id: 'name',
             header: t('managementList.name'),
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
         },
         {
             id: 'description',
             accessorKey: 'description',
             header: t('managementList.description'),
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
         },
     ]
 }

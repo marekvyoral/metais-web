@@ -27,6 +27,9 @@ export const SummarizingCard = ({ data, setSummarizingCardData }: SummCardProps)
             accessorFn: (row) => row?.attribute?.name,
             enableSorting: true,
             id: 'name',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
 
@@ -35,6 +38,9 @@ export const SummarizingCard = ({ data, setSummarizingCardData }: SummCardProps)
             accessorFn: (row) => row?.attribute?.description,
             enableSorting: true,
             id: 'description',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
 
@@ -43,6 +49,9 @@ export const SummarizingCard = ({ data, setSummarizingCardData }: SummCardProps)
             accessorFn: (row) => row?.attribute?.technicalName,
             enableSorting: true,
             id: 'technicalName',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
         {

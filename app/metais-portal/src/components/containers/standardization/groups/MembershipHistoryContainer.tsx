@@ -14,6 +14,9 @@ export const MembershipHistoryContainer: React.FC = () => {
             header: t('groups.userName'),
             accessorKey: 'identity',
             enableSorting: true,
+            meta: {
+                getCellContext: (ctx) => `${(ctx.getValue() as Person).firstName} ${(ctx.getValue() as Person).lastName}`,
+            },
             cell: (row) => {
                 return (
                     <span>
@@ -22,8 +25,26 @@ export const MembershipHistoryContainer: React.FC = () => {
                 )
             },
         },
-        { id: 'orgName', header: t('groups.organization'), accessorKey: 'orgName', enableSorting: true, size: 310 },
-        { id: 'roleDesc', header: t('groups.role'), accessorKey: 'roleDesc', enableSorting: true, size: 140 },
+        {
+            id: 'orgName',
+            header: t('groups.organization'),
+            accessorKey: 'orgName',
+            enableSorting: true,
+            size: 310,
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
+        },
+        {
+            id: 'roleDesc',
+            header: t('groups.role'),
+            accessorKey: 'roleDesc',
+            enableSorting: true,
+            size: 140,
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
+        },
     ]
 
     const [selectedGroup, setSelectedGroup] = useState<Group | undefined>(undefined)

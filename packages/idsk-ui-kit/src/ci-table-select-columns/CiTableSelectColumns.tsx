@@ -2,6 +2,7 @@ import { ATTRIBUTE_NAME } from '@isdd/metais-common/src/api'
 import classNames from 'classnames'
 import React, { ChangeEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFilters'
 
 import styles from './ciTableSelectColumns.module.scss'
 
@@ -121,9 +122,6 @@ export const CiTableSelectColumns: React.FC<ICiTableSelectColumnsProps> = ({
     }
 
     const updateMetaSelectedValue = (key: string, checked: boolean) => {
-        // if (checked && selectedColumns?.length >= MAX_SELECTED_COLUMNS) {
-        //     return
-        // }
         setSelectedMetaColumns((prev) => {
             const selectedPrev = prev.filter((column) => column.name !== key)
             if (checked) {
@@ -148,7 +146,7 @@ export const CiTableSelectColumns: React.FC<ICiTableSelectColumnsProps> = ({
     }
 
     const filterColumnsByNameSearch = (columns: IColumnType[]): IColumnType[] => {
-        return columns.filter((column) => column.name.toLowerCase().includes(search.toLowerCase()))
+        return columns.filter((column) => latiniseString(column.name).includes(latiniseString(search)))
     }
 
     return (

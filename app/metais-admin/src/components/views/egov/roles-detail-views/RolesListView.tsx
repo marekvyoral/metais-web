@@ -4,7 +4,7 @@ import { Role } from '@isdd/metais-common/api/generated/iam-swagger'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { ActionsOverTable, BASE_PAGE_SIZE, CreateEntityButton, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { ColumnDef } from '@tanstack/react-table'
+import { CellContext, ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
@@ -37,11 +37,35 @@ const RoleListView: React.FC<RoleListViewParams> = ({
     const { t } = useTranslation()
 
     const columns: ColumnDef<Role>[] = [
-        { technicalName: 'name', name: t('adminRolesPage.name') },
-        { technicalName: 'description', name: t('adminRolesPage.description') },
-        { technicalName: 'assignedGroup', name: t('adminRolesPage.group') },
-        { technicalName: 'type', name: t('adminRolesPage.systemRole') },
-    ].map((e) => ({ id: e.technicalName, header: e.name, accessorKey: e.technicalName, enableSorting: true, key: e.technicalName }))
+        {
+            technicalName: 'name',
+            name: t('adminRolesPage.name'),
+            meta: {
+                getCellContext: (ctx: CellContext<Role, unknown>) => ctx?.getValue?.(),
+            },
+        },
+        {
+            technicalName: 'description',
+            name: t('adminRolesPage.description'),
+            meta: {
+                getCellContext: (ctx: CellContext<Role, unknown>) => ctx?.getValue?.(),
+            },
+        },
+        {
+            technicalName: 'assignedGroup',
+            name: t('adminRolesPage.group'),
+            meta: {
+                getCellContext: (ctx: CellContext<Role, unknown>) => ctx?.getValue?.(),
+            },
+        },
+        {
+            technicalName: 'type',
+            name: t('adminRolesPage.systemRole'),
+            meta: {
+                getCellContext: (ctx: CellContext<Role, unknown>) => ctx?.getValue?.(),
+            },
+        },
+    ].map((e) => ({ id: e.technicalName, header: e.name, accessorKey: e.technicalName, enableSorting: true, key: e.technicalName, meta: e.meta }))
 
     const { handleFilterChange } = useFilterParams(defaultFilterValues)
     const myHandleFilterChange = (myFilter: IFilter) => {

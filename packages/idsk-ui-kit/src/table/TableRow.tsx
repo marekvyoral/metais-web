@@ -43,10 +43,9 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
         >
             {row.getVisibleCells().map((cell) => {
                 const columnDef = cell.column.columnDef
-                const meta = columnDef.meta && columnDef.meta.getCellContext && columnDef.meta.getCellContext(cell.getContext())
+                const tooltipText = columnDef?.meta?.getCellContext?.(cell.getContext())
                 const cellValue = flexRender(columnDef.cell, cell.getContext())
-                const shortString = typeof meta === 'string' && meta.length >= TOOLTIP_TEXT_BREAKER
-
+                const shortString = typeof tooltipText === 'string' && tooltipText.length >= TOOLTIP_TEXT_BREAKER
                 return (
                     <td
                         className={classNames('idsk-table__cell', {
@@ -65,7 +64,7 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
                                 cell.getValue() === null ||
                                 !shortString
                             }
-                            descriptionElement={<div className={styles.tooltipWidth500}>{cellValue}</div>}
+                            descriptionElement={<div className={styles.tooltipWidth500}>{tooltipText}</div>}
                             tooltipContent={(open, close) => (
                                 <div className={styles.tooltipTextWrapper} onMouseOver={open} onMouseOut={close}>
                                     {cellValue}

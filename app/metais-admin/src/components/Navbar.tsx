@@ -66,20 +66,26 @@ export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
                 ],
             },
             {
-                title: t('navMenu.egov.entity'),
-                path: AdminRouteNames.EGOV_ENTITY,
+                title: t('navMenu.egov.egov'),
+                path: AdminRouteNames.EGOV,
+                subItems: [
+                    {
+                        title: t('navMenu.egov.entity'),
+                        path: AdminRouteNames.EGOV_ENTITY,
+                    },
+                    {
+                        title: t('navMenu.egov.profiles'),
+                        path: AdminRouteNames.EGOV_PROFILE,
+                    },
+                    {
+                        title: t('navMenu.egov.relations'),
+                        path: AdminRouteNames.EGOV_RELATION,
+                    },
+                ],
             },
             {
-                title: t('navMenu.egov.roleManagement'),
+                title: t('navMenu.roleManagement'),
                 path: AdminRouteNames.ROLES,
-            },
-            {
-                title: t('navMenu.egov.profiles'),
-                path: AdminRouteNames.EGOV_PROFILE,
-            },
-            {
-                title: t('navMenu.egov.relations'),
-                path: AdminRouteNames.EGOV_RELATION,
             },
             {
                 title: t('navMenu.tooltips'),
