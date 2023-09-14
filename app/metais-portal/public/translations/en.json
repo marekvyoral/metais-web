@@ -368,9 +368,15 @@
             "target": "Target (Type)",
             "targetItemName": "Target item name",
             "relationshipType": "Relationship type",
+            "ciType": "Item type",
             "evidenceStatus": "Evidence status",
             "source": "Source (Type)",
             "sourceItemName": "Source item name"
+        },
+        "select": {
+            "ciType": "Select item type",
+            "relationshipType": "Select relationship type",
+            "evidenceStatus": "Select evidence status"
         }
     },
     "historyTab": {

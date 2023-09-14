@@ -1,11 +1,11 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { RelationshipsTable } from './RelationshipTable'
-import { targetTableColumns } from './RelationshipsTargetTableColumns'
 import { sourceTableColumns } from './RelationshipsSourceTableColumns'
+import { targetTableColumns } from './RelationshipsTargetTableColumns'
 
 import { CiNeighboursListContainer } from '@/components/containers/CiNeighboursListContainer'
 import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
@@ -39,6 +39,8 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                                     return (
                                         <RelationshipsTable
                                             data={props?.data?.fromNodes?.neighbourPairs}
+                                            defaultFilter={props?.filter}
+                                            filterData={props?.apiFilterData}
                                             columns={targetTableColumns(t)}
                                             isLoading={props.isLoading}
                                             isError={props.isError}
@@ -64,6 +66,8 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                                         <RelationshipsTable
                                             data={props?.data?.toNodes?.neighbourPairs}
                                             columns={sourceTableColumns(t)}
+                                            defaultFilter={props?.filter}
+                                            filterData={props?.apiFilterData}
                                             isLoading={props.isLoading}
                                             isError={props.isError}
                                             pagination={props.pagination}
