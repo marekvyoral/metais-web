@@ -394,6 +394,10 @@
             "actions": "Typ akcie",
             "actionTime": "Dátum zmeny",
             "actionBy": "Vykonal"
+        },
+        "compareButtonLabel": "Porovnať vybrane záznamy",
+        "compare": {
+            "modified": "{{date}}"
         }
     },
     "metaAttributes": {
@@ -681,7 +685,8 @@
         "noName": "Bez mena",
         "ciCreate": "Vytvorenie novej entity",
         "newRelation": "Pridanie nového vzťahu k {{itemName}}",
-        "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}"
+        "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}",
+        "compareHistory": "Porovnanie zmien"
     },
     "codeListList": {
         "title": "Číselníky",

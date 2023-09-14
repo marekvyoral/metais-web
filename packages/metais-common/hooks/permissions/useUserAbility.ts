@@ -12,6 +12,7 @@ export enum Actions {
     CREATE = 'create',
     EDIT = 'edit',
     CHANGE_OWNER = 'change_owner',
+    HISTORY = 'history',
     BULK_ACTIONS = 'bulk_actions',
 }
 
@@ -28,6 +29,7 @@ const defineAbilityForUser = (roles: string[] = [], entityName: string, create?:
         can(Actions.EXPORT, entityName)
         can(Actions.IMPORT, entityName)
         can(Actions.SELECT_COLUMNS, entityName)
+        can(Actions.HISTORY, entityName)
         can(Actions.BULK_ACTIONS, entityName)
     } else if (roles?.length > 0) {
         can(Actions.READ, entityName)

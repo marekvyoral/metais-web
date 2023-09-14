@@ -394,7 +394,8 @@
             "actions": "Action type",
             "actionTime": "Action time",
             "actionBy": "Action by"
-        }
+        },
+        "compareButtonLabel": "Compare selected versions"
     },
     "metaAttributes": {
         "state": {
@@ -680,7 +681,8 @@
         "noName": "No name",
         "ciCreate": "Create configuration item",
         "newRelation": "Add new relation of {{itemName}}",
-        "newCiAndRelation": "Add new item and relation for {{itemName}}"
+        "newCiAndRelation": "Add new item and relation for {{itemName}}",
+        "compareHistory": "Change comparer"
     },
     "codeListList": {
         "title": "Codelists",
