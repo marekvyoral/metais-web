@@ -27,6 +27,8 @@ const RegistrationRequestListPage = () => {
                             data={props.data}
                             defaultFilterParams={props.defaultFilterParams}
                             handleFilterChange={props.handleFilterChange}
+                            isError={props.isError}
+                            isLoading={props.isLoading}
                         />
                     )}
                 />

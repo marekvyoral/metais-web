@@ -12,6 +12,8 @@ import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { QueryFeedback } from '@isdd/metais-common/index'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import { IRequestListFilterView, RequestListType } from '@/components/containers/ManagementList/RequestListContainer'
 
@@ -21,9 +23,19 @@ export interface IRequestListView {
     defaultFilterParams: IRequestListFilterView
     route: AdminRouteNames
     handleFilterChange: (filter: IFilter) => void
+    isLoading: boolean
+    isError: boolean
 }
 
-export const RequestListView: React.FC<IRequestListView> = ({ listType, data, defaultFilterParams, handleFilterChange, route }) => {
+export const RequestListView: React.FC<IRequestListView> = ({
+    listType,
+    data,
+    defaultFilterParams,
+    handleFilterChange,
+    route,
+    isError,
+    isLoading,
+}) => {
     const { t, i18n } = useTranslation()
     const entityName = 'requestList'
     const columns: Array<ColumnDef<ClaimUi>> = [
@@ -111,68 +123,75 @@ export const RequestListView: React.FC<IRequestListView> = ({ listType, data, de
 
     return (
         <>
-            <TextHeading size="XL">
-                {listType === RequestListType.GDPR && t('requestList.gdprTitle')}
-                {listType === RequestListType.REGISTRATION && t('requestList.registrationLitle')}
-                {listType === RequestListType.REQUESTS && t('requestList.title')}
-            </TextHeading>
-            <Filter<IRequestListFilterView>
-                defaultFilterValues={defaultFilterParams}
-                form={({ filter, setValue }) => (
-                    <>
-                        <SimpleSelect
-                            label={t(`userManagement.filter.state`)}
-                            options={[
-                                {
-                                    value: '',
-                                    label: t('requestList.filter.all'),
-                                },
-                                {
-                                    value: EClaimState.WAITING,
-                                    label: t('requestList.filter.created'),
-                                },
-                                {
-                                    value: EClaimState.ACCEPTED,
-                                    label: t('requestList.filter.accepted'),
-                                },
-                                {
-                                    value: EClaimState.REFUSED,
-                                    label: t('requestList.filter.rejected'),
-                                },
-                            ]}
-                            defaultValue={filter?.status}
-                            name="status"
-                            setValue={setValue}
-                        />
-                    </>
-                )}
-            />
-            <ActionsOverTable
-                handleFilterChange={handleFilterChange}
-                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                entityName={entityName}
-                hiddenButtons={{ SELECT_COLUMNS: true }}
-            />
-            <Table
-                key={'requestListTable'}
-                rowHref={(row) => `./detail/${row?.original?.uuid}`}
-                data={data?.claimSet || []}
-                columns={columns}
-                sort={[{ orderBy: defaultFilterParams.sortAttribute, sortDirection: defaultFilterParams.ascending ? SortType.ASC : SortType.DESC }]}
-                pagination={{
-                    pageIndex: defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER,
-                    pageSize: defaultFilterParams.pageSize ?? BASE_PAGE_SIZE,
-                }}
-                onSortingChange={(columnSort) => {
-                    handleFilterChange({ sortAttribute: columnSort[0].orderBy, ascending: columnSort[0].sortDirection === SortType.ASC })
-                }}
-            />
-            <PaginatorWrapper
-                pageNumber={defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER}
-                pageSize={defaultFilterParams.pageSize ?? BASE_PAGE_SIZE}
-                dataLength={data?.pagination?.totalItems ?? 0}
-                handlePageChange={handleFilterChange}
-            />
+            <QueryFeedback loading={isLoading} error={false} withChildren>
+                <FlexColumnReverseWrapper>
+                    <TextHeading size="XL">
+                        {listType === RequestListType.GDPR && t('requestList.gdprTitle')}
+                        {listType === RequestListType.REGISTRATION && t('requestList.registrationLitle')}
+                        {listType === RequestListType.REQUESTS && t('requestList.title')}
+                    </TextHeading>
+                    {isError && <QueryFeedback error loading={false} errorProps={{ errorMessage: t('managementList.containerQueryError') }} />}
+                </FlexColumnReverseWrapper>
+                <Filter<IRequestListFilterView>
+                    defaultFilterValues={defaultFilterParams}
+                    form={({ filter, setValue }) => (
+                        <>
+                            <SimpleSelect
+                                label={t(`userManagement.filter.state`)}
+                                options={[
+                                    {
+                                        value: '',
+                                        label: t('requestList.filter.all'),
+                                    },
+                                    {
+                                        value: EClaimState.WAITING,
+                                        label: t('requestList.filter.created'),
+                                    },
+                                    {
+                                        value: EClaimState.ACCEPTED,
+                                        label: t('requestList.filter.accepted'),
+                                    },
+                                    {
+                                        value: EClaimState.REFUSED,
+                                        label: t('requestList.filter.rejected'),
+                                    },
+                                ]}
+                                defaultValue={filter?.status}
+                                name="status"
+                                setValue={setValue}
+                            />
+                        </>
+                    )}
+                />
+                <ActionsOverTable
+                    handleFilterChange={handleFilterChange}
+                    pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                    entityName={entityName}
+                    hiddenButtons={{ SELECT_COLUMNS: true }}
+                />
+                <Table
+                    key={'requestListTable'}
+                    rowHref={(row) => `./detail/${row?.original?.uuid}`}
+                    data={data?.claimSet || []}
+                    columns={columns}
+                    sort={[
+                        { orderBy: defaultFilterParams.sortAttribute, sortDirection: defaultFilterParams.ascending ? SortType.ASC : SortType.DESC },
+                    ]}
+                    pagination={{
+                        pageIndex: defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER,
+                        pageSize: defaultFilterParams.pageSize ?? BASE_PAGE_SIZE,
+                    }}
+                    onSortingChange={(columnSort) => {
+                        handleFilterChange({ sortAttribute: columnSort[0].orderBy, ascending: columnSort[0].sortDirection === SortType.ASC })
+                    }}
+                />
+                <PaginatorWrapper
+                    pageNumber={defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER}
+                    pageSize={defaultFilterParams.pageSize ?? BASE_PAGE_SIZE}
+                    dataLength={data?.pagination?.totalItems ?? 0}
+                    handlePageChange={handleFilterChange}
+                />
+            </QueryFeedback>
         </>
     )
 }

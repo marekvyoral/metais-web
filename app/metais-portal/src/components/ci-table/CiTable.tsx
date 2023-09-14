@@ -129,7 +129,7 @@ export const CiTable: React.FC<ICiTable> = ({
                 return t(`metaAttributes.state.${ctx.getValue()}`)
             }
             case isOwner || isGroup: {
-                return getOwnerInformation(ctx.getValue() as string, data.gestorsData)?.configurationItemUi?.attributes?.[
+                return getOwnerInformation(ctx?.row?.original?.metaAttributes?.owner as string, data.gestorsData)?.configurationItemUi?.attributes?.[
                     ATTRIBUTE_NAME.Gen_Profil_nazov
                 ]
             }
