@@ -275,6 +275,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
             setSearchParams({})
             dispatch({ type: FilterActions.RESET_FILTER, path: location.pathname })
         },
+        handleSubmit,
         onSubmit,
     }
 }

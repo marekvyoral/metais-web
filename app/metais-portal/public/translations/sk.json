@@ -368,9 +368,15 @@
             "target": "Cieľ (Typ)",
             "targetItemName": "Názov cieľovej položky",
             "relationshipType": "Typ vzťahu",
+            "ciType": "Typ položky",
             "evidenceStatus": "Stav evidencie",
             "source": "Zdroj (Typ)",
             "sourceItemName": "Názov zdrojovej položky"
+        },
+        "select": {
+            "ciType": "Vyberte typ položky",
+            "relationshipType": "Vyberte typ vzťahu",
+            "evidenceStatus": "Vyberte stav"
         }
     },
     "historyTab": {
