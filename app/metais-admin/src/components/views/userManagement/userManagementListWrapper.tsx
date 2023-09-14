@@ -9,7 +9,9 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isd
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 
 import {
     UserManagementActionsOverRowEnum,
@@ -29,6 +31,12 @@ export interface UserManagementListPageViewProps {
     handleRowAction: (identity: { uuid: string; login: string }, action: UserManagementActionsOverRowEnum, isCurrentlyBlocked?: boolean) => void
     handleBlockRowsAction: (identity: { uuid: string; login: string }[], activate: boolean) => void
     handleExport: () => void
+    isLoading: boolean
+    isError: boolean
+    isLoadingExport: boolean
+    isErrorExport: boolean
+    isMutationError: boolean
+    isMutationSuccess: boolean
 }
 
 export const UserManagementListPageView: React.FC<UserManagementListPageViewProps> = ({
@@ -38,9 +46,16 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
     handleRowAction,
     handleBlockRowsAction,
     handleExport,
+    isError,
+    isErrorExport,
+    isLoading,
+    isLoadingExport,
+    isMutationError,
+    isMutationSuccess,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
     const [rowSelection, setRowSelection] = useState<Record<string, UserManagementListItem>>({})
     const handleUpdateIdentitiesState = useCallback(
         (activate: boolean) =>
@@ -52,8 +67,20 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
     )
 
     return (
-        <>
-            <TextHeading size="XL">{t('userManagement.title')}</TextHeading>
+        <QueryFeedback
+            loading={isLoading || isLoadingExport}
+            error={false}
+            indicatorProps={{ label: isLoadingExport ? t('loading.export') : undefined }}
+            withChildren
+        >
+            <FlexColumnReverseWrapper>
+                <TextHeading size="XL">{t('userManagement.title')}</TextHeading>
+                {isError && <QueryFeedback loading={false} error errorProps={{ errorMessage: t('userManagement.error.query') }} />}
+                {isErrorExport && <QueryFeedback loading={false} error errorProps={{ errorMessage: t('userManagement.error.export') }} />}
+                {(isMutationError || isMutationSuccess) && (
+                    <MutationFeedback success={isMutationSuccess} error={isMutationError && t('userManagement.error.mutation')} />
+                )}
+            </FlexColumnReverseWrapper>
             <Filter<UserManagementFilterData>
                 defaultFilterValues={defaultFilterValues}
                 form={({ filter, setValue }) => (
@@ -136,7 +163,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                 pageSize={userManagementFilter.pageSize ?? BASE_PAGE_SIZE}
                 handlePageChange={handleFilterChange}
             />
-        </>
+        </QueryFeedback>
     )
 }
 export { UserManagementActionsOverRowEnum }

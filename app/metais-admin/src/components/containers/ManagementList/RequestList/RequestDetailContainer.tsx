@@ -13,10 +13,9 @@ import {
     useFindAll11,
     useUpdateWithOnePoAndRoles,
 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { EnumType, QueryFeedback, useGetValidEnum } from '@isdd/metais-common/index'
+import { EnumType, useGetValidEnum } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { RoleItem } from '@/components/views/userManagement/request-list-view/request-detail/RequestRolesForm'
@@ -31,6 +30,7 @@ export interface IUserDetailContainerView {
     errorMessage: string
     isLoading: boolean
     isSuccess: boolean
+    isError: boolean
     handleApproveClick: (selectedRoles: RoleItem[], request?: ClaimUi) => void
     handleRefuseModalClick: (text: string) => void
 }
@@ -40,7 +40,6 @@ interface IRequestDetailContainer {
 }
 
 export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ userId, View }) => {
-    const { t } = useTranslation()
     const navigate = useNavigate()
     const SKUPINA_ROL = 'SKUPINA_ROL'
 
@@ -119,23 +118,13 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
         [navigate, processEventMutationAsync, userId],
     )
 
-    if (isLoading || isError) {
-        return (
-            <QueryFeedback
-                loading={isLoading}
-                error={isError}
-                errorProps={{ errorMessage: t('managementList.containerQueryError') }}
-                indicatorProps={{ fullscreen: true, layer: 'parent' }}
-            />
-        )
-    }
-
     return (
         <View
             data={data}
             roleData={{ roleGroupsData, allRolesData }}
             errorMessage={errorMessage}
             isLoading={isLoading}
+            isError={isError}
             handleApproveClick={handleApprove}
             handleRefuseModalClick={handleRefuseModal}
             isSuccess={isSuccess || isSuccessPE}

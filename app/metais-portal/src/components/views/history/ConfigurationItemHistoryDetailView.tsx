@@ -17,7 +17,7 @@ export const ConfigurationItemHistoryDetailView: React.FC<ConfigurationItemHisto
 
     const metaAtributes = data?.metaAttributes
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
+        <QueryFeedback loading={isLoading} error={isError} withChildren>
             <CardColumnList>
                 <RelationAttribute
                     name={t('historyTab.configurationItemView.state')}

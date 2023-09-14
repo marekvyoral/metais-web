@@ -1,11 +1,12 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { BreadCrumbs, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
 import { POView } from '@/components/views/ci/PO/POView'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const POPOListPage = () => {
     const { t } = useTranslation()
@@ -32,19 +33,18 @@ const POPOListPage = () => {
 
     return (
         <>
-            <AttributesContainer
-                entityName={PO}
-                View={({ data: attributesData }) => {
-                    return (
-                        <>
-                            <BreadCrumbs
-                                links={[
-                                    { label: t('breadcrumbs.home'), href: '/' },
-                                    { label: t('ciType.PO_PO_Heading') ?? '', href: `/ci/${PO_PO}` },
-                                ]}
-                            />
-
-                            <TextHeading size="XL">{t('ciType.PO_PO_Heading')}</TextHeading>
+            <BreadCrumbs
+                withWidthContainer
+                links={[
+                    { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    { label: t('ciType.PO_PO_Heading') ?? '', href: `/ci/${PO_PO}` },
+                ]}
+            />
+            <MainContentWrapper>
+                <AttributesContainer
+                    entityName={PO}
+                    View={({ data: attributesData, isError: isAttError, isLoading: isAttLoading }) => {
+                        return (
                             <CiListContainer<POFilterData>
                                 entityName={PO}
                                 defaultFilterValues={defaultFilterValues}
@@ -66,17 +66,18 @@ const POPOListPage = () => {
                                         resetUserSelectedColumns={resetUserSelectedColumns}
                                         pagination={pagination}
                                         sort={sort}
-                                        isError={isError}
-                                        isLoading={isLoading}
+                                        isError={[isError, isAttError].some((item) => item)}
+                                        isLoading={[isLoading, isAttLoading].some((item) => item)}
                                         entityName={PO}
                                         defaultFilterValues={defaultFilterValues}
+                                        POType={PO_PO}
                                     />
                                 )}
                             />
-                        </>
-                    )
-                }}
-            />
+                        )
+                    }}
+                />
+            </MainContentWrapper>
         </>
     )
 }

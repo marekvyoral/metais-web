@@ -79,7 +79,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({ data, additionalColum
     const [expanded, setExpanded] = useState<ExpandedState>({})
 
     return (
-        <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent' }}>
+        <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
             <Table
                 columns={columns}
                 data={data}

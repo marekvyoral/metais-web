@@ -1,4 +1,4 @@
-import { BreadCrumbs } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { ATTRIBUTE_NAME, useReadConfigurationItem } from '@isdd/metais-common/api'
 import React from 'react'
@@ -6,11 +6,13 @@ import { useTranslation } from 'react-i18next'
 import { Outlet, useParams } from 'react-router-dom'
 import { MutationFeedback } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import NeighboursCardListWrapper from '@/components/entities/NeighboursCardListWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
 import Informations from '@/pages/ci/[entityName]/[entityId]/informations'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 export const INDEX_ROUTE = Informations
 
@@ -54,28 +56,33 @@ const EntityDetailPage: React.FC = () => {
 
     return (
         <>
-            <CiPermissionsWrapper entityId={entityId ?? ''} entityName={entityName ?? ''}>
-                <>
-                    <BreadCrumbs
-                        links={[
-                            { label: t('breadcrumbs.home'), href: '/' },
-                            { label: entityName, href: `/ci/${entityName}` },
-                            {
-                                label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
-                                href: `/ci/${entityName}/${entityId}`,
-                            },
-                        ]}
-                    />
-                    <MutationFeedback error={false} success={isActionSuccess.value} />
-                    <CiEntityIdHeader
-                        entityName={entityName ?? ''}
-                        entityId={entityId ?? ''}
-                        entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
-                    />
-                    <Tabs tabList={tabList} />
-                    <NeighboursCardListWrapper entityId={entityId} entityName={entityName} tabList={tabList} />
-                </>
-            </CiPermissionsWrapper>
+            <BreadCrumbs
+                withWidthContainer
+                links={[
+                    { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    { label: entityName, href: `/ci/${entityName}` },
+                    {
+                        label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
+                        href: `/ci/${entityName}/${entityId}`,
+                    },
+                ]}
+            />
+            <MainContentWrapper>
+                <CiPermissionsWrapper entityId={entityId ?? ''} entityName={entityName ?? ''}>
+                    <>
+                        <FlexColumnReverseWrapper>
+                            <CiEntityIdHeader
+                                entityName={entityName ?? ''}
+                                entityId={entityId ?? ''}
+                                entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
+                            />
+                            <MutationFeedback error={false} success={isActionSuccess.value} />
+                        </FlexColumnReverseWrapper>
+                        <Tabs tabList={tabList} />
+                        <NeighboursCardListWrapper entityId={entityId} entityName={entityName} tabList={tabList} />
+                    </>
+                </CiPermissionsWrapper>
+            </MainContentWrapper>
         </>
     )
 }

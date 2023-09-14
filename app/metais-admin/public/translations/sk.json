@@ -250,6 +250,31 @@
             "addConnection": "Pridať prepojenie",
             "addAttribute": "Pridať atribút",
             "back": "Späť na zoznam profilov atribútov"
+        },
+        "entity": {
+            "editHeader": "Editácia entity",
+            "createHeader": "Vytvorenie nového typu entity",
+            "detailHeading": "Detail entity"
+        },
+        "profile": {
+            "editHeader": "Editácia profilu atribútov",
+            "createHeader": "Vytvorenie nového profilu atribútov",
+            "detailHeading": "Detail profilu"
+        },
+        "relation": {
+            "editHeader": "Editácia vzťahu",
+            "createHeader": "Vytvorenie nového vzťahu",
+            "detailHeading": "Detail vzťahu"
+        },
+        "rolesMain": {
+            "editHeader": "Editácia rolí",
+            "createHeader": "Vytvorenie rolí",
+            "detailHeading": "Detail role"
+        },
+        "addNew": {
+            "entity": "Pridať novú entitu",
+            "profile": "Pridať nový profil",
+            "relation": "Pridať nový vzťah"
         }
     },
     "userManagement": {
@@ -671,5 +696,13 @@
     "errors": {
         "default": "Ups, niečo sa pokazilo.",
         "gnr403": "Na volanie nemáte oprávnenie."
+    },
+    "breadcrumbs": {
+        "home": "Domov",
+        "ciEdit": "Editácia {{itemName}}",
+        "noName": "Bez mena",
+        "ciCreate": "Vytvorenie novej entity",
+        "newRelation": "Pridanie nového vzťahu k {{itemName}}",
+        "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}"
     }
 }

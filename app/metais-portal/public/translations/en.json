@@ -407,6 +407,7 @@
         }
     },
     "reports": {
+        "heading": "Reports",
         "table": {
             "name": "Name",
             "category": "Category",
@@ -474,7 +475,8 @@
     "state": "Evidence status",
     "group": "Group",
     "loading": {
-        "loadingSubPage": "Loading sub-page"
+        "loadingSubPage": "Loading sub-page",
+        "neighboursCardList": "Loading related item relationships"
     },
     "actionOverTable": {
         "import": "Import",
@@ -555,7 +557,8 @@
         "created": "Created:"
     },
     "feedback": {
-        "failedFetch": "There was a problem with fetching data. Please try again."
+        "failedFetch": "There was a problem with fetching data. Please try again.",
+        "queryErrorMessage": "We apologize, but an error occurred while fetching data. Try reloading the page and if the error occurs repeatedly, contact the administrator."
     },
     "accordion": {
         "openAll": "Open all",
@@ -566,11 +569,15 @@
     "currency": "{{val, currency}}",
     "selectPublicAuthority": {
         "error": "Error while fetching data for public authorities.",
-        "loading": "Loading public authorities"
+        "loading": "Loading public authorities",
+        "missingRightsError": "You are missing rights for creating {{item}} under this organization",
+        "relations": "relations",
+        "entity": "entities"
     },
     "selectRole": {
         "error": "Error while fetching data about roles.",
-        "loading": "Loading role data"
+        "loading": "Loading role data",
+        "required": "Role is required"
     },
     "groups": {
         "member": "Member",
@@ -746,6 +753,7 @@
         "relation": "Relation",
         "errorTitle": "Error occured",
         "errorMessage": "We apologize, but an error occurred while creating new relation. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
-        "email": "metais@mirri.gov.sk"
+        "email": "metais@mirri.gov.sk",
+        "selectRelTypeError": "You are missing needed rights to create this relation type"
     }
 }

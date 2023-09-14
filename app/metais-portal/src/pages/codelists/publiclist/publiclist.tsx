@@ -6,7 +6,14 @@ const CodeListPage = () => {
         <CodeListListContainer
             isOnlyPublishedPage
             View={(props) => (
-                <CodeListListView data={props.data} filter={props.filter} handleFilterChange={props.handleFilterChange} isOnlyPublishedPage />
+                <CodeListListView
+                    isError={props.isError}
+                    isLoading={props.isLoading}
+                    data={props.data}
+                    filter={props.filter}
+                    handleFilterChange={props.handleFilterChange}
+                    isOnlyPublishedPage
+                />
             )}
         />
     )

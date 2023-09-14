@@ -1,7 +1,6 @@
 import { RoleOrgGroup, useAddOrGetGroup } from '@isdd/metais-common/api/generated/iam-swagger'
-import { HierarchyRightsUi, QueryFeedback } from '@isdd/metais-common/index'
+import { HierarchyRightsUi } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 export interface PublicAuthorityState {
     selectedPublicAuthority: HierarchyRightsUi | null
@@ -25,7 +24,6 @@ interface ICiContainer {
 }
 
 export const PublicAuthorityAndRoleContainer: React.FC<ICiContainer> = ({ View }) => {
-    const { t } = useTranslation()
     const [selectedPublicAuthority, setSelectedPublicAuthority] = useState<HierarchyRightsUi | null>(null)
     const [selectedRole, setSelectedRole] = useState<string>('')
 
@@ -39,8 +37,13 @@ export const PublicAuthorityAndRoleContainer: React.FC<ICiContainer> = ({ View }
     const publicAuthorityState = { selectedPublicAuthority, setSelectedPublicAuthority }
     const selectedRoleState = { selectedRole, setSelectedRole }
 
-    if (isFetched && (isLoading || isError)) {
-        return <QueryFeedback loading={isLoading} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
-    }
-    return <View data={groupData} publicAuthorityState={publicAuthorityState} roleState={selectedRoleState} isLoading={isLoading} isError={isError} />
+    return (
+        <View
+            data={groupData}
+            publicAuthorityState={publicAuthorityState}
+            roleState={selectedRoleState}
+            isLoading={isFetched && isLoading}
+            isError={isFetched && isError}
+        />
+    )
 }

@@ -6,9 +6,12 @@ import { useTranslation } from 'react-i18next'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ColumnDef } from '@tanstack/react-table'
 import { ALL_EVENT_TYPES } from '@isdd/metais-common/constants'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { QueryFeedback } from '@isdd/metais-common/index'
 
 import { FilterData, IRelatedIdentitiesTableData, IRoleUsersViewParams } from '@/components/containers/Egov/Roles/UsersContainer'
 import { mapRelatedIdentities } from '@/components/views/egov/roles-detail-views/formUtils'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const defaultFilterValues: FilterData = {
     fullTextSearch: '',
@@ -65,40 +68,48 @@ export const RoleUsersView: React.FC<IRoleUsersViewParams> = ({ roleId, data, is
     return (
         <>
             <BreadCrumbs
+                withWidthContainer
                 links={[
                     { label: t('navbar.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('adminRolesPage.rolesList'), href: AdminRouteNames.ROLES },
                     { label: t('adminRolesPage.newRole'), href: AdminRouteNames.ROLE_USERS + '/' + roleId },
                 ]}
             />
-            <TextHeading size="L">{t('adminRolesPage.assignedUsers')}</TextHeading>
-            <Filter<FilterData>
-                defaultFilterValues={defaultFilterValues}
-                form={({ filter: myFilter, setValue }) => (
-                    <div>
-                        {obligedPersonList.length && (
-                            <SimpleSelect
-                                defaultValue={myFilter.obligedPerson}
-                                setValue={setValue}
-                                id="obligedPerson"
-                                name="obligedPerson"
-                                label={t('adminRolesPage.obligedPerson')}
-                                options={[{ value: ALL_EVENT_TYPES, label: t('adminRolesPage.all') }, ...obligedPersonList]}
-                            />
+            <MainContentWrapper>
+                <QueryFeedback loading={isLoading} error={false} withChildren>
+                    <FlexColumnReverseWrapper>
+                        <TextHeading size="L">{t('adminRolesPage.assignedUsers')}</TextHeading>
+                        {isError && <QueryFeedback error loading={false} />}
+                    </FlexColumnReverseWrapper>
+                    <Filter<FilterData>
+                        defaultFilterValues={defaultFilterValues}
+                        form={({ filter: myFilter, setValue }) => (
+                            <div>
+                                {obligedPersonList.length && (
+                                    <SimpleSelect
+                                        defaultValue={myFilter.obligedPerson}
+                                        setValue={setValue}
+                                        id="obligedPerson"
+                                        name="obligedPerson"
+                                        label={t('adminRolesPage.obligedPerson')}
+                                        options={[{ value: ALL_EVENT_TYPES, label: t('adminRolesPage.all') }, ...obligedPersonList]}
+                                    />
+                                )}
+                            </div>
                         )}
-                    </div>
-                )}
-            />
-            <Table<IRelatedIdentitiesTableData>
-                onSortingChange={(newSort) => {
-                    setSort(newSort)
-                }}
-                sort={sort}
-                columns={roleUsersTableColumns}
-                isLoading={isLoading}
-                error={isError}
-                data={filteredTableData}
-            />
+                    />
+                    <Table<IRelatedIdentitiesTableData>
+                        onSortingChange={(newSort) => {
+                            setSort(newSort)
+                        }}
+                        sort={sort}
+                        columns={roleUsersTableColumns}
+                        isLoading={isLoading}
+                        error={isError}
+                        data={filteredTableData}
+                    />
+                </QueryFeedback>
+            </MainContentWrapper>
         </>
     )
 }

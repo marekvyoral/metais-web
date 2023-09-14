@@ -1,7 +1,9 @@
 import React from 'react'
 
+import { MainContentWrapper } from '@/components/MainContentWrapper'
+
 const EgovHowTo = () => {
-    return <div>EGOV_HOWTO</div>
+    return <MainContentWrapper>EGOV_HOWTO</MainContentWrapper>
 }
 
 export default EgovHowTo

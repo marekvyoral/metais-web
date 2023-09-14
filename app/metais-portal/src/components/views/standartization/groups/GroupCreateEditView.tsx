@@ -10,6 +10,7 @@ import { GroupFormEnum, createGroupSchema, editGroupSchema } from './groupSchema
 
 import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect'
 import { IGroupEditViewParams } from '@/components/containers/standardization/groups/GroupEditContainer'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, goBack, infoData, isEdit }) => {
     const { t } = useTranslation()
@@ -56,6 +57,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
         <>
             {!isEdit && (
                 <BreadCrumbs
+                    withWidthContainer
                     links={[
                         { href: RouteNames.HOME, label: t('notifications.home'), icon: HomeIcon },
                         { href: RouteNames.HOW_TO_STANDARDIZATION, label: t('navMenu.standardization') },
@@ -70,6 +72,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
             {isEdit && (
                 <>
                     <BreadCrumbs
+                        withWidthContainer
                         links={[
                             { href: RouteNames.HOME, label: t('notifications.home'), icon: HomeIcon },
                             { href: RouteNames.HOW_TO_STANDARDIZATION, label: t('navMenu.standardization') },
@@ -80,55 +83,56 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
                             },
                         ]}
                     />
-                    <TextHeading size="XL">{infoData?.name}</TextHeading>
                 </>
             )}
+            <MainContentWrapper>
+                <TextHeading size="XL">{isEdit ? `${t('groups.editGroup')} - ${infoData?.name}` : t('groups.addNewGroup')}</TextHeading>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Input
+                        label={`${t('groups.groupName')} (${t('groups.mandatory')}):`}
+                        id={GroupFormEnum.NAME}
+                        {...register(GroupFormEnum.NAME, { value: infoData?.name })}
+                        error={errors[GroupFormEnum.NAME]?.message}
+                    />
+                    <Input
+                        label={`${t('groups.shortGroupName')} (${t('groups.mandatory')}):`}
+                        id={GroupFormEnum.SHORT_NAME}
+                        {...register(GroupFormEnum.SHORT_NAME, { value: infoData?.shortName })}
+                        error={errors[GroupFormEnum.SHORT_NAME]?.message}
+                    />
+                    <TextArea
+                        label={`${t('groups.description')} (${t('groups.mandatory')}):`}
+                        rows={3}
+                        id={GroupFormEnum.DESCRIPTION}
+                        {...register(GroupFormEnum.DESCRIPTION, { value: infoData?.description })}
+                        error={errors[GroupFormEnum.DESCRIPTION]?.message}
+                    />
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <Input
-                    label={`${t('groups.groupName')} (${t('groups.mandatory')}):`}
-                    id={GroupFormEnum.NAME}
-                    {...register(GroupFormEnum.NAME, { value: infoData?.name })}
-                    error={errors[GroupFormEnum.NAME]?.message}
-                />
-                <Input
-                    label={`${t('groups.shortGroupName')} (${t('groups.mandatory')}):`}
-                    id={GroupFormEnum.SHORT_NAME}
-                    {...register(GroupFormEnum.SHORT_NAME, { value: infoData?.shortName })}
-                    error={errors[GroupFormEnum.SHORT_NAME]?.message}
-                />
-                <TextArea
-                    label={`${t('groups.description')} (${t('groups.mandatory')}):`}
-                    rows={3}
-                    id={GroupFormEnum.DESCRIPTION}
-                    {...register(GroupFormEnum.DESCRIPTION, { value: infoData?.description })}
-                    error={errors[GroupFormEnum.DESCRIPTION]?.message}
-                />
-
-                {!isEdit && (
-                    <>
-                        <IdentitySelect
-                            label={`${t('groups.master')} (${t('groups.mandatory')})`}
-                            name={GroupFormEnum.USER}
-                            setValue={setValue}
-                            clearErrors={clearErrors}
-                            error={errors[GroupFormEnum.USER]?.message}
-                        />
-                        <SimpleSelect
-                            label={`${t('groups.organization')} (${t('groups.mandatory')}):`}
-                            id={GroupFormEnum.ORGANIZATION}
-                            name={GroupFormEnum.ORGANIZATION}
-                            options={organizationOptions ?? []}
-                            setValue={setValue}
-                            error={errors[GroupFormEnum.ORGANIZATION]?.message}
-                        />
-                    </>
-                )}
-                <ButtonGroupRow>
-                    <Button label={t('form.cancel')} type="reset" variant="secondary" onClick={goBack} />
-                    <Button label={t('form.submit')} type="submit" />
-                </ButtonGroupRow>
-            </form>
+                    {!isEdit && (
+                        <>
+                            <IdentitySelect
+                                label={`${t('groups.master')} (${t('groups.mandatory')})`}
+                                name={GroupFormEnum.USER}
+                                setValue={setValue}
+                                clearErrors={clearErrors}
+                                error={errors[GroupFormEnum.USER]?.message}
+                            />
+                            <SimpleSelect
+                                label={`${t('groups.organization')} (${t('groups.mandatory')}):`}
+                                id={GroupFormEnum.ORGANIZATION}
+                                name={GroupFormEnum.ORGANIZATION}
+                                options={organizationOptions ?? []}
+                                setValue={setValue}
+                                error={errors[GroupFormEnum.ORGANIZATION]?.message}
+                            />
+                        </>
+                    )}
+                    <ButtonGroupRow>
+                        <Button label={t('form.cancel')} type="reset" variant="secondary" onClick={goBack} />
+                        <Button label={t('form.submit')} type="submit" />
+                    </ButtonGroupRow>
+                </form>
+            </MainContentWrapper>
         </>
     )
 }

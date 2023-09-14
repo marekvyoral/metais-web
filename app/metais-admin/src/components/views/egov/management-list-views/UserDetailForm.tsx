@@ -38,12 +38,7 @@ export const UserDetailForm: React.FC<Props> = ({ userData, handleBackNavigate, 
             <TextHeading size="L">{isCreate ? t('managementList.detailCreateHeading') : t('managementList.detailEditHeading')}</TextHeading>
 
             {(isFetching || isError) && (
-                <QueryFeedback
-                    loading={isFetching}
-                    error={isError}
-                    indicatorProps={{ fullscreen: true, layer: 'parent' }}
-                    errorProps={{ errorMessage: t('managementList.formError') }}
-                />
+                <QueryFeedback loading={isFetching} error={isError} errorProps={{ errorMessage: t('managementList.formError') }} withChildren />
             )}
             {!isError && (
                 <div>

@@ -59,7 +59,7 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
     ]
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
+        <QueryFeedback loading={isLoading} error={isError} withChildren>
             <Table columns={columns} data={data} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </QueryFeedback>

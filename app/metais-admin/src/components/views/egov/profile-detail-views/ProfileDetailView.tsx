@@ -8,11 +8,10 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import styles from '../detailViews.module.scss'
-
 import { MoreActionsColumn } from './actions/MoreActionsColumn'
 import { AddAttributeModal } from './attributes/AddAttributeModal'
 
+import styles from '@/components/views/egov/detailViews.module.scss'
 import { IAtrributesContainerView } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
 import { BasicInformations } from '@/components/views/egov/BasicInformations'
 

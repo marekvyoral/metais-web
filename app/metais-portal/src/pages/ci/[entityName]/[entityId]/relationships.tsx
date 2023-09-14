@@ -11,7 +11,14 @@ const RelationshipsAccordionPage: React.FC = () => {
         <CiContainer
             configurationItemId={entityId}
             View={(props) => {
-                return <RelationshipsAccordion data={props?.data?.ciItemData} configurationItemId={entityId} />
+                return (
+                    <RelationshipsAccordion
+                        data={props?.data?.ciItemData}
+                        configurationItemId={entityId}
+                        isError={props.isError}
+                        isLoading={props.isLoading}
+                    />
+                )
             }}
         />
     )

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import { AuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
@@ -22,6 +22,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
         dispatch,
     } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
     const { i18n } = useTranslation()
 
     return async ({ url, method, params: searchParams, data }) => {

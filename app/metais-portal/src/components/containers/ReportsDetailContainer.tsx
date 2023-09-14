@@ -3,7 +3,6 @@ import { EnumType, ParameterType, ReportDefinition, ReportResultObjectResult, us
 import { mapFilterToExecuteParams } from '@isdd/metais-common/componentHelpers'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useGetEnumBulk } from '@isdd/metais-common/hooks/useGetEnumBulk'
-import { QueryFeedback } from '@isdd/metais-common/index'
 import React from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
@@ -18,6 +17,8 @@ export interface IView {
     reportResult?: ReportResultObjectResult
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
+    isLoading: boolean
+    isError: boolean
 }
 
 interface IReportsDetailContainer {
@@ -54,15 +55,15 @@ export const ReportsDetailContainer: React.FC<IReportsDetailContainer> = ({ View
     const pagination = mapGenericTypeToPagination(filterParams, reportData)
 
     return (
-        <QueryFeedback loading={isLoading || isLoadingReport} error={isError || isErrorReport} indicatorProps={{ layer: 'parent' }}>
-            <View
-                data={reportMetaData}
-                filterEmumData={filterEnumData}
-                filterParams={filterParams}
-                reportResult={reportData?.result}
-                pagination={pagination}
-                handleFilterChange={handleFilterChange}
-            />
-        </QueryFeedback>
+        <View
+            data={reportMetaData}
+            filterEmumData={filterEnumData}
+            filterParams={filterParams}
+            reportResult={reportData?.result}
+            pagination={pagination}
+            handleFilterChange={handleFilterChange}
+            isLoading={isLoading || isLoadingReport}
+            isError={isError || isErrorReport}
+        />
     )
 }

@@ -219,7 +219,7 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
                     entityName={entityName ?? ''}
                     createButton={
                         <CreateEntityButton
-                            label={t('tooltips.addNewProfile')}
+                            label={t(`egov.addNew.${entityName}`)}
                             onClick={() => navigate(`/egov/${entityName}/create`, { state: { from: location } })}
                         />
                     }

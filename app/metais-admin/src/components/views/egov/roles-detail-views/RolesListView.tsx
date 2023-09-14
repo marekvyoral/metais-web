@@ -2,17 +2,20 @@ import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, Paginator, Table, TextHe
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { Role } from '@isdd/metais-common/api/generated/iam-swagger'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { ActionsOverTable, BASE_PAGE_SIZE, CreateEntityButton } from '@isdd/metais-common/index'
+import { ActionsOverTable, BASE_PAGE_SIZE, CreateEntityButton, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { useLocation } from 'react-router-dom'
 
 import { RoleListViewParams, defaultFilterValues } from '@/components/containers/Egov/Roles/RolesListContainer'
 import { RolesFilter } from '@/components/views/egov/roles-detail-views/components/Rolesfilter'
 import { DeleteRoleModal } from '@/components/views/egov/roles-detail-views/components/modal/DeleteModal'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const RoleListView: React.FC<RoleListViewParams> = ({
     isLoading,
@@ -30,6 +33,7 @@ const RoleListView: React.FC<RoleListViewParams> = ({
     tableData,
 }) => {
     const navigate = useNavigate()
+    const location = useLocation()
     const { t } = useTranslation()
 
     const columns: ColumnDef<Role>[] = [
@@ -89,40 +93,48 @@ const RoleListView: React.FC<RoleListViewParams> = ({
                 }}
             />
             <BreadCrumbs
+                withWidthContainer
                 links={[
                     { label: t('navbar.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('adminRolesPage.rolesList'), href: AdminRouteNames.ROLES },
                 ]}
             />
-            <TextHeading size="L">{t('adminRolesPage.rolesList')}</TextHeading>
-            <RolesFilter tableRoleGroups={tableRoleGroups} />
-            <ActionsOverTable
-                entityName=""
-                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                handleFilterChange={myHandleFilterChange}
-                createButton={
-                    <CreateEntityButton
-                        label={t('adminRolesPage.addNewRole')}
-                        onClick={() => navigate(AdminRouteNames.ROLE_NEW, { state: { from: location } })}
+            <MainContentWrapper>
+                <QueryFeedback loading={isLoading} error={false} withChildren>
+                    <FlexColumnReverseWrapper>
+                        <TextHeading size="L">{t('adminRolesPage.rolesList')}</TextHeading>
+                        {isError && <QueryFeedback error loading={false} />}
+                    </FlexColumnReverseWrapper>
+                    <RolesFilter tableRoleGroups={tableRoleGroups} />
+                    <ActionsOverTable
+                        entityName=""
+                        pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                        handleFilterChange={myHandleFilterChange}
+                        createButton={
+                            <CreateEntityButton
+                                label={t('adminRolesPage.addNewRole')}
+                                onClick={() => navigate(AdminRouteNames.ROLE_NEW, { state: { from: location } })}
+                            />
+                        }
                     />
-                }
-            />
-            <Table<Role>
-                onSortingChange={(newSort) => {
-                    setSorting(newSort)
-                }}
-                sort={sorting}
-                columns={SelectableColumnsSpec}
-                isLoading={isLoading}
-                error={isError}
-                data={tableData}
-            />
-            <Paginator
-                dataLength={rolesPages ?? 0}
-                pageNumber={pagination.pageNumber}
-                pageSize={pagination.pageSize}
-                onPageChanged={(pageNumber) => setPagination({ ...pagination, pageNumber: pageNumber })}
-            />
+                    <Table<Role>
+                        onSortingChange={(newSort) => {
+                            setSorting(newSort)
+                        }}
+                        sort={sorting}
+                        columns={SelectableColumnsSpec}
+                        isLoading={isLoading}
+                        error={isError}
+                        data={tableData}
+                    />
+                    <Paginator
+                        dataLength={rolesPages ?? 0}
+                        pageNumber={pagination.pageNumber}
+                        pageSize={pagination.pageSize}
+                        onPageChanged={(pageNumber) => setPagination({ ...pagination, pageNumber: pageNumber })}
+                    />
+                </QueryFeedback>
+            </MainContentWrapper>
         </>
     )
 }

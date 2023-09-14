@@ -12,15 +12,21 @@ const Informations = () => {
         <>
             <CiContainer
                 configurationItemId={entityId ?? ''}
-                View={({ data }) => {
+                View={({ data, isError: isCiItemError, isLoading: isCiItemLoading }) => {
                     const ciItemData = data?.ciItemData
                     const gestorData = data?.gestorData
                     return (
                         <>
                             <AttributesContainer
                                 entityName={entityName ?? ''}
-                                View={({ data: { ciTypeData, constraintsData, unitsData } }) => {
-                                    return <CiInformationAccordion data={{ ciItemData, gestorData, constraintsData, ciTypeData, unitsData }} />
+                                View={({ data: { ciTypeData, constraintsData, unitsData }, isError: attError, isLoading: attLoading }) => {
+                                    return (
+                                        <CiInformationAccordion
+                                            data={{ ciItemData, gestorData, constraintsData, ciTypeData, unitsData }}
+                                            isError={[isCiItemError, attError].some((item) => item)}
+                                            isLoading={[isCiItemLoading, attLoading].some((item) => item)}
+                                        />
+                                    )
                                 }}
                             />
                         </>

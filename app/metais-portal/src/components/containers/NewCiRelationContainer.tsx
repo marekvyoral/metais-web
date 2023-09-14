@@ -8,9 +8,7 @@ import {
     useReadRelationships,
 } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
-import { QueryFeedback } from '@isdd/metais-common/index'
 import React, { Dispatch, SetStateAction, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { filterRelatedList } from '@/componentHelpers/new-relation'
 
@@ -43,7 +41,6 @@ interface INewCiRelationContainer {
 }
 
 export const NewCiRelationContainer: React.FC<INewCiRelationContainer> = ({ configurationItemId, entityName, tabName, View }) => {
-    const { t } = useTranslation()
     const [selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName] = useState<string>('')
 
     const { data: relatedListData, isLoading: isRelatedListLoading, isError: isRelatedListError } = useListRelatedCiTypes(entityName)
@@ -88,9 +85,6 @@ export const NewCiRelationContainer: React.FC<INewCiRelationContainer> = ({ conf
         return (
             <View selectedRelationTypeState={{ selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName }} isLoading={false} isError />
         )
-    if (isLoading || isError) {
-        return <QueryFeedback loading={isLoading} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />
-    }
     return (
         <View
             data={{ relatedListAsSources, relatedListAsTargets, readRelationShipsData, relationTypeData, constraintsData, unitsData }}

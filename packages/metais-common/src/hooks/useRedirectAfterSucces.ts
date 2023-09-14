@@ -55,7 +55,12 @@ export const useRedirectAfterSuccess = (requestId: string, configurationItemId: 
         }
         if (data?.processed) {
             setIsProcessedError(false)
+            setIsTooManyFetchesError(false)
             switch (true) {
+                case fetchStatusCount === MAX_REFETCH_NUMBER: {
+                    setIsTooManyFetchesError(true)
+                    return
+                }
                 case data.status === RequestIdStatus.PROCESSED: {
                     const toPath = `/ci/${ciType}/${configurationItemId}`
                     setIsActionSuccess({ value: true, path: toPath })

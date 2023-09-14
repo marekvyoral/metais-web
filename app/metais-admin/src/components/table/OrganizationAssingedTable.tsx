@@ -65,7 +65,7 @@ export const OrganizationsAssignedTable = ({
             enableSorting: true,
             id: 'name',
             cell: (ctx) => (
-                <Link to={'./' + ctx?.row?.original?.uuid} state={{ from: location }}>
+                <Link to={'/organizations/' + ctx?.row?.original?.uuid} state={{ from: location }}>
                     {ctx?.getValue?.() as string}
                 </Link>
             ),

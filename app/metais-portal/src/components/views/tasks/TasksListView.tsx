@@ -10,6 +10,7 @@ import {
     RadioButtonGroup,
     SimpleSelect,
     Table,
+    TextHeading,
 } from '@isdd/idsk-ui-kit/index'
 import { ColumnSort, Pagination } from '@isdd/idsk-ui-kit/types'
 import { Task, TaskList } from '@isdd/metais-common/api/generated/tasks-swagger'
@@ -18,6 +19,9 @@ import { EnumType, QueryFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 enum TaskFilterState {
     ACTIVE = 'ACTIVE',
@@ -76,97 +80,106 @@ export const TasksListView: React.FC<ITasksListView> = ({
     return (
         <>
             <BreadCrumbs
+                withWidthContainer
                 links={[
                     { label: t('tasks.home'), href: '/', icon: HomeIcon },
                     { label: t('tasks.tasks'), href: '/ulohy' },
                 ]}
             />
-            <Filter<TasksFilter>
-                defaultFilterValues={defaultFilterValues}
-                form={({ register, setValue }) => {
-                    return (
-                        <div>
-                            <SimpleSelect
-                                options={[
-                                    { label: t('tasks.all'), value: 'ALL' },
-                                    ...(appIds?.enumItems?.map((enumItem) => {
-                                        return { value: `${enumItem.value}`, label: t(`tasks.${enumItem.code}`) }
-                                    }) ?? [{ value: '', label: '' }]),
-                                ]}
-                                label={t('tasks.selectType')}
-                                id="taskTypeSelect"
-                                name="appId"
-                                setValue={setValue}
-                            />
-                            <GridRow>
-                                <GridCol setWidth="one-half">
-                                    <Input
-                                        {...register('createdFrom')}
-                                        type="date"
-                                        name="createdFrom"
-                                        label={t('tasks.createdFrom')}
-                                        id="createdFrom"
-                                    />
-                                </GridCol>
-                                <GridCol setWidth="one-half">
-                                    <Input {...register('createdTo')} type="date" name="createdTo" label={t('tasks.createdTo')} id="createdTo" />
-                                </GridCol>
-                            </GridRow>
-                            <label className="govuk-label">{t('tasks.state')}:</label>
+            <MainContentWrapper>
+                <FlexColumnReverseWrapper>
+                    <TextHeading size="L">{t('tasks.tasks')}</TextHeading>
+                    {isError && <QueryFeedback loading={false} error={isError} />}
+                </FlexColumnReverseWrapper>
+                <Filter<TasksFilter>
+                    defaultFilterValues={defaultFilterValues}
+                    form={({ register, setValue }) => {
+                        return (
+                            <div>
+                                <SimpleSelect
+                                    options={[
+                                        { label: t('tasks.all'), value: 'ALL' },
+                                        ...(appIds?.enumItems?.map((enumItem) => {
+                                            return { value: `${enumItem.value}`, label: t(`tasks.${enumItem.code}`) }
+                                        }) ?? [{ value: '', label: '' }]),
+                                    ]}
+                                    label={t('tasks.selectType')}
+                                    id="taskTypeSelect"
+                                    name="appId"
+                                    setValue={setValue}
+                                />
+                                <GridRow>
+                                    <GridCol setWidth="one-half">
+                                        <Input
+                                            {...register('createdFrom')}
+                                            type="date"
+                                            name="createdFrom"
+                                            label={t('tasks.createdFrom')}
+                                            id="createdFrom"
+                                        />
+                                    </GridCol>
+                                    <GridCol setWidth="one-half">
+                                        <Input {...register('createdTo')} type="date" name="createdTo" label={t('tasks.createdTo')} id="createdTo" />
+                                    </GridCol>
+                                </GridRow>
+                                <label className="govuk-label">{t('tasks.state')}:</label>
 
-                            <RadioButtonGroup inline>
-                                <RadioButton
-                                    {...register('state')}
-                                    value="ALL"
-                                    label={`${t('tasks.all')} (${tasksData?.tasksCount ?? 0})`}
-                                    id="allRadioBtn"
-                                    name="allRadioBtn"
-                                    onChange={(val) => setValue('state', val.target.value)}
-                                    defaultChecked
-                                />
-                                <RadioButton
-                                    {...register('state')}
-                                    value="ACTIVE"
-                                    label={`${t('tasks.active')} (${(tasksData?.tasksCountCreated ?? 0) + (tasksData?.tasksCountInProgress ?? 0)})`}
-                                    id="activeRadioBtn"
-                                    name="activeRadioBtn"
-                                    onChange={(val) => {
-                                        setValue('state', val.target.value)
-                                    }}
-                                />
-                                <RadioButton
-                                    {...register('state')}
-                                    value="DONE"
-                                    label={`${t('tasks.done')} (${tasksData?.tasksCountDone ?? 0})`}
-                                    id="doneRadioBtn"
-                                    name="doneRadioBtn"
-                                    onChange={(val) => setValue('state', val.target.value)}
-                                />
-                            </RadioButtonGroup>
-                        </div>
-                    )
-                }}
-            />
-            <QueryFeedback loading={isLoading || isIdle} error={isError}>
-                <Table<Task>
-                    columns={columns}
-                    isLoading={isLoading}
-                    error={isError}
-                    data={tasksData?.tasks}
-                    sort={sort}
-                    onSortingChange={(newSort) => {
-                        setSort(newSort)
+                                <RadioButtonGroup inline>
+                                    <RadioButton
+                                        {...register('state')}
+                                        value="ALL"
+                                        label={`${t('tasks.all')} (${tasksData?.tasksCount ?? 0})`}
+                                        id="allRadioBtn"
+                                        name="allRadioBtn"
+                                        onChange={(val) => setValue('state', val.target.value)}
+                                        defaultChecked
+                                    />
+                                    <RadioButton
+                                        {...register('state')}
+                                        value="ACTIVE"
+                                        label={`${t('tasks.active')} (${
+                                            (tasksData?.tasksCountCreated ?? 0) + (tasksData?.tasksCountInProgress ?? 0)
+                                        })`}
+                                        id="activeRadioBtn"
+                                        name="activeRadioBtn"
+                                        onChange={(val) => {
+                                            setValue('state', val.target.value)
+                                        }}
+                                    />
+                                    <RadioButton
+                                        {...register('state')}
+                                        value="DONE"
+                                        label={`${t('tasks.done')} (${tasksData?.tasksCountDone ?? 0})`}
+                                        id="doneRadioBtn"
+                                        name="doneRadioBtn"
+                                        onChange={(val) => setValue('state', val.target.value)}
+                                    />
+                                </RadioButtonGroup>
+                            </div>
+                        )
                     }}
                 />
-            </QueryFeedback>
-            <PaginatorWrapper
-                pageNumber={pagination.pageNumber}
-                pageSize={pagination.pageSize}
-                dataLength={getTotalNumberOfTasks()}
-                handlePageChange={(filter) => {
-                    setPagination({ ...pagination, ...filter, dataLength: getTotalNumberOfTasks() })
-                }}
-            />
+                <QueryFeedback loading={isLoading || isIdle} error={false} withChildren>
+                    <Table<Task>
+                        columns={columns}
+                        isLoading={isLoading}
+                        error={isError}
+                        data={tasksData?.tasks}
+                        sort={sort}
+                        onSortingChange={(newSort) => {
+                            setSort(newSort)
+                        }}
+                    />
+                </QueryFeedback>
+                <PaginatorWrapper
+                    pageNumber={pagination.pageNumber}
+                    pageSize={pagination.pageSize}
+                    dataLength={getTotalNumberOfTasks()}
+                    handlePageChange={(filter) => {
+                        setPagination({ ...pagination, ...filter, dataLength: getTotalNumberOfTasks() })
+                    }}
+                />
+            </MainContentWrapper>
         </>
     )
 }

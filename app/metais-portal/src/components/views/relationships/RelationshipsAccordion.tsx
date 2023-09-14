@@ -1,5 +1,6 @@
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { QueryFeedback } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -14,13 +15,15 @@ import RelationshipGraph from '@/components/views/relationships/RelationshipGrap
 interface RelationshipsAccordion {
     data?: ConfigurationItemUi
     configurationItemId?: string
+    isLoading: boolean
+    isError: boolean
 }
 
-export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data, configurationItemId }) => {
+export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data, configurationItemId, isError, isLoading }) => {
     const { t } = useTranslation()
 
     return (
-        <>
+        <QueryFeedback loading={isLoading} error={isError} withChildren>
             <AccordionContainer
                 sections={[
                     {
@@ -80,6 +83,6 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                     },
                 ]}
             />
-        </>
+        </QueryFeedback>
     )
 }
