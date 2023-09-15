@@ -104,6 +104,27 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
+    standardsSwagger: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_STANDARDS_SWAGGER_SWAGGER_URL ?? '',
+            // filters: {
+            //     tags: ['scheduled-jobs-controller', 'enums-controller', 'enums-item-controller'],
+            // },
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/standards-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useStandardsSwaggerClient.ts',
+                    name: 'useStandardsSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
     typesRepo: {
         input: {
             target: process.env.VITE_REST_CLIENT_TYPES_REPO_SWAGGER_URL ?? '',
