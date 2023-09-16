@@ -107,13 +107,13 @@ export default defineConfig({
     standardsSwagger: {
         input: {
             target: process.env.VITE_REST_CLIENT_STANDARDS_SWAGGER_SWAGGER_URL ?? '',
-            // filters: {
-            //     tags: ['scheduled-jobs-controller', 'enums-controller', 'enums-item-controller'],
-            // },
         },
         output: {
             target: `./packages/metais-common/src/api/generated/standards-swagger.ts`,
             override: {
+                query: {
+                    useQuery: true,
+                },
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useStandardsSwaggerClient.ts',
                     name: 'useStandardsSwaggerClient',

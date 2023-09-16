@@ -1,17 +1,10 @@
 import React from 'react'
 
-import { IVotesFilter, VotesListContainer } from '@/components/containers/VotesListContainer'
+import { VotesListContainer } from '@/components/containers/VotesListContainer'
 import { VotesListView } from '@/components/views/votes/VoteListView'
 
 const VotesList: React.FC = () => {
-    const defaultFilterValues: IVotesFilter = {
-        state: '',
-        ascending: false,
-        onlyMy: false,
-        fromDate: '',
-        toDate: '',
-    }
-    return <VotesListContainer defaultFilterValues={defaultFilterValues} View={() => <VotesListView />} />
+    return <VotesListContainer View={(props) => <VotesListView votesListData={props.votesListData} />} />
 }
 
 export default VotesList
