@@ -4,7 +4,7 @@ import { VoteDetailContainer } from '@/components/containers/votes/VoteDetailCon
 import { IVoteDetailView, VoteDetailView } from '@/components/views/votes/VoteDetailView'
 
 const VoteDetail: React.FC<IVoteDetailView> = () => {
-    return <VoteDetailContainer View={(props) => <VoteDetailView voteId={props.voteId} />} />
+    return <VoteDetailContainer View={(props) => <VoteDetailView voteData={props.voteData} />} />
 }
 
 export default VoteDetail

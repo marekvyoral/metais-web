@@ -4,16 +4,20 @@ import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/
 import { ColumnDef, isRowSelected } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useLocation } from 'react-router-dom'
 import { ActionsOverTable } from '@isdd/metais-common/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 
-import { SelectFilterOrganization } from '../codeLists/components/SelectFilterMainGestor/SelectFilterMainGestor'
-
-import { CodeListListFilterData, defaultFilterValues } from '@/components/containers/CodeListListContainer'
+import { IVotesListFilterData } from '@/components/containers/votes/VotesListContainer'
 
 export interface IVotesListView {
     votesListData: ApiVotePreviewList | undefined
+}
+
+const defaultFilterValues: IVotesListFilterData = {
+    votesTypeToShow: { value: 'everyone', label: 'everyone' },
+    voteState: { value: 'planned', label: 'planned' },
+    effectiveFrom: '',
+    effectiveTo: '',
 }
 
 export const VotesListView: React.FC<IVotesListView> = ({ votesListData }) => {
@@ -86,25 +90,37 @@ export const VotesListView: React.FC<IVotesListView> = ({ votesListData }) => {
             />
             <TextHeading size="XL">{t('votesList.title')}</TextHeading>
             <TextHeading size="L">{t('votesList.votesListSubtitle')}</TextHeading>
-            <Filter<CodeListListFilterData>
+            <Filter<IVotesListFilterData>
                 heading={t('votesList.filter.title')}
                 defaultFilterValues={defaultFilterValues}
-                form={({ filter: formFilter, register, setValue }) => (
+                form={({ filter, register, setValue }) => (
                     <div>
                         <SimpleSelect
-                            id="type"
-                            label={t('votesList.create.type')}
+                            id="votesTypeToShow"
+                            label={t('votesList.filter.votesTypeToShow')}
                             options={[
-                                { value: 'application', label: t('votesList.type.application') },
-                                { value: 'system', label: t('votesList.type.system') },
-                                { value: 'custom', label: t('votesList.type.custom') },
+                                { value: 'onlyMy', label: t('votesList.type.onlyMy') },
+                                { value: 'everyone', label: t('votesList.type.everyone') },
                             ]}
                             setValue={setValue}
-                            defaultValue={formFilter.type || defaultFilterValues}
-                            name="type"
+                            defaultValue={defaultFilterValues.votesTypeToShow.label}
+                            name="votesTypeToShow"
                         />
-                        <Input {...register('toDate')} type="date" label={t('votesList.filter.toDate')} />
-                        <CheckBox {...register('onlyBase')} id="onlyBase" label={t('votesList.filter.onlyBase')} />
+                        <SimpleSelect
+                            id="voteState"
+                            label={t('votesList.filter.voteState')}
+                            options={[
+                                { value: 'planned', label: t('votesList.type.planned') },
+                                { value: 'ended', label: t('votesList.type.ended') },
+                            ]}
+                            setValue={setValue}
+                            defaultValue={defaultFilterValues.votesTypeToShow.label}
+                            name="voteState"
+                        />
+                        <div>
+                            <Input {...register('fromDate')} type="date" label={t('votesList.filter.fromDate')} />
+                            <Input {...register('toDate')} type="date" label={t('votesList.filter.toDate')} />
+                        </div>
                     </div>
                 )}
             />

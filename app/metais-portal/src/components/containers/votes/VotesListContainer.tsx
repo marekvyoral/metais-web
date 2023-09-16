@@ -1,11 +1,20 @@
-import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ApiVotePreviewList, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, GetVotesParams, QueryFeedback, useGetVotes } from '@isdd/metais-common/index'
 import React from 'react'
+import { IOption } from '@isdd/idsk-ui-kit/index'
+import { IFilter } from '@isdd/idsk-ui-kit/types'
 
 import { IVotesListView } from '@/components/views/votes/VoteListView'
 
 interface IVotesListContainer {
     View: React.FC<IVotesListView>
+}
+
+export interface IVotesListFilterData extends IFilterParams, IFilter {
+    votesTypeToShow: IOption
+    voteState: IOption
+    effectiveFrom: string
+    effectiveTo: string
 }
 
 const defaultParamValues: GetVotesParams = {
@@ -20,7 +29,7 @@ const mockVotesListResponseString = `{
     "votesCount": 396,
     "votes": [
       {
-        "id": 394,
+        "id": 11,
         "name": "PS4: Súhlasíte s predloženým návrhom, aby osoba vykonávajúca zaručenú konverziu nebola povinná konvertovať vnorené podpisové kontajnery a zároveň bola povinná informovať žiadateľa o existencii vnorených podpisov v dokumente predloženom na konverziu?",
         "description": "",
         "createdAt": "2023-08-25T10:56:07.774",
@@ -36,7 +45,7 @@ const mockVotesListResponseString = `{
         "hasCast": "no"
       },
       {
-        "id": 395,
+        "id": 12,
         "name": "PS4: Súhlasíte s návrhom na doplnenie § 5 a § 6 vyhlášky č.  70/2021 Z. z. o zaručenej konverzii a prílohy č. 4 a prílohy č. 6 k vyhláške č.  70/2021 Z. z. o zaručenej konverzii v predloženom znení?",
         "description": "",
         "createdAt": "2023-08-25T11:13:56.151",
