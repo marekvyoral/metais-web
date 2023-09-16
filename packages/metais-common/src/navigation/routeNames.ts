@@ -60,6 +60,7 @@ export enum NavigationSubRoutes {
     PRACOVNE_SKUPINY_KOMISIE = 'standardization/groupslist',
     ZOZNAM_NAVRHOV = 'standardization/draftslist',
     ZOZNAM_HLASOV = 'standardization/voteslist',
+    VOTE_DETAIL = '/standardization/votedetail',
     ZOZNAM_ZASADNUTI = 'standardization/meetingslist',
     TVORBA_NAVRHU = 'standardization/newdraft',
     REFERENCE_REGISTRE = 'refregisters/list',

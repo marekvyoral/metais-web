@@ -2,7 +2,7 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
-import { IVoteDetailView } from '../views/votes/VoteDetailView'
+import { IVoteDetailView } from '../../views/votes/VoteDetailView'
 
 interface IVoteDetailContainer {
     View: React.FC<IVoteDetailView>

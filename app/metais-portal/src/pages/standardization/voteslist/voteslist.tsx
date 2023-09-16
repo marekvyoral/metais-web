@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { VotesListContainer } from '@/components/containers/VotesListContainer'
+import { VotesListContainer } from '@/components/containers/votes/VotesListContainer'
 import { VotesListView } from '@/components/views/votes/VoteListView'
 
 const VotesList: React.FC = () => {

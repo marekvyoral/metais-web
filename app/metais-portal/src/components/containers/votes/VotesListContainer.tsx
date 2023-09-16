@@ -2,7 +2,7 @@ import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ApiVotePreviewList, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, GetVotesParams, QueryFeedback, useGetVotes } from '@isdd/metais-common/index'
 import React from 'react'
 
-import { IVotesListView } from '../views/votes/VoteListView'
+import { IVotesListView } from '@/components/views/votes/VoteListView'
 
 interface IVotesListContainer {
     View: React.FC<IVotesListView>
