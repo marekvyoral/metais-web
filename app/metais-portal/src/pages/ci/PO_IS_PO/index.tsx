@@ -10,6 +10,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const POIsPOListPage = () => {
     const { t } = useTranslation()
+    document.title = `${t('titles.PO_IS_PO')}`
     const PO = 'PO'
     const PO_IS_PO = 'PO_IS_PO'
     const defaultFilterValues: POFilterData = {

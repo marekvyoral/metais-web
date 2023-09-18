@@ -12,9 +12,9 @@ interface IInfoIconWithTextProps extends PropsWithChildren {
 
 export const InfoIconWithText = forwardRef<HTMLDivElement, IInfoIconWithTextProps>(({ children, tooltip, hideIcon = false }, ref) => {
     return (
-        <p className={classNames(styles.infoIconGroup)} ref={ref}>
+        <span className={classNames(styles.infoIconGroup)} ref={ref}>
             {!hideIcon && <img src={InfoIcon} className={classNames(styles.infoIcon)} alt="info-icon" title={tooltip} />}
-            <strong className={classNames(styles.infoText)}>{children}</strong>
-        </p>
+            <span className={classNames(styles.infoText)}>{children}</span>
+        </span>
     )
 })

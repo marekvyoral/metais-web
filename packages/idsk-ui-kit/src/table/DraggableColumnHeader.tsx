@@ -50,8 +50,12 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
         type: 'column',
     })
 
-    return (
+    return id === CHECKBOX_CELL ? (
+        <td className={classNames('idsk-table__header', styles.header, styles.checkBoxCell)}>{flexRender(columnHeader, getContext())}</td>
+    ) : (
         <th
+            scope="col"
+            id={header.id}
             ref={dropRef}
             className={classNames('idsk-table__header', styles.header, {
                 [styles.checkBoxCell]: id === CHECKBOX_CELL,
@@ -61,26 +65,22 @@ export const DraggableColumnHeader = <T,>({ header, table, canDrag }: TableHeade
         >
             <div ref={previewRef}>
                 <div ref={dragRef} className="th-span">
-                    {id === CHECKBOX_CELL ? (
-                        flexRender(columnHeader, getContext())
-                    ) : (
-                        <TextBody size="S" className={'marginBottom0'}>
-                            <strong className={styles.columnHeaderStrong}>
-                                {isPlaceholder ? null : flexRender(columnHeader, getContext())}
-                                {column.getCanSort() && columnEnabledSorting && (
-                                    <button
-                                        className={classNames(
-                                            'arrowBtn',
-                                            { arrowBtnDesc: column.getIsSorted() === 'desc' },
-                                            { arrowBtnAsc: column.getIsSorted() === 'asc' },
-                                        )}
-                                        onClick={column.getToggleSortingHandler()}
-                                        style={{ opacity: column.getIsSorted() === false ? 0.1 : 1 }}
-                                    />
-                                )}
-                            </strong>
-                        </TextBody>
-                    )}
+                    <TextBody size="S" className={'marginBottom0'}>
+                        <strong className={styles.columnHeaderStrong}>
+                            {isPlaceholder ? null : flexRender(columnHeader, getContext())}
+                            {column.getCanSort() && columnEnabledSorting && (
+                                <button
+                                    className={classNames(
+                                        'arrowBtn',
+                                        { arrowBtnDesc: column.getIsSorted() === 'desc' },
+                                        { arrowBtnAsc: column.getIsSorted() === 'asc' },
+                                    )}
+                                    onClick={column.getToggleSortingHandler()}
+                                    style={{ opacity: column.getIsSorted() === false ? 0.1 : 1 }}
+                                />
+                            )}
+                        </strong>
+                    </TextBody>
                 </div>
             </div>
         </th>

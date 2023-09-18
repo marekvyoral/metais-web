@@ -64,7 +64,6 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
         >
             <Link
                 className={classnames('govuk-link idsk-header-web__nav-list-item-link', styles.navListItemOvverride)}
-                title={title}
                 state={{ from: location }}
                 to={`/${path}`}
                 aria-label={expanded ? hideMenu : showMenu}

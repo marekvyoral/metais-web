@@ -91,7 +91,9 @@ export const SelectLazyLoading = <T,>({
 
     return (
         <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!error })}>
-            <label className="govuk-label">{label}</label>
+            <label className="govuk-label" htmlFor={id}>
+                {label}
+            </label>
             {!!error && <span className="govuk-error-message">{error}</span>}
             <AsyncPaginate<T, GroupBase<T>, { page: number } | undefined, boolean>
                 id={id}

@@ -5,6 +5,7 @@ import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { GridRow } from '@isdd/idsk-ui-kit/grid/GridRow'
 import { GridCol } from '@isdd/idsk-ui-kit/grid/GridCol'
 import { TextLinkExternal } from '@isdd/idsk-ui-kit/typography/TextLinkExternal'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 
 import styles from './relationCard.module.scss'
 import { RelationAttribute } from './RelationAttribute'
@@ -47,11 +48,11 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
                         </div>
                     </GridCol>
                 </GridRow>
+                <DefinitionList>
+                    <RelationAttribute name={t('relationCard.name')} value={name} />
 
-                <RelationAttribute name={t('relationCard.name')} value={name} />
-                <RelationAttribute name={t('relationCard.codeMetaIS')} value={codeMetaIS} />
-                <RelationAttribute name={t('relationCard.admin')} value={admin} />
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <RelationAttribute name={t('relationCard.codeMetaIS')} value={codeMetaIS} />
+                    <RelationAttribute name={t('relationCard.admin')} value={admin} />
                     {relations?.map((relation) => (
                         <RelationAttribute
                             key={relation.title}
@@ -59,7 +60,7 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
                             value={<TextLinkExternal title={relation.title} href={relation.href} textLink={relation.title} />}
                         />
                     ))}
-                </div>
+                </DefinitionList>
             </div>
         </>
     )

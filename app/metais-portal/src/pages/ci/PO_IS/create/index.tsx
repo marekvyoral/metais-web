@@ -10,8 +10,9 @@ import { CreateCiEntityView } from '@/components/views/ci/create/CreateCiEntityV
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const CreateEntityPage: React.FC = () => {
-    const entityName = 'PO'
     const { t } = useTranslation()
+    document.title = `${t('titles.PO_ISCreate')}`
+    const entityName = 'PO'
 
     return (
         <>

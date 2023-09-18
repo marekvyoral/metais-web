@@ -27,10 +27,12 @@ export const Navbar: React.FC = () => {
     const Notifications = () => (
         <IconWithNotification
             onClick={() => undefined}
-            title={t('navbar.factChecker')}
+            title={t('navbar.notifications')}
             src={NotificationIcon}
             count={notificationsData?.pagination?.totalUnreadedItems ?? 0}
             path={NavigationSubRoutes.NOTIFICATIONS}
+            showAsLink
+            altText={t('navbar.notifications')}
         />
     )
 

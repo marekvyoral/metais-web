@@ -12,8 +12,9 @@ import { EditCiEntityView } from '@/components/views/ci/edit/EditCiEntityView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const EditEntityPage = () => {
-    const { entityName, entityId } = useParams()
     const { t, i18n } = useTranslation()
+    const { entityName, entityId } = useParams()
+    document.title = `${t('titles.ciEdit', { ci: entityName })} | MetaIS`
 
     return (
         <>

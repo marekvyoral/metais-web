@@ -11,8 +11,9 @@ import { CreateCiEntityView } from '@/components/views/ci/create/CreateCiEntityV
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const CreateEntityPage: React.FC = () => {
-    const { entityName } = useParams()
     const { t } = useTranslation()
+    const { entityName } = useParams()
+    document.title = `${t('titles.ciCreate', { ci: entityName })} | MetaIS`
     return (
         <>
             <BreadCrumbs
