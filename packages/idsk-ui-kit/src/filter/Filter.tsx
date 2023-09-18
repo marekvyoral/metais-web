@@ -92,7 +92,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, handleOnSu
                     </div>
                 </div>
 
-                <div>
+                <div aria-hidden={!isOpen}>
                     <form
                         className={classNames(styles.animate, isOpen && styles.grow, showScrollbar && styles.form)}
                         action="#"

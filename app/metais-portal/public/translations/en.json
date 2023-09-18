@@ -470,7 +470,9 @@
     "table": {
         "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
         "noRowsFound": "No rows found",
-        "pagination": "Page navigation"
+        "pagination": "Page navigation",
+        "sortBy": "Sort by",
+        "selectAllItems": "Select all items"
     },
     "state": "Evidence status",
     "group": "Group",
@@ -498,6 +500,7 @@
     "tasks": {
         "home": "Home",
         "tasks": "Tasks",
+        "myTasks": "My tasks",
         "assignToUser": "Assign to user",
         "assignToGroup": "Assign to group",
         "finish": "Finish task",
@@ -756,6 +759,32 @@
         "errorMessage": "We apologize, but an error occurred while creating new relation. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
         "email": "metais@mirri.gov.sk",
         "selectRelTypeError": "You are missing needed rights to create this relation type"
+    },
+    "titles": {
+        "mainPage": "Main Page",
+        "myTasks": "My Tasks",
+        "taskDetail": "Task detail",
+        "notifications": "Notifications",
+        "notificationDetail": "Notification detail",
+        "groupsOfCommission": "Groups of Commission",
+        "groupDetail": "Group of Commission detail",
+        "groupCreate": "Creation of group",
+        "groupEdit": "Edit of group",
+        "reports": "Reports",
+        "reportDetail": "Report detail",
+        "ciList": "List of {{ci}} items",
+        "ciDetail": "Detail of {{ci}} item",
+        "ciCreate": "Creation of {{ci}} item",
+        "ciEdit": "Edit of {{ci}} item",
+        "PO_IS": "Processors of IT development concepts",
+        "PO_ISDetail": "Detail of IS",
+        "PO_ISCreate": "Creation of IS",
+        "PO_PO": "Subordinates",
+        "PO_PODetail": "Detail PO",
+        "PO_POCreate": "Vytvorenie PO",
+        "PO_IS_PO": "IS operators",
+        "PO_IS_PODetail": "Detail of IS PO",
+        "PO_IS_POCreate": "Creation of IS PO"
     },
     "todo": {
         "header": "Under construction",

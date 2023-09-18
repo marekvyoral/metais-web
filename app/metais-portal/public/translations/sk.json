@@ -473,7 +473,9 @@
     "table": {
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
         "noRowsFound": "Nenašli sa žiadne záznamy",
-        "pagination": "Tabuľková navigácia"
+        "pagination": "Tabuľková navigácia",
+        "sortBy": "Zoraď podľa",
+        "selectAllItems": "Vyber všetky položky"
     },
     "state": "Stav evidencie",
     "group": "Skupina",
@@ -501,6 +503,7 @@
     "tasks": {
         "home": "Domov",
         "tasks": "Úlohy",
+        "myTasks": "Moje úlohy",
         "assignToUser": "Priradiť k používateľovi",
         "assignToGroup": "Priradiť k skupine",
         "finish": "Ukončiť úlohu",
@@ -762,7 +765,33 @@
         "email": "metais@mirri.gov.sk",
         "errorTitle": "Nastala chyba",
         "errorMessage": "Ospravedlňujeme sa, ale pri vytváraní nového vzťahu nastala chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na ",
-        "selectRelTypeError": "Na vytvorenie tohto typu vzťahu Vám chýbajú potrebné práva"
+        "ÏselectRelTypeError": "Na vytvorenie tohto typu vzťahu Vám chýbajú potrebné práva"
+    },
+    "titles": {
+        "mainPage": "Hlavná stránka",
+        "myTasks": "Moje úlohy",
+        "taskDetail": "Detail úlohy",
+        "notifications": "Notifikácie",
+        "notificationDetail": "Detail notifikácie",
+        "groupsOfCommission": "Pracovné skupiny komisie",
+        "groupDetail": "Detail pracovnej skupiny",
+        "groupCreate": "Vytvorenie pracovnej skupiny",
+        "groupEdit": "Úprava pracovnej skupiny",
+        "reports": "Reporty a zostavy",
+        "reportDetail": "Detail reportu",
+        "ciList": "Zoznam položiek {{ci}}",
+        "ciDetail": "Detail položky {{ci}}",
+        "ciCreate": "Vytvorenie položky {{ci}}",
+        "ciEdit": "Úprava položky {{ci}}",
+        "PO_IS": "Spracovatelia koncepcií rozvoja IT",
+        "PO_ISDetail": "Detail IS",
+        "PO_ISCreate": "Vytvorenie IS",
+        "PO_PO": "Podriadené osoby",
+        "PO_PODetail": "Detail PO",
+        "PO_POCreate": "Vytvorenie PO",
+        "PO_IS_PO": "Prevádzkovatelia IS PO",
+        "PO_IS_PODetail": "Detail IS PO",
+        "PO_IS_POCreate": "Vytvorenie IS PO"
     },
     "todo": {
         "header": "Vo výstavbe",

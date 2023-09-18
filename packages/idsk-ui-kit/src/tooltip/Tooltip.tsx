@@ -23,6 +23,7 @@ interface ITooltip {
     mouseEnterDelay?: number
     mouseLeaveDelay?: number
     className?: string
+    altText?: string
 }
 
 export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, tooltipContent, closeButton = false, ...props }) => {
@@ -43,7 +44,7 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, tooltipContent
                             () => popupRef.current?.close(),
                         )
                     ) : (
-                        <img src={InfoIcon} onMouseOver={popupRef.current?.open} onMouseOut={popupRef.current?.close} />
+                        <img alt={props.altText} src={InfoIcon} onMouseOver={popupRef.current?.open} onMouseOut={popupRef.current?.close} />
                     )
                 }
             >

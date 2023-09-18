@@ -33,7 +33,7 @@ export const ImportButton: React.FC<IImportButtonProps> = ({ ciType }) => {
                 onClick={openImportModal}
                 variant="secondary"
                 className="marginBottom0"
-                label={<IconLabel label={t('actionOverTable.import')} icon={ImportIcon} />}
+                label={<IconLabel label={t('actionOverTable.import')} icon={ImportIcon} alt={t('fileImport.header')} />}
             />
             <FileImport
                 allowedFileTypes={['.xml', '.csv', '.xlsx']}

@@ -17,6 +17,7 @@ export const INDEX_ROUTE = Informations
 
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
+    document.title = `${t('titles.PO_ISDetail')}`
     const { isActionSuccess } = useActionSuccess()
     const { entityId } = useParams()
     const entityName = 'PO_IS'
