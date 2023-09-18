@@ -27,19 +27,6 @@ export default defineConfig(({ mode }) => {
             cors: {
                 origin: '*',
             },
-            proxy: {
-                '^/metaisiam/.*': {
-                    target: process.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL,
-                    changeOrigin: true,
-                    secure: false,
-                    rewrite: (p) => p.replace(/^\/metaisiam/, ''),
-                },
-                '^/file/.*': {
-                    target: process.env.VITE_REST_CLIENT_DMS_TARGET_URL,
-                    changeOrigin: true,
-                    secure: false,
-                },
-            },
         },
     }
 })
