@@ -10,6 +10,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const GroupsListPage: React.FC = () => {
     const { t } = useTranslation()
+    document.title = `${t('titles.groupsOfCommission')} | MetaIS`
 
     const tabsList: Tab[] = [
         {

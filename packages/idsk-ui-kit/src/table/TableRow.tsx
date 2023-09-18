@@ -21,6 +21,7 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
     const navigate = useNavigate()
     const location = useLocation()
     const hasCheckbox = row.getVisibleCells().find((cell) => cell.column.id === CHECKBOX_CELL)
+    const verticalHeaderColId = hasCheckbox ? row.getVisibleCells()[1].column.id : row.getVisibleCells()[0].column.id
     return (
         <tr
             className={classNames(
@@ -41,12 +42,54 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
                 onRowClick?.(row)
             }}
         >
-            {row.getVisibleCells().map((cell) => {
+            {row.getVisibleCells().map((cell, index) => {
                 const columnDef = cell.column.columnDef
                 const tooltipText = columnDef?.meta?.getCellContext?.(cell.getContext())
                 const cellValue = flexRender(columnDef.cell, cell.getContext())
                 const shortString = typeof tooltipText === 'string' && tooltipText.length >= TOOLTIP_TEXT_BREAKER
-                return (
+                const hideTooltip =
+                    cell.column.id === CHECKBOX_CELL ||
+                    cell.getValue() === '' ||
+                    cell.getValue() === undefined ||
+                    cell.getValue() === null ||
+                    !shortString
+                const useHeader = (index === 0 && cell.column.id !== CHECKBOX_CELL) || index === 1
+
+                const cellContent = hideTooltip ? (
+                    cellValue
+                ) : (
+                    <Tooltip
+                        position={'top center'}
+                        disabled={
+                            cell.column.id === CHECKBOX_CELL ||
+                            cell.getValue() === '' ||
+                            cell.getValue() === undefined ||
+                            cell.getValue() === null ||
+                            !shortString
+                        }
+                        descriptionElement={<div className={styles.tooltipWidth500}>{tooltipText}</div>}
+                        tooltipContent={(open, close) => (
+                            <div className={styles.tooltipTextWrapper} onMouseOver={open} onMouseOut={close}>
+                                {cellValue}
+                            </div>
+                        )}
+                    />
+                )
+                return useHeader ? (
+                    <th
+                        scope="row"
+                        className={classNames('idsk-table__cell', styles.fontWeightNormal, {
+                            [styles.fontWeightBolder]: isRowBold && isRowBold(row),
+                            [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
+                            [styles.rowSelected]: isRowSelected && isRowSelected(row),
+                        })}
+                        style={columnDef.size ? { width: columnDef.size } : { width: 'auto' }}
+                        key={cell.id}
+                        id={cell.column.id}
+                    >
+                        {cellContent}
+                    </th>
+                ) : (
                     <td
                         className={classNames('idsk-table__cell', {
                             [styles.checkBoxCell]: cell.column.id === CHECKBOX_CELL,
@@ -54,23 +97,9 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
                         })}
                         style={columnDef.size ? { width: columnDef.size } : { width: 'auto' }}
                         key={cell.id}
+                        headers={`${cell.column.id} ${verticalHeaderColId}`}
                     >
-                        <Tooltip
-                            position={'top center'}
-                            disabled={
-                                cell.column.id === CHECKBOX_CELL ||
-                                cell.getValue() === '' ||
-                                cell.getValue() === undefined ||
-                                cell.getValue() === null ||
-                                !shortString
-                            }
-                            descriptionElement={<div className={styles.tooltipWidth500}>{tooltipText}</div>}
-                            tooltipContent={(open, close) => (
-                                <div className={styles.tooltipTextWrapper} onMouseOver={open} onMouseOut={close}>
-                                    {cellValue}
-                                </div>
-                            )}
-                        />
+                        {cellContent}
                     </td>
                 )
             })}

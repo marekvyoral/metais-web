@@ -105,7 +105,7 @@ export const TasksListView: React.FC<ITasksListView> = ({
                                     ]}
                                     label={t('tasks.selectType')}
                                     id="taskTypeSelect"
-                                    name="appId"
+                                    name="taskTypeSelect"
                                     setValue={setValue}
                                 />
                                 <GridRow>
@@ -123,7 +123,6 @@ export const TasksListView: React.FC<ITasksListView> = ({
                                     </GridCol>
                                 </GridRow>
                                 <label className="govuk-label">{t('tasks.state')}:</label>
-
                                 <RadioButtonGroup inline>
                                     <RadioButton
                                         {...register('state')}
@@ -159,6 +158,7 @@ export const TasksListView: React.FC<ITasksListView> = ({
                         )
                     }}
                 />
+
                 <QueryFeedback loading={isLoading || isIdle} error={false} withChildren>
                     <Table<Task>
                         columns={columns}

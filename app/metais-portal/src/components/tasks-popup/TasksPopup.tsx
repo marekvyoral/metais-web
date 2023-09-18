@@ -48,6 +48,8 @@ export const TasksPopup: React.FC = () => {
                     src={FactCheckIcon}
                     count={(tasks?.tasksCountCreated ?? 0) + (tasks?.tasksCountInProgress ?? 0)}
                     path=""
+                    showAsLink={false}
+                    altText={t('tasks.tasks')}
                 />
             }
             className={styles.tasksPopupBtn}

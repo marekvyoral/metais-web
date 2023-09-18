@@ -93,7 +93,7 @@ export const ExportButton: React.FC = () => {
                 onClick={openModal}
                 className="marginBottom0"
                 variant="secondary"
-                label={<IconLabel label={t('actionOverTable.export')} icon={ExportIcon} />}
+                label={<IconLabel label={t('actionOverTable.export')} icon={ExportIcon} alt={t('exportItemsOrRelations.header')} />}
             />
             <ExportItemsOrRelations isOpen={modalOpen} close={onClose} isLoading={isLoading} onExportStart={onExportStart} />
         </>

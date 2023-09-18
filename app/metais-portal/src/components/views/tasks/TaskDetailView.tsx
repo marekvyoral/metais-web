@@ -2,6 +2,8 @@ import { BreadCrumbs, Button, GridCol, GridRow, HomeIcon, Table, TextBody, TextH
 import { Identity, RoleOrgIdentity } from '@isdd/metais-common/api/generated/iam-swagger'
 import { Task, TaskHistory, TaskState } from '@isdd/metais-common/api/generated/tasks-swagger'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
+import { DefinitionListItem } from '@isdd/metais-common/components/definition-list/DefinitionListItem'
 import { ColumnDef } from '@tanstack/react-table'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
@@ -54,10 +56,10 @@ export const TaskDetailView: React.FC<ITaskDetailView> = ({
                         <TextHeading size="L">{task?.name}</TextHeading>
                         {isError && <QueryFeedback loading={false} error={isError} />}
                     </FlexColumnReverseWrapper>
-
                     {task?.state !== TaskState.DONE ? (
                         <>
                             <Button onClick={closeTask} label={t('tasks.finish')} className="idsk-button" />
+
                             <GridRow>
                                 <GridCol setWidth="two-thirds">
                                     <IdentitySelect
@@ -93,28 +95,18 @@ export const TaskDetailView: React.FC<ITaskDetailView> = ({
                             <Button label={t('tasks.toMe')} className="idsk-button" onClick={() => reassignTask(true)} />
                         </>
                     )}
-
-                    <div className={styles.taskDetailGrid}>
-                        {task?.dueDate && (
-                            <>
-                                <label className="govuk-label">{t('tasks.deadline')}</label>
-                                <TextBody>{t('dateTime', { date: task?.dueDate })}</TextBody>
-                            </>
-                        )}
-                        <label className="govuk-label">{t('tasks.tableHeaders.createdAt')}:</label>
-                        <TextBody>{t('dateTime', { date: task?.createdAt })}</TextBody>
-                        <label className="govuk-label">{t('tasks.state')}:</label>
-                        <TextBody>{t(`tasks.${task?.state}`)}</TextBody>
-                        <label className="govuk-label">{t('tasks.tableHeaders.type')}:</label>
-                        <TextBody>{task?.appId}</TextBody>
-                        <label className="govuk-label">{t('tasks.assigne')}:</label>
-                        <TextBody>{task?.assignedTo}</TextBody>
-                    </div>
-                    <TextHeading size="M">{t('tasks.description')}</TextHeading>
+                    <DefinitionList>
+                        {task?.dueDate && <DefinitionListItem label={t('tasks.deadline')} value={t('dateTime', { date: task?.dueDate })} />}
+                        <DefinitionListItem label={t('tasks.tableHeaders.createdAt')} value={t('dateTime', { date: task?.createdAt })} />
+                        <DefinitionListItem label={t('tasks.state')} value={t(`tasks.${task?.state}`)} />
+                        <DefinitionListItem label={t('tasks.tableHeaders.type')} value={task?.appId ?? ''} />
+                        <DefinitionListItem label={t('tasks.assigne')} value={task?.assignedTo ?? ''} />
+                    </DefinitionList>
+                    <TextHeading size="L">{t('tasks.description')}</TextHeading>
                     <TextBody>
                         <div dangerouslySetInnerHTML={{ __html: task?.description ?? '' }} />
                     </TextBody>
-                    <TextHeading size="M">{t('tasks.baseInfo')}</TextHeading>
+                    <TextHeading size="L">{t('tasks.baseInfo')}</TextHeading>
                     <Table<TaskHistory>
                         columns={historyColumns}
                         isLoading={isLoading}

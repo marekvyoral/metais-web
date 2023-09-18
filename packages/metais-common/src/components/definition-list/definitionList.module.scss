@@ -1,0 +1,15 @@
+.dl {
+    display: flex;
+    flex-flow: row wrap;
+}
+.dt {
+    flex-basis: 20%;
+    font-weight: bold !important;
+    p, span {
+        font-weight: bold !important;
+    }
+}
+.dd {
+    flex-basis: 70%;
+    flex-grow: 1;
+}

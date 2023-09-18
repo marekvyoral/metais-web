@@ -1,4 +1,5 @@
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
+import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
@@ -62,6 +63,7 @@ export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handle
 
     return (
         <>
+            <TextHeading size="XL">{t('navMenu.reports')}</TextHeading>
             <Table columns={columns} data={data} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>

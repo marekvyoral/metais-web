@@ -26,7 +26,7 @@ export const NavProfile: React.FC = () => {
                 'idsk-header-web__main--login-action': !user,
             })}
         >
-            <img className="idsk-header-web__main--login-action-profile-img" src={ProfileIcon} alt="Profile image" />
+            <img className="idsk-header-web__main--login-action-profile-img" src={ProfileIcon} alt="User profile icon" />
             <div className="idsk-header-web__main--login-action-text">
                 {user?.displayName && <span className="govuk-body-s idsk-header-web__main--login-action-text-user-name">{user.displayName}</span>}
                 <div className="govuk-!-margin-bottom-1">
