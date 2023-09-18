@@ -8,6 +8,8 @@ import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/met
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 
 interface Props {
     onChangeAuthority: (e: HierarchyRightsUi | null) => void
@@ -27,6 +29,11 @@ export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, sele
     }
 
     const { implicitHierarchyData, isError, isLoading } = useGetImplicitHierarchy(defaultFilter)
+
+    const ability = useAbilityContext()
+    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
+
+    const hasError = implicitHierarchy.isError || isError
 
     useEffect(() => {
         if (implicitHierarchyData?.rights && selectedOrg === null) {
@@ -48,16 +55,18 @@ export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, sele
     return (
         <>
             {isLoading && (
-                <QueryFeedback
-                    loading={isLoading}
-                    error={false}
-                    indicatorProps={{ fullscreen: true, layer: 'parent', label: t('selectPublicAuthority.loading') }}
-                />
+                <QueryFeedback loading={isLoading} error={false} indicatorProps={{ label: t('selectPublicAuthority.loading') }} withChildren />
             )}
             <SelectLazyLoading
                 isClearable={false}
                 value={selectedOrg}
-                error={implicitHierarchy.isError || isError ? t('selectPublicAuthority.error') : ''}
+                error={
+                    !hasOrgPermission
+                        ? t('selectPublicAuthority.missingRightsError', { item: t('selectPublicAuthority.relations') })
+                        : hasError
+                        ? t('selectPublicAuthority.error')
+                        : ''
+                }
                 getOptionLabel={(item) => item.poName ?? ''}
                 getOptionValue={(item) => item.poUUID ?? ''}
                 loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}

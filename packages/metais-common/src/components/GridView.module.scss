@@ -11,6 +11,8 @@
     @include mq($until: desktop) {
         grid-column: 1/13;
     }
+    padding-top: 0 !important;
+    padding-right: govuk-spacing(4);
 }
 
 .closedContent {

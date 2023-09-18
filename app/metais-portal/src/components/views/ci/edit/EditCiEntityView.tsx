@@ -1,9 +1,11 @@
-import { BreadCrumbs, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ATTRIBUTE_NAME, CiType, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { SubHeading } from '@isdd/metais-common/src/components/sub-heading/SubHeading'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { QueryFeedback } from '@isdd/metais-common/index'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import { CreateEntity } from '@/components/create-entity/CreateEntity'
 
@@ -14,9 +16,20 @@ interface Props {
     ciItemData: ConfigurationItemUi | undefined
     entityName: string
     entityId: string
+    isLoading: boolean
+    isError: boolean
 }
 
-export const EditCiEntityView: React.FC<Props> = ({ ciTypeData, ciItemData, constraintsData, unitsData, entityName, entityId }) => {
+export const EditCiEntityView: React.FC<Props> = ({
+    ciTypeData,
+    ciItemData,
+    constraintsData,
+    unitsData,
+    entityName,
+    entityId,
+    isError,
+    isLoading,
+}) => {
     const { t, i18n } = useTranslation()
     const ciItemAttributes = ciItemData?.attributes
 
@@ -30,16 +43,11 @@ export const EditCiEntityView: React.FC<Props> = ({ ciTypeData, ciItemData, cons
             : ciItemAttributes?.[ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]
 
     return (
-        <>
-            <BreadCrumbs
-                links={[
-                    { label: t('breadcrumbs.home'), href: '/' },
-                    { label: entityName, href: `/ci/${entityName}` },
-                    { label: currentName ? currentName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
-                    { label: t('breadcrumbs.ciEdit', { itemName: currentName }), href: `/ci/${entityName}/${entityId}/edit` },
-                ]}
-            />
-            <TextHeading size="XL">{t('ciType.editEntity')}</TextHeading>
+        <QueryFeedback loading={isLoading} error={false} withChildren>
+            <FlexColumnReverseWrapper>
+                <TextHeading size="XL">{t('ciType.editEntity')}</TextHeading>
+                {isError && <QueryFeedback loading={false} error={isError} />}
+            </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
             <CreateEntity
                 updateCiItemId={ciItemData?.uuid}
@@ -47,6 +55,6 @@ export const EditCiEntityView: React.FC<Props> = ({ ciTypeData, ciItemData, cons
                 entityName={entityName}
                 defaultItemAttributeValues={ciItemAttributes}
             />
-        </>
+        </QueryFeedback>
     )
 }

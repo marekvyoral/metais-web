@@ -6,9 +6,6 @@ import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
-import { ErrorBlock } from '@isdd/idsk-ui-kit/index'
-import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
-import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
@@ -47,9 +44,6 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     const { t } = useTranslation()
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
-
-    const ability = useAbilityContext()
-    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
 
     const [uploadError, setUploadError] = useState(false)
     const [requestId, setRequestId] = useState<string>('')
@@ -137,10 +131,6 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                 }}
                 withChildren
             >
-                {!hasOrgPermission && publicAuthorityState?.selectedPublicAuthority && (
-                    <ErrorBlock errorTitle={t('createEntity.orgAndRoleError.title')} errorMessage={t('createEntity.orgAndRoleError.message')} />
-                )}
-
                 {!updateCiItemId && publicAuthorityState && roleState && (
                     <SelectPublicAuthorityAndRole
                         selectedRoleId={roleState.selectedRole}

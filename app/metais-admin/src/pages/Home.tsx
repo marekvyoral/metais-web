@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { MainContentWrapper } from '@/components/MainContentWrapper'
+
 export const Home: React.FC = () => {
-    return <div>Home</div>
+    return <MainContentWrapper>Home</MainContentWrapper>
 }

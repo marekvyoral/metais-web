@@ -21,6 +21,9 @@ export const ReportTable: React.FC<IReportTable> = ({ data, isLoading, isError, 
                 accessorFn: (row: { values: string[] }) => row,
                 header: () => header?.name ?? '',
                 id: header?.name ?? '',
+                meta: {
+                    getCellContext: (ctx: CellContext<unknown, { values: string[] }>) => ctx?.getValue?.(),
+                },
                 cell: (row: CellContext<unknown, { values: string[] }>) => row?.getValue()?.values?.[index],
             }
         }) ?? []

@@ -34,6 +34,7 @@ interface ICreateCiEntityForm {
     updateCiItemId?: string
     relationSchema?: RelationshipType
     isProcessing: boolean
+    withRelation?: boolean
 }
 
 export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
@@ -47,12 +48,16 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     updateCiItemId,
     relationSchema,
     isProcessing,
+    withRelation,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
 
     const ability = useAbilityContext()
     const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
+    const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
+
+    const isSubmitDisabled = (!hasOrgPermission && !updateCiItemId) || (withRelation ? !canCreateRelationType : false)
 
     const [hasReset, setHasReset] = useState(false)
     const genProfilTechName = Gen_Profil
@@ -181,7 +186,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                     ]}
                     submitButtonLabel={t('button.saveChanges')}
                     loading={isProcessing || formState.isValidating || formState.isSubmitting}
-                    disabled={!hasOrgPermission && !updateCiItemId}
+                    disabled={isSubmitDisabled}
                 />
             </form>
         </FormProvider>

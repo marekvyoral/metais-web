@@ -1,6 +1,6 @@
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { IColumn, Input, LoadingIndicator } from '@isdd/idsk-ui-kit/index'
+import { IColumn, Input, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { Attribute, AttributeProfile, CiType, ConfigurationItemSetUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
@@ -21,19 +21,21 @@ import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicF
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
-import { MutationFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { AddItemsButtonGroup } from '@/components/add-items-button-group/AddItemsButtonGroup'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { ColumnsOutputDefinition, IStoreColumnSelection } from '@/components/ci-table/ciTableHelpers'
-import { KSFilterData } from '@/pages/ci/[entityName]/entity'
+import { CIFilterData } from '@/pages/ci/[entityName]/entity'
 
 interface IListWrapper {
     isNewRelationModal?: boolean
-    defaultFilterValues: KSFilterData
+    defaultFilterValues: CIFilterData
     ciType: string | undefined
     columnListData: IColumn | undefined
     handleFilterChange: (filter: IFilter) => void
@@ -74,7 +76,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     isError,
     isNewRelationModal,
 }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
 
     const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner } = useBulkAction()
 
@@ -122,15 +124,20 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     }
 
     return (
-        <>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <MutationFeedback
-                    success={bulkActionResult?.isSuccess}
-                    successMessage={bulkActionResult?.successMessage}
-                    error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
-                />
-            )}
-            <Filter<KSFilterData>
+        <QueryFeedback loading={isLoading} error={false} withChildren>
+            <FlexColumnReverseWrapper>
+                <TextHeading size="XL">{i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}</TextHeading>
+                {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
+                {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
+                    <MutationFeedback
+                        success={bulkActionResult?.isSuccess}
+                        successMessage={bulkActionResult?.successMessage}
+                        error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                    />
+                )}
+            </FlexColumnReverseWrapper>
+
+            <Filter<CIFilterData>
                 defaultFilterValues={defaultFilterValues}
                 form={({ register, filter, setValue }) => (
                     <div>
@@ -266,6 +273,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 isError={isError}
             />
             {isNewRelationModal && <AddItemsButtonGroup handleItemsChange={handleRelationItemsChange} isUnderTable />}
-        </>
+        </QueryFeedback>
     )
 }

@@ -347,6 +347,30 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
+    claimManager: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_CLAIM_MANAGER_SWAGGER_URL ?? '',
+            filters: {
+                tags: ['claim-controller'],
+            },
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/claim-manager-swagger.ts`,
+            override: {
+                query: {
+                    useQuery: true,
+                },
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useClaimManagerSwaggerClient.ts',
+                    name: 'useClaimManagerSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
     codeListRepo: {
         input: {
             target: process.env.VITE_REST_CLIENT_CODELIST_REPO_SWAGGER_URL ?? '',

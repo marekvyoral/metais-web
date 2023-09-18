@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React, { ChangeEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { latiniseString } from '@isdd/metais-common/src/componentHelpers/filter/feFilters'
 
 import styles from './tableSelectColumns.module.scss'
 
@@ -58,7 +59,7 @@ export const TableSelectColumns: React.FC<ITableSelectColumnsProps> = ({ onClose
                 </TextBody>
                 <div className={classNames('govuk-checkboxes govuk-checkboxes--small', styles.scroll)}>
                     {selectedColumns
-                        .filter((column) => column.name.includes(search))
+                        .filter((column) => latiniseString(column.name).includes(latiniseString(search)))
                         .map((column) => {
                             const { name, technicalName, selected } = column
                             return (

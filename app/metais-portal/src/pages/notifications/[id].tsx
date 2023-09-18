@@ -7,7 +7,12 @@ import NotificationsDetailView from '@/components/views/notifications/Notificati
 const NotificationsDetailPage = () => {
     const { id } = useParams()
 
-    return <NotificationsDetailContainer id={id} View={(props) => <NotificationsDetailView id={props.id} data={props.data} />} />
+    return (
+        <NotificationsDetailContainer
+            id={id}
+            View={(props) => <NotificationsDetailView id={props.id} data={props.data} isError={props.isError} isLoading={props.isLoading} />}
+        />
+    )
 }
 
 export default NotificationsDetailPage

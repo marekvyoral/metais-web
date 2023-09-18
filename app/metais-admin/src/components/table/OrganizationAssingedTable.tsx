@@ -64,8 +64,11 @@ export const OrganizationsAssignedTable = ({
             accessorFn: (row) => row?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
             enableSorting: true,
             id: 'name',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => (
-                <Link to={'./' + ctx?.row?.original?.uuid} state={{ from: location }}>
+                <Link to={'/organizations/' + ctx?.row?.original?.uuid} state={{ from: location }}>
                     {ctx?.getValue?.() as string}
                 </Link>
             ),
@@ -75,6 +78,9 @@ export const OrganizationsAssignedTable = ({
             accessorFn: (row) => row?.attributes?.[ATTRIBUTE_NAME.EA_Profil_PO_ico],
             enableSorting: true,
             id: 'technicalName',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
         {
@@ -82,6 +88,9 @@ export const OrganizationsAssignedTable = ({
             accessorFn: (row) => createFullAdressFromAttributes(row?.attributes),
             enableSorting: true,
             id: 'adress',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
         {

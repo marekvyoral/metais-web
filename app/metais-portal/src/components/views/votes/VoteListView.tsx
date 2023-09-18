@@ -99,8 +99,8 @@ export const VotesListView: React.FC<IVotesListView> = ({ votesListData }) => {
                             id="votesTypeToShow"
                             label={t('votesList.filter.votesTypeToShow')}
                             options={[
-                                { value: 'onlyMy', label: t('votesList.type.onlyMy') },
-                                { value: 'everyone', label: t('votesList.type.everyone') },
+                                { value: 'onlyMy', label: t('votesList.type.onlyMyVotes') },
+                                { value: 'everyone', label: t('votesList.type.allVotes') },
                             ]}
                             setValue={setValue}
                             defaultValue={defaultFilterValues.votesTypeToShow.label}
@@ -117,7 +117,8 @@ export const VotesListView: React.FC<IVotesListView> = ({ votesListData }) => {
                             defaultValue={defaultFilterValues.votesTypeToShow.label}
                             name="voteState"
                         />
-                        <div>
+                        {/*TODO: zmenit inline style na nieco normalne*/}
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                             <Input {...register('fromDate')} type="date" label={t('votesList.filter.fromDate')} />
                             <Input {...register('toDate')} type="date" label={t('votesList.filter.toDate')} />
                         </div>

@@ -15,7 +15,6 @@ import {
 } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
-import { QueryFeedback } from '@isdd/metais-common'
 import { createTabNamesAndValuesMap } from '@isdd/metais-common/hooks/useEntityProfiles'
 
 export interface IAtrributesContainerView {
@@ -30,6 +29,8 @@ export interface IAtrributesContainerView {
     addNewConnectionToExistingRelation?: (selectedConnection: CiTypePreview, ciTypeRoleEnum: 'TARGET' | 'SOURCE') => void
     saveExistingAttribute?: (attributeTechnicalName?: string, attribute?: Attribute) => void
     resetExistingAttribute?: (attributeTechnicalName?: string) => void
+    isLoading: boolean
+    isError: boolean
 }
 
 interface AttributesContainer {
@@ -115,14 +116,14 @@ export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityN
     }
 
     return (
-        <QueryFeedback loading={isLoading || isAttributesOverridesLoading} error={isError || isAttributesOverridesError}>
-            <View
-                data={{ ciTypeData, constraintsData, unitsData: undefined, keysToDisplay, attributeOverridesData }}
-                unValidRelationShipTypeMutation={unValidRelationShipTypeMutation}
-                addNewConnectionToExistingRelation={addNewConnectionToExistingRelation}
-                saveExistingAttribute={saveExistingAttribute}
-                resetExistingAttribute={resetExistingAttribute}
-            />
-        </QueryFeedback>
+        <View
+            data={{ ciTypeData, constraintsData, unitsData: undefined, keysToDisplay, attributeOverridesData }}
+            unValidRelationShipTypeMutation={unValidRelationShipTypeMutation}
+            addNewConnectionToExistingRelation={addNewConnectionToExistingRelation}
+            saveExistingAttribute={saveExistingAttribute}
+            resetExistingAttribute={resetExistingAttribute}
+            isLoading={isLoading || isAttributesOverridesLoading}
+            isError={isError || isAttributesOverridesError}
+        />
     )
 }

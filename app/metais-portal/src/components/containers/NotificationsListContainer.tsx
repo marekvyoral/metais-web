@@ -16,7 +16,6 @@ import {
 } from '@isdd/metais-common/api/generated/notifications-swagger'
 import { ALL_EVENT_TYPES, NOTIFICATION_TITLE, notificationDefaultSelectedColumns } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
@@ -35,6 +34,8 @@ export interface NotificationsListViewParams {
     data: NotificationsList | undefined
     isLoading: boolean
     isError: boolean
+    isMutateLoading: boolean
+    isMutateError: boolean
     defaultFilterValues: FilterData
     columns: ColumnDef<Notification>[]
     selectedColumns: ISelectColumnType[]
@@ -59,6 +60,7 @@ export interface NotificationsListViewParams {
         unknown
     >
     handleFilterChange: (changedFilter: IFilter) => void
+    isMutateSuccess: boolean
 }
 
 interface INotificationsListContainer {
@@ -76,6 +78,7 @@ const defaultFilterValues: FilterData = {
 export const NotificationsListContainer: React.FC<INotificationsListContainer> = ({ View }) => {
     const location = useLocation()
     const [sort, setSort] = useState<ColumnSort[]>([{ sortDirection: SortType.DESC, orderBy: 'CreatedAt' }])
+
     const [data, setData] = useState<NotificationsList | undefined>()
     const { filter, handleFilterChange } = useFilterParams<FilterData>(defaultFilterValues)
     const fetchNotifications = useGetNotificationListElasticHook()
@@ -90,7 +93,7 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
     }
     const {
         isLoading: isListLoading,
-        isError,
+        isError: isListError,
         data: notificationListData,
     } = useGetNotificationListElastic(fetchProps, {
         query: { queryKey: [filter.eventType, filter.onlyUnread, filter.fullTextSearch, sort, filter.pageNumber, filter.pageSize] },
@@ -108,9 +111,24 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
         },
     }
 
-    const { mutate: mutateAllRead, isLoading: isSetAllAsReadLoading } = useSetAllNotificationsAsRead(onSuccessDelete)
-    const { mutate: mutateAllDelete, isLoading: isDeleteAllLoading } = useRemoveNotifications(onSuccessDelete)
-    const { mutate: mutateDelete, isLoading: isDeleteLoading } = useRemoveNotificationList(onSuccessDelete)
+    const {
+        mutate: mutateAllRead,
+        isLoading: isSetAllAsReadLoading,
+        isError: isSetAllAsReadError,
+        isSuccess: isSetAllAsReadSuccess,
+    } = useSetAllNotificationsAsRead(onSuccessDelete)
+    const {
+        mutate: mutateAllDelete,
+        isLoading: isDeleteAllLoading,
+        isError: isDeleteAllError,
+        isSuccess: isDeleteAllSuccess,
+    } = useRemoveNotifications(onSuccessDelete)
+    const {
+        mutate: mutateDelete,
+        isLoading: isDeleteLoading,
+        isError: isDeleteError,
+        isSuccess: isDeleteSuccess,
+    } = useRemoveNotificationList(onSuccessDelete)
     const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>([...notificationDefaultSelectedColumns])
     const columns = useMemo<ColumnDef<Notification>[]>(() => {
         const list: ColumnDef<Notification>[] = selectedColumns
@@ -121,6 +139,9 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
                           id: e.name,
                           header: e.name,
                           accessorKey: e.technicalName,
+                          meta: {
+                              getCellContext: (ctx) => ctx?.getValue?.(),
+                          },
                           cell: (row) => (
                               <Link to={NavigationSubRoutes.NOTIFICATIONS + '/' + row.row.original.id} state={{ from: location }}>
                                   {row.getValue() as string}
@@ -128,28 +149,41 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
                           ),
                           enableSorting: true,
                       }
-                    : { id: e.name, header: e.name, accessorKey: e.technicalName, enableSorting: true },
+                    : {
+                          id: e.name,
+                          header: e.name,
+                          accessorKey: e.technicalName,
+                          enableSorting: true,
+                          meta: {
+                              getCellContext: (ctx) => ctx?.getValue?.(),
+                          },
+                      },
             )
         return list
     }, [location, selectedColumns])
-    const isLoading = isListLoading || isSetAllAsReadLoading || isDeleteAllLoading || isDeleteLoading
+
+    const isMutateSuccess = isSetAllAsReadSuccess || isDeleteAllSuccess || isDeleteSuccess
+    const isMutateLoading = isSetAllAsReadLoading || isDeleteAllLoading || isDeleteLoading
+    const isMutateError = isDeleteAllError || isDeleteError || isSetAllAsReadError
+
     return (
-        <QueryFeedback loading={isLoading}>
-            <View
-                handleFilterChange={handleFilterChange}
-                data={data}
-                isLoading={isListLoading}
-                isError={isError}
-                defaultFilterValues={defaultFilterValues}
-                columns={columns}
-                selectedColumns={selectedColumns}
-                setSelectedColumns={setSelectedColumns}
-                sort={sort}
-                setSort={setSort}
-                mutateAllDelete={mutateAllDelete}
-                mutateAllRead={mutateAllRead}
-                mutateDelete={mutateDelete}
-            />
-        </QueryFeedback>
+        <View
+            handleFilterChange={handleFilterChange}
+            data={data}
+            isLoading={isListLoading}
+            isError={isListError}
+            defaultFilterValues={defaultFilterValues}
+            columns={columns}
+            selectedColumns={selectedColumns}
+            setSelectedColumns={setSelectedColumns}
+            sort={sort}
+            setSort={setSort}
+            mutateAllDelete={mutateAllDelete}
+            mutateAllRead={mutateAllRead}
+            mutateDelete={mutateDelete}
+            isMutateLoading={isMutateLoading}
+            isMutateError={isMutateError}
+            isMutateSuccess={isMutateSuccess}
+        />
     )
 }

@@ -4,10 +4,13 @@ import { CreateEntityButton, ExportButton, ImportButton } from '@isdd/metais-com
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { IListData } from '@isdd/metais-common/types/list'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { FavoriteCiType } from '@isdd/metais-common/api'
+import { QueryFeedback } from '@isdd/metais-common/index'
+import { TextHeading } from '@isdd/idsk-ui-kit/index'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import { CiTable } from '@/components/ci-table/CiTable'
 import { AttributesContainerViewData } from '@/components/containers/AttributesContainer'
@@ -26,6 +29,7 @@ interface Props {
     sort: ColumnSort[]
     isError: boolean
     isLoading: boolean
+    POType: string
 }
 
 export const POView: React.FC<Props> = ({
@@ -40,14 +44,20 @@ export const POView: React.FC<Props> = ({
     sort,
     isLoading,
     isError,
+    POType,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
     const { attributeProfiles, constraintsData, unitsData, ciTypeData, attributes } = attributesData
     const { columnListData, tableData, gestorsData } = ciListData
     const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
     return (
-        <>
+        <QueryFeedback loading={isLoading} error={false} withChildren>
+            <FlexColumnReverseWrapper>
+                <TextHeading size="XL">{t(`ciType.${POType}_Heading`)}</TextHeading>
+                {isError && <QueryFeedback error={isError} loading={false} />}
+            </FlexColumnReverseWrapper>
             <FilterPO
                 entityName={entityName}
                 availableAttributes={columnListData?.attributes}
@@ -82,6 +92,6 @@ export const POView: React.FC<Props> = ({
                 isLoading={isLoading}
                 isError={isError}
             />
-        </>
+        </QueryFeedback>
     )
 }

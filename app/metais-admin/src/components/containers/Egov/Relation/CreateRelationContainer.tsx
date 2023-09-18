@@ -1,7 +1,6 @@
 import React from 'react'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { RelationshipType, Role, useStoreAdminEntity } from '@isdd/metais-common/api'
-import { QueryFeedback } from '@isdd/metais-common'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 
 import { HiddenInputs } from '@/types/inputs'
@@ -12,6 +11,8 @@ export interface ICreateEntityView {
     }
     mutate: (formData: RelationshipType) => Promise<void>
     hiddenInputs?: Partial<HiddenInputs>
+    isLoading: boolean
+    isError: boolean
 }
 
 interface ICreateEntity {
@@ -34,14 +35,14 @@ export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View }: ICrea
     }
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View
-                data={{
-                    roles: (data as Role[]) ?? [],
-                }}
-                mutate={storeRelation}
-                hiddenInputs={{ CODE_PREFIX: true, URI_PREFIX: true }}
-            />
-        </QueryFeedback>
+        <View
+            data={{
+                roles: (data as Role[]) ?? [],
+            }}
+            mutate={storeRelation}
+            hiddenInputs={{ CODE_PREFIX: true, URI_PREFIX: true }}
+            isLoading={isLoading}
+            isError={isError}
+        />
     )
 }

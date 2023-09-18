@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useUpdateOrCreateWithGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
-import { MutationFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 
 import { InputNames, UserDetailForm } from './UserDetailForm'
 import { OrgData, UserRolesForm } from './UserRolesForm'
@@ -20,9 +20,11 @@ interface Props {
     detailData: UserDetailData | undefined | null
     managementData: UserManagementData | undefined
     isCreate?: boolean
+    isLoading: boolean
+    isError: boolean
 }
 
-export const UserManagementForm: React.FC<Props> = ({ detailData, managementData, isCreate = false }) => {
+export const UserManagementForm: React.FC<Props> = ({ detailData, managementData, isCreate = false, isLoading, isError }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
@@ -39,7 +41,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     const values = methods.watch()
     const loginString = `${values[InputNames.FIRST_NAME]}${values[InputNames.LAST_NAME] ? '.' + values[InputNames.LAST_NAME] : ''}`
 
-    const { isError, isFetching } = useGetAvailableLogin(loginString, setLoginValue, 500, isCreate)
+    const { isError: availableLoginError, isFetching } = useGetAvailableLogin(loginString, setLoginValue, 500, isCreate)
 
     const handleBackNavigate = () => {
         if (isCreate) {
@@ -88,30 +90,36 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
 
     return (
         <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
-                {(updateOrCreate.isError || updateOrCreate.isSuccess) && (
-                    <MutationFeedback error={t('managementList.mutationError')} success={updateOrCreate.isSuccess} />
-                )}
-                <UserDetailForm
-                    isCreate={isCreate}
-                    userData={detailData?.userData}
-                    handleBackNavigate={handleBackNavigate}
-                    handleResetForm={handleResetForm}
-                    isError={isError}
-                    isFetching={isFetching}
-                    loginValue={loginValue}
-                />
-                <UserRolesForm
-                    isCreate={isCreate}
-                    shouldReset={shouldReset}
-                    detailData={detailData}
-                    managementData={managementData}
-                    editedUserOrgAndRoles={editedUserOrgAndRoles}
-                    setEditedUserOrgAndRoles={setEditedUserOrgAndRoles}
-                    handleBackNavigate={handleBackNavigate}
-                />
-                <UserManagementFormButtons handleBackNavigate={handleBackNavigate} handleResetForm={handleResetForm} isError={isError} />
-            </form>
+            <QueryFeedback loading={isLoading} error={isError} withChildren>
+                <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
+                    {(updateOrCreate.isError || updateOrCreate.isSuccess) && (
+                        <MutationFeedback error={t('managementList.mutationError')} success={updateOrCreate.isSuccess} />
+                    )}
+                    <UserDetailForm
+                        isCreate={isCreate}
+                        userData={detailData?.userData}
+                        handleBackNavigate={handleBackNavigate}
+                        handleResetForm={handleResetForm}
+                        isError={availableLoginError}
+                        isFetching={isFetching}
+                        loginValue={loginValue}
+                    />
+                    <UserRolesForm
+                        isCreate={isCreate}
+                        shouldReset={shouldReset}
+                        detailData={detailData}
+                        managementData={managementData}
+                        editedUserOrgAndRoles={editedUserOrgAndRoles}
+                        setEditedUserOrgAndRoles={setEditedUserOrgAndRoles}
+                        handleBackNavigate={handleBackNavigate}
+                    />
+                    <UserManagementFormButtons
+                        handleBackNavigate={handleBackNavigate}
+                        handleResetForm={handleResetForm}
+                        isError={availableLoginError}
+                    />
+                </form>
+            </QueryFeedback>
         </FormProvider>
     )
 }

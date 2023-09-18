@@ -48,24 +48,44 @@ export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
                 path: AdminRouteNames.EKO,
             },
             {
-                title: t('navMenu.userManagement'),
+                title: t('navMenu.userManagement.userManagement'),
                 path: AdminRouteNames.USER_MANAGEMENT,
+                subItems: [
+                    {
+                        title: t('navMenu.userManagement.requestList'),
+                        path: AdminRouteNames.REQUEST_LIST,
+                    },
+                    {
+                        title: t('navMenu.userManagement.gdprRequestList'),
+                        path: AdminRouteNames.GDPR_REQUEST_LIST,
+                    },
+                    {
+                        title: t('navMenu.userManagement.registrationRequestList'),
+                        path: AdminRouteNames.REGISTRATION_REQUEST_LIST,
+                    },
+                ],
             },
             {
-                title: t('navMenu.egov.entity'),
-                path: AdminRouteNames.EGOV_ENTITY,
+                title: t('navMenu.egov.egov'),
+                path: AdminRouteNames.EGOV,
+                subItems: [
+                    {
+                        title: t('navMenu.egov.entity'),
+                        path: AdminRouteNames.EGOV_ENTITY,
+                    },
+                    {
+                        title: t('navMenu.egov.profiles'),
+                        path: AdminRouteNames.EGOV_PROFILE,
+                    },
+                    {
+                        title: t('navMenu.egov.relations'),
+                        path: AdminRouteNames.EGOV_RELATION,
+                    },
+                ],
             },
             {
-                title: t('navMenu.egov.roleManagement'),
+                title: t('navMenu.roleManagement'),
                 path: AdminRouteNames.ROLES,
-            },
-            {
-                title: t('navMenu.egov.profiles'),
-                path: AdminRouteNames.EGOV_PROFILE,
-            },
-            {
-                title: t('navMenu.egov.relations'),
-                path: AdminRouteNames.EGOV_RELATION,
             },
             {
                 title: t('navMenu.tooltips'),

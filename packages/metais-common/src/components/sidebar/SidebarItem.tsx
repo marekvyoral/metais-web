@@ -31,7 +31,7 @@ export const SidebarItem = ({ item, isSidebarExpanded, onToggle, isExpanded }: S
                         className={classNames(
                             styles.sidebarlink,
                             styles.sectionHeaderButton,
-                            ((item.subItems?.length && isExpanded) || location.pathname === item.path) && styles.expanded,
+                            ((item.subItems?.length && isExpanded) || location.pathname.includes(item.path)) && styles.expanded,
                         )}
                         aria-expanded={isExpanded}
                         to={item.path}

@@ -1,0 +1,28 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.textRow {
+    margin-bottom: govuk-spacing(0) !important;
+    @include mq($until: tablet) {
+        margin-top: govuk-spacing(2) !important;
+    }
+}
+
+.groupRow {
+    @include mq($until: tablet) {
+        margin-bottom: govuk-spacing(0);
+    }
+}
+
+.infoText {
+    font-size: 16px;
+}
+
+.diff {
+    color: govuk-colour('red') !important;
+}
+
+.attributeGridRowBox {
+    display: flex;
+    gap: govuk-spacing(4);
+    flex-direction: column;
+}

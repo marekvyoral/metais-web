@@ -118,6 +118,9 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
             accessorFn: (row) => row?.name,
             enableSorting: true,
             id: 'name',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => (
                 <Link to={'./' + ctx?.row?.original?.technicalName} state={{ from: location }}>
                     {ctx?.getValue?.() as string}
@@ -129,6 +132,9 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
             accessorFn: (row) => row?.technicalName,
             enableSorting: true,
             id: 'technicalName',
+            meta: {
+                getCellContext: (ctx) => ctx?.row?.original?.technicalName,
+            },
             cell: (ctx) => <span>{ctx?.row?.original?.technicalName}</span>,
         },
         {
@@ -219,7 +225,7 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
                     entityName={entityName ?? ''}
                     createButton={
                         <CreateEntityButton
-                            label={t('tooltips.addNewProfile')}
+                            label={t(`egov.addNew.${entityName}`)}
                             onClick={() => navigate(`/egov/${entityName}/create`, { state: { from: location } })}
                         />
                     }

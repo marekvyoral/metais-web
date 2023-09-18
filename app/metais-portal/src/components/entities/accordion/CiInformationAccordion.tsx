@@ -1,6 +1,6 @@
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 import { ATTRIBUTE_NAME, CiType, ConfigurationItemUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
-import { pairEnumsToEnumValues } from '@isdd/metais-common/index'
+import { QueryFeedback, pairEnumsToEnumValues } from '@isdd/metais-common/index'
 import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -15,9 +15,15 @@ interface CiInformationData {
         unitsData?: EnumType | undefined
         gestorData: RoleParticipantUI[] | undefined
     }
+    isError: boolean
+    isLoading: boolean
 }
 // Plánované ročné prevádzkové náklady projektu v EUR
-export const CiInformationAccordion: React.FC<CiInformationData> = ({ data: { ciItemData, ciTypeData, constraintsData, unitsData, gestorData } }) => {
+export const CiInformationAccordion: React.FC<CiInformationData> = ({
+    data: { ciItemData, ciTypeData, constraintsData, unitsData, gestorData },
+    isLoading,
+    isError,
+}) => {
     const { t } = useTranslation()
     const tabsFromApi =
         ciTypeData?.attributeProfiles?.map((attributesProfile) => {
@@ -49,7 +55,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({ data: { ci
         }) ?? []
 
     return (
-        <>
+        <QueryFeedback loading={isLoading} error={isError} withChildren>
             <AccordionContainer
                 sections={[
                     {
@@ -79,7 +85,6 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({ data: { ci
                     ...tabsFromApi,
                 ]}
             />
-            {}
-        </>
+        </QueryFeedback>
     )
 }

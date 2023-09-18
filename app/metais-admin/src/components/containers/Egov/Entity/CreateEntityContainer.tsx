@@ -1,5 +1,4 @@
 import { SortType } from '@isdd/idsk-ui-kit/types'
-import { QueryFeedback } from '@isdd/metais-common'
 import { CiType, Role, useStoreAdminEntity } from '@isdd/metais-common/api'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import React from 'react'
@@ -13,6 +12,10 @@ export interface ICreateEntityView {
     }
     mutate: (formData: CiType) => Promise<void>
     hiddenInputs?: Partial<HiddenInputs>
+    isLoading: boolean
+    isError: boolean
+    isEdit?: boolean
+    type?: 'entity' | 'profile' | 'relation' | 'roles'
 }
 
 interface ICreateEntity {
@@ -36,15 +39,15 @@ const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity)
     }
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View
-                data={{
-                    roles: data ?? [],
-                }}
-                mutate={storeEntity}
-                hiddenInputs={{ SOURCES: true, TARGETS: true, ENG_DESCRIPTION: true }}
-            />
-        </QueryFeedback>
+        <View
+            data={{
+                roles: data ?? [],
+            }}
+            mutate={storeEntity}
+            hiddenInputs={{ SOURCES: true, TARGETS: true, ENG_DESCRIPTION: true }}
+            isLoading={isLoading}
+            isError={isError}
+        />
     )
 }
 

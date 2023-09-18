@@ -8,7 +8,6 @@ import {
     useStorePo,
     useStorePoWithHierarchyRel,
 } from '@isdd/metais-common/api'
-import { QueryFeedback } from '@isdd/metais-common'
 
 export interface ICreateOrganizationView {
     data: {
@@ -20,6 +19,8 @@ export interface ICreateOrganizationView {
     }
     storePO: (formData: PoWithHierarchyUi, poId: string, relId: string) => Promise<void>
     updatePO: (poId: string, formData: ConfigurationItemUi) => Promise<void>
+    isError: boolean
+    isLoading: boolean
 }
 
 interface ICreateOrganization {
@@ -58,17 +59,17 @@ export const CreateOrganizationContainer: React.FC<ICreateOrganization> = ({ Vie
     const isError = personTypesError || personCategoriesError || sourcesError || replicationsError
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View
-                data={{
-                    personCategories,
-                    personTypes,
-                    sources,
-                    replications,
-                }}
-                storePO={storePO}
-                updatePO={updatePO}
-            />
-        </QueryFeedback>
+        <View
+            data={{
+                personCategories,
+                personTypes,
+                sources,
+                replications,
+            }}
+            storePO={storePO}
+            updatePO={updatePO}
+            isLoading={isLoading}
+            isError={isError}
+        />
     )
 }

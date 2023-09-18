@@ -21,6 +21,9 @@ const NotificationsPage = () => {
                     mutateAllRead={props.mutateAllRead}
                     mutateDelete={props.mutateDelete}
                     handleFilterChange={props.handleFilterChange}
+                    isMutateError={props.isMutateError}
+                    isMutateLoading={props.isMutateLoading}
+                    isMutateSuccess={props.isMutateSuccess}
                 />
             )}
         />

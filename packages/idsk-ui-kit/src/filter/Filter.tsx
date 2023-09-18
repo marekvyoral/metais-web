@@ -1,7 +1,7 @@
 import { IFilterParams, useFilter } from '@isdd/metais-common/hooks/useFilter'
 import classNames from 'classnames'
 import React, { useState } from 'react'
-import { Control, FieldValues, UseFormClearErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
+import { Control, FieldValues, SubmitHandler, UseFormClearErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ObjectSchema } from 'yup'
 
@@ -23,11 +23,12 @@ export interface FormProps<T extends FieldValues & IFilterParams> {
 type FilterProps<T extends FieldValues & IFilterParams> = {
     heading?: React.ReactNode
     form: (props: FormProps<T>) => React.ReactNode
+    handleOnSubmit?: SubmitHandler<T & IFilterParams>
     defaultFilterValues: T
     schema?: ObjectSchema<T & IFilterParams>
 }
 
-export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, defaultFilterValues, schema }: FilterProps<T>) => {
+export const Filter = <T extends FieldValues & IFilterParams>({ form, handleOnSubmit, heading, defaultFilterValues, schema }: FilterProps<T>) => {
     const {
         watch,
         register,
@@ -38,13 +39,15 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, d
         shouldBeFilterOpen,
         resetFilters: reset,
         clearErrors,
+        handleSubmit,
     } = useFilter<T & IFilterParams>(defaultFilterValues, schema)
     const { t } = useTranslation()
     const [isOpen, setOpen] = useState(shouldBeFilterOpen)
     const [showScrollbar, setShowscrollbar] = useState(isOpen)
+
     if (!heading) {
         heading = (
-            <form onSubmit={onSubmit}>
+            <form onSubmit={handleOnSubmit ? handleSubmit(handleOnSubmit) : onSubmit}>
                 <SearchInput
                     id={'fullTextSearch'}
                     placeholder={t('filter.searchPlaceholder')}
@@ -93,7 +96,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, heading, d
                     <form
                         className={classNames(styles.animate, isOpen && styles.grow, showScrollbar && styles.form)}
                         action="#"
-                        onSubmit={(e) => onSubmit(e)}
+                        onSubmit={handleOnSubmit ? handleSubmit(handleOnSubmit) : onSubmit}
                     >
                         <div
                             className={classNames({

@@ -77,6 +77,9 @@ export const getTableColumns = (
             accessorFn: (row) => row?.ekoCode,
             enableSorting: true,
             id: 'ekoCode',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => (
                 <TextBody key={`textBody_${ctx?.row?.id}`} size="S" className={styles.marginvBottom0}>
                     <Link
@@ -93,6 +96,9 @@ export const getTableColumns = (
             accessorFn: (row) => row?.name,
             enableSorting: true,
             id: 'name',
+            meta: {
+                getCellContext: (ctx) => ctx?.row?.original?.name,
+            },
             cell: (ctx) => <span>{ctx?.row?.original?.name}</span>,
         },
         {
@@ -100,6 +106,9 @@ export const getTableColumns = (
             accessorFn: (row) => row?.ekoCodeState,
             enableSorting: true,
             id: 'ekoCodeState',
+            meta: {
+                getCellContext: (ctx) => t(`ekoValidity.${ctx.row?.original?.ekoCodeState}`),
+            },
             cell: (ctx) => <span>{t(`ekoValidity.${ctx.row?.original?.ekoCodeState}`)}</span>,
         },
     ]

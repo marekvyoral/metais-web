@@ -1,18 +1,30 @@
+import { useFind2111 } from '@isdd/metais-common/api/generated/iam-swagger'
 import classNames from 'classnames'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Sidebar } from '@isdd/metais-common/src/components/sidebar/Sidebar'
 import styles from '@isdd/metais-common/src/components/GridView.module.scss'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 
-import { getPortalNavitagionItems } from './navbar/navigationItems'
+import { getPortalNavigationItems } from './navbar/navigationItems'
 
 export const MainContentWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { t } = useTranslation()
+    const {
+        state: { user },
+    } = useAuth()
 
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true)
+
+    const { data: ksisvsGroup } = useFind2111({ shortName: KSIVS_SHORT_NAME })
     return (
         <div className={classNames(styles.container)} id="main-content">
-            <Sidebar isSidebarExpanded={isSidebarExpanded} setIsSidebarExpanded={setIsSidebarExpanded} sections={getPortalNavitagionItems(t)} />
+            <Sidebar
+                isSidebarExpanded={isSidebarExpanded}
+                setIsSidebarExpanded={setIsSidebarExpanded}
+                sections={getPortalNavigationItems(t, !!user, Array.isArray(ksisvsGroup) ? ksisvsGroup[0].uuid : ksisvsGroup?.uuid)}
+            />
 
             <main
                 className={classNames(

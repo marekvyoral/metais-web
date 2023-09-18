@@ -2,7 +2,6 @@ import { ConfigurationItemUiAttributes, useInvalidateConfigurationItem, useReadC
 import { useFilterForCiList, useGetColumnData, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers/filter'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { QueryFeedback } from '@isdd/metais-common/index'
 import { IListView } from '@isdd/metais-common/types/list'
 import React from 'react'
 import { FieldValues } from 'react-hook-form'
@@ -71,19 +70,17 @@ export const OraganizationsListContainer = <T extends FieldValues & IFilterParam
     const isError = [isReadCiListError, isColumnsError].some((item) => item)
 
     return (
-        <QueryFeedback error={isError} loading={isLoading}>
-            <ListComponent
-                data={{ columnListData, tableData }}
-                pagination={pagination}
-                handleFilterChange={handleFilterChange}
-                resetUserSelectedColumns={resetColumns}
-                storeUserSelectedColumns={saveColumnSelection}
-                sort={filterParams?.sort ?? []}
-                refetch={refetch}
-                isLoading={isLoading}
-                isError={isError}
-                setInvalid={InvalidateConfigurationItem}
-            />
-        </QueryFeedback>
+        <ListComponent
+            data={{ columnListData, tableData }}
+            pagination={pagination}
+            handleFilterChange={handleFilterChange}
+            resetUserSelectedColumns={resetColumns}
+            storeUserSelectedColumns={saveColumnSelection}
+            sort={filterParams?.sort ?? []}
+            refetch={refetch}
+            isLoading={isLoading}
+            isError={isError}
+            setInvalid={InvalidateConfigurationItem}
+        />
     )
 }

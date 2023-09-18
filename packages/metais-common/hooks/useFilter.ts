@@ -191,7 +191,7 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
                 }
             })
 
-        memoFilter.sort = parseSortQuery(urlParams)
+        memoFilter.sort = parseSortQuery(urlParams) ?? defaults.sort
         memoFilter.attributeFilters = parseCustomAttributes(urlParams)
         return memoFilter
     }, [uiFilterState, defaults, urlParams, location.search])
@@ -275,6 +275,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
             setSearchParams({})
             dispatch({ type: FilterActions.RESET_FILTER, path: location.pathname })
         },
+        handleSubmit,
         onSubmit,
     }
 }

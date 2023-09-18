@@ -1,0 +1,17 @@
+.arrowBtnDesc.arrowBtn::after {
+    display: none;
+}
+
+.arrowBtnDesc.arrowBtn::before {
+    // top: calc(50% + 2px); original
+    top: calc(25% + 2px) !important;
+}
+
+.arrowBtnAsc.arrowBtn::before {
+    display: none;
+}
+
+.arrowBtnAsc.arrowBtn::after {
+    // top: calc(50% - 8px); original
+    top: calc(75% - 8px) !important;
+}

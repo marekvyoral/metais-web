@@ -98,7 +98,6 @@
         "lists": {
             "processorsOfITDevelopmentConcepts": "Spracovatelia koncepcií rozvoja IT",
             "subordinates": "Podriadené osoby",
-            "ISoperators": "Prevádzkovatelia IS",
             "goals": "Ciele, princípy a KRIT",
             "programs": "Programy",
             "projects": "Projekty",
@@ -118,7 +117,8 @@
             "votes": "Zoznam hlasov",
             "meetings": "Zoznam zasadnutí",
             "registers": "Referenčné registre",
-            "counters": "Číselníky",
+            "codelists": "Číselníky",
+            "publicCodelists": "Publikované číselníky",
             "centralModel": "Centrálny dátový model",
             "licenses": "Licencie",
             "prud": "Register dátových oprávnení a povinností",
@@ -367,9 +367,15 @@
             "target": "Cieľ (Typ)",
             "targetItemName": "Názov cieľovej položky",
             "relationshipType": "Typ vzťahu",
+            "ciType": "Typ položky",
             "evidenceStatus": "Stav evidencie",
             "source": "Zdroj (Typ)",
             "sourceItemName": "Názov zdrojovej položky"
+        },
+        "select": {
+            "ciType": "Vyberte typ položky",
+            "relationshipType": "Vyberte typ vzťahu",
+            "evidenceStatus": "Vyberte stav"
         }
     },
     "historyTab": {
@@ -388,6 +394,10 @@
             "actions": "Typ akcie",
             "actionTime": "Dátum zmeny",
             "actionBy": "Vykonal"
+        },
+        "compareButtonLabel": "Porovnať vybrane záznamy",
+        "compare": {
+            "modified": "{{date}}"
         }
     },
     "metaAttributes": {
@@ -400,6 +410,7 @@
         }
     },
     "reports": {
+        "heading": "Reporty a zostavy",
         "table": {
             "name": "Názov",
             "category": "Kategória",
@@ -467,7 +478,8 @@
     "state": "Stav evidencie",
     "group": "Skupina",
     "loading": {
-        "loadingSubPage": "Načítavam podstránku"
+        "loadingSubPage": "Načítavam podstránku",
+        "neighboursCardList": "Načítavam vzťahy na súvisiace položky"
     },
     "actionOverTable": {
         "import": "Import",
@@ -549,7 +561,8 @@
         "created": "Vytvorene:"
     },
     "feedback": {
-        "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím skúste znova."
+        "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím skúste znova.",
+        "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní údajov sa vyskytla chyba. Skúste stránku znova načítať a ak sa chyba vyskytuje opakovane, kontaktujte administrátora."
     },
     "accordion": {
         "openAll": "Otvoriť všetko",
@@ -560,11 +573,62 @@
     "currency": "{{val, currency}}",
     "selectPublicAuthority": {
         "error": "Chyba pri načítavaní údajov pre orgány verejnej moci.",
-        "loading": "Načítavajú sa údaje pre orgány verejnej moci."
+        "loading": "Načítavajú sa údaje pre orgány verejnej moci.",
+        "missingRightsError": "Chýbajú vám práva na vytváranie {{item}} pod touto organizáciou",
+        "relations": "vzťahov",
+        "entity": "entít"
     },
     "selectRole": {
         "error": "Chyba pri načítavaní údajov pre role.",
-        "loading": "Načítavajú sa údaje pre role."
+        "loading": "Načítavajú sa údaje pre role.",
+        "required": "Rola je povinná"
+    },
+    "groups": {
+        "member": "Člen",
+        "organization": "Organizácia",
+        "groupList": "Pracovné skupiny komisie",
+        "groupMembersHistory": "História členstva v pracovnej skupine",
+        "addNewGroup": "Pridať pracovnú skupinu",
+        "groupName": "Názov skupiny",
+        "shortGroupName": "Skratka skupiny",
+        "show": "Zobraziť",
+        "userName": "Meno",
+        "role": "Rola",
+        "master": "Predseda",
+        "selectDate": "Vyberte dátum",
+        "select": "Vyberte možnosť",
+        "addMember": "Pridať člena",
+        "selectMember": "Vyberte člena",
+        "selectOrganization": "Vyberte organizaciu",
+        "selectRole": "Vyberte rolu",
+        "professionals": "Odborná verejnosť",
+        "addToOngoingSession": "Pridať do prebiehajúcich zasadnutí",
+        "addToOngoingPolls": "Pridať do prebiehajúcich hlasovaní",
+        "seeEmailAddresses": "Vidí e-mailové adresy",
+        "editItem": "Upraviť položku",
+        "description": "Popis",
+        "shortName": "Skratka názvu",
+        "removeGroupMember": "Odstrániť člena skupiny",
+        "sureRemoveMember": "Naozaj chcete odstrániť člena skupiny?",
+        "export": "Export",
+        "sendEmail": "Poslať email",
+        "display": "Zobraziť",
+        "showRecords": "záznamov",
+        "name": "Meno",
+        "action": "Akcia",
+        "email": "Email",
+        "listOfMembers": "Zoznam členov",
+        "memberSuccessfullyAdded": "Člen úspešne pridaný.",
+        "mandatory": "povinné",
+        "editGroup": "Zmena skupiny",
+        "addingMember": "Pridávam nového člena",
+        "removingMember": "Odstraňujem člena",
+        "errors": {
+            "groupNameRequired": "Názov skupiny je povinný",
+            "groupShortNameRequired": "Skratka skupiny je povinná",
+            "chairmanRequired": "Predseda skupiny je povinný",
+            "organizationRequired": "Organizácia je povinná"
+        }
     },
     "tooltip": {
         "rights": {
@@ -621,29 +685,56 @@
         "noName": "Bez mena",
         "ciCreate": "Vytvorenie novej entity",
         "newRelation": "Pridanie nového vzťahu k {{itemName}}",
-        "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}"
+        "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}",
+        "compareHistory": "Porovnanie zmien"
     },
-    "codeList": {
+    "codeListList": {
         "title": "Číselníky",
-        "publicCodelistSubtitle": "Zoznam publikovaných číselníkov",
+        "codeListSubtitle": "Zoznam číselníkov",
+        "publicCodeListSubtitle": "Zoznam publikovaných číselníkov",
+        "lockedModal": {
+            "text": "Momentáne nie je možné meniť vybraný číselník, pretože je uzamknutý používateľom ({{lockedBy}}).",
+            "button": {
+                "lastSavedRevision": "Zobraziť poslednú uloženú verziu",
+                "currentRevision": "Zobraziť aktuálne publikovnú verziu"
+            }
+        },
         "filter": {
             "title": "Filter",
-            "mainGestor": "Main authority",
-            "toDate": "Valid as of",
-            "onlyBase": "Show only base counters"
+            "mainGestor": "Hlavný gestor",
+            "toDate": "Platné ku dňu",
+            "onlyBase": {
+                "label": "Základný číselník",
+                "all": "Všetky",
+                "true": "Áno",
+                "false": "Nie"
+            },
+            "state": "Stav číselníka",
+            "name": "Názov číselníka",
+            "code": "Kód"
+        },
+        "state": {
+            "UPDATING": "Upravovaný",
+            "READY_TO_PUBLISH": "Pripravený na publikovanie",
+            "ISVS_PROCESSING": "Odoslaný na schválenie na KS ISVS",
+            "PUBLISHED": "Publikovaný",
+            "KS_ISVS_REJECTED": "Zamietnuté v Komisii pre štandardizáciu ISVS",
+            "KS_ISVS_ACCEPTED": "Akceptované v Komisii pre štandardizáciu ISVS"
         },
         "breadcrumbs": {
             "home": "Domov",
             "dataObjects": "Dátové objekty",
             "codeLists": "Číselníky",
-            "publicCodeLists": "Zoznam publikovaných číselníkov"
+            "codeListsList": "Zoznam číselníkov",
+            "publicCodeListsList": "Zoznam publikovaných číselníkov"
         },
         "table": {
             "code": "Kód",
             "name": "Názov číselníka",
             "mainGestor": "Gestor číselníka",
             "effectiveFrom": "Začiatok účinnosti",
-            "isBase": "Základný číselník"
+            "isBase": "Základný číselník",
+            "state": "Stav"
         },
         "error": {
             "selectFilterMainGestor": ""
@@ -670,6 +761,28 @@
         "relation": "Vzťah",
         "email": "metais@mirri.gov.sk",
         "errorTitle": "Nastala chyba",
-        "errorMessage": "Ospravedlňujeme sa, ale pri vytváraní nového vzťahu nastala chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na "
+        "errorMessage": "Ospravedlňujeme sa, ale pri vytváraní nového vzťahu nastala chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na ",
+        "selectRelTypeError": "Na vytvorenie tohto typu vzťahu Vám chýbajú potrebné práva"
+    },
+    "todo": {
+        "header": "Vo výstavbe",
+        "homeButton": "Domovská stránka"
+    },
+    "votesList": {
+        "title": "Zoznam Hlasovaní",
+        "votesListSubtitle": "nejake blabla kecy",
+        "filter": {
+            "title": "Filter",
+            "votesTypeToShow": "Zobraziť",
+            "voteState": "Stav hlasovania",
+            "fromDate": "Prebiehajúce v období od",
+            "toDate": "Prebiehajúce v období do"
+        },
+        "type": {
+            "onlyMyVotes": "Len moje hlasovania",
+            "allVotes": "Všetky hlasovania",
+            "planned": "Plánované",
+            "ended": "Ukončené" 
+        }
     }
 }

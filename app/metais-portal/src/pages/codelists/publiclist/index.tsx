@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-import List from './list'
+import List from './publiclist'
 
 export const INDEX_ROUTE = List
 

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Input } from '@isdd/idsk-ui-kit'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useGetUuidHook } from '@isdd/metais-common/api'
 
@@ -18,6 +18,7 @@ export const FindView = ({ setIcoToSearch, data }: iFindView) => {
         mode: 'onChange',
     })
     const navigate = useNavigate()
+    const location = useLocation()
     const [showCreateButton, setShowCreateButton] = useState<boolean>(false)
     const { handleSubmit, register, formState, watch } = formMethods
     const getUUID = useGetUuidHook()
@@ -31,13 +32,13 @@ export const FindView = ({ setIcoToSearch, data }: iFindView) => {
 
     const handleOnCancelClick = useCallback(() => {
         navigate('/organizations', { state: { from: location } })
-    }, [navigate])
+    }, [location, navigate])
 
     const handleOnCreateClick = useCallback(async () => {
         const ico = watch('ico')
         const generatedUUID = await getUUID()
         navigate(`/organizations/${generatedUUID}/${ico}/create`, { state: { from: location } })
-    }, [navigate, watch, getUUID])
+    }, [watch, getUUID, navigate, location])
 
     useEffect(() => {
         if (data?.foundCiType?.configurationItemSet?.length == 0) setShowCreateButton(true)
