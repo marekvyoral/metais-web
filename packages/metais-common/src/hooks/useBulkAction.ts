@@ -27,12 +27,23 @@ export const useBulkAction = () => {
 
     const checkIsOwnerByGid = useIsOwnerByGidHook()
 
-    const handleInvalidate = async (items: ConfigurationItemUi[], onSuccess: (value: boolean) => void, onError: () => void) => {
+    const handleInvalidate = async (
+        items: ConfigurationItemUi[],
+        onSuccess: (value: boolean) => void,
+        onError: () => void,
+        isDocTypeValid?: boolean,
+    ) => {
         setBulkLoading(true)
         const isValid = items.every((item) => !ciInvalidFilter(item))
 
         if (!isValid) {
             setErrorMessage(t('tooltip.rights.invalidSelectedList'))
+            return onError()
+        }
+
+        if (isDocTypeValid !== undefined && !isDocTypeValid) {
+            setErrorMessage(t('tooltip.rights.missingPermission'))
+            setBulkLoading(false)
             return onError()
         }
 
@@ -50,6 +61,67 @@ export const useBulkAction = () => {
             if (hasRights) {
                 setErrorMessage(undefined)
                 return onSuccess(true)
+            } else {
+                setErrorMessage(t('tooltip.rights.missingPermission'))
+                return onError()
+            }
+        } catch (e) {
+            setErrorMessage(t('tooltip.rights.notFondPO'))
+            return onError()
+        } finally {
+            setBulkLoading(false)
+        }
+    }
+
+    const handleDeleteFile = async (items: ConfigurationItemUi[], onSuccess: () => void, onError: () => void, isDocTypeValid?: boolean) => {
+        setBulkLoading(true)
+
+        if (isDocTypeValid !== undefined && !isDocTypeValid) {
+            setErrorMessage(t('tooltip.rights.missingPermission'))
+            setBulkLoading(false)
+            return onError()
+        }
+        try {
+            const gids = uniq(items.filter((item) => !!item.attributes).map((item) => item.metaAttributes?.owner || ''))
+            const response = await checkIsOwnerByGid({
+                login: user?.login,
+                gids,
+            })
+            const hasRights = response.isOwner?.every((item) => {
+                return item.owner
+            })
+
+            if (hasRights) {
+                setErrorMessage(undefined)
+                return onSuccess()
+            } else {
+                setErrorMessage(t('tooltip.rights.missingPermission'))
+                return onError()
+            }
+        } catch (e) {
+            setErrorMessage(t('tooltip.rights.notFondPO'))
+            return onError()
+        } finally {
+            setBulkLoading(false)
+        }
+    }
+
+    const handleUpdateFile = async (items: ConfigurationItemUi[], onSuccess: () => void, onError: () => void) => {
+        setBulkLoading(true)
+        try {
+            const gids = uniq(items.filter((item) => !!item.attributes).map((item) => item.metaAttributes?.owner || ''))
+            const response = await checkIsOwnerByGid({
+                login: user?.login,
+                gids,
+            })
+
+            const hasRights = response.isOwner?.every((item) => {
+                return item.owner
+            })
+
+            if (hasRights) {
+                setErrorMessage(undefined)
+                return onSuccess()
             } else {
                 setErrorMessage(t('tooltip.rights.missingPermission'))
                 return onError()
@@ -80,7 +152,7 @@ export const useBulkAction = () => {
         } else return setErrorMessage(t('tooltip.rights.missingPermission'))
     }
 
-    const handleChangeOwner = async (items: ConfigurationItemUi[], onSuccess: (value: boolean) => void, onError: () => void) => {
+    const handleChangeOwner = async (items: ConfigurationItemUi[], onSuccess: () => void, onError: () => void) => {
         setBulkLoading(true)
         const isValid = !items.every((item) => ciInvalidFilter(item))
 
@@ -98,12 +170,12 @@ export const useBulkAction = () => {
         setBulkLoading(false)
         if (hasRights) {
             setErrorMessage(undefined)
-            return onSuccess(true)
+            return onSuccess()
         } else {
             setErrorMessage(t('tooltip.rights.missingPermission'))
             return onError()
         }
     }
 
-    return { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner }
+    return { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner, handleDeleteFile, handleUpdateFile }
 }
