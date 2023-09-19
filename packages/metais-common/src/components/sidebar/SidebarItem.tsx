@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import classNames from 'classnames'
 import { ArrowDownIcon } from '@isdd/idsk-ui-kit'
+import classNames from 'classnames'
+import React, { useState } from 'react'
+import { Link, useMatch } from 'react-router-dom'
 
 import styles from '@/components/GridView.module.scss'
 
@@ -20,8 +20,8 @@ export interface SidebarItemProps {
 }
 
 export const SidebarItem = ({ item, isSidebarExpanded, onToggle, isExpanded }: SidebarItemProps) => {
-    const location = useLocation()
     const [expandedSubItemIndexes, setExpandedSubItemIndexes] = useState<boolean[]>(() => Array(item.subItems?.length).fill(false))
+    const urlMatched = useMatch(item.path)
 
     return (
         <>
@@ -31,7 +31,7 @@ export const SidebarItem = ({ item, isSidebarExpanded, onToggle, isExpanded }: S
                         className={classNames(
                             styles.sidebarlink,
                             styles.sectionHeaderButton,
-                            ((item.subItems?.length && isExpanded) || location.pathname.includes(item.path)) && styles.expanded,
+                            ((item.subItems?.length && isExpanded) || urlMatched) && styles.expanded,
                         )}
                         aria-expanded={isExpanded}
                         to={item.path}
