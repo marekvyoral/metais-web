@@ -20,10 +20,10 @@ export enum RouteNames {
 
 export enum AdminRouteNames {
     HOME = '/',
-    DASHBOARD = 'dashboard',
-    ASSIGNMENT = 'assignment',
-    NOTIFICATIONS = 'notifications',
-    SETTINGS = 'settings',
+    DASHBOARD = '/dashboard',
+    ASSIGNMENT = '/assignment',
+    NOTIFICATIONS = '/notifications',
+    SETTINGS = '/settings',
     EKO = '/eko',
     USER_MANAGEMENT = '/managementList',
     REQUEST_LIST = '/managementList/requestList',
@@ -38,8 +38,8 @@ export enum AdminRouteNames {
     ROLE_EDIT = '/egov/roles/edit',
     ROLE_NEW = '/egov/roles/create',
     ROLES = '/egov/roles',
-    ORGANIZATIONS = 'organizations/',
-    CODELISTS = 'codelists-management/',
+    ORGANIZATIONS = '/organizations/',
+    CODELISTS = '/codelists-management/',
 }
 
 export enum NavigationSubRoutes {
