@@ -227,7 +227,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                                 key={'changeOwner'}
                                                 className={styles.buttonLinkWithIcon}
                                                 onClick={() => {
-                                                    handleChangeOwner(checkedItemList, () => setShowChangeOwner(false), open)
+                                                    handleChangeOwner(checkedItemList, setShowChangeOwner, open)
                                                 }}
                                                 icon={ChangeIcon}
                                                 label={t('actionOverTable.changeOwner')}

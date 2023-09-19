@@ -17,7 +17,7 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({ onClick, label, classNam
     const { t } = useTranslation()
     return (
         <button
-            className={classNames(styles.buttonLink, className, !!disabled && styles.disabled)}
+            className={classNames(styles.buttonLink, className, !!disabled && styles.cursorPointer)}
             onClick={(e) => (onClick ? onClick(e) : null)}
             type={type}
             disabled={disabled}

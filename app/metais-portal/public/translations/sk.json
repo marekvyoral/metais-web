@@ -350,9 +350,7 @@
             "note": "Poznámka",
             "evidenceStatus": "Stav evidencie",
             "createdAt": "Vytvorené",
-            "createdBy": "Vytvoril",
-            "lastModifiedAt": "Posledná zmena",
-            "lastModifiedBy": "Poslednú zmenu vykonal"
+            "lastModifiedAt": "Posledná zmena"
         },
         "card": {
             "type": "Typ dokumentu",
@@ -486,14 +484,6 @@
         "neighboursCardList": "Načítavam vzťahy na súvisiace položky"
     },
     "actionOverTable": {
-        "options": {
-            "title": "Možnosti",
-            "download": "Stiahnuť",
-            "update": "Aktualizovať",
-            "invalidate": "Zneplatniť",
-            "delete": "Zmazať",
-            "history": "História"
-        },
         "import": "Import",
         "export": "Export",
         "addItem": "Pridať {{ciType}} položku",
@@ -501,7 +491,6 @@
         "view": "Zobraziť",
         "actions": "Hromadné úkony",
         "invalidateItems": "Zneplatnenie položiek",
-        "deleteItems": "Odstránenie položiek",
         "validateItems": "Splatnenie položiek",
         "changeOwner": "Zmena vlastníka",
         "metaColumnName": {
@@ -559,17 +548,6 @@
             "statistics": "Štatistika"
         }
     },
-    "fileHistory": {
-        "documentHistory": "História dokumentu",
-        "filename": "Názov súboru",
-        "version": "Verzia",
-        "mimeType": "Typ dokumentu",
-        "contentLength": "Veľkosť",
-        "validFrom": "Platnosť od",
-        "validTo": "Platnosť do",
-        "lastModifiedBy": "Vytvoril",
-        "actualVersion": "Aktuálna verzia"
-    },
     "notifications": {
         "all": "Všetky",
         "INFO": "INFO",
@@ -587,10 +565,7 @@
     },
     "feedback": {
         "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím skúste znova.",
-        "queryErrorTitle": "Nastala chyba",
-        "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní dát sa vyskytla technická chyba. Skúste stránku znova načítať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na adrese ",
-        "mutationErrorTitle": "Akcia zlyhala",
-        "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na "
+        "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní údajov sa vyskytla chyba. Skúste stránku znova načítať a ak sa chyba vyskytuje opakovane, kontaktujte administrátora."
     },
     "accordion": {
         "openAll": "Otvoriť všetko",
@@ -668,24 +643,6 @@
         }
     },
     "bulkActions": {
-        "updateFile": {
-            "title": "Aktualizácia dokumentu",
-            "warningText": "Vybrané dokumenty budú aktualizované. Vzťahy, ktoré obsahujú, nebudú zmenené.",
-            "listText": "Chystáte sa aktualizovať tieto vybrané záznamy ({{count}}):",
-            "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
-            "reason": "Poznámka / Dôvod",
-            "updateFile": "Aktualizácia dokumentu",
-            "success": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o aktualizácí dokumentov."
-        },
-        "deleteFile": {
-            "title": "Zmazanie dokumentov",
-            "warningText": "Vybrané dokumenty budú zmazané. Ich obnovenie nebude možné.",
-            "listText": "Chystáte sa zmazať tieto vybrané dokumenty ({{count}}):",
-            "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
-            "reason": "Poznámka / Dôvod zmazania",
-            "deleteFile": "Zmazanie",
-            "success": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o odstránení dokumentov."
-        },
         "invalidate": {
             "title": "Zneplatnenie položiek",
             "warningText": "Vybrané záznamy budú zneplatnené. Nebude ich možné editovať, ani nad nimi vykonávať ďalšie operácie.Ich zneplatnením sa zneplatnia aj všetky vzťahy k ostatným entitám (službám a pod.)",

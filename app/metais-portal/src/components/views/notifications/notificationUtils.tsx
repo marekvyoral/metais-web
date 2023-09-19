@@ -71,7 +71,6 @@ export const SelectableColumnsSpec = (
                 </div>
             )
         },
-        size: 45,
         id: CHECKBOX_CELL,
         cell: ({ row }) => (
             <div className="govuk-checkboxes govuk-checkboxes--small">
