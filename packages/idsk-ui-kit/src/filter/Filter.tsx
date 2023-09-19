@@ -26,9 +26,17 @@ type FilterProps<T extends FieldValues & IFilterParams> = {
     handleOnSubmit?: SubmitHandler<T & IFilterParams>
     defaultFilterValues: T
     schema?: ObjectSchema<T & IFilterParams>
+    onlySearch?: boolean
 }
 
-export const Filter = <T extends FieldValues & IFilterParams>({ form, handleOnSubmit, heading, defaultFilterValues, schema }: FilterProps<T>) => {
+export const Filter = <T extends FieldValues & IFilterParams>({
+    form,
+    handleOnSubmit,
+    heading,
+    defaultFilterValues,
+    schema,
+    onlySearch,
+}: FilterProps<T>) => {
     const {
         watch,
         register,
@@ -77,39 +85,45 @@ export const Filter = <T extends FieldValues & IFilterParams>({ form, handleOnSu
         <div data-module="idsk-table-filter" className={classNames('idsk-table-filter', styles.filter)}>
             <div className={classNames('idsk-table-filter__panel idsk-table-filter__inputs', { 'idsk-table-filter--expanded': isOpen })}>
                 <div className={styles.headingWrapper}>
-                    <div className={classNames(styles.heading, 'idsk-table-filter__title govuk-heading-m')}>{heading}</div>
-                    <div className={styles.expandButton}>
-                        <button
-                            onClick={handleOpenCloseForm}
-                            className="govuk-body govuk-link idsk-filter-menu__toggle"
-                            tabIndex={0}
-                            data-category-name=""
-                            aria-label={isOpen ? t('filter.collapse') : t('filter.expand')}
-                            type="button"
-                        >
-                            {isOpen ? t('filter.collapse') : t('filter.expand')}
-                        </button>
+                    <div className={classNames(styles.heading, 'idsk-table-filter__title govuk-heading-m', !!onlySearch && styles.width100)}>
+                        {heading}
                     </div>
-                </div>
-
-                <div aria-hidden={!isOpen}>
-                    <form
-                        className={classNames(styles.animate, isOpen && styles.grow, showScrollbar && styles.form)}
-                        action="#"
-                        onSubmit={handleOnSubmit ? handleSubmit(handleOnSubmit) : onSubmit}
-                    >
-                        <div
-                            className={classNames({
-                                [styles.formWrapper]: true,
-                            })}
-                        >
-                            {form({ register, control, filter, setValue, watch, clearErrors })}
-                            <div className={styles.actionRow}>
-                                <ButtonLink label={t('filter.reset')} onClick={reset} className={styles.clearButton} type="reset" />
-                                <Button label={t('filter.submit')} type="submit" />
-                            </div>
+                    {!onlySearch && (
+                        <div className={styles.expandButton}>
+                            <button
+                                onClick={handleOpenCloseForm}
+                                className="govuk-body govuk-link idsk-filter-menu__toggle"
+                                tabIndex={0}
+                                data-category-name=""
+                                aria-label={isOpen ? t('filter.collapse') : t('filter.expand')}
+                                type="button"
+                            >
+                                {isOpen ? t('filter.collapse') : t('filter.expand')}
+                            </button>
                         </div>
-                    </form>
+                    )}
+
+                    {!onlySearch && (
+                        <div aria-hidden={!isOpen}>
+                            <form
+                                className={classNames(styles.animate, isOpen && styles.grow, showScrollbar && styles.form)}
+                                action="#"
+                                onSubmit={handleOnSubmit ? handleSubmit(handleOnSubmit) : onSubmit}
+                            >
+                                <div
+                                    className={classNames({
+                                        [styles.formWrapper]: true,
+                                    })}
+                                >
+                                    {form({ register, control, filter, setValue, watch, clearErrors })}
+                                    <div className={styles.actionRow}>
+                                        <ButtonLink label={t('filter.reset')} onClick={reset} className={styles.clearButton} type="reset" />
+                                        <Button label={t('filter.submit')} type="submit" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
