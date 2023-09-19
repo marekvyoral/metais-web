@@ -350,9 +350,7 @@
             "note": "Note",
             "evidenceStatus": "Evidence status",
             "createdAt": "Created",
-            "createdBy": "Created by",
-            "lastModifiedAt": "Last change",
-            "lastModifiedBy": "Last change by"
+            "lastModifiedAt": "Last change"
         },
         "card": {
             "type": "Document type",
@@ -483,14 +481,6 @@
         "neighboursCardList": "Loading related item relationships"
     },
     "actionOverTable": {
-        "options": {
-            "title": "Options",
-            "download": "Download",
-            "update": "Update",
-            "invalidate": "Invalidate",
-            "delete": "Delete",
-            "history": "History"
-        },
         "import": "Import",
         "export": "Export",
         "addItem": "Add {{ciType}} item",
@@ -498,7 +488,6 @@
         "view": "View",
         "actions": "Bulk actions",
         "invalidateItems": "Invalidate items",
-        "deleteItems": "Delete items",
         "validateItems": "Validate actions",
         "changeOwner": "Change owner",
         "metaColumnName": {
@@ -555,17 +544,6 @@
             "statistics": "Statistics"
         }
     },
-    "fileHistory": {
-        "documentHistory": "Document history",
-        "filename": "File name",
-        "version": "Version",
-        "mimeType": "Document type",
-        "contentLength": "Size",
-        "validFrom": "Valid from",
-        "validTo": "Valid to",
-        "lastModifiedBy": "Create",
-        "actualVersion": "Actual version"
-    },
     "notifications": {
         "all": "All",
         "INFO": "INFO",
@@ -583,10 +561,7 @@
     },
     "feedback": {
         "failedFetch": "There was a problem with fetching data. Please try again.",
-        "queryErrorTitle": "Error occured",
-        "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator by e-mail at ",
-        "mutationErrorTitle": "Action failed",
-        "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at"
+        "queryErrorMessage": "We apologize, but an error occurred while fetching data. Try reloading the page and if the error occurs repeatedly, contact the administrator."
     },
     "accordion": {
         "openAll": "Open all",
@@ -664,24 +639,6 @@
         }
     },
     "bulkActions": {
-        "updateFile": {
-            "title": "Update document",
-            "warningText": "Selected records will be updated. Relations that they contain shall remain unmodified.",
-            "listText": "Selected records will be updated ({{count}}):",
-            "newWindowText": "Show the whole list of instances and their relationships (in new window)",
-            "reason": "Note / Reason",
-            "updateFile": "Update file",
-            "success": "Item was sent for processing, please wait for documents removal notification."
-        },
-        "deleteFile": {
-            "title": "Remove documents",
-            "warningText": "Selected documents will be removed. It would not be possible to edit them or carry out any operations with them.",
-            "listText": "Selected documents will be removed ({{count}}):",
-            "newWindowText": "Show the whole list of instances and their relations (in new window)",
-            "reason": "Note / Removal reason",
-            "deleteFile": "Delete file",
-            "success": "Item was sent for processing, please wait for documents removal notification."
-        },
         "invalidate": {
             "title": "Invalidate items",
             "warningText": "Selected records will be invalidated. It would not be possible to edit them or carry out any operations with them. Upon their invalidation will all relations to other entities be invalidated (services and etc.)",

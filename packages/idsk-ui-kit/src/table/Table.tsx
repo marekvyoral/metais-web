@@ -113,7 +113,6 @@ export const Table = <T,>({
         getExpandedRowModel: getExpandedRowModel(),
         onExpandedChange,
         getSubRows: getSubRows,
-        enableRowSelection: !!rowSelection,
         enableMultiSort: true,
         manualPagination: true,
         getRowCanExpand: getExpandedRow ? (row) => !!getExpandedRow(row) : undefined,

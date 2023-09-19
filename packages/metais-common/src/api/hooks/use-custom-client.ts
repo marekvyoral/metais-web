@@ -25,23 +25,23 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
     const location = useLocation()
     const { i18n } = useTranslation()
 
-    return async ({ url, method, params: searchParams, data, headers }) => {
+    return async ({ url, method, params: searchParams, data }) => {
         const allParams = {
             ...searchParams,
             lang: i18n.language,
         }
         const params = `?${new URLSearchParams(allParams)}`
-        const customHeaders: Record<string, string> = {
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
             'Accept-Language': i18n.language,
-            ...headers,
             ...data?.headers,
         }
         if (accessToken) {
-            customHeaders['Authorization'] = `Bearer ${accessToken}`
+            headers['Authorization'] = `Bearer ${accessToken}`
         }
         const response = await fetch(`${baseURL}${url}${params}`, {
             method,
-            headers: customHeaders,
+            headers,
             ...(data ? { body: JSON.stringify(data) } : {}),
         })
 

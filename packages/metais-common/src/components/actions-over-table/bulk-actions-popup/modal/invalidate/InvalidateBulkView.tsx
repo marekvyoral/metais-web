@@ -39,7 +39,7 @@ export const InvalidateBulkView: React.FC<IInvalidateBulkView> = ({ items, regis
 
             <div className={styles.buttonGroupEnd}>
                 <Button onClick={() => onClose()} label={t('button.cancel')} variant="secondary" />
-                <Button onClick={() => onSubmit()} label={t('bulkActions.invalidate.invalidate')} type="submit" />
+                <Button label={t('bulkActions.invalidate.invalidate')} type="submit" />
             </div>
         </form>
     )
