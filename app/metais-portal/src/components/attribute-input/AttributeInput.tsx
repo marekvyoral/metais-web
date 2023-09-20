@@ -16,13 +16,13 @@ import {
     UseFormTrigger,
 } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 
 import { ArrayAttributeInput } from './ArrayAttributeInput'
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
 import styles from './attributeInput.module.scss'
 import { getDefaultArrayValue, getDefaultValue } from './attributeInputHelpers'
 
-import { formatDateForDefaultValue } from '@/componentHelpers/attributeInput/formatDateForDefaultValue'
 import { HasResetState } from '@/components/create-entity/CreateCiEntityForm'
 
 enum ConstraintTypes {
