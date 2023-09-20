@@ -139,6 +139,7 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
                           id: e.name,
                           header: e.name,
                           accessorKey: e.technicalName,
+                          size: 200,
                           meta: {
                               getCellContext: (ctx) => ctx?.getValue?.(),
                           },

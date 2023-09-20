@@ -13,6 +13,8 @@ const DocumentsListPage: React.FC = () => {
             View={(props) => {
                 return (
                     <DocumentsTable
+                        namesData={props.namesData}
+                        refetch={props.refetch}
                         data={props?.data}
                         handleFilterChange={props.handleFilterChange}
                         isLoading={props.isLoading}
