@@ -397,7 +397,8 @@
             "actionTime": "Action time",
             "actionBy": "Action by"
         },
-        "compareButtonLabel": "Compare selected versions"
+        "compareButtonLabel": "Compare selected versions",
+        "hideCheckButtonLabel": "Show only changes"
     },
     "metaAttributes": {
         "state": {

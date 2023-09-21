@@ -1,22 +1,34 @@
 import React, { PropsWithChildren } from 'react'
 import classNames from 'classnames'
-import { TextBody } from '@isdd/idsk-ui-kit'
+import { GridCol, GridRow, TextBody } from '@isdd/idsk-ui-kit'
 
 import styles from './definitionList.module.scss'
 
-interface IDefintionListItemProps extends PropsWithChildren {
+interface IDefinitionListItemProps extends PropsWithChildren {
     label: string | React.ReactNode
-    value: string | React.ReactNode
+    value: string | React.ReactNode | undefined
+    secColValue?: string | React.ReactNode | undefined
     lang?: string | undefined
 }
 
-export const DefinitionListItem: React.FC<IDefintionListItemProps> = ({ label, value, lang }) => {
+export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({ label, value, secColValue, lang }) => {
     return (
-        <>
-            <dt className={classNames('govuk-label', styles.dt)}>{label}</dt>
-            <dd className={styles.dd}>
-                <TextBody lang={lang}>{value}</TextBody>
-            </dd>
-        </>
+        <GridRow className={styles.groupRow}>
+            <GridCol setWidth="one-third">
+                <dt className={classNames('govuk-label', styles.dt)}>{label}</dt>
+            </GridCol>
+            <GridCol setWidth={secColValue ? 'one-third' : 'two-thirds'}>
+                <dd className={styles.dd}>
+                    <TextBody lang={lang}>{value}</TextBody>
+                </dd>
+            </GridCol>
+            {secColValue && (
+                <GridCol setWidth={'one-third'}>
+                    <dd className={styles.dd}>
+                        <TextBody lang={lang}>{secColValue}</TextBody>
+                    </dd>
+                </GridCol>
+            )}
+        </GridRow>
     )
 }

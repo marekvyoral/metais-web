@@ -1,9 +1,10 @@
 import React from 'react'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
-import { GridRow } from '@isdd/idsk-ui-kit/grid/GridRow'
 import { InfoIconWithText } from '@isdd/idsk-ui-kit/typography/InfoIconWithText'
-import { GridCol } from '@isdd/idsk-ui-kit/grid/GridCol'
 import classNames from 'classnames'
+import { diff_match_patch } from 'diff-match-patch'
+import sanitizeHtml from 'sanitize-html'
+import { DefinitionListItem } from '@isdd/metais-common/components/definition-list/DefinitionListItem'
 
 import styles from './historyCompare.module.scss'
 
@@ -13,9 +14,27 @@ interface IHistoryCompareItemViewProps {
     valueFirst: string | Array<string>
     valueSec: string | Array<string>
     isSimple?: boolean
+    withoutCompare?: boolean
+    showOnlyChanges?: boolean
 }
 
-export const HistoryCompareItemView: React.FC<IHistoryCompareItemViewProps> = ({ label, tooltip, valueFirst, valueSec, isSimple }) => {
+export const HistoryCompareItemView: React.FC<IHistoryCompareItemViewProps> = ({
+    label,
+    tooltip,
+    valueFirst,
+    valueSec,
+    isSimple,
+    withoutCompare,
+    showOnlyChanges,
+}) => {
+    const getArrayValue = (value: string[]): string => {
+        if (Array.isArray(value)) {
+            return value.join('')
+        }
+
+        return value
+    }
+
     const isDiff = (): boolean => {
         if (Array.isArray(valueFirst) && Array.isArray(valueSec)) {
             if (valueFirst.length !== valueSec.length) {
@@ -35,10 +54,43 @@ export const HistoryCompareItemView: React.FC<IHistoryCompareItemViewProps> = ({
 
         return false
     }
-    return (
-        <GridRow className={styles.groupRow}>
-            <GridCol setWidth="one-third">
-                {tooltip ? (
+
+    const makeDiffHtml = (): string => {
+        const dmp = new diff_match_patch()
+        let resultFirst = valueFirst.toString()
+        let resultSec = valueSec.toString()
+
+        if (Array.isArray(valueFirst)) {
+            resultFirst = getArrayValue(valueFirst)
+        }
+
+        if (Array.isArray(valueSec)) {
+            resultSec = getArrayValue(valueSec)
+        }
+
+        const diff = dmp.diff_main(resultFirst, resultSec)
+        const html = dmp.diff_prettyHtml(diff)
+
+        return sanitizeHtml(
+            html
+                .replaceAll('style="background:#e6ffe6;"', `class='${styles.diffIns}'`)
+                .replaceAll('style="background:#ffe6e6;', `class='${styles.diffDel}'`),
+            {
+                allowedTags: ['ins', 'del'],
+                allowedAttributes: {
+                    ins: ['class'],
+                    del: ['class'],
+                },
+            },
+        )
+    }
+
+    return showOnlyChanges && !isDiff() ? (
+        <></>
+    ) : (
+        <DefinitionListItem
+            label={
+                tooltip ? (
                     <InfoIconWithText tooltip={tooltip} hideIcon={!tooltip}>
                         {label}
                     </InfoIconWithText>
@@ -47,20 +99,20 @@ export const HistoryCompareItemView: React.FC<IHistoryCompareItemViewProps> = ({
                         &nbsp;
                         {label}
                     </TextBody>
-                )}
-            </GridCol>
-            <GridCol setWidth={isSimple ? 'two-thirds' : 'one-third'}>
-                <TextBody size="S" className={classNames(styles.textRow, !isSimple && isDiff() && styles.diff)}>
-                    {valueFirst}
+                )
+            }
+            value={
+                <TextBody size="S" className={classNames(styles.textRow)}>
+                    {valueFirst} &nbsp;
                 </TextBody>
-            </GridCol>
-            {!isSimple && (
-                <GridCol setWidth="one-third">
-                    <TextBody size="S" className={classNames(styles.textRow, isDiff() && styles.diff)}>
-                        {valueSec}
+            }
+            secColValue={
+                !isSimple && (
+                    <TextBody size="S" className={classNames(styles.textRow)}>
+                        {withoutCompare ? valueSec : <div dangerouslySetInnerHTML={{ __html: makeDiffHtml() }} />}
                     </TextBody>
-                </GridCol>
-            )}
-        </GridRow>
+                )
+            }
+        />
     )
 }
