@@ -5,8 +5,8 @@ import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEn
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
+import { NeighboursApiType } from '@/components/views/relationships/RelationshipsAccordion'
 import { mapNeighboursSetSourceToPagination, mapNeighboursSetTargetToPagination } from '@/componentHelpers/pagination'
-import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
 
 interface ICiNeighboursListContainerView {
     data?: NeighbourSetUi

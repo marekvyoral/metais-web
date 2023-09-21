@@ -3,6 +3,7 @@ import { CiListFilterContainerUi, ConfigurationItemUi, useReadCiList1Hook } from
 import { Identity, useFind1Hook, useFindByUuid2 } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import { FilterParams } from '@/components/containers/standardization/groups/GroupDetailContainer'
 import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standartization/groups/defaultRoles'
@@ -15,6 +16,7 @@ interface FilterProps {
 
 const GroupMembersFilter: React.FC<FilterProps> = ({ defaultFilterValues, isKsisvs, filter }) => {
     const { t } = useTranslation()
+    const { currentPreferences } = useUserPreferences()
     const loadOrgs = useReadCiList1Hook()
     const loadMembers = useFind1Hook()
     const { refetch } = useFindByUuid2(filter.memberUuid ?? '')
@@ -47,6 +49,8 @@ const GroupMembersFilter: React.FC<FilterProps> = ({ defaultFilterValues, isKsis
     const loadOrgOptions = useCallback(
         async (searchQuery: string, additional: { page: number } | undefined): Promise<ILoadOptionsResponse<ConfigurationItemUi>> => {
             const page = !additional?.page ? 1 : (additional?.page || 0) + 1
+
+            const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
             const queryParams: CiListFilterContainerUi = {
                 sortBy: 'Gen_Profil_nazov',
                 sortType: 'ASC',
@@ -55,9 +59,7 @@ const GroupMembersFilter: React.FC<FilterProps> = ({ defaultFilterValues, isKsis
                 filter: {
                     fullTextSearch: searchQuery,
                     type: ['PO'],
-                    metaAttributes: {
-                        state: ['DRAFT'],
-                    },
+                    metaAttributes,
                 },
             }
             const hierarchyData = (await loadOrgs(queryParams)).configurationItemSet
@@ -69,7 +71,7 @@ const GroupMembersFilter: React.FC<FilterProps> = ({ defaultFilterValues, isKsis
                 },
             }
         },
-        [loadOrgs],
+        [currentPreferences.showInvalidatedItems, loadOrgs],
     )
 
     useEffect(() => {
@@ -80,6 +82,7 @@ const GroupMembersFilter: React.FC<FilterProps> = ({ defaultFilterValues, isKsis
 
     useEffect(() => {
         if (!selectedOrganization && filter.poUuid) {
+            const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
             loadOrgs({
                 sortBy: 'Gen_Profil_nazov',
                 sortType: 'ASC',
@@ -89,13 +92,11 @@ const GroupMembersFilter: React.FC<FilterProps> = ({ defaultFilterValues, isKsis
                     fullTextSearch: '',
                     type: ['PO'],
                     uuid: [filter.poUuid ?? ''],
-                    metaAttributes: {
-                        state: ['DRAFT'],
-                    },
+                    metaAttributes,
                 },
             }).then((res) => setSelectedOrganization(res.configurationItemSet?.at(0) ?? undefined))
         }
-    }, [filter.poUuid, loadOrgs, selectedOrganization])
+    }, [currentPreferences.showInvalidatedItems, filter.poUuid, loadOrgs, selectedOrganization])
     useEffect(() => {
         setSeed1(Math.random())
     }, [selectedIdentity])

@@ -4,9 +4,13 @@ import { IFilter } from '@isdd/idsk-ui-kit/src/types'
 
 import { BASE_PAGE_SIZE, ConfigurationItemSetUi, useReadCiList1Hook } from '@isdd/metais-common/api'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { useUserPreferences } from '@/contexts/userPreferences/userPreferencesContext'
 
 export const useCiListBulk = (typeList: (string | undefined)[], filterParams: FieldValues & IFilterParams & IFilter) => {
     const readCiList1 = useReadCiList1Hook()
+    const { currentPreferences } = useUserPreferences()
+
+    const metaAttributes = currentPreferences ? { state: ['DRAFT', 'APPROVED_BY_OWNER', 'INVALIDATED'] } : { state: ['DRAFT', 'APPROVED_BY_OWNER'] }
 
     const resultList: UseQueryResult<ConfigurationItemSetUi, unknown>[] = useQueries({
         queries: typeList.map((type: string | undefined) => {
@@ -15,9 +19,7 @@ export const useCiListBulk = (typeList: (string | undefined)[], filterParams: Fi
             const queryOptions = {
                 filter: {
                     type: [type ?? ''],
-                    metaAttributes: {
-                        state: ['DRAFT', 'APPROVED_BY_OWNER'],
-                    },
+                    metaAttributes,
                     fullTextSearch: filterParamsOfType?.fullTextSearch,
                 },
                 page: filterParamsOfType?.pageNumber ?? 1,

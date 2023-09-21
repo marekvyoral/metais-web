@@ -10,6 +10,7 @@ import {
     useInvalidateConfigurationItem,
     useReadCiList1,
 } from '@isdd/metais-common'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 export interface ParsedAttribute {
     label: string
@@ -45,13 +46,17 @@ export const OrganizationsDetailContainer: React.FC<AttributesContainer> = ({ en
     const { data: personCategories } = useGetEnum(GET_ENUM.KATEGORIA_OSOBA)
     const { data: sources } = useGetEnum(GET_ENUM.ZDROJ)
 
+    const { currentPreferences } = useUserPreferences()
+
+    const metaAttributes = currentPreferences.showInvalidatedItems
+        ? { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'] }
+        : { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'] }
+
     const defaultRequestApi = {
         filter: {
             type: ['PO'],
             uuid: [entityId],
-            metaAttributes: {
-                state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'],
-            },
+            metaAttributes,
         },
     }
 

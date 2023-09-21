@@ -6,6 +6,7 @@ import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 
 import styles from './requestDetail.module.scss'
 import { RequestRolesForm, RoleItem } from './RequestRolesForm'
@@ -74,19 +75,19 @@ export const RequestDetailView: React.FC<IRequestDetailProps> = ({
             {(successedMutation || errorMessage) && <MutationFeedback success={successedMutation} error={errorMessage} />}
             <div className={styles.basicInformationSpace}>
                 <TextHeading size="M">{t('requestList.identityDetail')}</TextHeading>
-                <div className={styles.attributeGridRowBox}>
+                <DefinitionList>
                     {detailRows.map((item, index) => (
                         <InformationGridRow key={index} label={item.label} value={item.value} hideIcon />
                     ))}
-                </div>
+                </DefinitionList>
             </div>
             <div className={styles.basicInformationSpace}>
                 <TextHeading size="M">{t('requestList.requestDetail')}</TextHeading>
-                <div className={styles.attributeGridRowBox}>
+                <DefinitionList>
                     {detailRequestRows.map((item, index) => (
                         <InformationGridRow key={index} label={item.label} value={item.value} hideIcon />
                     ))}
-                </div>
+                </DefinitionList>
             </div>
             <div className={styles.basicInformationSpace}>
                 <div className={styles.formButtonsWrapper}>

@@ -15,6 +15,7 @@ export enum RouteNames {
     RELATIONSHIPS_LIST_TAB = '/ci/:entityName/:entityId/relationships',
     TASKS = '/ulohy',
     CODELISTS = '/codelists',
+    USER_PROFILE = '/userprofile',
     REPORTS = '/reports',
 }
 
@@ -23,7 +24,7 @@ export enum AdminRouteNames {
     DASHBOARD = '/dashboard',
     ASSIGNMENT = '/assignment',
     NOTIFICATIONS = '/notifications',
-    SETTINGS = '/settings',
+    SETTINGS = '/userprofile',
     EKO = '/eko',
     USER_MANAGEMENT = '/managementList',
     REQUEST_LIST = '/managementList/requestList',

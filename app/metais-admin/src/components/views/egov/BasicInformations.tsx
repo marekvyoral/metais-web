@@ -1,8 +1,8 @@
 import { CiType, EnumType } from '@isdd/metais-common/api'
 import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 
-import styles from './basicInformationSection.module.scss'
 import { ColorRow } from './ColorRow'
 
 interface ProjectInformationData {
@@ -16,7 +16,7 @@ interface ProjectInformationData {
 export const BasicInformations = ({ data: { ciTypeData } }: ProjectInformationData) => {
     const { t } = useTranslation()
     return (
-        <div className={styles.attributeGridRowBox}>
+        <DefinitionList>
             <InformationGridRow key={'name'} label={t('egov.name')} value={ciTypeData?.name} />
             {ciTypeData?.engName && <InformationGridRow key={'engName'} label={t('egov.engName')} value={ciTypeData?.engName} />}
             <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={ciTypeData?.technicalName} />
@@ -27,6 +27,6 @@ export const BasicInformations = ({ data: { ciTypeData } }: ProjectInformationDa
             <InformationGridRow key={'description'} label={t('egov.description')} value={ciTypeData?.description} />
             {ciTypeData?.color && <InformationGridRow key={'color'} label={t('egov.color')} value={<ColorRow color={ciTypeData?.color} />} />}
             <InformationGridRow key={'roles'} label={t('egov.roles')} value={ciTypeData?.roleList} />
-        </div>
+        </DefinitionList>
     )
 }

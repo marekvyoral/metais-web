@@ -2,14 +2,9 @@
 
 .connectionBox {
     display: flex;
-    gap: govuk-spacing(4);
-    justify-content: space-evenly;
+    justify-content: space-between;
+}
 
-    a {
-        padding-left: govuk-spacing(4);
-    }
-
-    .connectionItemsGap {
-        padding-bottom: govuk-spacing(4);
-    }
+.fullWidth {
+    width: 100%;
 }

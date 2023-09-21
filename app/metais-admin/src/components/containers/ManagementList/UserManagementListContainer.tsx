@@ -10,6 +10,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useRevokeUserBatch } from '@isdd/metais-common/hooks/useRevokeUser'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useGetOrganizationsForIdentitiesList } from '@isdd/metais-common/hooks/useGetOrganizationsForIdentitiesList'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import {
     UserManagementFilterData,
@@ -83,6 +84,12 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
         uuids: identitiesUuids,
     })
 
+    const { currentPreferences } = useUserPreferences()
+
+    const metaAttributes = currentPreferences.showInvalidatedItems
+        ? { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'] }
+        : { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'] }
+
     const {
         data: ciListData,
         isLoading: isLoadingCiList,
@@ -93,9 +100,7 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
             page: 1,
             perpage: 9999,
             filter: {
-                metaAttributes: {
-                    state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'],
-                },
+                metaAttributes,
                 type: ['PO'],
                 uuid: extractOrganizationsUuidsFromList(organizationsForListData),
             },

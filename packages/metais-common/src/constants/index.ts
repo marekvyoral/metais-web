@@ -67,4 +67,8 @@ export enum KSISVS_ROLES {
 }
 
 export const KSIVS_SHORT_NAME = 'KSISVS'
+export const META_PREFERENCES_KEY = 'META_'
 export const FILTER_LOCAL_STORAGE_KEY = 'filter_'
+export const NULL = 'null'
+
+export const USER_INFO_QUERY_KEY = 'userInfo'
