@@ -1,6 +1,7 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourPairUi, useReadCiNeighbours } from '@isdd/metais-common/api'
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useGetIdentitiesByLoginsBulkHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import uniq from 'lodash/uniq'
@@ -32,10 +33,13 @@ export const defaultFilter = {
 }
 
 export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ configurationItemId, View }) => {
+    const { currentPreferences } = useUserPreferences()
+    const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
+
     const [defaultRequestApi, setDefaultRequestApi] = useState({
         neighboursFilter: {
             ciType: ['Dokument'],
-            metaAttributes: { state: ['DRAFT'] },
+            metaAttributes,
             relType: ['CI_HAS_DOCUMENT', 'Dokument_sa_tyka_KRIS', 'CONTROL_HAS_DOCUMENT', 'PROJECT_HAS_DOCUMENT'],
             usageType: ['system', 'application'],
             fullTextSearch: '',

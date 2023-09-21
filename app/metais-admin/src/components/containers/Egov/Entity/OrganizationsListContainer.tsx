@@ -1,6 +1,7 @@
 import { ConfigurationItemUiAttributes, useInvalidateConfigurationItem, useReadCiList1 } from '@isdd/metais-common/api'
 import { useFilterForCiList, useGetColumnData, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers/filter'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { IListView } from '@isdd/metais-common/types/list'
 import React from 'react'
@@ -23,13 +24,16 @@ export const OraganizationsListContainer = <T extends FieldValues & IFilterParam
     entityId,
 }: IOraganizationsListContainer<T>) => {
     const { columnListData, saveColumnSelection, resetColumns, isLoading: isColumnsLoading, isError: isColumnsError } = useGetColumnData(entityName)
+    const { currentPreferences } = useUserPreferences()
+
+    const metaAttributes = currentPreferences.showInvalidatedItems
+        ? { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'] }
+        : { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'] }
 
     const defaultRequestApi = {
         filter: {
             type: [entityName],
-            metaAttributes: {
-                state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'],
-            },
+            metaAttributes,
             poUuid: entityId,
         },
     }

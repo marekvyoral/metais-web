@@ -9,6 +9,7 @@ import classnames from 'classnames'
 import * as d3 from 'd3'
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import styles from './relationshipGraph.module.scss'
 import { isRelatedCiTypeCmdbView } from './typeHelper'
@@ -59,6 +60,7 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
     const {
         state: { user },
     } = useAuth()
+    const { currentPreferences } = useUserPreferences()
     const [filterTypes, setFilterTypes] = useState<TypeFilter>({})
     const graphWrapperRef = useRef<HTMLDivElement>(null)
 
@@ -69,6 +71,8 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
             return isRelatedCiTypeCmdbView(oneType, !!user)
         })
         .map((type) => type.ciTypeTechnicalName || '')
+
+    const state = currentPreferences.showInvalidatedItems ? ['DRAFT', 'INVALIDATED'] : ['DRAFT']
     const {
         isLoading: isLoadingNeihbours,
         isError: isErrorNeighbours,
@@ -76,7 +80,7 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
     } = useReadCiNeighboursWithAllRels(target?.uuid ?? '', {
         page: 1,
         perPage: 50,
-        state: ['DRAFT'],
+        state,
         ciTypes: ciTypes.length === 0 ? ['NOT_EXIST_ENTITY'] : ciTypes,
     })
     const ciType = useMemo(() => {

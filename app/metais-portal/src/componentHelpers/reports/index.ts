@@ -32,15 +32,15 @@ export const loadEnumsCiOptions = async (
     additional: { page: number } | undefined,
     type: string,
     readCiList1: (ciListFilterContainerUi: CiListFilterContainerUi) => Promise<ConfigurationItemSetUi>,
+    showInvalidated: boolean,
 ) => {
     const page = !additional?.page ? 1 : (additional?.page || 0) + 1
 
+    const metaAttributes = showInvalidated ? { state: ['DRAFT', 'APPROVED_BY_OWNER', 'INVALIDATED'] } : { state: ['DRAFT', 'APPROVED_BY_OWNER'] }
     const queryOptions = {
         filter: {
             type: [type ?? ''],
-            metaAttributes: {
-                state: ['DRAFT', 'APPROVED_BY_OWNER'],
-            },
+            metaAttributes,
             fullTextSearch: searchQuery,
         },
         page: page,

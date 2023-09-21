@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import { AuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { getUserInfo } from '@isdd/metais-common/api/userInfoApi'
+import { USER_INFO_QUERY_KEY } from '@isdd/metais-common/constants'
 
 export const useUserInfo = () => {
     const {
@@ -14,6 +15,7 @@ export const useUserInfo = () => {
     const location = useLocation()
 
     const { data, isLoading, isError, error } = useQuery({
+        queryKey: [USER_INFO_QUERY_KEY, accessToken],
         queryFn: () => getUserInfo(accessToken || ''),
         enabled: !!accessToken && !user,
     })

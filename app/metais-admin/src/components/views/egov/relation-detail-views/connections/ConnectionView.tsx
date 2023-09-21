@@ -12,12 +12,12 @@ interface ConnectionViewProps {
 const ConnectionView = ({ sources, targets }: ConnectionViewProps) => {
     return (
         <div className={styles.connectionBox}>
-            <div>
+            <div className={styles.fullWidth}>
                 {sources?.map((previewType) => {
                     return <ConnectionItem item={previewType} type="source" key={previewType?.id} />
                 })}
             </div>
-            <div>
+            <div className={styles.fullWidth}>
                 {targets?.map((previewType) => {
                     return <ConnectionItem item={previewType} type="target" key={previewType?.id} />
                 })}

@@ -833,5 +833,27 @@
     "todo": {
         "header": "Under construction",
         "homeButton": "Home page"
+    },
+    "userProfile": {
+        "heading": "Profile and rights",
+        "changeInformationsButton": "Edit information",
+        "information": {
+            "header": "My information",
+            "name": "Name",
+            "position": "Position",
+            "phoneNumber": "Phone",
+            "email": "Email"
+        },
+        "settings": "Personal preferences",
+        "rights": "Rights",
+        "notificationsSettings": "Notifications preferences",
+        "passwordChange": "Password change",
+        "save": "Save",
+        "cancel": "Cancel",
+        "showInvalidated": "Show invalidated items",
+        "savePreferences": "Save preferences",
+        "userPreferencesSuccess": "Personal preferences were successfully saved",
+        "changedUserInformation": "Personal information were successfully changed",
+        "changedUserInformationError": "Error occurred while changing personal information. Please try again."
     }
 }

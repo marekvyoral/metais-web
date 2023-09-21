@@ -15,6 +15,7 @@ import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers/filte
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import { calcBlockedOrganizations, isCiAlreadyAssinged } from '@/components/views/organizations/helpers/formatting'
 
@@ -48,6 +49,12 @@ export const useAssignOrganizations = <T extends FieldValues & IFilterParams>({
             ?.filter((relationship) => relationship?.metaAttributes?.state !== 'INVALIDATED')
             ?.map((val) => val?.startUuid ?? '') ?? []
 
+    const { currentPreferences } = useUserPreferences()
+
+    const metaAttributes = currentPreferences.showInvalidatedItems
+        ? { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'] }
+        : { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'] }
+
     // ALL DATA Related to IDS
     const defaultRequestApi = {
         perpage: 9999,
@@ -55,9 +62,7 @@ export const useAssignOrganizations = <T extends FieldValues & IFilterParams>({
         filter: {
             type: ['PO'],
             uuid: idsToFind,
-            metaAttributes: {
-                state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'],
-            },
+            metaAttributes,
         },
     }
     const {

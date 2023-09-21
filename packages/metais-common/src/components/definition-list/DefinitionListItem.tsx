@@ -9,6 +9,7 @@ interface IDefinitionListItemProps extends PropsWithChildren {
     value: string | React.ReactNode | undefined
     secColValue?: string | React.ReactNode | undefined
     lang?: string | undefined
+    href?: string
 }
 
 export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({ label, value, secColValue, lang }) => {

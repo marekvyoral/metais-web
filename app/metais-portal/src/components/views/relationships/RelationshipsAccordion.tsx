@@ -9,9 +9,12 @@ import { sourceTableColumns } from './RelationshipsSourceTableColumns'
 import { targetTableColumns } from './RelationshipsTargetTableColumns'
 
 import { CiNeighboursListContainer } from '@/components/containers/CiNeighboursListContainer'
-import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
 import RelationshipGraph from '@/components/views/relationships/RelationshipGraph'
 
+export enum NeighboursApiType {
+    source,
+    target,
+}
 interface RelationshipsAccordion {
     data?: ConfigurationItemUi
     configurationItemId?: string
