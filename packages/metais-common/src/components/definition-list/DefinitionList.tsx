@@ -3,10 +3,10 @@ import React, { PropsWithChildren } from 'react'
 
 import styles from './definitionList.module.scss'
 
-interface IDefintionListProps extends PropsWithChildren {
+interface IDefinitionListProps extends PropsWithChildren {
     className?: string
 }
 
-export const DefinitionList: React.FC<IDefintionListProps> = ({ children, className }) => {
+export const DefinitionList: React.FC<IDefinitionListProps> = ({ children, className }) => {
     return <dl className={classNames(styles.dl, className)}>{children}</dl>
 }

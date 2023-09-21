@@ -8,11 +8,12 @@ import {
     EnumType,
     HistoryVersionUiConfigurationItemUi,
 } from '@isdd/metais-common/api'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
+import { CheckBox } from '@isdd/idsk-ui-kit/index'
 
 import { HistoryCompareItemView } from './HistoryCompareItemView'
-import styles from './historyCompare.module.scss'
 
 export interface AttributesData {
     ciTypeData: CiType | undefined
@@ -37,6 +38,7 @@ enum AttributeType {
 
 export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({ ciTypeData, dataFirst, dataSec, attributesData, isSimple }) => {
     const { t, i18n } = useTranslation()
+    const [showOnlyChanges, setShowOnlyChanges] = useState<boolean>(false)
     const languageEn = 'en'
     const attProfiles = ciTypeData?.attributeProfiles?.map((profile) => profile) ?? []
 
@@ -117,16 +119,19 @@ export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({ ciTypeD
                 change: !isSimple && haveDiff(ciTypeData?.attributes || []),
                 stepLabel: { label: '1', variant: 'circle' },
                 content: (
-                    <div className={styles.attributeGridRowBox}>
+                    <DefinitionList>
                         <HistoryCompareItemView
                             key={'attribute.technicalName'}
                             label={''}
                             tooltip={''}
                             isSimple={isSimple}
-                            valueFirst={`${dataFirst?.actions}:  ${
+                            valueFirst={`${t('history.ACTIONS.' + dataFirst?.actions ?? '')}:  ${
                                 dataFirst?.actionTime && new Date(dataFirst?.actionTime).toLocaleString(i18n.language)
                             }`}
-                            valueSec={`${dataSec?.actions}:  ${dataSec?.actionTime && new Date(dataSec?.actionTime).toLocaleString(i18n.language)}`}
+                            valueSec={`${t('history.ACTIONS.' + dataSec?.actions ?? '')}:  ${
+                                dataSec?.actionTime && new Date(dataSec?.actionTime).toLocaleString(i18n.language)
+                            }`}
+                            withoutCompare
                         />
                         {ciTypeData?.attributes
                             ?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
@@ -137,12 +142,13 @@ export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({ ciTypeD
                                         label={attribute.name || ''}
                                         tooltip={attribute.description || ''}
                                         isSimple={isSimple}
+                                        showOnlyChanges={showOnlyChanges}
                                         valueFirst={getAttributeValue(attribute, dataFirst)}
                                         valueSec={getAttributeValue(attribute, dataSec)}
                                     />
                                 )
                             })}
-                    </div>
+                    </DefinitionList>
                 ),
             },
             ...attProfiles.map((profile, index) => {
@@ -151,7 +157,7 @@ export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({ ciTypeD
                     change: !isSimple && haveDiff(profile.attributes || []),
                     stepLabel: { label: (index + 2).toString(), variant: 'circle' } as IStepLabel,
                     content: (
-                        <div className={styles.attributeGridRowBox}>
+                        <DefinitionList>
                             {profile.attributes &&
                                 profile.attributes.map((attribute) => {
                                     return (
@@ -160,12 +166,13 @@ export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({ ciTypeD
                                             label={attribute.name || ''}
                                             tooltip={attribute.description || ''}
                                             isSimple={isSimple}
+                                            showOnlyChanges={showOnlyChanges}
                                             valueFirst={getAttributeValue(attribute, dataFirst)}
                                             valueSec={getAttributeValue(attribute, dataSec)}
                                         />
                                     )
                                 })}
-                        </div>
+                        </DefinitionList>
                     ),
                 }
             }),
@@ -173,6 +180,14 @@ export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({ ciTypeD
 
     return (
         <>
+            {!isSimple && (
+                <CheckBox
+                    label={t('historyTab.hideCheckButtonLabel')}
+                    name={'hideCheckButtonLabel'}
+                    id={'hideCheckButtonLabel'}
+                    onChange={() => setShowOnlyChanges(!showOnlyChanges)}
+                />
+            )}
             <Stepper subtitleTitle="" stepperList={sections} />
         </>
     )

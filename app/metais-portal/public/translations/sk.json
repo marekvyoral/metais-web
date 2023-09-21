@@ -400,7 +400,8 @@
         "compareButtonLabel": "Porovnať vybrane záznamy",
         "compare": {
             "modified": "{{date}}"
-        }
+        },
+        "hideCheckButtonLabel": "Zobraziť iba zmeny"
     },
     "metaAttributes": {
         "state": {
