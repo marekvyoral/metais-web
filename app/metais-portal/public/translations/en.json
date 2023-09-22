@@ -855,5 +855,22 @@
         "userPreferencesSuccess": "Personal preferences were successfully saved",
         "changedUserInformation": "Personal information were successfully changed",
         "changedUserInformationError": "Error occurred while changing personal information. Please try again."
+    },
+    "votesList": {
+        "title": "Zoznam Hlasovaní",
+        "votesListSubtitle": "nejake blabla kecy",
+        "filter": {
+            "title": "Filter",
+            "votesTypeToShow": "Zobraziť",
+            "voteState": "Stav hlasovania",
+            "fromDate": "Prebiehajúce v období od",
+            "toDate": "Prebiehajúce v období do"
+        },
+        "type": {
+            "onlyMyVotes": "Len moje hlasovania",
+            "allVotes": "Všetky hlasovania",
+            "planned": "Plánované",
+            "ended": "Ukončené" 
+        }
     }
 }

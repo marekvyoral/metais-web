@@ -862,6 +862,7 @@
         "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené",
         "changedUserInformation": "Osobné informácie boli úspešne zmenené",
         "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova."
+    },
     "votesList": {
         "title": "Zoznam Hlasovaní",
         "votesListSubtitle": "nejake blabla kecy",
