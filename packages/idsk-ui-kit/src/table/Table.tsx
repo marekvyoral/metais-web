@@ -173,20 +173,29 @@ export const Table = <T,>({
                 onScroll={handleWrapper1Scroll}
                 ref={wrapper1Ref}
             >
-                {table.getRowModel().rows.map((row, index) => (
-                    <React.Fragment key={index}>
-                        <TableRow<T>
-                            row={row}
-                            key={index}
-                            isRowSelected={isRowSelected}
-                            isRowBold={isRowBold}
-                            isRowDanger={isRowDanger}
-                            onRowClick={onRowClick}
-                            rowHref={rowHref}
-                        />
-                        {row.getIsExpanded() && getExpandedRow && <TableRowExpanded row={row} getExpandedRow={getExpandedRow} />}
-                    </React.Fragment>
-                ))}
+                {table.getRowModel().rows.map((row, index) => {
+                    const isInvalidated =
+                        row
+                            .getAllCells()
+                            .find((cell) => cell.column.id == 'state')
+                            ?.getValue() == 'INVALIDATED'
+
+                    return (
+                        <React.Fragment key={index}>
+                            <TableRow<T>
+                                isInvalidated={isInvalidated}
+                                row={row}
+                                key={index}
+                                isRowSelected={isRowSelected}
+                                isRowBold={isRowBold}
+                                isRowDanger={isRowDanger}
+                                onRowClick={onRowClick}
+                                rowHref={rowHref}
+                            />
+                            {row.getIsExpanded() && getExpandedRow && <TableRowExpanded row={row} getExpandedRow={getExpandedRow} />}
+                        </React.Fragment>
+                    )
+                })}
             </tbody>
         </table>
     )
