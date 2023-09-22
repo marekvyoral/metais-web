@@ -37,7 +37,38 @@ export const notificationDefaultSelectedColumns = [
 export const ROLES_GROUP = 'SKUPINA_ROL'
 export const metaisEmail = 'metais@mirri.gov.sk'
 
+export const CAN_CREATE_GRAPH_QUERY_KEY = 'canCreateGraph'
+export enum EClaimState {
+    WAITING = 'WAITING',
+    ACCEPTED = 'ACCEPTED',
+    REFUSED = 'REFUSED',
+    ALL = '',
+}
 export enum ReponseErrorCodeEnum {
     DEFAULT = 'default',
     GNR403 = 'gnr403',
 }
+export const REPORTS = 'reports'
+export const FIRST_PAGE_NUMBER = 1
+
+export enum GROUP_ROLES {
+    STD_PSPRE = 'STD_PSPRE',
+    STD_PSPODP = 'STD_PSPODP',
+    STD_PSCLEN = 'STD_PSCLEN',
+    STD_PSPO = 'STD_PSPO',
+    STD_PSZAST = 'STD_PSZAST',
+}
+
+export enum KSISVS_ROLES {
+    STD_KSPRE = 'STD_KSPRE',
+    STD_KSPODP = 'STD_KSPODP',
+    STD_KSTAJ = 'STD_KSTAJ',
+    STD_KSCLEN = 'STD_KSCLEN',
+}
+
+export const KSIVS_SHORT_NAME = 'KSISVS'
+export const META_PREFERENCES_KEY = 'META_'
+export const FILTER_LOCAL_STORAGE_KEY = 'filter_'
+export const NULL = 'null'
+
+export const USER_INFO_QUERY_KEY = 'userInfo'

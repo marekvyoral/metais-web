@@ -1,8 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ConfigurationItemUi, QueryFeedback, RoleParticipantUI } from '@isdd/metais-common/index'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 
-import { CardColumnList } from '@/components/entities/cards/CardColumnList'
 import { RelationAttribute } from '@/components/entities/cards/RelationAttribute'
 
 interface ConfigurationItemHistoryDetail {
@@ -17,8 +17,8 @@ export const ConfigurationItemHistoryDetailView: React.FC<ConfigurationItemHisto
 
     const metaAtributes = data?.metaAttributes
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <CardColumnList>
+        <QueryFeedback loading={isLoading} error={isError} withChildren>
+            <DefinitionList>
                 <RelationAttribute
                     name={t('historyTab.configurationItemView.state')}
                     value={t(`metaAttributes.state.${metaAtributes?.state ?? ''}`)}
@@ -35,7 +35,7 @@ export const ConfigurationItemHistoryDetailView: React.FC<ConfigurationItemHisto
                     value={t('dateTime', { date: metaAtributes?.lastModifiedAt })}
                 />
                 <RelationAttribute name={t('historyTab.configurationItemView.source')} value={data?.attributes?.Gen_Profil_zdroj} />
-            </CardColumnList>
+            </DefinitionList>
         </QueryFeedback>
     )
 }

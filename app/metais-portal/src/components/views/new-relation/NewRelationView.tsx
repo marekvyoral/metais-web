@@ -1,6 +1,5 @@
 import {
     AccordionContainer,
-    BreadCrumbs,
     Button,
     ButtonGroupRow,
     ButtonLink,
@@ -14,7 +13,7 @@ import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectP
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
 import { JOIN_OPERATOR, metaisEmail } from '@isdd/metais-common/constants'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
-import { SubmitWithFeedback } from '@isdd/metais-common/index'
+import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { SelectCiItem } from '@isdd/metais-common/src/components/select-ci-item/SelectCiItem'
 import classNames from 'classnames'
@@ -26,6 +25,7 @@ import { MultiValue } from 'react-select'
 import { v4 as uuidV4 } from 'uuid'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import styles from './newRelationView.module.scss'
 
@@ -47,6 +47,8 @@ interface Props {
     entityId: string
     entityName: string
     ownerGid: string
+    isLoading: boolean
+    isError: boolean
 }
 
 export const NewRelationView: React.FC<Props> = ({
@@ -59,12 +61,15 @@ export const NewRelationView: React.FC<Props> = ({
     ownerGid,
     publicAuthorityState,
     roleState,
+    isLoading,
+    isError,
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
 
     const ability = useAbilityContext()
     const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
+    const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
 
     const [hasReset, setHasReset] = useState(false)
     const [hasMutationError, setHasMutationError] = useState(false)
@@ -102,7 +107,7 @@ export const NewRelationView: React.FC<Props> = ({
 
     useEffect(() => {
         if (!selectedRelationTypeTechnicalName) {
-            setSelectedRelationTypeTechnicalName(createSelectRelationTypeOptions(relatedListAsSources, relatedListAsTargets, t)[1].value)
+            setSelectedRelationTypeTechnicalName(createSelectRelationTypeOptions(relatedListAsSources, relatedListAsTargets, t)[1]?.value)
         }
     }, [relatedListAsSources, relatedListAsTargets, selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName, t])
 
@@ -209,24 +214,12 @@ export const NewRelationView: React.FC<Props> = ({
             : []
 
     return (
-        <>
-            <BreadCrumbs
-                links={[
-                    { label: t('breadcrumbs.home'), href: '/' },
-                    { label: entityName, href: `/ci/${entityName}` },
-                    { label: currentName ? currentName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
-                    {
-                        label: t('breadcrumbs.newRelation', { itemName: currentName }),
-                        href: `/ci/${entityName}/${entityId}/new-relation/${tabName}`,
-                    },
-                ]}
-            />
-            <TextHeading size="XL">{t('newRelation.heading', { relationEntityName: tabName })}</TextHeading>
+        <QueryFeedback loading={isLoading || storeGraph.isLoading} error={false} withChildren>
+            <FlexColumnReverseWrapper>
+                <TextHeading size="XL">{t('newRelation.heading', { relationEntityName: tabName })}</TextHeading>
+                {isError && <QueryFeedback loading={false} error={isError} />}
+            </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
-
-            {!hasOrgPermission && publicAuthorityState.selectedPublicAuthority && (
-                <ErrorBlock errorTitle={t('createEntity.orgAndRoleError.title')} errorMessage={t('createEntity.orgAndRoleError.message')} />
-            )}
             <SelectPublicAuthorityAndRole
                 onChangeAuthority={(e) => publicAuthorityState.setSelectedPublicAuthority(e)}
                 onChangeRole={(val) => roleState.setSelectedRole(val)}
@@ -241,7 +234,9 @@ export const NewRelationView: React.FC<Props> = ({
                 options={createSelectRelationTypeOptions(relatedListAsSources, relatedListAsTargets, t)}
                 value={selectedRelationTypeTechnicalName}
                 onChange={(val) => setSelectedRelationTypeTechnicalName(val ?? '')}
+                error={!canCreateRelationType ? t('newRelation.selectRelTypeError') : ''}
             />
+
             <SelectCiItem
                 filterTypeEntityName={tabName}
                 onChangeSelectedCiItem={(val) => setSelectedItems(val)}
@@ -250,6 +245,7 @@ export const NewRelationView: React.FC<Props> = ({
                 existingRelations={existingRelations}
                 modalContent={<CiListPage importantEntityName={tabName} />}
             />
+
             <form onSubmit={handleFormSubmit(handleSubmit)}>
                 {selectedItems && Array.isArray(selectedItems) && selectedItems.length > 0 && <AccordionContainer sections={sections} />}
                 {hasMutationError && (
@@ -270,9 +266,9 @@ export const NewRelationView: React.FC<Props> = ({
                     submitButtonLabel={t('newRelation.save')}
                     additionalButtons={[<Button key={1} label={t('newRelation.cancel')} type="reset" variant="secondary" onClick={handleReset} />]}
                     loading={storeGraph.isLoading}
-                    disabled={isSubmitDisabled || !hasOrgPermission}
+                    disabled={isSubmitDisabled || !hasOrgPermission || !canCreateRelationType}
                 />
             </form>
-        </>
+        </QueryFeedback>
     )
 }

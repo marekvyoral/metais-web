@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Tab, Tabs } from '@isdd/idsk-ui-kit'
+import { Button, ButtonGroupRow, Tab, Tabs } from '@isdd/idsk-ui-kit'
 import { useLocation, useNavigate } from 'react-router-dom'
-
-import styles from '../detailViews.module.scss'
-import createEntityStyles from '../entity-detail-views/createEntityView.module.scss'
-import { BasicInformations } from '../BasicInformations'
-import { EntityDetailViewAttributes } from '../entity-detail-views/attributes/EntityDetailViewAttributes'
+import { QueryFeedback } from '@isdd/metais-common/index'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import ConnectionView from './connections/ConnectionView'
 import { AddConnectionModal } from './connections/AddConnectionModal'
 
+import createEntityStyles from '@/components/views/egov/entity-detail-views/createEntityView.module.scss'
+import { EntityDetailViewAttributes } from '@/components/views/egov/entity-detail-views/attributes/EntityDetailViewAttributes'
+import { BasicInformations } from '@/components/views/egov/BasicInformations'
+import styles from '@/components/views/egov/detailViews.module.scss'
 import { IAtrributesContainerView } from '@/components/containers/Egov/Relation/RelationsDetailContainer'
 
 export const RelationDetailView = ({
@@ -19,6 +20,8 @@ export const RelationDetailView = ({
     addNewConnectionToExistingRelation,
     saveExistingAttribute,
     resetExistingAttribute,
+    isLoading,
+    isError,
 }: IAtrributesContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -65,23 +68,26 @@ export const RelationDetailView = ({
     ]
 
     return (
-        <>
+        <QueryFeedback loading={isLoading} error={false} withChildren>
             <div className={styles.basicInformationSpace}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
-                    <div>
-                        <Button
-                            label={t('egov.edit')}
-                            onClick={() => {
-                                navigate('/egov/relation/' + ciTypeData?.technicalName + '/edit', { state: { from: location } })
-                            }}
-                        />
-                        <Button
-                            label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
-                            onClick={() => unValidRelationShipTypeMutation?.(ciTypeData?.technicalName)}
-                        />
+                <FlexColumnReverseWrapper>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
+                        <ButtonGroupRow>
+                            <Button
+                                label={t('egov.edit')}
+                                onClick={() => {
+                                    navigate('/egov/relation/' + ciTypeData?.technicalName + '/edit', { state: { from: location } })
+                                }}
+                            />
+                            <Button
+                                label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
+                                onClick={() => unValidRelationShipTypeMutation?.(ciTypeData?.technicalName)}
+                            />
+                        </ButtonGroupRow>
                     </div>
-                </div>
+                    {isError && <QueryFeedback error loading={false} />}
+                </FlexColumnReverseWrapper>
                 <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
             </div>
             <div className={createEntityStyles.addConnection}>
@@ -92,6 +98,6 @@ export const RelationDetailView = ({
                 <h3 className="govuk-heading-m">{t('egov.detail.profiles')}</h3>
                 <Tabs tabList={tabList} />
             </div>
-        </>
+        </QueryFeedback>
     )
 }

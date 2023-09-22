@@ -2,8 +2,8 @@ import { useGetRoleParticipantBulk, useReadCiList1 } from '@isdd/metais-common/a
 import { useFilterForCiList, useGetColumnData, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers/filter'
 import { BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { QueryFeedback } from '@isdd/metais-common/index'
 import { IListView } from '@isdd/metais-common/types/list'
 import React from 'react'
 import { FieldValues } from 'react-hook-form'
@@ -21,13 +21,14 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
     defaultFilterOperators,
 }: ICiListContainer<T>) => {
     const { columnListData, saveColumnSelection, resetColumns, isLoading: isColumnsLoading, isError: isColumnsError } = useGetColumnData(entityName)
+    const { currentPreferences } = useUserPreferences()
+
+    const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
 
     const defaultRequestApi = {
         filter: {
             type: [entityName],
-            metaAttributes: {
-                state: ['DRAFT'],
-            },
+            metaAttributes,
             perPage: BASE_PAGE_SIZE,
         },
     }
@@ -63,18 +64,16 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
     const isError = [isReadCiListError, isColumnsError, isGestorsError].some((item) => item)
 
     return (
-        <QueryFeedback loading={isLoading} error={isError} withChildren>
-            <ListComponent
-                data={{ columnListData, tableData, gestorsData }}
-                pagination={pagination}
-                handleFilterChange={handleFilterChange}
-                resetUserSelectedColumns={resetColumns}
-                storeUserSelectedColumns={saveColumnSelection}
-                refetch={refetch}
-                sort={filterParams?.sort ?? []}
-                isLoading={isLoading}
-                isError={isError}
-            />
-        </QueryFeedback>
+        <ListComponent
+            data={{ columnListData, tableData, gestorsData }}
+            pagination={pagination}
+            handleFilterChange={handleFilterChange}
+            resetUserSelectedColumns={resetColumns}
+            storeUserSelectedColumns={saveColumnSelection}
+            refetch={refetch}
+            sort={filterParams?.sort ?? []}
+            isLoading={isLoading}
+            isError={isError}
+        />
     )
 }

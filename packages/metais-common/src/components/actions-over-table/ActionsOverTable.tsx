@@ -18,6 +18,7 @@ import { IColumn } from '@isdd/metais-common/hooks/useColumnList'
 export enum ActionNames {
     SELECT_COLUMNS = 'SELECT_COLUMNS',
     PAGING = 'PAGING',
+    BULK_ACTIONS = 'BULK_ACTIONS',
 }
 
 export interface ISimpleTableSelectParams {
@@ -111,9 +112,13 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
 
     return (
         <div className={styles.buttonContainer}>
-            {children}
             <div className={styles.buttonGroup}>
-                {bulkPopup && <>{bulkPopup}</>}
+                {children}
+                {bulkPopup && !hiddenButtons?.BULK_ACTIONS && (
+                    <Can I={Actions.BULK_ACTIONS} a={'ci'} ability={ability}>
+                        <>{bulkPopup}</>
+                    </Can>
+                )}
                 <div className={classnames(styles.buttonImportExport, styles.mobileOrder2)}>
                     {importButton && (
                         <Can I={Actions.IMPORT} a={'ci'} ability={ability}>

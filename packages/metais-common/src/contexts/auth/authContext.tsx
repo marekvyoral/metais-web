@@ -127,7 +127,7 @@ const AuthContextProvider: React.FC<React.PropsWithChildren> = (props) => {
         }
     }, [accessToken, state.accessToken])
 
-    if (accessToken) navigate(locationCurrent.pathname, { state: { from: location } })
+    if (accessToken) navigate(locationCurrent.pathname, { state: { from: locationCurrent } })
     return <AuthContext.Provider value={{ state, dispatch }}>{props.children}</AuthContext.Provider>
 }
 

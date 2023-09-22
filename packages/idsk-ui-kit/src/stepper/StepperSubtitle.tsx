@@ -27,7 +27,7 @@ export const StepperSubtitle: React.FC<IStepperSubtitle> = ({ title, setSectionA
     return (
         <div className="idsk-stepper__subtitle-container">
             <div className="idsk-stepper__subtitle--heading govuk-grid-column-three-quarters">
-                <h3 className="govuk-heading-m idsk-stepper__section-subtitle">{title}</h3>
+                {title ?? <h3 className="govuk-heading-m idsk-stepper__section-subtitle">{title}</h3>}
             </div>
 
             <div

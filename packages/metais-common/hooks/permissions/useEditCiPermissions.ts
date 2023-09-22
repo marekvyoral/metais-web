@@ -1,5 +1,6 @@
 import { AbilityBuilder, createMongoAbility } from '@casl/ability'
 import { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 import { useAbilityContext } from './useAbilityContext'
 import { Actions } from './useUserAbility'
@@ -7,6 +8,8 @@ import { Actions } from './useUserAbility'
 import { Gen_Profil, useGetCiType, useGetRoleParticipant, useReadConfigurationItem } from '@isdd/metais-common/api'
 import { useGetRightsForPO, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { fetchCanCreateGraph } from '@isdd/metais-common/api/fetchCanCreateGraph'
+import { CAN_CREATE_GRAPH_QUERY_KEY } from '@isdd/metais-common/constants'
 
 export const useEditCiPermissions = (entityName: string, entityId: string) => {
     const abilityContext = useAbilityContext()
@@ -50,6 +53,11 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
         { query: { enabled: !ciLoading && auth?.state?.accessToken !== null } },
     )
 
+    const { data: canCreateGraph } = useQuery({
+        queryKey: [CAN_CREATE_GRAPH_QUERY_KEY, auth.state.user?.uuid],
+        queryFn: () => fetchCanCreateGraph(auth.state.accessToken ?? ''),
+    })
+
     useEffect(() => {
         const { can, rules } = new AbilityBuilder(createMongoAbility)
         const myRoles = auth?.state?.user?.roles ?? []
@@ -73,7 +81,10 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
 
         if (canEditCi) can(Actions.EDIT, `ci.${ciData?.uuid}`)
 
+        //CAN CREATE RELATION
+        if (canCreateGraph) can(Actions.CREATE, `ci.create.newRelation`)
+
         abilityContext.update(rules)
-    }, [rightsData, auth, abilityContext, ciTypeData, isOwnerByGid, ciData])
+    }, [rightsData, auth, abilityContext, ciTypeData, isOwnerByGid, ciData, canCreateGraph])
     return {}
 }

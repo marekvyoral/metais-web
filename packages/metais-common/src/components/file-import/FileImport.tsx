@@ -1,30 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { UppyFile, Uppy } from '@uppy/core'
-import XHRUpload from '@uppy/xhr-upload'
-import '@uppy/core/dist/style.min.css'
-import '@uppy/drag-drop/dist/style.min.css'
-import '@uppy/status-bar/dist/style.min.css'
+import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import sk_SK from '@uppy/locales/lib/sk_SK'
-import en_US from '@uppy/locales/lib/en_US'
 import { BaseModal } from '@isdd/idsk-ui-kit/index'
 
-import { ProgressInfoList } from './FileImportList'
 import { FileImportView } from './FileImportView'
 
 import { OrgPermissionsWrapper } from '@isdd/metais-common/components/permissions/OrgPermissionsWrapper'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { HierarchyRightsUi } from '@isdd/metais-common/api'
 import { FileImportEditOptions } from '@isdd/metais-common/src/components/file-import/FileImportHeader'
-
-const uppy = new Uppy({
-    autoProceed: false,
-})
-
-uppy.use(XHRUpload, {
-    endpoint: '',
-})
+import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 
 interface IFileImport {
     allowedFileTypes: string[]
@@ -54,71 +38,30 @@ export const FileImport: React.FC<IFileImport> = ({
     maxFileSize = 20_971_520,
     ciType,
 }) => {
-    const {
-        state: { accessToken },
-    } = useAuth()
-    const { i18n, t } = useTranslation()
+    const { t } = useTranslation()
 
-    const [errorMessages, setErrorMessages] = useState<string[]>([])
-    const [uploadFileProgressInfo, setUploadFileProgressInfo] = useState<ProgressInfoList[]>([])
     const [radioButtonMetaData, setRadioButtonMetaData] = useState<FileImportEditOptions>(FileImportEditOptions.EXISTING_ONLY)
-    const [currentFiles, setCurrentFiles] = useState<UppyFile[]>([])
 
     const [selectedRoleId, setSelectedRoleId] = useState<string>('')
     const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
-
-    useEffect(() => {
-        const language = i18n.language === 'sk' ? sk_SK : en_US
-
-        uppy.setOptions({
-            restrictions: {
-                allowedFileTypes: allowedFileTypes,
-                maxFileSize: maxFileSize,
-                minNumberOfFiles: 1,
-                maxNumberOfFiles: multiple ? null : 1,
-            },
-            locale: {
-                strings: {
-                    ...language.strings,
-                    browse: '',
-                    dropHereOr: '',
-                },
-            },
-        })
-    }, [allowedFileTypes, i18n.language, maxFileSize, multiple])
-
-    useEffect(() => {
-        uppy.getPlugin('XHRUpload')?.setOptions({ endpoint: endpointUrl, headers: { Authorization: `Bearer ${accessToken}` } })
-    }, [accessToken, endpointUrl, fileImportStep])
-
-    useEffect(() => {
-        const fileErrorCallback = (_file: UppyFile | undefined, error: Error) => {
-            setErrorMessages((prev) => [...prev, error.message])
-        }
-        const fileAdded = () => {
-            setCurrentFiles(() => uppy.getFiles())
-            setFileImportStep(FileImportStepEnum.VALIDATE)
-        }
-
-        const fileRemoved = () => {
-            const files = uppy.getFiles()
-            setCurrentFiles(files)
-            if (!files.length) {
-                setFileImportStep(FileImportStepEnum.VALIDATE)
-            }
-            const remainingFileIds = files.map((x) => x.id)
-            setUploadFileProgressInfo((prev) => prev.filter((x) => remainingFileIds.includes(x.id)))
-        }
-
-        uppy.on('file-added', fileAdded)
-        uppy.on('file-removed', fileRemoved)
-        uppy.on('restriction-failed', fileErrorCallback)
-        return () => {
-            uppy.off('file-added', fileAdded)
-            uppy.off('file-removed', fileRemoved)
-            uppy.off('restriction-failed', fileErrorCallback)
-        }
-    }, [setFileImportStep])
+    const {
+        uppy,
+        setUploadFileProgressInfo,
+        setErrorMessages,
+        currentFiles,
+        uploadFileProgressInfo,
+        handleRemoveFile,
+        handleUpload,
+        errorMessages,
+        cancelImport,
+    } = useUppy({
+        maxFileSize,
+        allowedFileTypes,
+        multiple,
+        endpointUrl,
+        setFileImportStep,
+        fileImportStep,
+    })
 
     const handleValidate = useCallback(async () => {
         uppy.setMeta({ editType: radioButtonMetaData, type: ciType, poId: selectedOrg?.poUUID, roleId: selectedRoleId })
@@ -146,46 +89,21 @@ export const FileImport: React.FC<IFileImport> = ({
         } catch (error) {
             setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
         }
-    }, [ciType, fileImportStep, radioButtonMetaData, selectedOrg?.poUUID, selectedRoleId, setFileImportStep, t])
-
-    const handleUpload = async () => {
-        uppy.getFiles().forEach((file) => {
-            uppy.setFileState(file.id, {
-                progress: { uploadComplete: false, uploadStarted: false },
-            })
-        })
-        try {
-            uppy.upload().then((result) => {
-                if (result.successful.length > 0) {
-                    setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
-                }
-
-                const successfulFilesInfo = result.successful.map((item) => ({
-                    id: item.id,
-                    error: false,
-                }))
-                const failedFilesInfo = result.failed.map((item) => ({
-                    id: item.id,
-                    error: true,
-                }))
-
-                setUploadFileProgressInfo([...successfulFilesInfo, ...failedFilesInfo])
-            })
-        } catch (error) {
-            setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
-        }
-    }
-
-    const handleRemoveFile = (fileId: string) => {
-        uppy.removeFile(fileId)
-    }
+    }, [
+        ciType,
+        fileImportStep,
+        radioButtonMetaData,
+        selectedOrg?.poUUID,
+        selectedRoleId,
+        setErrorMessages,
+        setFileImportStep,
+        setUploadFileProgressInfo,
+        t,
+        uppy,
+    ])
 
     const handleCancelImport = () => {
-        setErrorMessages([])
-        setCurrentFiles([])
-        setUploadFileProgressInfo([])
-        uppy.resetProgress()
-        uppy.setState({ files: {} })
+        cancelImport()
         setRadioButtonMetaData(FileImportEditOptions.EXISTING_ONLY)
         close()
     }

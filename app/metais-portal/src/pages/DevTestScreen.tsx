@@ -10,6 +10,7 @@ import { DocsView } from '@/components/containers/DocumentListContainer.stories'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 import { RelationsView } from '@/components/containers/RelationsListContainer.stories'
 import { ExportItemsOrRelations } from '@/components/export-items-or-relations/ExportItemsOrRelations'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 // import { ActionsOverTable } from '@/components/actions-over-table/ActionsOverTable'
 
 export const DevTestScreen: React.FC = () => {
@@ -27,7 +28,7 @@ export const DevTestScreen: React.FC = () => {
     }
 
     return (
-        <>
+        <MainContentWrapper>
             <h4>Obrazovka na testovanie komponentov</h4>
             {/* <ActionsOverTable entityName={'abc'} /> */}
             {/* <AttributesContainer
@@ -63,6 +64,6 @@ export const DevTestScreen: React.FC = () => {
                     },
                 ]}
             />
-        </>
+        </MainContentWrapper>
     )
 }

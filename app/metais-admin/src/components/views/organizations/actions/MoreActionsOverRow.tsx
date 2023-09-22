@@ -1,9 +1,9 @@
 import React from 'react'
-import { Button, ButtonPopup } from '@isdd/idsk-ui-kit/index'
+import { ButtonLink, ButtonPopup } from '@isdd/idsk-ui-kit/index'
 import { ConfigurationItemUi } from '@isdd/metais-common/api'
 import { CellContext } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { IActions } from '@/components/containers/Egov/Entity/OrganizationsListContainer'
 
@@ -14,30 +14,35 @@ type Props = {
 export const MoreActionsOverRow = ({ ctx, setInvalid }: Props & IActions) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
 
     return (
         <>
             <ButtonPopup
+                key={ctx?.row?.index}
                 popupPosition="right"
                 buttonLabel={t('actionsInTable.moreActions')}
                 popupContent={(closePopup) => {
                     return (
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <Button
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                            <ButtonLink
+                                type="button"
                                 onClick={() => {
                                     setInvalid?.(ctx?.row.original?.uuid, ctx?.row?.original?.attributes)
                                     closePopup()
                                 }}
                                 label={t('egov.detail.validityChange.setInvalid')}
                             />
-                            <Button
+                            <ButtonLink
+                                type="button"
                                 onClick={() => {
                                     navigate(`/organizations/${ctx?.row?.original?.uuid}/edit`, { state: { from: location } })
                                     closePopup()
                                 }}
                                 label={t('egov.edit')}
                             />
-                            <Button
+                            <ButtonLink
+                                type="button"
                                 onClick={() => {
                                     navigate(`/organizations/${ctx?.row?.original?.uuid}/assigned`, { state: { from: location } })
                                     closePopup()

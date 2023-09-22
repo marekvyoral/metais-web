@@ -17,6 +17,7 @@ import { ExportIcon } from '@isdd/metais-common/assets/images'
 import { downloadBlobAsFile, generateExportFileName } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 import { IconLabel } from '@isdd/metais-common/components/actions-over-table/icon-label/IconLabel'
 import { ExportItemsOrRelations } from '@isdd/metais-common/components/export-items-or-relations/ExportItemsOrRelations'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 export enum FileExtensionEnum {
     XML = 'XML',
@@ -29,6 +30,7 @@ export const ExportButton: React.FC = () => {
     const [modalOpen, setModalOpen] = useState(false)
     const { t } = useTranslation()
     const { entityName } = useParams()
+    const { currentPreferences } = useUserPreferences()
 
     const [isLoading, setLoading] = useState<boolean>(false)
 
@@ -62,9 +64,11 @@ export const ExportButton: React.FC = () => {
     const onExportStart = async (exportValue: string, extension: FileExtensionEnum) => {
         if (!entityName) return
         setLoading(true)
+
+        const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
         const filter = {
             type: [entityName],
-            metaAttributes: { state: ['DRAFT'] },
+            metaAttributes,
         }
 
         if (exportValue === 'items') {
@@ -93,7 +97,7 @@ export const ExportButton: React.FC = () => {
                 onClick={openModal}
                 className="marginBottom0"
                 variant="secondary"
-                label={<IconLabel label={t('actionOverTable.export')} icon={ExportIcon} />}
+                label={<IconLabel label={t('actionOverTable.export')} icon={ExportIcon} alt={t('exportItemsOrRelations.header')} />}
             />
             <ExportItemsOrRelations isOpen={modalOpen} close={onClose} isLoading={isLoading} onExportStart={onExportStart} />
         </>

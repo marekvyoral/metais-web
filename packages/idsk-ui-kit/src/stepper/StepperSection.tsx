@@ -4,7 +4,7 @@ import React, { useId } from 'react'
 import { StepperArrayEnum } from './Stepper'
 import styles from './stepper.module.scss'
 
-import { AlertTriangleIcon } from '@isdd/idsk-ui-kit/assets/images'
+import { AlertTriangleIcon, InfoIcon } from '@isdd/idsk-ui-kit/assets/images'
 export interface IStepLabel {
     label: string
     variant: 'circle' | 'no-outline'
@@ -17,6 +17,7 @@ export interface ISection {
     stepLabel?: IStepLabel
     content?: React.ReactNode
     error?: boolean
+    change?: boolean
 }
 
 interface IStepperSection {
@@ -67,7 +68,7 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                         </span>
                     )}
                     <div className={styles.headerDiv}>
-                        <h4 className="idsk-stepper__section-heading">
+                        <h2 className="idsk-stepper__section-heading">
                             <button
                                 type="button"
                                 id="expand-button"
@@ -79,8 +80,9 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                                 {section.title}
                                 <span className="idsk-stepper__icon" aria-hidden={currentSection === StepperArrayEnum.CLOSED} />
                             </button>
-                        </h4>
+                        </h2>
                         {section.error && <img src={AlertTriangleIcon} />}
+                        {section.change && <img src={InfoIcon} />}
                     </div>
                 </div>
 

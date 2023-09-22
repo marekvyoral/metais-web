@@ -4,6 +4,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Button, Table } from '@isdd/idsk-ui-kit'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 
 import styles from '../detailViews.module.scss'
 
@@ -27,6 +28,9 @@ export const SummarizingCard = ({ data, setSummarizingCardData }: SummCardProps)
             accessorFn: (row) => row?.attribute?.name,
             enableSorting: true,
             id: 'name',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
 
@@ -35,6 +39,9 @@ export const SummarizingCard = ({ data, setSummarizingCardData }: SummCardProps)
             accessorFn: (row) => row?.attribute?.description,
             enableSorting: true,
             id: 'description',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
 
@@ -43,6 +50,9 @@ export const SummarizingCard = ({ data, setSummarizingCardData }: SummCardProps)
             accessorFn: (row) => row?.attribute?.technicalName,
             enableSorting: true,
             id: 'technicalName',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
         {
@@ -67,11 +77,13 @@ export const SummarizingCard = ({ data, setSummarizingCardData }: SummCardProps)
                 <div className={styles.attributeGridRowBox}>
                     <div className={styles.showOwner}>
                         <div className={styles.showOwnerBox}>
-                            <InformationGridRow
-                                key={'showOwner'}
-                                label={t('egov.detail.showOwner.heading')}
-                                value={t(`egov.detail.showOwner.${data?.showOwner ?? false}`)}
-                            />
+                            <DefinitionList>
+                                <InformationGridRow
+                                    key={'showOwner'}
+                                    label={t('egov.detail.showOwner.heading')}
+                                    value={t(`egov.detail.showOwner.${data?.showOwner ?? false}`)}
+                                />
+                            </DefinitionList>
                         </div>
                         <Button
                             label={t(`egov.detail.showOwnerChange.${!data?.showOwner}`)}

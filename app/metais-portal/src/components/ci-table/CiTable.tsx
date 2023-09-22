@@ -12,6 +12,7 @@ import classNames from 'classnames'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
+import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
 
 import styles from './ciTable.module.scss'
 import {
@@ -129,7 +130,7 @@ export const CiTable: React.FC<ICiTable> = ({
                 return t(`metaAttributes.state.${ctx.getValue()}`)
             }
             case isOwner || isGroup: {
-                return getOwnerInformation(ctx.getValue() as string, data.gestorsData)?.configurationItemUi?.attributes?.[
+                return getOwnerInformation(ctx?.row?.original?.metaAttributes?.owner as string, data.gestorsData)?.configurationItemUi?.attributes?.[
                     ATTRIBUTE_NAME.Gen_Profil_nazov
                 ]
             }
@@ -149,11 +150,11 @@ export const CiTable: React.FC<ICiTable> = ({
 
             return {
                 accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],
-                header: () => <span className={classNames({ [styles.textUnderline]: index === 0 })}>{attributeHeader ?? technicalName}</span>,
+                header: () => <span>{attributeHeader ?? technicalName}</span>,
                 id: technicalName ?? '',
                 size: index === 0 ? 300 : 200,
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
-                    <TextBody size="S" className={'marginBottom0'}>
+                    <TextBody lang={setEnglishLangForAttr(technicalName ?? '')} size="S" className={'marginBottom0'}>
                         {getColumnsFromApiCellContent(index, ctx, technicalName)}
                     </TextBody>
                 ),
@@ -184,6 +185,7 @@ export const CiTable: React.FC<ICiTable> = ({
                                       onClick={(event) => event.stopPropagation()}
                                       checked={checked}
                                       containerClassName={styles.marginBottom15}
+                                      title={t('table.selectAllItems')}
                                   />
                               </div>
                           )
@@ -193,6 +195,7 @@ export const CiTable: React.FC<ICiTable> = ({
                           <div className="govuk-checkboxes govuk-checkboxes--small">
                               <CheckBox
                                   label=""
+                                  title={`checkbox_${row.id}`}
                                   name="checkbox"
                                   id={`checkbox_${row.id}`}
                                   value="true"

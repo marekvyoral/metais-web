@@ -1,4 +1,3 @@
-import { QueryFeedback } from '@isdd/metais-common'
 import {
     AttributeProfile,
     CiType,
@@ -27,6 +26,8 @@ export interface IAtrributesContainerView<T> {
     setVisibilityOfAttributeProfile?: (attributeTechnicalName?: string, oldAttributeVisibility?: boolean) => void
     entityName?: string
     saveAttribute: (formData: T) => Promise<void>
+    isLoading: boolean
+    isError: boolean
 }
 
 interface AttributesContainer<T> {
@@ -104,14 +105,14 @@ export const ProfileDetailContainer: React.FC<AttributesContainer<CiType>> = ({ 
     }
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View
-                data={{ ciTypeData, constraintsData, unitsData: undefined }}
-                setValidityOfProfile={setValidityOfProfile}
-                setValidityOfAttributeProfile={setValidityOfAttributeProfile}
-                setVisibilityOfAttributeProfile={setVisibilityOfAttributeProfile}
-                saveAttribute={saveAttribute}
-            />
-        </QueryFeedback>
+        <View
+            data={{ ciTypeData, constraintsData, unitsData: undefined }}
+            setValidityOfProfile={setValidityOfProfile}
+            setValidityOfAttributeProfile={setValidityOfAttributeProfile}
+            setVisibilityOfAttributeProfile={setVisibilityOfAttributeProfile}
+            saveAttribute={saveAttribute}
+            isLoading={isLoading}
+            isError={isError}
+        />
     )
 }

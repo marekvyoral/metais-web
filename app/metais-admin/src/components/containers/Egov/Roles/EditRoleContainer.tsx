@@ -1,4 +1,3 @@
-import { QueryFeedback } from '@isdd/metais-common'
 import { EnumType, Role, useGetValidEnum } from '@isdd/metais-common/api'
 import { OperationResult, useFindByUuid, useUpdateOrCreate } from '@isdd/metais-common/api/generated/iam-swagger'
 import React, { useState } from 'react'
@@ -19,6 +18,7 @@ export interface IRoleEditViewParams {
     >
     isLoading: boolean
     roleGroups: EnumType | undefined
+    isError: boolean
 }
 
 interface IEditEntity {
@@ -44,9 +44,7 @@ const EditRoleContainer: React.FC<IEditEntity> = ({ View }: IEditEntity) => {
     const { data: roleGroups } = useGetValidEnum(ROLES_GROUP)
 
     return (
-        <QueryFeedback loading={isLoading} error={!!updateError}>
-            <View currentRole={currentRole} roleId={id} updateRole={updateRole} isLoading={isLoading} roleGroups={roleGroups} />
-        </QueryFeedback>
+        <View currentRole={currentRole} roleId={id} updateRole={updateRole} isLoading={isLoading} roleGroups={roleGroups} isError={!!updateError} />
     )
 }
 

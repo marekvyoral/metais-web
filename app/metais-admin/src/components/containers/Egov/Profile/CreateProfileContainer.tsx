@@ -1,5 +1,4 @@
 import { SortType } from '@isdd/idsk-ui-kit/types'
-import { QueryFeedback } from '@isdd/metais-common'
 import { AttributeProfile, CiType, Role, useStoreNewAttrProfile } from '@isdd/metais-common/api'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import React from 'react'
@@ -12,6 +11,8 @@ export interface ICreateEntityView {
     }
     mutate: (data: CiType) => Promise<void>
     hiddenInputs?: Partial<HiddenInputs>
+    isLoading: boolean
+    isError: boolean
 }
 
 interface ICreateEntity {
@@ -34,14 +35,14 @@ export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreat
     }
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View
-                data={{
-                    roles: (data as Role[]) ?? [],
-                }}
-                mutate={storeProfile}
-                hiddenInputs={{ ENG_NAME: true, CODE_PREFIX: true, URI_PREFIX: true, ATTRIBUTE_PROFILES: true, SOURCES: true, TARGETS: true }}
-            />
-        </QueryFeedback>
+        <View
+            data={{
+                roles: (data as Role[]) ?? [],
+            }}
+            mutate={storeProfile}
+            hiddenInputs={{ ENG_NAME: true, CODE_PREFIX: true, URI_PREFIX: true, ATTRIBUTE_PROFILES: true, SOURCES: true, TARGETS: true }}
+            isLoading={isLoading}
+            isError={isError}
+        />
     )
 }

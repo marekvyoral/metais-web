@@ -1,17 +1,19 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourSetUi, NeighboursFilterContainerUi, useReadCiNeighbours } from '@isdd/metais-common/api'
-import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourSetUi, NeighboursFilterUi, useReadCiNeighbours } from '@isdd/metais-common/api'
+import { INeighboursFilter, mapFilterToRelationApi } from '@isdd/metais-common/api/filter/filterApi'
 import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelationshipTabFilters'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
+import { NeighboursApiType } from '@/components/views/relationships/RelationshipsAccordion'
 import { mapNeighboursSetSourceToPagination, mapNeighboursSetTargetToPagination } from '@/componentHelpers/pagination'
-import { NeighboursApiType } from '@/components/containers/RelationshipFilters'
 
 interface ICiNeighboursListContainerView {
     data?: NeighbourSetUi
     pagination: Pagination
-    handleFilterChange: (filter: IFilter) => void
+    filter?: IFilter
+    apiFilterData?: NeighboursFilterUi
+    handleFilterChange: (filter: INeighboursFilter) => void
     isLoading: boolean
     isError: boolean
 }
@@ -29,13 +31,13 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
 }) => {
     const { entityName } = useParams()
 
-    const [uiFilterState, setUiFilterState] = useState<IFilter>({
+    const [uiFilterState, setUiFilterState] = useState<INeighboursFilter>({
         pageNumber: BASE_PAGE_NUMBER,
         pageSize: BASE_PAGE_SIZE,
         sort: [],
     })
 
-    const handleFilterChange = (filter: IFilter) => {
+    const handleFilterChange = (filter: INeighboursFilter) => {
         setUiFilterState({
             ...uiFilterState,
             ...filter,
@@ -55,7 +57,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         isLoading,
         isError,
         data: documentCiData,
-    } = useReadCiNeighbours(configurationItemId ?? '', mapFilterToNeighborsApi<NeighboursFilterContainerUi>(uiFilterState, selectedRequestApi), {})
+    } = useReadCiNeighbours(configurationItemId ?? '', mapFilterToRelationApi(uiFilterState, selectedRequestApi), {})
 
     const pagination =
         apiType === NeighboursApiType.source
@@ -67,6 +69,8 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         <View
             data={documentCiData}
             pagination={pagination}
+            filter={uiFilterState}
+            apiFilterData={selectedRequestApi.neighboursFilter}
             handleFilterChange={handleFilterChange}
             isLoading={isLoading || isEntityRelationsLoading}
             isError={isError || isEntityRelationsError}

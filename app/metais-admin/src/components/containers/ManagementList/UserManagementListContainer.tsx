@@ -1,16 +1,16 @@
 import React, { useCallback } from 'react'
 import { useFindPages, useFind1, useUpdateIdentityState, useExportIdentities } from '@isdd/metais-common/api/generated/iam-swagger'
-import { QueryFeedback, MutationFeedback, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common'
 import { useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useMutation } from '@tanstack/react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useRevokeUserBatch } from '@isdd/metais-common/hooks/useRevokeUser'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useGetOrganizationsForIdentitiesList } from '@isdd/metais-common/hooks/useGetOrganizationsForIdentitiesList'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import {
     UserManagementFilterData,
@@ -31,7 +31,6 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
     } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
-    const { t } = useTranslation()
     const { filter, handleFilterChange } = useFilterParams<UserManagementFilterData>({
         sort: [
             {
@@ -85,6 +84,12 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
         uuids: identitiesUuids,
     })
 
+    const { currentPreferences } = useUserPreferences()
+
+    const metaAttributes = currentPreferences.showInvalidatedItems
+        ? { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'] }
+        : { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'] }
+
     const {
         data: ciListData,
         isLoading: isLoadingCiList,
@@ -95,9 +100,7 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
             page: 1,
             perpage: 9999,
             filter: {
-                metaAttributes: {
-                    state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'],
-                },
+                metaAttributes,
                 type: ['PO'],
                 uuid: extractOrganizationsUuidsFromList(organizationsForListData),
             },
@@ -194,30 +197,20 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
     }
 
     return (
-        <>
-            <QueryFeedback
-                loading={isLoadingExport && isFetchingExport}
-                error={isErrorExport}
-                errorProps={{ errorMessage: t('userManagement.error.export') }}
-                indicatorProps={{ fullscreen: true, label: t('loading.export') }}
-            />
-            <QueryFeedback
-                loading={isLoading}
-                error={isQueryError}
-                errorProps={{ errorMessage: t('userManagement.error.query') }}
-                indicatorProps={{ fullscreen: true }}
-            >
-                <MutationFeedback success={isMutationSuccess} error={isMutationError && t('userManagement.error.mutation')} />
-                <View
-                    data={data}
-                    filter={filter ?? defaultFilterValues}
-                    handleFilterChange={handleFilterChange}
-                    handleRowAction={handleRowAction}
-                    handleBlockRowsAction={handleBlockRowsAction}
-                    handleExport={handleExport}
-                />
-            </QueryFeedback>
-        </>
+        <View
+            data={data}
+            filter={filter ?? defaultFilterValues}
+            handleFilterChange={handleFilterChange}
+            handleRowAction={handleRowAction}
+            handleBlockRowsAction={handleBlockRowsAction}
+            handleExport={handleExport}
+            isLoading={isLoading}
+            isError={isQueryError}
+            isLoadingExport={isLoadingExport && isFetchingExport}
+            isErrorExport={isErrorExport}
+            isMutationError={isMutationError}
+            isMutationSuccess={isMutationSuccess}
+        />
     )
 }
 

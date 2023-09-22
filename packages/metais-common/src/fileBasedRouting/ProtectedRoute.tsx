@@ -24,7 +24,7 @@ const ProtectedRoute = ({ element, slug }: iProtectedRoute) => {
         else setNotAuthorized(false)
     }, [isUserLogged, navigate, selectedAbility, isCannotReadPage, setNotAuthorized, auth])
 
-    if (notAuthorized) return <Navigate to={'/home'} />
+    if (notAuthorized) return <Navigate to={'/'} />
 
     return element
 }

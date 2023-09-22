@@ -7,6 +7,10 @@ $formMaxHeight: 500px;
     gap: govuk-spacing(3);
 }
 
+.width100 {
+    width: 100% !important;
+}
+
 .expandButton {
     width: 200px;
     display: flex;

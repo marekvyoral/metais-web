@@ -4,8 +4,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useLocation, useNavigate } from 'react-router-dom'
-
-import styles from './userView.module.scss'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 
 interface IUserDetail {
     userData: Identity | undefined
@@ -31,11 +30,11 @@ export const UserDetail: React.FC<IUserDetail> = ({ userData, userId }) => {
     return (
         <>
             <TextHeading size="L">{t('managementList.detailHeading')}</TextHeading>
-            <div className={styles.attributeGridRowBox}>
+            <DefinitionList>
                 {detailRows.map((item, index) => (
                     <InformationGridRow key={index} label={item.label} value={item.value} hideIcon />
                 ))}
-            </div>
+            </DefinitionList>
             <Button label={t('managementList.edit')} onClick={() => navigate('/managementlist/edit/' + userId, { state: { from: location } })} />
         </>
     )

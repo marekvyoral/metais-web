@@ -10,17 +10,24 @@ import { createRoot } from 'react-dom/client'
 import { I18nextProvider } from 'react-i18next'
 import { BrowserRouter } from 'react-router-dom'
 import { ActionSuccessProvider } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { UserPreferencesProvider } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import { App } from '@/App'
 import '@/index.scss'
 import { reportWebVitals } from '@/reportWebVitals'
 
 document.body.classList.add('js-enabled')
+
 const root = createRoot(document.getElementById('root') as HTMLElement)
+const CACHE_TIME = import.meta.env.VITE_CACHE_TIME
+const STALE_TIME = import.meta.env.VITE_CACHE_TIME
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            refetchOnWindowFocus: false,
+            enabled: true,
+            keepPreviousData: true,
+            staleTime: CACHE_TIME,
+            cacheTime: STALE_TIME,
         },
     },
 })
@@ -34,9 +41,11 @@ root.render(
                         <AuthContextProvider>
                             <FilterContextProvider>
                                 <ActionSuccessProvider>
-                                    <DndProvider backend={HTML5Backend}>
-                                        <App />
-                                    </DndProvider>
+                                    <UserPreferencesProvider>
+                                        <DndProvider backend={HTML5Backend}>
+                                            <App />
+                                        </DndProvider>
+                                    </UserPreferencesProvider>
                                 </ActionSuccessProvider>
                             </FilterContextProvider>
                         </AuthContextProvider>

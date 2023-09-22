@@ -250,6 +250,31 @@
             "addConnection": "Pridať prepojenie",
             "addAttribute": "Pridať atribút",
             "back": "Späť na zoznam profilov atribútov"
+        },
+        "entity": {
+            "editHeader": "Editácia entity",
+            "createHeader": "Vytvorenie nového typu entity",
+            "detailHeading": "Detail entity"
+        },
+        "profile": {
+            "editHeader": "Editácia profilu atribútov",
+            "createHeader": "Vytvorenie nového profilu atribútov",
+            "detailHeading": "Detail profilu"
+        },
+        "relation": {
+            "editHeader": "Editácia vzťahu",
+            "createHeader": "Vytvorenie nového vzťahu",
+            "detailHeading": "Detail vzťahu"
+        },
+        "rolesMain": {
+            "editHeader": "Editácia rolí",
+            "createHeader": "Vytvorenie rolí",
+            "detailHeading": "Detail role"
+        },
+        "addNew": {
+            "entity": "Pridať novú entitu",
+            "profile": "Pridať nový profil",
+            "relation": "Pridať nový vzťah"
         }
     },
     "userManagement": {
@@ -270,7 +295,7 @@
         "addNewUser": "Pridať nového použivateľa",
         "actions": "Úkony",
         "filter": {
-            "state": "Blokovanie",
+            "state": "Stav",
             "stateLabel": {
                 "all": "Všetky",
                 "blocked": "Blokované",
@@ -436,12 +461,18 @@
         "settings": "Nastavenia profilu",
         "admin": "Administrácia",
         "organizations": "Správa povinných osôb",
-        "userManagement": "Správa používateľov",
+        "userManagement": {
+            "userManagement": "Správa používateľov",
+            "requestList": "Žiadosti",
+            "gdprRequestList": "Žiadosti na vymazanie osobných údajov",
+            "registrationRequestList": "Registrácie"
+        },
+        "roleManagement": "Správa rolí",
         "egov": {
+            "egov": "Správa eGov komponentov",
             "entity": "Entity",
             "profiles": "Profily atribútov",
-            "relations": "Vzťahy",
-            "roleManagement": "Správa rolí"
+            "relations": "Vzťahy"
         },
         "eko": "Správa EKO kódov",
         "tooltips": "Tooltipy",
@@ -631,8 +662,74 @@
         "loadingSubPage": "Načítavám podstránku",
         "export": "Preparing export"
     },
+    "requestList": {
+        "title": "Zoznam žiadostí",
+        "registrationLitle": "Zoznam registrácií",
+        "gdprTitle": "Zoznam žiadostí",
+        "fullName": "Meno a priezvisko",
+        "identityLogin": "Login",
+        "telephone": "Telefón",
+        "mobile": "Mobil",
+        "email": "Email",
+        "createdAt": "Vytvorené",
+        "claimState": "Stav žiadosti",
+        "poName": "Povinná osoba",
+        "filter": {
+            "all": "Všetky",
+            "created": "Vytvorené",
+            "accepted": "Akceptovaná",
+            "rejected": "Odmietnutá"
+        },
+        "identityDetail": "Detail identity",
+        "rolesDetail": "Priradenie rolí k používateľovi",
+        "addRolesDetail": "Zoznam priradených rolí k používateľovi",
+        "requestDetail": "Detailné informácie o žiadosti",
+        "anonymizeBtn": "Anonymizovať údaje",
+        "deleteBtn": "Vymazanie používateľa",
+        "backBtn": "Späť",
+        "description": "Popis",
+        "decisionReason": "Dôvod zamietnutia",
+        "approve": "Schváliť",
+        "decline": "Zamietnuť",
+        "modalLabel": "Zamietnutie žiadosti",
+        "modalTextPlaceHolder": "Sem môžete napísať dôvod zamietnutia žiadosti"
+    },
     "errors": {
         "default": "Ups, niečo sa pokazilo.",
         "gnr403": "Na volanie nemáte oprávnenie."
+    },
+    "todo": {
+        "header": "Vo výstavbe",
+        "homeButton": "Domovská stránka"
+    },
+    "breadcrumbs": {
+        "home": "Domov",
+        "ciEdit": "Editácia {{itemName}}",
+        "noName": "Bez mena",
+        "ciCreate": "Vytvorenie novej entity",
+        "newRelation": "Pridanie nového vzťahu k {{itemName}}",
+        "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}"
+    },
+    "userProfile": {
+        "heading": "Profil a oprávnenia",
+        "changeInformationsButton": "Upraviť informácie",
+        "information": {
+            "header": "Moje informácie",
+            "name": "Meno",
+            "position": "Funkcia",
+            "phoneNumber": "Telefónne číslo",
+            "email": "Emailová adresa"
+        },
+        "settings": "Osobné preferencie",
+        "rights": "Oprávnenia",
+        "notificationsSettings": "Správa notifikácií",
+        "passwordChange": "Zmena hesla",
+        "save": "Uložiť",
+        "cancel": "Zrušiť",
+        "showInvalidated": "Zobraziť zneplatnené položky",
+        "savePreferences": "Uložiť nastavenia",
+        "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené",
+        "changedUserInformation": "Osobné informácie boli úspešne zmenené",
+        "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova."
     }
 }

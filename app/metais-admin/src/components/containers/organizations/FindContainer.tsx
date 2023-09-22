@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { ConfigurationItemSetUi, useReadCiList1 } from '@isdd/metais-common/api'
 import { CsruOrganization, useGetOrganizationFromCsru } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 export interface iFindView {
     data: {
@@ -16,6 +17,12 @@ interface ICreateEntity {
 
 export const FindContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
     const [ico, setIco] = useState<string>()
+    const { currentPreferences } = useUserPreferences()
+
+    const metaAttributes = currentPreferences.showInvalidatedItems
+        ? { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'] }
+        : { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'] }
+
     const defaultRequestApi = {
         filter: {
             type: ['PO'],
@@ -30,9 +37,7 @@ export const FindContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) 
                     ],
                 },
             ],
-            metaAttributes: {
-                state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'],
-            },
+            metaAttributes,
         },
     }
 

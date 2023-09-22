@@ -15,6 +15,7 @@ const EditRole: React.FC = () => {
                     currentRole={props.currentRole}
                     roleId={props.roleId}
                     isLoading={props.isLoading}
+                    isError={props.isError}
                     updateRole={props.updateRole}
                     roleGroups={props.roleGroups}
                 />

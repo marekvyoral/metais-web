@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { AuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ProfileIcon } from '@isdd/metais-common/assets/images'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
+import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 export const NavProfile: React.FC = () => {
     const { t } = useTranslation()
@@ -26,7 +27,7 @@ export const NavProfile: React.FC = () => {
                 'idsk-header-web__main--login-action': !user,
             })}
         >
-            <img className="idsk-header-web__main--login-action-profile-img" src={ProfileIcon} alt="Profile image" />
+            <img className="idsk-header-web__main--login-action-profile-img" src={ProfileIcon} alt="User profile icon" />
             <div className="idsk-header-web__main--login-action-text">
                 {user?.displayName && <span className="govuk-body-s idsk-header-web__main--login-action-text-user-name">{user.displayName}</span>}
                 <div className="govuk-!-margin-bottom-1">
@@ -51,7 +52,7 @@ export const NavProfile: React.FC = () => {
                             'idsk-header-web__main--login-action-text-profile',
                             user ? 'idsk-header-web__main--login-profilebtn--active' : 'idsk-header-web__main--login-profilebtn',
                         )}
-                        to="#"
+                        to={RouteNames.USER_PROFILE}
                         title={t('navbar.profile')}
                     >
                         {t('navbar.profile')}

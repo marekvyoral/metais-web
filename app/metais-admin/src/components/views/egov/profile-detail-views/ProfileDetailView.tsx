@@ -8,11 +8,10 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import styles from '../detailViews.module.scss'
-
 import { MoreActionsColumn } from './actions/MoreActionsColumn'
 import { AddAttributeModal } from './attributes/AddAttributeModal'
 
+import styles from '@/components/views/egov/detailViews.module.scss'
 import { IAtrributesContainerView } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
 import { BasicInformations } from '@/components/views/egov/BasicInformations'
 
@@ -64,6 +63,9 @@ export const ProfileDetailView = <T,>({
             accessorFn: (row) => row?.name,
             enableSorting: true,
             id: 'name',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
                     <Input {...register(`attributes.${ctx?.row?.index}.name`)} />
@@ -76,6 +78,9 @@ export const ProfileDetailView = <T,>({
             accessorFn: (row) => row?.engName,
             enableSorting: true,
             id: 'engName',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
                     <Input {...register(`attributes.${ctx?.row?.index}.engName`)} />
@@ -88,6 +93,9 @@ export const ProfileDetailView = <T,>({
             accessorFn: (row) => row?.description,
             enableSorting: true,
             id: 'description',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
                     <Input {...register(`attributes.${ctx?.row?.index}.description`)} />
@@ -100,6 +108,9 @@ export const ProfileDetailView = <T,>({
             accessorFn: (row) => row?.engDescription,
             enableSorting: true,
             id: 'engDescription',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
                     <Input {...register(`attributes.${ctx?.row?.index}.engDescription`)} />
@@ -124,6 +135,9 @@ export const ProfileDetailView = <T,>({
             accessorFn: (row) => row?.technicalName,
             enableSorting: true,
             id: 'technicalName',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
         {
@@ -155,6 +169,9 @@ export const ProfileDetailView = <T,>({
             accessorFn: (row) => row?.defaultValue,
             enableSorting: true,
             id: 'defaultValue',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
                     <Input {...register(`attributes.${ctx?.row?.index}.defaultValue`)} />

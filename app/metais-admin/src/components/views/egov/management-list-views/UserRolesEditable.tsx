@@ -33,11 +33,17 @@ export const UserRolesEditable: React.FC<IUserRoles> = ({ editedUserOrgAndRoles,
             id: RoleTableSummaryEnum.ROLE,
             accessorKey: RoleTableSummaryEnum.ROLE,
             header: t('managementList.tableHeaderRole'),
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
         },
         {
             id: RoleTableSummaryEnum.DESCRIPTION,
             accessorKey: RoleTableSummaryEnum.DESCRIPTION,
             header: t('managementList.tableHeaderDescription'),
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
         },
         {
             id: RoleTableSummaryEnum.DELETE,

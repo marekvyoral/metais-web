@@ -1,4 +1,4 @@
-import { BaseModal, Button, ButtonPopup, CheckBox, Input, PaginatorWrapper, SimpleSelect, Table, TextArea } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Button, ButtonLink, ButtonPopup, CheckBox, Input, PaginatorWrapper, SimpleSelect, Table, TextArea } from '@isdd/idsk-ui-kit/index'
 import { EnumTypePreview, EnumTypePreviewList } from '@isdd/metais-common/api'
 import { BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { useLocation, Link } from 'react-router-dom'
@@ -133,6 +133,9 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             accessorFn: (row) => row?.code,
             enableSorting: true,
             id: 'code',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
                     <Input
@@ -151,6 +154,9 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             accessorFn: (row) => row?.name,
             enableSorting: true,
             id: 'name',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
                     <Input
@@ -166,6 +172,9 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             accessorFn: (row) => row?.description,
             enableSorting: true,
             id: 'description',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
                     <TextArea
@@ -229,13 +238,25 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                 } else if (isRowSelected(ctx?.row?.index + indexModificator, selectedRows)) {
                     return (
                         <ButtonPopup
+                            key={ctx?.row?.index}
                             buttonLabel={t('codelists.actions')}
-                            popupContent={() => (
+                            popupPosition="right"
+                            popupContent={(closePopup) => (
                                 <div className={styles.actions}>
-                                    <Button onClick={() => handleSaveCodelist(ctx?.row?.index + indexModificator)} label={t('codelists.save')} />
-                                    <Button
-                                        variant="secondary"
-                                        onClick={() => cancelEditing(ctx?.row?.index + indexModificator)}
+                                    <ButtonLink
+                                        type="button"
+                                        onClick={() => {
+                                            handleSaveCodelist(ctx?.row?.index + indexModificator)
+                                            closePopup()
+                                        }}
+                                        label={t('codelists.save')}
+                                    />
+                                    <ButtonLink
+                                        type="button"
+                                        onClick={() => {
+                                            cancelEditing(ctx?.row?.index + indexModificator)
+                                            closePopup()
+                                        }}
                                         label={t('codelists.cancel')}
                                     />
                                 </div>
@@ -245,11 +266,27 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                 } else
                     return (
                         <ButtonPopup
+                            key={ctx?.row?.index}
                             buttonLabel={t('codelists.actions')}
-                            popupContent={() => (
+                            popupPosition="right"
+                            popupContent={(closePopup) => (
                                 <div className={styles.actions}>
-                                    <Button onClick={() => editRow(ctx?.row?.index + indexModificator)} label={t('codelists.edit')} />
-                                    <Button variant="warning" onClick={() => handleDelete(rowObject.code ?? '')} label={t('codelists.delete')} />
+                                    <ButtonLink
+                                        type="button"
+                                        onClick={() => {
+                                            editRow(ctx?.row?.index + indexModificator)
+                                            closePopup()
+                                        }}
+                                        label={t('codelists.edit')}
+                                    />
+                                    <ButtonLink
+                                        type="button"
+                                        onClick={() => {
+                                            handleDelete(rowObject.code ?? '')
+                                            closePopup()
+                                        }}
+                                        label={t('codelists.delete')}
+                                    />
                                 </div>
                             )}
                         />

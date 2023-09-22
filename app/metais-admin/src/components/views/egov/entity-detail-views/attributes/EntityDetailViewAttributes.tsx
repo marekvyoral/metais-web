@@ -5,6 +5,7 @@ import { Button, Input, Table } from '@isdd/idsk-ui-kit'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 
 import styles from '../../detailViews.module.scss'
 
@@ -54,6 +55,9 @@ export const EntityDetailViewAttributes = ({
             accessorFn: (row) => row?.name,
             enableSorting: true,
             id: 'name',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
                     <Input id="name" {...register(`attributes.${ctx?.row?.index}.name`)} />
@@ -66,6 +70,9 @@ export const EntityDetailViewAttributes = ({
             accessorFn: (row) => row?.description,
             enableSorting: true,
             id: 'description',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
                     <Input id="name" {...register(`attributes.${ctx?.row?.index}.description`)} />
@@ -79,6 +86,9 @@ export const EntityDetailViewAttributes = ({
             accessorFn: (row) => row?.technicalName,
             enableSorting: true,
             id: 'technicalName',
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
         {
@@ -129,14 +139,14 @@ export const EntityDetailViewAttributes = ({
                         onClick={() => removeProfileAttribute(data?.technicalName ?? '')}
                     />
                 )}
-                <div className={styles.attributeGridRowBox}>
+                <DefinitionList>
                     <InformationGridRow key={'name'} label={t('egov.name')} value={data?.name} />
                     <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={data?.technicalName} />
                     <InformationGridRow key={'type'} label={t('egov.type')} value={t(`type.${data?.type}`)} />
                     <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`validity.${data?.valid}`)} />
                     <InformationGridRow key={'description'} label={t('egov.description')} value={data?.description} />
                     <InformationGridRow key={'roles'} label={t('egov.roles')} value={data?.roleList} />
-                </div>
+                </DefinitionList>
             </div>
             <h3 className="govuk-heading-m">{t('egov.detail.profileAttributes')}</h3>
             <div>

@@ -50,7 +50,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label} {required && t('input.requiredField')}
                     </label>
-                    {info && <Tooltip descriptionElement={info} />}
+                    {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
                 </div>
 
                 {hint && (

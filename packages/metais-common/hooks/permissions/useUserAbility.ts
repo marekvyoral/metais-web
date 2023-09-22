@@ -12,11 +12,13 @@ export enum Actions {
     CREATE = 'create',
     EDIT = 'edit',
     CHANGE_OWNER = 'change_owner',
+    HISTORY = 'history',
+    BULK_ACTIONS = 'bulk_actions',
 }
 
 export const ADMIN = 'R_ADMIN'
 
-export const CANNOT_READ_ENTITY = ['ulohy', 'notifications']
+export const CANNOT_READ_ENTITY = ['ulohy', 'notifications', 'codelists/list']
 
 const defineAbilityForUser = (roles: string[] = [], entityName: string, create?: boolean) => {
     const { can, build } = new AbilityBuilder(createMongoAbility)
@@ -27,12 +29,15 @@ const defineAbilityForUser = (roles: string[] = [], entityName: string, create?:
         can(Actions.EXPORT, entityName)
         can(Actions.IMPORT, entityName)
         can(Actions.SELECT_COLUMNS, entityName)
+        can(Actions.HISTORY, entityName)
+        can(Actions.BULK_ACTIONS, entityName)
     } else if (roles?.length > 0) {
         can(Actions.READ, entityName)
         if (create) can(Actions.CREATE, entityName)
         can(Actions.EXPORT, entityName)
         can(Actions.IMPORT, entityName)
         can(Actions.SELECT_COLUMNS, entityName)
+        can(Actions.BULK_ACTIONS, entityName)
     }
 
     return build()

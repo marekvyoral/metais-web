@@ -5,9 +5,8 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import React, { useCallback, useEffect, useState } from 'react'
 import { UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { OptionProps, components } from 'react-select'
-
-import style from './selectFilterMainGestor.module.scss'
+import { OptionProps } from 'react-select'
+import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 
 import { CodeListListFilterData } from '@/components/containers/CodeListListContainer'
 
@@ -24,12 +23,12 @@ interface SelectFilterMainGestorProps {
 
 const formatOption = (optionProps: OptionProps<SelectFilterMainGestorOptionType>) => {
     return (
-        <components.Option {...optionProps} className={style.selectOption}>
+        <Option {...optionProps}>
             <div>{optionProps.data.name}</div>
             <span>
                 <small>{optionProps.data.address}</small>
             </span>
-        </components.Option>
+        </Option>
     )
 }
 
@@ -103,7 +102,7 @@ export const SelectFilterOrganization: React.FC<SelectFilterMainGestorProps> = (
                 getOptionLabel={(item) => item.name}
                 getOptionValue={(item) => item.uuid}
                 loadOptions={(searchQuery, _prevOptions, additional) => loadOptions(searchQuery, additional)}
-                label={t('codeList.filter.mainGestor')}
+                label={t('codeListList.filter.mainGestor')}
                 name="mainGestorPoUuid"
                 option={(ctx) => formatOption(ctx)}
                 setValue={setValue}

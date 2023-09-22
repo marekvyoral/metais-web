@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import { useFind2111 } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useGetNotificationList } from '@isdd/metais-common/api/generated/notifications-swagger'
+import { NotificationIcon } from '@isdd/metais-common/assets/images'
 import { NavBarHeader } from '@isdd/metais-common/components/navbar/navbar-header/NavBarHeader'
+import { IconWithNotification } from '@isdd/metais-common/components/navbar/navbar-main/IconWithNotification'
 import { NavBarMain } from '@isdd/metais-common/components/navbar/navbar-main/NavBarMain'
 import { NavMenu } from '@isdd/metais-common/components/navbar/navmenu/NavMenu'
-import { useTranslation } from 'react-i18next'
-import { useGetNotificationList } from '@isdd/metais-common/api/generated/notifications-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { NotificationIcon } from '@isdd/metais-common/assets/images'
-import { IconWithNotification } from '@isdd/metais-common/components/navbar/navbar-main/IconWithNotification'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 
-import { getPortalNavitagionItems } from './navigationItems'
+import { getPortalNavigationItems } from './navigationItems'
 
 import { TasksPopup } from '@/components/tasks-popup/TasksPopup'
 
@@ -25,12 +27,16 @@ export const Navbar: React.FC = () => {
     const Notifications = () => (
         <IconWithNotification
             onClick={() => undefined}
-            title={t('navbar.factChecker')}
+            title={t('navbar.notifications')}
             src={NotificationIcon}
             count={notificationsData?.pagination?.totalUnreadedItems ?? 0}
             path={NavigationSubRoutes.NOTIFICATIONS}
+            showAsLink
+            altText={t('navbar.notifications')}
         />
     )
+
+    const { data: ksisvsGroup } = useFind2111({ shortName: KSIVS_SHORT_NAME })
 
     const iconGroupItems: React.FC[] = [TasksPopup, Notifications]
 
@@ -46,7 +52,11 @@ export const Navbar: React.FC = () => {
 
                     <div className="idsk-header-web__nav--divider" />
 
-                    <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={getPortalNavitagionItems(t)} />
+                    <NavMenu
+                        isMenuExpanded={isMenuExpanded}
+                        setIsMenuExpanded={setIsMenuExpanded}
+                        navItems={getPortalNavigationItems(t, !!user, Array.isArray(ksisvsGroup) ? ksisvsGroup[0].uuid : ksisvsGroup?.uuid)}
+                    />
                 </div>
             </header>
         </>

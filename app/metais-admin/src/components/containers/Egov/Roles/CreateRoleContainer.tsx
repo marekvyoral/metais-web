@@ -1,7 +1,6 @@
 import { EnumType, Role, useGetValidEnum } from '@isdd/metais-common/api'
 import { OperationResult, useUpdateOrCreate } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ROLES_GROUP } from '@isdd/metais-common/constants'
-import { QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { MutateOptions } from '@tanstack/react-query'
 import React from 'react'
@@ -24,6 +23,8 @@ export interface ICreateRoleViewParams {
               >
             | undefined,
     ) => void
+    isLoading: boolean
+    isError: boolean
 }
 
 interface ICreateRole {
@@ -47,11 +48,7 @@ const CreateRoleContainer: React.FC<ICreateRole> = ({ View }) => {
 
     const { data: roleGroups } = useGetValidEnum(ROLES_GROUP)
 
-    return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <View roleGroups={roleGroups} createRole={createRole} />
-        </QueryFeedback>
-    )
+    return <View roleGroups={roleGroups} createRole={createRole} isLoading={isLoading} isError={isError} />
 }
 
 export default CreateRoleContainer

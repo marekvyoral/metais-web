@@ -8,9 +8,12 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
 import { AuthContextProvider } from '@isdd/metais-common/contexts/auth/authContext'
 import { FilterContextProvider } from '@isdd/metais-common/contexts/filter/filterContext'
+import { ActionSuccessProvider } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { UserPreferencesProvider } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import { App } from '@/App'
 import { reportWebVitals } from '@/reportWebVitals'
+
 import './index.scss'
 
 document.body.classList.add('js-enabled')
@@ -30,9 +33,13 @@ root.render(
                 <QueryClientProvider client={queryClient}>
                     <AuthContextProvider>
                         <FilterContextProvider>
-                            <DndProvider backend={HTML5Backend}>
-                                <App />
-                            </DndProvider>
+                            <ActionSuccessProvider>
+                                <UserPreferencesProvider>
+                                    <DndProvider backend={HTML5Backend}>
+                                        <App />
+                                    </DndProvider>
+                                </UserPreferencesProvider>
+                            </ActionSuccessProvider>
                         </FilterContextProvider>
                     </AuthContextProvider>
                 </QueryClientProvider>

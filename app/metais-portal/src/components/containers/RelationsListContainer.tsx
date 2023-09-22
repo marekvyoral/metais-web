@@ -5,6 +5,7 @@ import { IKeyToDisplay, useEntityRelationsTypesCount } from '@isdd/metais-common
 import React, { SetStateAction, useEffect, useMemo, useState } from 'react'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { mapFilterToNeighboursWithAllRelsApi } from '@isdd/metais-common/componentHelpers'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 export interface IRelationsView {
     isLoading: boolean
@@ -33,19 +34,21 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
         keysToDisplay,
         data: entityTypes,
     } = useEntityRelationsTypesCount(entityId, technicalName)
-
+    const { currentPreferences } = useUserPreferences()
     const defaultCiType = keysToDisplay?.[0]?.technicalName
     const defaultCiTypes: string[] = useMemo((): string[] => {
         return defaultCiType ? [defaultCiType] : []
     }, [defaultCiType])
+
     const defaultPageConfig: ReadCiNeighboursWithAllRelsParams = useMemo(() => {
+        const state = currentPreferences.showInvalidatedItems ? ['DRAFT', 'INVALIDATED'] : ['DRAFT']
         return {
             ciTypes: defaultCiTypes,
             page: BASE_PAGE_NUMBER,
             perPage: BASE_PAGE_SIZE,
-            state: ['DRAFT'],
+            state,
         }
-    }, [defaultCiTypes])
+    }, [currentPreferences.showInvalidatedItems, defaultCiTypes])
 
     const [pageConfig, setPageConfig] = useState<ReadCiNeighboursWithAllRelsParams>(defaultPageConfig)
 

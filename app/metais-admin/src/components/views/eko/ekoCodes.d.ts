@@ -7,12 +7,16 @@ export type TEkoCodeDecorated = EkoCode & {
 export interface IEkoEditView {
     data?: TEkoCodeDecorated
     mutate: (ekoCode: EkoCode) => Promise<void>
+    isLoading: boolean
+    isError: boolean
 }
 
 export interface IEkoCreateView {
     data: EkoCodeDecorated[]
     editData?: TEkoCodeDecorated
     mutate: (ekoCode: EkoCode) => Promise<void>
+    isLoading: boolean
+    isError: boolean
 }
 
 export interface IForm {
@@ -22,6 +26,8 @@ export interface IForm {
 
 export interface IEkoDetailView {
     data: EkoCodeDecorated | undefined
+    isLoading: boolean
+    isError: boolean
 }
 
 type IListData = {

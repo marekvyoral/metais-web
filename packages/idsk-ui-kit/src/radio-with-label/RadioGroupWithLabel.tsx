@@ -18,9 +18,7 @@ export const RadioGroupWithLabel = forwardRef<HTMLDivElement, IRadioWithLabelPro
         const hintId = `${id}-hint`
         return (
             <div className={classNames(className, 'govuk-form-group', { 'govuk-form-group--error': !!error })}>
-                <label className="govuk-label" htmlFor={id}>
-                    {label}
-                </label>
+                <label className="govuk-label">{label}</label>
                 {hint && (
                     <span className="govuk-hint" id={hintId}>
                         {hint}

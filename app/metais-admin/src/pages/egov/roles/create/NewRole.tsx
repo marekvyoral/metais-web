@@ -4,7 +4,13 @@ import CreateRoleContainer from '@/components/containers/Egov/Roles/CreateRoleCo
 import { RoleCreateView } from '@/components/views/egov/roles-detail-views/RoleCreateView'
 
 const NewRolePage: React.FC = () => {
-    return <CreateRoleContainer View={(props) => <RoleCreateView createRole={props.createRole} roleGroups={props.roleGroups} />} />
+    return (
+        <CreateRoleContainer
+            View={(props) => (
+                <RoleCreateView isError={props.isError} isLoading={props.isLoading} createRole={props.createRole} roleGroups={props.roleGroups} />
+            )}
+        />
+    )
 }
 
 export default NewRolePage

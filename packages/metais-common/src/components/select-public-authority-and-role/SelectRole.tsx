@@ -1,5 +1,5 @@
 import { SimpleSelect } from '@isdd/idsk-ui-kit'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { HierarchyRightsUi } from '@isdd/metais-common/api'
@@ -23,22 +23,32 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
         data: rightsForPOData,
         isLoading: isRightsForPOLoading,
         isError: isRightsForPOError,
-    } = useGetRightsForPO({ identityUuid: user.state.user?.uuid ?? '', cmdbId: selectedOrg?.poUUID ?? '' })
+    } = useGetRightsForPO(
+        { identityUuid: user.state.user?.uuid ?? '', cmdbId: selectedOrg?.poUUID ?? '' },
+        { query: { enabled: !!selectedOrg?.poUUID } },
+    )
+
+    const currentOrganizationsRoles = user.state.user?.groupData.find((org) => org.orgId === selectedOrg?.poUUID)?.roles
+    const roleSelectOptions = useMemo(() => {
+        return (
+            rightsForPOData
+                ?.filter((role) => currentOrganizationsRoles?.find((currentRole) => currentRole.roleUuid === role.roleUuid))
+                .map((role: GidRoleData) => ({ value: role.roleUuid ?? '', label: role.roleDescription ?? '' })) ?? []
+        )
+    }, [rightsForPOData, currentOrganizationsRoles])
 
     useEffect(() => {
-        if (rightsForPOData && rightsForPOData.length > 0 && selectedRoleId === '') {
-            const firstValue = rightsForPOData?.[0]?.roleUuid
+        if (roleSelectOptions && roleSelectOptions.length > 0 && selectedRoleId === '') {
+            const firstValue = roleSelectOptions[0].value
             if (firstValue) {
                 onChangeRole(firstValue)
                 setDefaultValue(firstValue)
             }
+        } else if (roleSelectOptions.length === 0 && selectedRoleId !== '') {
+            onChangeRole('')
+            setDefaultValue('')
         }
-    }, [onChangeRole, rightsForPOData, selectedRoleId])
-
-    const currentOrganizationsRoles = user.state.user?.groupData.find((org) => org.orgId === selectedOrg?.poUUID)?.roles
-    const roleSelectOptions = rightsForPOData
-        ?.filter((role) => currentOrganizationsRoles?.find((currentRole) => currentRole.roleUuid === role.roleUuid))
-        .map((role: GidRoleData) => ({ value: role.roleUuid ?? '', label: role.roleDescription ?? '' })) ?? [{ value: '', label: '' }]
+    }, [onChangeRole, roleSelectOptions, selectedRoleId])
 
     useEffect(() => {
         // SelectLazyLoading component does not rerender on defaultValue change.
@@ -50,15 +60,11 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
     return (
         <>
             {isRightsForPOLoading && !rightsForPOData && selectedOrg?.poUUID && (
-                <QueryFeedback
-                    loading={isRightsForPOLoading}
-                    error={false}
-                    indicatorProps={{ fullscreen: true, layer: 'parent', label: t('selectRole.loading') }}
-                />
+                <QueryFeedback loading={isRightsForPOLoading} error={false} indicatorProps={{ label: t('selectRole.loading') }} withChildren />
             )}
             <SimpleSelect
                 key={seed}
-                error={isRightsForPOError ? t('selectRole.error') : ''}
+                error={!selectedRoleId ? t('selectRole.required') : isRightsForPOError ? t('selectRole.error') : ''}
                 onChange={(value) => {
                     onChangeRole(value || '')
                 }}

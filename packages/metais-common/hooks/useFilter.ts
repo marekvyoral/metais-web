@@ -25,12 +25,14 @@ import { updateUrlParamsOnChange } from '@isdd/metais-common/componentHelpers/fi
 import {
     BASE_PAGE_NUMBER,
     BASE_PAGE_SIZE,
+    FILTER_LOCAL_STORAGE_KEY,
     JOIN_OPERATOR,
     OPERATOR_SEPARATOR,
     OPERATOR_SEPARATOR_TYPE,
     filterKeysToSkip,
 } from '@isdd/metais-common/constants'
 import { FilterActions, useFilterContext } from '@isdd/metais-common/contexts/filter/filterContext'
+import { updateFilterInLocalStorageOnChange } from '@isdd/metais-common/componentHelpers/filter/updateFilterInLocalStorageOnChange'
 
 //types for API
 export enum OPERATOR_OPTIONS {
@@ -158,6 +160,7 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
             ...changedFilter,
         })
         updateUrlParamsOnChange(changedFilter, setUrlParams)
+        updateFilterInLocalStorageOnChange(changedFilter, location.pathname)
     }
 
     const filter: T & IFilterParams & IFilter = useMemo(() => {
@@ -191,10 +194,10 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
                 }
             })
 
-        memoFilter.sort = parseSortQuery(urlParams)
+        memoFilter.sort = parseSortQuery(urlParams) ?? defaults.sort
         memoFilter.attributeFilters = parseCustomAttributes(urlParams)
         return memoFilter
-    }, [uiFilterState, defaults, urlParams, location.search])
+    }, [uiFilterState, location.search, defaults, urlParams])
 
     return { filter, urlParams, handleFilterChange }
 }
@@ -202,6 +205,7 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
 export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, schema?: ObjectSchema<T>): ReturnUseFilter<T> {
     const [, setSearchParams] = useSearchParams()
     const location = useLocation()
+    const currentFilterKey = FILTER_LOCAL_STORAGE_KEY + location.pathname
     const { state, dispatch } = useFilterContext()
     const { filter } = useFilterParams<T>(defaults)
 
@@ -218,12 +222,13 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
         const convertedArrayFilterData = convertFilterArrayData(filterData)
         const searchParamsFilterData = convertFilterToSearchParams(convertedArrayFilterData)
         //so when user is on page 200 and filter spits out only 2 pages he can get to them
-        setSearchParams({ ...searchParamsFilterData, pageNumber: 1 })
+        setSearchParams({ ...searchParamsFilterData, pageNumber: BASE_PAGE_NUMBER })
         dispatch({
             type: FilterActions.SET_FILTER,
             value: convertedArrayFilterData,
             path: location.pathname,
         })
+        localStorage.setItem(currentFilterKey, JSON.stringify({ ...searchParamsFilterData, pageNumber: BASE_PAGE_NUMBER }))
     })
 
     const handleShouldBeFilterOpen = () => {
@@ -255,13 +260,28 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
     }, [clearData, dispatch, filter, location.pathname, reset, state.clearedFilter])
 
     useEffect(() => {
+        const storedFilter = localStorage.getItem(currentFilterKey)
+        if (storedFilter && !location.search) {
+            const parsedStoredFilter = JSON.parse(storedFilter)
+            setSearchParams({ ...parsedStoredFilter })
+        }
+
         if (!state.filter[location.pathname] && !state.clearedFilter[location.pathname]) {
             //&& !filter) { TODO: WHAT ABOUT THIS
-            dispatch({
-                type: FilterActions.SET_FILTER,
-                value: defaults,
-                path: location.pathname,
-            })
+            if (storedFilter) {
+                const parsedStoredFilter = JSON.parse(storedFilter)
+                dispatch({
+                    type: FilterActions.SET_FILTER,
+                    value: parsedStoredFilter,
+                    path: location.pathname,
+                })
+            } else {
+                dispatch({
+                    type: FilterActions.SET_FILTER,
+                    value: defaults,
+                    path: location.pathname,
+                })
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -274,7 +294,9 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
             reset()
             setSearchParams({})
             dispatch({ type: FilterActions.RESET_FILTER, path: location.pathname })
+            localStorage.removeItem(currentFilterKey)
         },
+        handleSubmit,
         onSubmit,
     }
 }

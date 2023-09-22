@@ -1,11 +1,11 @@
-import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
-import { ATTRIBUTE_NAME, CiType, ConfigurationItemUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
-import { pairEnumsToEnumValues } from '@isdd/metais-common/index'
-import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
+import { QueryFeedback, pairEnumsToEnumValues } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-
-import styles from './basicInformationSection.module.scss'
+import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
+import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
+import { ATTRIBUTE_NAME, CiType, ConfigurationItemUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
+import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
 
 interface CiInformationData {
     data: {
@@ -15,16 +15,22 @@ interface CiInformationData {
         unitsData?: EnumType | undefined
         gestorData: RoleParticipantUI[] | undefined
     }
+    isError: boolean
+    isLoading: boolean
 }
 // Plánované ročné prevádzkové náklady projektu v EUR
-export const CiInformationAccordion: React.FC<CiInformationData> = ({ data: { ciItemData, ciTypeData, constraintsData, unitsData, gestorData } }) => {
+export const CiInformationAccordion: React.FC<CiInformationData> = ({
+    data: { ciItemData, ciTypeData, constraintsData, unitsData, gestorData },
+    isLoading,
+    isError,
+}) => {
     const { t } = useTranslation()
     const tabsFromApi =
         ciTypeData?.attributeProfiles?.map((attributesProfile) => {
             return {
                 title: attributesProfile?.description ?? '',
                 content: (
-                    <div className={styles.attributeGridRowBox}>
+                    <DefinitionList>
                         {attributesProfile?.attributes
                             ?.filter((atr) => atr.valid === true && atr.invisible !== true)
                             .sort((atr1, atr2) => (atr1.order || 0) - (atr2.order || 0))
@@ -39,24 +45,25 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({ data: { ci
                                             label={attribute?.name ?? ''}
                                             value={rowValue}
                                             tooltip={attribute?.description}
+                                            lang={setEnglishLangForAttr(attribute.technicalName ?? '')}
                                         />
                                     )
                                 )
                             })}
-                    </div>
+                    </DefinitionList>
                 ),
             }
         }) ?? []
 
     return (
-        <>
+        <QueryFeedback loading={isLoading} error={isError} withChildren>
             <AccordionContainer
                 sections={[
                     {
                         title: t('ciInformationAccordion.basicInformation'),
                         onLoadOpen: true,
                         content: (
-                            <div className={styles.attributeGridRowBox}>
+                            <DefinitionList>
                                 <InformationGridRow
                                     label={t('ciInformationAccordion.owner')}
                                     value={gestorData?.[0].configurationItemUi?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
@@ -70,16 +77,16 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({ data: { ci
                                             label={attribute.name ?? ''}
                                             value={pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, unitsData, withDescription)}
                                             tooltip={attribute?.description}
+                                            lang={setEnglishLangForAttr(attribute.technicalName ?? '')}
                                         />
                                     )
                                 })}
-                            </div>
+                            </DefinitionList>
                         ),
                     },
                     ...tabsFromApi,
                 ]}
             />
-            {}
-        </>
+        </QueryFeedback>
     )
 }
