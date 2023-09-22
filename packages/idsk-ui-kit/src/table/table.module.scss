@@ -22,7 +22,7 @@
     position: relative;
 }
 
-.initialOverflow{
+.initialOverflow {
     overflow: initial !important;
 }
 
@@ -34,12 +34,17 @@
     min-height: 400px;
 }
 
+.fontWeightNormal {
+    font-weight: normal;
+}
+
 .fontWeightBolder {
     font-weight: bolder;
 }
 
 .checkBoxCell {
     width: 34px !important;
+    padding-left: 10px !important;
 }
 
 .head {
@@ -88,7 +93,7 @@
 
 .tableSticky {
     thead .headerRow {
-        th:first-child {
+        td:first-child {
             position: sticky;
             left: 0;
             z-index: 1;
@@ -97,7 +102,7 @@
     }
 
     thead .checkBoxHeaderRow {
-        th:first-child {
+        td:first-child {
             position: sticky;
             left: 0;
             z-index: 1;
@@ -111,7 +116,7 @@
     }
 
     tbody .tableRow {
-        td:first-child {
+        th:first-child {
             position: sticky;
             left: 0;
             padding-left: govuk-spacing(2);
@@ -128,7 +133,7 @@
             background: govuk-colour('white');
             z-index: 1;
         }
-        td:nth-child(2) {
+        th:nth-child(2) {
             position: sticky;
             left: 50px;
             padding-left: govuk-spacing(2);
@@ -157,8 +162,16 @@ tr:hover td {
     background-color: govuk-colour('grey-4') !important;
 }
 
+tr:hover th {
+    background-color: govuk-colour('grey-4') !important;
+}
+
 .tableRowMinHeight {
     min-height: govuk-spacing(9) !important;
+}
+
+.height40 {
+    height: 40px;
 }
 
 .tooltipTextWrapper {

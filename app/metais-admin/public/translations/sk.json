@@ -709,5 +709,27 @@
         "ciCreate": "Vytvorenie novej entity",
         "newRelation": "Pridanie nového vzťahu k {{itemName}}",
         "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}"
+    },
+    "userProfile": {
+        "heading": "Profil a oprávnenia",
+        "changeInformationsButton": "Upraviť informácie",
+        "information": {
+            "header": "Moje informácie",
+            "name": "Meno",
+            "position": "Funkcia",
+            "phoneNumber": "Telefónne číslo",
+            "email": "Emailová adresa"
+        },
+        "settings": "Osobné preferencie",
+        "rights": "Oprávnenia",
+        "notificationsSettings": "Správa notifikácií",
+        "passwordChange": "Zmena hesla",
+        "save": "Uložiť",
+        "cancel": "Zrušiť",
+        "showInvalidated": "Zobraziť zneplatnené položky",
+        "savePreferences": "Uložiť nastavenia",
+        "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené",
+        "changedUserInformation": "Osobné informácie boli úspešne zmenené",
+        "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova."
     }
 }

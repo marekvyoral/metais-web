@@ -17,8 +17,12 @@
     font-size: 16px;
 }
 
-.diff {
-    color: govuk-colour('red') !important;
+.diffIns {
+    background: govuk-tint(govuk-colour('light-green'), 50) !important;
+}
+
+.diffDel {
+    background: govuk-tint(govuk-colour('red'), 50) !important;
 }
 
 .attributeGridRowBox {

@@ -68,7 +68,7 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                         </span>
                     )}
                     <div className={styles.headerDiv}>
-                        <h4 className="idsk-stepper__section-heading">
+                        <h2 className="idsk-stepper__section-heading">
                             <button
                                 type="button"
                                 id="expand-button"
@@ -80,7 +80,7 @@ export const StepperSection: React.FC<IStepperSection> = ({ section, sectionArra
                                 {section.title}
                                 <span className="idsk-stepper__icon" aria-hidden={currentSection === StepperArrayEnum.CLOSED} />
                             </button>
-                        </h4>
+                        </h2>
                         {section.error && <img src={AlertTriangleIcon} />}
                         {section.change && <img src={InfoIcon} />}
                     </div>

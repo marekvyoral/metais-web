@@ -1,13 +1,15 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { NeighboursFilterContainerUi, RelatedCiTypePreview, RelatedCiTypePreviewList, useListRelatedCiTypes } from '@isdd/metais-common/api'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { isRelatedCiTypeCmdbView, removeDuplicates } from '@isdd/metais-common/hooks/common'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 export const useEntityRelationshipTabFilters = (technicalName: string) => {
     const {
         state: { user },
     } = useAuth()
+    const { currentPreferences } = useUserPreferences()
     const isUserLogged = !!user
     const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName ?? '')
     const relatedCiTypesFilteredForView = useMemo((): RelatedCiTypePreviewList => {
@@ -17,34 +19,39 @@ export const useEntityRelationshipTabFilters = (technicalName: string) => {
         return relatedCiTypesFilteredData
     }, [relatedData, isUserLogged])
 
-    const mapFilterToNeighboursContainerUi = (relatedCiTypePreviewArray: RelatedCiTypePreview[] | undefined): NeighboursFilterContainerUi => {
-        const ciType: string[] = []
-        const relType: string[] = []
+    const mapFilterToNeighboursContainerUi = useCallback(
+        (relatedCiTypePreviewArray: RelatedCiTypePreview[] | undefined): NeighboursFilterContainerUi => {
+            const ciType: string[] = []
+            const relType: string[] = []
 
-        relatedCiTypePreviewArray?.forEach((relatedCiType) => {
-            relatedCiType.ciTypeTechnicalName && ciType.push(relatedCiType.ciTypeTechnicalName)
-            relatedCiType.relationshipTypeTechnicalName && relType.push(relatedCiType.relationshipTypeTechnicalName)
-        })
+            relatedCiTypePreviewArray?.forEach((relatedCiType) => {
+                relatedCiType.ciTypeTechnicalName && ciType.push(relatedCiType.ciTypeTechnicalName)
+                relatedCiType.relationshipTypeTechnicalName && relType.push(relatedCiType.relationshipTypeTechnicalName)
+            })
 
-        const uniqueCiType = removeDuplicates(ciType)
-        const uniqueRelType = removeDuplicates(relType)
+            const uniqueCiType = removeDuplicates(ciType)
+            const uniqueRelType = removeDuplicates(relType)
 
-        return {
-            neighboursFilter: {
-                ciType: uniqueCiType,
-                metaAttributes: { state: ['DRAFT'] },
-                relType: uniqueRelType,
-            },
-        }
-    }
+            const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
+
+            return {
+                neighboursFilter: {
+                    ciType: uniqueCiType,
+                    metaAttributes,
+                    relType: uniqueRelType,
+                },
+            }
+        },
+        [currentPreferences.showInvalidatedItems],
+    )
 
     const defaultSourceRelationshipTabFilter: NeighboursFilterContainerUi = useMemo(
         (): NeighboursFilterContainerUi => mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsTargets),
-        [relatedCiTypesFilteredForView],
+        [mapFilterToNeighboursContainerUi, relatedCiTypesFilteredForView.cisAsTargets],
     )
     const defaultTargetRelationshipTabFilter: NeighboursFilterContainerUi = useMemo(
         (): NeighboursFilterContainerUi => mapFilterToNeighboursContainerUi(relatedCiTypesFilteredForView.cisAsSources),
-        [relatedCiTypesFilteredForView],
+        [mapFilterToNeighboursContainerUi, relatedCiTypesFilteredForView.cisAsSources],
     )
 
     return {

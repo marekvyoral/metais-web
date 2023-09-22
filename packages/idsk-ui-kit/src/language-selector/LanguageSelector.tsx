@@ -20,6 +20,7 @@ export const LanguageItem: React.FC<ILanguageItem> = ({ handleClick, value }) =>
                 title={t(`language.${value}`)}
                 href="#"
                 onClick={(event) => handleClick(event, value)}
+                lang={value}
             >
                 {t(`language.${value}`)}
             </a>
@@ -35,6 +36,7 @@ export const LanguageSelector: React.FC = () => {
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
 
     const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, lng: Languages) => {
+        document.documentElement.setAttribute('lang', lng)
         event.preventDefault()
         setIsMenuExpanded(false)
         i18n.changeLanguage(lng, () => navigate(window.location, { state: { from: location } }))

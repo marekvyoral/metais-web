@@ -4,8 +4,8 @@ import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-ta
 import { DEFAULT_PAGESIZE_OPTIONS, REPORTS } from '@isdd/metais-common/constants'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
-import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
+import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
@@ -16,8 +16,9 @@ import { ReportsFilterParameterWrapper } from '@/components/views/reports/Report
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const ReportsDetailPage: React.FC = () => {
-    const defaultFilterValues: IFilterParams & { [key: string]: string } = {}
     const { t } = useTranslation()
+    document.title = `${t('reportDetail')} | MetaIS`
+    const defaultFilterValues: IFilterParams & { [key: string]: string } = {}
 
     return (
         <ReportsDetailContainer

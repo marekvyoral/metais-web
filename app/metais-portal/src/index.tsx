@@ -10,6 +10,7 @@ import { createRoot } from 'react-dom/client'
 import { I18nextProvider } from 'react-i18next'
 import { BrowserRouter } from 'react-router-dom'
 import { ActionSuccessProvider } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { UserPreferencesProvider } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import { App } from '@/App'
 import '@/index.scss'
@@ -40,9 +41,11 @@ root.render(
                         <AuthContextProvider>
                             <FilterContextProvider>
                                 <ActionSuccessProvider>
-                                    <DndProvider backend={HTML5Backend}>
-                                        <App />
-                                    </DndProvider>
+                                    <UserPreferencesProvider>
+                                        <DndProvider backend={HTML5Backend}>
+                                            <App />
+                                        </DndProvider>
+                                    </UserPreferencesProvider>
                                 </ActionSuccessProvider>
                             </FilterContextProvider>
                         </AuthContextProvider>

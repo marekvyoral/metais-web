@@ -18,6 +18,7 @@
     margin-right: 12px;
 }
 
-.cursorPointer {
+.disabled {
+    color: govuk-colour('mid-grey') !important;
     cursor: default;
 }

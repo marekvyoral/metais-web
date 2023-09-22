@@ -2,6 +2,7 @@ import { ISelectProps, SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
 import { useReadCiList1Hook, useReadConfigurationItem } from '@isdd/metais-common/api'
 import { mapReportsCiItemToOptions } from '@isdd/metais-common/componentHelpers'
 import React, { useEffect, useState } from 'react'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import { IOptions, SelectFilterCMDBParamsOption } from './SelectFilterCMDBParamsOptions'
 
@@ -28,6 +29,7 @@ export const SelectFilterCMDBParams: React.FC<ISelectFilterCMDBParams> = ({
     const [defaultValue, setDefaultValue] = useState<IOptions>()
     const [seed, setSeed] = useState(1)
     const { data } = useReadConfigurationItem(defaultValueKey ?? '')
+    const { currentPreferences } = useUserPreferences()
 
     useEffect(() => {
         if (data) {
@@ -45,7 +47,9 @@ export const SelectFilterCMDBParams: React.FC<ISelectFilterCMDBParams> = ({
             label={label}
             name={name}
             id={id}
-            loadOptions={(searchTerm, _, additional) => loadEnumsCiOptions(searchTerm, additional, type ?? '', readCiList1)}
+            loadOptions={(searchTerm, _, additional) =>
+                loadEnumsCiOptions(searchTerm, additional, type ?? '', readCiList1, currentPreferences.showInvalidatedItems)
+            }
             option={(optionProps) => SelectFilterCMDBParamsOption(optionProps)}
             getOptionValue={getOptionValue}
             getOptionLabel={getOptionLabel}

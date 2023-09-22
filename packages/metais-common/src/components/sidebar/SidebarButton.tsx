@@ -13,7 +13,7 @@ interface Props {
 export const SidebarButton = ({ isSidebarExpanded, setIsSidebarExpanded }: Props) => {
     const { t } = useTranslation()
     return (
-        <button className={styles.closeSidebarButton} onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}>
+        <button className={styles.closeSidebarButton} onClick={() => setIsSidebarExpanded(!isSidebarExpanded)} aria-hidden>
             <div className={styles.rotate}>{isSidebarExpanded ? t('sidebar.hide') : t('sidebar.unhide')}</div>
             <img src={ArrowDownIcon} alt="arrow-down" className={classNames(!isSidebarExpanded ? styles.rotate : styles.rotateClockWise)} />
         </button>

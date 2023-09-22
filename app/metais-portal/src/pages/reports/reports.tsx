@@ -20,6 +20,7 @@ export interface ReportsFilterData extends IFilterParams {
 
 const ReportsListPage: React.FC = () => {
     const { t } = useTranslation()
+    document.title = `${t('reports')} | MetaIS`
     const defaultFilterValues: ReportsFilterData = { name: '', category: '' }
 
     return (

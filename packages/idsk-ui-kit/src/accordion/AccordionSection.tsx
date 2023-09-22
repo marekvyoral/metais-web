@@ -35,7 +35,14 @@ export const AccordionSection = ({ index, section, setExpandedSectionIndexes, ex
         <div key={index} className={classNames('govuk-accordion__section', { 'govuk-accordion__section--expanded': isExpanded })}>
             <div className={classNames('govuk-accordion__section-header', styles.headerDiv)}>
                 <h3 className="govuk-accordion__section-heading">
-                    <button className="govuk-accordion__section-button" type="button" aria-expanded={isExpanded} onClick={onToggle} id={buttonId}>
+                    <button
+                        className="govuk-accordion__section-button"
+                        type="button"
+                        aria-expanded={isExpanded}
+                        aria-controls={id + index}
+                        onClick={onToggle}
+                        id={buttonId}
+                    >
                         {section.title}
                     </button>
 
@@ -45,7 +52,7 @@ export const AccordionSection = ({ index, section, setExpandedSectionIndexes, ex
                 <div className="govuk-accordion__section-summary govuk-body">{section.summary}</div>
                 {section.error && <img src={AlertTriangleIcon} />}
             </div>
-            <div className="govuk-accordion__section-content" aria-labelledby={buttonId}>
+            <div className="govuk-accordion__section-content" id={id + index} aria-labelledby={buttonId}>
                 {isExpanded ? section.content : null}
             </div>
         </div>

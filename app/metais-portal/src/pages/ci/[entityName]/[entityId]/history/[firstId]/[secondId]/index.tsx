@@ -9,6 +9,7 @@ import { CiHistoryPermissionsWrapper } from '@/components/permissions/CiHistoryP
 import { HistoryItemsCompareContainer } from '@/components/containers/HistoryItemsCompareContainer'
 import { HistoryCompareView } from '@/components/views/history/history-compare/HistoryCompareView'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const ComparePage: React.FC = () => {
     const { t } = useTranslation()
@@ -27,6 +28,7 @@ const ComparePage: React.FC = () => {
                     <CiHistoryPermissionsWrapper entityId={entityId ?? ''} entityName={entityName ?? ''}>
                         <>
                             <BreadCrumbs
+                                withWidthContainer
                                 links={[
                                     { label: t('breadcrumbs.home'), href: '/' },
                                     { label: entityName, href: `/ci/${entityName}` },
@@ -37,18 +39,20 @@ const ComparePage: React.FC = () => {
                                     { label: t('breadcrumbs.compareHistory'), href: `/ci/${entityName}/${entityId}/history/${firstId}/${secondId}` },
                                 ]}
                             />
-                            <HistoryItemsCompareContainer
-                                View={(props) => {
-                                    return (
-                                        <HistoryCompareView
-                                            ciTypeData={props.ciTypeData}
-                                            dataFirst={props.dataFirst}
-                                            dataSec={props.dataSec}
-                                            attributesData={attributesData}
-                                        />
-                                    )
-                                }}
-                            />
+                            <MainContentWrapper>
+                                <HistoryItemsCompareContainer
+                                    View={(props) => {
+                                        return (
+                                            <HistoryCompareView
+                                                ciTypeData={props.ciTypeData}
+                                                dataFirst={props.dataFirst}
+                                                dataSec={props.dataSec}
+                                                attributesData={attributesData}
+                                            />
+                                        )
+                                    }}
+                                />
+                            </MainContentWrapper>
                         </>
                     </CiHistoryPermissionsWrapper>
                 </>

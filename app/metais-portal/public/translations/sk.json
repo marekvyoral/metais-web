@@ -350,7 +350,9 @@
             "note": "Poznámka",
             "evidenceStatus": "Stav evidencie",
             "createdAt": "Vytvorené",
-            "lastModifiedAt": "Posledná zmena"
+            "createdBy": "Vytvoril",
+            "lastModifiedAt": "Posledná zmena",
+            "lastModifiedBy": "Poslednú zmenu vykonal"
         },
         "card": {
             "type": "Typ dokumentu",
@@ -398,7 +400,8 @@
         "compareButtonLabel": "Porovnať vybrane záznamy",
         "compare": {
             "modified": "{{date}}"
-        }
+        },
+        "hideCheckButtonLabel": "Zobraziť iba zmeny"
     },
     "metaAttributes": {
         "state": {
@@ -473,7 +476,9 @@
     "table": {
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
         "noRowsFound": "Nenašli sa žiadne záznamy",
-        "pagination": "Tabuľková navigácia"
+        "pagination": "Tabuľková navigácia",
+        "sortBy": "Zoraď podľa",
+        "selectAllItems": "Vyber všetky položky"
     },
     "state": "Stav evidencie",
     "group": "Skupina",
@@ -482,6 +487,14 @@
         "neighboursCardList": "Načítavam vzťahy na súvisiace položky"
     },
     "actionOverTable": {
+        "options": {
+            "title": "Možnosti",
+            "download": "Stiahnuť",
+            "update": "Aktualizovať",
+            "invalidate": "Zneplatniť",
+            "delete": "Zmazať",
+            "history": "História"
+        },
         "import": "Import",
         "export": "Export",
         "addItem": "Pridať {{ciType}} položku",
@@ -489,6 +502,7 @@
         "view": "Zobraziť",
         "actions": "Hromadné úkony",
         "invalidateItems": "Zneplatnenie položiek",
+        "deleteItems": "Odstránenie položiek",
         "validateItems": "Splatnenie položiek",
         "changeOwner": "Zmena vlastníka",
         "metaColumnName": {
@@ -501,6 +515,7 @@
     "tasks": {
         "home": "Domov",
         "tasks": "Úlohy",
+        "myTasks": "Moje úlohy",
         "assignToUser": "Priradiť k používateľovi",
         "assignToGroup": "Priradiť k skupine",
         "finish": "Ukončiť úlohu",
@@ -545,6 +560,17 @@
             "statistics": "Štatistika"
         }
     },
+    "fileHistory": {
+        "documentHistory": "História dokumentu",
+        "filename": "Názov súboru",
+        "version": "Verzia",
+        "mimeType": "Typ dokumentu",
+        "contentLength": "Veľkosť",
+        "validFrom": "Platnosť od",
+        "validTo": "Platnosť do",
+        "lastModifiedBy": "Vytvoril",
+        "actualVersion": "Aktuálna verzia"
+    },
     "notifications": {
         "all": "Všetky",
         "INFO": "INFO",
@@ -562,7 +588,10 @@
     },
     "feedback": {
         "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím skúste znova.",
-        "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní údajov sa vyskytla chyba. Skúste stránku znova načítať a ak sa chyba vyskytuje opakovane, kontaktujte administrátora."
+        "queryErrorTitle": "Nastala chyba",
+        "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní dát sa vyskytla technická chyba. Skúste stránku znova načítať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na adrese ",
+        "mutationErrorTitle": "Akcia zlyhala",
+        "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na "
     },
     "accordion": {
         "openAll": "Otvoriť všetko",
@@ -640,6 +669,24 @@
         }
     },
     "bulkActions": {
+        "updateFile": {
+            "title": "Aktualizácia dokumentu",
+            "warningText": "Vybrané dokumenty budú aktualizované. Vzťahy, ktoré obsahujú, nebudú zmenené.",
+            "listText": "Chystáte sa aktualizovať tieto vybrané záznamy ({{count}}):",
+            "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
+            "reason": "Poznámka / Dôvod",
+            "updateFile": "Aktualizácia dokumentu",
+            "success": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o aktualizácí dokumentov."
+        },
+        "deleteFile": {
+            "title": "Zmazanie dokumentov",
+            "warningText": "Vybrané dokumenty budú zmazané. Ich obnovenie nebude možné.",
+            "listText": "Chystáte sa zmazať tieto vybrané dokumenty ({{count}}):",
+            "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
+            "reason": "Poznámka / Dôvod zmazania",
+            "deleteFile": "Zmazanie",
+            "success": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o odstránení dokumentov."
+        },
         "invalidate": {
             "title": "Zneplatnenie položiek",
             "warningText": "Vybrané záznamy budú zneplatnené. Nebude ich možné editovať, ani nad nimi vykonávať ďalšie operácie.Ich zneplatnením sa zneplatnia aj všetky vzťahy k ostatným entitám (službám a pod.)",
@@ -762,12 +809,59 @@
         "email": "metais@mirri.gov.sk",
         "errorTitle": "Nastala chyba",
         "errorMessage": "Ospravedlňujeme sa, ale pri vytváraní nového vzťahu nastala chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na ",
-        "selectRelTypeError": "Na vytvorenie tohto typu vzťahu Vám chýbajú potrebné práva"
+        "ÏselectRelTypeError": "Na vytvorenie tohto typu vzťahu Vám chýbajú potrebné práva"
+    },
+    "titles": {
+        "mainPage": "Hlavná stránka",
+        "myTasks": "Moje úlohy",
+        "taskDetail": "Detail úlohy",
+        "notifications": "Notifikácie",
+        "notificationDetail": "Detail notifikácie",
+        "groupsOfCommission": "Pracovné skupiny komisie",
+        "groupDetail": "Detail pracovnej skupiny",
+        "groupCreate": "Vytvorenie pracovnej skupiny",
+        "groupEdit": "Úprava pracovnej skupiny",
+        "reports": "Reporty a zostavy",
+        "reportDetail": "Detail reportu",
+        "ciList": "Zoznam položiek {{ci}}",
+        "ciDetail": "Detail položky {{ci}}",
+        "ciCreate": "Vytvorenie položky {{ci}}",
+        "ciEdit": "Úprava položky {{ci}}",
+        "PO_IS": "Spracovatelia koncepcií rozvoja IT",
+        "PO_ISDetail": "Detail IS",
+        "PO_ISCreate": "Vytvorenie IS",
+        "PO_PO": "Podriadené osoby",
+        "PO_PODetail": "Detail PO",
+        "PO_POCreate": "Vytvorenie PO",
+        "PO_IS_PO": "Prevádzkovatelia IS PO",
+        "PO_IS_PODetail": "Detail IS PO",
+        "PO_IS_POCreate": "Vytvorenie IS PO"
     },
     "todo": {
         "header": "Vo výstavbe",
         "homeButton": "Domovská stránka"
     },
+    "userProfile": {
+        "heading": "Profil a oprávnenia",
+        "changeInformationsButton": "Upraviť informácie",
+        "information": {
+            "header": "Moje informácie",
+            "name": "Meno",
+            "position": "Funkcia",
+            "phoneNumber": "Telefónne číslo",
+            "email": "Emailová adresa"
+        },
+        "settings": "Osobné preferencie",
+        "rights": "Oprávnenia",
+        "notificationsSettings": "Správa notifikácií",
+        "passwordChange": "Zmena hesla",
+        "save": "Uložiť",
+        "cancel": "Zrušiť",
+        "showInvalidated": "Zobraziť zneplatnené položky",
+        "savePreferences": "Uložiť nastavenia",
+        "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené",
+        "changedUserInformation": "Osobné informácie boli úspešne zmenené",
+        "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova."
     "votesList": {
         "title": "Zoznam Hlasovaní",
         "votesListSubtitle": "nejake blabla kecy",

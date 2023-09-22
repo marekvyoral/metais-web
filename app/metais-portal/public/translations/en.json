@@ -350,7 +350,9 @@
             "note": "Note",
             "evidenceStatus": "Evidence status",
             "createdAt": "Created",
-            "lastModifiedAt": "Last change"
+            "createdBy": "Created by",
+            "lastModifiedAt": "Last change",
+            "lastModifiedBy": "Last change by"
         },
         "card": {
             "type": "Document type",
@@ -395,7 +397,8 @@
             "actionTime": "Action time",
             "actionBy": "Action by"
         },
-        "compareButtonLabel": "Compare selected versions"
+        "compareButtonLabel": "Compare selected versions",
+        "hideCheckButtonLabel": "Show only changes"
     },
     "metaAttributes": {
         "state": {
@@ -470,7 +473,9 @@
     "table": {
         "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
         "noRowsFound": "No rows found",
-        "pagination": "Page navigation"
+        "pagination": "Page navigation",
+        "sortBy": "Sort by",
+        "selectAllItems": "Select all items"
     },
     "state": "Evidence status",
     "group": "Group",
@@ -479,6 +484,14 @@
         "neighboursCardList": "Loading related item relationships"
     },
     "actionOverTable": {
+        "options": {
+            "title": "Options",
+            "download": "Download",
+            "update": "Update",
+            "invalidate": "Invalidate",
+            "delete": "Delete",
+            "history": "History"
+        },
         "import": "Import",
         "export": "Export",
         "addItem": "Add {{ciType}} item",
@@ -486,6 +499,7 @@
         "view": "View",
         "actions": "Bulk actions",
         "invalidateItems": "Invalidate items",
+        "deleteItems": "Delete items",
         "validateItems": "Validate actions",
         "changeOwner": "Change owner",
         "metaColumnName": {
@@ -498,6 +512,7 @@
     "tasks": {
         "home": "Home",
         "tasks": "Tasks",
+        "myTasks": "My tasks",
         "assignToUser": "Assign to user",
         "assignToGroup": "Assign to group",
         "finish": "Finish task",
@@ -541,6 +556,17 @@
             "statistics": "Statistics"
         }
     },
+    "fileHistory": {
+        "documentHistory": "Document history",
+        "filename": "File name",
+        "version": "Version",
+        "mimeType": "Document type",
+        "contentLength": "Size",
+        "validFrom": "Valid from",
+        "validTo": "Valid to",
+        "lastModifiedBy": "Create",
+        "actualVersion": "Actual version"
+    },
     "notifications": {
         "all": "All",
         "INFO": "INFO",
@@ -558,7 +584,10 @@
     },
     "feedback": {
         "failedFetch": "There was a problem with fetching data. Please try again.",
-        "queryErrorMessage": "We apologize, but an error occurred while fetching data. Try reloading the page and if the error occurs repeatedly, contact the administrator."
+        "queryErrorTitle": "Error occured",
+        "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator by e-mail at ",
+        "mutationErrorTitle": "Action failed",
+        "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at"
     },
     "accordion": {
         "openAll": "Open all",
@@ -636,6 +665,24 @@
         }
     },
     "bulkActions": {
+        "updateFile": {
+            "title": "Update document",
+            "warningText": "Selected records will be updated. Relations that they contain shall remain unmodified.",
+            "listText": "Selected records will be updated ({{count}}):",
+            "newWindowText": "Show the whole list of instances and their relationships (in new window)",
+            "reason": "Note / Reason",
+            "updateFile": "Update file",
+            "success": "Item was sent for processing, please wait for documents removal notification."
+        },
+        "deleteFile": {
+            "title": "Remove documents",
+            "warningText": "Selected documents will be removed. It would not be possible to edit them or carry out any operations with them.",
+            "listText": "Selected documents will be removed ({{count}}):",
+            "newWindowText": "Show the whole list of instances and their relations (in new window)",
+            "reason": "Note / Removal reason",
+            "deleteFile": "Delete file",
+            "success": "Item was sent for processing, please wait for documents removal notification."
+        },
         "invalidate": {
             "title": "Invalidate items",
             "warningText": "Selected records will be invalidated. It would not be possible to edit them or carry out any operations with them. Upon their invalidation will all relations to other entities be invalidated (services and etc.)",
@@ -757,8 +804,56 @@
         "email": "metais@mirri.gov.sk",
         "selectRelTypeError": "You are missing needed rights to create this relation type"
     },
+    "titles": {
+        "mainPage": "Main Page",
+        "myTasks": "My Tasks",
+        "taskDetail": "Task detail",
+        "notifications": "Notifications",
+        "notificationDetail": "Notification detail",
+        "groupsOfCommission": "Groups of Commission",
+        "groupDetail": "Group of Commission detail",
+        "groupCreate": "Creation of group",
+        "groupEdit": "Edit of group",
+        "reports": "Reports",
+        "reportDetail": "Report detail",
+        "ciList": "List of {{ci}} items",
+        "ciDetail": "Detail of {{ci}} item",
+        "ciCreate": "Creation of {{ci}} item",
+        "ciEdit": "Edit of {{ci}} item",
+        "PO_IS": "Processors of IT development concepts",
+        "PO_ISDetail": "Detail of IS",
+        "PO_ISCreate": "Creation of IS",
+        "PO_PO": "Subordinates",
+        "PO_PODetail": "Detail PO",
+        "PO_POCreate": "Vytvorenie PO",
+        "PO_IS_PO": "IS operators",
+        "PO_IS_PODetail": "Detail of IS PO",
+        "PO_IS_POCreate": "Creation of IS PO"
+    },
     "todo": {
         "header": "Under construction",
         "homeButton": "Home page"
+    },
+    "userProfile": {
+        "heading": "Profile and rights",
+        "changeInformationsButton": "Edit information",
+        "information": {
+            "header": "My information",
+            "name": "Name",
+            "position": "Position",
+            "phoneNumber": "Phone",
+            "email": "Email"
+        },
+        "settings": "Personal preferences",
+        "rights": "Rights",
+        "notificationsSettings": "Notifications preferences",
+        "passwordChange": "Password change",
+        "save": "Save",
+        "cancel": "Cancel",
+        "showInvalidated": "Show invalidated items",
+        "savePreferences": "Save preferences",
+        "userPreferencesSuccess": "Personal preferences were successfully saved",
+        "changedUserInformation": "Personal information were successfully changed",
+        "changedUserInformationError": "Error occurred while changing personal information. Please try again."
     }
 }

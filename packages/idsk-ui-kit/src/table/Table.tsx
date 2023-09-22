@@ -113,6 +113,7 @@ export const Table = <T,>({
         getExpandedRowModel: getExpandedRowModel(),
         onExpandedChange,
         getSubRows: getSubRows,
+        enableRowSelection: !!rowSelection,
         enableMultiSort: true,
         manualPagination: true,
         getRowCanExpand: getExpandedRow ? (row) => !!getExpandedRow(row) : undefined,
@@ -147,9 +148,9 @@ export const Table = <T,>({
                             })}
                             key={headerGroup.id}
                         >
-                            {headerGroup.headers.map((header) => (
-                                <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
-                            ))}
+                            {headerGroup.headers.map((header) => {
+                                return <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
+                            })}
                         </tr>
                     )
                 })}

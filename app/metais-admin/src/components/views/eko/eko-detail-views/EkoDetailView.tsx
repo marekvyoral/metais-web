@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 
 import { IEkoDetailView } from '@/components/views/eko/ekoCodes'
 import styles from '@/components/views/eko/ekoView.module.scss'
@@ -35,12 +36,11 @@ export const EkoDetailView = ({ data, isError, isLoading }: IEkoDetailView) => {
                             title: t('eko.tabTitle'),
                             content: (
                                 <>
-                                    <div>
+                                    <DefinitionList>
                                         <InformationGridRow key={'name'} label={t('eko.detailName')} value={data?.name} hideIcon />
-                                    </div>
-                                    <div>
+
                                         <InformationGridRow key={'ekoCode'} label={t('eko.ekoCode')} value={data?.ekoCode} hideIcon />
-                                    </div>
+                                    </DefinitionList>
                                 </>
                             ),
                         },

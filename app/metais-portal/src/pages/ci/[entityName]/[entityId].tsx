@@ -20,6 +20,7 @@ const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId, entityName } = useParams()
+    document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
 
     const tabList: Tab[] = [
         {

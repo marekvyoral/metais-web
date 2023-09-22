@@ -23,9 +23,22 @@ export const HistoryItemsCompareContainer: React.FC<IHistoryItemsCompareContaine
     const isLoading = isLoadingSec || isLoadingFirst || isCiTypeDataLoading
     const isError = isErrorFirst || isErrorSec || isCiTypeDataError
 
+    const isNewerVersion = (first: HistoryVersionUiConfigurationItemUi, sec: HistoryVersionUiConfigurationItemUi) => {
+        if (first.actionTime && sec.actionTime) {
+            if (new Date(first.actionTime) > new Date(sec.actionTime)) {
+                return true
+            }
+            return false
+        }
+    }
+
     return (
         <QueryFeedback loading={isLoading} error={isError}>
-            <View ciTypeData={ciTypeData} dataFirst={dataFirst} dataSec={dataSecond} />
+            <View
+                ciTypeData={ciTypeData}
+                dataFirst={!isNewerVersion(dataFirst ?? {}, dataSecond ?? {}) ? dataFirst : dataSecond}
+                dataSec={isNewerVersion(dataFirst ?? {}, dataSecond ?? {}) ? dataFirst : dataSecond}
+            />
         </QueryFeedback>
     )
 }
