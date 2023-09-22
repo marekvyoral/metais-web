@@ -42,6 +42,17 @@
     font-weight: bolder;
 }
 
+.invalidated {
+    color: govuk-colour('red') !important;
+    text-decoration: line-through;
+    p {
+        color: govuk-colour('red') !important;
+    }
+    a {
+        color: govuk-colour('red') !important;
+    }
+}
+
 .checkBoxCell {
     width: 34px !important;
     padding-left: 10px !important;
