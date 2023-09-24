@@ -4,7 +4,9 @@ import { VotesListContainer } from '@/components/containers/votes/VotesListConta
 import { VotesListView } from '@/components/views/votes/VoteListView'
 
 const VotesList: React.FC = () => {
-    return <VotesListContainer View={(props) => <VotesListView votesListData={props.votesListData} />} />
+    return (
+        <VotesListContainer View={(props) => <VotesListView votesListData={props.votesListData} defaultFilterValues={props.defaultFilterValues} />} />
+    )
 }
 
 export default VotesList

@@ -877,7 +877,11 @@
             "onlyMyVotes": "Len moje hlasovania",
             "allVotes": "Všetky hlasovania",
             "planned": "Plánované",
-            "ended": "Ukončené" 
+            "ended": "Ukončené",
+            "upcomming": "Prebiehajúce",
+            "canceled" : "Zrušené", 
+            "evaluated": "Vyhodnotené",
+            "vetoed": "Vetované"
         }
     }
 }
