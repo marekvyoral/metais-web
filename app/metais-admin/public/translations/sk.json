@@ -491,9 +491,9 @@
         },
         "documentsManagement": "Dokumenty",
         "templateReferenceIdentifiersManagement": "Správa šablón referencovateľných identifikátorov",
-        "managementBodies": {
+        "publicAuthorities": {
             "management": "Správa orgánov riadenia",
-            "managementBodies": "Orgány riadenia",
+            "publicAuthorities": "Orgány riadenia",
             "massActualizations": "Hromadné aktualizácie"
         }
     },
