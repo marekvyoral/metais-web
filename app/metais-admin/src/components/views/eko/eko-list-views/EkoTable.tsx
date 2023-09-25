@@ -13,6 +13,7 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { EkoTableModals } from './EkoTablesModals'
 
@@ -39,6 +40,10 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const {
+        state: { user },
+    } = useAuth()
+    const isUserLogged = !!user
     const dataLength = data?.length ?? 0
     const { rowSelection, setRowSelection } = rowSelectionState
     const checkedRowItems = Object.keys(rowSelection).length
@@ -92,6 +97,7 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
     const columns: Array<ColumnDef<TEkoCodeDecorated>> = useMemo(() => {
         return getTableColumns(rowSelection, handleAllCheckboxChange, data, handleCheckboxChange, t)
     }, [data, handleAllCheckboxChange, handleCheckboxChange, rowSelection, t])
+    const columnsWithPermissions = isUserLogged ? columns : columns.slice(1)
 
     const handlerSetIsLoading = useCallback((loading: boolean) => setIsLoading(loading), [setIsLoading])
     const handlerSetCloseDeleteModal = useCallback(() => setIsOpenDeleteConfirmationModal(false), [])
@@ -155,7 +161,7 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
                         sortDirection: defaultFilterParams.ascending === 'true' ? SortType.ASC : SortType.DESC,
                     },
                 ]}
-                columns={columns}
+                columns={columnsWithPermissions}
                 pagination={{
                     pageIndex: (defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER) - 1,
                     pageSize: defaultFilterParams.pageSize ?? BASE_PAGE_SIZE,
