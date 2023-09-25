@@ -16,7 +16,7 @@ const Find = () => {
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
                     { label: t('navMenu.organizations') ?? '', href: AdminRouteNames.ORGANIZATIONS },
-                    { label: t('organizations.find.new') ?? '', href: AdminRouteNames.ORGANIZATIONS + 'find' },
+                    { label: t('organizations.find.new') ?? '', href: `${AdminRouteNames.ORGANIZATIONS}/find` },
                 ]}
             />
             <FindContainer
