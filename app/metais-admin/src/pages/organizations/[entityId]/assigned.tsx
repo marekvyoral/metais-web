@@ -43,7 +43,7 @@ const Assigned = () => {
                                 { label: t('navMenu.organizations'), href: AdminRouteNames.ORGANIZATIONS },
                                 {
                                     label: `${t('organizations.assigned.heading')} - ${getNameFromPo(props?.data?.configurationItem)}`,
-                                    href: AdminRouteNames.ORGANIZATIONS + '/' + entityId + '/assigned',
+                                    href: `${AdminRouteNames.ORGANIZATIONS}/${entityId}/assigned}`,
                                 },
                             ]}
                         />

@@ -20,6 +20,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import React, { SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
@@ -83,7 +84,7 @@ export const TasksListView: React.FC<ITasksListView> = ({
                 withWidthContainer
                 links={[
                     { label: t('tasks.home'), href: '/', icon: HomeIcon },
-                    { label: t('tasks.tasks'), href: '/ulohy' },
+                    { label: t('tasks.tasks'), href: RouteNames.TASKS },
                 ]}
             />
             <MainContentWrapper>
