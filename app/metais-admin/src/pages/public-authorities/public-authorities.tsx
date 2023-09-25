@@ -2,8 +2,8 @@ import React from 'react'
 
 import { TodoPage } from '@/components/views/todo-page/TodoPage'
 
-const SettingsPage = () => {
+const PublicAuthoritiesPage = () => {
     return <TodoPage />
 }
 
-export default SettingsPage
+export default PublicAuthoritiesPage

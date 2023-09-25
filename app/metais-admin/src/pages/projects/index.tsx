@@ -1,9 +1,9 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-import SettingsPage from './settings'
+import ProjectsManagementPage from './projects'
 
-export const INDEX_ROUTE = SettingsPage
+export const INDEX_ROUTE = ProjectsManagementPage
 
 const index: React.FC = () => {
     return <Outlet />

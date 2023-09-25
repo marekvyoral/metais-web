@@ -1,7 +1,7 @@
 import { ArrowDownIcon } from '@isdd/idsk-ui-kit'
 import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useMatch } from 'react-router-dom'
 
 import styles from '@isdd/metais-common/components/GridView.module.scss'
 
@@ -32,6 +32,7 @@ export const SidebarItem = ({
     const [expandedSubItemIndexes, setExpandedSubItemIndexes] = useState<boolean[]>(() => Array(item.subItems?.length).fill(false))
 
     const isDefaultOpened = defaultOpenedMenuItemsPaths.some((opened) => opened === item.path)
+    const isUrlMatched = useMatch(item.path)
 
     useEffect(() => {
         if (defaultOpenedMenuItemsIndexes.length > 0) {
@@ -52,7 +53,7 @@ export const SidebarItem = ({
                         className={classNames(
                             styles.sidebarlink,
                             styles.sectionHeaderButton,
-                            ((item.subItems?.length && isExpanded) || isDefaultOpened) && styles.expanded,
+                            ((item.subItems?.length && isExpanded) || isDefaultOpened || isUrlMatched) && styles.expanded,
                         )}
                         aria-expanded={isExpanded}
                         to={item.path}

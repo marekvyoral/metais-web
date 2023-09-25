@@ -391,6 +391,7 @@
         "admin": "Administration",
         "organizations": "Organizations",
         "userManagement": {
+            "users": "Users",
             "userManagement": "User management",
             "requestList": "Requests",
             "gdprRequestList": "Requests for remove personal data",
@@ -403,9 +404,26 @@
             "profiles": "Attribute profiles",
             "relations": "Relations"
         },
-        "eko": "EKO codes management",
+        "eko": "EKO codes",
         "tooltips": "Tooltips",
-        "codelists": "Internal codelists"
+        "codelists": "Internal codelists management",
+        "monitoring": {
+            "monitoring": "Monitoring management",
+            "params": "Monitoring parameters",
+            "list": "Monitoring records"
+        },
+        "reportsManagement": "Reports management",
+        "projects": {
+            "management": "Projects Management",
+            "financeManagement": "Financial limits of the approval process"
+        },
+        "documentsManagement": "Documents",
+        "templateReferenceIdentifiersManagement": "Management of referenceable identifier templates",
+        "managementBodies": {
+            "management": "Management bodies management",
+            "managementBodies": "Management bodies",
+            "massActualizations": "Mass updates"
+        }
     },
     "tooltips": {
         "selectedEntries": "Selected entries",

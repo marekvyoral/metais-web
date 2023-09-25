@@ -462,6 +462,8 @@
         "admin": "Administrácia",
         "organizations": "Správa povinných osôb",
         "userManagement": {
+            "users": "Používatelia",
+
             "userManagement": "Správa používateľov",
             "requestList": "Žiadosti",
             "gdprRequestList": "Žiadosti na vymazanie osobných údajov",
@@ -474,9 +476,26 @@
             "profiles": "Profily atribútov",
             "relations": "Vzťahy"
         },
-        "eko": "Správa EKO kódov",
+        "eko": "EKO kódy",
         "tooltips": "Tooltipy",
-        "codelists": "Interné číselníky"
+        "codelists": "Správa interných číselníkov",
+        "monitoring": {
+            "monitoring": "Správa monitoringu",
+            "params": "Monitorovacie parametre",
+            "list": "Záznamy z monitoringu"
+        },
+        "reportsManagement": "Správa zostáv",
+        "projects": {
+            "management": "Správa projektov",
+            "financeManagement": "Finančné limity schvaľovacieho procesu"
+        },
+        "documentsManagement": "Dokumenty",
+        "templateReferenceIdentifiersManagement": "Správa šablón referencovateľných identifikátorov",
+        "managementBodies": {
+            "management": "Správa orgánov riadenia",
+            "managementBodies": "Orgány riadenia",
+            "massActualizations": "Hromadné aktualizácie"
+        }
     },
     "tooltips": {
         "selectedEntries": "Vybrané záznamy",
