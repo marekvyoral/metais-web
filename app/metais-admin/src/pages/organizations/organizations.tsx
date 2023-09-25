@@ -27,7 +27,7 @@ const Organizations = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: t('navMenu.organizations') ?? '', href: '/' + AdminRouteNames.ORGANIZATIONS },
+                    { label: t('navMenu.organizations') ?? '', href: AdminRouteNames.ORGANIZATIONS },
                 ]}
             />
             <OraganizationsListContainer<OrganizationFilterData>

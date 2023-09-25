@@ -22,6 +22,7 @@ import { TableRowExpanded } from './TableRowExpanded'
 import { CHECKBOX_CELL } from './constants'
 import styles from './table.module.scss'
 import { transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
+import { TableDragRow } from './TableDragRow'
 
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 
@@ -29,6 +30,7 @@ export interface ITableProps<T> {
     data?: Array<T>
     columns: Array<ColumnDef<T>>
     canDrag?: boolean
+    canDragRow?: boolean
     sort?: ColumnSort[]
     onSortingChange?: (sort: ColumnSort[]) => void
     columnOrder?: ColumnOrderState
@@ -48,12 +50,14 @@ export interface ITableProps<T> {
     getExpandedRow?: (row: Row<T>) => JSX.Element | null
     onRowClick?: (row: Row<T>) => void
     rowHref?: (row: Row<T>) => string
+    reorderRow?: (index: number, target: number) => void
 }
 
 export const Table = <T,>({
     data,
     columns,
     canDrag = false,
+    canDragRow = false,
     sort,
     onSortingChange,
     columnOrder,
@@ -73,6 +77,7 @@ export const Table = <T,>({
     getExpandedRow,
     onRowClick,
     rowHref,
+    reorderRow,
 }: ITableProps<T>): JSX.Element => {
     const wrapper1Ref = useRef<HTMLTableSectionElement>(null)
     const wrapper2Ref = useRef<HTMLTableSectionElement>(null)
@@ -182,16 +187,30 @@ export const Table = <T,>({
 
                     return (
                         <React.Fragment key={index}>
-                            <TableRow<T>
-                                isInvalidated={isInvalidated}
-                                row={row}
-                                key={index}
-                                isRowSelected={isRowSelected}
-                                isRowBold={isRowBold}
-                                isRowDanger={isRowDanger}
-                                onRowClick={onRowClick}
-                                rowHref={rowHref}
-                            />
+                            {canDragRow ? (
+                                <TableDragRow<T>
+                                    row={row}
+                                    key={index}
+                                    isRowSelected={isRowSelected}
+                                    isRowBold={isRowBold}
+                                    isRowDanger={isRowDanger}
+                                    onRowClick={onRowClick}
+                                    rowHref={rowHref}
+                                    reorderRow={reorderRow}
+                                    isInvalidated={isInvalidated}
+                                />
+                            ) : (
+                                <TableRow<T>
+                                    isInvalidated={isInvalidated}
+                                    row={row}
+                                    key={index}
+                                    isRowSelected={isRowSelected}
+                                    isRowBold={isRowBold}
+                                    isRowDanger={isRowDanger}
+                                    onRowClick={onRowClick}
+                                    rowHref={rowHref}
+                                />
+                            )}
                             {row.getIsExpanded() && getExpandedRow && <TableRowExpanded row={row} getExpandedRow={getExpandedRow} />}
                         </React.Fragment>
                     )

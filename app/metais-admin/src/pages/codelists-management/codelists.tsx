@@ -22,7 +22,7 @@ const Codelists = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: t('codelists.heading') ?? '', href: '/' + AdminRouteNames.CODELISTS },
+                    { label: t('codelists.heading') ?? '', href: AdminRouteNames.CODELISTS },
                 ]}
             />
             <CodelistContainer
