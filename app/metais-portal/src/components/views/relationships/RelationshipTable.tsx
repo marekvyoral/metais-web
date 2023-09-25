@@ -23,14 +23,6 @@ interface RelationshipsTable {
     handleFilterChange: (filter: IFilter) => void
 }
 
-const Loading: React.FC = () => {
-    return <div>loading</div>
-}
-
-const Error: React.FC = () => {
-    return <div>error</div>
-}
-
 type RelationFilterData = IFilterParams & NeighboursFilterUi
 
 export const RelationshipsTable: React.FC<RelationshipsTable> = ({
@@ -51,9 +43,6 @@ export const RelationshipsTable: React.FC<RelationshipsTable> = ({
         { value: 'DRAFT', label: t('metaAttributes.state.DRAFT') },
         { value: 'INVALIDATED', label: t('metaAttributes.state.INVALIDATED') },
     ]
-
-    if (isLoading) return <Loading />
-    if (isError) return <Error />
 
     const defaultValues: RelationFilterData = {
         relType: defaultFilter?.neighboursFilter?.relType,
@@ -106,7 +95,7 @@ export const RelationshipsTable: React.FC<RelationshipsTable> = ({
                 )}
             />
 
-            <Table columns={columns} data={data} />
+            <Table columns={columns} data={data} isLoading={isLoading} error={isError} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
     )

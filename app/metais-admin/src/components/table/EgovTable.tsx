@@ -19,6 +19,7 @@ import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import styles from './egovTable.module.scss'
 
@@ -37,7 +38,10 @@ interface IEgovTable {
 
 export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) => {
     const { t } = useTranslation()
-
+    const {
+        state: { user },
+    } = useAuth()
+    const isUserLogged = !!user
     const navigate = useNavigate()
     const location = useLocation()
     const [rowSelection, setRowSelection] = useState<Array<string>>([])
@@ -152,6 +156,7 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
             cell: (ctx) => <span className={classNames(!ctx.row?.original?.valid && styles.red)}>{t(`validity.${ctx.row?.original?.valid}`)}</span>,
         },
     ]
+    const columnsWithPermissions = isUserLogged ? columns : columns.slice(1)
 
     const [pageSize, setPageSize] = useState<number>(10)
     const [start, setStart] = useState<number>(0)
@@ -256,7 +261,7 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
                         />
                     }
                 />
-                <Table data={data?.slice(start, end)} columns={columns} pagination={{ pageIndex: pageNumber, pageSize }} />
+                <Table data={data?.slice(start, end)} columns={columnsWithPermissions} pagination={{ pageIndex: pageNumber, pageSize }} />
             </div>
             <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={data?.length || 0} handlePageChange={handlePageChange} />
         </div>

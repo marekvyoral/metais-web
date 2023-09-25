@@ -84,6 +84,8 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     const {
         state: { user },
     } = useAuth()
+    const isUserLogged = !!user
+
     const { groupId } = useParams()
 
     const ability = useContext(AbilityContext)
@@ -160,6 +162,8 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
         group?.shortName === KSIVS_SHORT_NAME,
     )
 
+    const columnsWithPermissions = isUserLogged ? selectableColumnsSpec : selectableColumnsSpec.slice(1)
+
     useEffect(() => {
         refetch()
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -181,7 +185,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
             user={user}
             rowSelection={rowSelection}
             isIdentitiesLoading={isLoading}
-            selectableColumnsSpec={selectableColumnsSpec}
+            selectableColumnsSpec={columnsWithPermissions}
             tableData={tableData}
             identitiesData={identitiesData}
             identityToDelete={identityToDelete}
