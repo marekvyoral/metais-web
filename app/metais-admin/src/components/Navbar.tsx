@@ -19,7 +19,7 @@ export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
             },
             {
                 title: t('navMenu.userManagement.requestList'),
-                path: AdminRouteNames.REQUEST_LIST,
+                path: AdminRouteNames.REQUEST_LIST_ALL,
             },
         ],
     },

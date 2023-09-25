@@ -296,6 +296,7 @@
         "addNewUser": "Pridať nového použivateľa",
         "actions": "Úkony",
         "filter": {
+            "listTypeLabel": "Typ zoznamu",
             "state": "Stav",
             "stateLabel": {
                 "all": "Všetky",
@@ -477,6 +478,7 @@
             "users": "Používatelia",
 
             "userManagement": "Správa používateľov",
+            "requestListAll": "Žiadosti, registrácie a žiadosti na vymazanie osobných údajov",
             "requestList": "Žiadosti",
             "gdprRequestList": "Žiadosti na vymazanie osobných údajov",
             "registrationRequestList": "Registrácie"
@@ -709,7 +711,12 @@
             "all": "Všetky",
             "created": "Vytvorené",
             "accepted": "Akceptovaná",
-            "rejected": "Odmietnutá"
+            "rejected": "Odmietnutá",
+            "listType": {
+                "requests": "Žiadosti",
+                "registrations": "Registrácie",
+                "gdpr": "GDPR"
+            }
         },
         "identityDetail": "Detail identity",
         "rolesDetail": "Priradenie rolí k používateľovi",

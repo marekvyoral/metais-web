@@ -94,7 +94,7 @@ export const GdprRequestDetailContainer: React.FC<IGdprRequestDetailContainer> =
                             },
                         })
                             .then(() => {
-                                navigate(`${AdminRouteNames.GDPR_REQUEST_LIST}`)
+                                navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
                             })
                             .catch((error) => {
                                 setErrorMessage(error.message)
@@ -121,7 +121,7 @@ export const GdprRequestDetailContainer: React.FC<IGdprRequestDetailContainer> =
                 },
             })
                 .then(() => {
-                    navigate(`${AdminRouteNames.GDPR_REQUEST_LIST}`)
+                    navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
                 })
                 .catch((error) => {
                     setErrorMessage(error.message)
@@ -136,7 +136,7 @@ export const GdprRequestDetailContainer: React.FC<IGdprRequestDetailContainer> =
                 uuid: request?.createdBy || '',
             })
                 .then(() => {
-                    navigate(`${AdminRouteNames.GDPR_REQUEST_LIST}`)
+                    navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
                 })
                 .catch((error) => {
                     setErrorMessage(error.message)

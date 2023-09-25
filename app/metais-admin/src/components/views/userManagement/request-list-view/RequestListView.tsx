@@ -48,7 +48,7 @@ export const RequestListView: React.FC<IRequestListView> = ({
                 getCellContext: (ctx) => ctx?.row?.original?.identityFirstName + ' ' + ctx?.row?.original?.identityLastName,
             },
             cell: (ctx) => (
-                <TextLink to={`${route}/detail/${ctx?.row?.original?.uuid}`}>
+                <TextLink to={`${route}/detail/${listType?.toLowerCase()}/${ctx?.row?.original?.uuid}`}>
                     {ctx?.row?.original?.identityFirstName + ' ' + ctx?.row?.original?.identityLastName}
                 </TextLink>
             ),
@@ -160,6 +160,26 @@ export const RequestListView: React.FC<IRequestListView> = ({
                                 name="status"
                                 setValue={setValue}
                             />
+                            <SimpleSelect
+                                label={t(`userManagement.filter.listTypeLabel`)}
+                                options={[
+                                    {
+                                        value: RequestListType.REQUESTS,
+                                        label: t('requestList.filter.listType.requests'),
+                                    },
+                                    {
+                                        value: RequestListType.REGISTRATION,
+                                        label: t('requestList.filter.listType.registrations'),
+                                    },
+                                    {
+                                        value: RequestListType.GDPR,
+                                        label: t('requestList.filter.listType.gdpr'),
+                                    },
+                                ]}
+                                defaultValue={filter?.listType}
+                                name="listType"
+                                setValue={setValue}
+                            />
                         </>
                     )}
                 />
@@ -171,7 +191,7 @@ export const RequestListView: React.FC<IRequestListView> = ({
                 />
                 <Table
                     key={'requestListTable'}
-                    rowHref={(row) => `./detail/${row?.original?.uuid}`}
+                    rowHref={(row) => `./detail/${listType.toLowerCase()}/${row?.original?.uuid}`}
                     data={data?.claimSet || []}
                     columns={columns}
                     sort={[

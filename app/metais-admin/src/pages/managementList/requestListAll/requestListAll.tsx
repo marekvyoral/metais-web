@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { RequestListContainer, RequestListType } from '@/components/containers/ManagementList/RequestListContainer'
+import { RequestListContainer } from '@/components/containers/ManagementList/RequestListContainer'
 import { RequestListView } from '@/components/views/userManagement/request-list-view/RequestListView'
 
-const RegistrationRequestListPage = () => {
+const RequestListAllPage = () => {
     const { t } = useTranslation()
     return (
         <>
@@ -14,12 +14,11 @@ const RegistrationRequestListPage = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: t('requestList.registrationLitle'), href: AdminRouteNames.REGISTRATION_REQUEST_LIST },
+                    { label: t('requestList.title'), href: AdminRouteNames.REQUEST_LIST_ALL },
                 ]}
             />
             <MainContentWrapper>
                 <RequestListContainer
-                    listType={RequestListType.REGISTRATION}
                     View={(props) => (
                         <RequestListView
                             listType={props.listType}
@@ -37,4 +36,4 @@ const RegistrationRequestListPage = () => {
     )
 }
 
-export default RegistrationRequestListPage
+export default RequestListAllPage
