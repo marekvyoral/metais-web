@@ -419,9 +419,9 @@
         },
         "documentsManagement": "Documents",
         "templateReferenceIdentifiersManagement": "Management of referenceable identifier templates",
-        "managementBodies": {
-            "management": "Management bodies management",
-            "managementBodies": "Management bodies",
+        "publicAuthorities": {
+            "management": "Public authorities management",
+            "publicAuthorities": "Public authorities",
             "massActualizations": "Mass updates"
         }
     },
