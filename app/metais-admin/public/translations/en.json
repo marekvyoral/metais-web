@@ -264,6 +264,7 @@
         "addNewUser": "Add new user",
         "actions": "Actions",
         "filter": {
+            "listTypeLabel": "List type",
             "state": "Blocked",
             "stateLabel": {
                 "all": "All",
@@ -405,6 +406,7 @@
             "users": "Users",
             "userManagement": "User management",
             "requestList": "Requests",
+            "requestListAll": "Requests, registrations and GDPR requests",
             "gdprRequestList": "Requests for remove personal data",
             "registrationRequestList": "Registrations"
         },
@@ -708,7 +710,12 @@
             "all": "Všetky",
             "created": "Vytvorené",
             "accepted": "Akceptovaná",
-            "rejected": "Odmietnutá"
+            "rejected": "Odmietnutá",
+            "listType": {
+                "requests": "Requests",
+                "registrations": "Registrations",
+                "gdpr": "GDPR"
+            }
         },
         "identityDetail": "Identity Detail",
         "requestDetail": "Request detail",

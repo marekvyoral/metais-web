@@ -27,7 +27,6 @@ export interface RequestRolesFormProps {
 
 export const RequestRolesForm: React.FC<RequestRolesFormProps> = ({ roleData, request, handleCanApprove, isRegistration = false }) => {
     const { t } = useTranslation()
-
     const roleGroupsData = roleData?.roleGroupsData
     const allRolesData = useMemo(() => {
         const roles = roleData?.allRolesData

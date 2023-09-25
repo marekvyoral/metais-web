@@ -29,10 +29,10 @@ const DetailRequest: React.FC = () => {
                         withWidthContainer
                         links={[
                             { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                            { label: t('requestList.title'), href: AdminRouteNames.REGISTRATION_REQUEST_LIST },
+                            { label: t('requestList.title'), href: AdminRouteNames.REQUEST_LIST_ALL },
                             {
                                 label: data?.identityFirstName + ' ' + data?.identityLastName ?? '',
-                                href: AdminRouteNames.REGISTRATION_REQUEST_LIST + '/detail/' + userId,
+                                href: AdminRouteNames.REQUEST_LIST_ALL + '/detail/registrations/' + userId,
                             },
                         ]}
                     />
@@ -45,12 +45,12 @@ const DetailRequest: React.FC = () => {
                         >
                             <RequestDetailView
                                 isRegistration
-                                root={AdminRouteNames.REGISTRATION_REQUEST_LIST}
+                                root={AdminRouteNames.REQUEST_LIST_ALL}
                                 request={data}
                                 roleData={roleData}
                                 handleApproveClick={handleApproveClick}
                                 handleRefuseClick={handleRefuseClick}
-                                successedMutation={isSuccess}
+                                successesMutation={isSuccess}
                                 errorMessage={errorMessage}
                             />
                             <RefuseTextModal

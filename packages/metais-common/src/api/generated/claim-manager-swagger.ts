@@ -65,6 +65,7 @@ export interface ClaimListFilter {
 
 export interface ClaimListFilterContainerUi {
     hkoUuid?: string
+    listType?: string
     page?: number
     perpage?: number
     filter?: ClaimListFilter
