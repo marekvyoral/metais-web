@@ -153,7 +153,8 @@
             "country": "Výber krajiny"
         },
         "submit": "Odoslať formulár",
-        "back": "Späť"
+        "back": "Späť",
+        "waitSending": "Odosielanie"
     },
     "languageSelector": {
         "open": "Rozbaliť jazykové menu",
@@ -351,6 +352,7 @@
         "code": "Kód",
         "name": "Názov",
         "description": "Popis",
+        "engDescription": "Anglický popis",
         "valid": "Validita",
         "category": "Kategória",
         "link": "Položky",
@@ -361,14 +363,23 @@
         "remove": "Odstrániť",
         "validate": "Zvalidovať",
         "value": "Hodnota",
+        "engValue": "Anglická hodnota",
         "valueDescription": "Popis hodnoty",
         "heading": "Interné číselníky",
         "moreActions": "Viac",
         "codeError": "Kód je povinný",
         "nameError": "Názov je povinný",
         "descriptionError": "Popis je povinný",
+        "valueError": "Hodnota je povinná",
+        "engValueError": "Anglická hodnota je povinná",
+        "engDescriptionError": "Anglický Popis je povinný",
         "wrongRegex": "Formát môže obsahovať len písmená {{letters}} a tieto znaky {{signs}}",
-        "actions": "Úkony"
+        "actions": "Úkony",
+        "order": "Poradie",
+        "addNewCodelistDetail": "Pridať novú položku",
+        "items": "Položky",
+        "tooltipOrder": "Potiahni a pusti riadok pre zmenu poradia",
+        "codeExist": "Kód je nesprávny. Takýto kód už existuje."
     },
     "adminRolesPage": {
         "addNewRole": "Pridať novú rolu",
@@ -406,7 +417,8 @@
         "search": "Hľadať"
     },
     "mutationFeedback": {
-        "successfulUpdated": "Položka bola úspešne zmenená"
+        "successfulUpdated": "Položka bola úspešne zmenená",
+        "successfulCreated": "Položka bola úspešne pridaná"
     },
     "managementList": {
         "namePassword": "Meno / Heslo",
@@ -715,7 +727,8 @@
     },
     "errors": {
         "default": "Ups, niečo sa pokazilo.",
-        "gnr403": "Na volanie nemáte oprávnenie."
+        "gnr403": "Na volanie nemáte oprávnenie.",
+        "gnr412": "Podmienka nie je splnená."
     },
     "todo": {
         "header": "Vo výstavbe",

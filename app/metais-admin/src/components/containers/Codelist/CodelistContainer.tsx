@@ -1,4 +1,3 @@
-import React from 'react'
 import {
     EnumType,
     EnumTypePreviewList,
@@ -8,9 +7,10 @@ import {
     useUpdateEnumType,
     useValidEnumType,
 } from '@isdd/metais-common/api'
-import { UseMutationResult, useQueryClient } from '@tanstack/react-query'
-import sift from 'sift'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { UseMutationResult, useQueryClient } from '@tanstack/react-query'
+import React from 'react'
+import sift from 'sift'
 
 export enum CodelistFilterInputs {
     NAME = 'NAME',

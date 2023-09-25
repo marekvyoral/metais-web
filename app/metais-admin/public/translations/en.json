@@ -117,7 +117,8 @@
             "country": "Choose country"
         },
         "submit": "Submit form",
-        "back": "Back"
+        "back": "Back",
+        "waitSending": "Sending"
     },
     "languageSelector": {
         "open": "Open language menu",
@@ -304,6 +305,7 @@
         "code": "Code",
         "name": "Name",
         "description": "Description",
+        "engDescription": "English description",
         "valid": "Validity",
         "category": "Category",
         "link": "Items",
@@ -313,14 +315,22 @@
         "cancel": "Cancel",
         "remove": "Remove",
         "validate": "Validate",
-        "value": "Code",
+        "value": "Value",
+        "engValue": "English Value",
         "valueDescription": "Value Description",
         "heading": "Internal codelists",
         "codeError": "Code is required",
         "nameError": "Name is required",
+        "valueError": "Value is required",
+        "engValueError": "English Value is required",
         "descriptionError": "Description is required",
+        "engDescriptionError": "English Description is required",
         "wrongRegex": "You can use only {{letters}} and {{signs}}",
-        "actions": "Actions"
+        "actions": "Actions",
+        "addNewCodelistDetail": "Add new detail item",
+        "items": "Items",
+        "tooltipOrder": "Drag and drop a row to change the order",
+        "codeExist": "The code is incorrect. This code already exists."
     },
     "filter": {
         "expand": "Expand filter",
@@ -366,6 +376,7 @@
     },
     "mutationFeedback": {
         "successfulUpdated": "The item was successfully changed",
+        "successfulCreated": "The item was successfully created",
         "changeOwner": "Change owner",
         "metaColumnName": {
             "state": "Evidence status",
@@ -715,7 +726,8 @@
     },
     "errors": {
         "default": "Ups, something went wrong.",
-        "gnr403": "You do not have permission to call this API."
+        "gnr403": "You do not have permission to call this API.",
+        "gnr412": "Condition not met."
     },
     "todo": {
         "header": "Under construction",
