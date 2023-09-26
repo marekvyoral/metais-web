@@ -1,0 +1,17 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.stretch {
+    flex-grow: 5;
+}
+
+.space {
+    // margin: 20;
+    flex-grow: 1;
+}

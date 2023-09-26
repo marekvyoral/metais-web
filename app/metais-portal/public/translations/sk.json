@@ -863,25 +863,39 @@
         "changedUserInformation": "Osobné informácie boli úspešne zmenené",
         "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova."
     },
-    "votesList": {
-        "title": "Zoznam Hlasovaní",
-        "votesListSubtitle": "nejake blabla kecy",
-        "filter": {
-            "title": "Filter",
-            "votesTypeToShow": "Zobraziť",
-            "voteState": "Stav hlasovania",
-            "fromDate": "Prebiehajúce v období od",
-            "toDate": "Prebiehajúce v období do"
+    "votes": {
+        "votesList": {
+            "title": "Zoznam Hlasovaní",
+            "votesListSubtitle": "nejake blabla kecy",
+            "workgroup": "Pracovná skupina",
+            "workgroupAbreviation": "Skratka pracovnej skupiny",
+            "datefrom": "Dátum spustenia",
+            "dateto": "Dátum ukončenia",
+            "votestate": "Stav",
+            "cancast": "Právo hlasovať",
+            "hascast": "Hlasované za subjekt",
+            "subjectname": "Premet hlasovania (znenie otázky)",
+            "filter": {
+                "title": "Filter",
+                "votesTypeToShow": "Zobraziť",
+                "voteState": "Stav hlasovania",
+                "fromDate": "Prebiehajúce v období od",
+                "toDate": "Prebiehajúce v období do"
+            }
         },
         "type": {
-            "onlyMyVotes": "Len moje hlasovania",
-            "allVotes": "Všetky hlasovania",
-            "planned": "Plánované",
-            "ended": "Ukončené",
-            "upcomming": "Prebiehajúce",
-            "canceled" : "Zrušené", 
-            "evaluated": "Vyhodnotené",
-            "vetoed": "Vetované"
+            "toShow": {
+                "onlyMyVotes": "Len moje hlasovania",
+                "allVotes": "Všetky hlasovania"
+            },
+            "state": {
+                "planned": "Plánované",
+                "ended": "Ukončené",
+                "upcomming": "Prebiehajúce",
+                "canceled" : "Zrušené", 
+                "summarized": "Vyhodnotené",
+                "vetoed": "Vetované"
+            }
         }
     }
 }

@@ -1,81 +1,96 @@
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { ApiVotePreviewList, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, GetVotesParams, QueryFeedback, useGetVotes } from '@isdd/metais-common/index'
-import React from 'react'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, GetVotesParams, QueryFeedback, formatDateForDefaultValue, useGetVotes } from '@isdd/metais-common/index'
+import React, { useMemo } from 'react'
+import { SortType } from '@isdd/idsk-ui-kit/types'
+import { DateTime } from 'luxon'
 
 import { IVotesListFilterData, IVotesListView } from '@/components/views/votes/VoteListView'
+import { VoteStateEnum, VoteStateOptionEnum } from '@/components/views/votes/voteListProps'
 
 interface IVotesListContainer {
     View: React.FC<IVotesListView>
 }
 
+interface IVotesParamsData {
+    state: string | undefined
+    dateFrom: string | undefined
+    dateTo: string | undefined
+}
+
 const defaultFilterValues: IVotesListFilterData = {
-    votesTypeToShow: { value: 'everyone', label: 'everyone' },
-    voteState: { value: 'planned', label: 'planned' },
+    votesTypeToShow: ['everyone'],
+    voteState: [''],
     effectiveFrom: '',
     effectiveTo: '',
 }
 
-const defaultParamValues: GetVotesParams = {
-    ascending: false,
-    onlyMy: false,
-    sortBy: 'effectiveFrom',
-    pageNumber: BASE_PAGE_NUMBER,
-    perPage: BASE_PAGE_SIZE,
+const getVoteParamsData = (voteStateOption: string, effectiveFrom: string, effectiveTo: string): IVotesParamsData => {
+    const dateNow = DateTime.now().toString()
+    const formattedDateNow = formatDateForDefaultValue(dateNow)
+    switch (voteStateOption) {
+        case VoteStateOptionEnum.planned:
+            return {
+                state: effectiveFrom === '' || effectiveFrom === undefined ? VoteStateEnum.CREATED : undefined,
+                dateFrom: effectiveFrom === '' || effectiveFrom === undefined ? formattedDateNow : effectiveFrom,
+                dateTo: effectiveTo,
+            }
+        case VoteStateOptionEnum.ended:
+            return {
+                state: effectiveTo === '' || effectiveTo === undefined ? VoteStateEnum.CREATED : undefined,
+                dateFrom: effectiveFrom,
+                dateTo: effectiveTo === '' || effectiveTo === undefined ? formattedDateNow : effectiveTo,
+            }
+        case VoteStateOptionEnum.upcomming:
+            return {
+                state: VoteStateEnum.CREATED,
+                dateFrom: effectiveFrom === '' || effectiveFrom === undefined ? formattedDateNow : effectiveFrom,
+                dateTo: effectiveTo === '' || effectiveTo === undefined ? formattedDateNow : effectiveTo,
+            }
+        case VoteStateOptionEnum.canceled:
+            return { state: VoteStateEnum.CANCELED, dateFrom: effectiveFrom, dateTo: effectiveTo }
+        case VoteStateOptionEnum.summarized:
+            return { state: VoteStateEnum.SUMMARIZED, dateFrom: effectiveFrom, dateTo: effectiveTo }
+        case VoteStateOptionEnum.vetoed:
+            return { state: VoteStateEnum.VETOED, dateFrom: effectiveFrom, dateTo: effectiveTo }
+        default:
+            return { state: '', dateFrom: '', dateTo: '' }
+    }
 }
 
-// const mockVotesListResponseString = `{
-//     "votesCount": 396,
-//     "votes": [
-//       {
-//         "id": 11,
-//         "name": "PS4: Súhlasíte s predloženým návrhom, aby osoba vykonávajúca zaručenú konverziu nebola povinná konvertovať vnorené podpisové kontajnery a zároveň bola povinná informovať žiadateľa o existencii vnorených podpisov v dokumente predloženom na konverziu?",
-//         "description": "",
-//         "createdAt": "2023-08-25T10:56:07.774",
-//         "effectiveFrom": "2023-08-25T00:00:00.000",
-//         "effectiveTo": "2023-09-06T23:59:59.999",
-//         "voteState": "SUMMARIZED",
-//         "secret": false,
-//         "veto": false,
-//         "createdBy": "veronika.drotarova",
-//         "actionDesription": "Návrh bol schválený v súlade s čl. 7 ods. 7 Štatútu a rokovacieho poriadku Komisie pre štandardizáciu ITVS.",
-//         "standardRequestId": null,
-//         "canCast": "false",
-//         "hasCast": "no"
-//       },
-//       {
-//         "id": 12,
-//         "name": "PS4: Súhlasíte s návrhom na doplnenie § 5 a § 6 vyhlášky č.  70/2021 Z. z. o zaručenej konverzii a prílohy č. 4 a prílohy č. 6 k vyhláške č.  70/2021 Z. z. o zaručenej konverzii v predloženom znení?",
-//         "description": "",
-//         "createdAt": "2023-08-25T11:13:56.151",
-//         "effectiveFrom": "2023-08-25T00:00:00.000",
-//         "effectiveTo": "2023-09-06T23:59:59.999",
-//         "voteState": "SUMMARIZED",
-//         "secret": false,
-//         "veto": false,
-//         "createdBy": "veronika.drotarova",
-//         "actionDesription": "Návrh bol schválený v súlade s čl. 7 ods. 7 Štatútu a rokovacieho poriadku Komisie pre štandardizáciu ITVS.",
-//         "standardRequestId": null,
-//         "canCast": "false",
-//         "hasCast": "no"
-//       }
-//     ]
-//   } `
-
-// const mockVotesListResponse: ApiVotePreviewList = JSON.parse(mockVotesListResponseString) as ApiVotePreviewList
-
 export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
-    const { filter, handleFilterChange } = useFilterParams<GetVotesParams>({
-        sortBy: 'effectiveFrom',
-        // ascending: defaultSort.sortDirection === SortType.ASC ? 'true' : 'false',
-        ascending: false,
-        pageNumber: BASE_PAGE_NUMBER,
-        perPage: BASE_PAGE_SIZE,
+    const { filter, handleFilterChange } = useFilterParams<IVotesListFilterData>({
+        sort: [
+            {
+                orderBy: 'effectiveFrom',
+                sortDirection: SortType.DESC,
+            },
+        ],
+        ...defaultFilterValues,
     })
-    const { data: votesList, isLoading, isError } = useGetVotes(defaultParamValues)
+
+    const voteParamsData = useMemo((): IVotesParamsData => {
+        return getVoteParamsData(filter.voteState?.[0], filter.effectiveFrom, filter.effectiveTo)
+    }, [filter.effectiveFrom, filter.effectiveTo, filter.voteState])
+
+    const getVotesParamValues: GetVotesParams = {
+        ascending: filter.sort?.[0]?.sortDirection === SortType.ASC ?? false,
+        onlyMy: filter.votesTypeToShow?.[0] === 'onlyMy' ?? false,
+        sortBy: filter.sort?.[0]?.orderBy ?? 'effectiveFrom',
+        ...(voteParamsData.state !== undefined && voteParamsData.state !== '' && { state: voteParamsData.state }),
+        ...(voteParamsData.dateFrom !== undefined && voteParamsData.dateFrom !== '' && { fromDate: voteParamsData.dateFrom }),
+        ...(voteParamsData.dateTo !== undefined && voteParamsData.dateTo !== '' && { toDate: voteParamsData.dateTo }),
+        pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+        perPage: filter.pageSize ?? BASE_PAGE_SIZE,
+    }
+
+    console.log({ voteParamsData })
+    console.log({ getVotesParamValues })
+
+    const { data: votesList, isLoading, isError } = useGetVotes(getVotesParamValues)
     // const pagination = usePagination(tableData, filterParams)
     return (
         <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent' }}>
-            <View votesListData={votesList} defaultFilterValues={defaultFilterValues} />
+            <View votesListData={votesList} filter={filter} defaultFilterValues={defaultFilterValues} handleFilterChange={handleFilterChange} />
         </QueryFeedback>
     )
 }

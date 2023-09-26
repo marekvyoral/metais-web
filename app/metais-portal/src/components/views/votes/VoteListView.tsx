@@ -6,28 +6,28 @@ import { ActionsOverTable } from '@isdd/metais-common/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
-import { columns } from '@/components/views/votes/voteListColumns'
+import styles from './votelist.module.scss'
 
-export interface IVotesListView {
-    votesListData: ApiVotePreviewList | undefined
-    defaultFilterValues: IVotesListFilterData
-}
+import { columns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/votes/voteListProps'
 
 export interface IVotesListFilterData extends IFilterParams, IFilter {
-    votesTypeToShow: IOption
-    voteState: IOption
+    votesTypeToShow: string[]
+    voteState: string[]
     effectiveFrom: string
     effectiveTo: string
 }
 
-export const VotesListView: React.FC<IVotesListView> = ({ votesListData, defaultFilterValues }) => {
+export interface IVotesListView {
+    votesListData: ApiVotePreviewList | undefined
+    defaultFilterValues: IVotesListFilterData
+    filter: IFilter
+    handleFilterChange: (filter: IFilter) => void
+}
+
+export const VotesListView: React.FC<IVotesListView> = ({ votesListData, filter, defaultFilterValues, handleFilterChange }) => {
     const { t } = useTranslation()
     // const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
     // const [currentPage, setCurrentPage] = useState(1)
-
-    function handleFilterChange(filter: IFilter): void {
-        throw new Error('Function not implemented.')
-    }
 
     return (
         <>
@@ -38,45 +38,54 @@ export const VotesListView: React.FC<IVotesListView> = ({ votesListData, default
                     { label: t('votesList.breadcrumbs.VotesLists'), href: NavigationSubRoutes.ZOZNAM_HLASOV },
                 ]}
             />
-            <TextHeading size="XL">{t('votesList.title')}</TextHeading>
-            <TextHeading size="L">{t('votesList.votesListSubtitle')}</TextHeading>
+            <TextHeading size="XL">{t('votes.votesList.title')}</TextHeading>
+            <TextHeading size="L">{t('votes.votesList.votesListSubtitle')}</TextHeading>
             <Filter<IVotesListFilterData>
-                heading={t('votesList.filter.title')}
+                heading={t('votes.votesList.filter.title')}
                 defaultFilterValues={defaultFilterValues}
-                form={({ filter, register, setValue }) => (
+                form={({ filter: listFilter, register, setValue }) => (
                     <div>
                         <SimpleSelect
                             id="votesTypeToShow"
-                            label={t('votesList.filter.votesTypeToShow')}
-                            options={[
-                                { value: 'onlyMy', label: t('votesList.type.onlyMyVotes') },
-                                { value: 'everyone', label: t('votesList.type.allVotes') },
-                            ]}
+                            label={t('votes.votesList.filter.votesTypeToShow')}
+                            options={votesTypeToShowOptions(t)}
                             setValue={setValue}
-                            defaultValue={defaultFilterValues.votesTypeToShow.label}
+                            defaultValue={listFilter?.votesTypeToShow?.[0]}
                             name="votesTypeToShow"
                         />
                         <SimpleSelect
                             id="voteState"
-                            label={t('votesList.filter.voteState')}
-                            options={[
-                                { value: 'planned', label: t('votesList.type.planned') },
-                                { value: 'ended', label: t('votesList.type.ended') },
-                            ]}
+                            label={t('votes.votesList.filter.voteState')}
+                            options={voteStateOptions(t)}
                             setValue={setValue}
-                            defaultValue={defaultFilterValues.votesTypeToShow.label}
+                            defaultValue={listFilter?.voteState?.[0]}
                             name="voteState"
                         />
-                        {/*TODO: zmenit inline style na nieco normalne*/}
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Input {...register('fromDate')} type="date" label={t('votesList.filter.fromDate')} />
-                            <Input {...register('toDate')} type="date" label={t('votesList.filter.toDate')} />
+
+                        <div className={styles.inline}>
+                            <Input
+                                {...register('effectiveFrom')}
+                                type="date"
+                                label={t('votes.votesList.filter.fromDate')}
+                                className={styles.stretch}
+                            />
+                            <div className={styles.space} />
+                            <Input {...register('effectiveTo')} type="date" label={t('votes.votesList.filter.toDate')} className={styles.stretch} />
                         </div>
                     </div>
                 )}
             />
             <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
-            <Table data={votesListData?.votes} columns={columns(t)} sort={undefined} isLoading={false} error={undefined} />
+            <Table
+                data={votesListData?.votes}
+                columns={columns(t)}
+                sort={filter.sort ?? []}
+                onSortingChange={(columnSort) => {
+                    handleFilterChange({ sort: columnSort })
+                }}
+                isLoading={false}
+                error={undefined}
+            />
         </>
     )
 }

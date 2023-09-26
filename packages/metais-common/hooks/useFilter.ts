@@ -155,6 +155,7 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
     })
 
     const handleFilterChange = (changedFilter: IFilter) => {
+        console.log('filter changed')
         setUiFilterState({
             ...uiFilterState,
             ...changedFilter,
