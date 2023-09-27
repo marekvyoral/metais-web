@@ -1,9 +1,9 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-import DashboardPage from './dashboard'
+import RequestListAllPage from './requestListAll'
 
-export const INDEX_ROUTE = DashboardPage
+export const INDEX_ROUTE = RequestListAllPage
 
 const index: React.FC = () => {
     return <Outlet />

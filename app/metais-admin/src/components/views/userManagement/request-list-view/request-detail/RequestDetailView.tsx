@@ -17,7 +17,7 @@ interface IRequestDetailProps {
     request: ClaimUi | undefined
     roleData: IRequestRoleData
     isRegistration?: boolean
-    successedMutation: boolean
+    successesMutation: boolean
     errorMessage: string
     root: AdminRouteNames
     handleAnonymizeClick?: (selectedRoles: RoleItem[], request?: ClaimUi) => void
@@ -30,7 +30,7 @@ export const RequestDetailView: React.FC<IRequestDetailProps> = ({
     request,
     roleData,
     handleApproveClick,
-    successedMutation,
+    successesMutation,
     errorMessage,
     handleRefuseClick,
     handleAnonymizeClick,
@@ -72,7 +72,7 @@ export const RequestDetailView: React.FC<IRequestDetailProps> = ({
 
     return (
         <>
-            {(successedMutation || errorMessage) && <MutationFeedback success={successedMutation} error={errorMessage} />}
+            {(successesMutation || errorMessage) && <MutationFeedback success={successesMutation} error={errorMessage} />}
             <div className={styles.basicInformationSpace}>
                 <TextHeading size="M">{t('requestList.identityDetail')}</TextHeading>
                 <DefinitionList>

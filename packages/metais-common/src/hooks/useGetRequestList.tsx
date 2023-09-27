@@ -11,7 +11,7 @@ export const useGetRequestList = ({ uuids, filter }: GetRequestListProps) => {
     const readList = useReadList()
 
     const { data, isLoading, isError, isFetching } = useQuery({
-        queryKey: ['requestList', uuids],
+        queryKey: ['requestList', uuids, filter],
         queryFn: async () => {
             return (await readList.mutateAsync({ data: filter })) ?? []
         },

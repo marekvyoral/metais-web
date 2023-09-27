@@ -1,12 +1,13 @@
+import React, { useCallback, useEffect, useState } from 'react'
 import { BaseModal, Button, ButtonLink, ButtonPopup, CheckBox, Input, PaginatorWrapper, SimpleSelect, Table, TextArea } from '@isdd/idsk-ui-kit/index'
 import { EnumTypePreview, EnumTypePreviewList } from '@isdd/metais-common/api'
 import { BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
-import { useLocation, Link } from 'react-router-dom'
 import { ActionsOverTable, CreateEntityButton, isRowSelected } from '@isdd/metais-common/index'
+import { useLocation, Link, useNavigate } from 'react-router-dom'
 import { ColumnDef } from '@tanstack/react-table'
-import React, { useCallback, useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { ListIcon } from '@isdd/metais-common/assets/images'
 
 import styles from './codelistsTable.module.scss'
 import { validateRowData } from './codelistTableActions'
@@ -45,7 +46,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
     const { t } = useTranslation()
     const { createEnum, validateEnum, updateEnum, deleteEnum } = mutations
     const location = useLocation()
-
+    const navigate = useNavigate()
     const { register, getValues, setValue, clearErrors } = useForm({
         defaultValues: {
             filteredData,
@@ -225,6 +226,15 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                     clearErrors={clearErrors}
                 />
             ),
+        },
+        {
+            accessorFn: (row) => row,
+            header: t('codelists.items'),
+            id: 'items',
+            cell: (ctx) => {
+                const rowObject = ctx.getValue() as CodelistsTableColumnsDefinition
+                return <img src={ListIcon} className={styles.iconList} onClick={() => navigate('./' + rowObject.code)} />
+            },
         },
         {
             header: t('actionsInTable.actions'),

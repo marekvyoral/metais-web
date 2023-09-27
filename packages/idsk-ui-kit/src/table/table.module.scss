@@ -36,10 +36,22 @@
 
 .fontWeightNormal {
     font-weight: normal;
+    // padding: 10px 0 20px 10px !important;
 }
 
 .fontWeightBolder {
     font-weight: bolder;
+}
+
+.invalidated {
+    color: govuk-colour('red') !important;
+    text-decoration: line-through;
+    p {
+        color: govuk-colour('red') !important;
+    }
+    a {
+        color: govuk-colour('red') !important;
+    }
 }
 
 .checkBoxCell {
@@ -61,6 +73,7 @@
 
 .header {
     background-color: govuk-colour('grey-4');
+    padding: 10px 20px 10px 10px !important;
 }
 
 .rowSelected {

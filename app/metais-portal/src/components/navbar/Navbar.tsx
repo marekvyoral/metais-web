@@ -6,7 +6,7 @@ import { IconWithNotification } from '@isdd/metais-common/components/navbar/navb
 import { NavBarMain } from '@isdd/metais-common/components/navbar/navbar-main/NavBarMain'
 import { NavMenu } from '@isdd/metais-common/components/navbar/navmenu/NavMenu'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
@@ -39,6 +39,10 @@ export const Navbar: React.FC = () => {
     const { data: ksisvsGroup } = useFind2111({ shortName: KSIVS_SHORT_NAME })
 
     const iconGroupItems: React.FC[] = [TasksPopup, Notifications]
+    const topMenuPortalRoutes = getPortalNavigationItems(t, !!user, Array.isArray(ksisvsGroup) ? ksisvsGroup[0].uuid : ksisvsGroup?.uuid)
+    const topMenuWithoutPOAndMonitoring = topMenuPortalRoutes.filter(
+        (item) => item.path != RouteNames.HOW_TO_PO && item.path != RouteNames.HOW_TO_MONITORING,
+    )
 
     return (
         <>
@@ -52,11 +56,7 @@ export const Navbar: React.FC = () => {
 
                     <div className="idsk-header-web__nav--divider" />
 
-                    <NavMenu
-                        isMenuExpanded={isMenuExpanded}
-                        setIsMenuExpanded={setIsMenuExpanded}
-                        navItems={getPortalNavigationItems(t, !!user, Array.isArray(ksisvsGroup) ? ksisvsGroup[0].uuid : ksisvsGroup?.uuid)}
-                    />
+                    <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={topMenuWithoutPOAndMonitoring} />
                 </div>
             </header>
         </>

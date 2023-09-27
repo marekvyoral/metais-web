@@ -153,7 +153,8 @@
             "country": "Výber krajiny"
         },
         "submit": "Odoslať formulár",
-        "back": "Späť"
+        "back": "Späť",
+        "waitSending": "Odosielanie"
     },
     "languageSelector": {
         "open": "Rozbaliť jazykové menu",
@@ -295,6 +296,7 @@
         "addNewUser": "Pridať nového použivateľa",
         "actions": "Úkony",
         "filter": {
+            "listTypeLabel": "Typ zoznamu",
             "state": "Stav",
             "stateLabel": {
                 "all": "Všetky",
@@ -351,6 +353,7 @@
         "code": "Kód",
         "name": "Názov",
         "description": "Popis",
+        "engDescription": "Anglický popis",
         "valid": "Validita",
         "category": "Kategória",
         "link": "Položky",
@@ -361,14 +364,23 @@
         "remove": "Odstrániť",
         "validate": "Zvalidovať",
         "value": "Hodnota",
+        "engValue": "Anglická hodnota",
         "valueDescription": "Popis hodnoty",
         "heading": "Interné číselníky",
         "moreActions": "Viac",
         "codeError": "Kód je povinný",
         "nameError": "Názov je povinný",
         "descriptionError": "Popis je povinný",
+        "valueError": "Hodnota je povinná",
+        "engValueError": "Anglická hodnota je povinná",
+        "engDescriptionError": "Anglický Popis je povinný",
         "wrongRegex": "Formát môže obsahovať len písmená {{letters}} a tieto znaky {{signs}}",
-        "actions": "Úkony"
+        "actions": "Úkony",
+        "order": "Poradie",
+        "addNewCodelistDetail": "Pridať novú položku",
+        "items": "Položky",
+        "tooltipOrder": "Potiahni a pusti riadok pre zmenu poradia",
+        "codeExist": "Kód je nesprávny. Takýto kód už existuje."
     },
     "adminRolesPage": {
         "addNewRole": "Pridať novú rolu",
@@ -406,7 +418,8 @@
         "search": "Hľadať"
     },
     "mutationFeedback": {
-        "successfulUpdated": "Položka bola úspešne zmenená"
+        "successfulUpdated": "Položka bola úspešne zmenená",
+        "successfulCreated": "Položka bola úspešne pridaná"
     },
     "managementList": {
         "namePassword": "Meno / Heslo",
@@ -462,7 +475,10 @@
         "admin": "Administrácia",
         "organizations": "Správa povinných osôb",
         "userManagement": {
+            "users": "Používatelia",
+
             "userManagement": "Správa používateľov",
+            "requestListAll": "Žiadosti, registrácie a žiadosti na vymazanie osobných údajov",
             "requestList": "Žiadosti",
             "gdprRequestList": "Žiadosti na vymazanie osobných údajov",
             "registrationRequestList": "Registrácie"
@@ -474,9 +490,26 @@
             "profiles": "Profily atribútov",
             "relations": "Vzťahy"
         },
-        "eko": "Správa EKO kódov",
+        "eko": "EKO kódy",
         "tooltips": "Tooltipy",
-        "codelists": "Interné číselníky"
+        "codelists": "Správa interných číselníkov",
+        "monitoring": {
+            "monitoring": "Správa monitoringu",
+            "params": "Monitorovacie parametre",
+            "list": "Záznamy z monitoringu"
+        },
+        "reportsManagement": "Správa zostáv",
+        "projects": {
+            "management": "Správa projektov",
+            "financeManagement": "Finančné limity schvaľovacieho procesu"
+        },
+        "documentsManagement": "Dokumenty",
+        "templateReferenceIdentifiersManagement": "Správa šablón referencovateľných identifikátorov",
+        "publicAuthorities": {
+            "management": "Správa orgánov riadenia",
+            "publicAuthorities": "Orgány riadenia",
+            "massActualizations": "Hromadné aktualizácie"
+        }
     },
     "tooltips": {
         "selectedEntries": "Vybrané záznamy",
@@ -678,7 +711,12 @@
             "all": "Všetky",
             "created": "Vytvorené",
             "accepted": "Akceptovaná",
-            "rejected": "Odmietnutá"
+            "rejected": "Odmietnutá",
+            "listType": {
+                "requests": "Žiadosti",
+                "registrations": "Registrácie",
+                "gdpr": "GDPR"
+            }
         },
         "identityDetail": "Detail identity",
         "rolesDetail": "Priradenie rolí k používateľovi",
@@ -696,7 +734,8 @@
     },
     "errors": {
         "default": "Ups, niečo sa pokazilo.",
-        "gnr403": "Na volanie nemáte oprávnenie."
+        "gnr403": "Na volanie nemáte oprávnenie.",
+        "gnr412": "Podmienka nie je splnená."
     },
     "todo": {
         "header": "Vo výstavbe",

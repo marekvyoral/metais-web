@@ -1,9 +1,9 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-import GdprRequestListPage from './gdprRequestList'
+import MonitoringPage from './monitoring'
 
-export const INDEX_ROUTE = GdprRequestListPage
+export const INDEX_ROUTE = MonitoringPage
 
 const index: React.FC = () => {
     return <Outlet />
