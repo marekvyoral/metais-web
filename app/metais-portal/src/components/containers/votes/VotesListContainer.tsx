@@ -3,6 +3,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, GetVotesParams, QueryFeedback, format
 import React, { useMemo } from 'react'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 import { DateTime } from 'luxon'
+import { usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 
 import { IVotesListFilterData, IVotesListView } from '@/components/views/votes/VoteListView'
 import { VoteStateEnum, VoteStateOptionEnum } from '@/components/views/votes/voteListProps'
@@ -87,7 +88,7 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
     console.log({ getVotesParamValues })
 
     const { data: votesList, isLoading, isError } = useGetVotes(getVotesParamValues)
-    // const pagination = usePagination(tableData, filterParams)
+
     return (
         <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent' }}>
             <View votesListData={votesList} filter={filter} defaultFilterValues={defaultFilterValues} handleFilterChange={handleFilterChange} />

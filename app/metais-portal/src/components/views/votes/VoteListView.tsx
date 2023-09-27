@@ -1,5 +1,5 @@
-import { BreadCrumbs, Filter, HomeIcon, IOption, Input, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { ApiVotePreviewList } from '@isdd/metais-common/api'
+import { BreadCrumbs, Filter, HomeIcon, Input, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { ApiVotePreviewList, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
 import { ActionsOverTable } from '@isdd/metais-common/index'
@@ -85,6 +85,12 @@ export const VotesListView: React.FC<IVotesListView> = ({ votesListData, filter,
                 }}
                 isLoading={false}
                 error={undefined}
+            />
+            <PaginatorWrapper
+                pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
+                pageSize={filter.pageSize || BASE_PAGE_SIZE}
+                dataLength={votesListData?.votesCount || 0}
+                handlePageChange={handleFilterChange}
             />
         </>
     )
