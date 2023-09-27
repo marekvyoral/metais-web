@@ -7,6 +7,7 @@ import { Outlet, useParams } from 'react-router-dom'
 import { MutationFeedback } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { Actions, useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 
 import NeighboursCardListWrapper from '@/components/entities/NeighboursCardListWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
@@ -21,6 +22,7 @@ const EntityDetailPage: React.FC = () => {
     const { isActionSuccess } = useActionSuccess()
     const { entityId, entityName } = useParams()
     document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
+    const userAbility = useUserAbility()
 
     const tabList: Tab[] = [
         {
@@ -41,12 +43,16 @@ const EntityDetailPage: React.FC = () => {
             title: t('ciType.relationships'),
             content: <Outlet />,
         },
-        {
-            id: 'history',
-            path: `/ci/${entityName}/${entityId}/history`,
-            title: t('ciType.history'),
-            content: <Outlet />,
-        },
+        ...(userAbility.can(Actions.HISTORY, 'ci')
+            ? [
+                  {
+                      id: 'history',
+                      path: `/ci/${entityName}/${entityId}/history`,
+                      title: t('ciType.history'),
+                      content: <Outlet />,
+                  },
+              ]
+            : []),
     ]
 
     const { data: ciItemData } = useReadConfigurationItem(entityId ?? '', {
