@@ -1,24 +1,25 @@
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, GetVotesParams, QueryFeedback, formatDateForDefaultValue, useGetVotes } from '@isdd/metais-common/index'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, GetVotesParams, QueryFeedback, useGetVotes } from '@isdd/metais-common/index'
 import React, { useMemo } from 'react'
 import { SortType } from '@isdd/idsk-ui-kit/types'
-import { DateTime } from 'luxon'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
-import { IVotesParamsData, getVoteParamsData } from './votesListFunc'
+import { getVoteParamsData } from './votesListFunc'
 
 import { IVotesListFilterData, IVotesListView } from '@/components/views/votes/VoteListView'
-import { VoteStateEnum, VoteStateOptionEnum } from '@/components/views/votes/voteListProps'
+import { VotesListColumnsEnum, VotesListShowEnum } from '@/components/views/votes/voteListProps'
 
 interface IVotesListContainer {
     View: React.FC<IVotesListView>
 }
 
-const defaultFilterValues: IVotesListFilterData = {
-    votesTypeToShow: ['everyone'],
-    voteState: [''],
-    effectiveFrom: '',
-    effectiveTo: '',
+const defaultFilterValues = (isUserLogged: boolean): IVotesListFilterData => {
+    return {
+        votesTypeToShow: isUserLogged ? VotesListShowEnum.onlyMy : VotesListShowEnum.everyone,
+        voteState: '',
+        effectiveFrom: '',
+        effectiveTo: '',
+    }
 }
 
 export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
@@ -28,19 +29,19 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
     const { filter, handleFilterChange } = useFilterParams<IVotesListFilterData>({
         sort: [
             {
-                orderBy: 'effectiveFrom',
+                orderBy: VotesListColumnsEnum.effectiveFrom,
                 sortDirection: SortType.DESC,
             },
         ],
-        ...defaultFilterValues,
+        ...defaultFilterValues(isUserLogged),
     })
 
     const getVotesParamValues = useMemo((): GetVotesParams => {
-        const voteParamsData = getVoteParamsData(filter.voteState?.[0], filter.effectiveFrom, filter.effectiveTo)
+        const voteParamsData = getVoteParamsData(filter.voteState, filter.effectiveFrom, filter.effectiveTo)
         const votesParamValues: GetVotesParams = {
             ascending: filter.sort?.[0]?.sortDirection === SortType.ASC ?? false,
-            onlyMy: filter.votesTypeToShow?.[0] === 'onlyMy' ?? false,
-            sortBy: filter.sort?.[0]?.orderBy ?? 'effectiveFrom',
+            onlyMy: filter.votesTypeToShow === VotesListShowEnum.onlyMy ?? false,
+            sortBy: filter.sort?.[0]?.orderBy ?? VotesListColumnsEnum.effectiveFrom,
             ...(voteParamsData.state !== undefined && voteParamsData.state !== '' && { state: voteParamsData.state }),
             ...(voteParamsData.dateFrom !== undefined && voteParamsData.dateFrom !== '' && { fromDate: voteParamsData.dateFrom }),
             ...(voteParamsData.dateTo !== undefined && voteParamsData.dateTo !== '' && { toDate: voteParamsData.dateTo }),
@@ -58,7 +59,7 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
                 isUserLogged={isUserLogged}
                 votesListData={votesList}
                 filter={filter}
-                defaultFilterValues={defaultFilterValues}
+                defaultFilterValues={defaultFilterValues(isUserLogged)}
                 handleFilterChange={handleFilterChange}
             />
         </QueryFeedback>

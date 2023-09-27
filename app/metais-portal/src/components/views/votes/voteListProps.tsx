@@ -4,6 +4,11 @@ import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
 
+export enum VotesListShowEnum {
+    everyone = 'everyone',
+    onlyMy = 'onlyMy',
+}
+
 export enum VoteStateEnum {
     CREATED = 'CREATED',
     CANCELED = 'CANCELED',
@@ -20,13 +25,22 @@ export enum VoteStateOptionEnum {
     vetoed = 'vetoed',
 }
 
+export enum VotesListColumnsEnum {
+    name = 'name',
+    effectiveFrom = 'effectiveFrom',
+    effectiveTo = 'effectiveTo',
+    voteState = 'voteState',
+    canCast = 'canCast',
+    hasCast = 'hasCast',
+}
+
 export const columns = (t: TFunction): Array<ColumnDef<ApiVotePreview>> => {
     return [
         {
             header: t('votes.votesList.subjectname'),
             accessorFn: (row) => row?.name,
             enableSorting: true,
-            id: 'name',
+            id: VotesListColumnsEnum.name,
             size: 500,
             cell: (ctx) => {
                 const { id } = ctx.row.original
@@ -38,35 +52,35 @@ export const columns = (t: TFunction): Array<ColumnDef<ApiVotePreview>> => {
             header: t('votes.votesList.datefrom'),
             accessorFn: (row) => row?.effectiveFrom,
             enableSorting: true,
-            id: 'effectiveFrom',
+            id: VotesListColumnsEnum.effectiveFrom,
             cell: (ctx) => t('date', { date: ctx.getValue() as string }),
         },
         {
             header: t('votes.votesList.dateto'),
             accessorFn: (row) => row?.effectiveTo,
             enableSorting: true,
-            id: 'effectiveTo',
+            id: VotesListColumnsEnum.effectiveTo,
             cell: (ctx) => t('date', { date: ctx.getValue() as string }),
         },
         {
             header: t('votes.votesList.votestate'),
             accessorFn: (row) => row?.voteState,
             enableSorting: true,
-            id: 'voteState',
+            id: VotesListColumnsEnum.voteState,
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
         {
             header: t('votes.votesList.cancast'),
             accessorFn: (row) => row?.canCast,
             enableSorting: true,
-            id: 'canCast',
+            id: VotesListColumnsEnum.canCast,
             cell: (ctx) => <span>{(ctx?.getValue?.() as boolean) ? 'true' : 'false'}</span>,
         },
         {
             header: t('votes.votesList.hascast'),
             accessorFn: (row) => row?.hasCast,
             enableSorting: true,
-            id: 'hasCast',
+            id: VotesListColumnsEnum.hasCast,
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
     ]
@@ -74,8 +88,8 @@ export const columns = (t: TFunction): Array<ColumnDef<ApiVotePreview>> => {
 
 export const votesTypeToShowOptions = (t: TFunction): IOption[] => {
     return [
-        { value: 'onlyMy', label: t('votes.type.toShow.onlyMyVotes') },
-        { value: 'everyone', label: t('votes.type.toShow.allVotes') },
+        { value: VotesListShowEnum.onlyMy, label: t('votes.type.toShow.onlyMyVotes') },
+        { value: VotesListShowEnum.everyone, label: t('votes.type.toShow.allVotes') },
     ]
 }
 

@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 
 import { VoteStateEnum, VoteStateOptionEnum } from '@/components/views/votes/voteListProps'
 
-interface IVotesParamsData {
+export interface IVotesParamsData {
     state: string | undefined
     dateFrom: string | undefined
     dateTo: string | undefined

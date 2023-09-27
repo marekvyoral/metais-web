@@ -11,8 +11,8 @@ import styles from './votelist.module.scss'
 import { columns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/votes/voteListProps'
 
 export interface IVotesListFilterData extends IFilterParams, IFilter {
-    votesTypeToShow: string[]
-    voteState: string[]
+    votesTypeToShow: string
+    voteState: string
     effectiveFrom: string
     effectiveTo: string
 }
@@ -25,18 +25,16 @@ export interface IVotesListView {
     handleFilterChange: (filter: IFilter) => void
 }
 
-export const VotesListView: React.FC<IVotesListView> = ({ votesListData, filter, defaultFilterValues, handleFilterChange }) => {
+export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesListData, filter, defaultFilterValues, handleFilterChange }) => {
     const { t } = useTranslation()
-    // const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
-    // const [currentPage, setCurrentPage] = useState(1)
 
     return (
         <>
             <BreadCrumbs
                 links={[
-                    { label: t('votesList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
-                    { label: t('votesList.breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
-                    { label: t('votesList.breadcrumbs.VotesLists'), href: NavigationSubRoutes.ZOZNAM_HLASOV },
+                    { label: t('votes.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
+                    { label: t('votes.breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
+                    { label: t('votes.breadcrumbs.VotesLists'), href: NavigationSubRoutes.ZOZNAM_HLASOV },
                 ]}
             />
             <TextHeading size="XL">{t('votes.votesList.title')}</TextHeading>
@@ -46,20 +44,22 @@ export const VotesListView: React.FC<IVotesListView> = ({ votesListData, filter,
                 defaultFilterValues={defaultFilterValues}
                 form={({ filter: listFilter, register, setValue }) => (
                     <div>
-                        <SimpleSelect
-                            id="votesTypeToShow"
-                            label={t('votes.votesList.filter.votesTypeToShow')}
-                            options={votesTypeToShowOptions(t)}
-                            setValue={setValue}
-                            defaultValue={listFilter?.votesTypeToShow?.[0]}
-                            name="votesTypeToShow"
-                        />
+                        {isUserLogged && (
+                            <SimpleSelect
+                                id="votesTypeToShow"
+                                label={t('votes.votesList.filter.votesTypeToShow')}
+                                options={votesTypeToShowOptions(t)}
+                                setValue={setValue}
+                                defaultValue={listFilter?.votesTypeToShow}
+                                name="votesTypeToShow"
+                            />
+                        )}
                         <SimpleSelect
                             id="voteState"
                             label={t('votes.votesList.filter.voteState')}
                             options={voteStateOptions(t)}
                             setValue={setValue}
-                            defaultValue={listFilter?.voteState?.[0]}
+                            defaultValue={listFilter?.voteState}
                             name="voteState"
                         />
 

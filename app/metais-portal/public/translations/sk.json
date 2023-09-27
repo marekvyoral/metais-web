@@ -864,6 +864,14 @@
         "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova."
     },
     "votes": {
+        "breadcrumbs": {
+            "home": "Domov",
+            "standardization": "Štandardizácia",
+            "VotesLists": "Zoznam Hlasovaní",
+            "VoteDetail": "Detail Hlasovania",
+            "VoteEdit": "Úprava hlasovania",
+            "NewVote": "Nové hlasovanie"
+        },
         "votesList": {
             "title": "Zoznam Hlasovaní",
             "votesListSubtitle": "nejake blabla kecy",
