@@ -1,12 +1,13 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { ATTRIBUTE_NAME, useReadConfigurationItem } from '@isdd/metais-common/api'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useParams } from 'react-router-dom'
 import { MutationFeedback } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { Actions, useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 
 import NeighboursCardListWrapper from '@/components/entities/NeighboursCardListWrapper'
@@ -21,6 +22,9 @@ const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId, entityName } = useParams()
+
+    const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
+
     document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
     const userAbility = useUserAbility()
 
@@ -55,11 +59,16 @@ const EntityDetailPage: React.FC = () => {
             : []),
     ]
 
-    const { data: ciItemData } = useReadConfigurationItem(entityId ?? '', {
+    const { data: ciItemData, refetch } = useReadConfigurationItem(entityId ?? '', {
         query: {
             queryKey: ['ciItemData', entityId],
         },
     })
+
+    const handleBulkAction = (actionResult: IBulkActionResult) => {
+        setBulkActionResult(actionResult)
+        refetch()
+    }
 
     return (
         <>
@@ -79,11 +88,20 @@ const EntityDetailPage: React.FC = () => {
                     <>
                         <FlexColumnReverseWrapper>
                             <CiEntityIdHeader
+                                entityData={ciItemData}
                                 entityName={entityName ?? ''}
                                 entityId={entityId ?? ''}
                                 entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
+                                handleBulkAction={handleBulkAction}
                             />
                             <MutationFeedback error={false} success={isActionSuccess.value} />
+                            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
+                                <MutationFeedback
+                                    success={bulkActionResult?.isSuccess}
+                                    successMessage={bulkActionResult?.successMessage}
+                                    error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                                />
+                            )}
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} />
                         <NeighboursCardListWrapper entityId={entityId} entityName={entityName} tabList={tabList} />
