@@ -10,24 +10,27 @@ import { BulkList } from '@isdd/metais-common/components/actions-over-table/bulk
 
 interface IReInvalidateBulkView {
     items: ConfigurationItemUi[]
+    multiple?: boolean
     onClose: () => void
     onSubmit: () => void
 }
 
-export const ReInvalidateView: React.FC<IReInvalidateBulkView> = ({ items, onSubmit, onClose }) => {
+export const ReInvalidateView: React.FC<IReInvalidateBulkView> = ({ items, multiple, onSubmit, onClose }) => {
     const { t } = useTranslation()
+
+    const title = multiple ? t('bulkActions.reInvalidate.titleList') : t('bulkActions.reInvalidate.title')
 
     return (
         <>
             <div>
-                <TextHeading size="L">{t('bulkActions.reInvalidate.title')}</TextHeading>
+                <TextHeading size="L">{title}</TextHeading>
             </div>
 
             <IconWithText className={styles.warningText} icon={ErrorTriangleIcon}>
                 {t('bulkActions.reInvalidate.warningText')}
             </IconWithText>
 
-            <BulkList title={t('bulkActions.reInvalidate.listText', { count: items.length })} items={items} />
+            {multiple && <BulkList title={t('bulkActions.reInvalidate.listText', { count: items.length })} items={items} />}
 
             <TextLinkExternal
                 title={t('bulkActions.reInvalidate.newWindowText')}

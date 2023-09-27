@@ -10,23 +10,26 @@ import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 
 export interface IInvalidateBulkModalProps {
     open: boolean
+    multiple?: boolean
     onClose: () => void
     onSubmit: (result: IBulkActionResult) => void
     items: ConfigurationItemUi[]
 }
 
-export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({ items, open, onClose, onSubmit }) => {
+export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({ items, open, multiple, onClose, onSubmit }) => {
     const { t } = useTranslation()
     const { register, handleSubmit, reset } = useForm()
+
+    const successMessage = multiple ? t('bulkActions.invalidate.successList') : t('bulkActions.invalidate.success')
 
     const { isLoading, mutateAsync: invalidateItems } = useInvalidateSet({
         mutation: {
             onSuccess() {
                 reset()
-                onSubmit({ isSuccess: true, isError: false, successMessage: t('bulkActions.invalidate.success') })
+                onSubmit({ isSuccess: true, isError: false, successMessage })
             },
             onError() {
-                onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.invalidate.success') })
+                onSubmit({ isSuccess: false, isError: true, successMessage })
             },
         },
     })
@@ -42,7 +45,7 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({ items
     return (
         <BaseModal isOpen={open} close={onClose}>
             {isLoading && <LoadingIndicator label={t('form.waitSending')} />}
-            <InvalidateBulkView items={items} register={register} onClose={onClose} onSubmit={handleSubmit(handleInvalidate)} />
+            <InvalidateBulkView items={items} register={register} onClose={onClose} multiple={multiple} onSubmit={handleSubmit(handleInvalidate)} />
         </BaseModal>
     )
 }

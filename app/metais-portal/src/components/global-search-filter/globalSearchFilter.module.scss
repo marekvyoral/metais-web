@@ -1,0 +1,19 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.button {
+    width: 100%;
+    margin-bottom: 0 !important;
+}
+.floatInitial {
+    float: initial !important;
+}
+.marginBottom {
+    margin-bottom: govuk-spacing(4);
+}
+
+.marginLeft {
+    margin-left: govuk-spacing(4);
+}
+.noPaddingTop {
+    padding-top: 0 !important;
+}

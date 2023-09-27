@@ -78,7 +78,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
                             { href: RouteNames.HOW_TO_STANDARDIZATION, label: t('navMenu.standardization') },
                             { href: NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL, label: infoData?.name ?? '' },
                             {
-                                href: NavigationSubRoutes.PRACOVNA_SKUPINA_EDIT + id + '/edit',
+                                href: `${NavigationSubRoutes.PRACOVNA_SKUPINA_EDIT}/${id}/edit`,
                                 label: t('groups.editGroup'),
                             },
                         ]}

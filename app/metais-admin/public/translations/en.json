@@ -117,7 +117,8 @@
             "country": "Choose country"
         },
         "submit": "Submit form",
-        "back": "Back"
+        "back": "Back",
+        "waitSending": "Sending"
     },
     "languageSelector": {
         "open": "Open language menu",
@@ -263,6 +264,7 @@
         "addNewUser": "Add new user",
         "actions": "Actions",
         "filter": {
+            "listTypeLabel": "List type",
             "state": "Blocked",
             "stateLabel": {
                 "all": "All",
@@ -304,6 +306,7 @@
         "code": "Code",
         "name": "Name",
         "description": "Description",
+        "engDescription": "English description",
         "valid": "Validity",
         "category": "Category",
         "link": "Items",
@@ -313,14 +316,22 @@
         "cancel": "Cancel",
         "remove": "Remove",
         "validate": "Validate",
-        "value": "Code",
+        "value": "Value",
+        "engValue": "English Value",
         "valueDescription": "Value Description",
         "heading": "Internal codelists",
         "codeError": "Code is required",
         "nameError": "Name is required",
+        "valueError": "Value is required",
+        "engValueError": "English Value is required",
         "descriptionError": "Description is required",
+        "engDescriptionError": "English Description is required",
         "wrongRegex": "You can use only {{letters}} and {{signs}}",
-        "actions": "Actions"
+        "actions": "Actions",
+        "addNewCodelistDetail": "Add new detail item",
+        "items": "Items",
+        "tooltipOrder": "Drag and drop a row to change the order",
+        "codeExist": "The code is incorrect. This code already exists."
     },
     "filter": {
         "expand": "Expand filter",
@@ -366,6 +377,7 @@
     },
     "mutationFeedback": {
         "successfulUpdated": "The item was successfully changed",
+        "successfulCreated": "The item was successfully created",
         "changeOwner": "Change owner",
         "metaColumnName": {
             "state": "Evidence status",
@@ -391,8 +403,10 @@
         "admin": "Administration",
         "organizations": "Organizations",
         "userManagement": {
+            "users": "Users",
             "userManagement": "User management",
             "requestList": "Requests",
+            "requestListAll": "Requests, registrations and GDPR requests",
             "gdprRequestList": "Requests for remove personal data",
             "registrationRequestList": "Registrations"
         },
@@ -403,9 +417,26 @@
             "profiles": "Attribute profiles",
             "relations": "Relations"
         },
-        "eko": "EKO codes management",
+        "eko": "EKO codes",
         "tooltips": "Tooltips",
-        "codelists": "Internal codelists"
+        "codelists": "Internal codelists management",
+        "monitoring": {
+            "monitoring": "Monitoring management",
+            "params": "Monitoring parameters",
+            "list": "Monitoring records"
+        },
+        "reportsManagement": "Reports management",
+        "projects": {
+            "management": "Projects Management",
+            "financeManagement": "Financial limits of the approval process"
+        },
+        "documentsManagement": "Documents",
+        "templateReferenceIdentifiersManagement": "Management of referenceable identifier templates",
+        "publicAuthorities": {
+            "management": "Public authorities management",
+            "publicAuthorities": "Public authorities",
+            "massActualizations": "Mass updates"
+        }
     },
     "tooltips": {
         "selectedEntries": "Selected entries",
@@ -679,7 +710,12 @@
             "all": "Všetky",
             "created": "Vytvorené",
             "accepted": "Akceptovaná",
-            "rejected": "Odmietnutá"
+            "rejected": "Odmietnutá",
+            "listType": {
+                "requests": "Requests",
+                "registrations": "Registrations",
+                "gdpr": "GDPR"
+            }
         },
         "identityDetail": "Identity Detail",
         "requestDetail": "Request detail",
@@ -697,7 +733,8 @@
     },
     "errors": {
         "default": "Ups, something went wrong.",
-        "gnr403": "You do not have permission to call this API."
+        "gnr403": "You do not have permission to call this API.",
+        "gnr412": "Condition not met."
     },
     "todo": {
         "header": "Under construction",

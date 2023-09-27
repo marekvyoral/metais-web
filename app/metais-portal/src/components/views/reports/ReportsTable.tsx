@@ -4,6 +4,7 @@ import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWr
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ReportHeader } from '@isdd/metais-common/api'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -21,6 +22,10 @@ interface IReportsTable {
 export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handleFilterChange }) => {
     const { t } = useTranslation()
     const location = useLocation()
+    const {
+        state: { user },
+    } = useAuth()
+    const isUserLogged = !!user
     const columns: Array<ColumnDef<TableCols>> = [
         {
             accessorFn: (row) => row.selected,
@@ -61,10 +66,11 @@ export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handle
         },
     ]
 
+    const columnsWithPermissions = isUserLogged ? columns : columns.slice(1)
     return (
         <>
             <TextHeading size="XL">{t('navMenu.reports')}</TextHeading>
-            <Table columns={columns} data={data} />
+            <Table columns={columnsWithPermissions} data={data} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
     )

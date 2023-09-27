@@ -23,18 +23,19 @@ export interface IRequestListFilterView extends IFilterParams, IFilter {
     status: string
     sortAttribute: string
     ascending: boolean
+    listType: RequestListType
 }
 
 interface IRequestListContainerProps {
-    listType: RequestListType
     View: React.FC<IRequestListView>
 }
 
-export const RequestListContainer: React.FC<IRequestListContainerProps> = ({ listType, View }) => {
+export const RequestListContainer: React.FC<IRequestListContainerProps> = ({ View }) => {
     const { filter, handleFilterChange } = useFilterParams<IRequestListFilterView>({
         status: EClaimState.ALL,
         sortAttribute: 'createdAt',
         ascending: false,
+        listType: RequestListType.REQUESTS,
     })
 
     const { isLoading, isError, data } = useGetRequestList({
@@ -51,19 +52,20 @@ export const RequestListContainer: React.FC<IRequestListContainerProps> = ({ lis
             perpage: filter.pageSize ? +filter.pageSize : BASE_PAGE_SIZE,
             sortAttribute: filter.sortAttribute,
             ascending: filter.ascending,
+            listType: filter.listType,
             filter: {
                 searchFilter: filter.fullTextSearch,
-                anonymous: listType === RequestListType.REGISTRATION,
+                anonymous: filter.listType === RequestListType.REGISTRATION,
                 status: filter.status,
-                ...(listType === RequestListType.GDPR ? { name: 'GDPR' } : ''),
+                ...(filter.listType === RequestListType.GDPR ? { name: 'GDPR' } : ''),
             },
         },
     })
 
     return (
         <View
-            listType={listType}
-            route={AdminRouteNames.GDPR_REQUEST_LIST}
+            listType={filter.listType}
+            route={AdminRouteNames.REQUEST_LIST_ALL}
             data={data}
             defaultFilterParams={filter}
             handleFilterChange={handleFilterChange}

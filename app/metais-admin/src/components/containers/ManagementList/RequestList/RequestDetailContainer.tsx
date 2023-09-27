@@ -44,8 +44,8 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
     const SKUPINA_ROL = 'SKUPINA_ROL'
 
     const { isLoading: isLoadingRequest, isError: isErrorRequest, data } = useRead(userId)
-    const { data: roleGroupsData, isLoading: isRoleGroupsLoading, isError: isRoleGroupsError } = useGetValidEnum(SKUPINA_ROL)
     const { data: allRolesData, isLoading: isAllRolesLoading, isError: isAllRolesError } = useFindAll11()
+    const { data: roleGroupsData, isLoading: isRoleGroupsLoading, isError: isRoleGroupsError } = useGetValidEnum(SKUPINA_ROL)
 
     const { mutateAsync: mutateAsyncApprove, isSuccess, isLoading: isLoadingUpdatePo } = useUpdateWithOnePoAndRoles()
     const { mutateAsync: processEventMutationAsync, isSuccess: isSuccessPE, isLoading: isLoadingPE } = useProcessEvent()
@@ -86,7 +86,7 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
                     },
                 })
                     .then(() => {
-                        navigate(`${AdminRouteNames.REQUEST_LIST}`)
+                        navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
                     })
                     .catch((error) => {
                         setErrorMessage(error.message)
@@ -109,7 +109,7 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
                 },
             })
                 .then(() => {
-                    navigate(`${AdminRouteNames.REQUEST_LIST}`)
+                    navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
                 })
                 .catch((error) => {
                     setErrorMessage(error.message)
@@ -118,7 +118,7 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
         [navigate, processEventMutationAsync, userId],
     )
 
-    return (
+    return allRolesData ? (
         <View
             data={data}
             roleData={{ roleGroupsData, allRolesData }}
@@ -129,5 +129,7 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
             handleRefuseModalClick={handleRefuseModal}
             isSuccess={isSuccess || isSuccessPE}
         />
+    ) : (
+        <></>
     )
 }

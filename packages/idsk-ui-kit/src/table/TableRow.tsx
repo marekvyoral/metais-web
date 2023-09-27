@@ -15,9 +15,10 @@ interface ITableRowProps<T> {
     isRowDanger?: (row: Row<T>) => boolean
     onRowClick?: (row: Row<T>) => void
     rowHref?: (row: Row<T>) => string
+    isInvalidated: boolean
 }
 
-export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRowClick, rowHref }: ITableRowProps<T>): JSX.Element => {
+export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRowClick, rowHref, isInvalidated }: ITableRowProps<T>): JSX.Element => {
     const navigate = useNavigate()
     const location = useLocation()
     const hasCheckbox = row.getVisibleCells().find((cell) => cell.column.id === CHECKBOX_CELL)
@@ -26,7 +27,7 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
         <tr
             className={classNames(
                 'idsk-table__row',
-                { [styles.fontWeightBolder]: isRowBold && isRowBold(row) },
+                { [styles.fontWeightBolder]: isRowBold && isRowBold(row), [styles.invalidated]: isInvalidated },
                 styles.rowHover,
                 styles.tableRow,
                 styles.tableRowMinHeight,

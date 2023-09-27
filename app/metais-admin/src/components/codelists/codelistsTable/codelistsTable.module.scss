@@ -3,8 +3,18 @@
 .buttonSpacing {
     margin-right: govuk-spacing(2);
 }
+
+.iconList {
+    display: flex;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+}
 .actions {
     display: flex;
     flex-direction: column;
     gap: govuk-spacing(4);
+}
+.tooltipIcon {
+    margin-right: 10px;
 }

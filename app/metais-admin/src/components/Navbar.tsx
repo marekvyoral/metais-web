@@ -9,29 +9,52 @@ import { useTranslation } from 'react-i18next'
 
 export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
     {
-        title: t('navMenu.dashboard'),
-        path: AdminRouteNames.DASHBOARD,
+        title: t('navMenu.userManagement.userManagement'),
+        path: AdminRouteNames.USER_MANAGEMENT,
+        icon: InstructionsIcon,
+        subItems: [
+            {
+                title: t('navMenu.userManagement.users'),
+                path: AdminRouteNames.USERS,
+            },
+            {
+                title: t('navMenu.userManagement.requestList'),
+                path: AdminRouteNames.REQUEST_LIST_ALL,
+            },
+        ],
+    },
+    {
+        title: t('navMenu.roleManagement'),
+        path: AdminRouteNames.ROLES,
         icon: InstructionsIcon,
     },
     {
-        title: t('navMenu.assignment'),
-        path: AdminRouteNames.ASSIGNMENT,
+        title: t('navMenu.publicAuthorities.management'),
+        path: '/public-authorities',
         icon: InstructionsIcon,
+        subItems: [
+            { title: t('navMenu.publicAuthorities.publicAuthorities'), path: '/public-authorities/list' },
+            { title: t('navMenu.publicAuthorities.massActualizations'), path: '/public-authorities/mass-updates' },
+        ],
     },
     {
-        title: t('navMenu.notifications'),
-        path: AdminRouteNames.NOTIFICATIONS,
+        title: t('navMenu.egov.egov'),
+        path: AdminRouteNames.EGOV,
         icon: InstructionsIcon,
-    },
-    {
-        title: t('navMenu.settings'),
-        path: AdminRouteNames.SETTINGS,
-        icon: InstructionsIcon,
-    },
-    {
-        title: t('navMenu.organizations'),
-        path: AdminRouteNames.ORGANIZATIONS,
-        icon: InstructionsIcon,
+        subItems: [
+            {
+                title: t('navMenu.egov.entity'),
+                path: AdminRouteNames.EGOV_ENTITY,
+            },
+            {
+                title: t('navMenu.egov.profiles'),
+                path: AdminRouteNames.EGOV_PROFILE,
+            },
+            {
+                title: t('navMenu.egov.relations'),
+                path: AdminRouteNames.EGOV_RELATION,
+            },
+        ],
     },
     {
         title: t('navMenu.codelists'),
@@ -39,63 +62,39 @@ export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
         icon: InstructionsIcon,
     },
     {
-        title: t('navMenu.admin'),
-        path: AdminRouteNames.EGOV,
+        title: t('navMenu.monitoring.monitoring'),
+        //in admin is /list but that is not unique
+        path: AdminRouteNames.MONITORING,
         icon: InstructionsIcon,
         subItems: [
+            //did not find similar routes in admin so I made custom ones
+            { title: t('navMenu.monitoring.params'), path: AdminRouteNames.MONITORING_PARAMS },
+            { title: t('navMenu.monitoring.list'), path: AdminRouteNames.MONITORING_LIST },
+        ],
+    },
+    //predpokladam ze to je sprava zostav
+    { title: t('navMenu.reportsManagement'), path: AdminRouteNames.REPORTS_MANAGEMENT, icon: InstructionsIcon },
+    {
+        title: t('navMenu.projects.management'),
+        path: AdminRouteNames.PROJECTS_MANAGEMENT,
+        icon: InstructionsIcon,
+        subItems: [
+            { title: t('navMenu.projects.financeManagement'), path: AdminRouteNames.PROJECTS_FINANCE_MANAGEMENT },
             {
                 title: t('navMenu.eko'),
                 path: AdminRouteNames.EKO,
             },
-            {
-                title: t('navMenu.userManagement.userManagement'),
-                path: AdminRouteNames.USER_MANAGEMENT,
-                subItems: [
-                    {
-                        title: t('navMenu.userManagement.requestList'),
-                        path: AdminRouteNames.REQUEST_LIST,
-                    },
-                    {
-                        title: t('navMenu.userManagement.gdprRequestList'),
-                        path: AdminRouteNames.GDPR_REQUEST_LIST,
-                    },
-                    {
-                        title: t('navMenu.userManagement.registrationRequestList'),
-                        path: AdminRouteNames.REGISTRATION_REQUEST_LIST,
-                    },
-                ],
-            },
-            {
-                title: t('navMenu.egov.egov'),
-                path: AdminRouteNames.EGOV,
-                subItems: [
-                    {
-                        title: t('navMenu.egov.entity'),
-                        path: AdminRouteNames.EGOV_ENTITY,
-                    },
-                    {
-                        title: t('navMenu.egov.profiles'),
-                        path: AdminRouteNames.EGOV_PROFILE,
-                    },
-                    {
-                        title: t('navMenu.egov.relations'),
-                        path: AdminRouteNames.EGOV_RELATION,
-                    },
-                ],
-            },
-            {
-                title: t('navMenu.roleManagement'),
-                path: AdminRouteNames.ROLES,
-            },
-            {
-                title: t('navMenu.tooltips'),
-                path: AdminRouteNames.EGOV_PROFILE,
-            },
+            { title: t('navMenu.documentsManagement'), path: AdminRouteNames.DOCUMENTS_MANAGEMENT },
         ],
     },
+    { title: t('navMenu.templateReferenceIdentifiersManagement'), path: AdminRouteNames.TEMPLATE_REFERENCE_IDENTIFIERS, icon: InstructionsIcon },
 ]
 
-export const Navbar: React.FC = () => {
+type NavbarProps = {
+    isAdmin?: boolean
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
     const { t } = useTranslation()
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
     const [showDropDown, setShowDropDown] = useState<boolean>(false)
@@ -110,7 +109,7 @@ export const Navbar: React.FC = () => {
                     <div className="idsk-header-web__tricolor" />
 
                     <NavBarHeader setShowDropDown={setShowDropDown} showDropDown={showDropDown} />
-                    <NavBarMain isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} />
+                    <NavBarMain isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} isAdmin={isAdmin} />
                     <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={getAdminNavItems(t)} />
                 </div>
             </header>

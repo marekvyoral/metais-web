@@ -98,7 +98,7 @@ export const RegistrationRequestDetailContainer: React.FC<IRegistrationRequestDe
                                         },
                                     })
                                         .then(() => {
-                                            navigate(`${AdminRouteNames.REGISTRATION_REQUEST_LIST}`)
+                                            navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
                                         })
                                         .catch((error) => {
                                             setErrorMessage(error.message)
@@ -132,7 +132,7 @@ export const RegistrationRequestDetailContainer: React.FC<IRegistrationRequestDe
                 },
             })
                 .then(() => {
-                    navigate(`${AdminRouteNames.REGISTRATION_REQUEST_LIST}`)
+                    navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
                 })
                 .catch((error) => {
                     setErrorMessage(error.message)

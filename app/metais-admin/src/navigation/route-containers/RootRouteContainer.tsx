@@ -7,7 +7,7 @@ import { Navbar } from '@/components/Navbar'
 export const RootRouteContainer: React.FC = () => {
     return (
         <>
-            <Navbar />
+            <Navbar isAdmin />
             <Outlet />
             <Footer />
         </>

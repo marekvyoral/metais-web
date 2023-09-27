@@ -11,22 +11,26 @@ import { BulkList } from '@isdd/metais-common/components/actions-over-table/bulk
 
 interface IInvalidateBulkView {
     items: ConfigurationItemUi[]
+    multiple?: boolean
     register: UseFormRegister<FieldValues>
     onSubmit: () => void
     onClose: () => void
 }
 
-export const InvalidateBulkView: React.FC<IInvalidateBulkView> = ({ items, register, onSubmit, onClose }) => {
+export const InvalidateBulkView: React.FC<IInvalidateBulkView> = ({ items, multiple, register, onSubmit, onClose }) => {
     const { t } = useTranslation()
+
+    const title = multiple ? t('bulkActions.invalidate.titleList') : t('bulkActions.invalidate.title')
+
     return (
         <form onSubmit={onSubmit}>
-            <TextHeading size="L">{t('bulkActions.invalidate.title')}</TextHeading>
+            <TextHeading size="L">{title}</TextHeading>
 
             <IconWithText className={styles.warningText} icon={ErrorTriangleIcon}>
                 {t('bulkActions.invalidate.warningText')}
             </IconWithText>
 
-            <BulkList title={t('bulkActions.invalidate.listText', { count: items.length })} items={items} />
+            {multiple && <BulkList title={t('bulkActions.invalidate.listText', { count: items.length })} items={items} />}
 
             <TextLinkExternal
                 title={t('bulkActions.invalidate.newWindowText')}
@@ -39,7 +43,7 @@ export const InvalidateBulkView: React.FC<IInvalidateBulkView> = ({ items, regis
 
             <div className={styles.buttonGroupEnd}>
                 <Button onClick={() => onClose()} label={t('button.cancel')} variant="secondary" />
-                <Button onClick={() => onSubmit()} label={t('bulkActions.invalidate.invalidate')} type="submit" />
+                <Button label={t('bulkActions.invalidate.invalidate')} type="submit" />
             </div>
         </form>
     )

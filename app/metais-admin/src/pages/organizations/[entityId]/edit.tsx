@@ -18,11 +18,11 @@ const Edit = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: t('navMenu.organizations'), href: '/' + AdminRouteNames.ORGANIZATIONS },
-                    { label: t('organizations.detail.title') ?? '', href: '/' + AdminRouteNames.ORGANIZATIONS + entityId },
+                    { label: t('navMenu.organizations'), href: AdminRouteNames.ORGANIZATIONS },
+                    { label: t('organizations.detail.title') ?? '', href: `${AdminRouteNames.ORGANIZATIONS}/${entityId}` },
                     {
                         label: ico ? t('organizations.create.addNewOrganization') : t('organizations.edit.updateExistingOrganization'),
-                        href: '/' + AdminRouteNames.ORGANIZATIONS + entityId + '/edit',
+                        href: `${AdminRouteNames.ORGANIZATIONS}/${entityId}/edit`,
                     },
                 ]}
             />
