@@ -881,5 +881,42 @@
         "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené",
         "changedUserInformation": "Osobné informácie boli úspešne zmenené",
         "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova."
+    },
+    "globalSearch": {
+        "header": "Výsledky vyhľadávania pre {{item}}",
+        "numberOfResults": "{{count}} výsledkov",
+        "code": "Kód",
+        "state": "Stav",
+        "filter": {
+            "updateDate": "Dátum aktualizácie",
+            "today": "Dnes",
+            "thisWeek": "Tento týždeň",
+            "thisMonth": "Tento mesiac",
+            "thisYear": "Tento rok",
+            "customRange": "Vlastný rozsah",
+            "fromUpdate": "Aktualizované od",
+            "toUpdate": "Aktualizované do",
+
+            "selected": "{{count}} vybrané",
+
+            "resultType": "Typ výsledku",
+            "attribute": "Atribút",
+            "document": "Dokument",
+            "object": "Objekt",
+            "relation": "Vzťah",
+
+            "section": "Sekcia",
+            "all": "Všetky",
+
+            "owner": "Vlastník",
+
+            "documentType": "Typ dokumentu",
+            "pdf": "PDF",
+            "docx": "DOCX",
+            "rtf": "RTF",
+            "otd": "OTD",
+
+            "submitButton": "Filtrovať výsledky"
+        }
     }
 }

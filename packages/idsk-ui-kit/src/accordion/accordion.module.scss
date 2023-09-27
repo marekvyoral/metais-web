@@ -1,5 +1,45 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
 .headerDiv {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.rotate180 {
+    transform: rotate(180deg);
+}
+.arrowDownIcon {
+    width: auto;
+    height: 0.5rem;
+}
+.noBorder {
+    border: none !important;
+}
+.noMarginBottom {
+    margin-bottom: 0 !important;
+}
+.smallMarginBottom {
+    margin-bottom: govuk-spacing(2) !important;
+}
+.noMarginTop {
+    margin-top: 0 !important;
+}
+.noPaddingRight {
+    padding-right: 0 !important;
+}
+.noPadding {
+    padding: 0 !important;
+}
+.smallHeading {
+    font-size: 20px !important;
+}
+.smallSummary {
+    font-size: 16px !important;
+    color: govuk-colour('dark-grey') !important;
+}
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: govuk-spacing(2);
 }

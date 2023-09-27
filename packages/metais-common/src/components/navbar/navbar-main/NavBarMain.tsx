@@ -15,9 +15,10 @@ interface INavBarMain {
     isMenuExpanded: boolean
     setIsMenuExpanded: React.Dispatch<SetStateAction<boolean>>
     iconGroupItems?: React.FC[]
+    isAdmin?: boolean
 }
 
-export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExpanded, iconGroupItems }) => {
+export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExpanded, iconGroupItems, isAdmin }) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -52,7 +53,7 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
 
                     <div className="govuk-grid-column-full">
                         <div className="idsk-header-web__main-action">
-                            <NavSearchBar />
+                            {isAdmin ? <div className={styles.fullWidth} /> : <NavSearchBar />}
                             <NavIconGroup isMobile={false} iconGroupItems={iconGroupItems} />
 
                             <div className="idsk-header-web__main--buttons">

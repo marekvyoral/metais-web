@@ -243,7 +243,7 @@ export const NewRelationView: React.FC<Props> = ({
                 onCloseModal={() => setIsListPageOpen(false)}
                 onOpenModal={() => setIsListPageOpen(true)}
                 existingRelations={existingRelations}
-                modalContent={<CiListPage importantEntityName={tabName} />}
+                modalContent={<CiListPage importantEntityName={tabName} noSideMenu />}
             />
 
             <form onSubmit={handleFormSubmit(handleSubmit)}>
