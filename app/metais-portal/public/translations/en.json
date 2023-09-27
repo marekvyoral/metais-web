@@ -153,7 +153,6 @@
             "educationalCourses": "Educational courses",
             "publicAuthorityHierarchy": "Hierarchy of public authorities",
             "webResidence": "Web residence"
-
         }
     },
     "radioButton": {
@@ -884,5 +883,42 @@
         "userPreferencesSuccess": "Personal preferences were successfully saved",
         "changedUserInformation": "Personal information were successfully changed",
         "changedUserInformationError": "Error occurred while changing personal information. Please try again."
+    },
+    "globalSearch": {
+        "header": "Search results for {{item}}",
+        "numberOfResults": "{{count}} results",
+        "code": "Code",
+        "state": "State",
+        "filter": {
+            "updateDate": "Update date",
+            "today": "Today",
+            "thisWeek": "This week",
+            "thisMonth": "This month",
+            "thisYear": "This year",
+            "customRange": "Custom range",
+            "fromUpdate": "Updated from",
+            "toUpdate": "Updated to",
+
+            "selected": "{{count}} selected",
+
+            "resultType": "Type of result",
+            "attribute": "Attribute",
+            "document": "Document",
+            "object": "Object",
+            "relation": "Relation",
+
+            "section": "Section",
+            "all": "All",
+
+            "owner": "Owner",
+
+            "documentType": "Type of document",
+            "pdf": "PDF",
+            "docx": "DOCX",
+            "rtf": "RTF",
+            "otd": "OTD",
+
+            "submitButton": "Filter results"
+        }
     }
 }

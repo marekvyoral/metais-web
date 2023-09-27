@@ -8,8 +8,14 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 
 import { getPortalNavigationItems } from './navbar/navigationItems'
+import { GlobalSearchFilter } from './global-search-filter/GlobalSearchFilter'
 
-export const MainContentWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
+type MainContentWrapperProps = React.PropsWithChildren & {
+    globalSearch?: boolean
+    noSideMenu?: boolean
+}
+
+export const MainContentWrapper: React.FC<MainContentWrapperProps> = ({ children, globalSearch, noSideMenu }) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -19,17 +25,21 @@ export const MainContentWrapper: React.FC<React.PropsWithChildren> = ({ children
 
     const { data: ksisvsGroup } = useFind2111({ shortName: KSIVS_SHORT_NAME })
     return (
-        <div className={classNames(styles.container)} id="main-content">
-            <Sidebar
-                isSidebarExpanded={isSidebarExpanded}
-                setIsSidebarExpanded={setIsSidebarExpanded}
-                sections={getPortalNavigationItems(t, !!user, Array.isArray(ksisvsGroup) ? ksisvsGroup[0].uuid : ksisvsGroup?.uuid)}
-            />
+        <div className={classNames({ [styles.container]: !noSideMenu })} id="main-content">
+            {!globalSearch && !noSideMenu && (
+                <Sidebar
+                    isSidebarExpanded={isSidebarExpanded}
+                    setIsSidebarExpanded={setIsSidebarExpanded}
+                    sections={getPortalNavigationItems(t, !!user, Array.isArray(ksisvsGroup) ? ksisvsGroup[0].uuid : ksisvsGroup?.uuid)}
+                />
+            )}
+
+            {globalSearch && <GlobalSearchFilter />}
 
             <main
                 className={classNames(
                     'govuk-main-wrapper govuk-main-wrapper--auto-spacing',
-                    styles.content,
+                    !noSideMenu && styles.content,
                     !isSidebarExpanded && styles.closedContent,
                 )}
             >

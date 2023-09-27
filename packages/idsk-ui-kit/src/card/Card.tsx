@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react'
+import { Link } from 'react-router-dom'
 
 interface Tag {
     title: string
@@ -33,31 +34,31 @@ export const Card: React.FC<ICardProps> = ({ variant = 'basic', tag1, tag2, titl
                 <div className="idsk-card-meta-container">
                     {date && (
                         <span className="idsk-card-meta idsk-card-meta-date">
-                            <a href={cardHref} className="govuk-link" title={`Pridané dňa: ${date}`}>
+                            <Link to={cardHref} className="govuk-link" title={`Pridané dňa: ${date}`}>
                                 {date}
-                            </a>
+                            </Link>
                         </span>
                     )}
                     {tag1?.title && (
                         <span className="idsk-card-meta idsk-card-meta-tag">
-                            <a href={tag1.href} className="govuk-link" title={tag1.title}>
+                            <Link to={tag1.href} className="govuk-link" title={tag1.title}>
                                 {tag1.title}
-                            </a>
+                            </Link>
                         </span>
                     )}
                     {tag2?.title && (
                         <span className="idsk-card-meta idsk-card-meta-tag">
-                            <a href={tag2.href} className="govuk-link" title={tag2.title}>
+                            <Link to={tag2.href} className="govuk-link" title={tag2.title}>
                                 {tag2.title}
-                            </a>
+                            </Link>
                         </span>
                     )}
                 </div>
 
                 <div className={`idsk-heading idsk-heading-${variant}`}>
-                    <a href={cardHref} className="idsk-card-title govuk-link" title={title}>
+                    <Link to={cardHref} className="idsk-card-title govuk-link" title={title}>
                         {title}
-                    </a>
+                    </Link>
                 </div>
                 {description &&
                     (variant.includes('profile') ? (

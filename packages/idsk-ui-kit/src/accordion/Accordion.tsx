@@ -1,6 +1,8 @@
 import React, { useState, useId, PropsWithChildren, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import classNames from 'classnames'
 
+import styles from './accordion.module.scss'
 import { AccordionSection } from './AccordionSection'
 
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
@@ -16,9 +18,11 @@ export type IAccordionSection = {
 interface IAccordionContainerProps extends PropsWithChildren {
     sections: IAccordionSection[]
     indexOfSectionToExpand?: number
+    isSmall?: boolean
+    shouldNotUnMountContent?: boolean
 }
 
-export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ sections, indexOfSectionToExpand }) => {
+export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ sections, indexOfSectionToExpand, isSmall, shouldNotUnMountContent }) => {
     const { t } = useTranslation()
     const id = useId()
 
@@ -38,15 +42,17 @@ export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ section
     }
 
     return (
-        <div className="govuk-accordion">
-            <div className="govuk-accordion__controls">
-                <Button
-                    variant="secondary"
-                    aria-expanded={isAllExpanded}
-                    label={isAllExpanded ? t('accordion.closeAll') : t('accordion.openAll')}
-                    onClick={toggleAllExpanded}
-                />
-            </div>
+        <div className={classNames('govuk-accordion', { [styles.noBorder]: isSmall, [styles.smallMarginBottom]: isSmall })}>
+            {!isSmall && (
+                <div className="govuk-accordion__controls">
+                    <Button
+                        variant="secondary"
+                        aria-expanded={isAllExpanded}
+                        label={isAllExpanded ? t('accordion.closeAll') : t('accordion.openAll')}
+                        onClick={toggleAllExpanded}
+                    />
+                </div>
+            )}
             {sections.map((section, index) => (
                 <AccordionSection
                     key={index}
@@ -55,6 +61,8 @@ export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ section
                     setExpandedSectionIndexes={setExpandedSectionIndexes}
                     expandedSectionIndexes={expandedSectionIndexes}
                     id={id}
+                    isSmall={isSmall}
+                    shouldNotUnMountContent={shouldNotUnMountContent}
                 />
             ))}
         </div>
