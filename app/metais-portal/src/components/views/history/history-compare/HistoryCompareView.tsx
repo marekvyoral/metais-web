@@ -112,11 +112,22 @@ export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({ ciTypeD
         return diff
     }
 
+    let firstIsOpen = false
+    const setOpenProfile = () => {
+        if (!firstIsOpen && !isSimple && haveDiff(ciTypeData?.attributes || [])) {
+            firstIsOpen = true
+            return true
+        }
+        return false
+    }
+
     const sections: ISection[] =
         [
             {
                 title: ciTypeData?.name ?? '',
                 change: !isSimple && haveDiff(ciTypeData?.attributes || []),
+                isOpen: setOpenProfile(),
+                hide: showOnlyChanges && !isSimple && !haveDiff(ciTypeData?.attributes || []),
                 stepLabel: { label: '1', variant: 'circle' },
                 content: (
                     <DefinitionList>
@@ -155,6 +166,8 @@ export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({ ciTypeD
                 return {
                     title: profile.description ?? '',
                     change: !isSimple && haveDiff(profile.attributes || []),
+                    isOpen: setOpenProfile(),
+                    hide: showOnlyChanges && !isSimple && !haveDiff(profile.attributes || []),
                     stepLabel: { label: (index + 2).toString(), variant: 'circle' } as IStepLabel,
                     content: (
                         <DefinitionList>
