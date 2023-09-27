@@ -37,11 +37,11 @@ export enum VotesListColumnsEnum {
 export const columns = (t: TFunction): Array<ColumnDef<ApiVotePreview>> => {
     return [
         {
-            header: t('votes.votesList.subjectname'),
+            header: t('votes.votesList.table.name'),
             accessorFn: (row) => row?.name,
             enableSorting: true,
             id: VotesListColumnsEnum.name,
-            size: 500,
+            size: 700,
             cell: (ctx) => {
                 const { id } = ctx.row.original
                 const name = ctx.getValue() as string
@@ -49,38 +49,43 @@ export const columns = (t: TFunction): Array<ColumnDef<ApiVotePreview>> => {
             },
         },
         {
-            header: t('votes.votesList.datefrom'),
+            header: t('votes.votesList.table.effectiveFrom'),
             accessorFn: (row) => row?.effectiveFrom,
             enableSorting: true,
             id: VotesListColumnsEnum.effectiveFrom,
+            size: 150,
             cell: (ctx) => t('date', { date: ctx.getValue() as string }),
         },
         {
-            header: t('votes.votesList.dateto'),
+            header: t('votes.votesList.table.effectiveTo'),
             accessorFn: (row) => row?.effectiveTo,
             enableSorting: true,
             id: VotesListColumnsEnum.effectiveTo,
+            size: 150,
             cell: (ctx) => t('date', { date: ctx.getValue() as string }),
         },
         {
-            header: t('votes.votesList.votestate'),
+            header: t('votes.votesList.table.voteState'),
             accessorFn: (row) => row?.voteState,
             enableSorting: true,
             id: VotesListColumnsEnum.voteState,
+            size: 150,
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
         {
-            header: t('votes.votesList.cancast'),
+            header: t('votes.votesList.table.canCast'),
             accessorFn: (row) => row?.canCast,
             enableSorting: true,
             id: VotesListColumnsEnum.canCast,
+            size: 100,
             cell: (ctx) => <span>{(ctx?.getValue?.() as boolean) ? 'true' : 'false'}</span>,
         },
         {
-            header: t('votes.votesList.hascast'),
+            header: t('votes.votesList.table.hasCast'),
             accessorFn: (row) => row?.hasCast,
             enableSorting: true,
             id: VotesListColumnsEnum.hasCast,
+            size: 100,
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
     ]

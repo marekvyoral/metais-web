@@ -939,14 +939,14 @@
         "votesList": {
             "title": "Zoznam Hlasovaní",
             "votesListSubtitle": "nejake blabla kecy",
-            "workgroup": "Pracovná skupina",
-            "workgroupAbreviation": "Skratka pracovnej skupiny",
-            "datefrom": "Dátum spustenia",
-            "dateto": "Dátum ukončenia",
-            "votestate": "Stav",
-            "cancast": "Právo hlasovať",
-            "hascast": "Hlasované za subjekt",
-            "subjectname": "Premet hlasovania (znenie otázky)",
+            "table": {
+                "effectiveFrom": "Dátum spustenia",
+                "effectiveTo": "Dátum ukončenia",
+                "voteState": "Stav",
+                "canCast": "Právo hlasovať",
+                "hasCast": "Hlasované za subjekt",
+                "name": "Premet hlasovania (znenie otázky)"
+            },
             "filter": {
                 "title": "Filter",
                 "votesTypeToShow": "Zobraziť",
