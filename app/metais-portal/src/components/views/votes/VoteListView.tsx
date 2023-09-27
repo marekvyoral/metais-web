@@ -18,6 +18,7 @@ export interface IVotesListFilterData extends IFilterParams, IFilter {
 }
 
 export interface IVotesListView {
+    isUserLogged: boolean
     votesListData: ApiVotePreviewList | undefined
     defaultFilterValues: IVotesListFilterData
     filter: IFilter

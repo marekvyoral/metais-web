@@ -1,7 +1,6 @@
 import React from 'react'
-import { IFilter } from '@isdd/idsk-ui-kit/types'
 
-import { VotesListContainer } from '@/components/containers/votes/VotesListContainer'
+import { VotesListContainer } from '@/components/containers/votes/VotesListContainer/VotesListContainer'
 import { VotesListView } from '@/components/views/votes/VoteListView'
 
 const VotesList: React.FC = () => {
@@ -13,6 +12,7 @@ const VotesList: React.FC = () => {
                     defaultFilterValues={props.defaultFilterValues}
                     filter={props.filter}
                     handleFilterChange={props.handleFilterChange}
+                    isUserLogged={props.isUserLogged}
                 />
             )}
         />
