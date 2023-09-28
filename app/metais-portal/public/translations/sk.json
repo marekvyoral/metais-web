@@ -881,5 +881,37 @@
         "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené",
         "changedUserInformation": "Osobné informácie boli úspešne zmenené",
         "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova."
+    },
+    "DraftsList": {
+        "table": {
+            "version": "Verzia",
+            "name": "Predkladateľ",
+            "srName": "Názov návrhu",
+            "standardRequestState": "Stav",
+            "requestChannel": "Typ návrhu",
+            "createdAt": "Dátum zadania návrhu",
+            "workGroup": "Pracovná skupina"
+        },
+        "filter": {
+            "createdBy": "Predkladateľ",
+            "draftName": "Názov návrhu",
+            "state": {
+                "label": "Stav návrhu",
+                "REQUESTED": "Nový",
+                "ASSIGNED": "Priradený",
+                "REJECTED": "Zamietnutý",
+                "ACCEPTED": "Akceptovaný"
+            },
+            "draftType": {
+                "label": "Typ návrhu",
+                "WEB": "Všeobecný",
+                "RI": "Referencovateľný identifikátor",
+                "RR": "Referenčný register",
+                "ZC_Request": "Žiadosť o pridanie nového ZČ",
+                "ZC_Header": "Žiadosť o zmenu ZČ"
+            },
+            "fromDate": "Prijaté v období od",
+            "toDate": "Prijaté v období do"
+        }
     }
 }

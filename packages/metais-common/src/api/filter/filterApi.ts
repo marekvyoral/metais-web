@@ -1,7 +1,11 @@
-import { IFilter } from '@isdd/idsk-ui-kit/src/types'
+import { IFilter, SortType } from '@isdd/idsk-ui-kit/src/types'
+import { FieldValues } from 'react-hook-form'
 
-import { DEFAULT_PAGESIZE_OPTIONS, FIRST_PAGE_NUMBER } from '@isdd/metais-common/constants'
+import { GetFOPStandardRequestsParams } from '../generated/standards-swagger'
+
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, FIRST_PAGE_NUMBER } from '@isdd/metais-common/constants'
 import { CiListFilterContainerUi, NeighboursFilterContainerUi, NeighboursFilterUi } from '@isdd/metais-common/api'
+import { IFilterParams } from 'hooks/useFilter'
 
 export interface INeighboursFilter extends IFilter {
     neighboursFilter?: NeighboursFilterUi
@@ -45,4 +49,36 @@ export const mapFilterToRelationApi = (filter: INeighboursFilter, defaultApiFilt
         sortBy: sort?.[0]?.orderBy ?? '',
         sortType: sort?.[0]?.sortDirection,
     }
+}
+
+export const mapFilterToStandardDrafts = (filterParams: FieldValues & IFilterParams & IFilter): GetFOPStandardRequestsParams => {
+    const { pageNumber, pageSize, sort } = filterParams
+
+    const mappedFilter: GetFOPStandardRequestsParams = {
+        pageNumber: pageNumber ?? BASE_PAGE_NUMBER,
+        perPage: pageSize ?? BASE_PAGE_SIZE,
+        ascending: sort?.[0]?.sortDirection === SortType.ASC,
+        ...(sort?.[0]?.orderBy && { sortBy: sort?.[0]?.orderBy }),
+    }
+
+    if (filterParams?.createdBy) {
+        mappedFilter.createdBy = filterParams?.createdBy
+    }
+    if (filterParams?.draftName) {
+        mappedFilter.draftName = filterParams?.draftName
+    }
+    if (filterParams?.state) {
+        mappedFilter.state = filterParams?.state
+    }
+    if (filterParams?.requestChannel) {
+        mappedFilter.requestChannel = filterParams?.requestChannel
+    }
+    if (filterParams?.fromDate) {
+        mappedFilter.fromDate = filterParams?.fromDate
+    }
+    if (filterParams?.toDate) {
+        mappedFilter.toDate = filterParams?.toDate
+    }
+
+    return mappedFilter
 }

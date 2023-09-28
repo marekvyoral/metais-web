@@ -33,6 +33,11 @@ export enum ATTRIBUTE_NAME {
     Gen_Profil_EA_odkaz_na_referenciu = 'Gen_Profil_EA_odkaz_na_referenciu',
     Gen_Profil_EA_typ_replikacie = 'Gen_Profil_EA_typ_replikacie',
     Gen_Profil_EA_pocet_replikacii = 'Gen_Profil_EA_pocet_replikacii',
+    ReferenceRegisterHistory_Profile_stav = 'ReferenceRegisterHistory_Profile_stav',
+    ReferenceRegisterHistory_Profile_popis = 'ReferenceRegisterHistory_Profile_popis',
+    ReferenceRegisterHistory_Profile_prilohy = 'ReferenceRegisterHistory_Profile_prilohy',
+    ISVS_Name = 'isvsName',
+    Sr_Name = 'srName',
 }
 
 export const Gen_Profil = 'Gen_Profil'
