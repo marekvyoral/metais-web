@@ -8,7 +8,7 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
 import styles from './votelist.module.scss'
 
-import { columns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/votes/voteListProps'
+import { voteListColumns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/votes/voteListProps'
 
 export interface IVotesListFilterData extends IFilterParams, IFilter {
     votesTypeToShow: string
@@ -79,7 +79,7 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
             <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
             <Table
                 data={votesListData?.votes}
-                columns={columns(t, isUserLogged)}
+                columns={voteListColumns(t, isUserLogged)}
                 sort={filter.sort ?? []}
                 onSortingChange={(columnSort) => {
                     handleFilterChange({ sort: columnSort })

@@ -1,13 +1,30 @@
 @import '@isdd/idsk-ui-kit/src/utils.scss';
 
-.boldText {
+.itemTitle {
     font-weight: bold !important;
     margin: 0 !important;
+    padding-right: 50px;
 }
 
 .inline {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: left;
     flex-direction: row;
+}
+
+.itemsTable {
+    width: max-content;
+}
+
+.itemsTableRow {
+    height: 50px;
+}
+
+.itemsTableCellContent {
+    display: contents;
+}
+
+.linkAlign {
+    padding-right: 20px;
 }

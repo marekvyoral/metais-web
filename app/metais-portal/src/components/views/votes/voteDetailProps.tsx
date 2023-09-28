@@ -1,6 +1,10 @@
-import { ApiVoteActorResult } from '@isdd/metais-common/api'
+import { ApiAttachment, ApiLink, ApiVoteActorResult } from '@isdd/metais-common/api'
 import { ColumnDef } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
+import { Link } from 'react-router-dom'
+import { TextLink } from '@isdd/idsk-ui-kit/index'
+
+import styles from './voteDetail.module.scss'
 
 export enum VotesListColumnsEnum {
     name = 'name',
@@ -46,4 +50,41 @@ export const voteDetailColumns = (t: TFunction): Array<ColumnDef<ApiVoteActorRes
     ]
 
     return columns
+}
+
+interface IAttachmentLink {
+    attachments: ApiAttachment[] | undefined
+    downloadFile: (attachment: ApiAttachment) => Promise<void>
+}
+
+export const AttachmentLinks: React.FC<IAttachmentLink> = ({ attachments, downloadFile }) => {
+    return (
+        <>
+            {attachments?.map((attachment) => {
+                return (
+                    <Link key={attachment.id} to="#" onClick={() => downloadFile(attachment)} className={styles.linkAlign}>
+                        {attachment.attachmentName}
+                    </Link>
+                )
+            })}
+        </>
+    )
+}
+
+interface IWebLink {
+    links: ApiLink[] | undefined
+}
+
+export const WebLinks: React.FC<IWebLink> = ({ links }) => {
+    return (
+        <>
+            {links?.map((link) => {
+                return (
+                    <TextLink key={link.id} to={link.url ?? ''} className={styles.linkAlign}>
+                        {link.linkDescription}
+                    </TextLink>
+                )
+            })}
+        </>
+    )
 }

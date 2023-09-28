@@ -1,13 +1,15 @@
 import { BreadCrumbs, HomeIcon, Tab, Table, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
-import { ApiVote, ApiVoteResult } from '@isdd/metais-common/api'
+import { ApiAttachment, ApiVote, ApiVoteResult, useGetContentHook } from '@isdd/metais-common/api'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 
 import styles from './voteDetail.module.scss'
-import { voteDetailColumns } from './voteDetailProps'
+import { AttachmentLinks, WebLinks, voteDetailColumns } from './voteDetailProps'
+import { IDetailItemData, VoteDetailItems } from './voteDetailAuxComponents'
 
 export interface IVoteDetailView {
     voteData: ApiVote | undefined
@@ -53,6 +55,45 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({ voteData, voteResult
         content: tabContent(actorResultsList, voteDetailColumns(t), []),
     }))
 
+    const downloadVersionFile = useGetContentHook()
+    const [isFileLoading, setFileLoading] = useState<boolean>(false)
+    const downloadAttachment = async (attachment: ApiAttachment) => {
+        const blobData = await downloadVersionFile(attachment.attachmentId ?? '')
+        downloadBlobAsFile(new Blob([blobData]), attachment.attachmentName ?? '')
+        setFileLoading(false)
+    }
+
+    const detailItemsTableData: IDetailItemData[] = [
+        {
+            itemTitleContent: t('votes.voteDetail.date'),
+            itemValueContent: (
+                <TextBody size="L" className={styles.itemsTableCellContent}>
+                    {t('date', { date: voteData?.effectiveFrom }) + '-' + t('date', { date: voteData?.effectiveTo })}
+                </TextBody>
+            ),
+            hidden: false,
+        },
+        {
+            itemTitleContent: t('votes.voteDetail.voteType'),
+            itemValueContent: (
+                <TextBody size="L" className={styles.itemsTableCellContent}>
+                    {voteData?.secret ? t('votes.voteDetail.secret') : t('votes.voteDetail.public')}
+                </TextBody>
+            ),
+            hidden: false,
+        },
+        {
+            itemTitleContent: t('votes.voteDetail.relatedVoteLinks'),
+            itemValueContent: <WebLinks links={voteData?.links} />,
+            hidden: voteData?.links !== undefined && voteData?.links?.length === 0,
+        },
+        {
+            itemTitleContent: t('votes.voteDetail.relatedDocuments'),
+            itemValueContent: <AttachmentLinks attachments={voteData?.attachments} downloadFile={downloadAttachment} />,
+            hidden: voteData?.attachments !== undefined && voteData?.attachments?.length === 0,
+        },
+    ]
+
     return (
         <>
             <BreadCrumbs
@@ -64,32 +105,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({ voteData, voteResult
                 ]}
             />
             <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
-            <div className={styles.inline}>
-                <TextBody size="L" className={styles.boldText}>
-                    {t('votes.voteDetail.date')}
-                </TextBody>
-                <TextBody size="L">
-                    {t('date', { date: voteData?.effectiveFrom })} - {t('date', { date: voteData?.effectiveTo })}
-                </TextBody>
-            </div>
-            <div className={styles.inline}>
-                <TextBody size="L" className={styles.boldText}>
-                    {t('votes.voteDetail.voteType')}
-                </TextBody>
-                <TextBody size="L">{voteData?.secret ? t('votes.voteDetail.secret') : t('votes.voteDetail.public')}</TextBody>
-            </div>
-            <div className={styles.inline}>
-                <TextBody size="L" className={styles.boldText}>
-                    {t('votes.voteDetail.relatedDocuments')}
-                </TextBody>
-                <TextBody size="L">{t('date', { date: voteData?.effectiveFrom })}</TextBody>
-            </div>
-            <div className={styles.inline}>
-                <TextBody size="L" className={styles.boldText}>
-                    {t('votes.voteDetail.relatedVoteLinks')}
-                </TextBody>
-                <TextBody size="L">{t('date', { date: voteData?.effectiveFrom })}</TextBody>
-            </div>
+            <VoteDetailItems tableData={detailItemsTableData} />
             <Tabs
                 tabList={tabList}
                 onSelect={(selected) => {

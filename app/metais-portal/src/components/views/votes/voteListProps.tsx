@@ -34,7 +34,7 @@ export enum VotesListColumnsEnum {
     hasCast = 'hasCast',
 }
 
-export const columns = (t: TFunction, isUserLogged: boolean): Array<ColumnDef<ApiVotePreview>> => {
+export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<ColumnDef<ApiVotePreview>> => {
     const columnsAll: Array<ColumnDef<ApiVotePreview>> = [
         {
             header: t('votes.votesList.table.name'),
