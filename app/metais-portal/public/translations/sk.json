@@ -955,6 +955,19 @@
                 "toDate": "Prebiehajúce v období do"
             }
         },
+        "voteDetail": {
+            "date": "Dátum",
+            "voteType": "Typ Hlasovania",
+            "relatedDocuments": "Súvisiace dokumenty",
+            "relatedVoteLinks": "Hlasovanie sa týka návrhu",
+            "secret": "Tajné",
+            "public": "Verejné",
+            "table":{
+                "name": "Meno",
+                "organization": "Organizácia",
+                "role": "Pozícia"
+            }
+        },
         "type": {
             "toShow": {
                 "onlyMyVotes": "Len moje hlasovania",

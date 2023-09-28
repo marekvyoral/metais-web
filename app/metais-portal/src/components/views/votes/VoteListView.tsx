@@ -79,7 +79,7 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
             <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
             <Table
                 data={votesListData?.votes}
-                columns={columns(t)}
+                columns={columns(t, isUserLogged)}
                 sort={filter.sort ?? []}
                 onSortingChange={(columnSort) => {
                     handleFilterChange({ sort: columnSort })

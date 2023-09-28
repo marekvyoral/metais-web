@@ -1,5 +1,5 @@
-import { QueryFeedback, useGetVoteDetail } from '@isdd/metais-common/index'
-import React from 'react'
+import { QueryFeedback, useGetVoteDetail, useGetVoteResult } from '@isdd/metais-common/index'
+import React, { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { IVoteDetailView } from '../../views/votes/VoteDetailView'
@@ -10,7 +10,7 @@ interface IVoteDetailContainer {
 
 export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) => {
     const { voteIdParam } = useParams()
-    const voteId = () => {
+    const voteId = useMemo(() => {
         if (voteIdParam == undefined) {
             return 0
         }
@@ -19,13 +19,14 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
             return 0
         }
         return voteIdValue
-    }
+    }, [voteIdParam])
 
-    const { data: voteData } = useGetVoteDetail(voteId())
+    const { data: voteData, isLoading: voteDataLoading } = useGetVoteDetail(voteId)
+    const { data: voteResultData, isLoading: voteResultDataLoading } = useGetVoteResult(voteId)
 
     return (
-        <QueryFeedback loading={false} error={false} indicatorProps={{ layer: 'parent' }}>
-            <View voteData={voteData} />
+        <QueryFeedback loading={voteDataLoading && voteResultDataLoading} error={false} indicatorProps={{ layer: 'parent' }}>
+            <View voteResultData={voteResultData} voteData={voteData} />
         </QueryFeedback>
     )
 }

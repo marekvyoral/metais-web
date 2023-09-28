@@ -1,0 +1,13 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.boldText {
+    font-weight: bold !important;
+    margin: 0 !important;
+}
+
+.inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}

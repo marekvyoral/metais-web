@@ -34,8 +34,8 @@ export enum VotesListColumnsEnum {
     hasCast = 'hasCast',
 }
 
-export const columns = (t: TFunction): Array<ColumnDef<ApiVotePreview>> => {
-    return [
+export const columns = (t: TFunction, isUserLogged: boolean): Array<ColumnDef<ApiVotePreview>> => {
+    const columnsAll: Array<ColumnDef<ApiVotePreview>> = [
         {
             header: t('votes.votesList.table.name'),
             accessorFn: (row) => row?.name,
@@ -89,6 +89,11 @@ export const columns = (t: TFunction): Array<ColumnDef<ApiVotePreview>> => {
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
     ]
+
+    if (!isUserLogged) {
+        return columnsAll.filter((column) => column.id != VotesListColumnsEnum.canCast && column.id != VotesListColumnsEnum.hasCast)
+    }
+    return columnsAll
 }
 
 export const votesTypeToShowOptions = (t: TFunction): IOption[] => {

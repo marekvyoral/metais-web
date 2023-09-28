@@ -13,18 +13,16 @@ interface IVotesListContainer {
     View: React.FC<IVotesListView>
 }
 
-const defaultFilterValues = (isUserLogged: boolean): IVotesListFilterData => {
-    return {
+export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
+    const { state: authState } = useAuth()
+    const isUserLogged = authState.user !== null
+
+    const defaultFilterValues: IVotesListFilterData = {
         votesTypeToShow: isUserLogged ? VotesListShowEnum.onlyMy : VotesListShowEnum.everyone,
         voteState: '',
         effectiveFrom: '',
         effectiveTo: '',
     }
-}
-
-export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
-    const { state: authState } = useAuth()
-    const isUserLogged = authState.user !== null
 
     const { filter, handleFilterChange } = useFilterParams<IVotesListFilterData>({
         sort: [
@@ -33,7 +31,7 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
                 sortDirection: SortType.DESC,
             },
         ],
-        ...defaultFilterValues(isUserLogged),
+        ...defaultFilterValues,
     })
 
     const getVotesParamValues = useMemo((): GetVotesParams => {
@@ -59,7 +57,7 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
                 isUserLogged={isUserLogged}
                 votesListData={votesList}
                 filter={filter}
-                defaultFilterValues={defaultFilterValues(isUserLogged)}
+                defaultFilterValues={defaultFilterValues}
                 handleFilterChange={handleFilterChange}
             />
         </QueryFeedback>
