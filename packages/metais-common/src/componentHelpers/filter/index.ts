@@ -62,6 +62,19 @@ export const mapFilterToReportsParams = (filterParams: FieldValues & IFilterPara
     }
 }
 
+export const mapFilterToReportsParamsAdmin = (filterParams: FieldValues & IFilterParams & IFilter): ListReportParams => {
+    const { pageNumber, pageSize, sort } = filterParams
+    return {
+        page: pageNumber ?? BASE_PAGE_NUMBER,
+        perPage: pageSize ?? BASE_PAGE_SIZE,
+        sortBy: sort?.map((s) => s.orderBy) ?? ['name'],
+        ascending: true,
+        showAllLanguages: true,
+        ...(filterParams?.category && { category: filterParams?.category }),
+        ...(filterParams.fullTextSearch && { fulltext: filterParams.fullTextSearch }),
+    }
+}
+
 export const mapFilterToExecuteParams = (
     filterParams: FieldValues & IFilterParams & IFilter,
     parameterMetaData?: Parameter[],

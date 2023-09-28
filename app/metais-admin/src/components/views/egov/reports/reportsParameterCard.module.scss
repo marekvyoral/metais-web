@@ -1,0 +1,19 @@
+@import '../../../../utils.scss';
+
+.closeButton {
+    float: right;
+    margin-right: govuk-spacing(1);
+    cursor: pointer;
+}
+
+.itemBox {
+    border: 1px solid govuk-colour('mid-grey');
+    margin-block-end: govuk-spacing(4);
+    padding: govuk-spacing(4);
+    padding-bottom: govuk-spacing(2);
+}
+
+.errorItemBox {
+    border: 1px solid govuk-colour('red');
+    background-color: rgba(govuk-colour('red'), 0.1);
+}
