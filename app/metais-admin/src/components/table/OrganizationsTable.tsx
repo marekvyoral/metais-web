@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { ColumnDef } from '@tanstack/react-table'
@@ -9,9 +9,10 @@ import { ATTRIBUTE_NAME, ConfigurationItemSetUi, ConfigurationItemUi, FavoriteCi
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { createFullAdressFromAttributes } from '@isdd/metais-common/componentHelpers/formatting/attributesCombinations'
+import { CreateEntityButton } from '@isdd/metais-common/components/actions-over-table/actions-default/CreateEntityButton'
 
-import { IActions } from '../containers/Egov/Entity/OrganizationsListContainer'
-import { MoreActionsOverRow } from '../views/organizations/actions/MoreActionsOverRow'
+import { MoreActionsOverRow } from '@/components/views/organizations/actions/MoreActionsOverRow'
+import { IActions } from '@/components/containers/Egov/Entity/OrganizationsListContainer'
 
 type OrganizationsTableProps = {
     data?: void | ConfigurationItemSetUi | undefined
@@ -39,6 +40,7 @@ export const OrganizationsTable = ({
 }: OrganizationsTableProps & IActions) => {
     const { t } = useTranslation()
     const location = useLocation()
+    const navigate = useNavigate()
     const columns: Array<ColumnDef<ConfigurationItemUi>> = [
         {
             header: t('table.name'),
@@ -89,6 +91,9 @@ export const OrganizationsTable = ({
                 resetUserSelectedColumns={resetUserSelectedColumns}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName={entityName ?? ''}
+                createButton={
+                    <CreateEntityButton onClick={() => navigate(`/organizations/find`)} label={t('organizations.create.addNewOrganization')} />
+                }
                 // createHref="/organizations/find"
             />
             <Table data={data?.configurationItemSet} columns={columns} sort={sort} isLoading={isLoading} error={error} />

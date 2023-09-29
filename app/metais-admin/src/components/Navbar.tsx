@@ -33,7 +33,10 @@ export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
         path: '/public-authorities',
         icon: InstructionsIcon,
         subItems: [
-            { title: t('navMenu.publicAuthorities.publicAuthorities'), path: '/public-authorities/list' },
+            {
+                title: t('navMenu.publicAuthorities.publicAuthorities'),
+                path: AdminRouteNames.ORGANIZATIONS,
+            },
             { title: t('navMenu.publicAuthorities.massActualizations'), path: '/public-authorities/mass-updates' },
         ],
     },

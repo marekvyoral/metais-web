@@ -564,7 +564,9 @@
             "cancel": "Cancel",
             "createNew": "Create new organization",
             "icoRequired": "Identification number is required",
-            "icoRegex": "Identification number is in incorrect format. Correct format is '00000000' or '000000000000'"
+            "icoExist": "Organization with this identification number already exist",
+            "icoRegex": "Identification number is in incorrect format. Correct format is '00000000' or '000000000000'",
+            "loading": "Searching identification number"
         },
         "edit": {
             "updateExistingOrganization": "Edit organization"
@@ -600,7 +602,8 @@
                 "name": "Name",
                 "lastName": "Last name",
                 "titleAfterName": "Title after name"
-            }
+            },
+            "savingPO": "Saving organization"
         },
         "assigned": {
             "heading": "Assign organization to superior organization",
