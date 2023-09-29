@@ -28,7 +28,7 @@ export const DraftsListFilter = ({ defaultFilterValues }: Filter) => {
         <Filter
             defaultFilterValues={defaultFilterValues}
             heading={<></>}
-            form={({ register, setValue, filter }) => (
+            form={({ register, setValue, filter, watch }) => (
                 <div>
                     <Input {...register(DraftsListFilterItems.DRAFT_NAME)} label={t('DraftsList.filter.draftName')} />
                     <SelectUserIdentities
@@ -58,8 +58,8 @@ export const DraftsListFilter = ({ defaultFilterValues }: Filter) => {
                         setValue={setValue}
                         defaultValue={filter.requestChannel}
                     />
-                    <Input {...register(DraftsListFilterItems.FROM_DATE)} type="date" label={t('DraftsList.filter.fromDate')} />
-                    <Input {...register(DraftsListFilterItems.TO_DATE)} type="date" label={t('DraftsList.filter.toDate')} />
+                    <Input {...register(DraftsListFilterItems.FROM_DATE)} type="date" label={t('DraftsList.filter.fromDate')} max={watch('toDate')} />
+                    <Input {...register(DraftsListFilterItems.TO_DATE)} type="date" label={t('DraftsList.filter.toDate')} min={watch('fromDate')} />
                 </div>
             )}
         />

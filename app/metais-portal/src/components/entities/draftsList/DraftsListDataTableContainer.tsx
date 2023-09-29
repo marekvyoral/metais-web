@@ -23,6 +23,7 @@ const DraftsListDataTableContainer = <T extends FieldValues & IFilterParams>({
         ...defaultFilterValues,
         sort: [{ orderBy: ATTRIBUTE_NAME.Sr_Name, sortDirection: SortType.ASC }],
     })
+
     const { data, isLoading, isError } = useGetFOPStandardRequests(mapFilterToStandardDrafts(filterParams))
 
     const workingGroupIdsPerPage = useMemo(() => {

@@ -8,6 +8,7 @@ import { IDraftsListTable } from '@/types/views'
 
 const DraftsListDataTableGridViewForForm: React.FC<IDraftsListTable> = ({ data, handleFilterChange, pagination, sort }) => {
     const { t } = useTranslation()
+
     const columns: Array<ColumnDef<ApiStandardRequestPreview>> = [
         {
             accessorFn: (row) => row?.srName,
@@ -27,6 +28,7 @@ const DraftsListDataTableGridViewForForm: React.FC<IDraftsListTable> = ({ data, 
             header: t('DraftsList.table.createdAt'),
             id: 'createdAt',
             cell: (row) => <span>{t('dateTime', { date: row.getValue() })}</span>,
+            enableSorting: true,
         },
         {
             accessorFn: (row) => row?.name,
@@ -45,14 +47,21 @@ const DraftsListDataTableGridViewForForm: React.FC<IDraftsListTable> = ({ data, 
         {
             accessorFn: (row) => row?.standardRequestState,
             header: t('DraftsList.table.standardRequestState'),
-            id: 'standardRequestState',
+            id: 'standardState.description',
             cell: (row) => <span>{t(`DraftsList.filter.state.${row?.getValue?.()}`)}</span>,
             enableSorting: true,
         },
     ]
     return (
         <>
-            <Table data={data?.draftsList ?? []} columns={columns} sort={sort} />
+            <Table
+                data={data?.draftsList ?? []}
+                columns={columns}
+                sort={sort}
+                onSortingChange={(newSort) => {
+                    handleFilterChange({ sort: newSort })
+                }}
+            />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
     )
