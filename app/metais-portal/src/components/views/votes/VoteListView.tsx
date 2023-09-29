@@ -9,6 +9,7 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import styles from './votelist.module.scss'
 
 import { voteListColumns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/votes/voteListProps'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 export interface IVotesListFilterData extends IFilterParams, IFilter {
     votesTypeToShow: string
@@ -37,62 +38,69 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
                     { label: t('votes.breadcrumbs.VotesLists'), href: NavigationSubRoutes.ZOZNAM_HLASOV },
                 ]}
             />
-            <TextHeading size="XL">{t('votes.votesList.title')}</TextHeading>
-            <TextHeading size="L">{t('votes.votesList.votesListSubtitle')}</TextHeading>
-            <Filter<IVotesListFilterData>
-                heading={t('votes.votesList.filter.title')}
-                defaultFilterValues={defaultFilterValues}
-                form={({ filter: listFilter, register, setValue }) => (
-                    <div>
-                        {isUserLogged && (
+            <MainContentWrapper>
+                <TextHeading size="XL">{t('votes.votesList.title')}</TextHeading>
+                <TextHeading size="L">{t('votes.votesList.votesListSubtitle')}</TextHeading>
+                <Filter<IVotesListFilterData>
+                    heading={t('votes.votesList.filter.title')}
+                    defaultFilterValues={defaultFilterValues}
+                    form={({ filter: listFilter, register, setValue }) => (
+                        <div>
+                            {isUserLogged && (
+                                <SimpleSelect
+                                    id="votesTypeToShow"
+                                    label={t('votes.votesList.filter.votesTypeToShow')}
+                                    options={votesTypeToShowOptions(t)}
+                                    setValue={setValue}
+                                    defaultValue={listFilter?.votesTypeToShow}
+                                    name="votesTypeToShow"
+                                />
+                            )}
                             <SimpleSelect
-                                id="votesTypeToShow"
-                                label={t('votes.votesList.filter.votesTypeToShow')}
-                                options={votesTypeToShowOptions(t)}
+                                id="voteState"
+                                label={t('votes.votesList.filter.voteState')}
+                                options={voteStateOptions(t)}
                                 setValue={setValue}
-                                defaultValue={listFilter?.votesTypeToShow}
-                                name="votesTypeToShow"
+                                defaultValue={listFilter?.voteState}
+                                name="voteState"
                             />
-                        )}
-                        <SimpleSelect
-                            id="voteState"
-                            label={t('votes.votesList.filter.voteState')}
-                            options={voteStateOptions(t)}
-                            setValue={setValue}
-                            defaultValue={listFilter?.voteState}
-                            name="voteState"
-                        />
 
-                        <div className={styles.inline}>
-                            <Input
-                                {...register('effectiveFrom')}
-                                type="date"
-                                label={t('votes.votesList.filter.fromDate')}
-                                className={styles.stretch}
-                            />
-                            <div className={styles.space} />
-                            <Input {...register('effectiveTo')} type="date" label={t('votes.votesList.filter.toDate')} className={styles.stretch} />
+                            <div className={styles.inline}>
+                                <Input
+                                    {...register('effectiveFrom')}
+                                    type="date"
+                                    label={t('votes.votesList.filter.fromDate')}
+                                    className={styles.stretch}
+                                />
+                                <div className={styles.space} />
+                                <Input
+                                    {...register('effectiveTo')}
+                                    type="date"
+                                    label={t('votes.votesList.filter.toDate')}
+                                    className={styles.stretch}
+                                />
+                            </div>
                         </div>
-                    </div>
-                )}
-            />
-            <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
-            <Table
-                data={votesListData?.votes}
-                columns={voteListColumns(t, isUserLogged)}
-                sort={filter.sort ?? []}
-                onSortingChange={(columnSort) => {
-                    handleFilterChange({ sort: columnSort })
-                }}
-                isLoading={false}
-                error={undefined}
-            />
-            <PaginatorWrapper
-                pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
-                pageSize={filter.pageSize || BASE_PAGE_SIZE}
-                dataLength={votesListData?.votesCount || 0}
-                handlePageChange={handleFilterChange}
-            />
+                    )}
+                />
+                <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
+                <Table
+                    data={votesListData?.votes}
+                    columns={voteListColumns(t, isUserLogged)}
+                    sort={filter.sort ?? []}
+                    onSortingChange={(columnSort) => {
+                        handleFilterChange({ sort: columnSort })
+                    }}
+                    isLoading={false}
+                    error={undefined}
+                />
+                <PaginatorWrapper
+                    pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
+                    pageSize={filter.pageSize || BASE_PAGE_SIZE}
+                    dataLength={votesListData?.votesCount || 0}
+                    handlePageChange={handleFilterChange}
+                />
+            </MainContentWrapper>
         </>
     )
 }

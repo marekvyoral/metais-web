@@ -962,6 +962,7 @@
             "relatedVoteLinks": "Hlasovanie sa týka návrhu",
             "secret": "Tajné",
             "public": "Verejné",
+            "downloadingFile": "Stahujem súbor",
             "voteProcessing": "Spracovávam hlasovanie",
             "voteDescription": "Predkladaný návrh",
             "votesHandlingTitle": "Hlasovanie",

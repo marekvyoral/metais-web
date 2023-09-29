@@ -41,7 +41,7 @@ export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<Colu
             accessorFn: (row) => row?.name,
             enableSorting: true,
             id: VotesListColumnsEnum.name,
-            size: 700,
+            size: 400,
             cell: (ctx) => {
                 const { id } = ctx.row.original
                 const name = ctx.getValue() as string

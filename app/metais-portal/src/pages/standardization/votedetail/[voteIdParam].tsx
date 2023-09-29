@@ -10,6 +10,8 @@ const VoteDetail: React.FC<IVoteDetailView> = () => {
                 <VoteDetailView
                     voteResultData={props.voteResultData}
                     voteData={props.voteData}
+                    canCastVote={props.canCastVote}
+                    castedVoteId={props.castedVoteId}
                     castVote={props.castVote}
                     vetoVote={props.vetoVote}
                     votesProcessing={props.votesProcessing}

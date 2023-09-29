@@ -54,15 +54,16 @@ export const voteDetailColumns = (t: TFunction): Array<ColumnDef<ApiVoteActorRes
 
 interface IAttachmentLink {
     attachments: ApiAttachment[] | undefined
-    downloadFile: (attachment: ApiAttachment) => Promise<void>
+    onClick: (attachment: ApiAttachment) => void
 }
 
-export const AttachmentLinks: React.FC<IAttachmentLink> = ({ attachments, downloadFile }) => {
+export const AttachmentLinks: React.FC<IAttachmentLink> = ({ attachments, onClick }) => {
     return (
         <>
             {attachments?.map((attachment) => {
                 return (
-                    <Link key={attachment.id} to="#" onClick={() => downloadFile(attachment)} className={styles.linkAlign}>
+                    <Link key={attachment.id} to="#" onClick={() => onClick(attachment)} className={styles.linkAlign}>
+                        {/* <Link key={attachment.id} to="#" onClick={() => downloadFileFunc(attachment)} className={styles.linkAlign}> */}
                         {attachment.attachmentName}
                     </Link>
                 )
