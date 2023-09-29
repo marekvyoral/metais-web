@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit'
 import { QueryFeedback } from '@isdd/metais-common'
 
+import DraftsListCreateForm from '../../../../components/entities/draftsList/DraftsListCreateForm'
 import { DraftsListFormContainer } from '../../../../components/entities/draftsList/DraftsListFormContainer'
-import DraftsListFormView from '../../../../components/entities/draftsList/DraftsListMetaisFormView'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-const DraftsListFormPage: React.FC = () => {
+const DraftsListEditPage = () => {
     const { t } = useTranslation()
     return (
         <DraftsListFormContainer
@@ -23,7 +23,12 @@ const DraftsListFormPage: React.FC = () => {
                         />
                         <MainContentWrapper>
                             <QueryFeedback loading={props.isLoading} error={false} withChildren>
-                                <DraftsListFormView data={props?.data} />
+                                <DraftsListCreateForm
+                                    data={props?.data}
+                                    onSubmit={async (data) => {
+                                        console.log('CREATE: ', data)
+                                    }}
+                                />
                             </QueryFeedback>
                         </MainContentWrapper>
                     </>
@@ -32,4 +37,4 @@ const DraftsListFormPage: React.FC = () => {
         />
     )
 }
-export default DraftsListFormPage
+export default DraftsListEditPage
