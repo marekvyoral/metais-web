@@ -21,12 +21,12 @@ export const SearchInput = forwardRef<HTMLInputElement, IInputProps>(
             <div className={classNames('idsk-header-web__main-action-search', styles.searchInputWrapper, className)} style={style}>
                 <input
                     className={classNames('govuk-input govuk-!-display-inline-block', styles.searchInput, { 'govuk-input--error': !!error })}
-                    title={placeholder || t('searchInput.search')}
+                    title={placeholder || t('searchInput.search').toString()}
                     type="search"
-                    aria-label={placeholder || t('searchInput.search')}
+                    aria-label={placeholder || t('searchInput.search').toString()}
                     id={id}
                     name={name}
-                    placeholder={placeholder || t('searchInput.search')}
+                    placeholder={placeholder || t('searchInput.search').toString()}
                     ref={ref}
                     {...rest}
                     aria-describedby={hint ? hintId : undefined}

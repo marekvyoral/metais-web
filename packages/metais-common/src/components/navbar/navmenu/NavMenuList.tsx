@@ -20,7 +20,7 @@ export const NavMenuList: React.FC<INavMenuList> = ({ activeTab, setActiveTab, m
     const { t } = useTranslation()
 
     return (
-        <ul className="idsk-header-web__nav-list " aria-label={t('navMenu.mainNav')}>
+        <ul className="idsk-header-web__nav-list " aria-label={t('navMenu.mainNav') ?? ''}>
             {menuItems?.map((menuItem) => {
                 return (
                     <NavMenuItem

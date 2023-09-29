@@ -73,3 +73,6 @@ export const FILTER_LOCAL_STORAGE_KEY = 'filter_'
 export const NULL = 'null'
 
 export const USER_INFO_QUERY_KEY = 'userInfo'
+
+export const PORTAL_URL = import.meta.env.VITE_PORTAL_URL
+export const DEFAULT_ERROR = 'Error'

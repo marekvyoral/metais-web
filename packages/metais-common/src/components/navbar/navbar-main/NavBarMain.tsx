@@ -10,15 +10,17 @@ import { NavLogin } from './NavLogin'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { LogoMirri } from '@isdd/metais-common/assets/images'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
+import { PORTAL_URL } from '@isdd/metais-common/constants'
 
 interface INavBarMain {
     isMenuExpanded: boolean
     setIsMenuExpanded: React.Dispatch<SetStateAction<boolean>>
     iconGroupItems?: React.FC[]
+    isLoginApp?: boolean
     isAdmin?: boolean
 }
 
-export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExpanded, iconGroupItems, isAdmin }) => {
+export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExpanded, iconGroupItems, isLoginApp, isAdmin }) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -30,8 +32,8 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
                 <div className="govuk-grid-row">
                     <div className="govuk-grid-column govuk-grid-column-one-quarter-from-desktop">
                         <div className="idsk-header-web__main-headline">
-                            <Link to="/" title={t('navbar.linkToHomePage')} state={{ from: location }}>
-                                <img src={LogoMirri} alt={t('navbar.ministryName')} className="idsk-header-web__main-headline-logo" />
+                            <Link to={isLoginApp ? PORTAL_URL + '/home' : '/'} title={t('navbar.linkToHomePage') ?? ''} state={{ from: location }}>
+                                <img src={LogoMirri} alt={t('navbar.ministryName') ?? ''} className="idsk-header-web__main-headline-logo" />
                             </Link>
 
                             <NavIconGroup isMobile />
@@ -39,10 +41,10 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
                             <button
                                 onClick={() => setIsMenuExpanded((prev) => !prev)}
                                 className="idsk-button idsk-header-web__main-headline-menu-button"
-                                aria-label={isMenuExpanded ? t('navbar.closeMenu') : t('navbar.openMenu')}
+                                aria-label={isMenuExpanded ? t('navbar.closeMenu') ?? '' : t('navbar.openMenu') ?? ''}
                                 aria-expanded={isMenuExpanded}
-                                data-text-for-show={t('navbar.openMenu')}
-                                data-text-for-hide={t('navbar.closeMenu')}
+                                data-text-for-show={t('navbar.openMenu') ?? ''}
+                                data-text-for-hide={t('navbar.closeMenu') ?? ''}
                             >
                                 {t('navbar.menu')}
                                 <span className="idsk-header-web__menu-open" />
@@ -72,7 +74,7 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
                                 )}
                             </div>
                             <div className="idsk-header-web__main--buttons">
-                                <NavLogin />
+                                <NavLogin isLoginApp={isLoginApp} />
                             </div>
                         </div>
                     </div>
