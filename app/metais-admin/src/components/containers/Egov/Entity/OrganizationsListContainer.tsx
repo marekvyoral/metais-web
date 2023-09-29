@@ -38,7 +38,7 @@ export const OraganizationsListContainer = <T extends FieldValues & IFilterParam
         },
     }
 
-    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, entityName, defaultRequestApi)
+    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, defaultRequestApi)
 
     const {
         data: tableData,

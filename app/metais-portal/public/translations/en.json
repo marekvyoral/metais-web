@@ -153,7 +153,6 @@
             "educationalCourses": "Educational courses",
             "publicAuthorityHierarchy": "Hierarchy of public authorities",
             "webResidence": "Web residence"
-
         }
     },
     "radioButton": {
@@ -876,5 +875,38 @@
         "userPreferencesSuccess": "Personal preferences were successfully saved",
         "changedUserInformation": "Personal information were successfully changed",
         "changedUserInformationError": "Error occurred while changing personal information. Please try again."
+    },
+    "DraftsList": {
+        "table": {
+            "version": "Version",
+            "name": "Tenderer",
+            "srName": "Draft name",
+            "standardRequestState": "Status",
+            "requestChannel": "Draft type",
+            "createdAt": "Created at",
+            "workGroup": "Assigned working group"
+        },
+        "filter": {
+            "createdBy": "Tenderer",
+            "draftName": "Draft name",
+            "state": {
+                "label": "Draft status",
+                "REQUESTED": "New",
+                "ASSIGNED": "Assigned",
+                "REJECTED": "Rejected",
+                "ACCEPTED": "Accepted"
+            },
+            "draftType": {
+                "label": "Draft type",
+                "WEB": "Web",
+                "RI": "Reference identifier",
+                "RR": "Reference register",
+                "ZC_Request": "Request for add new codelist",
+                "ZC_Header": "Request for change new codelist"
+            },
+            "fromDate": "Accepted from date",
+            "toDate": "Accepted to date",
+            "workGroupId": "Assigned working group"
+        }
     }
 }

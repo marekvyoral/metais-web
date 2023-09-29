@@ -1,12 +1,13 @@
 import React from 'react'
 import { Filter, IOption, Input, SimpleSelect } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
-import { ApiStandardRequestPreviewRequestChannel } from '@isdd/metais-common/api/generated/standards-swagger'
+import { ApiStandardRequestPreviewRequestChannel, GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
 import { SelectUserIdentities } from '@isdd/metais-common/components/select-user-identities/SelectUserIdentities'
+import { SelectWorkingGroups } from '@isdd/metais-common/components/select-working-groups/SelectWorkingGroups'
 
 import { DraftsListFilterItems } from '@/types/filters'
 export interface Filter {
-    defaultFilterValues: any
+    defaultFilterValues: GetFOPStandardRequestsParams
 }
 export const DraftsListFilter = ({ defaultFilterValues }: Filter) => {
     const { t } = useTranslation()
@@ -29,8 +30,19 @@ export const DraftsListFilter = ({ defaultFilterValues }: Filter) => {
             heading={<></>}
             form={({ register, setValue, filter }) => (
                 <div>
-                    <Input {...register('draftName')} label={t('DraftsList.filter.draftName')} />
-                    <SelectUserIdentities filter={filter} setValue={setValue} />
+                    <Input {...register(DraftsListFilterItems.DRAFT_NAME)} label={t('DraftsList.filter.draftName')} />
+                    <SelectUserIdentities
+                        filter={filter}
+                        setValue={setValue}
+                        name={DraftsListFilterItems.CREATED_BY}
+                        label={t('DraftsList.filter.createdBy')}
+                    />
+                    <SelectWorkingGroups
+                        filter={filter}
+                        setValue={setValue}
+                        label={t('DraftsList.filter.workGroupId')}
+                        name={DraftsListFilterItems.WORK_GROUP_ID}
+                    />
                     <SimpleSelect
                         label={t('DraftsList.filter.state.label')}
                         name={DraftsListFilterItems.STATE}
@@ -46,8 +58,8 @@ export const DraftsListFilter = ({ defaultFilterValues }: Filter) => {
                         setValue={setValue}
                         defaultValue={filter.requestChannel}
                     />
-                    <Input {...register('fromDate')} type="date" label={t('DraftsList.filter.fromDate')} />
-                    <Input {...register('toDate')} type="date" label={t('DraftsList.filter.toDate')} />
+                    <Input {...register(DraftsListFilterItems.FROM_DATE)} type="date" label={t('DraftsList.filter.fromDate')} />
+                    <Input {...register(DraftsListFilterItems.TO_DATE)} type="date" label={t('DraftsList.filter.toDate')} />
                 </div>
             )}
         />

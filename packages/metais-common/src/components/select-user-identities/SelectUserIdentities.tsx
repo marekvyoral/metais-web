@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { OptionProps } from 'react-select'
 import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit'
-import { useTranslation } from 'react-i18next'
 import { UseFormSetValue } from 'react-hook-form'
 
 import { Identity, useFindAll3Hook } from '@isdd/metais-common/api/generated/iam-swagger'
@@ -35,11 +34,12 @@ const mapToOption = (data?: Identity[]): SelectFilterIdentityOptionType[] => {
 interface SelectUserIdentitiesProps {
     filter: GetFOPStandardRequestsParams
     setValue: UseFormSetValue<GetFOPStandardRequestsParams>
+    name: string
+    label: string
 }
 
-export const SelectUserIdentities = ({ filter, setValue }: SelectUserIdentitiesProps) => {
+export const SelectUserIdentities = ({ filter, setValue, name, label }: SelectUserIdentitiesProps) => {
     const getIdentities = useFindAll3Hook()
-    const { t } = useTranslation()
     const [defaultValue, setDefaultValue] = useState<SelectFilterIdentityOptionType | undefined>(undefined)
 
     const [seed, setSeed] = useState(1)
@@ -65,6 +65,7 @@ export const SelectUserIdentities = ({ filter, setValue }: SelectUserIdentitiesP
 
     useEffect(() => {
         if (!defaultValue && filter.createdBy) {
+            // eslint-disable-next-line no-warning-comments
             // TODO: vyriesit ako potiahnut zaznam po refreshi ked som zvolil nieco vo filtri.
             getIdentities(1, 150).then((response) => {
                 const foundIdentity = response.find((item) => item?.login === filter?.createdBy)
@@ -87,8 +88,8 @@ export const SelectUserIdentities = ({ filter, setValue }: SelectUserIdentitiesP
                 getOptionLabel={(item) => item.displayName}
                 getOptionValue={(item) => item.login}
                 loadOptions={(searchQuery, _prevOptions, additional) => loadOptions(searchQuery, additional)}
-                label={t('DraftsList.filter.createdBy')}
-                name="createdBy"
+                label={label}
+                name={name}
                 option={(ctx) => formatOption(ctx)}
                 setValue={setValue}
                 defaultValue={defaultValue}

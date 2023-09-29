@@ -5,7 +5,7 @@ import { GetFOPStandardRequestsParams } from '../generated/standards-swagger'
 
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, FIRST_PAGE_NUMBER } from '@isdd/metais-common/constants'
 import { CiListFilterContainerUi, NeighboursFilterContainerUi, NeighboursFilterUi } from '@isdd/metais-common/api'
-import { IFilterParams } from 'hooks/useFilter'
+import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
 export interface INeighboursFilter extends IFilter {
     neighboursFilter?: NeighboursFilterUi
@@ -78,6 +78,9 @@ export const mapFilterToStandardDrafts = (filterParams: FieldValues & IFilterPar
     }
     if (filterParams?.toDate) {
         mappedFilter.toDate = filterParams?.toDate
+    }
+    if (filterParams?.workGroupId) {
+        mappedFilter.workGroupId = filterParams?.workGroupId
     }
 
     return mappedFilter

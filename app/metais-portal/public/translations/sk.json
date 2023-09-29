@@ -911,7 +911,8 @@
                 "ZC_Header": "Žiadosť o zmenu ZČ"
             },
             "fromDate": "Prijaté v období od",
-            "toDate": "Prijaté v období do"
+            "toDate": "Prijaté v období do",
+            "workGroupId": "Pracovná skupina"
         }
     }
 }

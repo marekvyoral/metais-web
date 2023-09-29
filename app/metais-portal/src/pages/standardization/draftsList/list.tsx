@@ -2,6 +2,7 @@ import React from 'react'
 import { ActionsOverTable } from '@isdd/metais-common/src/components/actions-over-table/ActionsOverTable'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/src/constants'
 import { GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 
 import DraftsListListContainer from '../../../components/entities/draftsList/DraftsListDataTableContainer'
 import DraftsListTable from '../../../components/entities/draftsList/DraftsListTable'
@@ -10,7 +11,6 @@ import { DraftsListFilter } from '../../../components/entities/draftsList/Drafts
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 const DraftsListListPage: React.FC = () => {
     const defaultFilterValues: GetFOPStandardRequestsParams = {
-        name: '',
         createdBy: '',
         state: '',
         fromDate: '',
@@ -18,9 +18,11 @@ const DraftsListListPage: React.FC = () => {
         draftName: '',
         requestChannel: undefined,
         workGroupId: '',
+        pageNumber: BASE_PAGE_NUMBER,
+        perPage: BASE_PAGE_SIZE,
     }
     return (
-        <DraftsListListContainer
+        <DraftsListListContainer<GetFOPStandardRequestsParams>
             defaultFilterValues={defaultFilterValues}
             View={({ data, handleFilterChange, pagination, sort }) => (
                 <>
@@ -32,7 +34,7 @@ const DraftsListListPage: React.FC = () => {
                             hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: true }}
                             handleFilterChange={handleFilterChange}
                         />
-                        <DraftsListTable data={data?.standardRequests} handleFilterChange={handleFilterChange} pagination={pagination} sort={sort} />
+                        <DraftsListTable data={data} handleFilterChange={handleFilterChange} pagination={pagination} sort={sort} />
                     </MainContentWrapper>
                 </>
             )}

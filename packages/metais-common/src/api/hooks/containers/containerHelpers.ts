@@ -73,7 +73,7 @@ export const useGetColumnData = (entityName: string) => {
     }
 }
 
-export const useFilterForCiList = <T extends FieldValues & IFilterParams, V>(defaultFilterValues: T, entityName: string, defaultRequestApi?: V) => {
+export const useFilterForCiList = <T extends FieldValues & IFilterParams, V>(defaultFilterValues: T, defaultRequestApi?: V) => {
     const { filter: filterParams, handleFilterChange } = useFilterParams<T & IFilter>({
         sort: [{ orderBy: ATTRIBUTE_NAME.Gen_Profil_nazov, sortDirection: SortType.ASC }],
         ...defaultFilterValues,
