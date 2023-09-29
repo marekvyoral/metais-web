@@ -962,6 +962,12 @@
             "relatedVoteLinks": "Hlasovanie sa týka návrhu",
             "secret": "Tajné",
             "public": "Verejné",
+            "voteProcessing": "Spracovávam hlasovanie",
+            "voteChoiseLabel": {
+                "cannotCast": "Hlasovať može iba prihlásený a oprávnený používateľ.",
+                "canCast": ""
+        },
+            "voteVetoChoiseLabel": "Vetovať hlasovanie",
             "table":{
                 "name": "Meno",
                 "organization": "Organizácia",
