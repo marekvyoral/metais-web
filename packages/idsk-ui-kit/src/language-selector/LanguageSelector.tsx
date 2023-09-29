@@ -17,7 +17,7 @@ export const LanguageItem: React.FC<ILanguageItem> = ({ handleClick, value }) =>
                     'govuk-link idsk-header-web__brand-language-list-item-link': true,
                     'idsk-header-web__brand-language-list-item-link--selected': i18n.language === value,
                 })}
-                title={t(`language.${value}`)}
+                title={t(`language.${value}`) ?? ''}
                 href="#"
                 onClick={(event) => handleClick(event, value)}
                 lang={value}
@@ -68,10 +68,10 @@ export const LanguageSelector: React.FC = () => {
         >
             <button
                 className="idsk-header-web__brand-language-button"
-                aria-label={isMenuExpanded ? t('languageSelector.close') : t('languageSelector.open')}
+                aria-label={isMenuExpanded ? t('languageSelector.close') ?? '' : t('languageSelector.open') ?? ''}
                 aria-expanded={isMenuExpanded}
-                data-text-for-hide={t('languageSelector.close')}
-                data-text-for-show={t('languageSelector.open')}
+                data-text-for-hide={t('languageSelector.close') ?? ''}
+                data-text-for-show={t('languageSelector.open') ?? ''}
                 onClick={() => setIsMenuExpanded((x) => !x)}
             >
                 {t(`language.${i18n.language}`)}

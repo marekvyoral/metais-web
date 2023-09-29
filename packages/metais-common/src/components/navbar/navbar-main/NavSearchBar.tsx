@@ -39,10 +39,10 @@ export const NavSearchBar = () => {
             <input
                 className="govuk-input govuk-!-display-inline-block"
                 id="idsk-header-web__main-action-search-input"
-                placeholder={t('navbar.searchPlaceholder')}
-                title={t('navbar.searchPlaceholder')}
+                placeholder={t('navbar.searchPlaceholder') ?? ''}
+                title={t('navbar.searchPlaceholder') ?? ''}
                 type="search"
-                aria-label={t('navbar.searchPlaceholder')}
+                aria-label={t('navbar.searchPlaceholder') ?? ''}
                 {...register('search')}
             />
             <button type="submit" className="govuk-button" data-module="govuk-button">

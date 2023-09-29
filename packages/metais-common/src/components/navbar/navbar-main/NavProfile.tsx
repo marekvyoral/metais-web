@@ -40,7 +40,7 @@ export const NavProfile: React.FC = () => {
                             user ? 'idsk-header-web__main--login-logoutbtn--active' : 'idsk-header-web__main--login-logoutbtn',
                         )}
                         to="#"
-                        title={t('navbar.logout')}
+                        title={t('navbar.logout') ?? ''}
                     >
                         {t('navbar.logout')}
                     </Link>
@@ -53,7 +53,7 @@ export const NavProfile: React.FC = () => {
                             user ? 'idsk-header-web__main--login-profilebtn--active' : 'idsk-header-web__main--login-profilebtn',
                         )}
                         to={RouteNames.USER_PROFILE}
-                        title={t('navbar.profile')}
+                        title={t('navbar.profile') ?? ''}
                     >
                         {t('navbar.profile')}
                     </Link>
