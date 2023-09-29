@@ -4,7 +4,7 @@ import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit'
 import { UseFormSetValue } from 'react-hook-form'
 
-import { Identity, useFindAll3Hook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Identity, useFindAll311Hook, useFindAll3Hook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
 
 export type SelectFilterIdentityOptionType = {
@@ -40,6 +40,7 @@ interface SelectUserIdentitiesProps {
 
 export const SelectUserIdentities = ({ filter, setValue, name, label }: SelectUserIdentitiesProps) => {
     const getIdentities = useFindAll3Hook()
+    const getIdentityByLogin = useFindAll311Hook()
     const [defaultValue, setDefaultValue] = useState<SelectFilterIdentityOptionType | undefined>(undefined)
 
     const [seed, setSeed] = useState(1)
@@ -67,12 +68,11 @@ export const SelectUserIdentities = ({ filter, setValue, name, label }: SelectUs
         if (!defaultValue && filter.createdBy) {
             // eslint-disable-next-line no-warning-comments
             // TODO: vyriesit ako potiahnut zaznam po refreshi ked som zvolil nieco vo filtri.
-            getIdentities(1, 150).then((response) => {
-                const foundIdentity = response.find((item) => item?.login === filter?.createdBy)
-                if (foundIdentity) setDefaultValue(mapToOption([foundIdentity])[0])
+            getIdentityByLogin({ login: filter?.createdBy }).then((response) => {
+                if (response) setDefaultValue(mapToOption([response as Identity])[0])
             })
         }
-    }, [defaultValue, filter.createdBy, getIdentities])
+    }, [defaultValue, filter.createdBy, getIdentityByLogin])
 
     useEffect(() => {
         // SelectLazyLoading component does not rerender on defaultValue change.
