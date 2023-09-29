@@ -963,6 +963,8 @@
             "secret": "Tajné",
             "public": "Verejné",
             "voteProcessing": "Spracovávam hlasovanie",
+            "voteDescription": "Predkladaný návrh",
+            "votesHandlingTitle": "Hlasovanie",
             "voteChoiseLabel": {
                 "cannotCast": "Hlasovať može iba prihlásený a oprávnený používateľ.",
                 "canCast": ""

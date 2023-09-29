@@ -6,7 +6,6 @@ import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
-import { QueryFeedback } from '@isdd/metais-common/index'
 
 import styles from './voteDetail.module.scss'
 import { AttachmentLinks, WebLinks, voteDetailColumns } from './voteDetailProps'
@@ -120,14 +119,24 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({ voteData, isUserLogg
             <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
             <VoteDetailItems tableData={detailItemsTableData} />
 
+            <div className={styles.spaceVertical} />
+
+            <TextHeading size="L">{t('votes.voteDetail.voteDescription')}</TextHeading>
+            <TextBody>{voteData?.description ?? ''}</TextBody>
+
+            <div className={styles.spaceVertical} />
+
+            <TextHeading size="L">{t('votes.voteDetail.votesHandlingTitle')}</TextHeading>
             <VotesHandling
                 voteData={voteData}
                 handleCastVote={handleCastVote}
                 handleVetoVote={handleVetoVote}
-                canCast={isUserLoggedIn}
-                canVeto={isUserLoggedIn}
+                canCast={(isUserLoggedIn && voteData?.canCast) ?? false}
+                canVeto={(isUserLoggedIn && voteData?.canCast && voteData?.veto) ?? false}
                 voteProcessing={votesProcessing}
             />
+
+            <div className={styles.spaceVertical} />
 
             <Tabs
                 tabList={tabList}
