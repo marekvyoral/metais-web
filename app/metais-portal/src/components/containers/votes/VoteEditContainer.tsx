@@ -2,7 +2,7 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
-import { IVoteEditView } from '@/components/views/votes/VoteEditView'
+import { IVoteEditView } from '@/components/views/standartization/votes/vodeDetail/VoteEditView'
 
 interface IVoteEditContainer {
     View: React.FC<IVoteEditView>

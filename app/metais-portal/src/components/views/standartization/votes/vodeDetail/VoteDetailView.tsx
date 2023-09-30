@@ -1,15 +1,14 @@
 import { BreadCrumbs, HomeIcon, Tab, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { ApiAttachment, ApiVote, ApiVoteResult, useGetContentHook } from '@isdd/metais-common/api'
+import { ApiVote, ApiVoteResult } from '@isdd/metais-common/api'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 
-import styles from './voteDetail.module.scss'
-import { AttachmentLinks, WebLinks, voteDetailColumns } from './voteDetailProps'
-import { VotesHandling, IDetailItemData, VoteDetailItems, votedTabContent } from './voteDetailAuxComponents'
-
+import { VotedTabContent } from '@/components/views/standartization/votes/vodeDetail/votedTabContent'
+import styles from '@/components/views/standartization/votes/vodeDetail/voteDetail.module.scss'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { VotesHandling } from '@/components/views/standartization/votes/vodeDetail/voteDetailComponents/VotesHandling'
+import { VoteDetailItems } from '@/components/views/standartization/votes/vodeDetail/voteDetailComponents/VoteDetailItems'
 
 export interface IVoteDetailView {
     voteData: ApiVote | undefined
@@ -49,10 +48,10 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
             return {
                 id: key?.id?.toString() ?? '',
                 title: getTabTitle(key?.value, key?.votedActorsCount),
-                content: votedTabContent(actorResultsList, voteDetailColumns(t), []),
+                content: <VotedTabContent tableData={actorResultsList} sort={undefined} />,
             }
         })
-    }, [selectedTab, t, voteResultData?.actorResults, voteResultData?.choiceResults])
+    }, [selectedTab, voteResultData?.actorResults, voteResultData?.choiceResults])
 
     const handleCastVote = async (voteId: number | undefined, choiceId: number | undefined, description: string | undefined) => {
         await castVote(voteId ?? 0, choiceId ?? 0, description ?? '')

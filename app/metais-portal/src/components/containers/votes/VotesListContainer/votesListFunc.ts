@@ -1,7 +1,7 @@
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { DateTime } from 'luxon'
 
-import { VoteStateEnum, VoteStateOptionEnum } from '@/components/views/votes/voteListProps'
+import { VoteStateEnum, VoteStateOptionEnum } from '@/components/views/standartization/votes/voteListProps'
 
 export interface IVotesParamsData {
     state: string | undefined

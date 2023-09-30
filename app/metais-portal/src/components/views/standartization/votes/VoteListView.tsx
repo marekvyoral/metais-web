@@ -8,7 +8,7 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
 import styles from './votelist.module.scss'
 
-import { voteListColumns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/votes/voteListProps'
+import { voteListColumns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/standartization/votes/voteListProps'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 export interface IVotesListFilterData extends IFilterParams, IFilter {

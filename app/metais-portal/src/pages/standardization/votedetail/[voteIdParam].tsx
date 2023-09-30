@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { VoteDetailContainer } from '@/components/containers/votes/VoteDetailContainer'
-import { IVoteDetailView, VoteDetailView } from '@/components/views/votes/VoteDetailView'
+import { IVoteDetailView, VoteDetailView } from '@/components/views/standartization/votes/vodeDetail/VoteDetailView'
 
 const VoteDetail: React.FC<IVoteDetailView> = () => {
     return (

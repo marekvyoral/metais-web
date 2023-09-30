@@ -13,11 +13,19 @@
     flex-direction: row;
 }
 
+.itemsTableWrapper {
+    width: 100%;
+    position: relative;
+}
+
 .itemsTable {
-    width: max-content;
+    position: relative;
+    //width: 100%;
+    border: 0px solid;
 }
 
 .itemsTableRow {
+    text-align: left;
     height: 50px;
 }
 
