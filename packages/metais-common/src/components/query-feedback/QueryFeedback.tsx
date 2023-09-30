@@ -36,14 +36,12 @@ export const QueryFeedback: React.FC<IQueryFeedbackProps> = ({ loading, error, c
                 {withChildren && children}
             </>
         )
-    } else if (loading) {
+    } else {
         return (
             <div className={classNames(styles.loadingIndicator, withChildren && styles.autoHeight)}>
-                <LoadingIndicator {...indicatorProps} />
-                {withChildren && children}
+                {loading && <LoadingIndicator {...indicatorProps} />}
+                {(withChildren || !loading) && children}
             </div>
         )
-    } else {
-        return <>{children}</>
     }
 }

@@ -73,6 +73,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                         {...rest}
                         aria-describedby={hint ? hintId : undefined}
                         disabled={disabled}
+                        required={required}
                     />
                     {correct && <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} />}
                 </div>

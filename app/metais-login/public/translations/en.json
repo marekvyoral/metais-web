@@ -1,0 +1,156 @@
+{
+    "navMenu": {
+        "publicAuthorities": "Public authorities",
+        "egovComponents": "E-gov Components",
+        "standardization": "Standardization",
+        "dataObjects": "Data objects",
+        "monitoring": "Reports and monitoring",
+        "guides": "Procedures and instructions",
+        "hide": "Hide",
+        "show": "Show",
+        "innerNav": "Inner navigation",
+        "mainNav": "Main navigation",
+        "reports": "List of reports",
+
+        "KRITProgramsProjects": "KRIT, Programs, Projects",
+        "referenceIdentifiers": "Reference identifiers",
+
+        "lists": {
+            "processorsOfITDevelopmentConcepts": "Processors of KRIT",
+            "subordinates": "Subordinates",
+            "goals": "Objectives, principles and KRIT",
+            "programs": "Programs",
+            "projects": "Projects",
+            "process": "Process",
+            "endServices": "End services",
+            "applicationServices": "Application services",
+            "isvs": "ISVS",
+            "infrastructures": "Infrastructure services",
+            "authorities": "Public authorities",
+            "otherComponents": "Other components",
+            "standards": "Standards of ITVS",
+            "procedures": "Special procedures",
+            "commission": "ITVS Standardization Commission",
+            "groups": "Working groups of the commission",
+            "concept": "Concept creation",
+            "concepts": "Concepts",
+            "votes": "Votes",
+            "meetings": "Meetings",
+            "registers": "Reference registers",
+            "codelists": "Codelists",
+            "publicCodelists": "Public codelists",
+            "centralModel": "Central data model",
+            "licenses": "Licenses",
+            "prud": "Register of data permissions and responsibilities",
+            "sdg": "Uniform digital gate",
+            "overviews": "Overviews",
+            "monitoringEnd": "Monitored parameters of KS",
+            "monitoringApp": "Monitored parameters of AS",
+            "monitoringSet": "Set of monitoring parameters",
+            "monitoringImport": "Import of monitored parameters",
+
+            "evidenceObjects": "Evidence objects",
+            "attributesEvidenceObjects": "Attributes of evidence objects",
+            "servers": "Servers",
+            "virtualMachines": "Virtual machines",
+            "operationPlace": "Operation place",
+            "notInOVM": "Operators, which are not in OVM",
+
+            "princip": "Principles",
+            "ciel": "Goals",
+            "aktivita": "Activity",
+            "kris": "Concepts of IS development",
+            "registersList": "List of reference registers",
+            "registersRequestsList": "List of requests to add a reference register",
+            "codelistsRequestsList": "List of requests to add a codelist",
+            "referenceIdentifiersList": "List of reference identifiers",
+            "referenceIdentifiersRequestsList": "List of requests to add a reference identifier",
+            "personalProcedures": "Personal procedures",
+            "educationalCourses": "Educational courses",
+            "publicAuthorityHierarchy": "Hierarchy of public authorities",
+            "webResidence": "Web residence"
+        }
+    },
+    "navbar": {
+        "skip": "Skip to main content",
+        "official": "Official Website",
+        "publicAdministration": "Public Administration",
+        "sk": "SK",
+        "e-gov": "e-gov",
+        "domain": "The gov.sk domain is official",
+        "officialSite": "This is the official website of the public authority of the Slovak Republic. Official websites primarily use the gov.sk domain.",
+        "link": "Links to individual websites of public authorities can be found at this link",
+        "security": "This page is secure",
+        "safety": "Be cautious and always ensure that you share information only through a secure website of the public administration of the Slovak Republic. A secure page always starts with https:// before the domain name of the website.",
+        "menu": "Menu",
+        "search": "Search",
+        "searchPlaceholder": "Enter search term",
+        "eurofonds": "Eurofunds",
+        "development": "Regional Development",
+        "info": "Digitization",
+        "invest": "Investments",
+        "inovations": "Innovations",
+        "newItem": "+ New Item",
+        "registration": "Registration",
+        "login": "Login",
+        "logout": "Logout",
+        "profile": "Profile",
+        "profileImage": "Profile image",
+        "showInformationAboutSite": "Show information about site",
+        "hideInformationAboutSite": "Hide information about site",
+        "linksToWebs": "links to websites of public authorities",
+        "linkToHomePage": "Link to home page",
+        "ministryName": "Ministry of Investments, Regional Development and Informatization of the Slovak Republic",
+        "notifications": "Notifications",
+        "factChecker": "Fact-checker",
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu"
+    },
+    "languageSelector": {
+        "open": "Open language menu",
+        "close": "Close language menu"
+    },
+    "language": {
+        "sk": "Slovenčina",
+        "en": "English"
+    },
+    "titles": {
+        "login": "Login"
+    },
+    "breadcrumbs": {
+        "home": "Home",
+        "prelogin": "Login",
+        "login": "Name and password",
+        "loginProblems": "Problems with login",
+        "forgottenPassword": "Reset password"
+    },
+    "input": {
+        "requiredField": "(required)"
+    },
+    "login": {
+        "heading": "Login",
+        "name": "Username",
+        "password": "Login password",
+        "forgottenPassword": "Did you forget your password?",
+        "loginProblems": "Problems with login?",
+        "nameError": "You entered an incorrect username",
+        "passwordError": "Password you entered is incorrect. Please try again"
+    },
+    "prelogin": {
+        "heading": "Choose a login method",
+        "nameAndPassword": "Name and password",
+        "nameAndPasswordDescription": "Lorem ipsum dolor sit amet consectetur. Duis integer sit lectus consequat .",
+        "eID": "eID",
+        "eIDDescription": "Lorem ipsum dolor sit amet consectetur. Duis integer sit lectus consequat ."
+    },
+    "loginProblems": {
+        "heading": "Do you have problems logging into the system?",
+        "description": "Please contact administrator by email on"
+    },
+    "forgottenPassword": {
+        "heading": "Did you forget your password?",
+        "description": "Enter your email address to which you will receive a link to create a new password",
+        "button": "Reset password",
+        "email": "Email address"
+    }
+}

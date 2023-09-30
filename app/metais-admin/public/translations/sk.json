@@ -613,7 +613,9 @@
             "cancel": "Zrušiť",
             "createNew": "Vytvoriť novú povinnú osobu",
             "icoRequired": "IČO je povinné",
-            "icoRegex": "IČO je v nesprávnom tvare. Správny tvar je '00000000' a '000000000000'"
+            "icoExist": "Povinná osoba s daným IČO-m už v systéme existuje",
+            "icoRegex": "IČO je v nesprávnom tvare. Správny tvar je '00000000' a '000000000000'",
+            "loading": "Vyhľadávam IČO"
         },
         "edit": {
             "updateExistingOrganization": "Úprava povinnej osoby"
@@ -649,7 +651,8 @@
                 "name": "Meno",
                 "lastName": "Priezvisko",
                 "titleAfterName": "Titul za menom"
-            }
+            },
+            "savingPO": "Ukladám povinnú osobu"
         },
         "assigned": {
             "heading": "Priradenie povinnej osoby nadradenej povinnej osobe",

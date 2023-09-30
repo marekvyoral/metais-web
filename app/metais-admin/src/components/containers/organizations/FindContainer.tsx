@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { ConfigurationItemSetUi, useReadCiList1 } from '@isdd/metais-common/api'
-import { CsruOrganization, useGetOrganizationFromCsru } from '@isdd/metais-common/api/generated/iam-swagger'
+import { ConfigurationItemSetUi, useReadCiList1Hook } from '@isdd/metais-common/api'
+import { CsruOrganization, useGetOrganizationFromCsruHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 export interface iFindView {
@@ -8,7 +8,10 @@ export interface iFindView {
         foundCiType?: ConfigurationItemSetUi
         csruData?: CsruOrganization
     }
-    setIcoToSearch: React.Dispatch<React.SetStateAction<string | undefined>>
+    onSearchIco: (ico: string) => void
+    isLoading: boolean
+    isSame: boolean
+    error?: string
 }
 
 interface ICreateEntity {
@@ -16,47 +19,67 @@ interface ICreateEntity {
 }
 
 export const FindContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
-    const [ico, setIco] = useState<string>()
+    const [CSRUData, setCSRUData] = useState<CsruOrganization>()
+    const [data, setData] = useState<ConfigurationItemSetUi>()
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isSame, setSame] = useState<boolean>(false)
+    const [error, setError] = useState<string>()
+    const hookFromCsru = useGetOrganizationFromCsruHook()
     const { currentPreferences } = useUserPreferences()
+    const readCiList1Hook = useReadCiList1Hook()
 
     const metaAttributes = currentPreferences.showInvalidatedItems
         ? { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER', 'INVALIDATED'] }
         : { state: ['DRAFT', 'AWAITING_APPROVAL', 'APPROVED_BY_OWNER'] }
 
-    const defaultRequestApi = {
-        filter: {
-            type: ['PO'],
-            attributes: [
-                {
-                    name: 'EA_Profil_PO_ico',
-                    filterValue: [
+    const onSearchIco = async (ico: string) => {
+        try {
+            setSame(false)
+            setError(undefined)
+            setIsLoading(true)
+
+            const dataRes = await readCiList1Hook({
+                filter: {
+                    type: ['PO'],
+                    attributes: [
                         {
-                            value: ico,
-                            equality: 'EQUAL',
+                            name: 'EA_Profil_PO_ico',
+                            filterValue: [
+                                {
+                                    value: ico,
+                                    equality: 'EQUAL',
+                                },
+                            ],
                         },
                     ],
+                    metaAttributes,
                 },
-            ],
-            metaAttributes,
-        },
+            })
+            setData(dataRes)
+            if (dataRes?.configurationItemSet?.length === 0) {
+                const CSRUres = await hookFromCsru(ico)
+                setCSRUData(CSRUres)
+            } else {
+                setSame(true)
+            }
+        } catch (err) {
+            setError((err as Error).message)
+        } finally {
+            setIsLoading(false)
+        }
     }
-
-    const { data } = useReadCiList1(
-        {
-            ...defaultRequestApi,
-        },
-        { query: { enabled: ico !== undefined, retry: false } },
-    )
-
-    const { data: CSRUData } = useGetOrganizationFromCsru(ico ?? '', { query: { enabled: ico !== undefined } })
-
     return (
-        <View
-            data={{
-                foundCiType: data,
-                csruData: CSRUData,
-            }}
-            setIcoToSearch={setIco}
-        />
+        <>
+            <View
+                data={{
+                    foundCiType: data,
+                    csruData: CSRUData,
+                }}
+                onSearchIco={onSearchIco}
+                isLoading={isLoading}
+                error={error}
+                isSame={isSame}
+            />
+        </>
     )
 }
