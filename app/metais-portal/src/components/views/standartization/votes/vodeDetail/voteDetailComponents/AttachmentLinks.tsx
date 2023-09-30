@@ -3,7 +3,6 @@ import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/downloa
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
 
 import styles from '@/components/views/standartization/votes/vodeDetail/voteDetail.module.scss'
 
@@ -18,21 +17,15 @@ export const AttachmentLinks: React.FC<IAttachmentLink> = ({ attachments }) => {
     const downloadAttachmentFile = useGetContentHook()
     const downloadAttachment = async (attachment: ApiAttachment) => {
         try {
+            setFileError(false)
+            setIsLoading(true)
             const blobData = await downloadAttachmentFile(attachment.attachmentId ?? '')
             downloadBlobAsFile(new Blob([blobData]), attachment.attachmentName ?? '')
         } catch {
             setFileError(true)
         } finally {
-            // setFileLoading(false)
-            // console.log('Neloadujem')
-            // isFileLoading.current = false
+            setIsLoading(false)
         }
-    }
-
-    const onAttachmentClickHandler = (attachment: ApiAttachment) => {
-        downloadAttachment(attachment)
-        console.log('loadujem')
-        setIsLoading(true)
     }
 
     return (
@@ -40,13 +33,15 @@ export const AttachmentLinks: React.FC<IAttachmentLink> = ({ attachments }) => {
             loading={isLoading}
             error={isFileError}
             withChildren
-            indicatorProps={{ layer: 'parent', transparentMask: true, label: t('votes.voteDetail.downloadingFile') }}
+            indicatorProps={{ layer: 'dialog', transparentMask: true, label: t('votes.voteDetail.downloadingFile') }}
         >
             {attachments?.map((attachment) => {
                 return (
-                    <Link key={attachment.id} to="#" onClick={() => onAttachmentClickHandler(attachment)} className={styles.linkAlign}>
-                        {attachment.attachmentName}
-                    </Link>
+                    <div key={attachment.id} className={styles.linkAlign}>
+                        <button onClick={() => downloadAttachment(attachment)} className={styles.link}>
+                            {attachment.attachmentName}
+                        </button>
+                    </div>
                 )
             })}
         </QueryFeedback>

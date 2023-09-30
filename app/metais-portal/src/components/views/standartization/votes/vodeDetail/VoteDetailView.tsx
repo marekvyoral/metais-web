@@ -21,6 +21,10 @@ export interface IVoteDetailView {
     vetoVote: (voteIdentifier: number, description: string) => Promise<void>
 }
 
+const Spacer: React.FC = () => {
+    return <div className={styles.spaceVertical} />
+}
+
 export const VoteDetailView: React.FC<IVoteDetailView> = ({
     voteData,
     isUserLoggedIn,
@@ -75,12 +79,12 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
                 <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
                 <VoteDetailItems voteData={voteData} />
 
-                <div className={styles.spaceVertical} />
+                <Spacer />
 
                 <TextHeading size="L">{t('votes.voteDetail.voteDescription')}</TextHeading>
                 <TextBody>{voteData?.description ?? ''}</TextBody>
 
-                <div className={styles.spaceVertical} />
+                <Spacer />
 
                 <TextHeading size="L">{t('votes.voteDetail.votesHandlingTitle')}</TextHeading>
                 <VotesHandling
@@ -92,7 +96,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
                     voteProcessing={votesProcessing}
                 />
 
-                <div className={styles.spaceVertical} />
+                <Spacer />
 
                 <Tabs
                     tabList={tabList}

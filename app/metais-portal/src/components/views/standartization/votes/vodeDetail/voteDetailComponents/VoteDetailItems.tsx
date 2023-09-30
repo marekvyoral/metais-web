@@ -18,56 +18,62 @@ export interface IDetailItemsData {
 export const VoteDetailItems: React.FC<IDetailItemsData> = ({ voteData }) => {
     const { t } = useTranslation()
 
-    const tableData: IDetailItemData[] = [
-        {
-            itemTitleContent: t('votes.voteDetail.date'),
-            itemValueContent: (
-                <TextBody size="L" className={styles.itemsTableCellContent}>
-                    {t('date', { date: voteData?.effectiveFrom }) + ' - ' + t('date', { date: voteData?.effectiveTo })}
-                </TextBody>
-            ),
-            hidden: voteData?.effectiveFrom === undefined || voteData?.effectiveTo === undefined,
-        },
-        {
-            itemTitleContent: t('votes.voteDetail.voteType'),
-            itemValueContent: (
-                <TextBody size="L" className={styles.itemsTableCellContent}>
-                    {voteData?.secret ? t('votes.voteDetail.secret') : t('votes.voteDetail.public')}
-                </TextBody>
-            ),
-            hidden: voteData?.secret === undefined,
-        },
-        {
-            itemTitleContent: t('votes.voteDetail.relatedVoteLinks'),
-            itemValueContent: <WebLinks links={voteData?.links} />,
-            hidden: voteData?.links === undefined || voteData?.links?.length === 0,
-        },
-        {
-            itemTitleContent: t('votes.voteDetail.relatedDocuments'),
-            itemValueContent: <AttachmentLinks attachments={voteData?.attachments} />,
-            hidden: voteData?.attachments === undefined || voteData?.attachments?.length === 0,
-        },
-    ]
-
-    const tableDataToShow = tableData.filter((data) => data.hidden === false)
-
-    console.log('som sa refreshol....')
     return (
         <div className={styles.itemsTableWrapper}>
             <table className={styles.itemsTable}>
                 <tbody>
-                    {tableDataToShow.map((detailItemData, index) => {
-                        return (
-                            <tr key={'itemData' + index} className={styles.itemsTableRow}>
-                                <td>
-                                    <TextBody size="L" className={styles.itemTitle}>
-                                        {detailItemData.itemTitleContent}:
-                                    </TextBody>
-                                </td>
-                                <td>{detailItemData.itemValueContent}</td>
-                            </tr>
-                        )
-                    })}
+                    {voteData?.effectiveFrom && voteData?.effectiveTo && (
+                        <tr className={styles.itemsTableRow}>
+                            <td>
+                                <TextBody size="L" className={styles.itemTitle}>
+                                    {t('votes.voteDetail.date')}:
+                                </TextBody>
+                            </td>
+                            <td>
+                                <TextBody size="L" className={styles.itemsTableCellContent}>
+                                    {t('date', { date: voteData?.effectiveFrom }) + ' - ' + t('date', { date: voteData?.effectiveTo })}
+                                </TextBody>
+                            </td>
+                        </tr>
+                    )}
+                    {voteData?.secret !== undefined && (
+                        <tr className={styles.itemsTableRow}>
+                            <td>
+                                <TextBody size="L" className={styles.itemTitle}>
+                                    {t('votes.voteDetail.voteType')}:
+                                </TextBody>
+                            </td>
+                            <td>
+                                <TextBody size="L" className={styles.itemsTableCellContent}>
+                                    {voteData?.secret ? t('votes.voteDetail.secret') : t('votes.voteDetail.public')}
+                                </TextBody>
+                            </td>
+                        </tr>
+                    )}
+                    {voteData?.links && voteData?.links.length > 0 && (
+                        <tr className={styles.itemsTableRow}>
+                            <td>
+                                <TextBody size="L" className={styles.itemTitle}>
+                                    {t('votes.voteDetail.relatedVoteLinks')}:
+                                </TextBody>
+                            </td>
+                            <td>
+                                <WebLinks links={voteData?.links} />
+                            </td>
+                        </tr>
+                    )}
+                    {voteData?.attachments && voteData?.attachments?.length > 0 && (
+                        <tr className={styles.itemsTableRow}>
+                            <td>
+                                <TextBody size="L" className={styles.itemTitle}>
+                                    {t('votes.voteDetail.relatedDocuments')}:
+                                </TextBody>
+                            </td>
+                            <td>
+                                <AttachmentLinks attachments={voteData?.attachments} />
+                            </td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
         </div>
