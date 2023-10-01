@@ -4,7 +4,7 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import styles from '@/components/views/standartization/votes/vodeDetail/voteDetail.module.scss'
+import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
 
 interface IAttachmentLink {
     attachments: ApiAttachment[] | undefined

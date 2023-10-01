@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
-import { IVoteDetailView } from '@/components/views/standartization/votes/vodeDetail/VoteDetailView'
+import { IVoteDetailView } from '@/components/views/standartization/votes/voteDetail/VoteDetailView'
 
 interface IVoteDetailContainer {
     View: React.FC<IVoteDetailView>

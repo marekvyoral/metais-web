@@ -966,6 +966,10 @@
             "voteProcessing": "Spracovávam hlasovanie",
             "voteDescription": "Predkladaný návrh",
             "votesHandlingTitle": "Hlasovanie",
+            "voteActorsTitle": "Účastníci hlasovania",
+            "changeDate": "Dátum Zmeny",
+            "changeInfo": "Informácie o zmenách hlasujúcich počas priebehu hlasovania",
+            "changeDescription": "Popis Zmeny",
             "voteChoiseLabel": {
                 "cannotCast": "Hlasovať može iba prihlásený a oprávnený používateľ.",
                 "canCast": ""

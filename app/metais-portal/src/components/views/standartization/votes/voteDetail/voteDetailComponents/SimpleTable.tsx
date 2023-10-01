@@ -1,19 +1,18 @@
 import { Table } from '@isdd/idsk-ui-kit/index'
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
-import { useTranslation } from 'react-i18next'
-import { ApiVoteActorResult } from '@isdd/metais-common/api'
+import { ColumnDef } from '@tanstack/react-table'
 
-import { voteDetailColumns } from './voteDetailColumns'
-
-interface IVotedTabContent<T> {
+type IVotedTabContent<T> = {
     tableData: Array<T>
+    tableColumns: ColumnDef<T>[]
     sort: ColumnSort[] | undefined
 }
 
-export const VotedTabContent: React.FC<IVotedTabContent<ApiVoteActorResult>> = ({ tableData, sort }) => {
-    const { t } = useTranslation()
-    const tableColumns = voteDetailColumns(t)
-
+export const SimpleTable: <T>({ tableData, sort, tableColumns }: IVotedTabContent<T>) => React.ReactElement<IVotedTabContent<T>> = ({
+    tableData,
+    sort,
+    tableColumns,
+}) => {
     return (
         <>
             <Table

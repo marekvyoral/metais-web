@@ -2,9 +2,9 @@ import { TextBody } from '@isdd/idsk-ui-kit/index'
 import { ApiVote } from '@isdd/metais-common/api'
 import { useTranslation } from 'react-i18next'
 
-import { WebLinks } from '@/components/views/standartization/votes/vodeDetail/voteDetailComponents/WebLinks'
-import { AttachmentLinks } from '@/components/views/standartization/votes/vodeDetail/voteDetailComponents/AttachmentLinks'
-import styles from '@/components/views/standartization/votes/vodeDetail/voteDetail.module.scss'
+import { WebLinks } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/WebLinks'
+import { AttachmentLinks } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/AttachmentLinks'
+import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
 
 export interface IDetailItemData {
     itemTitleContent: string

@@ -1,4 +1,4 @@
-import { ApiVoteActorResult } from '@isdd/metais-common/api'
+import { ApiVoteActor, ApiVoteActorResult } from '@isdd/metais-common/api'
 import { ColumnDef } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
 
@@ -8,7 +8,7 @@ export enum VotesListColumnsEnum {
     role = 'role',
 }
 
-export const voteDetailColumns = (t: TFunction): Array<ColumnDef<ApiVoteActorResult>> => {
+export const voteActorsColumns = (t: TFunction): Array<ColumnDef<ApiVoteActor>> => {
     const columns: Array<ColumnDef<ApiVoteActorResult>> = [
         {
             header: t('votes.voteDetail.table.name'),
