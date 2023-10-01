@@ -4,6 +4,8 @@ import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
+import { Collapsable } from './voteDetailComponents/collapsable/collapsable'
+
 import { VotedTabContent } from '@/components/views/standartization/votes/vodeDetail/votedTabContent'
 import styles from '@/components/views/standartization/votes/vodeDetail/voteDetail.module.scss'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -86,7 +88,23 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
 
                 <Spacer />
 
+                <Collapsable
+                    collapseSign={<div className={styles.collapsableSign}>-</div>}
+                    expandSign={<div className={styles.collapsableSign}>+</div>}
+                    heading={<div className={styles.textFormat}>Nejaky Heading</div>}
+                >
+                    <VotesHandling
+                        voteData={voteData}
+                        handleCastVote={handleCastVote}
+                        handleVetoVote={handleVetoVote}
+                        canCast={(isUserLoggedIn && canCastVote) ?? false}
+                        canVeto={(isUserLoggedIn && canCastVote && voteData?.veto) ?? false}
+                        voteProcessing={votesProcessing}
+                    />
+                </Collapsable>
+
                 <TextHeading size="L">{t('votes.voteDetail.votesHandlingTitle')}</TextHeading>
+
                 <VotesHandling
                     voteData={voteData}
                     handleCastVote={handleCastVote}
