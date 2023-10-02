@@ -1,0 +1,27 @@
+@import '../../../utils.scss';
+
+.buttonGroup {
+    display: flex;
+    align-items: center;
+    gap: govuk-spacing(2);
+}
+
+.attachementCardWrapper {
+    display: flex;
+    gap: govuk-spacing(4);
+    align-items: center;
+    .inputs {
+        flex: 10;
+    }
+    .attachementsCard {
+        display: flex;
+        align-items: center;
+        gap: govuk-spacing(4);
+        .attachmentDescription {
+            flex: 2 1 auto;
+        }
+        .attachmentType {
+            flex: 1 1 auto;
+        }
+    }
+}

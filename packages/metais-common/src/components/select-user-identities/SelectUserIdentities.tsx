@@ -66,8 +66,8 @@ export const SelectUserIdentities = ({ filter, setValue, name, label }: SelectUs
 
     useEffect(() => {
         if (!defaultValue && filter.createdBy) {
-            // eslint-disable-next-line no-warning-comments
-            // TODO: vyriesit ako potiahnut zaznam po refreshi ked som zvolil nieco vo filtri.
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
             getIdentityByLogin({ login: filter?.createdBy }).then((response) => {
                 if (response) setDefaultValue(mapToOption([response as Identity])[0])
             })
