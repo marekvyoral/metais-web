@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { VoteEditView } from '@/components/views/standartization/votes/voteEdit/VoteEditView'
-import { VoteEditContainer } from '@/components/containers/votes/VoteEditContainer'
+import { VoteEditContainer } from '@/components/containers/standardization/votes/VoteEditContainer'
 
 const VoteDetail: React.FC = () => {
     return <VoteEditContainer View={(props) => <VoteEditView voteId={props.voteId} />} />

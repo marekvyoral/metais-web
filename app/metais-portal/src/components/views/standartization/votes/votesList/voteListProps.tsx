@@ -1,11 +1,13 @@
-import { IOption, TextLink } from '@isdd/idsk-ui-kit/index'
+import { IOption, InfoIcon, TextLink } from '@isdd/idsk-ui-kit/index'
 import { ApiVotePreview } from '@isdd/metais-common/api'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 import { VoteStateOptionEnum, VotesListColumnsEnum } from '../voteProps'
 
+import styles from './votelist.module.scss'
 export enum VotesListShowEnum {
     everyone = 'everyone',
     onlyMy = 'onlyMy',
@@ -14,7 +16,21 @@ export enum VotesListShowEnum {
 export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<ColumnDef<ApiVotePreview>> => {
     const columnsAll: Array<ColumnDef<ApiVotePreview>> = [
         {
-            header: t('votes.votesList.table.name'),
+            header: () => {
+                return (
+                    <>
+                        {!isUserLogged && (
+                            <Tooltip
+                                tooltipContent={(open, close) => <img onMouseOver={open} onMouseOut={close} src={InfoIcon} />}
+                                descriptionElement={t('votes.votesList.tooltipText')}
+                                position={'top left'}
+                                arrow={false}
+                            />
+                        )}
+                        <span className={styles.tooltipIcon}>{t('votes.votesList.table.name')}</span>
+                    </>
+                )
+            },
             accessorFn: (row) => row?.name,
             enableSorting: true,
             id: VotesListColumnsEnum.name,

@@ -6,6 +6,7 @@ import { ActionsOverTable } from '@isdd/metais-common/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 import { getVoteStateExplanation } from '../voteProps'
 
@@ -102,6 +103,7 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
                     <Button type="submit" label={t('votes.voteDetail.newVote')} onClick={() => newVoteHandler()} />
                     <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
                 </div>
+
                 <Table
                     data={votesList}
                     columns={voteListColumns(t, isUserLogged)}

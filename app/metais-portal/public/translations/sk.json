@@ -939,6 +939,7 @@
         "votesList": {
             "title": "Zoznam Hlasovaní",
             "votesListSubtitle": "nejake blabla kecy",
+            "tooltipText": "Pre neprihláseného sa nezobrazia stĺpce Právo hlasovať a Hlasoval za subjekt.",
             "table": {
                 "effectiveFrom": "Dátum spustenia",
                 "effectiveTo": "Dátum ukončenia",
