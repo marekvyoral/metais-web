@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { WebLinks } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/WebLinks'
 import { AttachmentLinks } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/AttachmentLinks'
 import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
+import { getVoteStateExplanation } from '@/components/views/standartization/votes/voteProps'
 
 export interface IDetailItemData {
     itemTitleContent: string
@@ -18,20 +19,28 @@ export interface IDetailItemsData {
 export const VoteDetailItems: React.FC<IDetailItemsData> = ({ voteData }) => {
     const { t } = useTranslation()
 
+    const getVoteStateExplanationForDetail = (): string => {
+        return getVoteStateExplanation(voteData?.voteState, voteData?.effectiveFrom ?? '', voteData?.effectiveTo ?? '', t)
+    }
+
     return (
         <div className={styles.itemsTableWrapper}>
             <table className={styles.itemsTable}>
                 <tbody>
-                    {voteData?.veto && (
+                    {
                         <tr className={styles.itemsTableRow}>
                             <td>
                                 <TextBody size="L" className={styles.itemTitle}>
-                                    {t('votes.voteDetail.vetoed')}
+                                    {t('votes.voteDetail.voteDetailExplanationPrefix')}:
                                 </TextBody>
                             </td>
-                            <td />
+                            <td>
+                                <TextBody size="L" className={styles.itemTitle}>
+                                    {getVoteStateExplanationForDetail()}
+                                </TextBody>
+                            </td>
                         </tr>
-                    )}
+                    }
                     {voteData?.effectiveFrom && voteData?.effectiveTo && (
                         <tr className={styles.itemsTableRow}>
                             <td>

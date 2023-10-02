@@ -48,18 +48,9 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     }
     const firstTabToSelect = voteResultData?.choiceResults?.[0]?.id?.toString() ?? ''
     const [selectedTab, setSelectedTab] = useState<string>(firstTabToSelect)
-
-    const actorResultsColumns = useMemo(() => {
-        return voteActorResultsColumns(t)
-    }, [t])
-
-    const actorColumns = useMemo(() => {
-        return voteActorsColumns(t)
-    }, [t])
-
-    const actorPendingChangesColumns = useMemo(() => {
-        return voteActorPendingChangesColumns(t)
-    }, [t])
+    const actorResultsColumns = voteActorResultsColumns(t)
+    const actorColumns = voteActorsColumns(t)
+    const actorPendingChangesColumns = voteActorPendingChangesColumns(t)
 
     const tabList: Tab[] = useMemo((): Tab[] => {
         const choiceResultsList = voteResultData?.choiceResults ?? []
@@ -86,7 +77,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     const changeDescription = (name: string, changeAction: string): string => {
         switch (changeAction) {
             case 'ADD':
-                return `${name} bol pridaný do hlasovania`
+                return `${name} ${t('votes.type.changeAction.added')}`
             default:
                 return ''
         }

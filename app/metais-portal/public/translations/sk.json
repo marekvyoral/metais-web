@@ -982,6 +982,7 @@
             "voteVetoChoiseLabel": "Vetovať hlasovanie",
             "description": "Poznámka",
             "voteConclusion": "Záver hlasovania",
+            "voteDetailExplanationPrefix": "Stav hlasovania ",
             "vetoed": "Návrh bol vetovaný",
             "vetoedBy": "Vetoval",
             "vetoedDescription": "Dôvod",
@@ -1005,6 +1006,9 @@
                 "canceled" : "Zrušené", 
                 "summarized": "Vyhodnotené",
                 "vetoed": "Vetované"
+            },
+            "changeAction": {
+                "added": "bol pridaný do hlasovania"
             }
         }
     }

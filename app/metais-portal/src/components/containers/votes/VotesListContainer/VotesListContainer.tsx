@@ -7,7 +7,8 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { getVoteParamsData } from './votesListFunc'
 
 import { IVotesListFilterData, IVotesListView } from '@/components/views/standartization/votes/votesList/VoteListView'
-import { VotesListColumnsEnum, VotesListShowEnum } from '@/components/views/standartization/votes/votesList/voteListProps'
+import { VotesListShowEnum } from '@/components/views/standartization/votes/votesList/voteListProps'
+import { VotesListColumnsEnum } from '@/components/views/standartization/votes/voteProps'
 
 interface IVotesListContainer {
     View: React.FC<IVotesListView>

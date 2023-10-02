@@ -6,17 +6,12 @@ import { ActionsOverTable } from '@isdd/metais-common/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { TFunction } from 'i18next'
+
+import { getVoteStateExplanation } from '../voteProps'
 
 import styles from './votelist.module.scss'
 
-import {
-    VoteStateEnum,
-    VoteStateOptionEnum,
-    voteListColumns,
-    voteStateOptions,
-    votesTypeToShowOptions,
-} from '@/components/views/standartization/votes/votesList/voteListProps'
+import { voteListColumns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/standartization/votes/votesList/voteListProps'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 export interface IVotesListFilterData extends IFilterParams, IFilter {
@@ -32,37 +27,6 @@ export interface IVotesListView {
     defaultFilterValues: IVotesListFilterData
     filter: IFilter
     handleFilterChange: (filter: IFilter) => void
-}
-
-const getVoteStateExplanation = (originalState: string | undefined, effectiveFrom: string, effectiveTo: string, t: TFunction): string => {
-    const dateNow = new Date(Date.now())
-    const dateFrom = new Date(effectiveFrom)
-    const dateTo = new Date(effectiveTo)
-
-    const dateFromDiff = dateFrom.getTime() - dateNow.getTime()
-    const dateToDiff = dateTo.getTime() - dateNow.getTime()
-
-    switch (originalState) {
-        case VoteStateEnum.CREATED:
-            if (dateFromDiff > 0) {
-                return t('votes.type.state.' + VoteStateOptionEnum.planned)
-            }
-            if (dateToDiff < 0) {
-                return t('votes.type.state.' + VoteStateOptionEnum.ended)
-            }
-            if (dateFromDiff < 0 && dateToDiff > 0) {
-                return t('votes.type.state.' + VoteStateOptionEnum.upcomming)
-            }
-            return 'nejde to'
-        case VoteStateEnum.CANCELED:
-            return t('votes.type.state.' + VoteStateOptionEnum.canceled)
-        case VoteStateEnum.SUMMARIZED:
-            return t('votes.type.state.' + VoteStateOptionEnum.summarized)
-        case VoteStateEnum.VETOED:
-            return t('votes.type.state.' + VoteStateOptionEnum.vetoed)
-        default:
-            return ''
-    }
 }
 
 export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesListData, filter, defaultFilterValues, handleFilterChange }) => {

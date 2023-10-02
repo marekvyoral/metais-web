@@ -4,34 +4,11 @@ import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
 
+import { VoteStateOptionEnum, VotesListColumnsEnum } from '../voteProps'
+
 export enum VotesListShowEnum {
     everyone = 'everyone',
     onlyMy = 'onlyMy',
-}
-
-export enum VoteStateEnum {
-    CREATED = 'CREATED',
-    CANCELED = 'CANCELED',
-    SUMMARIZED = 'SUMMARIZED',
-    VETOED = 'VETOED',
-}
-
-export enum VoteStateOptionEnum {
-    planned = 'planned',
-    ended = 'ended',
-    upcomming = 'upcomming',
-    canceled = 'canceled',
-    summarized = 'summarized',
-    vetoed = 'vetoed',
-}
-
-export enum VotesListColumnsEnum {
-    name = 'name',
-    effectiveFrom = 'effectiveFrom',
-    effectiveTo = 'effectiveTo',
-    voteState = 'voteState',
-    canCast = 'canCast',
-    hasCast = 'hasCast',
 }
 
 export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<ColumnDef<ApiVotePreview>> => {
