@@ -963,6 +963,7 @@
             "secret": "Tajné",
             "public": "Verejné",
             "downloadingFile": "Stahujem súbor",
+            "submitVote": "Hlasovať",
             "voteProcessing": "Spracovávam hlasovanie",
             "voteDescription": "Predkladaný návrh",
             "votesHandlingTitle": "Hlasovanie",
@@ -975,6 +976,7 @@
                 "canCast": ""
         },
             "voteVetoChoiseLabel": "Vetovať hlasovanie",
+            "description": "Poznámka",
             "table":{
                 "name": "Meno",
                 "organization": "Organizácia",

@@ -1,8 +1,12 @@
-import { RadioButton, RadioGroupWithLabel } from '@isdd/idsk-ui-kit/index'
+import { Button, RadioButton, RadioGroupWithLabel, TextArea } from '@isdd/idsk-ui-kit/index'
 import { ApiVote } from '@isdd/metais-common/api'
 import { QueryFeedback } from '@isdd/metais-common/index'
+import classNames from 'classnames'
 import { useCallback, useMemo, useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+
+import { Spacer } from './Spacer'
 
 interface ICastVote {
     voteProcessing: boolean
@@ -19,32 +23,16 @@ interface IChoise {
     description: string
     isVeto: boolean
     disabled: boolean
-    handleOnChange: () => void
 }
 
-export const VotesHandling: React.FC<ICastVote> = ({ voteData, handleCastVote, handleVetoVote, canCast, canVeto, voteProcessing }) => {
+export const VotesCastingHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, handleVetoVote, canCast, canVeto, voteProcessing }) => {
     const { t } = useTranslation()
     const [votesProcessingError, setVotesProcessingError] = useState<boolean>(false)
-    const handleOnChange = useCallback(
-        async (voteId: number | undefined, choiceId: number | undefined, description: string | undefined, isVeto: boolean) => {
-            try {
-                setVotesProcessingError(false)
-                if (isVeto) {
-                    await handleVetoVote(voteId, description)
-                    return
-                }
-                await handleCastVote(voteId, choiceId, description)
-            } catch {
-                setVotesProcessingError(true)
-            }
-        },
-        [handleCastVote, handleVetoVote],
-    )
-    const vetoId = useMemo((): number => {
-        return 99999 + Math.random() * 1000
-    }, [])
+    const { register, handleSubmit } = useForm()
 
-    const choisesDataArrayFactory = useCallback(
+    const vetoVoteId = -1
+
+    const voteChoisesFactory = useCallback(
         (voteApiData: ApiVote | undefined, canDoCast: boolean, canDoVeto: boolean): Array<IChoise> => {
             const voteChoisesFromApi = voteApiData?.voteChoices?.map((choise, index) => {
                 const choiseData: IChoise = {
@@ -53,9 +41,6 @@ export const VotesHandling: React.FC<ICastVote> = ({ voteData, handleCastVote, h
                     description: choise.description ?? '',
                     isVeto: false,
                     disabled: !canDoCast,
-                    handleOnChange: () => {
-                        handleOnChange(voteApiData?.id, choise?.id, choise?.description, false)
-                    },
                 }
                 return choiseData
             })
@@ -64,24 +49,45 @@ export const VotesHandling: React.FC<ICastVote> = ({ voteData, handleCastVote, h
             }
 
             const vetoChoiseData: IChoise = {
-                id: vetoId,
+                id: vetoVoteId,
                 value: t('votes.voteDetail.voteVetoChoiseLabel'),
                 description: 'veto',
                 isVeto: true,
                 disabled: !canDoVeto,
-                handleOnChange: () => {
-                    handleOnChange(voteApiData?.id, undefined, undefined, true)
-                },
             }
             const voteHandlingChoisesData = voteChoisesFromApi?.concat(vetoChoiseData)
             return voteHandlingChoisesData ?? []
         },
-        [handleOnChange, t, vetoId],
+        [t, vetoVoteId],
     )
 
-    const choisesDataArray = useMemo((): IChoise[] => {
-        return choisesDataArrayFactory(voteData, canCast, canVeto)
-    }, [canCast, canVeto, choisesDataArrayFactory, voteData])
+    const voteChoisesData = useMemo((): IChoise[] => {
+        return voteChoisesFactory(voteData, /*canCast*/ true, /*canVeto*/ true)
+    }, [canCast, canVeto, voteChoisesFactory, voteData])
+
+    const onSubmit = async (formData: FieldValues) => {
+        if (voteData === undefined || voteData?.id === undefined) {
+            return
+        }
+        const voteId = voteData.id
+        const choiseId: number | undefined | null = formData['voteChoise']
+        const choiseDescription: string | undefined = formData['voteDescription']
+        if (choiseId == undefined) {
+            return
+        }
+        const isVeto = choiseId == vetoVoteId
+
+        try {
+            setVotesProcessingError(false)
+            if (isVeto) {
+                await handleVetoVote(voteId, choiseDescription)
+                return
+            }
+            await handleCastVote(voteId, choiseId, choiseDescription)
+        } catch {
+            setVotesProcessingError(true)
+        }
+    }
 
     return (
         <>
@@ -91,23 +97,30 @@ export const VotesHandling: React.FC<ICastVote> = ({ voteData, handleCastVote, h
                 error={votesProcessingError}
                 indicatorProps={{ transparentMask: true, layer: 'dialog', label: t('votes.voteDetail.voteProcessing') }}
             >
-                <RadioGroupWithLabel hint={!canCast ? t('votes.voteDetail.voteChoiseLabel.cannotCast') : ''}>
-                    <>
-                        {choisesDataArray.map((choise) => {
-                            return (
-                                <RadioButton
-                                    key={choise.id}
-                                    id={choise.id.toString()}
-                                    value={choise.value ?? ''}
-                                    label={choise.value ?? ''}
-                                    name={'voteHandling'}
-                                    onChange={() => handleOnChange(voteData?.id, choise?.id, choise?.description, choise.isVeto)}
-                                    disabled={choise.disabled}
-                                />
-                            )
-                        })}
-                    </>
-                </RadioGroupWithLabel>
+                <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
+                    <RadioGroupWithLabel hint={!canCast ? t('votes.voteDetail.voteChoiseLabel.cannotCast') : ''}>
+                        <>
+                            {voteChoisesData.map((choise) => {
+                                return (
+                                    <>
+                                        {choise.id == vetoVoteId && <Spacer />}
+                                        <RadioButton
+                                            key={choise.id}
+                                            id={choise.id.toString()}
+                                            value={choise.id}
+                                            label={choise.value ?? ''}
+                                            {...register('voteChoise')}
+                                            disabled={choise.disabled}
+                                        />
+                                    </>
+                                )
+                            })}
+                            <TextArea rows={3} label={t('votes.voteDetail.description')} {...register('voteDescription')} />
+                        </>
+                    </RadioGroupWithLabel>
+
+                    <Button type="submit" label={t('votes.voteDetail.submitVote')} />
+                </form>
             </QueryFeedback>
         </>
     )

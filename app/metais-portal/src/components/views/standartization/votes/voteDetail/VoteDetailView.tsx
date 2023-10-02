@@ -8,11 +8,12 @@ import { Collapsable } from './voteDetailComponents/collapsable/collapsable'
 import { voteActorResultsColumns } from './voteActorResultsColumns'
 import { voteActorsColumns } from './voteActorsColumns'
 import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
+import { Spacer } from './voteDetailComponents/Spacer'
 
 import { SimpleTable } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/SimpleTable'
 import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { VotesHandling } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/VotesHandling'
+import { VotesCastingHandler } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/VotesHandling'
 import { VoteDetailItems } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/VoteDetailItems'
 
 export interface IVoteDetailView {
@@ -24,10 +25,6 @@ export interface IVoteDetailView {
     votesProcessing: boolean
     castVote: (voteIdentifier: number, choiceId: number, description: string) => Promise<void>
     vetoVote: (voteIdentifier: number, description: string) => Promise<void>
-}
-
-const Spacer: React.FC = () => {
-    return <div className={styles.spaceVertical} />
 }
 
 export const VoteDetailView: React.FC<IVoteDetailView> = ({
@@ -123,7 +120,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
 
                 <TextHeading size="L">{t('votes.voteDetail.votesHandlingTitle')}</TextHeading>
 
-                <VotesHandling
+                <VotesCastingHandler
                     voteData={voteData}
                     handleCastVote={handleCastVote}
                     handleVetoVote={handleVetoVote}

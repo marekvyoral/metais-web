@@ -4,7 +4,7 @@ import React, { DetailedHTMLProps, forwardRef } from 'react'
 interface IRadioButtonProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     id: string
     name: string
-    value: string
+    value: string | number
     disabled?: boolean
     className?: string
     label: string
