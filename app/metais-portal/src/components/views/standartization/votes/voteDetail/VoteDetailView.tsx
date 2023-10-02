@@ -109,7 +109,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
             <MainContentWrapper>
                 <div className={styles.inlineSpaceBetween}>
                     <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
-                    <Button type="submit" label={t('votes.voteDetail.editVote')} onClick={() => editVoteHandler()} />
+                    {isUserLoggedIn && <Button type="submit" label={t('votes.voteDetail.editVote')} onClick={() => editVoteHandler()} />}
                 </div>
 
                 <VoteDetailItems voteData={voteData} />

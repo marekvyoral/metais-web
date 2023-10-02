@@ -98,7 +98,7 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
                     )}
                 />
                 <div className={styles.inline}>
-                    <Button type="submit" label={t('votes.voteDetail.newVote')} onClick={() => newVoteHandler()} />
+                    {isUserLogged && <Button type="submit" label={t('votes.voteDetail.newVote')} onClick={() => newVoteHandler()} />}
                     <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
                 </div>
 
