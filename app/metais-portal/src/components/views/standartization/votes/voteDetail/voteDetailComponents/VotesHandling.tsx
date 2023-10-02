@@ -6,8 +6,6 @@ import { useCallback, useMemo, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-import { Spacer } from './Spacer'
-
 interface ICastVote {
     voteProcessing: boolean
     voteData: ApiVote | undefined
@@ -62,6 +60,7 @@ export const VotesCastingHandler: React.FC<ICastVote> = ({ voteData, handleCastV
     )
 
     const voteChoisesData = useMemo((): IChoise[] => {
+        // return voteChoisesFactory(voteData, canCast, canVeto)
         return voteChoisesFactory(voteData, /*canCast*/ true, /*canVeto*/ true)
     }, [canCast, canVeto, voteChoisesFactory, voteData])
 
@@ -99,24 +98,19 @@ export const VotesCastingHandler: React.FC<ICastVote> = ({ voteData, handleCastV
             >
                 <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
                     <RadioGroupWithLabel hint={!canCast ? t('votes.voteDetail.voteChoiseLabel.cannotCast') : ''}>
-                        <>
-                            {voteChoisesData.map((choise) => {
-                                return (
-                                    <>
-                                        {choise.id == vetoVoteId && <Spacer />}
-                                        <RadioButton
-                                            key={choise.id}
-                                            id={choise.id.toString()}
-                                            value={choise.id}
-                                            label={choise.value ?? ''}
-                                            {...register('voteChoise')}
-                                            disabled={choise.disabled}
-                                        />
-                                    </>
-                                )
-                            })}
-                            <TextArea rows={3} label={t('votes.voteDetail.description')} {...register('voteDescription')} />
-                        </>
+                        {voteChoisesData.map((choise) => {
+                            return (
+                                <RadioButton
+                                    key={choise.id}
+                                    id={choise.id.toString()}
+                                    value={choise.id}
+                                    label={choise.value ?? ''}
+                                    {...register('voteChoise')}
+                                    disabled={choise.disabled}
+                                />
+                            )
+                        })}
+                        <TextArea rows={3} label={t('votes.voteDetail.description')} {...register('voteDescription')} />
                     </RadioGroupWithLabel>
 
                     <Button type="submit" label={t('votes.voteDetail.submitVote')} />
