@@ -6,6 +6,7 @@ import { ActionsOverTable } from '@isdd/metais-common/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { TFunction } from 'i18next'
 
 import styles from './votelist.module.scss'
 
@@ -33,6 +34,37 @@ export interface IVotesListView {
     handleFilterChange: (filter: IFilter) => void
 }
 
+const getVoteStateExplanation = (originalState: string | undefined, effectiveFrom: string, effectiveTo: string, t: TFunction): string => {
+    const dateNow = new Date(Date.now())
+    const dateFrom = new Date(effectiveFrom)
+    const dateTo = new Date(effectiveTo)
+
+    const dateFromDiff = dateFrom.getTime() - dateNow.getTime()
+    const dateToDiff = dateTo.getTime() - dateNow.getTime()
+
+    switch (originalState) {
+        case VoteStateEnum.CREATED:
+            if (dateFromDiff > 0) {
+                return t('votes.type.state.' + VoteStateOptionEnum.planned)
+            }
+            if (dateToDiff < 0) {
+                return t('votes.type.state.' + VoteStateOptionEnum.ended)
+            }
+            if (dateFromDiff < 0 && dateToDiff > 0) {
+                return t('votes.type.state.' + VoteStateOptionEnum.upcomming)
+            }
+            return 'nejde to'
+        case VoteStateEnum.CANCELED:
+            return t('votes.type.state.' + VoteStateOptionEnum.canceled)
+        case VoteStateEnum.SUMMARIZED:
+            return t('votes.type.state.' + VoteStateOptionEnum.summarized)
+        case VoteStateEnum.VETOED:
+            return t('votes.type.state.' + VoteStateOptionEnum.vetoed)
+        default:
+            return ''
+    }
+}
+
 export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesListData, filter, defaultFilterValues, handleFilterChange }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -42,39 +74,8 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
         navigate(`${NavigationSubRoutes.VOTE_EDIT}/0`, { state: { from: location } })
     }
 
-    const getVoteStateExplanation = (originalState: string | undefined, effectiveFrom: string, effectiveTo: string): string => {
-        const dateNow = new Date(Date.now())
-        const dateFrom = new Date(effectiveFrom)
-        const dateTo = new Date(effectiveTo)
-
-        const dateFromDiff = dateFrom.getTime() - dateNow.getTime()
-        const dateToDiff = dateTo.getTime() - dateNow.getTime()
-
-        switch (originalState) {
-            case VoteStateEnum.CREATED:
-                if (dateFromDiff > 0) {
-                    return t('votes.type.state.' + VoteStateOptionEnum.planned)
-                }
-                if (dateToDiff < 0) {
-                    return t('votes.type.state.' + VoteStateOptionEnum.ended)
-                }
-                if (dateFromDiff < 0 && dateToDiff > 0) {
-                    return t('votes.type.state.' + VoteStateOptionEnum.upcomming)
-                }
-                return 'nejde to'
-            case VoteStateEnum.CANCELED:
-                return t('votes.type.state.' + VoteStateOptionEnum.canceled)
-            case VoteStateEnum.SUMMARIZED:
-                return t('votes.type.state.' + VoteStateOptionEnum.summarized)
-            case VoteStateEnum.VETOED:
-                return t('votes.type.state.' + VoteStateOptionEnum.vetoed)
-            default:
-                return ''
-        }
-    }
-
     const votesList = votesListData?.votes?.map((vote) => {
-        const newVoteState = getVoteStateExplanation(vote.voteState, vote.effectiveFrom ?? '', vote.effectiveTo ?? '')
+        const newVoteState = getVoteStateExplanation(vote.voteState, vote.effectiveFrom ?? '', vote.effectiveTo ?? '', t)
         return { ...vote, voteState: newVoteState }
     })
 
