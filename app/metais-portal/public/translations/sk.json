@@ -913,6 +913,9 @@
             "fromDate": "Prijaté v období od",
             "toDate": "Prijaté v období do",
             "workGroupId": "Pracovná skupina"
+        },
+        "detail": {
+            "noDocuments": "Nie sú priložené žiadne dokumenty"
         }
     }
 }

@@ -38,9 +38,17 @@ export enum ATTRIBUTE_NAME {
     ReferenceRegisterHistory_Profile_prilohy = 'ReferenceRegisterHistory_Profile_prilohy',
     ISVS_Name = 'isvsName',
     Sr_Name = 'srName',
+    standardRequestState = 'standardRequestState',
+    requestChannel = 'requestChannel',
+    createdAt = 'createdAt',
+    name = 'name',
+    email = 'email',
+    srDescription1 = 'srDescription1',
+    relatedDocuments = 'relatedDocuments',
 }
 
 export const Gen_Profil = 'Gen_Profil'
+export const Gui_Profil_Standardy = 'Gui_Profil_Standardy'
 
 export enum STATUTAR_NAME {
     Profil_PO_statutar_titul_pred_menom = 'Profil_PO_statutar_titul_pred_menom',

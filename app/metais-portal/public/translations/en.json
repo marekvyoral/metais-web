@@ -907,6 +907,9 @@
             "fromDate": "Accepted from date",
             "toDate": "Accepted to date",
             "workGroupId": "Assigned working group"
+        },
+        "detail": {
+            "noDocuments": "No documents attached"
         }
     }
 }
