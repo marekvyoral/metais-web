@@ -3,6 +3,7 @@ import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/downloa
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ButtonLink } from '@isdd/idsk-ui-kit/index'
 
 import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
 
@@ -38,9 +39,7 @@ export const AttachmentLinks: React.FC<IAttachmentLink> = ({ attachments }) => {
             {attachments?.map((attachment) => {
                 return (
                     <div key={attachment.id} className={styles.linkAlign}>
-                        <button onClick={() => downloadAttachment(attachment)} className={styles.link}>
-                            {attachment.attachmentName}
-                        </button>
+                        <ButtonLink type="button" onClick={() => downloadAttachment(attachment)} label={attachment.attachmentName} />
                     </div>
                 )
             })}

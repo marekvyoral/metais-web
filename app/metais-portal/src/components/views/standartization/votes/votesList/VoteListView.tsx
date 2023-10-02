@@ -1,10 +1,11 @@
-import { BreadCrumbs, Filter, HomeIcon, Input, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, Filter, HomeIcon, Input, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ApiVotePreviewList, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
 import { ActionsOverTable } from '@isdd/metais-common/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from './votelist.module.scss'
 
@@ -28,6 +29,12 @@ export interface IVotesListView {
 
 export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesListData, filter, defaultFilterValues, handleFilterChange }) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const newVoteHandler = () => {
+        navigate(`${NavigationSubRoutes.VOTE_EDIT}/0`, { state: { from: location } })
+    }
 
     return (
         <>
@@ -83,7 +90,10 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
                         </div>
                     )}
                 />
-                <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
+                <div className={styles.inline}>
+                    <Button type="submit" label={t('votes.voteDetail.newVote')} onClick={() => newVoteHandler()} />
+                    <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
+                </div>
                 <Table
                     data={votesListData?.votes}
                     columns={voteListColumns(t, isUserLogged)}

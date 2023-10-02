@@ -964,6 +964,8 @@
             "public": "Verejné",
             "downloadingFile": "Stahujem súbor",
             "submitVote": "Hlasovať",
+            "editVote": "Upraviť hlasovanie",
+            "newVote": "+   Pridať nové hlasovanie",
             "voteProcessing": "Spracovávam hlasovanie",
             "voteDescription": "Predkladaný návrh",
             "votesHandlingTitle": "Hlasovanie",

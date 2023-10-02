@@ -1,8 +1,9 @@
-import { BreadCrumbs, HomeIcon, Tab, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, HomeIcon, Tab, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ApiVote, ApiVoteResult } from '@isdd/metais-common/api'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { Collapsable } from './voteDetailComponents/collapsable/collapsable'
 import { voteActorResultsColumns } from './voteActorResultsColumns'
@@ -38,6 +39,8 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
     votesProcessing,
 }) => {
     const { t } = useTranslation()
+    const location = useLocation()
+    const navigate = useNavigate()
 
     const getTabTitle = (textValue: string | undefined, numberValue: number | undefined): string => {
         return `${textValue ?? ''} (${numberValue ?? ''})`
@@ -97,6 +100,10 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
             }
         }) ?? []
 
+    const editVoteHandler = () => {
+        navigate(`${NavigationSubRoutes.VOTE_EDIT}/${voteData?.id}`, { state: { from: location } })
+    }
+
     return (
         <>
             <BreadCrumbs
@@ -108,7 +115,11 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
                 ]}
             />
             <MainContentWrapper>
-                <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
+                <div className={styles.inlineSpaceBetween}>
+                    <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
+                    <Button type="submit" label={t('votes.voteDetail.editVote')} onClick={() => editVoteHandler()} />
+                </div>
+
                 <VoteDetailItems voteData={voteData} />
 
                 <Spacer />
