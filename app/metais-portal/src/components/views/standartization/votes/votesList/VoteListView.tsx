@@ -6,7 +6,6 @@ import { ActionsOverTable } from '@isdd/metais-common/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 import { getVoteStateExplanation } from '../voteProps'
 
