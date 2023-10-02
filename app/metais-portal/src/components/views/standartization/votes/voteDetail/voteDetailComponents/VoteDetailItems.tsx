@@ -22,6 +22,16 @@ export const VoteDetailItems: React.FC<IDetailItemsData> = ({ voteData }) => {
         <div className={styles.itemsTableWrapper}>
             <table className={styles.itemsTable}>
                 <tbody>
+                    {voteData?.veto && (
+                        <tr className={styles.itemsTableRow}>
+                            <td>
+                                <TextBody size="L" className={styles.itemTitle}>
+                                    {t('votes.voteDetail.vetoed')}
+                                </TextBody>
+                            </td>
+                            <td />
+                        </tr>
+                    )}
                     {voteData?.effectiveFrom && voteData?.effectiveTo && (
                         <tr className={styles.itemsTableRow}>
                             <td>
@@ -36,7 +46,7 @@ export const VoteDetailItems: React.FC<IDetailItemsData> = ({ voteData }) => {
                             </td>
                         </tr>
                     )}
-                    {voteData?.secret !== undefined && (
+                    {voteData?.secret != undefined && (
                         <tr className={styles.itemsTableRow}>
                             <td>
                                 <TextBody size="L" className={styles.itemTitle}>

@@ -970,6 +970,7 @@
             "voteDescription": "Predkladaný návrh",
             "votesHandlingTitle": "Hlasovanie",
             "voteActorsTitle": "Účastníci hlasovania",
+            "voteOverview": "Prehľad hlasovania",
             "changeDate": "Dátum Zmeny",
             "changeInfo": "Informácie o zmenách hlasujúcich počas priebehu hlasovania",
             "changeDescription": "Popis Zmeny",
@@ -980,6 +981,10 @@
         },
             "voteVetoChoiseLabel": "Vetovať hlasovanie",
             "description": "Poznámka",
+            "voteConclusion": "Záver hlasovania",
+            "vetoed": "Návrh bol vetovaný",
+            "vetoedBy": "Vetoval",
+            "vetoedDescription": "Dôvod",
             "table":{
                 "name": "Meno",
                 "organization": "Organizácia",

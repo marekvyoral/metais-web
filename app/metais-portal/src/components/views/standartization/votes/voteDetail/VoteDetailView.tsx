@@ -10,6 +10,7 @@ import { voteActorResultsColumns } from './voteActorResultsColumns'
 import { voteActorsColumns } from './voteActorsColumns'
 import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
 import { Spacer } from './voteDetailComponents/Spacer'
+import { VoteOverViewItems } from './voteDetailComponents/VoteOverViewItems'
 
 import { SimpleTable } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/SimpleTable'
 import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
@@ -150,6 +151,10 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
                 >
                     {voteData?.voteActors && <SimpleTable tableColumns={actorColumns} tableData={voteData?.voteActors} sort={undefined} />}
                 </Collapsable>
+                <Spacer />
+
+                <TextHeading size="L">{t('votes.voteDetail.voteOverview')}</TextHeading>
+                <VoteOverViewItems voteData={voteData} voteResultData={voteResultData} />
 
                 <Spacer />
 
