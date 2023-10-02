@@ -973,7 +973,8 @@
             "changeDescription": "Popis Zmeny",
             "voteChoiseLabel": {
                 "cannotCast": "Hlasovať može iba prihlásený a oprávnený používateľ.",
-                "canCast": ""
+                "canCast": "Máte oprávnenie hlasovať",
+                "alreadyVoted": "Už ste zahlasovali za tento návrh"
         },
             "voteVetoChoiseLabel": "Vetovať hlasovanie",
             "description": "Poznámka",

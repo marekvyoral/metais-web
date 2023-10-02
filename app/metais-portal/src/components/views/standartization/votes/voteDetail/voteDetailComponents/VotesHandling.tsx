@@ -13,6 +13,7 @@ interface ICastVote {
     handleVetoVote: (voteId: number | undefined, description: string | undefined) => Promise<void>
     canCast: boolean
     canVeto: boolean
+    castedVoteId: number | undefined
 }
 
 interface IChoise {
@@ -23,12 +24,13 @@ interface IChoise {
     disabled: boolean
 }
 
-export const VotesCastingHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, handleVetoVote, canCast, canVeto, voteProcessing }) => {
+export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, handleVetoVote, canCast, canVeto, castedVoteId, voteProcessing }) => {
     const { t } = useTranslation()
     const [votesProcessingError, setVotesProcessingError] = useState<boolean>(false)
     const { register, handleSubmit } = useForm()
 
     const vetoVoteId = -1
+    const alreadyVoted = !!castedVoteId
 
     const voteChoisesFactory = useCallback(
         (voteApiData: ApiVote | undefined, canDoCast: boolean, canDoVeto: boolean): Array<IChoise> => {
@@ -38,7 +40,7 @@ export const VotesCastingHandler: React.FC<ICastVote> = ({ voteData, handleCastV
                     value: choise.value ?? '',
                     description: choise.description ?? '',
                     isVeto: false,
-                    disabled: !canDoCast,
+                    disabled: !canDoCast || alreadyVoted,
                 }
                 return choiseData
             })
@@ -51,17 +53,17 @@ export const VotesCastingHandler: React.FC<ICastVote> = ({ voteData, handleCastV
                 value: t('votes.voteDetail.voteVetoChoiseLabel'),
                 description: 'veto',
                 isVeto: true,
-                disabled: !canDoVeto,
+                disabled: !canDoVeto || alreadyVoted,
             }
             const voteHandlingChoisesData = voteChoisesFromApi?.concat(vetoChoiseData)
             return voteHandlingChoisesData ?? []
         },
-        [t, vetoVoteId],
+        [alreadyVoted, t, vetoVoteId],
     )
 
     const voteChoisesData = useMemo((): IChoise[] => {
-        // return voteChoisesFactory(voteData, canCast, canVeto)
-        return voteChoisesFactory(voteData, /*canCast*/ true, /*canVeto*/ true)
+        return voteChoisesFactory(voteData, canCast, canVeto)
+        // return voteChoisesFactory(voteData, /*canCast*/ true, /*canVeto*/ true)
     }, [canCast, canVeto, voteChoisesFactory, voteData])
 
     const onSubmit = async (formData: FieldValues) => {
@@ -97,7 +99,15 @@ export const VotesCastingHandler: React.FC<ICastVote> = ({ voteData, handleCastV
                 indicatorProps={{ transparentMask: true, layer: 'dialog', label: t('votes.voteDetail.voteProcessing') }}
             >
                 <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
-                    <RadioGroupWithLabel hint={!canCast ? t('votes.voteDetail.voteChoiseLabel.cannotCast') : ''}>
+                    <RadioGroupWithLabel
+                        hint={
+                            canCast
+                                ? alreadyVoted
+                                    ? t('votes.voteDetail.voteChoiseLabel.alreadyVoted')
+                                    : t('votes.voteDetail.voteChoiseLabel.canCast')
+                                : t('votes.voteDetail.voteChoiseLabel.cannotCast')
+                        }
+                    >
                         {voteChoisesData.map((choise) => {
                             return (
                                 <RadioButton
@@ -107,13 +117,14 @@ export const VotesCastingHandler: React.FC<ICastVote> = ({ voteData, handleCastV
                                     label={choise.value ?? ''}
                                     {...register('voteChoise')}
                                     disabled={choise.disabled}
+                                    defaultChecked={choise.id == castedVoteId}
                                 />
                             )
                         })}
-                        <TextArea rows={3} label={t('votes.voteDetail.description')} {...register('voteDescription')} />
+                        {canCast && <TextArea rows={3} label={t('votes.voteDetail.description')} {...register('voteDescription')} />}
                     </RadioGroupWithLabel>
 
-                    <Button type="submit" label={t('votes.voteDetail.submitVote')} />
+                    {canCast && <Button type="submit" label={t('votes.voteDetail.submitVote')} />}
                 </form>
             </QueryFeedback>
         </>

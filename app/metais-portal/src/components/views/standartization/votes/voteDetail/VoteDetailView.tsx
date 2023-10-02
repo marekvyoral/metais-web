@@ -13,7 +13,7 @@ import { Spacer } from './voteDetailComponents/Spacer'
 import { SimpleTable } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/SimpleTable'
 import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { VotesCastingHandler } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/VotesHandling'
+import { VotesHandler } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/VotesHandling'
 import { VoteDetailItems } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/VoteDetailItems'
 
 export interface IVoteDetailView {
@@ -120,13 +120,14 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
 
                 <TextHeading size="L">{t('votes.voteDetail.votesHandlingTitle')}</TextHeading>
 
-                <VotesCastingHandler
+                <VotesHandler
                     voteData={voteData}
                     handleCastVote={handleCastVote}
                     handleVetoVote={handleVetoVote}
                     canCast={(isUserLoggedIn && canCastVote) ?? false}
                     canVeto={(isUserLoggedIn && canCastVote && voteData?.veto) ?? false}
                     voteProcessing={votesProcessing}
+                    castedVoteId={castedVoteId}
                 />
 
                 <Spacer />
