@@ -55,7 +55,6 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
             />
             <MainContentWrapper>
                 <TextHeading size="XL">{t('votes.votesList.title')}</TextHeading>
-                <TextHeading size="L">{t('votes.votesList.votesListSubtitle')}</TextHeading>
                 <Filter<IVotesListFilterData>
                     heading={t('votes.votesList.filter.title')}
                     defaultFilterValues={defaultFilterValues}
