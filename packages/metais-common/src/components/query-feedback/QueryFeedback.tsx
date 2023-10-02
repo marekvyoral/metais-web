@@ -20,28 +20,24 @@ export const QueryFeedback: React.FC<IQueryFeedbackProps> = ({ loading, error, c
 
     const errorEmail = 'metais@LogoMirri.gov.sk'
 
-    if (error) {
-        return (
-            <>
-                <TextWarning>
-                    {errorProps?.errorMessage ? (
-                        errorProps.errorMessage
-                    ) : (
-                        <>
-                            {t('feedback.queryErrorMessage')}
-                            <Link to={`mailto:${errorEmail}`}>{errorEmail}</Link>
-                        </>
-                    )}
-                </TextWarning>
-                {withChildren && children}
-            </>
-        )
-    } else {
-        return (
+    return (
+        <>
             <div className={classNames(styles.loadingIndicator, withChildren && styles.autoHeight)}>
+                {error && (
+                    <TextWarning>
+                        {errorProps?.errorMessage ? (
+                            errorProps.errorMessage
+                        ) : (
+                            <>
+                                {t('feedback.queryErrorMessage')}
+                                <Link to={`mailto:${errorEmail}`}>{errorEmail}</Link>
+                            </>
+                        )}
+                    </TextWarning>
+                )}
                 {loading && <LoadingIndicator {...indicatorProps} />}
-                {(withChildren || !loading) && children}
+                {(withChildren || !loading || error) && children}
             </div>
-        )
-    }
+        </>
+    )
 }

@@ -25,12 +25,12 @@ const CreateEntityPage: React.FC = () => {
                 ]}
             />
             <MainContentWrapper>
-                <AttributesContainer
+                <CiCreateEntityContainer
                     entityName={entityName ?? ''}
-                    View={({ data: attributesData, isError: attError, isLoading: attLoading }) => (
-                        <CiCreateEntityContainer
+                    View={({ data: generatedEntityId, isError: generatedIdError, isLoading: generatedIdLoading }) => (
+                        <AttributesContainer
                             entityName={entityName ?? ''}
-                            View={({ data: generatedEntityId, isError: generatedIdError, isLoading: generatedIdLoading }) => (
+                            View={({ data: attributesData, isError: attError, isLoading: attLoading }) => (
                                 <PublicAuthorityAndRoleContainer
                                     View={({
                                         data: groupData,
