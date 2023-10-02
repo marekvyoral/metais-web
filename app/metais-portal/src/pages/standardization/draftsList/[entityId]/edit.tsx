@@ -25,6 +25,8 @@ const DraftsListEditPage = () => {
                             <QueryFeedback loading={props.isLoading} error={false} withChildren>
                                 <DraftsListCreateForm
                                     data={props?.data}
+                                    isSuccess={false}
+                                    isError={false}
                                     onSubmit={async (data) => {
                                         console.log('CREATE: ', data)
                                     }}

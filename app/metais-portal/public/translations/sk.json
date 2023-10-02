@@ -916,6 +916,32 @@
         },
         "detail": {
             "noDocuments": "Nie sú priložené žiadne dokumenty"
+        },
+        "create": {
+            "heading": "Tvorba návrhu",
+            "warning": "Kritériá, uvádzané nižšie, je potrebné pred schválením návrhu štandardu vyhodnotiť, neznamená to však, že každé z nich musí byť „splnené“ (nie každé kritérium je relevantné pre každý návrh). Pokiaľ predkladateľ nevie niektoré kritérium posúdiť alebo ho uviesť, v odpovedi uvedie takúto informáciu. V rámci možností odpovedajte celou vetou, nie len „áno/nie“."
+        },
+        "createForm": {
+            "heading": "Znenie návrhu",
+            "name": "Názov návrhu (povinné)",
+            "srDescription1": "Uveďte vecný popis návrhu nového štandardu a zároveň popíšte účel uplatnenia nového štandardu, aké problémy má vyriešiť alebo na aké účely má slúžiť (povinné) :",
+            "proposalDescription2": "Uveďte predpokladané umiestnenie návrhu v rámci aktuálneho výnosu o štandardoch pre informačné systémy verejnej správy (určenie existujúceho alebo nového paragrafu / odseku, kde sa má navrhovaná požiadavka nachádzať) :",
+            "proposalDescription3": "Podľa možnosti uveďte aj vlastný návrh legislatívneho znenia (textácie) požiadavky. ",
+            "impactDescription1": "Finančný dopad: Popíšte odhadované finančné náklady a prínosy prijatia navrhovaného štandardu (odhady uveďte podľa možnosti číselne alebo aspoň popisne) ",
+            "impactDescription5": "Bude navrhovaný štandard potrebovať osobitné bezpečnostné opatrenia resp. zvažuje ich ? (Ak áno, stručne ich popíšte.) ",
+            "impactDescription7": "Dopad na súkromie: Dotýka sa navrhovaný štandard otázok ochrany súkromia a osobných údajov (ak áno, popíšte ako) ?",
+            "submit": "Pridať návrh",
+            "cancel": "Zrušiť",
+            "attachments": {
+                "heading": "Dokumenty",
+                "subHeading": "Zadajte odkazy na dokumenty",
+                "attachmentDescription": "Popis dokumentu",
+                "attachmentType": "Typ dokumentu",
+                "attachmentId": "Link na dokument",
+                "attachmentSize": "Veľkosť dokumentu",
+                "andOrAddFile": "A/Alebo nahrajte dokumenty",
+                "addNewAttachment": "Pridať ďalší odkaz na dokument"
+            }
         }
     }
 }

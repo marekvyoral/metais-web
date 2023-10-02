@@ -21,10 +21,10 @@ uppy.use(XHRUpload, {
 })
 
 interface iUseUppy {
-    allowedFileTypes: string[]
+    allowedFileTypes?: string[]
     maxFileSize?: number
     multiple: boolean
-    endpointUrl: string
+    endpointUrl?: string
     fileImportStep: FileImportStepEnum
     setFileImportStep: (value: FileImportStepEnum) => void
 }
