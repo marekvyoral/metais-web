@@ -992,6 +992,8 @@
             }
         },
         "type": {
+            "yes": "Áno",
+            "no": "Nie",
             "toShow": {
                 "onlyMyVotes": "Len moje hlasovania",
                 "allVotes": "Všetky hlasovania"

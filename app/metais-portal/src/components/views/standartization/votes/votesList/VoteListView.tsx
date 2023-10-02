@@ -76,7 +76,8 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
 
     const votesList = votesListData?.votes?.map((vote) => {
         const newVoteState = getVoteStateExplanation(vote.voteState, vote.effectiveFrom ?? '', vote.effectiveTo ?? '', t)
-        return { ...vote, voteState: newVoteState }
+        const newHasCast = t('votes.type.' + vote.hasCast)
+        return { ...vote, voteState: newVoteState, hasCast: newHasCast }
     })
 
     return (

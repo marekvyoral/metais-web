@@ -78,7 +78,7 @@ export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<Colu
             enableSorting: true,
             id: VotesListColumnsEnum.canCast,
             size: 100,
-            cell: (ctx) => <span>{(ctx?.getValue?.() as boolean) ? 'true' : 'false'}</span>,
+            cell: (ctx) => <span>{(ctx?.getValue?.() as boolean) ? t('votes.type.yes') : t('votes.type.no')}</span>,
         },
         {
             header: t('votes.votesList.table.hasCast'),
