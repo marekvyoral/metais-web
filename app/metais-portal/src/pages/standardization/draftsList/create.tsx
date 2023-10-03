@@ -1,6 +1,7 @@
 import React from 'react'
 import { TextHeading, TextWarning } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
+import { QueryFeedback } from '@isdd/metais-common/index'
 
 import DraftsListCreateForm from '@/components/entities/draftsList/DraftsListCreateForm'
 import DraftsListCreateContainer from '@/components/entities/draftsList/DraftsListCreateContainer'
@@ -12,8 +13,18 @@ const DraftsListCreatePage: React.FC = () => {
             <TextHeading size="XL">{t('DraftsList.create.heading')}</TextHeading>
             <TextWarning>{t('DraftsList.create.warning')}</TextWarning>
             <DraftsListCreateContainer
-                View={(props) => (
-                    <DraftsListCreateForm onSubmit={props?.onSubmit} data={undefined} isSuccess={props?.isSuccess} isError={props?.isError} />
+                View={({ onSubmit, guiAttributes, isGuiDataError, isGuiDataLoading, isSuccess, isError }) => (
+                    <QueryFeedback loading={isGuiDataLoading} error={isGuiDataError}>
+                        <DraftsListCreateForm
+                            onSubmit={onSubmit}
+                            data={{
+                                defaultData: undefined,
+                                guiAttributes: guiAttributes,
+                            }}
+                            isSuccess={isSuccess}
+                            isError={isError}
+                        />
+                    </QueryFeedback>
                 )}
             />
         </MainContentWrapper>

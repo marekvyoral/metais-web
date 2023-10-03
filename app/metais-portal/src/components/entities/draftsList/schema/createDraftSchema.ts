@@ -6,6 +6,6 @@ export const generateSchemaForCreateDraft = (t: TFunction<'translation', undefin
     return yup.object().shape({
         srName: yup.string().required(t('egov.create.requiredField')),
         srDescription1: yup.string().required(t('egov.create.requiredField')),
-        attachements: yup.array<ApiAttachment>(),
+        attachments: yup.array<ApiAttachment>(),
     })
 }

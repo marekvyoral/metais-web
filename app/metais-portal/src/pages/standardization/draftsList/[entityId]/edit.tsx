@@ -24,7 +24,10 @@ const DraftsListEditPage = () => {
                         <MainContentWrapper>
                             <QueryFeedback loading={props.isLoading} error={false} withChildren>
                                 <DraftsListCreateForm
-                                    data={props?.data}
+                                    data={{
+                                        defaultData: props?.data,
+                                        guiAttributes: props?.guiAttributes ?? [],
+                                    }}
                                     isSuccess={false}
                                     isError={false}
                                     onSubmit={async (data) => {

@@ -943,5 +943,8 @@
                 "addNewAttachment": "Pridať ďalší odkaz na dokument"
             }
         }
+    },
+    "input": {
+        "requiredField": "(povinné)"
     }
 }

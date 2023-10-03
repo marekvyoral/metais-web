@@ -4,6 +4,7 @@ import { ApiStandardRequest, ApiStandardRequestPreviewRequestChannel } from '@is
 import { ATTRIBUTE_NAME, Attribute } from '@isdd/metais-common/api'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { getInfo, getLabel } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 
 interface Props {
     data?: ApiStandardRequest
@@ -80,11 +81,3 @@ const DraftsListFormView: React.FC<Props> = ({ data, guiAttributes }) => {
     )
 }
 export default DraftsListFormView
-
-export const getLabel = (attributeName: string, attributes?: Attribute[]) => {
-    return attributes?.find((val) => val?.technicalName === attributeName)?.name
-}
-
-export const getInfo = (attributeName: string, attributes?: Attribute[]) => {
-    return attributes?.find((val) => val?.technicalName === attributeName)?.description
-}
