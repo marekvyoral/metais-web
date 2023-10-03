@@ -914,6 +914,9 @@
             "toDate": "Prijaté v období do",
             "workGroupId": "Pracovná skupina"
         },
+        "detail": {
+            "noDocuments": "Nie sú priložené žiadne dokumenty"
+        },
         "create": {
             "heading": "Tvorba návrhu",
             "warning": "Kritériá, uvádzané nižšie, je potrebné pred schválením návrhu štandardu vyhodnotiť, neznamená to však, že každé z nich musí byť „splnené“ (nie každé kritérium je relevantné pre každý návrh). Pokiaľ predkladateľ nevie niektoré kritérium posúdiť alebo ho uviesť, v odpovedi uvedie takúto informáciu. V rámci možností odpovedajte celou vetou, nie len „áno/nie“."

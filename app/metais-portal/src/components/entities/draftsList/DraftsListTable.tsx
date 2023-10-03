@@ -3,18 +3,24 @@ import { useTranslation } from 'react-i18next'
 import { PaginatorWrapper, Table } from '@isdd/idsk-ui-kit'
 import { ColumnDef } from '@tanstack/react-table'
 import { ApiStandardRequestPreview } from '@isdd/metais-common/api/generated/standards-swagger'
+import { Link, useLocation } from 'react-router-dom'
 
 import { IDraftsListTable } from '@/types/views'
 
 const DraftsListDataTableGridViewForForm: React.FC<IDraftsListTable> = ({ data, handleFilterChange, pagination, sort }) => {
     const { t } = useTranslation()
+    const location = useLocation()
 
     const columns: Array<ColumnDef<ApiStandardRequestPreview>> = [
         {
-            accessorFn: (row) => row?.srName,
+            accessorFn: (row) => row,
             header: t('DraftsList.table.srName'),
             id: 'srName',
-            cell: (row) => <span>{row?.getValue?.() as string}</span>,
+            cell: (row) => (
+                <Link to={'./' + row.row.original?.id ?? ''} state={{ from: location }} className="govuk-link">
+                    {row.row.original?.srName as string}
+                </Link>
+            ),
             enableSorting: true,
         },
         {
