@@ -109,8 +109,15 @@ export const guiProfilStandardRequestMap = new Map<string, string>([
     ['Gui_Profil_Standardy_std_proposal_email', 'email'],
     ['Gui_Profil_Standardy_std_proposal_title', 'srName'],
     ['Gui_Profil_Standardy_std_proposal_description', 'srDescription1'],
+    ['Gui_Profil_Standardy_std_proposal_intended_location', 'srDescription2'],
+    ['Gui_Profil_Standardy_std_proposal_suitability', 'srDescription3'],
+    ['Gui_Profil_Standardy_std_proposal_potential', 'srDescription4'],
+    ['Gui_Profil_Standardy_std_proposal_openness', 'srDescription5'],
+    ['Gui_Profil_Standardy_std_proposal_market_potential', 'srDescription6'],
+
     ['Gui_Profil_Standardy_std_proposal_doc', 'relatedDocuments'],
 
+    //WEB type custom attributes
     ['Gui_Profil_Standardy_std_suitability', 'suitability'], //1
 
     ['Gui_Profil_Standardy_std_applicability', 'applicability'], //1.1
@@ -171,7 +178,7 @@ export const guiProfilStandardRequestMap = new Map<string, string>([
 
     ['Gui_Profil_Standardy_std_process', 'process'], //3.2
     ['Gui_Profil_Standardy_std_openness_process_consultations', 'processDescription1'], //3.2.1
-    ['Gui_Profil_Standardy_std_openness_process_consultations', 'processDescription2'], //3.2.2
+    ['Gui_Profil_Standardy_std_openness_process_consensus', 'processDescription2'], //3.2.2
     ['Gui_Profil_Standardy_std_openness_process_transparency', 'processDescriptionTransparency'], //3.2.3
     ['Gui_Profil_Standardy_std_openness_process_right', 'processDescription3'], //3.2.3a
     ['Gui_Profil_Standardy_std_openness_process_remedies', 'processDescription4'], //3.2.3b
@@ -200,14 +207,16 @@ export const guiProfilStandardRequestMap = new Map<string, string>([
 
     ['Gui_Profil_Standardy_std_market_reusability_parts', 'reusabilityDescription1'], //4.3.1
     ['Gui_Profil_Standardy_std_market_reusability_compatibility', 'reusabilityDescription2'], //4.3.2
-    ['Gui_Profil_Standardy_std_proposal_intended_location', 'proposalDescription2'],
+
+    //['Gui_Profil_Standardy_std_proposal_description', 'proposalDescription1'],
+    // ['Gui_Profil_Standardy_std_proposal_intended_location', 'proposalDescription2'],
     ['Gui_Profil_Standardy_std_proposal_own_legislative_text', 'proposalDescription3'],
 ])
 
-export const getLabel = (attributeName: string, attributes?: Attribute[]) => {
+export const getLabelGuiProfilStandardRequest = (attributeName: string, attributes?: Attribute[]) => {
     return attributes?.find((val) => val?.technicalName === attributeName)?.name
 }
 
-export const getInfo = (attributeName: string, attributes?: Attribute[]) => {
+export const getInfoGuiProfilStandardRequest = (attributeName: string, attributes?: Attribute[]) => {
     return attributes?.find((val) => val?.technicalName === attributeName)?.description
 }

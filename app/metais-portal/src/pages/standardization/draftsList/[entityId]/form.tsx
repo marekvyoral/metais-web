@@ -24,7 +24,7 @@ const DraftDetail: React.FC = () => {
                         <MainContentWrapper>
                             <TextHeading size="L">{props?.data?.srName}</TextHeading>
                             <QueryFeedback loading={props.isLoading} error={false} withChildren>
-                                <DraftsListFormView data={props?.data} guiAttributes={props.guiAttributes} />
+                                <DraftsListFormView data={props?.data} guiAttributes={props.guiAttributes} workGroup={props?.workGroup} />
                             </QueryFeedback>
                         </MainContentWrapper>
                     </>
