@@ -58,7 +58,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
             <form onSubmit={handleOnSubmit ? handleSubmit(handleOnSubmit) : onSubmit}>
                 <SearchInput
                     id={'fullTextSearch'}
-                    placeholder={t('filter.searchPlaceholder')}
+                    placeholder={t('filter.searchPlaceholder') ?? ''}
                     {
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
@@ -95,7 +95,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
                                 className="govuk-body govuk-link idsk-filter-menu__toggle"
                                 tabIndex={0}
                                 data-category-name=""
-                                aria-label={isOpen ? t('filter.collapse') : t('filter.expand')}
+                                aria-label={isOpen ? t('filter.collapse').toString() : t('filter.expand').toString()}
                                 type="button"
                             >
                                 {isOpen ? t('filter.collapse') : t('filter.expand')}

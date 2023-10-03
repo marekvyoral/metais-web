@@ -57,6 +57,7 @@ export const HistoryCompareItemView: React.FC<IHistoryCompareItemViewProps> = ({
 
     const makeDiffHtml = (): string => {
         const dmp = new diff_match_patch()
+
         let resultFirst = valueFirst.toString()
         let resultSec = valueSec.toString()
 
@@ -69,6 +70,7 @@ export const HistoryCompareItemView: React.FC<IHistoryCompareItemViewProps> = ({
         }
 
         const diff = dmp.diff_main(resultFirst, resultSec)
+        dmp.diff_cleanupSemantic(diff)
         const html = dmp.diff_prettyHtml(diff)
 
         return sanitizeHtml(

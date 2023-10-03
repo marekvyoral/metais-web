@@ -12,6 +12,7 @@ import { CHANGE_OWNER_CHANGE_REASON, CHANGE_OWNER_CHANGE_TYPE } from '@isdd/meta
 
 interface IChangeOwnerBulkView extends ISelectPublicAuthorityAndRole {
     items: ConfigurationItemUi[]
+    multiple?: boolean
     onSubmit: (data: ChangeOwnerDataUi) => void
     onClose: () => void
 }
@@ -20,12 +21,15 @@ export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
     items,
     selectedOrg,
     selectedRoleId,
+    multiple,
     onChangeAuthority,
     onChangeRole,
     onSubmit,
     onClose,
 }) => {
     const { t } = useTranslation()
+
+    const title = multiple ? t('bulkActions.changeOwner.titleList') : t('bulkActions.changeOwner.title')
 
     const { register, handleSubmit } = useForm<ChangeOwnerDataUi>({
         defaultValues: {
@@ -36,7 +40,7 @@ export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <TextHeading size="L">{t('bulkActions.changeOwner.title')}</TextHeading>
+            <TextHeading size="L">{title}</TextHeading>
 
             <SelectPublicAuthorityAndRole
                 onChangeAuthority={onChangeAuthority}
@@ -69,7 +73,7 @@ export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
                 <Button type="submit" label={t('bulkActions.changeOwner.button')} />
             </div>
 
-            <BulkList title={t('bulkActions.changeOwner.listText', { count: items.length })} items={items} />
+            {multiple && <BulkList title={t('bulkActions.changeOwner.listText', { count: items.length })} items={items} />}
 
             <TextLinkExternal
                 title={t('bulkActions.changeOwner.newWindowText')}

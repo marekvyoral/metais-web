@@ -89,7 +89,7 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
             <div className="idsk-header-web__nav-submenu">
                 <div className="govuk-width-container">
                     <div className="govuk-grid-row">
-                        <ul className="idsk-header-web__nav-submenu-list" aria-label={t('navMenu.innerNav')}>
+                        <ul className="idsk-header-web__nav-submenu-list" aria-label={t('navMenu.innerNav') ?? ''}>
                             {list.map((item) => (
                                 <li key={item.title} className="idsk-header-web__nav-submenu-list-item">
                                     <Link

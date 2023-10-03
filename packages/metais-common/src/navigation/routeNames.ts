@@ -20,6 +20,7 @@ export enum RouteNames {
     CODELISTS = '/codelists',
     USER_PROFILE = '/userprofile',
     REPORTS = '/reports',
+    GLOBAL_SEARCH = '/global/search',
 }
 
 export enum AdminRouteNames {

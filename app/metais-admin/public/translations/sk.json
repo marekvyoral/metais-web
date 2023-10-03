@@ -419,6 +419,8 @@
     },
     "mutationFeedback": {
         "successfulUpdated": "Položka bola úspešne zmenená",
+        "runMutationSuccess": "Skript bol úspešne vykonaný",
+        "runMutationError": "Vykonávanie skriptu zlyhalo, skontrolujte platnosť kódu",
         "successfulCreated": "Položka bola úspešne pridaná"
     },
     "managementList": {
@@ -488,6 +490,9 @@
             "egov": "Správa eGov komponentov",
             "entity": "Entity",
             "profiles": "Profily atribútov",
+            "relations": "Vzťahy",
+            "roleManagement": "Správa rolí",
+            "reports": "Reports",
             "relations": "Vzťahy"
         },
         "eko": "EKO kódy",
@@ -591,7 +596,9 @@
         "queryErrorTitle": "Nastala chyba",
         "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní dát sa vyskytla technická chyba. Skúste stránku znova načítať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na adrese ",
         "mutationErrorTitle": "Akcia zlyhala",
-        "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na "
+        "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na ",
+        "executingScript": "Script sa vykonáva",
+        "saving": "Ukladá sa..."
     },
     "organizations": {
         "detail": {
@@ -606,7 +613,9 @@
             "cancel": "Zrušiť",
             "createNew": "Vytvoriť novú povinnú osobu",
             "icoRequired": "IČO je povinné",
-            "icoRegex": "IČO je v nesprávnom tvare. Správny tvar je '00000000' a '000000000000'"
+            "icoExist": "Povinná osoba s daným IČO-m už v systéme existuje",
+            "icoRegex": "IČO je v nesprávnom tvare. Správny tvar je '00000000' a '000000000000'",
+            "loading": "Vyhľadávam IČO"
         },
         "edit": {
             "updateExistingOrganization": "Úprava povinnej osoby"
@@ -642,7 +651,8 @@
                 "name": "Meno",
                 "lastName": "Priezvisko",
                 "titleAfterName": "Titul za menom"
-            }
+            },
+            "savingPO": "Ukladám povinnú osobu"
         },
         "assigned": {
             "heading": "Priradenie povinnej osoby nadradenej povinnej osobe",
@@ -694,6 +704,43 @@
     "loading": {
         "loadingSubPage": "Načítavám podstránku",
         "export": "Preparing export"
+    },
+    "report": {
+        "language": "Jazyk",
+        "category": "Kategória",
+        "description": "Popis",
+        "publishedTrue": "Publikovaný",
+        "publishedFalse": "Nepublikovaný",
+        "detail": {
+            "name": "Názov",
+            "identificator": "Identifikátor",
+            "state": "Stav",
+            "script": "Script",
+            "runScript": "Spustiť script",
+            "results": "Výsledok scriptu",
+            "addParameter": "Pridať parameter",
+            "save": "Uložiť"
+        },
+        "cards": {
+            "identificator": "Identifikátor parametra",
+            "parameterType": "Typ parametra",
+            "name": "Názov parametra",
+            "defaultValue": "Predvolená hodnota",
+            "required": "Povinný parameter",
+            "additionalParams": "Doplňujúce parametre"
+        },
+        "table": {
+            "identificator": "Identifikátor",
+            "name": "Názov",
+            "description": "Popis",
+            "category": "Kategória",
+            "published": "Publikovaný",
+            "actions": "Úkony"
+        },
+        "filter": {
+            "category": "Kategória"
+        },
+        "newReport": "Nový report"
     },
     "requestList": {
         "title": "Zoznam žiadostí",
@@ -747,7 +794,10 @@
         "noName": "Bez mena",
         "ciCreate": "Vytvorenie novej entity",
         "newRelation": "Pridanie nového vzťahu k {{itemName}}",
-        "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}"
+        "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}",
+        "reports-management": "Správa zostáv",
+        "reportsCreate": "Nový report",
+        "reportsEdit": "Upraviť report"
     },
     "userProfile": {
         "heading": "Profil a oprávnenia",
@@ -770,5 +820,8 @@
         "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené",
         "changedUserInformation": "Osobné informácie boli úspešne zmenené",
         "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova."
+    },
+    "validation": {
+        "required": "Toto pole je povinné"
     }
 }

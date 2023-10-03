@@ -330,6 +330,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             <InvalidateBulkModal
                 items={checkedItemList.map((item) => item.configurationItem ?? {})}
                 open={showInvalidate}
+                multiple
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setShowInvalidate(false))}
                 onClose={() => setShowInvalidate(false)}
             />
@@ -337,6 +338,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             <ReInvalidateBulkModal
                 items={checkedItemList.map((item) => item.configurationItem ?? {})}
                 open={showReInvalidate}
+                multiple
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setShowInvalidate(false))}
                 onClose={() => setShowReInvalidate(false)}
             />

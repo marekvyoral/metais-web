@@ -246,18 +246,21 @@ export const ListWrapper: React.FC<IListWrapper> = ({
             <ReInvalidateBulkModal
                 items={checkedItemList}
                 open={showReInvalidate}
+                multiple
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowReInvalidate)}
                 onClose={() => setShowReInvalidate(false)}
             />
             <InvalidateBulkModal
                 items={checkedItemList}
                 open={showInvalidate}
+                multiple
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowInvalidate)}
                 onClose={() => setShowInvalidate(false)}
             />
             <ChangeOwnerBulkModal
                 items={checkedItemList}
                 open={showChangeOwner}
+                multiple
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowChangeOwner)}
                 onClose={() => setShowChangeOwner(false)}
             />

@@ -9,20 +9,24 @@ import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 
 export interface IReInvalidateBulkModalProps {
     open: boolean
+    multiple?: boolean
     onClose: () => void
     onSubmit: (result: IBulkActionResult) => void
     items: ConfigurationItemUi[]
 }
 
-export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ items, open, onSubmit, onClose }) => {
+export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ items, open, multiple, onSubmit, onClose }) => {
     const { t } = useTranslation()
+
+    const successMessage = multiple ? t('bulkActions.reInvalidate.successList') : t('bulkActions.reInvalidate.success')
+
     const { isLoading, mutateAsync: reInvalidate } = useRecycleInvalidatedCisBiznis({
         mutation: {
             onSuccess() {
-                onSubmit({ isSuccess: true, isError: false, successMessage: t('bulkActions.invalidate.success') })
+                onSubmit({ isSuccess: true, isError: false, successMessage })
             },
             onError() {
-                onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.invalidate.success') })
+                onSubmit({ isSuccess: false, isError: true, successMessage })
             },
         },
     })

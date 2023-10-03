@@ -1,0 +1,156 @@
+{
+    "navMenu": {
+        "publicAuthorities": "Orgány riadenia",
+        "egovComponents": "E-gov Komponenty",
+        "standardization": "Štandardizácia",
+        "dataObjects": "Dátové objekty",
+        "monitoring": "Zostavy a monitoring",
+        "guides": "Postupy a návody",
+        "hide": "Skrt",
+        "show": "Ukáž",
+        "innerNav": "Vnútorná navigácia",
+        "mainNav": "Hlavná navigácia",
+        "reports": "Zoznam zostáv",
+
+        "KRITProgramsProjects": "KRIT, programy, projekty",
+        "referenceIdentifiers": "Referenčné identifikátory",
+
+        "lists": {
+            "processorsOfITDevelopmentConcepts": "Spracovatelia KRIT",
+            "subordinates": "Podriadené osoby",
+            "goals": "Ciele, princípy a KRIT",
+            "programs": "Programy",
+            "projects": "Projekty",
+            "process": "Proces",
+            "endServices": "Koncové služby",
+            "applicationServices": "Aplikačné služby",
+            "isvs": "ISVS",
+            "infrastructures": "Infraštruktúrna služba",
+            "authorities": "Orgány verejnej moci",
+            "otherComponents": "Ostatné komponenty",
+            "standards": "Štandardy ITVS",
+            "procedures": "Osobitné postupy",
+            "commission": "Komisia na štandardizáciu ITVS",
+            "groups": "Pracovné skupiny komisie v pôsobnosti komisie pre štandardizáciu ITVS",
+            "concept": "Tvorba návrhu",
+            "concepts": "Zoznam návrhov predložených prostredníctvom MetaIS",
+            "votes": "Zoznam hlasovaní",
+            "meetings": "Zoznam zasadnutí",
+            "registers": "Referenčné registre",
+            "codelists": "Zoznam číselníkov",
+            "publicCodelists": "Publikované číselníky",
+            "centralModel": "Centrálny dátový model",
+            "licenses": "Licencie",
+            "prud": "Register dátových oprávnení a povinností",
+            "sdg": "Jednotná digitálna brána",
+            "overviews": "Prehľady",
+            "monitoringEnd": "Monitorované parametre KS",
+            "monitoringApp": "Monitorované parametre AS",
+            "monitoringSet": "Zostava monitorovaných parametrov",
+            "monitoringImport": "Import monitorovacích parametrov",
+            "evidenceObjects": "Objekt evidencie",
+            "attributesEvidenceObjects": "Atribút objektu evidencie",
+            "servers": "Servery",
+            "virtualMachines": "Virtuálne stroje",
+            "operationPlace": "Miesto prevádzky",
+            "notInOVM": "Prevádzkovatelia IS, ktorí nie sú orgánmi riadenia",
+
+            "princip": "Princípy",
+            "ciel": "Ciele",
+            "aktivita": "Aktivity",
+            "kris": "Koncepty rozvoja IS",
+            "registersList": "Zoznam referenčných registrov",
+            "registersRequestsList": "Zoznam žiadostí o pridanie referenčného registra",
+            "codelistsRequestsList": "Zoznam žiadostí o pridanie číselníka",
+            "referenceIdentifiersList": "Zoznam referenčných identifikátorov",
+            "referenceIdentifiersRequestsList": "Zoznam žiadostí o pridanie referenčného identifikátora",
+            "personalProcedures": "Osobitný postup",
+            "educationalCourses": "Školenia",
+            "publicAuthorityHierarchy": "Hierarchia orgánov riadenia",
+            "webResidence": "Webové sídlo"
+        }
+    },
+    "navbar": {
+        "skip": "Preskočiť na hlavný obsah",
+        "official": "Oficiálna stránka",
+        "publicAdministration": "verejnej správy SR",
+        "sk": "SK",
+        "e-gov": "e-gov",
+        "domain": "Doména gov.sk je oficálna",
+        "officialSite": "Toto je oficiálna webová stránka orgánu verejnej moci Slovenskej republiky. Oficiálne stránky využívajú najmä doménu gov.sk.",
+        "link": "Odkazy na jednotlivé webové sídla orgánov verejnej moci nájdete na tomto odkaze",
+        "security": "Táto stránka je zabezpečená",
+        "safety": "Buďte pozorní a vždy sa uistite, že zdieľate informácie iba cez zabezpečenú webovú stránku verejnej správy SR.Zabezpečená stránka vždy začína https:// pred názvom domény webového sídla.",
+        "menu": "Menu",
+        "search": "Search",
+        "searchPlaceholder": "Zadajte hľadaný výraz",
+        "eurofonds": "Eurofondy",
+        "development": "Regionálny rozvoj",
+        "info": "Informatizácia",
+        "invest": "Investície",
+        "inovations": "Inovácie",
+        "newItem": "+ Nová položka",
+        "registration": "Registrácia",
+        "login": "Prihlásiť",
+        "logout": "Odhlásiť",
+        "profile": "Profil",
+        "profileImage": "Profilový obrázok",
+        "showInformationAboutSite": "Rozbaľ informácie o stránke",
+        "hideInformationAboutSite": "Skry informácie o stránke",
+        "linksToWebs": "odkazy na webové stránky orgánov verejnej moci",
+        "linkToHomePage": "Odkaz na hlavnú stránku",
+        "ministryName": "Ministerstvo investícií, regionálneho rozvoja a informatizácie SR",
+        "notifications": "Notifikácie",
+        "factChecker": "Fact-checker",
+        "openMenu": "Otvor menu",
+        "closeMenu": "Skry menu"
+    },
+    "languageSelector": {
+        "open": "Rozbaliť jazykové menu",
+        "close": "Skryť jazykové menu"
+    },
+    "language": {
+        "sk": "Slovenčina",
+        "en": "English"
+    },
+    "titles": {
+        "login": "Prihlasovanie"
+    },
+    "breadcrumbs": {
+        "home": "Domov",
+        "prelogin": "Prihlásenie",
+        "login": "Meno a heslo",
+        "loginProblems": "Problémy s prihlásením",
+        "forgottenPassword": "Obnova hesla"
+
+    },
+    "input": {
+        "requiredField": "(povinné)"
+    },
+    "login": {
+        "heading": "Prihlásenie",
+        "name": "Prihlasovacie meno",
+        "password": "Prihlasovacie heslo",
+        "forgottenPassword": "Zabudli ste heslo?",
+        "loginProblems": "Problémy s prihlásením?",
+        "nameError": "Zadali ste nesprávne prihlasovacie meno",
+        "passwordError": "Heslo ktoré ste zadali je nesprávne. Skúste to prosím znova."
+    },
+    "prelogin": {
+        "heading": "Vyberte spôsob prihlásenia",
+        "nameAndPassword": "Meno a heslo",
+        "nameAndPasswordDescription": "Lorem ipsum dolor sit amet consectetur. Duis integer sit lectus consequat .",
+        "eID": "eID",
+        "eIDDescription": "Lorem ipsum dolor sit amet consectetur. Duis integer sit lectus consequat ."
+    },
+    "loginProblems": {
+        "heading": "Máte problémy s prihlásením sa do systému?",
+        "description": "Kontaktujte prosím administrátora e-mailom na"
+    },
+    "forgottenPassword": {
+        "heading": "Zabudli ste svoje heslo?",
+        "description": "Zadajte Vašu emailovú adresu, na ktorú Vám bude doručený odkaz na vytvorenie nového hesla.",
+        "button": "Obnoviť heslo",
+        "email": "Emailová adresa"
+    }
+}
