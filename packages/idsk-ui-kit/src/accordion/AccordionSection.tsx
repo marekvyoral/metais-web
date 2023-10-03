@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { IAccordionSection } from './Accordion'
 import styles from './accordion.module.scss'
 
-import { AlertTriangleIcon } from '@isdd/idsk-ui-kit/assets/images'
+import { AlertTriangleIcon, ArrowDownIcon } from '@isdd/idsk-ui-kit/assets/images'
 
 type Props = {
     index: number
@@ -12,6 +12,8 @@ type Props = {
     setExpandedSectionIndexes: React.Dispatch<React.SetStateAction<boolean[]>>
     expandedSectionIndexes: boolean[]
     id: string
+    isSmall?: boolean
+    shouldNotUnMountContent?: boolean
 }
 
 const newExpandedSectionIndexes = (newValue: boolean, index: number, oldArray: boolean[]) => {
@@ -20,7 +22,15 @@ const newExpandedSectionIndexes = (newValue: boolean, index: number, oldArray: b
     return newArr
 }
 
-export const AccordionSection = ({ index, section, setExpandedSectionIndexes, expandedSectionIndexes, id }: Props) => {
+export const AccordionSection = ({
+    index,
+    section,
+    setExpandedSectionIndexes,
+    expandedSectionIndexes,
+    id,
+    isSmall,
+    shouldNotUnMountContent,
+}: Props) => {
     const isExpanded = expandedSectionIndexes[index]
     useEffect(() => {
         if (section?.onLoadOpen) setExpandedSectionIndexes(newExpandedSectionIndexes(true, index, expandedSectionIndexes))
@@ -33,10 +43,15 @@ export const AccordionSection = ({ index, section, setExpandedSectionIndexes, ex
     const buttonId = `${id}-heading-${index + 1}`
     return (
         <div key={index} className={classNames('govuk-accordion__section', { 'govuk-accordion__section--expanded': isExpanded })}>
-            <div className={classNames('govuk-accordion__section-header', styles.headerDiv)}>
+            <div
+                className={classNames('govuk-accordion__section-header', styles.headerDiv, {
+                    [styles.noBorder]: isSmall,
+                    [styles.noPaddingRight]: isSmall,
+                })}
+            >
                 <h3 className="govuk-accordion__section-heading">
                     <button
-                        className="govuk-accordion__section-button"
+                        className={classNames('govuk-accordion__section-button', { [styles.smallHeading]: isSmall })}
                         type="button"
                         aria-expanded={isExpanded}
                         aria-controls={id + index}
@@ -46,14 +61,32 @@ export const AccordionSection = ({ index, section, setExpandedSectionIndexes, ex
                         {section.title}
                     </button>
 
-                    <span className="govuk-accordion__icon" onClick={onToggle} />
+                    {!isSmall && <span className="govuk-accordion__icon" onClick={onToggle} />}
                 </h3>
-
-                <div className="govuk-accordion__section-summary govuk-body">{section.summary}</div>
-                {section.error && <img src={AlertTriangleIcon} />}
+                <div className={styles.flex}>
+                    <div
+                        className={classNames('govuk-accordion__section-summary govuk-body', styles.noMarginTop, {
+                            [styles.smallSummary]: isSmall,
+                        })}
+                    >
+                        {section.summary}
+                    </div>
+                    {section.error && <img src={AlertTriangleIcon} />}
+                    {isSmall && (
+                        <img
+                            className={classNames(styles.arrowDownIcon, { [styles.rotate180]: isExpanded })}
+                            src={ArrowDownIcon}
+                            onClick={onToggle}
+                        />
+                    )}
+                </div>
             </div>
-            <div className="govuk-accordion__section-content" id={id + index} aria-labelledby={buttonId}>
-                {isExpanded ? section.content : null}
+            <div
+                className={classNames('govuk-accordion__section-content', { [styles.noPadding]: isSmall })}
+                id={id + index}
+                aria-labelledby={buttonId}
+            >
+                {shouldNotUnMountContent ? section.content : isExpanded ? section.content : null}
             </div>
         </div>
     )

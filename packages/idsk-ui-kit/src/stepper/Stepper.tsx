@@ -19,7 +19,14 @@ interface IStepper {
 }
 
 export const Stepper: React.FC<IStepper> = ({ description, stepperList, subtitleTitle }) => {
-    const [sectionArray, setSectionArray] = useState(() => Array<StepperArrayEnum>(stepperList.length).fill(StepperArrayEnum.CLOSED))
+    const defaultArray = Array<StepperArrayEnum>(stepperList.length).fill(StepperArrayEnum.CLOSED)
+    if (stepperList) {
+        stepperList.map((item, index) => {
+            if (item.isOpen) defaultArray[index] = StepperArrayEnum.EXPANDED
+        })
+    }
+
+    const [sectionArray, setSectionArray] = useState(defaultArray)
 
     return (
         <>

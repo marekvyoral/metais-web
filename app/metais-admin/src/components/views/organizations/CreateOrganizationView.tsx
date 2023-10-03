@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { useState } from 'react'
 
 import styles from './findView.module.scss'
 import { useCreateOrganization } from './hooks/useCreateOrganization'
@@ -12,16 +13,23 @@ import { ICreateOrganizationView } from '@/components/containers/organizations/C
 export const CreateOrganizationView = (props: ICreateOrganizationView) => {
     const { t } = useTranslation()
     const { ico } = useParams()
+    const [isSubmit, setSubmit] = useState<boolean>(false)
+    const [isSubmitLoading, setSubmitLoading] = useState<boolean>(false)
 
     const { onSubmit, formMethods, isTypePersonDisabled, personCategoriesOptions, personTypesOptions, sourcesOptions, replicationTypesOptions } =
-        useCreateOrganization(props)
+        useCreateOrganization(props, setSubmit, setSubmitLoading)
 
     const { formState, register, handleSubmit, setValue } = formMethods
+
     return (
-        <QueryFeedback loading={props.isLoading} error={false} withChildren>
+        <QueryFeedback
+            loading={props.isLoading || isSubmitLoading}
+            error={props.isError}
+            indicatorProps={{ label: isSubmit ? t('organizations.create.savingPO') : t('loading.loadingSubPage') }}
+            withChildren
+        >
             <FlexColumnReverseWrapper>
                 <h1>{ico ? t('organizations.create.addNewOrganization') : t('organizations.edit.updateExistingOrganization')}</h1>
-                {props.isError && <QueryFeedback error={props.isError} loading={false} />}
             </FlexColumnReverseWrapper>
             <div className={styles.form}>
                 <form onSubmit={handleSubmit(onSubmit)}>

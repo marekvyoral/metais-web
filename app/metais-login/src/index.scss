@@ -1,0 +1,16 @@
+$govuk-global-styles: true;
+
+@import '@id-sk/frontend/idsk/all';
+
+@import 'utils.scss';
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.marginBottom0 {
+    margin-bottom: govuk-spacing(0) !important;
+}

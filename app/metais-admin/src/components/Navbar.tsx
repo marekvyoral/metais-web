@@ -33,7 +33,10 @@ export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
         path: '/public-authorities',
         icon: InstructionsIcon,
         subItems: [
-            { title: t('navMenu.publicAuthorities.publicAuthorities'), path: '/public-authorities/list' },
+            {
+                title: t('navMenu.publicAuthorities.publicAuthorities'),
+                path: AdminRouteNames.ORGANIZATIONS,
+            },
             { title: t('navMenu.publicAuthorities.massActualizations'), path: '/public-authorities/mass-updates' },
         ],
     },
@@ -90,7 +93,11 @@ export const getAdminNavItems = (t: TFunction): NavigationItem[] => [
     { title: t('navMenu.templateReferenceIdentifiersManagement'), path: AdminRouteNames.TEMPLATE_REFERENCE_IDENTIFIERS, icon: InstructionsIcon },
 ]
 
-export const Navbar: React.FC = () => {
+type NavbarProps = {
+    isAdmin?: boolean
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
     const { t } = useTranslation()
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
     const [showDropDown, setShowDropDown] = useState<boolean>(false)
@@ -105,7 +112,7 @@ export const Navbar: React.FC = () => {
                     <div className="idsk-header-web__tricolor" />
 
                     <NavBarHeader setShowDropDown={setShowDropDown} showDropDown={showDropDown} />
-                    <NavBarMain isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} />
+                    <NavBarMain isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} isAdmin={isAdmin} />
                     <NavMenu isMenuExpanded={isMenuExpanded} setIsMenuExpanded={setIsMenuExpanded} navItems={getAdminNavItems(t)} />
                 </div>
             </header>

@@ -10,20 +10,24 @@ import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 
 export interface IChangeOwnerBulkModalProps {
     open: boolean
+    multiple?: boolean
     onClose: () => void
     onSubmit: (result: IBulkActionResult) => void
     items: ConfigurationItemUi[]
 }
 
-export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ items, open, onSubmit, onClose }) => {
+export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ items, open, multiple, onSubmit, onClose }) => {
     const { t } = useTranslation()
+
+    const successMessage = multiple ? t('bulkActions.changeOwner.successList') : t('bulkActions.changeOwner.success')
+
     const { isLoading, mutateAsync: changeOwner } = useChangeOwnerSet({
         mutation: {
             onSuccess() {
-                onSubmit({ isSuccess: true, isError: false, successMessage: t('bulkActions.invalidate.success') })
+                onSubmit({ isSuccess: true, isError: false, successMessage })
             },
             onError() {
-                onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.invalidate.success') })
+                onSubmit({ isSuccess: false, isError: true, successMessage })
             },
         },
     })
@@ -65,6 +69,7 @@ export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ ite
                 onChangeRole={setSelectedRoleId}
                 selectedOrg={selectedOrg}
                 selectedRoleId={selectedRoleId}
+                multiple={multiple}
             />
         </BaseModal>
     )

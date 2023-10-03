@@ -66,7 +66,7 @@ export const useBulkAction = () => {
                 return onError()
             }
         } catch (e) {
-            setErrorMessage(t('tooltip.rights.notFondPO'))
+            setErrorMessage(t('tooltip.rights.notFoundPO'))
             return onError()
         } finally {
             setBulkLoading(false)
@@ -99,7 +99,7 @@ export const useBulkAction = () => {
                 return onError()
             }
         } catch (e) {
-            setErrorMessage(t('tooltip.rights.notFondPO'))
+            setErrorMessage(t('tooltip.rights.notFoundPO'))
             return onError()
         } finally {
             setBulkLoading(false)
@@ -127,7 +127,7 @@ export const useBulkAction = () => {
                 return onError()
             }
         } catch (e) {
-            setErrorMessage(t('tooltip.rights.notFondPO'))
+            setErrorMessage(t('tooltip.rights.notFoundPO'))
             return onError()
         } finally {
             setBulkLoading(false)

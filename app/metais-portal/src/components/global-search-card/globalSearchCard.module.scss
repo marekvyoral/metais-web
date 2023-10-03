@@ -1,0 +1,16 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.row {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    dd {
+        margin: 0;
+    }
+}
+.bold {
+    font-weight: bold !important;
+}
+.noMargin {
+    margin: govuk-spacing(1) !important;
+}

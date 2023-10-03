@@ -11,12 +11,13 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 interface Props {
     importantEntityName?: string
+    noSideMenu?: boolean
 }
 export interface CIFilterData extends IFilterParams {
     Gen_Profil_nazov?: string
     Gen_Profil_kod_metais?: string
 }
-const CiListPage: React.FC<Props> = ({ importantEntityName }) => {
+const CiListPage: React.FC<Props> = ({ importantEntityName, noSideMenu }) => {
     const { entityName: ciType } = useParams()
     const { t } = useTranslation()
     document.title = `${t('titles.ciList', { ci: ciType })} | MetaIS`
@@ -35,7 +36,7 @@ const CiListPage: React.FC<Props> = ({ importantEntityName }) => {
                 />
             )}
 
-            <MainContentWrapper>
+            <MainContentWrapper noSideMenu={noSideMenu}>
                 <AttributesContainer
                     entityName={entityName}
                     View={({
