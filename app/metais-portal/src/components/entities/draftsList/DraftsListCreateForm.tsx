@@ -27,7 +27,7 @@ interface CreateForm {
 const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: CreateForm) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { register, handleSubmit, setValue, watch } = useForm({
+    const { register, handleSubmit, setValue, watch, getValues } = useForm({
         defaultValues: {
             ...data?.defaultData,
         },
@@ -61,6 +61,7 @@ const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: CreateForm
                     name={'srDescription1'}
                     label={getInfoGuiProfilStandardRequest('srDescription1', data?.guiAttributes)}
                     info={getInfoGuiProfilStandardRequest('srDescription1', data?.guiAttributes)}
+                    value={getValues('srDescription1')}
                     isRequired
                 />
                 <RichTextQuill
@@ -69,30 +70,35 @@ const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: CreateForm
                     name={'proposalDescription2'}
                     label={getInfoGuiProfilStandardRequest('proposalDescription2', data?.guiAttributes)}
                     info={getInfoGuiProfilStandardRequest('proposalDescription2', data?.guiAttributes)}
+                    value={getValues('proposalDescription2')}
                 />
                 <RichTextQuill
                     setValue={setValue}
                     name={'proposalDescription3'}
                     label={getInfoGuiProfilStandardRequest('proposalDescription3', data?.guiAttributes)}
                     info={getInfoGuiProfilStandardRequest('proposalDescription3', data?.guiAttributes)}
+                    value={getValues('proposalDescription3')}
                 />
                 <RichTextQuill
                     setValue={setValue}
                     name={'impactDescription1'}
                     label={getInfoGuiProfilStandardRequest('impactDescription1', data?.guiAttributes)}
                     info={getInfoGuiProfilStandardRequest('impactDescription1', data?.guiAttributes)}
+                    value={getValues('impactDescription1')}
                 />
                 <RichTextQuill
                     setValue={setValue}
                     name={'impactDescription5'}
                     label={getInfoGuiProfilStandardRequest('impactDescription5', data?.guiAttributes)}
                     info={getInfoGuiProfilStandardRequest('impactDescription5', data?.guiAttributes)}
+                    value={getValues('impactDescription5')}
                 />
                 <RichTextQuill
                     setValue={setValue}
                     name={'impactDescription7'}
                     label={getInfoGuiProfilStandardRequest('impactDescription7', data?.guiAttributes)}
                     info={getInfoGuiProfilStandardRequest('impactDescription7', data?.guiAttributes)}
+                    value={getValues('impactDescription7')}
                 />
                 <DraftsListAttachmentsZone
                     attachements={attachements}

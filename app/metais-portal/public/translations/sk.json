@@ -684,6 +684,8 @@
             "noSelectedList": "Neboli vybrané žiadne položky, nie je možné vykonať vybranú operáciu.",
             "invalidSelectedList": "Niektoré z vami vybraných položiek sú zneplatnené, nie je možné nad nimi vykonať vybranú operáciu.",
             "validSelectedList": "Niektoré z vami vybraných položiek sú platné, nie je možné nad nimi vykonať vybranú operáciu.",
+            "invalidItem": "Položka je zneplatnená, nie je možné nad ňou vykonať vybranú operáciu.",
+            "validItem": "Položka je platná, nie je možné nad ňou vykonať vybranú operáciu.",
             "notFoundPO": "Chyba pri získávaní informácií o právach - pre dané položke nebola nájdená povinná osoba."
         }
     },
@@ -695,7 +697,7 @@
             "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
             "reason": "Poznámka / Dôvod",
             "updateFile": "Aktualizácia dokumentu",
-            "success": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o aktualizácí dokumentov."
+            "successList": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o aktualizácí dokumentov."
         },
         "deleteFile": {
             "title": "Zmazanie dokumentov",
@@ -707,25 +709,30 @@
             "success": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o odstránení dokumentov."
         },
         "invalidate": {
-            "title": "Zneplatnenie položiek",
+            "title": "Zneplatnenie položky",
+            "titleList": "Zneplatnenie položiek",
             "warningText": "Vybrané záznamy budú zneplatnené. Nebude ich možné editovať, ani nad nimi vykonávať ďalšie operácie.Ich zneplatnením sa zneplatnia aj všetky vzťahy k ostatným entitám (službám a pod.)",
             "listText": "Chystáte sa zneplatniť tieto vybrané záznamy ({{count}}):",
             "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
             "reason": "Poznámka / Dôvod zneplatnenia",
             "invalidate": "Zneplatnenie",
-            "success": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o zneplatnení."
+            "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o zneplatnení.",
+            "successList": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o zneplatnení."
         },
         "reInvalidate": {
-            "title": "Splatňovanie položiek",
+            "title": "Splatňovanie položky",
+            "titleList": "Splatňovanie položiek",
             "warningText": "Vybrané záznamy budú splatnené. Vzťahy, ktoré obsahujú, nebudú zmenené.",
             "listText": "Chystáte sa splatniť tieto vybrané záznamy ({{count}}):",
             "newWindowText": "Zobraziť celý zoznam inštancií a ich vzťahov (do nového okna)",
             "reason": "Poznámka / Dôvod zneplatnenia:",
             "reInvalidate": "Splatnenie",
-            "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o splatnení."
+            "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o splatnení.",
+            "successList": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o splatnení."
         },
         "changeOwner": {
             "title": "Zmena vlastníka",
+            "titleList": "Zmena vlastníka",
             "reason": "Dôvod zmeny",
             "changeDescription": "Popis zmeny",
             "changeType": "Typ zmeny",
@@ -742,7 +749,8 @@
                 "changeCmdbItemAndRelatedCmdbItems": "Zmeniť všetky položky bez ohľadu na rozdieľnosť vlastníka",
                 "changeCmdbItem": "Zmeniť len vlastníka vybraných položiek, nemeniť vlastníka relácií"
             },
-            "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o zmene vlastníka."
+            "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o zmene vlastníka.",
+            "successAll": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o zmene vlastníka."
         }
     },
     "breadcrumbs": {
@@ -947,5 +955,42 @@
     },
     "input": {
         "requiredField": "(povinné)"
+    },
+    "globalSearch": {
+        "header": "Výsledky vyhľadávania pre {{item}}",
+        "numberOfResults": "{{count}} výsledkov",
+        "code": "Kód",
+        "state": "Stav",
+        "filter": {
+            "updateDate": "Dátum aktualizácie",
+            "today": "Dnes",
+            "thisWeek": "Tento týždeň",
+            "thisMonth": "Tento mesiac",
+            "thisYear": "Tento rok",
+            "customRange": "Vlastný rozsah",
+            "fromUpdate": "Aktualizované od",
+            "toUpdate": "Aktualizované do",
+
+            "selected": "{{count}} vybrané",
+
+            "resultType": "Typ výsledku",
+            "attribute": "Atribút",
+            "document": "Dokument",
+            "object": "Objekt",
+            "relation": "Vzťah",
+
+            "section": "Sekcia",
+            "all": "Všetky",
+
+            "owner": "Vlastník",
+
+            "documentType": "Typ dokumentu",
+            "pdf": "PDF",
+            "docx": "DOCX",
+            "rtf": "RTF",
+            "otd": "OTD",
+
+            "submitButton": "Filtrovať výsledky"
+        }
     }
 }

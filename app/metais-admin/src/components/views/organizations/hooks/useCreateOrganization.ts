@@ -53,11 +53,11 @@ interface iUseCreateOrganizationOutput {
     >
 }
 
-export const useCreateOrganization = ({
-    data: { personCategories, personTypes, sources, organizationData, replications },
-    storePO,
-    updatePO,
-}: ICreateOrganizationView): iUseCreateOrganizationOutput => {
+export const useCreateOrganization = (
+    { data: { personCategories, personTypes, sources, organizationData, replications }, storePO, updatePO }: ICreateOrganizationView,
+    setSubmit: React.Dispatch<React.SetStateAction<boolean>>,
+    setSubmitLoading: React.Dispatch<React.SetStateAction<boolean>>,
+): iUseCreateOrganizationOutput => {
     const { ico, entityId } = useParams()
     const { t } = useTranslation()
     const generatedFormSchema = generateCreateOrganizationSchema(t)
@@ -77,9 +77,12 @@ export const useCreateOrganization = ({
 
     const onSubmit = useCallback(
         async (formValues: FieldValues) => {
+            setSubmit(true)
+            setSubmitLoading(true)
             const sanitizedAttributes = removeEmptyAttributes(formValues)
             if (!ico && entityId) {
-                updatePO(entityId, {
+                setSubmitLoading(false)
+                await updatePO(entityId, {
                     type: 'PO',
                     uuid: entityId,
                     attributes: sanitizedAttributes,
@@ -89,10 +92,11 @@ export const useCreateOrganization = ({
                 const relId = await getUUID()
                 const poID = await getUUID()
                 const newPOElement = createNewPOElement(relId, poID, newGroup, sanitizedAttributes)
-                storePO(newPOElement, poID, relId)
+                setSubmitLoading(false)
+                await storePO(newPOElement, poID, relId)
             }
         },
-        [getUUID, roleOrgGroup, storePO, ico, updatePO, entityId],
+        [setSubmit, setSubmitLoading, ico, entityId, updatePO, roleOrgGroup, getUUID, storePO],
     )
 
     const personCategoriesOptions = [

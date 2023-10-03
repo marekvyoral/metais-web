@@ -376,6 +376,8 @@
         }
     },
     "mutationFeedback": {
+        "runMutationSuccess": "Script successfully executed",
+        "runMutationError": "Script execution failed, check the validity of the code",
         "successfulUpdated": "The item was successfully changed",
         "successfulCreated": "The item was successfully created",
         "changeOwner": "Change owner",
@@ -415,6 +417,9 @@
             "egov": "Management of eGov components",
             "entity": "Entities",
             "profiles": "Attribute profiles",
+            "relations": "Relations",
+            "roleManagement": "Role management",
+            "reports": "Reports",
             "relations": "Relations"
         },
         "eko": "EKO codes",
@@ -523,7 +528,9 @@
         "queryErrorTitle": "Error occured",
         "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator by e-mail at ",
         "mutationErrorTitle": "Action failed",
-        "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at"
+        "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at",
+        "executingScript": "Executing script",
+        "saving": "Saving..."
     },
     "adminRolesPage": {
         "addNewRole": "Add new role",
@@ -564,7 +571,9 @@
             "cancel": "Cancel",
             "createNew": "Create new organization",
             "icoRequired": "Identification number is required",
-            "icoRegex": "Identification number is in incorrect format. Correct format is '00000000' or '000000000000'"
+            "icoExist": "Organization with this identification number already exist",
+            "icoRegex": "Identification number is in incorrect format. Correct format is '00000000' or '000000000000'",
+            "loading": "Searching identification number"
         },
         "edit": {
             "updateExistingOrganization": "Edit organization"
@@ -600,7 +609,8 @@
                 "name": "Name",
                 "lastName": "Last name",
                 "titleAfterName": "Title after name"
-            }
+            },
+            "savingPO": "Saving organization"
         },
         "assigned": {
             "heading": "Assign organization to superior organization",
@@ -694,6 +704,43 @@
         "loadingSubPage": "Loading sub-page",
         "export": "Preparing export"
     },
+    "report": {
+        "language": "Language",
+        "category": "Category",
+        "description": "Description",
+        "publishedTrue": "Published",
+        "publishedFalse": "Unpublished",
+        "detail": {
+            "name": "Name",
+            "identificator": "Identificator",
+            "state": "State",
+            "script": "Script",
+            "runScript": "Run script",
+            "results": "Script results",
+            "addParameter": "Add parameter",
+            "save": "Save"
+        },
+        "cards": {
+            "identificator": "Parameter identificator",
+            "parameterType": "Parameter type",
+            "name": "Parameter name",
+            "defaultValue": "Default value",
+            "required": "Required parameter",
+            "additionalParams": "Additional parameters"
+        },
+        "table": {
+            "identificator": "Identificator",
+            "name": "Name",
+            "description": "Description",
+            "category": "Category",
+            "published": "Published",
+            "actions": "Actions"
+        },
+        "filter": {
+            "category": "Category"
+        },
+        "newReport": "New report"
+    },
     "requestList": {
         "title": "Request list",
         "registrationLitle": "List of registrations",
@@ -746,7 +793,10 @@
         "noName": "No name",
         "ciCreate": "Create configuration item",
         "newRelation": "Add new relation of {{itemName}}",
-        "newCiAndRelation": "Add new item and relation for {{itemName}}"
+        "newCiAndRelation": "Add new item and relation for {{itemName}}",
+        "reports-management": "Reports management",
+        "reportsCreate": "New report",
+        "reportsEdit": "Edit report"
     },
     "userProfile": {
         "heading": "Profile and rights",
@@ -769,5 +819,8 @@
         "userPreferencesSuccess": "Personal preferences were successfully saved",
         "changedUserInformation": "Personal information were successfully changed",
         "changedUserInformationError": "Error occurred while changing personal information. Please try again."
+    },
+    "validation": {
+        "required": "This field is required"
     }
 }

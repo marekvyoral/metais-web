@@ -27,7 +27,7 @@ export const HeaderDropDown: React.FC<IHeaderDropDown> = ({ showDropDown }) => {
                                 className="govuk-link"
                                 to="https://www.slovensko.sk/sk/agendy/agenda/_organy-verejnej-moci"
                                 target="_blank"
-                                title={t('navbar.linksToWebs')}
+                                title={t('navbar.linksToWebs') ?? ''}
                                 rel="noreferrer"
                                 state={{ from: location }}
                             >

@@ -28,22 +28,20 @@ const UserPreferencesProvider: React.FC<React.PropsWithChildren> = ({ children }
     const {
         state: { user },
     } = useAuth()
-    if (user?.login) {
-        const storedPreferences = localStorage.getItem(META_PREFERENCES_KEY + user.login)
-        const currentPreferences: IUserPreferences = storedPreferences ? JSON.parse(storedPreferences) : {}
 
-        const updateUserPreferences = (preferencesData: IUserPreferences) => {
-            try {
-                localStorage.setItem(META_PREFERENCES_KEY + user.login, JSON.stringify(preferencesData))
-                return UpdatePreferencesReturnEnum.SUCCESS
-            } catch {
-                return UpdatePreferencesReturnEnum.ERROR
-            }
+    const storedPreferences = localStorage.getItem(META_PREFERENCES_KEY + user?.login)
+    const currentPreferences: IUserPreferences = storedPreferences ? JSON.parse(storedPreferences) : {}
+
+    const updateUserPreferences = (preferencesData: IUserPreferences) => {
+        try {
+            localStorage.setItem(META_PREFERENCES_KEY + user?.login, JSON.stringify(preferencesData))
+            return UpdatePreferencesReturnEnum.SUCCESS
+        } catch {
+            return UpdatePreferencesReturnEnum.ERROR
         }
-        return <UserPreferences.Provider value={{ currentPreferences, updateUserPreferences }}>{children}</UserPreferences.Provider>
     }
 
-    return <>{children}</>
+    return <UserPreferences.Provider value={{ currentPreferences, updateUserPreferences }}>{children}</UserPreferences.Provider>
 }
 
 const useUserPreferences = () => useContext(UserPreferences)
