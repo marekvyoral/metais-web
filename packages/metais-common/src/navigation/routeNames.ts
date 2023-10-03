@@ -108,11 +108,20 @@ export enum NavigationSubRoutes {
     WEBOVE_SIDLO = '/todo',
 }
 
+export enum AdminRouteRoles {
+    ADMIN = 'R_ADMIN',
+    HKO = 'R_HKO',
+    METAIS = 'R_METAIS',
+    LM = 'LIC_LM_UPVII',
+    GDPR = 'GDPR',
+    STD_KA = 'STD_KOORDINATOR_AGENDY',
+}
 export interface NavigationSubItem {
     title: string
     path: string
     isLoginRequired?: boolean
     subItems?: NavigationSubItem[]
+    role?: AdminRouteRoles[]
 }
 
 export interface NavigationItem {
@@ -120,4 +129,5 @@ export interface NavigationItem {
     path: string
     icon?: string
     subItems?: NavigationSubItem[]
+    role?: AdminRouteRoles[]
 }

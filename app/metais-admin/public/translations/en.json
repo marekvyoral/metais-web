@@ -419,8 +419,7 @@
             "profiles": "Attribute profiles",
             "relations": "Relations",
             "roleManagement": "Role management",
-            "reports": "Reports",
-            "relations": "Relations"
+            "reports": "Reports"
         },
         "eko": "EKO codes",
         "tooltips": "Tooltips",
@@ -822,5 +821,8 @@
     },
     "validation": {
         "required": "This field is required"
+    },
+    "homePage": {
+        "placeholder": "Home - login to see navigation items"
     }
 }
