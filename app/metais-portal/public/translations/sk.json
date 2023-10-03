@@ -924,7 +924,8 @@
         },
         "detail": {
             "noDocuments": "Nie sú priložené žiadne dokumenty",
-            "assignedToGroup": "Pridelený skupine"
+            "assignedToGroup": "Pridelený skupine",
+            "missingRejectReason": "Nebol zadaný dôvod zrušenia"
         },
         "create": {
             "heading": "Tvorba návrhu",

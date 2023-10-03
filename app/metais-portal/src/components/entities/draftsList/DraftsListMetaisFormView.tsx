@@ -17,12 +17,16 @@ interface Props {
 const DraftsListFormView: React.FC<Props> = ({ data, guiAttributes, workGroup }) => {
     const { t } = useTranslation()
 
-    const linkElements = data?.links?.map((link) => (
-        <Link key={link.id} to={link?.url ?? ''} state={{ from: location }} target="_blank" className="govuk-link">
-            {link?.name as string}
-            <br />
-        </Link>
-    ))
+    const linkElements = data?.links?.map(
+        (
+            link, //todo this should be only show in state requested
+        ) => (
+            <Link key={link.id} to={link?.url ?? ''} state={{ from: location }} target="_blank" className="govuk-link">
+                {link?.name as string}
+                <br />
+            </Link>
+        ),
+    )
     // todo upresnit tieto downloady
     // const attachmentElements = data?.attachments?.map((attachment) => (
     //     <Link key={attachment.id} to={attachment?.id} state={{ from: location }} target="_blank" className="govuk-link">
@@ -34,6 +38,7 @@ const DraftsListFormView: React.FC<Props> = ({ data, guiAttributes, workGroup })
     const relatedDocuments = linkElements && linkElements?.length > 0 ? <>{...linkElements}</> : <> {t('DraftsList.detail.noDocuments')}</>
     const isVersion2 = data?.version === 2
     const showWorkGroup = data?.standardRequestState === 'ASSIGNED'
+    const showActionDesription = data?.standardRequestState === 'REJECTED'
     return (
         <div>
             <InformationGridRow
@@ -79,7 +84,7 @@ const DraftsListFormView: React.FC<Props> = ({ data, guiAttributes, workGroup })
                     />
 
                     <InformationGridRow
-                        key={ATTRIBUTE_NAME.srDescription1} //todo, what about the other srDescriptions
+                        key={ATTRIBUTE_NAME.srDescription1}
                         label={getLabelGuiProfilStandardRequest(ATTRIBUTE_NAME.srDescription1, guiAttributes) ?? ''}
                         value={<span key={ATTRIBUTE_NAME.srDescription1} dangerouslySetInnerHTML={{ __html: data?.srDescription1 ?? '' }} />}
                         tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.srDescription1, guiAttributes) ?? ''}
@@ -101,7 +106,16 @@ const DraftsListFormView: React.FC<Props> = ({ data, guiAttributes, workGroup })
                                 />
                             )
                     })}
+                    {/* todo: here should be attachments, according to legacy ui, not sure why should be there 2 separate fields for download */}
                 </>
+            )}
+            {showActionDesription && (
+                <InformationGridRow
+                    key={API_STANDARD_REQUEST_ATTRIBUTES.actionDesription}
+                    label={getLabelGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.actionDesription, guiAttributes) ?? ''}
+                    value={data?.actionDesription ?? t('DraftsList.detail.missingRejectReason')}
+                    tooltip={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.actionDesription, guiAttributes) ?? ''}
+                />
             )}
             {isVersion2 &&
                 customAttributesForVersion2.map((attribute) => {

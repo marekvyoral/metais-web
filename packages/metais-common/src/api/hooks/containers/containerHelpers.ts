@@ -211,6 +211,8 @@ export const guiProfilStandardRequestMap = new Map<string, string>([
     //['Gui_Profil_Standardy_std_proposal_description', 'proposalDescription1'],
     // ['Gui_Profil_Standardy_std_proposal_intended_location', 'proposalDescription2'],
     ['Gui_Profil_Standardy_std_proposal_own_legislative_text', 'proposalDescription3'],
+
+    ['Gui_Profil_Standardy_std_proposal_denial_reason', 'actionDesription'],
 ])
 
 export const getLabelGuiProfilStandardRequest = (attributeName: string, attributes?: Attribute[]) => {

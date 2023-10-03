@@ -918,7 +918,8 @@
         },
         "detail": {
             "noDocuments": "No documents attached",
-            "assignedToGroup": "Assigned to PS"
+            "assignedToGroup": "Assigned to PS",
+            "missingRejectReason": "Reject reason is missing"
         }
     },
     "input": {

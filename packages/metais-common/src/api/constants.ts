@@ -107,6 +107,7 @@ export enum API_STANDARD_REQUEST_ATTRIBUTES {
     srDescription4 = 'srDescription4',
     srDescription5 = 'srDescription5',
     srDescription6 = 'srDescription6',
+    actionDesription = 'actionDesription',
 }
 
 export const Gen_Profil = 'Gen_Profil'
