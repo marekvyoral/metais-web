@@ -923,7 +923,8 @@
             "workGroupId": "Pracovná skupina"
         },
         "detail": {
-            "noDocuments": "Nie sú priložené žiadne dokumenty"
+            "noDocuments": "Nie sú priložené žiadne dokumenty",
+            "assignedToGroup": "Pridelený skupine"
         },
         "create": {
             "heading": "Tvorba návrhu",

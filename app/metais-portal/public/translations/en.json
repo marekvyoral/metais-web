@@ -917,7 +917,8 @@
             "workGroupId": "Assigned working group"
         },
         "detail": {
-            "noDocuments": "No documents attached"
+            "noDocuments": "No documents attached",
+            "assignedToGroup": "Assigned to PS"
         },
         "createForm": {
             "heading": "Draft name",

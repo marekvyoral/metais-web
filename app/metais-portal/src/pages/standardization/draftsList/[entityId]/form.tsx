@@ -23,7 +23,7 @@ const DraftDetail: React.FC = () => {
     const { entityId } = useParams()
     return (
         <DraftsListFormContainer
-            View={({ data, isLoading, isError, guiAttributes }) => {
+            View={({ data, isLoading, isError, guiAttributes, workGroup }) => {
                 return (
                     <>
                         <StandardDraftsListPermissionsWrapper
@@ -46,7 +46,7 @@ const DraftDetail: React.FC = () => {
                                             <>
                                                 {!isLoading && <DraftsListIdHeader entityId={entityId ?? ''} entityItemName={data?.srName ?? ''} />}
 
-                                                <DraftsListFormView data={data} guiAttributes={guiAttributes} />
+                                                <DraftsListFormView data={data} guiAttributes={guiAttributes} workGroup={workGroup} />
                                             </>
                                         </DraftsListStateMachineWrapper>
                                     </QueryFeedback>
