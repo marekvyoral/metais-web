@@ -5,9 +5,7 @@ import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-
-import styles from './ciEntityHeader.module.scss'
-
+import styles from '@isdd/metais-common/components/entity-header/ciEntityHeader.module.scss'
 interface Props {
     entityName: string
     entityId: string

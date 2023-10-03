@@ -2,16 +2,19 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit'
 import { QueryFeedback } from '@isdd/metais-common'
+import { useParams } from 'react-router-dom'
 
 import { DraftsListFormContainer } from '../../../../components/entities/draftsList/DraftsListFormContainer'
 import DraftsListFormView from '../../../../components/entities/draftsList/DraftsListMetaisFormView'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { DraftsListIdHeader } from '@/components/entities/draftsList/DraftsListIdHeader'
 const DraftDetail: React.FC = () => {
     const { t } = useTranslation()
+    const { entityId } = useParams()
     return (
         <DraftsListFormContainer
-            View={(props) => {
+            View={({ data, isLoading, isError, guiAttributes }) => {
                 return (
                     <>
                         <BreadCrumbs
@@ -22,9 +25,15 @@ const DraftDetail: React.FC = () => {
                             ]}
                         />
                         <MainContentWrapper>
-                            <TextHeading size="L">{props?.data?.srName}</TextHeading>
-                            <QueryFeedback loading={props.isLoading} error={false} withChildren>
-                                <DraftsListFormView data={props?.data} guiAttributes={props.guiAttributes} />
+                            <DraftsListIdHeader
+                                entityId={entityId ?? ''}
+                                entityItemName={data?.srName ?? ''}
+                                isLoading={isLoading}
+                                isError={isError}
+                            />
+                            {/* <TextHeading size="L">{props?.data?.srName}</TextHeading> */}
+                            <QueryFeedback loading={isLoading} error={false} withChildren>
+                                <DraftsListFormView data={data} guiAttributes={guiAttributes} />
                             </QueryFeedback>
                         </MainContentWrapper>
                     </>
