@@ -920,6 +920,31 @@
             "noDocuments": "No documents attached",
             "assignedToGroup": "Assigned to PS",
             "missingRejectReason": "Reject reason is missing"
+        },
+        "createForm": {
+            "heading": "Draft name",
+            "submit": "Add draft",
+            "cancel": "Cancel",
+            "attachments": {
+                "heading": "Documents",
+                "subHeading": "Add links on documents",
+                "attachmentDescription": "Document description",
+                "attachmentType": "Type of document",
+                "attachmentId": "Link on document",
+                "attachmentSize": "Document size",
+                "andOrAddFile": "And/Or upload documents",
+                "addNewAttachment": "Add another document"
+            }
+        },
+        "header": {
+            "confluenceDocs": "Insert into confluence",
+            "ACCEPTED": "Mark draft as processed",
+            "REJECTED": "Reject draft",
+            "ASSIGNED": "Add into working group",
+            "changeState": {
+                "description": "Reason",
+                "submit": "Submit form"
+            }
         }
     },
     "input": {

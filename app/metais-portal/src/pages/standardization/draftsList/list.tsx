@@ -6,7 +6,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import { CreateEntityButton } from '@isdd/metais-common'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import DraftsListListContainer from '@/components/entities/draftsList/DraftsListDataTableContainer'
+import DraftsListContainer from '@/components/entities/draftsList/DraftsListContainer'
 import DraftsListTable from '@/components/entities/draftsList/DraftsListTable'
 import { DraftsListFilter } from '@/components/entities/draftsList/DraftsListFilter'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -25,7 +25,7 @@ const DraftsListListPage: React.FC = () => {
         perPage: BASE_PAGE_SIZE,
     }
     return (
-        <DraftsListListContainer<GetFOPStandardRequestsParams>
+        <DraftsListContainer<GetFOPStandardRequestsParams>
             defaultFilterValues={defaultFilterValues}
             View={({ data, handleFilterChange, pagination, sort }) => (
                 <>

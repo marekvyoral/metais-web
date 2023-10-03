@@ -952,6 +952,16 @@
                 "andOrAddFile": "A/Alebo nahrajte dokumenty",
                 "addNewAttachment": "Pridať ďalší odkaz na dokument"
             }
+        },
+        "header": {
+            "confluenceDocs": "Vložiť do confluence",
+            "ACCEPTED": "Označiť návrh ako zapracovaný",
+            "REJECTED": "Zamietnuť návrh",
+            "ASSIGNED": "Priradiť do PS",
+            "changeState": {
+                "description": "Dôvod",
+                "submit": "Odoslať formulár"
+            }
         }
     },
     "input": {
