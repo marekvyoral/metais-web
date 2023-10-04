@@ -1,7 +1,7 @@
 import React from 'react'
 import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
 import { ApiStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
-import { ATTRIBUTE_NAME, Attribute, API_STANDARD_REQUEST_ATTRIBUTES } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME, Attribute, API_STANDARD_REQUEST_ATTRIBUTES, DMS_DOWNLOAD_FILE } from '@isdd/metais-common/api'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { getInfoGuiProfilStandardRequest, getLabelGuiProfilStandardRequest } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
@@ -17,25 +17,35 @@ interface Props {
 const DraftsListFormView: React.FC<Props> = ({ data, guiAttributes, workGroup }) => {
     const { t } = useTranslation()
 
-    const linkElements = data?.links?.map(
-        (
-            link, //todo this should be only show in state requested
-        ) => (
-            <Link key={link.id} to={link?.url ?? ''} state={{ from: location }} target="_blank" className="govuk-link">
-                {link?.name as string}
-                <br />
-            </Link>
-        ),
-    )
-    // todo upresnit tieto downloady
-    // const attachmentElements = data?.attachments?.map((attachment) => (
-    //     <Link key={attachment.id} to={attachment?.id} state={{ from: location }} target="_blank" className="govuk-link">
-    //         {link?.name as string}
-    //         <br />
-    //     </Link>
-    // )) //todo
-    // [<> {t('DraftsList.detail.noDocuments')}</>]
-    const relatedDocuments = linkElements && linkElements?.length > 0 ? <>{...linkElements}</> : <> {t('DraftsList.detail.noDocuments')}</>
+    //todo add icons
+    const linkElements =
+        data?.standardRequestState !== 'REQUESTED' && data?.links && data?.links?.length > 0 //todo isKordinator true
+            ? data?.links?.map((link) => (
+                  <Link key={link.id} to={link?.url ?? ''} state={{ from: location }} target="_blank" className="govuk-link">
+                      {link?.name as string}
+                      <br />
+                  </Link>
+              ))
+            : undefined
+
+    const attachmentElements =
+        data?.attachments && data?.attachments?.length > 0
+            ? data?.attachments?.map((attachment) => (
+                  <Link
+                      key={attachment.id}
+                      to={`${DMS_DOWNLOAD_FILE}${attachment?.attachmentId}`}
+                      state={{ from: location }}
+                      target="_blank"
+                      className="govuk-link"
+                  >
+                      {attachment?.attachmentName as string}
+                      <br />
+                  </Link>
+              ))
+            : undefined
+    const relatedDocuments = [...(linkElements ?? []), ...(attachmentElements ?? [])]
+
+    const isVersion1 = data?.version === 1
     const isVersion2 = data?.version === 2
     const showWorkGroup = data?.standardRequestState === 'ASSIGNED'
     const showActionDesription = data?.standardRequestState === 'REJECTED'
@@ -74,7 +84,7 @@ const DraftsListFormView: React.FC<Props> = ({ data, guiAttributes, workGroup })
                 value={data?.name}
                 tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.name, guiAttributes) ?? ''}
             />
-            {!isVersion2 && (
+            {isVersion1 && (
                 <>
                     <InformationGridRow
                         key={ATTRIBUTE_NAME.Sr_Name}
@@ -89,12 +99,16 @@ const DraftsListFormView: React.FC<Props> = ({ data, guiAttributes, workGroup })
                         value={<span key={ATTRIBUTE_NAME.srDescription1} dangerouslySetInnerHTML={{ __html: data?.srDescription1 ?? '' }} />}
                         tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.srDescription1, guiAttributes) ?? ''}
                     />
-                    <InformationGridRow
-                        key={ATTRIBUTE_NAME.relatedDocuments}
-                        label={getLabelGuiProfilStandardRequest(ATTRIBUTE_NAME.relatedDocuments, guiAttributes) ?? ''}
-                        value={relatedDocuments}
-                        tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.relatedDocuments, guiAttributes) ?? ''}
-                    />
+                </>
+            )}
+            <InformationGridRow
+                key={ATTRIBUTE_NAME.relatedDocuments}
+                label={getLabelGuiProfilStandardRequest(ATTRIBUTE_NAME.relatedDocuments, guiAttributes) ?? ''}
+                value={relatedDocuments && relatedDocuments?.length > 0 ? <>{relatedDocuments}</> : <> {t('DraftsList.detail.noDocuments')}</>}
+                tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.relatedDocuments, guiAttributes) ?? ''}
+            />
+            {isVersion1 && (
+                <>
                     {srDescriptionAttributes.map((attribute) => {
                         if (data?.[attribute])
                             return (
@@ -106,7 +120,6 @@ const DraftsListFormView: React.FC<Props> = ({ data, guiAttributes, workGroup })
                                 />
                             )
                     })}
-                    {/* todo: here should be attachments, according to legacy ui, not sure why should be there 2 separate fields for download */}
                 </>
             )}
             {showActionDesription && (

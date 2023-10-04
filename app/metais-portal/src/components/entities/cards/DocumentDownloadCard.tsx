@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@isdd/idsk-ui-kit/index'
 import { QueryFeedback } from '@isdd/metais-common/index'
-import { Metadata } from '@isdd/metais-common/api'
+import { DMS_DOWNLOAD_FILE, Metadata } from '@isdd/metais-common/api'
 
 import styles from './relationCard.module.scss'
 import { RelationAttribute } from './RelationAttribute'
@@ -18,7 +18,6 @@ interface IDocumentDownloadCardProps extends PropsWithChildren {
 
 export const DocumentDownloadCard: React.FC<IDocumentDownloadCardProps> = ({ data, isLoading, isError }) => {
     const { t } = useTranslation()
-    const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
 
     return (
         <QueryFeedback loading={isLoading} error={isError}>
