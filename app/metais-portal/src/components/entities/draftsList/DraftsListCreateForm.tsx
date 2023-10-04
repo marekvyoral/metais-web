@@ -25,7 +25,7 @@ interface CreateForm {
     isSuccess: boolean
     isError: boolean
 }
-const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: CreateForm) => {
+export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: CreateForm) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { register, handleSubmit, setValue, watch, getValues } = useForm({
@@ -118,4 +118,3 @@ const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: CreateForm
         </div>
     )
 }
-export default DraftsListCreateForm

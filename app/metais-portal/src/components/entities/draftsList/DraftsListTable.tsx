@@ -7,7 +7,7 @@ import { Link, useLocation } from 'react-router-dom'
 
 import { IDraftsListTable } from '@/types/views'
 
-const DraftsListDataTableGridViewForForm: React.FC<IDraftsListTable> = ({ data, handleFilterChange, pagination, sort }) => {
+export const DraftsListTable: React.FC<IDraftsListTable> = ({ data, handleFilterChange, pagination, sort }) => {
     const { t } = useTranslation()
     const location = useLocation()
 
@@ -72,4 +72,3 @@ const DraftsListDataTableGridViewForForm: React.FC<IDraftsListTable> = ({ data, 
         </>
     )
 }
-export default DraftsListDataTableGridViewForForm

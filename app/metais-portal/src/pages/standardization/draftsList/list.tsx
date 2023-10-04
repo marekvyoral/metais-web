@@ -8,8 +8,8 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
 
-import DraftsListContainer from '@/components/entities/draftsList/DraftsListContainer'
-import DraftsListTable from '@/components/entities/draftsList/DraftsListTable'
+import { DraftsListContainer } from '@/components/entities/draftsList/DraftsListContainer'
+import { DraftsListTable } from '@/components/entities/draftsList/DraftsListTable'
 import { DraftsListFilter } from '@/components/entities/draftsList/DraftsListFilter'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 const DraftsListListPage: React.FC = () => {

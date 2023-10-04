@@ -15,10 +15,7 @@ interface IDraftsListDataTableContainerProps<T> {
     defaultFilterValues: T
 }
 
-const DraftsListDataTableContainer = <T extends FieldValues & IFilterParams>({
-    View,
-    defaultFilterValues,
-}: IDraftsListDataTableContainerProps<T>) => {
+export const DraftsListContainer = <T extends FieldValues & IFilterParams>({ View, defaultFilterValues }: IDraftsListDataTableContainerProps<T>) => {
     const { filterParams, handleFilterChange } = useFilterForCiList<T, GetFOPStandardRequestsParams>({
         ...defaultFilterValues,
         sort: [{ orderBy: ATTRIBUTE_NAME.Sr_Name, sortDirection: SortType.ASC }],
@@ -54,4 +51,3 @@ const DraftsListDataTableContainer = <T extends FieldValues & IFilterParams>({
         </QueryFeedback>
     )
 }
-export default DraftsListDataTableContainer

@@ -7,7 +7,7 @@ import { Actions } from './useUserAbility'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { MembershipData, useFindMembershipData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { StandardDraftsDraftStates } from '@isdd/metais-common/types/api'
-import { CONFLUENCE, GROUP_ROLES, KSISVS_ROLES, REFID_URI_SZ, ROLES_CAN_CHANGE_STD_DRAFTS } from '@isdd/metais-common/constants'
+import { CONFLUENCE, GROUP_ROLES, IS_KOORDINATOR, KSISVS_ROLES, REFID_URI_SZ, ROLES_CAN_CHANGE_STD_DRAFTS } from '@isdd/metais-common/constants'
 import { ApiLink, ApiStandardRequestPreviewRequestChannel } from '@isdd/metais-common/api/generated/standards-swagger'
 
 interface IUseStandardDraftsListPermissions {
@@ -49,7 +49,7 @@ export const useStandardDraftsListPermissions = ({ data: { state, groupId, links
         const canRejectAssignedStdDraft = canEdit
 
         const hasConfluenceDoc = links?.some((link) => link?.type === CONFLUENCE)
-
+        if (isKoordinator) can(Actions.HAS_ROLE, IS_KOORDINATOR)
         if (canEdit) can(Actions.EDIT, `DraftsList`)
         if (canEdit || canChangeNewStdDraft || canRejectNewStdDraft || canManageRIReq) can(Actions.CHANGE_STATES, 'DraftsList')
         if (canCreateConfluenceDoc && !hasConfluenceDoc) can(Actions.CREATE, 'DraftsList.confluenceDocs')

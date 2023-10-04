@@ -3,8 +3,8 @@ import { TextHeading, TextWarning } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
 import { QueryFeedback } from '@isdd/metais-common/index'
 
-import DraftsListCreateForm from '@/components/entities/draftsList/DraftsListCreateForm'
-import DraftsListCreateContainer from '@/components/entities/draftsList/DraftsListCreateContainer'
+import { DraftsListCreateForm } from '@/components/entities/draftsList/DraftsListCreateForm'
+import { DraftsListCreateContainer } from '@/components/entities/draftsList/DraftsListCreateContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 const DraftsListCreatePage: React.FC = () => {
     const { t } = useTranslation()

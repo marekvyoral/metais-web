@@ -945,6 +945,10 @@
                 "description": "Reason",
                 "submit": "Submit form"
             }
+        },
+        "create": {
+            "heading": "Create draft",
+            "warning": "The criteria below should be evaluated before approving the draft standard, but this does not mean that each of them must be 'met' (not every criterion is relevant to each proposal). If applicant does not know to judge a criterion, than answer the whole sentence, not just 'yes/no'."
         }
     },
     "input": {

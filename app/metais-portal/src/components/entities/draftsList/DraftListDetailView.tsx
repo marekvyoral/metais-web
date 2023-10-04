@@ -6,6 +6,9 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { getInfoGuiProfilStandardRequest, getLabelGuiProfilStandardRequest } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { Group } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { IS_KOORDINATOR } from '@isdd/metais-common/constants'
 
 import { customAttributesForVersion2, srDescriptionAttributes } from '@/componentHelpers'
 
@@ -16,12 +19,13 @@ interface Props {
 }
 export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, workGroup }) => {
     const { t } = useTranslation()
+    const ability = useAbilityContext()
+    const isKoordinator = ability?.can(Actions.HAS_ROLE, IS_KOORDINATOR)
 
     // eslint-disable-next-line no-warning-comments
     //todo add icons
     const linkElements =
-        // eslint-disable-next-line no-warning-comments
-        data?.standardRequestState !== 'REQUESTED' && data?.links && data?.links?.length > 0 //todo isKordinator true
+        isKoordinator && data?.standardRequestState !== 'REQUESTED' && data?.links && data?.links?.length > 0
             ? data?.links?.map((link) => (
                   <Link key={link.id} to={link?.url ?? ''} state={{ from: location }} target="_blank" className="govuk-link">
                       {link?.name as string}

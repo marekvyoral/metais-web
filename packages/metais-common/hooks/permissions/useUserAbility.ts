@@ -15,6 +15,7 @@ export enum Actions {
     HISTORY = 'history',
     BULK_ACTIONS = 'bulk_actions',
     CHANGE_STATES = 'change_states',
+    HAS_ROLE = 'has_role',
 }
 
 export const ADMIN = 'R_ADMIN'

@@ -15,7 +15,7 @@ interface IViewProps {
 interface DraftsListFormContainerProps {
     View: React.FC<IViewProps>
 }
-const DraftsListCreateContainer: React.FC<DraftsListFormContainerProps> = ({ View }) => {
+export const DraftsListCreateContainer: React.FC<DraftsListFormContainerProps> = ({ View }) => {
     const { mutateAsync, isSuccess, isError } = useCreateStandardRequest()
     const { data: guiData, isLoading: isGuiDataLoading, isError: isGuiDataError } = useGetAttributeProfile(Gui_Profil_Standardy)
 
@@ -45,4 +45,3 @@ const DraftsListCreateContainer: React.FC<DraftsListFormContainerProps> = ({ Vie
         />
     )
 }
-export default DraftsListCreateContainer
