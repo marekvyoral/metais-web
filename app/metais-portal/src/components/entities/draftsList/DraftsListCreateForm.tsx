@@ -8,12 +8,13 @@ import { useNavigate } from 'react-router-dom'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { Attribute, MutationFeedback } from '@isdd/metais-common/index'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ApiAttachment, ApiStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
+import { ApiLink, ApiStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { getInfoGuiProfilStandardRequest } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 
 import styles from './draftsListCreateForm.module.scss'
-import { generateSchemaForCreateDraft } from './schema/createDraftSchema'
-import { DraftsListAttachmentsZone } from './DraftsListAttachmentsZone'
+
+import { generateSchemaForCreateDraft } from '@/components/entities/draftsList/schema/createDraftSchema'
+import { DraftsListAttachmentsZone } from '@/components/entities/draftsList/DraftsListAttachmentsZone'
 
 interface CreateForm {
     data: {
@@ -33,15 +34,15 @@ const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: CreateForm
         },
         resolver: yupResolver(generateSchemaForCreateDraft(t)),
     })
-    const attachements = watch('attachments') ?? []
+    const links = watch('links') ?? []
 
-    const addNewAttachment = () => {
-        setValue('attachments', [...(attachements ?? []), {} as ApiAttachment])
+    const addNewLink = () => {
+        setValue('links', [...(links ?? []), {} as ApiLink])
     }
 
-    const removeParameter = (removeIndex: number) => {
-        const newAttachments = attachements?.filter((_: ApiAttachment, index: number) => index !== removeIndex)
-        setValue('attachments', newAttachments)
+    const removeLink = (removeIndex: number) => {
+        const newAttachments = links?.filter((_: ApiLink, index: number) => index !== removeIndex)
+        setValue('links', newAttachments)
     }
 
     return (
@@ -100,12 +101,7 @@ const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: CreateForm
                     info={getInfoGuiProfilStandardRequest('impactDescription7', data?.guiAttributes)}
                     value={getValues('impactDescription7')}
                 />
-                <DraftsListAttachmentsZone
-                    attachements={attachements}
-                    register={register}
-                    addNewAttachement={addNewAttachment}
-                    onDelete={removeParameter}
-                />
+                <DraftsListAttachmentsZone attachements={[]} links={links} register={register} addNewLink={addNewLink} onDelete={removeLink} />
                 <div className={styles.buttonGroup}>
                     <Button
                         label={t('DraftsList.createForm.cancel')}

@@ -1,4 +1,4 @@
-import { ApiAttachment } from '@isdd/metais-common/api/generated/standards-swagger'
+import { ApiAttachment, ApiLink } from '@isdd/metais-common/api/generated/standards-swagger'
 import { TFunction } from 'i18next'
 import * as yup from 'yup'
 
@@ -12,5 +12,6 @@ export const generateSchemaForCreateDraft = (t: TFunction<'translation', undefin
         impactDescription1: yup.string(),
         impactDescription5: yup.string(),
         impactDescription7: yup.string(),
+        links: yup.array<ApiLink>(),
     })
 }

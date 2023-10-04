@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import { StandardDraftsDraftStates } from '@isdd/metais-common/types/api'
 import { standardDraftsListStateMachine } from '@isdd/metais-common/components/state-machine/standardDraftsListStateMachine'
 import { InterpreterFrom } from 'xstate'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { DraftsListFormContainer } from '@/components/entities/draftsList/DraftsListFormContainer'
 import DraftsListFormView from '@/components/entities/draftsList/DraftsListMetaisFormView'
@@ -36,8 +37,13 @@ const DraftDetail: React.FC = () => {
                                 <BreadCrumbs
                                     withWidthContainer
                                     links={[
-                                        { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                                        { label: t('reports.placeHolder') ?? '', href: `placeholder` },
+                                        { label: t('breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
+                                        { label: t('breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
+                                        { label: t('breadcrumbs.draftsList'), href: NavigationSubRoutes.ZOZNAM_NAVRHOV },
+                                        {
+                                            label: data?.srName ?? t('breadcrumbs.noName'),
+                                            href: `${NavigationSubRoutes.ZOZNAM_NAVRHOV}/${entityId}`,
+                                        },
                                     ]}
                                 />
                                 <MainContentWrapper>

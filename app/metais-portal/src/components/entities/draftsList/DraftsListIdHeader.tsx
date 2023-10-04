@@ -10,10 +10,9 @@ import { StandardDraftsDraftStates } from '@isdd/metais-common/types/api'
 import { useActionStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { MutationFeedback } from '@isdd/metais-common/index'
 
-import { DraftsListButtonPopupContent } from './DraftsListButtonPopupContent'
-import { DraftsListChangeStateModal } from './DraftsListChangeStateModal'
-import { DraftsListAssignToPSDialog } from './DraftsListAssignToPSDialog'
-
+import { DraftsListButtonPopupContent } from '@/components/entities/draftsList/DraftsListButtonPopupContent'
+import { DraftsListChangeStateModal } from '@/components/entities/draftsList/DraftsListChangeStateModal'
+import { DraftsListAssignToPSDialog } from '@/components/entities/draftsList/DraftsListAssignToPSDialog'
 import { transformTargetStateIntoAction } from '@/componentHelpers/draftsList'
 
 interface Props {
