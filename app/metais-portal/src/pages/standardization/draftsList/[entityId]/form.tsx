@@ -9,7 +9,7 @@ import { InterpreterFrom } from 'xstate'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { DraftsListFormContainer } from '@/components/entities/draftsList/DraftsListFormContainer'
-import DraftsListFormView from '@/components/entities/draftsList/DraftsListMetaisFormView'
+import { DraftListDetailView } from '@/components/entities/draftsList/DraftListDetailView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { DraftsListIdHeader } from '@/components/entities/draftsList/DraftsListIdHeader'
 import { StandardDraftsListPermissionsWrapper } from '@/components/permissions/StandardDraftsListPermissionsWrapper'
@@ -51,7 +51,7 @@ const DraftDetail: React.FC = () => {
                                         <DraftsListStateMachineWrapper data={data}>
                                             <>
                                                 {!isLoading && <DraftsListIdHeader entityId={entityId ?? ''} entityItemName={data?.srName ?? ''} />}
-                                                <DraftsListFormView data={data} guiAttributes={guiAttributes} workGroup={workGroup} />
+                                                <DraftListDetailView data={data} guiAttributes={guiAttributes} workGroup={workGroup} />
                                             </>
                                         </DraftsListStateMachineWrapper>
                                     </QueryFeedback>

@@ -14,7 +14,7 @@ interface Props {
     guiAttributes?: Attribute[]
     workGroup?: Group
 }
-const DraftsListFormView: React.FC<Props> = ({ data, guiAttributes, workGroup }) => {
+export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, workGroup }) => {
     const { t } = useTranslation()
 
     // eslint-disable-next-line no-warning-comments
@@ -166,4 +166,3 @@ const DraftsListFormView: React.FC<Props> = ({ data, guiAttributes, workGroup })
         </div>
     )
 }
-export default DraftsListFormView
