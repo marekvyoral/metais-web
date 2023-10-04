@@ -1,6 +1,6 @@
 import { createMachine } from 'xstate'
 
-import { StandardDraftsDraftStates } from '@/types/api'
+import { StandardDraftsDraftStates } from '@isdd/metais-common/types/api'
 
 export enum StateMachineStatesExtension {
     FETCHING = 'FETCHING',

@@ -54,7 +54,7 @@ export interface ITextAreaQuillProps {
     name: string
     label?: string
     defaultValue?: ReactQuill.Value
-    id?: string
+    id: string
     info?: string
     isRequired?: boolean
     error?: string
@@ -64,11 +64,12 @@ export interface ITextAreaQuillProps {
 
 export interface ICustomToolBarProps {
     excludeOptions?: RichQuillButtons[]
+    id: string
 }
 
 const formats = ['header', 'bold', 'italic', 'underline', 'list', 'bullet', 'link']
 
-const CustomToolbar: React.FC<ICustomToolBarProps> = ({ excludeOptions }) => {
+const CustomToolbar: React.FC<ICustomToolBarProps> = ({ excludeOptions, id }) => {
     const icons = ReactQuill.Quill.import('ui/icons')
     icons['bold'] = '<strong>B</strong>'
     icons['underline'] = '<u>U</u>'
@@ -80,7 +81,7 @@ const CustomToolbar: React.FC<ICustomToolBarProps> = ({ excludeOptions }) => {
     icons['list']['bullet'] = '<img src=' + QuillBulletListIcon + ' />'
 
     return (
-        <div id="toolbar" className={styles.customToolbar}>
+        <div id={id} className={styles.customToolbar}>
             {RichTextButtons.filter((item) => !excludeOptions?.includes(item.key)).map((item) => (
                 <Button
                     key={item.key}
@@ -113,10 +114,10 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
     const modules = useMemo(
         () => ({
             toolbar: {
-                container: '#toolbar',
+                container: `#${id}`,
             },
         }),
-        [],
+        [id],
     )
 
     const handleContentChange = (newValue: string, delta: DeltaStatic, source: Sources, editor: ReactQuill.UnprivilegedEditor) => {
@@ -140,7 +141,7 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
                 <div className={styles.infoDiv}>{info && <Tooltip descriptionElement={info} />}</div>
             </div>
             <div className={classNames({ 'govuk-input--error': !!error })}>
-                <CustomToolbar excludeOptions={excludeOptions} />
+                <CustomToolbar excludeOptions={excludeOptions} id={id} />
                 <ReactQuill
                     id={id}
                     value={value}

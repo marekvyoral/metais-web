@@ -36,9 +36,11 @@ export const DraftsListAttachmentsZone = ({ attachements, register, addNewLink, 
             <TextHeading size="L">{t('DraftsList.createForm.links.heading')}</TextHeading>
 
             <TextHeading size="M">{t('DraftsList.createForm.links.subHeading')}</TextHeading>
-            {links?.length === 0 && <DraftsListAttachmentCard register={register} index={attachements?.length} onDelete={onDelete} />}
+            {links?.length === 0 && (
+                <DraftsListAttachmentCard register={register} index={attachements?.length} onDelete={onDelete} key={'placeholder'} />
+            )}
             {links?.map((val, index) => (
-                <DraftsListAttachmentCard key={val?.id} register={register} index={index} onDelete={onDelete} isPlaceholder={isPlaceholder} />
+                <DraftsListAttachmentCard key={index} register={register} index={index} onDelete={onDelete} isPlaceholder={isPlaceholder} />
             ))}
 
             <Button label={t('DraftsList.createForm.links.addNewAttachment')} onClick={() => addNewLink()} />

@@ -8,7 +8,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { MembershipData, useFindMembershipData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { StandardDraftsDraftStates } from '@isdd/metais-common/types/api'
 import { CONFLUENCE, GROUP_ROLES, KSISVS_ROLES, REFID_URI_SZ, ROLES_CAN_CHANGE_STD_DRAFTS } from '@isdd/metais-common/constants'
-import { ApiLink, ApiStandardRequestPreviewRequestChannel } from '@/api/generated/standards-swagger'
+import { ApiLink, ApiStandardRequestPreviewRequestChannel } from '@isdd/metais-common/api/generated/standards-swagger'
 
 interface IUseStandardDraftsListPermissions {
     data: {
