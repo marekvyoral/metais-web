@@ -17,8 +17,10 @@ interface Props {
 const DraftsListFormView: React.FC<Props> = ({ data, guiAttributes, workGroup }) => {
     const { t } = useTranslation()
 
+    // eslint-disable-next-line no-warning-comments
     //todo add icons
     const linkElements =
+        // eslint-disable-next-line no-warning-comments
         data?.standardRequestState !== 'REQUESTED' && data?.links && data?.links?.length > 0 //todo isKordinator true
             ? data?.links?.map((link) => (
                   <Link key={link.id} to={link?.url ?? ''} state={{ from: location }} target="_blank" className="govuk-link">
