@@ -5,7 +5,7 @@ import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ConfigurationItemUi, NeighbourPairUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, DMS_DOWNLOAD_FILE, NeighbourPairUi } from '@isdd/metais-common/api'
 import { formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
@@ -56,7 +56,6 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     const { state: authState } = useAuth()
     const isUserAdmin = authState.user?.roles.includes('R_ADMIN')
     const isUserLogged = authState.user !== null
-    const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
     const [rowSelection, setRowSelection] = useState({})
     const additionalColumnsNullsafe = additionalColumns ?? []
 
