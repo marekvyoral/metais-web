@@ -45,7 +45,6 @@ const DraftDetail: React.FC = () => {
                                         <DraftsListStateMachineWrapper data={data}>
                                             <>
                                                 {!isLoading && <DraftsListIdHeader entityId={entityId ?? ''} entityItemName={data?.srName ?? ''} />}
-
                                                 <DraftsListFormView data={data} guiAttributes={guiAttributes} workGroup={workGroup} />
                                             </>
                                         </DraftsListStateMachineWrapper>

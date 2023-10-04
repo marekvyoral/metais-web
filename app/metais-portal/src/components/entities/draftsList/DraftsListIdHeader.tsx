@@ -12,6 +12,7 @@ import { MutationFeedback } from '@isdd/metais-common/index'
 
 import { DraftsListButtonPopupContent } from './DraftsListButtonPopupContent'
 import { DraftsListChangeStateModal } from './DraftsListChangeStateModal'
+import { DraftsListAssignToPSDialog } from './DraftsListAssignToPSDialog'
 
 import { transformTargetStateIntoAction } from '@/componentHelpers/draftsList'
 
@@ -35,7 +36,7 @@ export const DraftsListIdHeader: React.FC<Props> = ({ entityId, entityItemName }
     } = useActionStandardRequest()
 
     const onClick = (incomingState: StandardDraftsDraftStates) => {
-        setOpenChangeStateDialog(true)
+        if (incomingState !== StandardDraftsDraftStates.ASSIGNED) setOpenChangeStateDialog(true)
         setTargetState(incomingState)
     }
 
@@ -64,6 +65,11 @@ export const DraftsListIdHeader: React.FC<Props> = ({ entityId, entityItemName }
                     setOpenChangeStateDialog={setOpenChangeStateDialog}
                     handleChangeState={handleChangeState}
                     targetState={targetState}
+                />
+                <DraftsListAssignToPSDialog
+                    openAddToPSDialog={targetState === StandardDraftsDraftStates.ASSIGNED}
+                    setOpenAddToPSDialog={() => setTargetState(undefined)}
+                    standardRequestId={parseInt(entityId)}
                 />
                 <TextHeading size="XL">{entityItemName}</TextHeading>
                 <ButtonGroupRow>
