@@ -925,13 +925,13 @@
             "heading": "Draft name",
             "submit": "Add draft",
             "cancel": "Cancel",
-            "attachments": {
+            "links": {
                 "heading": "Documents",
                 "subHeading": "Add links on documents",
-                "attachmentDescription": "Document description",
-                "attachmentType": "Type of document",
-                "attachmentId": "Link on document",
-                "attachmentSize": "Document size",
+                "linkDescription": "Document description",
+                "linkType": "Type of document",
+                "url": "Link on document",
+                "linkSize": "Document size",
                 "andOrAddFile": "And/Or upload documents",
                 "addNewAttachment": "Add another document"
             }

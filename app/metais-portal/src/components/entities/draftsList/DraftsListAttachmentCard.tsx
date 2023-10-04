@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { IconLabel } from '@isdd/metais-common/index'
 import { ImportDeleteIcon } from '@isdd/metais-common/assets/images'
 
-import styles from './draftsListCreateForm.module.scss'
+import styles from '@/components/entities/draftsList/draftsListCreateForm.module.scss'
 
 interface IDraftsListAttachmentCard {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,27 +22,27 @@ export const DraftsListAttachmentCard = ({ register, index, onDelete, isPlacehol
             <div className={styles.inputs}>
                 <div className={styles.attachementsCard}>
                     <Input
-                        {...register(`attachments.[${index}].attachmentDescription`)}
+                        {...register(`links.[${index}].linkDescription`)}
                         className={styles.attachmentDescription}
-                        label={t('DraftsList.createForm.attachments.attachmentDescription')}
+                        label={t('DraftsList.createForm.links.linkDescription')}
                     />
                     <Input
-                        {...register(`attachments.[${index}].attachmentType`)}
+                        {...register(`links.[${index}].linkType`)}
                         className={styles.attachmentType}
-                        label={t('DraftsList.createForm.attachments.attachmentType')}
+                        label={t('DraftsList.createForm.links.linkType')}
                     />
                 </div>
                 <div className={styles.attachementsCard}>
                     <Input
-                        {...register(`attachments.[${index}].attachmentId`)}
-                        label={t('DraftsList.createForm.attachments.attachmentId')}
+                        {...register(`links.[${index}].url`)}
+                        label={t('DraftsList.createForm.links.url')}
                         className={styles.attachmentDescription}
                     />
                     <Input
-                        {...register(`attachments.[${index}].attachmentSize`)}
+                        {...register(`links.[${index}].linkSize`)}
                         type="number"
                         className={styles.attachmentType}
-                        label={t('DraftsList.createForm.attachments.attachmentSize')}
+                        label={t('DraftsList.createForm.links.linkSize')}
                     />
                 </div>
             </div>
@@ -51,7 +51,7 @@ export const DraftsListAttachmentCard = ({ register, index, onDelete, isPlacehol
                     <Button
                         onClick={() => onDelete(index)}
                         variant="secondary"
-                        label={<IconLabel icon={ImportDeleteIcon} alt={t('DraftsList.createForm.attachments.delete')} />}
+                        label={<IconLabel icon={ImportDeleteIcon} alt={t('DraftsList.createForm.links.delete')} />}
                     />
                 </div>
             )}

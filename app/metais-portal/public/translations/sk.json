@@ -760,7 +760,9 @@
         "ciCreate": "Vytvorenie novej entity",
         "newRelation": "Pridanie nového vzťahu k {{itemName}}",
         "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}",
-        "compareHistory": "Porovnanie zmien"
+        "compareHistory": "Porovnanie zmien",
+        "standardization": "Štandardizácia",
+        "draftsList": "Zoznam návrhov"
     },
     "codeListList": {
         "title": "Číselníky",
@@ -942,13 +944,13 @@
             "impactDescription7": "Dopad na súkromie: Dotýka sa navrhovaný štandard otázok ochrany súkromia a osobných údajov (ak áno, popíšte ako) ?",
             "submit": "Pridať návrh",
             "cancel": "Zrušiť",
-            "attachments": {
+            "links": {
                 "heading": "Dokumenty",
                 "subHeading": "Zadajte odkazy na dokumenty",
-                "attachmentDescription": "Popis dokumentu",
-                "attachmentType": "Typ dokumentu",
-                "attachmentId": "Link na dokument",
-                "attachmentSize": "Veľkosť dokumentu",
+                "linkDescription": "Popis dokumentu",
+                "linkType": "Typ dokumentu",
+                "url": "Link na dokument",
+                "linkSize": "Veľkosť dokumentu",
                 "andOrAddFile": "A/Alebo nahrajte dokumenty",
                 "addNewAttachment": "Pridať ďalší odkaz na dokument"
             }
