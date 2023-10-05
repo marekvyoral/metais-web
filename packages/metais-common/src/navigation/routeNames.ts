@@ -65,7 +65,7 @@ export enum NavigationSubRoutes {
     NOT_OVM = '/ci/PO_IS_PO',
     PRINCIP = '/ci/Princip',
     CIEL = '/ci/Ciel',
-    AKTIVITA = '/ci/aktivita',
+    AKTIVITA = '/ci/Aktivita',
     PROGRAM = '/ci/Program',
     PROJEKT = '/ci/Projekt',
     KONCOVE_SLUZBY = '/ci/KS',
