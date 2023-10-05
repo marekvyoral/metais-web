@@ -99,7 +99,7 @@ export const useUppy = ({
             uppy.off('file-removed', fileRemoved)
             uppy.off('restriction-failed', fileErrorCallback)
         }
-    }, [setFileImportStep])
+    }, [setCustomFileMeta, setFileImportStep])
 
     const handleUpload = async () => {
         uppy.getFiles().forEach((file) => {
