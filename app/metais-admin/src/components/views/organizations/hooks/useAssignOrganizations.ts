@@ -16,6 +16,7 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { calcBlockedOrganizations, isCiAlreadyAssinged } from '@/components/views/organizations/helpers/formatting'
 
@@ -37,13 +38,20 @@ export const useAssignOrganizations = <T extends FieldValues & IFilterParams>({
     defaultFilterOperators,
 }: iUseAssignOrganizations<T>) => {
     const { t } = useTranslation()
+    const invalidatePODetail = useInvalidateCiListFilteredCache()
 
     const getGarpoAdmin = useFindEaGarpoAdminHook()
 
     const { data: relData, isLoading: relIsLoading, isError: relIsError } = useReadRelationships(entityId)
     const generateUUID = useGenerateUuidsHook()
     const getSuperiorPoRelationShip = useReadPoSuperiorPoRelationshipHook()
-    const { mutateAsync: storeGraph } = useStoreGraph()
+    const { mutateAsync: storeGraph } = useStoreGraph({
+        mutation: {
+            onSuccess() {
+                invalidatePODetail.invalidate({ ciUuid: entityId })
+            },
+        },
+    })
     const idsToFind =
         relData?.endRelationshipSet
             ?.filter((relationship) => relationship?.metaAttributes?.state !== 'INVALIDATED')

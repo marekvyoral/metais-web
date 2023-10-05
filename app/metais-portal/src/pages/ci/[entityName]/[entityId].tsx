@@ -9,6 +9,7 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { Actions, useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 
 import NeighboursCardListWrapper from '@/components/entities/NeighboursCardListWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
@@ -61,7 +62,7 @@ const EntityDetailPage: React.FC = () => {
 
     const { data: ciItemData, refetch } = useReadConfigurationItem(entityId ?? '', {
         query: {
-            queryKey: ['ciItemData', entityId],
+            queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
 

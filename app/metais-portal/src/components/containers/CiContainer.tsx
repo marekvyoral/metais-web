@@ -1,4 +1,5 @@
 import { ConfigurationItemUi, RoleParticipantUI, useGetRoleParticipantBulk, useReadConfigurationItem } from '@isdd/metais-common/api'
+import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import React from 'react'
 
 export interface ContainerViewData {
@@ -23,7 +24,7 @@ export const CiContainer: React.FC<ICiContainer> = ({ configurationItemId, View 
         isError: isCiItemError,
     } = useReadConfigurationItem(configurationItemId ?? '', {
         query: {
-            queryKey: ['ciItemData', configurationItemId],
+            queryKey: [CI_ITEM_QUERY_KEY, configurationItemId],
         },
     })
 
