@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { ApiLink, ApiStandardRequest, useUpdateStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
-import { Button } from '@isdd/idsk-ui-kit/index'
+import { Button, LoadingIndicator } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { MutationFeedback } from '@isdd/metais-common/index'
 
 import { DraftsListAttachmentsZone } from '@/components/entities/draftsList/DraftsListAttachmentsZone'
 import styles from '@/components/entities/draftsList/draftsListCreateForm.module.scss'
@@ -22,7 +23,7 @@ export const DraftsListEditForm = ({ defaultData }: IDraftsListEditForm) => {
             ...defaultData,
         },
     })
-    const { mutateAsync: updateDraft } = useUpdateStandardRequest()
+    const { mutateAsync: updateDraft, isSuccess, isError, isLoading } = useUpdateStandardRequest()
     const links = watch('links') ?? []
 
     const addNewLink = () => {
@@ -48,6 +49,8 @@ export const DraftsListEditForm = ({ defaultData }: IDraftsListEditForm) => {
 
     return (
         <>
+            {isLoading && <LoadingIndicator fullscreen />}
+            <MutationFeedback error={isError} success={isSuccess} />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <DraftsListAttachmentsZone links={links} register={register} addNewLink={addNewLink} onDelete={removeLink} attachements={[]} />
                 <div className={styles.buttonGroup}>

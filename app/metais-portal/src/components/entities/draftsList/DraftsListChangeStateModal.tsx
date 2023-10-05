@@ -20,7 +20,7 @@ export const DraftsListChangeStateModal = ({
     handleChangeState,
     targetState,
 }: IDraftsListChangeStateModal) => {
-    const { handleSubmit, register } = useForm()
+    const { handleSubmit, register, reset } = useForm()
     const { t } = useTranslation()
     const standardDraftsStateMachineContext = useContext(StandardDraftsStateMachine)
     const machine = useStateMachine({ stateContext: standardDraftsStateMachineContext })
@@ -28,6 +28,7 @@ export const DraftsListChangeStateModal = ({
         if (targetState) {
             await handleChangeState(formValues?.description)
             machine.changeState(targetState)
+            reset()
             setOpenChangeStateDialog(false)
         }
     }
