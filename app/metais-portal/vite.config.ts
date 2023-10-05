@@ -27,6 +27,13 @@ export default defineConfig(({ mode }) => {
             cors: {
                 origin: '*',
             },
+            proxy: {
+                '^/standards/.*': {
+                    target: process.env.VITE_REST_CLIENT_STANDARDS_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
+                },
+            },
         },
     }
 })

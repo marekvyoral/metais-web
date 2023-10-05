@@ -72,6 +72,7 @@
     "scripts": {
         "start": "yarn start:portal & yarn start:admin & yarn start:login && fg",
         "start:portal": "vite app/metais-portal",
+        "start:portal-test": "vite app/metais-portal --mode=test",
         "start:admin": "vite app/metais-admin",
         "start:login": "vite app/metais-login",
         "build": "yarn build:portal && yarn build:admin && yarn build:login",
