@@ -823,5 +823,20 @@
     },
     "validation": {
         "required": "Toto pole je povinné"
+    },
+    "documentsManagement": {
+        "heading": "Správa dokumentov Projektov",
+        "phase": "Fáza",
+        "status": "Stav",
+        "editPosition": "Upraviť pozíciu",
+        "savePosition": "Uložiť pozíciu",
+        "resetPosition": "Zrušiť editáciu",
+        "addNewGroup": "Nová skupina dokum",
+        "name": "Názov",
+        "nameEng": "Názov Eng",
+        "description": "Popis",
+        "descriptionEng": "Popis Eng",
+        "projectPhase": "Fáza projektu",
+        "projectStatus": "Stav projektu"
     }
 }

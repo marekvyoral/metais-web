@@ -368,4 +368,22 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
+    kris: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_KRIS_SWAGGER_URL ?? '',
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/kris-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useKRISSwaggerClient.ts',
+                    name: 'useKRISSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
 })

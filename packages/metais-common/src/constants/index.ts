@@ -34,6 +34,16 @@ export const notificationDefaultSelectedColumns = [
     { technicalName: 'userId', name: 'UserId', selected: false },
     { technicalName: 'createdAt', name: 'CreatedAt', selected: true },
 ]
+
+export const documentsManagementDefaultSelectedColumns = [
+    { technicalName: 'id', name: 'Id', selected: false },
+    { technicalName: 'name', name: 'Name', selected: true },
+    { technicalName: 'nameEng', name: 'NameEng', selected: true },
+    { technicalName: 'description', name: 'Description', selected: false },
+    { technicalName: 'descriptionEng', name: 'DescriptionEng', selected: false },
+    { technicalName: 'state', name: 'State', selected: true },
+]
+
 export const ROLES_GROUP = 'SKUPINA_ROL'
 export const metaisEmail = 'metais@mirri.gov.sk'
 
@@ -76,3 +86,6 @@ export const USER_INFO_QUERY_KEY = 'userInfo'
 
 export const PORTAL_URL = import.meta.env.VITE_PORTAL_URL
 export const DEFAULT_ERROR = 'Error'
+
+export const STAV_PROJEKTU = 'STAV_PROJEKTU'
+export const FAZA_PROJEKTU = 'FAZA_PROJEKTU'

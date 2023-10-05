@@ -822,5 +822,20 @@
     },
     "validation": {
         "required": "This field is required"
+    },
+    "documentsManagement": {
+        "heading": "Project document management",
+        "phase": "Phase",
+        "status": "Status",
+        "editPosition": "Edit position",
+        "savePosition": "Save position",
+        "resetPosition": "Reset position",
+        "addNewGroup": "Add a new group of documents",
+        "name": "Name",
+        "nameEng": "Name Eng",
+        "description": "Description",
+        "descriptionEng": "Description Eng",
+        "projectPhase": "Project phase",
+        "projectStatus": "Project status"
     }
 }
