@@ -48,11 +48,6 @@ export default defineConfig(({ mode }) => {
                     changeOrigin: true,
                     secure: false,
                 },
-                '^/typesrepository/.*': {
-                    target: process.env.VITE_REST_CLIENT_TYPES_REPO_TARGET_URL,
-                    changeOrigin: true,
-                    secure: false,
-                },
             },
         },
     }
