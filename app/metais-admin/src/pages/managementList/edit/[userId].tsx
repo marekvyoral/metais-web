@@ -45,16 +45,3 @@ const EditUserManagement: React.FC = () => {
 }
 
 export default EditUserManagement
-/**<QueryFeedback
-loading={isLoading}
-error={isError}
-errorProps={{ errorMessage: t('managementList.containerQueryError') }}
-indicatorProps={{ fullscreen: true, layer: 'parent' }}
-/>*/
-
-/**<QueryFeedback
-                loading={isLoading}
-                error={isError}
-                errorProps={{ errorMessage: t('managementList.containerQueryError') }}
-                indicatorProps={{ fullscreen: true, layer: 'parent' }}
-            /> */
