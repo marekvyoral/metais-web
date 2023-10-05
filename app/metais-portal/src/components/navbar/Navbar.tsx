@@ -41,7 +41,7 @@ export const Navbar: React.FC = () => {
     const iconGroupItems: React.FC[] = [TasksPopup, Notifications]
     const topMenuPortalRoutes = getPortalNavigationItems(t, !!user, Array.isArray(ksisvsGroup) ? ksisvsGroup[0].uuid : ksisvsGroup?.uuid)
     const topMenuWithoutPOAndMonitoring = topMenuPortalRoutes.filter(
-        (item) => item.path != RouteNames.HOW_TO_PO && item.path != RouteNames.HOW_TO_MONITORING,
+        (item) => item.path != RouteNames.HOW_TO_PO && item.path != RouteNames.HOW_TO_KRIS_STUDIES_PROJECTS,
     )
 
     return (
