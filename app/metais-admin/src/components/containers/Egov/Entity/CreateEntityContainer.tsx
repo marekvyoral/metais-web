@@ -1,5 +1,5 @@
 import { SortType } from '@isdd/idsk-ui-kit/types'
-import { CiType, Role, useStoreAdminEntity } from '@isdd/metais-common/api'
+import { CiType, Role, useStoreAdminEntity1 } from '@isdd/metais-common/api'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import React from 'react'
 import { useQueryClient } from '@tanstack/react-query'
@@ -29,9 +29,8 @@ const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity)
     const pageSize = 200
 
     const { data, isLoading, isError } = useFindAll1(pageNumber, pageSize, { direction: SortType.ASC, orderBy: 'name' })
-
     const queryClient = useQueryClient()
-    const { mutateAsync } = useStoreAdminEntity({
+    const { mutateAsync } = useStoreAdminEntity1({
         mutation: {
             onSuccess() {
                 queryClient.invalidateQueries([ADMIN_EGOV_ENTITY_LIST_QKEY])
