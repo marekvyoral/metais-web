@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
 import { ApiStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { ATTRIBUTE_NAME, Attribute, API_STANDARD_REQUEST_ATTRIBUTES, DMS_DOWNLOAD_FILE } from '@isdd/metais-common/api'
@@ -9,8 +9,10 @@ import { Group } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { IS_KOORDINATOR } from '@isdd/metais-common/constants'
+import { useStateMachine } from '@isdd/metais-common/components/state-machine/hooks/useStateMachine'
 
 import { customAttributesForVersion2, srDescriptionAttributes } from '@/componentHelpers'
+import { StandardDraftsStateMachine } from '@/pages/standardization/draftsList/[entityId]/form'
 
 interface Props {
     data?: ApiStandardRequest
@@ -19,13 +21,17 @@ interface Props {
 }
 export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, workGroup }) => {
     const { t } = useTranslation()
+    const stateContext = useContext(StandardDraftsStateMachine)
+    const stateMachine = useStateMachine({ stateContext })
     const ability = useAbilityContext()
     const isKoordinator = ability?.can(Actions.HAS_ROLE, IS_KOORDINATOR)
+
+    const currentState = stateMachine?.useCurrentState()
 
     // eslint-disable-next-line no-warning-comments
     //todo add icons
     const linkElements =
-        isKoordinator && data?.standardRequestState !== 'REQUESTED' && data?.links && data?.links?.length > 0
+        isKoordinator && currentState !== 'REQUESTED' && data?.links && data?.links?.length > 0
             ? data?.links?.map((link) => (
                   <Link key={link.id} to={link?.url ?? ''} state={{ from: location }} target="_blank" className="govuk-link">
                       {link?.name as string}
@@ -53,14 +59,14 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
 
     const isVersion1 = data?.version === 1
     const isVersion2 = data?.version === 2
-    const showWorkGroup = data?.standardRequestState === 'ASSIGNED'
-    const showActionDesription = data?.standardRequestState === 'REJECTED'
+    const showWorkGroup = currentState === 'ASSIGNED'
+    const showActionDesription = currentState === 'REJECTED'
     return (
         <div>
             <InformationGridRow
                 key={ATTRIBUTE_NAME.standardRequestState}
                 label={getLabelGuiProfilStandardRequest(ATTRIBUTE_NAME.standardRequestState, guiAttributes) ?? ''}
-                value={t(`DraftsList.filter.state.${data?.standardRequestState}`)}
+                value={t(`DraftsList.filter.state.${currentState}`)}
                 tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.standardRequestState, guiAttributes) ?? ''}
             />
             <InformationGridRow
