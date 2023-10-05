@@ -48,6 +48,11 @@ export default defineConfig(({ mode }) => {
                     changeOrigin: true,
                     secure: false,
                 },
+                '^/identities': {
+                    target: process.env.VITE_REST_ADMIN_IAM_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
+                },
             },
         },
     }
