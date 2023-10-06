@@ -10,7 +10,7 @@ export enum VoteStateEnum {
 export enum VoteStateOptionEnum {
     PLANNED = 'PLANNED',
     ENDED = 'ENDED',
-    UPCOMMING = 'PLANNED',
+    UPCOMMING = 'UPCOMMING',
     CANCELED = 'CANCELED',
     SUMMARIZED = 'SUMMARIZED',
     VETOED = 'VETOED',

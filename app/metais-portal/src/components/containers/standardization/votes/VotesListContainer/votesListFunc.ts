@@ -19,23 +19,23 @@ export const getVoteParamsData = (voteStateOption: string, effectiveFrom: string
                 dateFrom: effectiveFrom ? formattedDateNow : effectiveFrom,
                 dateTo: effectiveTo,
             }
-        case VoteStateOptionEnum.ended:
+        case VoteStateOptionEnum.ENDED:
             return {
                 state: effectiveTo ? VoteStateEnum.CREATED : undefined,
                 dateFrom: effectiveFrom,
                 dateTo: effectiveTo ? formattedDateNow : effectiveTo,
             }
-        case VoteStateOptionEnum.upcomming:
+        case VoteStateOptionEnum.UPCOMMING:
             return {
                 state: VoteStateEnum.CREATED,
                 dateFrom: effectiveFrom ? formattedDateNow : effectiveFrom,
                 dateTo: effectiveTo ? formattedDateNow : effectiveTo,
             }
-        case VoteStateOptionEnum.canceled:
+        case VoteStateOptionEnum.CANCELED:
             return { state: VoteStateEnum.CANCELED, dateFrom: effectiveFrom, dateTo: effectiveTo }
-        case VoteStateOptionEnum.summarized:
+        case VoteStateOptionEnum.SUMMARIZED:
             return { state: VoteStateEnum.SUMMARIZED, dateFrom: effectiveFrom, dateTo: effectiveTo }
-        case VoteStateOptionEnum.vetoed:
+        case VoteStateOptionEnum.VETOED:
             return { state: VoteStateEnum.VETOED, dateFrom: effectiveFrom, dateTo: effectiveTo }
         default:
             return { state: '', dateFrom: '', dateTo: '' }
