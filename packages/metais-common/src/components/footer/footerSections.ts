@@ -60,8 +60,8 @@ export const getPortalFooterSection = (t: TFunction): FooterSection[] => {
                     href: NavigationSubRoutes.CISELNIKY,
                 },
                 {
-                    label: t('navMenu.lists.personalProcedures'),
-                    href: NavigationSubRoutes.PERSONAL_PROCEDURES,
+                    label: t('footer.exceptionsLegislation'),
+                    href: FooterRouteNames.EXCEPTIONS_LEGISLATION,
                 },
             ],
         },
