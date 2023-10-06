@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 
-import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
+import styles from '@/components/views/standardization/votes/voteDetail/voteDetail.module.scss'
 interface ISpacer extends PropsWithChildren {
     noSpace?: boolean
 }

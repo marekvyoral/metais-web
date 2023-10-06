@@ -1,7 +1,7 @@
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { DateTime } from 'luxon'
 
-import { VoteStateEnum, VoteStateOptionEnum } from '@/components/views/standartization/votes/voteProps'
+import { VoteStateEnum, VoteStateOptionEnum } from '@/components/views/standardization/votes/voteProps'
 
 export interface IVotesParamsData {
     state: string | undefined
@@ -15,21 +15,21 @@ export const getVoteParamsData = (voteStateOption: string, effectiveFrom: string
     switch (voteStateOption) {
         case VoteStateOptionEnum.PLANNED:
             return {
-                state: effectiveFrom ? VoteStateEnum.CREATED : undefined,
-                dateFrom: effectiveFrom ? formattedDateNow : effectiveFrom,
+                state: effectiveFrom ? undefined : VoteStateEnum.CREATED,
+                dateFrom: effectiveFrom ? effectiveFrom : formattedDateNow,
                 dateTo: effectiveTo,
             }
         case VoteStateOptionEnum.ENDED:
             return {
-                state: effectiveTo ? VoteStateEnum.CREATED : undefined,
+                state: effectiveTo ? undefined : VoteStateEnum.CREATED,
                 dateFrom: effectiveFrom,
-                dateTo: effectiveTo ? formattedDateNow : effectiveTo,
+                dateTo: effectiveTo ? effectiveTo : formattedDateNow,
             }
-        case VoteStateOptionEnum.UPCOMMING:
+        case VoteStateOptionEnum.UPCOMING:
             return {
                 state: VoteStateEnum.CREATED,
-                dateFrom: effectiveFrom ? formattedDateNow : effectiveFrom,
-                dateTo: effectiveTo ? formattedDateNow : effectiveTo,
+                dateFrom: effectiveFrom ? effectiveFrom : formattedDateNow,
+                dateTo: effectiveTo ? effectiveTo : formattedDateNow,
             }
         case VoteStateOptionEnum.CANCELED:
             return { state: VoteStateEnum.CANCELED, dateFrom: effectiveFrom, dateTo: effectiveTo }

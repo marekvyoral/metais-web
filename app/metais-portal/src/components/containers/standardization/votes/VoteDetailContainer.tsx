@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
-import { IVoteDetailView } from '@/components/views/standartization/votes/voteDetail/VoteDetailView'
+import { IVoteDetailView } from '@/components/views/standardization/votes/voteDetail/VoteDetailView'
 
 interface IVoteDetailContainer {
     View: React.FC<IVoteDetailView>
@@ -25,6 +25,8 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
     const { data: voteData, isLoading: voteDataLoading, isError: voteDataError } = useGetVoteDetail(voteId)
     const { data: voteResultData, isLoading: voteResultDataLoading, isError: voteResultDataError } = useGetVoteResult(voteId)
     const { isLoading: castVoteLoading, mutateAsync: castVoteAsyncMutation } = useCastVote()
+    const { isLoading: vetoVoteLoading, mutateAsync: vetoVoteAsyncMutation } = useVetoVote()
+
     const castVote = async (voteIdentifier: number, choiceId: number, description: string) => {
         await castVoteAsyncMutation({
             voteId: voteIdentifier,
@@ -34,11 +36,6 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
         })
     }
 
-    const canDoCast = useMemo((): boolean => {
-        return voteData?.voteActors?.find((va) => va.userId == userLogin) !== undefined
-    }, [userLogin, voteData?.voteActors])
-
-    const { isLoading: vetoVoteLoading, mutateAsync: vetoVoteAsyncMutation } = useVetoVote()
     const vetoVote = async (voteIdentifier: number, description: string) => {
         await vetoVoteAsyncMutation({
             voteId: voteIdentifier,
@@ -46,6 +43,11 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
             data: { description },
         })
     }
+
+    const canDoCast = useMemo((): boolean => {
+        return voteData?.voteActors?.find((va) => va.userId == userLogin) !== undefined
+    }, [userLogin, voteData?.voteActors])
+
     const castedVoteId = useMemo((): number | undefined => {
         return voteResultData?.actorResults?.find((ar) => ar.userId == userLogin && ar.votedChoiceId !== null)?.votedChoiceId
     }, [userLogin, voteResultData?.actorResults])

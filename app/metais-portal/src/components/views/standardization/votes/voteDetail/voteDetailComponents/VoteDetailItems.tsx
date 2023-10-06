@@ -1,11 +1,12 @@
 import { TextBody } from '@isdd/idsk-ui-kit/index'
 import { ApiVote } from '@isdd/metais-common/api'
 import { useTranslation } from 'react-i18next'
+import { useMemo } from 'react'
 
-import { WebLinks } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/WebLinks'
-import { AttachmentLinks } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/AttachmentLinks'
-import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
-import { getVoteStateExplanation } from '@/components/views/standartization/votes/voteProps'
+import { WebLinks } from '@/components/views/standardization/votes/voteDetail/voteDetailComponents/WebLinks'
+import { AttachmentLinks } from '@/components/views/standardization/votes/voteDetail/voteDetailComponents/AttachmentLinks'
+import styles from '@/components/views/standardization/votes/voteDetail/voteDetail.module.scss'
+import { getVoteStateExplanation } from '@/components/views/standardization/votes/voteProps'
 
 export interface IDetailItemData {
     itemTitleContent: string
@@ -19,9 +20,9 @@ export interface IDetailItemsData {
 export const VoteDetailItems: React.FC<IDetailItemsData> = ({ voteData }) => {
     const { t } = useTranslation()
 
-    const getVoteStateExplanationForDetail = (): string => {
+    const getVoteStateExplanationForDetail = useMemo((): string => {
         return getVoteStateExplanation(voteData?.voteState, voteData?.effectiveFrom ?? '', voteData?.effectiveTo ?? '', t)
-    }
+    }, [t, voteData?.effectiveFrom, voteData?.effectiveTo, voteData?.voteState])
 
     const isVoteDate = voteData?.effectiveFrom && voteData?.effectiveTo
     const hasLinks = voteData?.links && voteData?.links.length > 0
@@ -39,7 +40,7 @@ export const VoteDetailItems: React.FC<IDetailItemsData> = ({ voteData }) => {
                         </td>
                         <td>
                             <TextBody size="L" className={styles.itemTitle}>
-                                {getVoteStateExplanationForDetail()}
+                                {getVoteStateExplanationForDetail}
                             </TextBody>
                         </td>
                     </tr>

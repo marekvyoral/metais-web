@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 import styles from './collapsible.module.scss'
 
-type CollapsableProps = {
+type CollapsibleProps = {
     openAtBeginning?: boolean
     heading?: React.ReactNode
     collapseSign?: React.ReactNode
@@ -13,8 +13,8 @@ type CollapsableProps = {
     children?: React.ReactNode
 }
 
-export const Collapsible = ({ collapseSign, collapseText, expandSign, expandText, heading, children, openAtBeginning }: CollapsableProps) => {
-    const [isOpen, setOpen] = useState(!!openAtBeginning)
+export const Collapsible = ({ collapseSign, collapseText, expandSign, expandText, heading, children, openAtBeginning }: CollapsibleProps) => {
+    const [isOpen, setOpen] = useState<boolean>(!!openAtBeginning)
     const handleOpenCloseForm = () => {
         setOpen((current) => !current)
     }

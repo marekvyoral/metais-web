@@ -7,10 +7,10 @@ import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 import { VoteStateOptionEnum, VotesListColumnsEnum } from '../voteProps'
 
-import styles from './votelist.module.scss'
+import styles from './voteList.module.scss'
 export enum VotesListShowEnum {
-    EVERYONE = 'EVERYONE',
-    ONLY_MY = 'ONLY_MY',
+    EVERYONE = 'everyone',
+    ONLY_MY = 'onlyMy',
 }
 
 export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<ColumnDef<ApiVotePreview>> => {
@@ -77,7 +77,7 @@ export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<Colu
             header: t('votes.votesList.table.hasCast'),
             accessorFn: (row) => row?.hasCast,
             enableSorting: true,
-            id: VotesListColumnsEnum.CAN_CAST,
+            id: VotesListColumnsEnum.HAS_CAST,
             size: 100,
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
@@ -100,7 +100,7 @@ export const voteStateOptions = (t: TFunction): IOption[] => {
     return [
         { value: VoteStateOptionEnum.PLANNED, label: t('votes.type.state.planned') },
         { value: VoteStateOptionEnum.CANCELED, label: t('votes.type.state.canceled') },
-        { value: VoteStateOptionEnum.UPCOMMING, label: t('votes.type.state.upcomming') },
+        { value: VoteStateOptionEnum.UPCOMING, label: t('votes.type.state.upcoming') },
         { value: VoteStateOptionEnum.ENDED, label: t('votes.type.state.ended') },
         { value: VoteStateOptionEnum.SUMMARIZED, label: t('votes.type.state.summarized') },
         { value: VoteStateOptionEnum.VETOED, label: t('votes.type.state.vetoed') },

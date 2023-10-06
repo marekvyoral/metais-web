@@ -1,7 +1,7 @@
 import { TextLink } from '@isdd/idsk-ui-kit/index'
 import { ApiLink } from '@isdd/metais-common/api'
 
-import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
+import styles from '@/components/views/standardization/votes/voteDetail/voteDetail.module.scss'
 
 interface IWebLink {
     links: ApiLink[] | undefined

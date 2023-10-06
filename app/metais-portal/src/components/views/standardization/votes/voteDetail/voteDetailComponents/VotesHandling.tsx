@@ -33,58 +33,58 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
 
     const alreadyVoted = !!castedVoteId
 
-    const voteChoisesFactory = useCallback(
+    const voteChoicesFactory = useCallback(
         (voteApiData: ApiVote | undefined, canDoCast: boolean, canDoVeto: boolean): Array<IChoise> => {
-            const voteChoisesFromApi = voteApiData?.voteChoices?.map((choise, index) => {
-                const choiseData: IChoise = {
-                    id: choise.id ?? index,
-                    value: choise.value ?? '',
-                    description: choise.description ?? '',
+            const voteChoicesFromApi = voteApiData?.voteChoices?.map((choice, index) => {
+                const choiceData: IChoise = {
+                    id: choice.id ?? index,
+                    value: choice.value ?? '',
+                    description: choice.description ?? '',
                     isVeto: false,
                     disabled: !canDoCast || alreadyVoted,
                 }
-                return choiseData
+                return choiceData
             })
             if (!canDoVeto) {
-                return voteChoisesFromApi ?? []
+                return voteChoicesFromApi ?? []
             }
 
-            const vetoChoiseData: IChoise = {
+            const vetoChoiceData: IChoise = {
                 id: VETO_VOTE_ID,
-                value: t('votes.voteDetail.voteVetoChoiseLabel'),
+                value: t('votes.voteDetail.voteVetoChoiceLabel'),
                 description: 'veto',
                 isVeto: true,
                 disabled: !canDoVeto || alreadyVoted,
             }
-            const voteHandlingChoisesData = voteChoisesFromApi?.concat(vetoChoiseData)
-            return voteHandlingChoisesData ?? []
+            const voteHandlingChoicesData = voteChoicesFromApi?.concat(vetoChoiceData)
+            return voteHandlingChoicesData ?? []
         },
         [alreadyVoted, t],
     )
 
-    const voteChoisesData = useMemo((): IChoise[] => {
-        return voteChoisesFactory(voteData, canCast, canVeto)
-    }, [canCast, canVeto, voteChoisesFactory, voteData])
+    const voteChoicesData = useMemo((): IChoise[] => {
+        return voteChoicesFactory(voteData, canCast, canVeto)
+    }, [canCast, canVeto, voteChoicesFactory, voteData])
 
     const onSubmit = async (formData: FieldValues) => {
         if (voteData === undefined || voteData?.id === undefined) {
             return
         }
         const voteId = voteData.id
-        const choiseId: number | undefined | null = formData['voteChoise']
-        const choiseDescription: string | undefined = formData['voteDescription']
-        if (choiseId == undefined) {
+        const choiceId: number | undefined | null = formData['voteChoice']
+        const choiceDescription: string | undefined = formData['voteDescription']
+        if (choiceId == undefined) {
             return
         }
-        const isVeto = choiseId === VETO_VOTE_ID
+        const isVeto = choiceId === VETO_VOTE_ID
 
         try {
             setVotesProcessingError(false)
             if (isVeto) {
-                await handleVetoVote(voteId, choiseDescription)
+                await handleVetoVote(voteId, choiceDescription)
                 return
             }
-            await handleCastVote(voteId, choiseId, choiseDescription)
+            await handleCastVote(voteId, choiceId, choiceDescription)
         } catch {
             setVotesProcessingError(true)
         }
@@ -102,21 +102,21 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
                     hint={
                         canCast
                             ? alreadyVoted
-                                ? t('votes.voteDetail.voteChoiseLabel.alreadyVoted')
-                                : t('votes.voteDetail.voteChoiseLabel.canCast')
-                            : t('votes.voteDetail.voteChoiseLabel.cannotCast')
+                                ? t('votes.voteDetail.voteChoiceLabel.alreadyVoted')
+                                : t('votes.voteDetail.voteChoiceLabel.canCast')
+                            : t('votes.voteDetail.voteChoiceLabel.cannotCast')
                     }
                 >
-                    {voteChoisesData.map((choise) => {
+                    {voteChoicesData.map((choice) => {
                         return (
                             <RadioButton
-                                key={choise.id}
-                                id={choise.id.toString()}
-                                value={choise.id}
-                                label={choise.value ?? ''}
-                                {...register('voteChoise')}
-                                disabled={choise.disabled}
-                                defaultChecked={choise.id == castedVoteId}
+                                key={choice.id}
+                                id={choice.id.toString()}
+                                value={choice.id}
+                                label={choice.value ?? ''}
+                                {...register('voteChoice')}
+                                disabled={choice.disabled}
+                                defaultChecked={choice.id == castedVoteId}
                             />
                         )
                     })}

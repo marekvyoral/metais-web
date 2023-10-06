@@ -15,7 +15,7 @@ import DeleteGroupMemberModal from './modals/DeleteGroupMemberModal'
 import styles from './styles.module.scss'
 
 import { defaultSort, GroupDetailViewProps, identitiesFilter, TableData } from '@/components/containers/standardization/groups/GroupDetailContainer'
-import GroupDetailBaseInfo from '@/components/views/standartization/groups/components/BaseGroupInfo'
+import GroupDetailBaseInfo from '@/components/views/standardization/groups/components/BaseGroupInfo'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const GroupDetailView: React.FC<GroupDetailViewProps> = ({

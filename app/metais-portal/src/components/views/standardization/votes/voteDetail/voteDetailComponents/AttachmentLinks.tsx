@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ButtonLink } from '@isdd/idsk-ui-kit/index'
 
-import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
+import styles from '@/components/views/standardization/votes/voteDetail/voteDetail.module.scss'
 
 interface IAttachmentLink {
     attachments: ApiAttachment[] | undefined

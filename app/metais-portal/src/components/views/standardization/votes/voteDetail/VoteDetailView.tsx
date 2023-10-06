@@ -12,11 +12,11 @@ import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPe
 import { Spacer } from './voteDetailComponents/Spacer'
 import { VoteOverViewItems } from './voteDetailComponents/VoteOverViewItems'
 
-import { SimpleTable } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/SimpleTable'
-import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
+import { SimpleTable } from '@/components/views/standardization/votes/voteDetail/voteDetailComponents/SimpleTable'
+import styles from '@/components/views/standardization/votes/voteDetail/voteDetail.module.scss'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { VotesHandler } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/VotesHandling'
-import { VoteDetailItems } from '@/components/views/standartization/votes/voteDetail/voteDetailComponents/VoteDetailItems'
+import { VotesHandler } from '@/components/views/standardization/votes/voteDetail/voteDetailComponents/VotesHandling'
+import { VoteDetailItems } from '@/components/views/standardization/votes/voteDetail/voteDetailComponents/VoteDetailItems'
 
 export interface IVoteDetailView {
     voteData: ApiVote | undefined

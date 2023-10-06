@@ -8,21 +8,21 @@ export enum VoteStateEnum {
 }
 
 export enum VoteStateOptionEnum {
-    PLANNED = 'PLANNED',
-    ENDED = 'ENDED',
-    UPCOMMING = 'UPCOMMING',
-    CANCELED = 'CANCELED',
-    SUMMARIZED = 'SUMMARIZED',
-    VETOED = 'VETOED',
+    PLANNED = 'Planned',
+    ENDED = 'ended',
+    UPCOMING = 'upcoming',
+    CANCELED = 'canceled',
+    SUMMARIZED = 'summarized',
+    VETOED = 'vetoed',
 }
 
 export enum VotesListColumnsEnum {
-    NAME = 'NAME',
-    EFFECTIVE_FROM = 'EFFECTIVE_FROM',
-    EFFECTIVE_TO = 'EFFECTIVE_TO',
-    VOTE_STATE = 'VOTESTATE',
-    CAN_CAST = 'CAN_CAST',
-    HAS_CAST = 'HAS_CAST',
+    NAME = 'name',
+    EFFECTIVE_FROM = 'effectiveFrom',
+    EFFECTIVE_TO = 'effectiveTo',
+    VOTE_STATE = 'voteState',
+    CAN_CAST = 'canCast',
+    HAS_CAST = 'hasCast',
 }
 
 export const getVoteStateEnum = (originalState: string | undefined, effectiveFrom: string, effectiveTo: string): string => {
@@ -42,7 +42,7 @@ export const getVoteStateEnum = (originalState: string | undefined, effectiveFro
                 return VoteStateOptionEnum.ENDED
             }
             if (dateFromDiff < 0 && dateToDiff > 0) {
-                return VoteStateOptionEnum.UPCOMMING
+                return VoteStateOptionEnum.UPCOMING
             }
             return ''
         case VoteStateEnum.CANCELED:

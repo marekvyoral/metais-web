@@ -9,9 +9,9 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import { getVoteStateExplanation } from '../voteProps'
 
-import styles from './votelist.module.scss'
+import styles from './voteList.module.scss'
 
-import { voteListColumns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/standartization/votes/votesList/voteListProps'
+import { voteListColumns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/standardization/votes/votesList/voteListProps'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 export interface IVotesListFilterData extends IFilterParams, IFilter {

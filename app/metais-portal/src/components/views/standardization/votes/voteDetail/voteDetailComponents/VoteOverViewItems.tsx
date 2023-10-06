@@ -2,7 +2,7 @@ import { TextBody } from '@isdd/idsk-ui-kit/index'
 import { ApiVote, ApiVoteResult } from '@isdd/metais-common/api'
 import { useTranslation } from 'react-i18next'
 
-import styles from '@/components/views/standartization/votes/voteDetail/voteDetail.module.scss'
+import styles from '@/components/views/standardization/votes/voteDetail/voteDetail.module.scss'
 
 export interface IOverviewItemData {
     itemTitleContent: string

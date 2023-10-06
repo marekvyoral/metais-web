@@ -1002,12 +1002,12 @@
             "changeDate": "Dátum Zmeny",
             "changeInfo": "Informácie o zmenách hlasujúcich počas priebehu hlasovania",
             "changeDescription": "Popis Zmeny",
-            "voteChoiseLabel": {
+            "voteChoiceLabel": {
                 "cannotCast": "Hlasovať može iba prihlásený a oprávnený používateľ.",
                 "canCast": "Máte oprávnenie hlasovať",
                 "alreadyVoted": "Už ste zahlasovali za tento návrh"
         },
-            "voteVetoChoiseLabel": "Vetovať hlasovanie",
+            "voteVetoChoiceLabel": "Vetovať hlasovanie",
             "description": "Poznámka",
             "voteConclusion": "Záver hlasovania",
             "voteDetailExplanationPrefix": "Stav hlasovania ",
@@ -1030,7 +1030,7 @@
             "state": {
                 "planned": "Plánované",
                 "ended": "Ukončené",
-                "upcomming": "Prebiehajúce",
+                "upcoming": "Prebiehajúce",
                 "canceled" : "Zrušené", 
                 "summarized": "Vyhodnotené",
                 "vetoed": "Vetované"
