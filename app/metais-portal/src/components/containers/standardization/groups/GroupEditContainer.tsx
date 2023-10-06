@@ -3,6 +3,7 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import React from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { useInvalidateGroupsDetailCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { GroupCreateEditView } from '@/components/views/standartization/groups/GroupCreateEditView'
 import { GroupFormEnum } from '@/components/views/standartization/groups/groupSchema'
@@ -32,6 +33,7 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
     const navigate = useNavigate()
 
     const { data: infoData, isLoading, isError } = useFindByUuid3(id ?? '')
+    const invalidateGroupDetailCache = useInvalidateGroupsDetailCache(id ?? '')
 
     const goBack = () => {
         navigate(-1)
@@ -40,6 +42,7 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
         mutation: {
             onSuccess() {
                 goBack()
+                invalidateGroupDetailCache.invalidate()
             },
         },
     })

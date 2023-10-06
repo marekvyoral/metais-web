@@ -34,6 +34,11 @@ checks:
         - yarn run lint
     rules:
         - when: always
+    artifacts:
+        expire_in: 2 days
+        paths:
+            - 'app/metais-portal/'
+            - 'app/metais-admin/'
 
 build-node:
     image: nexus.isdd.sk:8490/node:latest

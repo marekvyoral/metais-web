@@ -1,19 +1,39 @@
 {
+    "footer": {
+        "metaisServices": "MetaIS Services",
+        "usefulLinks": "Useful Links",
+        "mediaWiki": "MediaWiki",
+        "contact": "Contact",
+        "MIRRI": "Ministry of Investments, Regional Development, and Informatization of the Slovak Republic",
+        "operatorMIRRI": "The service is operated by the Ministry of Investments, Regional Development, and Informatization of the Slovak Republic.",
+        "idsk": "Unified design manual for electronic services.",
+        "createdInAccordance": "Created in accordance with ",
+
+        "accessibilityDeclaration": "Accessibility declaration",
+        "webResidencyMap": "Web residency map",
+        "GDPRAndCookies": "GDPR and cookies",
+        "technicalOperator": "Technical operator",
+        "contentAdmin": "Admin of content",
+        "RSS": "RSS"
+    },
     "navMenu": {
         "publicAuthorities": "Public authorities",
-        "egovComponents": "E-gov Components",
+        "egovComponents": "e-Government Components",
         "standardization": "Standardization",
         "dataObjects": "Data objects",
-        "monitoring": "Reports and monitoring",
-        "guides": "Procedures and instructions",
+        "monitoring": "Monitoring",
+        "guides": "Help",
         "hide": "Hide",
         "show": "Show",
         "innerNav": "Inner navigation",
         "mainNav": "Main navigation",
         "reports": "List of reports",
 
-        "KRITProgramsProjects": "KRIT, Programs, Projects",
+        "GoalsPrincipalsActivitiesKRIT": "Goals, principles, activities and KRIT",
         "referenceIdentifiers": "Reference identifiers",
+        "centralDataModel": "Central data model",
+        "dataElementsCatalogue": "Data elements catalogue",
+        "dataObligationsRegister": "Register of data authorizations and obligations",
 
         "lists": {
             "processorsOfITDevelopmentConcepts": "Processors of KRIT",
@@ -48,6 +68,7 @@
             "monitoringApp": "Monitored parameters of AS",
             "monitoringSet": "Set of monitoring parameters",
             "monitoringImport": "Import of monitored parameters",
+            "monitoringServices": "Monitoring services",
 
             "evidenceObjects": "Evidence objects",
             "attributesEvidenceObjects": "Attributes of evidence objects",
@@ -59,7 +80,7 @@
             "princip": "Principles",
             "ciel": "Goals",
             "aktivita": "Activity",
-            "kris": "Concepts of IS development",
+            "krit": "Concepts of IT development",
             "registersList": "List of reference registers",
             "registersRequestsList": "List of requests to add a reference register",
             "codelistsRequestsList": "List of requests to add a codelist",
@@ -68,7 +89,14 @@
             "personalProcedures": "Personal procedures",
             "educationalCourses": "Educational courses",
             "publicAuthorityHierarchy": "Hierarchy of public authorities",
-            "webResidence": "Web residence"
+            "webResidenceAndMobileApps": "Web residence and mobile applications",
+            "relationsInspection": "Inspection of relations",
+            "architectonicRepository": "Architectonic repository",
+
+            "assembliesAndReports": "Assemblies and reports",
+            "totalCostOfOwnership": "Total costs of ownership",
+            "serviceLevelAgreementsWithOperator": "Service level agreements with the Operator (SLA)",
+            "integrationAgreementsOnServiceLevel": "Integration agreements on the level of service provided (ISLA)"
         }
     },
     "navbar": {
