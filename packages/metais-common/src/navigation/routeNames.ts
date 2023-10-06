@@ -116,7 +116,6 @@ export enum NavigationSubRoutes {
     TOTAL_COST_OF_OWNERSHIP = '/howto/TCO.TCO_TOTAL_OWNERSHIP_COSTS/TOTAL_OWNERSHIP_COSTS_HOWTO',
     SERVICE_LEVEL_AGREEMENTS_WITH_OPERATOR = '/sla-contract-list',
     INTEGRATION_AGREEMENTS_ON_SERVICE_LEVEL = '/isla-contract-list',
-    PERSONAL_PROCEDURES = '/personal-procedures',
 }
 
 export enum AdminRouteRoles {
@@ -151,4 +150,5 @@ export enum FooterRouteNames {
     CONTENT_ADMIN = '/technical/manager',
     RSS = '/rss',
     IDSK_DIZAJN = '/#',
+    EXCEPTIONS_LEGISLATION = '/ci/vynimky_ITVS',
 }
