@@ -1,0 +1,11 @@
+@import '../../../utils.scss';
+.buttonGroupEnd {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: govuk-spacing(2);
+
+    @include mq($until: tablet) {
+        flex-direction: column;
+    }
+}

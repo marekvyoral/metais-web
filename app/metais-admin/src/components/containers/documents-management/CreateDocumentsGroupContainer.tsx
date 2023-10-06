@@ -15,15 +15,12 @@ import { UseMutationResult } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 
 export interface IView {
-    infoData: DocumentGroup
-    documentsData: Document[]
     projectStatus: EnumType
     saveDocument: (documentGroup: DocumentGroup) => Promise<DocumentGroup>
-    deleteDocument: (id: number) => Promise<boolean>
     isLoading: boolean
 }
 
-export interface IDocumentsGroupContainerProps {
+export interface ICreateDocumentsGroupContainerProps {
     View: React.FC<IView>
 }
 
@@ -32,22 +29,8 @@ export interface DocumentFilterData extends IFilterParams {
     status: string
 }
 
-export const DocumentsGroupContainer: React.FC<IDocumentsGroupContainerProps> = ({ View }) => {
-    const { entityId } = useParams()
-    const id = Number(entityId)
-    const { data: infoData, isLoading: isInfoLoading } = useGetDocumentGroupById(id)
-    const { data: documentsData, isLoading: isDocumentsLoading } = useGetDocuments(id)
+export const CreateDocumentsGroupContainer: React.FC<ICreateDocumentsGroupContainerProps> = ({ View }) => {
     const { data: projectStatus, isLoading: isStatusesLoading } = useGetValidEnum(STAV_PROJEKTU)
     const saveDocument = useSaveDocumentGroupHook()
-    const deleteDocument = useDeleteDocumentGroupHook()
-    return (
-        <View
-            isLoading={isDocumentsLoading || isInfoLoading || isStatusesLoading}
-            infoData={infoData ?? {}}
-            documentsData={documentsData ?? []}
-            projectStatus={projectStatus ?? {}}
-            saveDocument={saveDocument}
-            deleteDocument={deleteDocument}
-        />
-    )
+    return <View isLoading={isStatusesLoading} projectStatus={projectStatus ?? {}} saveDocument={saveDocument} />
 }

@@ -164,7 +164,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
                 <Button
                     bottomMargin={false}
                     label={t('documentsManagement.addNewGroup')}
-                    onClick={() => navigate(`/documents-management/create`, { state: { from: location } })}
+                    onClick={() => navigate(`./create`, { state: { from: location } })}
                 />
             </ActionsOverTable>
             <Table

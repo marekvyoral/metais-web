@@ -837,6 +837,17 @@
         "description": "Popis",
         "descriptionEng": "Popis Eng",
         "projectPhase": "Fáza projektu",
-        "projectStatus": "Stav projektu"
+        "projectStatus": "Stav projektu",
+        "confluence": "Confluence",
+        "required": "Povinný",
+        "documents": "Dokumenty",
+        "addNewDocument": "Pridať nový dokument",
+        "groupEdit": "Úprava skupiny dokumentov",
+        "input": "Zadajte",
+        "removingDocumentsGroup": "Odstrániť skupinu dokumentov",
+        "baseInfo": "Základné informácie",
+        "docId": "Identifikátor dokumentu",
+        "docTemplate": "Šablóna dokumentu",
+        "useTemplate": "Vložiť predvypľnený obsah šablóny"
     }
 }

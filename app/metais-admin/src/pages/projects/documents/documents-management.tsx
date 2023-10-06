@@ -21,20 +21,7 @@ const DocumentsManagementPage = () => {
             <MainContentWrapper>
                 <DocumentsManagementContainer
                     View={(props) => {
-                        return (
-                            <DocumentsManagementView
-                                filterMap={props.filterMap}
-                                filter={props.filter}
-                                data={props.data}
-                                statuses={props.statuses}
-                                setData={props.setData}
-                                saveOrder={props.saveOrder}
-                                resetOrder={props.resetOrder}
-                                selectedColumns={props.selectedColumns}
-                                setSelectedColumns={props.setSelectedColumns}
-                                handleFilterChange={props.handleFilterChange}
-                            />
-                        )
+                        return <DocumentsManagementView {...props} />
                     }}
                 />
             </MainContentWrapper>
