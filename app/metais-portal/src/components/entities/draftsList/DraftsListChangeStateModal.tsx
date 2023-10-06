@@ -1,9 +1,10 @@
-import { BaseModal, Button, Input } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Button, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { StandardDraftsDraftStates } from '@isdd/metais-common/types/api'
 import React, { useContext } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useStateMachine } from '@isdd/metais-common/components/state-machine/hooks/useStateMachine'
+import styles from '@isdd/metais-common/components/export-items-or-relations/exportItemsOrRelations.module.scss'
 
 import { StandardDraftsStateMachine } from '@/pages/standardization/draftsList/[entityId]/form'
 
@@ -35,13 +36,22 @@ export const DraftsListChangeStateModal = ({
 
     return (
         <BaseModal isOpen={openChangeStateDialog} close={() => setOpenChangeStateDialog(false)}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <>
-                    <Input {...register('description')} label={t('DraftsList.header.changeState.description')} />
+            <div className={styles.modalContainer}>
+                <div className={styles.content}>
+                    <TextHeading size={'L'} className={styles.heading}>
+                        {t(`DraftsList.header.${targetState}`)}
+                    </TextHeading>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <>
+                            <Input {...register('description')} label={t('DraftsList.header.changeState.description')} size={20} />
 
-                    <Button label={t('DraftsList.header.changeState.submit')} type="submit" />
-                </>
-            </form>
+                            <div className={styles.confirmButton}>
+                                <Button label={t('DraftsList.header.changeState.submit')} type="submit" />
+                            </div>
+                        </>
+                    </form>
+                </div>
+            </div>
         </BaseModal>
     )
 }

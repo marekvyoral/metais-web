@@ -937,7 +937,7 @@
             }
         },
         "header": {
-            "confluenceDocs": "Insert into confluence",
+            "confluenceDocs": "Insert into ?????",
             "ACCEPTED": "Mark draft as processed",
             "REJECTED": "Reject draft",
             "ASSIGNED": "Add into working group",

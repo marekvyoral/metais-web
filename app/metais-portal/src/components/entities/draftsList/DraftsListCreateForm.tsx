@@ -28,22 +28,83 @@ interface CreateForm {
 export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: CreateForm) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { register, handleSubmit, setValue, watch, getValues } = useForm({
+    const { register, handleSubmit, setValue, watch, getValues, formState } = useForm({
         defaultValues: {
             ...data?.defaultData,
+            version: 2,
+            actionDesription: '-',
+            email: '-',
+            name: '-',
+            srDescription2: '-',
+            srDescription3: '-',
+            srDescription4: '-',
+            srDescription5: '-',
+            srDescription6: '-',
+            proposalDescription1: '-',
+            applicabilityDescription1: '-',
+            applicabilityDescription2: '-',
+            applicabilityDescription3: '-',
+            applicabilityDescription4: '-',
+            relevanceDescription1: '-',
+            adaptabilityDescription1: '-',
+            adaptabilityDescription2: '-',
+            impactDescription2: '-',
+            impactDescription3: '-',
+            impactDescription4: '-',
+            impactDescription6: '-',
+            impactDescription8: '-',
+            impactDescription9: '-',
+            impactDescription10: '-',
+            impactDescription11: '-',
+            impactDescription12: '-',
+            scalabilityDescription1: '-',
+            expandabilityDescription1: '-',
+            expandabilityDescription2: '-',
+            stabilityDescription1: '-',
+            stabilityDescription2: '-',
+            stabilityDescription3: '-',
+            maintenanceDescription1: '-',
+            outputsDescription1: '-',
+            outputsDescription2: '-',
+            outputsDescription3: '-',
+            outputsDescription4: '-',
+            outputsDescription5: '-',
+            processDescription1: '-',
+            processDescription2: '-',
+            processDescription3: '-',
+            processDescription4: '-',
+            processDescription5: '-',
+            processDescription6: '-',
+            extensionDescription1: '-',
+            extensionDescription2: '-',
+            extensionDescription3: '-',
+            extensionDescription4: '-',
+            extensionDescription5: '-',
+            extensionDescription6: '-',
+            extensionDescription7: '-',
+            maturityDescription1: '-',
+            maturityDescription2: '-',
+            maturityDescription3: '-',
+            reusabilityDescription1: '-',
+            reusabilityDescription2: '-',
         },
         resolver: yupResolver(generateSchemaForCreateDraft(t)),
     })
     const links = watch('links') ?? []
 
     const addNewLink = () => {
-        setValue('links', [...(links ?? []), {} as ApiLink])
+        const newLinks = [...(links ?? []), {}]
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        setValue('links', newLinks)
     }
 
     const removeLink = (removeIndex: number) => {
         const newAttachments = links?.filter((_: ApiLink, index: number) => index !== removeIndex)
         setValue('links', newAttachments)
     }
+
+    const errors = formState?.errors
 
     return (
         <div>
@@ -105,7 +166,14 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
                     info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7, data?.guiAttributes)}
                     value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7)}
                 />
-                <DraftsListAttachmentsZone attachements={[]} links={links} register={register} addNewLink={addNewLink} onDelete={removeLink} />
+                <DraftsListAttachmentsZone
+                    attachements={[]}
+                    links={links}
+                    register={register}
+                    addNewLink={addNewLink}
+                    onDelete={removeLink}
+                    errors={errors}
+                />
                 <div className={styles.buttonGroup}>
                     <Button
                         label={t('DraftsList.createForm.cancel')}
