@@ -19,7 +19,7 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
     const isUserLogged = authState.user !== null
 
     const defaultFilterValues: IVotesListFilterData = {
-        votesTypeToShow: isUserLogged ? VotesListShowEnum.onlyMy : VotesListShowEnum.everyone,
+        votesTypeToShow: isUserLogged ? VotesListShowEnum.ONLY_MY : VotesListShowEnum.EVERYONE,
         voteState: '',
         effectiveFrom: '',
         effectiveTo: '',
@@ -28,7 +28,7 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
     const { filter, handleFilterChange } = useFilterParams<IVotesListFilterData>({
         sort: [
             {
-                orderBy: VotesListColumnsEnum.effectiveFrom,
+                orderBy: VotesListColumnsEnum.EFFECTIVE_FROM,
                 sortDirection: SortType.DESC,
             },
         ],
@@ -38,12 +38,12 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
     const getVotesParamValues = useMemo((): GetVotesParams => {
         const voteParamsData = getVoteParamsData(filter.voteState, filter.effectiveFrom, filter.effectiveTo)
         const votesParamValues: GetVotesParams = {
-            ascending: filter.sort?.[0]?.sortDirection === SortType.ASC ?? false,
-            onlyMy: filter.votesTypeToShow === VotesListShowEnum.onlyMy ?? false,
-            sortBy: filter.sort?.[0]?.orderBy ?? VotesListColumnsEnum.effectiveFrom,
-            ...(voteParamsData.state !== undefined && voteParamsData.state !== '' && { state: voteParamsData.state }),
-            ...(voteParamsData.dateFrom !== undefined && voteParamsData.dateFrom !== '' && { fromDate: voteParamsData.dateFrom }),
-            ...(voteParamsData.dateTo !== undefined && voteParamsData.dateTo !== '' && { toDate: voteParamsData.dateTo }),
+            ascending: filter.sort?.[0]?.sortDirection === SortType.ASC,
+            onlyMy: filter.votesTypeToShow === VotesListShowEnum.ONLY_MY,
+            sortBy: filter.sort?.[0]?.orderBy ?? VotesListColumnsEnum.EFFECTIVE_FROM,
+            ...(!!voteParamsData.state && { state: voteParamsData.state }),
+            ...(!!voteParamsData.dateFrom && { fromDate: voteParamsData.dateFrom }),
+            ...(!!voteParamsData.dateTo && { toDate: voteParamsData.dateTo }),
             pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
             perPage: filter.pageSize ?? BASE_PAGE_SIZE,
         }

@@ -3,9 +3,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
 
 export enum VotesListColumnsEnum {
-    name = 'name',
-    userOrgName = 'userOrgName',
-    role = 'role',
+    name = 'NAME',
+    userOrgName = 'USER_ORG_NAME',
+    role = 'ROLE',
 }
 
 export const voteActorsColumns = (t: TFunction): Array<ColumnDef<ApiVoteActor>> => {

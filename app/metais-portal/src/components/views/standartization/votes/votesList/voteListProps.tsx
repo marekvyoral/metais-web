@@ -9,8 +9,8 @@ import { VoteStateOptionEnum, VotesListColumnsEnum } from '../voteProps'
 
 import styles from './votelist.module.scss'
 export enum VotesListShowEnum {
-    everyone = 'everyone',
-    onlyMy = 'onlyMy',
+    EVERYONE = 'EVERYONE',
+    ONLY_MY = 'ONLY_MY',
 }
 
 export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<ColumnDef<ApiVotePreview>> => {
@@ -33,7 +33,7 @@ export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<Colu
             },
             accessorFn: (row) => row?.name,
             enableSorting: true,
-            id: VotesListColumnsEnum.name,
+            id: VotesListColumnsEnum.NAME,
             size: 400,
             cell: (ctx) => {
                 const { id } = ctx.row.original
@@ -45,7 +45,7 @@ export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<Colu
             header: t('votes.votesList.table.effectiveFrom'),
             accessorFn: (row) => row?.effectiveFrom,
             enableSorting: true,
-            id: VotesListColumnsEnum.effectiveFrom,
+            id: VotesListColumnsEnum.EFFECTIVE_FROM,
             size: 150,
             cell: (ctx) => t('date', { date: ctx.getValue() as string }),
         },
@@ -53,7 +53,7 @@ export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<Colu
             header: t('votes.votesList.table.effectiveTo'),
             accessorFn: (row) => row?.effectiveTo,
             enableSorting: true,
-            id: VotesListColumnsEnum.effectiveTo,
+            id: VotesListColumnsEnum.EFFECTIVE_TO,
             size: 150,
             cell: (ctx) => t('date', { date: ctx.getValue() as string }),
         },
@@ -61,7 +61,7 @@ export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<Colu
             header: t('votes.votesList.table.voteState'),
             accessorFn: (row) => row?.voteState,
             enableSorting: true,
-            id: VotesListColumnsEnum.voteState,
+            id: VotesListColumnsEnum.VOTE_STATE,
             size: 150,
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
@@ -69,7 +69,7 @@ export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<Colu
             header: t('votes.votesList.table.canCast'),
             accessorFn: (row) => row?.canCast,
             enableSorting: true,
-            id: VotesListColumnsEnum.canCast,
+            id: VotesListColumnsEnum.CAN_CAST,
             size: 100,
             cell: (ctx) => <span>{(ctx?.getValue?.() as boolean) ? t('votes.type.yes') : t('votes.type.no')}</span>,
         },
@@ -77,32 +77,32 @@ export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<Colu
             header: t('votes.votesList.table.hasCast'),
             accessorFn: (row) => row?.hasCast,
             enableSorting: true,
-            id: VotesListColumnsEnum.hasCast,
+            id: VotesListColumnsEnum.CAN_CAST,
             size: 100,
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },
     ]
 
     if (!isUserLogged) {
-        return columnsAll.filter((column) => column.id != VotesListColumnsEnum.canCast && column.id != VotesListColumnsEnum.hasCast)
+        return columnsAll.filter((column) => column.id != VotesListColumnsEnum.CAN_CAST && column.id != VotesListColumnsEnum.CAN_CAST)
     }
     return columnsAll
 }
 
 export const votesTypeToShowOptions = (t: TFunction): IOption[] => {
     return [
-        { value: VotesListShowEnum.onlyMy, label: t('votes.type.toShow.onlyMyVotes') },
-        { value: VotesListShowEnum.everyone, label: t('votes.type.toShow.allVotes') },
+        { value: VotesListShowEnum.ONLY_MY, label: t('votes.type.toShow.onlyMyVotes') },
+        { value: VotesListShowEnum.EVERYONE, label: t('votes.type.toShow.allVotes') },
     ]
 }
 
 export const voteStateOptions = (t: TFunction): IOption[] => {
     return [
-        { value: VoteStateOptionEnum.planned, label: t('votes.type.state.planned') },
-        { value: VoteStateOptionEnum.canceled, label: t('votes.type.state.canceled') },
-        { value: VoteStateOptionEnum.upcomming, label: t('votes.type.state.upcomming') },
-        { value: VoteStateOptionEnum.ended, label: t('votes.type.state.ended') },
-        { value: VoteStateOptionEnum.summarized, label: t('votes.type.state.summarized') },
-        { value: VoteStateOptionEnum.vetoed, label: t('votes.type.state.vetoed') },
+        { value: VoteStateOptionEnum.PLANNED, label: t('votes.type.state.planned') },
+        { value: VoteStateOptionEnum.CANCELED, label: t('votes.type.state.canceled') },
+        { value: VoteStateOptionEnum.UPCOMMING, label: t('votes.type.state.upcomming') },
+        { value: VoteStateOptionEnum.ENDED, label: t('votes.type.state.ended') },
+        { value: VoteStateOptionEnum.SUMMARIZED, label: t('votes.type.state.summarized') },
+        { value: VoteStateOptionEnum.VETOED, label: t('votes.type.state.vetoed') },
     ]
 }

@@ -15,16 +15,7 @@ export const SimpleTable: <T>({ tableData, sort, tableColumns }: IVotedTabConten
 }) => {
     return (
         <>
-            <Table
-                data={tableData}
-                columns={tableColumns}
-                sort={sort ?? []}
-                // onSortingChange={(columnSort) => {
-                //     handleFilterChange({ sort: columnSort })
-                // }}
-                isLoading={false}
-                error={undefined}
-            />
+            <Table data={tableData} columns={tableColumns} sort={sort ?? []} isLoading={false} />
         </>
     )
 }

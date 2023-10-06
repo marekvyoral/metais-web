@@ -16,20 +16,14 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
     } = useAuth()
     const isUserLogged = !!user
     const userId = user?.uuid ?? ''
-    const userlogin = user?.login ?? ''
+    const userLogin = user?.login ?? ''
     const voteId = useMemo(() => {
-        if (voteIdParam == undefined) {
-            return 0
-        }
-        const voteIdValue = parseInt(voteIdParam)
-        if (isNaN(voteIdValue)) {
-            return 0
-        }
-        return voteIdValue
+        const voteIdValue = voteIdParam ? parseInt(voteIdParam) : 0
+        return isNaN(voteIdValue) ? 0 : voteIdValue
     }, [voteIdParam])
 
-    const { data: voteData, isLoading: voteDataLoading, error: voteDataError } = useGetVoteDetail(voteId)
-    const { data: voteResultData, isLoading: voteResultDataLoading, error: voteResultDataError } = useGetVoteResult(voteId)
+    const { data: voteData, isLoading: voteDataLoading, isError: voteDataError } = useGetVoteDetail(voteId)
+    const { data: voteResultData, isLoading: voteResultDataLoading, isError: voteResultDataError } = useGetVoteResult(voteId)
     const { isLoading: castVoteLoading, mutateAsync: castVoteAsyncMutation } = useCastVote()
     const castVote = async (voteIdentifier: number, choiceId: number, description: string) => {
         await castVoteAsyncMutation({
@@ -39,6 +33,11 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
             data: { description },
         })
     }
+
+    const canDoCast = useMemo((): boolean => {
+        return voteData?.voteActors?.find((va) => va.userId == userLogin) !== undefined
+    }, [userLogin, voteData?.voteActors])
+
     const { isLoading: vetoVoteLoading, mutateAsync: vetoVoteAsyncMutation } = useVetoVote()
     const vetoVote = async (voteIdentifier: number, description: string) => {
         await vetoVoteAsyncMutation({
@@ -47,21 +46,15 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
             data: { description },
         })
     }
-
-    const canDoCast = useMemo((): boolean => {
-        return voteData?.voteActors?.find((va) => va.userId == userlogin) !== undefined
-    }, [userlogin, voteData?.voteActors])
-
     const castedVoteId = useMemo((): number | undefined => {
-        return voteResultData?.actorResults?.find((ar) => ar.userId == userlogin && ar.votedChoiceId !== null)?.votedChoiceId
-    }, [userlogin, voteResultData?.actorResults])
+        return voteResultData?.actorResults?.find((ar) => ar.userId == userLogin && ar.votedChoiceId !== null)?.votedChoiceId
+    }, [userLogin, voteResultData?.actorResults])
+
+    const isLoading = voteDataLoading || voteResultDataLoading
+    const isError = voteDataError || voteResultDataError
 
     return (
-        <QueryFeedback
-            loading={voteDataLoading || voteResultDataLoading}
-            error={!!voteDataError || !!voteResultDataError}
-            indicatorProps={{ layer: 'parent', transparentMask: true }}
-        >
+        <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent', transparentMask: true }}>
             <View
                 voteResultData={voteResultData}
                 voteData={voteData}

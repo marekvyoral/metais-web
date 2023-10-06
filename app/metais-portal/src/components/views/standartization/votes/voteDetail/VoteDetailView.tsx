@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Collapsable } from './voteDetailComponents/collapsable/collapsable'
+import { Collapsible } from './voteDetailComponents/Collapsible/Collapsible'
 import { voteActorResultsColumns } from './voteActorResultsColumns'
 import { voteActorsColumns } from './voteActorsColumns'
 import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
@@ -135,13 +135,13 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
 
                 <Spacer />
 
-                <Collapsable
+                <Collapsible
                     collapseSign={<div className={styles.collapsableSign}>-</div>}
                     expandSign={<div className={styles.collapsableSign}>+</div>}
                     heading={<div className={styles.textFormat}>{t('votes.voteDetail.voteActorsTitle')}</div>}
                 >
                     {voteData?.voteActors && <SimpleTable tableColumns={actorColumns} tableData={voteData?.voteActors} sort={undefined} />}
-                </Collapsable>
+                </Collapsible>
                 <Spacer />
 
                 <TextHeading size="L">{t('votes.voteDetail.voteOverview')}</TextHeading>
@@ -158,13 +158,13 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
 
                 <Spacer />
                 {pendingChangesData.length !== 0 && (
-                    <Collapsable
+                    <Collapsible
                         collapseSign={<div className={styles.collapsableSign}>-</div>}
                         expandSign={<div className={styles.collapsableSign}>+</div>}
                         heading={<div className={styles.textFormat}>{t('votes.voteDetail.changeInfo')}</div>}
                     >
                         <SimpleTable tableColumns={actorPendingChangesColumns} tableData={pendingChangesData} sort={undefined} />
-                    </Collapsable>
+                    </Collapsible>
                 )}
             </MainContentWrapper>
         </>

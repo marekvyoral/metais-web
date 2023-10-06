@@ -8,21 +8,21 @@ export enum VoteStateEnum {
 }
 
 export enum VoteStateOptionEnum {
-    planned = 'planned',
-    ended = 'ended',
-    upcomming = 'upcomming',
-    canceled = 'canceled',
-    summarized = 'summarized',
-    vetoed = 'vetoed',
+    PLANNED = 'PLANNED',
+    ENDED = 'ENDED',
+    UPCOMMING = 'PLANNED',
+    CANCELED = 'CANCELED',
+    SUMMARIZED = 'SUMMARIZED',
+    VETOED = 'VETOED',
 }
 
 export enum VotesListColumnsEnum {
-    name = 'name',
-    effectiveFrom = 'effectiveFrom',
-    effectiveTo = 'effectiveTo',
-    voteState = 'voteState',
-    canCast = 'canCast',
-    hasCast = 'hasCast',
+    NAME = 'NAME',
+    EFFECTIVE_FROM = 'EFFECTIVE_FROM',
+    EFFECTIVE_TO = 'EFFECTIVE_TO',
+    VOTE_STATE = 'VOTESTATE',
+    CAN_CAST = 'CAN_CAST',
+    HAS_CAST = 'HAS_CAST',
 }
 
 export const getVoteStateEnum = (originalState: string | undefined, effectiveFrom: string, effectiveTo: string): string => {
@@ -36,21 +36,21 @@ export const getVoteStateEnum = (originalState: string | undefined, effectiveFro
     switch (originalState) {
         case VoteStateEnum.CREATED:
             if (dateFromDiff > 0) {
-                return VoteStateOptionEnum.planned
+                return VoteStateOptionEnum.PLANNED
             }
             if (dateToDiff < 0) {
-                return VoteStateOptionEnum.ended
+                return VoteStateOptionEnum.ENDED
             }
             if (dateFromDiff < 0 && dateToDiff > 0) {
-                return VoteStateOptionEnum.upcomming
+                return VoteStateOptionEnum.UPCOMMING
             }
             return ''
         case VoteStateEnum.CANCELED:
-            return VoteStateOptionEnum.canceled
+            return VoteStateOptionEnum.CANCELED
         case VoteStateEnum.SUMMARIZED:
-            return VoteStateOptionEnum.summarized
+            return VoteStateOptionEnum.SUMMARIZED
         case VoteStateEnum.VETOED:
-            return VoteStateOptionEnum.vetoed
+            return VoteStateOptionEnum.VETOED
         default:
             return ''
     }

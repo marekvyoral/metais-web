@@ -24,12 +24,13 @@ interface IChoise {
     disabled: boolean
 }
 
+const VETO_VOTE_ID = -1
+
 export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, handleVetoVote, canCast, canVeto, castedVoteId, voteProcessing }) => {
     const { t } = useTranslation()
     const [votesProcessingError, setVotesProcessingError] = useState<boolean>(false)
     const { register, handleSubmit } = useForm()
 
-    const vetoVoteId = -1
     const alreadyVoted = !!castedVoteId
 
     const voteChoisesFactory = useCallback(
@@ -49,7 +50,7 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
             }
 
             const vetoChoiseData: IChoise = {
-                id: vetoVoteId,
+                id: VETO_VOTE_ID,
                 value: t('votes.voteDetail.voteVetoChoiseLabel'),
                 description: 'veto',
                 isVeto: true,
@@ -58,12 +59,11 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
             const voteHandlingChoisesData = voteChoisesFromApi?.concat(vetoChoiseData)
             return voteHandlingChoisesData ?? []
         },
-        [alreadyVoted, t, vetoVoteId],
+        [alreadyVoted, t],
     )
 
     const voteChoisesData = useMemo((): IChoise[] => {
         return voteChoisesFactory(voteData, canCast, canVeto)
-        // return voteChoisesFactory(voteData, /*canCast*/ true, /*canVeto*/ true)
     }, [canCast, canVeto, voteChoisesFactory, voteData])
 
     const onSubmit = async (formData: FieldValues) => {
@@ -76,7 +76,7 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
         if (choiseId == undefined) {
             return
         }
-        const isVeto = choiseId == vetoVoteId
+        const isVeto = choiseId === VETO_VOTE_ID
 
         try {
             setVotesProcessingError(false)
@@ -91,42 +91,40 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
     }
 
     return (
-        <>
-            <QueryFeedback
-                withChildren
-                loading={voteProcessing}
-                error={votesProcessingError}
-                indicatorProps={{ transparentMask: true, layer: 'dialog', label: t('votes.voteDetail.voteProcessing') }}
-            >
-                <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
-                    <RadioGroupWithLabel
-                        hint={
-                            canCast
-                                ? alreadyVoted
-                                    ? t('votes.voteDetail.voteChoiseLabel.alreadyVoted')
-                                    : t('votes.voteDetail.voteChoiseLabel.canCast')
-                                : t('votes.voteDetail.voteChoiseLabel.cannotCast')
-                        }
-                    >
-                        {voteChoisesData.map((choise) => {
-                            return (
-                                <RadioButton
-                                    key={choise.id}
-                                    id={choise.id.toString()}
-                                    value={choise.id}
-                                    label={choise.value ?? ''}
-                                    {...register('voteChoise')}
-                                    disabled={choise.disabled}
-                                    defaultChecked={choise.id == castedVoteId}
-                                />
-                            )
-                        })}
-                        {canCast && <TextArea rows={3} label={t('votes.voteDetail.description')} {...register('voteDescription')} />}
-                    </RadioGroupWithLabel>
+        <QueryFeedback
+            withChildren
+            loading={voteProcessing}
+            error={votesProcessingError}
+            indicatorProps={{ transparentMask: true, layer: 'dialog', label: t('votes.voteDetail.voteProcessing') }}
+        >
+            <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
+                <RadioGroupWithLabel
+                    hint={
+                        canCast
+                            ? alreadyVoted
+                                ? t('votes.voteDetail.voteChoiseLabel.alreadyVoted')
+                                : t('votes.voteDetail.voteChoiseLabel.canCast')
+                            : t('votes.voteDetail.voteChoiseLabel.cannotCast')
+                    }
+                >
+                    {voteChoisesData.map((choise) => {
+                        return (
+                            <RadioButton
+                                key={choise.id}
+                                id={choise.id.toString()}
+                                value={choise.id}
+                                label={choise.value ?? ''}
+                                {...register('voteChoise')}
+                                disabled={choise.disabled}
+                                defaultChecked={choise.id == castedVoteId}
+                            />
+                        )
+                    })}
+                    {canCast && <TextArea rows={3} label={t('votes.voteDetail.description')} {...register('voteDescription')} />}
+                </RadioGroupWithLabel>
 
-                    {canCast && <Button type="submit" label={t('votes.voteDetail.submitVote')} />}
-                </form>
-            </QueryFeedback>
-        </>
+                {canCast && <Button type="submit" label={t('votes.voteDetail.submitVote')} />}
+            </form>
+        </QueryFeedback>
     )
 }

@@ -23,25 +23,28 @@ export const VoteDetailItems: React.FC<IDetailItemsData> = ({ voteData }) => {
         return getVoteStateExplanation(voteData?.voteState, voteData?.effectiveFrom ?? '', voteData?.effectiveTo ?? '', t)
     }
 
+    const isVoteDate = voteData?.effectiveFrom && voteData?.effectiveTo
+    const hasLinks = voteData?.links && voteData?.links.length > 0
+    const hasAttachments = voteData?.attachments && voteData?.attachments?.length > 0
+
     return (
         <div className={styles.itemsTableWrapper}>
             <table className={styles.itemsTable}>
                 <tbody>
-                    {
-                        <tr className={styles.itemsTableRow}>
-                            <td>
-                                <TextBody size="L" className={styles.itemTitle}>
-                                    {t('votes.voteDetail.voteDetailExplanationPrefix')}:
-                                </TextBody>
-                            </td>
-                            <td>
-                                <TextBody size="L" className={styles.itemTitle}>
-                                    {getVoteStateExplanationForDetail()}
-                                </TextBody>
-                            </td>
-                        </tr>
-                    }
-                    {voteData?.effectiveFrom && voteData?.effectiveTo && (
+                    <tr className={styles.itemsTableRow}>
+                        <td>
+                            <TextBody size="L" className={styles.itemTitle}>
+                                {t('votes.voteDetail.voteDetailExplanationPrefix')}:
+                            </TextBody>
+                        </td>
+                        <td>
+                            <TextBody size="L" className={styles.itemTitle}>
+                                {getVoteStateExplanationForDetail()}
+                            </TextBody>
+                        </td>
+                    </tr>
+
+                    {isVoteDate && (
                         <tr className={styles.itemsTableRow}>
                             <td>
                                 <TextBody size="L" className={styles.itemTitle}>
@@ -69,7 +72,7 @@ export const VoteDetailItems: React.FC<IDetailItemsData> = ({ voteData }) => {
                             </td>
                         </tr>
                     )}
-                    {voteData?.links && voteData?.links.length > 0 && (
+                    {hasLinks && (
                         <tr className={styles.itemsTableRow}>
                             <td>
                                 <TextBody size="L" className={styles.itemTitle}>
@@ -81,7 +84,7 @@ export const VoteDetailItems: React.FC<IDetailItemsData> = ({ voteData }) => {
                             </td>
                         </tr>
                     )}
-                    {voteData?.attachments && voteData?.attachments?.length > 0 && (
+                    {hasAttachments && (
                         <tr className={styles.itemsTableRow}>
                             <td>
                                 <TextBody size="L" className={styles.itemTitle}>
