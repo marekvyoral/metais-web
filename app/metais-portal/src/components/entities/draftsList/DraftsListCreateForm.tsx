@@ -14,9 +14,8 @@ import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { v4 as uuidV4 } from 'uuid'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
-import styles from './draftsListCreateForm.module.scss'
-import { DraftListCreateFormDialog } from './DraftListCreateFormDialog'
-
+import styles from '@/components/entities/draftsList/draftsListCreateForm.module.scss'
+import { DraftListCreateFormDialog } from '@/components/entities/draftsList/DraftListCreateFormDialog'
 import { generateSchemaForCreateDraft } from '@/components/entities/draftsList/schema/createDraftSchema'
 import { DraftsListAttachmentsZone } from '@/components/entities/draftsList/DraftsListAttachmentsZone'
 
