@@ -12,7 +12,7 @@ import React, { SetStateAction, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import styles from '@/components/views/standartization/groups/groupslist.module.scss'
+import styles from '@/components/views/standardization/groups/groupslist.module.scss'
 import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect'
 import { CiLazySelect } from '@/components/ci-lazy-select/CiLazySelect'
 

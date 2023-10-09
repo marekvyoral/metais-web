@@ -947,5 +947,90 @@
 
             "submitButton": "Filter results"
         }
+    },
+    "votes": {
+        "breadcrumbs": {
+            "home": "Home",
+            "standardization": "Standardization",
+            "VotesLists": "Votes List",
+            "VoteDetail": "Vote Detail",
+            "VoteEdit": "Vote Edit",
+            "NewVote": "New Vote"
+        },
+        "votesList": {
+            "title": "Votes List",
+            "tooltipText": "Without login, columns 'Can cast vote' and 'Has cast vote' are hidden.",
+            "table": {
+                "effectiveFrom": "Effective date",
+                "effectiveTo": "Effective end date",
+                "voteState": "State",
+                "canCast": "Can cast vote",
+                "hasCast": "Has cast vote",
+                "name": "Subject"
+            },
+            "filter": {
+                "title": "Filter",
+                "votesTypeToShow": "Show",
+                "voteState": "State",
+                "fromDate": "Effective date from",
+                "toDate": "Effective end date"
+            }
+        },
+        "voteDetail": {
+            "date": "Date",
+            "voteType": "Vote type",
+            "relatedDocuments": "Related documents",
+            "relatedVoteLinks": "Related Draft",
+            "secret": "Secret",
+            "public": "Public",
+            "downloadingFile": "Downloading File",
+            "submitVote": "Submit",
+            "editVote": "Edit vote",
+            "newVote": "+  New vote",
+            "voteProcessing": "Processing",
+            "voteDescription": "Description",
+            "votesHandlingTitle": "Voting",
+            "voteActorsTitle": "Vote actors",
+            "voteOverview": "Vote Owerview",
+            "changeDate": "Change Date",
+            "changeInfo": "Information about changed actors during vote",
+            "changeDescription": "Description Of Change",
+            "voteChoiseLabel": {
+                "cannotCast": "Only logged in user with autorization can cast vote",
+                "canCast": "You are authorized to vote",
+                "alreadyVoted": "You already casted vote for this draft"
+        },
+            "voteVetoChoiseLabel": "Veto Vote",
+            "description": "Note",
+            "voteConclusion": "Conclusion",
+            "voteDetailExplanationPrefix": "Vote state ",
+            "vetoed": "Draft was vetoed",
+            "vetoedBy": "Vetoed by",
+            "vetoedDescription": "Reason",
+            "table":{
+                "name": "Name",
+                "organization": "Organization",
+                "role": "Role"
+            }
+        },
+        "type": {
+            "yes": "Yes",
+            "no": "No",
+            "toShow": {
+                "onlyMyVotes": "My votes only",
+                "allVotes": "All votes"
+            },
+            "state": {
+                "planned": "Planned",
+                "ended": "Finished",
+                "upcomming": "Upcomming",
+                "canceled" : "Canceled", 
+                "summarized": "Sumarized",
+                "vetoed": "Vetoed"
+            },
+            "changeAction": {
+                "added": "was added to vote"
+            }
+        }
     }
 }

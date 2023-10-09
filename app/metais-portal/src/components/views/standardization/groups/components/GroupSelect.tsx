@@ -4,7 +4,7 @@ import { Group, useFind2111Hook } from '@isdd/metais-common/api/generated/iam-sw
 import { OptionProps, components } from 'react-select'
 import { useTranslation } from 'react-i18next'
 
-import styles from '@/components/views/standartization/groups/groupslist.module.scss'
+import styles from '@/components/views/standardization/groups/groupslist.module.scss'
 
 interface IGroupSelect {
     selectedGroup: Group | undefined

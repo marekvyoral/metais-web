@@ -953,5 +953,91 @@
 
             "submitButton": "Filtrovať výsledky"
         }
+    },
+    "votes": {
+        "breadcrumbs": {
+            "home": "Domov",
+            "standardization": "Štandardizácia",
+            "VotesLists": "Zoznam Hlasovaní",
+            "VoteDetail": "Detail Hlasovania",
+            "VoteEdit": "Úprava hlasovania",
+            "NewVote": "Nové hlasovanie"
+        },
+        "votesList": {
+            "title": "Zoznam Hlasovaní",
+            "votesListSubtitle": "nejake blabla kecy",
+            "tooltipText": "Pre neprihláseného sa nezobrazia stĺpce Právo hlasovať a Hlasoval za subjekt.",
+            "table": {
+                "effectiveFrom": "Dátum spustenia",
+                "effectiveTo": "Dátum ukončenia",
+                "voteState": "Stav",
+                "canCast": "Právo hlasovať",
+                "hasCast": "Hlasované za subjekt",
+                "name": "Premet hlasovania (znenie otázky)"
+            },
+            "filter": {
+                "title": "Filter",
+                "votesTypeToShow": "Zobraziť",
+                "voteState": "Stav hlasovania",
+                "fromDate": "Prebiehajúce v období od",
+                "toDate": "Prebiehajúce v období do"
+            }
+        },
+        "voteDetail": {
+            "date": "Dátum",
+            "voteType": "Typ Hlasovania",
+            "relatedDocuments": "Súvisiace dokumenty",
+            "relatedVoteLinks": "Hlasovanie sa týka návrhu",
+            "secret": "Tajné",
+            "public": "Verejné",
+            "downloadingFile": "Stahujem súbor",
+            "submitVote": "Hlasovať",
+            "editVote": "Upraviť hlasovanie",
+            "newVote": "+   Pridať nové hlasovanie",
+            "voteProcessing": "Spracovávam hlasovanie",
+            "voteDescription": "Predkladaný návrh",
+            "votesHandlingTitle": "Hlasovanie",
+            "voteActorsTitle": "Účastníci hlasovania",
+            "voteOverview": "Prehľad hlasovania",
+            "changeDate": "Dátum Zmeny",
+            "changeInfo": "Informácie o zmenách hlasujúcich počas priebehu hlasovania",
+            "changeDescription": "Popis Zmeny",
+            "voteChoiceLabel": {
+                "cannotCast": "Hlasovať može iba prihlásený a oprávnený používateľ.",
+                "canCast": "Máte oprávnenie hlasovať",
+                "alreadyVoted": "Už ste zahlasovali za tento návrh"
+        },
+            "voteVetoChoiceLabel": "Vetovať hlasovanie",
+            "description": "Poznámka",
+            "voteConclusion": "Záver hlasovania",
+            "voteDetailExplanationPrefix": "Stav hlasovania ",
+            "vetoed": "Návrh bol vetovaný",
+            "vetoedBy": "Vetoval",
+            "vetoedDescription": "Dôvod",
+            "table":{
+                "name": "Meno",
+                "organization": "Organizácia",
+                "role": "Pozícia"
+            }
+        },
+        "type": {
+            "yes": "Áno",
+            "no": "Nie",
+            "toShow": {
+                "onlyMyVotes": "Len moje hlasovania",
+                "allVotes": "Všetky hlasovania"
+            },
+            "state": {
+                "planned": "Plánované",
+                "ended": "Ukončené",
+                "upcoming": "Prebiehajúce",
+                "canceled" : "Zrušené", 
+                "summarized": "Vyhodnotené",
+                "vetoed": "Vetované"
+            },
+            "changeAction": {
+                "added": "bol pridaný do hlasovania"
+            }
+        }
     }
 }

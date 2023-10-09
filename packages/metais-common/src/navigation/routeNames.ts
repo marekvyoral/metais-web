@@ -96,6 +96,8 @@ export enum NavigationSubRoutes {
     MONITORING_AS = '/monitoras',
     MONITORING_PARAMETRE_SET = '/monitor-report',
     MONITORING_IMPORT = '/todo',
+    VOTE_DETAIL = '/standardization/votedetail',
+    VOTE_EDIT = '/standardization/vote',
     NOTIFICATIONS = '/notifications',
     LICENCIE = '/howto/LICENCE.LICENCE_TITLE/LICENSE_HOWTO',
     SERVERY = '/servers',

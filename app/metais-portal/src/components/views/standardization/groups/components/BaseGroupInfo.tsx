@@ -6,7 +6,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-import styles from '@/components/views/standartization/groups/styles.module.scss'
+import styles from '@/components/views/standardization/groups/styles.module.scss'
 
 interface GroupDetailBaseInfoProps {
     infoData: Group | undefined
