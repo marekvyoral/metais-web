@@ -27,9 +27,18 @@ interface iUseUppy {
     endpointUrl?: string
     fileImportStep: FileImportStepEnum
     setFileImportStep: (value: FileImportStepEnum) => void
+    setCustomFileMeta?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => { [metaKey: string]: string | number } //this could be any
 }
 
-export const useUppy = ({ maxFileSize = 20_971_520, allowedFileTypes, multiple, endpointUrl, setFileImportStep, fileImportStep }: iUseUppy) => {
+export const useUppy = ({
+    maxFileSize = 20_971_520,
+    allowedFileTypes,
+    multiple,
+    endpointUrl,
+    setFileImportStep,
+    setCustomFileMeta,
+    fileImportStep,
+}: iUseUppy) => {
     const {
         state: { accessToken },
     } = useAuth()
@@ -66,7 +75,8 @@ export const useUppy = ({ maxFileSize = 20_971_520, allowedFileTypes, multiple, 
         const fileErrorCallback = (_file: UppyFile | undefined, error: Error) => {
             setErrorMessages((prev) => [...prev, error.message])
         }
-        const fileAdded = () => {
+        const fileAdded = (file: UppyFile<Record<string, unknown>, Record<string, unknown>>) => {
+            if (setCustomFileMeta) uppy.setFileMeta(file.id, setCustomFileMeta?.(file))
             setCurrentFiles(() => uppy.getFiles())
             setFileImportStep(FileImportStepEnum.VALIDATE)
         }
@@ -89,7 +99,7 @@ export const useUppy = ({ maxFileSize = 20_971_520, allowedFileTypes, multiple, 
             uppy.off('file-removed', fileRemoved)
             uppy.off('restriction-failed', fileErrorCallback)
         }
-    }, [setFileImportStep])
+    }, [setCustomFileMeta, setFileImportStep])
 
     const handleUpload = async () => {
         uppy.getFiles().forEach((file) => {
