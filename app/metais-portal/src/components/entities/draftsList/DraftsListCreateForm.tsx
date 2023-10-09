@@ -12,8 +12,10 @@ import { ApiLink, ApiStandardRequest } from '@isdd/metais-common/api/generated/s
 import { getInfoGuiProfilStandardRequest } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { v4 as uuidV4 } from 'uuid'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import styles from './draftsListCreateForm.module.scss'
+import { DraftListCreateFormDialog } from './DraftListCreateFormDialog'
 
 import { generateSchemaForCreateDraft } from '@/components/entities/draftsList/schema/createDraftSchema'
 import { DraftsListAttachmentsZone } from '@/components/entities/draftsList/DraftsListAttachmentsZone'
@@ -29,14 +31,18 @@ interface CreateForm {
 }
 export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: CreateForm) => {
     const { t } = useTranslation()
+    const [openCreateFormDialog, setOpenCreateFormDialog] = useState<boolean>(false)
     const navigate = useNavigate()
+    const {
+        state: { user },
+    } = useAuth()
     const { register, handleSubmit, setValue, watch, getValues, formState } = useForm({
         defaultValues: {
             ...data?.defaultData,
             version: 2,
             actionDesription: '-', // TODO: Vymazat ak sa fixne BE
-            email: '-',
-            name: '-',
+            email: user ? '-' : undefined,
+            name: user ? '-' : undefined,
             srDescription2: '-',
             srDescription3: '-',
             srDescription4: '-',
@@ -119,7 +125,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
 
     const handleSubmitForm = useCallback(
         async (values: FieldValues) => {
-            await handleUpload()
+            if (currentFiles?.length > 0) await handleUpload()
             const uploadedFiles =
                 currentFiles?.map((file) => ({
                     attachmentId: file?.meta?.uuid,
@@ -140,6 +146,12 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
 
     return (
         <div>
+            <DraftListCreateFormDialog
+                openCreateFormDialog={openCreateFormDialog}
+                closeCreateFormDialog={() => setOpenCreateFormDialog(false)}
+                handleSubmit={handleSubmit(handleSubmitForm)}
+                register={register}
+            />
             <MutationFeedback error={isError} success={isSuccess} />
             <TextHeading size="L">{t('DraftsList.createForm.heading')}</TextHeading>
             <form onSubmit={handleSubmit(handleSubmitForm)}>
@@ -212,7 +224,11 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
                         variant="secondary"
                         onClick={() => navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV)}
                     />
-                    <Button label={t('DraftsList.createForm.submit')} type="submit" />
+                    <Button
+                        label={t('DraftsList.createForm.submit')}
+                        type={user ? 'submit' : undefined}
+                        onClick={() => !user && setOpenCreateFormDialog(true)}
+                    />
                 </div>
             </form>
         </div>
