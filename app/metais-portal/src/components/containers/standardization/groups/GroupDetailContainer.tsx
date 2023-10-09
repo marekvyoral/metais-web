@@ -17,7 +17,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
-import { buildColumns } from '@/components/views/standartization/groups/groupMembersTableUtils'
+import { buildColumns } from '@/components/views/standardization/groups/groupMembersTableUtils'
 
 export interface TableData {
     uuid: string

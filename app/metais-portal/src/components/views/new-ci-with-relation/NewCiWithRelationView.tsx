@@ -22,6 +22,7 @@ import { v4 as uuidV4 } from 'uuid'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/src/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { useInvalidateCiNeighboursWithAllRelsCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
@@ -105,12 +106,18 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
         }
     }, [relatedListAsSources, relatedListAsTargets, selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName, t])
 
+    const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCache(entityId)
+
     const storeGraph = useStoreGraph({
         mutation: {
             onSuccess() {
                 navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
                 setIsListPageOpen(false)
                 setSelectedItems(null)
+                invalidateRelationListCacheByUuid.invalidate()
+            },
+            onError() {
+                setUploadError(true)
             },
         },
     })

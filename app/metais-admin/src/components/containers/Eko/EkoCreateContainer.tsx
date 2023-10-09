@@ -1,5 +1,7 @@
 import { EkoCode, GetEkoCodesParams, useCreateEkoCode, useGetEkoCodes } from '@isdd/metais-common/api'
 import React from 'react'
+import { ADMIN_EKO_LIST_QKEY } from '@isdd/metais-common/constants'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { IEkoCreateView } from '@/components/views/eko/ekoCodes'
 import { enrichEkoDataMaper } from '@/components/views/eko/ekoHelpers'
@@ -13,7 +15,14 @@ export const EkoCreateContainer: React.FC<ICreateEkoCodeContainerProps> = ({ Vie
     const { data, isLoading, isError } = useGetEkoCodes(defaultParams)
     const ekoCodes = enrichEkoDataMaper(data?.ekoCodes || [])
 
-    const { mutateAsync } = useCreateEkoCode()
+    const queryClient = useQueryClient()
+    const { mutateAsync } = useCreateEkoCode({
+        mutation: {
+            onSuccess() {
+                queryClient.invalidateQueries([ADMIN_EKO_LIST_QKEY])
+            },
+        },
+    })
 
     const createEko = async (ekoCode: EkoCode) => {
         await mutateAsync({

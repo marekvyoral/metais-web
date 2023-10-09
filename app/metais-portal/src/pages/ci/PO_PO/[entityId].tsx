@@ -7,6 +7,7 @@ import { ATTRIBUTE_NAME, useReadConfigurationItem } from '@isdd/metais-common/ap
 import { MutationFeedback } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 
 import Informations from './[entityId]/informations'
 
@@ -52,7 +53,7 @@ const EntityDetailPage: React.FC = () => {
 
     const { data: ciItemData } = useReadConfigurationItem(entityId ?? '', {
         query: {
-            queryKey: ['ciItemData', entityId],
+            queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
 

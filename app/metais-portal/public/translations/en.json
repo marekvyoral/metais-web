@@ -6,6 +6,22 @@
         "exportPDF": "As PDF"
     },
     "footer": {
+        "metaisServices": "MetaIS Services",
+        "usefulLinks": "Useful Links",
+        "mediaWiki": "MediaWiki",
+        "contact": "Contact",
+        "MIRRI": "Ministry of Investments, Regional Development, and Informatization of the Slovak Republic",
+        "operatorMIRRI": "The service is operated by the Ministry of Investments, Regional Development, and Informatization of the Slovak Republic.",
+        "idsk": "Unified design manual for electronic services.",
+        "createdInAccordance": "Created in accordance with ",
+        "exceptionsLegislation": "Exceptions legislation",
+        "accessibilityDeclaration": "Accessibility declaration",
+        "webResidencyMap": "Web residency map",
+        "GDPRAndCookies": "GDPR and cookies",
+        "technicalOperator": "Technical operator",
+        "contentAdmin": "Admin of content",
+        "RSS": "RSS",
+
         "services": {
             "title": "Services and Information",
             "rations": "Rations",
@@ -85,19 +101,22 @@
     },
     "navMenu": {
         "publicAuthorities": "Public authorities",
-        "egovComponents": "E-gov Components",
+        "egovComponents": "e-Government Components",
         "standardization": "Standardization",
         "dataObjects": "Data objects",
-        "monitoring": "Reports and monitoring",
-        "guides": "Procedures and instructions",
+        "monitoring": "Monitoring",
+        "guides": "Help",
         "hide": "Hide",
         "show": "Show",
         "innerNav": "Inner navigation",
         "mainNav": "Main navigation",
         "reports": "List of reports",
 
-        "KRITProgramsProjects": "KRIT, Programs, Projects",
+        "GoalsPrincipalsActivitiesKRIT": "Goals, principles, activities and KRIT",
         "referenceIdentifiers": "Reference identifiers",
+        "centralDataModel": "Central data model",
+        "dataElementsCatalogue": "Data elements catalogue",
+        "dataObligationsRegister": "Register of data authorizations and obligations",
 
         "lists": {
             "processorsOfITDevelopmentConcepts": "Processors of KRIT",
@@ -132,6 +151,7 @@
             "monitoringApp": "Monitored parameters of AS",
             "monitoringSet": "Set of monitoring parameters",
             "monitoringImport": "Import of monitored parameters",
+            "monitoringServices": "Monitoring services",
 
             "evidenceObjects": "Evidence objects",
             "attributesEvidenceObjects": "Attributes of evidence objects",
@@ -143,7 +163,7 @@
             "princip": "Principles",
             "ciel": "Goals",
             "aktivita": "Activity",
-            "kris": "Concepts of IS development",
+            "krit": "Concepts of IT development",
             "registersList": "List of reference registers",
             "registersRequestsList": "List of requests to add a reference register",
             "codelistsRequestsList": "List of requests to add a codelist",
@@ -152,7 +172,14 @@
             "personalProcedures": "Personal procedures",
             "educationalCourses": "Educational courses",
             "publicAuthorityHierarchy": "Hierarchy of public authorities",
-            "webResidence": "Web residence"
+            "webResidenceAndMobileApps": "Web residence and mobile applications",
+            "relationsInspection": "Inspection of relations",
+            "architectonicRepository": "Architectonic repository",
+
+            "assembliesAndReports": "Assemblies and reports",
+            "totalCostOfOwnership": "Total costs of ownership",
+            "serviceLevelAgreementsWithOperator": "Service level agreements with the Operator (SLA)",
+            "integrationAgreementsOnServiceLevel": "Integration agreements on the level of service provided (ISLA)"
         }
     },
     "radioButton": {
@@ -994,6 +1021,91 @@
             "otd": "OTD",
 
             "submitButton": "Filter results"
+        }
+    },
+    "votes": {
+        "breadcrumbs": {
+            "home": "Home",
+            "standardization": "Standardization",
+            "VotesLists": "Votes List",
+            "VoteDetail": "Vote Detail",
+            "VoteEdit": "Vote Edit",
+            "NewVote": "New Vote"
+        },
+        "votesList": {
+            "title": "Votes List",
+            "tooltipText": "Without login, columns 'Can cast vote' and 'Has cast vote' are hidden.",
+            "table": {
+                "effectiveFrom": "Effective date",
+                "effectiveTo": "Effective end date",
+                "voteState": "State",
+                "canCast": "Can cast vote",
+                "hasCast": "Has cast vote",
+                "name": "Subject"
+            },
+            "filter": {
+                "title": "Filter",
+                "votesTypeToShow": "Show",
+                "voteState": "State",
+                "fromDate": "Effective date from",
+                "toDate": "Effective end date"
+            }
+        },
+        "voteDetail": {
+            "date": "Date",
+            "voteType": "Vote type",
+            "relatedDocuments": "Related documents",
+            "relatedVoteLinks": "Related Draft",
+            "secret": "Secret",
+            "public": "Public",
+            "downloadingFile": "Downloading File",
+            "submitVote": "Submit",
+            "editVote": "Edit vote",
+            "newVote": "+  New vote",
+            "voteProcessing": "Processing",
+            "voteDescription": "Description",
+            "votesHandlingTitle": "Voting",
+            "voteActorsTitle": "Vote actors",
+            "voteOverview": "Vote Owerview",
+            "changeDate": "Change Date",
+            "changeInfo": "Information about changed actors during vote",
+            "changeDescription": "Description Of Change",
+            "voteChoiseLabel": {
+                "cannotCast": "Only logged in user with autorization can cast vote",
+                "canCast": "You are authorized to vote",
+                "alreadyVoted": "You already casted vote for this draft"
+        },
+            "voteVetoChoiseLabel": "Veto Vote",
+            "description": "Note",
+            "voteConclusion": "Conclusion",
+            "voteDetailExplanationPrefix": "Vote state ",
+            "vetoed": "Draft was vetoed",
+            "vetoedBy": "Vetoed by",
+            "vetoedDescription": "Reason",
+            "table":{
+                "name": "Name",
+                "organization": "Organization",
+                "role": "Role"
+            }
+        },
+        "type": {
+            "yes": "Yes",
+            "no": "No",
+            "toShow": {
+                "onlyMyVotes": "My votes only",
+                "allVotes": "All votes"
+            },
+            "state": {
+                "planned": "Planned",
+                "ended": "Finished",
+                "upcomming": "Upcomming",
+                "canceled" : "Canceled", 
+                "summarized": "Sumarized",
+                "vetoed": "Vetoed"
+            },
+            "changeAction": {
+                "added": "was added to vote"
+            }
         }
     }
 }

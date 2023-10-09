@@ -1,7 +1,9 @@
 import { SortType } from '@isdd/idsk-ui-kit/types'
-import { CiType, Role, useStoreAdminEntity } from '@isdd/metais-common/api'
+import { CiType, Role, useStoreAdminEntity1 } from '@isdd/metais-common/api'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import React from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import { ADMIN_EGOV_ENTITY_LIST_QKEY } from '@isdd/metais-common/constants'
 
 import { HiddenInputs } from '@/types/inputs'
 
@@ -27,8 +29,14 @@ const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity)
     const pageSize = 200
 
     const { data, isLoading, isError } = useFindAll1(pageNumber, pageSize, { direction: SortType.ASC, orderBy: 'name' })
-
-    const { mutateAsync } = useStoreAdminEntity()
+    const queryClient = useQueryClient()
+    const { mutateAsync } = useStoreAdminEntity1({
+        mutation: {
+            onSuccess() {
+                queryClient.invalidateQueries([ADMIN_EGOV_ENTITY_LIST_QKEY])
+            },
+        },
+    })
 
     const storeEntity = async (formData: CiType) => {
         await mutateAsync({

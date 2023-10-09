@@ -1,8 +1,9 @@
 import { ColumnSort, IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import { EkoCodeList, useDeleteHrEkoCode, useGetEkoCodes, useUpdateHrEkoCode } from '@isdd/metais-common/api'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { ADMIN_EKO_LIST_QKEY, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 
 export interface IFilterData extends IFilterParams, IFilter {
     isActive?: boolean
@@ -24,6 +25,7 @@ export interface IEkoListContainerProps {
 }
 
 export const EkoListContainer: React.FC<IEkoListContainerProps> = ({ View }) => {
+    const queryClient = useQueryClient()
     const defaultSort: ColumnSort = {
         orderBy: 'ekoCode',
         sortDirection: SortType.ASC,
@@ -35,8 +37,21 @@ export const EkoListContainer: React.FC<IEkoListContainerProps> = ({ View }) => 
         pageNumber: BASE_PAGE_NUMBER,
         pageSize: BASE_PAGE_SIZE,
     })
-    const { mutateAsync } = useDeleteHrEkoCode()
-    const { mutateAsync: updateMutateAsync } = useUpdateHrEkoCode()
+
+    const { mutateAsync } = useDeleteHrEkoCode({
+        mutation: {
+            onSuccess() {
+                queryClient.invalidateQueries([ADMIN_EKO_LIST_QKEY])
+            },
+        },
+    })
+    const { mutateAsync: updateMutateAsync } = useUpdateHrEkoCode({
+        mutation: {
+            onSuccess() {
+                queryClient.invalidateQueries([ADMIN_EKO_LIST_QKEY])
+            },
+        },
+    })
 
     const { data, isLoading, isError } = useGetEkoCodes({
         sortBy: filter?.sortAttribute,

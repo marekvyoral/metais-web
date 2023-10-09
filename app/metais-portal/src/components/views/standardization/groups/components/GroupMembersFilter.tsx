@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import { FilterParams } from '@/components/containers/standardization/groups/GroupDetailContainer'
-import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standartization/groups/defaultRoles'
+import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standardization/groups/defaultRoles'
 
 interface FilterProps {
     defaultFilterValues: FilterParams

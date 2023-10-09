@@ -22,6 +22,7 @@ export const MainContentWrapper: React.FC<MainContentWrapperProps> = ({ children
     } = useAuth()
 
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true)
+    const isSideMenu = true
 
     const { data: ksisvsGroup } = useFind2111({ shortName: KSIVS_SHORT_NAME })
     return (
@@ -30,7 +31,7 @@ export const MainContentWrapper: React.FC<MainContentWrapperProps> = ({ children
                 <Sidebar
                     isSidebarExpanded={isSidebarExpanded}
                     setIsSidebarExpanded={setIsSidebarExpanded}
-                    sections={getPortalNavigationItems(t, !!user, Array.isArray(ksisvsGroup) ? ksisvsGroup[0].uuid : ksisvsGroup?.uuid)}
+                    sections={getPortalNavigationItems(t, !!user, Array.isArray(ksisvsGroup) ? ksisvsGroup[0].uuid : ksisvsGroup?.uuid, isSideMenu)}
                 />
             )}
 
