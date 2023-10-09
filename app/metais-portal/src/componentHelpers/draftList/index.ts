@@ -1,10 +1,13 @@
 import { API_STANDARD_REQUEST_ATTRIBUTES } from '@isdd/metais-common/api'
 
-export const customAttributesForVersion2 = [
+export const customMainAttributesForVersion2 = [
     API_STANDARD_REQUEST_ATTRIBUTES.srName,
     API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription1,
     API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2,
     API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription3,
+]
+
+export const customAttributesForVersion2 = [
     API_STANDARD_REQUEST_ATTRIBUTES.applicabilityDescription1,
     API_STANDARD_REQUEST_ATTRIBUTES.applicabilityDescription2,
     API_STANDARD_REQUEST_ATTRIBUTES.applicabilityDescription3,

@@ -954,7 +954,12 @@
         "detail": {
             "noDocuments": "Nie sú priložené žiadne dokumenty",
             "assignedToGroup": "Pridelený skupine",
-            "missingRejectReason": "Nebol zadaný dôvod zrušenia"
+            "missingRejectReason": "Nebol zadaný dôvod zrušenia",
+            "accordion": {
+                "basicInformation": "Základné informácie",
+                "generalDescription": "Všeobecný popis návrhu",
+                "otherDescription": "Ostatné"
+            }
         },
         "create": {
             "heading": "Tvorba návrhu",

@@ -948,7 +948,12 @@
         "detail": {
             "noDocuments": "No documents attached",
             "assignedToGroup": "Assigned to PS",
-            "missingRejectReason": "Reject reason is missing"
+            "missingRejectReason": "Reject reason is missing",
+            "accordion": {
+                "basicInformation": "Basic information",
+                "generalDescription": "General description of the proposal",
+                "otherDescription": "Other"
+            }
         },
         "createForm": {
             "heading": "Draft name",
