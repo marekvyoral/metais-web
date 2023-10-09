@@ -925,6 +925,9 @@
         },
         "createForm": {
             "heading": "Draft name",
+            "name": "First/Last name",
+            "email": "Email",
+            "userHeading": "User identification",
             "submit": "Add draft",
             "cancel": "Cancel",
             "links": {

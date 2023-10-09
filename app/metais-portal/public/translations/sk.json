@@ -935,7 +935,9 @@
         },
         "createForm": {
             "heading": "Znenie návrhu",
-            "name": "Názov návrhu (povinné)",
+            "name": "Meno a priezvisko",
+            "email": "Email",
+            "userHeading": "Identifikácia používateľa",
             "srDescription1": "Uveďte vecný popis návrhu nového štandardu a zároveň popíšte účel uplatnenia nového štandardu, aké problémy má vyriešiť alebo na aké účely má slúžiť (povinné) :",
             "proposalDescription2": "Uveďte predpokladané umiestnenie návrhu v rámci aktuálneho výnosu o štandardoch pre informačné systémy verejnej správy (určenie existujúceho alebo nového paragrafu / odseku, kde sa má navrhovaná požiadavka nachádzať) :",
             "proposalDescription3": "Podľa možnosti uveďte aj vlastný návrh legislatívneho znenia (textácie) požiadavky. ",
