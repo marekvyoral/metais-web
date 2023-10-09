@@ -10,6 +10,7 @@ import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbil
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { IS_KOORDINATOR } from '@isdd/metais-common/constants'
 import { useStateMachine } from '@isdd/metais-common/components/state-machine/hooks/useStateMachine'
+import sanitizeHtml from 'sanitize-html'
 
 import { customAttributesForVersion2, srDescriptionAttributes } from '@/componentHelpers'
 import { StandardDraftsStateMachine } from '@/pages/standardization/draftsList/[entityId]/form'
@@ -108,7 +109,12 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                     <InformationGridRow
                         key={ATTRIBUTE_NAME.srDescription1}
                         label={getLabelGuiProfilStandardRequest(ATTRIBUTE_NAME.srDescription1, guiAttributes) ?? ''}
-                        value={<span key={ATTRIBUTE_NAME.srDescription1} dangerouslySetInnerHTML={{ __html: data?.srDescription1 ?? '' }} />}
+                        value={
+                            <span
+                                key={ATTRIBUTE_NAME.srDescription1}
+                                dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.srDescription1) ?? '' }}
+                            />
+                        }
                         tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.srDescription1, guiAttributes) ?? ''}
                     />
                 </>
@@ -127,7 +133,7 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                                 return (
                                     <InformationGridRow
                                         key={attribute}
-                                        value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
+                                        value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.[attribute]) ?? '' }} />}
                                         label={
                                             getLabelGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2, guiAttributes) ??
                                             ''
@@ -139,7 +145,7 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                                 return (
                                     <InformationGridRow
                                         key={attribute}
-                                        value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
+                                        value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.[attribute]) ?? '' }} />}
                                         label={getLabelGuiProfilStandardRequest(attribute, guiAttributes) ?? ''}
                                         hideIcon
                                     />
@@ -162,7 +168,7 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                             return (
                                 <InformationGridRow
                                     key={attribute}
-                                    value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
+                                    value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.[attribute]) ?? '' }} />}
                                     label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srDescription1, guiAttributes) ?? ''}
                                     hideIcon
                                 />
@@ -170,7 +176,7 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                         return (
                             <InformationGridRow
                                 key={attribute}
-                                value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
+                                value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.[attribute]) ?? '' }} />}
                                 label={getInfoGuiProfilStandardRequest(attribute, guiAttributes) ?? ''}
                                 hideIcon
                             />
