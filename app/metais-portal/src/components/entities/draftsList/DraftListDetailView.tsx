@@ -112,7 +112,7 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                         value={
                             <span
                                 key={ATTRIBUTE_NAME.srDescription1}
-                                dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.srDescription1) ?? '' }}
+                                dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.srDescription1 ?? '') }}
                             />
                         }
                         tooltip={getInfoGuiProfilStandardRequest(ATTRIBUTE_NAME.srDescription1, guiAttributes) ?? ''}
@@ -128,12 +128,12 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
             {isVersion1 && (
                 <>
                     {srDescriptionAttributes.map((attribute) => {
-                        if (data?.[attribute])
+                        if (data?.[attribute] && data?.[attribute] != '-')
                             if (attribute === API_STANDARD_REQUEST_ATTRIBUTES.srDescription2)
                                 return (
                                     <InformationGridRow
                                         key={attribute}
-                                        value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.[attribute]) ?? '' }} />}
+                                        value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.[attribute] ?? '') }} />}
                                         label={
                                             getLabelGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2, guiAttributes) ??
                                             ''
@@ -145,7 +145,7 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                                 return (
                                     <InformationGridRow
                                         key={attribute}
-                                        value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.[attribute]) ?? '' }} />}
+                                        value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.[attribute] ?? '') }} />}
                                         label={getLabelGuiProfilStandardRequest(attribute, guiAttributes) ?? ''}
                                         hideIcon
                                     />
@@ -168,7 +168,7 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                             return (
                                 <InformationGridRow
                                     key={attribute}
-                                    value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.[attribute]) ?? '' }} />}
+                                    value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.[attribute] ?? '') }} />}
                                     label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srDescription1, guiAttributes) ?? ''}
                                     hideIcon
                                 />
@@ -176,7 +176,7 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                         return (
                             <InformationGridRow
                                 key={attribute}
-                                value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.[attribute]) ?? '' }} />}
+                                value={<span dangerouslySetInnerHTML={{ __html: sanitizeHtml(data?.[attribute] ?? '') }} />}
                                 label={getInfoGuiProfilStandardRequest(attribute, guiAttributes) ?? ''}
                                 hideIcon
                             />
