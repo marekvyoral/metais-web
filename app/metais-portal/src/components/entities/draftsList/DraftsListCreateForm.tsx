@@ -39,6 +39,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
         defaultValues: {
             ...data?.defaultData,
             version: 2,
+            // eslint-disable-next-line no-warning-comments
             actionDesription: '-', // TODO: Vymazat ak sa fixne BE
             email: user ? '-' : undefined,
             name: user ? '-' : undefined,
@@ -113,6 +114,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
 
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
 
+    // eslint-disable-next-line no-warning-comments
     const id = uuidV4() // TODO: vymazat ked bude BE opraveny
     const { uppy, currentFiles, handleRemoveFile, uploadFileProgressInfo, handleUpload } = useUppy({
         multiple: true,
