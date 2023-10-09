@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
 
-import { TableCols } from '../documents'
+import { TableCols } from '@/components/containers/DocumentListContainer'
 
 export const sourceTableColumns = (t: TFunction<'translation', undefined, 'translation'>) => {
     const columns: Array<ColumnDef<TableCols>> = [

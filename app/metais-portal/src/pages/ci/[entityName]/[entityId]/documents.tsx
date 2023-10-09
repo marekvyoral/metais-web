@@ -20,6 +20,8 @@ const DocumentsListPage: React.FC = () => {
                         isLoading={props.isLoading}
                         isError={props.isError}
                         pagination={props.pagination}
+                        selectedItems={props.selectedItems}
+                        setSelectedItems={props.setSelectedItems}
                     />
                 )
             }}
