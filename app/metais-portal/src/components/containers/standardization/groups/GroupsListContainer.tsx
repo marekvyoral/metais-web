@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
-import { GroupsListView } from '@/components/views/standartization/groups/GroupsListView'
+import { GroupsListView } from '@/components/views/standardization/groups/GroupsListView'
 
 export const GroupsListContainer: React.FC = () => {
     const { t } = useTranslation()

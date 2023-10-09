@@ -3,7 +3,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { MembershipHistoryView } from '@/components/views/standartization/groups/MembershipHistoryView'
+import { MembershipHistoryView } from '@/components/views/standardization/groups/MembershipHistoryView'
 
 export const MembershipHistoryContainer: React.FC = () => {
     const { t } = useTranslation()

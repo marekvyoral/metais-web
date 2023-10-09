@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import { GROUP_ROLES } from '@isdd/metais-common/constants'
 import { FieldValues } from 'react-hook-form'
 
-import { GroupCreateEditView } from '@/components/views/standartization/groups/GroupCreateEditView'
-import { GroupFormEnum } from '@/components/views/standartization/groups/groupSchema'
+import { GroupCreateEditView } from '@/components/views/standardization/groups/GroupCreateEditView'
+import { GroupFormEnum } from '@/components/views/standardization/groups/groupSchema'
 
 interface INewGroupRelationRequest {
     uuid: string
