@@ -25,11 +25,13 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
     const stateMachine = useStateMachine({ stateContext })
     const ability = useAbilityContext()
     const isKoordinator = ability?.can(Actions.HAS_ROLE, IS_KOORDINATOR)
+
     const currentState = stateMachine?.useCurrentState()
+
     // eslint-disable-next-line no-warning-comments
     //todo add icons
     const linkElements =
-        isKoordinator && data?.standardRequestState !== 'REQUESTED' && data?.links && data?.links?.length > 0
+        isKoordinator && currentState !== 'REQUESTED' && data?.links && data?.links?.length > 0
             ? data?.links?.map((link) => (
                   <Link key={link.id} to={link?.url ?? ''} state={{ from: location }} target="_blank" className="govuk-link">
                       {link?.name as string}
@@ -57,8 +59,8 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
 
     const isVersion1 = data?.version === 1
     const isVersion2 = data?.version === 2
-    const showWorkGroup = data?.standardRequestState === 'ASSIGNED'
-    const showActionDesription = data?.standardRequestState === 'REJECTED'
+    const showWorkGroup = currentState === 'ASSIGNED'
+    const showActionDesription = currentState === 'REJECTED'
     return (
         <div>
             <InformationGridRow
@@ -121,14 +123,27 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                 <>
                     {srDescriptionAttributes.map((attribute) => {
                         if (data?.[attribute])
-                            return (
-                                <InformationGridRow
-                                    key={attribute}
-                                    value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
-                                    label={getLabelGuiProfilStandardRequest(attribute, guiAttributes) ?? ''}
-                                    hideIcon
-                                />
-                            )
+                            if (attribute === API_STANDARD_REQUEST_ATTRIBUTES.srDescription2)
+                                return (
+                                    <InformationGridRow
+                                        key={attribute}
+                                        value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
+                                        label={
+                                            getLabelGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2, guiAttributes) ??
+                                            ''
+                                        }
+                                        hideIcon
+                                    />
+                                )
+                            else
+                                return (
+                                    <InformationGridRow
+                                        key={attribute}
+                                        value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
+                                        label={getLabelGuiProfilStandardRequest(attribute, guiAttributes) ?? ''}
+                                        hideIcon
+                                    />
+                                )
                     })}
                 </>
             )}
@@ -149,15 +164,6 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                                     key={attribute}
                                     value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
                                     label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srDescription1, guiAttributes) ?? ''}
-                                    hideIcon
-                                />
-                            )
-                        else if (attribute === API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2)
-                            return (
-                                <InformationGridRow
-                                    key={attribute}
-                                    value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
-                                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srDescription2, guiAttributes) ?? ''}
                                     hideIcon
                                 />
                             )

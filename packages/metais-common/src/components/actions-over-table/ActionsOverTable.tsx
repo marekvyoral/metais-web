@@ -79,7 +79,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     simpleTableColumnsSelect,
     children,
 }) => {
-    const ability = useCreateCiAbility(ciTypeData)
+    const ability = useCreateCiAbility(ciTypeData, entityName)
     const { t } = useTranslation()
     const pagingSelectId = useId()
 

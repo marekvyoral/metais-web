@@ -1,19 +1,39 @@
 {
+    "footer": {
+        "metaisServices": "Služby MetaIS",
+        "usefulLinks": "Užitočné odkazy",
+        "mediaWiki": "MediaWiki",
+        "contact": "Kontakt",
+        "MIRRI": "Ministerstvo investícií, regionálneho rozvoja a informatizácie Slovenskej republiky",
+        "operatorMIRRI": "Prevadzkovatelom sluzby je Ministerstvo investicii, regionalneho rozvoja a informatizacie SR.",
+        "idsk": "Jednotnym dizajn manualom elektronickych sluzieb.",
+        "createdInAccordance": "Vytvorené v sulade s ",
+
+        "accessibilityDeclaration": "Vyhlásenie o prístupnosti",
+        "webResidencyMap": "Mapa webového sídla",
+        "GDPRAndCookies": "GDPR a cookies",
+        "technicalOperator": "Technický prevádzkovateľ",
+        "contentAdmin": "Správca obsahu",
+        "RSS": "RSS"
+    },
     "navMenu": {
         "publicAuthorities": "Orgány riadenia",
-        "egovComponents": "E-gov Komponenty",
+        "egovComponents": "e-Government komponenty",
         "standardization": "Štandardizácia",
         "dataObjects": "Dátové objekty",
-        "monitoring": "Zostavy a monitoring",
-        "guides": "Postupy a návody",
+        "monitoring": "Monitoring",
+        "guides": "Pomoc",
         "hide": "Skrt",
         "show": "Ukáž",
         "innerNav": "Vnútorná navigácia",
         "mainNav": "Hlavná navigácia",
         "reports": "Zoznam zostáv",
 
-        "KRITProgramsProjects": "KRIT, programy, projekty",
+        "GoalsPrincipalsActivitiesKRIT": "Ciele, princípy, aktivity a KRIT",
         "referenceIdentifiers": "Referenčné identifikátory",
+        "centralDataModel": "Centrálny dátový model",
+        "dataElementsCatalogue": "Katalóg dátových prvkov",
+        "dataObligationsRegister": "Register dátových oprávnení a povinností",
 
         "lists": {
             "processorsOfITDevelopmentConcepts": "Spracovatelia KRIT",
@@ -48,6 +68,7 @@
             "monitoringApp": "Monitorované parametre AS",
             "monitoringSet": "Zostava monitorovaných parametrov",
             "monitoringImport": "Import monitorovacích parametrov",
+            "monitoringServices": "Monitoring služieb",
             "evidenceObjects": "Objekt evidencie",
             "attributesEvidenceObjects": "Atribút objektu evidencie",
             "servers": "Servery",
@@ -58,7 +79,7 @@
             "princip": "Princípy",
             "ciel": "Ciele",
             "aktivita": "Aktivity",
-            "kris": "Koncepty rozvoja IS",
+            "krit": "Koncepty rozvoja IT",
             "registersList": "Zoznam referenčných registrov",
             "registersRequestsList": "Zoznam žiadostí o pridanie referenčného registra",
             "codelistsRequestsList": "Zoznam žiadostí o pridanie číselníka",
@@ -67,7 +88,14 @@
             "personalProcedures": "Osobitný postup",
             "educationalCourses": "Školenia",
             "publicAuthorityHierarchy": "Hierarchia orgánov riadenia",
-            "webResidence": "Webové sídlo"
+            "webResidenceAndMobileApps": "Webové sídlo a mobilné aplikácie",
+            "relationsInspection": "Inšpekcia vzťahov",
+            "architectonicRepository": "Architektonický repozitár",
+
+            "assembliesAndReports": "Zostavy a reporty",
+            "totalCostOfOwnership": "Celkové náklady na vlastníctvo",
+            "serviceLevelAgreementsWithOperator": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
+            "integrationAgreementsOnServiceLevel": "Integračné dohody o úrovni poskytovania služieb (ISLA)"
         }
     },
     "navbar": {
@@ -122,7 +150,6 @@
         "login": "Meno a heslo",
         "loginProblems": "Problémy s prihlásením",
         "forgottenPassword": "Obnova hesla"
-
     },
     "input": {
         "requiredField": "(povinné)"

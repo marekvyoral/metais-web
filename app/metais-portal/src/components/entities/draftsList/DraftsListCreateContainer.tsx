@@ -1,7 +1,7 @@
 import { Attribute, Gui_Profil_Standardy, useGetAttributeProfile } from '@isdd/metais-common/api'
 import { useCreateStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { guiProfilStandardRequestMap } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { FieldValues } from 'react-hook-form'
 
 interface IViewProps {
@@ -19,12 +19,14 @@ export const DraftsListCreateContainer: React.FC<DraftsListFormContainerProps> =
     const { mutateAsync, isSuccess, isError } = useCreateStandardRequest()
     const { data: guiData, isLoading: isGuiDataLoading, isError: isGuiDataError } = useGetAttributeProfile(Gui_Profil_Standardy)
 
-    const guiAttributes: Attribute[] = [
-        ...(guiData?.attributes?.map((attr) => ({
-            ...attr,
-            technicalName: guiProfilStandardRequestMap?.get(attr?.technicalName ?? '') ?? attr?.technicalName,
-        })) ?? []),
-    ]
+    const guiAttributes: Attribute[] = useMemo(() => {
+        return [
+            ...(guiData?.attributes?.map((attr) => ({
+                ...attr,
+                technicalName: guiProfilStandardRequestMap?.get(attr?.technicalName ?? '') ?? attr?.technicalName,
+            })) ?? []),
+        ]
+    }, [guiData])
 
     const handleSubmit = async (values: FieldValues) => {
         await mutateAsync({

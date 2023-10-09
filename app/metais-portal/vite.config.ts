@@ -53,6 +53,11 @@ export default defineConfig(({ mode }) => {
                     changeOrigin: true,
                     secure: false,
                 },
+                '^/file/.*': {
+                    target: process.env.VITE_REST_CLIENT_DMS_TARGET_URL,
+                    changeOrigin: true,
+                    secure: false,
+                },
             },
         },
     }

@@ -109,7 +109,7 @@ export const guiProfilStandardRequestMap = new Map<string, string>([
     ['Gui_Profil_Standardy_std_proposal_email', 'email'],
     ['Gui_Profil_Standardy_std_proposal_title', 'srName'],
     ['Gui_Profil_Standardy_std_proposal_description', 'srDescription1'],
-    ['Gui_Profil_Standardy_std_proposal_intended_location', 'srDescription2'],
+    // ['Gui_Profil_Standardy_std_proposal_intended_location', 'srDescription2'],
     ['Gui_Profil_Standardy_std_proposal_suitability', 'srDescription3'],
     ['Gui_Profil_Standardy_std_proposal_potential', 'srDescription4'],
     ['Gui_Profil_Standardy_std_proposal_openness', 'srDescription5'],
@@ -209,7 +209,7 @@ export const guiProfilStandardRequestMap = new Map<string, string>([
     ['Gui_Profil_Standardy_std_market_reusability_compatibility', 'reusabilityDescription2'], //4.3.2
 
     //['Gui_Profil_Standardy_std_proposal_description', 'proposalDescription1'],
-    // ['Gui_Profil_Standardy_std_proposal_intended_location', 'proposalDescription2'],
+    ['Gui_Profil_Standardy_std_proposal_intended_location', 'proposalDescription2'],
     ['Gui_Profil_Standardy_std_proposal_own_legislative_text', 'proposalDescription3'],
 
     ['Gui_Profil_Standardy_std_proposal_denial_reason', 'actionDesription'],

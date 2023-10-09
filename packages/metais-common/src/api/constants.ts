@@ -1,7 +1,7 @@
 export const BASE_PAGE_NUMBER = 1
 export const BASE_PAGE_SIZE = 10
 export const urlBase = 'https://metais.vicepremier.gov.sk'
-export const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
+export const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_BASE_URL}/file/`
 
 export enum GET_ENUM {
     KATEGORIA_OSOBA = 'KATEGORIA_OSOBA',

@@ -1,7 +1,8 @@
 import { SortType } from '@isdd/idsk-ui-kit/types'
-import { AttributeProfile, CiType, Role, useStoreNewAttrProfile } from '@isdd/metais-common/api'
+import { AttributeProfile, CiType, Role, getListAttrProfile1QueryKey, useStoreNewAttrProfile } from '@isdd/metais-common/api'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import React from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { HiddenInputs } from '@/types/inputs'
 
@@ -23,8 +24,17 @@ export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreat
     const pageNumber = 1
     const pageSize = 200
 
+    const queryClient = useQueryClient()
+    const profileListQueryKey = getListAttrProfile1QueryKey({})
+
     const { data, isLoading, isError } = useFindAll1(pageNumber, pageSize, { direction: SortType.ASC, orderBy: 'name' })
-    const { mutateAsync } = useStoreNewAttrProfile()
+    const { mutateAsync } = useStoreNewAttrProfile({
+        mutation: {
+            onSuccess() {
+                queryClient.invalidateQueries([profileListQueryKey[0]])
+            },
+        },
+    })
 
     const storeProfile = async (formData: AttributeProfile) => {
         await mutateAsync({

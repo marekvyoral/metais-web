@@ -6,6 +6,22 @@
         "exportPDF": "Ako PDF"
     },
     "footer": {
+        "metaisServices": "Služby MetaIS",
+        "usefulLinks": "Užitočné odkazy",
+        "mediaWiki": "MediaWiki",
+        "contact": "Kontakt",
+        "MIRRI": "Ministerstvo investícií, regionálneho rozvoja a informatizácie Slovenskej republiky",
+        "operatorMIRRI": "Prevadzkovatelom sluzby je Ministerstvo investicii, regionalneho rozvoja a informatizacie SR.",
+        "idsk": "Jednotnym dizajn manualom elektronickych sluzieb.",
+        "createdInAccordance": "Vytvorené v sulade s ",
+        "exceptionsLegislation": "Osobitný postup",
+        "accessibilityDeclaration": "Vyhlásenie o prístupnosti",
+        "webResidencyMap": "Mapa webového sídla",
+        "GDPRAndCookies": "GDPR a cookies",
+        "technicalOperator": "Technický prevádzkovateľ",
+        "contentAdmin": "Správca obsahu",
+        "RSS": "RSS",
+
         "services": {
             "title": "Služby a informácie",
             "rations": "Dávky",
@@ -85,19 +101,22 @@
     },
     "navMenu": {
         "publicAuthorities": "Orgány riadenia",
-        "egovComponents": "E-gov Komponenty",
+        "egovComponents": "e-Government komponenty",
         "standardization": "Štandardizácia",
         "dataObjects": "Dátové objekty",
-        "monitoring": "Zostavy a monitoring",
-        "guides": "Postupy a návody",
+        "monitoring": "Monitoring",
+        "guides": "Pomoc",
         "hide": "Skrt",
         "show": "Ukáž",
         "innerNav": "Vnútorná navigácia",
         "mainNav": "Hlavná navigácia",
         "reports": "Zoznam zostáv",
 
-        "KRITProgramsProjects": "KRIT, programy, projekty",
+        "GoalsPrincipalsActivitiesKRIT": "Ciele, princípy, aktivity a KRIT",
         "referenceIdentifiers": "Referenčné identifikátory",
+        "centralDataModel": "Centrálny dátový model",
+        "dataElementsCatalogue": "Katalóg dátových prvkov",
+        "dataObligationsRegister": "Register dátových oprávnení a povinností",
 
         "lists": {
             "processorsOfITDevelopmentConcepts": "Spracovatelia KRIT",
@@ -132,6 +151,7 @@
             "monitoringApp": "Monitorované parametre AS",
             "monitoringSet": "Zostava monitorovaných parametrov",
             "monitoringImport": "Import monitorovacích parametrov",
+            "monitoringServices": "Monitoring služieb",
             "evidenceObjects": "Objekt evidencie",
             "attributesEvidenceObjects": "Atribút objektu evidencie",
             "servers": "Servery",
@@ -142,7 +162,7 @@
             "princip": "Princípy",
             "ciel": "Ciele",
             "aktivita": "Aktivity",
-            "kris": "Koncepty rozvoja IS",
+            "krit": "Koncepty rozvoja IT",
             "registersList": "Zoznam referenčných registrov",
             "registersRequestsList": "Zoznam žiadostí o pridanie referenčného registra",
             "codelistsRequestsList": "Zoznam žiadostí o pridanie číselníka",
@@ -151,7 +171,14 @@
             "personalProcedures": "Osobitný postup",
             "educationalCourses": "Školenia",
             "publicAuthorityHierarchy": "Hierarchia orgánov riadenia",
-            "webResidence": "Webové sídlo"
+            "webResidenceAndMobileApps": "Webové sídlo a mobilné aplikácie",
+            "relationsInspection": "Inšpekcia vzťahov",
+            "architectonicRepository": "Architektonický repozitár",
+
+            "assembliesAndReports": "Zostavy a reporty",
+            "totalCostOfOwnership": "Celkové náklady na vlastníctvo",
+            "serviceLevelAgreementsWithOperator": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
+            "integrationAgreementsOnServiceLevel": "Integračné dohody o úrovni poskytovania služieb (ISLA)"
         }
     },
     "radioButton": {
@@ -935,7 +962,9 @@
         },
         "createForm": {
             "heading": "Znenie návrhu",
-            "name": "Názov návrhu (povinné)",
+            "name": "Meno a priezvisko",
+            "email": "Email",
+            "userHeading": "Identifikácia používateľa",
             "srDescription1": "Uveďte vecný popis návrhu nového štandardu a zároveň popíšte účel uplatnenia nového štandardu, aké problémy má vyriešiť alebo na aké účely má slúžiť (povinné) :",
             "proposalDescription2": "Uveďte predpokladané umiestnenie návrhu v rámci aktuálneho výnosu o štandardoch pre informačné systémy verejnej správy (určenie existujúceho alebo nového paragrafu / odseku, kde sa má navrhovaná požiadavka nachádzať) :",
             "proposalDescription3": "Podľa možnosti uveďte aj vlastný návrh legislatívneho znenia (textácie) požiadavky. ",
@@ -956,7 +985,7 @@
             }
         },
         "header": {
-            "confluenceDocs": "Vložiť do confluence",
+            "confluenceDocs": "Vložiť do ?????",
             "ACCEPTED": "Označiť návrh ako zapracovaný",
             "REJECTED": "Zamietnuť návrh",
             "ASSIGNED": "Priradiť do PS",
@@ -1004,6 +1033,92 @@
             "otd": "OTD",
 
             "submitButton": "Filtrovať výsledky"
+        }
+    },
+    "votes": {
+        "breadcrumbs": {
+            "home": "Domov",
+            "standardization": "Štandardizácia",
+            "VotesLists": "Zoznam Hlasovaní",
+            "VoteDetail": "Detail Hlasovania",
+            "VoteEdit": "Úprava hlasovania",
+            "NewVote": "Nové hlasovanie"
+        },
+        "votesList": {
+            "title": "Zoznam Hlasovaní",
+            "votesListSubtitle": "nejake blabla kecy",
+            "tooltipText": "Pre neprihláseného sa nezobrazia stĺpce Právo hlasovať a Hlasoval za subjekt.",
+            "table": {
+                "effectiveFrom": "Dátum spustenia",
+                "effectiveTo": "Dátum ukončenia",
+                "voteState": "Stav",
+                "canCast": "Právo hlasovať",
+                "hasCast": "Hlasované za subjekt",
+                "name": "Premet hlasovania (znenie otázky)"
+            },
+            "filter": {
+                "title": "Filter",
+                "votesTypeToShow": "Zobraziť",
+                "voteState": "Stav hlasovania",
+                "fromDate": "Prebiehajúce v období od",
+                "toDate": "Prebiehajúce v období do"
+            }
+        },
+        "voteDetail": {
+            "date": "Dátum",
+            "voteType": "Typ Hlasovania",
+            "relatedDocuments": "Súvisiace dokumenty",
+            "relatedVoteLinks": "Hlasovanie sa týka návrhu",
+            "secret": "Tajné",
+            "public": "Verejné",
+            "downloadingFile": "Stahujem súbor",
+            "submitVote": "Hlasovať",
+            "editVote": "Upraviť hlasovanie",
+            "newVote": "+   Pridať nové hlasovanie",
+            "voteProcessing": "Spracovávam hlasovanie",
+            "voteDescription": "Predkladaný návrh",
+            "votesHandlingTitle": "Hlasovanie",
+            "voteActorsTitle": "Účastníci hlasovania",
+            "voteOverview": "Prehľad hlasovania",
+            "changeDate": "Dátum Zmeny",
+            "changeInfo": "Informácie o zmenách hlasujúcich počas priebehu hlasovania",
+            "changeDescription": "Popis Zmeny",
+            "voteChoiceLabel": {
+                "cannotCast": "Hlasovať može iba prihlásený a oprávnený používateľ.",
+                "canCast": "Máte oprávnenie hlasovať",
+                "alreadyVoted": "Už ste zahlasovali za tento návrh"
+        },
+            "voteVetoChoiceLabel": "Vetovať hlasovanie",
+            "description": "Poznámka",
+            "voteConclusion": "Záver hlasovania",
+            "voteDetailExplanationPrefix": "Stav hlasovania ",
+            "vetoed": "Návrh bol vetovaný",
+            "vetoedBy": "Vetoval",
+            "vetoedDescription": "Dôvod",
+            "table":{
+                "name": "Meno",
+                "organization": "Organizácia",
+                "role": "Pozícia"
+            }
+        },
+        "type": {
+            "yes": "Áno",
+            "no": "Nie",
+            "toShow": {
+                "onlyMyVotes": "Len moje hlasovania",
+                "allVotes": "Všetky hlasovania"
+            },
+            "state": {
+                "planned": "Plánované",
+                "ended": "Ukončené",
+                "upcoming": "Prebiehajúce",
+                "canceled" : "Zrušené", 
+                "summarized": "Vyhodnotené",
+                "vetoed": "Vetované"
+            },
+            "changeAction": {
+                "added": "bol pridaný do hlasovania"
+            }
         }
     }
 }

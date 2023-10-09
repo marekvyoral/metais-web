@@ -20,12 +20,14 @@ export const DraftsListFormContainer: React.FC<IReportsDetailContainer> = ({ Vie
     const { isLoading: dataIsLoading, isError: dataIsError, data } = useGetStandardRequestDetail(parseInt(entityId ?? ''))
     const { isLoading: guiDataIsLoading, isError: guiDataIsError, data: guiData } = useGetAttributeProfile(Gui_Profil_Standardy)
 
-    const guiAttributes: Attribute[] = [
-        ...(guiData?.attributes?.map((attr) => ({
-            ...attr,
-            technicalName: guiProfilStandardRequestMap?.get(attr?.technicalName ?? '') ?? attr?.technicalName,
-        })) ?? []),
-    ]
+    const guiAttributes: Attribute[] = useMemo(() => {
+        return [
+            ...(guiData?.attributes?.map((attr) => ({
+                ...attr,
+                technicalName: guiProfilStandardRequestMap?.get(attr?.technicalName ?? '') ?? attr?.technicalName,
+            })) ?? []),
+        ]
+    }, [guiData])
 
     const workingGroupId = useMemo(() => data?.workGroupId, [data])
     const { data: workGroup, isLoading: workGroupIsLoading, isError: workGroupIsError } = useFindByUuid3(workingGroupId ?? '')

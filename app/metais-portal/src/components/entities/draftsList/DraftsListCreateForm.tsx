@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { Input } from '@isdd/idsk-ui-kit/src/input/Input'
 import { useTranslation } from 'react-i18next'
@@ -6,13 +6,16 @@ import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/Ri
 import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useNavigate } from 'react-router-dom'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { API_STANDARD_REQUEST_ATTRIBUTES, Attribute, MutationFeedback } from '@isdd/metais-common/index'
+import { API_STANDARD_REQUEST_ATTRIBUTES, Attribute, DMS_DOWNLOAD_FILE, FileImportStepEnum, MutationFeedback } from '@isdd/metais-common/index'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ApiLink, ApiStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { getInfoGuiProfilStandardRequest } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
+import { useUppy } from '@isdd/metais-common/hooks/useUppy'
+import { v4 as uuidV4 } from 'uuid'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
-import styles from './draftsListCreateForm.module.scss'
-
+import styles from '@/components/entities/draftsList/draftsListCreateForm.module.scss'
+import { DraftListCreateFormDialog } from '@/components/entities/draftsList/DraftListCreateFormDialog'
 import { generateSchemaForCreateDraft } from '@/components/entities/draftsList/schema/createDraftSchema'
 import { DraftsListAttachmentsZone } from '@/components/entities/draftsList/DraftsListAttachmentsZone'
 
@@ -27,17 +30,81 @@ interface CreateForm {
 }
 export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: CreateForm) => {
     const { t } = useTranslation()
+    const [openCreateFormDialog, setOpenCreateFormDialog] = useState<boolean>(false)
     const navigate = useNavigate()
-    const { register, handleSubmit, setValue, watch, getValues } = useForm({
+    const {
+        state: { user },
+    } = useAuth()
+    const { register, handleSubmit, setValue, watch, getValues, formState } = useForm({
         defaultValues: {
             ...data?.defaultData,
+            version: 2,
+            // eslint-disable-next-line no-warning-comments
+            actionDesription: '-', // TODO: Vymazat ak sa fixne BE
+            email: user ? '-' : undefined,
+            name: user ? '-' : undefined,
+            srDescription2: '-',
+            srDescription3: '-',
+            srDescription4: '-',
+            srDescription5: '-',
+            srDescription6: '-',
+            proposalDescription1: '-',
+            applicabilityDescription1: '-',
+            applicabilityDescription2: '-',
+            applicabilityDescription3: '-',
+            applicabilityDescription4: '-',
+            relevanceDescription1: '-',
+            adaptabilityDescription1: '-',
+            adaptabilityDescription2: '-',
+            impactDescription2: '-',
+            impactDescription3: '-',
+            impactDescription4: '-',
+            impactDescription6: '-',
+            impactDescription8: '-',
+            impactDescription9: '-',
+            impactDescription10: '-',
+            impactDescription11: '-',
+            impactDescription12: '-',
+            scalabilityDescription1: '-',
+            expandabilityDescription1: '-',
+            expandabilityDescription2: '-',
+            stabilityDescription1: '-',
+            stabilityDescription2: '-',
+            stabilityDescription3: '-',
+            maintenanceDescription1: '-',
+            outputsDescription1: '-',
+            outputsDescription2: '-',
+            outputsDescription3: '-',
+            outputsDescription4: '-',
+            outputsDescription5: '-',
+            processDescription1: '-',
+            processDescription2: '-',
+            processDescription3: '-',
+            processDescription4: '-',
+            processDescription5: '-',
+            processDescription6: '-',
+            extensionDescription1: '-',
+            extensionDescription2: '-',
+            extensionDescription3: '-',
+            extensionDescription4: '-',
+            extensionDescription5: '-',
+            extensionDescription6: '-',
+            extensionDescription7: '-',
+            maturityDescription1: '-',
+            maturityDescription2: '-',
+            maturityDescription3: '-',
+            reusabilityDescription1: '-',
+            reusabilityDescription2: '-',
         },
         resolver: yupResolver(generateSchemaForCreateDraft(t)),
     })
     const links = watch('links') ?? []
 
     const addNewLink = () => {
-        setValue('links', [...(links ?? []), {} as ApiLink])
+        const newLinks = [...(links ?? []), {}]
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        setValue('links', newLinks)
     }
 
     const removeLink = (removeIndex: number) => {
@@ -45,11 +112,50 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
         setValue('links', newAttachments)
     }
 
+    const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
+
+    // eslint-disable-next-line no-warning-comments
+    const id = uuidV4() // TODO: vymazat ked bude BE opraveny
+    const { uppy, currentFiles, handleRemoveFile, uploadFileProgressInfo, handleUpload } = useUppy({
+        multiple: true,
+        fileImportStep,
+        endpointUrl: `${DMS_DOWNLOAD_FILE}/${id}`,
+        setFileImportStep,
+        setCustomFileMeta: () => ({ uuid: id }),
+    })
+
+    const handleSubmitForm = useCallback(
+        async (values: FieldValues) => {
+            if (currentFiles?.length > 0) await handleUpload()
+            const uploadedFiles =
+                currentFiles?.map((file) => ({
+                    attachmentId: file?.meta?.uuid,
+                    attachmentName: file?.name,
+                    attachmentSize: file?.size,
+                    attachmentType: file?.extension,
+                    attachmentDescription: '-',
+                })) ?? []
+            onSubmit({
+                ...values,
+                attachments: uploadedFiles,
+            })
+        },
+        [handleUpload, onSubmit, currentFiles],
+    )
+
+    const errors = formState?.errors
+
     return (
         <div>
+            <DraftListCreateFormDialog
+                openCreateFormDialog={openCreateFormDialog}
+                closeCreateFormDialog={() => setOpenCreateFormDialog(false)}
+                handleSubmit={handleSubmit(handleSubmitForm)}
+                register={register}
+            />
             <MutationFeedback error={isError} success={isSuccess} />
             <TextHeading size="L">{t('DraftsList.createForm.heading')}</TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(handleSubmitForm)}>
                 <Input
                     {...register(API_STANDARD_REQUEST_ATTRIBUTES.srName)}
                     label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srName, data?.guiAttributes)}
@@ -105,14 +211,25 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
                     info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7, data?.guiAttributes)}
                     value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7)}
                 />
-                <DraftsListAttachmentsZone attachements={[]} links={links} register={register} addNewLink={addNewLink} onDelete={removeLink} />
+                <DraftsListAttachmentsZone
+                    links={links}
+                    register={register}
+                    addNewLink={addNewLink}
+                    onDelete={removeLink}
+                    errors={errors}
+                    uppyHelpers={{ uppy, uploadFileProgressInfo, handleRemoveFile, currentFiles }}
+                />
                 <div className={styles.buttonGroup}>
                     <Button
                         label={t('DraftsList.createForm.cancel')}
                         variant="secondary"
                         onClick={() => navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV)}
                     />
-                    <Button label={t('DraftsList.createForm.submit')} type="submit" />
+                    <Button
+                        label={t('DraftsList.createForm.submit')}
+                        type={user ? 'submit' : undefined}
+                        onClick={() => !user && setOpenCreateFormDialog(true)}
+                    />
                 </div>
             </form>
         </div>

@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react'
-import { BaseModal, Button } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Button, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { GetFOPStandardRequestsParams, useAssignStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { SelectWorkingGroups } from '@isdd/metais-common/components/select-working-groups/SelectWorkingGroups'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import styles from '@isdd/metais-common/components/export-items-or-relations/exportItemsOrRelations.module.scss'
 
 interface IDraftsListAssignToPSDialog {
     openAddToPSDialog: boolean
@@ -27,17 +28,27 @@ export const DraftsListAssignToPSDialog = ({ openAddToPSDialog, setOpenAddToPSDi
     )
     return (
         <BaseModal isOpen={openAddToPSDialog} close={setOpenAddToPSDialog}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <>
-                    <SelectWorkingGroups
-                        setValue={setValue}
-                        label={t('DraftsList.filter.workGroupId')}
-                        name={'workGroupId'}
-                        optionLabel={(option) => option?.name ?? ''}
-                    />
-                    <Button label={t('DraftsList.header.changeState.submit')} type="submit" />
-                </>
-            </form>
+            <div className={styles.modalContainer}>
+                <div className={styles.content}>
+                    <TextHeading size={'L'} className={styles.heading}>
+                        {t(`DraftsList.header.ASSIGNED`)}
+                    </TextHeading>
+
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <>
+                            <SelectWorkingGroups
+                                setValue={setValue}
+                                label={t('DraftsList.filter.workGroupId')}
+                                name={'workGroupId'}
+                                optionLabel={(option) => option?.name ?? ''}
+                            />
+                            <div className={styles.confirmButton}>
+                                <Button label={t('DraftsList.header.changeState.submit')} type="submit" />
+                            </div>
+                        </>
+                    </form>
+                </div>
+            </div>
         </BaseModal>
     )
 }
