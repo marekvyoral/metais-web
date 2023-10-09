@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CreateDocumentContainer } from '@/components/containers/documents-management/CreateDocumentContainer'
-import { CreateDocumentView } from '@/components/views/documents-management/CreateDocumentView'
+import { EditDocumentView } from '@/components/views/documents-management/EditDocumentView'
 
 const CreateDocument = () => {
     const { entityId } = useParams()
@@ -21,7 +21,7 @@ const CreateDocument = () => {
                 ]}
             />
             <MainContentWrapper>
-                <CreateDocumentContainer View={(props) => <CreateDocumentView {...props} />} />
+                <CreateDocumentContainer View={(props) => <EditDocumentView {...props} />} />
             </MainContentWrapper>
         </>
     )

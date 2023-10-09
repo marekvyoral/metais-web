@@ -1,5 +1,4 @@
-import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { BaseModal, Button, ButtonGroupRow, ButtonLink, ButtonPopup, Tab, Table, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Button, ButtonGroupRow, ButtonLink, Tab, Table, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Document } from '@isdd/metais-common/api/generated/kris-swagger'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { ActionsOverTable } from '@isdd/metais-common/index'
@@ -29,6 +28,37 @@ export const DocumentsGroupView: React.FC<IView> = ({
 
     const [deleteGroupModalOpen, setDeleteGroupModalOpen] = useState(false)
     const [documentToDelete, setDocumentToDelete] = useState<Document>()
+
+    documentsData = [
+        {
+            id: 69,
+            name: 'Test123',
+            nameEng: 'Test123',
+            description: 'Description123',
+            descriptionEng: 'Description123',
+            required: true,
+            confluence: true,
+            type: '123',
+            position: 0,
+            documentGroup: {
+                id: 19,
+            },
+        },
+        {
+            id: 68,
+            name: 'Test1234',
+            nameEng: 'Test1234',
+            description: 'Description1234',
+            descriptionEng: 'Description1234',
+            required: true,
+            confluence: true,
+            type: '1234',
+            position: 0,
+            documentGroup: {
+                id: 19,
+            },
+        },
+    ]
 
     const columns: Array<ColumnDef<Document>> = [
         {
@@ -105,15 +135,20 @@ export const DocumentsGroupView: React.FC<IView> = ({
             id: 'remove',
             cell: (ctx) => {
                 return (
-                    <ButtonLink
-                        className={styles.redText}
-                        label={t('codelists.remove')}
-                        onClick={() => {
-                            if (ctx.row.original.id != undefined) {
-                                setDocumentToDelete(documentsData.find((d) => d.id == ctx.row.original.id))
-                            }
-                        }}
-                    />
+                    <>
+                        <Link to={'./' + ctx?.row?.original?.id + '/edit'} state={{ from: location }}>
+                            {t('codelists.edit')}
+                        </Link>
+                        <ButtonLink
+                            className={styles.deleteButton}
+                            label={t('codelists.remove')}
+                            onClick={() => {
+                                if (ctx.row.original.id != undefined) {
+                                    setDocumentToDelete(documentsData.find((d) => d.id == ctx.row.original.id))
+                                }
+                            }}
+                        />
+                    </>
                 )
             },
         },
@@ -156,11 +191,9 @@ export const DocumentsGroupView: React.FC<IView> = ({
                 <div style={{ marginLeft: 'auto' }} />
                 <Button label={t('documentsManagement.edit')} onClick={() => navigate('./edit')} />
                 <Button label={t('documentsManagement.delete')} variant="warning" onClick={() => setDeleteGroupModalOpen(true)} />
-                <ButtonPopup buttonLabel={t('documentsManagement.moreOptions')} popupContent={() => null} />
             </ButtonGroupRow>
             <Tabs tabList={tabList} />
             <TextHeading size="L">{t('documentsManagement.documents')}</TextHeading>
-            <Filter form={() => <></>} defaultFilterValues={{}} />
             <ActionsOverTable
                 entityName={''}
                 simpleTableColumnsSelect={{ selectedColumns, setSelectedColumns }}
