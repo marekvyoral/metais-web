@@ -44,6 +44,18 @@ export const documentsManagementDefaultSelectedColumns = [
     { technicalName: 'state', name: 'State', selected: true },
 ]
 
+export const documentsManagementGroupDocumentsDefaultSelectedColumns = [
+    { technicalName: 'id', name: 'Id', selected: false },
+    { technicalName: 'name', name: 'Name', selected: true },
+    { technicalName: 'nameEng', name: 'NameEng', selected: false },
+    { technicalName: 'description', name: 'Description', selected: true },
+    { technicalName: 'descriptionEng', name: 'DescriptionEng', selected: false },
+    { technicalName: 'confluence', name: 'Confluence', selected: true },
+    { technicalName: 'required', name: 'Required', selected: true },
+    { technicalName: 'documentGroup', name: 'Document group', selected: false },
+    { technicalName: 'type', name: 'Type', selected: false },
+]
+
 export const ROLES_GROUP = 'SKUPINA_ROL'
 export const metaisEmail = 'metais@mirri.gov.sk'
 

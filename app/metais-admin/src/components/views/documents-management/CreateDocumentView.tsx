@@ -20,18 +20,21 @@ export const CreateDocumentView: React.FC<IView> = ({ infoData, saveDocument, is
     const onSubmit = (fieldValues: FieldValues) => {
         if (isValid) {
             saveDocument({
-                // state: fieldValues['status'],
-                // name: fieldValues['name'],
-                // description: fieldValues['description'],
-                // nameEng: fieldValues['nameEng'],
-                // descriptionEng: fieldValues['descriptionEng'],
+                documentGroup: infoData,
+                type: fieldValues['docId'],
+                name: fieldValues['name'],
+                description: fieldValues['description'],
+                nameEng: fieldValues['nameEng'],
+                descriptionEng: fieldValues['descriptionEng'],
+                confluence: fieldValues['confluence'],
+                required: fieldValues['required'],
             })
             navigate(-1)
         }
     }
     return (
         <QueryFeedback loading={isLoading}>
-            <TextHeading size="L">{t('documentsManagement.documents')}</TextHeading>
+            <TextHeading size="L">{t('documentsManagement.addDocument')}</TextHeading>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Input
                     placeholder={t('documentsManagement.input')}
@@ -41,13 +44,13 @@ export const CreateDocumentView: React.FC<IView> = ({ infoData, saveDocument, is
                     {...register('docId')}
                 />
                 <SimpleSelect
-                    label={t('documentsManagement.docPreset') + ' ' + t('input.requiredField')}
-                    name="status"
+                    label={t('documentsManagement.docTemplate') + ' ' + t('input.requiredField')}
+                    name="docPreset"
                     setValue={setValue}
-                    error={errors['status']?.message as string}
+                    error={errors['docPreset']?.message as string}
                     options={[]}
                 />
-                <CheckBox label={t('documentsManagement.usePreset')} id="usePreset" {...register('usePreset')} />
+                <CheckBox label={t('documentsManagement.useTemplate')} id="usePreset" {...register('usePreset')} />
                 <div style={{ height: '20px' }} />
                 <Input
                     placeholder={t('documentsManagement.input')}

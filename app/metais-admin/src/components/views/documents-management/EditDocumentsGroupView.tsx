@@ -1,16 +1,12 @@
-import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { Button, ButtonGroupRow, ButtonPopup, Input, SimpleSelect, Tab, Table, Tabs, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { Document } from '@isdd/metais-common/api/generated/kris-swagger'
-import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { ColumnDef } from '@tanstack/react-table'
-import { useTranslation } from 'react-i18next'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { ActionsOverTable, BulkPopup, QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { Button, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 import { IView } from '@/components/containers/documents-management/DocumentsGroupContainer'
 
-export const EditDocumentsGroupView: React.FC<IView> = ({ infoData, projectStatus, saveDocument, isLoading }) => {
+export const EditDocumentsGroupView: React.FC<IView> = ({ infoData, projectStatus, saveDocumentGroup, isLoading }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
 
@@ -23,7 +19,7 @@ export const EditDocumentsGroupView: React.FC<IView> = ({ infoData, projectStatu
     } = useForm()
     const onSubmit = (fieldValues: FieldValues) => {
         if (isValid) {
-            saveDocument({
+            saveDocumentGroup({
                 ...infoData,
                 state: fieldValues['status'] ?? infoData.state,
                 name: fieldValues['name'],

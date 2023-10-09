@@ -847,6 +847,14 @@
         "baseInfo": "Base info",
         "docId": "Document identifier",
         "docTemplate": "Document template",
-        "useTemplate": "Insert pre-filled template content"
+        "useTemplate": "Insert pre-filled template content",
+        "addDocument": "Add document",
+        "selectedDocumentsGroup": "Selected group of documents",
+        "removingDocument": "Remove document",
+        "edit": "Edit item",
+        "delete": "Delete item",
+        "moreOptions": "More options",
+        "documentGroup": "Document group",
+        "type": "Type"
     }
 }

@@ -1,4 +1,5 @@
 import { ISelectColumnType } from '@isdd/idsk-ui-kit/index'
+import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { DocumentGroup, useGetDocumentGroups, useGetPhaseMap, useSaveDocumentGroupHook } from '@isdd/metais-common/api/generated/kris-swagger'
 import {
@@ -10,7 +11,6 @@ import {
 } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { ColumnSort, IFilter, Pagination, SortType } from '@isdd/idsk-ui-kit/types'
 
 import { filterObjectByValue } from './utils'
 

@@ -831,7 +831,7 @@
         "editPosition": "Upraviť pozíciu",
         "savePosition": "Uložiť pozíciu",
         "resetPosition": "Zrušiť editáciu",
-        "addNewGroup": "Nová skupina dokum",
+        "addNewGroup": "Nová skupina dokumentov",
         "name": "Názov",
         "nameEng": "Názov Eng",
         "description": "Popis",
@@ -848,6 +848,14 @@
         "baseInfo": "Základné informácie",
         "docId": "Identifikátor dokumentu",
         "docTemplate": "Šablóna dokumentu",
-        "useTemplate": "Vložiť predvypľnený obsah šablóny"
+        "useTemplate": "Vložiť predvypľnený obsah šablóny",
+        "addDocument": "Pridať dokument",
+        "selectedDocumentsGroup": "Vybraná skupina dokumentov",
+        "removingDocument": "Odstrániť dokument",
+        "edit": "Upraviť položku",
+        "delete": "Odstrániť položku",
+        "moreOptions": "Viac možností",
+        "documentGroup": "Skupina dokumentov",
+        "type": "Typ"
     }
 }
