@@ -108,7 +108,7 @@ export const useUppy = ({
             })
         })
         try {
-            uppy.upload().then((result) => {
+            await uppy.upload().then((result) => {
                 if (result.successful.length > 0) {
                     setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
                 }

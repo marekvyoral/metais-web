@@ -1,12 +1,14 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { ApiLink, ApiStandardRequest, useUpdateStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { Button, LoadingIndicator } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { MutationFeedback } from '@isdd/metais-common/index'
+import { DMS_DOWNLOAD_FILE, FileImportStepEnum, MutationFeedback } from '@isdd/metais-common/index'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { v4 as uuidV4 } from 'uuid'
+import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 
 import { DraftsListAttachmentsZone } from '@/components/entities/draftsList/DraftsListAttachmentsZone'
 import styles from '@/components/entities/draftsList/draftsListCreateForm.module.scss'
@@ -56,20 +58,49 @@ export const DraftsListEditForm = ({ defaultData }: IDraftsListEditForm) => {
     )
 
     const errors = formState?.errors
+    const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
+
+    const id = uuidV4() // TODO: vymazat ked bude BE opraveny
+    const { uppy, currentFiles, handleRemoveFile, uploadFileProgressInfo, handleUpload } = useUppy({
+        multiple: true,
+        fileImportStep,
+        endpointUrl: `${DMS_DOWNLOAD_FILE}/${id}`,
+        setFileImportStep,
+        setCustomFileMeta: () => ({ uuid: id }),
+    })
+
+    const handleSubmitForm = useCallback(
+        async (values: FieldValues) => {
+            await handleUpload()
+            const uploadedFiles =
+                currentFiles?.map((file) => ({
+                    attachmentId: file?.meta?.uuid,
+                    attachmentName: file?.name,
+                    attachmentSize: file?.size,
+                    attachmentType: file?.extension,
+                    attachmentDescription: '-',
+                })) ?? []
+            onSubmit({
+                ...values,
+                attachments: uploadedFiles,
+            })
+        },
+        [handleUpload, onSubmit, currentFiles],
+    )
 
     return (
         <>
             {isLoading && <LoadingIndicator fullscreen />}
             <MutationFeedback error={isError} success={isSuccess} />
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(handleSubmitForm)}>
                 <DraftsListAttachmentsZone
                     links={links}
                     register={register}
                     addNewLink={addNewLink}
                     onDelete={removeLink}
-                    attachements={[]}
                     errors={errors}
+                    uppyHelpers={{ uppy, uploadFileProgressInfo, handleRemoveFile, currentFiles }}
                 />
                 <div className={styles.buttonGroup}>
                     <Button

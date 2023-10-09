@@ -8,12 +8,12 @@ import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
 import stylesImport from '@isdd/metais-common/components/file-import/FileImport.module.scss'
 import { StatusBar } from '@uppy/react'
-import { FileImportList } from '@isdd/metais-common/components/file-import/FileImportList'
+import { FileImportList, ProgressInfoList } from '@isdd/metais-common/components/file-import/FileImportList'
 
 import { DraftsListAttachmentCard } from '@/components/entities/draftsList/DraftsListAttachmentCard'
+import Uppy, { UppyFile } from '@uppy/core'
 
 interface IDraftsListAttachmentsZone {
-    attachements: ApiAttachment[]
     links: ApiLink[]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     register: UseFormRegister<any>
@@ -33,24 +33,24 @@ interface IDraftsListAttachmentsZone {
     }>
     addNewLink: () => void
     onDelete: (index: number) => void
+    uppyHelpers: {
+        uppy: Uppy
+        handleRemoveFile: (fileId: string) => void
+        currentFiles: UppyFile[]
+        uploadFileProgressInfo: ProgressInfoList[]
+    }
 }
 
-export const DraftsListAttachmentsZone = ({ attachements, register, addNewLink, onDelete, links, errors }: IDraftsListAttachmentsZone) => {
+export const DraftsListAttachmentsZone = ({ register, addNewLink, onDelete, links, errors, uppyHelpers }: IDraftsListAttachmentsZone) => {
     const { t } = useTranslation()
-    const isPlaceholder = attachements?.length === 1
-    const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
-
-    const { uppy, currentFiles, handleRemoveFile, uploadFileProgressInfo } = useUppy({
-        multiple: true,
-        fileImportStep,
-        setFileImportStep,
-    })
+    const isPlaceholder = links?.length === 1
+    const { uppy, handleRemoveFile, currentFiles, uploadFileProgressInfo } = uppyHelpers
     return (
         <div>
             <TextHeading size="L">{t('DraftsList.createForm.links.heading')}</TextHeading>
 
             <TextHeading size="M">{t('DraftsList.createForm.links.subHeading')}</TextHeading>
-            {links?.map((val, index) => (
+            {links?.map((_, index) => (
                 <DraftsListAttachmentCard
                     key={index}
                     register={register}

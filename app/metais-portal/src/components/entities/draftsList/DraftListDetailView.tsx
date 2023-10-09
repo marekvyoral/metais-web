@@ -123,14 +123,27 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                 <>
                     {srDescriptionAttributes.map((attribute) => {
                         if (data?.[attribute])
-                            return (
-                                <InformationGridRow
-                                    key={attribute}
-                                    value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
-                                    label={getLabelGuiProfilStandardRequest(attribute, guiAttributes) ?? ''}
-                                    hideIcon
-                                />
-                            )
+                            if (attribute === API_STANDARD_REQUEST_ATTRIBUTES.srDescription2)
+                                return (
+                                    <InformationGridRow
+                                        key={attribute}
+                                        value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
+                                        label={
+                                            getLabelGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2, guiAttributes) ??
+                                            ''
+                                        }
+                                        hideIcon
+                                    />
+                                )
+                            else
+                                return (
+                                    <InformationGridRow
+                                        key={attribute}
+                                        value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
+                                        label={getLabelGuiProfilStandardRequest(attribute, guiAttributes) ?? ''}
+                                        hideIcon
+                                    />
+                                )
                     })}
                 </>
             )}
@@ -151,15 +164,6 @@ export const DraftListDetailView: React.FC<Props> = ({ data, guiAttributes, work
                                     key={attribute}
                                     value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
                                     label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srDescription1, guiAttributes) ?? ''}
-                                    hideIcon
-                                />
-                            )
-                        else if (attribute === API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2)
-                            return (
-                                <InformationGridRow
-                                    key={attribute}
-                                    value={<span dangerouslySetInnerHTML={{ __html: data?.[attribute] ?? '' }} />}
-                                    label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srDescription2, guiAttributes) ?? ''}
                                     hideIcon
                                 />
                             )

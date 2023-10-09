@@ -757,7 +757,9 @@
         "ciCreate": "Create configuration item",
         "newRelation": "Add new relation of {{itemName}}",
         "newCiAndRelation": "Add new item and relation for {{itemName}}",
-        "compareHistory": "Change comparer"
+        "compareHistory": "Change comparer",
+        "standardization": "Standardization",
+        "draftsList": "Drafts list"
     },
     "codeListList": {
         "title": "Codelists",

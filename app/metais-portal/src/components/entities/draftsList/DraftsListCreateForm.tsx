@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { Input } from '@isdd/idsk-ui-kit/src/input/Input'
 import { useTranslation } from 'react-i18next'
@@ -6,10 +6,12 @@ import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/Ri
 import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useNavigate } from 'react-router-dom'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { API_STANDARD_REQUEST_ATTRIBUTES, Attribute, MutationFeedback } from '@isdd/metais-common/index'
+import { API_STANDARD_REQUEST_ATTRIBUTES, Attribute, DMS_DOWNLOAD_FILE, FileImportStepEnum, MutationFeedback } from '@isdd/metais-common/index'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ApiLink, ApiStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { getInfoGuiProfilStandardRequest } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
+import { useUppy } from '@isdd/metais-common/hooks/useUppy'
+import { v4 as uuidV4 } from 'uuid'
 
 import styles from './draftsListCreateForm.module.scss'
 
@@ -32,7 +34,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
         defaultValues: {
             ...data?.defaultData,
             version: 2,
-            actionDesription: '-',
+            actionDesription: '-', // TODO: Vymazat ak sa fixne BE
             email: '-',
             name: '-',
             srDescription2: '-',
@@ -104,13 +106,43 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
         setValue('links', newAttachments)
     }
 
+    const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
+
+    const id = uuidV4() // TODO: vymazat ked bude BE opraveny
+    const { uppy, currentFiles, handleRemoveFile, uploadFileProgressInfo, handleUpload } = useUppy({
+        multiple: true,
+        fileImportStep,
+        endpointUrl: `${DMS_DOWNLOAD_FILE}/${id}`,
+        setFileImportStep,
+        setCustomFileMeta: () => ({ uuid: id }),
+    })
+
+    const handleSubmitForm = useCallback(
+        async (values: FieldValues) => {
+            await handleUpload()
+            const uploadedFiles =
+                currentFiles?.map((file) => ({
+                    attachmentId: file?.meta?.uuid,
+                    attachmentName: file?.name,
+                    attachmentSize: file?.size,
+                    attachmentType: file?.extension,
+                    attachmentDescription: '-',
+                })) ?? []
+            onSubmit({
+                ...values,
+                attachments: uploadedFiles,
+            })
+        },
+        [handleUpload, onSubmit, currentFiles],
+    )
+
     const errors = formState?.errors
 
     return (
         <div>
             <MutationFeedback error={isError} success={isSuccess} />
             <TextHeading size="L">{t('DraftsList.createForm.heading')}</TextHeading>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(handleSubmitForm)}>
                 <Input
                     {...register(API_STANDARD_REQUEST_ATTRIBUTES.srName)}
                     label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srName, data?.guiAttributes)}
@@ -167,12 +199,12 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
                     value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7)}
                 />
                 <DraftsListAttachmentsZone
-                    attachements={[]}
                     links={links}
                     register={register}
                     addNewLink={addNewLink}
                     onDelete={removeLink}
                     errors={errors}
+                    uppyHelpers={{ uppy, uploadFileProgressInfo, handleRemoveFile, currentFiles }}
                 />
                 <div className={styles.buttonGroup}>
                     <Button
