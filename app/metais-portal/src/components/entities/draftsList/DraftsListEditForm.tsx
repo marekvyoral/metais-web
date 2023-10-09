@@ -60,6 +60,7 @@ export const DraftsListEditForm = ({ defaultData }: IDraftsListEditForm) => {
     const errors = formState?.errors
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
 
+    // eslint-disable-next-line no-warning-comments
     const id = uuidV4() // TODO: vymazat ked bude BE opraveny
     const { uppy, currentFiles, handleRemoveFile, uploadFileProgressInfo, handleUpload } = useUppy({
         multiple: true,

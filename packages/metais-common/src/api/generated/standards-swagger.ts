@@ -264,6 +264,19 @@ export interface ApiVotePreviewList {
     votes?: ApiVotePreview[]
 }
 
+export interface Group {
+    uuid?: string
+    shortName?: string
+    name?: string
+    description?: string
+}
+
+export interface GroupMeetings {
+    group?: Group
+    lastMeetingDate?: string
+    nextMeetingDate?: string
+}
+
 export interface ApiMeetingResult {
     linkUrl?: string
 }
@@ -1951,6 +1964,48 @@ export const useCancelMeetingRequest = <TError = ApiError, TContext = unknown>(o
     const mutationOptions = useCancelMeetingRequestMutationOptions(options)
 
     return useMutation(mutationOptions)
+}
+
+export const useGroupsWithMeetingsHook = () => {
+    const groupsWithMeetings = useStandardsSwaggerClient<GroupMeetings[]>()
+
+    return (signal?: AbortSignal) => {
+        return groupsWithMeetings({ url: `/user-groups/meetings`, method: 'get', signal })
+    }
+}
+
+export const getGroupsWithMeetingsQueryKey = () => [`/user-groups/meetings`] as const
+
+export const useGroupsWithMeetingsQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>,
+    TError = ApiError,
+>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>, TError, TData>
+}): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGroupsWithMeetingsQueryKey()
+
+    const groupsWithMeetings = useGroupsWithMeetingsHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>> = ({ signal }) => groupsWithMeetings(signal)
+
+    return { queryKey, queryFn, ...queryOptions }
+}
+
+export type GroupsWithMeetingsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>>
+export type GroupsWithMeetingsQueryError = ApiError
+
+export const useGroupsWithMeetings = <TData = Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>, TError = ApiError>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGroupsWithMeetingsQueryOptions(options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
 }
 
 export const useGetVoteResultHook = () => {

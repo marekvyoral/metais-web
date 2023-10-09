@@ -3,7 +3,7 @@ import { useDeleteGroupRelationHook } from '@isdd/metais-common/api/generated/ia
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import styles from '@/components/views/standartization/groups/styles.module.scss'
+import styles from '@/components/views/standardization/groups/styles.module.scss'
 interface DeleteGroupMemberModalProps {
     uuid?: string
     groupUuid: string

@@ -21,6 +21,8 @@ export enum RouteNames {
     USER_PROFILE = '/userprofile',
     REPORTS = '/reports',
     GLOBAL_SEARCH = '/global/search',
+    MEDIA_WIKI = '/media-wiki',
+    CONTACT = '/contact',
 }
 
 export enum AdminRouteNames {
@@ -58,12 +60,12 @@ export enum NavigationSubRoutes {
     HOW_TO_REFERENCE_REGISTERS = '/howto/REFERENCE.REFERENCE/REF_REG_HOWTO',
     TASK_DETAIL = '/ulohy/:taskId',
     PROCESSORS_OF_IT_DEVELOPMENT_CONCEPTS = '/ci/PO_IS',
-    KRIS = '/kr/list',
+    KRIT = '/kr/list',
     SUBORDINATES = '/ci/PO_PO',
     NOT_OVM = '/ci/PO_IS_PO',
     PRINCIP = '/ci/Princip',
     CIEL = '/ci/Ciel',
-    AKTIVITA = '/ci/aktivita',
+    AKTIVITA = '/ci/Aktivita',
     PROGRAM = '/ci/Program',
     PROJEKT = '/ci/Projekt',
     KONCOVE_SLUZBY = '/ci/KS',
@@ -90,22 +92,30 @@ export enum NavigationSubRoutes {
     CENTRALNY_DATOVY_MODEL = '/todo',
     PRUD = '/todo',
     JEDNOTNA_DIGITALNA_BRANA = '/todo',
-    PREHLADY = '/todo',
     MONITORING_KS = '/monitorks',
     MONITORING_AS = '/monitoras',
     MONITORING_PARAMETRE_SET = '/monitor-report',
     MONITORING_IMPORT = '/todo',
+    VOTE_DETAIL = '/standardization/votedetail',
+    VOTE_EDIT = '/standardization/vote',
     NOTIFICATIONS = '/notifications',
     LICENCIE = '/howto/LICENCE.LICENCE_TITLE/LICENSE_HOWTO',
-    SERVERY = '/todo',
-    VIRTUALNE_STROJE = '/todo',
+    SERVERY = '/servers',
+    VIRTUALNE_STROJE = '/virtual-machines',
     MIESTO_PREVADZKY = '/ci/MiestoPrevadzky',
     PUBLIC_AUTHORITY_HIERARCHY = '/po-table',
     REFERENCE_REGISTERS_REQUESTS = '/todo',
     CODELIST_REQUESTS = '/todo',
     IDENTIFIERS_REQUESTS = '/uri/list/sent',
     IDENTIFIERS_LIST = '/uri/list/accepted',
-    WEBOVE_SIDLO = '/todo',
+    WEBOVE_SIDLO_AND_MOBILE_APPS = '/todo',
+    OVERVIEWS = '/overviews',
+    EDUCATIONAL_COURSES = '/courses',
+    RELATIONS_INSPECTION = '/relations-inspection',
+    ARCHITECTONIC_REPOSITORY = '/architectonic-repository',
+    TOTAL_COST_OF_OWNERSHIP = '/howto/TCO.TCO_TOTAL_OWNERSHIP_COSTS/TOTAL_OWNERSHIP_COSTS_HOWTO',
+    SERVICE_LEVEL_AGREEMENTS_WITH_OPERATOR = '/sla-contract-list',
+    INTEGRATION_AGREEMENTS_ON_SERVICE_LEVEL = '/isla-contract-list',
 }
 
 export enum AdminRouteRoles {
@@ -130,4 +140,15 @@ export interface NavigationItem {
     icon?: string
     subItems?: NavigationSubItem[]
     role?: AdminRouteRoles[]
+}
+
+export enum FooterRouteNames {
+    ACCESSIBILITY_DECLARATION = '/technical/declaration',
+    WEB_RESIDENCY_MAP = '/sitemap',
+    GDPR_AND_COOKIES = '/cookies/info',
+    TECHNICAL_OPERATOR = '/technical/help',
+    CONTENT_ADMIN = '/technical/manager',
+    RSS = '/rss',
+    IDSK_DIZAJN = '/#',
+    EXCEPTIONS_LEGISLATION = '/ci/vynimky_ITVS',
 }

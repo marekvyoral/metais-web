@@ -14,9 +14,8 @@ import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { v4 as uuidV4 } from 'uuid'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
-import styles from './draftsListCreateForm.module.scss'
-import { DraftListCreateFormDialog } from './DraftListCreateFormDialog'
-
+import styles from '@/components/entities/draftsList/draftsListCreateForm.module.scss'
+import { DraftListCreateFormDialog } from '@/components/entities/draftsList/DraftListCreateFormDialog'
 import { generateSchemaForCreateDraft } from '@/components/entities/draftsList/schema/createDraftSchema'
 import { DraftsListAttachmentsZone } from '@/components/entities/draftsList/DraftsListAttachmentsZone'
 
@@ -40,6 +39,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
         defaultValues: {
             ...data?.defaultData,
             version: 2,
+            // eslint-disable-next-line no-warning-comments
             actionDesription: '-', // TODO: Vymazat ak sa fixne BE
             email: user ? '-' : undefined,
             name: user ? '-' : undefined,
@@ -114,6 +114,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError }: Cre
 
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
 
+    // eslint-disable-next-line no-warning-comments
     const id = uuidV4() // TODO: vymazat ked bude BE opraveny
     const { uppy, currentFiles, handleRemoveFile, uploadFileProgressInfo, handleUpload } = useUppy({
         multiple: true,

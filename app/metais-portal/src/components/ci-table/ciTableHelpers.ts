@@ -6,9 +6,9 @@ import {
     ConfigurationItemUi,
     ConfigurationItemUiAttributes,
     EnumType,
-    FavoriteCiType,
     RoleParticipantUI,
 } from '@isdd/metais-common/api'
+import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { pairEnumsToEnumValues } from '@isdd/metais-common/index'
 import { ColumnOrderState } from '@tanstack/react-table'
 import { TFunction } from 'i18next'

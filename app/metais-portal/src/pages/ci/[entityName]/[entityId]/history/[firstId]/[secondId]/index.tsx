@@ -4,6 +4,7 @@ import { BreadCrumbs } from '@isdd/idsk-ui-kit/bread-crumbs/BreadCrumbs'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useTranslation } from 'react-i18next'
+import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 
 import { CiHistoryPermissionsWrapper } from '@/components/permissions/CiHistoryPermissionsWrapper'
 import { HistoryItemsCompareContainer } from '@/components/containers/HistoryItemsCompareContainer'
@@ -16,7 +17,7 @@ const ComparePage: React.FC = () => {
     const { firstId, secondId, entityId, entityName } = useParams()
     const { data: ciItemData } = useReadConfigurationItem(entityId ?? '', {
         query: {
-            queryKey: ['ciItemData', entityId],
+            queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
 

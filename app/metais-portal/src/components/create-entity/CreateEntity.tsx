@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
+import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
@@ -49,6 +50,9 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     const [requestId, setRequestId] = useState<string>('')
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
+    const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
+    const invalidateCiByUuidCache = useInvalidateCiItemCache(updateCiItemId ? updateCiItemId : configurationItemId)
+
     const storeConfigurationItem = useStoreConfigurationItem({
         mutation: {
             onError() {
@@ -57,6 +61,8 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
             onSuccess(successData) {
                 if (successData.requestId != null) {
                     setRequestId(successData.requestId)
+                    invalidateCilistFilteredCache.invalidate({ ciType: entityName })
+                    invalidateCiByUuidCache.invalidate()
                 } else {
                     setUploadError(true)
                 }

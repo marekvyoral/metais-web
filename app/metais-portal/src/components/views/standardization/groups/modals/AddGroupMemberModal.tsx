@@ -15,9 +15,9 @@ import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 
 import { AddMemberEnum, addMemberSchema } from './addMemberSchema'
 
-import styles from '@/components/views/standartization/groups/styles.module.scss'
+import styles from '@/components/views/standardization/groups/styles.module.scss'
 import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect'
-import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standartization/groups/defaultRoles'
+import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standardization/groups/defaultRoles'
 
 const proffesionalsUuid = '1734e40c-f959-4629-a699-5c0bc6ba8d55'
 

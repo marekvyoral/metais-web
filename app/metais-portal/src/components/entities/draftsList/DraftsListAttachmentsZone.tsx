@@ -1,17 +1,15 @@
 import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ApiAttachment, ApiLink } from '@isdd/metais-common/api/generated/standards-swagger'
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FieldErrors, UseFormRegister } from 'react-hook-form'
-import { FileImportStepEnum } from '@isdd/metais-common/index'
-import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
 import stylesImport from '@isdd/metais-common/components/file-import/FileImport.module.scss'
 import { StatusBar } from '@uppy/react'
 import { FileImportList, ProgressInfoList } from '@isdd/metais-common/components/file-import/FileImportList'
+import { UppyFile, Uppy } from '@uppy/core'
 
 import { DraftsListAttachmentCard } from '@/components/entities/draftsList/DraftsListAttachmentCard'
-import Uppy, { UppyFile } from '@uppy/core'
 
 interface IDraftsListAttachmentsZone {
     links: ApiLink[]

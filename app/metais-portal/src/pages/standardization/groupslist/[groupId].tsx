@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import GroupDetailContainer from '@/components/containers/standardization/groups/GroupDetailContainer'
 import { GroupsPermissionsWrapper } from '@/components/permissions/GroupsPermissionsWrapper'
-import GroupDetailView from '@/components/views/standartization/groups/GroupDetailView'
+import GroupDetailView from '@/components/views/standardization/groups/GroupDetailView'
 
 const GroupDetailPage: React.FC = () => {
     const { t } = useTranslation()
