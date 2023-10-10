@@ -29,37 +29,6 @@ export const DocumentsGroupView: React.FC<IView> = ({
     const [deleteGroupModalOpen, setDeleteGroupModalOpen] = useState(false)
     const [documentToDelete, setDocumentToDelete] = useState<Document>()
 
-    documentsData = [
-        {
-            id: 69,
-            name: 'Test123',
-            nameEng: 'Test123',
-            description: 'Description123',
-            descriptionEng: 'Description123',
-            required: true,
-            confluence: true,
-            type: '123',
-            position: 0,
-            documentGroup: {
-                id: 19,
-            },
-        },
-        {
-            id: 68,
-            name: 'Test1234',
-            nameEng: 'Test1234',
-            description: 'Description1234',
-            descriptionEng: 'Description1234',
-            required: true,
-            confluence: true,
-            type: '1234',
-            position: 0,
-            documentGroup: {
-                id: 19,
-            },
-        },
-    ]
-
     const columns: Array<ColumnDef<Document>> = [
         {
             header: 'Id',
