@@ -40,6 +40,9 @@ export interface IView {
     refetchDocuments: <TPageData>(
         options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
     ) => Promise<QueryObserverResult<Document[], ApiError>>
+    refetchInfoData: <TPageData>(
+        options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
+    ) => Promise<QueryObserverResult<DocumentGroup, ApiError>>
     isLoading: boolean
     filter: DocumentFilter
     handleFilterChange: (changedFilter: IFilter) => void
@@ -59,7 +62,7 @@ export interface DocumentFilterData extends IFilterParams {
 export const DocumentsGroupContainer: React.FC<IDocumentsGroupContainerProps> = ({ View }) => {
     const { entityId } = useParams()
     const id = Number(entityId)
-    const { data: infoData, isLoading: isInfoLoading } = useGetDocumentGroupById(id)
+    const { data: infoData, isLoading: isInfoLoading, refetch: refetchInfoData } = useGetDocumentGroupById(id)
     const { data: documentsData, isLoading: isDocumentsLoading, refetch: refetchDocuments } = useGetDocuments(id)
     const { data: projectStatus, isLoading: isStatusesLoading } = useGetValidEnum(STAV_PROJEKTU)
     const saveDocumentGroup = useSaveDocumentGroupHook()
@@ -93,6 +96,7 @@ export const DocumentsGroupContainer: React.FC<IDocumentsGroupContainerProps> = 
             handleFilterChange={handleFilterChange}
             selectedColumns={selectedColumns}
             setSelectedColumns={setSelectedColumns}
+            refetchInfoData={refetchInfoData}
         />
     )
 }
