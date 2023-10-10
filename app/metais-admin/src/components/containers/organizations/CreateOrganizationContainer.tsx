@@ -11,6 +11,7 @@ import {
 } from '@isdd/metais-common/api'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 import { useTranslation } from 'react-i18next'
+import { useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 export interface ICreateOrganizationView {
     data: {
@@ -48,6 +49,8 @@ export const CreateOrganizationContainer: React.FC<ICreateOrganization> = ({ Vie
     const [errorStorePO, setErrorStorePO] = useState<string>()
     const [isSuccess, setSuccess] = useState<boolean | undefined>(undefined)
 
+    const invalidatePOList = useInvalidateCiListFilteredCache()
+
     const storePO = async (formData: PoWithHierarchyUi, poId: string, relId: string) => {
         setLoadingStorePO(true)
         setErrorStorePO(undefined)
@@ -62,6 +65,7 @@ export const CreateOrganizationContainer: React.FC<ICreateOrganization> = ({ Vie
                 await checkProcessHook(res?.requestId ?? '')
                     .then((resB) => {
                         setSuccess(resB?.processed)
+                        invalidatePOList.invalidate({})
                     })
                     .catch(() => {
                         setSuccess(false)
@@ -88,6 +92,7 @@ export const CreateOrganizationContainer: React.FC<ICreateOrganization> = ({ Vie
                 await checkProcessHook(res?.requestId ?? '')
                     .then((resB) => {
                         setSuccess(resB?.processed)
+                        invalidatePOList.invalidate({ ciUuid: poId })
                     })
                     .catch(() => {
                         setSuccess(false)

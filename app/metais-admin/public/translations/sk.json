@@ -492,8 +492,7 @@
             "profiles": "Profily atribútov",
             "relations": "Vzťahy",
             "roleManagement": "Správa rolí",
-            "reports": "Reports",
-            "relations": "Vzťahy"
+            "reports": "Reports"
         },
         "eko": "EKO kódy",
         "tooltips": "Tooltipy",
@@ -857,5 +856,8 @@
         "moreOptions": "Viac možností",
         "documentGroup": "Skupina dokumentov",
         "type": "Typ"
+    },
+    "homePage": {
+        "placeholder": "Domov - na zobrazenie navigacie je potrebne sa prihlasit"
     }
 }

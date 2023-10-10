@@ -419,8 +419,7 @@
             "profiles": "Attribute profiles",
             "relations": "Relations",
             "roleManagement": "Role management",
-            "reports": "Reports",
-            "relations": "Relations"
+            "reports": "Reports"
         },
         "eko": "EKO codes",
         "tooltips": "Tooltips",
@@ -856,5 +855,8 @@
         "moreOptions": "More options",
         "documentGroup": "Document group",
         "type": "Type"
+    },
+    "homePage": {
+        "placeholder": "Home - login to see navigation items"
     }
 }

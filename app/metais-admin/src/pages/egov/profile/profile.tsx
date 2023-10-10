@@ -10,7 +10,7 @@ import { EntityFilter } from '@/components/filters/EntityFilter'
 import { EgovTable } from '@/components/table/EgovTable'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-const Profile = () => {
+const Profiles = () => {
     const defaultFilterValues: EntityFilterData = { name: '', technicalName: '', type: '', valid: '' }
     const { t } = useTranslation()
     return (
@@ -43,4 +43,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default Profiles

@@ -5,7 +5,7 @@ import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ConfigurationItemUi, NeighbourPairUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api'
 import { formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
@@ -24,13 +24,10 @@ import { ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { downloadFile, isDocumentUpdatable, isDocumentsUpdatable } from './utils'
+import { downloadFile, isDocumentUpdatable, isDocumentsUpdatable, listToMap } from './utils'
 
-import { defaultFilter } from '@/components/containers/DocumentListContainer'
+import { TableCols, defaultFilter } from '@/components/containers/DocumentListContainer'
 
-export interface TableCols extends NeighbourPairUi {
-    selected?: boolean
-}
 interface DocumentsTable {
     refetch: () => void
     data?: TableCols[]
@@ -40,6 +37,12 @@ interface DocumentsTable {
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
     namesData?: { login: string; fullName: string }[]
+    selectedItems: { [key: number]: TableCols[] }
+    setSelectedItems: React.Dispatch<
+        React.SetStateAction<{
+            [key: number]: TableCols[]
+        }>
+    >
 }
 
 export const DocumentsTable: React.FC<DocumentsTable> = ({
@@ -51,6 +54,8 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     handleFilterChange,
     refetch,
     namesData,
+    selectedItems,
+    setSelectedItems,
 }) => {
     const { t } = useTranslation()
     const { state: authState } = useAuth()
@@ -71,8 +76,6 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     const [deleteSingle, setDeleteSingle] = useState<ConfigurationItemUi>()
     const [updateFile, setUpdateFile] = useState<ConfigurationItemUi>()
     const [singleItemHistory, setSingleItemHistory] = useState<ConfigurationItemUi>()
-
-    const [checkedItemList, setCheckedItemList] = useState<TableCols[]>([])
 
     const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: () => void) => {
         closeFunction()
@@ -253,11 +256,20 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
         },
         ...additionalColumnsNullsafe,
     ]
+
     useEffect(() => {
         if (data !== undefined) {
-            setCheckedItemList(Object.keys(rowSelection).map((item) => data[Number(item)] ?? {}))
+            setSelectedItems({ ...selectedItems, ...{ [pagination.pageNumber]: Object.keys(rowSelection).map((item) => data[Number(item)] ?? {}) } })
         }
-    }, [rowSelection, data])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [rowSelection, pagination.pageNumber])
+    useEffect(() => {
+        if (data !== undefined && selectedItems[pagination.pageNumber] != undefined) {
+            const rowSel = listToMap(data, selectedItems[pagination.pageNumber])
+            setRowSelection(rowSel)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     const filteredColumns = isUserLogged
         ? columns
         : columns.filter((column) => column.id != 'documentsTab.table.lastModifiedBy').filter((column) => column.id != 'documentsTab.table.createdBy')
@@ -288,7 +300,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                             disabled={!isUserLogged}
                                             onClick={() => {
                                                 handleReInvalidate(
-                                                    checkedItemList.map((item) => item.configurationItem ?? {}),
+                                                    Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
                                                     setShowReInvalidate,
                                                     open,
                                                 )
@@ -300,10 +312,10 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                             disabled={!isUserLogged}
                                             onClick={() => {
                                                 handleInvalidate(
-                                                    checkedItemList.map((item) => item.configurationItem ?? {}),
+                                                    Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
                                                     setShowInvalidate,
                                                     open,
-                                                    isDocumentsUpdatable(checkedItemList),
+                                                    isDocumentsUpdatable(Object.values(selectedItems).flatMap((i) => i)),
                                                 )
                                             }}
                                         />,
@@ -313,10 +325,10 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                             disabled={!isUserAdmin}
                                             onClick={() => {
                                                 handleDeleteFile(
-                                                    checkedItemList.map((item) => item.configurationItem ?? {}),
+                                                    Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
                                                     () => setShowDeleteFile(true),
                                                     open,
-                                                    isDocumentsUpdatable(checkedItemList),
+                                                    isDocumentsUpdatable(Object.values(selectedItems).flatMap((i) => i)),
                                                 )
                                             }}
                                         />,
@@ -328,7 +340,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                 }
             />
             <InvalidateBulkModal
-                items={checkedItemList.map((item) => item.configurationItem ?? {})}
+                items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {}))}
                 open={showInvalidate}
                 multiple
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setShowInvalidate(false))}
@@ -336,7 +348,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             />
 
             <ReInvalidateBulkModal
-                items={checkedItemList.map((item) => item.configurationItem ?? {})}
+                items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {}))}
                 open={showReInvalidate}
                 multiple
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setShowInvalidate(false))}
@@ -344,7 +356,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             />
 
             <DeleteFileBulkModal
-                items={checkedItemList.map((item) => item.configurationItem ?? {})}
+                items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {}))}
                 open={showDeleteFile}
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setShowDeleteFile(false))}
                 onClose={() => setShowDeleteFile(false)}
