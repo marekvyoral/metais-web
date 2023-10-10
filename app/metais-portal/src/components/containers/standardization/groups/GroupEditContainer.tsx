@@ -5,8 +5,8 @@ import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useInvalidateGroupsDetailCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
-import { GroupCreateEditView } from '@/components/views/standartization/groups/GroupCreateEditView'
-import { GroupFormEnum } from '@/components/views/standartization/groups/groupSchema'
+import { GroupCreateEditView } from '@/components/views/standardization/groups/GroupCreateEditView'
+import { GroupFormEnum } from '@/components/views/standardization/groups/groupSchema'
 
 export interface IGroupForm {
     name: string

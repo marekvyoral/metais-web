@@ -10,7 +10,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { INeighboursFilter } from '@isdd/metais-common/api/filter/filterApi'
 
-import { TableCols } from '../documents'
+import { TableCols } from '@/components/containers/DocumentListContainer'
 
 interface RelationshipsTable {
     data?: TableCols[] //missing return types from orval, types should come from backend, not from _GeneratedType file

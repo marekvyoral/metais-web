@@ -15,8 +15,8 @@ import { Row } from '@tanstack/react-table'
 import React, { useState } from 'react'
 
 import { TableData } from '@/components/containers/standardization/groups/GroupDetailContainer'
-import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standartization/groups/defaultRoles'
-import styles from '@/components/views/standartization/groups/styles.module.scss'
+import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standardization/groups/defaultRoles'
+import styles from '@/components/views/standardization/groups/styles.module.scss'
 
 interface GroupMemberTableRoleSelectorProps {
     row: Row<TableData>

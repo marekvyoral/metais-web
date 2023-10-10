@@ -6,8 +6,8 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { PageSizeSelect } from '@isdd/idsk-ui-kit/page-size-select/PageSizeSelect'
 
-import { sendBatchEmail } from '@/components/views/standartization/groups/groupMembersTableUtils'
-import styles from '@/components/views/standartization/groups/styles.module.scss'
+import { sendBatchEmail } from '@/components/views/standardization/groups/groupMembersTableUtils'
+import styles from '@/components/views/standardization/groups/styles.module.scss'
 import { TableData } from '@/components/containers/standardization/groups/GroupDetailContainer'
 
 interface GroupMembersTableActionsProps {

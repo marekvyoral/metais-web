@@ -10,6 +10,10 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { mapNeighboursSetSourceToPagination } from '@/componentHelpers/pagination'
 
+export interface TableCols extends NeighbourPairUi {
+    selected?: boolean
+}
+
 export interface IView {
     data?: NeighbourPairUi[]
     pagination: Pagination
@@ -18,6 +22,12 @@ export interface IView {
     isError: boolean
     refetch: () => void
     namesData?: { login: string; fullName: string }[]
+    selectedItems: { [key: number]: TableCols[] }
+    setSelectedItems: React.Dispatch<
+        React.SetStateAction<{
+            [key: number]: TableCols[]
+        }>
+    >
 }
 
 interface IDocumentsListContainer {
@@ -84,9 +94,20 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
     })
 
     const pagination = mapNeighboursSetSourceToPagination(filter, documentCiData)
+    const [selectedItems, setSelectedItems] = useState<{ [key: number]: TableCols[] }>([])
 
     if (!configurationItemId)
-        return <View refetch={refetch} pagination={pagination} handleFilterChange={handleFilterChange} isLoading={false} isError />
+        return (
+            <View
+                refetch={refetch}
+                pagination={pagination}
+                handleFilterChange={handleFilterChange}
+                isLoading={false}
+                isError
+                selectedItems={selectedItems}
+                setSelectedItems={setSelectedItems}
+            />
+        )
     return (
         <View
             namesData={namesData}
@@ -96,6 +117,8 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
             handleFilterChange={handleFilterChange}
             isLoading={isLoading}
             isError={isError}
+            selectedItems={selectedItems}
+            setSelectedItems={setSelectedItems}
         />
     )
 }
