@@ -6,6 +6,7 @@ import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid
 import { ATTRIBUTE_NAME, CiType, ConfigurationItemUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
+import { useGetCiTypeConstraintsData } from '@isdd/metais-common/src/hooks/useGetCiTypeConstraintsData'
 
 interface CiInformationData {
     data: {
@@ -25,6 +26,14 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
     isError,
 }) => {
     const { t } = useTranslation()
+
+    const {
+        isLoading: isCiConstraintLoading,
+        isError: isCiConstraintError,
+        uuidsToMatchedCiItemsMap,
+    } = useGetCiTypeConstraintsData(ciTypeData, [ciItemData ?? {}])
+    const currentEntityCiTypeConstraintsData = uuidsToMatchedCiItemsMap[ciItemData?.uuid ?? '']
+
     const tabsFromApi =
         ciTypeData?.attributeProfiles?.map((attributesProfile) => {
             return {
@@ -36,7 +45,15 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                             .sort((atr1, atr2) => (atr1.order || 0) - (atr2.order || 0))
                             .map((attribute) => {
                                 const withDescription = true
-                                const rowValue = pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, unitsData, withDescription)
+                                const rowValue = pairEnumsToEnumValues(
+                                    attribute,
+                                    ciItemData,
+                                    constraintsData,
+                                    t,
+                                    unitsData,
+                                    currentEntityCiTypeConstraintsData,
+                                    withDescription,
+                                )
 
                                 return (
                                     !attribute?.invisible && (
@@ -56,7 +73,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
         }) ?? []
 
     return (
-        <QueryFeedback loading={isLoading} error={isError} withChildren>
+        <QueryFeedback loading={isLoading || isCiConstraintLoading} error={isError || isCiConstraintError} withChildren>
             <AccordionContainer
                 sections={[
                     {
@@ -75,7 +92,15 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                                         <InformationGridRow
                                             key={attribute?.technicalName}
                                             label={attribute.name ?? ''}
-                                            value={pairEnumsToEnumValues(attribute, ciItemData, constraintsData, t, unitsData, withDescription)}
+                                            value={pairEnumsToEnumValues(
+                                                attribute,
+                                                ciItemData,
+                                                constraintsData,
+                                                t,
+                                                unitsData,
+                                                currentEntityCiTypeConstraintsData,
+                                                withDescription,
+                                            )}
                                             tooltip={attribute?.description}
                                             lang={setEnglishLangForAttr(attribute.technicalName ?? '')}
                                         />

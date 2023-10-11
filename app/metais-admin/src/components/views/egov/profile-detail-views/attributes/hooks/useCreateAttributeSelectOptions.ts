@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { EnumType, EnumTypePreviewList } from '@isdd/metais-common/api'
+import { AttributeAttributeTypeEnum, EnumType, EnumTypePreviewList } from '@isdd/metais-common/api'
 import { IOption } from '@isdd/idsk-ui-kit'
 
 interface iUseCreateAttribute {
@@ -15,17 +15,28 @@ interface iUseCreateAttributeOutput {
     integerConstraints: IOption[]
 }
 
+export enum StringConstraints {
+    ENUM = 'enum',
+    REGEX = 'regex',
+    INTERVAL = 'interval',
+    CI_TYPE = 'ciType',
+}
+
+export enum IntegerConstraints {
+    INTERVAL = 'interval',
+}
+
 export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: iUseCreateAttribute): iUseCreateAttributeOutput => {
     const { t } = useTranslation()
 
     const attributeTypes: IOption[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
-        { label: 'Integer', value: 'INTEGER' },
-        { label: 'Long', value: 'LONG' },
-        { label: 'Double', value: 'DOUBLE' },
-        { label: 'String', value: 'STRING' },
-        { label: 'Boolean', value: 'BOOLEAN' },
-        { label: 'Date', value: 'DATE' },
+        { label: t('egov.create.integer'), value: AttributeAttributeTypeEnum.INTEGER },
+        { label: t('egov.create.long'), value: AttributeAttributeTypeEnum.LONG },
+        { label: t('egov.create.double'), value: AttributeAttributeTypeEnum.DOUBLE },
+        { label: t('egov.create.string'), value: AttributeAttributeTypeEnum.STRING },
+        { label: t('egov.create.boolean'), value: AttributeAttributeTypeEnum.BOOLEAN },
+        { label: t('egov.create.date'), value: AttributeAttributeTypeEnum.DATE },
     ]
 
     const measureUnits: IOption[] = [
@@ -46,14 +57,15 @@ export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: i
 
     const stringConstraints: IOption[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
-        { label: 'Interný čiselník', value: 'enum' },
-        { label: 'Regularny vyraz', value: 'regex' },
-        { label: 'Intervalove rozlozenie', value: 'interval' },
+        { label: t('egov.create.enum'), value: StringConstraints.ENUM },
+        { label: t('egov.create.regex'), value: StringConstraints.REGEX },
+        { label: t('egov.create.interval'), value: StringConstraints.INTERVAL },
+        { label: t('egov.create.ciType'), value: StringConstraints.CI_TYPE },
     ]
 
     const integerConstraints: IOption[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
-        { label: 'Intervalove rozlozenie', value: 'interval' },
+        { label: t('egov.create.interval'), value: IntegerConstraints.INTERVAL },
     ]
 
     return {

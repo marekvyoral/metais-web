@@ -71,15 +71,15 @@ export const ProfileDetailContainer: React.FC<AttributesContainer<CiType>> = ({ 
     const setValidityOfAttributeProfile = async (attributeTechnicalName?: string, oldAttributeValidity?: boolean) => {
         if (oldAttributeValidity) {
             setProfileAttributeAsInvalid({
-                technicalName: ciTypeData?.technicalName ?? '',
-                attrProfileTechnicalName: attributeTechnicalName ?? '',
+                technicalName: attributeTechnicalName ?? '',
+                attrProfileTechnicalName: ciTypeData?.technicalName ?? '',
             }).then(() => {
                 refetch()
             })
         } else {
             setProfileAttributeAsValid({
-                technicalName: ciTypeData?.technicalName ?? '',
-                attrProfileTechnicalName: attributeTechnicalName ?? '',
+                technicalName: attributeTechnicalName ?? '',
+                attrProfileTechnicalName: ciTypeData?.technicalName ?? '',
             }).then(() => {
                 refetch()
             })
@@ -89,15 +89,15 @@ export const ProfileDetailContainer: React.FC<AttributesContainer<CiType>> = ({ 
     const setVisibilityOfAttributeProfile = (attributeTechnicalName?: string, oldAttributeInvisibility?: boolean) => {
         if (!oldAttributeInvisibility) {
             setProfileAttributeAsInvisible({
-                technicalName: ciTypeData?.technicalName ?? '',
-                attrProfileTechnicalName: attributeTechnicalName ?? '',
+                technicalName: attributeTechnicalName ?? '',
+                attrProfileTechnicalName: ciTypeData?.technicalName ?? '',
             }).then(() => {
                 refetch()
             })
         } else {
             setProfileAttributeAsVisible({
-                technicalName: ciTypeData?.technicalName ?? '',
-                attrProfileTechnicalName: attributeTechnicalName ?? '',
+                technicalName: attributeTechnicalName ?? '',
+                attrProfileTechnicalName: ciTypeData?.technicalName ?? '',
             }).then(() => {
                 refetch()
             })
