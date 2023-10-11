@@ -2,7 +2,7 @@ import { BreadCrumbs, Button, CheckBox, HomeIcon, Input, Table } from '@isdd/ids
 import { isRowSelected } from '@isdd/metais-common'
 import { Attribute } from '@isdd/metais-common/api'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { ColumnDef } from '@tanstack/react-table'
+import { ColumnDef, Row } from '@tanstack/react-table'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -49,9 +49,12 @@ export const ProfileDetailView = <T,>({
     )
 
     const handleSaveAttribute = useCallback(
-        (rowIndex: number) => {
+        (rowIndex: number, row: Row<Attribute>) => {
             const editedData = getValues(`attributes.${rowIndex}`)
-            saveAttribute?.(editedData as T)
+            const originalRow = row.original
+
+            const editedAttribute = { ...originalRow, ...editedData }
+            saveAttribute?.(editedAttribute as T)
             cancelEditing(rowIndex)
         },
         [saveAttribute, getValues, cancelEditing],
@@ -68,7 +71,7 @@ export const ProfileDetailView = <T,>({
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
-                    <Input {...register(`attributes.${ctx?.row?.index}.name`)} />
+                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.index}.name`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -83,7 +86,7 @@ export const ProfileDetailView = <T,>({
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
-                    <Input {...register(`attributes.${ctx?.row?.index}.engName`)} />
+                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.index}.engName`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -98,7 +101,7 @@ export const ProfileDetailView = <T,>({
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
-                    <Input {...register(`attributes.${ctx?.row?.index}.description`)} />
+                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.index}.description`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -113,7 +116,7 @@ export const ProfileDetailView = <T,>({
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
-                    <Input {...register(`attributes.${ctx?.row?.index}.engDescription`)} />
+                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.index}.engDescription`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -125,7 +128,7 @@ export const ProfileDetailView = <T,>({
             id: 'order',
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
-                    <Input type="number" {...register(`attributes.${ctx?.row?.index}.order`)} />
+                    <Input defaultValue={Number(ctx?.getValue?.())} type="number" {...register(`attributes.${ctx?.row?.index}.order`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -174,7 +177,7 @@ export const ProfileDetailView = <T,>({
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.index, selectedRows) ? (
-                    <Input {...register(`attributes.${ctx?.row?.index}.defaultValue`)} />
+                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.index}.defaultValue`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -194,7 +197,7 @@ export const ProfileDetailView = <T,>({
                 } else if (isRowSelected(ctx?.row?.index, selectedRows)) {
                     return (
                         <div className={styles.actions}>
-                            <Button onClick={() => handleSaveAttribute(ctx?.row?.index)} label={t('actionsInTable.save')} />
+                            <Button onClick={() => handleSaveAttribute(ctx?.row?.index, ctx.row)} label={t('actionsInTable.save')} />
                             <Button onClick={() => cancelEditing(ctx?.row?.index)} label={t('actionsInTable.cancel')} />
                         </div>
                     )

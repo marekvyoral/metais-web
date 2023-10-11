@@ -58,12 +58,21 @@ export const mapTableData = (
     t: TFunction<'translation', undefined, 'translation'>,
     unitsData: EnumType | undefined,
     constraintsData?: (EnumType | undefined)[],
+    uuidsToMatchedCiItemsMap?: Record<string, Record<string, ConfigurationItemUi>> | undefined,
 ) => {
     return (tableData?.configurationItemSet?.map((confItem: ConfigurationItemUi) => {
         const newAttributes: { [attributeName: string]: string } = {}
         Object.keys(confItem?.attributes ?? {})?.map((attributeName: string) => {
             const foundAttrWithTypes = reducedAttributes[attributeName]
-            const newRowValue = pairEnumsToEnumValues(foundAttrWithTypes, confItem, constraintsData ?? [], t, unitsData, false)
+            const newRowValue = pairEnumsToEnumValues(
+                foundAttrWithTypes,
+                confItem,
+                constraintsData ?? [],
+                t,
+                unitsData,
+                uuidsToMatchedCiItemsMap?.[confItem.uuid ?? ''] ?? {},
+                false,
+            )
             newAttributes[attributeName] = newRowValue
         })
 

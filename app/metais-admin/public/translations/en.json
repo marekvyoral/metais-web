@@ -1,4 +1,6 @@
 {
+    "yes": "Yes",
+    "no": "No",
     "footer": {
         "services": {
             "title": "Services and Information",
@@ -162,6 +164,7 @@
         "units": "Measure unit",
         "edit": "Edit",
         "assigned": "Assigned liable persons",
+        "ciTypeSelect": "Select entity type",
         "detail": {
             "profileAttributesHeading": "Detail attributes profile",
             "profileAttributes": "Attributes",
@@ -208,10 +211,20 @@
         "create": {
             "requiredField": "This field is required",
             "codePrefixRegex": "Accepted character are only 'a'..'z' and underscore '_'.",
-            "technicalNameRegex": "Technical name could only consists of alphabet character",
+            "technicalNameRegex": "Technical name could only consists of alphabet character or underscore",
             "addProfile": "Add profile",
             "removeProfile": "Remove profile",
-            "back": "Back to the list of attribute profiles"
+            "back": "Back to the list of attribute profiles",
+            "integer": "Integer",
+            "boolean": "Boolean",
+            "long": "Long",
+            "date": "Date",
+            "string": "String",
+            "double": "Double",
+            "enum": "Internal codelist",
+            "regex": "Regex",
+            "interval": "Interval",
+            "ciType": "Entity"
         },
         "entity": {
             "editHeader": "Edit entity",

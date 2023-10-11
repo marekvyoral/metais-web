@@ -17,7 +17,7 @@ export const generateFormValidationSchema = (t: TFunction<'translation', undefin
                 .string()
                 .required(t('egov.create.requiredField'))
                 .min(2)
-                .matches(/^[a-z-A-Z]+$/, t('egov.create.technicalNameRegex')),
+                .matches(/^[a-z-A-Z_]+$/, t('egov.create.technicalNameRegex')),
             codePrefix: yup.string().when('codePrefix', {
                 is: () => !hiddenInputs?.CODE_PREFIX,
                 then: () =>

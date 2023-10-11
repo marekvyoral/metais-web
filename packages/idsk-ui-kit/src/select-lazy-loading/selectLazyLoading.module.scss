@@ -16,3 +16,10 @@
     background-color: govuk-colour('white');
     z-index: 10 !important;
 }
+
+.labelDiv {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+}

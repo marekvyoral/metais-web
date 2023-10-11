@@ -630,6 +630,8 @@
         "created": "Created:"
     },
     "feedback": {
+        "loading": "Loading...",
+        "error": "Error while fetching data",
         "failedFetch": "There was a problem with fetching data. Please try again.",
         "queryErrorTitle": "Error occured",
         "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator by e-mail at ",

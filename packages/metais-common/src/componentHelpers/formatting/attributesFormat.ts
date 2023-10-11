@@ -1,6 +1,6 @@
 import { TFunction } from 'i18next'
 
-import { Attribute, AttributeConstraintEnum, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME, Attribute, AttributeConstraintEnum, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
 
 const findUnitValue = (attribute: Attribute | undefined, unitsData: EnumType | undefined) => {
     const unit = unitsData?.enumItems?.find((item) => item.code === attribute?.units)?.value ?? ''
@@ -35,6 +35,7 @@ export const pairEnumsToEnumValues = (
     constraintsData: (EnumType | undefined)[],
     t: TFunction<'translation', undefined, 'translation'>,
     unitsData: EnumType | undefined,
+    matchedAttributeNamesToCiItem: Record<string, ConfigurationItemUi>,
     withDescription?: boolean,
 ) => {
     const rowValue = ciItemData?.attributes?.[attribute?.technicalName ?? attribute?.name ?? '']
@@ -60,6 +61,9 @@ export const pairEnumsToEnumValues = (
                 }
                 case 'interval': {
                     return parseInt(formattedRowValue ?? 0) ?? 0
+                }
+                case 'ciType': {
+                    return matchedAttributeNamesToCiItem?.[attribute.technicalName ?? '']?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? ''
                 }
                 default: {
                     return formattedRowValue
