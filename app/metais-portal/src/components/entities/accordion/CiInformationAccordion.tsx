@@ -73,7 +73,12 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
         }) ?? []
 
     return (
-        <QueryFeedback loading={isLoading || isCiConstraintLoading} error={isError || isCiConstraintError} withChildren>
+        <QueryFeedback
+            loading={isLoading || isCiConstraintLoading}
+            error={isError || isCiConstraintError}
+            errorProps={{ errorMessage: isCiConstraintError ? t('ciInformationAccordion.error') : undefined }}
+            withChildren
+        >
             <AccordionContainer
                 sections={[
                     {

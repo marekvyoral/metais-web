@@ -3,6 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { QueryFeedback } from '@isdd/metais-common/index'
 
 import { CodeListDetailTable } from '@/components/codelists/codelistsTable/CodeListDetailTable'
 import {
@@ -38,11 +39,11 @@ const CodelistDetail: React.FC = () => {
                 enumCode={enumCode as string}
                 View={({ filteredData, mutations, isError, isLoading, refetch }) => {
                     return (
-                        <>
-                            <MainContentWrapper>
-                                <TextHeading size="L">{enumCode}</TextHeading>
-                                <CodelistDetailFeedback mutations={mutations} isFetchError={isError} isFetchLoading={isLoading} />
-                                <TextHeading size="L">{t('codelists.heading')}</TextHeading>
+                        <MainContentWrapper>
+                            <TextHeading size="L">{enumCode}</TextHeading>
+                            <TextHeading size="L">{t('codelists.heading')}</TextHeading>
+                            <QueryFeedback loading={isError} error={isLoading} withChildren>
+                                <CodelistDetailFeedback mutations={mutations} />
                                 <Filter<CodelistDetailFilterData>
                                     defaultFilterValues={defaultFilterValues}
                                     form={({ register }) => (
@@ -86,8 +87,8 @@ const CodelistDetail: React.FC = () => {
                                         refetch={refetch}
                                     />
                                 )}
-                            </MainContentWrapper>
-                        </>
+                            </QueryFeedback>
+                        </MainContentWrapper>
                     )
                 }}
             />

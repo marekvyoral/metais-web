@@ -326,7 +326,8 @@
     "ciInformationAccordion": {
         "info": "Informácie",
         "basicInformation": "Základné informácie",
-        "owner": "Správca"
+        "owner": "Správca",
+        "error": "Pri načítavaní dát sa vyskytla technická chyba a niektoré položky nemusia mať priradené hodnoty. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom."
     },
     "ciType": {
         "informations": "Informácie",
@@ -1008,7 +1009,7 @@
                 "cannotCast": "Hlasovať može iba prihlásený a oprávnený používateľ.",
                 "canCast": "Máte oprávnenie hlasovať",
                 "alreadyVoted": "Už ste zahlasovali za tento návrh"
-        },
+            },
             "voteVetoChoiceLabel": "Vetovať hlasovanie",
             "description": "Poznámka",
             "voteConclusion": "Záver hlasovania",
@@ -1016,7 +1017,7 @@
             "vetoed": "Návrh bol vetovaný",
             "vetoedBy": "Vetoval",
             "vetoedDescription": "Dôvod",
-            "table":{
+            "table": {
                 "name": "Meno",
                 "organization": "Organizácia",
                 "role": "Pozícia"
@@ -1033,7 +1034,7 @@
                 "planned": "Plánované",
                 "ended": "Ukončené",
                 "upcoming": "Prebiehajúce",
-                "canceled" : "Zrušené", 
+                "canceled": "Zrušené",
                 "summarized": "Vyhodnotené",
                 "vetoed": "Vetované"
             },
