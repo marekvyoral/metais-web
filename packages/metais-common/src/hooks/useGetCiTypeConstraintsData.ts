@@ -87,7 +87,7 @@ export const useGetCiTypeConstraintsData = (entityStructure: CiType | undefined,
         .map((pair) => Object.values(pair))
         .flat()
 
-    const { data, isLoading, isError } = useReadCiList1(
+    const { data, isLoading, isError, fetchStatus } = useReadCiList1(
         {
             filter: {
                 type: [...new Set(Object.values(ciTypesFromConstraints))],
@@ -113,7 +113,7 @@ export const useGetCiTypeConstraintsData = (entityStructure: CiType | undefined,
     }
 
     return {
-        isLoading,
+        isLoading: fetchStatus != 'idle' && isLoading,
         isError,
         uuidsToMatchedCiItemsMap,
     }

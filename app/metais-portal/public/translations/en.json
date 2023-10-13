@@ -326,7 +326,8 @@
     "ciInformationAccordion": {
         "info": "Information",
         "basicInformation": "Basic information",
-        "owner": "Manager"
+        "owner": "Manager",
+        "error": "Technical error occurred while fetching data and some items might not have assigned value. In case the error occurred repeatedly, contact the administrator by e-mail."
     },
     "ciType": {
         "informations": "Information",
@@ -1001,7 +1002,7 @@
                 "cannotCast": "Only logged in user with autorization can cast vote",
                 "canCast": "You are authorized to vote",
                 "alreadyVoted": "You already casted vote for this draft"
-        },
+            },
             "voteVetoChoiseLabel": "Veto Vote",
             "description": "Note",
             "voteConclusion": "Conclusion",
@@ -1009,7 +1010,7 @@
             "vetoed": "Draft was vetoed",
             "vetoedBy": "Vetoed by",
             "vetoedDescription": "Reason",
-            "table":{
+            "table": {
                 "name": "Name",
                 "organization": "Organization",
                 "role": "Role"
@@ -1026,7 +1027,7 @@
                 "planned": "Planned",
                 "ended": "Finished",
                 "upcomming": "Upcomming",
-                "canceled" : "Canceled", 
+                "canceled": "Canceled",
                 "summarized": "Sumarized",
                 "vetoed": "Vetoed"
             },
