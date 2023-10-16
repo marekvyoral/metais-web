@@ -42,7 +42,8 @@
         "createdBy": "Government Digital Services Office",
         "license": "Open Government Licence v3.0",
         "licenseIf": ", unless otherwise stated",
-        "rights": "© Copyright"
+        "rights": "© Copyright",
+        "appVersion": "App version"
     },
     "navbar": {
         "home": "Home",
