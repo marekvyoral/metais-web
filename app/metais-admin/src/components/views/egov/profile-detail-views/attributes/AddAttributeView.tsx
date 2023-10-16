@@ -2,9 +2,13 @@ import React, { useCallback } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { Button, Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
+import { CiTypeListSelect } from '@isdd/metais-common/src/components/ci-type-list-select/CiTypeListSelect'
+import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
+import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
+import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 
 import { IAddAttributeView } from './AddAttributeContainer'
-import { useCreateAttributeSelectOptions } from './hooks/useCreateAttributeSelectOptions'
+import { StringConstraints, useCreateAttributeSelectOptions } from './hooks/useCreateAttributeSelectOptions'
 import { useCreateAttributeForm } from './hooks/useCreateAttributeForm'
 import { getTypeForDefaultValue } from './hooks/helpers'
 
@@ -17,7 +21,9 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
 
     const { formMethods, showUnit, showConstraint, selectedConstraint, selectedType } = useCreateAttributeForm()
 
-    const { register, formState, handleSubmit, setValue } = formMethods
+    const { register, formState, handleSubmit, setValue, clearErrors, watch } = formMethods
+
+    const currentSelectedConstraints = watch('constraints')?.[0]
 
     const onSubmit = useCallback(
         async (formValues: FieldValues) => {
@@ -76,15 +82,15 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                 />
             )}
 
-            {selectedType === 'BOOLEAN' && (
+            {selectedType === AttributeAttributeTypeEnum.BOOLEAN && (
                 <SimpleSelect
                     label={t('egov.defaultValue')}
                     id="defaultValue"
                     setValue={setValue}
                     name="defaultValue"
                     options={[
-                        { label: 'Ano', value: 'true' },
-                        { label: 'Nie', value: 'false' },
+                        { label: t('yes'), value: 'true' },
+                        { label: t('no'), value: 'false' },
                     ]}
                     error={formState.errors.defaultValue?.message}
                 />
@@ -95,11 +101,11 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                     id="constraints"
                     name="constraints.0.type"
                     setValue={setValue}
-                    options={selectedType === 'INTEGER' ? integerConstraints : stringConstraints}
+                    options={selectedType === AttributeAttributeTypeEnum.INTEGER ? integerConstraints : stringConstraints}
                     defaultValue={stringConstraints?.[0].value}
                 />
             )}
-            {selectedConstraint === 'enum' && (
+            {selectedConstraint === StringConstraints.ENUM && (
                 <SimpleSelect
                     label={t('egov.clarification')}
                     id="constraints"
@@ -109,22 +115,47 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                     defaultValue={stringConstraints?.[0].value}
                 />
             )}
-            {selectedConstraint === 'regex' && <Input label={t('egov.clarification')} id="regex" {...register('constraints.0.regex')} />}
-            {selectedConstraint === 'interval' && (
+            {selectedConstraint === StringConstraints.REGEX && (
+                <Input label={t('egov.clarification')} id="regex" {...register('constraints.0.regex')} />
+            )}
+            {selectedConstraint === StringConstraints.INTERVAL && (
                 <>
                     <Input label={t('egov.minValue')} type="number" id="order" {...register('constraints.0.minValue')} />
                     <Input label={t('egov.maxValue')} type="number" id="order" {...register('constraints.0.maxValue')} />
                 </>
             )}
-            {selectedType !== '' && selectedType !== 'BOOLEAN' && selectedConstraint !== 'enum' && (
-                <Input
-                    label={t('egov.defaultValue')}
-                    id="defaultValue"
-                    type={getTypeForDefaultValue(selectedType)}
-                    {...register('defaultValue')}
-                    error={formState?.errors?.defaultValue?.message}
-                />
+            {selectedConstraint === StringConstraints.CI_TYPE && (
+                <>
+                    <CiTypeListSelect
+                        error={formState.errors.constraints?.[0]?.message ?? ''}
+                        label={t('egov.ciTypeSelect')}
+                        name={'constraints.0.ciType'}
+                        setValue={setValue}
+                        clearErrors={clearErrors}
+                    />
+                    <CiLazySelect
+                        error={formState?.errors?.defaultValue?.message}
+                        name="defaultValue"
+                        label={t('egov.defaultValue')}
+                        setValue={setValue}
+                        clearErrors={clearErrors}
+                        ciType={isConstraintCiType(currentSelectedConstraints) ? currentSelectedConstraints.ciType : ''}
+                    />
+                </>
             )}
+
+            {selectedType !== '' &&
+                selectedType !== AttributeAttributeTypeEnum.BOOLEAN &&
+                selectedConstraint !== StringConstraints.ENUM &&
+                selectedConstraint !== StringConstraints.CI_TYPE && (
+                    <Input
+                        label={t('egov.defaultValue')}
+                        id="defaultValue"
+                        type={getTypeForDefaultValue(selectedType)}
+                        {...register('defaultValue')}
+                        error={formState?.errors?.defaultValue?.message}
+                    />
+                )}
             <Button type="submit" label={t('form.submit')} />
         </form>
     )

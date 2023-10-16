@@ -3,7 +3,7 @@ import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME, ConfigurationItemUi } from '@isdd/metais-common/api'
 import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IListData } from '@isdd/metais-common/types/list'
@@ -40,6 +40,7 @@ interface ICiTable {
     isLoading: boolean
     isError: boolean
     rowSelectionState: IRowSelectionState
+    uuidsToMatchedCiItemsMap?: Record<string, Record<string, ConfigurationItemUi>>
 }
 
 export const CiTable: React.FC<ICiTable> = ({
@@ -51,6 +52,7 @@ export const CiTable: React.FC<ICiTable> = ({
     isLoading,
     isError,
     rowSelectionState,
+    uuidsToMatchedCiItemsMap,
 }) => {
     const { t } = useTranslation()
 
@@ -61,7 +63,7 @@ export const CiTable: React.FC<ICiTable> = ({
     const location = useLocation()
     const { rowSelection, setRowSelection } = rowSelectionState
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
-    const tableData = mapTableData(data.tableData, schemaAttributes, t, data.unitsData, data.constraintsData)
+    const tableData = mapTableData(data.tableData, schemaAttributes, t, data.unitsData, data.constraintsData, uuidsToMatchedCiItemsMap)
     const columnsAttributes = sortAndMergeCiColumns(data?.columnListData)
 
     const handleCheckboxChange = useCallback(

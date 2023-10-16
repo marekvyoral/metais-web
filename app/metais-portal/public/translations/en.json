@@ -326,7 +326,8 @@
     "ciInformationAccordion": {
         "info": "Information",
         "basicInformation": "Basic information",
-        "owner": "Manager"
+        "owner": "Manager",
+        "error": "Technical error occurred while fetching data and some items might not have assigned value. In case the error occurred repeatedly, contact the administrator by e-mail."
     },
     "ciType": {
         "informations": "Information",
@@ -630,6 +631,8 @@
         "created": "Created:"
     },
     "feedback": {
+        "loading": "Loading...",
+        "error": "Error while fetching data",
         "failedFetch": "There was a problem with fetching data. Please try again.",
         "queryErrorTitle": "Error occured",
         "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator by e-mail at ",
@@ -999,7 +1002,7 @@
                 "cannotCast": "Only logged in user with autorization can cast vote",
                 "canCast": "You are authorized to vote",
                 "alreadyVoted": "You already casted vote for this draft"
-        },
+            },
             "voteVetoChoiseLabel": "Veto Vote",
             "description": "Note",
             "voteConclusion": "Conclusion",
@@ -1007,7 +1010,7 @@
             "vetoed": "Draft was vetoed",
             "vetoedBy": "Vetoed by",
             "vetoedDescription": "Reason",
-            "table":{
+            "table": {
                 "name": "Name",
                 "organization": "Organization",
                 "role": "Role"
@@ -1024,7 +1027,7 @@
                 "planned": "Planned",
                 "ended": "Finished",
                 "upcomming": "Upcomming",
-                "canceled" : "Canceled", 
+                "canceled": "Canceled",
                 "summarized": "Sumarized",
                 "vetoed": "Vetoed"
             },

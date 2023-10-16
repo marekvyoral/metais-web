@@ -7,6 +7,7 @@ import { AsyncPaginate } from 'react-select-async-paginate'
 import styles from './selectLazyLoading.module.scss'
 
 import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 export interface ILoadOptionsResponse<T> {
     options: T[]
@@ -42,6 +43,8 @@ export interface ISelectProps<T> {
     clearErrors?: UseFormClearErrors<any>
     isClearable?: boolean
     menuPosition?: MenuPosition
+    disabled?: boolean
+    info?: string
 }
 
 export const SelectLazyLoading = <T,>({
@@ -62,6 +65,8 @@ export const SelectLazyLoading = <T,>({
     clearErrors,
     isClearable = true,
     menuPosition = 'fixed',
+    disabled,
+    info,
 }: ISelectProps<T>): JSX.Element => {
     const Option = (props: OptionProps<T>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
@@ -91,9 +96,12 @@ export const SelectLazyLoading = <T,>({
 
     return (
         <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!error })}>
-            <label className="govuk-label" htmlFor={id}>
-                {label}
-            </label>
+            <div className={styles.labelDiv}>
+                <label className="govuk-label" htmlFor={id}>
+                    {label}
+                </label>
+                {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
+            </div>
             {!!error && <span className="govuk-error-message">{error}</span>}
             <AsyncPaginate<T, GroupBase<T>, { page: number } | undefined, boolean>
                 id={id}
@@ -114,6 +122,7 @@ export const SelectLazyLoading = <T,>({
                 isClearable={isClearable}
                 unstyled
                 onChange={handleOnChange}
+                isDisabled={disabled}
             />
         </div>
     )

@@ -11,10 +11,10 @@ import { ColumnDef } from '@tanstack/react-table'
 import React, { SetStateAction, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 
 import styles from '@/components/views/standardization/groups/groupslist.module.scss'
 import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect'
-import { CiLazySelect } from '@/components/ci-lazy-select/CiLazySelect'
 
 interface IGroupsListView {
     groups: Group[] | undefined

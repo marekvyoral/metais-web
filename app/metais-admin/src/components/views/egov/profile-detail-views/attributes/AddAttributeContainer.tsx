@@ -16,6 +16,7 @@ export interface IAddAttributeContainer {
 
 const AddAttributeContainer = ({ View }: IAddAttributeContainer) => {
     const { data } = useGetEnum('MERNA_JEDNOTKA')
+    const underscore = '_'
     const { data: allEnumsData } = useListEnums()
 
     const { mutateAsync: storeAttribute } = useStoreNewAttribute()
@@ -25,6 +26,7 @@ const AddAttributeContainer = ({ View }: IAddAttributeContainer) => {
             atrProfTechnicalName: attributeTechnicalName ?? '',
             data: {
                 ...newAttribute,
+                technicalName: attributeTechnicalName + underscore + newAttribute?.technicalName,
             },
         })
     }

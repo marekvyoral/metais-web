@@ -1,19 +1,50 @@
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
 import { SortType } from '@isdd/idsk-ui-kit/types'
-import { ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api'
-import React, { SetStateAction, useCallback } from 'react'
-import { OptionProps, components } from 'react-select'
+import React, { SetStateAction, useCallback, useEffect, useState } from 'react'
+import { MultiValue, OptionProps, components } from 'react-select'
+import { FieldValues, UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 
-interface ICiLazySelect {
+import { ConfigurationItemUi, useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api'
+
+interface ICiLazySelect<T extends FieldValues> {
     ciType: string
-    selectedCi: ConfigurationItemUi | undefined
+    selectedCi?: ConfigurationItemUi | undefined
     label: string
-    setSelectedCi: React.Dispatch<SetStateAction<ConfigurationItemUi | undefined>>
+    setSelectedCi?: React.Dispatch<SetStateAction<ConfigurationItemUi | undefined>>
     placeholder?: string
+    name?: string
+    error?: string
+    setValue?: UseFormSetValue<T>
+    clearErrors?: UseFormClearErrors<T>
+    disabled?: boolean
+    defaultValue?: string
+    info?: string
 }
 
-export const CiLazySelect: React.FC<ICiLazySelect> = ({ ciType, selectedCi, setSelectedCi, label, placeholder }) => {
+export const CiLazySelect = <T extends FieldValues>({
+    ciType,
+    selectedCi,
+    setSelectedCi,
+    label,
+    placeholder,
+    setValue,
+    clearErrors,
+    error,
+    name,
+    disabled,
+    defaultValue,
+    info,
+}: ICiLazySelect<T>) => {
     const ciOptionsHook = useReadCiList1Hook()
+
+    const { data } = useReadCiList1({
+        filter: { type: [ciType], uuid: [defaultValue ?? ''] },
+    })
+
+    const [seed, setSeed] = useState(1)
+    useEffect(() => {
+        setSeed(Math.random())
+    }, [data, defaultValue, ciType])
 
     const loadCiOptions = useCallback(
         async (searchQuery: string, additional: { page: number } | undefined) => {
@@ -48,17 +79,32 @@ export const CiLazySelect: React.FC<ICiLazySelect> = ({ ciType, selectedCi, setS
         )
     }
 
+    const onChangeProps = {
+        ...(setSelectedCi
+            ? {
+                  onChange: (val: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | null) => setSelectedCi(Array.isArray(val) ? val[0] : val),
+                  value: selectedCi,
+              }
+            : {}),
+    }
+
     return (
         <SelectLazyLoading<ConfigurationItemUi>
+            key={seed}
             placeholder={placeholder}
-            name="account"
+            name={name ?? 'account'}
             label={label + ':'}
-            value={selectedCi}
-            onChange={(val) => setSelectedCi(Array.isArray(val) ? val[0] : val)}
             getOptionValue={(item) => item.uuid?.toString() || ''}
             getOptionLabel={(item) => (item.attributes ? item.attributes?.Gen_Profil_nazov : '')}
             option={(props) => selectLazyLoadingCiOption(props)}
             loadOptions={(searchTerm, _, additional) => loadCiOptions(searchTerm, additional)}
+            {...onChangeProps}
+            setValue={setValue}
+            clearErrors={clearErrors}
+            error={error}
+            disabled={disabled}
+            defaultValue={defaultValue ? data?.configurationItemSet?.[0] : undefined}
+            info={info}
         />
     )
 }

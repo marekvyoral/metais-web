@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { UseFormReturn, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import {
+    AttributeAttributeTypeEnum,
     AttributeConstraint,
     AttributeConstraintEnumAllOf,
     AttributeConstraintIntervalAllOf,
@@ -46,7 +47,7 @@ export const useCreateAttributeForm = (): iUseCreateAttributeForm => {
     const selectedType = formMethods.watch('type') ?? ''
 
     const showUnit = isSelectedTypeNumber(selectedType)
-    const showConstraint = selectedType === 'INTEGER' || selectedType === 'STRING'
+    const showConstraint = selectedType === AttributeAttributeTypeEnum.INTEGER || selectedType === AttributeAttributeTypeEnum.STRING
 
     const selectedConstraint = formMethods.watch('constraints.0.type')
     return {
