@@ -1,6 +1,8 @@
-import * as React from 'react'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 export const Footer: React.FC = () => {
+    const { t } = useTranslation()
     return (
         <footer className="govuk-footer ">
             <div className="govuk-width-container ">
@@ -198,6 +200,9 @@ export const Footer: React.FC = () => {
                             © Autorské práva
                         </a>
                     </div>
+                </div>
+                <div>
+                    {t('footer.appVersion')}: {import.meta.env.VITE_APP_VERSION}
                 </div>
             </div>
         </footer>

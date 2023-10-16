@@ -42,7 +42,8 @@
         "createdBy": "Úradom pre digitálne služby vlády",
         "license": "Open Government Licence v3.0",
         "licenseIf": ", pokiaľ nie je uvedené inak",
-        "rights": "© Autorské práva"
+        "rights": "© Autorské práva",
+        "appVersion": "Verzia aplikácie"
     },
     "navbar": {
         "home": "Domov",
