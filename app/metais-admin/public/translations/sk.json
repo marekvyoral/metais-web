@@ -1,4 +1,6 @@
 {
+    "yes": "Áno",
+    "no": "Nie",
     "footer": {
         "services": {
             "title": "Služby a informácie",
@@ -199,6 +201,7 @@
         "units": "Merná jednotka",
         "edit": "Upraviť",
         "assigned": "Priradené povinné osoby",
+        "ciTypeSelect": "Vyberte typ entity",
         "detail": {
             "profileAttributesHeading": "Detail profilu atribútov",
             "profileAttributes": "Atribúty",
@@ -220,7 +223,7 @@
             },
             "visibilityChange": {
                 "setVisible": "Zviditeľniť",
-                "setInvisible": "Nezviditeľniť"
+                "setInvisible": "Zneviditeľniť"
             },
             "showOwnerChange": {
                 "true": "Povoliť",
@@ -245,12 +248,22 @@
         "create": {
             "requiredField": "Toto pole je povinné",
             "codePrefixRegex": "Povolenými znakmi pre prefix sú 'a'..'z', a oddelovač '_'.",
-            "technicalNameRegex": "Technické meno môže byť len z písmen abecedy",
+            "technicalNameRegex": "Technické meno môže byť len z písmen abecedy alebo podčiarkovníka",
             "addProfile": "Pridať profil",
             "removeProfile": "Odstrániť profil",
             "addConnection": "Pridať prepojenie",
             "addAttribute": "Pridať atribút",
-            "back": "Späť na zoznam profilov atribútov"
+            "back": "Späť na zoznam profilov atribútov",
+            "integer": "Integer",
+            "boolean": "Boolean",
+            "long": "Long",
+            "date": "Date",
+            "string": "String",
+            "double": "Double",
+            "enum": "Interný číselník",
+            "regex": "Regulárny výraz",
+            "interval": "Intervalové rozloženie",
+            "ciType": "Entita"
         },
         "entity": {
             "editHeader": "Editácia entity",

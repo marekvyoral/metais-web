@@ -1,16 +1,14 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback } from '@isdd/metais-common/index'
 
 import { CodeListDetailMutations } from '@/components/containers/Codelist/CodelistDetailContainer'
 
 interface ICodelistSucces {
     mutations: CodeListDetailMutations
-    isFetchError: boolean
-    isFetchLoading: boolean
 }
 
-export const CodelistDetailFeedback: React.FC<ICodelistSucces> = ({ mutations, isFetchError, isFetchLoading }) => {
+export const CodelistDetailFeedback: React.FC<ICodelistSucces> = ({ mutations }) => {
     const { t } = useTranslation()
     const { updateEnumItem, validateEnumItem, createEnumItem, deleteEnumItem } = mutations
 
@@ -25,14 +23,5 @@ export const CodelistDetailFeedback: React.FC<ICodelistSucces> = ({ mutations, i
         return ''
     }
 
-    return (
-        <>
-            <MutationFeedback
-                success={isSuccess}
-                error={isError ? t('feedback.mutationErrorMessage') : undefined}
-                successMessage={successMessage()}
-            />
-            <QueryFeedback loading={isFetchLoading} error={isFetchError} />
-        </>
-    )
+    return <MutationFeedback success={isSuccess} error={isError ? t('feedback.mutationErrorMessage') : undefined} successMessage={successMessage()} />
 }

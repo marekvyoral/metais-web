@@ -17,6 +17,8 @@ import {
 } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
+import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 
 import { ArrayAttributeInput } from './ArrayAttributeInput'
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
@@ -29,6 +31,7 @@ enum ConstraintTypes {
     REGEX = 'regex',
     ENUM = 'enum',
     INTERVAL = 'interval',
+    CI_TYPE = 'ciType',
 }
 
 enum MandatoryType {
@@ -113,6 +116,10 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     const isArray = attribute.array
 
     const isEnum = attribute?.constraints && attribute.constraints.length > 0 && attribute?.constraints[0].type === ConstraintTypes.ENUM
+
+    const isCiTypeConstraint =
+        attribute?.constraints && attribute.constraints.length > 0 && attribute?.constraints[0].type === ConstraintTypes.CI_TYPE
+    const ciType = isConstraintCiType(attribute?.constraints?.[0]) ? attribute?.constraints?.[0].ciType ?? '' : ''
 
     const hasNumericValue = isInteger || isDouble || isFloat || isByte || isLong || isShort
     const hasStringValue = isString || isCharacter
@@ -209,6 +216,21 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         value="true"
                         defaultChecked={!!defaultValueFromCiItem}
                         containerClassName={styles.withInfoCheckbox}
+                    />
+                )
+            }
+            case isCiTypeConstraint && !!ciType: {
+                return (
+                    <CiLazySelect
+                        label={attribute.name + requiredLabel}
+                        name={attribute.technicalName ?? '' + nameSufix}
+                        ciType={ciType}
+                        setValue={setValue}
+                        clearErrors={clearErrors}
+                        error={error?.message?.toString()}
+                        disabled={attribute.readOnly || disabled}
+                        info={attribute.description}
+                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
                     />
                 )
             }

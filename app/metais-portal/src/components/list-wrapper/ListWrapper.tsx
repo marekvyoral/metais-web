@@ -27,6 +27,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 
 import { AddItemsButtonGroup } from '@/components/add-items-button-group/AddItemsButtonGroup'
 import { CiTable } from '@/components/ci-table/CiTable'
@@ -45,7 +46,7 @@ interface IListWrapper {
     ciTypeData: CiType | undefined
     attributeProfiles: AttributeProfile[] | undefined
     attributes: Attribute[] | undefined
-    tableData: void | ConfigurationItemSetUi | undefined
+    tableData: ConfigurationItemSetUi | undefined
     constraintsData: (EnumType | undefined)[]
     unitsData: EnumType | undefined
     pagination: Pagination
@@ -77,6 +78,12 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     isNewRelationModal,
 }) => {
     const { t, i18n } = useTranslation()
+
+    const {
+        isError: isCiTypeConstraintsError,
+        isLoading: isCiTypeConstraintsLoading,
+        uuidsToMatchedCiItemsMap,
+    } = useGetCiTypeConstraintsData(ciTypeData, tableData?.configurationItemSet ?? [])
 
     const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner } = useBulkAction()
 
@@ -127,7 +134,9 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}</TextHeading>
-                {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
+                {(isError || isCiTypeConstraintsError) && (
+                    <QueryFeedback loading={false} error errorProps={{ errorMessage: t('feedback.failedFetch') }} />
+                )}
                 {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
                     <MutationFeedback
                         success={bulkActionResult?.isSuccess}
@@ -272,8 +281,9 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 sort={sort}
                 rowSelectionState={{ rowSelection, setRowSelection }}
                 storeUserSelectedColumns={storeUserSelectedColumns}
-                isLoading={isLoading}
-                isError={isError}
+                isLoading={isLoading || isCiTypeConstraintsLoading}
+                isError={isError || isCiTypeConstraintsError}
+                uuidsToMatchedCiItemsMap={uuidsToMatchedCiItemsMap}
             />
             {isNewRelationModal && <AddItemsButtonGroup handleItemsChange={handleRelationItemsChange} isUnderTable />}
         </QueryFeedback>
