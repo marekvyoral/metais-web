@@ -113,7 +113,8 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         }
 
         storeConfigurationItem.mutate({
-            data: updateCiItemId ? dataToUpdate : dataToCreate,
+            data: dataToCreate,
+            // data: updateCiItemId ? dataToUpdate : dataToCreate,
         })
     }
 

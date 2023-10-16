@@ -40,7 +40,15 @@ const CreateEntityPage: React.FC = () => {
                                         isLoading: publicAuthAndRoleLoading,
                                     }) => (
                                         <OrgPermissionsWrapper selectedOrganizationId={publicAuthorityState?.selectedPublicAuthority?.poUUID ?? ''}>
-                                            <ITVSExceptionsCreateContainer data={{ attributesData, generatedEntityId }} />
+                                            <ITVSExceptionsCreateContainer
+                                                entityName={entityName}
+                                                data={{ attributesData, generatedEntityId }}
+                                                ownerId={groupData?.gid ?? ''}
+                                                isLoading={[attLoading, generatedIdLoading, publicAuthAndRoleLoading].some((item) => item)}
+                                                isError={[attError, generatedIdError, publicAuthAndRoleError].some((item) => item)}
+                                                roleState={roleState}
+                                                publicAuthorityState={publicAuthorityState}
+                                            />
                                         </OrgPermissionsWrapper>
                                     )}
                                 />

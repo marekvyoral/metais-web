@@ -83,6 +83,7 @@ export const NewRelationView: React.FC<Props> = ({
 
     const { register, handleSubmit: handleFormSubmit, formState, setValue, clearErrors, trigger } = useForm()
     const relationSchema = relationData?.relationTypeData
+
     const relationSchemaCombinedAttributes = [
         ...(relationSchema?.attributes ?? []),
         ...(relationSchema?.attributeProfiles?.map((profile) => profile.attributes?.map((att) => att)).flat() ?? []),

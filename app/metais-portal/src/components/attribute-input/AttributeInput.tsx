@@ -178,6 +178,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         defaultValue={formattedDate}
                         hint={hint}
                         hasInputIcon
+                        className={classnames(attClassNameConfig.attributes[attribute.technicalName]?.className || '')}
                     />
                 )
             }
