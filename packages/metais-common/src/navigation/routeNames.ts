@@ -149,6 +149,6 @@ export enum FooterRouteNames {
     TECHNICAL_OPERATOR = '/technical/help',
     CONTENT_ADMIN = '/technical/manager',
     RSS = '/rss',
-    IDSK_DIZAJN = '/#',
+    IDSK_DIZAJN = 'https://idsk.gov.sk',
     EXCEPTIONS_LEGISLATION = '/ci/vynimky_ITVS',
 }

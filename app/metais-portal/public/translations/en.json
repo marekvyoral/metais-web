@@ -21,6 +21,7 @@
         "technicalOperator": "Technical operator",
         "contentAdmin": "Admin of content",
         "RSS": "RSS",
+        "portalVersion": "Portal version",
 
         "services": {
             "title": "Services and Information",
