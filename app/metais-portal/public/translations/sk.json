@@ -334,6 +334,7 @@
     "ciType": {
         "informations": "Informácie",
         "documents": "Dokumenty",
+        "activities": "Aktivity NKIVS",
         "relationships": "Vzťahy",
         "history": "História zmien",
         "editEntity": "Editácia entity",
@@ -1044,5 +1045,11 @@
                 "added": "bol pridaný do hlasovania"
             }
         }
+    },
+    "activities": {
+        "target": "Cieľ aktivity",
+        "name": "Aktivity NKIVS",
+        "description": "Popis aktivity",
+        "projectActivity": "V relácií s vybraným Projektom"
     }
 }
