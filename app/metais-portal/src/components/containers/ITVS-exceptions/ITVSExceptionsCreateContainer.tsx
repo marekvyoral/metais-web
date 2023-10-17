@@ -65,8 +65,8 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const { data: relatedListData, isLoading: isRelatedListLoading, isError: isRelatedListError } = useListRelatedCiTypes(entityName)
 
     //build select options from this data
-    const relatedListAsSources = filterRelatedList(relatedListData?.cisAsSources, 'ISVS')
-    const relatedListAsTargets = filterRelatedList(relatedListData?.cisAsTargets, 'ISVS')
+    const relatedListAsSources = filterRelatedList(relatedListData?.cisAsSources, ['ISVS', 'WeboveSidlo'])
+    const relatedListAsTargets = filterRelatedList(relatedListData?.cisAsTargets, ['ISVS', 'WeboveSidlo'])
 
     const [formData, setFormData] = useState<FieldValues>({})
 
@@ -99,6 +99,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                 // navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
                 setIsListPageOpen(false)
                 setSelectedItems(null)
+                invalidateCilistFilteredCache.invalidate({ ciType: entityName })
                 // invalidateRelationListCacheByUuid.invalidate()
             },
             onError() {
@@ -107,9 +108,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
         },
     })
 
-    const saveRelations = async (endUuid: string) => {
-        console.log(endUuid)
-
+    const saveRelations = async () => {
         const formAttributesKeys = Object.keys(formData)
 
         const formattedAttributesToSend = filter(
@@ -141,9 +140,9 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                                       })),
                               ],
                               //uuid of picked entities
-                              startUuid: item.uuid,
+                              startUuid: configurationItemId,
                               //id of current entity
-                              endUuid: endUuid,
+                              endUuid: item.uuid,
                               //from getGroup Api
                               owner: ownerId,
                               uuid: uuidV4(),
@@ -162,10 +161,8 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
             },
             async onSuccess(successData) {
                 if (successData.requestId != null) {
-                    console.log(successData)
-
                     setRequestId(successData.requestId)
-                    await saveRelations(successData.requestId)
+                    await saveRelations()
                     invalidateCilistFilteredCache.invalidate({ ciType: entityName })
                     invalidateCiByUuidCache.invalidate()
                 } else {

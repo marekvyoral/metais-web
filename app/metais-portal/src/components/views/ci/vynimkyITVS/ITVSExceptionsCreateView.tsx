@@ -70,7 +70,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     const { t } = useTranslation()
     const navigate = useNavigate()
 
-    const tabName = 'ISVS'
+    const tabName = relationData?.relationTypeData?.targets ? relationData?.relationTypeData?.targets[0].technicalName : ''
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
     const attProfiles = ciTypeData?.attributeProfiles?.map((profile) => profile) ?? []
@@ -229,7 +229,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                             onChange={(val) => setSelectedRelationTypeTechnicalName(val ?? '')}
                         />
                         <SelectCiItem
-                            filterTypeEntityName={tabName}
+                            filterTypeEntityName={tabName ?? ''}
                             onChangeSelectedCiItem={(val) => setSelectedItems(val)}
                             onCloseModal={() => setIsListPageOpen(false)}
                             onOpenModal={() => setIsListPageOpen(true)}

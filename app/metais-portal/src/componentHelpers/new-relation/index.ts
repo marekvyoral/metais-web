@@ -26,15 +26,16 @@ export const createSelectRelationTypeOptions = (
     return combinedOptions
 }
 
-export const filterRelatedList = (list: RelatedCiTypePreview[] | undefined, tabName: string) => {
+export const filterRelatedList = (list: RelatedCiTypePreview[] | undefined, tabName: string | string[]) => {
     return (
-        list?.filter(
-            (item) =>
-                tabName === item.ciTypeTechnicalName &&
-                item.ciTypeValid &&
-                item.relationshipTypeValid &&
-                (item.ciCategory != 'NO' || item.relationshipCategory != 'NO') &&
-                (item.ciTypeUsageType != 'system' || item.relationshipTypeUsageType != 'system'),
+        list?.filter((item) =>
+            Array.isArray(tabName)
+                ? tabName.includes(item.ciTypeTechnicalName ?? '')
+                : tabName === item.ciTypeTechnicalName &&
+                  item.ciTypeValid &&
+                  item.relationshipTypeValid &&
+                  (item.ciCategory != 'NO' || item.relationshipCategory != 'NO') &&
+                  (item.ciTypeUsageType != 'system' || item.relationshipTypeUsageType != 'system'),
         ) ?? []
     )
 }
