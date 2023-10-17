@@ -1,6 +1,7 @@
 import { TFunction } from 'i18next'
 
-import { ATTRIBUTE_NAME, Attribute, AttributeConstraintEnum, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
+import { Attribute, AttributeConstraintEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
 
 const findUnitValue = (attribute: Attribute | undefined, unitsData: EnumType | undefined) => {
     const unit = unitsData?.enumItems?.find((item) => item.code === attribute?.units)?.value ?? ''

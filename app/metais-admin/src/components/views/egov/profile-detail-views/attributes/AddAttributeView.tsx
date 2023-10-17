@@ -3,7 +3,7 @@ import { FieldValues } from 'react-hook-form'
 import { Button, Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
 import { CiTypeListSelect } from '@isdd/metais-common/src/components/ci-type-list-select/CiTypeListSelect'
-import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
+import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 

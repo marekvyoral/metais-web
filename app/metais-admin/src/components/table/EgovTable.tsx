@@ -5,13 +5,12 @@ import {
     AttributeProfile,
     AttributeProfilePreview,
     AttributeProfileType,
-    BASE_PAGE_SIZE,
     CiTypePreview,
     useStoreUnValid,
     useStoreValid1,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { ActionsOverTable, BulkPopup, CreateEntityButton } from '@isdd/metais-common/index'
 import { QueryObserverResult } from '@tanstack/react-query'
 import { ColumnDef, Row } from '@tanstack/react-table'

@@ -1,7 +1,8 @@
-import { Attribute, AttributeConstraintIntervalAllOf, AttributeConstraintRegexAllOf, EnumType } from '@isdd/metais-common/api'
+import { Attribute, AttributeConstraintIntervalAllOf, AttributeConstraintRegexAllOf } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 import { FieldErrors, FieldValues } from 'react-hook-form'
 import { AnyObject, NumberSchema } from 'yup'
+import { EnumType } from '@isdd/metais-common/api'
 
 import { ByteInterval, ShortInterval } from './createCiEntityFormSchema'
 

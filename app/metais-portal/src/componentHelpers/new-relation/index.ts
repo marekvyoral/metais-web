@@ -1,4 +1,4 @@
-import { RelatedCiTypePreview } from '@isdd/metais-common/api'
+import { RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 
 export const createSelectRelationTypeOptions = (

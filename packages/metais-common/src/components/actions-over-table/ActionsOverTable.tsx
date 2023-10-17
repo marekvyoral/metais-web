@@ -10,7 +10,8 @@ import { useTranslation } from 'react-i18next'
 
 import styles from './actionsOverTable.module.scss'
 
-import { Attribute, AttributeProfile, BASE_PAGE_SIZE, CiType } from '@isdd/metais-common/api'
+import { BASE_PAGE_SIZE } from '@isdd/metais-common/api'
+import { Attribute, AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { notificationDefaultSelectedColumns } from '@isdd/metais-common/constants'
 import { Actions, useCreateCiAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { IColumn } from '@isdd/metais-common/hooks/useColumnList'

@@ -1,7 +1,5 @@
 import {
     ATTRIBUTE_NAME,
-    Attribute,
-    CiType,
     ConfigurationItemSetUi,
     ConfigurationItemUi,
     ConfigurationItemUiAttributes,
@@ -9,6 +7,7 @@ import {
     FavoriteCiType,
     RoleParticipantUI,
 } from '@isdd/metais-common/api'
+import { Attribute, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { pairEnumsToEnumValues } from '@isdd/metais-common/index'
 import { ColumnOrderState } from '@tanstack/react-table'
 import { TFunction } from 'i18next'

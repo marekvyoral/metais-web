@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import { AttributeProfile } from '@isdd/metais-common/api'
+import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 
 export const generateSchemaForCreateAttribute = (t: TFunction<'translation', undefined, 'translation'>) => {

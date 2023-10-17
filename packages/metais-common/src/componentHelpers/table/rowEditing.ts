@@ -1,4 +1,4 @@
-import { Attribute } from '../../api'
+import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 export const isRowSelected = (rowIndex: number, selectedRows: Array<number>) => selectedRows.indexOf(rowIndex) !== -1
 

@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import { AttributeProfile, Cardinality, CiTypePreview } from '@isdd/metais-common/api'
+import { AttributeProfile, Cardinality, CiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 
 import { HiddenInputs } from '@/types/inputs'

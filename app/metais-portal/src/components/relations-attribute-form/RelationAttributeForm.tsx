@@ -1,5 +1,6 @@
-import { EnumType, RelationshipType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api'
 import { useFormContext } from 'react-hook-form'
+import { RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 import { HasResetState } from '@/components/create-entity/CreateCiEntityForm'

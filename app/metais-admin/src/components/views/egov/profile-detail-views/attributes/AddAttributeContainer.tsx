@@ -1,5 +1,6 @@
 import React from 'react'
-import { Attribute, EnumType, EnumTypePreviewList, useGetEnum, useListEnums, useStoreNewAttribute } from '@isdd/metais-common/api'
+import { EnumType, EnumTypePreviewList, useGetEnum, useListEnums } from '@isdd/metais-common/api'
+import { Attribute, useStoreNewAttribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 export interface IAddAttributeView {
     data: {

@@ -1,4 +1,5 @@
-import { CiType, ConfigurationItemUi, useReadCiList1 } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useReadCiList1 } from '@isdd/metais-common/api'
+import { AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 type AttributeTechnicalName = string
 type CiTypeConstraintTechnicalName = string
@@ -49,7 +50,10 @@ const getCiTypesFromConstraints = (entityStructure: CiType | undefined): Record<
     if (!entityStructure) return {}
     const { attributes, attributeProfiles } = entityStructure
 
-    const ciTypesFromConstraints = [...(attributes ?? []), ...(attributeProfiles?.map((profile) => profile.attributes).flat() ?? [])]
+    const ciTypesFromConstraints = [
+        ...(attributes ?? []),
+        ...(attributeProfiles?.map((profile: AttributeProfile) => profile.attributes).flat() ?? []),
+    ]
         .filter((att) => att?.constraints?.[0]?.type === 'ciType')
         .reduce((acc: Record<AttributeTechnicalName, CiTypeConstraintTechnicalName>, att) => {
             if (isConstraintCiType(att?.constraints?.[0])) {

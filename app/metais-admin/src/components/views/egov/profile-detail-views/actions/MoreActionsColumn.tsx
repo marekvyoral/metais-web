@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, ButtonPopup } from '@isdd/idsk-ui-kit'
 import { CellContext } from '@tanstack/react-table'
-import { Attribute } from '@isdd/metais-common/api'
+import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 
 interface iMoreActionsColumn {

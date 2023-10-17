@@ -1,6 +1,7 @@
 import React from 'react'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { RelationshipType, Role, useStoreAdminEntity } from '@isdd/metais-common/api'
+import { Role } from '@isdd/metais-common/api'
+import { RelationshipType, useStoreAdminEntity } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 import { useQueryClient } from '@tanstack/react-query'
 import { ADMIN_EGOV_RELATION_LIST_QKEY } from '@isdd/metais-common/constants'

@@ -5,17 +5,16 @@
  * MetaIS CMDB
  * OpenAPI spec version: 3.0-SNAPSHOT
  */
-import type { MutationFunction, QueryFunction, QueryKey, UseMutationOptions, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useCmdbSwaggerClient } from '../hooks/useCmdbSwaggerClient'
-import {
-    useClientForGetRoleParticipantBulkUsingPOST,
-    useClientForGetRoleParticipantUsingGET,
-    useClientForReadCiListUsingPOST,
-    useClientForReadCiNeighboursWithAllRelsUsingGET,
-    useClientForReadConfigurationItemUsingGET,
-    useClientForreadCiNeighboursUsingPOST,
-} from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForGetRoleParticipantBulkUsingPOST } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForreadCiNeighboursUsingPOST } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForReadCiListUsingPOST } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForGetRoleParticipantUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForReadCiNeighboursWithAllRelsUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForReadConfigurationItemUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForReadCiDerivedRelTypesUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 export type ReadAllCiHistoryVersionsParams = {
     page: number
     perPage: number
@@ -69,6 +68,20 @@ export type GetMetricsParams = {
 
 export type GetCountCiTypesByOwnerParams = {
     liableEntities?: string[]
+}
+
+export type ReadCiDerivedRelTypesParams = {
+    states?: string[]
+    page?: number
+    perPage?: number
+    'usageType.whiteList'?: string[]
+    'usageType.blackList'?: string[]
+}
+
+export type ReadCiDerivedRelTypesCountParams = {
+    'usageType.whiteList[]'?: string[]
+    'usageType.blackList[]'?: string[]
+    includeInvalidated?: boolean
 }
 
 export type ReadNeighboursConfigurationItemsParams = {
@@ -273,9 +286,23 @@ export interface PaginationData {
     totalUnreadedItems?: number
 }
 
+export interface NotificationsList {
+    notifications?: Notification[]
+    pagination?: PaginationData
+}
+
 export interface CountTypes {
     type?: string
     count?: number
+}
+
+export interface DerivedRelationshipCount {
+    technicalName?: string
+    count?: number
+}
+
+export interface DerivedCiTypeCountSummaryUi {
+    derivedRelationshipCounts?: DerivedRelationshipCount[]
 }
 
 export interface ConfigurationItemNeighbourSetUi {
@@ -550,15 +577,16 @@ export interface Notification {
     notifType?: string
 }
 
-export interface NotificationsList {
-    notifications?: Notification[]
-    pagination?: PaginationData
-}
-
 export interface ConfigurationItemSetUi {
     pagination?: PaginationUi
     configurationItemSet?: ConfigurationItemUi[]
     incidentRelationshipSet?: RelationshipUi[]
+}
+
+export interface CiRelationshipCiPreviewHolderUi {
+    ciStart?: CiPreviewUi
+    rel?: RelationshipUi
+    ciEnd?: CiPreviewUi
 }
 
 export interface CiRelationshipCiPreviewHolderListUi {
@@ -572,12 +600,6 @@ export interface CiPreviewUi {
     genName?: string
 }
 
-export interface CiRelationshipCiPreviewHolderUi {
-    ciStart?: CiPreviewUi
-    rel?: RelationshipUi
-    ciEnd?: CiPreviewUi
-}
-
 export interface CiUuidSetUi {
     pagination?: PaginationUi
     ciUuids?: string[]
@@ -588,20 +610,6 @@ export interface RelTypeFilterUi {
     relCiUuids?: string[]
     onlyValidRel?: boolean
     byHierarchy?: boolean
-}
-
-export interface CiFilterUi {
-    type?: string[]
-    usageType?: string[]
-    uuid?: string[]
-    attributes?: FilterAttributesUi[]
-    metaAttributes?: FilterMetaAttributesUi
-    fullTextSearch?: string
-    searchFields?: string[]
-    mustExistAttributes?: string[]
-    mustNotExistAttributes?: string[]
-    relTypeFilters?: RelTypeFilterUi[]
-    poUuid?: string
 }
 
 export interface CiListFilterContainerUi {
@@ -761,6 +769,20 @@ export interface FilterMetaAttributesUi {
     lastModifiedAtTo?: string
 }
 
+export interface CiFilterUi {
+    type?: string[]
+    usageType?: string[]
+    uuid?: string[]
+    attributes?: FilterAttributesUi[]
+    metaAttributes?: FilterMetaAttributesUi
+    fullTextSearch?: string
+    searchFields?: string[]
+    mustExistAttributes?: string[]
+    mustNotExistAttributes?: string[]
+    relTypeFilters?: RelTypeFilterUi[]
+    poUuid?: string
+}
+
 export interface RelFilterSmallUi {
     text?: string
     relTypes?: string[]
@@ -866,6 +888,13 @@ export interface RecycleRelsUi {
     relIdList?: string[]
 }
 
+export interface AddressObjectUi {
+    number?: string
+    village?: string
+    street?: string
+    zipCode?: string
+}
+
 export interface HierarchyRightsUi {
     poUUID?: string
     poName?: string
@@ -888,13 +917,6 @@ export interface HierarchyPOFilterUi {
     poUUID?: string
     fullTextSearch?: string
     rights?: HierarchyRightsUi[]
-}
-
-export interface AddressObjectUi {
-    number?: string
-    village?: string
-    street?: string
-    zipCode?: string
 }
 
 export interface MeetingRequestUi {
@@ -1139,11 +1161,25 @@ export interface StoreSetUi {
     invalidateReason?: InvalidateReason
 }
 
+export interface InvalidateSetUi {
+    configurationItemSet?: ConfigurationItemUi[]
+    relationshipSet?: RelationshipUi[]
+    invalidateReason?: InvalidateReason
+}
+
 export interface CustomMessageUi {
     messageSuccessType?: string
     successPlaceholderValues?: string[]
     messageFailType?: string
     failPlaceholderValues?: string[]
+}
+
+export interface GraphRequestUi {
+    storeSet?: StoreSetUi
+    invalidateSet?: InvalidateSetUi
+    changeOwnerSet?: ChangeOwnerSetUi
+    recycleSet?: RecycleSetUi
+    customMessage?: CustomMessageUi
 }
 
 export type ConfigurationItemUiAttributes = { [key: string]: any }
@@ -1154,12 +1190,6 @@ export interface ConfigurationItemUi {
     owner?: string
     attributes?: ConfigurationItemUiAttributes
     metaAttributes?: MetaAttributesUi
-}
-
-export interface InvalidateSetUi {
-    configurationItemSet?: ConfigurationItemUi[]
-    relationshipSet?: RelationshipUi[]
-    invalidateReason?: InvalidateReason
 }
 
 export type ChangeOwnerDataUiChangeType = (typeof ChangeOwnerDataUiChangeType)[keyof typeof ChangeOwnerDataUiChangeType]
@@ -1185,14 +1215,6 @@ export interface ChangeOwnerSetUi {
     changeOwnerData?: ChangeOwnerDataUi
 }
 
-export interface GraphRequestUi {
-    storeSet?: StoreSetUi
-    invalidateSet?: InvalidateSetUi
-    changeOwnerSet?: ChangeOwnerSetUi
-    recycleSet?: RecycleSetUi
-    customMessage?: CustomMessageUi
-}
-
 export type AttributeUiValue = { [key: string]: any }
 
 export interface AttributeUi {
@@ -1216,6 +1238,16 @@ export interface NotificationUpdateHolderUi {
     userId?: string
 }
 
+export type ApiErrorData = { [key: string]: any }
+
+export interface ApiError {
+    type?: string
+    message?: string
+    data?: ApiErrorData
+    logToken?: string
+    values?: string[]
+}
+
 type AwaitedInput<T> = PromiseLike<T> | T
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
@@ -1233,7 +1265,7 @@ export const getReadNotificationsWithFilterQueryKey = (params?: ReadNotification
 
 export const useReadNotificationsWithFilterQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadNotificationsWithFilterHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     params?: ReadNotificationsWithFilterParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadNotificationsWithFilterHook>>>, TError, TData> },
@@ -1251,9 +1283,9 @@ export const useReadNotificationsWithFilterQueryOptions = <
 }
 
 export type ReadNotificationsWithFilterQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadNotificationsWithFilterHook>>>>
-export type ReadNotificationsWithFilterQueryError = unknown
+export type ReadNotificationsWithFilterQueryError = ApiError
 
-export const useReadNotificationsWithFilter = <TData = Awaited<ReturnType<ReturnType<typeof useReadNotificationsWithFilterHook>>>, TError = unknown>(
+export const useReadNotificationsWithFilter = <TData = Awaited<ReturnType<ReturnType<typeof useReadNotificationsWithFilterHook>>>, TError = ApiError>(
     params?: ReadNotificationsWithFilterParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadNotificationsWithFilterHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -1279,7 +1311,7 @@ export const useUpdateNotificationsHook = () => {
     }
 }
 
-export const useUpdateNotificationsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateNotificationsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateNotificationsHook>>>,
         TError,
@@ -1309,9 +1341,9 @@ export const useUpdateNotificationsMutationOptions = <TError = unknown, TContext
 
 export type UpdateNotificationsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateNotificationsHook>>>>
 export type UpdateNotificationsMutationBody = NotificationUpdateHolderUi
-export type UpdateNotificationsMutationError = unknown
+export type UpdateNotificationsMutationError = ApiError
 
-export const useUpdateNotifications = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateNotifications = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateNotificationsHook>>>,
         TError,
@@ -1332,7 +1364,7 @@ export const useStoreNotificationsHook = () => {
     }
 }
 
-export const useStoreNotificationsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreNotificationsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNotificationsHook>>>, TError, { data: Notification[] }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNotificationsHook>>>, TError, { data: Notification[] }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1350,9 +1382,9 @@ export const useStoreNotificationsMutationOptions = <TError = unknown, TContext 
 
 export type StoreNotificationsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreNotificationsHook>>>>
 export type StoreNotificationsMutationBody = Notification[]
-export type StoreNotificationsMutationError = unknown
+export type StoreNotificationsMutationError = ApiError
 
-export const useStoreNotifications = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreNotifications = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNotificationsHook>>>, TError, { data: Notification[] }, TContext>
 }) => {
     const mutationOptions = useStoreNotificationsMutationOptions(options)
@@ -1371,7 +1403,7 @@ export const useValidateStoreGraphHook = () => {
     }
 }
 
-export const useValidateStoreGraphMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useValidateStoreGraphMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphHook>>>, TError, { data: GraphRequestUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphHook>>>, TError, { data: GraphRequestUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1389,12 +1421,12 @@ export const useValidateStoreGraphMutationOptions = <TError = unknown, TContext 
 
 export type ValidateStoreGraphMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphHook>>>>
 export type ValidateStoreGraphMutationBody = GraphRequestUi
-export type ValidateStoreGraphMutationError = unknown
+export type ValidateStoreGraphMutationError = ApiError
 
 /**
  * @summary validateStoreGraph
  */
-export const useValidateStoreGraph = <TError = unknown, TContext = unknown>(options?: {
+export const useValidateStoreGraph = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidateStoreGraphHook>>>, TError, { data: GraphRequestUi }, TContext>
 }) => {
     const mutationOptions = useValidateStoreGraphMutationOptions(options)
@@ -1415,7 +1447,7 @@ export const useUpdateConfluenceHook = () => {
     }
 }
 
-export const useUpdateConfluenceMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateConfluenceMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateConfluenceHook>>>,
         TError,
@@ -1440,9 +1472,9 @@ export const useUpdateConfluenceMutationOptions = <TError = unknown, TContext = 
 
 export type UpdateConfluenceMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateConfluenceHook>>>>
 export type UpdateConfluenceMutationBody = Version
-export type UpdateConfluenceMutationError = unknown
+export type UpdateConfluenceMutationError = ApiError
 
-export const useUpdateConfluence = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateConfluence = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateConfluenceHook>>>,
         TError,
@@ -1463,7 +1495,7 @@ export const useReindexRelationshipsHook = () => {
     }
 }
 
-export const useReindexRelationshipsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReindexRelationshipsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReindexRelationshipsHook>>>,
         TError,
@@ -1494,9 +1526,9 @@ export const useReindexRelationshipsMutationOptions = <TError = unknown, TContex
 
 export type ReindexRelationshipsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexRelationshipsHook>>>>
 
-export type ReindexRelationshipsMutationError = unknown
+export type ReindexRelationshipsMutationError = ApiError
 
-export const useReindexRelationships = <TError = unknown, TContext = unknown>(options?: {
+export const useReindexRelationships = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReindexRelationshipsHook>>>,
         TError,
@@ -1517,7 +1549,7 @@ export const useAsyncReindexHook = () => {
     }
 }
 
-export const useAsyncReindexMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useAsyncReindexMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>, TError, { params?: AsyncReindexParams }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>, TError, { params?: AsyncReindexParams }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1535,9 +1567,9 @@ export const useAsyncReindexMutationOptions = <TError = unknown, TContext = unkn
 
 export type AsyncReindexMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>>
 
-export type AsyncReindexMutationError = unknown
+export type AsyncReindexMutationError = ApiError
 
-export const useAsyncReindex = <TError = unknown, TContext = unknown>(options?: {
+export const useAsyncReindex = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAsyncReindexHook>>>, TError, { params?: AsyncReindexParams }, TContext>
 }) => {
     const mutationOptions = useAsyncReindexMutationOptions(options)
@@ -1553,7 +1585,7 @@ export const useReindexCiHook = () => {
     }
 }
 
-export const useReindexCiMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReindexCiMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexCiHook>>>, TError, { ciUuid: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexCiHook>>>, TError, { ciUuid: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1571,9 +1603,9 @@ export const useReindexCiMutationOptions = <TError = unknown, TContext = unknown
 
 export type ReindexCiMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexCiHook>>>>
 
-export type ReindexCiMutationError = unknown
+export type ReindexCiMutationError = ApiError
 
-export const useReindexCi = <TError = unknown, TContext = unknown>(options?: {
+export const useReindexCi = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexCiHook>>>, TError, { ciUuid: string }, TContext>
 }) => {
     const mutationOptions = useReindexCiMutationOptions(options)
@@ -1589,7 +1621,7 @@ export const usePartialReindexHook = () => {
     }
 }
 
-export const usePartialReindexMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const usePartialReindexMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePartialReindexHook>>>, TError, { params: PartialReindexParams }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePartialReindexHook>>>, TError, { params: PartialReindexParams }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1607,9 +1639,9 @@ export const usePartialReindexMutationOptions = <TError = unknown, TContext = un
 
 export type PartialReindexMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof usePartialReindexHook>>>>
 
-export type PartialReindexMutationError = unknown
+export type PartialReindexMutationError = ApiError
 
-export const usePartialReindex = <TError = unknown, TContext = unknown>(options?: {
+export const usePartialReindex = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePartialReindexHook>>>, TError, { params: PartialReindexParams }, TContext>
 }) => {
     const mutationOptions = usePartialReindexMutationOptions(options)
@@ -1625,7 +1657,7 @@ export const useReindexHierarchyHook = () => {
     }
 }
 
-export const useReindexHierarchyMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useReindexHierarchyMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHierarchyHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHierarchyHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1641,9 +1673,9 @@ export const useReindexHierarchyMutationOptions = <TError = unknown, TVariables 
 
 export type ReindexHierarchyMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexHierarchyHook>>>>
 
-export type ReindexHierarchyMutationError = unknown
+export type ReindexHierarchyMutationError = ApiError
 
-export const useReindexHierarchy = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useReindexHierarchy = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHierarchyHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useReindexHierarchyMutationOptions(options)
@@ -1662,7 +1694,7 @@ export const useConfluenceDocumentResultsHook = () => {
     }
 }
 
-export const useConfluenceDocumentResultsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useConfluenceDocumentResultsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useConfluenceDocumentResultsHook>>>,
         TError,
@@ -1693,12 +1725,12 @@ export const useConfluenceDocumentResultsMutationOptions = <TError = unknown, TC
 
 export type ConfluenceDocumentResultsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useConfluenceDocumentResultsHook>>>>
 
-export type ConfluenceDocumentResultsMutationError = unknown
+export type ConfluenceDocumentResultsMutationError = ApiError
 
 /**
  * @summary confluenceDocumentResults
  */
-export const useConfluenceDocumentResults = <TError = unknown, TContext = unknown>(options?: {
+export const useConfluenceDocumentResults = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useConfluenceDocumentResultsHook>>>,
         TError,
@@ -1724,7 +1756,7 @@ export const useStoreGroupItemsHook = () => {
     }
 }
 
-export const useStoreGroupItemsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreGroupItemsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGroupItemsHook>>>,
         TError,
@@ -1755,9 +1787,9 @@ export const useStoreGroupItemsMutationOptions = <TError = unknown, TContext = u
 
 export type StoreGroupItemsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreGroupItemsHook>>>>
 export type StoreGroupItemsMutationBody = StoreGroupMembersSetUi
-export type StoreGroupItemsMutationError = unknown
+export type StoreGroupItemsMutationError = ApiError
 
-export const useStoreGroupItems = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreGroupItems = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreGroupItemsHook>>>,
         TError,
@@ -1778,7 +1810,7 @@ export const useStoreRelationshipHook = () => {
     }
 }
 
-export const useStoreRelationshipMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreRelationshipMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreRelationshipHook>>>, TError, { data: RelationshipUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreRelationshipHook>>>, TError, { data: RelationshipUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1796,9 +1828,9 @@ export const useStoreRelationshipMutationOptions = <TError = unknown, TContext =
 
 export type StoreRelationshipMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreRelationshipHook>>>>
 export type StoreRelationshipMutationBody = RelationshipUi
-export type StoreRelationshipMutationError = unknown
+export type StoreRelationshipMutationError = ApiError
 
-export const useStoreRelationship = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreRelationship = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreRelationshipHook>>>, TError, { data: RelationshipUi }, TContext>
 }) => {
     const mutationOptions = useStoreRelationshipMutationOptions(options)
@@ -1814,7 +1846,7 @@ export const useStoreCiNeighboursSUHook = () => {
     }
 }
 
-export const useStoreCiNeighboursSUMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreCiNeighboursSUMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreCiNeighboursSUHook>>>, TError, { programMetaCode: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreCiNeighboursSUHook>>>, TError, { programMetaCode: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1832,9 +1864,9 @@ export const useStoreCiNeighboursSUMutationOptions = <TError = unknown, TContext
 
 export type StoreCiNeighboursSUMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreCiNeighboursSUHook>>>>
 
-export type StoreCiNeighboursSUMutationError = unknown
+export type StoreCiNeighboursSUMutationError = ApiError
 
-export const useStoreCiNeighboursSU = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreCiNeighboursSU = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreCiNeighboursSUHook>>>, TError, { programMetaCode: string }, TContext>
 }) => {
     const mutationOptions = useStoreCiNeighboursSUMutationOptions(options)
@@ -1850,7 +1882,7 @@ export const useStoreGroupHook = () => {
     }
 }
 
-export const useStoreGroupMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreGroupMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGroupHook>>>, TError, { data: GroupUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGroupHook>>>, TError, { data: GroupUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1868,9 +1900,9 @@ export const useStoreGroupMutationOptions = <TError = unknown, TContext = unknow
 
 export type StoreGroupMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreGroupHook>>>>
 export type StoreGroupMutationBody = GroupUi
-export type StoreGroupMutationError = unknown
+export type StoreGroupMutationError = ApiError
 
-export const useStoreGroup = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreGroup = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGroupHook>>>, TError, { data: GroupUi }, TContext>
 }) => {
     const mutationOptions = useStoreGroupMutationOptions(options)
@@ -1886,7 +1918,7 @@ export const useRemoveManagerFromGroupHook = () => {
     }
 }
 
-export const useRemoveManagerFromGroupMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useRemoveManagerFromGroupMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveManagerFromGroupHook>>>,
         TError,
@@ -1911,9 +1943,9 @@ export const useRemoveManagerFromGroupMutationOptions = <TError = unknown, TCont
 
 export type RemoveManagerFromGroupMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRemoveManagerFromGroupHook>>>>
 
-export type RemoveManagerFromGroupMutationError = unknown
+export type RemoveManagerFromGroupMutationError = ApiError
 
-export const useRemoveManagerFromGroup = <TError = unknown, TContext = unknown>(options?: {
+export const useRemoveManagerFromGroup = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveManagerFromGroupHook>>>,
         TError,
@@ -1934,7 +1966,7 @@ export const useStoreManagerToGroupHook = () => {
     }
 }
 
-export const useStoreManagerToGroupMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreManagerToGroupMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreManagerToGroupHook>>>,
         TError,
@@ -1959,9 +1991,9 @@ export const useStoreManagerToGroupMutationOptions = <TError = unknown, TContext
 
 export type StoreManagerToGroupMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreManagerToGroupHook>>>>
 
-export type StoreManagerToGroupMutationError = unknown
+export type StoreManagerToGroupMutationError = ApiError
 
-export const useStoreManagerToGroup = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreManagerToGroup = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreManagerToGroupHook>>>,
         TError,
@@ -1982,7 +2014,7 @@ export const useStoreGraphHook = () => {
     }
 }
 
-export const useStoreGraphMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreGraphMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGraphHook>>>, TError, { data: GraphRequestUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGraphHook>>>, TError, { data: GraphRequestUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2000,9 +2032,9 @@ export const useStoreGraphMutationOptions = <TError = unknown, TContext = unknow
 
 export type StoreGraphMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreGraphHook>>>>
 export type StoreGraphMutationBody = GraphRequestUi
-export type StoreGraphMutationError = unknown
+export type StoreGraphMutationError = ApiError
 
-export const useStoreGraph = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreGraph = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGraphHook>>>, TError, { data: GraphRequestUi }, TContext>
 }) => {
     const mutationOptions = useStoreGraphMutationOptions(options)
@@ -2018,7 +2050,7 @@ export const useStoreGraphBiznisHook = () => {
     }
 }
 
-export const useStoreGraphBiznisMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreGraphBiznisMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisHook>>>, TError, { data: GraphRequestUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisHook>>>, TError, { data: GraphRequestUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2036,9 +2068,9 @@ export const useStoreGraphBiznisMutationOptions = <TError = unknown, TContext = 
 
 export type StoreGraphBiznisMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisHook>>>>
 export type StoreGraphBiznisMutationBody = GraphRequestUi
-export type StoreGraphBiznisMutationError = unknown
+export type StoreGraphBiznisMutationError = ApiError
 
-export const useStoreGraphBiznis = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreGraphBiznis = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreGraphBiznisHook>>>, TError, { data: GraphRequestUi }, TContext>
 }) => {
     const mutationOptions = useStoreGraphBiznisMutationOptions(options)
@@ -2059,7 +2091,7 @@ export const useStoreConfigurationItemHook = () => {
     }
 }
 
-export const useStoreConfigurationItemMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreConfigurationItemMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemHook>>>,
         TError,
@@ -2084,9 +2116,9 @@ export const useStoreConfigurationItemMutationOptions = <TError = unknown, TCont
 
 export type StoreConfigurationItemMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemHook>>>>
 export type StoreConfigurationItemMutationBody = ConfigurationItemUi
-export type StoreConfigurationItemMutationError = unknown
+export type StoreConfigurationItemMutationError = ApiError
 
-export const useStoreConfigurationItem = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreConfigurationItem = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemHook>>>,
         TError,
@@ -2112,7 +2144,7 @@ export const useStoreConfigurationItemBiznisHook = () => {
     }
 }
 
-export const useStoreConfigurationItemBiznisMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreConfigurationItemBiznisMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemBiznisHook>>>,
         TError,
@@ -2142,9 +2174,9 @@ export const useStoreConfigurationItemBiznisMutationOptions = <TError = unknown,
 
 export type StoreConfigurationItemBiznisMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemBiznisHook>>>>
 export type StoreConfigurationItemBiznisMutationBody = ConfigurationItemUi
-export type StoreConfigurationItemBiznisMutationError = unknown
+export type StoreConfigurationItemBiznisMutationError = ApiError
 
-export const useStoreConfigurationItemBiznis = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreConfigurationItemBiznis = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreConfigurationItemBiznisHook>>>,
         TError,
@@ -2167,7 +2199,7 @@ export const useReadVotesFromStandardHook = () => {
 
 export const getReadVotesFromStandardQueryKey = (params?: ReadVotesFromStandardParams) => [`/standard/votes`, ...(params ? [params] : [])] as const
 
-export const useReadVotesFromStandardQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardHook>>>, TError = unknown>(
+export const useReadVotesFromStandardQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardHook>>>, TError = ApiError>(
     params?: ReadVotesFromStandardParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -2184,9 +2216,9 @@ export const useReadVotesFromStandardQueryOptions = <TData = Awaited<ReturnType<
 }
 
 export type ReadVotesFromStandardQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardHook>>>>
-export type ReadVotesFromStandardQueryError = unknown
+export type ReadVotesFromStandardQueryError = ApiError
 
-export const useReadVotesFromStandard = <TData = Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardHook>>>, TError = unknown>(
+export const useReadVotesFromStandard = <TData = Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardHook>>>, TError = ApiError>(
     params?: ReadVotesFromStandardParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadVotesFromStandardHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2207,7 +2239,7 @@ export const useStoreStandardVotesHook = () => {
     }
 }
 
-export const useStoreStandardVotesMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreStandardVotesMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesHook>>>, TError, { data: VoteListUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesHook>>>, TError, { data: VoteListUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2225,9 +2257,9 @@ export const useStoreStandardVotesMutationOptions = <TError = unknown, TContext 
 
 export type StoreStandardVotesMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesHook>>>>
 export type StoreStandardVotesMutationBody = VoteListUi
-export type StoreStandardVotesMutationError = unknown
+export type StoreStandardVotesMutationError = ApiError
 
-export const useStoreStandardVotes = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreStandardVotes = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreStandardVotesHook>>>, TError, { data: VoteListUi }, TContext>
 }) => {
     const mutationOptions = useStoreStandardVotesMutationOptions(options)
@@ -2243,7 +2275,7 @@ export const useDeleteStandardVotes1Hook = () => {
     }
 }
 
-export const useDeleteStandardVotes1MutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useDeleteStandardVotes1MutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotes1Hook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotes1Hook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2259,9 +2291,9 @@ export const useDeleteStandardVotes1MutationOptions = <TError = unknown, TVariab
 
 export type DeleteStandardVotes1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotes1Hook>>>>
 
-export type DeleteStandardVotes1MutationError = unknown
+export type DeleteStandardVotes1MutationError = ApiError
 
-export const useDeleteStandardVotes1 = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useDeleteStandardVotes1 = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotes1Hook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useDeleteStandardVotes1MutationOptions(options)
@@ -2282,7 +2314,7 @@ export const useDeleteStandardVotesHook = () => {
     }
 }
 
-export const useDeleteStandardVotesMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteStandardVotesMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesHook>>>, TError, { data: number[] }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesHook>>>, TError, { data: number[] }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2300,9 +2332,9 @@ export const useDeleteStandardVotesMutationOptions = <TError = unknown, TContext
 
 export type DeleteStandardVotesMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesHook>>>>
 export type DeleteStandardVotesMutationBody = number[]
-export type DeleteStandardVotesMutationError = unknown
+export type DeleteStandardVotesMutationError = ApiError
 
-export const useDeleteStandardVotes = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteStandardVotes = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardVotesHook>>>, TError, { data: number[] }, TContext>
 }) => {
     const mutationOptions = useDeleteStandardVotesMutationOptions(options)
@@ -2323,7 +2355,7 @@ export const getReadStandardRequestsFromStandardQueryKey = (params?: ReadStandar
 
 export const useReadStandardRequestsFromStandardQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadStandardRequestsFromStandardHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     params?: ReadStandardRequestsFromStandardParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadStandardRequestsFromStandardHook>>>, TError, TData> },
@@ -2341,11 +2373,11 @@ export const useReadStandardRequestsFromStandardQueryOptions = <
 }
 
 export type ReadStandardRequestsFromStandardQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadStandardRequestsFromStandardHook>>>>
-export type ReadStandardRequestsFromStandardQueryError = unknown
+export type ReadStandardRequestsFromStandardQueryError = ApiError
 
 export const useReadStandardRequestsFromStandard = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadStandardRequestsFromStandardHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     params?: ReadStandardRequestsFromStandardParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadStandardRequestsFromStandardHook>>>, TError, TData> },
@@ -2372,7 +2404,7 @@ export const useStoreStandardStandardRequestsHook = () => {
     }
 }
 
-export const useStoreStandardStandardRequestsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreStandardStandardRequestsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardStandardRequestsHook>>>,
         TError,
@@ -2403,9 +2435,9 @@ export const useStoreStandardStandardRequestsMutationOptions = <TError = unknown
 
 export type StoreStandardStandardRequestsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreStandardStandardRequestsHook>>>>
 export type StoreStandardStandardRequestsMutationBody = StandardRequestListUi
-export type StoreStandardStandardRequestsMutationError = unknown
+export type StoreStandardStandardRequestsMutationError = ApiError
 
-export const useStoreStandardStandardRequests = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreStandardStandardRequests = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardStandardRequestsHook>>>,
         TError,
@@ -2426,7 +2458,7 @@ export const useDeleteStandardStandardHook = () => {
     }
 }
 
-export const useDeleteStandardStandardMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useDeleteStandardStandardMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2442,9 +2474,9 @@ export const useDeleteStandardStandardMutationOptions = <TError = unknown, TVari
 
 export type DeleteStandardStandardMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardHook>>>>
 
-export type DeleteStandardStandardMutationError = unknown
+export type DeleteStandardStandardMutationError = ApiError
 
-export const useDeleteStandardStandard = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useDeleteStandardStandard = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useDeleteStandardStandardMutationOptions(options)
@@ -2465,7 +2497,7 @@ export const useDeleteStandardStandardRequestsHook = () => {
     }
 }
 
-export const useDeleteStandardStandardRequestsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteStandardStandardRequestsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsHook>>>, TError, { data: number[] }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsHook>>>, TError, { data: number[] }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2485,9 +2517,9 @@ export const useDeleteStandardStandardRequestsMutationOptions = <TError = unknow
 
 export type DeleteStandardStandardRequestsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsHook>>>>
 export type DeleteStandardStandardRequestsMutationBody = number[]
-export type DeleteStandardStandardRequestsMutationError = unknown
+export type DeleteStandardStandardRequestsMutationError = ApiError
 
-export const useDeleteStandardStandardRequests = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteStandardStandardRequests = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardStandardRequestsHook>>>, TError, { data: number[] }, TContext>
 }) => {
     const mutationOptions = useDeleteStandardStandardRequestsMutationOptions(options)
@@ -2508,7 +2540,7 @@ export const getReadMeetingRequestsFromStandardQueryKey = (params?: ReadMeetingR
 
 export const useReadMeetingRequestsFromStandardQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadMeetingRequestsFromStandardHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     params?: ReadMeetingRequestsFromStandardParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadMeetingRequestsFromStandardHook>>>, TError, TData> },
@@ -2526,11 +2558,11 @@ export const useReadMeetingRequestsFromStandardQueryOptions = <
 }
 
 export type ReadMeetingRequestsFromStandardQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadMeetingRequestsFromStandardHook>>>>
-export type ReadMeetingRequestsFromStandardQueryError = unknown
+export type ReadMeetingRequestsFromStandardQueryError = ApiError
 
 export const useReadMeetingRequestsFromStandard = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadMeetingRequestsFromStandardHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     params?: ReadMeetingRequestsFromStandardParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadMeetingRequestsFromStandardHook>>>, TError, TData> },
@@ -2557,7 +2589,7 @@ export const useStoreStandardMeetingRequestsHook = () => {
     }
 }
 
-export const useStoreStandardMeetingRequestsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreStandardMeetingRequestsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardMeetingRequestsHook>>>,
         TError,
@@ -2588,9 +2620,9 @@ export const useStoreStandardMeetingRequestsMutationOptions = <TError = unknown,
 
 export type StoreStandardMeetingRequestsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreStandardMeetingRequestsHook>>>>
 export type StoreStandardMeetingRequestsMutationBody = MeetingRequestListUi
-export type StoreStandardMeetingRequestsMutationError = unknown
+export type StoreStandardMeetingRequestsMutationError = ApiError
 
-export const useStoreStandardMeetingRequests = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreStandardMeetingRequests = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreStandardMeetingRequestsHook>>>,
         TError,
@@ -2611,7 +2643,7 @@ export const useDeleteStandardMeetingRequests1Hook = () => {
     }
 }
 
-export const useDeleteStandardMeetingRequests1MutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useDeleteStandardMeetingRequests1MutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequests1Hook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequests1Hook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2627,9 +2659,9 @@ export const useDeleteStandardMeetingRequests1MutationOptions = <TError = unknow
 
 export type DeleteStandardMeetingRequests1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequests1Hook>>>>
 
-export type DeleteStandardMeetingRequests1MutationError = unknown
+export type DeleteStandardMeetingRequests1MutationError = ApiError
 
-export const useDeleteStandardMeetingRequests1 = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useDeleteStandardMeetingRequests1 = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequests1Hook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useDeleteStandardMeetingRequests1MutationOptions(options)
@@ -2650,7 +2682,7 @@ export const useDeleteStandardMeetingRequestsHook = () => {
     }
 }
 
-export const useDeleteStandardMeetingRequestsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteStandardMeetingRequestsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsHook>>>, TError, { data: number[] }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsHook>>>, TError, { data: number[] }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2670,9 +2702,9 @@ export const useDeleteStandardMeetingRequestsMutationOptions = <TError = unknown
 
 export type DeleteStandardMeetingRequestsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsHook>>>>
 export type DeleteStandardMeetingRequestsMutationBody = number[]
-export type DeleteStandardMeetingRequestsMutationError = unknown
+export type DeleteStandardMeetingRequestsMutationError = ApiError
 
-export const useDeleteStandardMeetingRequests = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteStandardMeetingRequests = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardMeetingRequestsHook>>>, TError, { data: number[] }, TContext>
 }) => {
     const mutationOptions = useDeleteStandardMeetingRequestsMutationOptions(options)
@@ -2696,7 +2728,7 @@ export const useReadCiListHook = () => {
     }
 }
 
-export const useReadCiListMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReadCiListMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListHook>>>, TError, { data: HierarchyPOFilterUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListHook>>>, TError, { data: HierarchyPOFilterUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2714,12 +2746,12 @@ export const useReadCiListMutationOptions = <TError = unknown, TContext = unknow
 
 export type ReadCiListMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiListHook>>>>
 export type ReadCiListMutationBody = HierarchyPOFilterUi
-export type ReadCiListMutationError = unknown
+export type ReadCiListMutationError = ApiError
 
 /**
  * @summary readCiList
  */
-export const useReadCiList = <TError = unknown, TContext = unknown>(options?: {
+export const useReadCiList = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadCiListHook>>>, TError, { data: HierarchyPOFilterUi }, TContext>
 }) => {
     const mutationOptions = useReadCiListMutationOptions(options)
@@ -2740,7 +2772,7 @@ export const useRemoveCiFromGroupHook = () => {
     }
 }
 
-export const useRemoveCiFromGroupMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useRemoveCiFromGroupMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveCiFromGroupHook>>>,
         TError,
@@ -2765,9 +2797,9 @@ export const useRemoveCiFromGroupMutationOptions = <TError = unknown, TContext =
 
 export type RemoveCiFromGroupMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRemoveCiFromGroupHook>>>>
 export type RemoveCiFromGroupMutationBody = string[]
-export type RemoveCiFromGroupMutationError = unknown
+export type RemoveCiFromGroupMutationError = ApiError
 
-export const useRemoveCiFromGroup = <TError = unknown, TContext = unknown>(options?: {
+export const useRemoveCiFromGroup = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRemoveCiFromGroupHook>>>,
         TError,
@@ -2788,7 +2820,7 @@ export const useRemoveGroupHook = () => {
     }
 }
 
-export const useRemoveGroupMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useRemoveGroupMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRemoveGroupHook>>>, TError, { uuid: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRemoveGroupHook>>>, TError, { uuid: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2806,9 +2838,9 @@ export const useRemoveGroupMutationOptions = <TError = unknown, TContext = unkno
 
 export type RemoveGroupMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRemoveGroupHook>>>>
 
-export type RemoveGroupMutationError = unknown
+export type RemoveGroupMutationError = ApiError
 
-export const useRemoveGroup = <TError = unknown, TContext = unknown>(options?: {
+export const useRemoveGroup = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRemoveGroupHook>>>, TError, { uuid: string }, TContext>
 }) => {
     const mutationOptions = useRemoveGroupMutationOptions(options)
@@ -2824,7 +2856,7 @@ export const useRecycleInvalidatedRelsHook = () => {
     }
 }
 
-export const useRecycleInvalidatedRelsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useRecycleInvalidatedRelsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsHook>>>, TError, { data: RecycleRelsUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsHook>>>, TError, { data: RecycleRelsUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2842,9 +2874,9 @@ export const useRecycleInvalidatedRelsMutationOptions = <TError = unknown, TCont
 
 export type RecycleInvalidatedRelsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsHook>>>>
 export type RecycleInvalidatedRelsMutationBody = RecycleRelsUi
-export type RecycleInvalidatedRelsMutationError = unknown
+export type RecycleInvalidatedRelsMutationError = ApiError
 
-export const useRecycleInvalidatedRels = <TError = unknown, TContext = unknown>(options?: {
+export const useRecycleInvalidatedRels = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsHook>>>, TError, { data: RecycleRelsUi }, TContext>
 }) => {
     const mutationOptions = useRecycleInvalidatedRelsMutationOptions(options)
@@ -2865,7 +2897,7 @@ export const useRecycleInvalidatedRelsBiznisHook = () => {
     }
 }
 
-export const useRecycleInvalidatedRelsBiznisMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useRecycleInvalidatedRelsBiznisMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsBiznisHook>>>,
         TError,
@@ -2890,9 +2922,9 @@ export const useRecycleInvalidatedRelsBiznisMutationOptions = <TError = unknown,
 
 export type RecycleInvalidatedRelsBiznisMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsBiznisHook>>>>
 export type RecycleInvalidatedRelsBiznisMutationBody = RecycleRelsUi
-export type RecycleInvalidatedRelsBiznisMutationError = unknown
+export type RecycleInvalidatedRelsBiznisMutationError = ApiError
 
-export const useRecycleInvalidatedRelsBiznis = <TError = unknown, TContext = unknown>(options?: {
+export const useRecycleInvalidatedRelsBiznis = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedRelsBiznisHook>>>,
         TError,
@@ -2918,7 +2950,7 @@ export const useRecyclePoWithHierarchyHook = () => {
     }
 }
 
-export const useRecyclePoWithHierarchyMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useRecyclePoWithHierarchyMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecyclePoWithHierarchyHook>>>,
         TError,
@@ -2949,9 +2981,9 @@ export const useRecyclePoWithHierarchyMutationOptions = <TError = unknown, TCont
 
 export type RecyclePoWithHierarchyMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRecyclePoWithHierarchyHook>>>>
 export type RecyclePoWithHierarchyMutationBody = PoWithHierarchyUi
-export type RecyclePoWithHierarchyMutationError = unknown
+export type RecyclePoWithHierarchyMutationError = ApiError
 
-export const useRecyclePoWithHierarchy = <TError = unknown, TContext = unknown>(options?: {
+export const useRecyclePoWithHierarchy = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecyclePoWithHierarchyHook>>>,
         TError,
@@ -2972,7 +3004,7 @@ export const useRecycleInvalidatedCisHook = () => {
     }
 }
 
-export const useRecycleInvalidatedCisMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useRecycleInvalidatedCisMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisHook>>>, TError, { data: RecycleCisUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisHook>>>, TError, { data: RecycleCisUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2990,9 +3022,9 @@ export const useRecycleInvalidatedCisMutationOptions = <TError = unknown, TConte
 
 export type RecycleInvalidatedCisMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisHook>>>>
 export type RecycleInvalidatedCisMutationBody = RecycleCisUi
-export type RecycleInvalidatedCisMutationError = unknown
+export type RecycleInvalidatedCisMutationError = ApiError
 
-export const useRecycleInvalidatedCis = <TError = unknown, TContext = unknown>(options?: {
+export const useRecycleInvalidatedCis = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisHook>>>, TError, { data: RecycleCisUi }, TContext>
 }) => {
     const mutationOptions = useRecycleInvalidatedCisMutationOptions(options)
@@ -3013,7 +3045,7 @@ export const useRecycleInvalidatedCisBiznisHook = () => {
     }
 }
 
-export const useRecycleInvalidatedCisBiznisMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useRecycleInvalidatedCisBiznisMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisBiznisHook>>>,
         TError,
@@ -3038,9 +3070,9 @@ export const useRecycleInvalidatedCisBiznisMutationOptions = <TError = unknown, 
 
 export type RecycleInvalidatedCisBiznisMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisBiznisHook>>>>
 export type RecycleInvalidatedCisBiznisMutationBody = RecycleCisUi
-export type RecycleInvalidatedCisBiznisMutationError = unknown
+export type RecycleInvalidatedCisBiznisMutationError = ApiError
 
-export const useRecycleInvalidatedCisBiznis = <TError = unknown, TContext = unknown>(options?: {
+export const useRecycleInvalidatedCisBiznis = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useRecycleInvalidatedCisBiznisHook>>>,
         TError,
@@ -3069,7 +3101,7 @@ export const useReadGroupItemsHook = () => {
     }
 }
 
-export const useReadGroupItemsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReadGroupItemsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadGroupItemsHook>>>,
         TError,
@@ -3100,12 +3132,12 @@ export const useReadGroupItemsMutationOptions = <TError = unknown, TContext = un
 
 export type ReadGroupItemsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadGroupItemsHook>>>>
 export type ReadGroupItemsMutationBody = GroupMembersFilterUi
-export type ReadGroupItemsMutationError = unknown
+export type ReadGroupItemsMutationError = ApiError
 
 /**
  * @summary readGroupItems
  */
-export const useReadGroupItems = <TError = unknown, TContext = unknown>(options?: {
+export const useReadGroupItems = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadGroupItemsHook>>>,
         TError,
@@ -3134,7 +3166,7 @@ export const useReadConfigurationItemByRefIDHook = () => {
     }
 }
 
-export const useReadConfigurationItemByRefIDMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReadConfigurationItemByRefIDMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDHook>>>, TError, { data: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDHook>>>, TError, { data: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3152,12 +3184,12 @@ export const useReadConfigurationItemByRefIDMutationOptions = <TError = unknown,
 
 export type ReadConfigurationItemByRefIDMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDHook>>>>
 export type ReadConfigurationItemByRefIDMutationBody = string
-export type ReadConfigurationItemByRefIDMutationError = unknown
+export type ReadConfigurationItemByRefIDMutationError = ApiError
 
 /**
  * @summary readConfigurationItemByRefID
  */
-export const useReadConfigurationItemByRefID = <TError = unknown, TContext = unknown>(options?: {
+export const useReadConfigurationItemByRefID = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByRefIDHook>>>, TError, { data: string }, TContext>
 }) => {
     const mutationOptions = useReadConfigurationItemByRefIDMutationOptions(options)
@@ -3181,7 +3213,7 @@ export const useReadConfigurationItemsByMetaIsCodesHook = () => {
     }
 }
 
-export const useReadConfigurationItemsByMetaIsCodesMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReadConfigurationItemsByMetaIsCodesMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesHook>>>,
         TError,
@@ -3214,12 +3246,12 @@ export type ReadConfigurationItemsByMetaIsCodesMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesHook>>>
 >
 export type ReadConfigurationItemsByMetaIsCodesMutationBody = MetaIsCodesListUi
-export type ReadConfigurationItemsByMetaIsCodesMutationError = unknown
+export type ReadConfigurationItemsByMetaIsCodesMutationError = ApiError
 
 /**
  * @summary readConfigurationItemsByMetaIsCodes
  */
-export const useReadConfigurationItemsByMetaIsCodes = <TError = unknown, TContext = unknown>(options?: {
+export const useReadConfigurationItemsByMetaIsCodes = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemsByMetaIsCodesHook>>>,
         TError,
@@ -3252,7 +3284,7 @@ export const getGetRoleParticipantBulkQueryKey = (gidSetUi: GidSetUi) => [`/read
 
 export const useGetRoleParticipantBulkQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     gidSetUi: GidSetUi,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkHook>>>, TError, TData> },
@@ -3269,12 +3301,12 @@ export const useGetRoleParticipantBulkQueryOptions = <
 }
 
 export type GetRoleParticipantBulkQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkHook>>>>
-export type GetRoleParticipantBulkQueryError = unknown
+export type GetRoleParticipantBulkQueryError = ApiError
 
 /**
  * @summary getRoleParticipantBulk
  */
-export const useGetRoleParticipantBulk = <TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkHook>>>, TError = unknown>(
+export const useGetRoleParticipantBulk = <TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkHook>>>, TError = ApiError>(
     gidSetUi: GidSetUi,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantBulkHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -3298,7 +3330,7 @@ export const useReadRelListHook = () => {
     }
 }
 
-export const useReadRelListMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReadRelListMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadRelListHook>>>, TError, { data: RelFilterSmallUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadRelListHook>>>, TError, { data: RelFilterSmallUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3316,12 +3348,12 @@ export const useReadRelListMutationOptions = <TError = unknown, TContext = unkno
 
 export type ReadRelListMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadRelListHook>>>>
 export type ReadRelListMutationBody = RelFilterSmallUi
-export type ReadRelListMutationError = unknown
+export type ReadRelListMutationError = ApiError
 
 /**
  * @summary readRelList
  */
-export const useReadRelList = <TError = unknown, TContext = unknown>(options?: {
+export const useReadRelList = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadRelListHook>>>, TError, { data: RelFilterSmallUi }, TContext>
 }) => {
     const mutationOptions = useReadRelListMutationOptions(options)
@@ -3345,7 +3377,7 @@ export const useReadPoSuperiorPoRelationshipHook = () => {
     }
 }
 
-export const useReadPoSuperiorPoRelationshipMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReadPoSuperiorPoRelationshipMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipHook>>>, TError, { data: UuidSetUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipHook>>>, TError, { data: UuidSetUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3365,12 +3397,12 @@ export const useReadPoSuperiorPoRelationshipMutationOptions = <TError = unknown,
 
 export type ReadPoSuperiorPoRelationshipMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipHook>>>>
 export type ReadPoSuperiorPoRelationshipMutationBody = UuidSetUi
-export type ReadPoSuperiorPoRelationshipMutationError = unknown
+export type ReadPoSuperiorPoRelationshipMutationError = ApiError
 
 /**
  * @summary readPoSuperiorPoRelationship
  */
-export const useReadPoSuperiorPoRelationship = <TError = unknown, TContext = unknown>(options?: {
+export const useReadPoSuperiorPoRelationship = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadPoSuperiorPoRelationshipHook>>>, TError, { data: UuidSetUi }, TContext>
 }) => {
     const mutationOptions = useReadPoSuperiorPoRelationshipMutationOptions(options)
@@ -3394,7 +3426,7 @@ export const useReadRelationshipListHook = () => {
     }
 }
 
-export const useReadRelationshipListMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReadRelationshipListMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadRelationshipListHook>>>,
         TError,
@@ -3419,12 +3451,12 @@ export const useReadRelationshipListMutationOptions = <TError = unknown, TContex
 
 export type ReadRelationshipListMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadRelationshipListHook>>>>
 export type ReadRelationshipListMutationBody = RelListFilterContainerUi
-export type ReadRelationshipListMutationError = unknown
+export type ReadRelationshipListMutationError = ApiError
 
 /**
  * @summary readRelationshipList
  */
-export const useReadRelationshipList = <TError = unknown, TContext = unknown>(options?: {
+export const useReadRelationshipList = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadRelationshipListHook>>>,
         TError,
@@ -3456,7 +3488,7 @@ export const useReadCiNeighboursHook = () => {
 export const getReadCiNeighboursQueryKey = (uuid: string, neighboursFilterContainerUi: NeighboursFilterContainerUi) =>
     [`/read/relations/neighbours/${uuid}`, neighboursFilterContainerUi] as const
 
-export const useReadCiNeighboursQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursHook>>>, TError = unknown>(
+export const useReadCiNeighboursQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursHook>>>, TError = ApiError>(
     uuid: string,
     neighboursFilterContainerUi: NeighboursFilterContainerUi,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursHook>>>, TError, TData> },
@@ -3474,12 +3506,12 @@ export const useReadCiNeighboursQueryOptions = <TData = Awaited<ReturnType<Retur
 }
 
 export type ReadCiNeighboursQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursHook>>>>
-export type ReadCiNeighboursQueryError = unknown
+export type ReadCiNeighboursQueryError = ApiError
 
 /**
  * @summary readCiNeighbours
  */
-export const useReadCiNeighbours = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursHook>>>, TError = unknown>(
+export const useReadCiNeighbours = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursHook>>>, TError = ApiError>(
     uuid: string,
     neighboursFilterContainerUi: NeighboursFilterContainerUi,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursHook>>>, TError, TData> },
@@ -3504,7 +3536,7 @@ export const useReadQueryHook = () => {
     }
 }
 
-export const useReadQueryMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReadQueryMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadQueryHook>>>, TError, { data: QueryUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadQueryHook>>>, TError, { data: QueryUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3522,12 +3554,12 @@ export const useReadQueryMutationOptions = <TError = unknown, TContext = unknown
 
 export type ReadQueryMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadQueryHook>>>>
 export type ReadQueryMutationBody = QueryUi
-export type ReadQueryMutationError = unknown
+export type ReadQueryMutationError = ApiError
 
 /**
  * @summary readQuery
  */
-export const useReadQuery = <TError = unknown, TContext = unknown>(options?: {
+export const useReadQuery = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadQueryHook>>>, TError, { data: QueryUi }, TContext>
 }) => {
     const mutationOptions = useReadQueryMutationOptions(options)
@@ -3551,7 +3583,7 @@ export const useReadIncidentRelationshipsHook = () => {
     }
 }
 
-export const useReadIncidentRelationshipsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReadIncidentRelationshipsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsHook>>>,
         TError,
@@ -3582,12 +3614,12 @@ export const useReadIncidentRelationshipsMutationOptions = <TError = unknown, TC
 
 export type ReadIncidentRelationshipsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsHook>>>>
 export type ReadIncidentRelationshipsMutationBody = IncidentRelationshipsFilterUi
-export type ReadIncidentRelationshipsMutationError = unknown
+export type ReadIncidentRelationshipsMutationError = ApiError
 
 /**
  * @summary readIncidentRelationships
  */
-export const useReadIncidentRelationships = <TError = unknown, TContext = unknown>(options?: {
+export const useReadIncidentRelationships = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadIncidentRelationshipsHook>>>,
         TError,
@@ -3616,7 +3648,7 @@ export const useReadCiUuidSetHook = () => {
     }
 }
 
-export const useReadCiUuidSetMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReadCiUuidSetMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetHook>>>, TError, { data: CiListFilterContainerUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetHook>>>, TError, { data: CiListFilterContainerUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -3634,12 +3666,12 @@ export const useReadCiUuidSetMutationOptions = <TError = unknown, TContext = unk
 
 export type ReadCiUuidSetMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetHook>>>>
 export type ReadCiUuidSetMutationBody = CiListFilterContainerUi
-export type ReadCiUuidSetMutationError = unknown
+export type ReadCiUuidSetMutationError = ApiError
 
 /**
  * @summary readCiUuidSet
  */
-export const useReadCiUuidSet = <TError = unknown, TContext = unknown>(options?: {
+export const useReadCiUuidSet = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReadCiUuidSetHook>>>, TError, { data: CiListFilterContainerUi }, TContext>
 }) => {
     const mutationOptions = useReadCiUuidSetMutationOptions(options)
@@ -3663,7 +3695,7 @@ export const useReadCiRelationshipCiListHook = () => {
     }
 }
 
-export const useReadCiRelationshipCiListMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReadCiRelationshipCiListMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListHook>>>,
         TError,
@@ -3694,12 +3726,12 @@ export const useReadCiRelationshipCiListMutationOptions = <TError = unknown, TCo
 
 export type ReadCiRelationshipCiListMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListHook>>>>
 export type ReadCiRelationshipCiListMutationBody = RelListFilterContainerUi
-export type ReadCiRelationshipCiListMutationError = unknown
+export type ReadCiRelationshipCiListMutationError = ApiError
 
 /**
  * @summary readCiRelationshipCiList
  */
-export const useReadCiRelationshipCiList = <TError = unknown, TContext = unknown>(options?: {
+export const useReadCiRelationshipCiList = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReadCiRelationshipCiListHook>>>,
         TError,
@@ -3727,7 +3759,7 @@ export const useReadCiList1Hook = () => {
 
 export const getReadCiList1QueryKey = (ciListFilterContainerUi: CiListFilterContainerUi) => [`/read/cilistfiltered`, ciListFilterContainerUi] as const
 
-export const useReadCiList1QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiList1Hook>>>, TError = unknown>(
+export const useReadCiList1QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiList1Hook>>>, TError = ApiError>(
     ciListFilterContainerUi: CiListFilterContainerUi,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiList1Hook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiList1Hook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -3743,9 +3775,9 @@ export const useReadCiList1QueryOptions = <TData = Awaited<ReturnType<ReturnType
 }
 
 export type ReadCiList1QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiList1Hook>>>>
-export type ReadCiList1QueryError = unknown
+export type ReadCiList1QueryError = ApiError
 
-export const useReadCiList1 = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiList1Hook>>>, TError = unknown>(
+export const useReadCiList1 = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiList1Hook>>>, TError = ApiError>(
     ciListFilterContainerUi: CiListFilterContainerUi,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiList1Hook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -3771,7 +3803,7 @@ export const useStorePoWithHierarchyRelHook = () => {
     }
 }
 
-export const useStorePoWithHierarchyRelMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStorePoWithHierarchyRelMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoWithHierarchyRelHook>>>,
         TError,
@@ -3802,9 +3834,9 @@ export const useStorePoWithHierarchyRelMutationOptions = <TError = unknown, TCon
 
 export type StorePoWithHierarchyRelMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStorePoWithHierarchyRelHook>>>>
 export type StorePoWithHierarchyRelMutationBody = PoWithHierarchyUi
-export type StorePoWithHierarchyRelMutationError = unknown
+export type StorePoWithHierarchyRelMutationError = ApiError
 
-export const useStorePoWithHierarchyRel = <TError = unknown, TContext = unknown>(options?: {
+export const useStorePoWithHierarchyRel = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoWithHierarchyRelHook>>>,
         TError,
@@ -3825,7 +3857,7 @@ export const useStorePoHook = () => {
     }
 }
 
-export const useStorePoMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStorePoMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoHook>>>,
         TError,
@@ -3850,9 +3882,9 @@ export const useStorePoMutationOptions = <TError = unknown, TContext = unknown>(
 
 export type StorePoMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStorePoHook>>>>
 export type StorePoMutationBody = ConfigurationItemUi
-export type StorePoMutationError = unknown
+export type StorePoMutationError = ApiError
 
-export const useStorePo = <TError = unknown, TContext = unknown>(options?: {
+export const useStorePo = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoHook>>>,
         TError,
@@ -3873,7 +3905,7 @@ export const useInvalidateSendEmailHook = () => {
     }
 }
 
-export const useInvalidateSendEmailMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useInvalidateSendEmailMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateSendEmailHook>>>,
         TError,
@@ -3904,9 +3936,9 @@ export const useInvalidateSendEmailMutationOptions = <TError = unknown, TContext
 
 export type InvalidateSendEmailMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useInvalidateSendEmailHook>>>>
 
-export type InvalidateSendEmailMutationError = unknown
+export type InvalidateSendEmailMutationError = ApiError
 
-export const useInvalidateSendEmail = <TError = unknown, TContext = unknown>(options?: {
+export const useInvalidateSendEmail = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateSendEmailHook>>>,
         TError,
@@ -3933,7 +3965,7 @@ export const useInvalidateRelationshipHook = () => {
     }
 }
 
-export const useInvalidateRelationshipMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useInvalidateRelationshipMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateRelationshipHook>>>,
         TError,
@@ -3964,9 +3996,9 @@ export const useInvalidateRelationshipMutationOptions = <TError = unknown, TCont
 
 export type InvalidateRelationshipMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useInvalidateRelationshipHook>>>>
 export type InvalidateRelationshipMutationBody = RelationshipInvalidateUi
-export type InvalidateRelationshipMutationError = unknown
+export type InvalidateRelationshipMutationError = ApiError
 
-export const useInvalidateRelationship = <TError = unknown, TContext = unknown>(options?: {
+export const useInvalidateRelationship = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateRelationshipHook>>>,
         TError,
@@ -3987,7 +4019,7 @@ export const useInvalidateSetHook = () => {
     }
 }
 
-export const useInvalidateSetMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useInvalidateSetMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInvalidateSetHook>>>, TError, { data: InvalidateSetBody }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInvalidateSetHook>>>, TError, { data: InvalidateSetBody }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4005,9 +4037,9 @@ export const useInvalidateSetMutationOptions = <TError = unknown, TContext = unk
 
 export type InvalidateSetMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useInvalidateSetHook>>>>
 export type InvalidateSetMutationBody = InvalidateSetBody
-export type InvalidateSetMutationError = unknown
+export type InvalidateSetMutationError = ApiError
 
-export const useInvalidateSet = <TError = unknown, TContext = unknown>(options?: {
+export const useInvalidateSet = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInvalidateSetHook>>>, TError, { data: InvalidateSetBody }, TContext>
 }) => {
     const mutationOptions = useInvalidateSetMutationOptions(options)
@@ -4028,7 +4060,7 @@ export const useInvalidateConfigurationItemHook = () => {
     }
 }
 
-export const useInvalidateConfigurationItemMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useInvalidateConfigurationItemMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemHook>>>,
         TError,
@@ -4059,9 +4091,9 @@ export const useInvalidateConfigurationItemMutationOptions = <TError = unknown, 
 
 export type InvalidateConfigurationItemMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemHook>>>>
 export type InvalidateConfigurationItemMutationBody = ConfigurationItemInvalidateUi
-export type InvalidateConfigurationItemMutationError = unknown
+export type InvalidateConfigurationItemMutationError = ApiError
 
-export const useInvalidateConfigurationItem = <TError = unknown, TContext = unknown>(options?: {
+export const useInvalidateConfigurationItem = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemHook>>>,
         TError,
@@ -4087,7 +4119,7 @@ export const useInvalidateConfigurationItemBiznisMdulesHook = () => {
     }
 }
 
-export const useInvalidateConfigurationItemBiznisMdulesMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useInvalidateConfigurationItemBiznisMdulesMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemBiznisMdulesHook>>>,
         TError,
@@ -4120,9 +4152,9 @@ export type InvalidateConfigurationItemBiznisMdulesMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemBiznisMdulesHook>>>
 >
 export type InvalidateConfigurationItemBiznisMdulesMutationBody = ConfigurationItemInvalidateUi
-export type InvalidateConfigurationItemBiznisMdulesMutationError = unknown
+export type InvalidateConfigurationItemBiznisMdulesMutationError = ApiError
 
-export const useInvalidateConfigurationItemBiznisMdules = <TError = unknown, TContext = unknown>(options?: {
+export const useInvalidateConfigurationItemBiznisMdules = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInvalidateConfigurationItemBiznisMdulesHook>>>,
         TError,
@@ -4148,7 +4180,7 @@ export const useStorePoHierarchyRelHook = () => {
     }
 }
 
-export const useStorePoHierarchyRelMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStorePoHierarchyRelMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoHierarchyRelHook>>>,
         TError,
@@ -4179,9 +4211,9 @@ export const useStorePoHierarchyRelMutationOptions = <TError = unknown, TContext
 
 export type StorePoHierarchyRelMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStorePoHierarchyRelHook>>>>
 export type StorePoHierarchyRelMutationBody = RelationshipUi
-export type StorePoHierarchyRelMutationError = unknown
+export type StorePoHierarchyRelMutationError = ApiError
 
-export const useStorePoHierarchyRel = <TError = unknown, TContext = unknown>(options?: {
+export const useStorePoHierarchyRel = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStorePoHierarchyRelHook>>>,
         TError,
@@ -4207,7 +4239,7 @@ export const useReportErrorHook = () => {
     }
 }
 
-export const useReportErrorMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReportErrorMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReportErrorHook>>>, TError, { data: UserFeedbackErrorReportUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReportErrorHook>>>, TError, { data: UserFeedbackErrorReportUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4225,9 +4257,9 @@ export const useReportErrorMutationOptions = <TError = unknown, TContext = unkno
 
 export type ReportErrorMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReportErrorHook>>>>
 export type ReportErrorMutationBody = UserFeedbackErrorReportUi
-export type ReportErrorMutationError = unknown
+export type ReportErrorMutationError = ApiError
 
-export const useReportError = <TError = unknown, TContext = unknown>(options?: {
+export const useReportError = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReportErrorHook>>>, TError, { data: UserFeedbackErrorReportUi }, TContext>
 }) => {
     const mutationOptions = useReportErrorMutationOptions(options)
@@ -4248,7 +4280,7 @@ export const useDeleteRelationshipHook = () => {
     }
 }
 
-export const useDeleteRelationshipMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteRelationshipMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteRelationshipHook>>>,
         TError,
@@ -4273,9 +4305,9 @@ export const useDeleteRelationshipMutationOptions = <TError = unknown, TContext 
 
 export type DeleteRelationshipMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteRelationshipHook>>>>
 export type DeleteRelationshipMutationBody = RelationshipInvalidateUi
-export type DeleteRelationshipMutationError = unknown
+export type DeleteRelationshipMutationError = ApiError
 
-export const useDeleteRelationship = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteRelationship = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteRelationshipHook>>>,
         TError,
@@ -4296,7 +4328,7 @@ export const useChangeOwnerSetHook = () => {
     }
 }
 
-export const useChangeOwnerSetMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useChangeOwnerSetMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetHook>>>, TError, { data: ChangeOwnerSetUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetHook>>>, TError, { data: ChangeOwnerSetUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4314,9 +4346,9 @@ export const useChangeOwnerSetMutationOptions = <TError = unknown, TContext = un
 
 export type ChangeOwnerSetMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetHook>>>>
 export type ChangeOwnerSetMutationBody = ChangeOwnerSetUi
-export type ChangeOwnerSetMutationError = unknown
+export type ChangeOwnerSetMutationError = ApiError
 
-export const useChangeOwnerSet = <TError = unknown, TContext = unknown>(options?: {
+export const useChangeOwnerSet = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useChangeOwnerSetHook>>>, TError, { data: ChangeOwnerSetUi }, TContext>
 }) => {
     const mutationOptions = useChangeOwnerSetMutationOptions(options)
@@ -4337,7 +4369,7 @@ export const useChangePoHierarchyHook = () => {
     }
 }
 
-export const useChangePoHierarchyMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useChangePoHierarchyMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useChangePoHierarchyHook>>>,
         TError,
@@ -4368,9 +4400,9 @@ export const useChangePoHierarchyMutationOptions = <TError = unknown, TContext =
 
 export type ChangePoHierarchyMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useChangePoHierarchyHook>>>>
 export type ChangePoHierarchyMutationBody = ChangeHierarchyUi
-export type ChangePoHierarchyMutationError = unknown
+export type ChangePoHierarchyMutationError = ApiError
 
-export const useChangePoHierarchy = <TError = unknown, TContext = unknown>(options?: {
+export const useChangePoHierarchy = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useChangePoHierarchyHook>>>,
         TError,
@@ -4396,7 +4428,7 @@ export const useAddCiToGroupHook = () => {
     }
 }
 
-export const useAddCiToGroupMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useAddCiToGroupMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAddCiToGroupHook>>>, TError, { uuid: string; data: string[] }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAddCiToGroupHook>>>, TError, { uuid: string; data: string[] }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4414,9 +4446,9 @@ export const useAddCiToGroupMutationOptions = <TError = unknown, TContext = unkn
 
 export type AddCiToGroupMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useAddCiToGroupHook>>>>
 export type AddCiToGroupMutationBody = string[]
-export type AddCiToGroupMutationError = unknown
+export type AddCiToGroupMutationError = ApiError
 
-export const useAddCiToGroup = <TError = unknown, TContext = unknown>(options?: {
+export const useAddCiToGroup = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useAddCiToGroupHook>>>, TError, { uuid: string; data: string[] }, TContext>
 }) => {
     const mutationOptions = useAddCiToGroupMutationOptions(options)
@@ -4437,7 +4469,7 @@ export const getValidateCIsByTypesAndOwnerQueryKey = (params: ValidateCIsByTypes
 
 export const useValidateCIsByTypesAndOwnerQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useValidateCIsByTypesAndOwnerHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     params: ValidateCIsByTypesAndOwnerParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useValidateCIsByTypesAndOwnerHook>>>, TError, TData> },
@@ -4455,9 +4487,9 @@ export const useValidateCIsByTypesAndOwnerQueryOptions = <
 }
 
 export type ValidateCIsByTypesAndOwnerQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useValidateCIsByTypesAndOwnerHook>>>>
-export type ValidateCIsByTypesAndOwnerQueryError = unknown
+export type ValidateCIsByTypesAndOwnerQueryError = ApiError
 
-export const useValidateCIsByTypesAndOwner = <TData = Awaited<ReturnType<ReturnType<typeof useValidateCIsByTypesAndOwnerHook>>>, TError = unknown>(
+export const useValidateCIsByTypesAndOwner = <TData = Awaited<ReturnType<ReturnType<typeof useValidateCIsByTypesAndOwnerHook>>>, TError = ApiError>(
     params: ValidateCIsByTypesAndOwnerParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useValidateCIsByTypesAndOwnerHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -4482,7 +4514,7 @@ export const getListAllReindexTasksQueryKey = () => [`/util/reindexelastic/tasks
 
 export const useListAllReindexTasksQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -4498,9 +4530,9 @@ export const useListAllReindexTasksQueryOptions = <
 }
 
 export type ListAllReindexTasksQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>>
-export type ListAllReindexTasksQueryError = unknown
+export type ListAllReindexTasksQueryError = ApiError
 
-export const useListAllReindexTasks = <TData = Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError = unknown>(options?: {
+export const useListAllReindexTasks = <TData = Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAllReindexTasksHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useListAllReindexTasksQueryOptions(options)
@@ -4524,7 +4556,7 @@ export const getGetReindexTaskStateByUuidQueryKey = (uuid: string) => [`/util/re
 
 export const useGetReindexTaskStateByUuidQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>, TError, TData> },
@@ -4542,9 +4574,9 @@ export const useGetReindexTaskStateByUuidQueryOptions = <
 }
 
 export type GetReindexTaskStateByUuidQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>>
-export type GetReindexTaskStateByUuidQueryError = unknown
+export type GetReindexTaskStateByUuidQueryError = ApiError
 
-export const useGetReindexTaskStateByUuid = <TData = Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>, TError = unknown>(
+export const useGetReindexTaskStateByUuid = <TData = Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>, TError = ApiError>(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetReindexTaskStateByUuidHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -4565,7 +4597,7 @@ export const useCancelReindexTaskByUuidHook = () => {
     }
 }
 
-export const useCancelReindexTaskByUuidMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useCancelReindexTaskByUuidMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>, TError, { uuid: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>, TError, { uuid: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -4583,9 +4615,9 @@ export const useCancelReindexTaskByUuidMutationOptions = <TError = unknown, TCon
 
 export type CancelReindexTaskByUuidMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>>
 
-export type CancelReindexTaskByUuidMutationError = unknown
+export type CancelReindexTaskByUuidMutationError = ApiError
 
-export const useCancelReindexTaskByUuid = <TError = unknown, TContext = unknown>(options?: {
+export const useCancelReindexTaskByUuid = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCancelReindexTaskByUuidHook>>>, TError, { uuid: string }, TContext>
 }) => {
     const mutationOptions = useCancelReindexTaskByUuidMutationOptions(options)
@@ -4603,7 +4635,7 @@ export const useGetPropertiesHook = () => {
 
 export const getGetPropertiesQueryKey = () => [`/util/properties`] as const
 
-export const useGetPropertiesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetPropertiesHook>>>, TError = unknown>(options?: {
+export const useGetPropertiesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetPropertiesHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetPropertiesHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetPropertiesHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -4618,9 +4650,9 @@ export const useGetPropertiesQueryOptions = <TData = Awaited<ReturnType<ReturnTy
 }
 
 export type GetPropertiesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetPropertiesHook>>>>
-export type GetPropertiesQueryError = unknown
+export type GetPropertiesQueryError = ApiError
 
-export const useGetProperties = <TData = Awaited<ReturnType<ReturnType<typeof useGetPropertiesHook>>>, TError = unknown>(options?: {
+export const useGetProperties = <TData = Awaited<ReturnType<ReturnType<typeof useGetPropertiesHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetPropertiesHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useGetPropertiesQueryOptions(options)
@@ -4642,7 +4674,7 @@ export const useGetDocumentHook = () => {
 
 export const getGetDocumentQueryKey = (ciUuid: string) => [`/util/getDocument/${ciUuid}`] as const
 
-export const useGetDocumentQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetDocumentHook>>>, TError = unknown>(
+export const useGetDocumentQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetDocumentHook>>>, TError = ApiError>(
     ciUuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetDocumentHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetDocumentHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -4658,9 +4690,9 @@ export const useGetDocumentQueryOptions = <TData = Awaited<ReturnType<ReturnType
 }
 
 export type GetDocumentQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetDocumentHook>>>>
-export type GetDocumentQueryError = unknown
+export type GetDocumentQueryError = ApiError
 
-export const useGetDocument = <TData = Awaited<ReturnType<ReturnType<typeof useGetDocumentHook>>>, TError = unknown>(
+export const useGetDocument = <TData = Awaited<ReturnType<ReturnType<typeof useGetDocumentHook>>>, TError = ApiError>(
     ciUuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetDocumentHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -4683,7 +4715,7 @@ export const useIntegrityCheckHook = () => {
 
 export const getIntegrityCheckQueryKey = () => [`/util/databaseIntegrityCheck`] as const
 
-export const useIntegrityCheckQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useIntegrityCheckHook>>>, TError = unknown>(options?: {
+export const useIntegrityCheckQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useIntegrityCheckHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useIntegrityCheckHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useIntegrityCheckHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -4698,9 +4730,9 @@ export const useIntegrityCheckQueryOptions = <TData = Awaited<ReturnType<ReturnT
 }
 
 export type IntegrityCheckQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useIntegrityCheckHook>>>>
-export type IntegrityCheckQueryError = unknown
+export type IntegrityCheckQueryError = ApiError
 
-export const useIntegrityCheck = <TData = Awaited<ReturnType<ReturnType<typeof useIntegrityCheckHook>>>, TError = unknown>(options?: {
+export const useIntegrityCheck = <TData = Awaited<ReturnType<ReturnType<typeof useIntegrityCheckHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useIntegrityCheckHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useIntegrityCheckQueryOptions(options)
@@ -4724,7 +4756,7 @@ export const getCiRelTypesIntegrityCheckQueryKey = () => [`/util/ciRelTypesInteg
 
 export const useCiRelTypesIntegrityCheckQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useCiRelTypesIntegrityCheckHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useCiRelTypesIntegrityCheckHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useCiRelTypesIntegrityCheckHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -4741,11 +4773,11 @@ export const useCiRelTypesIntegrityCheckQueryOptions = <
 }
 
 export type CiRelTypesIntegrityCheckQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCiRelTypesIntegrityCheckHook>>>>
-export type CiRelTypesIntegrityCheckQueryError = unknown
+export type CiRelTypesIntegrityCheckQueryError = ApiError
 
 export const useCiRelTypesIntegrityCheck = <
     TData = Awaited<ReturnType<ReturnType<typeof useCiRelTypesIntegrityCheckHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useCiRelTypesIntegrityCheckHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -4768,7 +4800,7 @@ export const useGetRequestStatusHook = () => {
 
 export const getGetRequestStatusQueryKey = (requestId: string) => [`/request-tracking/${requestId}`] as const
 
-export const useGetRequestStatusQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetRequestStatusHook>>>, TError = unknown>(
+export const useGetRequestStatusQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetRequestStatusHook>>>, TError = ApiError>(
     requestId: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRequestStatusHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRequestStatusHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -4785,9 +4817,9 @@ export const useGetRequestStatusQueryOptions = <TData = Awaited<ReturnType<Retur
 }
 
 export type GetRequestStatusQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetRequestStatusHook>>>>
-export type GetRequestStatusQueryError = unknown
+export type GetRequestStatusQueryError = ApiError
 
-export const useGetRequestStatus = <TData = Awaited<ReturnType<ReturnType<typeof useGetRequestStatusHook>>>, TError = unknown>(
+export const useGetRequestStatus = <TData = Awaited<ReturnType<ReturnType<typeof useGetRequestStatusHook>>>, TError = ApiError>(
     requestId: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRequestStatusHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -4810,7 +4842,7 @@ export const useReadReportsWithFilterHook = () => {
 
 export const getReadReportsWithFilterQueryKey = (params?: ReadReportsWithFilterParams) => [`/reports`, ...(params ? [params] : [])] as const
 
-export const useReadReportsWithFilterQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterHook>>>, TError = unknown>(
+export const useReadReportsWithFilterQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterHook>>>, TError = ApiError>(
     params?: ReadReportsWithFilterParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -4827,9 +4859,9 @@ export const useReadReportsWithFilterQueryOptions = <TData = Awaited<ReturnType<
 }
 
 export type ReadReportsWithFilterQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterHook>>>>
-export type ReadReportsWithFilterQueryError = unknown
+export type ReadReportsWithFilterQueryError = ApiError
 
-export const useReadReportsWithFilter = <TData = Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterHook>>>, TError = unknown>(
+export const useReadReportsWithFilter = <TData = Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterHook>>>, TError = ApiError>(
     params?: ReadReportsWithFilterParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadReportsWithFilterHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -4854,7 +4886,7 @@ export const getReadConfigurationItemByMetaIsCodeQueryKey = (metaIsCode: string)
 
 export const useReadConfigurationItemByMetaIsCodeQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     metaIsCode: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeHook>>>, TError, TData> },
@@ -4874,11 +4906,11 @@ export const useReadConfigurationItemByMetaIsCodeQueryOptions = <
 export type ReadConfigurationItemByMetaIsCodeQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeHook>>>
 >
-export type ReadConfigurationItemByMetaIsCodeQueryError = unknown
+export type ReadConfigurationItemByMetaIsCodeQueryError = ApiError
 
 export const useReadConfigurationItemByMetaIsCode = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     metaIsCode: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemByMetaIsCodeHook>>>, TError, TData> },
@@ -4902,7 +4934,7 @@ export const useSearchAllHook = () => {
 
 export const getSearchAllQueryKey = (params?: SearchAllParams) => [`/read/search`, ...(params ? [params] : [])] as const
 
-export const useSearchAllQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError = unknown>(
+export const useSearchAllQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError = ApiError>(
     params?: SearchAllParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -4918,9 +4950,9 @@ export const useSearchAllQueryOptions = <TData = Awaited<ReturnType<ReturnType<t
 }
 
 export type SearchAllQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>>
-export type SearchAllQueryError = unknown
+export type SearchAllQueryError = ApiError
 
-export const useSearchAll = <TData = Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError = unknown>(
+export const useSearchAll = <TData = Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError = ApiError>(
     params?: SearchAllParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useSearchAllHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -4943,7 +4975,7 @@ export const useGetRoleParticipantHook = () => {
 
 export const getGetRoleParticipantQueryKey = (gid: string) => [`/read/roleParticipant/${gid}`] as const
 
-export const useGetRoleParticipantQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantHook>>>, TError = unknown>(
+export const useGetRoleParticipantQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantHook>>>, TError = ApiError>(
     gid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -4959,9 +4991,9 @@ export const useGetRoleParticipantQueryOptions = <TData = Awaited<ReturnType<Ret
 }
 
 export type GetRoleParticipantQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantHook>>>>
-export type GetRoleParticipantQueryError = unknown
+export type GetRoleParticipantQueryError = ApiError
 
-export const useGetRoleParticipant = <TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantHook>>>, TError = unknown>(
+export const useGetRoleParticipant = <TData = Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantHook>>>, TError = ApiError>(
     gid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRoleParticipantHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -4987,7 +5019,7 @@ export const getReadCiNeighboursWithAllRelsQueryKey = (uuid: string, params?: Re
 
 export const useReadCiNeighboursWithAllRelsQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursWithAllRelsHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     params?: ReadCiNeighboursWithAllRelsParams,
@@ -5006,9 +5038,9 @@ export const useReadCiNeighboursWithAllRelsQueryOptions = <
 }
 
 export type ReadCiNeighboursWithAllRelsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursWithAllRelsHook>>>>
-export type ReadCiNeighboursWithAllRelsQueryError = unknown
+export type ReadCiNeighboursWithAllRelsQueryError = ApiError
 
-export const useReadCiNeighboursWithAllRels = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursWithAllRelsHook>>>, TError = unknown>(
+export const useReadCiNeighboursWithAllRels = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursWithAllRelsHook>>>, TError = ApiError>(
     uuid: string,
     params?: ReadCiNeighboursWithAllRelsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiNeighboursWithAllRelsHook>>>, TError, TData> },
@@ -5032,7 +5064,7 @@ export const useReadRelationshipHook = () => {
 
 export const getReadRelationshipQueryKey = (uuid: string) => [`/read/relation/${uuid}`] as const
 
-export const useReadRelationshipQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipHook>>>, TError = unknown>(
+export const useReadRelationshipQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipHook>>>, TError = ApiError>(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelationshipHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelationshipHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -5048,9 +5080,9 @@ export const useReadRelationshipQueryOptions = <TData = Awaited<ReturnType<Retur
 }
 
 export type ReadRelationshipQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadRelationshipHook>>>>
-export type ReadRelationshipQueryError = unknown
+export type ReadRelationshipQueryError = ApiError
 
-export const useReadRelationship = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipHook>>>, TError = unknown>(
+export const useReadRelationship = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipHook>>>, TError = ApiError>(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelationshipHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -5075,7 +5107,7 @@ export const getGetKSSpravcaVerejnaMocAktivnaFZCQueryKey = () => [`/read/ksSpVmF
 
 export const useGetKSSpravcaVerejnaMocAktivnaFZCQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -5092,11 +5124,11 @@ export const useGetKSSpravcaVerejnaMocAktivnaFZCQueryOptions = <
 }
 
 export type GetKSSpravcaVerejnaMocAktivnaFZCQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCHook>>>>
-export type GetKSSpravcaVerejnaMocAktivnaFZCQueryError = unknown
+export type GetKSSpravcaVerejnaMocAktivnaFZCQueryError = ApiError
 
 export const useGetKSSpravcaVerejnaMocAktivnaFZC = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetKSSpravcaVerejnaMocAktivnaFZCHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -5122,7 +5154,7 @@ export const useReadCiList2Hook = () => {
 
 export const getReadCiList2QueryKey = (params?: ReadCiList2Params) => [`/read/cilist`, ...(params ? [params] : [])] as const
 
-export const useReadCiList2QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiList2Hook>>>, TError = unknown>(
+export const useReadCiList2QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiList2Hook>>>, TError = ApiError>(
     params?: ReadCiList2Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiList2Hook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiList2Hook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -5138,12 +5170,12 @@ export const useReadCiList2QueryOptions = <TData = Awaited<ReturnType<ReturnType
 }
 
 export type ReadCiList2QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiList2Hook>>>>
-export type ReadCiList2QueryError = unknown
+export type ReadCiList2QueryError = ApiError
 
 /**
  * @summary readCiList
  */
-export const useReadCiList2 = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiList2Hook>>>, TError = unknown>(
+export const useReadCiList2 = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiList2Hook>>>, TError = ApiError>(
     params?: ReadCiList2Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiList2Hook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -5166,7 +5198,7 @@ export const useReadConfigurationItemHook = () => {
 
 export const getReadConfigurationItemQueryKey = (uuid: string) => [`/read/ci/${uuid}`] as const
 
-export const useReadConfigurationItemQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemHook>>>, TError = unknown>(
+export const useReadConfigurationItemQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemHook>>>, TError = ApiError>(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -5183,9 +5215,9 @@ export const useReadConfigurationItemQueryOptions = <TData = Awaited<ReturnType<
 }
 
 export type ReadConfigurationItemQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemHook>>>>
-export type ReadConfigurationItemQueryError = unknown
+export type ReadConfigurationItemQueryError = ApiError
 
-export const useReadConfigurationItem = <TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemHook>>>, TError = unknown>(
+export const useReadConfigurationItem = <TData = Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemHook>>>, TError = ApiError>(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadConfigurationItemHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -5209,7 +5241,7 @@ export const useReadRelationshipsHook = () => {
 export const getReadRelationshipsQueryKey = (uuid: string, params?: ReadRelationshipsParams) =>
     [`/read/ci/${uuid}/relations`, ...(params ? [params] : [])] as const
 
-export const useReadRelationshipsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipsHook>>>, TError = unknown>(
+export const useReadRelationshipsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipsHook>>>, TError = ApiError>(
     uuid: string,
     params?: ReadRelationshipsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelationshipsHook>>>, TError, TData> },
@@ -5227,9 +5259,9 @@ export const useReadRelationshipsQueryOptions = <TData = Awaited<ReturnType<Retu
 }
 
 export type ReadRelationshipsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadRelationshipsHook>>>>
-export type ReadRelationshipsQueryError = unknown
+export type ReadRelationshipsQueryError = ApiError
 
-export const useReadRelationships = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipsHook>>>, TError = unknown>(
+export const useReadRelationships = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelationshipsHook>>>, TError = ApiError>(
     uuid: string,
     params?: ReadRelationshipsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelationshipsHook>>>, TError, TData> },
@@ -5256,7 +5288,7 @@ export const getReadNeighboursConfigurationItemsCountQueryKey = (uuid: string, p
 
 export const useReadNeighboursConfigurationItemsCountQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsCountHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     params?: ReadNeighboursConfigurationItemsCountParams,
@@ -5277,11 +5309,11 @@ export const useReadNeighboursConfigurationItemsCountQueryOptions = <
 export type ReadNeighboursConfigurationItemsCountQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsCountHook>>>
 >
-export type ReadNeighboursConfigurationItemsCountQueryError = unknown
+export type ReadNeighboursConfigurationItemsCountQueryError = ApiError
 
 export const useReadNeighboursConfigurationItemsCount = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsCountHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     params?: ReadNeighboursConfigurationItemsCountParams,
@@ -5309,7 +5341,7 @@ export const getReadNeighboursConfigurationItemsQueryKey = (uuid: string, params
 
 export const useReadNeighboursConfigurationItemsQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     params?: ReadNeighboursConfigurationItemsParams,
@@ -5328,17 +5360,112 @@ export const useReadNeighboursConfigurationItemsQueryOptions = <
 }
 
 export type ReadNeighboursConfigurationItemsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsHook>>>>
-export type ReadNeighboursConfigurationItemsQueryError = unknown
+export type ReadNeighboursConfigurationItemsQueryError = ApiError
 
 export const useReadNeighboursConfigurationItems = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     params?: ReadNeighboursConfigurationItemsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useReadNeighboursConfigurationItemsQueryOptions(uuid, params, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useReadCiDerivedRelTypesCountHook = () => {
+    const readCiDerivedRelTypesCount = useCmdbSwaggerClient<DerivedCiTypeCountSummaryUi>()
+
+    return (ciUUID: string, params?: ReadCiDerivedRelTypesCountParams, signal?: AbortSignal) => {
+        return readCiDerivedRelTypesCount({ url: `/read/ci/${ciUUID}/neighbourscount/derived`, method: 'get', params, signal })
+    }
+}
+
+export const getReadCiDerivedRelTypesCountQueryKey = (ciUUID: string, params?: ReadCiDerivedRelTypesCountParams) =>
+    [`/read/ci/${ciUUID}/neighbourscount/derived`, ...(params ? [params] : [])] as const
+
+export const useReadCiDerivedRelTypesCountQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesCountHook>>>,
+    TError = ApiError,
+>(
+    ciUUID: string,
+    params?: ReadCiDerivedRelTypesCountParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesCountHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesCountHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getReadCiDerivedRelTypesCountQueryKey(ciUUID, params)
+
+    const readCiDerivedRelTypesCount = useReadCiDerivedRelTypesCountHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesCountHook>>>> = ({ signal }) =>
+        readCiDerivedRelTypesCount(ciUUID, params, signal)
+
+    return { queryKey, queryFn, enabled: !!ciUUID, ...queryOptions }
+}
+
+export type ReadCiDerivedRelTypesCountQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesCountHook>>>>
+export type ReadCiDerivedRelTypesCountQueryError = ApiError
+
+export const useReadCiDerivedRelTypesCount = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesCountHook>>>, TError = ApiError>(
+    ciUUID: string,
+    params?: ReadCiDerivedRelTypesCountParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesCountHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useReadCiDerivedRelTypesCountQueryOptions(ciUUID, params, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useReadCiDerivedRelTypesHook = () => {
+    const readCiDerivedRelTypes = useClientForReadCiDerivedRelTypesUsingGET<CiWithRelsResultUi>()
+
+    return (ciUUID: string, derivedTechnicalName: string, params?: ReadCiDerivedRelTypesParams, signal?: AbortSignal) => {
+        return readCiDerivedRelTypes({ url: `/read/ci/${ciUUID}/neighbours/derived/${derivedTechnicalName}`, method: 'get', params, signal })
+    }
+}
+
+export const getReadCiDerivedRelTypesQueryKey = (ciUUID: string, derivedTechnicalName: string, params?: ReadCiDerivedRelTypesParams) =>
+    [`/read/ci/${ciUUID}/neighbours/derived/${derivedTechnicalName}`, ...(params ? [params] : [])] as const
+
+export const useReadCiDerivedRelTypesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesHook>>>, TError = ApiError>(
+    ciUUID: string,
+    derivedTechnicalName: string,
+    params?: ReadCiDerivedRelTypesParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getReadCiDerivedRelTypesQueryKey(ciUUID, derivedTechnicalName, params)
+
+    const readCiDerivedRelTypes = useReadCiDerivedRelTypesHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesHook>>>> = ({ signal }) =>
+        readCiDerivedRelTypes(ciUUID, derivedTechnicalName, params, signal)
+
+    return { queryKey, queryFn, enabled: !!(ciUUID && derivedTechnicalName), ...queryOptions }
+}
+
+export type ReadCiDerivedRelTypesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesHook>>>>
+export type ReadCiDerivedRelTypesQueryError = ApiError
+
+export const useReadCiDerivedRelTypes = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesHook>>>, TError = ApiError>(
+    ciUUID: string,
+    derivedTechnicalName: string,
+    params?: ReadCiDerivedRelTypesParams,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiDerivedRelTypesHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useReadCiDerivedRelTypesQueryOptions(ciUUID, derivedTechnicalName, params, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -5360,7 +5487,7 @@ export const getGetCountCiTypesByOwnerQueryKey = (params?: GetCountCiTypesByOwne
 
 export const useGetCountCiTypesByOwnerQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetCountCiTypesByOwnerHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     params?: GetCountCiTypesByOwnerParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCountCiTypesByOwnerHook>>>, TError, TData> },
@@ -5378,9 +5505,9 @@ export const useGetCountCiTypesByOwnerQueryOptions = <
 }
 
 export type GetCountCiTypesByOwnerQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetCountCiTypesByOwnerHook>>>>
-export type GetCountCiTypesByOwnerQueryError = unknown
+export type GetCountCiTypesByOwnerQueryError = ApiError
 
-export const useGetCountCiTypesByOwner = <TData = Awaited<ReturnType<ReturnType<typeof useGetCountCiTypesByOwnerHook>>>, TError = unknown>(
+export const useGetCountCiTypesByOwner = <TData = Awaited<ReturnType<ReturnType<typeof useGetCountCiTypesByOwnerHook>>>, TError = ApiError>(
     params?: GetCountCiTypesByOwnerParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCountCiTypesByOwnerHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -5403,7 +5530,7 @@ export const useGetMetricsHook = () => {
 
 export const getGetMetricsQueryKey = (params?: GetMetricsParams) => [`/metrics`, ...(params ? [params] : [])] as const
 
-export const useGetMetricsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetricsHook>>>, TError = unknown>(
+export const useGetMetricsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetricsHook>>>, TError = ApiError>(
     params?: GetMetricsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetricsHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetricsHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -5419,9 +5546,9 @@ export const useGetMetricsQueryOptions = <TData = Awaited<ReturnType<ReturnType<
 }
 
 export type GetMetricsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetMetricsHook>>>>
-export type GetMetricsQueryError = unknown
+export type GetMetricsQueryError = ApiError
 
-export const useGetMetrics = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetricsHook>>>, TError = unknown>(
+export const useGetMetrics = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetricsHook>>>, TError = ApiError>(
     params?: GetMetricsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetricsHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -5445,7 +5572,7 @@ export const useReadRelHistoryVersionHook = () => {
 export const getReadRelHistoryVersionQueryKey = (uuid: string, params?: ReadRelHistoryVersionParams) =>
     [`/history/read/rel/${uuid}`, ...(params ? [params] : [])] as const
 
-export const useReadRelHistoryVersionQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionHook>>>, TError = unknown>(
+export const useReadRelHistoryVersionQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionHook>>>, TError = ApiError>(
     uuid: string,
     params?: ReadRelHistoryVersionParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionHook>>>, TError, TData> },
@@ -5463,9 +5590,9 @@ export const useReadRelHistoryVersionQueryOptions = <TData = Awaited<ReturnType<
 }
 
 export type ReadRelHistoryVersionQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionHook>>>>
-export type ReadRelHistoryVersionQueryError = unknown
+export type ReadRelHistoryVersionQueryError = ApiError
 
-export const useReadRelHistoryVersion = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionHook>>>, TError = unknown>(
+export const useReadRelHistoryVersion = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionHook>>>, TError = ApiError>(
     uuid: string,
     params?: ReadRelHistoryVersionParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionHook>>>, TError, TData> },
@@ -5492,7 +5619,7 @@ export const getReadRelHistoryVersionsQueryKey = (uuid: string, params: ReadRelH
 
 export const useReadRelHistoryVersionsQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionsHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     params: ReadRelHistoryVersionsParams,
@@ -5511,9 +5638,9 @@ export const useReadRelHistoryVersionsQueryOptions = <
 }
 
 export type ReadRelHistoryVersionsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionsHook>>>>
-export type ReadRelHistoryVersionsQueryError = unknown
+export type ReadRelHistoryVersionsQueryError = ApiError
 
-export const useReadRelHistoryVersions = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionsHook>>>, TError = unknown>(
+export const useReadRelHistoryVersions = <TData = Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionsHook>>>, TError = ApiError>(
     uuid: string,
     params: ReadRelHistoryVersionsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadRelHistoryVersionsHook>>>, TError, TData> },
@@ -5537,7 +5664,7 @@ export const useGdprHistoryHook = () => {
 
 export const getGdprHistoryQueryKey = (params: GdprHistoryParams) => [`/history/read/gdpr/list`, ...(params ? [params] : [])] as const
 
-export const useGdprHistoryQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGdprHistoryHook>>>, TError = unknown>(
+export const useGdprHistoryQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGdprHistoryHook>>>, TError = ApiError>(
     params: GdprHistoryParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGdprHistoryHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGdprHistoryHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -5553,9 +5680,9 @@ export const useGdprHistoryQueryOptions = <TData = Awaited<ReturnType<ReturnType
 }
 
 export type GdprHistoryQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGdprHistoryHook>>>>
-export type GdprHistoryQueryError = unknown
+export type GdprHistoryQueryError = ApiError
 
-export const useGdprHistory = <TData = Awaited<ReturnType<ReturnType<typeof useGdprHistoryHook>>>, TError = unknown>(
+export const useGdprHistory = <TData = Awaited<ReturnType<ReturnType<typeof useGdprHistoryHook>>>, TError = ApiError>(
     params: GdprHistoryParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGdprHistoryHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -5579,7 +5706,7 @@ export const useReadCiHistoryVersionHook = () => {
 export const getReadCiHistoryVersionQueryKey = (uuid: string, params?: ReadCiHistoryVersionParams) =>
     [`/history/read/ci/${uuid}`, ...(params ? [params] : [])] as const
 
-export const useReadCiHistoryVersionQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionHook>>>, TError = unknown>(
+export const useReadCiHistoryVersionQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionHook>>>, TError = ApiError>(
     uuid: string,
     params?: ReadCiHistoryVersionParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionHook>>>, TError, TData> },
@@ -5597,9 +5724,9 @@ export const useReadCiHistoryVersionQueryOptions = <TData = Awaited<ReturnType<R
 }
 
 export type ReadCiHistoryVersionQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionHook>>>>
-export type ReadCiHistoryVersionQueryError = unknown
+export type ReadCiHistoryVersionQueryError = ApiError
 
-export const useReadCiHistoryVersion = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionHook>>>, TError = unknown>(
+export const useReadCiHistoryVersion = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionHook>>>, TError = ApiError>(
     uuid: string,
     params?: ReadCiHistoryVersionParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionHook>>>, TError, TData> },
@@ -5626,7 +5753,7 @@ export const getReadCiHistoryVersionsIncidentRelsQueryKey = (uuid: string, param
 
 export const useReadCiHistoryVersionsIncidentRelsQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsIncidentRelsHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     params: ReadCiHistoryVersionsIncidentRelsParams,
@@ -5647,11 +5774,11 @@ export const useReadCiHistoryVersionsIncidentRelsQueryOptions = <
 export type ReadCiHistoryVersionsIncidentRelsQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsIncidentRelsHook>>>
 >
-export type ReadCiHistoryVersionsIncidentRelsQueryError = unknown
+export type ReadCiHistoryVersionsIncidentRelsQueryError = ApiError
 
 export const useReadCiHistoryVersionsIncidentRels = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsIncidentRelsHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     params: ReadCiHistoryVersionsIncidentRelsParams,
@@ -5677,7 +5804,7 @@ export const useReadCiHistoryVersionsHook = () => {
 export const getReadCiHistoryVersionsQueryKey = (uuid: string, params: ReadCiHistoryVersionsParams) =>
     [`/history/read/ci/${uuid}/list`, ...(params ? [params] : [])] as const
 
-export const useReadCiHistoryVersionsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsHook>>>, TError = unknown>(
+export const useReadCiHistoryVersionsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsHook>>>, TError = ApiError>(
     uuid: string,
     params: ReadCiHistoryVersionsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsHook>>>, TError, TData> },
@@ -5695,9 +5822,9 @@ export const useReadCiHistoryVersionsQueryOptions = <TData = Awaited<ReturnType<
 }
 
 export type ReadCiHistoryVersionsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsHook>>>>
-export type ReadCiHistoryVersionsQueryError = unknown
+export type ReadCiHistoryVersionsQueryError = ApiError
 
-export const useReadCiHistoryVersions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsHook>>>, TError = unknown>(
+export const useReadCiHistoryVersions = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsHook>>>, TError = ApiError>(
     uuid: string,
     params: ReadCiHistoryVersionsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsHook>>>, TError, TData> },
@@ -5723,7 +5850,7 @@ export const getReadCiHistoryModifiedByListQueryKey = (uuid: string) => [`/histo
 
 export const useReadCiHistoryModifiedByListQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListHook>>>, TError, TData> },
@@ -5741,9 +5868,9 @@ export const useReadCiHistoryModifiedByListQueryOptions = <
 }
 
 export type ReadCiHistoryModifiedByListQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListHook>>>>
-export type ReadCiHistoryModifiedByListQueryError = unknown
+export type ReadCiHistoryModifiedByListQueryError = ApiError
 
-export const useReadCiHistoryModifiedByList = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListHook>>>, TError = unknown>(
+export const useReadCiHistoryModifiedByList = <TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListHook>>>, TError = ApiError>(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryModifiedByListHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -5768,7 +5895,7 @@ export const getReadCiHistoryVersionsActionsListQueryKey = (uuid: string) => [`/
 
 export const useReadCiHistoryVersionsActionsListQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListHook>>>, TError, TData> },
@@ -5786,11 +5913,11 @@ export const useReadCiHistoryVersionsActionsListQueryOptions = <
 }
 
 export type ReadCiHistoryVersionsActionsListQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListHook>>>>
-export type ReadCiHistoryVersionsActionsListQueryError = unknown
+export type ReadCiHistoryVersionsActionsListQueryError = ApiError
 
 export const useReadCiHistoryVersionsActionsList = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadCiHistoryVersionsActionsListHook>>>, TError, TData> },
@@ -5817,7 +5944,7 @@ export const getReadAllCiHistoryVersionsQueryKey = (params: ReadAllCiHistoryVers
 
 export const useReadAllCiHistoryVersionsQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useReadAllCiHistoryVersionsHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     params: ReadAllCiHistoryVersionsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadAllCiHistoryVersionsHook>>>, TError, TData> },
@@ -5835,9 +5962,9 @@ export const useReadAllCiHistoryVersionsQueryOptions = <
 }
 
 export type ReadAllCiHistoryVersionsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReadAllCiHistoryVersionsHook>>>>
-export type ReadAllCiHistoryVersionsQueryError = unknown
+export type ReadAllCiHistoryVersionsQueryError = ApiError
 
-export const useReadAllCiHistoryVersions = <TData = Awaited<ReturnType<ReturnType<typeof useReadAllCiHistoryVersionsHook>>>, TError = unknown>(
+export const useReadAllCiHistoryVersions = <TData = Awaited<ReturnType<ReturnType<typeof useReadAllCiHistoryVersionsHook>>>, TError = ApiError>(
     params: ReadAllCiHistoryVersionsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useReadAllCiHistoryVersionsHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -5860,7 +5987,7 @@ export const useGetGroupListHook = () => {
 
 export const getGetGroupListQueryKey = () => [`/grouplist`] as const
 
-export const useGetGroupListQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetGroupListHook>>>, TError = unknown>(options?: {
+export const useGetGroupListQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetGroupListHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetGroupListHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetGroupListHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -5875,9 +6002,9 @@ export const useGetGroupListQueryOptions = <TData = Awaited<ReturnType<ReturnTyp
 }
 
 export type GetGroupListQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetGroupListHook>>>>
-export type GetGroupListQueryError = unknown
+export type GetGroupListQueryError = ApiError
 
-export const useGetGroupList = <TData = Awaited<ReturnType<ReturnType<typeof useGetGroupListHook>>>, TError = unknown>(options?: {
+export const useGetGroupList = <TData = Awaited<ReturnType<ReturnType<typeof useGetGroupListHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetGroupListHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useGetGroupListQueryOptions(options)
@@ -5901,7 +6028,7 @@ export const getGetConfigurationItemsGroupsQueryKey = (uuid: string) => [`/group
 
 export const useGetConfigurationItemsGroupsQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsHook>>>, TError, TData> },
@@ -5919,9 +6046,9 @@ export const useGetConfigurationItemsGroupsQueryOptions = <
 }
 
 export type GetConfigurationItemsGroupsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsHook>>>>
-export type GetConfigurationItemsGroupsQueryError = unknown
+export type GetConfigurationItemsGroupsQueryError = ApiError
 
-export const useGetConfigurationItemsGroups = <TData = Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsHook>>>, TError = unknown>(
+export const useGetConfigurationItemsGroups = <TData = Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsHook>>>, TError = ApiError>(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetConfigurationItemsGroupsHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -5944,7 +6071,7 @@ export const useGetUuidHook = () => {
 
 export const getGetUuidQueryKey = () => [`/generate/uuid`] as const
 
-export const useGetUuidQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetUuidHook>>>, TError = unknown>(options?: {
+export const useGetUuidQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetUuidHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUuidHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUuidHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -5959,9 +6086,9 @@ export const useGetUuidQueryOptions = <TData = Awaited<ReturnType<ReturnType<typ
 }
 
 export type GetUuidQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetUuidHook>>>>
-export type GetUuidQueryError = unknown
+export type GetUuidQueryError = ApiError
 
-export const useGetUuid = <TData = Awaited<ReturnType<ReturnType<typeof useGetUuidHook>>>, TError = unknown>(options?: {
+export const useGetUuid = <TData = Awaited<ReturnType<ReturnType<typeof useGetUuidHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUuidHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useGetUuidQueryOptions(options)
@@ -5981,7 +6108,7 @@ export const useReindexReportsHook = () => {
     }
 }
 
-export const useReindexReportsMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useReindexReportsMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexReportsHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexReportsHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -5997,9 +6124,9 @@ export const useReindexReportsMutationOptions = <TError = unknown, TVariables = 
 
 export type ReindexReportsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexReportsHook>>>>
 
-export type ReindexReportsMutationError = unknown
+export type ReindexReportsMutationError = ApiError
 
-export const useReindexReports = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useReindexReports = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexReportsHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useReindexReportsMutationOptions(options)
@@ -6015,7 +6142,7 @@ export const useDeleteStandardHook = () => {
     }
 }
 
-export const useDeleteStandardMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useDeleteStandardMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6031,9 +6158,9 @@ export const useDeleteStandardMutationOptions = <TError = unknown, TVariables = 
 
 export type DeleteStandardMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteStandardHook>>>>
 
-export type DeleteStandardMutationError = unknown
+export type DeleteStandardMutationError = ApiError
 
-export const useDeleteStandard = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useDeleteStandard = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteStandardHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useDeleteStandardMutationOptions(options)
@@ -6049,7 +6176,7 @@ export const useClearCacheAllHook = () => {
     }
 }
 
-export const useClearCacheAllMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearCacheAllMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCacheAllHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCacheAllHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6065,9 +6192,9 @@ export const useClearCacheAllMutationOptions = <TError = unknown, TVariables = v
 
 export type ClearCacheAllMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearCacheAllHook>>>>
 
-export type ClearCacheAllMutationError = unknown
+export type ClearCacheAllMutationError = ApiError
 
-export const useClearCacheAll = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearCacheAll = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCacheAllHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearCacheAllMutationOptions(options)
@@ -6083,7 +6210,7 @@ export const useClearCacheHook = () => {
     }
 }
 
-export const useClearCacheMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearCacheMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCacheHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCacheHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6099,9 +6226,9 @@ export const useClearCacheMutationOptions = <TError = unknown, TVariables = void
 
 export type ClearCacheMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearCacheHook>>>>
 
-export type ClearCacheMutationError = unknown
+export type ClearCacheMutationError = ApiError
 
-export const useClearCache = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearCache = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCacheHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearCacheMutationOptions(options)
@@ -6117,7 +6244,7 @@ export const useClearRelCacheHook = () => {
     }
 }
 
-export const useClearRelCacheMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearRelCacheMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRelCacheHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRelCacheHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6133,9 +6260,9 @@ export const useClearRelCacheMutationOptions = <TError = unknown, TVariables = v
 
 export type ClearRelCacheMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearRelCacheHook>>>>
 
-export type ClearRelCacheMutationError = unknown
+export type ClearRelCacheMutationError = ApiError
 
-export const useClearRelCache = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearRelCache = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRelCacheHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearRelCacheMutationOptions(options)
@@ -6151,7 +6278,7 @@ export const useClearRelCache1Hook = () => {
     }
 }
 
-export const useClearRelCache1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useClearRelCache1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRelCache1Hook>>>, TError, { relType: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRelCache1Hook>>>, TError, { relType: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6169,9 +6296,9 @@ export const useClearRelCache1MutationOptions = <TError = unknown, TContext = un
 
 export type ClearRelCache1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearRelCache1Hook>>>>
 
-export type ClearRelCache1MutationError = unknown
+export type ClearRelCache1MutationError = ApiError
 
-export const useClearRelCache1 = <TError = unknown, TContext = unknown>(options?: {
+export const useClearRelCache1 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRelCache1Hook>>>, TError, { relType: string }, TContext>
 }) => {
     const mutationOptions = useClearRelCache1MutationOptions(options)
@@ -6187,7 +6314,7 @@ export const useClearEnumCacheHook = () => {
     }
 }
 
-export const useClearEnumCacheMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearEnumCacheMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearEnumCacheHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearEnumCacheHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6203,9 +6330,9 @@ export const useClearEnumCacheMutationOptions = <TError = unknown, TVariables = 
 
 export type ClearEnumCacheMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearEnumCacheHook>>>>
 
-export type ClearEnumCacheMutationError = unknown
+export type ClearEnumCacheMutationError = ApiError
 
-export const useClearEnumCache = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearEnumCache = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearEnumCacheHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearEnumCacheMutationOptions(options)
@@ -6221,7 +6348,7 @@ export const useClearEnumCache1Hook = () => {
     }
 }
 
-export const useClearEnumCache1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useClearEnumCache1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearEnumCache1Hook>>>, TError, { enumType: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearEnumCache1Hook>>>, TError, { enumType: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6239,9 +6366,9 @@ export const useClearEnumCache1MutationOptions = <TError = unknown, TContext = u
 
 export type ClearEnumCache1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearEnumCache1Hook>>>>
 
-export type ClearEnumCache1MutationError = unknown
+export type ClearEnumCache1MutationError = ApiError
 
-export const useClearEnumCache1 = <TError = unknown, TContext = unknown>(options?: {
+export const useClearEnumCache1 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearEnumCache1Hook>>>, TError, { enumType: string }, TContext>
 }) => {
     const mutationOptions = useClearEnumCache1MutationOptions(options)
@@ -6257,7 +6384,7 @@ export const useClearCiCacheHook = () => {
     }
 }
 
-export const useClearCiCacheMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearCiCacheMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCiCacheHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCiCacheHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6273,9 +6400,9 @@ export const useClearCiCacheMutationOptions = <TError = unknown, TVariables = vo
 
 export type ClearCiCacheMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearCiCacheHook>>>>
 
-export type ClearCiCacheMutationError = unknown
+export type ClearCiCacheMutationError = ApiError
 
-export const useClearCiCache = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearCiCache = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCiCacheHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearCiCacheMutationOptions(options)
@@ -6291,7 +6418,7 @@ export const useClearCiCache1Hook = () => {
     }
 }
 
-export const useClearCiCache1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useClearCiCache1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCiCache1Hook>>>, TError, { ciType: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCiCache1Hook>>>, TError, { ciType: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6309,9 +6436,9 @@ export const useClearCiCache1MutationOptions = <TError = unknown, TContext = unk
 
 export type ClearCiCache1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearCiCache1Hook>>>>
 
-export type ClearCiCache1MutationError = unknown
+export type ClearCiCache1MutationError = ApiError
 
-export const useClearCiCache1 = <TError = unknown, TContext = unknown>(options?: {
+export const useClearCiCache1 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCiCache1Hook>>>, TError, { ciType: string }, TContext>
 }) => {
     const mutationOptions = useClearCiCache1MutationOptions(options)
@@ -6327,7 +6454,7 @@ export const useClearRoleCacheHook = () => {
     }
 }
 
-export const useClearRoleCacheMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearRoleCacheMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRoleCacheHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRoleCacheHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6343,9 +6470,9 @@ export const useClearRoleCacheMutationOptions = <TError = unknown, TVariables = 
 
 export type ClearRoleCacheMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearRoleCacheHook>>>>
 
-export type ClearRoleCacheMutationError = unknown
+export type ClearRoleCacheMutationError = ApiError
 
-export const useClearRoleCache = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearRoleCache = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearRoleCacheHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearRoleCacheMutationOptions(options)
@@ -6361,7 +6488,7 @@ export const useClearOrganizationCacheHook = () => {
     }
 }
 
-export const useClearOrganizationCacheMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearOrganizationCacheMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearOrganizationCacheHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearOrganizationCacheHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6377,9 +6504,9 @@ export const useClearOrganizationCacheMutationOptions = <TError = unknown, TVari
 
 export type ClearOrganizationCacheMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearOrganizationCacheHook>>>>
 
-export type ClearOrganizationCacheMutationError = unknown
+export type ClearOrganizationCacheMutationError = ApiError
 
-export const useClearOrganizationCache = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearOrganizationCache = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearOrganizationCacheHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearOrganizationCacheMutationOptions(options)
@@ -6395,7 +6522,7 @@ export const useClearIdentityCacheHook = () => {
     }
 }
 
-export const useClearIdentityCacheMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearIdentityCacheMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearIdentityCacheHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearIdentityCacheHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6411,9 +6538,9 @@ export const useClearIdentityCacheMutationOptions = <TError = unknown, TVariable
 
 export type ClearIdentityCacheMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useClearIdentityCacheHook>>>>
 
-export type ClearIdentityCacheMutationError = unknown
+export type ClearIdentityCacheMutationError = ApiError
 
-export const useClearIdentityCache = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearIdentityCache = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearIdentityCacheHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearIdentityCacheMutationOptions(options)
@@ -6429,7 +6556,7 @@ export const useClearCmdbReadRoleParticipantCacheHook = () => {
     }
 }
 
-export const useClearCmdbReadRoleParticipantCacheMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearCmdbReadRoleParticipantCacheMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCmdbReadRoleParticipantCacheHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCmdbReadRoleParticipantCacheHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -6447,9 +6574,9 @@ export type ClearCmdbReadRoleParticipantCacheMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useClearCmdbReadRoleParticipantCacheHook>>>
 >
 
-export type ClearCmdbReadRoleParticipantCacheMutationError = unknown
+export type ClearCmdbReadRoleParticipantCacheMutationError = ApiError
 
-export const useClearCmdbReadRoleParticipantCache = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useClearCmdbReadRoleParticipantCache = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useClearCmdbReadRoleParticipantCacheHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useClearCmdbReadRoleParticipantCacheMutationOptions(options)

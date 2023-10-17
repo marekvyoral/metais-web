@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { SimpleSelect } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
 import { useFormContext } from 'react-hook-form'
-import { CiTypePreview } from '@isdd/metais-common/api'
+import { CiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { CreateEntityForm } from '@/types/form'
 

@@ -11,8 +11,8 @@ import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 
 import Informations from './[entityId]/informations'
 
-import NeighboursCardListWrapper from '@/components/entities/NeighboursCardListWrapper'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 
 export const INDEX_ROUTE = Informations
 
@@ -77,7 +77,7 @@ const EntityDetailPage: React.FC = () => {
                     <MutationFeedback error={false} success={isActionSuccess.value} />
                 </FlexColumnReverseWrapper>
                 <Tabs tabList={tabList} />
-                <NeighboursCardListWrapper entityId={entityId} entityName={PO} tabList={tabList} />
+                <RelationsListContainer entityId={entityId ?? ''} technicalName={PO} />
             </MainContentWrapper>
         </>
     )

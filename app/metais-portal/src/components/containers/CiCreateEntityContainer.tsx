@@ -1,4 +1,5 @@
-import { CiCode, HierarchyRightsUi, useGenerateCodeAndURL } from '@isdd/metais-common/api'
+import { HierarchyRightsUi } from '@isdd/metais-common/api'
+import { CiCode, useGenerateCodeAndURL } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import React, { SetStateAction } from 'react'
 
 export interface ISelectedOrg {

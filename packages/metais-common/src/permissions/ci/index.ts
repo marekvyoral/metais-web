@@ -1,5 +1,5 @@
 import { Group, User } from '@isdd/metais-common/contexts/auth/authContext'
-import { CiType } from '@isdd/metais-common/api'
+import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 enum CATEGORY_ENUM {
     NOT_VISIBLE = 'NO',

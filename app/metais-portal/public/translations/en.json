@@ -285,7 +285,8 @@
         "and": "and"
     },
     "tab": {
-        "contents": "Contents"
+        "contents": "Contents",
+        "moreTabs": "More tabs"
     },
     "button": {
         "saveAndContinue": "Save and continue",
