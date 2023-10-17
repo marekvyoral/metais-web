@@ -1,4 +1,5 @@
-import { Attribute, AttributeProfile, CiType, EnumType, useGetCiType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api'
+import { Attribute, AttributeProfile, CiType, useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import React from 'react'
 

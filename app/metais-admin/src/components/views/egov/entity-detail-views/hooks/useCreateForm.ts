@@ -1,8 +1,10 @@
 import { createTabNamesAndValuesMap } from '@isdd/metais-common/hooks/useEntityProfiles'
-import { getTabsFromApi, AttributeProfile, Cardinality, CiType, CiTypePreview, Role } from '@isdd/metais-common'
+import { AttributeProfile, Cardinality, CiType, CiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { UseFormReturn, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { Role } from '@isdd/metais-common/api'
+import { getTabsFromApi } from '@isdd/metais-common/index'
 
 import { EntityDetailViewAttributes } from '../attributes/EntityDetailViewAttributes'
 

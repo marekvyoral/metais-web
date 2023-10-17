@@ -1,4 +1,4 @@
-import { CiCode, CiType, ConfigurationItemUiAttributes, EnumType, useStoreConfigurationItem } from '@isdd/metais-common/api'
+import { ConfigurationItemUiAttributes, EnumType, useStoreConfigurationItem } from '@isdd/metais-common/api'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useRedirectAfterSuccess } from '@isdd/metais-common/src/hooks/useRedirectAfterSucces'
@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
+import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'

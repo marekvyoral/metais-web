@@ -1,7 +1,7 @@
+import { EnumType } from '@isdd/metais-common/api'
 import {
     AttributeProfile,
     CiType,
-    EnumType,
     useGetAttributeProfile,
     useStoreExistAttribute,
     useStoreInvisible,
@@ -10,7 +10,7 @@ import {
     useStoreValid1,
     useStoreValid2,
     useStoreVisible,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import React from 'react'

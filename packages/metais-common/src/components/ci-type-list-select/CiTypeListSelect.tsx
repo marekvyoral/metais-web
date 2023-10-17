@@ -3,7 +3,7 @@ import { SimpleSelect } from '@isdd/idsk-ui-kit'
 import { FieldValues, UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 import { t } from 'i18next'
 
-import { useListCiTypes } from '@isdd/metais-common/api'
+import { useListCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 type CiTypeListSelectProps<T extends FieldValues> = {
     label: string

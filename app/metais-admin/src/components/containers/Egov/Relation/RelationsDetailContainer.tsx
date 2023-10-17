@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-    EnumType,
     useGetRelationshipType,
     RelationshipType,
     AttributeProfile,
@@ -12,10 +11,11 @@ import {
     Attribute,
     useStoreAttributeTextation,
     useDeleteAttributeTextation,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
 import { createTabNamesAndValuesMap } from '@isdd/metais-common/hooks/useEntityProfiles'
+import { EnumType } from '@isdd/metais-common/api'
 
 export interface IAtrributesContainerView {
     data: {

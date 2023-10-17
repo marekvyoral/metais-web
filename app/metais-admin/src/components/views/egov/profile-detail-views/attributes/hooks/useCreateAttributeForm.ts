@@ -8,7 +8,7 @@ import {
     AttributeConstraintIntervalAllOf,
     AttributeConstraintRegexAllOf,
     AttributeProfile,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { generateSchemaForCreateAttribute } from './schemas/createAttributeSchema'
 import { isSelectedTypeNumber } from './helpers'

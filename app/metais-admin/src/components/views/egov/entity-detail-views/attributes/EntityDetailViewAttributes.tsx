@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react'
-import { Attribute, IEntityDetailViewAttributes, filterSelectedRowsFromApi, isRowSelected } from '@isdd/metais-common'
+import { IEntityDetailViewAttributes, filterSelectedRowsFromApi, isRowSelected } from '@isdd/metais-common'
 import { ColumnDef } from '@tanstack/react-table'
 import { Button, Input, Table } from '@isdd/idsk-ui-kit'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
+import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import styles from '../../detailViews.module.scss'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { CiTypePreview } from '@isdd/metais-common/api'
+import { CiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import styles from './connectionView.module.scss'
 import ConnectionItem from './ConnectionItem'

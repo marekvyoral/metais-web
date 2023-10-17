@@ -1,20 +1,22 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams, RelatedCiTypePreview, RoleParticipantUI } from '@isdd/metais-common/api'
+import { ReadCiNeighboursWithAllRelsParams, RoleParticipantUI } from '@isdd/metais-common/api'
 import { useEntityRelationsDataList } from '@isdd/metais-common/hooks/useEntityRelationsDataList'
 import { IKeyToDisplay, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelationsTypesCount'
 import React, { SetStateAction, useEffect, useMemo, useState } from 'react'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { mapFilterToNeighboursWithAllRelsApi } from '@isdd/metais-common/componentHelpers'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { RelationshipTypePreview, useGetCiType, useListRelationshipTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
+
+import { NeighboursCardList } from '@/components/entities/NeighboursCardList'
 
 export interface IRelationsView {
     isLoading: boolean
     isError: boolean
     data: {
-        entityTypes?: RelatedCiTypePreview[]
-        relationsList?: CiWithRelsResultUi
         owners?: void | RoleParticipantUI[] | undefined
         keysToDisplay: IKeyToDisplay[]
+        relationTypes: RelationshipTypePreview[]
     }
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
@@ -24,16 +26,14 @@ export interface IRelationsView {
 interface IRelationsListContainer {
     entityId: string
     technicalName: string
-    View: React.FC<IRelationsView>
 }
 
-export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ entityId, technicalName, View }) => {
-    const {
-        isLoading: areTypesLoading,
-        isError: areTypesError,
-        keysToDisplay,
-        data: entityTypes,
-    } = useEntityRelationsTypesCount(entityId, technicalName)
+export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ entityId, technicalName }) => {
+    const { data: ciTypeData } = useGetCiType(technicalName)
+    const { isLoading: areTypesLoading, isError: areTypesError, keysToDisplay } = useEntityRelationsTypesCount(entityId, technicalName)
+
+    const { data: relationTypes } = useListRelationshipTypes({ filter: { role: undefined } })
+
     const { currentPreferences } = useUserPreferences()
     const defaultCiType = keysToDisplay?.[0]?.technicalName
     const defaultCiTypes: string[] = useMemo((): string[] => {
@@ -51,6 +51,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
     }, [currentPreferences.showInvalidatedItems, defaultCiTypes])
 
     const [pageConfig, setPageConfig] = useState<ReadCiNeighboursWithAllRelsParams>(defaultPageConfig)
+    const [isDerived, setIsDerived] = useState<boolean>(false)
 
     useEffect(() => {
         if (defaultCiType) {
@@ -62,28 +63,39 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
         setPageConfig(mapFilterToNeighboursWithAllRelsApi(pageConfig, filter))
     }
 
-    const { isLoading: areRelationsLoading, isError: areRelationsError, relationsList, owners } = useEntityRelationsDataList(entityId, pageConfig)
+    const {
+        isLoading: areRelationsLoading,
+        isDerivedLoading: areDerivedLoading,
+        isError: areRelationsError,
+        relationsList,
+        owners,
+    } = useEntityRelationsDataList(entityId, pageConfig, isDerived)
+
     const pagination: Pagination = {
         pageNumber: pageConfig.page ?? 1,
         pageSize: pageConfig.perPage ?? 10,
         dataLength: relationsList?.pagination?.totaltems ?? 0,
     }
-    const isLoading = areRelationsLoading || areTypesLoading
+
     const isError = areTypesError || areRelationsError
 
     return (
-        <View
-            isLoading={isLoading}
+        <NeighboursCardList
+            areTypesLoading={areTypesLoading}
+            isLoading={areRelationsLoading}
+            isDerivedLoading={areDerivedLoading}
             isError={isError}
+            relationsList={relationsList}
             data={{
-                entityTypes,
-                relationsList,
                 owners,
                 keysToDisplay: keysToDisplay ?? [],
+                relationTypes: relationTypes?.results ?? [],
             }}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
             setPageConfig={setPageConfig}
+            setIsDerived={setIsDerived}
+            ciTypeData={ciTypeData}
         />
     )
 }

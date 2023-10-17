@@ -1,6 +1,6 @@
 import { BreadCrumbs, Button, CheckBox, HomeIcon, Input, Table } from '@isdd/idsk-ui-kit'
 import { isRowSelected } from '@isdd/metais-common'
-import { Attribute } from '@isdd/metais-common/api'
+import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { useCallback, useState } from 'react'

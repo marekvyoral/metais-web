@@ -13,6 +13,7 @@ export interface Tab {
     path?: string
     title: string
     content: React.ReactNode
+    meta?: { [key: string]: string | number | boolean }
 }
 
 interface ITabItemDesktop {

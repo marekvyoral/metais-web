@@ -5,10 +5,11 @@ import { useQuery } from '@tanstack/react-query'
 import { useAbilityContext } from './useAbilityContext'
 import { Actions } from './useUserAbility'
 
-import { Gen_Profil, useGetCiType, useGetRoleParticipant, useReadConfigurationItem } from '@isdd/metais-common/api'
+import { Gen_Profil, useGetRoleParticipant, useReadConfigurationItem } from '@isdd/metais-common/api'
 import { useGetRightsForPO, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { fetchCanCreateGraph } from '@isdd/metais-common/api/fetchCanCreateGraph'
+import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CAN_CREATE_GRAPH_QUERY_KEY, CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 
 export const useEditCiPermissions = (entityName: string, entityId: string) => {

@@ -1,9 +1,10 @@
 import { useCallback, useMemo } from 'react'
 
-import { NeighboursFilterContainerUi, RelatedCiTypePreview, RelatedCiTypePreviewList, useListRelatedCiTypes } from '@isdd/metais-common/api'
+import { RelatedCiTypePreview, RelatedCiTypePreviewList, useListRelatedCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { isRelatedCiTypeCmdbView, removeDuplicates } from '@isdd/metais-common/hooks/common'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { NeighboursFilterContainerUi } from '@isdd/metais-common/api'
 
 export const useEntityRelationshipTabFilters = (technicalName: string) => {
     const {

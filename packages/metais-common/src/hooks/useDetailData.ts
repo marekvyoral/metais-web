@@ -1,4 +1,5 @@
-import { CiType, useGetEnum } from '@isdd/metais-common/api'
+import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useGetEnum } from '@isdd/metais-common/api'
 import {
     calculateConstraintFromAttributeProfiles,
     calculateConstraintFromAttributes,

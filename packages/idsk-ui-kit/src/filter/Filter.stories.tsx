@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
-import { AttributeAttributeTypeEnum, AttributeProfileType } from '@isdd/metais-common/src/api'
+import { AttributeAttributeTypeEnum, AttributeProfileType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { Filter } from './Filter'
 

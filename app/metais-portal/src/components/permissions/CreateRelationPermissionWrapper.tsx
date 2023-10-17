@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { AbilityContext, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { RelatedCiTypePreview } from '@isdd/metais-common/api'
+import { RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useCanCreateRelationTypeUnderOrgAndRole } from '@isdd/metais-common/hooks/permissions/useCanCreateRelationTypeUnderOrgAndRole'
 
 interface Props extends PropsWithChildren {

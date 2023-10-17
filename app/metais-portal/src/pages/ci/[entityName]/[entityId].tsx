@@ -11,11 +11,11 @@ import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { Actions, useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 
-import NeighboursCardListWrapper from '@/components/entities/NeighboursCardListWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
 import Informations from '@/pages/ci/[entityName]/[entityId]/informations'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 
 export const INDEX_ROUTE = Informations
 
@@ -105,7 +105,7 @@ const EntityDetailPage: React.FC = () => {
                             )}
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} />
-                        <NeighboursCardListWrapper entityId={entityId} entityName={entityName} tabList={tabList} />
+                        <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} />
                     </>
                 </CiPermissionsWrapper>
             </MainContentWrapper>

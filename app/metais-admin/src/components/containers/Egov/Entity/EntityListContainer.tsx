@@ -1,4 +1,4 @@
-import { CiTypeFilter, CiTypePreview, useListCiTypes } from '@isdd/metais-common/api'
+import { CiTypeFilter, CiTypePreview, useListCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { EntityFilterData, filterEntityData } from '@isdd/metais-common/componentHelpers/filter/feFilters'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React, { useState } from 'react'

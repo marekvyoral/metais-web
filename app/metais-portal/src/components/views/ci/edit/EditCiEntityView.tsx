@@ -1,11 +1,12 @@
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
-import { ATTRIBUTE_NAME, CiType, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { SubHeading } from '@isdd/metais-common/src/components/sub-heading/SubHeading'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { CreateEntity } from '@/components/create-entity/CreateEntity'
 

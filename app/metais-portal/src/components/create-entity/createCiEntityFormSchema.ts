@@ -1,4 +1,4 @@
-import { Attribute, AttributeAttributeTypeEnum, AttributeConstraintRegexAllOf } from '@isdd/metais-common'
+import { Attribute, AttributeAttributeTypeEnum, AttributeConstraintRegexAllOf } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 import {
     AnyObject,

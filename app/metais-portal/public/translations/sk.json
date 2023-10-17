@@ -285,7 +285,8 @@
         "and": "a"
     },
     "tab": {
-        "contents": "Obsah"
+        "contents": "Obsah",
+        "moreTabs": "Viac"
     },
     "errors": {
         "fixLink": "Opraviť",

@@ -7,8 +7,6 @@ import React, { useState } from 'react'
 
 import { DocumentsListContainer } from '@/components/containers/DocumentListContainer'
 import { DocsView } from '@/components/containers/DocumentListContainer.stories'
-import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
-import { RelationsView } from '@/components/containers/RelationsListContainer.stories'
 import { ExportItemsOrRelations } from '@/components/export-items-or-relations/ExportItemsOrRelations'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 // import { ActionsOverTable } from '@/components/actions-over-table/ActionsOverTable'
@@ -43,7 +41,6 @@ export const DevTestScreen: React.FC = () => {
             <ExportItemsOrRelations isOpen={modalOpen} close={onClose} onExportStart={onExportStart} />
             <ButtonLink label="ButtonLink" />
 
-            <RelationsListContainer entityId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" technicalName="Dokument" View={RelationsView} />
             <DocumentsListContainer configurationItemId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={DocsView} />
             <Paginator dataLength={100} pageNumber={page} pageSize={10} onPageChanged={setPage} />
             <AccordionContainer

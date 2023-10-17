@@ -1,5 +1,5 @@
 import { BaseModal } from '@isdd/idsk-ui-kit'
-import { CiTypePreview } from '@isdd/metais-common/api'
+import { CiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { AddConnectionView } from './AddConnectionView'
 

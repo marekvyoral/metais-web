@@ -1,7 +1,7 @@
 import { Button, Input } from '@isdd/idsk-ui-kit/index'
 import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
-import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
+import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CloseIcon, PlusIcon } from '@isdd/metais-common/assets/images'
 import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'

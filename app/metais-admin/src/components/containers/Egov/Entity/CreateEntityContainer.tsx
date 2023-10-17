@@ -1,5 +1,6 @@
 import { SortType } from '@isdd/idsk-ui-kit/types'
-import { CiType, Role, useStoreAdminEntity1 } from '@isdd/metais-common/api'
+import { CiType, useStoreAdminEntity1 } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Role } from '@isdd/metais-common/api'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import React from 'react'
 import { useQueryClient } from '@tanstack/react-query'

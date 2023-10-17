@@ -1,14 +1,12 @@
-import {
-    EnumType,
-    IncidentRelationshipSetUi,
-    RelatedCiTypePreview,
-    RelationshipType,
-    useGetRelationshipType,
-    useListRelatedCiTypes,
-    useReadRelationships,
-} from '@isdd/metais-common/api'
+import { EnumType, IncidentRelationshipSetUi, useReadRelationships } from '@isdd/metais-common/api'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import React, { Dispatch, SetStateAction, useState } from 'react'
+import {
+    RelatedCiTypePreview,
+    RelationshipType,
+    useListRelatedCiTypes,
+    useGetRelationshipType,
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { filterRelatedList } from '@/componentHelpers/new-relation'
 
