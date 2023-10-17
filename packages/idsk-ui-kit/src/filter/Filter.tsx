@@ -27,6 +27,7 @@ type FilterProps<T extends FieldValues & IFilterParams> = {
     defaultFilterValues: T
     schema?: ObjectSchema<T & IFilterParams>
     onlySearch?: boolean
+    onlyForm?: boolean
 }
 
 export const Filter = <T extends FieldValues & IFilterParams>({
@@ -36,6 +37,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
     defaultFilterValues,
     schema,
     onlySearch,
+    onlyForm,
 }: FilterProps<T>) => {
     const {
         watch,
@@ -50,7 +52,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
         handleSubmit,
     } = useFilter<T & IFilterParams>(defaultFilterValues, schema)
     const { t } = useTranslation()
-    const [isOpen, setOpen] = useState(shouldBeFilterOpen)
+    const [isOpen, setOpen] = useState(shouldBeFilterOpen || !!onlyForm)
     const [showScrollbar, setShowscrollbar] = useState(isOpen)
 
     if (!heading) {
@@ -84,25 +86,27 @@ export const Filter = <T extends FieldValues & IFilterParams>({
     return (
         <div data-module="idsk-table-filter" className={classNames('idsk-table-filter', styles.filter)}>
             <div className={classNames('idsk-table-filter__panel idsk-table-filter__inputs', { 'idsk-table-filter--expanded': isOpen })}>
-                <div className={styles.headingWrapper}>
-                    <div className={classNames(styles.heading, 'idsk-table-filter__title govuk-heading-m', !!onlySearch && styles.width100)}>
-                        {heading}
-                    </div>
-                    {!onlySearch && (
-                        <div className={styles.expandButton}>
-                            <button
-                                onClick={handleOpenCloseForm}
-                                className="govuk-body govuk-link idsk-filter-menu__toggle"
-                                tabIndex={0}
-                                data-category-name=""
-                                aria-label={isOpen ? t('filter.collapse').toString() : t('filter.expand').toString()}
-                                type="button"
-                            >
-                                {isOpen ? t('filter.collapse') : t('filter.expand')}
-                            </button>
+                {!onlyForm && (
+                    <div className={styles.headingWrapper}>
+                        <div className={classNames(styles.heading, 'idsk-table-filter__title govuk-heading-m', !!onlySearch && styles.width100)}>
+                            {heading}
                         </div>
-                    )}
-                </div>
+                        {!onlySearch && (
+                            <div className={styles.expandButton}>
+                                <button
+                                    onClick={handleOpenCloseForm}
+                                    className="govuk-body govuk-link idsk-filter-menu__toggle"
+                                    tabIndex={0}
+                                    data-category-name=""
+                                    aria-label={isOpen ? t('filter.collapse').toString() : t('filter.expand').toString()}
+                                    type="button"
+                                >
+                                    {isOpen ? t('filter.collapse') : t('filter.expand')}
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
                 {!onlySearch && (
                     <div aria-hidden={!isOpen}>
                         <form
