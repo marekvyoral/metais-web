@@ -18,6 +18,19 @@ export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: {
     }
 }
 
+export const mapFilterToNeighborsApiWithTextSearch = <T>(
+    filter: IFilter,
+    defaultApiFilter?: { [filterName: string]: T } | T,
+): CiListFilterContainerUi => {
+    const { pageNumber, pageSize, sort } = filter
+    return {
+        filter: { ...defaultApiFilter, fullTextSearch: filter.full },
+        page: pageNumber ? pageNumber : FIRST_PAGE_NUMBER,
+        perpage: pageSize ? pageSize : Number(DEFAULT_PAGESIZE_OPTIONS[0].value),
+        sortBy: sort?.[0]?.orderBy ?? '',
+        sortType: sort?.[0]?.sortDirection,
+    }
+}
 export const mapFilterToRelationApi = (filter: INeighboursFilter, defaultApiFilter?: NeighboursFilterContainerUi): NeighboursFilterContainerUi => {
     const { pageNumber, pageSize, sort } = filter
     const currentNeighboursFilter = filter.neighboursFilter
