@@ -837,6 +837,40 @@
     "validation": {
         "required": "Toto pole je povinné"
     },
+    "documentsManagement": {
+        "heading": "Správa dokumentov Projektov",
+        "phase": "Fáza",
+        "status": "Stav",
+        "editPosition": "Upraviť pozíciu",
+        "savePosition": "Uložiť pozíciu",
+        "resetPosition": "Zrušiť editáciu",
+        "addNewGroup": "Nová skupina dokumentov",
+        "name": "Názov",
+        "nameEng": "Názov Eng",
+        "description": "Popis",
+        "descriptionEng": "Popis Eng",
+        "projectPhase": "Fáza projektu",
+        "projectStatus": "Stav projektu",
+        "confluence": "Confluence",
+        "required": "Povinný",
+        "documents": "Dokumenty",
+        "addNewDocument": "Pridať nový dokument",
+        "groupEdit": "Úprava skupiny dokumentov",
+        "input": "Zadajte",
+        "removingDocumentsGroup": "Odstrániť skupinu dokumentov",
+        "baseInfo": "Základné informácie",
+        "docId": "Identifikátor dokumentu",
+        "docTemplate": "Šablóna dokumentu",
+        "useTemplate": "Vložiť predvypľnený obsah šablóny",
+        "addDocument": "Pridať dokument",
+        "selectedDocumentsGroup": "Vybraná skupina dokumentov",
+        "removingDocument": "Odstrániť dokument",
+        "edit": "Upraviť položku",
+        "delete": "Odstrániť položku",
+        "moreOptions": "Viac možností",
+        "documentGroup": "Skupina dokumentov",
+        "type": "Typ"
+    },
     "homePage": {
         "placeholder": "Domov - na zobrazenie navigacie je potrebne sa prihlasit"
     }
