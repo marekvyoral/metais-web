@@ -21,7 +21,7 @@ export interface AttrributesData {
 
 export interface CreateEntityData {
     attributesData: AttrributesData
-    generatedEntityId: CiCode | undefined
+    generatedEntityId?: CiCode | undefined
     ownerId?: string
 }
 
@@ -113,8 +113,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         }
 
         storeConfigurationItem.mutate({
-            data: dataToCreate,
-            // data: updateCiItemId ? dataToUpdate : dataToCreate,
+            data: updateCiItemId ? dataToUpdate : dataToCreate,
         })
     }
 

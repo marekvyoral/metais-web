@@ -52,9 +52,10 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const { t } = useTranslation()
 
     const [uploadError, setUploadError] = useState(false)
+
     const [requestId, setRequestId] = useState<string>('')
     const [selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName] = useState<string>('')
-
+    const [selectedCITypeForRelationTechnicalName, setSelectedCITypeForRelationTechnicalName] = useState<string>('')
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
     const { selectedItems, setSelectedItems, setIsListPageOpen, isListPageOpen } = useNewRelationData()
@@ -62,11 +63,12 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
     const invalidateCiByUuidCache = useInvalidateCiItemCache(updateCiItemId ? updateCiItemId : configurationItemId)
 
+    //load all relationship types for CI
     const { data: relatedListData, isLoading: isRelatedListLoading, isError: isRelatedListError } = useListRelatedCiTypes(entityName)
 
     //build select options from this data
-    const relatedListAsSources = filterRelatedList(relatedListData?.cisAsSources, ['ISVS', 'WeboveSidlo'])
-    const relatedListAsTargets = filterRelatedList(relatedListData?.cisAsTargets, ['ISVS', 'WeboveSidlo'])
+    const relatedListAsSources = filterRelatedList(relatedListData?.cisAsSources, ['ISVS', 'WeboveSidlo', 'PO'])
+    const relatedListAsTargets = filterRelatedList(relatedListData?.cisAsTargets, ['ISVS', 'WeboveSidlo', 'PO'])
 
     const [formData, setFormData] = useState<FieldValues>({})
 
@@ -76,18 +78,14 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
         isError: isReadRelationshipsError,
     } = useReadRelationships(configurationItemId ?? '')
 
+    //load relationship type detail data
     const {
         data: relationTypeData,
         isLoading: isRelationTypeDataLoading,
         isError: isRelationTypeDataError,
     } = useGetRelationshipType(selectedRelationTypeTechnicalName ?? '')
 
-    const {
-        isLoading: isDetailDataLoading,
-        isError: isDetailDataError,
-        constraintsData,
-        unitsData,
-    } = useDetailData({
+    const { constraintsData, unitsData } = useDetailData({
         entityStructure: relationTypeData,
         isEntityStructureLoading: isRelationTypeDataLoading,
         isEntityStructureError: isRelationTypeDataError,
@@ -96,11 +94,10 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const storeGraph = useStoreGraph({
         mutation: {
             onSuccess() {
-                // navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
                 setIsListPageOpen(false)
                 setSelectedItems(null)
                 invalidateCilistFilteredCache.invalidate({ ciType: entityName })
-                // invalidateRelationListCacheByUuid.invalidate()
+                invalidateCiByUuidCache.invalidate()
             },
             onError() {
                 setUploadError(true)
@@ -163,8 +160,6 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                 if (successData.requestId != null) {
                     setRequestId(successData.requestId)
                     await saveRelations()
-                    invalidateCilistFilteredCache.invalidate({ ciType: entityName })
-                    invalidateCiByUuidCache.invalidate()
                 } else {
                     setUploadError(true)
                 }
@@ -224,6 +219,10 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
             data: updateCiItemId ? dataToUpdate : dataToCreate,
         })
     }
+
+    // const isDataLoading = [isReadRelationshipsLoading, isRelatedListLoading, isRelationTypeDataLoading, isDetailDataLoading].some((item) => item)
+    // const isDataError = [isReadRelationshipsError, isRelatedListError, isRelationTypeDataError, isDetailDataError].some((item) => item)
+
     return (
         <>
             {!(isRedirectError || isProcessedError || isRedirectLoading) && (
@@ -245,7 +244,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                 withChildren
             >
                 <FlexColumnReverseWrapper>
-                    <TextHeading size="XL">{t('ciType.createEntity')}</TextHeading>
+                    <TextHeading size="XL">{!updateCiItemId ? t('ciType.createEntity') : t('ciType.editEntity')}</TextHeading>
                     {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
                 </FlexColumnReverseWrapper>
                 {!updateCiItemId && publicAuthorityState && roleState && (
@@ -261,9 +260,10 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                     relationData={{ relatedListAsSources, relatedListAsTargets, readRelationShipsData, relationTypeData, constraintsData, unitsData }}
                     onSubmit={onSubmit}
                     isProcessing={false}
-                    isLoading={isLoading}
+                    isLoading={isLoading || isRelatedListLoading}
                     isError={isError}
                     selectedRelationTypeState={{ selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName }}
+                    selectedCITypeForRelationState={{ selectedCITypeForRelationTechnicalName, setSelectedCITypeForRelationTechnicalName }}
                     selectedRelationItemsState={{ selectedItems, setSelectedItems, setIsListPageOpen, isListPageOpen }}
                 />
             </QueryFeedback>

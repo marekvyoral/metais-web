@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -37,6 +37,12 @@ import { getAttributeInputErrorMessage, findAttributeConstraint, getAttributeUni
 import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
 import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
+import { createSelectRelationTypesOptions } from '@/componentHelpers/ITVS-exceptions'
+
+interface ISelectedCITypeForRelationState {
+    selectedCITypeForRelationTechnicalName: string
+    setSelectedCITypeForRelationTechnicalName: Dispatch<SetStateAction<string>>
+}
 
 interface Props {
     data: CreateEntityData
@@ -48,6 +54,7 @@ interface Props {
     isLoading: boolean
     isError: boolean
     selectedRelationTypeState: ISelectedRelationTypeState
+    selectedCITypeForRelationState: ISelectedCITypeForRelationState
     selectedRelationItemsState: INewRelationData
     publicAuthorityState?: PublicAuthorityState
     roleState?: RoleState
@@ -64,13 +71,13 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     isError,
     selectedRelationTypeState,
     selectedRelationItemsState,
+    selectedCITypeForRelationState,
     publicAuthorityState,
     roleState,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
 
-    const tabName = relationData?.relationTypeData?.targets ? relationData?.relationTypeData?.targets[0].technicalName : ''
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
     const attProfiles = ciTypeData?.attributeProfiles?.map((profile) => profile) ?? []
@@ -103,6 +110,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
 
     const [sectionError, setSectionError] = useState<{ [x: string]: boolean }>(sectionErrorDefaultConfig)
     const { selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName } = selectedRelationTypeState
+    const { selectedCITypeForRelationTechnicalName, setSelectedCITypeForRelationTechnicalName } = selectedCITypeForRelationState
     const { selectedItems, setSelectedItems, setIsListPageOpen } = selectedRelationItemsState
 
     const relationSchema = relationData?.relationTypeData
@@ -127,6 +135,12 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         setValue(AttributesConfigTechNames.METAIS_CODE, metaIsCodeValue)
     }, [metaIsCodeValue, referenceIdValue, setValue])
 
+    const setSelectedRelationAndCI = (val: string) => {
+        const [relation, ci] = val.split(JOIN_OPERATOR)
+        setSelectedRelationTypeTechnicalName(relation)
+        setSelectedCITypeForRelationTechnicalName(ci)
+    }
+
     const sections: IAccordionSection[] =
         selectedItems && Array.isArray(selectedItems)
             ? selectedItems.map((item: ConfigurationItemUi) => ({
@@ -136,7 +150,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                           <ButtonLink
                               label={t('newRelation.detailButton')}
                               //className={classNames(styles.buttonLink, styles.blue)}
-                              onClick={() => navigate(`/ci/${tabName}/${item.uuid}`, { state: { from: location } })}
+                              onClick={() => navigate(`/ci/${selectedCITypeForRelationTechnicalName}/${item.uuid}`, { state: { from: location } })}
                           />
                           <ButtonLink
                               label={t('newRelation.deleteButton')}
@@ -224,17 +238,17 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                             isClearable={false}
                             label={t('newRelation.selectRelType')}
                             name="relation-type"
-                            options={createSelectRelationTypeOptions(relationData?.relatedListAsSources, relationData?.relatedListAsTargets, t)}
+                            options={createSelectRelationTypesOptions(relationData?.relatedListAsSources, relationData?.relatedListAsTargets, t)}
                             value={selectedRelationTypeTechnicalName}
-                            onChange={(val) => setSelectedRelationTypeTechnicalName(val ?? '')}
+                            onChange={(val) => setSelectedRelationAndCI(val ?? '')}
                         />
                         <SelectCiItem
-                            filterTypeEntityName={tabName ?? ''}
+                            filterTypeEntityName={selectedCITypeForRelationTechnicalName ?? ''}
                             onChangeSelectedCiItem={(val) => setSelectedItems(val)}
                             onCloseModal={() => setIsListPageOpen(false)}
                             onOpenModal={() => setIsListPageOpen(true)}
                             existingRelations={undefined}
-                            modalContent={<CiListPage importantEntityName={tabName} noSideMenu />}
+                            modalContent={<CiListPage importantEntityName={selectedCITypeForRelationTechnicalName} noSideMenu />}
                         />
                         {selectedItems && Array.isArray(selectedItems) && selectedItems.length > 0 && <AccordionContainer sections={sections} />}
 
