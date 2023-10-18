@@ -115,7 +115,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     }, [relationSchema])
 
     const methods = useForm({
-        defaultValues: {},
+        defaultValues: defaultItemAttributeValues ?? {},
         resolver: yupResolver(generateFormSchema([...attributes, ...relationSchemaCombinedAttributes], t)),
     })
     const { register, clearErrors, trigger, handleSubmit, setValue, reset, formState } = methods

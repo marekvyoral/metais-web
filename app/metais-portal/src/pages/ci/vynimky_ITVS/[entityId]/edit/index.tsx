@@ -13,7 +13,8 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const EditEntityPage: React.FC = () => {
     const { t, i18n } = useTranslation()
-    const { entityName, entityId } = useParams()
+    const { entityId } = useParams()
+    const entityName = 'vynimky_ITVS'
     return (
         <>
             <BreadCrumbs
@@ -29,6 +30,8 @@ const EditEntityPage: React.FC = () => {
                     configurationItemId={entityId ?? ''}
                     View={({ data: ciData, isLoading: isCiItemLoading, isError: isCiItemError }) => {
                         const ciItemData = ciData?.ciItemData
+                        console.log(ciItemData)
+
                         // const currentName =
                         //     i18n.language == Languages.SLOVAK
                         //         ? ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
@@ -57,6 +60,7 @@ const EditEntityPage: React.FC = () => {
                                                     roleState={roleState}
                                                     publicAuthorityState={publicAuthorityState}
                                                     updateCiItemId={ciItemData?.uuid}
+                                                    ciItemData={ciItemData}
                                                 />
                                             </OrgPermissionsWrapper>
                                         )}

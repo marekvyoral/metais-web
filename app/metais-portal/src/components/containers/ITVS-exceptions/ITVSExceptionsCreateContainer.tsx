@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { ConfigurationItemUi, useReadRelationships, useStoreConfigurationItem, useStoreGraph } from '@isdd/metais-common/api'
+import {
+    ATTRIBUTE_NAME,
+    ConfigurationItemUi,
+    useReadCiNeighboursWithAllRels,
+    useReadRelationships,
+    useStoreConfigurationItem,
+    useStoreGraph,
+} from '@isdd/metais-common/api'
 import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useRedirectAfterSuccess } from '@isdd/metais-common/hooks/useRedirectAfterSucces'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
@@ -30,6 +37,7 @@ interface Props {
     updateCiItemId?: string
     roleState?: RoleState
     publicAuthorityState?: PublicAuthorityState
+    ciItemData?: ConfigurationItemUi | undefined
 }
 
 export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
@@ -41,6 +49,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     isError,
     roleState,
     publicAuthorityState,
+    ciItemData,
 }) => {
     const { t } = useTranslation()
 
@@ -59,9 +68,23 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     //load all relationship types for CI
     const { data: relatedListData, isLoading: isRelatedListLoading, isError: isRelatedListError } = useListRelatedCiTypes(entityName)
 
+    const { data: rels } = useReadCiNeighboursWithAllRels(updateCiItemId ?? '')
+
+    useEffect(() => {
+        return () => {
+            const cis = rels?.ciWithRels?.map((ciWithRel) => ciWithRel.ci)
+            setSelectedItems(cis as ConfigurationItemUi[])
+        }
+    }, [rels, setSelectedItems])
+
     //build select options from this data
     const relatedListAsSources = filterRelatedList(relatedListData?.cisAsSources, ['ISVS', 'WeboveSidlo', 'PO'])
     const relatedListAsTargets = filterRelatedList(relatedListData?.cisAsTargets, ['ISVS', 'WeboveSidlo', 'PO'])
+
+    const entityIdToUpdate = {
+        cicode: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais],
+        ciurl: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_ref_id],
+    }
 
     const [formData, setFormData] = useState<FieldValues>({})
 
@@ -89,7 +112,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
             onSuccess() {
                 setIsListPageOpen(false)
                 setSelectedItems(null)
-                invalidateCilistFilteredCache.invalidate({ ciType: entityName })
+                //invalidateCilistFilteredCache.invalidate({ ciType: entityName })
                 invalidateCiByUuidCache.invalidate()
             },
             onError() {
@@ -134,7 +157,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                               //id of current entity
                               endUuid: item.uuid,
                               //from getGroup Api
-                              owner: ownerId,
+                              owner: updateCiItemId ? ciItemData?.metaAttributes?.owner : ownerId,
                               uuid: uuidV4(),
                           }))
                         : [],
@@ -248,7 +271,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                     />
                 )}
                 <ITVSExceptionsCreateView
-                    data={{ ...data, ownerId }}
+                    data={{ ...data, ownerId, generatedEntityId: updateCiItemId ? entityIdToUpdate : data.generatedEntityId }}
                     relationData={{ relatedListAsSources, relatedListAsTargets, readRelationShipsData, relationTypeData, constraintsData, unitsData }}
                     onSubmit={onSubmit}
                     isProcessing={false}
@@ -257,6 +280,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                     selectedRelationTypeState={{ selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName }}
                     selectedCITypeForRelationState={{ selectedCITypeForRelationTechnicalName, setSelectedCITypeForRelationTechnicalName }}
                     selectedRelationItemsState={{ selectedItems, setSelectedItems, setIsListPageOpen, isListPageOpen }}
+                    defaultItemAttributeValues={ciItemData?.attributes}
                 />
             </QueryFeedback>
         </>
