@@ -792,6 +792,126 @@
         "newCiAndRelation": "Add new item and relation for {{itemName}}",
         "compareHistory": "Change comparer"
     },
+    "codeListDetail": {
+        "title": {
+            "tab": {
+                "info": "Basic information",
+                "gestor": "Factual counter authority",
+                "history": "History of changes"
+            },
+            "items": "Codelist items"
+        },
+        "history": {
+            "table": {
+                "action": "Action",
+                "changedAt": "Date of change",
+                "changedBy": "Changed by"
+            },
+            "filter": {
+                "action": "Action",
+                "lastModifiedBy": "Changed by",
+                "lastChangeFrom": "Last change from",
+                "lastChangeTo": "Last change to"
+            }
+        },
+        "filter": {
+            "effective": {
+                "label": "Effective as of today",
+                "true": "Yes",
+                "false": "No"
+            },
+            "state": "Request status"
+        },
+        "state": {
+            "NEW": "New",
+            "READY_TO_PUBLISH": "Ready for publishing",
+            "PUBLISHED": "Published",
+            "UPDATING": "In-progress"
+        },
+        "table": {
+            "code": "Code",
+            "name": "Item name",
+            "state": "Status",
+            "readyToPublish": "Ready for publishing",
+            "effective": "Effective as of today"
+        },
+        "languages": {
+            "en": "English",
+            "de": "German",
+            "hu": "Hungarian"
+        },
+        "form": {
+            "label": {
+                "language": "Language",
+                "name": "Codelist name",
+                "submit": "Send"
+            },
+            "hint": {
+                "name": "SK: {{name}}"
+            }
+        },
+        "feedback": {
+            "editCodeListItems": "Codelist items have been changed",
+            "translationCreated": "The language version of codelist has been created. You can now add translation of items in this language. The language version of the codelist should be published only when completely translated.",
+            "returnToMainGestor": "Codelist was returned for revision.",
+            "sendToSzzc": "Request has been sent to administrator of BC list.",
+            "sendToIsvs": "Codelist was sent for approval to the Committee for Standardization ISPA.",
+            "publishCodeList": "Codelist was published.",
+            "publishCodeListItems": "Codelist items were published."
+        },
+        "modal": {
+            "title": {
+                "markForPublish": "Mark as ready for publishing",
+                "markForPublishAllItems": "Publish items",
+                "setDates": "Fill validity date and effective date",
+                "export": "Codelist export",
+                "import": "Codelist import",
+                "addLanguageVersion": "Add language version",
+                "sendToIsvs": "Move to the Committee for Standardization ISPA",
+                "sendToSzzc": "Sent to headers list administrator",
+                "returnToMainGestor": "Return codelist to main gestor",
+                "publishCodeList": "Publish codelist"
+            },
+            "form": {
+                "validFrom": "Valid from:",
+                "effectiveFrom": "Effective of"
+            },
+            "text": {
+                "willBeChanged": "The action will affect the following records:",
+                "nothingSelected": "Select records"
+            },
+            "button": {
+                "confirm": "Confirm",
+                "xml": "XML",
+                "csv": "CSV",
+                "xlsx": "XLSX"
+            }
+        },
+        "unlimited": "Unlimited",
+        "selectedSuffix": " (selected)",
+        "button": {
+            "edit": "Edit",
+            "more": "More",
+            "language": "Language",
+            "exportCodelist": "Codelist export",
+            "importCodelist": "Codelist import",
+            "publishCodelist": "Publish",
+            "publishCodelistItems": "Publish items",
+            "sendToIsvs": "Move to the Committee for Standardization ISPA",
+            "sendToSzzc": "Sent to headers list administrator",
+            "returnToMainGestor": "Return codelist to main gestor",
+            "addLanguage": "Add language version",
+            "addNewItem": "Add new item",
+            "markItemReadyForPublishing": "Mark as ready for publishing",
+            "markReadyForPublishingBulk": "Mark as ready for publishing",
+            "setDatesBulk": "Fill in the validity date and effective start date"
+        },
+        "warning": {
+            "itemLocked": "This is a version in-progress by authorized user {{user}} as of {{day}}",
+            "workVersion": "This is a version in-progress.",
+            "updatingVersion": "You are modifying a version in-progress by authorized user {{user}} as of {{day}}."
+        }
+    },
     "codeListList": {
         "title": "Codelists",
         "codeListSubtitle": "List of codelists",
@@ -824,13 +944,6 @@
             "PUBLISHED": "Published",
             "KS_ISVS_REJECTED": "Rejected by Committee for Standardization ISPA",
             "KS_ISVS_ACCEPTED": "Accepted by Committee for Standardization ISPA"
-        },
-        "breadcrumbs": {
-            "home": "Home",
-            "dataObjects": "Data objects",
-            "codeLists": "Codelists",
-            "codeListsList": "List of codelists",
-            "publicCodeListsList": "List of published codelists"
         },
         "table": {
             "code": "Code",

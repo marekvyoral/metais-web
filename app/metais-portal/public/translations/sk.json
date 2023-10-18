@@ -278,6 +278,9 @@
         "en": "English",
         "ge": "German"
     },
+    "input": {
+        "requiredField": "(povinné)"
+    },
     "stepper": {
         "openAll": "Zobraziť všetko",
         "closeAll": "Zatvoriť všetko",
@@ -532,6 +535,10 @@
     },
     "state": "Stav evidencie",
     "group": "Skupina",
+    "confirmationModal": {
+        "okButtonLabel": "OK",
+        "cancelButtonLabel": "Zrušiť"
+    },
     "loading": {
         "loadingSubPage": "Načítavam podstránku",
         "neighboursCardList": "Načítavam vzťahy na súvisiace položky"
@@ -795,6 +802,138 @@
         "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}",
         "compareHistory": "Porovnanie zmien"
     },
+    "codeList": {
+        "breadcrumbs": {
+            "home": "Domov",
+            "dataObjects": "Dátové objekty",
+            "codeLists": "Číselníky",
+            "codeListsList": "Zoznam číselníkov",
+            "publicCodeListsList": "Zoznam publikovaných číselníkov"
+        },
+        "filter": {
+            "title": "Filter"
+        }
+    },
+    "codeListDetail": {
+        "title": {
+            "tab": {
+                "info": "Základné informácie",
+                "gestor": "Vecný gestor číselníka",
+                "history": "História zmien"
+            },
+            "items": "Položky číselníka"
+        },
+        "history": {
+            "table": {
+                "action": "Akcia",
+                "changedAt": "Dátum zmeny",
+                "changedBy": "Zmenu vykonal"
+            },
+            "filter": {
+                "action": "Akcia",
+                "lastModifiedBy": "Zmenu vykonal",
+                "lastChangeFrom": "Posledná zmena od",
+                "lastChangeTo": "Posledná zmena do"
+            }
+        },
+        "filter": {
+            "effective": {
+                "label": "Účinnosť k dnešnému dňu",
+                "true": "Áno",
+                "false": "Nie"
+            },
+            "state": "Stav žiadostí"
+        },
+        "state": {
+            "NEW": "Nová",
+            "READY_TO_PUBLISH": "Pripravená na publikovanie",
+            "PUBLISHED": "Publikovaná",
+            "UPDATING": "Rozpracovaná"
+        },
+        "table": {
+            "code": "Kód",
+            "name": "Názov položky",
+            "state": "Stav",
+            "readyToPublish": "Pripravená na publikovanie",
+            "effective": "Účinnosť k dnešnému dňu"
+        },
+        "languages": {
+            "en": "Angličtina",
+            "de": "Nemčina",
+            "hu": "Maďarčina"
+        },
+        "form": {
+            "label": {
+                "language": "Jazyk",
+                "name": "Názov číselníka",
+                "submit": "Odoslať"
+            },
+            "hint": {
+                "name": "SK: {{name}}"
+            }
+        },
+        "feedback": {
+            "editCodeListItems": "Položky číselníka boli zmenené",
+            "translationCreated": "Jazyková verzia číselníka bola vytvorená. Teraz môžete pridávať preklad položiek v tomto jazyku. Jazyková verzia číselníka by mala byť publikovaná len kompletne preložená.",
+            "returnToMainGestor": "Číselník bol vrátený na prepracovanie.",
+            "sendToSzzc": "Požiadavka bola odoslaná správcovi zoznamu ZČ.",
+            "sendToIsvs": "Číselník bol odoslaný na schválenie Komisii pre štandardizáciu ISVS.",
+            "publishCodeList": "Číselník bol zverejnený.",
+            "publishCodeListItems": "Položky číselníka boli zverejnené."
+        },
+        "modal": {
+            "title": {
+                "markForPublish": "Označiť ako pripravené pre publikovanie",
+                "markForPublishAllItems": "Publikovať položky",
+                "setDates": "Doplnenie dátumu platnosti a začiatku účinnosti",
+                "export": "Export číselníka",
+                "import": "Import číselníka",
+                "addLanguageVersion": "Pridať jazykovú verziu",
+                "sendToIsvs": "Presunúť do Komisie pre štandardizáciu ISVS",
+                "sendToSzzc": "Presunúť na správcu zoznamu ZČ",
+                "returnToMainGestor": "Vrátiť hlavnému gestorovi",
+                "publishCodeList": "Publikovať číselník"
+            },
+            "form": {
+                "validFrom": "Platné od:",
+                "effectiveFrom": "Začiatok účinnosti"
+            },
+            "text": {
+                "willBeChanged": "Akcia ovplyvní nasledovné záznamy:",
+                "nothingSelected": "Zvoľte záznamy"
+            },
+            "button": {
+                "confirm": "Potvrdiť",
+                "xml": "XML",
+                "csv": "CSV",
+                "xlsx": "XLSX"
+            }
+        },
+        "unlimited": "Neobmedzene",
+        "selectedSuffix": " (zvolený)",
+        "button": {
+            "edit": "Upraviť",
+            "more": "Viac možnosťí",
+            "language": "Jazyk",
+            "exportCodelist": "Export číselníka",
+            "importCodelist": "Import číselníka",
+            "sendToIsvs": "Presunúť do Komisie pre štandardizáciu ISVS",
+            "publishCodelist": "Publikovať",
+            "publishCodelistItems": "Publikovať položky",
+            "sendToSzzc": "Presunúť na správcu zoznamu ZČ",
+            "returnToMainGestor": "Vrátiť hlavnému gestorovi",
+            "addLanguage": "Pridať jazykovú verziu",
+            "addNewItem": "Pridať novú položku",
+            "markItemReadyForPublishing": "Pripraviť na publikovanie",
+            "markReadyForPublishingBulk": "Označiť ako pripravené pre publikovanie",
+            "setDatesBulk": "Doplniť dátum platnosti a začiatok účinnosti"
+        },
+        "warning": {
+            "itemLocked": "Toto je rozpracovaná verzia oprávneným používateľom {{user}} zo dňa {{date}}",
+            "workVersion": "Toto je rozpracovaná verzia",
+            "updatingVersion": "Upravujete rozpracovanú verziu oprávneným používateľom {{user}} zo dňa {{day}}"
+        }
+    },
     "codeListList": {
         "title": "Číselníky",
         "codeListSubtitle": "Zoznam číselníkov",
@@ -812,7 +951,6 @@
             "toDate": "Platné ku dňu",
             "onlyBase": {
                 "label": "Základný číselník",
-                "all": "Všetky",
                 "true": "Áno",
                 "false": "Nie"
             },
@@ -821,19 +959,13 @@
             "code": "Kód"
         },
         "state": {
+            "NEW": "Nová",
             "UPDATING": "Upravovaný",
             "READY_TO_PUBLISH": "Pripravený na publikovanie",
             "ISVS_PROCESSING": "Odoslaný na schválenie na KS ISVS",
             "PUBLISHED": "Publikovaný",
             "KS_ISVS_REJECTED": "Zamietnuté v Komisii pre štandardizáciu ISVS",
             "KS_ISVS_ACCEPTED": "Akceptované v Komisii pre štandardizáciu ISVS"
-        },
-        "breadcrumbs": {
-            "home": "Domov",
-            "dataObjects": "Dátové objekty",
-            "codeLists": "Číselníky",
-            "codeListsList": "Zoznam číselníkov",
-            "publicCodeListsList": "Zoznam publikovaných číselníkov"
         },
         "table": {
             "code": "Kód",
@@ -842,9 +974,6 @@
             "effectiveFrom": "Začiatok účinnosti",
             "isBase": "Základný číselník",
             "state": "Stav"
-        },
-        "error": {
-            "selectFilterMainGestor": ""
         }
     },
     "selectCiItem": {

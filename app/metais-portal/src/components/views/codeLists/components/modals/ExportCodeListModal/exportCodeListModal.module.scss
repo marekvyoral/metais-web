@@ -1,0 +1,53 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.buttonGroup {
+    display: flex;
+    gap: govuk-spacing(6);
+    margin-top: govuk-spacing(7);
+    flex-wrap: wrap;
+    justify-content: center;
+
+    @include mq($until: tablet) {
+        flex-direction: column;
+        gap: govuk-spacing(3);
+    }
+}
+.buttons {
+    margin-bottom: govuk-spacing(0) !important;
+    width: 195px !important;
+
+    @include mq($until: tablet) {
+        width: 250px !important;
+    }
+}
+
+.modalContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: govuk-spacing(7);
+    padding: govuk-spacing(6);
+
+    background: govuk-colour('white');
+    border-radius: 8px;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.icon {
+    margin-bottom: govuk-spacing(2);
+}
+
+.iconWidth {
+    width: 48px;
+}
+
+.heading {
+    text-align: center;
+}
