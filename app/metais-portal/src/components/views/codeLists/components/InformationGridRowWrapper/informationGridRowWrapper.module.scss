@@ -1,0 +1,7 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.attributeGridRowBox {
+    display: flex;
+    gap: govuk-spacing(4);
+    flex-direction: column;
+}

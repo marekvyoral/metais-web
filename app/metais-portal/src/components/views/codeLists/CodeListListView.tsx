@@ -87,7 +87,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                         {name}
                     </TextClickable>
                 ) : (
-                    <TextLink to={`${RouteNames.CODELISTS}/${id}/detail`}>{name}</TextLink>
+                    <TextLink to={`${RouteNames.CODELISTS}/${id}`}>{name}</TextLink>
                 )
             },
         },
@@ -147,29 +147,28 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
             <BreadCrumbs
                 withWidthContainer
                 links={[
-                    { label: t('codeListList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
-                    { label: t('codeListList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                    { label: t('codeListList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
+                    { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
+                    { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
+                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
                     isOnlyPublishedPage
-                        ? { label: t('codeListList.breadcrumbs.publicCodeListsList'), href: NavigationSubRoutes.PUBLIKOVANE_CISELNIKY }
-                        : { label: t('codeListList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CISELNIKY },
+                        ? { label: t('codeList.breadcrumbs.publicCodeListsList'), href: NavigationSubRoutes.PUBLIKOVANE_CISELNIKY }
+                        : { label: t('codeList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CISELNIKY },
                 ]}
             />
             <MainContentWrapper>
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
-                        {isOnlyPublishedPage ? (
-                            <TextHeading size="L">{t('codeListList.publicCodeListSubtitle')}</TextHeading>
-                        ) : (
-                            <TextHeading size="L">{t('codeListList.codeListSubtitle')}</TextHeading>
-                        )}
-                        <TextHeading size="XL">{t('codeList.title')}</TextHeading>
+                        <TextHeading size="XL">{t('codeListList.title')}</TextHeading>
                         {isError && <QueryFeedback error={isError} loading={false} />}
                     </FlexColumnReverseWrapper>
-                    <TextHeading size="XL">{t('codeListList.title')}</TextHeading>
+                    {isOnlyPublishedPage ? (
+                        <TextHeading size="L">{t('codeListList.publicCodeListSubtitle')}</TextHeading>
+                    ) : (
+                        <TextHeading size="L">{t('codeListList.codeListSubtitle')}</TextHeading>
+                    )}
 
                     <Filter<CodeListListFilterData>
-                        heading={t('codeListList.filter.title')}
+                        heading={t('codeList.filter.title')}
                         defaultFilterValues={defaultFilterValues}
                         form={({ filter: formFilter, register, setValue }) => (
                             <div>
@@ -194,7 +193,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                                             label={t('codeListList.filter.state')}
                                             options={Object.values(CodeListState).map((state) => ({
                                                 value: state,
-                                                label: t(`codeListList.state.${state}`),
+                                                label: t(`codeList.state.${state}`),
                                             }))}
                                             setValue={setValue}
                                             defaultValue={formFilter.wfState || defaultFilterValues.wfState}
@@ -226,11 +225,11 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                         <ButtonGroupRow>
                             <Button
                                 label={t('codeListList.lockedModal.button.lastSavedRevision')}
-                                onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}/detail`)}
+                                onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}`)}
                             />
                             <Button
                                 label={t('codeListList.lockedModal.button.currentRevision')}
-                                onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}/detail`)}
+                                onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}`)}
                             />
                         </ButtonGroupRow>
                     </BaseModal>
