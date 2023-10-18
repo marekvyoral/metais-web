@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-    ConfigurationItemUi,
-    useGetRelationshipType,
-    useListRelatedCiTypes,
-    useReadRelationships,
-    useStoreConfigurationItem,
-    useStoreGraph,
-} from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useReadRelationships, useStoreConfigurationItem, useStoreGraph } from '@isdd/metais-common/api'
 import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useRedirectAfterSuccess } from '@isdd/metais-common/hooks/useRedirectAfterSucces'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
@@ -19,7 +12,7 @@ import { FieldValues } from 'react-hook-form'
 import { v4 as uuidV4 } from 'uuid'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { JOIN_OPERATOR } from '@isdd/metais-common/constants'
-import { filter } from 'd3'
+import { useListRelatedCiTypes, useGetRelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { PublicAuthorityState, RoleState } from '../PublicAuthorityAndRoleContainer'
 
@@ -108,19 +101,19 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const saveRelations = async () => {
         const formAttributesKeys = Object.keys(formData)
 
-        const formattedAttributesToSend = filter(
-            formAttributesKeys.map((key) => ({
+        const formattedAttributesToSend = formAttributesKeys
+            .map((key) => ({
                 name: key,
                 value: formatFormAttributeValue(formData, key),
-            })),
-            (attr) => attr.name.includes('RELATION'),
-        ).map((relation) => {
-            const splitted = relation.name.split(JOIN_OPERATOR)
-            return {
-                name: splitted[0],
-                id: splitted[1],
-            }
-        })
+            }))
+            .filter((attr) => attr.name.includes('RELATION'))
+            .map((relation) => {
+                const splitted = relation.name.split(JOIN_OPERATOR)
+                return {
+                    name: splitted[0],
+                    id: splitted[1],
+                }
+            })
 
         const relationRequestData = {
             storeSet: {
@@ -191,13 +184,12 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
         resetRedirect()
         const formAttributesKeys = Object.keys(formAttributes)
 
-        const formattedAttributesToSend = filter(
-            formAttributesKeys.map((key) => ({
+        const formattedAttributesToSend = formAttributesKeys
+            .map((key) => ({
                 name: key,
                 value: formatFormAttributeValue(formAttributes, key),
-            })),
-            (attr) => !attr.name.includes('RELATION'),
-        )
+            }))
+            .filter((attr) => !attr.name.includes('RELATION'))
 
         const type = entityName
 

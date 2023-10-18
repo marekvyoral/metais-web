@@ -3,16 +3,7 @@ import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
-import {
-    ATTRIBUTE_NAME,
-    Attribute,
-    ConfigurationItemUi,
-    ConfigurationItemUiAttributes,
-    Gen_Profil,
-    RelatedCiTypePreview,
-    useGetRelationshipType,
-    useListRelatedCiTypes,
-} from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME, ConfigurationItemUi, ConfigurationItemUiAttributes, Gen_Profil } from '@isdd/metais-common/api'
 import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { AccordionContainer, Button, ButtonGroupRow, ButtonLink, IAccordionSection, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
@@ -24,6 +15,7 @@ import classNames from 'classnames'
 import { MultiValue } from 'react-select'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
+import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { CreateEntityData } from '@/components/create-entity/CreateEntity'
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
