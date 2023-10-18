@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { AttributeAttributeTypeEnum, EnumType, EnumTypePreviewList } from '@isdd/metais-common/api'
+import { EnumType, EnumTypePreviewList } from '@isdd/metais-common/api'
+import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IOption } from '@isdd/idsk-ui-kit'
 
 interface iUseCreateAttribute {

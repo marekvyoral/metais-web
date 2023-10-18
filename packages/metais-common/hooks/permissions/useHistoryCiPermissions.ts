@@ -4,9 +4,10 @@ import { useEffect } from 'react'
 import { useAbilityContext } from './useAbilityContext'
 import { Actions } from './useUserAbility'
 
-import { Gen_Profil, useGetCiType, useGetRoleParticipant, useReadConfigurationItem } from '@isdd/metais-common/api'
+import { Gen_Profil, useGetRoleParticipant, useReadConfigurationItem } from '@isdd/metais-common/api'
 import { useGetRightsForPO, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 
 export const useHistoryCiPermissions = (entityName: string, entityId: string) => {

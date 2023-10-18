@@ -8,7 +8,8 @@ import { DynamicFilterAttributeInput } from './DynamicFilterAttributeInput'
 
 import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
-import { Attribute, AttributeProfile, EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api'
+import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { findAvailableOperators } from '@isdd/metais-common/componentHelpers/filter/findAvailableOperators'
 
 interface Props {

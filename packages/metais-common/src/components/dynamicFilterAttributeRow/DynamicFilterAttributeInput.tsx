@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next'
 
 import style from './customFilterAttribute.module.scss'
 
-import { AttributeAttributeTypeEnum, EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api'
+import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 
 enum RadioInputValue {

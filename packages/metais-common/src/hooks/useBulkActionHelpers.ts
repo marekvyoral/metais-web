@@ -1,6 +1,7 @@
 import uniq from 'lodash/uniq'
 
-import { CiType, ConfigurationItemUi, useGetCiTypeHook } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { CiType, useGetCiTypeHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useGetRightsForPOBulkHook, useIsInPoByGid1Hook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 

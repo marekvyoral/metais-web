@@ -1,4 +1,5 @@
-import { AttributeAttributeTypeEnum, EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api'
+import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
 
 export const findDefaultOperator = (attType: { isArray: boolean; type: string }, attributeConstraints: EnumType | undefined) => {

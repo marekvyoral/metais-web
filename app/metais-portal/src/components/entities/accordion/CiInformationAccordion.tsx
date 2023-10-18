@@ -3,9 +3,10 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
-import { ATTRIBUTE_NAME, CiType, ConfigurationItemUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
+import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/src/hooks/useGetCiTypeConstraintsData'
 
 interface CiInformationData {

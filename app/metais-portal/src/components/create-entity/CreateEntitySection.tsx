@@ -1,9 +1,10 @@
 import { ErrorBlockList } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
-import { Attribute, AttributeConstraintEnumAllOf, CiCode, ConfigurationItemUiAttributes, EnumType } from '@isdd/metais-common'
+import { ConfigurationItemUiAttributes, EnumType } from '@isdd/metais-common'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import React, { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { Attribute, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { HasResetState } from './CreateCiEntityForm'
 import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits } from './createEntityHelpers'

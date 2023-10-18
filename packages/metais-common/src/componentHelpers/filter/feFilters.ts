@@ -1,6 +1,6 @@
 import { FieldValues } from 'react-hook-form'
 
-import { CiTypePreview } from '@isdd/metais-common/api'
+import { CiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
 export interface EntityFilterData extends IFilterParams, FieldValues {

@@ -3,8 +3,8 @@ import { FieldErrors, FieldValues, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import React, { useState } from 'react'
 import { Button } from '@isdd/idsk-ui-kit/index'
-import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api'
 import { Meta, StoryObj } from '@storybook/react'
+import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { AttributeInput } from './AttributeInput'
 

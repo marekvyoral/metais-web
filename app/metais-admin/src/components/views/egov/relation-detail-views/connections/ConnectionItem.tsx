@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { CiTypePreview } from '@isdd/metais-common/api'
+import { CiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useTranslation } from 'react-i18next'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 

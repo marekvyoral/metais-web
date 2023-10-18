@@ -1,5 +1,5 @@
 import React from 'react'
-import { SummarizingCardItemUi, SummarizingCardUi } from '@isdd/metais-common/api'
+import { SummarizingCardItemUi, SummarizingCardUi } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ColumnDef } from '@tanstack/react-table'
 import { Button, Table } from '@isdd/idsk-ui-kit'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'

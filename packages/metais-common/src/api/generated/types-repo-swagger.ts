@@ -5,8 +5,8 @@
  * MetaIS Types Repo
  * OpenAPI spec version: 3.0-SNAPSHOT
  */
-import type { MutationFunction, QueryFunction, QueryKey, UseMutationOptions, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useTypesRepoSwaggerClient } from '../hooks/useTypesRepoSwaggerClient'
 export type GenerateCodeAndURL1Params = {
     count: number
@@ -67,14 +67,38 @@ export interface RelatedCiTypePreview {
     ownerRelationship?: boolean
 }
 
+export interface DerivedCiTypePreview {
+    name?: string
+    engName?: string
+    technicalName?: string
+    description?: string
+    descriptionEn?: string
+    ciType?: CiTypePreview
+    relations?: RelationshipType[]
+}
+
 export interface RelatedCiTypePreviewList {
     cisAsSources?: RelatedCiTypePreview[]
     cisAsTargets?: RelatedCiTypePreview[]
+    derivedCisAsSources?: DerivedCiTypePreview[]
+    derivedCisAsTargets?: DerivedCiTypePreview[]
 }
 
 export interface CiCode {
     cicode?: string
     ciurl?: string
+}
+
+export interface DerivedRelationshipType {
+    technicalName?: string
+    name?: string
+    nameEn?: string
+    description?: string
+    descriptionEn?: string
+    sourceCiTypeTn?: string
+    targetCiTypeTn?: string
+    relationshipTns?: string[]
+    valid?: boolean
 }
 
 export interface RightsTypeHolder {
@@ -190,6 +214,10 @@ export interface RelationshipType {
     engDescription?: string
 }
 
+export interface AttributeProfilePreview {
+    attributeProfileList?: AttributeProfile[]
+}
+
 export interface AttributeProfileFilter {
     role?: string
 }
@@ -239,10 +267,6 @@ export interface AttributeProfile {
     attributes?: Attribute[]
 }
 
-export interface AttributeProfilePreview {
-    attributeProfileList?: AttributeProfile[]
-}
-
 export interface CiTypePreview {
     id?: number
     name?: string
@@ -273,10 +297,14 @@ export type AttributeConstraintIntervalAllOf = {
     maxValue?: number
 }
 
-export type AttributeConstraintInterval = AttributeConstraint & AttributeConstraintIntervalAllOf
-
 export type AttributeConstraintEnumAllOf = {
     enumCode?: string
+}
+
+export type AttributeConstraintEnum = AttributeConstraint & AttributeConstraintEnumAllOf
+
+export type AttributeConstraintCiTypeAllOf = {
+    ciType?: string
 }
 
 export interface AttributeConstraint {
@@ -284,7 +312,9 @@ export interface AttributeConstraint {
     type?: string
 }
 
-export type AttributeConstraintEnum = AttributeConstraint & AttributeConstraintEnumAllOf
+export type AttributeConstraintInterval = AttributeConstraint & AttributeConstraintIntervalAllOf
+
+export type AttributeConstraintCiType = AttributeConstraint & AttributeConstraintCiTypeAllOf
 
 export type AttributeAttributeTypeEnum = (typeof AttributeAttributeTypeEnum)[keyof typeof AttributeAttributeTypeEnum]
 
@@ -302,9 +332,10 @@ export const AttributeAttributeTypeEnum = {
     DATE: 'DATE',
     STRING_PAIR: 'STRING_PAIR',
     IMAGE: 'IMAGE',
+    HTML: 'HTML',
 } as const
 
-export type AttributeConstraintsItem = AttributeConstraintEnum | AttributeConstraintInterval | AttributeConstraintRegex
+export type AttributeConstraintsItem = AttributeConstraintCiType | AttributeConstraintEnum | AttributeConstraintInterval | AttributeConstraintRegex
 
 export interface Attribute {
     id?: number
@@ -363,6 +394,16 @@ export interface RelationshipTypeFilter {
     role?: string
 }
 
+export type ApiErrorData = { [key: string]: any }
+
+export interface ApiError {
+    type?: string
+    message?: string
+    data?: ApiErrorData
+    logToken?: string
+    values?: string[]
+}
+
 type AwaitedInput<T> = PromiseLike<T> | T
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
@@ -381,7 +422,7 @@ export const useListRelationshipTypesHook = () => {
 export const getListRelationshipTypesQueryKey = (params: ListRelationshipTypesParams) =>
     [`/relationshiptypes/list`, ...(params ? [params] : [])] as const
 
-export const useListRelationshipTypesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesHook>>>, TError = unknown>(
+export const useListRelationshipTypesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesHook>>>, TError = ApiError>(
     params: ListRelationshipTypesParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -398,12 +439,12 @@ export const useListRelationshipTypesQueryOptions = <TData = Awaited<ReturnType<
 }
 
 export type ListRelationshipTypesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesHook>>>>
-export type ListRelationshipTypesQueryError = unknown
+export type ListRelationshipTypesQueryError = ApiError
 
 /**
  * @summary listRelationshipTypes
  */
-export const useListRelationshipTypes = <TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesHook>>>, TError = unknown>(
+export const useListRelationshipTypes = <TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesHook>>>, TError = ApiError>(
     params: ListRelationshipTypesParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypesHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -432,7 +473,7 @@ export const useListRelationshipTypes1Hook = () => {
     }
 }
 
-export const useListRelationshipTypes1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useListRelationshipTypes1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useListRelationshipTypes1Hook>>>,
         TError,
@@ -457,12 +498,12 @@ export const useListRelationshipTypes1MutationOptions = <TError = unknown, TCont
 
 export type ListRelationshipTypes1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypes1Hook>>>>
 export type ListRelationshipTypes1MutationBody = RelationshipTypeFilter
-export type ListRelationshipTypes1MutationError = unknown
+export type ListRelationshipTypes1MutationError = ApiError
 
 /**
  * @summary listRelationshipTypes
  */
-export const useListRelationshipTypes1 = <TError = unknown, TContext = unknown>(options?: {
+export const useListRelationshipTypes1 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useListRelationshipTypes1Hook>>>,
         TError,
@@ -488,7 +529,7 @@ export const useListCiTypesHook = () => {
 
 export const getListCiTypesQueryKey = (params: ListCiTypesParams) => [`/citypes/list`, ...(params ? [params] : [])] as const
 
-export const useListCiTypesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListCiTypesHook>>>, TError = unknown>(
+export const useListCiTypesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListCiTypesHook>>>, TError = ApiError>(
     params: ListCiTypesParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypesHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypesHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -504,12 +545,12 @@ export const useListCiTypesQueryOptions = <TData = Awaited<ReturnType<ReturnType
 }
 
 export type ListCiTypesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListCiTypesHook>>>>
-export type ListCiTypesQueryError = unknown
+export type ListCiTypesQueryError = ApiError
 
 /**
  * @summary listCiTypes
  */
-export const useListCiTypes = <TData = Awaited<ReturnType<ReturnType<typeof useListCiTypesHook>>>, TError = unknown>(
+export const useListCiTypes = <TData = Awaited<ReturnType<ReturnType<typeof useListCiTypesHook>>>, TError = ApiError>(
     params: ListCiTypesParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypesHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -533,7 +574,7 @@ export const useListCiTypes1Hook = () => {
     }
 }
 
-export const useListCiTypes1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useListCiTypes1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypes1Hook>>>, TError, { data: CiTypeFilter }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypes1Hook>>>, TError, { data: CiTypeFilter }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -551,12 +592,12 @@ export const useListCiTypes1MutationOptions = <TError = unknown, TContext = unkn
 
 export type ListCiTypes1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListCiTypes1Hook>>>>
 export type ListCiTypes1MutationBody = CiTypeFilter
-export type ListCiTypes1MutationError = unknown
+export type ListCiTypes1MutationError = ApiError
 
 /**
  * @summary listCiTypes
  */
-export const useListCiTypes1 = <TError = unknown, TContext = unknown>(options?: {
+export const useListCiTypes1 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListCiTypes1Hook>>>, TError, { data: CiTypeFilter }, TContext>
 }) => {
     const mutationOptions = useListCiTypes1MutationOptions(options)
@@ -577,7 +618,7 @@ export const useListAttrProfileHook = () => {
 
 export const getListAttrProfileQueryKey = (params: ListAttrProfileParams) => [`/attrprofiles/list`, ...(params ? [params] : [])] as const
 
-export const useListAttrProfileQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileHook>>>, TError = unknown>(
+export const useListAttrProfileQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileHook>>>, TError = ApiError>(
     params: ListAttrProfileParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -593,12 +634,12 @@ export const useListAttrProfileQueryOptions = <TData = Awaited<ReturnType<Return
 }
 
 export type ListAttrProfileQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListAttrProfileHook>>>>
-export type ListAttrProfileQueryError = unknown
+export type ListAttrProfileQueryError = ApiError
 
 /**
  * @summary listAttrProfile
  */
-export const useListAttrProfile = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileHook>>>, TError = unknown>(
+export const useListAttrProfile = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileHook>>>, TError = ApiError>(
     params: ListAttrProfileParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -629,7 +670,7 @@ export const useListAttrProfile1Hook = () => {
 
 export const getListAttrProfile1QueryKey = (attributeProfileFilter: AttributeProfileFilter) => [`/attrprofiles/list`, attributeProfileFilter] as const
 
-export const useListAttrProfile1QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError = unknown>(
+export const useListAttrProfile1QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError = ApiError>(
     attributeProfileFilter: AttributeProfileFilter,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -645,12 +686,12 @@ export const useListAttrProfile1QueryOptions = <TData = Awaited<ReturnType<Retur
 }
 
 export type ListAttrProfile1QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>>
-export type ListAttrProfile1QueryError = unknown
+export type ListAttrProfile1QueryError = ApiError
 
 /**
  * @summary listAttrProfile
  */
-export const useListAttrProfile1 = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError = unknown>(
+export const useListAttrProfile1 = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError = ApiError>(
     attributeProfileFilter: AttributeProfileFilter,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfile1Hook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -676,7 +717,7 @@ export const useStoreAttributeTextationHook = () => {
     }
 }
 
-export const useStoreAttributeTextationMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreAttributeTextationMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationHook>>>,
         TError,
@@ -707,9 +748,9 @@ export const useStoreAttributeTextationMutationOptions = <TError = unknown, TCon
 
 export type StoreAttributeTextationMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationHook>>>>
 export type StoreAttributeTextationMutationBody = Attribute
-export type StoreAttributeTextationMutationError = unknown
+export type StoreAttributeTextationMutationError = ApiError
 
-export const useStoreAttributeTextation = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreAttributeTextation = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextationHook>>>,
         TError,
@@ -730,7 +771,7 @@ export const useDeleteAttributeTextationHook = () => {
     }
 }
 
-export const useDeleteAttributeTextationMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteAttributeTextationMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationHook>>>,
         TError,
@@ -761,9 +802,9 @@ export const useDeleteAttributeTextationMutationOptions = <TError = unknown, TCo
 
 export type DeleteAttributeTextationMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationHook>>>>
 
-export type DeleteAttributeTextationMutationError = unknown
+export type DeleteAttributeTextationMutationError = ApiError
 
-export const useDeleteAttributeTextation = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteAttributeTextation = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextationHook>>>,
         TError,
@@ -784,7 +825,7 @@ export const useValidRelationshipTypeHook = () => {
     }
 }
 
-export const useValidRelationshipTypeMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useValidRelationshipTypeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeHook>>>, TError, { technicalName: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeHook>>>, TError, { technicalName: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -802,9 +843,9 @@ export const useValidRelationshipTypeMutationOptions = <TError = unknown, TConte
 
 export type ValidRelationshipTypeMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeHook>>>>
 
-export type ValidRelationshipTypeMutationError = unknown
+export type ValidRelationshipTypeMutationError = ApiError
 
-export const useValidRelationshipType = <TError = unknown, TContext = unknown>(options?: {
+export const useValidRelationshipType = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidRelationshipTypeHook>>>, TError, { technicalName: string }, TContext>
 }) => {
     const mutationOptions = useValidRelationshipTypeMutationOptions(options)
@@ -820,7 +861,7 @@ export const useUnvalidRelationshipTypeHook = () => {
     }
 }
 
-export const useUnvalidRelationshipTypeMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useUnvalidRelationshipTypeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUnvalidRelationshipTypeHook>>>, TError, { technicalName: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUnvalidRelationshipTypeHook>>>, TError, { technicalName: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -840,9 +881,9 @@ export const useUnvalidRelationshipTypeMutationOptions = <TError = unknown, TCon
 
 export type UnvalidRelationshipTypeMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUnvalidRelationshipTypeHook>>>>
 
-export type UnvalidRelationshipTypeMutationError = unknown
+export type UnvalidRelationshipTypeMutationError = ApiError
 
-export const useUnvalidRelationshipType = <TError = unknown, TContext = unknown>(options?: {
+export const useUnvalidRelationshipType = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUnvalidRelationshipTypeHook>>>, TError, { technicalName: string }, TContext>
 }) => {
     const mutationOptions = useUnvalidRelationshipTypeMutationOptions(options)
@@ -863,7 +904,7 @@ export const useStoreExistRelationshipTypeHook = () => {
     }
 }
 
-export const useStoreExistRelationshipTypeMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreExistRelationshipTypeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistRelationshipTypeHook>>>,
         TError,
@@ -888,9 +929,9 @@ export const useStoreExistRelationshipTypeMutationOptions = <TError = unknown, T
 
 export type StoreExistRelationshipTypeMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreExistRelationshipTypeHook>>>>
 export type StoreExistRelationshipTypeMutationBody = RelationshipType
-export type StoreExistRelationshipTypeMutationError = unknown
+export type StoreExistRelationshipTypeMutationError = ApiError
 
-export const useStoreExistRelationshipType = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreExistRelationshipType = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistRelationshipTypeHook>>>,
         TError,
@@ -916,7 +957,7 @@ export const useStoreNewRelationshipTypeHook = () => {
     }
 }
 
-export const useStoreNewRelationshipTypeMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreNewRelationshipTypeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewRelationshipTypeHook>>>,
         TError,
@@ -941,9 +982,9 @@ export const useStoreNewRelationshipTypeMutationOptions = <TError = unknown, TCo
 
 export type StoreNewRelationshipTypeMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreNewRelationshipTypeHook>>>>
 export type StoreNewRelationshipTypeMutationBody = RelationshipType
-export type StoreNewRelationshipTypeMutationError = unknown
+export type StoreNewRelationshipTypeMutationError = ApiError
 
-export const useStoreNewRelationshipType = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreNewRelationshipType = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewRelationshipTypeHook>>>,
         TError,
@@ -966,7 +1007,7 @@ export const useGetSummarizingCardHook = () => {
 
 export const getGetSummarizingCardQueryKey = (technicalName: string) => [`/citypes/citype/${technicalName}/summarizingcard`] as const
 
-export const useGetSummarizingCardQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardHook>>>, TError = unknown>(
+export const useGetSummarizingCardQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -983,9 +1024,9 @@ export const useGetSummarizingCardQueryOptions = <TData = Awaited<ReturnType<Ret
 }
 
 export type GetSummarizingCardQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardHook>>>>
-export type GetSummarizingCardQueryError = unknown
+export type GetSummarizingCardQueryError = ApiError
 
-export const useGetSummarizingCard = <TData = Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardHook>>>, TError = unknown>(
+export const useGetSummarizingCard = <TData = Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetSummarizingCardHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -1011,7 +1052,7 @@ export const useSetSummarizingCardHook = () => {
     }
 }
 
-export const useSetSummarizingCardMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useSetSummarizingCardMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useSetSummarizingCardHook>>>,
         TError,
@@ -1042,9 +1083,9 @@ export const useSetSummarizingCardMutationOptions = <TError = unknown, TContext 
 
 export type SetSummarizingCardMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useSetSummarizingCardHook>>>>
 export type SetSummarizingCardMutationBody = SummarizingCardUi
-export type SetSummarizingCardMutationError = unknown
+export type SetSummarizingCardMutationError = ApiError
 
-export const useSetSummarizingCard = <TError = unknown, TContext = unknown>(options?: {
+export const useSetSummarizingCard = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useSetSummarizingCardHook>>>,
         TError,
@@ -1065,7 +1106,7 @@ export const useDeleteSummarizingCardHook = () => {
     }
 }
 
-export const useDeleteSummarizingCardMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteSummarizingCardMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteSummarizingCardHook>>>, TError, { technicalName: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteSummarizingCardHook>>>, TError, { technicalName: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1083,9 +1124,9 @@ export const useDeleteSummarizingCardMutationOptions = <TError = unknown, TConte
 
 export type DeleteSummarizingCardMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteSummarizingCardHook>>>>
 
-export type DeleteSummarizingCardMutationError = unknown
+export type DeleteSummarizingCardMutationError = ApiError
 
-export const useDeleteSummarizingCard = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteSummarizingCard = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteSummarizingCardHook>>>, TError, { technicalName: string }, TContext>
 }) => {
     const mutationOptions = useDeleteSummarizingCardMutationOptions(options)
@@ -1106,7 +1147,7 @@ export const useStoreAttributeTextation1Hook = () => {
     }
 }
 
-export const useStoreAttributeTextation1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreAttributeTextation1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextation1Hook>>>,
         TError,
@@ -1137,9 +1178,9 @@ export const useStoreAttributeTextation1MutationOptions = <TError = unknown, TCo
 
 export type StoreAttributeTextation1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextation1Hook>>>>
 export type StoreAttributeTextation1MutationBody = Attribute
-export type StoreAttributeTextation1MutationError = unknown
+export type StoreAttributeTextation1MutationError = ApiError
 
-export const useStoreAttributeTextation1 = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreAttributeTextation1 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreAttributeTextation1Hook>>>,
         TError,
@@ -1160,7 +1201,7 @@ export const useDeleteAttributeTextation1Hook = () => {
     }
 }
 
-export const useDeleteAttributeTextation1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteAttributeTextation1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextation1Hook>>>,
         TError,
@@ -1191,9 +1232,9 @@ export const useDeleteAttributeTextation1MutationOptions = <TError = unknown, TC
 
 export type DeleteAttributeTextation1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextation1Hook>>>>
 
-export type DeleteAttributeTextation1MutationError = unknown
+export type DeleteAttributeTextation1MutationError = ApiError
 
-export const useDeleteAttributeTextation1 = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteAttributeTextation1 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useDeleteAttributeTextation1Hook>>>,
         TError,
@@ -1214,7 +1255,7 @@ export const useStoreValidHook = () => {
     }
 }
 
-export const useStoreValidMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreValidMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreValidHook>>>, TError, { technicalName: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreValidHook>>>, TError, { technicalName: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1232,9 +1273,9 @@ export const useStoreValidMutationOptions = <TError = unknown, TContext = unknow
 
 export type StoreValidMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreValidHook>>>>
 
-export type StoreValidMutationError = unknown
+export type StoreValidMutationError = ApiError
 
-export const useStoreValid = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreValid = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreValidHook>>>, TError, { technicalName: string }, TContext>
 }) => {
     const mutationOptions = useStoreValidMutationOptions(options)
@@ -1250,7 +1291,7 @@ export const useStoreUnvalidHook = () => {
     }
 }
 
-export const useStoreUnvalidMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreUnvalidMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreUnvalidHook>>>, TError, { technicalName: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreUnvalidHook>>>, TError, { technicalName: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1268,9 +1309,9 @@ export const useStoreUnvalidMutationOptions = <TError = unknown, TContext = unkn
 
 export type StoreUnvalidMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreUnvalidHook>>>>
 
-export type StoreUnvalidMutationError = unknown
+export type StoreUnvalidMutationError = ApiError
 
-export const useStoreUnvalid = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreUnvalid = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreUnvalidHook>>>, TError, { technicalName: string }, TContext>
 }) => {
     const mutationOptions = useStoreUnvalidMutationOptions(options)
@@ -1286,7 +1327,7 @@ export const useStoreExistCiTypeHook = () => {
     }
 }
 
-export const useStoreExistCiTypeMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreExistCiTypeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeHook>>>, TError, { data: CiType }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeHook>>>, TError, { data: CiType }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1304,9 +1345,9 @@ export const useStoreExistCiTypeMutationOptions = <TError = unknown, TContext = 
 
 export type StoreExistCiTypeMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeHook>>>>
 export type StoreExistCiTypeMutationBody = CiType
-export type StoreExistCiTypeMutationError = unknown
+export type StoreExistCiTypeMutationError = ApiError
 
-export const useStoreExistCiType = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreExistCiType = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistCiTypeHook>>>, TError, { data: CiType }, TContext>
 }) => {
     const mutationOptions = useStoreExistCiTypeMutationOptions(options)
@@ -1322,7 +1363,7 @@ export const useStoreNewCiTypeHook = () => {
     }
 }
 
-export const useStoreNewCiTypeMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreNewCiTypeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeHook>>>, TError, { data: CiType }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeHook>>>, TError, { data: CiType }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1340,9 +1381,9 @@ export const useStoreNewCiTypeMutationOptions = <TError = unknown, TContext = un
 
 export type StoreNewCiTypeMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeHook>>>>
 export type StoreNewCiTypeMutationBody = CiType
-export type StoreNewCiTypeMutationError = unknown
+export type StoreNewCiTypeMutationError = ApiError
 
-export const useStoreNewCiType = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreNewCiType = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeHook>>>, TError, { data: CiType }, TContext>
 }) => {
     const mutationOptions = useStoreNewCiTypeMutationOptions(options)
@@ -1363,7 +1404,7 @@ export const useStoreExistsCiTypeRelationshipTypeMapHook = () => {
     }
 }
 
-export const useStoreExistsCiTypeRelationshipTypeMapMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreExistsCiTypeRelationshipTypeMapMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistsCiTypeRelationshipTypeMapHook>>>,
         TError,
@@ -1396,9 +1437,9 @@ export type StoreExistsCiTypeRelationshipTypeMapMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreExistsCiTypeRelationshipTypeMapHook>>>
 >
 export type StoreExistsCiTypeRelationshipTypeMapMutationBody = CiTypeRelationshipTypeMap
-export type StoreExistsCiTypeRelationshipTypeMapMutationError = unknown
+export type StoreExistsCiTypeRelationshipTypeMapMutationError = ApiError
 
-export const useStoreExistsCiTypeRelationshipTypeMap = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreExistsCiTypeRelationshipTypeMap = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistsCiTypeRelationshipTypeMapHook>>>,
         TError,
@@ -1424,7 +1465,7 @@ export const useStoreNewCiTypeRelationshipTypeMapHook = () => {
     }
 }
 
-export const useStoreNewCiTypeRelationshipTypeMapMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreNewCiTypeRelationshipTypeMapMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeRelationshipTypeMapHook>>>,
         TError,
@@ -1457,9 +1498,9 @@ export type StoreNewCiTypeRelationshipTypeMapMutationResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeRelationshipTypeMapHook>>>
 >
 export type StoreNewCiTypeRelationshipTypeMapMutationBody = CiTypeRelationshipTypeMap
-export type StoreNewCiTypeRelationshipTypeMapMutationError = unknown
+export type StoreNewCiTypeRelationshipTypeMapMutationError = ApiError
 
-export const useStoreNewCiTypeRelationshipTypeMap = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreNewCiTypeRelationshipTypeMap = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewCiTypeRelationshipTypeMapHook>>>,
         TError,
@@ -1480,7 +1521,7 @@ export const useStoreValid1Hook = () => {
     }
 }
 
-export const useStoreValid1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreValid1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreValid1Hook>>>, TError, { technicalName: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreValid1Hook>>>, TError, { technicalName: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1498,9 +1539,9 @@ export const useStoreValid1MutationOptions = <TError = unknown, TContext = unkno
 
 export type StoreValid1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreValid1Hook>>>>
 
-export type StoreValid1MutationError = unknown
+export type StoreValid1MutationError = ApiError
 
-export const useStoreValid1 = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreValid1 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreValid1Hook>>>, TError, { technicalName: string }, TContext>
 }) => {
     const mutationOptions = useStoreValid1MutationOptions(options)
@@ -1516,7 +1557,7 @@ export const useStoreUnValidHook = () => {
     }
 }
 
-export const useStoreUnValidMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreUnValidMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreUnValidHook>>>, TError, { technicalName: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreUnValidHook>>>, TError, { technicalName: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1534,9 +1575,9 @@ export const useStoreUnValidMutationOptions = <TError = unknown, TContext = unkn
 
 export type StoreUnValidMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreUnValidHook>>>>
 
-export type StoreUnValidMutationError = unknown
+export type StoreUnValidMutationError = ApiError
 
-export const useStoreUnValid = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreUnValid = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreUnValidHook>>>, TError, { technicalName: string }, TContext>
 }) => {
     const mutationOptions = useStoreUnValidMutationOptions(options)
@@ -1557,7 +1598,7 @@ export const useStoreExistAttrProfileHook = () => {
     }
 }
 
-export const useStoreExistAttrProfileMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreExistAttrProfileMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileHook>>>, TError, { data: AttributeProfile }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileHook>>>, TError, { data: AttributeProfile }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1577,9 +1618,9 @@ export const useStoreExistAttrProfileMutationOptions = <TError = unknown, TConte
 
 export type StoreExistAttrProfileMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileHook>>>>
 export type StoreExistAttrProfileMutationBody = AttributeProfile
-export type StoreExistAttrProfileMutationError = unknown
+export type StoreExistAttrProfileMutationError = ApiError
 
-export const useStoreExistAttrProfile = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreExistAttrProfile = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistAttrProfileHook>>>, TError, { data: AttributeProfile }, TContext>
 }) => {
     const mutationOptions = useStoreExistAttrProfileMutationOptions(options)
@@ -1600,7 +1641,7 @@ export const useStoreNewAttrProfileHook = () => {
     }
 }
 
-export const useStoreNewAttrProfileMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreNewAttrProfileMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileHook>>>, TError, { data: AttributeProfile }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileHook>>>, TError, { data: AttributeProfile }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1618,9 +1659,9 @@ export const useStoreNewAttrProfileMutationOptions = <TError = unknown, TContext
 
 export type StoreNewAttrProfileMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileHook>>>>
 export type StoreNewAttrProfileMutationBody = AttributeProfile
-export type StoreNewAttrProfileMutationError = unknown
+export type StoreNewAttrProfileMutationError = ApiError
 
-export const useStoreNewAttrProfile = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreNewAttrProfile = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreNewAttrProfileHook>>>, TError, { data: AttributeProfile }, TContext>
 }) => {
     const mutationOptions = useStoreNewAttrProfileMutationOptions(options)
@@ -1641,7 +1682,7 @@ export const useStoreExistGenericAttrProfileHook = () => {
     }
 }
 
-export const useStoreExistGenericAttrProfileMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreExistGenericAttrProfileMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistGenericAttrProfileHook>>>,
         TError,
@@ -1666,9 +1707,9 @@ export const useStoreExistGenericAttrProfileMutationOptions = <TError = unknown,
 
 export type StoreExistGenericAttrProfileMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreExistGenericAttrProfileHook>>>>
 export type StoreExistGenericAttrProfileMutationBody = AttributeProfile
-export type StoreExistGenericAttrProfileMutationError = unknown
+export type StoreExistGenericAttrProfileMutationError = ApiError
 
-export const useStoreExistGenericAttrProfile = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreExistGenericAttrProfile = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreExistGenericAttrProfileHook>>>,
         TError,
@@ -1689,7 +1730,7 @@ export const useStoreValid2Hook = () => {
     }
 }
 
-export const useStoreValid2MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreValid2MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreValid2Hook>>>,
         TError,
@@ -1720,9 +1761,9 @@ export const useStoreValid2MutationOptions = <TError = unknown, TContext = unkno
 
 export type StoreValid2MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreValid2Hook>>>>
 
-export type StoreValid2MutationError = unknown
+export type StoreValid2MutationError = ApiError
 
-export const useStoreValid2 = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreValid2 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreValid2Hook>>>,
         TError,
@@ -1743,7 +1784,7 @@ export const useStoreUnvalid1Hook = () => {
     }
 }
 
-export const useStoreUnvalid1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreUnvalid1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreUnvalid1Hook>>>,
         TError,
@@ -1774,9 +1815,9 @@ export const useStoreUnvalid1MutationOptions = <TError = unknown, TContext = unk
 
 export type StoreUnvalid1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreUnvalid1Hook>>>>
 
-export type StoreUnvalid1MutationError = unknown
+export type StoreUnvalid1MutationError = ApiError
 
-export const useStoreUnvalid1 = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreUnvalid1 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreUnvalid1Hook>>>,
         TError,
@@ -1802,7 +1843,7 @@ export const useStoreExistAttributeHook = () => {
     }
 }
 
-export const useStoreExistAttributeMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreExistAttributeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeHook>>>, TError, { data: Attribute }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeHook>>>, TError, { data: Attribute }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1820,9 +1861,9 @@ export const useStoreExistAttributeMutationOptions = <TError = unknown, TContext
 
 export type StoreExistAttributeMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeHook>>>>
 export type StoreExistAttributeMutationBody = Attribute
-export type StoreExistAttributeMutationError = unknown
+export type StoreExistAttributeMutationError = ApiError
 
-export const useStoreExistAttribute = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreExistAttribute = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreExistAttributeHook>>>, TError, { data: Attribute }, TContext>
 }) => {
     const mutationOptions = useStoreExistAttributeMutationOptions(options)
@@ -1838,7 +1879,7 @@ export const useStoreVisibleHook = () => {
     }
 }
 
-export const useStoreVisibleMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreVisibleMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreVisibleHook>>>,
         TError,
@@ -1869,9 +1910,9 @@ export const useStoreVisibleMutationOptions = <TError = unknown, TContext = unkn
 
 export type StoreVisibleMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreVisibleHook>>>>
 
-export type StoreVisibleMutationError = unknown
+export type StoreVisibleMutationError = ApiError
 
-export const useStoreVisible = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreVisible = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreVisibleHook>>>,
         TError,
@@ -1892,7 +1933,7 @@ export const useStoreInvisibleHook = () => {
     }
 }
 
-export const useStoreInvisibleMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreInvisibleMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreInvisibleHook>>>,
         TError,
@@ -1923,9 +1964,9 @@ export const useStoreInvisibleMutationOptions = <TError = unknown, TContext = un
 
 export type StoreInvisibleMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreInvisibleHook>>>>
 
-export type StoreInvisibleMutationError = unknown
+export type StoreInvisibleMutationError = ApiError
 
-export const useStoreInvisible = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreInvisible = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreInvisibleHook>>>,
         TError,
@@ -1951,7 +1992,7 @@ export const useStoreAdminEntityHook = () => {
     }
 }
 
-export const useStoreAdminEntityMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreAdminEntityMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityHook>>>, TError, { data: RelationshipType }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityHook>>>, TError, { data: RelationshipType }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1969,9 +2010,9 @@ export const useStoreAdminEntityMutationOptions = <TError = unknown, TContext = 
 
 export type StoreAdminEntityMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityHook>>>>
 export type StoreAdminEntityMutationBody = RelationshipType
-export type StoreAdminEntityMutationError = unknown
+export type StoreAdminEntityMutationError = ApiError
 
-export const useStoreAdminEntity = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreAdminEntity = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntityHook>>>, TError, { data: RelationshipType }, TContext>
 }) => {
     const mutationOptions = useStoreAdminEntityMutationOptions(options)
@@ -1995,7 +2036,7 @@ export const useListTypesHook = () => {
     }
 }
 
-export const useListTypesMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useListTypesMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>, TError, { data: TypesFilter }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>, TError, { data: TypesFilter }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2013,12 +2054,12 @@ export const useListTypesMutationOptions = <TError = unknown, TContext = unknown
 
 export type ListTypesMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>>
 export type ListTypesMutationBody = TypesFilter
-export type ListTypesMutationError = unknown
+export type ListTypesMutationError = ApiError
 
 /**
  * @summary listTypes
  */
-export const useListTypes = <TError = unknown, TContext = unknown>(options?: {
+export const useListTypes = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useListTypesHook>>>, TError, { data: TypesFilter }, TContext>
 }) => {
     const mutationOptions = useListTypesMutationOptions(options)
@@ -2034,7 +2075,7 @@ export const useStoreAdminEntity1Hook = () => {
     }
 }
 
-export const useStoreAdminEntity1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreAdminEntity1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntity1Hook>>>, TError, { data: CiType }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntity1Hook>>>, TError, { data: CiType }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -2052,9 +2093,9 @@ export const useStoreAdminEntity1MutationOptions = <TError = unknown, TContext =
 
 export type StoreAdminEntity1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntity1Hook>>>>
 export type StoreAdminEntity1MutationBody = CiType
-export type StoreAdminEntity1MutationError = unknown
+export type StoreAdminEntity1MutationError = ApiError
 
-export const useStoreAdminEntity1 = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreAdminEntity1 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useStoreAdminEntity1Hook>>>, TError, { data: CiType }, TContext>
 }) => {
     const mutationOptions = useStoreAdminEntity1MutationOptions(options)
@@ -2075,7 +2116,7 @@ export const useStoreNewAttributeHook = () => {
     }
 }
 
-export const useStoreNewAttributeMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreNewAttributeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttributeHook>>>,
         TError,
@@ -2106,9 +2147,9 @@ export const useStoreNewAttributeMutationOptions = <TError = unknown, TContext =
 
 export type StoreNewAttributeMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useStoreNewAttributeHook>>>>
 export type StoreNewAttributeMutationBody = Attribute
-export type StoreNewAttributeMutationError = unknown
+export type StoreNewAttributeMutationError = ApiError
 
-export const useStoreNewAttribute = <TError = unknown, TContext = unknown>(options?: {
+export const useStoreNewAttribute = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useStoreNewAttributeHook>>>,
         TError,
@@ -2133,7 +2174,7 @@ export const getListRelationshipTypes2QueryKey = (params: ListRelationshipTypes2
 
 export const useListRelationshipTypes2QueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypes2Hook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     params: ListRelationshipTypes2Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypes2Hook>>>, TError, TData> },
@@ -2151,13 +2192,64 @@ export const useListRelationshipTypes2QueryOptions = <
 }
 
 export type ListRelationshipTypes2QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypes2Hook>>>>
-export type ListRelationshipTypes2QueryError = unknown
+export type ListRelationshipTypes2QueryError = ApiError
 
-export const useListRelationshipTypes2 = <TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypes2Hook>>>, TError = unknown>(
+export const useListRelationshipTypes2 = <TData = Awaited<ReturnType<ReturnType<typeof useListRelationshipTypes2Hook>>>, TError = ApiError>(
     params: ListRelationshipTypes2Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelationshipTypes2Hook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useListRelationshipTypes2QueryOptions(params, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useFindDerivedByDerivedTechnicalNameHook = () => {
+    const findDerivedByDerivedTechnicalName = useTypesRepoSwaggerClient<DerivedRelationshipType>()
+
+    return (derivedTechnicalName: string, signal?: AbortSignal) => {
+        return findDerivedByDerivedTechnicalName({ url: `/relationshiptypes/${derivedTechnicalName}/derived`, method: 'get', signal })
+    }
+}
+
+export const getFindDerivedByDerivedTechnicalNameQueryKey = (derivedTechnicalName: string) =>
+    [`/relationshiptypes/${derivedTechnicalName}/derived`] as const
+
+export const useFindDerivedByDerivedTechnicalNameQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useFindDerivedByDerivedTechnicalNameHook>>>,
+    TError = ApiError,
+>(
+    derivedTechnicalName: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFindDerivedByDerivedTechnicalNameHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFindDerivedByDerivedTechnicalNameHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getFindDerivedByDerivedTechnicalNameQueryKey(derivedTechnicalName)
+
+    const findDerivedByDerivedTechnicalName = useFindDerivedByDerivedTechnicalNameHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useFindDerivedByDerivedTechnicalNameHook>>>> = ({ signal }) =>
+        findDerivedByDerivedTechnicalName(derivedTechnicalName, signal)
+
+    return { queryKey, queryFn, enabled: !!derivedTechnicalName, ...queryOptions }
+}
+
+export type FindDerivedByDerivedTechnicalNameQueryResult = NonNullable<
+    Awaited<ReturnType<ReturnType<typeof useFindDerivedByDerivedTechnicalNameHook>>>
+>
+export type FindDerivedByDerivedTechnicalNameQueryError = ApiError
+
+export const useFindDerivedByDerivedTechnicalName = <
+    TData = Awaited<ReturnType<ReturnType<typeof useFindDerivedByDerivedTechnicalNameHook>>>,
+    TError = ApiError,
+>(
+    derivedTechnicalName: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFindDerivedByDerivedTechnicalNameHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useFindDerivedByDerivedTechnicalNameQueryOptions(derivedTechnicalName, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -2176,7 +2268,7 @@ export const useGetRelationshipTypeHook = () => {
 
 export const getGetRelationshipTypeQueryKey = (technicalName: string) => [`/relationshiptypes/relationshiptype/${technicalName}`] as const
 
-export const useGetRelationshipTypeQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>, TError = unknown>(
+export const useGetRelationshipTypeQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -2193,9 +2285,9 @@ export const useGetRelationshipTypeQueryOptions = <TData = Awaited<ReturnType<Re
 }
 
 export type GetRelationshipTypeQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>>
-export type GetRelationshipTypeQueryError = unknown
+export type GetRelationshipTypeQueryError = ApiError
 
-export const useGetRelationshipType = <TData = Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>, TError = unknown>(
+export const useGetRelationshipType = <TData = Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetRelationshipTypeHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2219,7 +2311,7 @@ export const useGetAttributeOverridesHook = () => {
 export const getGetAttributeOverridesQueryKey = (technicalName: string) =>
     [`/relationshiptypes/relationshiptype/${technicalName}/attributeOverride`] as const
 
-export const useGetAttributeOverridesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesHook>>>, TError = unknown>(
+export const useGetAttributeOverridesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -2236,13 +2328,58 @@ export const useGetAttributeOverridesQueryOptions = <TData = Awaited<ReturnType<
 }
 
 export type GetAttributeOverridesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesHook>>>>
-export type GetAttributeOverridesQueryError = unknown
+export type GetAttributeOverridesQueryError = ApiError
 
-export const useGetAttributeOverrides = <TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesHook>>>, TError = unknown>(
+export const useGetAttributeOverrides = <TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverridesHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useGetAttributeOverridesQueryOptions(technicalName, options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
+export const useFindAllDerivedByCiTypeHook = () => {
+    const findAllDerivedByCiType = useTypesRepoSwaggerClient<DerivedRelationshipType[]>()
+
+    return (ciType: string, signal?: AbortSignal) => {
+        return findAllDerivedByCiType({ url: `/relationshiptypes/citypes/${ciType}/derived`, method: 'get', signal })
+    }
+}
+
+export const getFindAllDerivedByCiTypeQueryKey = (ciType: string) => [`/relationshiptypes/citypes/${ciType}/derived`] as const
+
+export const useFindAllDerivedByCiTypeQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useFindAllDerivedByCiTypeHook>>>,
+    TError = ApiError,
+>(
+    ciType: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFindAllDerivedByCiTypeHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFindAllDerivedByCiTypeHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getFindAllDerivedByCiTypeQueryKey(ciType)
+
+    const findAllDerivedByCiType = useFindAllDerivedByCiTypeHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useFindAllDerivedByCiTypeHook>>>> = ({ signal }) =>
+        findAllDerivedByCiType(ciType, signal)
+
+    return { queryKey, queryFn, enabled: !!ciType, ...queryOptions }
+}
+
+export type FindAllDerivedByCiTypeQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useFindAllDerivedByCiTypeHook>>>>
+export type FindAllDerivedByCiTypeQueryError = ApiError
+
+export const useFindAllDerivedByCiType = <TData = Awaited<ReturnType<ReturnType<typeof useFindAllDerivedByCiTypeHook>>>, TError = ApiError>(
+    ciType: string,
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFindAllDerivedByCiTypeHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useFindAllDerivedByCiTypeQueryOptions(ciType, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
@@ -2261,7 +2398,7 @@ export const useGetLastCodeHook = () => {
 
 export const getGetLastCodeQueryKey = (technicalName: string) => [`/citypes/getLastCode/${technicalName}`] as const
 
-export const useGetLastCodeQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetLastCodeHook>>>, TError = unknown>(
+export const useGetLastCodeQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetLastCodeHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetLastCodeHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetLastCodeHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -2277,9 +2414,9 @@ export const useGetLastCodeQueryOptions = <TData = Awaited<ReturnType<ReturnType
 }
 
 export type GetLastCodeQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetLastCodeHook>>>>
-export type GetLastCodeQueryError = unknown
+export type GetLastCodeQueryError = ApiError
 
-export const useGetLastCode = <TData = Awaited<ReturnType<ReturnType<typeof useGetLastCodeHook>>>, TError = unknown>(
+export const useGetLastCode = <TData = Awaited<ReturnType<ReturnType<typeof useGetLastCodeHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetLastCodeHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2302,7 +2439,7 @@ export const useGenerateCodeAndURLHook = () => {
 
 export const getGenerateCodeAndURLQueryKey = (technicalName: string) => [`/citypes/generate/${technicalName}`] as const
 
-export const useGenerateCodeAndURLQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLHook>>>, TError = unknown>(
+export const useGenerateCodeAndURLQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -2319,9 +2456,9 @@ export const useGenerateCodeAndURLQueryOptions = <TData = Awaited<ReturnType<Ret
 }
 
 export type GenerateCodeAndURLQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLHook>>>>
-export type GenerateCodeAndURLQueryError = unknown
+export type GenerateCodeAndURLQueryError = ApiError
 
-export const useGenerateCodeAndURL = <TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLHook>>>, TError = unknown>(
+export const useGenerateCodeAndURL = <TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURLHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2345,7 +2482,7 @@ export const useGenerateCodeAndURL1Hook = () => {
 export const getGenerateCodeAndURL1QueryKey = (technicalName: string, params: GenerateCodeAndURL1Params) =>
     [`/citypes/generate/${technicalName}/bulk`, ...(params ? [params] : [])] as const
 
-export const useGenerateCodeAndURL1QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURL1Hook>>>, TError = unknown>(
+export const useGenerateCodeAndURL1QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURL1Hook>>>, TError = ApiError>(
     technicalName: string,
     params: GenerateCodeAndURL1Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURL1Hook>>>, TError, TData> },
@@ -2363,9 +2500,9 @@ export const useGenerateCodeAndURL1QueryOptions = <TData = Awaited<ReturnType<Re
 }
 
 export type GenerateCodeAndURL1QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURL1Hook>>>>
-export type GenerateCodeAndURL1QueryError = unknown
+export type GenerateCodeAndURL1QueryError = ApiError
 
-export const useGenerateCodeAndURL1 = <TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURL1Hook>>>, TError = unknown>(
+export const useGenerateCodeAndURL1 = <TData = Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURL1Hook>>>, TError = ApiError>(
     technicalName: string,
     params: GenerateCodeAndURL1Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGenerateCodeAndURL1Hook>>>, TError, TData> },
@@ -2389,7 +2526,7 @@ export const useGetCiTypeHook = () => {
 
 export const getGetCiTypeQueryKey = (technicalName: string) => [`/citypes/citype/${technicalName}`] as const
 
-export const useGetCiTypeQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>, TError = unknown>(
+export const useGetCiTypeQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -2405,9 +2542,9 @@ export const useGetCiTypeQueryOptions = <TData = Awaited<ReturnType<ReturnType<t
 }
 
 export type GetCiTypeQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>>
-export type GetCiTypeQueryError = unknown
+export type GetCiTypeQueryError = ApiError
 
-export const useGetCiType = <TData = Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>, TError = unknown>(
+export const useGetCiType = <TData = Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetCiTypeHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2430,7 +2567,7 @@ export const useListRelatedCiTypesHook = () => {
 
 export const getListRelatedCiTypesQueryKey = (technicalName: string) => [`/citypes/citype/${technicalName}/related`] as const
 
-export const useListRelatedCiTypesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>, TError = unknown>(
+export const useListRelatedCiTypesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -2447,9 +2584,9 @@ export const useListRelatedCiTypesQueryOptions = <TData = Awaited<ReturnType<Ret
 }
 
 export type ListRelatedCiTypesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>>
-export type ListRelatedCiTypesQueryError = unknown
+export type ListRelatedCiTypesQueryError = ApiError
 
-export const useListRelatedCiTypes = <TData = Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>, TError = unknown>(
+export const useListRelatedCiTypes = <TData = Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListRelatedCiTypesHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2474,7 +2611,7 @@ export const getGetAttributeOverrides1QueryKey = (technicalName: string) => [`/c
 
 export const useGetAttributeOverrides1QueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeOverrides1Hook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverrides1Hook>>>, TError, TData> },
@@ -2492,9 +2629,9 @@ export const useGetAttributeOverrides1QueryOptions = <
 }
 
 export type GetAttributeOverrides1QueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverrides1Hook>>>>
-export type GetAttributeOverrides1QueryError = unknown
+export type GetAttributeOverrides1QueryError = ApiError
 
-export const useGetAttributeOverrides1 = <TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeOverrides1Hook>>>, TError = unknown>(
+export const useGetAttributeOverrides1 = <TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeOverrides1Hook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeOverrides1Hook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2519,7 +2656,7 @@ export const getListAttrProfileLMQueryKey = () => [`/attrprofiles/listLM`] as co
 
 export const useListAttrProfileLMQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -2535,9 +2672,9 @@ export const useListAttrProfileLMQueryOptions = <
 }
 
 export type ListAttrProfileLMQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMHook>>>>
-export type ListAttrProfileLMQueryError = unknown
+export type ListAttrProfileLMQueryError = ApiError
 
-export const useListAttrProfileLM = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMHook>>>, TError = unknown>(options?: {
+export const useListAttrProfileLM = <TData = Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListAttrProfileLMHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useListAttrProfileLMQueryOptions(options)
@@ -2562,7 +2699,7 @@ export const getListGenericAttrProfileQueryKey = (params: ListGenericAttrProfile
 
 export const useListGenericAttrProfileQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useListGenericAttrProfileHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     params: ListGenericAttrProfileParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListGenericAttrProfileHook>>>, TError, TData> },
@@ -2580,9 +2717,9 @@ export const useListGenericAttrProfileQueryOptions = <
 }
 
 export type ListGenericAttrProfileQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListGenericAttrProfileHook>>>>
-export type ListGenericAttrProfileQueryError = unknown
+export type ListGenericAttrProfileQueryError = ApiError
 
-export const useListGenericAttrProfile = <TData = Awaited<ReturnType<ReturnType<typeof useListGenericAttrProfileHook>>>, TError = unknown>(
+export const useListGenericAttrProfile = <TData = Awaited<ReturnType<ReturnType<typeof useListGenericAttrProfileHook>>>, TError = ApiError>(
     params: ListGenericAttrProfileParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListGenericAttrProfileHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2605,7 +2742,7 @@ export const useGetAttributeProfileHook = () => {
 
 export const getGetAttributeProfileQueryKey = (technicalName: string) => [`/attrprofiles/attrprofile/${technicalName}`] as const
 
-export const useGetAttributeProfileQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileHook>>>, TError = unknown>(
+export const useGetAttributeProfileQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -2622,9 +2759,9 @@ export const useGetAttributeProfileQueryOptions = <TData = Awaited<ReturnType<Re
 }
 
 export type GetAttributeProfileQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileHook>>>>
-export type GetAttributeProfileQueryError = unknown
+export type GetAttributeProfileQueryError = ApiError
 
-export const useGetAttributeProfile = <TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileHook>>>, TError = unknown>(
+export const useGetAttributeProfile = <TData = Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileHook>>>, TError = ApiError>(
     technicalName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAttributeProfileHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {

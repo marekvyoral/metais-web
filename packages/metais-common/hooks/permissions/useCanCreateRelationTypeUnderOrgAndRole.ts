@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useAbilityContext } from './useAbilityContext'
 import { Actions } from './useUserAbility'
 
-import { RelatedCiTypePreview } from '@isdd/metais-common/api'
+import { RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useCanCreateRelationTypeUnderOrgAndRole = (

@@ -18,6 +18,13 @@ export const useClientForReadCiNeighboursWithAllRelsUsingGET = <T extends CiWith
         })
     })
 
+export const useClientForReadCiDerivedRelTypesUsingGET = <T extends CiWithRelsResultUi>() =>
+    useCustomClient<T>(baseURL, (body) => {
+        body?.ciWithRels?.forEach?.((rel) => {
+            transformAttributesKeyValue(rel.ci)
+        })
+    })
+
 export const useClientForGetRoleParticipantBulkUsingPOST = <T extends RoleParticipantUI[]>() =>
     useCustomClient<T>(baseURL, (body) => {
         body?.forEach?.((rel) => {

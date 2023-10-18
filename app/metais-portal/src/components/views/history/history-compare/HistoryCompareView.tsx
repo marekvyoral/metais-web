@@ -1,17 +1,11 @@
 import { Stepper } from '@isdd/idsk-ui-kit/src/stepper/Stepper'
 import { ISection, IStepLabel } from '@isdd/idsk-ui-kit/stepper/StepperSection'
-import {
-    Attribute,
-    AttributeConstraintEnumAllOf,
-    CiType,
-    ConfigurationItemUiAttributes,
-    EnumType,
-    HistoryVersionUiConfigurationItemUi,
-} from '@isdd/metais-common/api'
+import { ConfigurationItemUiAttributes, EnumType, HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { CheckBox } from '@isdd/idsk-ui-kit/index'
+import { CiType, AttributeConstraintEnumAllOf, Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { HistoryCompareItemView } from './HistoryCompareItemView'
 

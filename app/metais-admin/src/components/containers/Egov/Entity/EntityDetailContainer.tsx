@@ -1,19 +1,19 @@
 import React from 'react'
+import { EnumType } from '@isdd/metais-common/api'
+import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
+import { useEntityProfiles } from '@isdd/metais-common/hooks/useEntityProfiles'
+import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
 import {
-    EnumType,
     CiType,
     SummarizingCardUi,
+    Attribute,
     AttributeProfile,
     useStoreUnvalid,
     useStoreValid,
     useSetSummarizingCard,
-    Attribute,
     useStoreAttributeTextation,
     useDeleteAttributeTextation,
-} from '@isdd/metais-common/api'
-import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
-import { useEntityProfiles } from '@isdd/metais-common/hooks/useEntityProfiles'
-import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 export interface IAtrributesContainerView {
     data: {

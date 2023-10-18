@@ -1,4 +1,4 @@
-import { AttributeProfile, useGetAttributeOverrides, useGetCiType, useGetSummarizingCard } from '@isdd/metais-common/api'
+import { AttributeProfile, useGetAttributeOverrides, useGetCiType, useGetSummarizingCard } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 export const createTabNamesAndValuesMap = (profileAttributes: AttributeProfile[] | undefined) => {
     const keysToDisplay = new Map<string, AttributeProfile | undefined>()

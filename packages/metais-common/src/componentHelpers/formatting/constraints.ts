@@ -1,4 +1,4 @@
-import { Attribute, AttributeConstraintEnumAllOf, AttributeProfile } from '../../api'
+import { Attribute, AttributeConstraintEnumAllOf, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 export const calculateConstraintFromAttributes = (entityAttributes: Attribute[] | undefined) => {
     return (

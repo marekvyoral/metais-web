@@ -1,6 +1,6 @@
 import { AbilityBuilder, createMongoAbility } from '@casl/ability'
 
-import { CiType } from '@isdd/metais-common/api'
+import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { canCreateCiForType, canUserCreateCi } from '@isdd/metais-common/permissions/ci'
 

@@ -21,6 +21,7 @@
         "technicalOperator": "Technical operator",
         "contentAdmin": "Admin of content",
         "RSS": "RSS",
+        "appVersion": "App version",
 
         "services": {
             "title": "Services and Information",
@@ -284,7 +285,8 @@
         "and": "and"
     },
     "tab": {
-        "contents": "Contents"
+        "contents": "Contents",
+        "moreTabs": "More tabs"
     },
     "button": {
         "saveAndContinue": "Save and continue",
@@ -332,6 +334,7 @@
     "ciType": {
         "informations": "Information",
         "documents": "Documents",
+        "activities": "Activities NKIVS",
         "relationships": "Relationships",
         "history": "History of changes",
         "editEntity": "Edit entity",
@@ -1035,5 +1038,11 @@
                 "added": "was added to vote"
             }
         }
+    },
+    "activities": {
+        "target": "Objective of the activity",
+        "name": "Activities NKIVS",
+        "description": "Description of activity",
+        "projectActivity": "In relation with selected project"
     }
 }

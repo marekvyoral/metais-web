@@ -1,4 +1,4 @@
-import { RelatedCiTypePreview } from '@isdd/metais-common/api'
+import { DerivedCiTypePreview, RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CATEGORY_ENUM, NOT_PUBLIC_ENTITIES, TYPES_ENUM, connectedCiTabsToRemove } from '@isdd/metais-common/src/api/constants'
 
 export const removeDuplicates = <T>(arr: T[], by: keyof T | undefined = undefined) => {
@@ -17,6 +17,14 @@ export const isInBlackList = (relatedCiType: RelatedCiTypePreview): boolean => {
     return isContainedInBlacList
 }
 
+export const isDerivedInBlackList = (derived: DerivedCiTypePreview): boolean => {
+    if (derived.ciType?.technicalName == undefined) {
+        return false
+    }
+    const isContainedInBlacList = connectedCiTabsToRemove.includes(derived.ciType.technicalName)
+    return isContainedInBlacList
+}
+
 export const isRelatedCiTypeCmdbView = (relatedCiType: RelatedCiTypePreview, isLogged: boolean): boolean => {
     const isValid = relatedCiType.ciTypeValid === true && relatedCiType.relationshipTypeValid === true
     const isCategory = relatedCiType.ciCategory !== CATEGORY_ENUM.NOT_VISIBLE && relatedCiType.relationshipCategory !== CATEGORY_ENUM.NOT_VISIBLE
@@ -24,4 +32,13 @@ export const isRelatedCiTypeCmdbView = (relatedCiType: RelatedCiTypePreview, isL
     const isViewForLogged = isLogged || NOT_PUBLIC_ENTITIES.indexOf(relatedCiType.ciTypeTechnicalName || '') === -1
     const isNotBlacklisted = !isInBlackList(relatedCiType)
     return isValid && isCategory && isTypeOk && isViewForLogged && isNotBlacklisted
+}
+
+export const isDerivedCiTypeCmdbView = (derivedCiType: DerivedCiTypePreview, isLogged: boolean): boolean | undefined => {
+    const isCategory = derivedCiType.ciType?.category !== CATEGORY_ENUM.NOT_VISIBLE
+    const isTypeOk = derivedCiType.ciType?.type !== TYPES_ENUM.SYSTEM
+    const isViewForLogged = isLogged || NOT_PUBLIC_ENTITIES.indexOf(derivedCiType.technicalName || '') === -1
+    const isNotBlacklisted = !isDerivedInBlackList(derivedCiType)
+
+    return derivedCiType.ciType?.valid && isCategory && isTypeOk && isNotBlacklisted && isViewForLogged
 }

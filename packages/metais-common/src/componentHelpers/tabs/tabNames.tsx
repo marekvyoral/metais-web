@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { CiType, AttributeProfile, Attribute } from '../../api'
+import { CiType, AttributeProfile, Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 export interface IEntityDetailViewAttributes {
     data: CiType | AttributeProfile | undefined

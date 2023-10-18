@@ -3,16 +3,7 @@ import { RoleOrgGroup } from '@isdd/metais-common/api/generated/iam-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
-import {
-    ATTRIBUTE_NAME,
-    CiCode,
-    CiType,
-    ConfigurationItemUi,
-    EnumType,
-    MutationFeedback,
-    QueryFeedback,
-    useStoreGraph,
-} from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType, MutationFeedback, QueryFeedback, useStoreGraph } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
@@ -22,6 +13,7 @@ import { v4 as uuidV4 } from 'uuid'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/src/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useInvalidateCiNeighboursWithAllRelsCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'

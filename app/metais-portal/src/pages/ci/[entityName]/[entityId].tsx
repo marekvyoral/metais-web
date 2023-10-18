@@ -10,12 +10,13 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { Actions, useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
-import NeighboursCardListWrapper from '@/components/entities/NeighboursCardListWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
 import Informations from '@/pages/ci/[entityName]/[entityId]/informations'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 
 export const INDEX_ROUTE = Informations
 
@@ -23,7 +24,10 @@ const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId, entityName } = useParams()
-
+    const {
+        state: { user },
+    } = useAuth()
+    const isUserLogged = !!user
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
 
     document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
@@ -42,6 +46,7 @@ const EntityDetailPage: React.FC = () => {
             title: t('ciType.documents'),
             content: <Outlet />,
         },
+
         {
             id: 'relationships',
             path: `/ci/${entityName}/${entityId}/relationships`,
@@ -69,6 +74,15 @@ const EntityDetailPage: React.FC = () => {
     const handleBulkAction = (actionResult: IBulkActionResult) => {
         setBulkActionResult(actionResult)
         refetch()
+    }
+
+    if (entityName == 'Projekt' && isUserLogged) {
+        tabList.splice(2, 0, {
+            id: 'activities',
+            path: `/ci/${entityName}/${entityId}/activities`,
+            title: t('ciType.activities'),
+            content: <Outlet />,
+        })
     }
 
     return (
@@ -105,7 +119,7 @@ const EntityDetailPage: React.FC = () => {
                             )}
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} />
-                        <NeighboursCardListWrapper entityId={entityId} entityName={entityName} tabList={tabList} />
+                        <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} />
                     </>
                 </CiPermissionsWrapper>
             </MainContentWrapper>
