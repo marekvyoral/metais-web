@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
 import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
@@ -87,6 +88,8 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         }
     }, [performRedirection, requestId])
 
+    const deleteCacheMutation = useDeleteCacheForCi(entityName)
+
     const onSubmit = async (formAttributes: FieldValues) => {
         setRequestId('')
         setUploadError(false)
@@ -113,8 +116,14 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
             owner: ownerId,
         }
 
-        storeConfigurationItem.mutate({
-            data: updateCiItemId ? dataToUpdate : dataToCreate,
+        const handleStoreConfigurationItem = () => {
+            storeConfigurationItem.mutate({
+                data: updateCiItemId ? dataToUpdate : dataToCreate,
+            })
+        }
+
+        deleteCacheMutation.mutateAsync(undefined, {
+            onSuccess: () => handleStoreConfigurationItem(),
         })
     }
 

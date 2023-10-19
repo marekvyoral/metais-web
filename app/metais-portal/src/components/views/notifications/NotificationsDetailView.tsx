@@ -4,6 +4,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 
 import styles from './notifications.module.scss'
 
@@ -33,7 +34,7 @@ const NotificationsDetailView: React.FC<NotificationsDetailViewParams> = ({ data
                         <TextBody className={styles.fontWeightBolder}>{t('notifications.created')}</TextBody>
                         <TextBody> {date.toLocaleString(i18n.language)}</TextBody>
                     </div>
-                    <div dangerouslySetInnerHTML={{ __html: data?.message ?? '' }} />
+                    <SafeHtmlComponent dirtyHtml={data?.message ?? ''} />
                 </QueryFeedback>
             </MainContentWrapper>
         </>

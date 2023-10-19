@@ -8,7 +8,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { SubmitWithFeedback } from '@isdd/metais-common/index'
+import { SubmitWithFeedback, formatDateForFormDefaultValues } from '@isdd/metais-common/index'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { CiCode, CiType, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
@@ -23,7 +23,6 @@ export interface HasResetState {
     hasReset: boolean
     setHasReset: Dispatch<SetStateAction<boolean>>
 }
-
 interface ICreateCiEntityForm {
     generatedEntityId: CiCode
     constraintsData: (EnumType | undefined)[]
@@ -82,9 +81,10 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     const [sectionError, setSectionError] = useState<{ [x: string]: boolean }>(sectionErrorDefaultConfig)
 
     const methods = useForm({
-        defaultValues: defaultItemAttributeValues ?? {},
+        defaultValues: formatDateForFormDefaultValues(defaultItemAttributeValues ?? {}, attributes),
         resolver: yupResolver(generateFormSchema(attributes, t)),
     })
+
     const { handleSubmit, setValue, reset, formState } = methods
 
     const referenceIdValue = generatedEntityId?.ciurl?.split('/').pop()

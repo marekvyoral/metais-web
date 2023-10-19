@@ -7,6 +7,8 @@ import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
+import { HTML_TYPE } from '@isdd/metais-common/constants'
 
 import { MoreActionsColumn } from './actions/MoreActionsColumn'
 import { AddAttributeModal } from './attributes/AddAttributeModal'
@@ -175,12 +177,15 @@ export const ProfileDetailView = <T,>({
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
-            cell: (ctx) =>
-                isRowSelected(ctx?.row?.index, selectedRows) ? (
-                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.index}.defaultValue`)} />
-                ) : (
-                    <span>{ctx?.getValue?.() as string}</span>
-                ),
+            cell: (ctx) => {
+                if (isRowSelected(ctx?.row?.index, selectedRows)) {
+                    return <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.index}.defaultValue`)} />
+                } else if (ctx.row.original.type === HTML_TYPE) {
+                    return <SafeHtmlComponent dirtyHtml={ctx?.getValue?.() as string} />
+                } else {
+                    return <span>{ctx?.getValue?.() as string}</span>
+                }
+            },
         },
         {
             header: t('actionsInTable.actions'),

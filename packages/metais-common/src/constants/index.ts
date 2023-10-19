@@ -106,6 +106,7 @@ export const REPORTS_LIST_QUERY_KEY = '/reports/list'
 export const ADMIN_EGOV_ENTITY_LIST_QKEY = `/citypes/list`
 export const ADMIN_EGOV_RELATION_LIST_QKEY = `/relationshiptypes/list`
 export const ADMIN_EKO_LIST_QKEY = `/ekocodes`
+export const HTML_TYPE = 'HTML'
 
 export const P_REALIZUJE_AKT = 'P_realizuje_AKT'
 export const ACTIVITY = 'Aktivita'
