@@ -61,6 +61,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
     const { selectedItems, setSelectedItems, setIsListPageOpen, isListPageOpen } = useNewRelationData()
+    const [existingRelations, setExistingRelations] = useState<ConfigurationItemUi[]>()
 
     const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
     const invalidateCiByUuidCache = useInvalidateCiItemCache(updateCiItemId ? updateCiItemId : configurationItemId)
@@ -73,6 +74,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     useEffect(() => {
         return () => {
             const cis = rels?.ciWithRels?.map((ciWithRel) => ciWithRel.ci)
+            setExistingRelations(cis as ConfigurationItemUi[])
             setSelectedItems(cis as ConfigurationItemUi[])
         }
     }, [rels, setSelectedItems])

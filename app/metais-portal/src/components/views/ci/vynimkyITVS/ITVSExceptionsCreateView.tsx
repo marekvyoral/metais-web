@@ -155,34 +155,30 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                           />
                       </ButtonGroupRow>
                   ),
-                  content: (
+                  content: relationSchemaCombinedAttributes.map((attribute) => (
                       <>
-                          {relationSchemaCombinedAttributes.map((attribute) => (
-                              <>
-                                  <AttributeInput
-                                      key={`${attribute?.id}+${item.uuid}`}
-                                      attribute={attribute ?? {}}
-                                      register={register}
-                                      setValue={setValue}
-                                      clearErrors={clearErrors}
-                                      trigger={trigger}
-                                      isSubmitted={formState.isSubmitted}
-                                      error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
-                                      nameSufix={JOIN_OPERATOR + item.uuid + JOIN_OPERATOR + 'RELATION'}
-                                      hint={attribute?.description}
-                                      hasResetState={{ hasReset, setHasReset }}
-                                      constraints={findAttributeConstraint(
-                                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                          //@ts-ignore
-                                          attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
-                                          relationData?.constraintsData ?? [],
-                                      )}
-                                      unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
-                                  />
-                              </>
-                          ))}
+                          <AttributeInput
+                              key={`${attribute?.id}+${item.uuid}`}
+                              attribute={attribute ?? {}}
+                              register={register}
+                              setValue={setValue}
+                              clearErrors={clearErrors}
+                              trigger={trigger}
+                              isSubmitted={formState.isSubmitted}
+                              error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
+                              nameSufix={JOIN_OPERATOR + item.uuid + JOIN_OPERATOR + 'RELATION'}
+                              hint={attribute?.description}
+                              hasResetState={{ hasReset, setHasReset }}
+                              constraints={findAttributeConstraint(
+                                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                  //@ts-ignore
+                                  attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
+                                  relationData?.constraintsData ?? [],
+                              )}
+                              unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                          />
                       </>
-                  ),
+                  )),
               }))
             : []
 
