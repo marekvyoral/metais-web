@@ -1052,6 +1052,112 @@
         "changedUserInformation": "Osobné informácie boli úspešne zmenené",
         "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova."
     },
+    "meetings": {
+        "name": "Meno",
+        "date": "Dátum zasadnutia",
+        "start": "Začiatok zasadnutia",
+        "end": "Koniec zasadnutia",
+        "place": "Miesto zasadnutia",
+        "vote": "Zúčastním sa",
+        "program": "Program zasadnutia",
+        "description": "Popis",
+        "editItem": "Upraviť zasadnutie",
+        "documents": "Podklady k zasadnutiu",
+        "proposal": "Súvisiaci návrh predložený prostredníctvom MetaIS",
+        "record": "Záznam zo stretnutia",
+        "listActors": "Zoznam pozvaných",
+        "meetingActors": "Pozvaní členovia",
+        "meetingExternalActors": "Hostia",
+        "userName": "Meno",
+        "email": "Emailová adresa",
+        "participation": "Potvrdenie o účasti",
+        "participationValue": {
+            "ACCEPTED": "Potvrdil účasť"
+        },
+        "groupShortName": "Skratka pracovnej skupiny",
+        "userOrgName": "Organizácia",
+        "groupName": "Názov pracovnej skupiny",
+        "beginDate": "Dátum a čas",
+        "state": "Stav",
+        "stateValue": {
+            "PAST": "Ukončené",
+            "CANCELED": "Zrušené",
+            "FUTURE": "Nový",
+            "SUMMARIZED": "Vyhodnotené",
+            "NOW": "Prebiehajúce"
+        },
+        "addNewMeeting": "Pridať zasadnutie",
+        "mandatory": "povinné",
+        "editMeeting": "Zmeniť zasadnutie",
+        "form": {
+            "heading": {
+                "dateTime": "Čas a miesto",
+                "actors": "Pozvaní",
+                "externalActors": "Pozvať hostí",
+                "program": "Program zasadnutia",
+                "documents": "Dokumenty",
+                "documentsDetail": "Zadajte odkazy na dokumenty",
+                "documentsExport": "A/Alebo nahrajte dokumenty",
+                "proposals": "Zoznam návrhov",
+                "reasons": "Úprava zasadnutia"
+            },
+            "name": "Názov zasadnutia",
+            "date": "Dátum zasadnutia",
+            "timeStart": "Čas zasadnutia od",
+            "timeEnd": "Čas zasadnutia do",
+            "place": "Miesto zasadnutia",
+            "group": "Pozvané skupiny",
+            "meetingActors": "Pozvaní používatelia",
+            "externalActorName": "Meno a priezvisko",
+            "externalActorEmail": "Emailová adresa",
+            "externalActorDescription": "Doplnkový popis",
+            "addExternalActors": "+ Pridať ďalšieho hosťa",
+            "program": "Agenda",
+            "proposalsSelect": "Súvisiace návrhy",
+            "proposalsButton": "Vybrať zo zoznamu"
+        },
+        "proposals": {
+            "standardRequestState": "Stav",
+            "standardRequestStateValue": {
+                "REJECTED": "Zamietnutý",
+                "ASSIGNED": "Priradený",
+                "ACCEPTED": "Akceptovaný",
+                "REQUESTED": "Nový"
+            },
+            "requestChannel": "Typ návrhu",
+            "name": "Predkladateľ",
+            "createdAt": "Dátum zadania návrhu",
+            "srName": "Názov návrhu",
+            "requestChannelValue": {
+                "RI": "Referencovateľný identifikátor",
+                "ZC_Request": "Žiadosť o pridanie nového ZČ",
+                "ZC_Header": "Žiadosť o zmenu ZČ",
+                "RR": "Referenčný register",
+                "WEB": "Všeobecný"
+            }
+        },
+        "actions": "Viac akcií",
+        "cancelMeeting": "Zrušiť zasadnutie",
+        "participateButton": "Uložiť",
+        "labelYes": "Áno",
+        "labelNo": "Nie",
+        "guestNumber": "Hosť",
+        "reasonsDescription": "Dôvod a popis zmeny",
+        "notificationUser": "Poslať notifikáciu len novým účastníkom",
+        "notification": "Ignorovať osobné nastavenia notifikácií",
+        "filter": {
+            "meetingOption": "Zobraziť",
+            "meetingOptionValue": {
+                "all": "Všetky zasadnutia",
+                "my": "Len moje zasadnutia"
+            },
+            "group": "Pridelená pracovná skupina",
+            "state": "Stav",
+            "startDate": "Prijaté v období od",
+            "endDate": "Prijaté v období do"
+        },
+        "": ""
+    },
     "globalSearch": {
         "header": "Výsledky vyhľadávania pre {{item}}",
         "numberOfResults": "{{count}} výsledkov",

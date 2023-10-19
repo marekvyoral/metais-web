@@ -173,6 +173,7 @@
             "personalProcedures": "Personal procedures",
             "educationalCourses": "Educational courses",
             "publicAuthorityHierarchy": "Hierarchy of public authorities",
+            "webResidence": "Web residence",
             "webResidenceAndMobileApps": "Web residence and mobile applications",
             "relationsInspection": "Inspection of relations",
             "architectonicRepository": "Architectonic repository",
@@ -1029,6 +1030,111 @@
         "userPreferencesSuccess": "Personal preferences were successfully saved",
         "changedUserInformation": "Personal information were successfully changed",
         "changedUserInformationError": "Error occurred while changing personal information. Please try again."
+    },
+    "meetings": {
+        "name": "Name",
+        "date": "Date of meeting",
+        "start": "Start of the meeting",
+        "end": "End of the meeting",
+        "place": "Location",
+        "vote": "I will participate",
+        "program": "Agenda",
+        "description": "Description",
+        "editItem": "Edit meeting",
+        "documents": "Meeting documents",
+        "proposal": "Related proposal submitted via MetaIS",
+        "record": "Record of the meeting",
+        "listActors": "List of invitees",
+        "meetingActors": "Invited members",
+        "meetingExternalActors": "Guests",
+        "userName": "Name",
+        "email": "Email address",
+        "participation": "Confirmation of participation",
+        "participationValue": {
+            "ACCEPTED": "Confirmed participation"
+        },
+        "groupShortName": "Working group abbreviation",
+        "userOrgName": "Organisation",
+        "groupName": "Name of the working group",
+        "beginDate": "Date and time",
+        "state": "State",
+        "stateValue": {
+            "PAST": "Ended",
+            "CANCELED": "Cancelled",
+            "FUTURE": "New",
+            "SUMMARIZED": "Assessed",
+            "NOW": "Ongoing"
+        },
+        "addNewMeeting": "Add a meeting",
+        "mandatory": "mandatory",
+        "form": {
+            "heading": {
+                "dateTime": "Time and place",
+                "actors": "Invited users",
+                "externalActors": "Invite guests",
+                "program": "Agenda of the meeting",
+                "documents": "Documents",
+                "documentsDetail": "Enter links to documents",
+                "documentsExport": "And/Or upload documents",
+                "proposals": "List of proposals",
+                "reasons": "Updating of the meeting"
+            },
+            "name": "Name of meeting",
+            "date": "Date of meeting",
+            "timeStart": "Meeting time from",
+            "timeEnd": "Meeting time to",
+            "place": "Meeting place",
+            "group": "Invited groups",
+            "meetingActors": "Invited guests",
+            "externalActorName": "Name and surname",
+            "externalActorEmail": "Email address",
+            "externalActorDescription": "Additional description",
+            "addExternalActors": "+ Add another guest",
+            "program": "Agenda",
+            "proposalsSelect": "Related proposals",
+            "proposalsButton": "Select from list"
+        },
+        "proposals": {
+            "standardRequestState": "Status",
+            "standardRequestStateValue": {
+                "REJECTED": "Rejected",
+                "ASSIGNED": "Assigned",
+                "ACCEPTED": "Accepted",
+                "REQUESTED": "Requested"
+            },
+            "requestChannel": "Type of proposal",
+            "name": "Submitted by",
+            "createdAt": "Date of submission",
+            "srName": "Name of proposal",
+            "requestChannelValue": {
+                "RI": "Reference identifier",
+                "ZC_Request": "Request for add new codelist",
+                "ZC_Header": "Request for change codelist",
+                "RR": "Reference register",
+                "WEB": "Web"
+            }
+        },
+        "actions": "More actions",
+        "cancelMeeting": "Cancel meeting",
+        "participateButton": "Save",
+        "labelYes": "Yes",
+        "labelNo": "No",
+        "guestNumber": "Guest",
+        "reasonsDescription": "Reason and description of the change",
+        "notificationUser": "Send notification only to new subscribers",
+        "notification": "Ignore personal notification settings",
+        "filter": {
+            "meetingOption": "View",
+            "meetingOptionValue": {
+                "all": "All meetings",
+                "my": "Only my meetings"
+            },
+            "group": "Assigned working group",
+            "state": "State",
+            "startDate": "Accepted in the period from",
+            "endDate": "Accepted in the period up to"
+        },
+        "": ""
     },
     "globalSearch": {
         "header": "Search results for {{item}}",
