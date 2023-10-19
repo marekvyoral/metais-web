@@ -74,6 +74,7 @@ export const SelectCiItem: React.FC<Props> = ({
                 <div className={styles.selectDiv}>
                     <SelectLazyLoading
                         error={''}
+                        key={filterTypeEntityName}
                         isMulti
                         getOptionLabel={(item) => item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
                         getOptionValue={(item) => item.uuid ?? ''}
