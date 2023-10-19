@@ -94,6 +94,7 @@ export const CreateEntitySection: React.FC<ISection> = ({
                                 defaultValueFromCiItem={defaultItemAttributeValues?.[attribute.technicalName ?? '']}
                                 hasResetState={hasResetState}
                                 disabled={isUpdateSectionDisabled}
+                                isUpdate={!!updateCiItemId}
                             />
                         )}
                     </React.Fragment>

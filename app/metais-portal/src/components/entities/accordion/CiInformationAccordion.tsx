@@ -6,6 +6,8 @@ import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid
 import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
+import { HTML_TYPE } from '@isdd/metais-common/constants'
+import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/src/hooks/useGetCiTypeConstraintsData'
 
@@ -55,13 +57,14 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                                     currentEntityCiTypeConstraintsData,
                                     withDescription,
                                 )
+                                const isHTML = attribute.type === HTML_TYPE
 
                                 return (
                                     !attribute?.invisible && (
                                         <InformationGridRow
                                             key={attribute?.technicalName}
                                             label={attribute?.name ?? ''}
-                                            value={rowValue}
+                                            value={isHTML ? <SafeHtmlComponent dirtyHtml={rowValue} /> : rowValue}
                                             tooltip={attribute?.description}
                                             lang={setEnglishLangForAttr(attribute.technicalName ?? '')}
                                         />
@@ -94,19 +97,21 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                                 />
                                 {ciTypeData?.attributes?.map((attribute) => {
                                     const withDescription = true
+                                    const rowValue = pairEnumsToEnumValues(
+                                        attribute,
+                                        ciItemData,
+                                        constraintsData,
+                                        t,
+                                        unitsData,
+                                        currentEntityCiTypeConstraintsData,
+                                        withDescription,
+                                    )
+                                    const isHTML = attribute.type === HTML_TYPE
                                     return (
                                         <InformationGridRow
                                             key={attribute?.technicalName}
                                             label={attribute.name ?? ''}
-                                            value={pairEnumsToEnumValues(
-                                                attribute,
-                                                ciItemData,
-                                                constraintsData,
-                                                t,
-                                                unitsData,
-                                                currentEntityCiTypeConstraintsData,
-                                                withDescription,
-                                            )}
+                                            value={isHTML ? <SafeHtmlComponent dirtyHtml={rowValue} /> : rowValue}
                                             tooltip={attribute?.description}
                                             lang={setEnglishLangForAttr(attribute.technicalName ?? '')}
                                         />

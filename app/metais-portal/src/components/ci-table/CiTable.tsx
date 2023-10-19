@@ -13,6 +13,8 @@ import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
+import { HTML_TYPE } from '@isdd/metais-common/constants'
+import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 
 import styles from './ciTable.module.scss'
 import {
@@ -112,6 +114,7 @@ export const CiTable: React.FC<ICiTable> = ({
         const isOwner = technicalName === MetainformationColumns.OWNER
         const isGroup = technicalName === MetainformationColumns.GROUP
         const isDate = technicalName === MetainformationColumns.LAST_MODIFIED_AT || technicalName === MetainformationColumns.CREATED_AT
+        const isHTML = schemaAttributes?.[technicalName]?.type === HTML_TYPE
 
         switch (true) {
             case isFirstItem: {
@@ -138,6 +141,9 @@ export const CiTable: React.FC<ICiTable> = ({
             }
             case isDate: {
                 return t('dateTime', { date: ctx.getValue() as string })
+            }
+            case isHTML: {
+                return <SafeHtmlComponent dirtyHtml={ctx?.getValue?.() as string} />
             }
             default: {
                 return ''

@@ -9,6 +9,7 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import React, { SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
+import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/src/save-html-component/SafeHtmlComponent'
 
 import { AssignToGroupSelect } from './AssignToGroupSelect'
 import styles from './tasks.module.scss'
@@ -104,7 +105,7 @@ export const TaskDetailView: React.FC<ITaskDetailView> = ({
                     </DefinitionList>
                     <TextHeading size="L">{t('tasks.description')}</TextHeading>
                     <TextBody>
-                        <div dangerouslySetInnerHTML={{ __html: task?.description ?? '' }} />
+                        <SafeHtmlComponent dirtyHtml={task?.description ?? ''} />
                     </TextBody>
                     <TextHeading size="L">{t('tasks.baseInfo')}</TextHeading>
                     <Table<TaskHistory>

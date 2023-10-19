@@ -2,7 +2,7 @@ import { Button } from '@isdd/idsk-ui-kit'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import classNames from 'classnames'
 import { DeltaStatic, Sources } from 'quill'
-import React, { useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import ReactQuill from 'react-quill'
@@ -60,6 +60,7 @@ export interface ITextAreaQuillProps {
     error?: string
     value?: string
     onChange?(value: string, delta: DeltaStatic, source: Sources, editor: ReactQuill.UnprivilegedEditor): void
+    readOnly?: boolean
 }
 
 export interface ICustomToolBarProps {
@@ -106,6 +107,7 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
     value,
     onChange,
     excludeOptions,
+    readOnly,
 }) => {
     const { t } = useTranslation()
     const quillRef = useRef<ReactQuill | null>(null)
@@ -132,6 +134,13 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
     const requiredText = ` (${t('createEntity.required')})`
     const requiredLabel = `${isRequired ? requiredText : ''}`
 
+    useEffect(() => {
+        if (setValue && value) {
+            setValue(name, value)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     return (
         <div className={classNames('govuk-form-group', styles.fieldset, { 'govuk-form-group--error': !!error })}>
             {error && <span className="govuk-error-message">{error}</span>}
@@ -152,6 +161,7 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
                         handleContentChange(newValue, newDelta, source, editor)
                     }}
                     defaultValue={defaultValue}
+                    readOnly={readOnly}
                 />
             </div>
         </div>

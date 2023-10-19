@@ -16,6 +16,7 @@ import {
     object,
     string,
 } from 'yup'
+import { HTML_TYPE } from '@isdd/metais-common/constants'
 
 import { numericProperties } from './createEntityHelpers'
 
@@ -77,13 +78,14 @@ export const generateFormSchema = (data: (Attribute | undefined)[], t: TFunction
         const isDouble = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.DOUBLE
         const isInteger = attribute?.attributeTypeEnum === AttributeAttributeTypeEnum.INTEGER
         const isArray = attribute?.array
+        const isHTML = attribute?.type === HTML_TYPE
 
         const hasNumericValue = isInteger || isDouble || isLong || isByte || isShort || isFloat
         const canBeDecimal = isDouble || isFloat
 
         if (isInvisible) return
         if (attribute?.technicalName == null) return
-        if (isString) {
+        if (isString || isHTML) {
             switch (true) {
                 case isArray && isRegex: {
                     if (attribute.constraints) {
