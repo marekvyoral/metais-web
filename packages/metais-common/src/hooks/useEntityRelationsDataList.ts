@@ -12,6 +12,7 @@ export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighbo
     const {
         isLoading,
         isError,
+        isFetching,
         data: directList,
     } = useReadCiNeighboursWithAllRels(id, pageConfig, {
         query: {
@@ -19,9 +20,12 @@ export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighbo
         },
     })
 
-    const { data: derivedList, isLoading: isDerivedLoading } = useReadCiDerivedRelTypes(id, pageConfig.relTypes ? pageConfig.relTypes[0] : '', {
-        page: pageConfig.page,
-        perPage: pageConfig.perPage,
+    const {
+        data: derivedList,
+        isLoading: isDerivedLoading,
+        isFetching: isDerivedFetching,
+    } = useReadCiDerivedRelTypes(id, pageConfig.relTypes ? pageConfig.relTypes[0] : '', {
+        ...pageConfig,
     })
 
     const relationsList: CiWithRelsResultUi | undefined = useMemo(() => {
@@ -39,8 +43,8 @@ export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighbo
     } = useGetRoleParticipantBulk({ gids: owners }, { query: { enabled: !!owners?.length } })
 
     return {
-        isLoading: isLoading || isOwnersLoading,
-        isDerivedLoading: isLoading || isDerivedLoading,
+        isLoading: isLoading || isOwnersLoading || isFetching,
+        isDerivedLoading: isDerivedLoading || isDerivedFetching,
         isError: isError || isOwnersError,
         relationsList: relationsList,
         owners: ownersData,
