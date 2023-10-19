@@ -85,6 +85,8 @@ export enum NavigationSubRoutes {
     ZOZNAM_NAVRHOV = '/standardization/draftslist',
     ZOZNAM_HLASOV = '/standardization/voteslist',
     ZOZNAM_ZASADNUTI = '/standardization/meetingslist',
+    ZOZNAM_ZASADNUTI_CREATE = '/standardization/meetingslist/create',
+    ZOZNAM_ZASADNUTI_DETAIL = '/standardization/meetingslist',
     TVORBA_NAVRHU = '/standardization/newdraft',
     REFERENCE_REGISTRE = '/refregisters/list',
     CISELNIKY = '/codelists/list',
