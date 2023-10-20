@@ -1,5 +1,5 @@
 import { Button, RadioButton, RadioGroupWithLabel, TextArea } from '@isdd/idsk-ui-kit/index'
-import { ApiVote } from '@isdd/metais-common/api'
+import { ApiVote } from '@isdd/metais-common/api/generated/standards-swagger'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import classNames from 'classnames'
 import { useCallback, useMemo, useState } from 'react'

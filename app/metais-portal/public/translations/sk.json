@@ -679,6 +679,8 @@
         "addNewGroup": "Pridať pracovnú skupinu",
         "groupName": "Názov skupiny",
         "shortGroupName": "Skratka skupiny",
+        "nextMeetingDate": "Dátum najbližšieho zasadnutia",
+        "lastMeetingDate": "Dátum posledného zasadnutia",
         "show": "Zobraziť",
         "userName": "Meno",
         "role": "Rola",
