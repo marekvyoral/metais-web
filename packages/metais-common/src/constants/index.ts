@@ -112,3 +112,11 @@ export const HTML_TYPE = 'HTML'
 
 export const P_REALIZUJE_AKT = 'P_realizuje_AKT'
 export const ACTIVITY = 'Aktivita'
+
+export const FINISHED_STATE = 'c_stav_projektu_9'
+
+export const PROJECT_STATUS = 'EA_Profil_Projekt_status'
+
+export const ACTION_CREATE = 'CREATE'
+export const ACTION_UPDATE = 'UPDATE'
+export const ENTITY_PROJECT = 'Projekt'

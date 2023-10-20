@@ -9,13 +9,15 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { Actions, useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
-import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
+import { CI_ITEM_QUERY_KEY, ENTITY_PROJECT } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
 import Informations from '@/pages/ci/[entityName]/[entityId]/informations'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { ProjectStateContainer } from '@/components/containers/ProjectStateContainer'
+import { ProjectStateView } from '@/components/views/ci/project/ProjectStateView'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 
 export const INDEX_ROUTE = Informations
@@ -76,7 +78,7 @@ const EntityDetailPage: React.FC = () => {
         refetch()
     }
 
-    if (entityName == 'Projekt' && isUserLogged) {
+    if (entityName == ENTITY_PROJECT && isUserLogged) {
         tabList.splice(2, 0, {
             id: 'activities',
             path: `/ci/${entityName}/${entityId}/activities`,
@@ -118,6 +120,18 @@ const EntityDetailPage: React.FC = () => {
                                 />
                             )}
                         </FlexColumnReverseWrapper>
+                        {entityName == ENTITY_PROJECT && (
+                            <ProjectStateContainer
+                                configurationItemId={entityId ?? ''}
+                                View={(props) => {
+                                    return (
+                                        <>
+                                            <ProjectStateView {...props} />
+                                        </>
+                                    )
+                                }}
+                            />
+                        )}
                         <Tabs tabList={tabList} />
                         <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} />
                     </>

@@ -1,0 +1,71 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.textWrapper {
+    margin: 0 govuk-spacing(4);
+    margin-bottom: 0 !important;
+    text-align: center;
+    font-weight: bold !important;
+}
+
+.noWrap {
+    white-space: nowrap;
+}
+
+.greenText {
+    color: govuk-colour('green') !important;
+}
+.greyText {
+    color: govuk-colour('grey-1') !important;
+}
+
+.mainWrapper {
+    background-color: govuk-colour('grey-4');
+    padding: govuk-spacing(4);
+    overflow-y: hidden;
+    display: flex;
+    margin: 0 auto;
+    margin-bottom: govuk-spacing(8);
+}
+
+.stepsWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.stepIndicator {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: govuk-spacing(2);
+}
+
+.line {
+    height: 3px;
+    width: 100%;
+}
+
+.green {
+    background-color: govuk-colour('green');
+}
+
+.black {
+    background-color: govuk-colour('black');
+}
+
+.grey {
+    background-color: govuk-colour('grey-1');
+}
+
+.transparent {
+    background-color: transparent;
+}
