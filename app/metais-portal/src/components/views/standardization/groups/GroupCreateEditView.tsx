@@ -1,10 +1,11 @@
-import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, IOption, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, IOption, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useFindRelatedOrganizationsHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 
 import { GroupFormEnum, createGroupSchema, editGroupSchema } from './groupSchema'
 
@@ -19,8 +20,8 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
         register,
         handleSubmit,
         setValue,
-        clearErrors,
         watch,
+        clearErrors,
         formState: { errors },
     } = useForm({ resolver: yupResolver(isEdit ? editGroupSchema(t) : createGroupSchema(t)) })
 
@@ -28,6 +29,8 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
 
     const [selectedIdentity, setSelectedIdentity] = useState<string | undefined>(undefined)
     const [organizationOptions, setOrganizationOptions] = useState<IOption[] | undefined>(undefined)
+
+    const [richText, setRichText] = useState<string | undefined>(infoData?.description)
 
     const watchUser = watch([GroupFormEnum.USER])
 
@@ -61,6 +64,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
                     links={[
                         { href: RouteNames.HOME, label: t('notifications.home'), icon: HomeIcon },
                         { href: RouteNames.HOW_TO_STANDARDIZATION, label: t('navMenu.standardization') },
+                        { href: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE, label: t('navMenu.lists.groups') },
                         { href: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE, label: t('groups.groupList') },
                         {
                             href: NavigationSubRoutes.PRACOVNA_SKUPINA_CREATE,
@@ -76,6 +80,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
                         links={[
                             { href: RouteNames.HOME, label: t('notifications.home'), icon: HomeIcon },
                             { href: RouteNames.HOW_TO_STANDARDIZATION, label: t('navMenu.standardization') },
+                            { href: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE, label: t('navMenu.lists.groups') },
                             { href: NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL, label: infoData?.name ?? '' },
                             {
                                 href: `${NavigationSubRoutes.PRACOVNA_SKUPINA_EDIT}/${id}/edit`,
@@ -100,12 +105,14 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
                         {...register(GroupFormEnum.SHORT_NAME, { value: infoData?.shortName })}
                         error={errors[GroupFormEnum.SHORT_NAME]?.message}
                     />
-                    <TextArea
+                    <RichTextQuill
                         label={`${t('groups.description')} (${t('groups.mandatory')}):`}
-                        rows={3}
                         id={GroupFormEnum.DESCRIPTION}
-                        {...register(GroupFormEnum.DESCRIPTION, { value: infoData?.description })}
+                        name={GroupFormEnum.DESCRIPTION}
+                        setValue={setValue}
+                        value={richText}
                         error={errors[GroupFormEnum.DESCRIPTION]?.message}
+                        onChange={setRichText}
                     />
 
                     {!isEdit && (

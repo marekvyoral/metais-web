@@ -1,7 +1,7 @@
 import { Button, PaginatorWrapper, SimpleSelect, Table } from '@isdd/idsk-ui-kit/index'
-import { IFilter } from '@isdd/idsk-ui-kit/types'
+import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
 import { ConfigurationItemUi } from '@isdd/metais-common/api'
-import { Group, Identity } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Identity } from '@isdd/metais-common/api/generated/iam-swagger'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
@@ -15,16 +15,19 @@ import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLa
 
 import styles from '@/components/views/standardization/groups/groupslist.module.scss'
 import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect'
+import { GroupWithMeetings } from '@/components/containers/standardization/groups/GroupsListContainer'
 
 interface IGroupsListView {
-    groups: Group[] | undefined
-    columns: ColumnDef<Group>[]
+    groups: GroupWithMeetings[] | undefined
+    columns: ColumnDef<GroupWithMeetings>[]
     setSelectedIdentity: React.Dispatch<SetStateAction<Identity | undefined>>
     selectedOrg: ConfigurationItemUi | undefined
     setSelectedOrg: React.Dispatch<SetStateAction<ConfigurationItemUi | undefined>>
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
     isLoading: boolean
     isError: boolean
+    sort: ColumnSort[]
+    setSort: React.Dispatch<SetStateAction<ColumnSort[]>>
 }
 
 export const GroupsListView: React.FC<IGroupsListView> = ({
@@ -36,6 +39,8 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
     handleSubmit,
     isLoading,
     isError,
+    sort,
+    setSort,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -104,7 +109,7 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
             </div>
 
             <QueryFeedback loading={isLoading} error={isError}>
-                <Table<Group> columns={columns} data={groups?.slice(start, end)} />
+                <Table<GroupWithMeetings> columns={columns} data={groups?.slice(start, end)} sort={sort} onSortingChange={setSort} />
             </QueryFeedback>
             <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={groups?.length ?? 0} handlePageChange={handlePageChange} />
         </>

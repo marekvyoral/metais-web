@@ -670,6 +670,8 @@
         "addNewGroup": "Add new group",
         "groupName": "Group Name",
         "shortGroupName": "Abbreviation of group",
+        "nextMeetingDate": "Next meeting date",
+        "lastMeetingDate": "Last meeting date",
         "show": "Show",
         "userName": "Name",
         "role": "Role",

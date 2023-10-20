@@ -1,5 +1,5 @@
 import { IOption, InfoIcon, TextLink } from '@isdd/idsk-ui-kit/index'
-import { ApiVotePreview } from '@isdd/metais-common/api'
+import { ApiVotePreview } from '@isdd/metais-common/api/generated/standards-swagger'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
 import { TFunction } from 'i18next'

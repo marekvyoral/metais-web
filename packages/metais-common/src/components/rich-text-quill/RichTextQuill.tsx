@@ -122,13 +122,8 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
     )
 
     const handleContentChange = (newValue: string, delta: DeltaStatic, source: Sources, editor: ReactQuill.UnprivilegedEditor) => {
-        if (onChange) {
-            onChange(newValue, delta, source, editor)
-        } else {
-            if (setValue) {
-                setValue(name, newValue)
-            }
-        }
+        onChange && onChange(newValue, delta, source, editor)
+        setValue && setValue(name, newValue)
     }
 
     const requiredText = ` (${t('createEntity.required')})`
