@@ -1,6 +1,5 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { BrowserRouter } from 'react-router-dom'
 
 import { Stepper } from './Stepper'
 import { ISection } from './StepperSection'
@@ -67,13 +66,7 @@ export default meta
 type Story = StoryObj<typeof Stepper>
 
 export const Main: Story = {
-    decorators: [
-        (StoryComponent) => (
-            <BrowserRouter>
-                <StoryComponent />
-            </BrowserRouter>
-        ),
-    ],
+    decorators: [(StoryComponent) => <StoryComponent />],
     args: {
         description: 'Čo je potrebné vybaviť a zariadieť keď sa Vám má narodiť dieťa ?',
         subtitleTitle: 'I am first subtitle with show all',
