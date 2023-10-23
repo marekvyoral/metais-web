@@ -1,7 +1,8 @@
-import { QueryFeedback, useCastVote, useGetVoteDetail, useGetVoteResult, useVetoVote } from '@isdd/metais-common/index'
+import { QueryFeedback } from '@isdd/metais-common/index'
 import React, { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useCastVote, useGetVoteDetail, useGetVoteResult, useVetoVote } from '@isdd/metais-common/api/generated/standards-swagger'
 
 import { IVoteDetailView } from '@/components/views/standardization/votes/voteDetail/VoteDetailView'
 

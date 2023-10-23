@@ -1,7 +1,7 @@
 import { TextBody } from '@isdd/idsk-ui-kit/index'
-import { ApiVote } from '@isdd/metais-common/api'
 import { useTranslation } from 'react-i18next'
 import { useMemo } from 'react'
+import { ApiVote } from '@isdd/metais-common/api/generated/standards-swagger'
 
 import { WebLinks } from '@/components/views/standardization/votes/voteDetail/voteDetailComponents/WebLinks'
 import { AttachmentLinks } from '@/components/views/standardization/votes/voteDetail/voteDetailComponents/AttachmentLinks'

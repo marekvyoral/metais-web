@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => {
     }
 
     return {
+        build: {
+            sourcemap: true,
+        },
         plugins: [
             react(),
             tsconfigPaths({

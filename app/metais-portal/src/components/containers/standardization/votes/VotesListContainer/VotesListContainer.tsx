@@ -1,8 +1,9 @@
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, GetVotesParams, QueryFeedback, useGetVotes } from '@isdd/metais-common/index'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useMemo } from 'react'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { GetVotesParams, useGetVotes } from '@isdd/metais-common/api/generated/standards-swagger'
 
 import { getVoteParamsData } from './votesListFunc'
 
