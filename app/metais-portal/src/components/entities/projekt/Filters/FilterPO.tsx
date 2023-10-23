@@ -71,7 +71,7 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
                         attributeProfiles={attributeProfiles}
                         constraintsData={constraintsData}
                         setValue={setValue}
-                        data={filter.attributeFilters}
+                        filterData={{ attributeFilters: filter.attributeFilters ?? {}, metaAttributeFilters: filter.metaAttributeFilters ?? {} }}
                     />
                 </div>
             )}

@@ -8,25 +8,44 @@ export enum MetainformationColumns {
     OWNER = 'owner',
 }
 
-export const getCiDefaultMetaAttributes = (t: TFunction<'translation', undefined, 'translation'>) => {
+export enum MetaInformationTypes {
+    OWNER = 'OWNER',
+    STATE = 'STATE',
+    CREATED_AT = 'CREATED_AT',
+    LAST_MODIFIED = 'LAST_MODIFIED',
+}
+
+export const getCiDefaultMetaAttributes = (t: TFunction) => {
     const defaultCiMetaAttributes = {
         name: t('ciType.meta.metaInformationsName'),
         attributes: [
             {
                 name: t('ciType.meta.lastModifiedAt'),
                 technicalName: MetainformationColumns.LAST_MODIFIED_AT,
+                invisible: false,
+                valid: true,
+                attributeTypeEnum: MetaInformationTypes.LAST_MODIFIED as string,
             },
             {
                 name: t('ciType.meta.createdAt'),
                 technicalName: MetainformationColumns.CREATED_AT,
+                invisible: false,
+                valid: true,
+                attributeTypeEnum: MetaInformationTypes.CREATED_AT as string,
             },
             {
                 name: t('ciType.meta.owner'),
-                technicalName: MetainformationColumns.GROUP,
+                technicalName: MetainformationColumns.OWNER,
+                invisible: false,
+                valid: true,
+                attributeTypeEnum: MetaInformationTypes.OWNER as string,
             },
             {
                 name: t('ciType.meta.state'),
                 technicalName: MetainformationColumns.STATE,
+                invisible: false,
+                valid: true,
+                attributeTypeEnum: MetaInformationTypes.STATE as string,
             },
         ],
     }
