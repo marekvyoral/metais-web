@@ -4,21 +4,21 @@ import { MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select
 
 import { IOption, Select } from '@isdd/idsk-ui-kit/select/Select'
 
-interface ISelectProps {
+interface ISelectProps<T> {
     id?: string
     label: string
     name: string
-    options: MultiValue<IOption>
-    option?: (props: OptionProps<IOption>) => JSX.Element
-    onChange?: (newValue?: string) => void
+    options: MultiValue<IOption<T>>
+    option?: (props: OptionProps<IOption<T>>) => JSX.Element
+    onChange?: (newValue?: T) => void
     placeholder?: string
     className?: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setValue?: UseFormSetValue<any>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     clearErrors?: UseFormClearErrors<any>
-    defaultValue?: string
-    value?: string
+    defaultValue?: T
+    value?: T
     error?: string
     info?: string
     correct?: boolean
@@ -28,7 +28,7 @@ interface ISelectProps {
     menuPosition?: MenuPosition
 }
 
-export const SimpleSelect: React.FC<ISelectProps> = ({
+export const SimpleSelect = <T,>({
     label,
     name,
     options,
@@ -48,12 +48,12 @@ export const SimpleSelect: React.FC<ISelectProps> = ({
     onBlur,
     isClearable,
     menuPosition,
-}) => {
-    const handleOnChange = (selectedOption: MultiValue<IOption> | SingleValue<IOption>) => {
-        const opt: IOption | undefined = Array.isArray(selectedOption) ? selectedOption[0] : selectedOption
+}: ISelectProps<T>) => {
+    const handleOnChange = (selectedOption: MultiValue<IOption<T>> | SingleValue<IOption<T>>) => {
+        const opt: IOption<T> | undefined = Array.isArray(selectedOption) ? selectedOption[0] : selectedOption
         opt && clearErrors && clearErrors(name)
         setValue && setValue(name, opt?.value || '')
-        onChange && onChange(opt?.value || '')
+        onChange && onChange(opt?.value)
     }
 
     return (

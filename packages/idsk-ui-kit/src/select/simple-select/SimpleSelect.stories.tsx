@@ -115,7 +115,7 @@ export const DisabledOption: Story = {
 export const UncontrolledWithInitValue: Story = {
     render: ({ value: initValue, ...args }) => {
         const StateWrapper = () => {
-            const { handleSubmit, watch, setValue, formState } = useForm({ defaultValues: { select: initValue, test: '' } })
+            const { handleSubmit, watch, setValue, formState } = useForm({ defaultValues: { select: initValue as string, test: '' } })
             const selectedValue = watch('select')
 
             const submit = handleSubmit((formData) => {

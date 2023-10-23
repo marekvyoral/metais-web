@@ -22,7 +22,7 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
                 {
                     title: t('navMenu.userManagement.users'),
                     role: [AdminRouteRoles.ADMIN, AdminRouteRoles.HKO],
-                    path: AdminRouteNames.USERS,
+                    path: AdminRouteNames.USER_MANAGEMENT,
                 },
                 {
                     title: t('navMenu.userManagement.requestList'),
@@ -45,19 +45,19 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
             subItems: [
                 {
                     title: t('navMenu.publicAuthorities.publicAuthorities'),
+                    path: AdminRouteNames.PUBLIC_AUTHORITIES_LIST,
                     role: [AdminRouteRoles.ADMIN],
-                    path: AdminRouteNames.ORGANIZATIONS,
                 },
                 {
-                    title: t('navMenu.publicAuthorities.massActualizations'),
-                    path: '/public-authorities/mass-updates',
+                    title: t('navMenu.publicAuthorities.massUpdate'),
+                    path: AdminRouteNames.PUBLIC_AUTHORITIES_MASS_UPDATE,
                     role: [AdminRouteRoles.ADMIN],
                 },
             ],
         },
         {
             title: t('navMenu.egov.egov'),
-            path: AdminRouteNames.EGOV,
+            path: AdminRouteNames.EGOV_ENTITY,
             icon: InstructionsIcon,
             role: [AdminRouteRoles.ADMIN],
             subItems: [
@@ -113,7 +113,7 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
         },
         {
             title: t('navMenu.projects.management'),
-            path: AdminRouteNames.PROJECTS_MANAGEMENT,
+            path: AdminRouteNames.PROJECTS_FINANCE_MANAGEMENT,
             icon: InstructionsIcon,
             role: [AdminRouteRoles.ADMIN, AdminRouteRoles.METAIS],
             subItems: [

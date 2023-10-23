@@ -11,9 +11,10 @@ interface IInformationGridRowProps extends PropsWithChildren {
     hideIcon?: boolean
     lang?: string | undefined
     href?: string
+    valueWarning?: boolean
 }
 
-export const InformationGridRow: React.FC<IInformationGridRowProps> = ({ label, value, tooltip, hideIcon, lang, href }) => {
+export const InformationGridRow: React.FC<IInformationGridRowProps> = ({ label, value, tooltip, hideIcon, lang, href, valueWarning }) => {
     return (
         <DefinitionListItem
             label={
@@ -26,6 +27,7 @@ export const InformationGridRow: React.FC<IInformationGridRowProps> = ({ label, 
             value={value}
             lang={lang}
             href={href}
+            valueWarning={valueWarning}
         />
     )
 }

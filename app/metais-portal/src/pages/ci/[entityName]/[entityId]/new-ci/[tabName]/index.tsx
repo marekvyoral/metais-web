@@ -4,8 +4,8 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiContainer } from '@/components/containers/CiContainer'
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
 import { NewCiRelationContainer } from '@/components/containers/NewCiRelationContainer'
@@ -45,10 +45,10 @@ const CreateCiItemAndRelation: React.FC = () => {
                             />
                             <MainContentWrapper>
                                 <AttributesContainer
-                                    entityName={entityName ?? ''}
+                                    entityName={tabName ?? ''}
                                     View={({ data: attributesData, isError: attError, isLoading: attLoading }) => (
                                         <CiCreateEntityContainer
-                                            entityName={entityName ?? ''}
+                                            entityName={tabName ?? ''}
                                             View={({
                                                 data: generatedEntityId,
                                                 isError: isGeneratedEntityIdError,

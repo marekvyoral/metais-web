@@ -4,12 +4,12 @@ import { MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select
 
 import { IOption, Select } from '@isdd/idsk-ui-kit/select/Select'
 
-interface ISelectProps {
+interface ISelectProps<T> {
     id?: string
     label: string
     name: string
-    options: MultiValue<IOption>
-    option?: (props: OptionProps<IOption>) => JSX.Element
+    options: MultiValue<IOption<T>>
+    option?: (props: OptionProps<IOption<T>>) => JSX.Element
     onChange?: (newValue: string[]) => void
     placeholder?: string
     className?: string
@@ -28,7 +28,7 @@ interface ISelectProps {
     menuPosition?: MenuPosition
 }
 
-export const MultiSelect: React.FC<ISelectProps> = ({
+export const MultiSelect = <T,>({
     label,
     name,
     options,
@@ -48,8 +48,8 @@ export const MultiSelect: React.FC<ISelectProps> = ({
     onBlur,
     isClearable,
     menuPosition,
-}) => {
-    const handleOnChange = (selectedOption: MultiValue<IOption> | SingleValue<IOption>) => {
+}: ISelectProps<T>) => {
+    const handleOnChange = (selectedOption: MultiValue<IOption<T>> | SingleValue<IOption<T>>) => {
         const values: string[] = Array.isArray(selectedOption) ? selectedOption?.map((opt) => opt.value) : []
         values.length && clearErrors && clearErrors(name)
         setValue && setValue(name, values)
@@ -57,7 +57,7 @@ export const MultiSelect: React.FC<ISelectProps> = ({
     }
 
     const getValues = (val?: string[]) => {
-        const results: IOption[] = []
+        const results: IOption<T>[] = []
         val?.forEach((optionVal) => {
             const result = options.find((opt) => opt.value === optionVal)
             result && results.push(result)

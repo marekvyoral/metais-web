@@ -12,16 +12,20 @@ export const ExpandableRowCellWrapper = <T,>({ row, children }: ExpandableRowCel
     return (
         <div
             className={styles.expandCheckboxCell}
+            onClick={row.getToggleExpandedHandler()}
             style={{
                 paddingLeft: `${row.depth * 2}rem`,
+                display: 'flex',
+                gap: 6,
             }}
         >
             {row.getCanExpand() && (
-                <img
-                    src={PaginatorRightArrowIcon}
-                    onClick={row.getToggleExpandedHandler()}
-                    style={{ cursor: 'pointer', transform: row.getIsExpanded() ? 'rotate(90deg)' : 'rotate(0deg)' }}
-                />
+                <div>
+                    <img
+                        src={PaginatorRightArrowIcon}
+                        style={{ cursor: 'pointer', transform: row.getIsExpanded() ? 'rotate(90deg)' : 'rotate(0deg)' }}
+                    />
+                </div>
             )}
             <div className={styles.height40}>{children}</div>
         </div>

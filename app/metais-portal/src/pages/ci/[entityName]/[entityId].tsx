@@ -11,6 +11,7 @@ import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { Actions, useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { CI_ITEM_QUERY_KEY, ENTITY_PROJECT } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
@@ -67,6 +68,7 @@ const EntityDetailPage: React.FC = () => {
             : []),
     ]
 
+    const { data: ciTypeData } = useGetCiType(entityName ?? '')
     const { data: ciItemData, refetch } = useReadConfigurationItem(entityId ?? '', {
         query: {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
@@ -110,6 +112,7 @@ const EntityDetailPage: React.FC = () => {
                                 entityId={entityId ?? ''}
                                 entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
                                 handleBulkAction={handleBulkAction}
+                                ciRoles={ciTypeData?.roleList ?? []}
                             />
                             <MutationFeedback error={false} success={isActionSuccess.value} />
                             {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (

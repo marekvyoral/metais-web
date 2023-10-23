@@ -23,7 +23,7 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
 
     const { formMethods, showUnit, showConstraint, selectedConstraint, selectedType } = useCreateAttributeForm()
 
-    const { register, formState, handleSubmit, setValue, clearErrors, watch } = formMethods
+    const { register, formState, handleSubmit, setValue, clearErrors, watch, control } = formMethods
 
     const currentSelectedConstraints = watch('constraints')?.[0]
 
@@ -135,7 +135,13 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                     error={formState?.errors?.defaultValue?.message}
                 />
             )}
-            {selectedType === HTML_TYPE && <Controller name="defaultValue" render={({ field }) => <RichTextQuill {...field} />} />}
+            {selectedType === HTML_TYPE && (
+                <Controller
+                    name="defaultValue"
+                    control={control}
+                    render={({ field }) => <RichTextQuill {...field} value={field.value?.toString()} />}
+                />
+            )}
             {selectedConstraint === StringConstraints.CI_TYPE && (
                 <>
                     <CiTypeListSelect

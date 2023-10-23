@@ -11,7 +11,7 @@ import { SummarizingCard } from './SummarizingCard'
 
 import styles from '@/components/views/egov/detailViews.module.scss'
 import { BasicInformations } from '@/components/views/egov/BasicInformations'
-import { IAtrributesContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'
+import { IAttributesContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'
 import { ProfileTabs } from '@/components/ProfileTabs'
 
 export const EntityDetailView = ({
@@ -22,7 +22,8 @@ export const EntityDetailView = ({
     resetExistingAttribute,
     isError,
     isLoading,
-}: IAtrributesContainerView) => {
+    roles,
+}: IAttributesContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
@@ -46,6 +47,7 @@ export const EntityDetailView = ({
             title: t('egov.detail.genericProfile'),
             content: (
                 <EntityDetailViewAttributes
+                    roles={roles}
                     data={ciTypeData}
                     attributesOverridesData={attributesOverridesData}
                     saveExistingAttribute={saveExistingAttribute}
@@ -77,7 +79,7 @@ export const EntityDetailView = ({
                     </div>
                     {isError && <QueryFeedback error loading={false} />}
                 </FlexColumnReverseWrapper>
-                <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
+                <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} roles={roles} />
             </div>
             <ProfileTabs tabList={tabList} />
         </QueryFeedback>

@@ -26,7 +26,7 @@ const mapHistory = (data?: HistoryVersionsListUiConfigurationItemUi, defaultProj
 
     return data?.historyVersions
         ?.filter((obj) => {
-            const code: string = Object.values(obj.item?.attributes ?? {}).find((attr) => attr.name == PROJECT_STATUS).value
+            const code: string = Object.values(obj.item?.attributes ?? {}).find((attr) => attr.name == PROJECT_STATUS)?.value
             if (!uniqueValues.has(code) && (obj.actions?.includes(ACTION_CREATE) || obj.actions?.includes(ACTION_UPDATE))) {
                 uniqueValues.add(code)
                 return true
@@ -38,7 +38,7 @@ const mapHistory = (data?: HistoryVersionsListUiConfigurationItemUi, defaultProj
             return {
                 date: formatDateTimeForDefaultValue(i.actionTime ?? ''),
                 state: defaultProjectStates?.find(
-                    (st) => st.code == Object.values(i.item?.attributes ?? {}).find((attr) => attr.name == PROJECT_STATUS).value,
+                    (st) => st.code == Object.values(i.item?.attributes ?? {}).find((attr) => attr.name == PROJECT_STATUS)?.value,
                 ),
             }
         })

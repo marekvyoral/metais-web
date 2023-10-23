@@ -149,10 +149,11 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
             >
                 {!updateCiItemId && publicAuthorityState && roleState && (
                     <SelectPublicAuthorityAndRole
-                        selectedRoleId={roleState.selectedRole}
+                        selectedRole={roleState.selectedRole ?? {}}
                         onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
                         onChangeRole={roleState.setSelectedRole}
                         selectedOrg={publicAuthorityState.selectedPublicAuthority}
+                        ciRoles={ciTypeData?.roleList ?? []}
                     />
                 )}
 
@@ -166,6 +167,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                     defaultItemAttributeValues={defaultItemAttributeValues}
                     updateCiItemId={updateCiItemId}
                     isProcessing={storeConfigurationItem.isLoading}
+                    selectedRole={roleState?.selectedRole ?? null}
                 />
             </QueryFeedback>
         </>

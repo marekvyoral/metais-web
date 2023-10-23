@@ -4,7 +4,7 @@ import { FieldErrors, FieldValues, useForm } from 'react-hook-form'
 import { Button } from '@isdd/idsk-ui-kit/index'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
-import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Attribute, AttributeAttributeTypeEnum, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { AttributeInput } from './AttributeInput'
 
@@ -154,7 +154,9 @@ export const TextInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -187,7 +189,9 @@ export const RequiredTextInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -220,7 +224,9 @@ export const RegexTextInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -253,7 +259,9 @@ export const DateInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -286,7 +294,9 @@ export const FileInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -319,7 +329,9 @@ export const TextAreaInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -352,7 +364,9 @@ export const SelectInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -405,7 +419,9 @@ export const MultiSelectInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -467,7 +483,9 @@ export const CheckBoxInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -500,7 +518,9 @@ export const IntervalInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -533,7 +553,9 @@ export const DoubleInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -566,7 +588,9 @@ export const defaultInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -599,7 +623,9 @@ export const byteInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -632,7 +658,9 @@ export const shortInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -665,7 +693,9 @@ export const floatWithRegexInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -697,7 +727,9 @@ export const longInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
@@ -730,7 +762,9 @@ export const characterInput: Story = {
         const FormWrapper = () => {
             const { t } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([args.attribute], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], { roleName: 'EA_GARPO' }, t),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')

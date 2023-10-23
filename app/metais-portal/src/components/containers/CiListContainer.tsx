@@ -46,6 +46,9 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
             ...filterToNeighborsApi.filter,
             fullTextSearch: filterParams.fullTextSearch || '',
             attributes: mapFilterParamsToApi(filterParams, defaultFilterOperators),
+            metaAttributes: {
+                ...filterParams.metaAttributeFilters,
+            },
         },
     })
 

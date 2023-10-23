@@ -18,9 +18,10 @@ interface Props {
     entityItemName: string
     entityData?: ConfigurationItemUi
     handleBulkAction: (actionResult: IBulkActionResult) => void
+    ciRoles: string[]
 }
 
-export const CiEntityIdHeader: React.FC<Props> = ({ entityData, entityName, entityId, entityItemName, handleBulkAction }) => {
+export const CiEntityIdHeader: React.FC<Props> = ({ entityData, entityName, entityId, entityItemName, handleBulkAction, ciRoles }) => {
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
@@ -46,50 +47,50 @@ export const CiEntityIdHeader: React.FC<Props> = ({ entityData, entityName, enti
                         label={t('ciType.editButton')}
                         onClick={() => navigate(`/ci/${entityName}/${entityId}/edit`, { state: location.state })}
                     />
-                </Can>
-                <ButtonPopup
-                    buttonClassName={styles.noWrap}
-                    buttonLabel={t('ciType.moreButton')}
-                    popupPosition="right"
-                    popupContent={() => {
-                        return (
-                            <div className={styles.buttonLinksDiv}>
-                                <Tooltip
-                                    key={'invalidateItem'}
-                                    descriptionElement={errorMessage}
-                                    position={'top center'}
-                                    on={'right-click'}
-                                    tooltipContent={(open) => (
-                                        <div>
-                                            <ButtonLink
-                                                onClick={() => handleInvalidate(entityListData, setShowInvalidate, open)}
-                                                label={t('ciType.invalidateItem')}
-                                            />
-                                        </div>
-                                    )}
-                                />
-                                <Tooltip
-                                    key={'revalidateItem'}
-                                    descriptionElement={errorMessage}
-                                    position={'top center'}
-                                    tooltipContent={(open) => (
-                                        <div>
-                                            <ButtonLink
-                                                onClick={() => handleReInvalidate(entityListData, setShowReInvalidate, open)}
-                                                label={t('ciType.revalidateItem')}
-                                            />
-                                        </div>
-                                    )}
-                                />
 
-                                <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
-                                    <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
-                                </Can>
-                                <ButtonLink label={t('ciType.besManagement')} />
-                            </div>
-                        )
-                    }}
-                />
+                    <ButtonPopup
+                        buttonClassName={styles.noWrap}
+                        buttonLabel={t('ciType.moreButton')}
+                        popupPosition="right"
+                        popupContent={() => {
+                            return (
+                                <div className={styles.buttonLinksDiv}>
+                                    <Tooltip
+                                        key={'invalidateItem'}
+                                        descriptionElement={errorMessage}
+                                        position={'top center'}
+                                        on={'right-click'}
+                                        tooltipContent={(open) => (
+                                            <div>
+                                                <ButtonLink
+                                                    onClick={() => handleInvalidate(entityListData, setShowInvalidate, open)}
+                                                    label={t('ciType.invalidateItem')}
+                                                />
+                                            </div>
+                                        )}
+                                    />
+                                    <Tooltip
+                                        key={'revalidateItem'}
+                                        descriptionElement={errorMessage}
+                                        position={'top center'}
+                                        tooltipContent={(open) => (
+                                            <div>
+                                                <ButtonLink
+                                                    onClick={() => handleReInvalidate(entityListData, setShowReInvalidate, open)}
+                                                    label={t('ciType.revalidateItem')}
+                                                />
+                                            </div>
+                                        )}
+                                    />
+
+                                    <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
+                                        <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
+                                    </Can>
+                                </div>
+                            )
+                        }}
+                    />
+                </Can>
             </ButtonGroupRow>
             {isBulkLoading && <LoadingIndicator fullscreen />}
 
@@ -110,6 +111,7 @@ export const CiEntityIdHeader: React.FC<Props> = ({ entityData, entityName, enti
                 open={showChangeOwner}
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowChangeOwner)}
                 onClose={() => setShowChangeOwner(false)}
+                ciRoles={ciRoles}
             />
         </div>
     )

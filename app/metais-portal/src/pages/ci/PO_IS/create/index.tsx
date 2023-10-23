@@ -1,9 +1,8 @@
 import React from 'react'
-import { OrgPermissionsWrapper } from '@isdd/metais-common/components/permissions/OrgPermissionsWrapper'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
+import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
 import { PublicAuthorityAndRoleContainer } from '@/components/containers/PublicAuthorityAndRoleContainer'
 import { CreateCiEntityView } from '@/components/views/ci/create/CreateCiEntityView'
@@ -39,19 +38,15 @@ const CreateEntityPage: React.FC = () => {
                                         isError: isPublicAuthAndRoleError,
                                         isLoading: isPublicAuthAndRoleLoading,
                                     }) => (
-                                        <OrgPermissionsWrapper selectedOrganizationId={publicAuthorityState?.selectedPublicAuthority?.poUUID ?? ''}>
-                                            <CreateCiEntityView
-                                                data={{ attributesData, generatedEntityId }}
-                                                ownerId={groupData?.gid ?? ''}
-                                                roleState={roleState}
-                                                publicAuthorityState={publicAuthorityState}
-                                                entityName={entityName ?? ''}
-                                                isError={[isAttError, isPublicAuthAndRoleError, isGeneratedEntityIdError].some((item) => item)}
-                                                isLoading={[isAttLoading, isPublicAuthAndRoleLoading, isGeneratedEntityIdLoading].some(
-                                                    (item) => item,
-                                                )}
-                                            />
-                                        </OrgPermissionsWrapper>
+                                        <CreateCiEntityView
+                                            data={{ attributesData, generatedEntityId }}
+                                            ownerId={groupData?.gid ?? ''}
+                                            roleState={roleState}
+                                            publicAuthorityState={publicAuthorityState}
+                                            entityName={entityName ?? ''}
+                                            isError={[isAttError, isPublicAuthAndRoleError, isGeneratedEntityIdError].some((item) => item)}
+                                            isLoading={[isAttLoading, isPublicAuthAndRoleLoading, isGeneratedEntityIdLoading].some((item) => item)}
+                                        />
                                     )}
                                 />
                             )}

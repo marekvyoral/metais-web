@@ -1,6 +1,10 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { FieldValues } from 'react-hook-form'
 
+import { transformOperatorsFromUrl } from './transformOperators'
+
+import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
+import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting'
 import {
     BASE_PAGE_NUMBER,
     BASE_PAGE_SIZE,
@@ -9,13 +13,16 @@ import {
     ConfigurationItemUi,
     EnumType,
     FilterAttributesUi,
+    FilterMetaAttributesUi,
     ListReportParams,
     Parameter,
     ReadAllCiHistoryVersionsParams,
     ReadCiNeighboursWithAllRelsParams,
     ReportExecute,
 } from '@isdd/metais-common/api'
-import { IFilterParams, OPERATOR_OPTIONS } from '@isdd/metais-common/hooks/useFilter'
+import { IAttributeFilters, IFilterParams, OPERATOR_OPTIONS, OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
+import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { JOIN_OPERATOR } from '@isdd/metais-common/constants'
 
 export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: { [filterName: string]: T } | T): CiListFilterContainerUi => {
     const { pageNumber, pageSize, sort } = filter
@@ -135,6 +142,7 @@ export enum FILTER_KEY {
     sort = 'sort',
     pageSize = 'pageSize',
     pageNumber = 'pageNumber',
+    metaAttributeFilters = 'metaAttributeFilters',
 }
 
 //maps static inputs in <Filter> to their correct format needed for cilistfiltered filter
@@ -147,6 +155,7 @@ export const mapFilterParamsToApi = <T extends IFilterParams>(
         FILTER_KEY.fullTextSearch,
         FILTER_KEY.attributeFilters,
         FILTER_KEY.sort,
+        FILTER_KEY.metaAttributeFilters,
         FILTER_KEY.pageSize,
         FILTER_KEY.pageNumber,
     ])
@@ -202,4 +211,153 @@ export const mapFilterParamsToApi = <T extends IFilterParams>(
     }
 
     return attributes
+}
+
+export enum FilterMetaAttributesUiKeys {
+    owner = 'owner',
+    liableEntity = 'liableEntity',
+    liableEntityByHierarchy = 'liableEntityByHierarchy',
+    lastAction = 'lastAction',
+    state = 'state',
+    createdBy = 'createdBy',
+    createdAtFrom = 'createdAtFrom',
+    createdAtTo = 'createdAtTo',
+    lastModifiedBy = 'lastModifiedBy',
+    lastModifiedAtFrom = 'lastModifiedAtFrom',
+    lastModifiedAtTo = 'lastModifiedAtTo',
+}
+
+export const formatMetaAttributesToFilterAttributeType = (metaAttributeFiltersData: FilterMetaAttributesUi): FilterAttribute[] => {
+    const formattedMetaAttributes: FilterAttribute[] = []
+    for (const key in metaAttributeFiltersData) {
+        switch (key) {
+            case FilterMetaAttributesUiKeys.lastModifiedAtTo: {
+                const filterAttribute: FilterAttribute = {
+                    name: MetainformationColumns.LAST_MODIFIED_AT,
+                    operator: OPERATOR_OPTIONS_URL.LOWER,
+                    value: formatDateForDefaultValue(metaAttributeFiltersData[key] ?? ''),
+                }
+                formattedMetaAttributes.push(filterAttribute)
+                break
+            }
+            case FilterMetaAttributesUiKeys.lastModifiedAtFrom: {
+                const filterAttribute: FilterAttribute = {
+                    name: MetainformationColumns.LAST_MODIFIED_AT,
+                    operator: OPERATOR_OPTIONS_URL.GREATER,
+                    value: formatDateForDefaultValue(metaAttributeFiltersData[key] ?? ''),
+                }
+                formattedMetaAttributes.push(filterAttribute)
+                break
+            }
+            case FilterMetaAttributesUiKeys.createdAtTo: {
+                const filterAttribute: FilterAttribute = {
+                    name: MetainformationColumns.CREATED_AT,
+                    operator: OPERATOR_OPTIONS_URL.LOWER,
+                    value: formatDateForDefaultValue(metaAttributeFiltersData[key] ?? ''),
+                }
+                formattedMetaAttributes.push(filterAttribute)
+                break
+            }
+            case FilterMetaAttributesUiKeys.createdAtFrom: {
+                const filterAttribute: FilterAttribute = {
+                    name: MetainformationColumns.CREATED_AT,
+                    operator: OPERATOR_OPTIONS_URL.GREATER,
+                    value: formatDateForDefaultValue(metaAttributeFiltersData[key] ?? ''),
+                }
+                formattedMetaAttributes.push(filterAttribute)
+                break
+            }
+            case FilterMetaAttributesUiKeys.state: {
+                const filterAttribute: FilterAttribute = {
+                    name: MetainformationColumns.STATE,
+                    operator: OPERATOR_OPTIONS_URL.FULLTEXT,
+                    value: metaAttributeFiltersData[key],
+                }
+                formattedMetaAttributes.push(filterAttribute)
+                break
+            }
+            case FilterMetaAttributesUiKeys.liableEntity: {
+                const filterAttribute: FilterAttribute = {
+                    name: MetainformationColumns.OWNER,
+                    operator: OPERATOR_OPTIONS_URL.FULLTEXT,
+                    value: metaAttributeFiltersData[key],
+                }
+                formattedMetaAttributes.push(filterAttribute)
+                break
+            }
+        }
+    }
+
+    return formattedMetaAttributes
+}
+
+export const formatAttributeFiltersToFilterAttributeType = (attributeFiltersData: IAttributeFilters): FilterAttribute[] => {
+    const formattedAttributeFilters: FilterAttribute[] = []
+
+    for (const [technicalName, attributeFilterValue] of Object.entries(attributeFiltersData)) {
+        if (attributeFilterValue.length > 1) {
+            const values = attributeFilterValue.map((attr) => attr.value as string)
+            const operators = attributeFilterValue.map((attr) => attr.operator)
+            const uniqueOperators = [...new Set(operators)]
+
+            //this means it is multiSelect
+            if (uniqueOperators.length > 1) {
+                uniqueOperators.forEach((operator, index) => {
+                    formattedAttributeFilters.push({ name: technicalName, operator: transformOperatorsFromUrl(operator), value: values[index] })
+                })
+            } else {
+                formattedAttributeFilters.push({ name: technicalName, operator: transformOperatorsFromUrl(operators[0]), value: values })
+            }
+        } else {
+            attributeFilterValue.forEach((attr) => {
+                formattedAttributeFilters.push({ name: technicalName, operator: transformOperatorsFromUrl(attr.operator), value: attr.value })
+            })
+        }
+    }
+
+    return formattedAttributeFilters
+}
+
+export const mapMetaAttributeFromUrlToFitFilter = (
+    name: string,
+    operator: string,
+    value: string,
+): {
+    metaAttributeName: FilterMetaAttributesUiKeys | undefined
+    metaAttributeValue: string | string[] | undefined
+} => {
+    if (name === MetainformationColumns.CREATED_AT) {
+        if (operator == OPERATOR_OPTIONS_URL.LOWER) {
+            return { metaAttributeName: FilterMetaAttributesUiKeys.createdAtTo, metaAttributeValue: new Date(value).toISOString() }
+        } else if (operator == OPERATOR_OPTIONS_URL.GREATER) {
+            return { metaAttributeName: FilterMetaAttributesUiKeys.createdAtFrom, metaAttributeValue: new Date(value).toISOString() }
+        }
+    }
+
+    if (name === MetainformationColumns.LAST_MODIFIED_AT) {
+        if (operator == OPERATOR_OPTIONS_URL.LOWER) {
+            return { metaAttributeName: FilterMetaAttributesUiKeys.lastModifiedAtTo, metaAttributeValue: new Date(value).toISOString() }
+        } else if (operator == OPERATOR_OPTIONS_URL.GREATER) {
+            return { metaAttributeName: FilterMetaAttributesUiKeys.lastModifiedAtFrom, metaAttributeValue: new Date(value).toISOString() }
+        }
+    }
+
+    if (name === MetainformationColumns.OWNER) {
+        return { metaAttributeName: FilterMetaAttributesUiKeys.liableEntity, metaAttributeValue: value.split(JOIN_OPERATOR) }
+    }
+
+    if (name === MetainformationColumns.STATE) {
+        return { metaAttributeName: FilterMetaAttributesUiKeys.state, metaAttributeValue: value.split(JOIN_OPERATOR) }
+    }
+
+    return { metaAttributeName: undefined, metaAttributeValue: undefined }
+}
+
+export const isMatchWithMetaAttributeTechnicalName = (technicalName: string) => {
+    return [
+        MetainformationColumns.OWNER,
+        MetainformationColumns.STATE,
+        MetainformationColumns.LAST_MODIFIED_AT,
+        MetainformationColumns.CREATED_AT,
+    ].some((metaAttributeName) => metaAttributeName === technicalName)
 }

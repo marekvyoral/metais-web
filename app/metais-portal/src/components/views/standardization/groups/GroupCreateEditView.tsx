@@ -28,7 +28,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
     const orgOptionsHook = useFindRelatedOrganizationsHook()
 
     const [selectedIdentity, setSelectedIdentity] = useState<string | undefined>(undefined)
-    const [organizationOptions, setOrganizationOptions] = useState<IOption[] | undefined>(undefined)
+    const [organizationOptions, setOrganizationOptions] = useState<IOption<string>[] | undefined>(undefined)
 
     const [richText, setRichText] = useState<string | undefined>(infoData?.description)
 
@@ -38,7 +38,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
         await orgOptionsHook(selectedIdentityUuid).then((res) => {
             setOrganizationOptions(
                 res.map((org) => {
-                    const option: IOption = { value: org.cmdbId ?? '', label: org.attributes?.Gen_Profil_nazov ?? '' }
+                    const option: IOption<string> = { value: org.cmdbId ?? '', label: org.attributes?.Gen_Profil_nazov ?? '' }
                     return option
                 }),
             )

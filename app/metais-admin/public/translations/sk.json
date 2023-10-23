@@ -82,12 +82,13 @@
     "filter": {
         "chooseState": "Vyberte stav",
         "chooseValue": "Vyberte hodnotu",
-        "organizations": {
+        "publicAuthorities": {
             "name": "Meno",
             "ICO": "ICO",
-            "onlyFreePO": "Iba voľné povinné osoby"
+            "onlyFreePO": "Iba voľné povinné osoby",
+            "state": "Stav",
+            "poName": "Povinná osoba"
         },
-
         "PO": {
             "name": "Názov",
             "itIsChapter": "Je kapitola",
@@ -95,14 +96,12 @@
             "publicAuthorityType": "Typ povinnej osoby",
             "evidenceStatus": "Stav evidencie"
         },
-
         "egov": {
             "name": "Meno",
             "technicalName": "Technické meno",
             "type": "Typ",
             "valid": "Stav"
         },
-
         "expand": "Rozbaliť filter",
         "collapse": "Zbaliť filter",
         "namePlaceholder": "Zadajte názov",
@@ -489,10 +488,8 @@
         "notifications": "Notifikácie",
         "settings": "Nastavenia profilu",
         "admin": "Administrácia",
-        "organizations": "Správa povinných osôb",
         "userManagement": {
             "users": "Používatelia",
-
             "userManagement": "Správa používateľov",
             "requestListAll": "Žiadosti, registrácie a žiadosti na vymazanie osobných údajov",
             "requestList": "Žiadosti",
@@ -526,7 +523,8 @@
         "publicAuthorities": {
             "management": "Správa orgánov riadenia",
             "publicAuthorities": "Orgány riadenia",
-            "massActualizations": "Hromadné aktualizácie"
+            "massActualizations": "Hromadné aktualizácie",
+            "massUpdate": "Hromadné aktualizácie"
         }
     },
     "tooltips": {
@@ -613,7 +611,7 @@
         "executingScript": "Script sa vykonáva",
         "saving": "Ukladá sa..."
     },
-    "organizations": {
+    "publicAuthorities": {
         "detail": {
             "title": "Detail povinnej osoby",
             "statutoryOfficer": "Štatutár"
@@ -674,6 +672,29 @@
             "isCycleInHierarchy": "V hierarchii PO nesmie vzniknúť cirkulárna referencia v rámci PO, teda PO nesmie byť nadradenou a zároveň podradenou pre tú istú PO!",
             "warningInfo": "Nemôžete vytvoriť vzťah medzi rovnakou identitou!",
             "topLevelOrg": "Nemôžete priradiť povinnej osobe hlavnú povinnú osobu!"
+        },
+        "massUpdate": {
+            "title": "Hromadná aktualizácia povinných osôb",
+            "state": "Stav",
+            "stateEnum": {
+                "NEW": "Vytvorená",
+                "PROCESSED": "Schválená",
+                "REJECTED": "Zamietnutá"
+            },
+            "actions": {
+                "approve": "Schváliť",
+                "reject": "Zamietnuť"
+            },
+            "feedback": {
+                "approve": {
+                    "success": "Organizačné zmeny boli akceptované",
+                    "error": "Chyba pri akceptovaní zmien"
+                },
+                "reject": {
+                    "success": "Organizačné zmeny boli zamietnuté",
+                    "error": "Chyba pri zamietnutí zmien"
+                }
+            }
         }
     },
     "ekoValidity": {
