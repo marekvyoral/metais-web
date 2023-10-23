@@ -8,30 +8,36 @@ const removeSubItemsForLoggedInUser = (subItems?: NavigationSubItem[]): Navigati
 
 const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
     const commonRoutes: NavigationItem[] = [
-        { title: t('navMenu.lists.isvs'), path: NavigationSubRoutes.ISVS },
         { title: t('navMenu.lists.endServices'), path: NavigationSubRoutes.KONCOVE_SLUZBY },
         { title: t('navMenu.lists.applicationServices'), path: NavigationSubRoutes.APLIKACNE_SLUZBY },
+        { title: t('navMenu.lists.isvs'), path: NavigationSubRoutes.ISVS },
+        { title: t('navMenu.lists.infrastructures'), path: NavigationSubRoutes.INFRASCTRUCTURES },
+        { title: t('navMenu.lists.webResidenceAndMobileApps'), path: NavigationSubRoutes.WEBOVE_SIDLO_AND_MOBILE_APPS },
+        { title: t('navMenu.lists.personalProcedures'), path: '/todo' },
+        { title: t('navMenu.lists.educationalCourses'), path: NavigationSubRoutes.EDUCATIONAL_COURSES },
         { title: t('navMenu.lists.evidenceObjects'), path: NavigationSubRoutes.OBJEKTY_EVIDENCIE },
         { title: t('navMenu.lists.attributesEvidenceObjects'), path: NavigationSubRoutes.ATRIBUTY_OBJEKTY_EVIDENCIE },
-        { title: t('navMenu.lists.infrastructures'), path: NavigationSubRoutes.INFRASCTRUCTURES },
-        { title: t('navMenu.lists.projects'), path: NavigationSubRoutes.PROJEKT },
     ]
     const egovComponentsSubItemsSideMenu: NavigationItem[] = [
-        ...commonRoutes,
-        { title: t('navMenu.lists.programs'), path: NavigationSubRoutes.PROGRAM },
         {
             path: RouteNames.HOW_TO_KRIS_STUDIES_PROJECTS,
             title: t('navMenu.GoalsPrincipalsActivitiesKRIT'),
             subItems: [
                 { title: t('navMenu.lists.ciel'), path: NavigationSubRoutes.CIEL },
                 { title: t('navMenu.lists.princip'), path: NavigationSubRoutes.PRINCIP },
-                { title: t('navMenu.lists.aktivita'), path: NavigationSubRoutes.AKTIVITA },
                 { title: t('navMenu.lists.krit'), path: NavigationSubRoutes.KRIT },
             ],
         },
-        { title: t('navMenu.lists.servers'), path: '/todo' },
-        { title: t('navMenu.lists.virtualMachines'), path: '/todo' },
-        { title: t('navMenu.lists.operationPlace'), path: '/todo' },
+
+        {
+            title: t('navMenu.programProjectsActivities'),
+            path: RouteNames.HOW_TO_PROGRAMS_PROJECTS_ACTIVITIES,
+            subItems: [
+                { title: t('navMenu.lists.aktivita'), path: NavigationSubRoutes.AKTIVITA },
+                { title: t('navMenu.lists.programs'), path: NavigationSubRoutes.PROGRAM },
+                { title: t('navMenu.lists.projects'), path: NavigationSubRoutes.PROJEKT },
+            ],
+        },
         {
             title: t('navMenu.publicAuthorities'),
             path: RouteNames.HOW_TO_PO,
@@ -45,13 +51,12 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
                 { title: t('navMenu.lists.publicAuthorityHierarchy'), path: NavigationSubRoutes.PUBLIC_AUTHORITY_HIERARCHY },
             ],
         },
-        { title: t('navMenu.lists.educationalCourses'), path: NavigationSubRoutes.EDUCATIONAL_COURSES },
+        ...commonRoutes,
     ]
 
     const egovComponentsSubItemsTopMenu: NavigationItem[] = [
-        ...commonRoutes.slice(0, 1),
-        { title: t('navMenu.lists.webResidenceAndMobileApps'), path: NavigationSubRoutes.WEBOVE_SIDLO_AND_MOBILE_APPS },
-        ...commonRoutes.slice(1),
+        ...commonRoutes,
+        { title: t('navMenu.lists.projects'), path: NavigationSubRoutes.PROJEKT },
         { title: t('navMenu.lists.otherComponents'), path: RouteNames.HOW_TO_EGOV_COMPONENTS },
     ]
 
@@ -79,12 +84,12 @@ export const getPortalNavigationItems = (
             title: t('navMenu.standardization'),
             icon: StandartsIcon,
             subItems: [
-                { title: t('navMenu.lists.standards'), path: NavigationSubRoutes.STANDARDY_ISVS },
                 { title: t('navMenu.lists.commission'), path: `${NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE}/${ksisvsGroupId}` },
                 { title: t('navMenu.lists.groups'), path: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE },
                 { title: t('navMenu.lists.concepts'), path: NavigationSubRoutes.ZOZNAM_NAVRHOV },
                 { title: t('navMenu.lists.votes'), path: NavigationSubRoutes.ZOZNAM_HLASOV },
                 { title: t('navMenu.lists.meetings'), path: NavigationSubRoutes.ZOZNAM_ZASADNUTI },
+                { title: t('navMenu.lists.standards'), path: NavigationSubRoutes.STANDARDY_ISVS },
             ],
         },
 
@@ -94,24 +99,28 @@ export const getPortalNavigationItems = (
             icon: DataObjectsIcon,
             subItems: [
                 {
-                    title: t('navMenu.lists.registersList'),
-                    path: NavigationSubRoutes.REFERENCE_REGISTRE,
-                },
-                {
-                    title: t('navMenu.lists.codelists'),
-                    path: NavigationSubRoutes.CISELNIKY,
-                },
-                {
-                    title: t('navMenu.centralDataModel'),
-                    path: '/todo',
+                    title: t('navMenu.lists.registers'),
+                    path: NavigationSubRoutes.HOW_TO_REFERENCE_REGISTERS,
                     subItems: [
-                        { title: t('navMenu.referenceIdentifiers'), path: '/todo' },
-                        { title: t('navMenu.dataElementsCatalogue'), path: '/todo' },
+                        { title: t('navMenu.lists.registersList'), path: NavigationSubRoutes.REFERENCE_REGISTRE },
+                        { title: t('navMenu.lists.registersRequestsList'), path: NavigationSubRoutes.REFERENCE_REGISTERS_REQUESTS },
                     ],
                 },
                 {
-                    title: t('navMenu.dataObligationsRegister'),
-                    path: '/todo',
+                    title: t('navMenu.lists.codelists'),
+                    path: RouteNames.HOW_TO_CODELIST,
+                    subItems: [
+                        { title: t('navMenu.lists.codelistsList'), path: NavigationSubRoutes.CISELNIKY },
+                        { title: t('navMenu.lists.codelistsRequestsList'), path: NavigationSubRoutes.CODELIST_REQUESTS },
+                    ],
+                },
+                {
+                    title: t('navMenu.referenceIdentifiers'),
+                    path: RouteNames.HOW_TO_REFERENCE_IDENTIFIERS,
+                    subItems: [
+                        { title: t('navMenu.lists.referenceIdentifiersList'), path: NavigationSubRoutes.IDENTIFIERS_LIST },
+                        { title: t('navMenu.lists.referenceIdentifiersRequestsList'), path: NavigationSubRoutes.IDENTIFIERS_REQUESTS },
+                    ],
                 },
             ],
         },
@@ -120,7 +129,10 @@ export const getPortalNavigationItems = (
             title: t('navMenu.monitoring'),
             icon: MonitoringIcon,
             subItems: [
-                { title: t('navMenu.lists.monitoringServices'), path: RouteNames.REPORTS },
+                { title: t('navMenu.reports'), path: RouteNames.REPORTS },
+                { title: t('navMenu.lists.monitoringEnd'), path: NavigationSubRoutes.MONITORING_KS },
+                { title: t('navMenu.lists.monitoringApp'), path: NavigationSubRoutes.MONITORING_AS },
+                { title: t('navMenu.lists.monitoringImport'), path: NavigationSubRoutes.MONITORING_IMPORT },
                 { title: t('navMenu.lists.monitoringSet'), path: NavigationSubRoutes.MONITORING_PARAMETRE_SET },
             ],
         },

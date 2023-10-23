@@ -4,14 +4,14 @@ import { useTranslation } from 'react-i18next'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-const TutorialPage = () => {
+const REF_REG_HOWTO = () => {
     const { t } = useTranslation()
     return (
         <>
             <BreadCrumbs withWidthContainer links={[{ label: t('breadcrumbs.home'), href: '/', icon: HomeIcon }]} />
-            <MainContentWrapper>POSTUPY_NAVODY</MainContentWrapper>
+            <MainContentWrapper>REF_REGISTERS_HOWTO</MainContentWrapper>
         </>
     )
 }
 
-export default TutorialPage
+export default REF_REG_HOWTO

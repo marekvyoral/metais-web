@@ -105,8 +105,8 @@
         "egovComponents": "e-Government Components",
         "standardization": "Standardization",
         "dataObjects": "Data objects",
-        "monitoring": "Monitoring",
-        "guides": "Help",
+        "monitoring": "Reports and monitoring",
+        "guides": "Guides and procedures",
         "hide": "Hide",
         "show": "Show",
         "innerNav": "Inner navigation",
@@ -118,6 +118,8 @@
         "centralDataModel": "Central data model",
         "dataElementsCatalogue": "Data elements catalogue",
         "dataObligationsRegister": "Register of data authorizations and obligations",
+
+        "programProjectsActivities": "Programs, projects and activities",
 
         "lists": {
             "processorsOfITDevelopmentConcepts": "Processors of KRIT",
@@ -132,7 +134,7 @@
             "infrastructures": "Infrastructure services",
             "authorities": "Public authorities",
             "otherComponents": "Other components",
-            "standards": "Standards of ITVS",
+            "standards": "Standards of ISVS",
             "procedures": "Special procedures",
             "commission": "ITVS Standardization Commission",
             "groups": "Working groups of the commission",
@@ -167,6 +169,7 @@
             "krit": "Concepts of IT development",
             "registersList": "List of reference registers",
             "registersRequestsList": "List of requests to add a reference register",
+            "codelistsList": "Codelists list",
             "codelistsRequestsList": "List of requests to add a codelist",
             "referenceIdentifiersList": "List of reference identifiers",
             "referenceIdentifiersRequestsList": "List of requests to add a reference identifier",
