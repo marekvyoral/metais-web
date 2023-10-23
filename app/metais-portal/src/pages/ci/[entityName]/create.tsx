@@ -1,6 +1,5 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { OrgPermissionsWrapper } from '@isdd/metais-common/components/permissions/OrgPermissionsWrapper'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
@@ -39,17 +38,15 @@ const CreateEntityPage: React.FC = () => {
                                         isError: publicAuthAndRoleError,
                                         isLoading: publicAuthAndRoleLoading,
                                     }) => (
-                                        <OrgPermissionsWrapper selectedOrganizationId={publicAuthorityState?.selectedPublicAuthority?.poUUID ?? ''}>
-                                            <CreateCiEntityView
-                                                data={{ attributesData, generatedEntityId }}
-                                                ownerId={groupData?.gid ?? ''}
-                                                roleState={roleState}
-                                                publicAuthorityState={publicAuthorityState}
-                                                entityName={entityName ?? ''}
-                                                isLoading={[attLoading, generatedIdLoading, publicAuthAndRoleLoading].some((item) => item)}
-                                                isError={[attError, generatedIdError, publicAuthAndRoleError].some((item) => item)}
-                                            />
-                                        </OrgPermissionsWrapper>
+                                        <CreateCiEntityView
+                                            data={{ attributesData, generatedEntityId }}
+                                            ownerId={groupData?.gid ?? ''}
+                                            roleState={roleState}
+                                            publicAuthorityState={publicAuthorityState}
+                                            entityName={entityName ?? ''}
+                                            isLoading={[attLoading, generatedIdLoading, publicAuthAndRoleLoading].some((item) => item)}
+                                            isError={[attError, generatedIdError, publicAuthAndRoleError].some((item) => item)}
+                                        />
                                     )}
                                 />
                             )}

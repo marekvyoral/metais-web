@@ -273,6 +273,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 multiple
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowChangeOwner)}
                 onClose={() => setShowChangeOwner(false)}
+                ciRoles={ciTypeData?.roleList ?? []}
             />
 
             <CiTable

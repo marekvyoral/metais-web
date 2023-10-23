@@ -22,7 +22,7 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
                 {
                     title: t('navMenu.userManagement.users'),
                     role: [AdminRouteRoles.ADMIN, AdminRouteRoles.HKO],
-                    path: AdminRouteNames.USERS,
+                    path: AdminRouteNames.USER_MANAGEMENT,
                 },
                 {
                     title: t('navMenu.userManagement.requestList'),
@@ -57,7 +57,7 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
         },
         {
             title: t('navMenu.egov.egov'),
-            path: AdminRouteNames.EGOV,
+            path: AdminRouteNames.EGOV_ENTITY,
             icon: InstructionsIcon,
             role: [AdminRouteRoles.ADMIN],
             subItems: [
@@ -113,7 +113,7 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
         },
         {
             title: t('navMenu.projects.management'),
-            path: AdminRouteNames.PROJECTS_MANAGEMENT,
+            path: AdminRouteNames.PROJECTS_FINANCE_MANAGEMENT,
             icon: InstructionsIcon,
             role: [AdminRouteRoles.ADMIN, AdminRouteRoles.METAIS],
             subItems: [

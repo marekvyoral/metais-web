@@ -117,6 +117,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                         handleBackNavigate={handleBackNavigate}
                         handleResetForm={handleResetForm}
                         isError={availableLoginError}
+                        hideCancelButton={!isCreate}
                     />
                 </form>
             </QueryFeedback>

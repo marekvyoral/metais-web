@@ -1,4 +1,4 @@
-import { Attribute, AttributeAttributeTypeEnum, AttributeConstraintRegexAllOf } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { AttributeAttributeTypeEnum, AttributeConstraintRegexAllOf, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 import {
     AnyObject,
@@ -16,6 +16,7 @@ import {
     object,
     string,
 } from 'yup'
+import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { HTML_TYPE } from '@isdd/metais-common/constants'
 
 import { numericProperties } from './createEntityHelpers'
@@ -48,12 +49,17 @@ type SchemaType = {
         | ArraySchema<(number | null | undefined)[] | undefined, AnyObject, '', ''>
 }
 
-export const generateFormSchema = (data: (Attribute | undefined)[], t: TFunction<'translation', undefined, 'translation'>) => {
+export const generateFormSchema = (
+    data: AttributeProfile[],
+    selectedRole: GidRoleData | null,
+    t: TFunction<'translation', undefined, 'translation'>,
+) => {
     const schema: SchemaType = {}
 
     const phoneOrEmptyStringRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$|^$/
+    const attributes = data.filter((profile) => profile?.roleList?.includes(selectedRole?.roleName ?? '')).flatMap((profile) => profile?.attributes)
 
-    data?.forEach((attribute: Attribute | undefined) => {
+    attributes?.forEach((attribute) => {
         const isInvisible = attribute?.invisible
 
         const isRegex = attribute?.constraints && attribute.constraints.length > 0 && attribute?.constraints[0].type === 'regex'

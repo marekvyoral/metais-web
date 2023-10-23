@@ -68,7 +68,6 @@ export const NewRelationView: React.FC<Props> = ({
     const navigate = useNavigate()
 
     const ability = useAbilityContext()
-    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
     const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
 
     const [hasReset, setHasReset] = useState(false)
@@ -80,8 +79,9 @@ export const NewRelationView: React.FC<Props> = ({
     const relatedListAsTargets = relationData?.relatedListAsTargets
     const constraintsData = relationData?.constraintsData ?? []
     const unitsData = relationData?.unitsData
+    const ciTypeData = relationData?.ciTypeData
 
-    const { register, handleSubmit: handleFormSubmit, formState, setValue, clearErrors, trigger } = useForm()
+    const { register, handleSubmit: handleFormSubmit, formState, setValue, clearErrors, trigger, control } = useForm()
     const relationSchema = relationData?.relationTypeData
     const relationSchemaCombinedAttributes = [
         ...(relationSchema?.attributes ?? []),
@@ -206,6 +206,7 @@ export const NewRelationView: React.FC<Props> = ({
                                       constraintsData,
                                   )}
                                   unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                                  control={control}
                               />
                           ))}
                       </>
@@ -223,8 +224,9 @@ export const NewRelationView: React.FC<Props> = ({
             <SelectPublicAuthorityAndRole
                 onChangeAuthority={(e) => publicAuthorityState.setSelectedPublicAuthority(e)}
                 onChangeRole={(val) => roleState.setSelectedRole(val)}
-                selectedRoleId={roleState.selectedRole}
+                selectedRole={roleState.selectedRole ?? {}}
                 selectedOrg={publicAuthorityState.selectedPublicAuthority}
+                ciRoles={ciTypeData?.roleList ?? []}
             />
 
             <SimpleSelect
@@ -266,7 +268,7 @@ export const NewRelationView: React.FC<Props> = ({
                     submitButtonLabel={t('newRelation.save')}
                     additionalButtons={[<Button key={1} label={t('newRelation.cancel')} type="reset" variant="secondary" onClick={handleReset} />]}
                     loading={storeGraph.isLoading}
-                    disabled={isSubmitDisabled || !hasOrgPermission || !canCreateRelationType}
+                    disabled={isSubmitDisabled || !canCreateRelationType || !roleState?.selectedRole?.roleUuid}
                 />
             </form>
         </QueryFeedback>

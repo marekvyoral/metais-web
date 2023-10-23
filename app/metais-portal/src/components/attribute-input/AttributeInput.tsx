@@ -6,6 +6,7 @@ import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/g
 import classnames from 'classnames'
 import React from 'react'
 import {
+    Control,
     Controller,
     FieldError,
     FieldErrorsImpl,
@@ -75,6 +76,7 @@ interface IAttributeInput {
     hasResetState: HasResetState
     disabled?: boolean
     isUpdate?: boolean
+    control: Control
 }
 
 export const AttributeInput: React.FC<IAttributeInput> = ({
@@ -93,6 +95,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     disabled,
     nameSufix = '',
     isUpdate,
+    control,
 }) => {
     const { t } = useTranslation()
 
@@ -309,17 +312,20 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                 return (
                     <Controller
                         name={attribute.technicalName + nameSufix}
-                        render={({ field }) => (
-                            <RichTextQuill
-                                id={attribute.technicalName ?? ''}
-                                label={attribute.name + requiredLabel}
-                                error={error?.message?.toString()}
-                                info={attribute.description}
-                                defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
-                                readOnly={attribute.readOnly || disabled}
-                                {...field}
-                            />
-                        )}
+                        control={control}
+                        render={({ field }) => {
+                            return (
+                                <RichTextQuill
+                                    id={attribute.technicalName ?? ''}
+                                    label={attribute.name + requiredLabel}
+                                    error={error?.message?.toString()}
+                                    info={attribute.description}
+                                    readOnly={attribute.readOnly || disabled}
+                                    defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
+                                    {...field}
+                                />
+                            )
+                        }}
                     />
                 )
             }

@@ -20,12 +20,13 @@ interface IChangeOwnerBulkView extends ISelectPublicAuthorityAndRole {
 export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
     items,
     selectedOrg,
-    selectedRoleId,
+    selectedRole,
     multiple,
     onChangeAuthority,
     onChangeRole,
     onSubmit,
     onClose,
+    ciRoles,
 }) => {
     const { t } = useTranslation()
 
@@ -46,7 +47,8 @@ export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
                 onChangeAuthority={onChangeAuthority}
                 onChangeRole={onChangeRole}
                 selectedOrg={selectedOrg}
-                selectedRoleId={selectedRoleId}
+                selectedRole={selectedRole}
+                ciRoles={ciRoles}
             />
             <RadioGroupWithLabel label={t('bulkActions.changeOwner.reason')}>
                 {CHANGE_OWNER_CHANGE_REASON.map((item) => (

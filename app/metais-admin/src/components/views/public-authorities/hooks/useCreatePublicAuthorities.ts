@@ -12,10 +12,10 @@ import { createNewPOElement, removeEmptyAttributes } from '@/components/views/pu
 import { generateCreatePublicAuthoritiesSchema } from '@/components/views/public-authorities/schemas/createPublicAuthoritiesSchema'
 
 interface iUseCreatePublicAuthoritiesOutput {
-    personCategoriesOptions: IOption[]
-    personTypesOptions: IOption[]
-    sourcesOptions: IOption[]
-    replicationTypesOptions: IOption[]
+    personCategoriesOptions: IOption<string>[]
+    personTypesOptions: IOption<string>[]
+    sourcesOptions: IOption<string>[]
+    replicationTypesOptions: IOption<string>[]
     isTypePersonDisabled: boolean
     onSubmit: (formValues: FieldValues) => Promise<void>
     formMethods: UseFormReturn<

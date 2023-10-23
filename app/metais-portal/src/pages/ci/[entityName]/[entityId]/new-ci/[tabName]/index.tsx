@@ -45,10 +45,10 @@ const CreateCiItemAndRelation: React.FC = () => {
                             />
                             <MainContentWrapper>
                                 <AttributesContainer
-                                    entityName={entityName ?? ''}
+                                    entityName={tabName ?? ''}
                                     View={({ data: attributesData, isError: attError, isLoading: attLoading }) => (
                                         <CiCreateEntityContainer
-                                            entityName={entityName ?? ''}
+                                            entityName={tabName ?? ''}
                                             View={({
                                                 data: generatedEntityId,
                                                 isError: isGeneratedEntityIdError,

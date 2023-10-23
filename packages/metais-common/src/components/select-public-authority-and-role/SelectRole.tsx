@@ -8,16 +8,17 @@ import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/Que
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 interface Props {
-    onChangeRole: (val: string) => void
+    onChangeRole: (val: GidRoleData | null) => void
     selectedOrg: HierarchyRightsUi | null
-    selectedRoleId: string
+    selectedRole: GidRoleData
+    ciRoles: string[]
 }
 
-export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selectedRoleId }) => {
+export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selectedRole, ciRoles }) => {
     const { t } = useTranslation()
     const user = useAuth()
     const [seed, setSeed] = useState(1)
-    const [defaultValue, setDefaultValue] = useState<string>('')
+    const [defaultValue, setDefaultValue] = useState<GidRoleData | null>(null)
 
     const {
         data: rightsForPOData,
@@ -28,27 +29,26 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
         { query: { enabled: !!selectedOrg?.poUUID } },
     )
 
-    const currentOrganizationsRoles = user.state.user?.groupData.find((org) => org.orgId === selectedOrg?.poUUID)?.roles
     const roleSelectOptions = useMemo(() => {
         return (
             rightsForPOData
-                ?.filter((role) => currentOrganizationsRoles?.find((currentRole) => currentRole.roleUuid === role.roleUuid))
-                .map((role: GidRoleData) => ({ value: role.roleUuid ?? '', label: role.roleDescription ?? '' })) ?? []
+                ?.filter((role) => ciRoles?.find((currentRole) => currentRole === role.roleName))
+                .map((role: GidRoleData) => ({ value: role, label: role.roleDescription ?? '' })) ?? []
         )
-    }, [rightsForPOData, currentOrganizationsRoles])
+    }, [ciRoles, rightsForPOData])
 
     useEffect(() => {
-        if (roleSelectOptions && roleSelectOptions.length > 0 && selectedRoleId === '') {
+        if (roleSelectOptions && roleSelectOptions.length > 0 && selectedRole?.roleUuid == undefined) {
             const firstValue = roleSelectOptions[0].value
             if (firstValue) {
                 onChangeRole(firstValue)
                 setDefaultValue(firstValue)
             }
-        } else if (roleSelectOptions.length === 0 && selectedRoleId !== '') {
-            onChangeRole('')
-            setDefaultValue('')
+        } else if (roleSelectOptions.length === 0 && selectedRole?.roleUuid !== undefined) {
+            onChangeRole(null)
+            setDefaultValue(null)
         }
-    }, [onChangeRole, roleSelectOptions, selectedRoleId])
+    }, [onChangeRole, roleSelectOptions, selectedRole?.roleUuid])
 
     useEffect(() => {
         // SelectLazyLoading component does not rerender on defaultValue change.
@@ -56,7 +56,6 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
         // Change of key forces the component to render changed default value.
         setSeed(Math.random())
     }, [defaultValue])
-
     return (
         <>
             {isRightsForPOLoading && !rightsForPOData && selectedOrg?.poUUID && (
@@ -64,10 +63,8 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
             )}
             <SimpleSelect
                 key={seed}
-                error={!selectedRoleId ? t('selectRole.required') : isRightsForPOError ? t('selectRole.error') : ''}
-                onChange={(value) => {
-                    onChangeRole(value || '')
-                }}
+                error={!selectedRole ? t('selectRole.required') : isRightsForPOError ? t('selectRole.error') : ''}
+                onChange={(value) => value && onChangeRole(value)}
                 label={t('createEntity.role')}
                 id="role"
                 name="role"
@@ -75,7 +72,7 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
                 options={roleSelectOptions}
                 defaultValue={defaultValue}
                 isClearable={false}
-                value={selectedRoleId}
+                value={selectedRole}
             />
         </>
     )

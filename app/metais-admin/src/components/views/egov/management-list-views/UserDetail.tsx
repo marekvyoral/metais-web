@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 interface IUserDetail {
     userData: Identity | undefined
@@ -35,7 +36,10 @@ export const UserDetail: React.FC<IUserDetail> = ({ userData, userId }) => {
                     <InformationGridRow key={index} label={item.label} value={item.value} hideIcon />
                 ))}
             </DefinitionList>
-            <Button label={t('managementList.edit')} onClick={() => navigate('/managementlist/edit/' + userId, { state: { from: location } })} />
+            <Button
+                label={t('managementList.edit')}
+                onClick={() => navigate(AdminRouteNames.USER_MANAGEMENT + '/edit/' + userId, { state: { from: location } })}
+            />
         </>
     )
 }

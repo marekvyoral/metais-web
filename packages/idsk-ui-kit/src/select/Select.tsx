@@ -8,23 +8,23 @@ import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { Control, Menu, Option as ReactSelectDefaultOptionComponent, selectStyles } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
-export interface IOption {
-    value: string
+export interface IOption<T> {
+    value: T
     label: string
     disabled?: boolean
 }
 
-interface ISelectProps {
+interface ISelectProps<T> {
     id?: string
     label: string
     name: string
-    options: MultiValue<IOption>
-    option?: (props: OptionProps<IOption>) => JSX.Element
-    onChange: (newValue: MultiValue<IOption> | SingleValue<IOption>) => void
+    options: MultiValue<IOption<T>>
+    option?: (props: OptionProps<IOption<T>>) => JSX.Element
+    onChange: (newValue: MultiValue<IOption<T>> | SingleValue<IOption<T>>) => void
     placeholder?: string
     className?: string
-    defaultValue?: IOption | IOption[]
-    value?: IOption | IOption[]
+    defaultValue?: IOption<T> | IOption<T>[]
+    value?: IOption<T> | IOption<T>[]
     error?: string
     info?: string
     correct?: boolean
@@ -35,7 +35,7 @@ interface ISelectProps {
     menuPosition?: MenuPosition
 }
 
-export const Select: React.FC<ISelectProps> = ({
+export const Select = <T,>({
     label,
     name,
     options,
@@ -54,8 +54,8 @@ export const Select: React.FC<ISelectProps> = ({
     onBlur,
     isClearable = true,
     menuPosition = 'fixed',
-}) => {
-    const Option = (props: OptionProps<IOption>) => {
+}: ISelectProps<T>) => {
+    const Option = (props: OptionProps<IOption<T>>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
     }
 
@@ -69,7 +69,7 @@ export const Select: React.FC<ISelectProps> = ({
             </div>
             {!!error && <span className="govuk-error-message">{error}</span>}
             <div className={styles.inputWrapper}>
-                <ReactSelect<IOption, boolean, GroupBase<IOption>>
+                <ReactSelect<IOption<T>, boolean, GroupBase<IOption<T>>>
                     id={id}
                     name={name}
                     value={value}
@@ -79,7 +79,7 @@ export const Select: React.FC<ISelectProps> = ({
                     classNames={{ menuList: () => styles.reactSelectMenuList }}
                     components={{ Option, Menu, Control }}
                     options={options}
-                    styles={selectStyles<IOption>()}
+                    styles={selectStyles<IOption<T>>()}
                     unstyled
                     menuPosition={menuPosition}
                     isDisabled={disabled}

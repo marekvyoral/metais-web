@@ -18,9 +18,10 @@ interface Props {
     entityItemName: string
     entityData?: ConfigurationItemUi
     handleBulkAction: (actionResult: IBulkActionResult) => void
+    ciRoles: string[]
 }
 
-export const CiEntityIdHeader: React.FC<Props> = ({ entityData, entityName, entityId, entityItemName, handleBulkAction }) => {
+export const CiEntityIdHeader: React.FC<Props> = ({ entityData, entityName, entityId, entityItemName, handleBulkAction, ciRoles }) => {
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
@@ -109,6 +110,7 @@ export const CiEntityIdHeader: React.FC<Props> = ({ entityData, entityName, enti
                 open={showChangeOwner}
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowChangeOwner)}
                 onClose={() => setShowChangeOwner(false)}
+                ciRoles={ciRoles}
             />
         </div>
     )
