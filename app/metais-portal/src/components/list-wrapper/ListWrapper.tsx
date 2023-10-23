@@ -149,30 +149,35 @@ export const ListWrapper: React.FC<IListWrapper> = ({
 
             <Filter<CIFilterData>
                 defaultFilterValues={defaultFilterValues}
-                form={({ register, filter, setValue }) => (
-                    <div>
-                        <Input
-                            id="name"
-                            label={t(`filter.${ciType}.name`)}
-                            placeholder={t(`filter.namePlaceholder`)}
-                            {...register('Gen_Profil_nazov')}
-                        />
-                        <Input
-                            id="metais-code"
-                            label={t('filter.metaisCode.label')}
-                            placeholder={ciTypeData?.codePrefix}
-                            {...register('Gen_Profil_kod_metais')}
-                        />
-                        <DynamicFilterAttributes
-                            setValue={setValue}
-                            defaults={defaultFilterValues}
-                            data={filter.attributeFilters}
-                            attributes={attributes}
-                            attributeProfiles={attributeProfiles}
-                            constraintsData={constraintsData}
-                        />
-                    </div>
-                )}
+                form={({ register, filter, setValue }) => {
+                    return (
+                        <div>
+                            <Input
+                                id="name"
+                                label={t(`filter.${ciType}.name`)}
+                                placeholder={t(`filter.namePlaceholder`)}
+                                {...register('Gen_Profil_nazov')}
+                            />
+                            <Input
+                                id="metais-code"
+                                label={t('filter.metaisCode.label')}
+                                placeholder={ciTypeData?.codePrefix}
+                                {...register('Gen_Profil_kod_metais')}
+                            />
+                            <DynamicFilterAttributes
+                                setValue={setValue}
+                                defaults={defaultFilterValues}
+                                filterData={{
+                                    attributeFilters: filter.attributeFilters ?? {},
+                                    metaAttributeFilters: filter.metaAttributeFilters ?? {},
+                                }}
+                                attributes={attributes}
+                                attributeProfiles={attributeProfiles}
+                                constraintsData={constraintsData}
+                            />
+                        </div>
+                    )
+                }}
             />
             {isNewRelationModal && (
                 <ActionsOverTable

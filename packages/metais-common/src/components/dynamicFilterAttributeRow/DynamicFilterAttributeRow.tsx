@@ -42,7 +42,6 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
     attributeProfiles,
 }) => {
     const { t } = useTranslation()
-
     const currentAvailableOperators = selectedAttributes.filter((item) => item.name === currentAttribute.name).map((item) => item.operator)
     const operatorsToDisable = findAvailableOperators(
         attributeType,
@@ -55,7 +54,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
         attributeProfiles?.map(
             (attributeProfile) =>
                 attributeProfile.attributes
-                    ?.filter((attr) => attr.invisible === false)
+                    ?.filter((attr) => attr.invisible === false && attr.valid)
                     .map((attr) => ({
                         label: attr.name ?? '',
                         value: attr.technicalName ?? '',
@@ -64,12 +63,11 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
 
     const attributesColumnSection =
         attributes
-            ?.filter((attr) => attr.invisible === false)
+            ?.filter((attr) => attr.invisible === false && attr.valid)
             ?.map((attr) => ({
                 label: attr.name ?? '',
                 value: attr.technicalName ?? '',
             })) ?? []
-
     const availableOperators = findAvailableOperators(attributeType, attributeConstraints, Object.values(OPERATOR_OPTIONS_URL)).map((option) => ({
         value: option,
         label: t(`customAttributeFilter.operator.${option}`),
@@ -79,6 +77,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
     return (
         <div className={style.customFilterWrapper}>
             <SimpleSelect
+                isClearable={false}
                 className={style.rowItem}
                 id={`attribute-name-${index}`}
                 label={t('customAttributeFilter.attribute.label')}
@@ -89,6 +88,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 onChange={(val) => onChange({ ...attribute, name: val }, attribute, true)}
             />
             <SimpleSelect
+                isClearable={false}
                 className={style.rowItem}
                 id={`attribute-operator-${index}`}
                 name={`attribute-operator-${index}`}
