@@ -28,15 +28,7 @@ const Entity = () => {
                         ]}
                     />
                     <MainContentWrapper>
-                        <EntityDetailView
-                            data={props?.data}
-                            setValidityOfEntity={props?.setValidityOfEntity}
-                            setSummarizingCardData={props?.setSummarizingCardData}
-                            saveExistingAttribute={props?.saveExistingAttribute}
-                            resetExistingAttribute={props?.resetExistingAttribute}
-                            isError={props.isError}
-                            isLoading={props.isLoading}
-                        />
+                        <EntityDetailView {...props} />
                     </MainContentWrapper>
                 </>
             )}

@@ -103,6 +103,7 @@ export enum NavigationSubRoutes {
     NOTIFICATIONS = '/notifications',
     LICENCIE = '/howto/LICENCE.LICENCE_TITLE/LICENSE_HOWTO',
     SERVERY = '/servers',
+    WEB_ADDRESS = '/ci/WeboveSidlo',
     VIRTUALNE_STROJE = '/virtual-machines',
     MIESTO_PREVADZKY = '/ci/MiestoPrevadzky',
     PUBLIC_AUTHORITY_HIERARCHY = '/po-table',

@@ -10,6 +10,10 @@
     vertical-align: middle;
 }
 
+.handlePointer {
+    cursor: grab !important;
+}
+
 .redColor {
     color: govuk-colour('red');
 }
@@ -192,4 +196,9 @@ tr:hover th {
 
 .tooltipWidth500 {
     max-width: 500px;
+}
+
+.flexCenter {
+    display: flex;
+    align-items: center;
 }
