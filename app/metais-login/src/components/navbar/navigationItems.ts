@@ -11,6 +11,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
         { title: t('navMenu.lists.evidenceObjects'), path: PORTAL_URL + NavigationSubRoutes.OBJEKTY_EVIDENCIE },
         { title: t('navMenu.lists.attributesEvidenceObjects'), path: PORTAL_URL + NavigationSubRoutes.ATRIBUTY_OBJEKTY_EVIDENCIE },
         { title: t('navMenu.lists.infrastructures'), path: PORTAL_URL + NavigationSubRoutes.INFRASCTRUCTURES },
+        { title: t('navMenu.lists.webAddress'), path: PORTAL_URL + NavigationSubRoutes.WEB_ADDRESS },
         { title: t('navMenu.lists.projects'), path: PORTAL_URL + NavigationSubRoutes.PROJEKT },
     ]
     const egovComponentsSubItemsSideMenu: NavigationItem[] = [
@@ -26,9 +27,6 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
                 { title: t('navMenu.lists.krit'), path: PORTAL_URL + NavigationSubRoutes.KRIT },
             ],
         },
-        { title: t('navMenu.lists.servers'), path: PORTAL_URL + '/todo' },
-        { title: t('navMenu.lists.virtualMachines'), path: PORTAL_URL + '/todo' },
-        { title: t('navMenu.lists.operationPlace'), path: PORTAL_URL + '/todo' },
         {
             title: t('navMenu.publicAuthorities'),
             path: PORTAL_URL + RouteNames.HOW_TO_PO,
@@ -96,10 +94,7 @@ export const getLoginNavigationItems = (t: TFunction, ksisvsGroupId: string | un
                 {
                     title: t('navMenu.centralDataModel'),
                     path: PORTAL_URL + '/todo',
-                    subItems: [
-                        { title: t('navMenu.referenceIdentifiers'), path: PORTAL_URL + '/todo' },
-                        { title: t('navMenu.dataElementsCatalogue'), path: PORTAL_URL + '/todo' },
-                    ],
+                    subItems: [{ title: t('navMenu.referenceIdentifiers'), path: PORTAL_URL + '/todo' }],
                 },
                 {
                     title: t('navMenu.dataObligationsRegister'),

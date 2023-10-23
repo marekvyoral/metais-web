@@ -46,49 +46,49 @@ export const CiEntityIdHeader: React.FC<Props> = ({ entityData, entityName, enti
                         label={t('ciType.editButton')}
                         onClick={() => navigate(`/ci/${entityName}/${entityId}/edit`, { state: location.state })}
                     />
-                </Can>
-                <ButtonPopup
-                    buttonLabel={t('ciType.moreButton')}
-                    popupPosition="right"
-                    popupContent={() => {
-                        return (
-                            <div className={styles.buttonLinksDiv}>
-                                <Tooltip
-                                    key={'invalidateItem'}
-                                    descriptionElement={errorMessage}
-                                    position={'top center'}
-                                    on={'right-click'}
-                                    tooltipContent={(open) => (
-                                        <div>
-                                            <ButtonLink
-                                                onClick={() => handleInvalidate(entityListData, setShowInvalidate, open)}
-                                                label={t('ciType.invalidateItem')}
-                                            />
-                                        </div>
-                                    )}
-                                />
-                                <Tooltip
-                                    key={'revalidateItem'}
-                                    descriptionElement={errorMessage}
-                                    position={'top center'}
-                                    tooltipContent={(open) => (
-                                        <div>
-                                            <ButtonLink
-                                                onClick={() => handleReInvalidate(entityListData, setShowReInvalidate, open)}
-                                                label={t('ciType.revalidateItem')}
-                                            />
-                                        </div>
-                                    )}
-                                />
 
-                                <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
-                                    <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
-                                </Can>
-                                <ButtonLink label={t('ciType.besManagement')} />
-                            </div>
-                        )
-                    }}
-                />
+                    <ButtonPopup
+                        buttonLabel={t('ciType.moreButton')}
+                        popupPosition="right"
+                        popupContent={() => {
+                            return (
+                                <div className={styles.buttonLinksDiv}>
+                                    <Tooltip
+                                        key={'invalidateItem'}
+                                        descriptionElement={errorMessage}
+                                        position={'top center'}
+                                        on={'right-click'}
+                                        tooltipContent={(open) => (
+                                            <div>
+                                                <ButtonLink
+                                                    onClick={() => handleInvalidate(entityListData, setShowInvalidate, open)}
+                                                    label={t('ciType.invalidateItem')}
+                                                />
+                                            </div>
+                                        )}
+                                    />
+                                    <Tooltip
+                                        key={'revalidateItem'}
+                                        descriptionElement={errorMessage}
+                                        position={'top center'}
+                                        tooltipContent={(open) => (
+                                            <div>
+                                                <ButtonLink
+                                                    onClick={() => handleReInvalidate(entityListData, setShowReInvalidate, open)}
+                                                    label={t('ciType.revalidateItem')}
+                                                />
+                                            </div>
+                                        )}
+                                    />
+
+                                    <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
+                                        <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
+                                    </Can>
+                                </div>
+                            )
+                        }}
+                    />
+                </Can>
             </ButtonGroupRow>
             {isBulkLoading && <LoadingIndicator fullscreen />}
 

@@ -102,9 +102,9 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
                                 <SimpleSelect
                                     label={t('egov.type')}
                                     options={[
-                                        { label: t('type.custom'), value: 'custom' },
-                                        { value: 'application', label: t('type.application') },
-                                        { value: 'system', label: t('type.system') },
+                                        { value: 'custom', label: t('tooltips.type.custom') },
+                                        { value: 'application', label: t('tooltips.type.application') },
+                                        { value: 'system', label: t('tooltips.type.system') },
                                     ]}
                                     name="type"
                                     defaultValue={data?.existingEntityData?.type || 'custom'}

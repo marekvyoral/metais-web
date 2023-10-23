@@ -14,6 +14,7 @@ import {
     useStoreAttributeTextation,
     useDeleteAttributeTextation,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { FindAll11200, useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
 
 export interface IAtrributesContainerView {
     data: {
@@ -29,6 +30,7 @@ export interface IAtrributesContainerView {
     saveExistingAttribute: (attributeTechnicalName?: string, attribute?: Attribute) => void
     resetExistingAttribute: (attributeTechnicalName?: string) => void
     isLoading: boolean
+    roles?: FindAll11200
     isError: boolean
 }
 
@@ -47,7 +49,7 @@ export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityNam
         keysToDisplay,
         refetch,
     } = useEntityProfiles(entityName)
-
+    const { data: roles, isLoading: isRolesLoading, isError: isRolesError } = useFindAll11()
     const { mutateAsync: setEntityAsInvalid } = useStoreUnvalid()
     const { mutateAsync: setEntityAsValid } = useStoreValid()
     const { mutateAsync: setShowOwner } = useSetSummarizingCard()
@@ -115,8 +117,9 @@ export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityNam
             setSummarizingCardData={setSummarizingCardData}
             saveExistingAttribute={saveExistingAttribute}
             resetExistingAttribute={resetExistingAttribute}
-            isLoading={isLoading}
-            isError={isError}
+            isLoading={isLoading || isRolesLoading}
+            isError={isError || isRolesError}
+            roles={roles}
         />
     )
 }
