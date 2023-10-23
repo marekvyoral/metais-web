@@ -3,8 +3,7 @@ import { EnumType, Parameter, ParameterType } from '@isdd/metais-common/api'
 import React from 'react'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { FormProps } from '@isdd/idsk-ui-kit/filter/Filter'
-
-import { SelectFilterCMDBParams } from './SelectFilterCMDBParams'
+import { SelectFilterCMDBParams } from '@isdd/metais-common/src/components/select-cmdb-params/SelectFilterCMDBParams'
 
 import { loadEnumerateOptions, loadEnumsRepoOptions } from '@/componentHelpers'
 
@@ -38,7 +37,7 @@ export const ReportsFilter: React.FC<IReportsFilterProps> = ({ parameters, filte
                                 error={control._formState.errors?.[parameter.key ?? 0]?.message}
                                 clearErrors={clearErrors}
                                 type={parameter.metaData}
-                                defaultValueKey={filter?.[parameter.key ?? 0] ?? parameter.defaultValue}
+                                defaultValueKey={[filter?.[parameter.key ?? 0] ?? parameter.defaultValue]}
                             />
                         </div>
                     )

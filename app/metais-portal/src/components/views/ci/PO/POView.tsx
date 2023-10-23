@@ -11,9 +11,9 @@ import { FavoriteCiType } from '@isdd/metais-common/api'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { AttributesContainerViewData } from '@isdd/metais-common/components/containers/AttributesContainer'
 
 import { CiTable } from '@/components/ci-table/CiTable'
-import { AttributesContainerViewData } from '@/components/containers/AttributesContainer'
 import { FilterPO, POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
 import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 

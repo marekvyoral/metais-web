@@ -1,8 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
 import { POView } from '@/components/views/ci/PO/POView'

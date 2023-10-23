@@ -24,8 +24,8 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useNavigate } from 'react-router-dom'
+import { SelectFilterOrganization } from '@isdd/metais-common/components/select-organization/SelectFilterOrganization'
 
-import { SelectFilterOrganization } from './components/SelectFilterMainGestor/SelectFilterMainGestor'
 import { TextClickable } from './components/TextClickable/TextClickable'
 
 import {
@@ -172,7 +172,12 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                         defaultFilterValues={defaultFilterValues}
                         form={({ filter: formFilter, register, setValue }) => (
                             <div>
-                                <SelectFilterOrganization filter={formFilter} setValue={setValue} />
+                                <SelectFilterOrganization<CodeListListFilterData>
+                                    label={t('codeListList.filter.mainGestor')}
+                                    name="mainGestorPoUuid"
+                                    filter={formFilter}
+                                    setValue={setValue}
+                                />
                                 <Input {...register('toDate')} type="date" label={t('codeListList.filter.toDate')} />
                                 <SimpleSelect
                                     id="onlyBase"

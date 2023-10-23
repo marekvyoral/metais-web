@@ -11,7 +11,7 @@ import { SummarizingCard } from './SummarizingCard'
 
 import styles from '@/components/views/egov/detailViews.module.scss'
 import { BasicInformations } from '@/components/views/egov/BasicInformations'
-import { IAtrributesContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'
+import { IAttributesContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'
 import { ProfileTabs } from '@/components/ProfileTabs'
 
 export const EntityDetailView = ({
@@ -23,7 +23,7 @@ export const EntityDetailView = ({
     isError,
     isLoading,
     roles,
-}: IAtrributesContainerView) => {
+}: IAttributesContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()

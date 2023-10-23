@@ -1,8 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 
 import { CiContainer } from '@/components/containers/CiContainer'
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiInformationAccordion } from '@/components/entities/accordion/CiInformationAccordion'
 
 const Informations = () => {

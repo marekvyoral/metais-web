@@ -253,13 +253,11 @@
             "relation": "Add new relation"
         }
     },
-
     "state": {
         "removeProfile": "Remove profile",
         "addConnection": "Add connection",
         "addAttribute": "Add attribute"
     },
-
     "userManagement": {
         "title": "Users",
         "fullName": "Name and surname",
@@ -358,29 +356,27 @@
         "isvs": {
             "name": "Name of information system"
         },
-
         "egov": {
             "name": "Name",
             "technicalName": "Technical name",
             "type": "Type",
             "valid": "State"
         },
-
         "metaisCode": {
             "label": "Code MetaIS",
             "placeholder": "ks_"
         },
         "reset": "Clear Filter",
         "submit": "Filter",
-
         "chooseState": "Select status",
         "chooseValue": "Select value",
-        "organizations": {
+        "publicAuthorities": {
             "name": "Name",
             "ICO": "ICO",
-            "onlyFreePO": "Only free organizations"
+            "onlyFreePO": "Only free organizations",
+            "state": "State",
+            "poName": "Obliged person"
         },
-
         "PO": {
             "name": "Name",
             "itIsChapter": "It is a chapter",
@@ -417,7 +413,6 @@
         "notifications": "Notifications",
         "settings": "Settings",
         "admin": "Administration",
-        "organizations": "Organizations",
         "userManagement": {
             "users": "Users",
             "userManagement": "User management",
@@ -453,7 +448,8 @@
         "publicAuthorities": {
             "management": "Public authorities management",
             "publicAuthorities": "Public authorities",
-            "massActualizations": "Mass updates"
+            "massActualizations": "Mass updates",
+            "massUpdate": "Mass update"
         }
     },
     "tooltips": {
@@ -571,7 +567,7 @@
         "show": "Show",
         "entities": "entities"
     },
-    "organizations": {
+    "publicAuthorities": {
         "detail": {
             "title": "Detail of organization",
             "statutoryOfficer": "Statutory officer"
@@ -632,6 +628,29 @@
             "isCycleInHierarchy": "Organization can not be superior and subject at the same time for one organization!",
             "warningInfo": "You can not create relationship between similar identity!",
             "topLevelOrg": "You can not assign organization main organization!"
+        },
+        "massUpdate": {
+            "title": "Mass update of mandatory persons",
+            "state": "State",
+            "stateEnum": {
+                "NEW": "Created",
+                "PROCESSED": "Approved",
+                "REJECTED": "Rejected"
+            },
+            "actions": {
+                "approve": "Approve",
+                "reject": "Reject"
+            },
+            "feedback": {
+                "approve": {
+                    "success": "Organizational changes were accepted",
+                    "error": "Error accepting changes"
+                },
+                "reject": {
+                    "success": "Organizational changes were rejected",
+                    "error": "Error rejecting changes"
+                }
+            }
         }
     },
     "PO_Attributes": {

@@ -20,7 +20,7 @@ import {
     UserManagementListItem,
     defaultFilterValues,
 } from '@/components/containers/ManagementList/UserManagementListUtils'
-import { SelectFilterOrganization } from '@/components/views/userManagement/components/SelectFilterOrganization/SelectFilterOrganization'
+import { SelectFilterOrganizationHierarchy } from '@/components/views/userManagement/components/SelectFilterOrganizationHierarchy/SelectFilterOrganizationHierarchy'
 import { SelectFilterRole } from '@/components/views/userManagement/components/SelectFilterRole/SelectFilterRole'
 import { UserManagementListTable } from '@/components/views/userManagement/components/UserManagementTable/UserManagementListTable'
 
@@ -106,7 +106,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                             setValue={setValue}
                         />
                         <SelectFilterRole filter={filter} setValue={setValue} />
-                        <SelectFilterOrganization filter={filter} setValue={setValue} />
+                        <SelectFilterOrganizationHierarchy filter={filter} setValue={setValue} />
                     </>
                 )}
             />

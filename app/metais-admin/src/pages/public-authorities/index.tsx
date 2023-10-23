@@ -1,9 +1,9 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-import ManagementBodiesPage from './public-authorities'
+import PublicAuthoritiesPage from './public-authorities'
 
-export const INDEX_ROUTE = ManagementBodiesPage
+export const INDEX_ROUTE = PublicAuthoritiesPage
 
 const index: React.FC = () => {
     return <Outlet />

@@ -1,7 +1,8 @@
 import { TFunction } from 'i18next'
 
-import { Attribute, AttributeConstraintEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
+import { ConfigurationItemUi as ConfigurationItemUiOriginal } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Attribute, AttributeConstraintEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 const findUnitValue = (attribute: Attribute | undefined, unitsData: EnumType | undefined) => {
     const unit = unitsData?.enumItems?.find((item) => item.code === attribute?.units)?.value ?? ''
@@ -32,14 +33,20 @@ const formatRowValueByRowType = (
 
 export const pairEnumsToEnumValues = (
     attribute: Attribute | undefined,
-    ciItemData: ConfigurationItemUi | undefined,
+    ciItemData: ConfigurationItemUi | ConfigurationItemUiOriginal | undefined,
     constraintsData: (EnumType | undefined)[],
     t: TFunction<'translation', undefined, 'translation'>,
     unitsData: EnumType | undefined,
-    matchedAttributeNamesToCiItem: Record<string, ConfigurationItemUi>,
+    matchedAttributeNamesToCiItem: Record<string, ConfigurationItemUi> | undefined,
     withDescription?: boolean,
 ) => {
-    const rowValue = ciItemData?.attributes?.[attribute?.technicalName ?? attribute?.name ?? '']
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let rowValue: any
+    if (Array.isArray(ciItemData?.attributes)) {
+        rowValue = ciItemData?.attributes?.find((i) => i.name === attribute?.technicalName || i.name === attribute?.name)?.value || ''
+    } else {
+        rowValue = ciItemData?.attributes?.[attribute?.technicalName ?? attribute?.name ?? '']
+    }
     const formattedRowValue = formatRowValueByRowType(attribute, rowValue, t, unitsData)
     if (!attribute?.constraints || !attribute?.constraints?.length) return formattedRowValue
     return (
