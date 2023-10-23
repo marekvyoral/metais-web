@@ -45,12 +45,12 @@ export const getAdminNavItems = (t: TFunction, userRoles: string[] | null): Navi
             subItems: [
                 {
                     title: t('navMenu.publicAuthorities.publicAuthorities'),
+                    path: AdminRouteNames.PUBLIC_AUTHORITIES_LIST,
                     role: [AdminRouteRoles.ADMIN],
-                    path: AdminRouteNames.ORGANIZATIONS,
                 },
                 {
-                    title: t('navMenu.publicAuthorities.massActualizations'),
-                    path: '/public-authorities/mass-updates',
+                    title: t('navMenu.publicAuthorities.massUpdate'),
+                    path: AdminRouteNames.PUBLIC_AUTHORITIES_MASS_UPDATE,
                     role: [AdminRouteRoles.ADMIN],
                 },
             ],

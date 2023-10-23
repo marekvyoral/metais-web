@@ -11,11 +11,11 @@ import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useListRelatedCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 
 import styles from './relationshipGraph.module.scss'
 import { isRelatedCiTypeCmdbView } from './typeHelper'
 
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiContainer } from '@/components/containers/CiContainer'
 import { CiInformationAccordion } from '@/components/entities/accordion/CiInformationAccordion'
 import { drawGraph, exportGraph, filterCiName, getShortName, prepareData } from '@/components/views/relationships/graphHelpers'

@@ -15,7 +15,7 @@ import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpe
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import React from 'react'
 
-export interface IAtrributesContainerView<T> {
+export interface IAttributesContainerView<T> {
     data: {
         ciTypeData: AttributeProfile | undefined
         constraintsData: (EnumType | undefined)[]
@@ -32,7 +32,7 @@ export interface IAtrributesContainerView<T> {
 
 interface AttributesContainer<T> {
     entityName: string
-    View: React.FC<IAtrributesContainerView<T>>
+    View: React.FC<IAttributesContainerView<T>>
 }
 
 export const ProfileDetailContainer: React.FC<AttributesContainer<CiType>> = ({ entityName, View }) => {

@@ -5,12 +5,12 @@ import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useTranslation } from 'react-i18next'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
+import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 
 import { CiHistoryPermissionsWrapper } from '@/components/permissions/CiHistoryPermissionsWrapper'
 import { HistoryCompareView } from '@/components/views/history/history-compare/HistoryCompareView'
 import { HistorySingleItemCompareContainer } from '@/components/containers/HistorySingleItemCompareContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
 
 const CompareSinglePage: React.FC = () => {
     const { t } = useTranslation()

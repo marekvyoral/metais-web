@@ -14,7 +14,7 @@ import { MoreActionsColumn } from './actions/MoreActionsColumn'
 import { AddAttributeModal } from './attributes/AddAttributeModal'
 
 import styles from '@/components/views/egov/detailViews.module.scss'
-import { IAtrributesContainerView } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
+import { IAttributesContainerView } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
 import { BasicInformations } from '@/components/views/egov/BasicInformations'
 
 export const ProfileDetailView = <T,>({
@@ -24,7 +24,7 @@ export const ProfileDetailView = <T,>({
     saveAttribute,
     setValidityOfAttributeProfile,
     setVisibilityOfAttributeProfile,
-}: IAtrributesContainerView<T>) => {
+}: IAttributesContainerView<T>) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()

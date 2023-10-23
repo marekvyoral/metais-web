@@ -17,6 +17,10 @@
     flex-grow: 1;
 }
 
+.valueRed {
+    color: govuk-colour('red') !important;
+}
+
 .groupRow {
     @include mq($until: tablet) {
         margin-bottom: govuk-spacing(0);
