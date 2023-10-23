@@ -14,6 +14,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
         { title: t('navMenu.lists.evidenceObjects'), path: NavigationSubRoutes.OBJEKTY_EVIDENCIE },
         { title: t('navMenu.lists.attributesEvidenceObjects'), path: NavigationSubRoutes.ATRIBUTY_OBJEKTY_EVIDENCIE },
         { title: t('navMenu.lists.infrastructures'), path: NavigationSubRoutes.INFRASCTRUCTURES },
+        { title: t('navMenu.lists.webAddress'), path: NavigationSubRoutes.WEB_ADDRESS },
         { title: t('navMenu.lists.projects'), path: NavigationSubRoutes.PROJEKT },
     ]
     const egovComponentsSubItemsSideMenu: NavigationItem[] = [
@@ -29,9 +30,6 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
                 { title: t('navMenu.lists.krit'), path: NavigationSubRoutes.KRIT },
             ],
         },
-        { title: t('navMenu.lists.servers'), path: '/todo' },
-        { title: t('navMenu.lists.virtualMachines'), path: '/todo' },
-        { title: t('navMenu.lists.operationPlace'), path: '/todo' },
         {
             title: t('navMenu.publicAuthorities'),
             path: RouteNames.HOW_TO_PO,
@@ -104,10 +102,7 @@ export const getPortalNavigationItems = (
                 {
                     title: t('navMenu.centralDataModel'),
                     path: '/todo',
-                    subItems: [
-                        { title: t('navMenu.referenceIdentifiers'), path: '/todo' },
-                        { title: t('navMenu.dataElementsCatalogue'), path: '/todo' },
-                    ],
+                    subItems: [{ title: t('navMenu.referenceIdentifiers'), path: '/todo' }],
                 },
                 {
                     title: t('navMenu.dataObligationsRegister'),

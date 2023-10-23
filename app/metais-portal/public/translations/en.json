@@ -130,6 +130,7 @@
             "applicationServices": "Application services",
             "isvs": "ISVS",
             "infrastructures": "Infrastructure services",
+            "webAddress": "Web addresses",
             "authorities": "Public authorities",
             "otherComponents": "Other components",
             "standards": "Standards of ITVS",

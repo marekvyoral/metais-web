@@ -11,9 +11,9 @@ export const EntityFilter = ({ defaultFilterValues }: Props) => {
     const { t } = useTranslation()
 
     const typeOptions: IOption[] = [
-        { label: t('type.application'), value: 'application' },
-        { label: t('type.system'), value: 'system' },
-        { label: t('type.custom'), value: 'custom' },
+        { label: t('tooltips.type.application'), value: 'application' },
+        { label: t('tooltips.type.system'), value: 'system' },
+        { label: t('tooltips.type.custom'), value: 'custom' },
     ]
 
     const validOption: IOption[] = [

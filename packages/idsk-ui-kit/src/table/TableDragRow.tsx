@@ -1,13 +1,14 @@
 import { Row, flexRender } from '@tanstack/react-table'
 import classNames from 'classnames'
+import { useDrag, useDrop } from 'react-dnd'
 import { useLocation, useNavigate } from 'react-router-dom'
 import React from 'react'
-import { useDrag, useDrop } from 'react-dnd'
 
 import { CHECKBOX_CELL, TOOLTIP_TEXT_BREAKER } from './constants'
 import styles from './table.module.scss'
 
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
+import { DndIcon } from '@isdd/idsk-ui-kit/assets/images'
 
 interface ITableDragRowProps<T> {
     row: Row<T>
@@ -117,7 +118,10 @@ export const TableDragRow = <T,>({
                         id={cell.column.id}
                         ref={index === 0 ? dropRef : null}
                     >
-                        <div ref={index === 0 ? dragRef : null}>{cellContent}</div>
+                        <div ref={index === 0 ? dragRef : null} className={styles.flexCenter}>
+                            {index === 0 && <img height={30} className={classNames({ [styles.handlePointer]: index === 0 })} src={DndIcon} />}
+                            {cellContent}
+                        </div>
                     </th>
                 ) : (
                     <td

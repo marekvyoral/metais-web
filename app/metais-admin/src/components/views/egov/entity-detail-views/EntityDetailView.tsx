@@ -22,6 +22,7 @@ export const EntityDetailView = ({
     resetExistingAttribute,
     isError,
     isLoading,
+    roles,
 }: IAtrributesContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -46,6 +47,7 @@ export const EntityDetailView = ({
             title: t('egov.detail.genericProfile'),
             content: (
                 <EntityDetailViewAttributes
+                    roles={roles}
                     data={ciTypeData}
                     attributesOverridesData={attributesOverridesData}
                     saveExistingAttribute={saveExistingAttribute}
@@ -77,7 +79,7 @@ export const EntityDetailView = ({
                     </div>
                     {isError && <QueryFeedback error loading={false} />}
                 </FlexColumnReverseWrapper>
-                <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
+                <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} roles={roles} />
             </div>
             <ProfileTabs tabList={tabList} />
         </QueryFeedback>
