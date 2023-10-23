@@ -8,7 +8,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
 import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { PublicAuthorityAndRoleContainer } from '@/components/containers/PublicAuthorityAndRoleContainer'
-import { ITVSExceptionsCreateView } from '@/components/views/ci/vynimkyITVS/ITVSExceptionsCreateView'
+import { ITVSExceptionsCreateView } from '@/components/views/ci/ITVSExceptions/ITVSExceptionsCreateView'
 import { ITVSExceptionsCreateContainer } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
 
 const CreateEntityPage: React.FC = () => {

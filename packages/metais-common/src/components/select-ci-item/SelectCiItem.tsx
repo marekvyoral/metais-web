@@ -18,6 +18,7 @@ interface Props {
     onOpenModal: () => void
     existingRelations: IncidentRelationshipSetUi | undefined
     modalContent?: React.ReactNode
+    label?: string
 }
 
 export const SelectCiItem: React.FC<Props> = ({
@@ -28,6 +29,7 @@ export const SelectCiItem: React.FC<Props> = ({
     onOpenModal,
     modalContent,
     existingRelations,
+    label,
 }) => {
     const { t } = useTranslation()
     const { selectedItems, isListPageOpen } = useNewRelationData()
@@ -79,7 +81,7 @@ export const SelectCiItem: React.FC<Props> = ({
                         getOptionLabel={(item) => item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
                         getOptionValue={(item) => item.uuid ?? ''}
                         loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
-                        label={t('selectCiItem.label')}
+                        label={label ? label : t('selectCiItem.label')}
                         name="select-configuration-item"
                         onChange={(val: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | null) => onChangeSelectedCiItem(val)}
                         value={selectedItems}

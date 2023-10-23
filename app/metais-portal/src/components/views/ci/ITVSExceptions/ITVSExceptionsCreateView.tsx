@@ -29,12 +29,6 @@ import { getAttributeInputErrorMessage, findAttributeConstraint, getAttributeUni
 import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
 import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
-import { createSelectRelationTypesOptions } from '@/componentHelpers/ITVS-exceptions'
-
-interface ISelectedCITypeForRelationState {
-    selectedCITypeForRelationTechnicalName: string
-    setSelectedCITypeForRelationTechnicalName: Dispatch<SetStateAction<string>>
-}
 
 interface Props {
     data: CreateEntityData
@@ -45,9 +39,8 @@ interface Props {
     isProcessing: boolean
     isLoading: boolean
     isError: boolean
-    selectedRelationTypeState: ISelectedRelationTypeState
-    selectedCITypeForRelationState: ISelectedCITypeForRelationState
-    selectedRelationItemsState: INewRelationData
+    selectedISVSItemsState: INewRelationData
+    selectedPOItemsState: INewRelationData
     publicAuthorityState?: PublicAuthorityState
     roleState?: RoleState
 }
@@ -61,9 +54,8 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     isProcessing,
     isLoading,
     isError,
-    selectedRelationTypeState,
-    selectedRelationItemsState,
-    selectedCITypeForRelationState,
+    selectedISVSItemsState,
+    selectedPOItemsState,
     publicAuthorityState,
     roleState,
 }) => {
@@ -101,9 +93,9 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     }
 
     const [sectionError, setSectionError] = useState<{ [x: string]: boolean }>(sectionErrorDefaultConfig)
-    const { selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName } = selectedRelationTypeState
-    const { selectedCITypeForRelationTechnicalName, setSelectedCITypeForRelationTechnicalName } = selectedCITypeForRelationState
-    const { selectedItems, setSelectedItems, setIsListPageOpen } = selectedRelationItemsState
+
+    const { selectedItems: selectedISVSs, setSelectedItems: setSelectedISVSs, setIsListPageOpen: setIsISVSListPageOpen } = selectedISVSItemsState
+    const { selectedItems: selectedPOs, setSelectedItems: setSelectedPOs, setIsListPageOpen: setIsPOListPageOpen } = selectedPOItemsState
 
     const relationSchema = relationData?.relationTypeData
     const [relationSchemaCombinedAttributes, setRelationSchemaCombinedAttributest] = useState<(Attribute | undefined)[]>([])
@@ -127,28 +119,71 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         setValue(AttributesConfigTechNames.METAIS_CODE, metaIsCodeValue)
     }, [metaIsCodeValue, referenceIdValue, setValue])
 
-    const setSelectedRelationAndCI = (val: string) => {
-        const [relation, ci] = val.split(JOIN_OPERATOR)
-        setSelectedRelationTypeTechnicalName(relation)
-        setSelectedCITypeForRelationTechnicalName(ci)
-    }
-
     const sections: IAccordionSection[] =
-        selectedItems && Array.isArray(selectedItems)
-            ? selectedItems.map((item: ConfigurationItemUi) => ({
+        selectedISVSs && Array.isArray(selectedISVSs)
+            ? selectedISVSs.map((item: ConfigurationItemUi) => ({
                   title: item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
                   summary: (
                       <ButtonGroupRow key={item.uuid} className={''}>
                           <ButtonLink
                               label={t('newRelation.detailButton')}
                               //className={classNames(styles.buttonLink, styles.blue)}
-                              onClick={() => navigate(`/ci/${selectedCITypeForRelationTechnicalName}/${item.uuid}`, { state: { from: location } })}
+                              onClick={() => navigate(`/ci/ISVS/${item.uuid}`, { state: { from: location } })}
                           />
                           <ButtonLink
                               label={t('newRelation.deleteButton')}
                               //className={classNames(styles.buttonLink, styles.red)}
                               onClick={() =>
-                                  setSelectedItems((prev: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | ColumnsOutputDefinition | null) =>
+                                  setSelectedISVSs((prev: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | ColumnsOutputDefinition | null) =>
+                                      Array.isArray(prev) ? prev.filter((prevItem: ConfigurationItemUi) => prevItem.uuid !== item.uuid) : prev,
+                                  )
+                              }
+                          />
+                      </ButtonGroupRow>
+                  ),
+                  content: relationSchemaCombinedAttributes.map((attribute) => (
+                      <>
+                          <AttributeInput
+                              key={`${attribute?.id}+${item.uuid}`}
+                              attribute={attribute ?? {}}
+                              register={register}
+                              setValue={setValue}
+                              clearErrors={clearErrors}
+                              trigger={trigger}
+                              isSubmitted={formState.isSubmitted}
+                              error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
+                              nameSufix={JOIN_OPERATOR + item.uuid + JOIN_OPERATOR + 'RELATION'}
+                              hint={attribute?.description}
+                              hasResetState={{ hasReset, setHasReset }}
+                              constraints={findAttributeConstraint(
+                                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                  //@ts-ignore
+                                  attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
+                                  relationData?.constraintsData ?? [],
+                              )}
+                              unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                          />
+                      </>
+                  )),
+              }))
+            : []
+
+    const POSections: IAccordionSection[] =
+        selectedPOs && Array.isArray(selectedPOs)
+            ? selectedPOs.map((item: ConfigurationItemUi) => ({
+                  title: item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
+                  summary: (
+                      <ButtonGroupRow key={item.uuid} className={''}>
+                          <ButtonLink
+                              label={t('newRelation.detailButton')}
+                              //className={classNames(styles.buttonLink, styles.blue)}
+                              onClick={() => navigate(`/ci/PO/${item.uuid}`, { state: { from: location } })}
+                          />
+                          <ButtonLink
+                              label={t('newRelation.deleteButton')}
+                              //className={classNames(styles.buttonLink, styles.red)}
+                              onClick={() =>
+                                  setSelectedPOs((prev: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | ColumnsOutputDefinition | null) =>
                                       Array.isArray(prev) ? prev.filter((prevItem: ConfigurationItemUi) => prevItem.uuid !== item.uuid) : prev,
                                   )
                               }
@@ -222,23 +257,30 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                 />
                             </div>
                         ))}
-                        <SimpleSelect
-                            isClearable={false}
-                            label={t('newRelation.selectRelType')}
-                            name="relation-type"
-                            options={createSelectRelationTypesOptions(relationData?.relatedListAsSources, relationData?.relatedListAsTargets, t)}
-                            value={selectedRelationTypeTechnicalName}
-                            onChange={(val) => setSelectedRelationAndCI(val ?? '')}
-                        />
+
                         <SelectCiItem
-                            filterTypeEntityName={selectedCITypeForRelationTechnicalName ?? ''}
-                            onChangeSelectedCiItem={(val) => setSelectedItems(val)}
-                            onCloseModal={() => setIsListPageOpen(false)}
-                            onOpenModal={() => setIsListPageOpen(true)}
+                            key={'ISVSSelect'}
+                            filterTypeEntityName={'ISVS'}
+                            onChangeSelectedCiItem={(val) => setSelectedISVSs(val)}
+                            onCloseModal={() => setIsISVSListPageOpen(false)}
+                            onOpenModal={() => setIsISVSListPageOpen(true)}
                             existingRelations={undefined}
-                            modalContent={<CiListPage importantEntityName={selectedCITypeForRelationTechnicalName} noSideMenu />}
+                            modalContent={<CiListPage importantEntityName={'ISVS'} noSideMenu />}
+                            label={'TRANS//Suvisiace ISVS'}
                         />
-                        {selectedItems && Array.isArray(selectedItems) && selectedItems.length > 0 && <AccordionContainer sections={sections} />}
+                        {selectedISVSs && Array.isArray(selectedISVSs) && selectedISVSs.length > 0 && <AccordionContainer sections={sections} />}
+
+                        <SelectCiItem
+                            key={'POSelect'}
+                            filterTypeEntityName={'PO'}
+                            onChangeSelectedCiItem={(val) => setSelectedPOs(val)}
+                            onCloseModal={() => setIsPOListPageOpen(false)}
+                            onOpenModal={() => setIsPOListPageOpen(true)}
+                            existingRelations={undefined}
+                            modalContent={<CiListPage importantEntityName={'PO'} noSideMenu />}
+                            label={'TRANS//Suvisiace PO'}
+                        />
+                        {selectedPOs && Array.isArray(selectedPOs) && selectedPOs.length > 0 && <AccordionContainer sections={POSections} />}
 
                         <SubmitWithFeedback
                             additionalButtons={[
