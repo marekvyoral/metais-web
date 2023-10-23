@@ -89,7 +89,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
             name: attributeProfile.name || '',
             attributes:
                 attributeProfile.attributes
-                    ?.filter((attribute) => attribute.invisible === false)
+                    ?.filter((attribute) => attribute.invisible === false && attribute.valid)
                     .map((attribute) => ({
                         name: attribute.name || '',
                         technicalName: attribute.technicalName || '',
@@ -100,7 +100,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
         name: entityName || '',
         attributes:
             attributes
-                ?.filter((attribute) => attribute.invisible === false)
+                ?.filter((attribute) => attribute.invisible === false && attribute.valid)
                 ?.map((attribute) => ({
                     name: attribute.name || '',
                     technicalName: attribute.technicalName || '',

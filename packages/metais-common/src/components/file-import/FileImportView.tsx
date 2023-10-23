@@ -4,7 +4,6 @@ import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { StatusBar } from '@uppy/react'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { useTranslation } from 'react-i18next'
-import { ErrorBlock } from '@isdd/idsk-ui-kit'
 
 import { FileImportEditOptions, FileImportHeader } from './FileImportHeader'
 import { FileImportDragDrop } from './FileImportDragDrop'
@@ -15,8 +14,9 @@ import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-
 import { CloseIcon, ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
 import { HierarchyRightsUi } from '@isdd/metais-common/api'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
-import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { QueryFeedback } from '@isdd/metais-common/index'
 
 interface IFileImportView {
     uppy: Uppy
@@ -31,10 +31,10 @@ interface IFileImportView {
     fileImportStep: FileImportStepEnum
     radioButtonMetaData: string
     ciType: string
-    setSelectedRoleId: React.Dispatch<SetStateAction<string>>
+    setSelectedRole: React.Dispatch<SetStateAction<GidRoleData | null>>
     setSelectedOrg: React.Dispatch<SetStateAction<HierarchyRightsUi | null>>
     selectedOrg: HierarchyRightsUi | null
-    selectedRoleId: string
+    selectedRole: GidRoleData
 }
 
 export const FileImportView: React.FC<IFileImportView> = ({
@@ -49,31 +49,30 @@ export const FileImportView: React.FC<IFileImportView> = ({
     currentFiles,
     fileImportStep,
     radioButtonMetaData,
-    setSelectedRoleId,
+    setSelectedRole,
     setSelectedOrg,
     selectedOrg,
-    selectedRoleId,
+    selectedRole,
+    ciType,
 }) => {
     const { t } = useTranslation()
-    const ability = useAbilityContext()
-    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
-    const isSubmitDisabled = currentFiles.length === 0 || (radioButtonMetaData === FileImportEditOptions.EXISTING_AND_NEW && !hasOrgPermission)
+    const isSubmitDisabled = currentFiles.length === 0 || !selectedRole.roleUuid
+
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ciType)
 
     return (
         <>
             <FileImportHeader setRadioButtonMetaData={setRadioButtonMetaData} />
             {radioButtonMetaData === FileImportEditOptions.EXISTING_AND_NEW && (
-                <>
-                    {!hasOrgPermission && selectedOrg?.poUUID && (
-                        <ErrorBlock errorTitle={t('createEntity.orgAndRoleError.title')} errorMessage={t('createEntity.orgAndRoleError.message')} />
-                    )}
+                <QueryFeedback loading={isCiTypeDataLoading} error={isCiTypeDataError}>
                     <SelectPublicAuthorityAndRole
                         onChangeAuthority={setSelectedOrg}
-                        onChangeRole={setSelectedRoleId}
+                        onChangeRole={setSelectedRole}
                         selectedOrg={selectedOrg}
-                        selectedRoleId={selectedRoleId}
+                        selectedRole={selectedRole}
+                        ciRoles={ciTypeData?.roleList ?? []}
                     />
-                </>
+                </QueryFeedback>
             )}
             <FileImportDragDrop uppy={uppy} />
 

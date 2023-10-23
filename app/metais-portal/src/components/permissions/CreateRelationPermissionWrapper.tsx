@@ -9,8 +9,8 @@ interface Props extends PropsWithChildren {
     selectedCiRelationType: RelatedCiTypePreview | undefined
 }
 
-export const RelationTypePermissionWrapper: React.FC<Props> = ({ children, selectedOrgId, selectedRoleName, selectedCiRelationType }) => {
+export const RelationTypePermissionWrapper: React.FC<Props> = ({ children, selectedRoleName, selectedCiRelationType }) => {
     const ability = useAbilityContext()
-    useCanCreateRelationTypeUnderOrgAndRole(selectedOrgId, selectedRoleName, selectedCiRelationType)
+    useCanCreateRelationTypeUnderOrgAndRole(selectedRoleName, selectedCiRelationType)
     return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
 }

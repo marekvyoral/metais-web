@@ -89,14 +89,14 @@ export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<Colu
     return columnsAll
 }
 
-export const votesTypeToShowOptions = (t: TFunction): IOption[] => {
+export const votesTypeToShowOptions = (t: TFunction): IOption<string>[] => {
     return [
         { value: VotesListShowEnum.ONLY_MY, label: t('votes.type.toShow.onlyMyVotes') },
         { value: VotesListShowEnum.EVERYONE, label: t('votes.type.toShow.allVotes') },
     ]
 }
 
-export const voteStateOptions = (t: TFunction): IOption[] => {
+export const voteStateOptions = (t: TFunction): IOption<string>[] => {
     return [
         { value: VoteStateOptionEnum.PLANNED, label: t('votes.type.state.planned') },
         { value: VoteStateOptionEnum.CANCELED, label: t('votes.type.state.canceled') },

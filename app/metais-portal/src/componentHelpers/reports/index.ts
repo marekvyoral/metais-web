@@ -7,7 +7,7 @@ export const getDefaultValueForKey = (key?: string, parameters?: Parameter[]) =>
     return parameters?.find((parameter) => parameter.key === key)?.defaultValue
 }
 
-export const loadEnumsRepoOptions = (filterData: (EnumType | undefined)[], code?: string): IOption[] => {
+export const loadEnumsRepoOptions = (filterData: (EnumType | undefined)[], code?: string): IOption<string>[] => {
     const enumtItems = filterData.find((fD) => fD?.code === code)?.enumItems
     const selectOptions = enumtItems?.map((eI) => {
         return { value: eI.code ?? '', label: eI.description ?? '' }
@@ -15,7 +15,7 @@ export const loadEnumsRepoOptions = (filterData: (EnumType | undefined)[], code?
     return [...(selectOptions ?? [])]
 }
 
-export const loadEnumerateOptions = (enumsString?: string): IOption[] => {
+export const loadEnumerateOptions = (enumsString?: string): IOption<string>[] => {
     const selectOptions = enumsString
         ?.split(';')
         .filter(Boolean)

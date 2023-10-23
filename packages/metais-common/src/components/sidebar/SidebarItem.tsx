@@ -1,7 +1,7 @@
 import { ArrowDownIcon } from '@isdd/idsk-ui-kit'
 import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
-import { Link, useMatch } from 'react-router-dom'
+import { Link, useLocation, useMatch } from 'react-router-dom'
 
 import styles from '@isdd/metais-common/components/GridView.module.scss'
 
@@ -19,6 +19,7 @@ export interface SidebarItemProps {
     isSidebarExpanded: boolean
     defaultOpenedMenuItemsIndexes: number[]
     defaultOpenedMenuItemsPaths: string[]
+    hasSamePathAsParent?: boolean
 }
 
 export const SidebarItem = ({
@@ -28,11 +29,20 @@ export const SidebarItem = ({
     isExpanded,
     defaultOpenedMenuItemsIndexes,
     defaultOpenedMenuItemsPaths,
+    hasSamePathAsParent,
 }: SidebarItemProps) => {
     const [expandedSubItemIndexes, setExpandedSubItemIndexes] = useState<boolean[]>(() => Array(item.subItems?.length).fill(false))
 
     const isDefaultOpened = defaultOpenedMenuItemsPaths.some((opened) => opened === item.path)
-    const isUrlMatched = useMatch(item.path)
+    const isUrlMatched = !!useMatch(item.path)
+
+    const location = useLocation()
+    const locationWithoutItemPath = location.pathname.slice(item.path.length)
+    const isDetail = hasSamePathAsParent
+        ? locationWithoutItemPath.includes('detail') || locationWithoutItemPath.includes('create') || locationWithoutItemPath.includes('edit')
+        : false
+
+    const shouldNotBeBold = hasSamePathAsParent && !isDetail && !isUrlMatched
 
     useEffect(() => {
         if (defaultOpenedMenuItemsIndexes.length > 0) {
@@ -53,7 +63,7 @@ export const SidebarItem = ({
                         className={classNames(
                             styles.sidebarlink,
                             styles.sectionHeaderButton,
-                            ((item.subItems?.length && isExpanded) || isDefaultOpened || isUrlMatched) && styles.expanded,
+                            ((item.subItems?.length && isExpanded) || isDefaultOpened || isUrlMatched) && !shouldNotBeBold && styles.expanded,
                         )}
                         aria-expanded={isExpanded}
                         to={item.path}
@@ -78,6 +88,8 @@ export const SidebarItem = ({
                                         return newArr
                                     })
                                 }
+                                const subItemHasSamePathAsParent = item.path == subItem.path
+
                                 return (
                                     <SidebarItem
                                         key={`subItem-${indexSubItem}.${subItem.title}`}
@@ -87,6 +99,7 @@ export const SidebarItem = ({
                                         onToggle={onToggleSub}
                                         defaultOpenedMenuItemsIndexes={defaultOpenedMenuItemsIndexes.slice(1)}
                                         defaultOpenedMenuItemsPaths={defaultOpenedMenuItemsPaths}
+                                        hasSamePathAsParent={subItemHasSamePathAsParent}
                                     />
                                 )
                             })}

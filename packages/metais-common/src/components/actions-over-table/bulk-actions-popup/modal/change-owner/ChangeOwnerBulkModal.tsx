@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { ChangeOwnerBulkView } from './ChangeOwnerBulkView'
 
 import { ChangeOwnerDataUi, ConfigurationItemUi, HierarchyRightsUi, useChangeOwnerSet } from '@isdd/metais-common/api'
-import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { GidRoleData, useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 
 export interface IChangeOwnerBulkModalProps {
@@ -14,9 +14,10 @@ export interface IChangeOwnerBulkModalProps {
     onClose: () => void
     onSubmit: (result: IBulkActionResult) => void
     items: ConfigurationItemUi[]
+    ciRoles: string[]
 }
 
-export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ items, open, multiple, onSubmit, onClose }) => {
+export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ items, open, multiple, onSubmit, onClose, ciRoles }) => {
     const { t } = useTranslation()
 
     const successMessage = multiple ? t('bulkActions.changeOwner.successList') : t('bulkActions.changeOwner.success')
@@ -33,7 +34,7 @@ export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ ite
     })
     const getAddOrGetGroup = useAddOrGetGroupHook()
 
-    const [selectedRoleId, setSelectedRoleId] = useState<string>('')
+    const [selectedRole, setSelectedRole] = useState<GidRoleData | null>(null)
     const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
 
     const handleChangeOwner = async (data: ChangeOwnerDataUi) => {
@@ -42,8 +43,8 @@ export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ ite
             return { ...i, attributes }
         })
 
-        if (!selectedOrg || !selectedOrg.poUUID || !selectedRoleId) return
-        const groupData = await getAddOrGetGroup(selectedRoleId, selectedOrg.poUUID || '')
+        if (!selectedOrg || !selectedOrg.poUUID || !selectedRole?.roleUuid) return
+        const groupData = await getAddOrGetGroup(selectedRole.roleUuid, selectedOrg.poUUID || '')
 
         await changeOwner({
             data: {
@@ -66,10 +67,11 @@ export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ ite
                 onClose={onClose}
                 onSubmit={handleChangeOwner}
                 onChangeAuthority={setSelectedOrg}
-                onChangeRole={setSelectedRoleId}
+                onChangeRole={setSelectedRole}
                 selectedOrg={selectedOrg}
-                selectedRoleId={selectedRoleId}
+                selectedRole={selectedRole ?? {}}
                 multiple={multiple}
+                ciRoles={ciRoles}
             />
         </BaseModal>
     )
