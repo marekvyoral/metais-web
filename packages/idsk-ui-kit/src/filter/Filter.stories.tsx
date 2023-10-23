@@ -115,7 +115,7 @@ export const Advanced: Story = {
                         Gen_Profil_kod_metais: '',
                     }}
                     setValue={setValue}
-                    data={filter.attributeFilters}
+                    filterData={{ attributeFilters: filter.attributeFilters ?? {}, metaAttributeFilters: filter.metaAttributeFilters ?? {} }}
                     attributes={attributes}
                     attributeProfiles={attributeProfiles}
                     constraintsData={[]}

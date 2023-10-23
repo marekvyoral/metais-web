@@ -33,6 +33,8 @@ import {
 } from '@isdd/metais-common/constants'
 import { FilterActions, useFilterContext } from '@isdd/metais-common/contexts/filter/filterContext'
 import { updateFilterInLocalStorageOnChange } from '@isdd/metais-common/componentHelpers/filter/updateFilterInLocalStorageOnChange'
+import { FilterMetaAttributesUi } from '@isdd/metais-common/api'
+import { isMatchWithMetaAttributeTechnicalName, mapMetaAttributeFromUrlToFitFilter } from '@isdd/metais-common/componentHelpers'
 
 //types for API
 export enum OPERATOR_OPTIONS {
@@ -67,6 +69,7 @@ export interface IFilterParams {
     fullTextSearch?: string
     [key: `${string}${OPERATOR_SEPARATOR_TYPE}${string}`]: string | undefined | string[] | Date | null
     attributeFilters?: IAttributeFilters
+    metaAttributeFilters?: FilterMetaAttributesUi
 }
 
 // extended type from react-hook-form
@@ -102,14 +105,24 @@ const parseSortQuery = (urlParams: URLSearchParams): undefined | ColumnSort[] =>
     return undefined
 }
 
-const parseCustomAttributes = (urlParams: URLSearchParams): undefined | IAttributeFilters => {
+type ParsedCustomAttributes = {
+    attributeFilters: undefined | IAttributeFilters
+    metaAttributeFilters: FilterMetaAttributesUi
+}
+
+const parseCustomAttributes = (urlParams: URLSearchParams): ParsedCustomAttributes => {
     let attributeFilters: undefined | IAttributeFilters = undefined
+    let metaAttributeFilters: FilterMetaAttributesUi = {}
+
     for (const queryKey of urlParams.keys()) {
-        if (queryKey.includes(OPERATOR_SEPARATOR)) {
-            const value = urlParams.get(queryKey)
-            if (value) {
-                const [name, operator] = queryKey.split(OPERATOR_SEPARATOR)
-                if (!name || !operator || !value) continue
+        const [name, operator] = queryKey.split(OPERATOR_SEPARATOR)
+        const value = urlParams.get(queryKey)
+
+        const isMetaAttribute = isMatchWithMetaAttributeTechnicalName(name)
+
+        if (value && queryKey.includes(OPERATOR_SEPARATOR)) {
+            if (!isMetaAttribute) {
+                if (!name || !operator) continue
                 if (!attributeFilters) attributeFilters = {}
                 if (attributeFilters && !attributeFilters[name]) {
                     attributeFilters = {
@@ -129,10 +142,15 @@ const parseCustomAttributes = (urlParams: URLSearchParams): undefined | IAttribu
                         })
                     }
                 }
+            } else if (isMetaAttribute) {
+                const { metaAttributeName, metaAttributeValue } = mapMetaAttributeFromUrlToFitFilter(name, operator, value)
+                if (metaAttributeName != null && metaAttributeValue != null) {
+                    metaAttributeFilters = { ...metaAttributeFilters, [metaAttributeName]: metaAttributeValue }
+                }
             }
         }
     }
-    return attributeFilters
+    return { attributeFilters, metaAttributeFilters }
 }
 
 interface ReturnUseFilterParams<T> {
@@ -195,7 +213,10 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
             })
 
         memoFilter.sort = parseSortQuery(urlParams) ?? defaults.sort
-        memoFilter.attributeFilters = parseCustomAttributes(urlParams)
+        const { attributeFilters, metaAttributeFilters } = parseCustomAttributes(urlParams)
+        memoFilter.attributeFilters = attributeFilters
+        memoFilter.metaAttributeFilters = metaAttributeFilters
+
         return memoFilter
     }, [uiFilterState, location.search, defaults, urlParams])
 
@@ -213,7 +234,9 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
     const { reset, handleSubmit } = methods
 
     const clearData = useCallback((obj: T): T => {
-        return Object.fromEntries<T>(Object.entries<T>(obj).filter(([key, v]) => !!v && key !== 'attributeFilters')) as T
+        return Object.fromEntries<T>(
+            Object.entries<T>(obj).filter(([key, v]) => !!v && key !== 'attributeFilters' && key !== 'metaAttributeFilters'),
+        ) as T
     }, [])
 
     const onSubmit = handleSubmit((data: T) => {
@@ -221,6 +244,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
 
         const convertedArrayFilterData = convertFilterArrayData(filterData)
         const searchParamsFilterData = convertFilterToSearchParams(convertedArrayFilterData)
+
         //so when user is on page 200 and filter spits out only 2 pages he can get to them
         setSearchParams({ ...searchParamsFilterData, pageNumber: BASE_PAGE_NUMBER })
         dispatch({
