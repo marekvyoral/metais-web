@@ -13,7 +13,7 @@ export enum RouteNames {
     HOW_TO_REFERENCE_IDENTIFIERS = '/howto/URI.URI/URI_HOWTO',
     //not found on metais
     HOW_TO_DATA_OBJECTS = '/howto/DATA.DATA_OBJECTS/DO_HOWTO',
-    PREHLADY_A_POSTUPY = '/tutorial',
+    PREHLADY_A_POSTUPY = '/help',
     DOCUMENTS_LIST_TAB = '/ci/:entityName/:entityId/documents',
     RELATIONSHIPS_LIST_TAB = '/ci/:entityName/:entityId/relationships',
     TASKS = '/ulohy',

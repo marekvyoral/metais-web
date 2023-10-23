@@ -117,9 +117,11 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     const handleSubListSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: Tab) => {
         event.preventDefault()
         changeTabOrder(value, MAX_SHOWN_TABS - 1, newTabList, setNewTabList)
+
         if (value.path) {
             navigate(value.path, { state: { from: location } })
         } else {
+            onSelected?.(value)
             setSelected(value)
         }
     }

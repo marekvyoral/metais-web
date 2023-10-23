@@ -47,6 +47,7 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
     return (
         <>
             <BreadCrumbs
+                withWidthContainer
                 links={[
                     { label: t('votes.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('votes.breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
