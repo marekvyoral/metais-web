@@ -79,8 +79,9 @@ build-node-isdd-dev:
     variables: 
         BUILD_ENV: development
     rules:
-        - if: $CI_COMMIT_TAG =~ "^isdd-dev.+$" || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_REF_NAME =~ /^feature\/.+$/i  || $CI_COMMIT_REF_NAME =~ /^met-[^\/]+\/.+$/i || $CI_COMMIT_REF_NAME =~ /^bug\/.+$/i
-
+        #- if: $CI_COMMIT_TAG =~ "^isdd-dev.+$" || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_REF_NAME =~ /^feature\/.+$/i  || $CI_COMMIT_REF_NAME =~ /^met-[^\/]+\/.+$/i || $CI_COMMIT_REF_NAME =~ /^bug\/.+$/i
+        - if: $CI_COMMIT_TAG =~ "^isdd-dev.+$"
+        
 build-node-mirri-test:
     extends: .build-node
     variables: 
