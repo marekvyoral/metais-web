@@ -98,6 +98,26 @@ export const NULL = 'null'
 
 export const USER_INFO_QUERY_KEY = 'userInfo'
 
+export enum RequestListState {
+    DRAFT = 'DRAFT',
+    ACCEPTED = 'ACCEPTED',
+    NEW_REQUEST = 'NEW_REQUEST',
+    REJECTED = 'REJECTED',
+    PUBLISHED = 'PUBLISHED',
+    UPDATING = 'UPDATING',
+    READY_TO_PUBLISH = 'READY_TO_PUBLISH',
+    ISVS_PROCESSING = 'ISVS_PROCESSING',
+    ISVS_REJECTED = 'ISVS_REJECTED',
+    ISVS_ACCEPTED = 'ISVS_ACCEPTED',
+    KS_ISVS_REJECTED = 'KS_ISVS_REJECTED',
+    KS_ISVS_ACCEPTED = 'KS_ISVS_ACCEPTED',
+    ACCEPTED_SZZC = 'ACCEPTED_SZZC',
+}
+
+export enum CodeListFilterOnlyBase {
+    TRUE = 'TRUE',
+    FALSE = 'FALSE',
+}
 export const PORTAL_URL = import.meta.env.VITE_PORTAL_URL
 export const DEFAULT_ERROR = 'Error'
 

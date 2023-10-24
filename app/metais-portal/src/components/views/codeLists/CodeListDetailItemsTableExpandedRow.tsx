@@ -13,7 +13,7 @@ interface CodeListDetailItemsTableExpandedRowProps {
     workingLanguage: string
     codelistItem?: ApiCodelistItem
     attributeProfile?: AttributeProfile
-    handleMarkForPublish: (ids: number[]) => void
+    handleMarkForPublish?: (ids: number[]) => void
 }
 
 export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTableExpandedRowProps> = ({
@@ -147,22 +147,24 @@ export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTa
                 />
             </InformationGridRowWrapper>
 
-            <ButtonGroupRow>
-                {true && (
-                    <Button
-                        label={t('codeListDetail.button.edit')}
-                        onClick={() => {
-                            return // add edit
-                        }}
-                    />
-                )}
-                {true && (
-                    <Button
-                        label={t('codeListDetail.button.markItemReadyForPublishing')}
-                        onClick={() => handleMarkForPublish([Number(codelistItem.id)])}
-                    />
-                )}
-            </ButtonGroupRow>
+            {handleMarkForPublish && (
+                <ButtonGroupRow>
+                    {true && (
+                        <Button
+                            label={t('codeListDetail.button.edit')}
+                            onClick={() => {
+                                return // add edit
+                            }}
+                        />
+                    )}
+                    {true && (
+                        <Button
+                            label={t('codeListDetail.button.markItemReadyForPublishing')}
+                            onClick={() => handleMarkForPublish([Number(codelistItem.id)])}
+                        />
+                    )}
+                </ButtonGroupRow>
+            )}
         </div>
     )
 }
