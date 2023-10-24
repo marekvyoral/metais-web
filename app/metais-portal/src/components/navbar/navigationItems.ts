@@ -124,6 +124,7 @@ export const getPortalNavigationItems = (
                 },
             ],
         },
+
         {
             path: RouteNames.HOW_TO_MONITORING,
             title: t('navMenu.monitoring'),

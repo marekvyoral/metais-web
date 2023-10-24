@@ -272,6 +272,8 @@
             "country": "Choose country"
         },
         "submit": "Submit form",
+        "save": "Save form",
+        "editItem": "Edit item",
         "waitSending": "Wait please. I am sending the form.",
         "cancel": "Cancel"
     },
@@ -792,12 +794,25 @@
     },
     "breadcrumbs": {
         "home": "Home",
-        "ciEdit": "Edit of {{itemName}}",
-        "noName": "No name",
-        "ciCreate": "Create configuration item",
-        "newRelation": "Add new relation of {{itemName}}",
-        "newCiAndRelation": "Add new item and relation for {{itemName}}",
-        "compareHistory": "Change comparer"
+        "dataObjects": "Data objects",
+        "codeLists": "Codelists",
+        "requestList": "List of requests to add a codelist",
+        "requestCreate": "Create request to add a codelist",
+        "codeListsList": "List of codelists",
+        "publicCodeListsList": "List of published codelists"
+    },
+    "codeList": {
+        "breadcrumbs": {
+            "home": "Home",
+            "dataObjects": "Data objects",
+            "codeLists": "Codelists",
+            "codeListsList": "List of codelists",
+            "publicCodeListsList": "List of published codelists",
+            "requestList": "List of requests to add a codelist"
+        },
+        "filter": {
+            "title": "Filter"
+        }
     },
     "codeListDetail": {
         "title": {
@@ -921,6 +936,7 @@
     },
     "codeListList": {
         "title": "Codelists",
+        "requestTitle": "List of requests to add a codelist",
         "codeListSubtitle": "List of codelists",
         "publicCodeListSubtitle": "List of published codelists",
         "lockedModal": {
@@ -929,6 +945,37 @@
                 "lastSavedRevision": "View the last saved version",
                 "currentRevision": "View the currently published version"
             }
+        },
+        "requestCreate": {
+            "base": "Base code list",
+            "btnCheck": "Check",
+            "codeListName": "Name of codelist",
+            "refIndicator": "Reference indicator",
+            "mainGestor": "Main authority",
+            "resortCode": "Resort code",
+            "note": "Note",
+            "addNote": "+ Add note",
+            "codeListId": "Code of codelist",
+            "name": "Name",
+            "lastName": "Last name",
+            "phone": "Phone",
+            "email": "Email",
+            "contactTitle": "Kontakt na vecného gestora číselníka",
+            "codeListTableTitle": "codelist items",
+            "codeId": "Code",
+            "codeName": "Item Nam",
+            "addItemBtn": "Add item"
+        },
+        "requestValidations": {
+            "codelistName": "Codelist name is required field",
+            "codelistIdFormat": "Codelist ID has wrong format",
+            "codelistId": "Codelist ID is required field",
+            "resortCode": "Resort code is required field",
+            "mainGestor": "Main gestor is required field",
+            "name": "Name is required field",
+            "lastName": "Lastname is required field",
+            "email": "Email is required field",
+            "phone": "Phone is required field"
         },
         "filter": {
             "title": "Filter",
@@ -948,9 +995,16 @@
             "UPDATING": "Modified",
             "READY_TO_PUBLISH": "Ready for publishing",
             "ISVS_PROCESSING": "Sent for approval to the Committee for Standardization of ISPA.",
+            "ISVS_ACCEPTED": "Accepted ISPA",
+            "ISVS_REJECTED": "Rejected ISPA",
             "PUBLISHED": "Published",
             "KS_ISVS_REJECTED": "Rejected by Committee for Standardization ISPA",
-            "KS_ISVS_ACCEPTED": "Accepted by Committee for Standardization ISPA"
+            "KS_ISVS_ACCEPTED": "Accepted by Committee for Standardization ISPA",
+            "DRAFT": "Draft",
+            "ACCEPTED": "Accepted",
+            "NEW_REQUEST": "New request",
+            "REJECTED": "Rejected",
+            "ACCEPTED_SZZC": "Accepted ZC administrator"
         },
         "table": {
             "code": "Code",
@@ -1178,6 +1232,9 @@
 
             "submitButton": "Filter results"
         }
+    },
+    "input": {
+        "requiredField": "(required)"
     },
     "votes": {
         "breadcrumbs": {

@@ -271,6 +271,8 @@
             "country": "Výber krajiny"
         },
         "submit": "Odoslať formulár",
+        "save": "Uložiť formulár",
+        "editItem": "Editovať položku",
         "waitSending": "Čakajte prosím. Odosielam formulár.",
         "cancel": "Zrušiť"
     },
@@ -802,12 +804,12 @@
     },
     "breadcrumbs": {
         "home": "Domov",
-        "ciEdit": "Editácia {{itemName}}",
-        "noName": "Bez mena",
-        "ciCreate": "Vytvorenie novej entity",
-        "newRelation": "Pridanie nového vzťahu k {{itemName}}",
-        "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}",
-        "compareHistory": "Porovnanie zmien"
+        "dataObjects": "Dátové objekty",
+        "codeLists": "Číselníky",
+        "requestList": "Zoznam žiadostí založenia číselníka",
+        "requestCreate": "Žiadosť o zaradenie číselníka",
+        "codeListsList": "Zoznam číselníkov",
+        "publicCodeListsList": "Zoznam publikovaných číselníkov"
     },
     "codeList": {
         "breadcrumbs": {
@@ -815,7 +817,8 @@
             "dataObjects": "Dátové objekty",
             "codeLists": "Číselníky",
             "codeListsList": "Zoznam číselníkov",
-            "publicCodeListsList": "Zoznam publikovaných číselníkov"
+            "publicCodeListsList": "Zoznam publikovaných číselníkov",
+            "requestList": "Zoznam žiadostí číselníkov"
         },
         "filter": {
             "title": "Filter"
@@ -943,6 +946,7 @@
     },
     "codeListList": {
         "title": "Číselníky",
+        "requestTitle": "Žiadosť o zaradenie číselníka",
         "codeListSubtitle": "Zoznam číselníkov",
         "publicCodeListSubtitle": "Zoznam publikovaných číselníkov",
         "lockedModal": {
@@ -951,6 +955,55 @@
                 "lastSavedRevision": "Zobraziť poslednú uloženú verziu",
                 "currentRevision": "Zobraziť aktuálne publikovnú verziu"
             }
+        },
+        "requestCreate": {
+            "base": "Základný číselník",
+            "btnCheck": "Overiť dostupnosť",
+            "codeListName": "Názov číselníka",
+            "refIndicator": "Referencovateľný identifikátor",
+            "mainGestor": "Hlavný gestor",
+            "resortCode": "Rezortný kód",
+            "note": "Poznámka",
+            "addNote": "+ Pridať poznámku",
+            "codeListId": "Kód číselníka",
+            "name": "Meno",
+            "lastName": "Priezvisko",
+            "phone": "Telefónne číslo",
+            "email": "Emailová adresa",
+            "contactTitle": "Kontakt na vecného gestora číselníka",
+            "codeListTableTitle": "Položky číselníka",
+            "codeId": "Kód",
+            "codeName": "Názov položky",
+            "addItemBtn": "Pridať položku"
+        },
+        "requestValidations": {
+            "codelistName": "Názov číselníka je povinné pole",
+            "codelistIdFormat": "Kód číselníka je v zlom formáte",
+            "codelistId": "Kód číselníka je povinné pole",
+            "resortCode": "Rezortný kód je povinné pole",
+            "mainGestor": "Hlavný gestor je povinné pole",
+            "name": "Meno je povinné pole",
+            "lastName": "Priezvisko je povinné pole",
+            "email": "Email je povinné pole",
+            "phone": "Telefónne číslo je povinné pole"
+        },
+        "requestModal": {
+            "shortcut": "Skrátený názov položky",
+            "codeItem": "Kód položky",
+            "codeName": "Názov položky",
+            "shortname": "Skratka názvu položky",
+            "refident": "Referencovateľný identifikátor",
+            "addData": "Doplňujúci obsah",
+            "unit": "Merná jednotka",
+            "note": "Poznámka pre položku",
+            "contain": "Zahŕňa",
+            "alsoContain": "Tiež zahŕňa",
+            "exclude": "Vylučuje",
+            "order": "Logické poradie položky",
+            "law": "Legislatívna uznateľnosť",
+            "validate": "Dátum platnosti",
+            "startDate": "Začiatok účinnosti",
+            "endDate": "Koniec účinnosti"
         },
         "filter": {
             "title": "Filter",
@@ -970,9 +1023,16 @@
             "UPDATING": "Upravovaný",
             "READY_TO_PUBLISH": "Pripravený na publikovanie",
             "ISVS_PROCESSING": "Odoslaný na schválenie na KS ISVS",
+            "ISVS_ACCEPTED": "Akceptovaná ISVS",
+            "ISVS_REJECTED": "Zamietnutá ISVS",
             "PUBLISHED": "Publikovaný",
             "KS_ISVS_REJECTED": "Zamietnuté v Komisii pre štandardizáciu ISVS",
-            "KS_ISVS_ACCEPTED": "Akceptované v Komisii pre štandardizáciu ISVS"
+            "KS_ISVS_ACCEPTED": "Akceptované v Komisii pre štandardizáciu ISVS",
+            "DRAFT": "Rozpracovaná",
+            "ACCEPTED": "Akceptovaná",
+            "NEW_REQUEST": "Nespracovaná",
+            "REJECTED": "Zamietnutá",
+            "ACCEPTED_SZZC": "Akceptované správcom ZČ"
         },
         "table": {
             "code": "Kód",
@@ -1201,6 +1261,9 @@
 
             "submitButton": "Filtrovať výsledky"
         }
+    },
+    "input": {
+        "requiredField": "(povinné)"
     },
     "votes": {
         "breadcrumbs": {
