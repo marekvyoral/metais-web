@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MultiValue } from 'react-select'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { UseFormReturn, set } from 'react-hook-form'
+import { FieldValues, UseFormRegister, UseFormReturn, UseFormSetValue, UseFormTrigger, set } from 'react-hook-form'
 import { v4 as uuidV4 } from 'uuid'
 
 import CiListPage from '@/pages/ci/[entityName]/entity'
@@ -26,6 +26,9 @@ interface Props {
     unitsData: EnumType | undefined
     relationType: string
     relationshipSetState: IRelationshipSetState
+    register: UseFormRegister<FieldValues>
+    setValue: UseFormSetValue<any>
+    trigger: UseFormTrigger<any>
 }
 
 export const ISVSRelationSelect: React.FC<Props> = ({
@@ -37,14 +40,16 @@ export const ISVSRelationSelect: React.FC<Props> = ({
     unitsData,
     relationType,
     relationshipSetState,
+    register,
+    setValue,
+    trigger,
 }) => {
     const navigate = useNavigate()
-    const { register, clearErrors, trigger, setValue, formState } = methods
+    const { clearErrors, formState } = methods
     const { selectedItems, setSelectedItems, setIsListPageOpen } = useNewRelationData()
     const { relationshipSet, setRelationshipSet } = relationshipSetState
 
     const handleItemSelection = (items: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | null) => {
-        console.log(items)
         const selectedCIs = Array.isArray(items) ? items : [items]
         const reducedSet = relationshipSet.filter((rel) => rel.ciType !== ciType)
         setRelationshipSet([...reducedSet, ...selectedCIs.map((ci) => ({ ciType: ciType, type: relationType, endUuid: ci.uuid, uuid: uuidV4() }))])
@@ -73,28 +78,26 @@ export const ISVSRelationSelect: React.FC<Props> = ({
                       </ButtonGroupRow>
                   ),
                   content: relationSchemaCombinedAttributes.map((attribute) => (
-                      <>
-                          <AttributeInput
-                              key={`${attribute?.id}+${item.uuid}`}
-                              attribute={attribute ?? {}}
-                              register={register}
-                              setValue={setValue}
-                              clearErrors={clearErrors}
-                              trigger={trigger}
-                              isSubmitted={formState.isSubmitted}
-                              error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
-                              nameSufix={JOIN_OPERATOR + item.uuid + JOIN_OPERATOR + 'RELATION'}
-                              hint={attribute?.description}
-                              hasResetState={hasResetState}
-                              constraints={findAttributeConstraint(
-                                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                  //@ts-ignore
-                                  attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
-                                  constraintsData ?? [],
-                              )}
-                              unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
-                          />
-                      </>
+                      <AttributeInput
+                          key={`${attribute?.id}+${item.uuid}`}
+                          attribute={attribute ?? {}}
+                          register={register}
+                          setValue={setValue}
+                          clearErrors={clearErrors}
+                          trigger={trigger}
+                          isSubmitted={formState.isSubmitted}
+                          error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
+                          nameSufix={JOIN_OPERATOR + item.uuid + JOIN_OPERATOR + 'RELATION'}
+                          hint={attribute?.description}
+                          hasResetState={hasResetState}
+                          constraints={findAttributeConstraint(
+                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                              //@ts-ignore
+                              attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
+                              constraintsData ?? [],
+                          )}
+                          unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                      />
                   )),
               }))
             : []

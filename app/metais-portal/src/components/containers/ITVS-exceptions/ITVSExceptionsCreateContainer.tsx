@@ -131,6 +131,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
 
     const saveRelations = async () => {
         const formAttributesKeys = Object.keys(formData)
+        console.log(formData)
 
         const formattedAttributesToSend = formAttributesKeys
             .map((key) => ({
@@ -165,6 +166,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                     : [],
             },
         }
+        console.log(relationRequestData)
 
         await storeGraph.mutateAsync({ data: relationRequestData })
     }
@@ -206,6 +208,8 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     }, [relationshipSet])
 
     const onSubmit = async (formAttributes: FieldValues) => {
+        console.log(formAttributes)
+
         setFormData(formAttributes)
 
         setRequestId('')
@@ -236,9 +240,9 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
             owner: ownerId,
         }
 
-        // await storeConfigurationItem.mutate({
-        //     data: updateCiItemId ? dataToUpdate : dataToCreate,
-        // })
+        await storeConfigurationItem.mutate({
+            data: updateCiItemId ? dataToUpdate : dataToCreate,
+        })
     }
 
     // const isDataLoading = [isReadRelationshipsLoading, isRelatedListLoading, isRelationTypeDataLoading, isDetailDataLoading].some((item) => item)
@@ -285,6 +289,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                     isError={isError}
                     defaultItemAttributeValues={ciItemData?.attributes}
                     relationshipSetState={{ relationshipSet, setRelationshipSet }}
+                    existingRelations={rels}
                 />
             </QueryFeedback>
         </>

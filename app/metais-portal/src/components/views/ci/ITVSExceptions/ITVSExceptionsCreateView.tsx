@@ -3,7 +3,14 @@ import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
-import { ATTRIBUTE_NAME, ConfigurationItemUi, ConfigurationItemUiAttributes, Gen_Profil, RelationshipUi } from '@isdd/metais-common/api'
+import {
+    ATTRIBUTE_NAME,
+    CiWithRelsResultUi,
+    ConfigurationItemUi,
+    ConfigurationItemUiAttributes,
+    Gen_Profil,
+    RelationshipUi,
+} from '@isdd/metais-common/api'
 import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { AccordionContainer, Button, ButtonGroupRow, ButtonLink, IAccordionSection, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
@@ -16,6 +23,8 @@ import { MultiValue } from 'react-select'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+
+import styles from './styles.module.scss'
 
 import { CreateEntityData } from '@/components/create-entity/CreateEntity'
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
@@ -51,6 +60,7 @@ interface Props {
     publicAuthorityState?: PublicAuthorityState
     roleState?: RoleState
     relationshipSetState: IRelationshipSetState
+    existingRelations?: CiWithRelsResultUi
 }
 
 export const ITVSExceptionsCreateView: React.FC<Props> = ({
@@ -67,6 +77,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     publicAuthorityState,
     roleState,
     relationshipSetState,
+    existingRelations,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -173,6 +184,9 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                 ciType="ISVS"
                                 relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
                                 methods={methods}
+                                register={register}
+                                setValue={setValue}
+                                trigger={trigger}
                                 hasResetState={{ hasReset, setHasReset }}
                                 constraintsData={relationData?.constraintsData ?? []}
                                 unitsData={unitsData}
@@ -180,11 +194,19 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                 relationshipSetState={relationshipSetState}
                             />
                         </NewRelationDataProvider>
+                        {existingRelations?.ciWithRels
+                            ?.filter((ciRel) => ciRel.ci?.type === 'ISVS')
+                            .map((ciWithRel) => (
+                                <div key={ciWithRel.ci?.uuid}>{ciWithRel.ci?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}</div>
+                            ))}
                         <NewRelationDataProvider>
                             <ISVSRelationSelect
                                 ciType="PO"
                                 relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
                                 methods={methods}
+                                register={register}
+                                setValue={setValue}
+                                trigger={trigger}
                                 hasResetState={{ hasReset, setHasReset }}
                                 constraintsData={relationData?.constraintsData ?? []}
                                 unitsData={unitsData}
@@ -192,18 +214,18 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                 relationshipSetState={relationshipSetState}
                             />
                         </NewRelationDataProvider>
-                        {/* <SelectCiItem
-                            key={'POSelect'}
-                            filterTypeEntityName={'PO'}
-                            onChangeSelectedCiItem={(val) => setSelectedPOs(val)}
-                            onCloseModal={() => setIsPOListPageOpen(false)}
-                            onOpenModal={() => setIsPOListPageOpen(true)}
-                            existingRelations={undefined}
-                            modalContent={<CiListPage importantEntityName={'PO'} noSideMenu />}
-                            label={'TRANS//Suvisiace PO'}
-                        />
-                        {selectedPOs && Array.isArray(selectedPOs) && selectedPOs.length > 0 && <AccordionContainer sections={POSections} />} */}
-
+                        {existingRelations?.ciWithRels
+                            ?.filter((ciRel) => ciRel.ci?.type === 'PO')
+                            .map((ciWithRel) => (
+                                <div className={'govuk-accordion__section'} key={ciWithRel.ci?.uuid}>
+                                    <div className="govuk-accordion__section-header">
+                                        <a className="govuk-accordion__section-button">
+                                            {ciWithRel.ci?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
+                                        </a>
+                                        <small>Poznamka: {ciWithRel.rels?.[0].attributes?.[0]?.value?.toString() ?? ''}</small>
+                                    </div>
+                                </div>
+                            ))}
                         <SubmitWithFeedback
                             additionalButtons={[
                                 <Button
