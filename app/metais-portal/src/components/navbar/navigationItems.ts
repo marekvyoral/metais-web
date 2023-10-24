@@ -12,7 +12,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
         { title: t('navMenu.lists.applicationServices'), path: NavigationSubRoutes.APLIKACNE_SLUZBY },
         { title: t('navMenu.lists.isvs'), path: NavigationSubRoutes.ISVS },
         { title: t('navMenu.lists.infrastructures'), path: NavigationSubRoutes.INFRASCTRUCTURES },
-        { title: t('navMenu.lists.webResidenceAndMobileApps'), path: NavigationSubRoutes.WEBOVE_SIDLO_AND_MOBILE_APPS },
+        { title: t('navMenu.lists.webResidence'), path: NavigationSubRoutes.WEBOVE_SIDLO },
         { title: t('navMenu.lists.personalProcedures'), path: '/todo' },
         { title: t('navMenu.lists.educationalCourses'), path: NavigationSubRoutes.EDUCATIONAL_COURSES },
         { title: t('navMenu.lists.evidenceObjects'), path: NavigationSubRoutes.OBJEKTY_EVIDENCIE },
