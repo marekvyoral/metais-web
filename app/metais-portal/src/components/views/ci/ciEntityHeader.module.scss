@@ -3,10 +3,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @include mq($until: tablet) {
+        display: block;
+    }
 }
 .buttonLinksDiv {
     display: flex;
     flex-direction: column;
     align-items: start;
     gap: govuk-spacing(2);
+}
+.noWrap {
+    white-space: nowrap;
 }

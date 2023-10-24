@@ -13,6 +13,9 @@
     }
     padding-top: 0 !important;
     padding-right: govuk-spacing(4);
+    @include mq($until: desktop) {
+        padding-left: govuk-spacing(4);
+    }
 }
 
 .closedContent {
