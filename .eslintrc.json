@@ -118,7 +118,9 @@
     },
     "settings": {
         "import/resolver": {
-            "typescript": {},
+            "typescript": {
+                "project": ["./tsconfig.json", "./packages/*/tsconfig.json", ".app/*/tsconfig.json"]
+            },
             "alias": {
                 "map": [
                     ["@", "src"],
