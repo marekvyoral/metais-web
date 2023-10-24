@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {
     ATTRIBUTE_NAME,
     ConfigurationItemUi,
+    RelationshipUi,
     useReadCiNeighboursWithAllRels,
     useReadRelationships,
     useStoreConfigurationItem,
@@ -27,6 +28,10 @@ import { CreateEntityData } from '@/components/create-entity/CreateEntity'
 import { ITVSExceptionsCreateView } from '@/components/views/ci/ITVSExceptions/ITVSExceptionsCreateView'
 import { filterRelatedList } from '@/componentHelpers/new-relation'
 import { formatFormAttributeValue } from '@/components/create-entity/createEntityHelpers'
+
+export interface RelationshipWithCiType extends RelationshipUi {
+    ciType: string
+}
 
 interface Props {
     entityName: string
@@ -59,20 +64,9 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
 
     const [requestId, setRequestId] = useState<string>('')
     const [selectedCITypeForRelationTechnicalName, setSelectedCITypeForRelationTechnicalName] = useState<string>('')
+    const [relationshipSet, setRelationshipSet] = useState<RelationshipWithCiType[]>([])
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
-    const {
-        selectedItems: selectedISVSs,
-        setSelectedItems: setSelectedISVSs,
-        setIsListPageOpen: setIsISVSListPageOpen,
-        isListPageOpen: isISVSListPageOpen,
-    } = useNewRelationData()
-    const {
-        selectedItems: selectedPOs,
-        setSelectedItems: setSelectedPOs,
-        setIsListPageOpen: setIsPOListPageOpen,
-        isListPageOpen: isPOListPageOpen,
-    } = useNewRelationData()
     const [existingRelations, setExistingRelations] = useState<ConfigurationItemUi[]>()
 
     const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
@@ -87,9 +81,9 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
         return () => {
             const cis = rels?.ciWithRels?.map((ciWithRel) => ciWithRel.ci)
             setExistingRelations(cis as ConfigurationItemUi[])
-            setSelectedISVSs(cis as ConfigurationItemUi[])
+            //setSelectedISVSs(cis as ConfigurationItemUi[])
         }
-    }, [rels, setSelectedISVSs])
+    }, [rels])
 
     //build select options from this data
     const relatedListAsSources = filterRelatedList(relatedListData?.cisAsSources, ['ISVS', 'PO'])
@@ -124,8 +118,8 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const storeGraph = useStoreGraph({
         mutation: {
             onSuccess() {
-                setIsISVSListPageOpen(false)
-                setSelectedISVSs(null)
+                // setIsISVSListPageOpen(false)
+                // setSelectedISVSs(null)
                 //invalidateCilistFilteredCache.invalidate({ ciType: entityName })
                 invalidateCiByUuidCache.invalidate()
             },
@@ -154,27 +148,21 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
 
         const relationRequestData = {
             storeSet: {
-                relationshipSet:
-                    selectedISVSs && Array.isArray(selectedISVSs)
-                        ? selectedISVSs.map((item: ConfigurationItemUi) => ({
-                              type: 'osobitny_postup_vztah_ISVS',
-                              attributes: [
-                                  ...formattedAttributesToSend
-                                      .filter((key) => key.id == item.uuid)
-                                      .map((key) => ({
-                                          name: key.name,
-                                          value: formData[key.name + JOIN_OPERATOR + key.id + JOIN_OPERATOR + relationSuffix],
-                                      })),
-                              ],
-                              //uuid of picked entities
-                              startUuid: configurationItemId,
-                              //id of current entity
-                              endUuid: item.uuid,
-                              //from getGroup Api
-                              owner: updateCiItemId ? ciItemData?.metaAttributes?.owner : ownerId,
-                              uuid: uuidV4(),
-                          }))
-                        : [],
+                relationshipSet: relationshipSet
+                    ? relationshipSet.map((rel) => ({
+                          ...rel,
+                          startUuid: configurationItemId,
+                          owner: ownerId,
+                          attributes: [
+                              ...formattedAttributesToSend
+                                  .filter((key) => key.id == rel.endUuid)
+                                  .map((key) => ({
+                                      name: key.name,
+                                      value: formData[key.name + JOIN_OPERATOR + key.id + JOIN_OPERATOR + relationSuffix],
+                                  })),
+                          ],
+                      }))
+                    : [],
             },
         }
 
@@ -213,6 +201,10 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
         }
     }, [performRedirection, requestId])
 
+    useEffect(() => {
+        console.log(relationshipSet)
+    }, [relationshipSet])
+
     const onSubmit = async (formAttributes: FieldValues) => {
         setFormData(formAttributes)
 
@@ -244,9 +236,9 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
             owner: ownerId,
         }
 
-        await storeConfigurationItem.mutate({
-            data: updateCiItemId ? dataToUpdate : dataToCreate,
-        })
+        // await storeConfigurationItem.mutate({
+        //     data: updateCiItemId ? dataToUpdate : dataToCreate,
+        // })
     }
 
     // const isDataLoading = [isReadRelationshipsLoading, isRelatedListLoading, isRelationTypeDataLoading, isDetailDataLoading].some((item) => item)
@@ -291,19 +283,8 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                     isProcessing={false}
                     isLoading={isLoading || isRelatedListLoading}
                     isError={isError}
-                    selectedISVSItemsState={{
-                        selectedItems: selectedISVSs,
-                        setSelectedItems: setSelectedISVSs,
-                        setIsListPageOpen: setIsISVSListPageOpen,
-                        isListPageOpen: isISVSListPageOpen,
-                    }}
-                    selectedPOItemsState={{
-                        selectedItems: selectedPOs,
-                        setSelectedItems: setSelectedPOs,
-                        setIsListPageOpen: setIsPOListPageOpen,
-                        isListPageOpen: isPOListPageOpen,
-                    }}
                     defaultItemAttributeValues={ciItemData?.attributes}
+                    relationshipSetState={{ relationshipSet, setRelationshipSet }}
                 />
             </QueryFeedback>
         </>

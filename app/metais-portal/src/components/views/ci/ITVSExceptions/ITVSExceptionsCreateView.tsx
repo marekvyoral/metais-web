@@ -3,13 +3,13 @@ import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
-import { ATTRIBUTE_NAME, ConfigurationItemUi, ConfigurationItemUiAttributes, Gen_Profil } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME, ConfigurationItemUi, ConfigurationItemUiAttributes, Gen_Profil, RelationshipUi } from '@isdd/metais-common/api'
 import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { AccordionContainer, Button, ButtonGroupRow, ButtonLink, IAccordionSection, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { isError } from '@tanstack/react-query'
 import { SelectCiItem } from '@isdd/metais-common/components/select-ci-item/SelectCiItem'
-import { INewRelationData, useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
+import { INewRelationData, NewRelationDataProvider, useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { JOIN_OPERATOR } from '@isdd/metais-common/constants'
 import classNames from 'classnames'
 import { MultiValue } from 'react-select'
@@ -29,6 +29,13 @@ import { getAttributeInputErrorMessage, findAttributeConstraint, getAttributeUni
 import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
 import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
+import { ISVSRelationSelect } from '@/components/containers/ITVS-exceptions/ISVSRelationSelect'
+import { RelationshipWithCiType } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
+
+export interface IRelationshipSetState {
+    relationshipSet: RelationshipWithCiType[]
+    setRelationshipSet: React.Dispatch<React.SetStateAction<RelationshipWithCiType[]>>
+}
 
 interface Props {
     data: CreateEntityData
@@ -39,10 +46,11 @@ interface Props {
     isProcessing: boolean
     isLoading: boolean
     isError: boolean
-    selectedISVSItemsState: INewRelationData
-    selectedPOItemsState: INewRelationData
+    // selectedISVSItemsState: INewRelationData
+    // selectedPOItemsState: INewRelationData
     publicAuthorityState?: PublicAuthorityState
     roleState?: RoleState
+    relationshipSetState: IRelationshipSetState
 }
 
 export const ITVSExceptionsCreateView: React.FC<Props> = ({
@@ -54,10 +62,11 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     isProcessing,
     isLoading,
     isError,
-    selectedISVSItemsState,
-    selectedPOItemsState,
+    // selectedISVSItemsState,
+    // selectedPOItemsState,
     publicAuthorityState,
     roleState,
+    relationshipSetState,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -94,8 +103,8 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
 
     const [sectionError, setSectionError] = useState<{ [x: string]: boolean }>(sectionErrorDefaultConfig)
 
-    const { selectedItems: selectedISVSs, setSelectedItems: setSelectedISVSs, setIsListPageOpen: setIsISVSListPageOpen } = selectedISVSItemsState
-    const { selectedItems: selectedPOs, setSelectedItems: setSelectedPOs, setIsListPageOpen: setIsPOListPageOpen } = selectedPOItemsState
+    // const { selectedItems: selectedISVSs, setSelectedItems: setSelectedISVSs, setIsListPageOpen: setIsISVSListPageOpen } = selectedISVSItemsState
+    // const { selectedItems: selectedPOs, setSelectedItems: setSelectedPOs, setIsListPageOpen: setIsPOListPageOpen } = selectedPOItemsState
 
     const relationSchema = relationData?.relationTypeData
     const [relationSchemaCombinedAttributes, setRelationSchemaCombinedAttributest] = useState<(Attribute | undefined)[]>([])
@@ -118,104 +127,6 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         setValue(AttributesConfigTechNames.REFERENCE_ID, referenceIdValue)
         setValue(AttributesConfigTechNames.METAIS_CODE, metaIsCodeValue)
     }, [metaIsCodeValue, referenceIdValue, setValue])
-
-    const sections: IAccordionSection[] =
-        selectedISVSs && Array.isArray(selectedISVSs)
-            ? selectedISVSs.map((item: ConfigurationItemUi) => ({
-                  title: item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
-                  summary: (
-                      <ButtonGroupRow key={item.uuid} className={''}>
-                          <ButtonLink
-                              label={t('newRelation.detailButton')}
-                              //className={classNames(styles.buttonLink, styles.blue)}
-                              onClick={() => navigate(`/ci/ISVS/${item.uuid}`, { state: { from: location } })}
-                          />
-                          <ButtonLink
-                              label={t('newRelation.deleteButton')}
-                              //className={classNames(styles.buttonLink, styles.red)}
-                              onClick={() =>
-                                  setSelectedISVSs((prev: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | ColumnsOutputDefinition | null) =>
-                                      Array.isArray(prev) ? prev.filter((prevItem: ConfigurationItemUi) => prevItem.uuid !== item.uuid) : prev,
-                                  )
-                              }
-                          />
-                      </ButtonGroupRow>
-                  ),
-                  content: relationSchemaCombinedAttributes.map((attribute) => (
-                      <>
-                          <AttributeInput
-                              key={`${attribute?.id}+${item.uuid}`}
-                              attribute={attribute ?? {}}
-                              register={register}
-                              setValue={setValue}
-                              clearErrors={clearErrors}
-                              trigger={trigger}
-                              isSubmitted={formState.isSubmitted}
-                              error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
-                              nameSufix={JOIN_OPERATOR + item.uuid + JOIN_OPERATOR + 'RELATION'}
-                              hint={attribute?.description}
-                              hasResetState={{ hasReset, setHasReset }}
-                              constraints={findAttributeConstraint(
-                                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                  //@ts-ignore
-                                  attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
-                                  relationData?.constraintsData ?? [],
-                              )}
-                              unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
-                          />
-                      </>
-                  )),
-              }))
-            : []
-
-    const POSections: IAccordionSection[] =
-        selectedPOs && Array.isArray(selectedPOs)
-            ? selectedPOs.map((item: ConfigurationItemUi) => ({
-                  title: item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
-                  summary: (
-                      <ButtonGroupRow key={item.uuid} className={''}>
-                          <ButtonLink
-                              label={t('newRelation.detailButton')}
-                              //className={classNames(styles.buttonLink, styles.blue)}
-                              onClick={() => navigate(`/ci/PO/${item.uuid}`, { state: { from: location } })}
-                          />
-                          <ButtonLink
-                              label={t('newRelation.deleteButton')}
-                              //className={classNames(styles.buttonLink, styles.red)}
-                              onClick={() =>
-                                  setSelectedPOs((prev: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | ColumnsOutputDefinition | null) =>
-                                      Array.isArray(prev) ? prev.filter((prevItem: ConfigurationItemUi) => prevItem.uuid !== item.uuid) : prev,
-                                  )
-                              }
-                          />
-                      </ButtonGroupRow>
-                  ),
-                  content: relationSchemaCombinedAttributes.map((attribute) => (
-                      <>
-                          <AttributeInput
-                              key={`${attribute?.id}+${item.uuid}`}
-                              attribute={attribute ?? {}}
-                              register={register}
-                              setValue={setValue}
-                              clearErrors={clearErrors}
-                              trigger={trigger}
-                              isSubmitted={formState.isSubmitted}
-                              error={getAttributeInputErrorMessage(attribute ?? {}, formState.errors)}
-                              nameSufix={JOIN_OPERATOR + item.uuid + JOIN_OPERATOR + 'RELATION'}
-                              hint={attribute?.description}
-                              hasResetState={{ hasReset, setHasReset }}
-                              constraints={findAttributeConstraint(
-                                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                  //@ts-ignore
-                                  attribute?.constraints?.map((att: AttributeConstraintEnumAllOf) => att.enumCode ?? '') ?? [],
-                                  relationData?.constraintsData ?? [],
-                              )}
-                              unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
-                          />
-                      </>
-                  )),
-              }))
-            : []
 
     return (
         <>
@@ -257,20 +168,31 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                 />
                             </div>
                         ))}
-
-                        <SelectCiItem
-                            key={'ISVSSelect'}
-                            filterTypeEntityName={'ISVS'}
-                            onChangeSelectedCiItem={(val) => setSelectedISVSs(val)}
-                            onCloseModal={() => setIsISVSListPageOpen(false)}
-                            onOpenModal={() => setIsISVSListPageOpen(true)}
-                            existingRelations={undefined}
-                            modalContent={<CiListPage importantEntityName={'ISVS'} noSideMenu />}
-                            label={'TRANS//Suvisiace ISVS'}
-                        />
-                        {selectedISVSs && Array.isArray(selectedISVSs) && selectedISVSs.length > 0 && <AccordionContainer sections={sections} />}
-
-                        <SelectCiItem
+                        <NewRelationDataProvider>
+                            <ISVSRelationSelect
+                                ciType="ISVS"
+                                relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
+                                methods={methods}
+                                hasResetState={{ hasReset, setHasReset }}
+                                constraintsData={relationData?.constraintsData ?? []}
+                                unitsData={unitsData}
+                                relationType="osobitny_postup_vztah_ISVS"
+                                relationshipSetState={relationshipSetState}
+                            />
+                        </NewRelationDataProvider>
+                        <NewRelationDataProvider>
+                            <ISVSRelationSelect
+                                ciType="PO"
+                                relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
+                                methods={methods}
+                                hasResetState={{ hasReset, setHasReset }}
+                                constraintsData={relationData?.constraintsData ?? []}
+                                unitsData={unitsData}
+                                relationType="osobitny_postup_vztah_ISVS"
+                                relationshipSetState={relationshipSetState}
+                            />
+                        </NewRelationDataProvider>
+                        {/* <SelectCiItem
                             key={'POSelect'}
                             filterTypeEntityName={'PO'}
                             onChangeSelectedCiItem={(val) => setSelectedPOs(val)}
@@ -280,7 +202,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                             modalContent={<CiListPage importantEntityName={'PO'} noSideMenu />}
                             label={'TRANS//Suvisiace PO'}
                         />
-                        {selectedPOs && Array.isArray(selectedPOs) && selectedPOs.length > 0 && <AccordionContainer sections={POSections} />}
+                        {selectedPOs && Array.isArray(selectedPOs) && selectedPOs.length > 0 && <AccordionContainer sections={POSections} />} */}
 
                         <SubmitWithFeedback
                             additionalButtons={[
