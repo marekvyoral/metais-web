@@ -92,8 +92,12 @@ export const getPortalNavigationItems = (
             icon: DataObjectsIcon,
             subItems: [
                 {
-                    title: t('navMenu.lists.registersList'),
-                    path: NavigationSubRoutes.REFERENCE_REGISTRE,
+                    title: t('navMenu.lists.registers'),
+                    path: NavigationSubRoutes.HOW_TO_REFERENCE_REGISTERS,
+                    subItems: [
+                        { title: t('navMenu.lists.registersList'), path: NavigationSubRoutes.REFERENCE_REGISTRE },
+                        { title: t('navMenu.lists.registersRequestsList'), path: NavigationSubRoutes.REFERENCE_REGISTERS_REQUESTS },
+                    ],
                 },
                 {
                     title: t('navMenu.lists.codelists'),
@@ -105,11 +109,24 @@ export const getPortalNavigationItems = (
                     subItems: [{ title: t('navMenu.referenceIdentifiers'), path: '/todo' }],
                 },
                 {
-                    title: t('navMenu.dataObligationsRegister'),
-                    path: '/todo',
+                    title: t('navMenu.lists.codelists'),
+                    path: RouteNames.HOW_TO_CODELIST,
+                    subItems: [
+                        { title: t('navMenu.lists.codelists'), path: NavigationSubRoutes.CISELNIKY },
+                        { title: t('navMenu.lists.codelistsRequestsList'), path: NavigationSubRoutes.CODELIST_REQUESTS },
+                    ],
+                },
+                {
+                    title: t('navMenu.referenceIdentifiers'),
+                    path: RouteNames.HOW_TO_REFERENCE_IDENTIFIERS,
+                    subItems: [
+                        { title: t('navMenu.lists.referenceIdentifiersList'), path: NavigationSubRoutes.IDENTIFIERS_LIST },
+                        { title: t('navMenu.lists.referenceIdentifiersRequestsList'), path: NavigationSubRoutes.IDENTIFIERS_REQUESTS },
+                    ],
                 },
             ],
         },
+
         {
             path: RouteNames.HOW_TO_MONITORING,
             title: t('navMenu.monitoring'),
