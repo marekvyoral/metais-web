@@ -49,6 +49,7 @@ export const CiEntityIdHeader: React.FC<Props> = ({ entityData, entityName, enti
                     />
 
                     <ButtonPopup
+                        buttonClassName={styles.noWrap}
                         buttonLabel={t('ciType.moreButton')}
                         popupPosition="right"
                         popupContent={() => {

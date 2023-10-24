@@ -4,12 +4,14 @@ import { useTranslation } from 'react-i18next'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-export const Home: React.FC = () => {
+const PPAHowTo = () => {
     const { t } = useTranslation()
     return (
         <>
-            <BreadCrumbs withWidthContainer links={[{ label: t('breadcrumbs.home'), href: '/', icon: HomeIcon }]} />{' '}
-            <MainContentWrapper>Home</MainContentWrapper>
+            <BreadCrumbs withWidthContainer links={[{ label: t('breadcrumbs.home'), href: '/', icon: HomeIcon }]} />
+            <MainContentWrapper>STD_HOWTO</MainContentWrapper>
         </>
     )
 }
+
+export default PPAHowTo

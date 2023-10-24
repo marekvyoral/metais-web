@@ -4,12 +4,14 @@ import { useTranslation } from 'react-i18next'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-export const Home: React.FC = () => {
+const RefIdentifiersHowTo = () => {
     const { t } = useTranslation()
     return (
         <>
-            <BreadCrumbs withWidthContainer links={[{ label: t('breadcrumbs.home'), href: '/', icon: HomeIcon }]} />{' '}
-            <MainContentWrapper>Home</MainContentWrapper>
+            <BreadCrumbs withWidthContainer links={[{ label: t('breadcrumbs.home'), href: '/', icon: HomeIcon }]} />
+            <MainContentWrapper>REF_IDENTIFIERS_HOWTO</MainContentWrapper>
         </>
     )
 }
+
+export default RefIdentifiersHowTo
