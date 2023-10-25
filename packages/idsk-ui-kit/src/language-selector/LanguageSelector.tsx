@@ -39,6 +39,10 @@ export const LanguageSelector: React.FC = () => {
         document.documentElement.setAttribute('lang', lng)
         event.preventDefault()
         setIsMenuExpanded(false)
+        // eslint-disable-next-line no-console
+        console.log('location.pathname', location.pathname)
+        // eslint-disable-next-line no-console
+        console.log('window.location', window.location.pathname)
         i18n.changeLanguage(lng, () => navigate(location.pathname, { state: { from: location } }))
     }
 
