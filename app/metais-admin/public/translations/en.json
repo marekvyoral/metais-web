@@ -703,6 +703,11 @@
         "detailHeading": "User detail",
         "detailEditHeading": "Editing of exisitng user",
         "detailCreateHeading": "Creation of user",
+        "password": "Password",
+        "passwordChange": "Password change",
+        "newPassword": "New password",
+        "passwordChangeInProgress": "Password is being changed",
+        "passwordChangeError": "Changing the password ended in an error",
         "save": "Save",
         "cancel": "Cancel",
         "back": "Back",
@@ -853,7 +858,10 @@
         "changedUserInformationError": "Error occurred while changing personal information. Please try again."
     },
     "validation": {
-        "required": "This field is required"
+        "required": "This field is required",
+        "minCharacters": "{{itemName}} must be at least {{min}} characters",
+        "maxCharacters": "{{itemName}} must be at most {{max}} characters",
+        "password": "Password must meet the criteria: at least one uppercase, one lowercase, and one other character."
     },
     "documentsManagement": {
         "heading": "Project document management",

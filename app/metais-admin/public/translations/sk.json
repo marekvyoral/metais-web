@@ -457,6 +457,11 @@
         "detailHeading": "Detail používateľa",
         "detailEditHeading": "Upravenie existujúceho používateľa",
         "detailCreateHeading": "Vytvorenie nového používateľa",
+        "passwordChange": "Zmena hesla",
+        "password": "Heslo",
+        "newPassword": "Nové heslo",
+        "passwordChangeInProgress": "Prebieha zmena hesla",
+        "passwordChangeError": "Zmena hesla skončila chybou",
         "save": "Uložiť",
         "cancel": "Zrušiť",
         "back": "Späť",
@@ -856,7 +861,10 @@
         "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova."
     },
     "validation": {
-        "required": "Toto pole je povinné"
+        "required": "Toto pole je povinné",
+        "minCharacters": "{{itemName}} musí obsahovať aspoň {{min}} znakov",
+        "maxCharacters": "{{itemName}} môže obsahovať maximálne {{max}} znakov",
+        "password": "Heslo musí obsahovať aspoň jeden veľký znak, aspoň jeden malý znak a aspoň jeden iný znak."
     },
     "documentsManagement": {
         "heading": "Správa dokumentov Projektov",
