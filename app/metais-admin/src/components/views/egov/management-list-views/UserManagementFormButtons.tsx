@@ -9,13 +9,14 @@ interface Props {
     handleResetForm: () => void
     isError: boolean
     hideCancelButton?: boolean
+    saveButtonLabel?: string
 }
 
-export const UserManagementFormButtons: React.FC<Props> = ({ handleBackNavigate, handleResetForm, isError, hideCancelButton }) => {
+export const UserManagementFormButtons: React.FC<Props> = ({ handleBackNavigate, handleResetForm, isError, hideCancelButton, saveButtonLabel }) => {
     const { t } = useTranslation()
     return (
         <div className={styles.formButtonsWrapper}>
-            <Button label={t('managementList.save')} type="submit" disabled={isError} />
+            <Button label={saveButtonLabel ?? t('managementList.save')} type="submit" disabled={isError} />
             {!hideCancelButton && (
                 <Button className={styles.cancelButton} variant="warning" label={t('managementList.cancel')} type="reset" onClick={handleResetForm} />
             )}
