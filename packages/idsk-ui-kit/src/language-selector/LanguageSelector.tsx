@@ -39,7 +39,7 @@ export const LanguageSelector: React.FC = () => {
         document.documentElement.setAttribute('lang', lng)
         event.preventDefault()
         setIsMenuExpanded(false)
-        i18n.changeLanguage(lng, () => navigate(window.location, { state: { from: location } }))
+        i18n.changeLanguage(lng, () => navigate(location.pathname, { state: { from: location } }))
     }
 
     const handleWrapperBlur = (event: React.FocusEvent<HTMLDivElement, Element>) => {
