@@ -22,7 +22,6 @@
         "contentAdmin": "Správca obsahu",
         "RSS": "RSS",
         "appVersion": "Verzia aplikácie",
-
         "services": {
             "title": "Služby a informácie",
             "rations": "Dávky",
@@ -112,15 +111,12 @@
         "innerNav": "Vnútorná navigácia",
         "mainNav": "Hlavná navigácia",
         "reports": "Zoznam zostáv",
-
         "GoalsPrincipalsActivitiesKRIT": "Ciele, princípy, aktivity a KRIT",
         "referenceIdentifiers": "Referenčné identifikátory",
         "centralDataModel": "Centrálny dátový model",
         "dataElementsCatalogue": "Katalóg dátových prvkov",
         "dataObligationsRegister": "Register dátových oprávnení a povinností",
-
         "programProjectsActivities": "Programy, projekty a aktivity",
-
         "lists": {
             "processorsOfITDevelopmentConcepts": "Spracovatelia KRIT",
             "subordinates": "Podriadené osoby",
@@ -162,7 +158,6 @@
             "virtualMachines": "Virtuálne stroje",
             "operationPlace": "Miesto prevádzky",
             "notInOVM": "Prevádzkovatelia IS, ktorí nie sú orgánmi riadenia",
-
             "princip": "Princípy",
             "ciel": "Ciele",
             "aktivita": "Aktivity",
@@ -180,7 +175,6 @@
             "webResidenceAndMobileApps": "Webové sídlo a mobilné aplikácie",
             "relationsInspection": "Inšpekcia vzťahov",
             "architectonicRepository": "Architektonický repozitár",
-
             "assembliesAndReports": "Zostavy a reporty",
             "totalCostOfOwnership": "Celkové náklady na vlastníctvo",
             "serviceLevelAgreementsWithOperator": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
@@ -356,6 +350,57 @@
         "changeOfOwner": "Zmena vlastníka",
         "besManagement": "BES management",
         "createEntity": "Vytvorenie novej entity",
+        "sendForApproval": "Poslať na schválenie",
+        "approve": "Schváliť",
+        "return": "Vrátiť na dopracovanie",
+        "reject": "Zamietnuť",
+        "changeBDA": "Správa položiek architektonického modelu",
+        "cloneAS": "Vytvoriť novú verziu položky",
+        "cloneKS": "Vytvoriť novú inštanciu položky",
+        "actions": {
+            "next": {
+                "c_stav_projektu_1_0": "Odoslať na ohlásenie",
+                "c_stav_projektu_2_0": "Odoslať ako plánovaný",
+                "c_stav_projektu_3_0": "Odoslať na schválenie",
+                "c_stav_projektu_3_0_REALIZATION": "Začať realizáciu",
+                "c_stav_projektu_4_0": "Schváliť",
+                "c_stav_projektu_5_0": "Odoslať na schválenie",
+                "c_stav_projektu_6_0": "Začať realizáciu",
+                "c_stav_projektu_8_0": "Nasadiť",
+                "c_stav_projektu_10_0": "Ukončiť projekt",
+                "c_stav_projektu_11_0": "Schváliť",
+                "c_stav_projektu_3_1": "Začať realizáciu",
+                "c_stav_projektu_4_1": "Vrátiť na dopracovanie",
+                "c_stav_projektu_8_1": "Zrušiť",
+                "c_stav_projektu_11_1": "Vrátiť na dopracovanie",
+                "c_stav_projektu_11_2": "Neschválený"
+            },
+            "return": {
+                "return": "Vrátiť stav"
+            },
+            "error": {
+                "approvedBudget": "Pre schválenie je potrebné doplnenie \"Schválené ročné prevádzkové náklady projektu v EUR:\" a \"Schválený rozpočet projektu v EUR:\" na záložke \"detailne informácie\" v profile Finančné informácie\"",
+                "approvedDoc": "Pre schválenie je potrebná dokumntácia Hodnotenie projektu."
+            }
+        },
+        "messages": {
+            "success": "Projekt bol posunutý do ďalšej fázy",
+            "successReturned": "Projekt vrátený na dopracovanie",
+            "error": "Pri odoslaní projektu nastala chyba",
+            "errorDocuments": "Nie sú vytvorené povinné dokumenty",
+            "errorRelations": "Nie je vytvorený povinný vzťah na ISVS, alebo Miesto prevádzky",
+            "errorRelationsAsKsFaza": "Položka má fázu životného cyklu \"Ostrá prevádzka",
+            "errorNotApprovedKS": "Koncové služby je potrebné vyplniť a vypublikovať.",
+            "errorNotAllowedApprove": "Používateľ nemá práva na schválenie projektu.",
+            "docUploadSuccess": "Dokument bol nahraný",
+            "docRefreshSuccess": "Dokument bol obnovený",
+            "docRefreshError": "Dokument sa nepodarilo obnoviť",
+            "docRefreshDatabaseError": "Ukládanie dokumentu do databázy zlyhalo.",
+            "docUploadError": "Dokument {{name}} nie je vytvorený",
+            "successProjectReturn": "Projekt vratený do predchadzajúceho stavu",
+            "successProjectCanceled": "Projekt bol zrušený",
+            "docNotExist": "Daný dokument nie je vytvorený."
+        },
         "meta": {
             "lastModifiedAt": "Posledná zmena",
             "createdAt": "Vytvorené",
@@ -1271,26 +1316,20 @@
             "customRange": "Vlastný rozsah",
             "fromUpdate": "Aktualizované od",
             "toUpdate": "Aktualizované do",
-
             "selected": "{{count}} vybrané",
-
             "resultType": "Typ výsledku",
             "attribute": "Atribút",
             "document": "Dokument",
             "object": "Objekt",
             "relation": "Vzťah",
-
             "section": "Sekcia",
             "all": "Všetky",
-
             "owner": "Vlastník",
-
             "documentType": "Typ dokumentu",
             "pdf": "PDF",
             "docx": "DOCX",
             "rtf": "RTF",
             "otd": "OTD",
-
             "submitButton": "Filtrovať výsledky"
         }
     },

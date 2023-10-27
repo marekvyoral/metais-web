@@ -2,7 +2,7 @@ import uniq from 'lodash/uniq'
 
 import { ConfigurationItemUi } from '@isdd/metais-common/api'
 import { CiType, useGetCiTypeHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { useGetRightsForPOBulkHook, useIsInPoByGid1Hook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useGetRightsForPOBulkHook, useIsInPoByGid1Hook, useIsOwnerByGidHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useBulkActionHelpers = () => {
@@ -13,6 +13,20 @@ export const useBulkActionHelpers = () => {
     const getRightsForPOBulk = useGetRightsForPOBulkHook()
     const getCiType = useGetCiTypeHook()
     const checkIsInPoByGid = useIsInPoByGid1Hook()
+    const checkIsOwnerByGid = useIsOwnerByGidHook()
+
+    const hasOwnerRights = async (items: ConfigurationItemUi[]) => {
+        const gids = uniq(items.filter((item) => !!item.attributes).map((item) => item.metaAttributes?.owner || ''))
+        const response = await checkIsOwnerByGid({
+            login: user?.login,
+            gids,
+        })
+        const hasRights = response.isOwner?.every((item) => {
+            return item.owner
+        })
+
+        return hasRights
+    }
 
     const loadRights = async (owners: string[]) => {
         const rightsResult = await getRightsForPOBulk({
@@ -108,5 +122,5 @@ export const useBulkActionHelpers = () => {
         return !!(ci && ci.metaAttributes && ci.metaAttributes.state === 'INVALIDATED')
     }
 
-    return { bulkCheck, ciInvalidFilter, checkChangeOfOwner }
+    return { bulkCheck, ciInvalidFilter, checkChangeOfOwner, hasOwnerRights }
 }

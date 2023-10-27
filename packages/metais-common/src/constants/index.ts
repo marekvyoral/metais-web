@@ -88,7 +88,9 @@ export enum KSISVS_ROLES {
     STD_KSTAJ = 'STD_KSTAJ',
     STD_KSCLEN = 'STD_KSCLEN',
 }
-
+export enum RoleEnum {
+    PROJEKT_SCHVALOVATEL = 'PROJEKT_SCHVALOVATEL',
+}
 export const KSIVS_SHORT_NAME = 'KSISVS'
 export const META_PREFERENCES_KEY = 'META_'
 export const FILTER_LOCAL_STORAGE_KEY = 'filter_'
@@ -145,5 +147,8 @@ export const PROJECT_STATUS = 'EA_Profil_Projekt_status'
 export const ACTION_CREATE = 'CREATE'
 export const ACTION_UPDATE = 'UPDATE'
 export const ENTITY_PROJECT = 'Projekt'
+export const ENTITY_KS = 'KS'
+export const ENTITY_AS = 'AS'
+export const ENTITY_MIGRATION = 'Migracia'
 
 export const API_CALL_RETRY_COUNT = 30

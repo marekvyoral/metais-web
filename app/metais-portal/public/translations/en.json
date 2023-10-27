@@ -22,7 +22,6 @@
         "contentAdmin": "Admin of content",
         "RSS": "RSS",
         "appVersion": "App version",
-
         "services": {
             "title": "Services and Information",
             "rations": "Rations",
@@ -112,15 +111,12 @@
         "innerNav": "Inner navigation",
         "mainNav": "Main navigation",
         "reports": "List of reports",
-
         "GoalsPrincipalsActivitiesKRIT": "Goals, principles, activities and KRIT",
         "referenceIdentifiers": "Reference identifiers",
         "centralDataModel": "Central data model",
         "dataElementsCatalogue": "Data elements catalogue",
         "dataObligationsRegister": "Register of data authorizations and obligations",
-
         "programProjectsActivities": "Programs, projects and activities",
-
         "lists": {
             "processorsOfITDevelopmentConcepts": "Processors of KRIT",
             "subordinates": "Subordinates",
@@ -156,14 +152,12 @@
             "monitoringSet": "Set of monitoring parameters",
             "monitoringImport": "Import of monitored parameters",
             "monitoringServices": "Monitoring services",
-
             "evidenceObjects": "Evidence objects",
             "attributesEvidenceObjects": "Attributes of evidence objects",
             "servers": "Servers",
             "virtualMachines": "Virtual machines",
             "operationPlace": "Operation place",
             "notInOVM": "Operators, which are not in OVM",
-
             "princip": "Principles",
             "ciel": "Goals",
             "aktivita": "Activity",
@@ -181,7 +175,6 @@
             "webResidenceAndMobileApps": "Web residence and mobile applications",
             "relationsInspection": "Inspection of relations",
             "architectonicRepository": "Architectonic repository",
-
             "assembliesAndReports": "Assemblies and reports",
             "totalCostOfOwnership": "Total costs of ownership",
             "serviceLevelAgreementsWithOperator": "Service level agreements with the Operator (SLA)",
@@ -353,6 +346,57 @@
         "changeOfOwner": "Change owner",
         "besManagement": "BES management",
         "createEntity": "Create new entity",
+        "sendForApproval": "Send for approval",
+        "approve": "Approve",
+        "return": "Return",
+        "reject": "Reject",
+        "changeBDA": "BES management",
+        "cloneAS": "Create new version of item",
+        "cloneKS": "Create new instance of item",
+        "actions": {
+            "next": {
+                "c_stav_projektu_1_0": "Send for notification",
+                "c_stav_projektu_2_0": "Send as scheduled",
+                "c_stav_projektu_3_0": "Submit for approval",
+                "c_stav_projektu_3_0_REALIZATION": "Begin implementation",
+                "c_stav_projektu_4_0": "Approve",
+                "c_stav_projektu_5_0": "Submit for approval",
+                "c_stav_projektu_6_0": "Begin implementation",
+                "c_stav_projektu_8_0": "Deploy",
+                "c_stav_projektu_10_0": "Complete the project",
+                "c_stav_projektu_11_0": "Approve",
+                "c_stav_projektu_3_1": "Begin implementation",
+                "c_stav_projektu_4_1": "Return to completion",
+                "c_stav_projektu_8_1": "Cancel",
+                "c_stav_projektu_11_1": "Return to completion",
+                "c_stav_projektu_11_2": "Not approved"
+            },
+            "return": {
+                "return": "Vrátiť stav"
+            },
+            "error": {
+                "approvedBudget": "PTo approve project is needed to approve budget and approve annual operating costs of the project.",
+                "approvedDoc": "To approve project is needed to add documentation Hodnotenie projektu."
+            }
+        },
+        "messages": {
+            "success": "The project was moved to the next phase",
+            "successReturned": "Project returned for completion",
+            "error": "An error occurred while submitting the project",
+            "errorDocuments": "Mandatory documents are not created",
+            "errorRelations": "There is no mandatory relationship with the ISVS or the Place of operation",
+            "errorRelationsAsKsFaza": "The item has a life cycle phase of \"Live Operation",
+            "errorNotApprovedKS": "End services need to be completed and published.",
+            "errorNotAllowedApprove": "The user has no right to approve the project.",
+            "docUploadSuccess": "The document has been uploaded",
+            "docRefreshSuccess": "Document was refreshed",
+            "docRefreshError": "Document was not refreshed",
+            "docRefreshDatabaseError": "Saving document into database failed.",
+            "docUploadError": "Document {{name}} not created",
+            "successProjectReturn": "Project returned to previous state",
+            "successProjectCanceled": "The project was canceled",
+            "docNotExist": "Document is not created."
+        },
         "meta": {
             "lastModifiedAt": "Last change",
             "createdAt": "Created",
@@ -1250,26 +1294,20 @@
             "customRange": "Custom range",
             "fromUpdate": "Updated from",
             "toUpdate": "Updated to",
-
             "selected": "{{count}} selected",
-
             "resultType": "Type of result",
             "attribute": "Attribute",
             "document": "Document",
             "object": "Object",
             "relation": "Relation",
-
             "section": "Section",
             "all": "All",
-
             "owner": "Owner",
-
             "documentType": "Type of document",
             "pdf": "PDF",
             "docx": "DOCX",
             "rtf": "RTF",
             "otd": "OTD",
-
             "submitButton": "Filter results"
         }
     },

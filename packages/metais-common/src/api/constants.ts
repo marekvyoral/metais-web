@@ -27,7 +27,12 @@ export enum ATTRIBUTE_NAME {
     EA_Profil_PO_ulica = 'EA_Profil_PO_ulica',
     EA_Profil_PO_cislo = 'EA_Profil_PO_cislo',
     EA_Profil_PO_okres = 'EA_Profil_PO_okres',
+    EA_Profil_Projekt_schvalovaci_proces = 'EA_Profil_Projekt_schvalovaci_proces',
     EA_Profil_PO_je_kapitola = 'EA_Profil_PO_je_kapitola',
+    EA_Profil_Projekt_status = 'EA_Profil_Projekt_status',
+    IKT_Profil_Schvalenie_stav_migracie = 'IKT_Profil_Schvalenie_stav_migracie',
+    Financny_Profil_Projekt_schvalene_rocne_naklady = 'Financny_Profil_Projekt_schvalene_rocne_naklady',
+    Financny_Profil_Projekt_schvaleny_rozpocet = 'Financny_Profil_Projekt_schvaleny_rozpocet',
     Gen_Profil_EA_skrateny_nazov = 'Gen_Profil_EA_skrateny_nazov',
     Gen_Profil_EA_popis_referencie = 'Gen_Profil_EA_popis_referencie',
     Gen_Profil_EA_odkaz_na_referenciu = 'Gen_Profil_EA_odkaz_na_referenciu',
@@ -36,6 +41,27 @@ export enum ATTRIBUTE_NAME {
 }
 
 export const Gen_Profil = 'Gen_Profil'
+
+export const TYPE_OF_APPROVAL_PROCESS_DEFAULT = 'OPTIONAL_APPROVAL'
+
+export enum APPROVAL_PROCESS {
+    OPTIONAL_APPROVAL = 'OPTIONAL_APPROVAL',
+    WITHOUT_APPROVAL = 'WITHOUT_APPROVAL',
+}
+
+export enum PROJECT_STATE_ENUM {
+    c_stav_projektu_1 = 'c_stav_projektu_1',
+    c_stav_projektu_2 = 'c_stav_projektu_1',
+    c_stav_projektu_3 = 'c_stav_projektu_1',
+    c_stav_projektu_4 = 'c_stav_projektu_1',
+    c_stav_projektu_5 = 'c_stav_projektu_1',
+    c_stav_projektu_6 = 'c_stav_projektu_1',
+    c_stav_projektu_7 = 'c_stav_projektu_1',
+    c_stav_projektu_8 = 'c_stav_projektu_1',
+    c_stav_projektu_9 = 'c_stav_projektu_1',
+    c_stav_projektu_10 = 'c_stav_projektu_1',
+    c_stav_projektu_11 = 'c_stav_projektu_1',
+}
 
 export enum STATUTAR_NAME {
     Profil_PO_statutar_titul_pred_menom = 'Profil_PO_statutar_titul_pred_menom',

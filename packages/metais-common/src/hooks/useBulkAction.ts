@@ -1,31 +1,28 @@
-import uniq from 'lodash/uniq'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useBulkActionHelpers } from './useBulkActionHelpers'
 
-import { useIsOwnerByGidHook } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { ConfigurationItemUi } from '@isdd/metais-common/index'
+import { APPROVAL_PROCESS, ATTRIBUTE_NAME, ApiError, ConfigurationItemUi, PROJECT_STATE_ENUM } from '@isdd/metais-common/index'
+import { Confirm200, ReturnProject200, useConfirm, useReturnProject } from '@isdd/metais-common/api/generated/kris-swagger'
 
 export interface IBulkActionResult {
     isSuccess: boolean
     isError: boolean
-    successMessage: string
+    successMessage?: string
+    errorMessage?: string
 }
 
 export const useBulkAction = () => {
-    const {
-        state: { user },
-    } = useAuth()
     const { t } = useTranslation()
 
-    const { bulkCheck, checkChangeOfOwner, ciInvalidFilter } = useBulkActionHelpers()
+    const { bulkCheck, checkChangeOfOwner, ciInvalidFilter, hasOwnerRights } = useBulkActionHelpers()
 
     const [errorMessage, setErrorMessage] = useState<string | undefined>()
     const [isBulkLoading, setBulkLoading] = useState<boolean>(false)
 
-    const checkIsOwnerByGid = useIsOwnerByGidHook()
+    const { mutateAsync: confirmProjectMutate } = useConfirm()
+    const { mutateAsync: mutateReturnProject } = useReturnProject()
 
     const handleInvalidate = async (
         items: ConfigurationItemUi[],
@@ -48,15 +45,7 @@ export const useBulkAction = () => {
         }
 
         try {
-            const gids = uniq(items.filter((item) => !!item.attributes).map((item) => item.metaAttributes?.owner || ''))
-            const response = await checkIsOwnerByGid({
-                login: user?.login,
-                gids,
-            })
-
-            const hasRights = response.isOwner?.every((item) => {
-                return item.owner
-            })
+            const hasRights = await hasOwnerRights(items)
 
             if (hasRights) {
                 setErrorMessage(undefined)
@@ -82,14 +71,7 @@ export const useBulkAction = () => {
             return onError()
         }
         try {
-            const gids = uniq(items.filter((item) => !!item.attributes).map((item) => item.metaAttributes?.owner || ''))
-            const response = await checkIsOwnerByGid({
-                login: user?.login,
-                gids,
-            })
-            const hasRights = response.isOwner?.every((item) => {
-                return item.owner
-            })
+            const hasRights = await hasOwnerRights(items)
 
             if (hasRights) {
                 setErrorMessage(undefined)
@@ -109,15 +91,7 @@ export const useBulkAction = () => {
     const handleUpdateFile = async (items: ConfigurationItemUi[], onSuccess: () => void, onError: () => void) => {
         setBulkLoading(true)
         try {
-            const gids = uniq(items.filter((item) => !!item.attributes).map((item) => item.metaAttributes?.owner || ''))
-            const response = await checkIsOwnerByGid({
-                login: user?.login,
-                gids,
-            })
-
-            const hasRights = response.isOwner?.every((item) => {
-                return item.owner
-            })
+            const hasRights = await hasOwnerRights(items)
 
             if (hasRights) {
                 setErrorMessage(undefined)
@@ -177,5 +151,94 @@ export const useBulkAction = () => {
         }
     }
 
-    return { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner, handleDeleteFile, handleUpdateFile }
+    const confirmProjectApproved = async (
+        uuid: string,
+        order: number,
+        approvalProcess: string,
+        handleResult: (actionResult: IBulkActionResult) => void,
+    ) => {
+        setBulkLoading(true)
+        await confirmProjectMutate(
+            { uuid, params: { order, approvalProcess } },
+            {
+                onSuccess: (data: Confirm200) => {
+                    if (data.newStatus === PROJECT_STATE_ENUM.c_stav_projektu_5) {
+                        handleResult({ isSuccess: true, isError: false, successMessage: t('ciType.messages.successReturned') })
+                    } else {
+                        handleResult({ isSuccess: true, isError: false, successMessage: t('ciType.messages.success') })
+                    }
+                },
+                onError: (error: ApiError) => {
+                    const errorData = JSON.parse(error.message ?? '')
+                    let m = 'ciType.messages.error'
+                    if (errorData.message === 'not_created_documents') {
+                        m = 'ciType.messages.errorDocuments'
+                    } else if (errorData.message === 'not_created_relations') {
+                        m = 'ciType.messages.errorRelations'
+                    } else if (errorData.message === 'not_approved_ks') {
+                        m = 'ciType.messages.errorNotApprovedKS'
+                    } else if (errorData.message === 'not_allowed_approve') {
+                        m = 'ciType.messages.errorNotAllowedApprove'
+                    }
+                    return handleResult({ isSuccess: false, isError: true, successMessage: t(m) })
+                },
+                onSettled: () => setBulkLoading(false),
+            },
+        )
+    }
+
+    const handleConfirmProject = async (
+        order: number,
+        entityData: ConfigurationItemUi,
+        handleResult: (actionResult: IBulkActionResult) => void,
+        onError: () => void,
+    ) => {
+        const projectStatus = entityData?.attributes?.[ATTRIBUTE_NAME.EA_Profil_Projekt_status]
+        const typeOfApprovalProcess =
+            entityData?.attributes?.[ATTRIBUTE_NAME.EA_Profil_Projekt_schvalovaci_proces] ?? APPROVAL_PROCESS.OPTIONAL_APPROVAL
+
+        if ((projectStatus === PROJECT_STATE_ENUM.c_stav_projektu_4 || projectStatus == PROJECT_STATE_ENUM.c_stav_projektu_11) && order == 0) {
+            if (
+                !entityData?.attributes?.[ATTRIBUTE_NAME.Financny_Profil_Projekt_schvalene_rocne_naklady] &&
+                !entityData?.attributes?.[ATTRIBUTE_NAME.Financny_Profil_Projekt_schvaleny_rozpocet]
+            ) {
+                setErrorMessage(t('ciType.actions.error.approvedBudget'))
+                return onError()
+            } else {
+                confirmProjectApproved(entityData?.uuid ?? '', order, typeOfApprovalProcess, handleResult)
+            }
+        } else {
+            confirmProjectApproved(entityData?.uuid ?? '', order, typeOfApprovalProcess, handleResult)
+        }
+    }
+
+    const handleProjectReturn = async (entityId: string, handleResult: (actionResult: IBulkActionResult) => void) => {
+        setBulkLoading(true)
+        await mutateReturnProject(
+            { uuid: entityId },
+            {
+                onSuccess: (data: ReturnProject200) => {
+                    if (data.newStatus === PROJECT_STATE_ENUM.c_stav_projektu_7)
+                        handleResult({ isSuccess: true, isError: false, successMessage: t('ciType.messages.successProjectCanceled') })
+                    else handleResult({ isSuccess: true, isError: false, successMessage: t('ciType.messages.successProjectReturn') })
+                },
+                onError: () => {
+                    handleResult({ isSuccess: false, isError: true, errorMessage: t('ciType.messages.error') })
+                },
+                onSettled: () => setBulkLoading(false),
+            },
+        )
+    }
+
+    return {
+        errorMessage,
+        isBulkLoading,
+        handleInvalidate,
+        handleReInvalidate,
+        handleChangeOwner,
+        handleDeleteFile,
+        handleUpdateFile,
+        handleConfirmProject,
+        handleProjectReturn,
+    }
 }
