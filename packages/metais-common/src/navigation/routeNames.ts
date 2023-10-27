@@ -21,6 +21,7 @@ export enum RouteNames {
     CODELISTS = '/codelists',
     REQUESTLIST = '/codelists/requestlist',
     CREATEREQUEST = '/codelists/requestlist/create',
+    EDITREQUEST = '/codelists/requestlist/edit',
     USER_PROFILE = '/userprofile',
     REPORTS = '/reports',
     GLOBAL_SEARCH = '/global/search',

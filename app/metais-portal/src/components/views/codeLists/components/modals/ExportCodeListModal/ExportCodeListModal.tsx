@@ -6,13 +6,14 @@ import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
 import { ExportIcon } from '@isdd/metais-common/assets/images'
 import { LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
-import { useDownloadInternalCodelistHook } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import { useDownloadInternalCodelistHook, useDownloadInternalCodelistRequestHook } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 
 import styles from './exportCodeListModal.module.scss'
 
 interface ExportCodeListModalProps {
     code: string
     isOpen: boolean
+    isRequest?: boolean
     onClose: () => void
 }
 
@@ -26,16 +27,18 @@ const generateExportFileName = (code: string, extension: CodeListExportExtension
     return `${code}.${extension.toLocaleLowerCase()}`
 }
 
-export const ExportCodeListModal: React.FC<ExportCodeListModalProps> = ({ code, isOpen, onClose }) => {
+export const ExportCodeListModal: React.FC<ExportCodeListModalProps> = ({ code, isOpen, onClose, isRequest }) => {
     const { t } = useTranslation()
     const [isLoading, setLoading] = useState<boolean>(false)
 
     const downloadFunction = useDownloadInternalCodelistHook()
+    const downloadRequestFunction = useDownloadInternalCodelistRequestHook()
 
     if (!code) return <></>
 
     const exportAndDownloadBlob = async (extension: CodeListExportExtensionEnum) => {
-        const blobData = await downloadFunction(code)
+        const blobData = !isRequest ? await downloadFunction(code) : await downloadRequestFunction(code)
+
         downloadBlobAsFile(new Blob([blobData]), generateExportFileName(code, extension))
         setLoading(false)
     }

@@ -26,7 +26,7 @@ import { CellContext, ColumnDef, ExpandedState, Row } from '@tanstack/react-tabl
 import { RequestListActions } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
-import { CodeListDetailItemsTableExpandedRow } from '@/components/views/codeLists/CodeListDetailItemsTableExpandedRow'
+import { RequestDetailItemsTableExpandedRow } from '@/components/views/requestLists/components/RequestDetailItemsTableExpandedRow'
 import { IItemForm, ModalItem } from '@/components/views/requestLists/components/modalItem/ModalItem'
 import styles from '@/components/views/requestLists/requestView.module.scss'
 import { DateModalItem } from '@/components/views/requestLists/components/modalItem/DateModalItem'
@@ -84,6 +84,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     canEditDate,
     attributeProfile,
     onSaveDates,
+    requestId,
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
@@ -270,15 +271,30 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
 
     return (
         <>
-            <BreadCrumbs
-                withWidthContainer
-                links={[
-                    { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
-                    { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
-                    { label: t('codeList.breadcrumbs.requestList'), href: RouteNames.REQUESTLIST },
-                ]}
-            />
+            {editData ? (
+                <BreadCrumbs
+                    withWidthContainer
+                    links={[
+                        { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
+                        { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
+                        { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
+                        { label: t('codeList.breadcrumbs.requestList'), href: RouteNames.REQUESTLIST },
+                        { label: editData?.codeListId ?? '', href: `${RouteNames.REQUESTLIST}/${requestId}` },
+                        { label: t('codeList.breadcrumbs.requestEdit'), href: `${RouteNames.EDITREQUEST}/${requestId}` },
+                    ]}
+                />
+            ) : (
+                <BreadCrumbs
+                    withWidthContainer
+                    links={[
+                        { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
+                        { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
+                        { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
+                        { label: t('codeList.breadcrumbs.requestList'), href: RouteNames.REQUESTLIST },
+                        { label: t('codeList.breadcrumbs.requestCreate'), href: `${RouteNames.CREATEREQUEST}/create` },
+                    ]}
+                />
+            )}
             {userAbility.can(RequestListActions.SHOW, entityName) && (
                 <MainContentWrapper>
                     <QueryFeedback loading={isLoading} error={isError} withChildren>
@@ -466,7 +482,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 columns={colDef}
                                 getExpandedRow={(row: Row<IItemForm>) => {
                                     return (
-                                        <CodeListDetailItemsTableExpandedRow
+                                        <RequestDetailItemsTableExpandedRow
                                             workingLanguage={i18n.language}
                                             codelistItem={mapToCodeListDetail(
                                                 i18n.language,
@@ -483,6 +499,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 close={closeDate}
                                 onSubmit={(i) => {
                                     onSaveDates?.(i, rowSelection)
+                                    closeDate()
                                 }}
                             />
                             <ButtonGroupRow>

@@ -16,7 +16,7 @@ import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { TextLink } from '@isdd/idsk-ui-kit/typography/TextLink'
 import { ApiCodelistItemName, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, RequestListState } from '@isdd/metais-common/constants'
-import { ActionsOverTable, CreateEntityButton, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RequestListActions } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { TextClickable } from '@/components/views/codeLists/components/TextClickable/TextClickable'
 import { CodeListFilterOnlyBase, CodeListListFilterData, defaultFilterValues } from '@/components/containers/CodeListListContainer'
@@ -44,6 +45,9 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
     const userAbility = useAbilityContext()
 
     const [lockedDialogData, setLockedDialogData] = useState<{ id?: number; lockedBy?: string; isOpened: boolean }>({ isOpened: false })
+    const {
+        isActionSuccess: { value: isSuccess },
+    } = useActionSuccess()
 
     const columns: Array<ColumnDef<ApiCodelistPreview>> = [
         {
@@ -76,7 +80,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                         {name}
                     </TextClickable>
                 ) : (
-                    <TextLink to={`${RouteNames.REQUESTLIST}/detail/${id}`}>{name}</TextLink>
+                    <TextLink to={`${RouteNames.REQUESTLIST}/${id}`}>{name}</TextLink>
                 )
             },
         },
@@ -113,6 +117,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
             />
             {userAbility.can(RequestListActions.SHOW, entityName) && (
                 <MainContentWrapper>
+                    {isSuccess && <MutationFeedback success error={false} />}
                     <QueryFeedback loading={isLoading} error={false} withChildren>
                         <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>
 

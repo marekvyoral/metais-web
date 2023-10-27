@@ -806,19 +806,17 @@
         "home": "Domov",
         "dataObjects": "Dátové objekty",
         "codeLists": "Číselníky",
-        "requestList": "Zoznam žiadostí založenia číselníka",
-        "requestCreate": "Žiadosť o zaradenie číselníka",
-        "codeListsList": "Zoznam číselníkov",
-        "publicCodeListsList": "Zoznam publikovaných číselníkov"
+        "requestList": "Zoznam žiadostí založenia číselníka"
     },
     "codeList": {
         "breadcrumbs": {
             "home": "Domov",
             "dataObjects": "Dátové objekty",
             "codeLists": "Číselníky",
-            "codeListsList": "Zoznam číselníkov",
             "publicCodeListsList": "Zoznam publikovaných číselníkov",
-            "requestList": "Zoznam žiadostí číselníkov"
+            "requestList": "Zoznam žiadostí číselníkov",
+            "requestCreate": "Vytvoriť žiadosť číselníka",
+            "requestEdit": "Editovať žiadosť číselníka"
         },
         "filter": {
             "title": "Filter"
@@ -988,6 +986,8 @@
             "phone": "Telefónne číslo je povinné pole"
         },
         "requestModal": {
+            "yes": "Áno",
+            "no": "Nie",
             "shortcut": "Skrátený názov položky",
             "codeItem": "Kód položky",
             "codeName": "Názov položky",
@@ -1003,7 +1003,17 @@
             "law": "Legislatívna uznateľnosť",
             "validate": "Dátum platnosti",
             "startDate": "Začiatok účinnosti",
-            "endDate": "Koniec účinnosti"
+            "endDate": "Koniec účinnosti",
+            "acceptTitle": "Akceptácia žiadosti",
+            "acceptDesc": "Akceptáciou žiadosti sa návrh základného číselníka odošle na schválanie Komisii pre štandardizáciu ISVS. Po jeho schválaní sa presunie do zoznamu číselníkov a príslušný gestor bude vyzvaný na doplnenie položiek číselníka  v zákonnej lehote.",
+            "acceptSzzcTitle": "Akceptácia žiadosti správcom",
+            "acceptSzzcDesc": "Naozaj chcete akceptovať žiadosť?",
+            "cancelReqTitle": "Zrušiť žiadosť",
+            "cancelReqDesc": "Naozaj chcete zrušiť žiadosť?",
+            "rejectRequestTitle": "Zamietnutie žiadosti",
+            "rejectRequestDesc": "Dôvod zamietnutia",
+            "sendTitle": "Odoslať žiadosť",
+            "sendDesc": "Naozaj chcete odoslať žiadosť číselníka?"
         },
         "filter": {
             "title": "Filter",
@@ -1041,6 +1051,17 @@
             "effectiveFrom": "Začiatok účinnosti",
             "isBase": "Základný číselník",
             "state": "Stav"
+        },
+        "buttons": {
+            "MOVE_TO_KSISVS": "Presunúť do Komisie pre štandardizáciu ISVS",
+            "REJECT": "Zamietnuť",
+            "ACCEPT": "Akceptovať",
+            "ACCEPT_SZZC": "Akceptovať správcom ZČ",
+            "SEND": "Odoslať",
+            "EDIT": "Upraviť",
+            "CANCEL_REQUEST": "Zrušit žiadosť",
+            "IMPORT": "Import číselníka",
+            "EXPORT": "Export"
         }
     },
     "selectCiItem": {

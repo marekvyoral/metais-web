@@ -1,6 +1,8 @@
 import { ApiCodelistItem, ApiCodelistItemList, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { RequestListState } from '@isdd/metais-common/constants'
+import { Roles } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
+import { Group } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { INoteRow } from '@/components/views/requestLists/CreateRequestView'
 import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
@@ -117,7 +119,7 @@ export const mapFormToSave = (formData: IRequestForm, language: string, uuid: st
                                 value: item.unit,
                             },
                         ],
-                        id: item.id,
+                        id: item.id?.toString().startsWith('create') ? undefined : item.id,
                         itemCode: item.codeItem,
                         itemUri: item.refident,
                         locked: false,
@@ -131,12 +133,14 @@ export const mapFormToSave = (formData: IRequestForm, language: string, uuid: st
         mainCodelistManagers: [
             {
                 value: `${uuid}-${formData?.mainGestor}`,
+                language: language,
+                effectiveTo: undefined,
                 effectiveFrom: new Date().toISOString(),
             },
         ],
         uri: formData.refIndicator,
-        effectiveFrom: formData.startDate ? formData.startDate.toISOString() : undefined,
-        validFrom: formData.validDate ? formData.validDate.toISOString() : undefined,
+        effectiveFrom: formData.startDate ? formatDateForDefaultValue(formData.startDate.toString()) : undefined,
+        validFrom: formData.validDate ? formatDateForDefaultValue(formData.validDate.toString()) : undefined,
     }
 
     return res
@@ -206,4 +210,13 @@ export const mapToForm = (language: string, itemList?: ApiCodelistItemList, data
         startDate: data?.fromDate ? new Date(data.fromDate) : undefined,
         codeListSate: data?.codelistState ?? '',
     } as IRequestForm
+}
+
+export const getUUID = (dataRoles: Group[]): string => {
+    const roleUuid = dataRoles.reduce((uuid, org) => {
+        const roleRes = org.roles.find((role) => role.roleName === Roles.SZCHLGES || role.roleName === Roles.SZCVEDGES)
+        return roleRes?.roleUuid ?? uuid
+    }, '')
+
+    return roleUuid
 }

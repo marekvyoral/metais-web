@@ -408,6 +408,7 @@ export interface ApiCodelistLanguageVersion {
 export interface ApiCodelistManager {
     id?: number
     value?: string
+    language?: string
     effectiveFrom?: string
     effectiveTo?: string
 }

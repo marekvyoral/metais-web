@@ -12,15 +12,18 @@ import {
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RequestListState } from '@isdd/metais-common/constants'
 import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { CreateRequestViewProps } from '@/components/containers/CreateRequestContainer'
 import { IItemDates } from '@/components/views/requestLists/components/modalItem/DateModalItem'
 import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
-import { IRequestForm, _entityName, mapFormToSave, mapToForm } from '@/componentHelpers/requests'
+import { IRequestForm, _entityName, getUUID, mapFormToSave, mapToForm } from '@/componentHelpers/requests'
 
 interface EditRequestContainerProps {
     View: React.FC<CreateRequestViewProps>
@@ -30,9 +33,12 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     const user = useAuth()
     const { i18n } = useTranslation()
     const { requestId } = useParams()
+    const navigate = useNavigate()
+
     const checkHook = useExistsCodelistHook()
     const setItemsDatesHook = useProcessItemRequestAction1Hook()
     const saaveDatesHook = useSaveDatesHook()
+    const { setIsActionSuccess } = useActionSuccess()
 
     const [isLoadingCheck, setLoadingCheck] = useState<boolean>()
     const [isErrorCheck, setErrorCheck] = useState<boolean>()
@@ -47,8 +53,8 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
 
     const implicitHierarchy = useReadCiList()
     const { data, isLoading: isLoadingDetail, isError: isErrorDetail } = useGetCodelistRequestDetail(Number.parseInt(requestId || ''))
-    const { mutate, isLoading: isLoadingSave, isError: isErrorSave } = useCreateCodelistRequest()
-    const { mutate: mutateSend, isLoading: isLoadingSend, isError: isErrorSend } = useSaveAndSendCodelist()
+    const { mutateAsync, isLoading: isLoadingSave, isError: isErrorSave } = useCreateCodelistRequest()
+    const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, isError: isErrorSend } = useSaveAndSendCodelist()
     const { isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile, data: attributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
 
     const {
@@ -94,28 +100,65 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     )
 
     const onSave = async (formData: IRequestForm) => {
-        const mappedData = mapFormToSave(formData, i18n.language, user.state.user?.uuid ?? '')
+        const uuid = getUUID(user?.state?.user?.groupData ?? [])
+        const mappedData = mapFormToSave(formData, i18n.language, uuid)
         if (
             mappedData.code &&
             (data?.codelistState === RequestListState.ACCEPTED_SZZC || data?.codelistState === RequestListState.KS_ISVS_ACCEPTED)
         ) {
-            saaveDatesHook(mappedData.code, [], { effectiveFrom: mappedData.effectiveFrom, validFrom: mappedData.validFrom })
+            saaveDatesHook(mappedData.code, [], {
+                effectiveFrom: mappedData.effectiveFrom && formatDateForDefaultValue(mappedData.effectiveFrom, 'dd.MM.yyyy'),
+                validFrom: mappedData.validFrom && formatDateForDefaultValue(mappedData.validFrom, 'dd.MM.yyyy'),
+            })
+                .then(() => {
+                    setIsActionSuccess({ value: true, path: RouteNames.REQUESTLIST })
+                    navigate(`${RouteNames.REQUESTLIST}`)
+                })
+                .catch(() => {
+                    setErrorCheck(true)
+                })
         } else {
-            mutate({ data: mappedData })
+            mutateAsync({ data: mappedData })
+                .then(() => {
+                    setIsActionSuccess({ value: true, path: RouteNames.REQUESTLIST })
+                    navigate(`${RouteNames.REQUESTLIST}`)
+                })
+                .catch(() => {
+                    setErrorCheck(true)
+                })
         }
     }
 
     const onSend = async (formData: IRequestForm) => {
-        mutateSend({ data: mapFormToSave(formData, i18n.language, user.state.user?.uuid ?? '') })
+        const uuid = getUUID(user?.state?.user?.groupData ?? [])
+        mutateSendASync({ data: mapFormToSave(formData, i18n.language, uuid) })
+            .then(() => {
+                setIsActionSuccess({ value: true, path: RouteNames.REQUESTLIST })
+                navigate(`${RouteNames.REQUESTLIST}`)
+            })
+            .catch(() => {
+                setErrorCheck(true)
+            })
     }
 
     const onSaveDates = (dates: IItemDates, items: Record<string, IItemForm>) => {
         setItemsDatesHook(
             defaultData.codeListId,
             false,
-            { effectiveFrom: dates.effectiveFrom, validFrom: dates.validDate, itemCodes: Object.values(items).map((i) => i.codeItem) },
+            {
+                effectiveFrom: formatDateForDefaultValue(dates.effectiveFrom, 'dd.MM.yyyy'),
+                validFrom: formatDateForDefaultValue(dates.validDate, 'dd.MM.yyyy'),
+                itemCodes: Object.values(items).map((i) => i.codeItem),
+            },
             { fromIndex: 0, toIndex: Object.keys(items).length },
         )
+            .then(() => {
+                setIsActionSuccess({ value: true, path: RouteNames.REQUESTLIST })
+                navigate(`${RouteNames.REQUESTLIST}`)
+            })
+            .catch(() => {
+                setErrorCheck(true)
+            })
     }
 
     const isLoading = [isLoadingCheck, isLoadingSave, isLoadingSend, isLoadingDetail, isLoadingItemList, isLoadingAttributeProfile].some(
@@ -136,6 +179,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     return !isLoading && defaultData ? (
         <RequestListPermissionsWrapper entityName={_entityName}>
             <View
+                requestId={requestId}
                 entityName={_entityName}
                 canEdit={canEdit}
                 canEditDate={canEditDate}
