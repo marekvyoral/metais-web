@@ -9,6 +9,10 @@
     width: 100%;
 }
 
+.invalidated {
+    color: govuk-colour('red') !important;
+}
+
 .buttonWithIcon {
     display: flex;
     align-items: center;

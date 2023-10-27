@@ -26,6 +26,8 @@ import { TableDragRow } from './TableDragRow'
 
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 
+const invalidStates = ['INVALIDATED', 'Zneplatnené', 'Invalidated']
+
 export interface ITableProps<T> {
     data?: Array<T>
     columns: Array<ColumnDef<T>>
@@ -183,11 +185,12 @@ export const Table = <T,>({
                 ref={wrapper1Ref}
             >
                 {table.getRowModel().rows.map((row, index) => {
-                    const isInvalidated =
+                    const isInvalidated = invalidStates.includes(
                         row
                             .getAllCells()
                             .find((cell) => cell.column.id == 'state')
-                            ?.getValue() == 'INVALIDATED'
+                            ?.getValue() as string,
+                    )
 
                     return (
                         <React.Fragment key={index}>
