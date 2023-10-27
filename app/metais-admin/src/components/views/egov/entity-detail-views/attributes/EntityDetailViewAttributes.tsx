@@ -153,7 +153,7 @@ export const EntityDetailViewAttributes = ({
                         }
                     />
                     <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={Gen_Profil} />
-                    <InformationGridRow key={'type'} label={t('egov.type')} value={t(`tooltips.type.${data?.type}`)} />
+                    <InformationGridRow key={'type'} label={t('egov.type')} value={data?.type ? t(`tooltips.type.${data.type}`) : ''} />
                     <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`validity.${data?.valid}`)} />
                     <InformationGridRow key={'description'} label={t('egov.description')} value={data?.description} />
                     {Array.isArray(roles) ? (

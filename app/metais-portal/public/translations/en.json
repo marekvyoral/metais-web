@@ -22,6 +22,8 @@
         "contentAdmin": "Admin of content",
         "RSS": "RSS",
         "appVersion": "App version",
+        "home": "Home",
+
         "services": {
             "title": "Services and Information",
             "rations": "Rations",
@@ -136,7 +138,7 @@
             "commission": "ITVS Standardization Commission",
             "groups": "Working groups of the commission",
             "concept": "Concept creation",
-            "concepts": "Concepts",
+            "concepts": "Drafts list",
             "votes": "Votes",
             "meetings": "Meetings",
             "registers": "Reference registers",
@@ -197,6 +199,21 @@
         "searchPlaceholder": "Search in table",
         "chooseState": "Select status",
         "chooseValue": "Select value",
+        "WeboveSidlo": {
+            "name": "Name of web residency"
+        },
+        "Aktivita": {
+            "name": "Name of activity"
+        },
+        "KRIS": {
+            "name": "Name of KRIS"
+        },
+        "Princip": {
+            "name": "Name of principal"
+        },
+        "Ciel": {
+            "name": "Name of goal"
+        },
         "KS": {
             "name": "Name of end service"
         },
@@ -295,7 +312,8 @@
     },
     "errors": {
         "fixLink": "Correct",
-        "invalidEntityId": "Invalid entity"
+        "invalidEntityId": "Invalid entity",
+        "NoChangesDetected": "No changes detected"
     },
     "mutationFeedback": {
         "successfulUpdated": "The item was successfully changed"
@@ -337,7 +355,7 @@
         "activities": "Activities NKIVS",
         "relationships": "Relationships",
         "history": "History of changes",
-        "editEntity": "Edit entity",
+        "editEntity": "Edit component",
         "chosenObject": "Chosen object (type)",
         "editButton": "Modify",
         "moreButton": "More actions",
@@ -345,7 +363,7 @@
         "revalidateItem": "Revalidate",
         "changeOfOwner": "Change owner",
         "besManagement": "BES management",
-        "createEntity": "Create new entity",
+        "createEntity": "Create new component of type {{entityName}}",
         "sendForApproval": "Send for approval",
         "approve": "Approve",
         "return": "Return",
@@ -515,6 +533,9 @@
         }
     },
     "reports": {
+        "filter": {
+            "category": "Category"
+        },
         "heading": "Reports",
         "table": {
             "name": "Name",
@@ -564,15 +585,15 @@
         "role": "Role",
         "addNewRow": "Add new row",
         "units": "(Value in {{units}})",
-        "redirectLoading": "Processing creation of new entity",
-        "redirectLoadingEdit": "Updating data on entity",
-        "redirectError": "Failed to process new entity creation. Check notifications for more information.",
-        "redirectErrorEdit": "Failed to process updating of current entity. Check notifications for more information.",
+        "redirectLoading": "Processing creation of new component",
+        "redirectLoadingEdit": "Updating data on component",
+        "redirectError": "Failed to process new component creation. Check notifications for more information.",
+        "redirectErrorEdit": "Failed to process updating of current component. Check notifications for more information.",
         "mutationError": "Error while executing your action. Please try again or contact support.",
         "tooManyFetchesError": "There was a mistake during processing. Action took too long. Check notifications for more information.",
         "orgAndRoleError": {
             "title": "Missing rights for organization",
-            "message": "You are missing rights for creating entity under this organization"
+            "message": "You are missing rights for creating component under this organization"
         }
     },
     "table": {
@@ -688,7 +709,22 @@
         "columns": "Columns",
         "column": "Column",
         "eventType": "Event Type",
-        "created": "Created:"
+        "created": "Created",
+        "description": "Description",
+
+        "columnsNames": {
+            "messagePerex": "Name",
+            "createdAt": "Created at",
+            "notifType": "Type",
+            "readedAt": "Readed at",
+            "deleted": "Deleted",
+            "eventType": "Event type",
+            "id": "ID",
+            "message": "Message",
+            "sendToUserIdSet": "Odoslané zostave používateľov",
+            "targetUri": "Target URI",
+            "userId": "User ID"
+        }
     },
     "feedback": {
         "loading": "Loading...",
@@ -849,9 +885,20 @@
     "breadcrumbs": {
         "home": "Home",
         "dataObjects": "Data objects",
-        "codeLists": "Codelists"
+        "codeLists": "Codelists",
+        "requestList": "List of requests to add a codelist",
+        "requestCreate": "Create request to add a codelist",
+        "codeListsList": "List of codelists",
+        "publicCodeListsList": "List of published codelists",
+        "ciCreate": "Create new component of type {{entityName}}",
+        "compareHistory": "Compare history",
+        "ciEdit": "Edit of component",
+        "noName": "Without name"
+        
     },
     "codeList": {
+        "descriptionError": "Description is required",
+
         "breadcrumbs": {
             "home": "Home",
             "dataObjects": "Data objects",
@@ -1147,6 +1194,7 @@
         "PO_IS_PO": "IS operators",
         "PO_IS_PODetail": "Detail of IS PO",
         "PO_IS_POCreate": "Creation of IS PO",
+        "meetings": "Meetings",
         "publicAuthoritiesHierarchy": "Hierarchy of public authorities"
     },
     "todo": {
@@ -1407,5 +1455,31 @@
     },
     "publicAuthorities": {
         "hierarchy": "Hierarchy of public authorities"
+    },
+    "refRegisters": {
+        "list": {
+            "heading": "List of reference registers"
+        },
+        "requests": {
+            "heading": "List of request to add a reference register"
+        }
+    },
+    "publicspace": {
+        "heading": "Standards of ISVS"
+    },
+    "draftsList": {
+        "heading": "Drafts list"
+    },
+    "howto": {
+        "codelists": "Codelists",
+        "refRegisters": "Reference registers",
+        "monitoring": "Reports and monitoring",
+        "guides": "Procedures and guides",
+        "dataObjects": "Data objects",
+        "standardization": "Standardization",
+        "programProjectsActivities": "Programs, projects and activities",
+        "kris": "Goals, principles, activites and KRIT",
+        "po": "Public authorities",
+        "egov": "e-Government components"
     }
 }

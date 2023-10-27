@@ -46,6 +46,14 @@
         "appVersion": "App version"
     },
     "navbar": {
+        "factChecker": "Fact-checker",
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu",
+        "linksToWebs": "links to websites of public authorities",
+        "linkToHomePage": "Link to home page",
+        "ministryName": "Ministry of Investments, Regional Development and Informatization of the Slovak Republic",
+        "showInformationAboutSite": "Show information about site",
+        "hideInformationAboutSite": "Hide information about site",
         "home": "Home",
         "skip": "Skip to main content",
         "official": "Official Website",
@@ -85,6 +93,7 @@
         "viewButton": "View"
     },
     "table": {
+        "selectAllItems": "Select all items",
         "title": "Cities",
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
         "heading": "Filter Content",
@@ -225,7 +234,8 @@
             "enum": "Internal codelist",
             "regex": "Regex",
             "interval": "Interval",
-            "ciType": "Entity"
+            "ciType": "Entity",
+            "mustBeNumber": "Must be a number"
         },
         "entity": {
             "editHeader": "Edit entity",
@@ -315,6 +325,7 @@
     },
     "codelists": {
         "createNew": "Add item",
+        "createNewCodelist": "Create new codelist",
         "code": "Code",
         "name": "Name",
         "description": "Description",
@@ -408,6 +419,11 @@
         "assignment": "Assignment"
     },
     "navMenu": {
+        "hide": "Hide",
+        "show": "Show",
+        "innerNav": "Inner navigation",
+        "mainNav": "Main navigation",
+
         "dashboard": "Dashboard",
         "assignment": "Assignments",
         "notifications": "Notifications",
@@ -539,7 +555,8 @@
         "mutationErrorTitle": "Action failed",
         "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at",
         "executingScript": "Executing script",
-        "saving": "Saving..."
+        "saving": "Saving...",
+        "failedFetch": "There was a problem with fetching data. Please try again."
     },
     "adminRolesPage": {
         "addNewRole": "Add new role",
@@ -716,18 +733,19 @@
         "tableHeaderRole": "Role",
         "tableHeaderDescription": "Role description",
         "userRolesHeading": "Assigned roles",
-        "giveRolesToUserHeading": "Assigning of organisation and role to user",
+        "giveRolesToUserHeading": "Assigning of organization and role to user",
         "delete": "Delete",
         "edit": "Edit",
-        "publicAuthority": "Organisation",
+        "publicAuthority": "Organization",
         "roleGroups": "Role groups",
         "singleRoles": "Individual roles",
-        "selectPlaceholder": "Choose organisation...",
+        "selectPlaceholder": "Choose organization...",
         "formError": "Error while checking available login",
         "required": "The {{value}} is required",
         "containerQueryError": "Loading of data for user management failed.",
         "noUserId": "There was mistake in fetching data.",
-        "mutationError": "Error while performing action."
+        "mutationError": "Error while performing action.",
+        "emailFormat": "Bad email format"
     },
     "accordion": {
         "openAll": "Open all",
@@ -899,5 +917,25 @@
     },
     "homePage": {
         "placeholder": "Home - login to see navigation items"
+    },
+    "notifications": {
+        "column": "Column"
+    },
+    "monitoring": {
+        "heading": "Monitoring mangement",
+        "params": {
+            "heading": "Monitoring parameters"
+        },
+        "list": {
+            "heading": "Monitoring records"
+        }
+    },
+    "projects": {
+        "financeManagement": {
+            "heading": "Finance limits of approval process"
+        }
+    },
+    "templateReferenceIdentifiers": {
+        "heading": "Template reference identifiers"
     }
 }

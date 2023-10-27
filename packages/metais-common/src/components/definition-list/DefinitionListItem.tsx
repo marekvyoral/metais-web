@@ -20,7 +20,7 @@ export const DefinitionListItem: React.FC<IDefinitionListItemProps> = ({ label, 
                 <dt className={classNames('govuk-label', styles.dt)}>{label}</dt>
             </GridCol>
             <GridCol setWidth={secColValue ? 'one-third' : 'two-thirds'}>
-                <dd className={styles.dt}>
+                <dd className={styles.dd}>
                     <TextBody className={classNames({ [styles.valueRed]: valueWarning })} lang={lang}>
                         {value}
                     </TextBody>

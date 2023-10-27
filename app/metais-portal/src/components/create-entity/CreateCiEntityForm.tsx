@@ -107,7 +107,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     const sections: ISection[] =
         [
             {
-                title: ciTypeData?.name ?? '',
+                title: t('ciInformationAccordion.basicInformation'),
                 error: sectionError[genProfilTechName] === true,
                 stepLabel: { label: '1', variant: 'circle' },
                 content: (
@@ -127,7 +127,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                 ),
             },
             ...attProfiles.map((profile, index) => ({
-                title: profile.name ?? '',
+                title: profile.description ?? profile.name ?? '',
                 stepLabel: { label: (index + 2).toString(), variant: 'circle' } as IStepLabel,
                 last: relationSchema ? false : attProfiles.length === index + 1 ? true : false,
                 error: sectionError[profile.technicalName ?? ''] === true,

@@ -22,3 +22,26 @@ export const transformSortingStateToColumnSort = (sortUpdater: (oldSort: Sorting
 export const transformColumnSortToSortingState = (sort?: ColumnSort[]) => {
     return sort?.map((columnSort) => ({ id: columnSort?.orderBy, desc: columnSort?.sortDirection === SortType.DESC })) ?? []
 }
+
+type HasMetaAttributesWithStatePropertyType = {
+    original: {
+        metaAttributes: {
+            state: string
+        }
+    }
+}
+
+export const hasMetaAttributesWithStateProperty = (obj: unknown): obj is HasMetaAttributesWithStatePropertyType => {
+    return (
+        typeof obj === 'object' &&
+        obj !== null &&
+        'original' in obj &&
+        typeof obj.original === 'object' &&
+        obj.original !== null &&
+        'metaAttributes' in obj.original &&
+        typeof obj.original.metaAttributes === 'object' &&
+        obj.original.metaAttributes !== null &&
+        'state' in obj.original.metaAttributes &&
+        typeof obj.original.metaAttributes.state === 'string'
+    )
+}

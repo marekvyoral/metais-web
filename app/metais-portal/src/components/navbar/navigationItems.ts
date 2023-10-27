@@ -14,9 +14,9 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
         { title: t('navMenu.lists.infrastructures'), path: NavigationSubRoutes.INFRASCTRUCTURES },
         { title: t('navMenu.lists.webResidence'), path: NavigationSubRoutes.WEBOVE_SIDLO },
         { title: t('navMenu.lists.personalProcedures'), path: '/todo' },
-        { title: t('navMenu.lists.educationalCourses'), path: NavigationSubRoutes.EDUCATIONAL_COURSES },
-        { title: t('navMenu.lists.evidenceObjects'), path: NavigationSubRoutes.OBJEKTY_EVIDENCIE },
-        { title: t('navMenu.lists.attributesEvidenceObjects'), path: NavigationSubRoutes.ATRIBUTY_OBJEKTY_EVIDENCIE },
+        //{ title: t('navMenu.lists.educationalCourses'), path: NavigationSubRoutes.EDUCATIONAL_COURSES },
+        //{ title: t('navMenu.lists.evidenceObjects'), path: NavigationSubRoutes.OBJEKTY_EVIDENCIE },
+        //{ title: t('navMenu.lists.attributesEvidenceObjects'), path: NavigationSubRoutes.ATRIBUTY_OBJEKTY_EVIDENCIE },
     ]
     const egovComponentsSubItemsSideMenu: NavigationItem[] = [
         {
@@ -114,14 +114,14 @@ export const getPortalNavigationItems = (
                         { title: t('navMenu.lists.codelistsRequestsList'), path: NavigationSubRoutes.CODELIST_REQUESTS },
                     ],
                 },
-                {
+                /* {
                     title: t('navMenu.referenceIdentifiers'),
                     path: RouteNames.HOW_TO_REFERENCE_IDENTIFIERS,
                     subItems: [
                         { title: t('navMenu.lists.referenceIdentifiersList'), path: NavigationSubRoutes.IDENTIFIERS_LIST },
                         { title: t('navMenu.lists.referenceIdentifiersRequestsList'), path: NavigationSubRoutes.IDENTIFIERS_REQUESTS },
                     ],
-                },
+                },*/
             ],
         },
 
@@ -131,10 +131,10 @@ export const getPortalNavigationItems = (
             icon: MonitoringIcon,
             subItems: [
                 { title: t('navMenu.reports'), path: RouteNames.REPORTS },
-                { title: t('navMenu.lists.monitoringEnd'), path: NavigationSubRoutes.MONITORING_KS },
-                { title: t('navMenu.lists.monitoringApp'), path: NavigationSubRoutes.MONITORING_AS },
-                { title: t('navMenu.lists.monitoringImport'), path: NavigationSubRoutes.MONITORING_IMPORT },
-                { title: t('navMenu.lists.monitoringSet'), path: NavigationSubRoutes.MONITORING_PARAMETRE_SET },
+                //{ title: t('navMenu.lists.monitoringEnd'), path: NavigationSubRoutes.MONITORING_KS },
+                //{ title: t('navMenu.lists.monitoringApp'), path: NavigationSubRoutes.MONITORING_AS },
+                //{ title: t('navMenu.lists.monitoringImport'), path: NavigationSubRoutes.MONITORING_IMPORT },
+                //{ title: t('navMenu.lists.monitoringSet'), path: NavigationSubRoutes.MONITORING_PARAMETRE_SET },
             ],
         },
         {

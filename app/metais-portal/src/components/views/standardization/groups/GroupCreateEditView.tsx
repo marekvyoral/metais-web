@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { MutationFeedback } from '@isdd/metais-common/index'
 
 import { GroupFormEnum, createGroupSchema, editGroupSchema } from './groupSchema'
 
@@ -13,7 +15,7 @@ import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect
 import { IGroupEditViewParams } from '@/components/containers/standardization/groups/GroupEditContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, goBack, infoData, isEdit, id }) => {
+export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, goBack, infoData, isEdit, id, resultApiCall }) => {
     const { t } = useTranslation()
 
     const {
@@ -91,7 +93,12 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
                 </>
             )}
             <MainContentWrapper>
-                <TextHeading size="XL">{isEdit ? `${t('groups.editGroup')} - ${infoData?.name}` : t('groups.addNewGroup')}</TextHeading>
+                <FlexColumnReverseWrapper>
+                    <TextHeading size="XL">{isEdit ? `${t('groups.editGroup')} - ${infoData?.name}` : t('groups.addNewGroup')}</TextHeading>
+                    {(resultApiCall?.isError || resultApiCall?.isSuccess) && (
+                        <MutationFeedback error={resultApiCall.message} success={resultApiCall.isSuccess} />
+                    )}
+                </FlexColumnReverseWrapper>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Input
                         label={`${t('groups.groupName')} (${t('groups.mandatory')}):`}

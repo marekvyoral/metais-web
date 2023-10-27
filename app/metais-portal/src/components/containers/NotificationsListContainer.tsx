@@ -21,6 +21,7 @@ import { UseMutateFunction } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { firstLetterToLowerCase } from '@/components/views/notifications/notificationUtils'
 export interface FilterData extends IFilterParams, IFilter {
@@ -75,7 +76,13 @@ const defaultFilterValues: FilterData = {
     pageSize: 10,
 }
 
+const NotificationDateIdKeys = {
+    CREATED_AT: 'createdAt',
+    READED_AT: 'readedAt',
+}
+
 export const NotificationsListContainer: React.FC<INotificationsListContainer> = ({ View }) => {
+    const { t, i18n } = useTranslation()
     const location = useLocation()
     const [sort, setSort] = useState<ColumnSort[]>([{ sortDirection: SortType.DESC, orderBy: 'CreatedAt' }])
 
@@ -129,14 +136,32 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
         isError: isDeleteError,
         isSuccess: isDeleteSuccess,
     } = useRemoveNotificationList(onSuccessDelete)
-    const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>([...notificationDefaultSelectedColumns])
+
+    const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>([])
+
+    const translateColumns = (columnsArray: ISelectColumnType[]) => {
+        return columnsArray.map((item) => ({
+            ...item,
+            name: t(`notifications.columnsNames.${item.technicalName}`),
+        }))
+    }
+
+    useEffect(() => {
+        if (selectedColumns.length > 0) {
+            setSelectedColumns((prev) => translateColumns(prev))
+        } else {
+            setSelectedColumns(translateColumns(notificationDefaultSelectedColumns))
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [i18n.language])
+
     const columns = useMemo<ColumnDef<Notification>[]>(() => {
         const list: ColumnDef<Notification>[] = selectedColumns
             .filter((e) => e.selected)
             .map((e) =>
                 e.technicalName == NOTIFICATION_TITLE
                     ? {
-                          id: e.name,
+                          id: e.technicalName,
                           header: e.name,
                           accessorKey: e.technicalName,
                           size: 200,
@@ -151,17 +176,33 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
                           enableSorting: true,
                       }
                     : {
-                          id: e.name,
+                          id: e.technicalName,
                           header: e.name,
                           accessorKey: e.technicalName,
                           enableSorting: true,
+                          cell: (row) => {
+                              const isDate = Object.values(NotificationDateIdKeys).includes(row.column.id)
+                              if (isDate && row.getValue() != null) {
+                                  return t('dateTime', { date: row.getValue() as string })
+                              } else {
+                                  row.getValue()
+                              }
+                          },
                           meta: {
-                              getCellContext: (ctx) => ctx?.getValue?.(),
+                              getCellContext: (ctx) => {
+                                  const isDate = Object.values(NotificationDateIdKeys).includes(ctx.column.id)
+                                  if (isDate && ctx.getValue() != null) {
+                                      return t('dateTime', { date: ctx.getValue() as string })
+                                  } else {
+                                      return ctx?.getValue?.()
+                                  }
+                              },
                           },
                       },
             )
         return list
-    }, [location, selectedColumns])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location, selectedColumns, t, i18n.language])
 
     const isMutateSuccess = isSetAllAsReadSuccess || isDeleteAllSuccess || isDeleteSuccess
     const isMutateLoading = isSetAllAsReadLoading || isDeleteAllLoading || isDeleteLoading

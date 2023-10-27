@@ -22,6 +22,7 @@ import {
     IStoreColumnSelection,
     getOrderCiColumns,
     getOwnerInformation,
+    isMetaAttribute,
     mapTableData,
     reduceAttributesByTechnicalName,
     reduceTableDataToObject,
@@ -154,7 +155,7 @@ export const CiTable: React.FC<ICiTable> = ({
     const columnsFromApi =
         columnsAttributes?.map((attribute, index) => {
             const technicalName = attribute.name ?? ''
-            const attributeHeader = schemaAttributes[technicalName]?.name ?? t(`ciType.meta.${technicalName}`)
+            const attributeHeader = isMetaAttribute(technicalName) ? t(`ciType.meta.${technicalName}`) : schemaAttributes[technicalName]?.name
 
             return {
                 accessorFn: (row: ColumnsOutputDefinition) => row?.attributes?.[technicalName] ?? row?.metaAttributes?.[technicalName],

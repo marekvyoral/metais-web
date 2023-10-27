@@ -20,9 +20,10 @@ interface RelationshipsAccordion {
     configurationItemId?: string
     isLoading: boolean
     isError: boolean
+    entityName: string
 }
 
-export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data, configurationItemId, isError, isLoading }) => {
+export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data, configurationItemId, isError, isLoading, entityName }) => {
     const { t } = useTranslation()
 
     return (
@@ -39,6 +40,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                         }),
                         content: (
                             <CiNeighboursListContainer
+                                entityName={entityName}
                                 configurationItemId={configurationItemId}
                                 apiType={NeighboursApiType.source}
                                 View={(props) => {
@@ -65,6 +67,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                         }),
                         content: (
                             <CiNeighboursListContainer
+                                entityName={entityName}
                                 configurationItemId={configurationItemId}
                                 apiType={NeighboursApiType.target}
                                 View={(props) => {

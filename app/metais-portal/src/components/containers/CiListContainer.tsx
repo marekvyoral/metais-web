@@ -23,17 +23,18 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
     const { columnListData, saveColumnSelection, resetColumns, isLoading: isColumnsLoading, isError: isColumnsError } = useGetColumnData(entityName)
     const { currentPreferences } = useUserPreferences()
 
-    const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
-
     const defaultRequestApi = {
         filter: {
             type: [entityName],
-            metaAttributes,
+
             perPage: BASE_PAGE_SIZE,
         },
     }
 
     const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, entityName, defaultRequestApi)
+    const metaAttributes = currentPreferences.showInvalidatedItems
+        ? { state: ['DRAFT', 'INVALIDATED'], ...filterParams.metaAttributeFilters }
+        : { state: ['DRAFT'], ...filterParams.metaAttributeFilters }
 
     const {
         data: tableData,
@@ -46,9 +47,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
             ...filterToNeighborsApi.filter,
             fullTextSearch: filterParams.fullTextSearch || '',
             attributes: mapFilterParamsToApi(filterParams, defaultFilterOperators),
-            metaAttributes: {
-                ...filterParams.metaAttributeFilters,
-            },
+            metaAttributes,
         },
     })
 

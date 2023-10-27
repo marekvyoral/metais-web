@@ -1,4 +1,4 @@
-import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -9,7 +9,9 @@ const ITVSStandards = () => {
     return (
         <>
             <BreadCrumbs withWidthContainer links={[{ label: t('breadcrumbs.home'), href: '/', icon: HomeIcon }]} />
-            <MainContentWrapper>POMOC</MainContentWrapper>
+            <MainContentWrapper>
+                <TextHeading size="L">{t('publicspace.heading')}</TextHeading>
+            </MainContentWrapper>
         </>
     )
 }

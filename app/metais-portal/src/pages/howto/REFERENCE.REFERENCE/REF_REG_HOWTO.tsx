@@ -1,4 +1,4 @@
-import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -9,7 +9,10 @@ const REF_REG_HOWTO = () => {
     return (
         <>
             <BreadCrumbs withWidthContainer links={[{ label: t('breadcrumbs.home'), href: '/', icon: HomeIcon }]} />
-            <MainContentWrapper>REF_REGISTERS_HOWTO</MainContentWrapper>
+            <MainContentWrapper>
+                <TextHeading size="L">{t('howto.refRegisters')}</TextHeading>
+                REF_REGISTERS_HOWTO
+            </MainContentWrapper>
         </>
     )
 }
