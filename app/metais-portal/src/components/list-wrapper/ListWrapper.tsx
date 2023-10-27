@@ -142,7 +142,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     <MutationFeedback
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage}
-                        error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                        error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
                     />
                 )}
             </FlexColumnReverseWrapper>
