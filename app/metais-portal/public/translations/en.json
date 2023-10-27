@@ -403,6 +403,9 @@
         "search": "Search"
     },
     "documentsTab": {
+        "requiredDocs": "Documents required for the current phase",
+        "addNewDocument": "Add new document",
+        "allDocuments": "All documents",
         "table": {
             "name": "Name",
             "note": "Note",
@@ -548,7 +551,10 @@
             "update": "Update",
             "invalidate": "Invalidate",
             "delete": "Delete",
-            "history": "History"
+            "history": "History",
+            "openDocument": "Open/Edit documents",
+            "uploadDocument": "Upload document",
+            "addDocument": "Add document"
         },
         "import": "Import",
         "export": "Export",
@@ -729,6 +735,10 @@
         }
     },
     "bulkActions": {
+        "addFile": {
+            "title": "Add document",
+            "upload": "Upload file"
+        },
         "updateFile": {
             "title": "Update document",
             "warningText": "Selected records will be updated. Relations that they contain shall remain unmodified.",

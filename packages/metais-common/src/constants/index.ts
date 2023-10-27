@@ -133,6 +133,11 @@ export const HTML_TYPE = 'HTML'
 export const P_REALIZUJE_AKT = 'P_realizuje_AKT'
 export const ACTIVITY = 'Aktivita'
 
+export const PROJECT_DOCUMENTS_SECTIONS_EXPANDABLE: { [key: string]: string } = {
+    'Projektový iniciálny dokument (PID)': 'projektovy_inicialny_dokument_',
+    'Manažérske správy, reporty, zoznamy a požiadavky': 'manazerske_spravy_reporty_',
+    'Dokumenty architektúry': 'dokumenty_architektury_',
+}
 export const FINISHED_STATE = 'c_stav_projektu_9'
 
 export const PROJECT_STATUS = 'EA_Profil_Projekt_status'
@@ -140,3 +145,5 @@ export const PROJECT_STATUS = 'EA_Profil_Projekt_status'
 export const ACTION_CREATE = 'CREATE'
 export const ACTION_UPDATE = 'UPDATE'
 export const ENTITY_PROJECT = 'Projekt'
+
+export const API_CALL_RETRY_COUNT = 30

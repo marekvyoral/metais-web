@@ -10,6 +10,7 @@ import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export interface IUpdateFileModalProps {
+    addButtonSectionName?: string
     open: boolean
     onClose: () => void
     onSubmit: (result: IBulkActionResult) => void
@@ -22,7 +23,6 @@ export const UpdateFileModal: React.FC<IUpdateFileModalProps> = ({ item, open, o
     const baseURL = import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL
     const auth = useAuth()
     const [isLoading, setIsLoading] = useState(false)
-
     const handleUpdateFile = async (formData1: FieldValues) => {
         setIsLoading(true)
         const formData = new FormData()

@@ -405,6 +405,9 @@
         "search": "Hľadať"
     },
     "documentsTab": {
+        "requiredDocs": "Dokumenty potrebné pre aktuálnu fázu",
+        "addNewDocument": "Pridať nový dokument",
+        "allDocuments": "Všetky dokumenty",
         "table": {
             "name": "Názov",
             "note": "Poznámka",
@@ -557,7 +560,10 @@
             "update": "Aktualizovať",
             "invalidate": "Zneplatniť",
             "delete": "Zmazať",
-            "history": "História"
+            "history": "História",
+            "openDocument": "Otvoriť/upraviť dokument",
+            "uploadDocument": "Nahrať dokument",
+            "addDocument": "Pridať dokument"
         },
         "import": "Import",
         "export": "Export",
@@ -739,6 +745,10 @@
         }
     },
     "bulkActions": {
+        "addFile": {
+            "title": "Pridat dokument",
+            "upload": "Nahrať súbor"
+        },
         "updateFile": {
             "title": "Aktualizácia dokumentu",
             "warningText": "Vybrané dokumenty budú aktualizované. Vzťahy, ktoré obsahujú, nebudú zmenené.",

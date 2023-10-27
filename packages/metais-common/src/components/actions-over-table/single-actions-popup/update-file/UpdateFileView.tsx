@@ -41,7 +41,7 @@ export const UpdateFileView: React.FC<IUpdateFileViewProps> = ({ items, register
 
             <div className={styles.buttonGroupEnd}>
                 <Button onClick={() => onClose()} label={t('button.cancel')} variant="secondary" />
-                <Button onClick={() => onSubmit()} label={t('bulkActions.updateFile.updateFile')} disabled={!formState.isDirty} type="submit" />
+                <Button label={t('bulkActions.updateFile.updateFile')} disabled={!formState.isDirty} type="submit" />
             </div>
         </form>
     )
