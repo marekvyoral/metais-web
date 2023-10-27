@@ -51,6 +51,7 @@ export interface ITableProps<T> {
     onRowClick?: (row: Row<T>) => void
     rowHref?: (row: Row<T>) => string
     reorderRow?: (index: number, target: number) => void
+    hideHeaders?: boolean
 }
 
 export const Table = <T,>({
@@ -78,6 +79,7 @@ export const Table = <T,>({
     onRowClick,
     rowHref,
     reorderRow,
+    hideHeaders,
 }: ITableProps<T>): JSX.Element => {
     const wrapper1Ref = useRef<HTMLTableSectionElement>(null)
     const wrapper2Ref = useRef<HTMLTableSectionElement>(null)
@@ -143,23 +145,25 @@ export const Table = <T,>({
 
     return (
         <table className={classNames('idsk-table', [styles.displayBlock, styles.tableSticky, styles.initialOverflow])}>
-            <thead className={classNames('idsk-table__head', [styles.head])} onScroll={handleWrapper2Scroll} ref={wrapper2Ref}>
-                {table.getHeaderGroups().map((headerGroup) => {
-                    const hasCheckbox = headerGroup.headers.find((cell) => cell.id === CHECKBOX_CELL)
-                    return (
-                        <tr
-                            className={classNames('idsk-table__row', styles.headerRow, {
-                                [styles.checkBoxHeaderRow]: hasCheckbox,
-                            })}
-                            key={headerGroup.id}
-                        >
-                            {headerGroup.headers.map((header) => {
-                                return <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
-                            })}
-                        </tr>
-                    )
-                })}
-            </thead>
+            {!hideHeaders && (
+                <thead className={classNames('idsk-table__head', [styles.head])} onScroll={handleWrapper2Scroll} ref={wrapper2Ref}>
+                    {table.getHeaderGroups().map((headerGroup) => {
+                        const hasCheckbox = headerGroup.headers.find((cell) => cell.id === CHECKBOX_CELL)
+                        return (
+                            <tr
+                                className={classNames('idsk-table__row', styles.headerRow, {
+                                    [styles.checkBoxHeaderRow]: hasCheckbox,
+                                })}
+                                key={headerGroup.id}
+                            >
+                                {headerGroup.headers.map((header) => {
+                                    return <DraggableColumnHeader<T> key={header.id} header={header} table={table} canDrag={canDrag} />
+                                })}
+                            </tr>
+                        )
+                    })}
+                </thead>
+            )}
             {!isLoading && isEmptyRows && (
                 <tbody className={styles.displayFlex}>
                     <tr>

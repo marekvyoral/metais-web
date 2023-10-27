@@ -111,7 +111,7 @@ export enum NavigationSubRoutes {
     WEBOVE_SIDLO = '/ci/WeboveSidlo',
     VIRTUALNE_STROJE = '/virtual-machines',
     MIESTO_PREVADZKY = '/ci/MiestoPrevadzky',
-    PUBLIC_AUTHORITY_HIERARCHY = '/po-table',
+    PUBLIC_AUTHORITY_HIERARCHY = '/public-authorities-hierarchy',
     REFERENCE_REGISTERS_REQUESTS = '/todo',
     CODELIST_REQUESTS = '/codelists/requestlist',
     IDENTIFIERS_REQUESTS = '/uri/list/sent',

@@ -1091,7 +1091,8 @@
         "PO_POCreate": "Vytvorenie PO",
         "PO_IS_PO": "Prevádzkovatelia IS PO",
         "PO_IS_PODetail": "Detail IS PO",
-        "PO_IS_POCreate": "Vytvorenie IS PO"
+        "PO_IS_POCreate": "Vytvorenie IS PO",
+        "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia"
     },
     "todo": {
         "header": "Vo výstavbe",
@@ -1356,5 +1357,8 @@
         "name": "Aktivity NKIVS",
         "description": "Popis aktivity",
         "projectActivity": "V relácií s vybraným Projektom"
+    },
+    "publicAuthorities": {
+        "hierarchy": "Hierarchia orgánov riadenia"
     }
 }
