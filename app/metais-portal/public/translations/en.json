@@ -1063,7 +1063,8 @@
         "PO_POCreate": "Vytvorenie PO",
         "PO_IS_PO": "IS operators",
         "PO_IS_PODetail": "Detail of IS PO",
-        "PO_IS_POCreate": "Creation of IS PO"
+        "PO_IS_POCreate": "Creation of IS PO",
+        "publicAuthoritiesHierarchy": "Hierarchy of public authorities"
     },
     "todo": {
         "header": "Under construction",
@@ -1326,5 +1327,8 @@
         "name": "Activities NKIVS",
         "description": "Description of activity",
         "projectActivity": "In relation with selected project"
+    },
+    "publicAuthorities": {
+        "hierarchy": "Hierarchy of public authorities"
     }
 }

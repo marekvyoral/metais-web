@@ -14,7 +14,6 @@ import { useClientForReadCiListUsingPOST } from '../hooks/useCmdbSwaggerClientWi
 import { useClientForGetRoleParticipantUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForReadCiNeighboursWithAllRelsUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForReadConfigurationItemUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
-import { useClientForReadCiDerivedRelTypesUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 export type ReadAllCiHistoryVersionsParams = {
     page: number
     perPage: number
@@ -178,6 +177,8 @@ export type InvalidateRelationshipParams = {
 
 export type InvalidateSendEmail200 = { [key: string]: any }
 
+export type ReadListNeighboursConfigurationItems200 = { [key: string]: ConfigurationItemNeighbourSetUi }
+
 export type ReadPoSuperiorPoRelationship200 = { [key: string]: RelationshipUi }
 
 export type ReadConfigurationItemByRefID200 = { [key: string]: any }
@@ -303,11 +304,6 @@ export interface DerivedRelationshipCount {
 
 export interface DerivedCiTypeCountSummaryUi {
     derivedRelationshipCounts?: DerivedRelationshipCount[]
-}
-
-export interface ConfigurationItemNeighbourSetUi {
-    fromCiSet?: ConfigurationItemUi[]
-    toCiSet?: ConfigurationItemUi[]
 }
 
 export interface IncidentRelationshipSetUi {
@@ -577,16 +573,26 @@ export interface Notification {
     notifType?: string
 }
 
+export interface ConfigurationItemNeighbourSetUi {
+    fromCiSet?: ConfigurationItemUi[]
+    toCiSet?: ConfigurationItemUi[]
+}
+
+export interface CiListNeighboursFilterUi {
+    ciUuids?: string[]
+    nodeType?: string
+    relationshipType?: string
+    nodeUsageTypeWhiteList?: string[]
+    nodeUsageTypeBlackList?: string[]
+    relUsageTypeWhiteList?: string[]
+    relUsageTypeBlackList?: string[]
+    includeInvalidated?: boolean
+}
+
 export interface ConfigurationItemSetUi {
     pagination?: PaginationUi
     configurationItemSet?: ConfigurationItemUi[]
     incidentRelationshipSet?: RelationshipUi[]
-}
-
-export interface CiRelationshipCiPreviewHolderUi {
-    ciStart?: CiPreviewUi
-    rel?: RelationshipUi
-    ciEnd?: CiPreviewUi
 }
 
 export interface CiRelationshipCiPreviewHolderListUi {
@@ -600,6 +606,12 @@ export interface CiPreviewUi {
     genName?: string
 }
 
+export interface CiRelationshipCiPreviewHolderUi {
+    ciStart?: CiPreviewUi
+    rel?: RelationshipUi
+    ciEnd?: CiPreviewUi
+}
+
 export interface CiUuidSetUi {
     pagination?: PaginationUi
     ciUuids?: string[]
@@ -610,6 +622,20 @@ export interface RelTypeFilterUi {
     relCiUuids?: string[]
     onlyValidRel?: boolean
     byHierarchy?: boolean
+}
+
+export interface CiFilterUi {
+    type?: string[]
+    usageType?: string[]
+    uuid?: string[]
+    attributes?: FilterAttributesUi[]
+    metaAttributes?: FilterMetaAttributesUi
+    fullTextSearch?: string
+    searchFields?: string[]
+    mustExistAttributes?: string[]
+    mustNotExistAttributes?: string[]
+    relTypeFilters?: RelTypeFilterUi[]
+    poUuid?: string
 }
 
 export interface CiListFilterContainerUi {
@@ -769,20 +795,6 @@ export interface FilterMetaAttributesUi {
     lastModifiedAtTo?: string
 }
 
-export interface CiFilterUi {
-    type?: string[]
-    usageType?: string[]
-    uuid?: string[]
-    attributes?: FilterAttributesUi[]
-    metaAttributes?: FilterMetaAttributesUi
-    fullTextSearch?: string
-    searchFields?: string[]
-    mustExistAttributes?: string[]
-    mustNotExistAttributes?: string[]
-    relTypeFilters?: RelTypeFilterUi[]
-    poUuid?: string
-}
-
 export interface RelFilterSmallUi {
     text?: string
     relTypes?: string[]
@@ -888,13 +900,6 @@ export interface RecycleRelsUi {
     relIdList?: string[]
 }
 
-export interface AddressObjectUi {
-    number?: string
-    village?: string
-    street?: string
-    zipCode?: string
-}
-
 export interface HierarchyRightsUi {
     poUUID?: string
     poName?: string
@@ -917,6 +922,13 @@ export interface HierarchyPOFilterUi {
     poUUID?: string
     fullTextSearch?: string
     rights?: HierarchyRightsUi[]
+}
+
+export interface AddressObjectUi {
+    number?: string
+    village?: string
+    street?: string
+    zipCode?: string
 }
 
 export interface MeetingRequestUi {
@@ -3790,6 +3802,67 @@ export const useReadCiList1 = <TData = Awaited<ReturnType<ReturnType<typeof useR
     return query
 }
 
+export const useReadListNeighboursConfigurationItemsHook = () => {
+    const readListNeighboursConfigurationItems = useCmdbSwaggerClient<ReadListNeighboursConfigurationItems200>()
+
+    return (ciListNeighboursFilterUi: CiListNeighboursFilterUi) => {
+        return readListNeighboursConfigurationItems({
+            url: `/read/ci/neighbours`,
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            data: ciListNeighboursFilterUi,
+        })
+    }
+}
+
+export const useReadListNeighboursConfigurationItemsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useReadListNeighboursConfigurationItemsHook>>>,
+        TError,
+        { data: CiListNeighboursFilterUi },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useReadListNeighboursConfigurationItemsHook>>>,
+    TError,
+    { data: CiListNeighboursFilterUi },
+    TContext
+> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const readListNeighboursConfigurationItems = useReadListNeighboursConfigurationItemsHook()
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<ReturnType<typeof useReadListNeighboursConfigurationItemsHook>>>,
+        { data: CiListNeighboursFilterUi }
+    > = (props) => {
+        const { data } = props ?? {}
+
+        return readListNeighboursConfigurationItems(data)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type ReadListNeighboursConfigurationItemsMutationResult = NonNullable<
+    Awaited<ReturnType<ReturnType<typeof useReadListNeighboursConfigurationItemsHook>>>
+>
+export type ReadListNeighboursConfigurationItemsMutationBody = CiListNeighboursFilterUi
+export type ReadListNeighboursConfigurationItemsMutationError = ApiError
+
+export const useReadListNeighboursConfigurationItems = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useReadListNeighboursConfigurationItemsHook>>>,
+        TError,
+        { data: CiListNeighboursFilterUi },
+        TContext
+    >
+}) => {
+    const mutationOptions = useReadListNeighboursConfigurationItemsMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
 export const useStorePoWithHierarchyRelHook = () => {
     const storePoWithHierarchyRel = useCmdbSwaggerClient<RequestIdUi>()
 
@@ -5428,7 +5501,7 @@ export const useReadCiDerivedRelTypesCount = <TData = Awaited<ReturnType<ReturnT
 }
 
 export const useReadCiDerivedRelTypesHook = () => {
-    const readCiDerivedRelTypes = useClientForReadCiDerivedRelTypesUsingGET<CiWithRelsResultUi>()
+    const readCiDerivedRelTypes = useCmdbSwaggerClient<CiWithRelsResultUi>()
 
     return (ciUUID: string, derivedTechnicalName: string, params?: ReadCiDerivedRelTypesParams, signal?: AbortSignal) => {
         return readCiDerivedRelTypes({ url: `/read/ci/${ciUUID}/neighbours/derived/${derivedTechnicalName}`, method: 'get', params, signal })
