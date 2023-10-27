@@ -5,6 +5,8 @@ import { initReactI18next } from 'react-i18next'
 
 import { Languages } from './languages'
 
+export const LANGUAGE_STORE_KEY = 'i18nLang'
+
 export const i18nInstance = createInstance()
 
 i18nInstance
@@ -15,6 +17,7 @@ i18nInstance
             loadPath: '/translations/{{lng}}.json',
         },
         fallbackLng: Languages.SLOVAK,
+        lng: localStorage.getItem(LANGUAGE_STORE_KEY) || Languages.SLOVAK,
         debug: true,
         keySeparator: '.',
         ns: ['translations'],

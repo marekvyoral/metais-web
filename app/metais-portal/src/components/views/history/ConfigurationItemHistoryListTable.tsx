@@ -82,7 +82,7 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
             accessorFn: (row) => row?.actions,
             header: t('historyTab.table.actions'),
             id: '1',
-            cell: (row) => t(`history.ACTIONS.${row.getValue() as string}`),
+            cell: (row) => (row.getValue() as string[])?.map((i) => t(`history.ACTIONS.${i as string}`)),
         },
         {
             accessorFn: (row) => row?.actionTime,
