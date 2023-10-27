@@ -1,5 +1,5 @@
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
-import { ButtonLink, Filter } from '@isdd/idsk-ui-kit/index'
+import { Button, ButtonLink, Filter } from '@isdd/idsk-ui-kit/index'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
@@ -16,6 +16,7 @@ import {
     FileHistoryModal,
     InvalidateBulkModal,
     MutationFeedback,
+    ProjectUploadFileModal,
     QueryFeedback,
     ReInvalidateBulkModal,
     UpdateFileModal,
@@ -23,12 +24,14 @@ import {
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import styles from '@isdd/metais-common/src/components/actions-over-table/single-actions-popup/file-history/styles.module.scss'
 
 import { downloadFile, isDocumentUpdatable, isDocumentsUpdatable, listToMap } from './utils'
 
 import { TableCols, defaultFilter } from '@/components/containers/DocumentListContainer'
 
 interface DocumentsTable {
+    ciData?: ConfigurationItemUi
     refetch: () => void
     data?: TableCols[]
     isLoading: boolean
@@ -56,6 +59,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     namesData,
     selectedItems,
     setSelectedItems,
+    ciData,
 }) => {
     const { t } = useTranslation()
     const { state: authState } = useAuth()
@@ -71,6 +75,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
     const [showDeleteFile, setShowDeleteFile] = useState<boolean>(false)
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
+    const [openAddModal, setOpenAddModal] = useState<ConfigurationItemUi>()
 
     const [invalidateSingle, setInvalidateSingle] = useState<ConfigurationItemUi>()
     const [deleteSingle, setDeleteSingle] = useState<ConfigurationItemUi>()
@@ -286,6 +291,9 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                 handleFilterChange={handleFilterChange}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}
+                createButton={
+                    <Button label={t('documentsTab.addNewDocument')} onClick={() => setOpenAddModal({})} className={styles.marginBottom0} />
+                }
                 bulkPopup={
                     <Tooltip
                         descriptionElement={errorMessage}
@@ -385,6 +393,17 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                     open
                     onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setUpdateFile(undefined))}
                     onClose={() => setUpdateFile(undefined)}
+                />
+            )}
+            {openAddModal && (
+                <ProjectUploadFileModal
+                    isCi
+                    project={ciData}
+                    docNumber={String(data?.length) ?? '0'}
+                    item={openAddModal}
+                    open
+                    onClose={() => setOpenAddModal(undefined)}
+                    onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setOpenAddModal(undefined))}
                 />
             )}
 
