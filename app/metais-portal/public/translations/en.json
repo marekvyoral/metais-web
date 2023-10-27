@@ -795,11 +795,7 @@
     "breadcrumbs": {
         "home": "Home",
         "dataObjects": "Data objects",
-        "codeLists": "Codelists",
-        "requestList": "List of requests to add a codelist",
-        "requestCreate": "Create request to add a codelist",
-        "codeListsList": "List of codelists",
-        "publicCodeListsList": "List of published codelists"
+        "codeLists": "Codelists"
     },
     "codeList": {
         "breadcrumbs": {
@@ -977,6 +973,28 @@
             "email": "Email is required field",
             "phone": "Phone is required field"
         },
+        "requestModal": {
+            "yes": "Yes",
+            "no": "No",
+            "shortcut": "Skrátený názov položky",
+            "codeItem": "Kód položky",
+            "codeName": "Názov položky",
+            "shortname": "Skratka názvu položky",
+            "refident": "Referencovateľný identifikátor",
+            "addData": "Doplňujúci obsah",
+            "unit": "Merná jednotka",
+            "note": "Poznámka pre položku",
+            "contain": "Zahŕňa",
+            "alsoContain": "Tiež zahŕňa",
+            "exclude": "Vylučuje",
+            "order": "Logické poradie položky",
+            "law": "Legislatívna uznateľnosť",
+            "validate": "Dátum platnosti",
+            "startDate": "Začiatok účinnosti",
+            "endDate": "Koniec účinnosti",
+            "acceptTitle": "Accepting request",
+            "acceptDesc": "By accepting request is base counter draft sent for approval to the Committee for Standardization of ISPA. Upon its approval it is moved to counter list and relevant authority will be asked to complete counter items within the statutory deadline."
+        },
         "filter": {
             "title": "Filter",
             "mainGestor": "Main authority",
@@ -1013,6 +1031,17 @@
             "effectiveFrom": "Valid as of",
             "isBase": "Base counter",
             "state": "State"
+        },
+        "buttons": {
+            "MOVE_TO_KSISVS": "Move to the Committee for Standardization ISPA",
+            "REJECT": "Reject",
+            "ACCEPT": "Accept",
+            "ACCEPT_SZZC": "Accept by headers list administrator",
+            "SEND": "Send",
+            "EDIT": "Edit",
+            "CANCEL_REQUEST": "Cancel request",
+            "IMPORT": "Import codelist",
+            "EXPORT": "Export"
         }
     },
     "selectCiItem": {

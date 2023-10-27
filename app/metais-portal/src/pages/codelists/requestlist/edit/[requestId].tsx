@@ -19,6 +19,7 @@ const EditPage = () => {
                     editData={props.editData}
                     attributeProfile={props.attributeProfile}
                     onSaveDates={props.onSaveDates}
+                    requestId={props.requestId}
                 />
             )}
         />

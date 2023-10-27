@@ -54,8 +54,8 @@ export const RequestListContainer: React.FC<RequestListContainerProps> = ({ View
     const { filter, handleFilterChange } = useFilterParams<CodeListListFilterData>({
         sort: [
             {
-                orderBy: 'code',
-                sortDirection: SortType.DESC,
+                orderBy: 'id',
+                sortDirection: SortType.ASC,
             },
         ],
         ...defaultFilterValues,
