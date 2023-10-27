@@ -12,6 +12,7 @@ import { Actions, useUserAbility } from '@isdd/metais-common/hooks/permissions/u
 import { CI_ITEM_QUERY_KEY, ENTITY_PROJECT } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { shouldEntityNameBePO } from '@isdd/metais-common/src/componentHelpers/ci/entityNameHelpers'
 
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
@@ -26,33 +27,37 @@ export const INDEX_ROUTE = Informations
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
-    const { entityId, entityName } = useParams()
+    const { entityId, entityName: urlEntityName } = useParams()
+
+    const entityName = shouldEntityNameBePO(urlEntityName ?? '')
+
     const {
         state: { user },
     } = useAuth()
+
     const isUserLogged = !!user
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
 
-    document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
+    document.title = `${t('titles.ciDetail', { ci: urlEntityName })} | MetaIS`
     const userAbility = useUserAbility()
 
     const tabList: Tab[] = [
         {
             id: 'informations',
-            path: `/ci/${entityName}/${entityId}/`,
+            path: `/ci/${urlEntityName}/${entityId}/`,
             title: t('ciType.informations'),
             content: <Outlet />,
         },
         {
             id: 'documents',
-            path: `/ci/${entityName}/${entityId}/documents`,
+            path: `/ci/${urlEntityName}/${entityId}/documents`,
             title: t('ciType.documents'),
             content: <Outlet />,
         },
 
         {
             id: 'relationships',
-            path: `/ci/${entityName}/${entityId}/relationships`,
+            path: `/ci/${urlEntityName}/${entityId}/relationships`,
             title: t('ciType.relationships'),
             content: <Outlet />,
         },
@@ -60,7 +65,7 @@ const EntityDetailPage: React.FC = () => {
             ? [
                   {
                       id: 'history',
-                      path: `/ci/${entityName}/${entityId}/history`,
+                      path: `/ci/${urlEntityName}/${entityId}/history`,
                       title: t('ciType.history'),
                       content: <Outlet />,
                   },
@@ -80,10 +85,10 @@ const EntityDetailPage: React.FC = () => {
         refetch()
     }
 
-    if (entityName == ENTITY_PROJECT && isUserLogged) {
+    if (urlEntityName == ENTITY_PROJECT && isUserLogged) {
         tabList.splice(2, 0, {
             id: 'activities',
-            path: `/ci/${entityName}/${entityId}/activities`,
+            path: `/ci/${urlEntityName}/${entityId}/activities`,
             title: t('ciType.activities'),
             content: <Outlet />,
         })
@@ -95,10 +100,10 @@ const EntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: entityName, href: `/ci/${entityName}` },
+                    { label: urlEntityName, href: `/ci/${urlEntityName}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
-                        href: `/ci/${entityName}/${entityId}`,
+                        href: `/ci/${urlEntityName}/${entityId}`,
                     },
                 ]}
             />
@@ -108,7 +113,7 @@ const EntityDetailPage: React.FC = () => {
                         <FlexColumnReverseWrapper>
                             <CiEntityIdHeader
                                 entityData={ciItemData}
-                                entityName={entityName ?? ''}
+                                entityName={urlEntityName ?? ''}
                                 entityId={entityId ?? ''}
                                 entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
                                 handleBulkAction={handleBulkAction}

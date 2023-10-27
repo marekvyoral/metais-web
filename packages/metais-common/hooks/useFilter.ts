@@ -35,6 +35,7 @@ import { FilterActions, useFilterContext } from '@isdd/metais-common/contexts/fi
 import { updateFilterInLocalStorageOnChange } from '@isdd/metais-common/componentHelpers/filter/updateFilterInLocalStorageOnChange'
 import { FilterMetaAttributesUi } from '@isdd/metais-common/api'
 import { isMatchWithMetaAttributeTechnicalName, mapMetaAttributeFromUrlToFitFilter } from '@isdd/metais-common/componentHelpers'
+import { isObjectEmpty } from '@isdd/metais-common/utils/utils'
 
 //types for API
 export enum OPERATOR_OPTIONS {
@@ -260,6 +261,7 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
             const defaultKeys = Object.keys(filter)
             const hasCurrentValue = defaultKeys.some((item) => {
                 if (filterKeysToSkip.has(item)) return false
+                if (isObjectEmpty(filter[item])) return false
                 return filter[item]
             })
 

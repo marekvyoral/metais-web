@@ -39,11 +39,12 @@ export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighbo
     const {
         isLoading: isOwnersLoading,
         isError: isOwnersError,
+        fetchStatus,
         data: ownersData,
     } = useGetRoleParticipantBulk({ gids: owners }, { query: { enabled: !!owners?.length } })
 
     return {
-        isLoading: isLoading || isOwnersLoading || isFetching,
+        isLoading: isLoading || isFetching || (isOwnersLoading && fetchStatus != 'idle'),
         isDerivedLoading: isDerivedLoading || isDerivedFetching,
         isError: isError || isOwnersError,
         relationsList: relationsList,

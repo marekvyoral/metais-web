@@ -21,7 +21,7 @@ import { TableRow } from './TableRow'
 import { TableRowExpanded } from './TableRowExpanded'
 import { CHECKBOX_CELL } from './constants'
 import styles from './table.module.scss'
-import { transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
+import { hasMetaAttributesWithStateProperty, transformColumnSortToSortingState, transformSortingStateToColumnSort } from './tableUtils'
 import { TableDragRow } from './TableDragRow'
 
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
@@ -185,12 +185,14 @@ export const Table = <T,>({
                 ref={wrapper1Ref}
             >
                 {table.getRowModel().rows.map((row, index) => {
-                    const isInvalidated = invalidStates.includes(
-                        row
-                            .getAllCells()
-                            .find((cell) => cell.column.id == 'state')
-                            ?.getValue() as string,
-                    )
+                    const isInvalidated =
+                        (hasMetaAttributesWithStateProperty(row) && row.original.metaAttributes?.state === 'INVALIDATED') ||
+                        invalidStates.includes(
+                            row
+                                .getAllCells()
+                                .find((cell) => cell.column.id == 'state')
+                                ?.getValue() as string,
+                        )
 
                     return (
                         <React.Fragment key={index}>

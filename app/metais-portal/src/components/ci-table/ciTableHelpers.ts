@@ -8,6 +8,7 @@ import {
     RoleParticipantUI,
 } from '@isdd/metais-common/api'
 import { Attribute, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { pairEnumsToEnumValues } from '@isdd/metais-common/index'
 import { ColumnOrderState } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
@@ -126,4 +127,13 @@ export const reduceTableDataToObject = <T extends { uuid?: string }>(array: T[])
 export const getOwnerInformation = (ownerGid: string, ownerList: RoleParticipantUI[] | undefined) => {
     const foundOwner = ownerList?.find((item) => item.gid === ownerGid)
     return foundOwner
+}
+
+export const isMetaAttribute = (metaTechnicalName: string) => {
+    return (
+        metaTechnicalName === MetainformationColumns.OWNER ||
+        metaTechnicalName === MetainformationColumns.STATE ||
+        metaTechnicalName === MetainformationColumns.CREATED_AT ||
+        metaTechnicalName === MetainformationColumns.LAST_MODIFIED_AT
+    )
 }

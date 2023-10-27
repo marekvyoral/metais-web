@@ -34,6 +34,7 @@ export const useBulkAction = () => {
         const isValid = items.every((item) => !ciInvalidFilter(item))
 
         if (!isValid) {
+            setBulkLoading(false)
             setErrorMessage(t('tooltip.rights.invalidSelectedList'))
             return onError()
         }
@@ -51,6 +52,7 @@ export const useBulkAction = () => {
                 setErrorMessage(undefined)
                 return onSuccess(true)
             } else {
+                setBulkLoading(false)
                 setErrorMessage(t('tooltip.rights.missingPermission'))
                 return onError()
             }
@@ -77,6 +79,7 @@ export const useBulkAction = () => {
                 setErrorMessage(undefined)
                 return onSuccess()
             } else {
+                setBulkLoading(false)
                 setErrorMessage(t('tooltip.rights.missingPermission'))
                 return onError()
             }
@@ -97,6 +100,7 @@ export const useBulkAction = () => {
                 setErrorMessage(undefined)
                 return onSuccess()
             } else {
+                setBulkLoading(false)
                 setErrorMessage(t('tooltip.rights.missingPermission'))
                 return onError()
             }

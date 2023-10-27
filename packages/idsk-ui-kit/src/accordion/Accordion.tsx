@@ -35,7 +35,7 @@ export const AccordionContainer: React.FC<IAccordionContainerProps> = ({ section
         }
     }, [indexOfSectionToExpand, sections.length])
 
-    const isAllExpanded = expandedSectionIndexes.every((x) => x)
+    const isAllExpanded = expandedSectionIndexes.every((x) => x) && expandedSectionIndexes.length > 0
 
     const toggleAllExpanded = () => {
         setExpandedSectionIndexes(Array(sections.length).fill(!isAllExpanded))

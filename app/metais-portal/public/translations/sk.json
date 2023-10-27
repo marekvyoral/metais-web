@@ -22,6 +22,8 @@
         "contentAdmin": "Správca obsahu",
         "RSS": "RSS",
         "appVersion": "Verzia aplikácie",
+        "home": "Home",
+
         "services": {
             "title": "Služby a informácie",
             "rations": "Dávky",
@@ -197,6 +199,21 @@
         "searchPlaceholder": "Vyhľadajte v tabuľke",
         "chooseState": "Vyberte stav",
         "chooseValue": "Vyberte hodnotu",
+        "WeboveSidlo": {
+            "name": "Názov webového sídla"
+        },
+        "Aktivita": {
+            "name": "Názov aktivity"
+        },
+        "KRIS": {
+            "name": "Názov KRIS"
+        },
+        "Princip": {
+            "name": "Názov princípu"
+        },
+        "Ciel": {
+            "name": "Názov cieľu"
+        },
         "KS": {
             "name": "Názov koncovej služby"
         },
@@ -279,9 +296,6 @@
         "en": "English",
         "ge": "German"
     },
-    "input": {
-        "requiredField": "(povinné)"
-    },
     "stepper": {
         "openAll": "Zobraziť všetko",
         "closeAll": "Zatvoriť všetko",
@@ -294,7 +308,8 @@
     },
     "errors": {
         "fixLink": "Opraviť",
-        "invalidEntityId": "Nevalidná entita"
+        "invalidEntityId": "Nevalidná entita",
+        "NoChangesDetected": "Žiadne zmeny na položke"
     },
     "mutationFeedback": {
         "successfulUpdated": "Položka bola úspešne zmenená"
@@ -341,7 +356,7 @@
         "activities": "Aktivity NKIVS",
         "relationships": "Vzťahy",
         "history": "História zmien",
-        "editEntity": "Editácia entity",
+        "editEntity": "Editácia komponentu",
         "chosenObject": "Vybraný objekt (typ)",
         "editButton": "Upraviť",
         "moreButton": "Viac akcií",
@@ -349,7 +364,7 @@
         "revalidateItem": "Revalidovať",
         "changeOfOwner": "Zmena vlastníka",
         "besManagement": "BES management",
-        "createEntity": "Vytvorenie novej entity",
+        "createEntity": "Vytvorenie nového komponentu typu {{entityName}}",
         "sendForApproval": "Poslať na schválenie",
         "approve": "Schváliť",
         "return": "Vrátiť na dopracovanie",
@@ -521,6 +536,9 @@
         }
     },
     "reports": {
+        "filter": {
+            "category": "Kategória"
+        },
         "heading": "Reporty a zostavy",
         "table": {
             "name": "Názov",
@@ -570,15 +588,15 @@
         "role": "Rola",
         "addNewRow": "Pridať nový riadok",
         "units": "(Hodnota v {{units}})",
-        "redirectLoading": "Spracúva sa vytvorenie novej entity",
+        "redirectLoading": "Spracúva sa vytvorenie nového komponentu",
         "redirectLoadingEdit": "Prebieha aktualizácia údajov na entite",
-        "redirectError": "Nepodarilo sa spracovať vytvorenie novej entity. Ďalšie informácie nájdete v upozorneniach.",
-        "redirectErrorEdit": "Nepodarila sa spracovať aktualizáciu novej entity. Ďalšie informácie nájdete v upozorneniach.",
+        "redirectError": "Nepodarilo sa spracovať vytvorenie nového komponentu. Ďalšie informácie nájdete v upozorneniach.",
+        "redirectErrorEdit": "Nepodarila sa spracovať aktualizáciu nového komponentu. Ďalšie informácie nájdete v upozorneniach.",
         "mutationError": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.",
         "tooManyFetchesError": "Pri spracovaní došlo k chybe. Akcia trvala príliš dlho. Ďalšie informácie nájdete v upozorneniach.",
         "orgAndRoleError": {
             "title": "Chýbajúce práva pre organizáciu",
-            "message": "Chýbajú vám práva na vytvorenie entity pod touto organizáciou"
+            "message": "Chýbajú vám práva na vytvorenie komponentu pod touto organizáciou"
         }
     },
     "table": {
@@ -699,7 +717,22 @@
         "columns": "Stĺpce",
         "column": "Stĺpec",
         "eventType": "Typ notifikaci",
-        "created": "Vytvorene:"
+        "created": "Vytvorené",
+        "description": "Popis",
+
+        "columnsNames": {
+            "messagePerex": "Názov",
+            "createdAt": "Dátum vytvorenia",
+            "notifType": "Typ",
+            "readedAt": "Dátum prečítania",
+            "deleted": "Vymazané",
+            "eventType": "Typ udalosti",
+            "id": "Identifikátor",
+            "message": "Správa",
+            "sendToUserIdSet": "Odoslané zostave používateľov",
+            "targetUri": "Cieľová URL",
+            "userId": "ID používateľa"
+        }
     },
     "feedback": {
         "loading": "Načítavajú sa údaje...",
@@ -854,16 +887,24 @@
                 "changeCmdbItem": "Zmeniť len vlastníka vybraných položiek, nemeniť vlastníka relácií"
             },
             "success": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o zmene vlastníka.",
-            "successAll": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o zmene vlastníka."
+            "successList": "Položky boli poslané na spracovanie, prosím počkajte na notifikáciu o zmene vlastníka."
         }
     },
     "breadcrumbs": {
         "home": "Domov",
         "dataObjects": "Dátové objekty",
         "codeLists": "Číselníky",
-        "requestList": "Zoznam žiadostí založenia číselníka"
+        "requestList": "Zoznam žiadostí založenia číselníka",
+        "requestCreate": "Žiadosť o zaradenie číselníka",
+        "codeListsList": "Zoznam číselníkov",
+        "publicCodeListsList": "Zoznam publikovaných číselníkov",
+        "ciCreate": "Vytvorenie nového komponentu typu {{entityName}}",
+        "compareHistory": "Porovnávanie histórie",
+        "ciEdit": "Editácia komponentu",
+        "noName": "Bez mena"
     },
     "codeList": {
+        "descriptionError": "Popis je povinný",
         "breadcrumbs": {
             "home": "Domov",
             "dataObjects": "Dátové objekty",
@@ -1168,6 +1209,7 @@
         "PO_IS_PO": "Prevádzkovatelia IS PO",
         "PO_IS_PODetail": "Detail IS PO",
         "PO_IS_POCreate": "Vytvorenie IS PO",
+        "meetings": "Zoznam zasadnutí",
         "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia"
     },
     "todo": {
@@ -1430,5 +1472,31 @@
     },
     "publicAuthorities": {
         "hierarchy": "Hierarchia orgánov riadenia"
+    },
+    "refRegisters": {
+        "list": {
+            "heading": "Zoznam referenčných registrov"
+        },
+        "requests": {
+            "heading": "Zoznam žiadostí o pridanie referenčného registra"
+        }
+    },
+    "publicspace": {
+        "heading": "Štandardy ISVS"
+    },
+    "draftsList": {
+        "heading": "Zoznam návrhov predložených prostredníctvom MetaIS"
+    },
+    "howto": {
+        "codelists": "Číselníky",
+        "refRegisters": "Referenčné registre",
+        "monitoring": "Zostavy a monitoring",
+        "guides": "Postupy a návody",
+        "dataObjects": "Dátové objekty",
+        "standardization": "Štandardizácia",
+        "programProjectsActivities": "Programy, projekty a aktivity",
+        "kris": "Ciele, princípy, aktivity a KRIT",
+        "po": "Orgány riadenia",
+        "egov": "e-Government komponenty"
     }
 }

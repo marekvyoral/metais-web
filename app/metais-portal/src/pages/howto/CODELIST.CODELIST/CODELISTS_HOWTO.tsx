@@ -1,5 +1,5 @@
 import React from 'react'
-import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -9,7 +9,9 @@ const CodeListsHowTo = () => {
     return (
         <>
             <BreadCrumbs withWidthContainer links={[{ label: t('breadcrumbs.home'), href: '/', icon: HomeIcon }]} />
-            <MainContentWrapper>CODELISTS_HOWTO</MainContentWrapper>
+            <MainContentWrapper>
+                <TextHeading size="L">{t('howto.codelists')}</TextHeading>CODELISTS_HOWTO
+            </MainContentWrapper>
         </>
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -9,7 +9,10 @@ const EgovHowTo = () => {
     return (
         <>
             <BreadCrumbs withWidthContainer links={[{ label: t('breadcrumbs.home'), href: '/', icon: HomeIcon }]} />
-            <MainContentWrapper>EGOV_HOWTO</MainContentWrapper>
+            <MainContentWrapper>
+                <TextHeading size="L">{t('howto.egov')}</TextHeading>
+                EGOV_HOWTO
+            </MainContentWrapper>
         </>
     )
 }

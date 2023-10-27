@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/entityNameHelpers'
 
 import { CiContainer } from '@/components/containers/CiContainer'
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
@@ -16,7 +17,9 @@ import { findRelationType } from '@/componentHelpers/new-relation'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const CreateCiItemAndRelation: React.FC = () => {
-    const { entityName, entityId, tabName } = useParams()
+    const { entityId, tabName } = useParams()
+    let { entityName } = useParams()
+    entityName = shouldEntityNameBePO(entityName ?? '')
     const { t, i18n } = useTranslation()
 
     return (

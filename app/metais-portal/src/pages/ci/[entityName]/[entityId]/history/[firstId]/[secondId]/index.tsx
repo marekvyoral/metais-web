@@ -6,6 +6,7 @@ import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb
 import { useTranslation } from 'react-i18next'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/entityNameHelpers'
 
 import { CiHistoryPermissionsWrapper } from '@/components/permissions/CiHistoryPermissionsWrapper'
 import { HistoryItemsCompareContainer } from '@/components/containers/HistoryItemsCompareContainer'
@@ -14,7 +15,9 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const ComparePage: React.FC = () => {
     const { t } = useTranslation()
-    const { firstId, secondId, entityId, entityName } = useParams()
+    const { firstId, secondId, entityId } = useParams()
+    let { entityName } = useParams()
+    entityName = shouldEntityNameBePO(entityName ?? '')
     const { data: ciItemData } = useReadConfigurationItem(entityId ?? '', {
         query: {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
@@ -42,6 +45,10 @@ const ComparePage: React.FC = () => {
                             />
                             <MainContentWrapper>
                                 <HistoryItemsCompareContainer
+                                    entityId={entityId ?? ''}
+                                    entityName={entityName ?? ''}
+                                    firstId={firstId ?? ''}
+                                    secondId={secondId ?? ''}
                                     View={(props) => {
                                         return (
                                             <HistoryCompareView

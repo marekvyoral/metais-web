@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/entityNameHelpers'
 
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
 import { PublicAuthorityAndRoleContainer } from '@/components/containers/PublicAuthorityAndRoleContainer'
@@ -11,7 +12,9 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const CreateEntityPage: React.FC = () => {
     const { t } = useTranslation()
-    const { entityName } = useParams()
+
+    let { entityName } = useParams()
+    entityName = shouldEntityNameBePO(entityName ?? '')
     document.title = `${t('titles.ciCreate', { ci: entityName })} | MetaIS`
     return (
         <>
@@ -20,7 +23,7 @@ const CreateEntityPage: React.FC = () => {
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
                     { label: entityName ?? '', href: `/ci/${entityName}` },
-                    { label: t('breadcrumbs.ciCreate'), href: `/ci/create` },
+                    { label: t('breadcrumbs.ciCreate', { entityName: entityName }), href: `/ci/create` },
                 ]}
             />
             <MainContentWrapper>

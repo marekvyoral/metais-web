@@ -11,9 +11,9 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
         { title: t('navMenu.lists.infrastructures'), path: PORTAL_URL + NavigationSubRoutes.INFRASCTRUCTURES },
         { title: t('navMenu.lists.webResidence'), path: PORTAL_URL + NavigationSubRoutes.WEBOVE_SIDLO },
         { title: t('navMenu.lists.personalProcedures'), path: PORTAL_URL + '/todo' },
-        { title: t('navMenu.lists.educationalCourses'), path: PORTAL_URL + NavigationSubRoutes.EDUCATIONAL_COURSES },
-        { title: t('navMenu.lists.evidenceObjects'), path: PORTAL_URL + NavigationSubRoutes.OBJEKTY_EVIDENCIE },
-        { title: t('navMenu.lists.attributesEvidenceObjects'), path: PORTAL_URL + NavigationSubRoutes.ATRIBUTY_OBJEKTY_EVIDENCIE },
+        //{ title: t('navMenu.lists.educationalCourses'), path: PORTAL_URL + NavigationSubRoutes.EDUCATIONAL_COURSES },
+        //{ title: t('navMenu.lists.evidenceObjects'), path: PORTAL_URL + NavigationSubRoutes.OBJEKTY_EVIDENCIE },
+        //{ title: t('navMenu.lists.attributesEvidenceObjects'), path: PORTAL_URL + NavigationSubRoutes.ATRIBUTY_OBJEKTY_EVIDENCIE },
     ]
     const egovComponentsSubItemsSideMenu: NavigationItem[] = [
         {
@@ -106,14 +106,14 @@ export const getLoginNavigationItems = (t: TFunction, ksisvsGroupId: string | un
                         { title: t('navMenu.lists.codelistsRequestsList'), path: PORTAL_URL + NavigationSubRoutes.CODELIST_REQUESTS },
                     ],
                 },
-                {
+                /* {
                     title: t('navMenu.referenceIdentifiers'),
                     path: PORTAL_URL + RouteNames.HOW_TO_REFERENCE_IDENTIFIERS,
                     subItems: [
                         { title: t('navMenu.lists.referenceIdentifiersList'), path: PORTAL_URL + NavigationSubRoutes.IDENTIFIERS_LIST },
                         { title: t('navMenu.lists.referenceIdentifiersRequestsList'), path: PORTAL_URL + NavigationSubRoutes.IDENTIFIERS_REQUESTS },
                     ],
-                },
+                },*/
             ],
         },
         {
@@ -122,10 +122,10 @@ export const getLoginNavigationItems = (t: TFunction, ksisvsGroupId: string | un
             icon: MonitoringIcon,
             subItems: [
                 { title: t('navMenu.reports'), path: PORTAL_URL + RouteNames.REPORTS },
-                { title: t('navMenu.lists.monitoringEnd'), path: PORTAL_URL + NavigationSubRoutes.MONITORING_KS },
-                { title: t('navMenu.lists.monitoringApp'), path: PORTAL_URL + NavigationSubRoutes.MONITORING_AS },
-                { title: t('navMenu.lists.monitoringImport'), path: PORTAL_URL + NavigationSubRoutes.MONITORING_IMPORT },
-                { title: t('navMenu.lists.monitoringSet'), path: PORTAL_URL + NavigationSubRoutes.MONITORING_PARAMETRE_SET },
+                //{ title: t('navMenu.lists.monitoringEnd'), path: PORTAL_URL + NavigationSubRoutes.MONITORING_KS },
+                //{ title: t('navMenu.lists.monitoringApp'), path: PORTAL_URL + NavigationSubRoutes.MONITORING_AS },
+                //{ title: t('navMenu.lists.monitoringImport'), path: PORTAL_URL + NavigationSubRoutes.MONITORING_IMPORT },
+                //{ title: t('navMenu.lists.monitoringSet'), path: PORTAL_URL + NavigationSubRoutes.MONITORING_PARAMETRE_SET },
             ],
         },
         {

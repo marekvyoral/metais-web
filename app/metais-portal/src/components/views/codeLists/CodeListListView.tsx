@@ -198,7 +198,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                                             label={t('codeListList.filter.state')}
                                             options={Object.values(CodeListState).map((state) => ({
                                                 value: state,
-                                                label: t(`codeList.state.${state}`),
+                                                label: t(`codeListList.state.${state}`),
                                             }))}
                                             setValue={setValue}
                                             defaultValue={formFilter.wfState || defaultFilterValues.wfState}

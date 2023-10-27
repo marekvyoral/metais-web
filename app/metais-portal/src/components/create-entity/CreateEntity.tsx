@@ -9,6 +9,7 @@ import { v4 as uuidV4 } from 'uuid'
 import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
+import { isObjectEmpty } from '@isdd/metais-common/src/utils/utils'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
@@ -96,10 +97,13 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         resetRedirect()
         const formAttributesKeys = Object.keys(formAttributes)
 
-        const formattedAttributesToSend = formAttributesKeys.map((key) => ({
-            name: key,
-            value: formatFormAttributeValue(formAttributes, key),
-        }))
+        const formattedAttributesToSend = formAttributesKeys
+            .map((key) => ({
+                name: key,
+                value: formatFormAttributeValue(formAttributes, key),
+            }))
+            .filter((att) => !isObjectEmpty(att.value))
+
         const type = entityName
         const ownerId = data.ownerId
         const uuid = updateCiItemId ? updateCiItemId : uuidV4()

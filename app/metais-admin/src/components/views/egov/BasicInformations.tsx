@@ -27,7 +27,7 @@ export const BasicInformations = ({ data: { ciTypeData }, roles }: ProjectInform
             <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={ciTypeData?.technicalName} />
             {ciTypeData?.codePrefix && <InformationGridRow key={'codePrefix'} label={t('egov.codePrefix')} value={ciTypeData?.codePrefix} />}
             {ciTypeData?.uriPrefix && <InformationGridRow key={'uriPrefix'} label={t('egov.uriPrefix')} value={ciTypeData?.uriPrefix} />}
-            <InformationGridRow key={'type'} label={t('egov.type')} value={t(`tooltips.type.${ciTypeData?.type}`)} />
+            <InformationGridRow key={'type'} label={t('egov.type')} value={ciTypeData?.type ? t(`tooltips.type.${ciTypeData.type}`) : ''} />
             <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`validity.${ciTypeData?.valid}`)} />
             <InformationGridRow key={'description'} label={t('egov.description')} value={ciTypeData?.description} />
             {ciTypeData?.engDescription && (

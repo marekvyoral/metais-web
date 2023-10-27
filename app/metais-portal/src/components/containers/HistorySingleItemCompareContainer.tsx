@@ -2,7 +2,6 @@ import { HistoryVersionUiConfigurationItemUi, useReadCiHistoryVersion } from '@i
 import { CiType, useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
 import React from 'react'
-import { useParams } from 'react-router-dom'
 
 export interface IView {
     ciTypeData: CiType | undefined
@@ -12,10 +11,12 @@ export interface IView {
 
 interface IHistorySingleItemCompareContainerProps {
     View: React.FC<IView>
+    firstId: string
+    entityId: string
+    entityName: string
 }
 
-export const HistorySingleItemCompareContainer: React.FC<IHistorySingleItemCompareContainerProps> = ({ View }) => {
-    const { firstId, entityId, entityName } = useParams()
+export const HistorySingleItemCompareContainer: React.FC<IHistorySingleItemCompareContainerProps> = ({ View, entityName, entityId, firstId }) => {
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
     const { data: dataFirst, isError: isErrorFirst, isLoading: isLoadingFirst } = useReadCiHistoryVersion(entityId ?? '', { versionId: firstId })
 
