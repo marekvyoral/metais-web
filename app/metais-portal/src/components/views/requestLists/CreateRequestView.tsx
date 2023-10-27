@@ -130,10 +130,10 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
             setCodeList([...removeItem, { ...data }])
         } else {
             if (codeList.every((i) => i.codeItem !== data.codeItem)) {
-                setCodeList([...codeList, { ...data, id: 'create' + codeList.length }])
+                setCodeList([...codeList, { ...data, state: 'PUBLISHED', id: 'create' + codeList.length }])
             } else {
                 const removeItem = codeList.filter((i) => i.codeItem !== data.codeItem)
-                setCodeList([...removeItem, { ...data, id: 'create' + removeItem.length }])
+                setCodeList([...removeItem, { ...data, state: 'PUBLISHED', id: 'create' + removeItem.length }])
             }
         }
         close()

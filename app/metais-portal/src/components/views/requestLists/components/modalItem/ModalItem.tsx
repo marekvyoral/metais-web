@@ -25,6 +25,7 @@ export interface IItemForm {
     effectiveFrom?: string
     lockedBy?: string
     lockedFrom?: string
+    state?: string
     selected?: boolean
 }
 

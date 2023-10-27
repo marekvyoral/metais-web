@@ -52,76 +52,98 @@ export const mapFormToSave = (formData: IRequestForm, language: string, uuid: st
         lockedBy: 'lockedBy',
         temporal: false,
         apiCodelistItemList: {
+            codelistsItemCount: formData.codeLists?.length ?? 0,
             codelistsItems: formData.codeLists?.map(
                 (item) =>
                     ({
-                        codelistItemAbbreviatedNames: [
-                            {
-                                language: language,
-                                value: item.codeName,
-                            },
-                        ],
-                        codelistItemAdditionalContents: [
-                            {
-                                language: language,
-                                value: item.addData,
-                            },
-                        ],
-                        codelistItemExcludes: [
-                            {
-                                language: language,
-                                value: item.exclude,
-                            },
-                        ],
-                        codelistItemIncludes: [
-                            {
-                                language: language,
-                                value: item.contain,
-                            },
-                        ],
-                        codelistItemIncludesAlso: [
-                            {
-                                language: language,
-                                value: item.alsoContain,
-                            },
-                        ],
+                        codelistItemAbbreviatedNames: item.shortcut
+                            ? [
+                                  {
+                                      language: language,
+                                      value: item.shortcut,
+                                  },
+                              ]
+                            : [],
+                        codelistItemAdditionalContents: item.addData
+                            ? [
+                                  {
+                                      language: language,
+                                      value: item.addData,
+                                  },
+                              ]
+                            : [],
+                        codelistItemExcludes: item.exclude
+                            ? [
+                                  {
+                                      language: language,
+                                      value: item.exclude,
+                                  },
+                              ]
+                            : [],
+                        codelistItemIncludes: item.contain
+                            ? [
+                                  {
+                                      language: language,
+                                      value: item.contain,
+                                  },
+                              ]
+                            : [],
+                        codelistItemIncludesAlso: item.alsoContain
+                            ? [
+                                  {
+                                      language: language,
+                                      value: item.alsoContain,
+                                  },
+                              ]
+                            : [],
                         codelistItemLegislativeValidities: [
                             {
                                 validityValue: true,
                             },
                         ],
-                        codelistItemLogicalOrders: [
-                            {
-                                language: language,
-                                value: item.order,
-                            },
-                        ],
-                        codelistItemNotes: [
-                            {
-                                language: language,
-                                value: item.note,
-                            },
-                        ],
-                        codelistItemNames: [
-                            {
-                                language: language,
-                                value: item.codeName,
-                            },
-                        ],
-                        codelistItemShortenedNames: [
-                            {
-                                language: language,
-                                value: item.shortname,
-                            },
-                        ],
-                        codelistItemUnitsOfMeasure: [
-                            {
-                                value: item.unit,
-                            },
-                        ],
+                        codelistItemLogicalOrders: item.order
+                            ? [
+                                  {
+                                      language: language,
+                                      value: item.order.toString(),
+                                  },
+                              ]
+                            : [],
+                        codelistItemNotes: item.note
+                            ? [
+                                  {
+                                      language: language,
+                                      value: item.note,
+                                  },
+                              ]
+                            : [],
+                        codelistItemNames: item.codeName
+                            ? [
+                                  {
+                                      language: language,
+                                      value: item.codeName,
+                                  },
+                              ]
+                            : [],
+                        codelistItemShortenedNames: item.shortname
+                            ? [
+                                  {
+                                      language: language,
+                                      value: item.shortname,
+                                  },
+                              ]
+                            : [],
+                        codelistItemUnitsOfMeasure: item.unit
+                            ? [
+                                  {
+                                      value: item.unit,
+                                  },
+                              ]
+                            : [],
                         id: item.id?.toString().startsWith('create') ? undefined : item.id,
                         itemCode: item.codeItem,
                         itemUri: item.refident,
+                        codelistItemState: item.state,
                         locked: false,
                         published: false,
                         temporal: false,
