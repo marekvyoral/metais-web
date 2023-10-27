@@ -11,6 +11,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useIsOwnerByGidHook } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import { useGenerateCodeAndURLHook } from '@isdd/metais-common/src/api/generated/types-repo-swagger'
+import { API_CALL_RETRY_COUNT } from '@isdd/metais-common/constants'
 
 export interface IDocType extends ConfigurationItemUi {
     confluence?: boolean
@@ -27,6 +28,7 @@ export interface IProjectUploadFileModalProps {
     addButtonSectionName?: string
     docNumber: string
     project?: ConfigurationItemUi
+    isCi?: boolean
 }
 
 export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
@@ -37,6 +39,7 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
     addButtonSectionName,
     docNumber,
     project,
+    isCi,
 }) => {
     const { t } = useTranslation()
     const { register, handleSubmit, reset, formState } = useForm()
@@ -50,7 +53,7 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
     const getDocument = useGetDocumentHook()
     const getStatus = async (requestId: string) => {
         let done = false
-        for (let index = 0; index < 30; index++) {
+        for (let index = 0; index < API_CALL_RETRY_COUNT; index++) {
             const status = await requestStatus(requestId)
             if (status.processed) {
                 done = true
@@ -61,7 +64,7 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
     }
     const getDocumentExists = async (docId: string) => {
         let done = false
-        for (let index = 0; index < 30; index++) {
+        for (let index = 0; index < API_CALL_RETRY_COUNT; index++) {
             const status = await getDocument(docId)
             if (status.isExist) {
                 done = true
@@ -118,7 +121,7 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
                             ],
                             relationshipSet: [
                                 {
-                                    type: 'PROJECT_HAS_DOCUMENT',
+                                    type: isCi ? 'CI_HAS_DOCUMENT' : 'PROJECT_HAS_DOCUMENT',
                                     attributes: [],
                                     startUuid: project?.uuid,
                                     endUuid: id,

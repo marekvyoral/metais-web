@@ -24,19 +24,7 @@ const DocumentsListPage: React.FC = () => {
         <DocumentsListContainer
             configurationItemId={entityId}
             View={(props) => {
-                return (
-                    <DocumentsTable
-                        namesData={props.namesData}
-                        refetch={props.refetch}
-                        data={props?.data}
-                        handleFilterChange={props.handleFilterChange}
-                        isLoading={props.isLoading}
-                        isError={props.isError}
-                        pagination={props.pagination}
-                        selectedItems={props.selectedItems}
-                        setSelectedItems={props.setSelectedItems}
-                    />
-                )
+                return <DocumentsTable {...props} />
             }}
         />
     )

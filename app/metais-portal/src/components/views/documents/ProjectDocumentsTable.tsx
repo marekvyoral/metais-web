@@ -306,7 +306,11 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, PAGING: !selectPageSize }}
-                createButton={!!addButtonSectionName && <Button label={t('documentsTab.addNewDocument')} onClick={() => setOpenAddModal({})} />}
+                createButton={
+                    !!addButtonSectionName && (
+                        <Button label={t('documentsTab.addNewDocument')} onClick={() => setOpenAddModal({})} className={styles.bottomMargin0} />
+                    )
+                }
                 bulkPopup={
                     <Tooltip
                         descriptionElement={errorMessage}

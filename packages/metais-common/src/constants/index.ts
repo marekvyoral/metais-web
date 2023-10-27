@@ -148,6 +148,7 @@ export const ACTION_CREATE = 'CREATE'
 export const ACTION_UPDATE = 'UPDATE'
 export const ENTITY_PROJECT = 'Projekt'
 
+export const API_CALL_RETRY_COUNT = 50
 export const PO_IS = 'PO_IS'
 export const PO_PO = 'PO_PO'
 export const PO_IS_PO = 'PO_IS_PO'
@@ -155,5 +156,3 @@ export const PO = 'PO'
 export const ENTITY_KS = 'KS'
 export const ENTITY_AS = 'AS'
 export const ENTITY_MIGRATION = 'Migracia'
-
-export const API_CALL_RETRY_COUNT = 30
