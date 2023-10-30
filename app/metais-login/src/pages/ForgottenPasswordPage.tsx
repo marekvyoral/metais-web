@@ -2,9 +2,9 @@ import { BreadCrumbs, Button, HomeIcon, Input, TextBody, TextHeading } from '@is
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { DEFAULT_ERROR, PORTAL_URL } from '@isdd/metais-common/constants'
+import { CenterWrapper } from '@isdd/metais-common/components/center-wrapper/CenterWrapper'
 
 import styles from '@/styles/commonStyles.module.scss'
-import { CenterWrapper } from '@/components/center-wrapper/CenterWrapper'
 import { LoginRouteNames } from '@/navigation/Router'
 
 enum ForgottenPasswordFields {

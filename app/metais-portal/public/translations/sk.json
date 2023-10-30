@@ -1464,6 +1464,42 @@
             }
         }
     },
+    "registration": {
+        "uniqueLogin": "Používateľ s týmto prihlasovacím menom už existuje. Prihlásenie musí byť jedinečné, dostupné prihlasovacie meno je napríklad {{available}}",
+        "uniqueEmail": "Používateľ s týmto e-mailom už existuje. E-mail musí byť unikátny.",
+        "firstName": "Meno",
+        "lastName": "Priezvisko",
+        "email": "Emailová adresa",
+        "phone": "Telefónne číslo",
+        "po": "Zástupca za subjekt",
+        "login": "Prihlasovacie meno",
+        "required": {
+            "firstName": "Vaše meno je povinný údaj pre registráciu.",
+            "lastName": "Vaše priezvisko je povinný údaj pre registráciu.",
+            "phone": "Telefónne číslo je povinný údaj",
+            "email": "Email je povinný údaj",
+            "default": "Táto položka je povinná"
+        },
+        "format": {
+            "name": "Toto pole nesme obsahovať špeciálne znaky ako '@,&' atď.",
+            "email": "Emial zadávajte vo formáte napríklad meno.priezvisko@domena.sk",
+            "phone": "Skontrolujte si prosím formát telefónneho čísla."
+        },
+        "submit": "Registrovať",
+        "title": "Registrácia",
+        "phoneHint": "Telefónne číslo zadávajte v medzinárodnom tvare (napr. +421 123 456 789 ).",
+        "success": {
+            "title": "Vaša registrácia prebehla úspešne",
+            "description": "Po schválení Vašej registrácie administrátorom MetaIS Vám bude, na zadanú e-mailovú adresu, doručený notifikačný email s odkazom na aktiváciu konta a vytvorenie hesla. Platnosť notifikačného emailu je 48 hodín.",
+            "button": "Na úvodnú stránku"
+        },
+        "failed": {
+            "title": "Vaša registrácia zlyhala",
+            "description": "Ospravedlňujeme sa, ale pri procese registrácie nastala chyba. Pokúste sa registráciu zopakovať. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora emailom na <email>metais@mirri.gov.sk</email>.",
+            "button": "Zopakovať registráciu"
+        },
+        "error": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
+    },
     "activities": {
         "target": "Cieľ aktivity",
         "name": "Aktivity NKIVS",

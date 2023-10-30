@@ -11,6 +11,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { LogoMirri } from '@isdd/metais-common/assets/images'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 import { PORTAL_URL } from '@isdd/metais-common/constants'
+import { RegistrationRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 interface INavBarMain {
     isMenuExpanded: boolean
@@ -64,9 +65,8 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
                                 ) : (
                                     <Link
                                         className="govuk-link"
-                                        to="#"
+                                        to={isLoginApp ? PORTAL_URL + RegistrationRoutes.REGISTRATION : RegistrationRoutes.REGISTRATION}
                                         state={{ from: location }}
-                                        onClick={(e) => e.preventDefault()}
                                         style={{ marginLeft: 10 }}
                                     >
                                         {t('navbar.registration')}

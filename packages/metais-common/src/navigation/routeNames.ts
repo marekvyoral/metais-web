@@ -160,3 +160,9 @@ export enum FooterRouteNames {
     IDSK_DIZAJN = 'https://idsk.gov.sk',
     EXCEPTIONS_LEGISLATION = '/ci/vynimky_ITVS',
 }
+
+export enum RegistrationRoutes {
+    REGISTRATION = '/registration',
+    REGISTRATION_SUCCESS = '/registration/success',
+    REGISTRATION_FAILED = '/registration/failed',
+}
