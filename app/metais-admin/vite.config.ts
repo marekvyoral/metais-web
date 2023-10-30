@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => {
         base: process.env.VITE_ADMIN_URL,
         build: {
             sourcemap: true,
+            outDir: './dist/admin',
         },
         plugins: [
             react(),
