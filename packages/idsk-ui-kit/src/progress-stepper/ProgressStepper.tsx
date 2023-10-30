@@ -19,6 +19,7 @@ export interface IStep {
     state?: PROGRESS_STATE
     firstItem?: boolean
     lastItem?: boolean
+    isRed?: boolean
 }
 
 export interface IProgressStepper {
@@ -40,7 +41,7 @@ const lineColor = (position: 'before' | 'after', state?: PROGRESS_STATE, firstIt
     return 'grey'
 }
 
-export const Step: React.FC<IStep> = ({ keyNumber, name, date, description, state, firstItem, lastItem }) => {
+export const Step: React.FC<IStep> = ({ keyNumber, name, date, description, state, firstItem, lastItem, isRed }) => {
     return (
         <div key={keyNumber} className={styles.step}>
             <div className={styles.stepIndicator}>
@@ -55,6 +56,7 @@ export const Step: React.FC<IStep> = ({ keyNumber, name, date, description, stat
                 className={classNames([styles.textWrapper, styles.noWrap], {
                     [styles.greenText]: state == PROGRESS_STATE.FINISHED,
                     [styles.greyText]: state == PROGRESS_STATE.FUTURE,
+                    [styles.redText]: isRed,
                 })}
             >
                 {keyNumber + '. ' + name}
