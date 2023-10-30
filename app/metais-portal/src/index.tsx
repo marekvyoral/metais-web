@@ -1,7 +1,7 @@
 import { AuthContextProvider } from '@isdd/metais-common/contexts/auth/authContext'
 import { FilterContextProvider } from '@isdd/metais-common/contexts/filter/filterContext'
 import { NewRelationDataProvider } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
-import { i18nInstance } from '@isdd/metais-common/localization/i18next'
+import { initializeI18nInstance } from '@isdd/metais-common/localization/i18next'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import { DndProvider } from 'react-dnd'
@@ -37,7 +37,7 @@ root.render(
     <React.StrictMode>
         <NewRelationDataProvider>
             <BrowserRouter>
-                <I18nextProvider i18n={i18nInstance}>
+                <I18nextProvider i18n={initializeI18nInstance()}>
                     <QueryClientProvider client={queryClient}>
                         <AuthContextProvider>
                             <FilterContextProvider>
