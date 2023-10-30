@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 
-import styles from '@/styles/commonStyles.module.scss'
+import styles from './centerWrapper.module.scss'
 
 export const CenterWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     return (

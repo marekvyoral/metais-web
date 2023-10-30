@@ -4,7 +4,7 @@ import React, { SetStateAction, useCallback, useEffect, useState } from 'react'
 import { MultiValue, OptionProps, components } from 'react-select'
 import { FieldValues, UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 
-import { ConfigurationItemUi, useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, FilterMetaAttributesUi, useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api'
 
 interface ICiLazySelect<T extends FieldValues> {
     ciType: string
@@ -19,6 +19,7 @@ interface ICiLazySelect<T extends FieldValues> {
     disabled?: boolean
     defaultValue?: string
     info?: string
+    metaAttributes?: FilterMetaAttributesUi
 }
 
 export const CiLazySelect = <T extends FieldValues>({
@@ -34,11 +35,12 @@ export const CiLazySelect = <T extends FieldValues>({
     disabled,
     defaultValue,
     info,
+    metaAttributes,
 }: ICiLazySelect<T>) => {
     const ciOptionsHook = useReadCiList1Hook()
 
     const { data } = useReadCiList1({
-        filter: { type: [ciType], uuid: [defaultValue ?? ''] },
+        filter: { type: [ciType], uuid: defaultValue ? [defaultValue] : undefined },
     })
 
     const [seed, setSeed] = useState(1)
@@ -55,7 +57,12 @@ export const CiLazySelect = <T extends FieldValues>({
                 perpage: 20,
                 sortBy: 'Gen_Profil_nazov',
                 sortType: SortType.ASC,
-                filter: { type: [ciType], searchFields: ['Gen_Profil_nazov'], fullTextSearch: searchQuery },
+                filter: {
+                    type: [ciType],
+                    searchFields: ['Gen_Profil_nazov'],
+                    fullTextSearch: searchQuery,
+                    metaAttributes: { ...(metaAttributes ?? undefined) },
+                },
             })
 
             return {
@@ -66,7 +73,7 @@ export const CiLazySelect = <T extends FieldValues>({
                 },
             }
         },
-        [ciOptionsHook, ciType],
+        [ciOptionsHook, ciType, metaAttributes],
     )
 
     const selectLazyLoadingCiOption = (props: OptionProps<ConfigurationItemUi>) => {

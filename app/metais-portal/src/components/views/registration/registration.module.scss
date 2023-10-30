@@ -1,0 +1,17 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.icon {
+    width: 48px;
+    height: auto;
+    margin-bottom: govuk-spacing(4);
+}
+
+.halfWidth {
+    @include mq($from: tablet) {
+        width: 50%;
+    }
+}
+
+.title {
+    margin-bottom: govuk-spacing(4) !important;
+}

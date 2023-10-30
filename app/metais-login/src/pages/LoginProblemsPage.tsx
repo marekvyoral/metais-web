@@ -2,9 +2,9 @@ import { BreadCrumbs, HomeIcon, TextBody, TextHeading } from '@isdd/idsk-ui-kit/
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { metaisEmail, PORTAL_URL } from '@isdd/metais-common/constants'
+import { CenterWrapper } from '@isdd/metais-common/components/center-wrapper/CenterWrapper'
 
 import { LoginRouteNames } from '@/navigation/Router'
-import { CenterWrapper } from '@/components/center-wrapper/CenterWrapper'
 
 export const LoginProblemsPage = () => {
     const { t } = useTranslation()

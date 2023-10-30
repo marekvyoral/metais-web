@@ -894,7 +894,6 @@
         "compareHistory": "Compare history",
         "ciEdit": "Edit of component",
         "noName": "Without name"
-        
     },
     "codeList": {
         "descriptionError": "Description is required",
@@ -1446,6 +1445,42 @@
                 "added": "was added to vote"
             }
         }
+    },
+    "registration": {
+        "uniqueLogin": "User with this login already exists. Login must be unique, available login is for exmaple {{available}}",
+        "uniqueEmail": "User with this email already exists. Email must be unique.",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email address",
+        "phone": "Phone number",
+        "po": "Representative of the subject",
+        "login": "Login",
+        "required": {
+            "firstName": "Your first name is required.",
+            "lastName": "Your last name is required.",
+            "phone": "Your phone number is required",
+            "email": "Your email address is required",
+            "default": "This is required field"
+        },
+        "format": {
+            "name": "This field can not contain special signs as '@,&' etc.",
+            "email": "Email should be for example in format  name.surname@domain.com",
+            "phone": "Phone number format is incorrect."
+        },
+        "submit": "Register",
+        "title": "Registration",
+        "phoneHint": "Phone number in international format (f.e. +421 ... ).",
+        "success": {
+            "title": "Your registration was successful",
+            "description": "After approval of your registration request by administrator of MetaIS, notification email, with link for account activation and password creation, will be delivered on entered email. Notification email is valid 48 hours.",
+            "button": "To homepage"
+        },
+        "failed": {
+            "title": "Your registration failed",
+            "description": "We are sorry, but during registration process error occurred. Try to register again. In case that error occurs repeatedly, contact administrator by email at <email>metais@mirri.gov.sk</email>.",
+            "button": "Repeat registration"
+        },
+        "error": "Error while executing your action. Please try again or contact support."
     },
     "activities": {
         "target": "Objective of the activity",

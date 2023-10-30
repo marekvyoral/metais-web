@@ -3,10 +3,10 @@ import { BreadCrumbs, Button, ButtonLink, HomeIcon, Input, TextHeading } from '@
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { DEFAULT_ERROR, PORTAL_URL } from '@isdd/metais-common/constants'
+import { CenterWrapper } from '@isdd/metais-common/components/center-wrapper/CenterWrapper'
 
 import styles from '@/styles/commonStyles.module.scss'
 import { LoginRouteNames } from '@/navigation/Router'
-import { CenterWrapper } from '@/components/center-wrapper/CenterWrapper'
 
 enum LoginFields {
     NAME = 'name',

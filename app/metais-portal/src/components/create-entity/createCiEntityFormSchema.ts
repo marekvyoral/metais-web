@@ -16,8 +16,8 @@ import {
     object,
     string,
 } from 'yup'
+import { phoneOrEmptyStringRegex, HTML_TYPE } from '@isdd/metais-common/constants'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
-import { HTML_TYPE } from '@isdd/metais-common/constants'
 
 import { numericProperties } from './createEntityHelpers'
 
@@ -56,7 +56,6 @@ export const generateFormSchema = (
 ) => {
     const schema: SchemaType = {}
 
-    const phoneOrEmptyStringRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$|^$/
     const attributes = data.filter((profile) => profile?.roleList?.includes(selectedRole?.roleName ?? '')).flatMap((profile) => profile?.attributes)
 
     attributes?.forEach((attribute) => {
