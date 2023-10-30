@@ -7,7 +7,17 @@ import {
     useReadCiHistoryVersionsActionsList,
     useReadConfigurationItem,
 } from '@isdd/metais-common/api'
-import { ACTION_CREATE, ACTION_UPDATE, FINISHED_STATE, PROJECT_STATUS, STAV_PROJEKTU } from '@isdd/metais-common/constants'
+import {
+    ACTION_CREATE,
+    ACTION_UPDATE,
+    FINISHED_STATE,
+    NOT_APPROVED_STATE,
+    PROJECT_STATUS,
+    RATED_STATE,
+    RETURNED_STATE,
+    RE_RATED_STATE,
+    STAV_PROJEKTU,
+} from '@isdd/metais-common/constants'
 import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 import React from 'react'
 
@@ -63,10 +73,41 @@ export const ProjectStateContainer: React.FC<IProjectStateContainer> = ({ config
             if (ps.code == FINISHED_STATE) {
                 return { name: ps.value ?? '', date: formatDateForDefaultValue(ciData?.attributes?.EA_Profil_Projekt_termin_ukoncenia, 'dd.MM.yyyy') }
             }
+            if (ps.code == RATED_STATE && ciData?.attributes?.EA_Profil_Projekt_status == RE_RATED_STATE) {
+                return {
+                    name: ps.value ?? '',
+                    date: mappedHistory?.find((mp) => mp.state == ps.value)?.date,
+                    description: projectsStates?.find((ps1) => ps1.code == RE_RATED_STATE)?.value,
+                }
+            }
+            if (ps.code == RATED_STATE && ciData?.attributes?.EA_Profil_Projekt_status == RETURNED_STATE) {
+                return {
+                    name: ps.value ?? '',
+                    date: mappedHistory?.find((mp) => mp.state == ps.value)?.date,
+                    description: projectsStates?.find((ps2) => ps2.code == RETURNED_STATE)?.value,
+                }
+            }
             return { name: ps.value ?? '', date: mappedHistory?.find((mp) => mp.state == ps.value)?.date }
         }) ?? []
+    const steps = fullSteps.filter((fs) => fs.name != defaultProjectStates?.enumItems?.find((e) => e.code == RETURNED_STATE)?.value)
 
-    const currentStep = defaultProjectStates?.enumItems?.findIndex((dps) => dps.code == ciData?.attributes?.EA_Profil_Projekt_status)
+    let currentStep = steps.indexOf(
+        steps.find(
+            (s) => s.name == defaultProjectStates?.enumItems?.find((dps) => dps.code == ciData?.attributes?.EA_Profil_Projekt_status)?.value,
+        ) ?? steps[0],
+    )
 
-    return <View steps={fullSteps ?? []} currentStep={currentStep ?? 0} />
+    if (ciData?.attributes?.EA_Profil_Projekt_status == RE_RATED_STATE || ciData?.attributes?.EA_Profil_Projekt_status == RETURNED_STATE) {
+        currentStep = steps.indexOf(
+            steps.find((s) => s.name == defaultProjectStates?.enumItems?.find((d) => d.code == RATED_STATE)?.value) ?? steps[0],
+        )
+    }
+    const removedSteps = steps.splice(-2)
+    if (ciData?.attributes?.EA_Profil_Projekt_status == NOT_APPROVED_STATE) {
+        steps.splice(3, steps.length)
+
+        removedSteps[removedSteps.length - 1] && steps.push({ ...removedSteps[removedSteps.length - 1], isRed: true })
+        currentStep = steps.length
+    }
+    return <View steps={steps ?? []} currentStep={currentStep ?? 0} />
 }

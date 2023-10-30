@@ -18,8 +18,13 @@
     color: govuk-colour('grey-1') !important;
 }
 
+.redText {
+    color: govuk-colour('red') !important;
+}
+
 .mainWrapper {
     background-color: govuk-colour('grey-4');
+    justify-content: center;
     padding: govuk-spacing(4);
     overflow-y: hidden;
     display: flex;

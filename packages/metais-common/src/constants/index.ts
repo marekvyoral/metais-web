@@ -142,6 +142,10 @@ export const PROJECT_DOCUMENTS_SECTIONS_EXPANDABLE: { [key: string]: string } = 
     'Dokumenty architektúry': 'dokumenty_architektury_',
 }
 export const FINISHED_STATE = 'c_stav_projektu_9'
+export const RATED_STATE = 'c_stav_projektu_4'
+export const NOT_APPROVED_STATE = 'c_stav_projektu_12'
+export const RE_RATED_STATE = 'c_stav_projektu_11'
+export const RETURNED_STATE = 'c_stav_projektu_5'
 
 export const PROJECT_STATUS = 'EA_Profil_Projekt_status'
 
