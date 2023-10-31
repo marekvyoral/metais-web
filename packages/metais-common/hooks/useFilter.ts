@@ -223,7 +223,7 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
 
         //set default pageSize to user preferred page size settings
         if (!memoFilter.pageSize) {
-            memoFilter.pageSize = Number(currentPreferences.defaultPerPage)
+            memoFilter.pageSize = Number(currentPreferences.defaultPerPage) || BASE_PAGE_SIZE
         }
 
         return memoFilter
