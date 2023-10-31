@@ -937,5 +937,8 @@
     },
     "templateReferenceIdentifiers": {
         "heading": "Template reference identifiers"
+    },
+    "titles": {
+        "mainPage": "MetaIS Admin"
     }
 }
