@@ -41,16 +41,28 @@ const yupSchema = (t: TFunction<'translation', undefined, 'translation'>): Yup.O
 
 export const UserPasswordChangePage = () => {
     const { t } = useTranslation()
-    const changePassword = useChangePassword()
     const { state } = useAuth()
 
     const { register, formState, handleSubmit } = useForm<FormData>({
         resolver: yupResolver(yupSchema(t)),
         mode: 'onChange',
     })
-
-    const onSubmit = async ({ newPassword }: FormData) => {
-        changePassword.mutateAsync({ uuid: state.user?.uuid || '', data: { value: newPassword } })
+    const formData = new FormData()
+    const onSubmit = async (formData1: FormData) => {
+        formData.append('j_password_old', formData1.oldPassword)
+        formData.append('j_password_new', formData1.newPassword)
+        formData.append('j_password_confirm', formData1.newPasswordRepeat)
+        const response = await fetch(import.meta.env.VITE_REST_CLIENT_IAM_NO_REST_TARGET_URL + '/changePass', {
+            method: 'POST',
+            body: formData,
+            // mode: 'navigate',/
+            credentials: 'include',
+            headers: {
+                // Authorization: `Bearer ${state.accessToken}`,
+            },
+        })
+        // changePassword.mutateAsync({ uuid: state.user?.uuid || '', data: { value: newPassword } })
+        console.log(response)
     }
 
     return (
@@ -76,7 +88,7 @@ export const UserPasswordChangePage = () => {
                 autoFocus
                 type="password"
             />
-            <Button label="save" />
+            <Button label="save" type="submit" />
         </form>
     )
 }
