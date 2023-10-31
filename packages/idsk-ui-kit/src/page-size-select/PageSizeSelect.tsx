@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
 import { useSearchParams } from 'react-router-dom'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import { SimpleSelect } from '@isdd/idsk-ui-kit'
 
@@ -22,6 +23,7 @@ enum DefaultPagingEnum {
 export const PageSizeSelect: React.FC<Props> = ({ pagingOptions, handlePagingSelect, className, id }) => {
     const { t } = useTranslation()
     const [urlParams] = useSearchParams()
+    const { currentPreferences } = useUserPreferences()
     const defaultPagingOptions = [
         { value: DefaultPagingEnum.TEN, label: DefaultPagingEnum.TEN },
         { value: DefaultPagingEnum.TWENTY, label: DefaultPagingEnum.TWENTY },
@@ -36,7 +38,7 @@ export const PageSizeSelect: React.FC<Props> = ({ pagingOptions, handlePagingSel
             name={`name_${id}`}
             options={pagingOptions ? pagingOptions : defaultPagingOptions}
             onChange={(value) => handlePagingSelect && handlePagingSelect(value || '')}
-            defaultValue={urlParams.get('pageSize') || defaultPagingOptions[0].value}
+            defaultValue={urlParams.get('pageSize') || currentPreferences.defaultPerPage || defaultPagingOptions[0].value}
             isClearable={false}
         />
     )

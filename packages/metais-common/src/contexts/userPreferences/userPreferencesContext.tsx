@@ -1,10 +1,21 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { META_PREFERENCES_KEY } from '@isdd/metais-common/constants'
 
+export enum UserPreferencesFormNamesEnum {
+    SHOW_INVALIDATED = 'showInvalidatedItems',
+    DEFAULT_PER_PAGE = 'defaultPerPage',
+    DEFAULT_LANG = 'defaultLanguage',
+    MY_PO = 'myPO',
+}
+
 export interface IUserPreferences {
-    showInvalidatedItems: boolean
+    [UserPreferencesFormNamesEnum.SHOW_INVALIDATED]: boolean
+    [UserPreferencesFormNamesEnum.DEFAULT_PER_PAGE]: string
+    [UserPreferencesFormNamesEnum.DEFAULT_LANG]: string
+    [UserPreferencesFormNamesEnum.MY_PO]: string
 }
 
 export enum UpdatePreferencesReturnEnum {
@@ -17,7 +28,12 @@ interface UserPreferencesContextValue {
     updateUserPreferences: (preferencesData: IUserPreferences) => UpdatePreferencesReturnEnum
 }
 
-const DEFAULT_PREFERENCES: IUserPreferences = { showInvalidatedItems: false }
+const DEFAULT_PREFERENCES: IUserPreferences = {
+    [UserPreferencesFormNamesEnum.SHOW_INVALIDATED]: false,
+    [UserPreferencesFormNamesEnum.DEFAULT_PER_PAGE]: '',
+    [UserPreferencesFormNamesEnum.DEFAULT_LANG]: '',
+    [UserPreferencesFormNamesEnum.MY_PO]: '',
+}
 
 const UserPreferences = createContext<UserPreferencesContextValue>({
     currentPreferences: DEFAULT_PREFERENCES,
@@ -25,12 +41,19 @@ const UserPreferences = createContext<UserPreferencesContextValue>({
 })
 
 const UserPreferencesProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+    const { i18n } = useTranslation()
     const {
         state: { user },
     } = useAuth()
 
     const storedPreferences = localStorage.getItem(META_PREFERENCES_KEY + user?.login)
     const currentPreferences: IUserPreferences = storedPreferences ? JSON.parse(storedPreferences) : {}
+
+    useEffect(() => {
+        if (currentPreferences.defaultLanguage) {
+            i18n.changeLanguage(currentPreferences.defaultLanguage)
+        }
+    }, [currentPreferences.defaultLanguage, i18n])
 
     const updateUserPreferences = (preferencesData: IUserPreferences) => {
         try {

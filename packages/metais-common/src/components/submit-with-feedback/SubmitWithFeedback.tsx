@@ -13,13 +13,21 @@ interface ISubmitWithFeedbackProps {
     disabled?: boolean
     loading: boolean
     className?: string
+    variant?: 'secondary' | 'warning'
 }
-export const SubmitWithFeedback: React.FC<ISubmitWithFeedbackProps> = ({ submitButtonLabel, className, loading, disabled, additionalButtons }) => {
+export const SubmitWithFeedback: React.FC<ISubmitWithFeedbackProps> = ({
+    submitButtonLabel,
+    className,
+    loading,
+    disabled,
+    additionalButtons,
+    variant,
+}) => {
     const { t } = useTranslation()
     return (
         <ButtonGroupRow className={className}>
             {additionalButtons}
-            <Button label={submitButtonLabel} disabled={loading || disabled} type="submit" />
+            <Button variant={variant} label={submitButtonLabel} disabled={loading || disabled} type="submit" />
             {loading && (
                 <IconWithText icon={LoadingArrowIcon}>
                     <div className={styles.loadingText}>{t('form.waitSending')}</div>

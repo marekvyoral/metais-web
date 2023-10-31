@@ -1,0 +1,9 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.ul {
+    list-style: none;
+    padding: 0;
+    ul {
+        list-style-type: disc;
+    }
+}

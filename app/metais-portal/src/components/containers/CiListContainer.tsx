@@ -1,7 +1,6 @@
 import { useGetRoleParticipantBulk, useReadCiList1 } from '@isdd/metais-common/api'
 import { useFilterForCiList, useGetColumnData, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers/filter'
-import { BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { IListView } from '@isdd/metais-common/types/list'
@@ -26,15 +25,15 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
     const defaultRequestApi = {
         filter: {
             type: [entityName],
-
-            perPage: BASE_PAGE_SIZE,
         },
     }
 
     const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, entityName, defaultRequestApi)
+
+    const liableEntity = currentPreferences.myPO ? [currentPreferences.myPO] : undefined
     const metaAttributes = currentPreferences.showInvalidatedItems
-        ? { state: ['DRAFT', 'INVALIDATED'], ...filterParams.metaAttributeFilters }
-        : { state: ['DRAFT'], ...filterParams.metaAttributeFilters }
+        ? { state: ['DRAFT', 'INVALIDATED'], liableEntity, ...filterParams.metaAttributeFilters }
+        : { state: ['DRAFT'], liableEntity, ...filterParams.metaAttributeFilters }
 
     const {
         data: tableData,

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { UserInformationsPage } from '@isdd/metais-common/components/views/user-profile/user-informations/UserInformationsPage'
 import { UserPreferencesPage } from '@isdd/metais-common/components/views/user-profile/user-preferences/UserPreferencesPage'
-import { UserRightsPage } from '@isdd/metais-common/components/views/user-profile/UserRightsPage'
+import { UserRightsPage } from '@isdd/metais-common/components/views/user-profile/user-rights/UserRightsPage'
 import { UserNotificationsSettings } from '@isdd/metais-common/components/views/user-profile/UserNotificationsSettings'
 import { UserPasswordChangePage } from '@isdd/metais-common/components/views/user-profile/UserPasswordChangePage'
 
