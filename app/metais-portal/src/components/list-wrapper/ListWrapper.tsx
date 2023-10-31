@@ -95,6 +95,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
 
     const checkedRowItems = Object.keys(rowSelection).length
     const isDisabledBulkButton = checkedRowItems === 0
+    const isProject = ciType === 'Projekt'
 
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
     const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
@@ -174,6 +175,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                 attributes={attributes}
                                 attributeProfiles={attributeProfiles}
                                 constraintsData={constraintsData}
+                                isProject={isProject}
                             />
                         </div>
                     )
@@ -195,7 +197,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
             )}
             {!isNewRelationModal && (
                 <ActionsOverTable
-                    metaAttributesColumnSection={getCiDefaultMetaAttributes(t)}
+                    metaAttributesColumnSection={getCiDefaultMetaAttributes({ t, asGroup: isProject, withoutEvidenceStatus: isProject })}
                     handleFilterChange={handleFilterChange}
                     storeUserSelectedColumns={storeUserSelectedColumns}
                     resetUserSelectedColumns={resetUserSelectedColumns}

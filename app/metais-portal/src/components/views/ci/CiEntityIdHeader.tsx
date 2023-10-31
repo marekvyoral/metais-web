@@ -13,6 +13,7 @@ import { ChangeOwnerBulkModal, InvalidateBulkModal, ReInvalidateBulkModal } from
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import classNames from 'classnames'
 
 import styles from './ciEntityHeader.module.scss'
 
@@ -23,9 +24,10 @@ interface Props {
     entityData?: ConfigurationItemUi
     handleBulkAction: (actionResult: IBulkActionResult) => void
     ciRoles: string[]
+    isInvalidated: boolean
 }
 
-export const CiEntityIdHeader: React.FC<Props> = ({ entityData, entityName, entityId, entityItemName, handleBulkAction, ciRoles }) => {
+export const CiEntityIdHeader: React.FC<Props> = ({ entityData, entityName, entityId, entityItemName, handleBulkAction, ciRoles, isInvalidated }) => {
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
@@ -94,111 +96,113 @@ export const CiEntityIdHeader: React.FC<Props> = ({ entityData, entityName, enti
     return (
         <div className={styles.headerDiv}>
             {isBulkLoading && <LoadingIndicator fullscreen />}
-            <TextHeading size="XL">{entityItemName}</TextHeading>
+            <TextHeading size="XL" className={classNames({ [styles.invalidated]: isInvalidated })}>
+                {entityItemName}
+            </TextHeading>
             <ButtonGroupRow>
                 <Can I={Actions.EDIT} a={`ci.${entityId}`}>
                     <Button
                         label={t('ciType.editButton')}
                         onClick={() => navigate(`/ci/${entityName}/${entityId}/edit`, { state: location.state })}
                     />
-
-                    <ButtonPopup
-                        buttonClassName={styles.noWrap}
-                        buttonLabel={t('ciType.moreButton')}
-                        popupPosition="right"
-                        popupContent={() => {
-                            return (
-                                <div className={styles.buttonLinksDiv}>
-                                    <Tooltip
-                                        key={'invalidateItem'}
-                                        descriptionElement={errorMessage}
-                                        position={'top center'}
-                                        on={'right-click'}
-                                        tooltipContent={(open) => (
-                                            <div>
-                                                <ButtonLink
-                                                    onClick={() => handleInvalidate(entityListData, setShowInvalidate, open)}
-                                                    label={t('ciType.invalidateItem')}
-                                                />
-                                            </div>
-                                        )}
-                                    />
-
-                                    <Tooltip
-                                        key={'revalidateItem'}
-                                        descriptionElement={errorMessage}
-                                        position={'top center'}
-                                        tooltipContent={(open) => (
-                                            <div>
-                                                <ButtonLink
-                                                    onClick={() => handleReInvalidate(entityListData, setShowReInvalidate, open)}
-                                                    label={t('ciType.revalidateItem')}
-                                                />
-                                            </div>
-                                        )}
-                                    />
-
-                                    <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
-                                        <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
-                                    </Can>
-                                    {canSendForApproval && <ButtonLink onClick={() => undefined} label={t('ciType.sendForApproval')} />}
-
-                                    {canMigrationAction && (
-                                        <>
-                                            <ButtonLink onClick={() => undefined} label={t('ciType.approve')} />
-                                            <ButtonLink onClick={() => undefined} label={t('ciType.return')} />
-                                            <ButtonLink onClick={() => undefined} label={t('ciType.reject')} />
-                                        </>
+                </Can>
+                <ButtonPopup
+                    buttonClassName={styles.noWrap}
+                    buttonLabel={t('ciType.moreButton')}
+                    popupPosition="right"
+                    popupContent={() => {
+                        return (
+                            <div className={styles.buttonLinksDiv}>
+                                <Tooltip
+                                    key={'invalidateItem'}
+                                    descriptionElement={errorMessage}
+                                    position={'top center'}
+                                    on={'right-click'}
+                                    tooltipContent={(open) => (
+                                        <div>
+                                            <ButtonLink
+                                                disabled={isInvalidated}
+                                                onClick={() => handleInvalidate(entityListData, setShowInvalidate, open)}
+                                                label={t('ciType.invalidateItem')}
+                                            />
+                                        </div>
                                     )}
+                                />
 
-                                    {/* <ButtonLink onClick={() => undefined} label={t('ciType.changeBDA')} /> */}
+                                <Tooltip
+                                    key={'revalidateItem'}
+                                    descriptionElement={errorMessage}
+                                    position={'top center'}
+                                    tooltipContent={(open) => (
+                                        <div>
+                                            <ButtonLink
+                                                onClick={() => handleReInvalidate(entityListData, setShowReInvalidate, open)}
+                                                label={t('ciType.revalidateItem')}
+                                            />
+                                        </div>
+                                    )}
+                                />
 
-                                    {canClone && (
+                                <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
+                                    <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
+                                </Can>
+                                {canSendForApproval && <ButtonLink onClick={() => undefined} label={t('ciType.sendForApproval')} />}
+
+                                {canMigrationAction && (
+                                    <>
+                                        <ButtonLink onClick={() => undefined} label={t('ciType.approve')} />
+                                        <ButtonLink onClick={() => undefined} label={t('ciType.return')} />
+                                        <ButtonLink onClick={() => undefined} label={t('ciType.reject')} />
+                                    </>
+                                )}
+
+                                {/* <ButtonLink onClick={() => undefined} label={t('ciType.changeBDA')} /> */}
+
+                                {canClone && (
+                                    <Tooltip
+                                        key={'cloneCI'}
+                                        descriptionElement={errorMessage}
+                                        position={'top center'}
+                                        tooltipContent={() => (
+                                            <div>
+                                                <ButtonLink onClick={() => undefined} label={cloneButtonLabel} />
+                                            </div>
+                                        )}
+                                    />
+                                )}
+                                {canProjectConfirm &&
+                                    nexStates &&
+                                    nexStates.map((state, index) => (
                                         <Tooltip
-                                            key={'cloneCI'}
+                                            key={index}
                                             descriptionElement={errorMessage}
                                             position={'top center'}
-                                            tooltipContent={() => (
+                                            tooltipContent={(open) => (
                                                 <div>
-                                                    <ButtonLink onClick={() => undefined} label={cloneButtonLabel} />
+                                                    <ButtonLink
+                                                        key={state}
+                                                        onClick={() => handleConfirmProject(index, entityData, handleBulkAction, open)}
+                                                        label={
+                                                            shouldBeRealization
+                                                                ? t(`ciType.actions.next.${projectStatus}_${index}_REALIZATION`)
+                                                                : t(`ciType.actions.next.${projectStatus}_${index}`)
+                                                        }
+                                                    />
                                                 </div>
                                             )}
                                         />
-                                    )}
-                                    {canProjectConfirm &&
-                                        nexStates &&
-                                        nexStates.map((state, index) => (
-                                            <Tooltip
-                                                key={index}
-                                                descriptionElement={errorMessage}
-                                                position={'top center'}
-                                                tooltipContent={(open) => (
-                                                    <div>
-                                                        <ButtonLink
-                                                            key={state}
-                                                            onClick={() => handleConfirmProject(index, entityData, handleBulkAction, open)}
-                                                            label={
-                                                                shouldBeRealization
-                                                                    ? t(`ciType.actions.next.${projectStatus}_${index}_REALIZATION`)
-                                                                    : t(`ciType.actions.next.${projectStatus}_${index}`)
-                                                            }
-                                                        />
-                                                    </div>
-                                                )}
-                                            />
-                                        ))}
+                                    ))}
 
-                                    {canProjectReturn && (
-                                        <ButtonLink
-                                            onClick={() => handleProjectReturn(entityId, handleBulkAction)}
-                                            label={t('ciType.actions.return.return')}
-                                        />
-                                    )}
-                                </div>
-                            )
-                        }}
-                    />
-                </Can>
+                                {canProjectReturn && (
+                                    <ButtonLink
+                                        onClick={() => handleProjectReturn(entityId, handleBulkAction)}
+                                        label={t('ciType.actions.return.return')}
+                                    />
+                                )}
+                            </div>
+                        )
+                    }}
+                />
             </ButtonGroupRow>
             {isBulkLoading && <LoadingIndicator fullscreen />}
 

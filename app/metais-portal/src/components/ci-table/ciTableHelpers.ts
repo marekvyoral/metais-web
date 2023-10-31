@@ -134,6 +134,7 @@ export const isMetaAttribute = (metaTechnicalName: string) => {
         metaTechnicalName === MetainformationColumns.OWNER ||
         metaTechnicalName === MetainformationColumns.STATE ||
         metaTechnicalName === MetainformationColumns.CREATED_AT ||
-        metaTechnicalName === MetainformationColumns.LAST_MODIFIED_AT
+        metaTechnicalName === MetainformationColumns.LAST_MODIFIED_AT ||
+        metaTechnicalName === MetainformationColumns.GROUP
     )
 }

@@ -25,6 +25,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styles from '@isdd/metais-common/src/components/actions-over-table/single-actions-popup/file-history/styles.module.scss'
+import { INVALIDATED } from '@isdd/metais-common/constants'
 
 import { downloadFile, isDocumentUpdatable, isDocumentsUpdatable, listToMap } from './utils'
 
@@ -65,6 +66,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     const { state: authState } = useAuth()
     const isUserAdmin = authState.user?.roles.includes('R_ADMIN')
     const isUserLogged = authState.user !== null
+    const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED
     const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
     const [rowSelection, setRowSelection] = useState({})
     const additionalColumnsNullsafe = additionalColumns ?? []
@@ -292,7 +294,12 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}
                 createButton={
-                    <Button label={t('documentsTab.addNewDocument')} onClick={() => setOpenAddModal({})} className={styles.marginBottom0} />
+                    <Button
+                        disabled={isInvalidated}
+                        label={t('documentsTab.addNewDocument')}
+                        onClick={() => setOpenAddModal({})}
+                        className={styles.marginBottom0}
+                    />
                 }
                 bulkPopup={
                     <Tooltip

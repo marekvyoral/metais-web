@@ -12,7 +12,15 @@ export const formatRelationAttributes = (
     lng: i18n,
 ) => {
     const ci = ciWithRel?.ci
-    const attributes = ci?.attributes
+    let attributes = ci?.attributes
+
+    if (Array.isArray(attributes)) {
+        attributes = ci?.attributes?.reduce(
+            (acc: { [key: string]: unknown }, att: { name: string; value: unknown }) => ({ ...acc, [att.name]: att.value }),
+            {},
+        )
+    }
+
     const owner = owners?.find((o) => o?.gid === ci?.metaAttributes?.owner)
     const relations = ciWithRel?.rels?.map((rel) => {
         const relationType = relationTypes?.find((et) => et?.technicalName === rel?.type)
@@ -23,6 +31,7 @@ export const formatRelationAttributes = (
             href: `/relation/${ci?.type}/${ci?.uuid}/${rel?.uuid}`,
         }
     })
+
     return {
         status: ci?.metaAttributes?.state,
         codeMetaIS: attributes?.Gen_Profil_kod_metais as string,

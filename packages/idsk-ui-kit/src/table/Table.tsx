@@ -193,7 +193,6 @@ export const Table = <T,>({
                                 .find((cell) => cell.column.id == 'state')
                                 ?.getValue() as string,
                         )
-
                     return (
                         <React.Fragment key={index}>
                             {canDragRow ? (

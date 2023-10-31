@@ -68,7 +68,7 @@ export const POView: React.FC<Props> = ({
                 codePrefix={ciTypeData?.codePrefix}
             />
             <ActionsOverTable
-                metaAttributesColumnSection={getCiDefaultMetaAttributes(t)}
+                metaAttributesColumnSection={getCiDefaultMetaAttributes({ t })}
                 handleFilterChange={handleFilterChange}
                 storeUserSelectedColumns={storeUserSelectedColumns}
                 resetUserSelectedColumns={resetUserSelectedColumns}
