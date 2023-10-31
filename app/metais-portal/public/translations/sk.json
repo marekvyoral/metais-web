@@ -825,7 +825,9 @@
     "bulkActions": {
         "addFile": {
             "title": "Pridat dokument",
-            "upload": "Nahrať súbor"
+            "upload": "Nahrať súbor",
+            "success": "Dokument bol úspešne pridaný",
+            "tooLargeError": "Dokument je príliš veľký"
         },
         "updateFile": {
             "title": "Aktualizácia dokumentu",

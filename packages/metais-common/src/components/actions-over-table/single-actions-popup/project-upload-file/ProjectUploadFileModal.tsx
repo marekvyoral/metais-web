@@ -59,6 +59,11 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
                 done = true
                 break
             }
+
+            if (index < API_CALL_RETRY_COUNT - 1) {
+                const delay = 500
+                await new Promise((resolve) => setTimeout(resolve, delay))
+            }
         }
         return done
     }
@@ -69,6 +74,11 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
             if (status.isExist) {
                 done = true
                 break
+            }
+
+            if (index < API_CALL_RETRY_COUNT - 1) {
+                const delay = 500
+                await new Promise((resolve) => setTimeout(resolve, delay))
             }
         }
         return done
@@ -137,20 +147,30 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
                         docExists = await getDocumentExists(id)
                     }
                 }
+                // if (response.status === 413) {
+                //     setIsLoading(false)
+                //     reset()
+                //     onSubmit({
+                //         isSuccess: false,
+                //         isError: true,
+                //         successMessage: t('bulkActions.addFile.success'),
+                //         errorMessage: t('bulkActions.addFile.tooLargeError'),
+                //     })
+                // }
 
                 if (docExists) {
                     setIsLoading(false)
                     reset()
-                    onSubmit({ isSuccess: true, isError: false, successMessage: t('bulkActions.deleteFile.success') })
+                    onSubmit({ isSuccess: true, isError: false, successMessage: t('bulkActions.addFile.success') })
                 } else {
                     setIsLoading(false)
                     reset()
-                    onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.deleteFile.success') })
+                    onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.addFile.success') })
                 }
             }
         } catch (e) {
             setIsLoading(false)
-            onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.deleteFile.success') })
+            onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.addFile.success') })
         }
     }
 
