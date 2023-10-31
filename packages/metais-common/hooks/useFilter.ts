@@ -33,6 +33,7 @@ import {
 } from '@isdd/metais-common/constants'
 import { FilterActions, useFilterContext } from '@isdd/metais-common/contexts/filter/filterContext'
 import { updateFilterInLocalStorageOnChange } from '@isdd/metais-common/componentHelpers/filter/updateFilterInLocalStorageOnChange'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { FilterMetaAttributesUi } from '@isdd/metais-common/api'
 import { isMatchWithMetaAttributeTechnicalName, mapMetaAttributeFromUrlToFitFilter } from '@isdd/metais-common/componentHelpers'
 import { isObjectEmpty } from '@isdd/metais-common/utils/utils'
@@ -167,6 +168,8 @@ const getPropertyType = <T, K extends keyof T>(obj: T, key: K): string => {
 export function useFilterParams<T extends FieldValues & IFilterParams>(defaults: T & IFilter): ReturnUseFilterParams<T> {
     const [urlParams, setUrlParams] = useSearchParams()
     const location = useLocation()
+    const { currentPreferences } = useUserPreferences()
+
     const [uiFilterState, setUiFilterState] = useState<IFilter>({
         sort: defaults?.sort ?? [],
         pageNumber: defaults?.pageNumber ?? BASE_PAGE_NUMBER,
@@ -218,8 +221,13 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
         memoFilter.attributeFilters = attributeFilters
         memoFilter.metaAttributeFilters = metaAttributeFilters
 
+        //set default pageSize to user preferred page size settings
+        if (!memoFilter.pageSize) {
+            memoFilter.pageSize = Number(currentPreferences.defaultPerPage)
+        }
+
         return memoFilter
-    }, [uiFilterState, location.search, defaults, urlParams])
+    }, [uiFilterState, defaults, urlParams, location.search, currentPreferences.defaultPerPage])
 
     return { filter, urlParams, handleFilterChange }
 }
@@ -253,7 +261,9 @@ export function useFilter<T extends FieldValues & IFilterParams>(defaults: T, sc
             value: convertedArrayFilterData,
             path: location.pathname,
         })
-        localStorage.setItem(currentFilterKey, JSON.stringify({ ...searchParamsFilterData, pageNumber: BASE_PAGE_NUMBER }))
+
+        const searchParamsFilterDataWithoutPageSize = { ...searchParamsFilterData, pageNumber: BASE_PAGE_NUMBER, pageSize: undefined }
+        localStorage.setItem(currentFilterKey, JSON.stringify(searchParamsFilterDataWithoutPageSize))
     })
 
     const handleShouldBeFilterOpen = () => {

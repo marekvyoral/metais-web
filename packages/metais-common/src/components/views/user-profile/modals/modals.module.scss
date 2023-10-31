@@ -1,0 +1,17 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.div {
+    h1,
+    h2,
+    h3,
+    h3 {
+        text-align: center;
+    }
+    padding: govuk-spacing(4);
+}
+
+.noMarginButtons {
+    Button {
+        margin-bottom: 0;
+    }
+}
