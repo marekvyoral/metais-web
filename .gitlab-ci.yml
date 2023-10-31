@@ -119,7 +119,7 @@ deploy-okd-feature:
          - CI_COMMIT_BRANCH_TEMP=$CI_COMMIT_BRANCH
          - RELEASE_NAME="${CI_COMMIT_BRANCH_TEMP//\//-}" 
          - RELEASE_NAME=$(echo "$RELEASE_NAME" | tr '[:upper:]' '[:lower:]')
-         - OKD_HELM_OPTS="--set metaisPortal.ingress.tls[0].hosts[0]=$RELEASE_NAME-metais3.apps.dev.isdd.sk --set metaisPortal.ingress.hosts[0].host=$RELEASE_NAME-metais3.apps.dev.isdd.sk --set metaisPortal.ingress.hosts[0].paths[0].path=/ --set metaisAdmin.ingress.tls[0].hosts[0]=$RELEASE_NAME-admin-metais3.apps.dev.isdd.sk --set metaisAdmin.ingress.hosts[0].host=$RELEASE_NAME-admin-metais3.apps.dev.isdd.sk --set metaisAdmin.ingress.hosts[0].paths[0].path=/admin/ --set image.AppVersion=${IMAGE_TAG}"
+         - OKD_HELM_OPTS="--set metaisPortal.ingress.tls[0].hosts[0]=$RELEASE_NAME-metais3.apps.dev.isdd.sk --set metaisPortal.ingress.hosts[0].host=$RELEASE_NAME-metais3.apps.dev.isdd.sk --set metaisPortal.ingress.hosts[0].paths[0].path=/ --set metaisAdmin.ingress.tls[0].hosts[0]=$RELEASE_NAME-admin-metais3.apps.dev.isdd.sk --set metaisAdmin.ingress.hosts[0].host=$RELEASE_NAME-admin-metais3.apps.dev.isdd.sk --set metaisAdmin.ingress.hosts[0].paths[0].path=/admin --set image.AppVersion=${IMAGE_TAG}"
          - echo $OKD_HELM_OPTS
          - curl -X POST --fail -F token=$CD_REPO_TOKEN -F ref=$BRANCH_NAME --form "variables[HELM_RELEASE_NAME]=$RELEASE_NAME" --form "variables[OKD_HELM_OPTS]=$OKD_HELM_OPTS" https://gitlab.isdd.sk/api/v4/projects/967/trigger/pipeline
          - echo "#####################################################################"
