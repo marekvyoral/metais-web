@@ -817,7 +817,9 @@
     "bulkActions": {
         "addFile": {
             "title": "Add document",
-            "upload": "Upload file"
+            "upload": "Upload file",
+            "success": "Document has been added successfully",
+            "tooLargeError": "Document too large"
         },
         "updateFile": {
             "title": "Update document",
