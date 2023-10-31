@@ -939,5 +939,8 @@
     },
     "templateReferenceIdentifiers": {
         "heading": "Správa šablón referencovateľných identifikátorov"
+    },
+    "titles": {
+        "mainPage": "MetaIS Admin"
     }
 }
