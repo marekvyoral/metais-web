@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React, { PropsWithChildren, forwardRef } from 'react'
+import { Link } from 'react-router-dom'
 
 interface ITextLinkExternalProps extends PropsWithChildren {
     title: string
@@ -16,7 +17,7 @@ export const TextLinkExternal = forwardRef<HTMLAnchorElement, ITextLinkExternalP
     ({ title, href, textLink, linkBack, noVisitedState, newTab, inverse, noUnderline }, ref) => {
         return (
             <>
-                <a
+                <Link
                     ref={ref}
                     className={classNames(
                         'govuk-link',
@@ -25,13 +26,13 @@ export const TextLinkExternal = forwardRef<HTMLAnchorElement, ITextLinkExternalP
                         { 'govuk-link--no-underline': !!noUnderline },
                         { 'link-back': !!linkBack },
                     )}
-                    href={href}
+                    to={href}
                     title={title}
                     rel={newTab ? 'noreferrer noopener' : undefined}
                     target={newTab ? '_blank' : undefined}
                 >
                     {textLink}
-                </a>
+                </Link>
             </>
         )
     },

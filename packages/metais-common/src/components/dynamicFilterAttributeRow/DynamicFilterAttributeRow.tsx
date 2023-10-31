@@ -11,6 +11,7 @@ import { OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
 import { EnumType } from '@isdd/metais-common/api'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { findAvailableOperators } from '@isdd/metais-common/componentHelpers/filter/findAvailableOperators'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 interface Props {
     index: number
@@ -41,7 +42,10 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
     attributes,
     attributeProfiles,
 }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
+
+    const language = i18n.language
+    const isLangSK = language === Languages.SLOVAK
     const currentAvailableOperators = selectedAttributes.filter((item) => item.name === currentAttribute.name).map((item) => item.operator)
     const operatorsToDisable = findAvailableOperators(
         attributeType,
@@ -56,7 +60,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 attributeProfile.attributes
                     ?.filter((attr) => attr.invisible === false && attr.valid)
                     .map((attr) => ({
-                        label: attr.name ?? '',
+                        label: isLangSK ? attr.name ?? '' : attr.engName ?? '',
                         value: attr.technicalName ?? '',
                     })) || [],
         ) ?? []
@@ -65,7 +69,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
         attributes
             ?.filter((attr) => attr.invisible === false && attr.valid)
             ?.map((attr) => ({
-                label: attr.name ?? '',
+                label: isLangSK ? attr.name ?? '' : attr.engName ?? '',
                 value: attr.technicalName ?? '',
             })) ?? []
     const availableOperators = findAvailableOperators(attributeType, attributeConstraints, Object.values(OPERATOR_OPTIONS_URL)).map((option) => ({

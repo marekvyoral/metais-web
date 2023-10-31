@@ -1541,5 +1541,13 @@
         "kris": "Goals, principles, activites and KRIT",
         "po": "Public authorities",
         "egov": "e-Government components"
+    },
+    "relationDetail": {
+        "heading": "Detail of relationship: {{item}}",
+        "back": "Back",
+        "source": "Source",
+        "target": "Target",
+        "evidenceStatus": "Evidence status",
+        "owner": "Owner"
     }
 }

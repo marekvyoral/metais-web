@@ -1560,5 +1560,13 @@
         "kris": "Ciele, princípy, aktivity a KRIT",
         "po": "Orgány riadenia",
         "egov": "e-Government komponenty"
+    },
+    "relationDetail": {
+        "heading": "Detail vzťahu: {{item}}",
+        "back": "Späť",
+        "source": "Zdroj",
+        "target": "Cieľ",
+        "evidenceStatus": "Stav evidencie",
+        "owner": "Vlastník"
     }
 }
