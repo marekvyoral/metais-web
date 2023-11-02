@@ -24,7 +24,7 @@ const steps = [
 
 export const Basic: Story = {
     args: {
-        currentStep: 3,
+        currentStep: 2,
         steps: steps,
     },
 }

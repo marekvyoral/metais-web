@@ -1,9 +1,10 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, { useState } from 'react'
+import { useWindowWidthBreakpoints } from '@isdd/metais-common/src/hooks/window-size/useWindowWidthBreakpoints'
 
 import styles from './styles.module.scss'
 
-import { CurrentStepIcon, FinishedStepIcon, FutureStepIcon, TextBody } from '@isdd/idsk-ui-kit/'
+import { ArrowDownIcon, CurrentStepIcon, FinishedStepIcon, FutureStepIcon, LoadingIndicator, TextBody } from '@isdd/idsk-ui-kit/'
 
 export enum PROGRESS_STATE {
     FINISHED = 'finished',
@@ -20,11 +21,14 @@ export interface IStep {
     firstItem?: boolean
     lastItem?: boolean
     isRed?: boolean
+    isExpanded?: boolean
+    onExpand?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface IProgressStepper {
     steps: IStep[]
     currentStep: number
+    isLoading: boolean
 }
 
 const lineColor = (position: 'before' | 'after', state?: PROGRESS_STATE, firstItem?: boolean, lastItem?: boolean): string => {
@@ -71,25 +75,106 @@ export const Step: React.FC<IStep> = ({ keyNumber, name, date, description, stat
     )
 }
 
-export const ProgressStepper: React.FC<IProgressStepper> = ({ steps, currentStep }) => {
+export const MobileStep: React.FC<IStep> = ({ keyNumber, name, date, description, state, firstItem, lastItem, isRed, isExpanded, onExpand }) => {
     return (
-        <div className={styles.mainWrapper}>
-            <div className={styles.stepsWrapper}>
-                {steps.map((step, index) => {
-                    return (
-                        <Step
-                            key={index}
-                            keyNumber={index + 1}
-                            {...step}
-                            state={
-                                index == currentStep ? PROGRESS_STATE.CURRENT : index < currentStep ? PROGRESS_STATE.FINISHED : PROGRESS_STATE.FUTURE
-                            }
-                            firstItem={index == 0}
-                            lastItem={index == steps.length - 1}
-                        />
-                    )
-                })}
+        <div key={keyNumber} className={styles.mobileStep}>
+            <div className={styles.mobileStepIndicator}>
+                <div className={classNames(styles.mobileLine, styles[lineColor('before', state, firstItem, lastItem)])} />
+                <img
+                    src={state == PROGRESS_STATE.CURRENT ? CurrentStepIcon : state == PROGRESS_STATE.FINISHED ? FinishedStepIcon : FutureStepIcon}
+                    height={16}
+                />
+                <div className={classNames(styles.mobileLine, styles[lineColor('after', state, firstItem, lastItem)])} />
             </div>
+            <div className={styles.mobileColumnWrapper}>
+                <div className={styles.mobileTextDate}>
+                    <TextBody
+                        className={classNames([styles.mobileTextWrapper, styles.noWrap], {
+                            [styles.greenText]: state == PROGRESS_STATE.FINISHED,
+                            [styles.greyText]: state == PROGRESS_STATE.FUTURE,
+                            [styles.redText]: isRed,
+                        })}
+                    >
+                        {keyNumber + '. ' + name}
+                    </TextBody>
+
+                    <TextBody size="S" className={styles.mobileDateWrapper}>
+                        {date}
+                    </TextBody>
+                </div>
+                <div className={styles.descriptionWrapper}>
+                    <TextBody size="S" className={styles.mobileTextWrapper}>
+                        {description}
+                    </TextBody>
+                    {((state == PROGRESS_STATE.CURRENT && !isExpanded) || (lastItem && isExpanded)) && (
+                        <img
+                            height={10}
+                            className={classNames(styles.imageMargin, { [styles.rotate180]: isExpanded })}
+                            src={ArrowDownIcon}
+                            onClick={() => onExpand && onExpand(!isExpanded)}
+                        />
+                    )}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const resolveState = (index: number, currentStep: number) =>
+    index == currentStep ? PROGRESS_STATE.CURRENT : index < currentStep ? PROGRESS_STATE.FINISHED : PROGRESS_STATE.FUTURE
+
+export const ProgressStepper: React.FC<IProgressStepper> = ({ steps, currentStep, isLoading }) => {
+    const windowWidthBreakpoints = useWindowWidthBreakpoints()
+    const [isExpanded, setExpanded] = useState(false)
+    return windowWidthBreakpoints?.tablet || !windowWidthBreakpoints ? (
+        <div className={classNames(styles.mainWrapper, { [styles.positionRelative]: isLoading })}>
+            {isLoading ? (
+                <div className={styles.paddingLoading}>
+                    <LoadingIndicator transparentMask />
+                </div>
+            ) : (
+                <div className={styles.stepsWrapper}>
+                    {steps.map((step, index) => {
+                        return (
+                            <Step
+                                key={index}
+                                keyNumber={index + 1}
+                                {...step}
+                                state={resolveState(index, currentStep)}
+                                firstItem={index == 0}
+                                lastItem={index == steps.length - 1}
+                            />
+                        )
+                    })}
+                </div>
+            )}
+        </div>
+    ) : (
+        <div className={styles.mobileMainWrapper}>
+            {isLoading ? (
+                <div className={styles.paddingLoading}>
+                    <LoadingIndicator transparentMask />
+                </div>
+            ) : (
+                <div className={styles.mobileStepsWrapper}>
+                    {steps.map((step, index) => {
+                        return (
+                            (index == currentStep || isExpanded) && (
+                                <MobileStep
+                                    isExpanded={isExpanded}
+                                    onExpand={setExpanded}
+                                    key={index}
+                                    keyNumber={index + 1}
+                                    {...step}
+                                    state={resolveState(index, currentStep)}
+                                    firstItem={index == 0}
+                                    lastItem={index == steps.length - 1}
+                                />
+                            )
+                        )
+                    })}
+                </div>
+            )}
         </div>
     )
 }
