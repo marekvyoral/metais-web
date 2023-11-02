@@ -1,5 +1,11 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { CategoryHeaderList, ReportHeader, ReportHeaderList, useListCategories, useListReport } from '@isdd/metais-common/api'
+import {
+    CategoryHeaderList,
+    ReportHeader,
+    ReportHeaderList,
+    useListCategories,
+    useListReport,
+} from '@isdd/metais-common/api/generated/report-swagger'
 import { mapFilterToReportsParamsAdmin } from '@isdd/metais-common/componentHelpers'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'

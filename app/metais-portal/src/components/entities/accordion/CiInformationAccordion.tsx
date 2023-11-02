@@ -1,5 +1,6 @@
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
-import { ConfigurationItemUi, RoleParticipantUI, EnumType } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { QueryFeedback, pairEnumsToEnumValues } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'

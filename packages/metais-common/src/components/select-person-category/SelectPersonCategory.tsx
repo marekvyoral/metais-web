@@ -3,7 +3,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { FieldValues, UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-import { ATTRIBUTE_NAME, GET_ENUM, useGetEnum } from '@isdd/metais-common/api'
+import { useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { ATTRIBUTE_NAME, GET_ENUM } from '@isdd/metais-common/api/constants'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
 interface iSelectPersonCategory<T extends FieldValues> {

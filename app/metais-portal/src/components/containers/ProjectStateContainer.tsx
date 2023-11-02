@@ -1,12 +1,11 @@
 import { IStep } from '@isdd/idsk-ui-kit/index'
 import {
-    EnumItem,
     HistoryVersionsListUiConfigurationItemUi,
-    useGetValidEnum,
     useReadCiHistoryVersions,
     useReadCiHistoryVersionsActionsList,
     useReadConfigurationItem,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import {
     ACTION_CREATE,
     ACTION_UPDATE,

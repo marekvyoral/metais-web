@@ -1,5 +1,5 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, ConfigurationItemUi, useReadCiNeighbours, useReadConfigurationItem } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useReadCiNeighbours, useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
 import { useRequiredDocs } from '@isdd/metais-common/api/generated/kris-swagger'
 import { PROJECT_DOCUMENTS_SECTIONS_EXPANDABLE } from '@isdd/metais-common/constants'
@@ -7,6 +7,7 @@ import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
+import { BASE_PAGE_NUMBER } from '@isdd/metais-common/api/constants'
 
 export interface IDocType extends ConfigurationItemUi {
     confluence?: boolean

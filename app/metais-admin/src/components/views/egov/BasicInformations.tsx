@@ -1,4 +1,4 @@
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'

@@ -1,5 +1,6 @@
 import { CheckBox, Input, SimpleSelect } from '@isdd/idsk-ui-kit/index'
-import { EnumType, Parameter, ParameterType } from '@isdd/metais-common/api'
+import { Parameter, ParameterType } from '@isdd/metais-common/api/generated/report-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import React from 'react'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { FormProps } from '@isdd/idsk-ui-kit/filter/Filter'

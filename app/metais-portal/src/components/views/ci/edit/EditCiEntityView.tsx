@@ -1,5 +1,7 @@
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
-import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { SubHeading } from '@isdd/metais-common/src/components/sub-heading/SubHeading'
 import React from 'react'

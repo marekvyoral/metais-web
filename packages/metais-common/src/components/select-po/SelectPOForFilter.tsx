@@ -3,7 +3,7 @@ import { SortType } from '@isdd/idsk-ui-kit/types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { MultiValue } from 'react-select'
 
-import { ConfigurationItemUi, useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 interface ISelectPO {
     ciType: string

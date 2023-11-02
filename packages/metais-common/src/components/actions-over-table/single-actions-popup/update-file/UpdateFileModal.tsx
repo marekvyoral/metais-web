@@ -5,7 +5,7 @@ import { FieldValues, useForm } from 'react-hook-form'
 
 import { UpdateFileView } from './UpdateFileView'
 
-import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 

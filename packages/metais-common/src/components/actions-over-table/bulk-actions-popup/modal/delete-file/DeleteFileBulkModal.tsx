@@ -5,7 +5,8 @@ import { useForm } from 'react-hook-form'
 
 import { DeleteFileBulkView } from './DeleteFileBulkView'
 
-import { ConfigurationItemUi, useDeleteDocuments } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useDeleteDocuments } from '@isdd/metais-common/api/generated/dms-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 
 export interface IDeleteFileBulkModalProps {

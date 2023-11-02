@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ReInvalidateView } from './ReInvalidateBulkView'
 
-import { ConfigurationItemUi, useRecycleInvalidatedCisBiznis } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useRecycleInvalidatedCisBiznis } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 
 export interface IReInvalidateBulkModalProps {

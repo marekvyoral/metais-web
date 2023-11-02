@@ -7,7 +7,8 @@ import { MultiValue } from 'react-select'
 
 import styles from './selectCiItem.module.scss'
 
-import { ATTRIBUTE_NAME, ConfigurationItemUi, IncidentRelationshipSetUi, useReadCiList1Hook } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
+import { ConfigurationItemUi, IncidentRelationshipSetUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 
 interface Props {

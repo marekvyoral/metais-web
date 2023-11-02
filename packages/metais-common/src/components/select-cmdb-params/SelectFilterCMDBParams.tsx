@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 import { IOptions, SelectFilterCMDBParamsOption } from './SelectFilterCMDBParamsOptions'
 
-import { useReadCiList1Hook, useReadConfigurationItemHook } from '@isdd/metais-common/api'
+import { useReadCiList1Hook, useReadConfigurationItemHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { mapReportsCiItemToOptions } from '@isdd/metais-common/componentHelpers'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { loadEnumsCiOptions } from '@isdd/metais-common/componentHelpers/ci/ciEnum'

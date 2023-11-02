@@ -1,5 +1,5 @@
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
-import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'

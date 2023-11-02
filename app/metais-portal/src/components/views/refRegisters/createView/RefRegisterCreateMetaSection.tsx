@@ -1,5 +1,5 @@
 import { Input, SimpleSelect } from '@isdd/idsk-ui-kit/index'
-import { ConfigurationItemSetUi } from '@isdd/metais-common/api'
+import { ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React from 'react'
 import { FormState, UseFormClearErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'

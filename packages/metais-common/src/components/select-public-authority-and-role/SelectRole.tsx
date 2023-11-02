@@ -2,7 +2,7 @@ import { SimpleSelect } from '@isdd/idsk-ui-kit'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { HierarchyRightsUi } from '@isdd/metais-common/api'
+import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { GidRoleData, useGetRightsForPO } from '@isdd/metais-common/api/generated/iam-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'

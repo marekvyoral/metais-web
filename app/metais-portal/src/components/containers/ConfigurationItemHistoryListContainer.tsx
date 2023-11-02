@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { IFilter, Pagination, SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
-import { HistoryVersionsListUiConfigurationItemUi, useReadCiHistoryVersions, useReadCiNeighbours } from '@isdd/metais-common/api'
+import {
+    HistoryVersionsListUiConfigurationItemUi,
+    useReadCiHistoryVersions,
+    useReadCiNeighbours,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { mapFilterToHistoryVersionsApi } from '@isdd/metais-common/componentHelpers'
 
 import { mapConfigurationItemHistoryListToPagination } from '@/componentHelpers/pagination'

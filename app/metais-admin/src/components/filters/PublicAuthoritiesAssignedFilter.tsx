@@ -1,6 +1,6 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { CheckBox, Input, SimpleSelect } from '@isdd/idsk-ui-kit/index'
-import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { useOptionsPersonCategory } from '@isdd/metais-common/api/hooks/containers/filterMultiValues'
 import { Dispatch, SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'

@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Input } from '@isdd/idsk-ui-kit'
-import { EkoCode, EkoCodeEkoCodeState } from '@isdd/metais-common/api'
+import { EkoCode, EkoCodeEkoCodeState } from '@isdd/metais-common/api/generated/tco-swagger'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 import { useCallback, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'

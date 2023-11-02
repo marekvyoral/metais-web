@@ -1,4 +1,4 @@
-import { ConfigurationItemUiAttributes, useReadCiList1 } from '@isdd/metais-common/api'
+import { ConfigurationItemUiAttributes, useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useReadChanges } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useGetColumnData, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { BASE_PAGE_NUMBER } from '@isdd/metais-common/constants'

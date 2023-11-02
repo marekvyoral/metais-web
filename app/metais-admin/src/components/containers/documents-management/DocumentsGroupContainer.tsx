@@ -1,6 +1,6 @@
 import { ISelectColumnType } from '@isdd/idsk-ui-kit/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { EnumType, useGetValidEnum } from '@isdd/metais-common/api'
+import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import {
     ApiError,
     Document,

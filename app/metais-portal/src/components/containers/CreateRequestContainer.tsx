@@ -1,5 +1,5 @@
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
-import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api'
+import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     useCreateCodelistRequest,
     useExistsCodelistHook,

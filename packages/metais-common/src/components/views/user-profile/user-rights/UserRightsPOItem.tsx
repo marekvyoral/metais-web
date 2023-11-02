@@ -1,7 +1,8 @@
 import { TextBody, TextHeading } from '@isdd/idsk-ui-kit'
 import React from 'react'
 
-import { ATTRIBUTE_NAME, ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 type Props = {

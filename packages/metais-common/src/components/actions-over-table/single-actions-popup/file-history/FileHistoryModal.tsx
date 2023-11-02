@@ -4,7 +4,8 @@ import uniq from 'lodash/uniq'
 
 import { FileHistoryView } from './FileHistoryView'
 
-import { ConfigurationItemUi, useGetHistory } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useGetHistory } from '@isdd/metais-common/api/generated/dms-swagger'
 import { useGetIdentitiesByLoginsBulkHook } from '@isdd/metais-common/api/generated/iam-swagger'
 
 export interface IFileHistoryModalProps {

@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import style from './customFilterAttribute.module.scss'
 
 import { SelectPOForFilter } from '@isdd/metais-common/components/select-po/SelectPOForFilter'
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FilterAttribute, FilterAttributeValue } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { MetaInformationTypes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'

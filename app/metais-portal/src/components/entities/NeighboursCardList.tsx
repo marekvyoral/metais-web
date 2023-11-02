@@ -4,7 +4,7 @@ import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWr
 import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { QueryFeedback, formatRelationAttributes } from '@isdd/metais-common'
-import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
+import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'

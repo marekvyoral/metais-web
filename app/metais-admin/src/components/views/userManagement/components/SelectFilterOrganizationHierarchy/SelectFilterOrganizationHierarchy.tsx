@@ -1,6 +1,6 @@
 import { DEFAULT_LAZY_LOAD_PER_PAGE, ILoadOptionsResponse, SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
-import { AddressObjectUi, HierarchyPOFilterUi, useReadCiList } from '@isdd/metais-common/api'
+import { AddressObjectUi, HierarchyPOFilterUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import React, { useCallback, useEffect, useState } from 'react'

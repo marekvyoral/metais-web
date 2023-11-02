@@ -1,4 +1,4 @@
-import { useGetContentHook } from '@isdd/metais-common/api'
+import { useGetContentHook } from '@isdd/metais-common/api/generated/dms-swagger'
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { useState } from 'react'

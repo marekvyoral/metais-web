@@ -1,5 +1,6 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { EnumType, Parameter } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Parameter } from '@isdd/metais-common/api/generated/report-swagger'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'

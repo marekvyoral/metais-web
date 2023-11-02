@@ -6,7 +6,7 @@ import styles from './userRights.module.scss'
 import { UserRightsPOItem } from './UserRightsPOItem'
 
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useReadCiList1 } from '@isdd/metais-common/api'
+import { useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
 
 export const UserRightsPage = () => {

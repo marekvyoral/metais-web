@@ -8,7 +8,7 @@ import { SortType } from '@isdd/idsk-ui-kit/src/types'
 
 import styles from './modals.module.scss'
 
-import { ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SubmitWithFeedback } from '@isdd/metais-common/components/submit-with-feedback/SubmitWithFeedback'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ClaimEvent } from '@isdd/metais-common/api/generated/claim-manager-swagger'

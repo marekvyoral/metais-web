@@ -6,7 +6,7 @@ import { ExportIcon } from '@isdd/metais-common/assets/images'
 import { IconLabel } from '@isdd/metais-common/components/actions-over-table/icon-label/IconLabel'
 import { ExportItemsOrRelations } from '@isdd/metais-common/components/export-items-or-relations/ExportItemsOrRelations'
 import { useReportOnExportStart } from '@isdd/metais-common/componentHelpers'
-import { ReportExecute } from '@isdd/metais-common/api'
+import { ReportExecute } from '@isdd/metais-common/api/generated/report-swagger'
 
 interface IExportButtonProps {
     entityId: number

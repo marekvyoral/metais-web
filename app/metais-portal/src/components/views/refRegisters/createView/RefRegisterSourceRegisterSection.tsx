@@ -1,4 +1,5 @@
-import { BASE_PAGE_NUMBER, NeighbourPairUi, useReadCiNeighbours } from '@isdd/metais-common/api'
+import { NeighbourPairUi, useReadCiNeighbours } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { BASE_PAGE_NUMBER } from '@isdd/metais-common/api/constants'
 import React, { useEffect, useState } from 'react'
 import { FormState, UseFormClearErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import { ApiReferenceRegister, useGetFOPReferenceRegisters1 } from '@isdd/metais-common/api/generated/reference-registers-swagger'

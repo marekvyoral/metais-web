@@ -1,4 +1,4 @@
-import { EkoCode, GetEkoCodesParams, useEditEkoCode, useGetEkoCodes } from '@isdd/metais-common/api'
+import { EkoCode, GetEkoCodesParams, useEditEkoCode, useGetEkoCodes } from '@isdd/metais-common/api/generated/tco-swagger'
 import React from 'react'
 import { ADMIN_EKO_LIST_QKEY } from '@isdd/metais-common/constants'
 import { useQueryClient } from '@tanstack/react-query'

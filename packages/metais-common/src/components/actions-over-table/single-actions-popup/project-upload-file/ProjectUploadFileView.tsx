@@ -4,7 +4,7 @@ import React from 'react'
 import { FieldValues, FormState, UseFormRegister } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 
 interface IProjectUploadFileViewProps {

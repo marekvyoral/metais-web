@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute, AttributeProfile, CiType, useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { transformColumnsMap } from '@isdd/metais-common/api/hooks/containers/containerHelpers'

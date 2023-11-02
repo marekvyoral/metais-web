@@ -1,6 +1,7 @@
 import { Stepper } from '@isdd/idsk-ui-kit/src/stepper/Stepper'
 import { ISection, IStepLabel } from '@isdd/idsk-ui-kit/stepper/StepperSection'
-import { ConfigurationItemUiAttributes, EnumType, HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUiAttributes, HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'

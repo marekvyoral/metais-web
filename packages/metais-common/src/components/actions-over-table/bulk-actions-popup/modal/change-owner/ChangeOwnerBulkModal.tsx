@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ChangeOwnerBulkView } from './ChangeOwnerBulkView'
 
-import { ChangeOwnerDataUi, ConfigurationItemUi, HierarchyRightsUi, useChangeOwnerSet } from '@isdd/metais-common/api'
+import { ChangeOwnerDataUi, ConfigurationItemUi, HierarchyRightsUi, useChangeOwnerSet } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { GidRoleData, useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 

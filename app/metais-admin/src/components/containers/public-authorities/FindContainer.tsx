@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ConfigurationItemSetUi, useReadCiList1Hook } from '@isdd/metais-common/api'
+import { ConfigurationItemSetUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CsruOrganization, useGetOrganizationFromCsruHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 

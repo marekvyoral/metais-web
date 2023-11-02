@@ -5,7 +5,7 @@ import {
     HierarchyRightsUi,
     useReadCiList,
     useReadListNeighboursConfigurationItems,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { IFilter, SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { Row } from '@tanstack/react-table'

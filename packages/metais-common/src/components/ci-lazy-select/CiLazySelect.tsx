@@ -4,7 +4,7 @@ import React, { SetStateAction, useCallback, useEffect, useState } from 'react'
 import { MultiValue, OptionProps, components } from 'react-select'
 import { FieldValues, UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 
-import { ConfigurationItemUi, FilterMetaAttributesUi, useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, FilterMetaAttributesUi, useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 interface ICiLazySelect<T extends FieldValues> {
     ciType: string

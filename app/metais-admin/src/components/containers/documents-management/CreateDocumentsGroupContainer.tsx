@@ -1,4 +1,4 @@
-import { EnumType, useGetValidEnum } from '@isdd/metais-common/api'
+import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { DocumentGroup, useSaveDocumentGroupHook } from '@isdd/metais-common/api/generated/kris-swagger'
 import { STAV_PROJEKTU } from '@isdd/metais-common/constants'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'

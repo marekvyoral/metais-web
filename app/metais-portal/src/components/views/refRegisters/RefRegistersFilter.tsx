@@ -4,7 +4,7 @@ import style from '@isdd/idsk-ui-kit/select-lazy-loading/selectLazyLoading.modul
 import { GetFOPReferenceRegisters1Muk, GetFOPReferenceRegisters1State } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { useTranslation } from 'react-i18next'
 import { OptionProps } from 'react-select'
-import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { OPERATOR_OPTIONS } from '@isdd/metais-common/hooks/useFilter'
 import {

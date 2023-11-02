@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { OptionProps } from 'react-select'
 
 import { QueryFeedback } from '@isdd/metais-common/index'
-import { ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
 export type SelectFilterOrganizationOptionType = {

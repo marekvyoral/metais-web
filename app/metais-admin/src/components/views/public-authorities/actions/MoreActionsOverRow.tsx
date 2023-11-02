@@ -1,6 +1,6 @@
 import React from 'react'
 import { ButtonLink, ButtonPopup } from '@isdd/idsk-ui-kit/index'
-import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CellContext } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
