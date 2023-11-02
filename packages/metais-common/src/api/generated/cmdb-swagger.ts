@@ -14,6 +14,7 @@ import { useClientForReadCiListUsingPOST } from '../hooks/useCmdbSwaggerClientWi
 import { useClientForGetRoleParticipantUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForReadCiNeighboursWithAllRelsUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForReadConfigurationItemUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForRefRegistersHistory } from '../hooks/useCmdbSwaggerClientWithTransform'
 export type ReadAllCiHistoryVersionsParams = {
     page: number
     perPage: number
@@ -5867,7 +5868,7 @@ export const useReadCiHistoryVersionsIncidentRels = <
 }
 
 export const useReadCiHistoryVersionsHook = () => {
-    const readCiHistoryVersions = useCmdbSwaggerClient<HistoryVersionsListUiConfigurationItemUi>()
+    const readCiHistoryVersions = useClientForRefRegistersHistory<HistoryVersionsListUiConfigurationItemUi>()
 
     return (uuid: string, params: ReadCiHistoryVersionsParams, signal?: AbortSignal) => {
         return readCiHistoryVersions({ url: `/history/read/ci/${uuid}/list`, method: 'get', params, signal })

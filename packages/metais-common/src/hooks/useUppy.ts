@@ -24,7 +24,7 @@ interface iUseUppy {
     allowedFileTypes?: string[] // if undefined all file types are allowed
     maxFileSize?: number
     multiple: boolean
-    endpointUrl: string
+    endpointUrl?: string
     fileImportStep: FileImportStepEnum
     setFileImportStep: (value: FileImportStepEnum) => void
     setCustomFileMeta?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => { [metaKey: string]: string | number }
@@ -108,7 +108,7 @@ export const useUppy = ({
             })
         })
         try {
-            uppy.upload().then((result) => {
+            await uppy.upload().then((result) => {
                 if (result.successful.length > 0) {
                     setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
                 }

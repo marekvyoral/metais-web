@@ -26,6 +26,7 @@ interface ISelectProps<T> {
     onBlur?: React.FocusEventHandler<HTMLInputElement>
     isClearable?: boolean
     menuPosition?: MenuPosition
+    required?: boolean
 }
 
 export const SimpleSelect = <T,>({
@@ -48,6 +49,7 @@ export const SimpleSelect = <T,>({
     onBlur,
     isClearable,
     menuPosition,
+    required,
 }: ISelectProps<T>) => {
     const handleOnChange = (selectedOption: MultiValue<IOption<T>> | SingleValue<IOption<T>>) => {
         const opt: IOption<T> | undefined = Array.isArray(selectedOption) ? selectedOption[0] : selectedOption
@@ -76,6 +78,7 @@ export const SimpleSelect = <T,>({
             isClearable={isClearable}
             menuPosition={menuPosition}
             onChange={handleOnChange}
+            required={required}
         />
     )
 }

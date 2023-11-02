@@ -1,5 +1,6 @@
+import { OptionProps } from 'react-select'
+import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import React from 'react'
-import { OptionProps, components } from 'react-select'
 
 export interface IOptions {
     label: string
@@ -9,12 +10,12 @@ export interface IOptions {
 
 export const SelectFilterCMDBParamsOption = (props: OptionProps<IOptions>) => {
     return (
-        <components.Option {...props} className="select-option">
+        <Option {...props} className="select-option">
             <div>{props.data?.label}</div>
 
             <span>
                 <small>{props.data?.subLabel}</small>
             </span>
-        </components.Option>
+        </Option>
     )
 }

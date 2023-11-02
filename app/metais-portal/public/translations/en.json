@@ -518,7 +518,10 @@
         "table": {
             "actions": "Action type",
             "actionTime": "Action time",
-            "actionBy": "Action by"
+            "actionBy": "Action by",
+            "targetStatus": "Target status",
+            "note": "Note",
+            "attachements": "Attachments"
         },
         "compareButtonLabel": "Compare selected versions",
         "hideCheckButtonLabel": "Show only changes"
@@ -529,6 +532,12 @@
             "INVALIDATED": "Invalidated",
             "DELETED": "Invalidated",
             "UNKNOW": "Unknown",
+            "MPK_IN_PROGRESS": "MPK draft",
+            "APPROVAL_IN_PROGRESS": "Draft for review",
+            "PUBLISHED": "Approved and published",
+            "IN_CONSTRUCTION": "in-progress/optional",
+            "READY_TO_APPROVAL": "Request for registration in the list of reference registers",
+            "REJECTED": "Registration in the list of reference registers rejected",
             "": ""
         }
     },
@@ -601,7 +610,8 @@
         "noRowsFound": "No rows found",
         "pagination": "Page navigation",
         "sortBy": "Sort by",
-        "selectAllItems": "Select all items"
+        "selectAllItems": "Select all items",
+        "noDataLoaded": "No data loaded"
     },
     "state": "Evidence status",
     "group": "Group",
@@ -733,7 +743,8 @@
         "queryErrorTitle": "Error occured",
         "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator by e-mail at ",
         "mutationErrorTitle": "Action failed",
-        "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at"
+        "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at",
+        "mutationCreateSuccessMessage": "The item was successfully created"
     },
     "accordion": {
         "openAll": "Open all",
@@ -886,6 +897,15 @@
     },
     "breadcrumbs": {
         "home": "Home",
+        "ciEdit": "Edit of {{itemName}}",
+        "noName": "No name",
+        "ciCreate": "Create configuration item",
+        "newRelation": "Add new relation of {{itemName}}",
+        "newCiAndRelation": "Add new item and relation for {{itemName}}",
+        "refRegisters": "Reference registers",
+        "compareHistory": "Change comparer",
+        "refRegistersCreate": "Request to add",
+        "refRegistersEdit": "Edit reference register",
         "dataObjects": "Data objects",
         "codeLists": "Codelists",
         "requestList": "List of requests to add a codelist",
@@ -1169,6 +1189,83 @@
         "errorMessage": "We apologize, but an error occurred while creating new relation. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
         "email": "metais@mirri.gov.sk",
         "selectRelTypeError": "You are missing needed rights to create this relation type"
+    },
+    "refRegisters": {
+        "title": "Referential registers",
+        "create": {
+            "title": "Add new referential register",
+            "name": "Name",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "email": "Email",
+            "phoneNumber": "Phone number",
+            "managerContact": "Referential register administrator contact",
+            "registratorContact": "Referential register registrar contact",
+            "save": "Save"
+        },
+        "edit": {
+            "title": "Edit referential register"
+        },
+        "table": {
+            "code": "Code",
+            "name": "Referencial register name",
+            "manager": "Administrator",
+            "registrator": "Registrar",
+            "state": {
+                "heading": "Status",
+                "MPK_IN_PROGRESS": "MPK draft",
+                "APPROVAL_IN_PROGRESS": "Draft for review",
+                "PUBLISHED": "Approved and published",
+                "IN_CONSTRUCTION": "in-progress/optional",
+                "READY_TO_APPROVAL": "Request for registration in the list of reference registers",
+                "REJECTED": "Registration in the list of reference registers rejected"
+            },
+            "muk": {
+                "heading": "MUK",
+                "NONE": "None",
+                "BOTH": "Both",
+                "MV": "MV",
+                "MF": "MF"
+            }
+        },
+        "option": {
+            "name": "Name",
+            "code": "Code"
+        },
+        "detail": {
+            "informations": "Basic informations",
+            "history": "History of changes",
+            "historyChanges": "History of state changes",
+            "isvsRefId": "Reference ID",
+            "isvsRefTooltip": "Reference ID tooltip",
+            "items": {
+                "heading": "List of register references data",
+                "order": "Order",
+                "itemName": "Referential data",
+                "group": "Group",
+                "subGroup": "Subgroup",
+                "subjectIdentification": "Subject identification",
+                "refID": "Reference identifier of reference item",
+                "dataElementRefID": "Reference item name and code",
+                "note": "Note"
+            }
+        },
+        "header": {
+            "description": "Change state note",
+            "submit": "Submit",
+            "submitMPK": "Send to MPK",
+            "generateProposition": "Generate working copy",
+            "changeContact": "Change contact data",
+            "changeManagerInfo": "Change administrator permissions data",
+            "delete": "Delete",
+            "inConstructionPrefix": "Back to status '{{ itemName }}'",
+            "othersPrefix": "Move to status '{{ itemName }}'",
+            "generateProp1": "Dear user, after click on button reference register working copy file will be generated. Register state will not be changed and also history will not contain this event. File will be stored localy on your computer. It is recommended to change it's name and location.",
+            "generateProp2": "(If you just insert or edit reference data, we highly recommend wait a minute to save data and then confirm action.)",
+            "generateProp": "Generate working copy",
+            "MPKheading1": "Dear user, after confirmation of state change to 'Draft for MPK' file will be generated. This file is base document for MPK review process and will be stored in your computer.",
+            "MPKheading2": "It is recommended to change its name and location."
+        }
     },
     "titles": {
         "mainPage": "Main Page",

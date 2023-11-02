@@ -91,6 +91,7 @@ export const useGetCiTypeConstraintsData = (entityStructure: CiType | undefined,
         .map((pair) => Object.values(pair))
         .flat()
 
+    const isQueryEnabled = listOfAllCiUuidsToSearch.length > 0
     const { data, isLoading, isError, fetchStatus } = useReadCiList1(
         {
             filter: {
@@ -99,7 +100,7 @@ export const useGetCiTypeConstraintsData = (entityStructure: CiType | undefined,
             },
             perpage: 999,
         },
-        { query: { enabled: listOfAllCiUuidsToSearch.length > 0 } },
+        { query: { enabled: isQueryEnabled } },
     )
 
     const uuidsToMatchedCiItemsMap: Record<string, Record<string, ConfigurationItemUi>> = {}

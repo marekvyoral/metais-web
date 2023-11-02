@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import * as React from 'react'
 import { forwardRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import styles from '../styles/InfoAndCheckInput.module.scss'
 
@@ -19,16 +20,18 @@ interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<
     correct?: boolean
     wrapperClassname?: string
     hasInputIcon?: boolean
+    required?: boolean
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
-    ({ id, label, name, rows, hint, info, error, disabled, correct, wrapperClassname, hasInputIcon = false, ...rest }, ref) => {
+    ({ id, label, name, rows, hint, info, error, disabled, correct, wrapperClassname, hasInputIcon = false, required, ...rest }, ref) => {
         const hintId = `${id}-hint`
+        const { t } = useTranslation()
         return (
             <div className={classNames('govuk-form-group', wrapperClassname, { 'govuk-form-group--error': !!error })}>
                 <div className={styles.labelDiv}>
                     <label className="govuk-label" htmlFor={id}>
-                        {label}
+                        {label} {required && t('input.requiredField')}
                     </label>
                     {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
                 </div>

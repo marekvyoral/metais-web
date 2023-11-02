@@ -28,7 +28,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
         },
     }
 
-    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, entityName, defaultRequestApi)
+    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, defaultRequestApi)
 
     const liableEntity = currentPreferences.myPO ? [currentPreferences.myPO] : undefined
     const metaAttributes = currentPreferences.showInvalidatedItems

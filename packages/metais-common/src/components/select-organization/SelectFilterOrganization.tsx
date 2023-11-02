@@ -1,6 +1,6 @@
 import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { DEFAULT_LAZY_LOAD_PER_PAGE, ILoadOptionsResponse, SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
-import { SortType } from '@isdd/idsk-ui-kit/types'
+import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { FieldValues, UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -14,14 +14,17 @@ export type SelectFilterOrganizationOptionType = {
     uuid: string
     name: string
     address: string
+    code: string
 }
 
 interface SelectFilterOrganizationProps<T extends FieldValues & IFilterParams> {
     filter: T
     setValue: UseFormSetValue<T>
+    additionalData?: IFilter
     name: string
     label: string
     isMulti?: boolean
+    option?: (row: OptionProps<SelectFilterOrganizationOptionType>) => JSX.Element
 }
 
 const formatOption = (optionProps: OptionProps<SelectFilterOrganizationOptionType>) => {
@@ -40,6 +43,7 @@ const mapToOption = (data?: ConfigurationItemUi[]): SelectFilterOrganizationOpti
         data?.map((item) => ({
             uuid: item.uuid || '',
             name: item.attributes?.Gen_Profil_nazov || '',
+            code: item?.attributes?.Gen_Profil_kod_metais || '',
             address: [item.attributes?.EA_Profil_PO_ulica, item.attributes?.EA_Profil_PO_psc, item.attributes?.EA_Profil_PO_obec].join(' '),
         })) || []
     )
@@ -51,6 +55,8 @@ export const SelectFilterOrganization = <T extends FieldValues & IFilterParams>(
     label,
     filter,
     setValue,
+    additionalData,
+    option,
 }: SelectFilterOrganizationProps<T>) => {
     const { t } = useTranslation()
 
@@ -66,6 +72,7 @@ export const SelectFilterOrganization = <T extends FieldValues & IFilterParams>(
                 filter: {
                     fullTextSearch: searchQuery,
                     type: ['PO'],
+                    ...additionalData,
                 },
                 sortBy: 'Gen_Profil_nazov',
                 sortType: SortType.ASC,
@@ -81,7 +88,7 @@ export const SelectFilterOrganization = <T extends FieldValues & IFilterParams>(
                 },
             }
         },
-        [readCiListHook],
+        [readCiListHook, additionalData],
     )
 
     useEffect(() => {
@@ -113,7 +120,7 @@ export const SelectFilterOrganization = <T extends FieldValues & IFilterParams>(
                 label={label}
                 name={name}
                 isMulti={isMulti}
-                option={(ctx) => formatOption(ctx)}
+                option={(ctx) => (option ? option?.(ctx) : formatOption(ctx))}
                 setValue={setValue}
                 defaultValue={defaultValue}
             />

@@ -5,7 +5,7 @@ import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, DMS_DOWNLOAD_FILE } from '@isdd/metais-common/api'
 import { formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
@@ -27,8 +27,7 @@ import { useTranslation } from 'react-i18next'
 import styles from '@isdd/metais-common/src/components/actions-over-table/single-actions-popup/file-history/styles.module.scss'
 import { INVALIDATED } from '@isdd/metais-common/constants'
 
-import { downloadFile, isDocumentUpdatable, isDocumentsUpdatable, listToMap } from './utils'
-
+import { downloadFile, isDocumentUpdatable, isDocumentsUpdatable, listToMap } from '@/components/views/documents/utils'
 import { TableCols, defaultFilter } from '@/components/containers/DocumentListContainer'
 
 interface DocumentsTable {
@@ -67,7 +66,6 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     const isUserAdmin = authState.user?.roles.includes('R_ADMIN')
     const isUserLogged = authState.user !== null
     const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED
-    const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
     const [rowSelection, setRowSelection] = useState({})
     const additionalColumnsNullsafe = additionalColumns ?? []
 
