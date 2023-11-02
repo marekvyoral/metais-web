@@ -1,6 +1,8 @@
 import { ColumnSort } from '@isdd/idsk-ui-kit/types'
 
-import { CiListFilterContainerUi, CiType, ConfigurationItemSetUi, EnumType, IColumn } from '@isdd/metais-common/api'
+import { IColumn } from '@isdd/metais-common/api'
+import { CiListFilterContainerUi, CiType, ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
 export interface IListFilterCallbacks {
     setListQueryArgs: React.Dispatch<SetStateAction<CiListFilterContainerUi>>

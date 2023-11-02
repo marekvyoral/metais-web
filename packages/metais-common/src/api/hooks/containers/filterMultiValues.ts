@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 
-import { useGetEnum } from '@isdd/metais-common/api'
+import { useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
 export const useOptionsPersonType = () => {
     const { data: personTypesCategories } = useGetEnum('TYP_OSOBY')

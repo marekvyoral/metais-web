@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { IOption } from '@isdd/idsk-ui-kit'
-import { useGetUuidHook } from '@isdd/metais-common/api'
+import { useGetUuidHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useFindEaGarpoAdminHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useCallback } from 'react'
 import { FieldValues, UseFormReturn, useForm } from 'react-hook-form'

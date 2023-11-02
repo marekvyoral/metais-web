@@ -8,7 +8,8 @@ import {
     useUpdateReferenceRegisterContact,
 } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { useUserInfo } from '@isdd/metais-common/hooks/useUserInfo'
-import { MutationFeedback, useReadCiList1 } from '@isdd/metais-common/index'
+import { MutationFeedback } from '@isdd/metais-common/index'
+import { useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useTranslation } from 'react-i18next'
 
 import { IRefRegisterCreateView } from '@/components/views/refRegisters/createView/RefRegisterCreateView'

@@ -1,5 +1,5 @@
 import { Attribute, AttributeConstraintEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
 export const findAttributeConstraints = (technicalName: string, attributes: (Attribute | undefined)[], constraintsData: (EnumType | undefined)[]) => {
     const constraints = attributes.find((item) => item?.technicalName === technicalName)?.constraints as AttributeConstraintEnum[]

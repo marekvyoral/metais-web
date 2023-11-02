@@ -1,5 +1,6 @@
 import { Group, useFindByUuid3, useUpdateOrCreate2 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { ApiError, QueryFeedback } from '@isdd/metais-common/index'
+import { QueryFeedback } from '@isdd/metais-common/index'
+import { ApiError } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React, { useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'

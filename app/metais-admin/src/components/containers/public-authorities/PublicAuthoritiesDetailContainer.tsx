@@ -1,15 +1,7 @@
 import React from 'react'
-import {
-    ATTRIBUTE_NAME,
-    ConfigurationItemUi,
-    EnumItem,
-    EnumType,
-    GET_ENUM,
-    STATUTAR_NAME,
-    useGetEnum,
-    useInvalidateConfigurationItem,
-    useReadCiList1,
-} from '@isdd/metais-common'
+import { ATTRIBUTE_NAME, GET_ENUM, STATUTAR_NAME } from '@isdd/metais-common'
+import { EnumItem, EnumType, useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { ConfigurationItemUi, useInvalidateConfigurationItem, useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 export interface ParsedAttribute {

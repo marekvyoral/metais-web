@@ -1,4 +1,11 @@
-import { Category, Parameter, ParameterType, ReportDefinition, ReportDefinitionLanguage, ScriptExecute } from '@isdd/metais-common/api'
+import {
+    Category,
+    Parameter,
+    ParameterType,
+    ReportDefinition,
+    ReportDefinitionLanguage,
+    ScriptExecute,
+} from '@isdd/metais-common/api/generated/report-swagger'
 import { array, mixed, object, ObjectSchema, string } from 'yup'
 import { TFunction } from 'i18next'
 

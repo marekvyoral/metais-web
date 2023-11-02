@@ -1,4 +1,4 @@
-import { ConfigurationItemUi, useReadCiList1 } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 type AttributeTechnicalName = string

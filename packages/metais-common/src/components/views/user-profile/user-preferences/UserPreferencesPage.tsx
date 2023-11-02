@@ -12,14 +12,8 @@ import {
     UserPreferencesFormNamesEnum,
     useUserPreferences,
 } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
-import {
-    ConfigurationItemUi,
-    MutationFeedback,
-    QueryFeedback,
-    SubmitWithFeedback,
-    useReadCiList1,
-    useReadCiList1Hook,
-} from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { ConfigurationItemUi, useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'

@@ -1,4 +1,4 @@
-import { EnumItem } from '@isdd/metais-common/api'
+import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ValidationError, object, string } from 'yup'
 import { TFunction } from 'i18next'
 

@@ -2,7 +2,7 @@ import { Attribute, AttributeConstraintIntervalAllOf, AttributeConstraintRegexAl
 import { TFunction } from 'i18next'
 import { FieldErrors, FieldValues } from 'react-hook-form'
 import { AnyObject, NumberSchema } from 'yup'
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
 import { ByteInterval, ShortInterval } from './createCiEntityFormSchema'
 

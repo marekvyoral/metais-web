@@ -2,7 +2,9 @@ import { TFunction } from 'i18next'
 
 import { MetainformationColumns } from '../ci/getCiDefaultMetaAttributes'
 
-import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ConfigurationItemUi as ConfigurationItemUiOriginal } from '@isdd/metais-common/api/generated/iam-swagger'
 import { Attribute, AttributeConstraintEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 

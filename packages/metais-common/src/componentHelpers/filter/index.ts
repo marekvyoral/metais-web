@@ -5,21 +5,17 @@ import { transformOperatorsFromUrl } from './transformOperators'
 
 import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import {
-    BASE_PAGE_NUMBER,
-    BASE_PAGE_SIZE,
-    Category,
     CiListFilterContainerUi,
     ConfigurationItemUi,
-    EnumType,
     FilterAttributesUi,
     FilterMetaAttributesUi,
-    ListReportParams,
-    Parameter,
     ReadAllCiHistoryVersionsParams,
     ReadCiNeighboursWithAllRelsParams,
-    ReportExecute,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { Category, ListReportParams, Parameter, ReportExecute } from '@isdd/metais-common/api/generated/report-swagger'
 import { IAttributeFilters, IFilterParams, OPERATOR_OPTIONS, OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
 import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { JOIN_OPERATOR } from '@isdd/metais-common/constants'

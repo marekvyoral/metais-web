@@ -1,4 +1,4 @@
-import { ConfigurationItemSetUi, ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemSetUi, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { StringList, Identity } from '@isdd/metais-common/api/generated/iam-swagger'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'

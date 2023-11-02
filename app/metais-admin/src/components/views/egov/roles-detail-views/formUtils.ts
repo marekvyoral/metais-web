@@ -1,4 +1,4 @@
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { RelatedIdentityWithPo } from '@isdd/metais-common/api/generated/iam-swagger'
 import { FieldErrors, FieldValues } from 'react-hook-form'
 

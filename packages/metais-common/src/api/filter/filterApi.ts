@@ -2,7 +2,8 @@ import { IFilter, SortType } from '@isdd/idsk-ui-kit/src/types'
 import { FieldValues } from 'react-hook-form'
 
 import { GetFOPReferenceRegisters1Params } from '@isdd/metais-common/api/generated/reference-registers-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, CiListFilterContainerUi, NeighboursFilterContainerUi, NeighboursFilterUi } from '@isdd/metais-common/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
+import { CiListFilterContainerUi, NeighboursFilterContainerUi, NeighboursFilterUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { DEFAULT_PAGESIZE_OPTIONS, FIRST_PAGE_NUMBER } from '@isdd/metais-common/constants'
 

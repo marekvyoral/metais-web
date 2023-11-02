@@ -1,5 +1,6 @@
 import { IOption } from '@isdd/idsk-ui-kit/index'
-import { EnumType, Parameter, ParameterType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Parameter, ParameterType } from '@isdd/metais-common/api/generated/report-swagger'
 import { TFunction } from 'i18next'
 import { addMethod, boolean, object, string } from 'yup'
 

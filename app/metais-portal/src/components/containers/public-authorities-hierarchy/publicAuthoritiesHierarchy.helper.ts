@@ -1,10 +1,10 @@
 import {
-    ATTRIBUTE_NAME,
     ConfigurationItemNeighbourSetUi,
     ConfigurationItemUi,
     ConfigurationItemUiAttributes,
     HierarchyRightsUi,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 
 import { PublicAuthoritiesHierarchyItem } from './PublicAuthoritiesHierarchyContainer'
 

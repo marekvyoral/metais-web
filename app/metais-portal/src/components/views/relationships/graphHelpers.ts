@@ -2,7 +2,7 @@ import * as d3 from 'd3'
 import React, { MouseEvent, RefObject } from 'react'
 import Canvg from 'canvg'
 import { jsPDF } from 'jspdf'
-import { CiWithRelsResultUi, CiWithRelsUi, ConfigurationItemUi } from '@isdd/metais-common/api'
+import { CiWithRelsResultUi, CiWithRelsUi, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 import { CiItem, RelsItem, TypeFilter } from './RelationshipGraph'
 

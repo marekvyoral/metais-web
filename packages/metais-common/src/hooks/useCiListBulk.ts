@@ -2,7 +2,8 @@ import { UseQueryResult, useQueries } from '@tanstack/react-query'
 import { FieldValues } from 'react-hook-form'
 import { IFilter } from '@isdd/idsk-ui-kit/src/types'
 
-import { BASE_PAGE_SIZE, ConfigurationItemSetUi, useReadCiList1Hook } from '@isdd/metais-common/api'
+import { ConfigurationItemSetUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useUserPreferences } from '@/contexts/userPreferences/userPreferencesContext'
 

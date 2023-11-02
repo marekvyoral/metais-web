@@ -14,7 +14,8 @@ import {
     TextArea,
     TextHeading,
 } from '@isdd/idsk-ui-kit/index'
-import { ActionsOverTable, BulkPopup, CreateEntityButton, QueryFeedback, useGetRoleParticipantHook } from '@isdd/metais-common/index'
+import { ActionsOverTable, BulkPopup, CreateEntityButton, QueryFeedback } from '@isdd/metais-common/index'
+import { useGetRoleParticipantHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { EnumType, EnumTypePreviewList } from '@isdd/metais-common/api'
+import { EnumType, EnumTypePreviewList } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IOption } from '@isdd/idsk-ui-kit'
 import { HTML_TYPE } from '@isdd/metais-common/constants'

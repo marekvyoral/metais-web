@@ -13,7 +13,7 @@ import {
     useFindAll11,
     useUpdateWithOnePoAndRoles,
 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { EnumType, useGetValidEnum } from '@isdd/metais-common/index'
+import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'

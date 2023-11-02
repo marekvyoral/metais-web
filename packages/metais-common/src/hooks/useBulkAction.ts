@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next'
 
 import { useBulkActionHelpers } from './useBulkActionHelpers'
 
-import { APPROVAL_PROCESS, ATTRIBUTE_NAME, ApiError, ConfigurationItemUi, PROJECT_STATE_ENUM } from '@isdd/metais-common/index'
+import { APPROVAL_PROCESS, ATTRIBUTE_NAME, PROJECT_STATE_ENUM } from '@isdd/metais-common/index'
+import { ApiError, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Confirm200, ReturnProject200, useConfirm, useReturnProject } from '@isdd/metais-common/api/generated/kris-swagger'
 
 export interface IBulkActionResult {

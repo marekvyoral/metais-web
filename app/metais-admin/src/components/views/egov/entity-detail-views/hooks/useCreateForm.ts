@@ -3,7 +3,7 @@ import { AttributeProfile, Cardinality, CiType, CiTypePreview } from '@isdd/meta
 import { yupResolver } from '@hookform/resolvers/yup'
 import { UseFormReturn, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Role } from '@isdd/metais-common/api'
+import { Role } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { getTabsFromApi } from '@isdd/metais-common/index'
 
 import { EntityDetailViewAttributes } from '../attributes/EntityDetailViewAttributes'

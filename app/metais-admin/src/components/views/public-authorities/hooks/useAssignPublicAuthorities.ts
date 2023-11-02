@@ -4,7 +4,7 @@ import {
     useReadPoSuperiorPoRelationshipHook,
     useReadRelationships,
     useStoreGraph,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     useFindEaGarpoAdminHook,
     useGenerateUuidsHook,

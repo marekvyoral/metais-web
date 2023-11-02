@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 
-import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api'
+import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 export const formatDateForDefaultValue = (date: string, format = 'yyyy-MM-dd') => {

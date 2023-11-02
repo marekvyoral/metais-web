@@ -3,11 +3,11 @@ import {
     ConfigurationItemUi,
     ConfigurationItemUiAttributes,
     PoWithHierarchyUi,
-    TOP_LEVEL_PO_ICO,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { PoRelationshipIntegrityConstraints, RoleOrgGroup } from '@isdd/metais-common/api/generated/iam-swagger'
 import { TFunction } from 'i18next'
 import { FieldValues } from 'react-hook-form'
+import { TOP_LEVEL_PO_ICO } from '@isdd/metais-common/api/constants'
 
 import { ConfItemWithBlockedAndMessage } from '@/components/containers/public-authorities/PublicAuthoritiesAssignedContainer'
 
