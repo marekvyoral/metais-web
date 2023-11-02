@@ -1,5 +1,5 @@
 import { BreadCrumbs, Button, CheckBox, HomeIcon, Input, Table } from '@isdd/idsk-ui-kit'
-import { isRowSelected } from '@isdd/metais-common'
+import { MutationFeedback, isRowSelected } from '@isdd/metais-common'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef, Row } from '@tanstack/react-table'
@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 import { HTML_TYPE } from '@isdd/metais-common/constants'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import { MoreActionsColumn } from './actions/MoreActionsColumn'
 import { AddAttributeModal } from './attributes/AddAttributeModal'
@@ -27,6 +29,7 @@ export const ProfileDetailView = <T,>({
 }: IAttributesContainerView<T>) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const { isActionSuccess } = useActionSuccess()
     const location = useLocation()
     const [openAddAttributeModal, setOpenAddAttributeModal] = useState(false)
     const [selectedRows, setSelectedRows] = useState<Array<number>>([])
@@ -229,21 +232,24 @@ export const ProfileDetailView = <T,>({
                 ]}
             />
             <div className={styles.basicInformationSpace}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <h2 className="govuk-heading-l">{t('egov.detail.profileAttributesHeading')}</h2>
-                    <div className={styles.generalActions}>
-                        <Button
-                            label={t('egov.edit')}
-                            onClick={() => {
-                                navigate('/egov/profile/' + ciTypeData?.technicalName + '/edit', { state: { from: location } })
-                            }}
-                        />
-                        <Button
-                            label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
-                            onClick={() => setValidityOfProfile(ciTypeData?.technicalName)}
-                        />
+                <FlexColumnReverseWrapper>
+                    <div className={styles.flexBetween}>
+                        <h2 className="govuk-heading-l">{t('egov.detail.profileAttributesHeading')}</h2>
+                        <div className={styles.generalActions}>
+                            <Button
+                                label={t('egov.edit')}
+                                onClick={() => {
+                                    navigate('/egov/profile/' + ciTypeData?.technicalName + '/edit', { state: { from: location } })
+                                }}
+                            />
+                            <Button
+                                label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
+                                onClick={() => setValidityOfProfile(ciTypeData?.technicalName)}
+                            />
+                        </div>
                     </div>
-                </div>
+                    <MutationFeedback success={isActionSuccess.value} error={false} />
+                </FlexColumnReverseWrapper>
                 <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
             </div>
             <div>

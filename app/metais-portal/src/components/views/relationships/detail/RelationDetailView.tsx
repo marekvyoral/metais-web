@@ -1,12 +1,18 @@
-import { BreadCrumbs, Button, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { ATTRIBUTE_NAME, QueryFeedback } from '@isdd/metais-common/index'
-import React from 'react'
+import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { INVALIDATED } from '@isdd/metais-common/constants'
+import { useQueryClient } from '@tanstack/react-query'
+import { getReadRelationshipQueryKey, useStoreRelationship } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
+import { RelationDetailEditForm } from './RelationDetailEditForm'
+
+import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { RelationDetailProps } from '@/components/containers/RelationDetailContainer'
 
@@ -16,10 +22,29 @@ type Props = RelationDetailProps & {
     relationshipId: string
 }
 
-export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId, entityId, data, isLoading, isError }) => {
+export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId, entityId, data, isLoading, isError, refetchRelationship }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { ownerData, relationTypeData, relationshipData, ciSourceData, ciTargetData } = data
+    const { ownerData, relationTypeData, relationshipData, ciSourceData, ciTargetData, constraintsData, unitsData } = data
+    const isInvalidated = relationshipData?.metaAttributes?.state === INVALIDATED
+
+    const [isEditable, setIsEditable] = useState(false)
+
+    const queryClient = useQueryClient()
+    const relationshipQueryKey = getReadRelationshipQueryKey(relationshipId)
+    const {
+        isLoading: isEditLoading,
+        isError: isEditError,
+        mutateAsync: editRelation,
+        isSuccess: isEditSuccess,
+    } = useStoreRelationship({
+        mutation: {
+            onSuccess(_data, variables) {
+                setIsEditable(false)
+                queryClient.setQueryData(relationshipQueryKey, variables.data)
+            },
+        },
+    })
 
     return (
         <>
@@ -41,8 +66,23 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
             <MainContentWrapper>
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
-                        <TextHeading size="L">{t('relationDetail.heading', { item: relationTypeData?.name })}</TextHeading>
+                        <CiEntityIdHeader
+                            editButton={<Button disabled={isEditable} label={t('ciType.editButton')} onClick={() => setIsEditable(true)} />}
+                            entityData={relationshipData}
+                            entityName={entityName}
+                            entityId={entityId}
+                            entityItemName={t('relationDetail.heading', { item: relationTypeData?.name })}
+                            ciRoles={relationTypeData?.roleList ?? []}
+                            isInvalidated={isInvalidated}
+                            refetchCi={refetchRelationship}
+                            isRelation
+                        />
                         <QueryFeedback loading={false} error={isError} />
+                        <MutationFeedback
+                            success={isEditSuccess}
+                            error={isEditError ? t('relationDetail.editError', { relationName: relationTypeData?.name }) : ''}
+                            successMessage={t('relationDetail.editSuccess', { relationName: relationTypeData?.name })}
+                        />
                     </FlexColumnReverseWrapper>
 
                     <DefinitionList>
@@ -61,23 +101,38 @@ export const RelationDetailView: React.FC<Props> = ({ entityName, relationshipId
                         />
                     </DefinitionList>
 
-                    <DefinitionList>
-                        {relationTypeData?.attributes
-                            ?.concat(relationTypeData?.attributeProfiles?.flatMap((profile) => profile.attributes ?? []) ?? [])
-                            .map((attribute) => {
-                                const value = relationshipData?.attributes?.find((relAttr) => relAttr.name === attribute.technicalName)?.value
+                    {isEditable && (
+                        <RelationDetailEditForm
+                            relationTypeData={relationTypeData}
+                            relationshipData={relationshipData}
+                            constraintsData={constraintsData}
+                            unitsData={unitsData}
+                            setIsEditable={setIsEditable}
+                            isEditLoading={isEditLoading}
+                            editRelation={editRelation}
+                        />
+                    )}
 
-                                return (
-                                    <InformationGridRow
-                                        key={attribute.technicalName}
-                                        label={attribute.name ?? ''}
-                                        //cause of bad generated type
-                                        value={typeof value == 'string' ? value : ''}
-                                    />
-                                )
-                            })}
-                    </DefinitionList>
-                    <Button variant="secondary" label={t('relationDetail.back')} onClick={() => navigate(-1)} />
+                    {!isEditable && (
+                        <>
+                            <DefinitionList>
+                                {relationTypeData?.attributes
+                                    ?.concat(relationTypeData?.attributeProfiles?.flatMap((profile) => profile.attributes ?? []) ?? [])
+                                    .map((attribute) => {
+                                        const value = relationshipData?.attributes?.find((relAttr) => relAttr.name === attribute.technicalName)?.value
+                                        return (
+                                            <InformationGridRow
+                                                key={attribute.technicalName}
+                                                label={attribute.name ?? ''}
+                                                //cause of bad generated type
+                                                value={typeof value == 'string' ? value : ''}
+                                            />
+                                        )
+                                    })}
+                            </DefinitionList>
+                            <Button variant="secondary" label={t('relationDetail.back')} onClick={() => navigate(-1)} />
+                        </>
+                    )}
                 </QueryFeedback>
             </MainContentWrapper>
         </>

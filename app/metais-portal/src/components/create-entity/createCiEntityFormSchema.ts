@@ -1,4 +1,9 @@
-import { AttributeAttributeTypeEnum, AttributeConstraintRegexAllOf, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import {
+    Attribute,
+    AttributeAttributeTypeEnum,
+    AttributeConstraintRegexAllOf,
+    AttributeProfile,
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 import {
     AnyObject,
@@ -51,12 +56,15 @@ type SchemaType = {
 
 export const generateFormSchema = (
     data: AttributeProfile[],
-    selectedRole: GidRoleData | null,
     t: TFunction<'translation', undefined, 'translation'>,
+    selectedRole?: GidRoleData | null,
 ) => {
     const schema: SchemaType = {}
 
-    const attributes = data.filter((profile) => profile?.roleList?.includes(selectedRole?.roleName ?? '')).flatMap((profile) => profile?.attributes)
+    let attributes: (Attribute | undefined)[] = []
+    if (selectedRole) {
+        attributes = data.filter((profile) => profile?.roleList?.includes(selectedRole?.roleName ?? '')).flatMap((profile) => profile?.attributes)
+    }
 
     attributes?.forEach((attribute) => {
         const isInvisible = attribute?.invisible

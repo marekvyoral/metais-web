@@ -161,4 +161,9 @@ export const PO = 'PO'
 export const ENTITY_KS = 'KS'
 export const ENTITY_AS = 'AS'
 export const ENTITY_MIGRATION = 'Migracia'
+
+export const MAX_TITLE_LENGTH = 100
 export const INVALIDATED = 'INVALIDATED'
+
+export const ENITTY_CIEL = 'Ciel'
+export const ENTITY_PRINCIP = 'Princip'

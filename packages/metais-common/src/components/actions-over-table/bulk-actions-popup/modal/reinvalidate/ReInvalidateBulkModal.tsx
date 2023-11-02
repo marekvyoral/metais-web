@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ReInvalidateView } from './ReInvalidateBulkView'
 
-import { ConfigurationItemUi, useRecycleInvalidatedCisBiznis } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ConfigurationItemUi, useRecycleInvalidatedCisBiznis, useRecycleInvalidatedRels } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 
 export interface IReInvalidateBulkModalProps {
@@ -13,12 +13,24 @@ export interface IReInvalidateBulkModalProps {
     onClose: () => void
     onSubmit: (result: IBulkActionResult) => void
     items: ConfigurationItemUi[]
+    isRelation?: boolean
 }
 
-export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ items, open, multiple, onSubmit, onClose }) => {
+export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ items, open, multiple, onSubmit, onClose, isRelation }) => {
     const { t } = useTranslation()
 
     const successMessage = multiple ? t('bulkActions.reInvalidate.successList') : t('bulkActions.reInvalidate.success')
+
+    const recycleRelation = useRecycleInvalidatedRels({
+        mutation: {
+            onSuccess() {
+                onSubmit({ isSuccess: true, isError: false, successMessage })
+            },
+            onError() {
+                onSubmit({ isSuccess: false, isError: true, successMessage })
+            },
+        },
+    })
 
     const { isLoading, mutateAsync: reInvalidate } = useRecycleInvalidatedCisBiznis({
         mutation: {
@@ -32,7 +44,11 @@ export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ i
     })
 
     const handleReInvalidate = async () => {
-        await reInvalidate({ data: { ciIdList: items.map((item) => item.uuid || '') } })
+        if (isRelation) {
+            await recycleRelation.mutateAsync({ data: { relIdList: items.map((item) => item.uuid || '') } })
+        } else {
+            await reInvalidate({ data: { ciIdList: items.map((item) => item.uuid || '') } })
+        }
     }
 
     return (

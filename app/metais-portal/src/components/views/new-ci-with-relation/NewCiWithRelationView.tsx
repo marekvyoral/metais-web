@@ -166,7 +166,7 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
-                <TextHeading size="XL">{t('newRelation.newCiWithRelationHeading')}</TextHeading>
+                <TextHeading size="XL">{t('newRelation.newCiWithRelationHeading', { entityName: tabName })}</TextHeading>
                 {isError && <QueryFeedback loading={false} error={isError} />}
                 {(storeGraph.isError || storeGraph.isSuccess) && (
                     <MutationFeedback success={storeGraph.isSuccess} error={storeGraph.isError ? t('newRelation.mutationError') : ''} />

@@ -1,7 +1,7 @@
 import uniq from 'lodash/uniq'
 
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { CiType, useGetCiTypeHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CiType, RelationshipType, useGetCiTypeHook, useGetRelationshipTypeHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useGetRightsForPOBulkHook, useIsInPoByGid1Hook, useIsOwnerByGidHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
@@ -12,6 +12,7 @@ export const useBulkActionHelpers = () => {
 
     const getRightsForPOBulk = useGetRightsForPOBulkHook()
     const getCiType = useGetCiTypeHook()
+    const getRelationType = useGetRelationshipTypeHook()
     const checkIsInPoByGid = useIsInPoByGid1Hook()
     const checkIsOwnerByGid = useIsOwnerByGidHook()
 
@@ -74,6 +75,43 @@ export const useBulkActionHelpers = () => {
         return entitySchemaMap
     }
 
+    const loadRelationSchemaData = async (types: string[]) => {
+        const fetchedData: RelationshipType[] = []
+        const entitySchemaMap: { [key: string]: RelationshipType } = {}
+        for (const type of types) {
+            const response = await getRelationType(type)
+            fetchedData.push(response)
+        }
+
+        fetchedData.forEach((item) => {
+            const techName = item.technicalName || ''
+            entitySchemaMap[techName] = item
+        })
+
+        return entitySchemaMap
+    }
+
+    const bulkRelationCheck = async (ciList: ConfigurationItemUi[]) => {
+        let canReInvalidate = true
+
+        const types = uniq(ciList.map((item) => item.type || ''))
+        const owners = uniq(ciList.map((item) => item.metaAttributes?.owner || ''))
+
+        const rightResponse = await loadRights(owners)
+        const schemaResponse = await loadRelationSchemaData(types)
+
+        ciList.forEach((item) => {
+            const schema = schemaResponse[item.type || '']
+            const roles = rightResponse.find((i) => i.gid === item.metaAttributes?.owner)?.gidRoles?.map((i) => i.roleName) || []
+
+            if (!schema.roleList || schema.roleList.length === 0 || roles.length === 0 || !findInterSection(schema.roleList, roles)) {
+                canReInvalidate = false
+            }
+        })
+
+        return canReInvalidate
+    }
+
     const bulkCheck = async (ciList: ConfigurationItemUi[]) => {
         let canReInvalidate = true
 
@@ -122,5 +160,5 @@ export const useBulkActionHelpers = () => {
         return !!(ci && ci.metaAttributes && ci.metaAttributes.state === 'INVALIDATED')
     }
 
-    return { bulkCheck, ciInvalidFilter, checkChangeOfOwner, hasOwnerRights }
+    return { bulkCheck, bulkRelationCheck, ciInvalidFilter, checkChangeOfOwner, hasOwnerRights }
 }

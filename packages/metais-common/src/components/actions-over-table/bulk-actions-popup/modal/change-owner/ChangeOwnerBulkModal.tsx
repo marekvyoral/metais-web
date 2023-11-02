@@ -4,7 +4,13 @@ import { useTranslation } from 'react-i18next'
 
 import { ChangeOwnerBulkView } from './ChangeOwnerBulkView'
 
-import { ChangeOwnerDataUi, ConfigurationItemUi, HierarchyRightsUi, useChangeOwnerSet } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import {
+    ChangeOwnerDataUi,
+    ChangeOwnerSetUi,
+    ConfigurationItemUi,
+    HierarchyRightsUi,
+    useChangeOwnerSet,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { GidRoleData, useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 
@@ -15,9 +21,10 @@ export interface IChangeOwnerBulkModalProps {
     onSubmit: (result: IBulkActionResult) => void
     items: ConfigurationItemUi[]
     ciRoles: string[]
+    isRelation?: boolean
 }
 
-export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ items, open, multiple, onSubmit, onClose, ciRoles }) => {
+export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ items, open, multiple, onSubmit, onClose, ciRoles, isRelation }) => {
     const { t } = useTranslation()
 
     const successMessage = multiple ? t('bulkActions.changeOwner.successList') : t('bulkActions.changeOwner.success')
@@ -46,8 +53,19 @@ export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ ite
         if (!selectedOrg || !selectedOrg.poUUID || !selectedRole?.roleUuid) return
         const groupData = await getAddOrGetGroup(selectedRole.roleUuid, selectedOrg.poUUID || '')
 
-        await changeOwner({
-            data: {
+        let dataToSend: ChangeOwnerSetUi = {}
+        if (isRelation) {
+            dataToSend = {
+                relationshipSet: mappedItems,
+                changeOwnerData: {
+                    newOwner: groupData.gid,
+                    changeReason: data.changeReason,
+                    changeDescription: data.changeDescription,
+                    changeType: data.changeType,
+                },
+            }
+        } else {
+            dataToSend = {
                 configurationItemSet: mappedItems,
                 changeOwnerData: {
                     newOwner: groupData.gid,
@@ -55,7 +73,11 @@ export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ ite
                     changeDescription: data.changeDescription,
                     changeType: data.changeType,
                 },
-            },
+            }
+        }
+
+        await changeOwner({
+            data: dataToSend,
         })
     }
 
