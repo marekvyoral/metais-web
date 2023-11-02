@@ -54,13 +54,10 @@ export const NavMenuItem: React.FC<INavMenuItem> = ({ list, title, path, activeT
         <li
             ref={ref}
             onClick={handleShouldCloseOnClick}
-            className={classnames(
-                {
-                    'idsk-header-web__nav-list-item': true,
-                    'idsk-header-web__nav-list-item--active': expanded,
-                },
-                styles.navListItemOverride,
-            )}
+            className={classnames({
+                'idsk-header-web__nav-list-item': true,
+                'idsk-header-web__nav-list-item--active': expanded,
+            })}
         >
             <Link
                 className={classnames('govuk-link idsk-header-web__nav-list-item-link', styles.navListItemOvverride)}

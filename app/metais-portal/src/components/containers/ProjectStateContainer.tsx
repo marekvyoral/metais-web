@@ -23,6 +23,7 @@ import React from 'react'
 export interface IView {
     steps: IStep[]
     currentStep: number
+    isLoading: boolean
 }
 
 interface IProjectStateContainer {
@@ -54,12 +55,12 @@ const mapHistory = (data?: HistoryVersionsListUiConfigurationItemUi, defaultProj
 }
 
 export const ProjectStateContainer: React.FC<IProjectStateContainer> = ({ configurationItemId, View }) => {
-    const { data: ciData } = useReadConfigurationItem(configurationItemId)
-    const { data: defaultProjectStates } = useGetValidEnum(STAV_PROJEKTU)
+    const { data: ciData, isLoading: isCiDataLoading } = useReadConfigurationItem(configurationItemId)
+    const { data: defaultProjectStates, isLoading: isDefaultStatesLoading } = useGetValidEnum(STAV_PROJEKTU)
     const projectsStates = defaultProjectStates?.enumItems?.sort((a, b) => (a.orderList ?? 0) - (b.orderList ?? 0))
 
-    const { data: actions } = useReadCiHistoryVersionsActionsList(configurationItemId)
-    const { data: historyData } = useReadCiHistoryVersions(configurationItemId, {
+    const { data: actions, isLoading: isActionsLoading } = useReadCiHistoryVersionsActionsList(configurationItemId)
+    const { data: historyData, isLoading: isHistoryLoading } = useReadCiHistoryVersions(configurationItemId, {
         page: 1,
         perPage: 1000,
         action: actions?.filter((a) => a == ACTION_CREATE || a == ACTION_UPDATE),
@@ -108,5 +109,11 @@ export const ProjectStateContainer: React.FC<IProjectStateContainer> = ({ config
         removedSteps[removedSteps.length - 1] && steps.push({ ...removedSteps[removedSteps.length - 1], isRed: true })
         currentStep = steps.length
     }
-    return <View steps={steps ?? []} currentStep={currentStep ?? 0} />
+    return (
+        <View
+            steps={steps ?? []}
+            currentStep={currentStep ?? 0}
+            isLoading={isCiDataLoading || isDefaultStatesLoading || isActionsLoading || isHistoryLoading}
+        />
+    )
 }

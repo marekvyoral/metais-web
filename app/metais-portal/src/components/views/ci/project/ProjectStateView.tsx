@@ -3,6 +3,6 @@ import React from 'react'
 
 import { IView } from '@/components/containers/ProjectStateContainer'
 
-export const ProjectStateView: React.FC<IView> = ({ steps, currentStep }) => {
-    return <ProgressStepper steps={steps} currentStep={currentStep} />
+export const ProjectStateView: React.FC<IView> = ({ steps, currentStep, isLoading }) => {
+    return <ProgressStepper steps={steps} currentStep={currentStep} isLoading={isLoading} />
 }

@@ -96,16 +96,7 @@ const EntityDetailPage: React.FC = () => {
                             <MutationFeedback error={false} success={isActionSuccess.value} />
                         </FlexColumnReverseWrapper>
                         {entityName == ENTITY_PROJECT && (
-                            <ProjectStateContainer
-                                configurationItemId={entityId ?? ''}
-                                View={(props) => {
-                                    return (
-                                        <>
-                                            <ProjectStateView {...props} />
-                                        </>
-                                    )
-                                }}
-                            />
+                            <ProjectStateContainer configurationItemId={entityId ?? ''} View={(props) => <ProjectStateView {...props} />} />
                         )}
                         <Tabs tabList={tabList} />
                         <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} />

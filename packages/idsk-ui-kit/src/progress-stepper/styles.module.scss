@@ -7,6 +7,19 @@
     font-weight: bold !important;
 }
 
+.mobileTextWrapper {
+    margin: 0 govuk-spacing(2);
+    margin-bottom: 0 !important;
+    text-align: center;
+    font-weight: bold !important;
+}
+
+.mobileDateWrapper {
+    margin-bottom: 0 !important;
+    text-align: center;
+    color: govuk-colour('grey-1') !important;
+}
+
 .noWrap {
     white-space: nowrap;
 }
@@ -32,11 +45,36 @@
     margin-bottom: govuk-spacing(8);
 }
 
+.paddingLoading {
+    padding: govuk-spacing(4);
+}
+
+.positionRelative {
+    position: relative;
+}
+
+.mobileMainWrapper {
+    background-color: govuk-colour('grey-4');
+    padding: 0 govuk-spacing(2);
+    overflow-y: hidden;
+    display: flex;
+    margin: 0 auto;
+    margin-bottom: govuk-spacing(8);
+}
+
 .stepsWrapper {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
+}
+
+.mobileStepsWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
 }
 
 .step {
@@ -47,6 +85,13 @@
     justify-content: center;
 }
 
+.mobileStep {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
 .stepIndicator {
     display: flex;
     flex-direction: row;
@@ -54,9 +99,50 @@
     padding-bottom: govuk-spacing(2);
 }
 
+.rotate180 {
+    transform: rotate(180deg);
+}
+
+.imageMargin {
+    margin-bottom: govuk-spacing(2);
+}
+
+.mobileTextDate {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: govuk-spacing(2) 0;
+}
+
+.mobileColumnWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.descriptionWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: govuk-spacing(5);
+}
+
+.mobileStepIndicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
 .line {
     height: 3px;
     width: 100%;
+}
+
+.mobileLine {
+    height: 100%;
+    width: 3px;
 }
 
 .green {
