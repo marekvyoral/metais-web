@@ -1,5 +1,6 @@
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, HierarchyPOFilterUi, useReadCiList } from '@isdd/metais-common/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
+import { HierarchyPOFilterUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     useCreateCodelistRequest,
     useExistsCodelistHook,

@@ -1,7 +1,7 @@
 import { TextBody } from '@isdd/idsk-ui-kit'
 import React from 'react'
 
-import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 
 export interface IBulkListProps {

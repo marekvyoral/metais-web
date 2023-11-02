@@ -1,4 +1,4 @@
-import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Find2111Params, Group, Identity, useFind2111 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'

@@ -1,5 +1,5 @@
 import { CheckBox, Input, SimpleSelect } from '@isdd/idsk-ui-kit/index'
-import { ParameterType } from '@isdd/metais-common/api'
+import { ParameterType } from '@isdd/metais-common/api/generated/report-swagger'
 import { CloseIcon } from '@isdd/metais-common/assets/images'
 import classNames from 'classnames'
 import React from 'react'

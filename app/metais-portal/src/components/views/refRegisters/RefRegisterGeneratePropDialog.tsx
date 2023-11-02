@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { BaseModal, Button, TextBody } from '@isdd/idsk-ui-kit/index'
 import { useGenerateReferenceRegisterByUuidHook } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { useTranslation } from 'react-i18next'
-import { DMS_DOWNLOAD_FILE } from '@isdd/metais-common/api'
+import { DMS_DOWNLOAD_FILE } from '@isdd/metais-common/api/constants'
 
 import { downloadFile } from '@/components/views/documents/utils'
 

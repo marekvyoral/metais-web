@@ -1,5 +1,5 @@
 import { SortType } from '@isdd/idsk-ui-kit/types'
-import { Role } from '@isdd/metais-common/api'
+import { Role } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { CiType, useStoreAdminEntity1 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ADMIN_EGOV_ENTITY_LIST_QKEY } from '@isdd/metais-common/constants'

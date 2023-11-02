@@ -1,17 +1,16 @@
 import React, { useState } from 'react'
+import { EnumType, useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import {
-    ConfigurationItemUi,
-    EnumType,
-    GET_ENUM,
-    PoWithHierarchyUi,
-    useGetEnum,
-    useGetRequestStatusHook,
-    useStorePo,
     useStorePoWithHierarchyRel,
-} from '@isdd/metais-common/api'
+    useStorePo,
+    useGetRequestStatusHook,
+    PoWithHierarchyUi,
+    ConfigurationItemUi,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 import { useTranslation } from 'react-i18next'
 import { useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { GET_ENUM } from '@isdd/metais-common/api/constants'
 
 export interface ICreatePublicAuthoritiesView {
     data: {

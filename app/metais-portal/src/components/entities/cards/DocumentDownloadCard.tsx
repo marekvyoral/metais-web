@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@isdd/idsk-ui-kit/index'
 import { QueryFeedback } from '@isdd/metais-common/index'
-import { Metadata } from '@isdd/metais-common/api'
+import { Metadata } from '@isdd/metais-common/api/generated/dms-swagger'
 
 import styles from './relationCard.module.scss'
 import { RelationAttribute } from './RelationAttribute'

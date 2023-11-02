@@ -1,5 +1,5 @@
 import { ColumnSort, IFilter, SortType } from '@isdd/idsk-ui-kit/types'
-import { EkoCodeList, useDeleteHrEkoCode, useGetEkoCodes, useUpdateHrEkoCode } from '@isdd/metais-common/api'
+import { EkoCodeList, useDeleteHrEkoCode, useGetEkoCodes, useUpdateHrEkoCode } from '@isdd/metais-common/api/generated/tco-swagger'
 import { ADMIN_EKO_LIST_QKEY, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'

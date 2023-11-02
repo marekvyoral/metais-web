@@ -1,4 +1,5 @@
-import { ConfigurationItemUiAttributes, EnumType, useStoreConfigurationItem } from '@isdd/metais-common/api'
+import { ConfigurationItemUiAttributes, useStoreConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useRedirectAfterSuccess } from '@isdd/metais-common/src/hooks/useRedirectAfterSucces'

@@ -1,5 +1,5 @@
 import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit'
-import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { OPERATOR_OPTIONS } from '@isdd/metais-common/hooks/useFilter'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'

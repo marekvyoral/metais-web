@@ -1,5 +1,12 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { EnumType, useDeleteEnumItem, useGetEnum, useInsertEnumItem, useUpdateEnumItem, useValidEnumItem } from '@isdd/metais-common/api'
+import {
+    EnumType,
+    useDeleteEnumItem,
+    useGetEnum,
+    useInsertEnumItem,
+    useUpdateEnumItem,
+    useValidEnumItem,
+} from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFilters'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters, UseMutationResult } from '@tanstack/react-query'

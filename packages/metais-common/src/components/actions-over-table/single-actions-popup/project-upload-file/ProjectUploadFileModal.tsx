@@ -6,7 +6,7 @@ import { v4 as uuidV4 } from 'uuid'
 
 import { ProjectUploadFileView } from './ProjectUploadFileView'
 
-import { ConfigurationItemUi, useGetDocumentHook, useGetRequestStatusHook, useStoreGraphHook } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useGetDocumentHook, useGetRequestStatusHook, useStoreGraphHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useIsOwnerByGidHook } from '@isdd/metais-common/src/api/generated/iam-swagger'

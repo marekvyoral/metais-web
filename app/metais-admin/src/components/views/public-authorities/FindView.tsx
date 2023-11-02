@@ -4,7 +4,7 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useGetUuidHook } from '@isdd/metais-common/api'
+import { useGetUuidHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 

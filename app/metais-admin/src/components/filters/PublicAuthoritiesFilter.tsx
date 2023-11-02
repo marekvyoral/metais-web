@@ -1,6 +1,6 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { Input } from '@isdd/idsk-ui-kit/index'
-import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { SelectPersonType } from '@isdd/metais-common/components/select-person-type/SelectPersonType'
 import { useTranslation } from 'react-i18next'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { useEntityProfiles } from '@isdd/metais-common/hooks/useEntityProfiles'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'

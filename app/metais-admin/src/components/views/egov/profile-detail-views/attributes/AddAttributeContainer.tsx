@@ -1,5 +1,5 @@
 import React from 'react'
-import { EnumType, EnumTypePreviewList, useGetEnum, useListEnums } from '@isdd/metais-common/api'
+import { EnumType, EnumTypePreviewList, useGetEnum, useListEnums } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
 import { Attribute, useStoreNewAttribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 

@@ -1,4 +1,4 @@
-import { EnumType, useGetValidEnum } from '@isdd/metais-common/api'
+import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { FindAll11200, useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
 import React from 'react'
 

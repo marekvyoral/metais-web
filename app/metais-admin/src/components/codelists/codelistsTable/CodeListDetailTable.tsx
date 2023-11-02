@@ -1,7 +1,6 @@
 import { BaseModal, Button, ButtonLink, ButtonPopup, CheckBox, InfoIcon, Input, PaginatorWrapper, Table, TextArea } from '@isdd/idsk-ui-kit/index'
-import { EnumItem, EnumType } from '@isdd/metais-common/api'
 import { BASE_PAGE_SIZE, ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
-import { ActionsOverTable, CreateEntityButton, isRowSelected, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, CreateEntityButton, EnumItem, EnumType, isRowSelected, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FieldValues, useForm } from 'react-hook-form'

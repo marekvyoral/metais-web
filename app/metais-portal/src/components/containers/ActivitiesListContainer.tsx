@@ -1,7 +1,5 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import {
-    BASE_PAGE_NUMBER,
-    BASE_PAGE_SIZE,
     ConfigurationItemUi,
     useGetUuidHook,
     useInvalidateRelationshipHook,
@@ -9,7 +7,8 @@ import {
     useReadCiNeighbours,
     useReadConfigurationItem,
     useStoreGraphHook,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
 import { useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFilters'

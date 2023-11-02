@@ -8,7 +8,8 @@ import {
     SimpleSelect,
     TextHeading,
 } from '@isdd/idsk-ui-kit/index'
-import { ATTRIBUTE_NAME, ConfigurationItemUi, useStoreGraph } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
 import { JOIN_OPERATOR, metaisEmail } from '@isdd/metais-common/constants'

@@ -1,10 +1,11 @@
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, RoleParticipantUI } from '@isdd/metais-common/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { ApiCodelistPreview, useGetCodelistRequests } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { CodeListFilterOnlyBase } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { _entityName } from '@/componentHelpers/requests'

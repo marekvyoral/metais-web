@@ -5,7 +5,7 @@ import { BaseModal } from '@isdd/idsk-ui-kit/index'
 import { FileImportView } from './FileImportView'
 
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { HierarchyRightsUi } from '@isdd/metais-common/api'
+import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { FileImportEditOptions } from '@isdd/metais-common/src/components/file-import/FileImportHeader'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'

@@ -1,5 +1,5 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ReadCiNeighboursWithAllRelsParams, RoleParticipantUI } from '@isdd/metais-common/api'
+import { ReadCiNeighboursWithAllRelsParams, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useEntityRelationsDataList } from '@isdd/metais-common/hooks/useEntityRelationsDataList'
 import { IKeyToDisplay, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelationsTypesCount'
 import React, { SetStateAction, useEffect, useMemo, useState } from 'react'

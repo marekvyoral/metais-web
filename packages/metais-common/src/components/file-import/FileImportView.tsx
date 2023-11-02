@@ -12,7 +12,7 @@ import { FileImportList, ProgressInfoList } from './FileImportList'
 
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { CloseIcon, ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
-import { HierarchyRightsUi } from '@isdd/metais-common/api'
+import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'

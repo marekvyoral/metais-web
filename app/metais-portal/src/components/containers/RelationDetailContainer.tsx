@@ -5,7 +5,7 @@ import {
     useGetRoleParticipant,
     useReadConfigurationItem,
     useReadRelationship,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { RelationshipType, useGetRelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import React from 'react'
 

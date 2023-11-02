@@ -1,5 +1,5 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { CategoryHeaderList, ReportHeader, useListCategories, useListReport } from '@isdd/metais-common/api'
+import { CategoryHeaderList, ReportHeader, useListCategories, useListReport } from '@isdd/metais-common/api/generated/report-swagger'
 import { mapFilterToReportsParams } from '@isdd/metais-common/componentHelpers'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'

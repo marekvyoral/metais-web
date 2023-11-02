@@ -1,7 +1,7 @@
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ReportResultObjectResult } from '@isdd/metais-common/api'
+import { ReportResultObjectResult } from '@isdd/metais-common/api/generated/report-swagger'
 import { CellContext } from '@tanstack/react-table'
 import React from 'react'
 

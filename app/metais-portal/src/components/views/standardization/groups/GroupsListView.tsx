@@ -1,6 +1,6 @@
 import { Button, PaginatorWrapper, SimpleSelect, Table } from '@isdd/idsk-ui-kit/index'
 import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
-import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Identity } from '@isdd/metais-common/api/generated/iam-swagger'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'

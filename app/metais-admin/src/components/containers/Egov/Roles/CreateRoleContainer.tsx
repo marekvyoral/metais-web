@@ -1,4 +1,5 @@
-import { EnumType, Role, useGetValidEnum } from '@isdd/metais-common/api'
+import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Role } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { OperationResult, useUpdateOrCreate } from '@isdd/metais-common/api/generated/iam-swagger'
 import { ROLES_GROUP } from '@isdd/metais-common/constants'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'

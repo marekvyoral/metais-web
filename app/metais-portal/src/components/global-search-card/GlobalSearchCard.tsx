@@ -1,5 +1,10 @@
 import { Button, Card } from '@isdd/idsk-ui-kit/index'
-import { CiElasticItem, DMSDocElasticItem, GeneralElasticItemSetGeneralElasticItemSetItem, RelElasticItem } from '@isdd/metais-common/api'
+import {
+    CiElasticItem,
+    DMSDocElasticItem,
+    GeneralElasticItemSetGeneralElasticItemSetItem,
+    RelElasticItem,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 

@@ -1,4 +1,4 @@
-import { NeighbourPairUi } from '@isdd/metais-common/api'
+import { NeighbourPairUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IDocType } from '@isdd/metais-common/index'
 import { Row, Table } from '@tanstack/react-table'
 

@@ -1,4 +1,4 @@
-import { GetEkoCodesParams, useGetEkoCodes } from '@isdd/metais-common/api'
+import { GetEkoCodesParams, useGetEkoCodes } from '@isdd/metais-common/api/generated/tco-swagger'
 import React from 'react'
 
 import { IEkoDetailView } from '@/components/views/eko/ekoCodes'

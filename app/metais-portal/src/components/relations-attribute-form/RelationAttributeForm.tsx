@@ -1,4 +1,4 @@
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useFormContext } from 'react-hook-form'
 import { RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 

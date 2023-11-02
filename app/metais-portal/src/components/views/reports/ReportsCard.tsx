@@ -1,5 +1,5 @@
 import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
-import { ReportDefinition } from '@isdd/metais-common/api'
+import { ReportDefinition } from '@isdd/metais-common/api/generated/report-swagger'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 

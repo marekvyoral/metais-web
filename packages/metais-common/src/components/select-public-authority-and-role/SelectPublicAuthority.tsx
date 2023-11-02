@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MultiValue } from 'react-select'
 
-import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api'
+import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'

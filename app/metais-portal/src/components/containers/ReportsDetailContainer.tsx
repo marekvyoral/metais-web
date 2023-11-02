@@ -1,5 +1,12 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { EnumType, ParameterType, ReportDefinition, ReportResultObjectResult, useExecute, useGetReport1 } from '@isdd/metais-common/api'
+import {
+    ParameterType,
+    ReportDefinition,
+    ReportResultObjectResult,
+    useExecute,
+    useGetReport1,
+} from '@isdd/metais-common/api/generated/report-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { mapFilterToExecuteParams } from '@isdd/metais-common/componentHelpers'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useGetEnumBulk } from '@isdd/metais-common/hooks/useGetEnumBulk'

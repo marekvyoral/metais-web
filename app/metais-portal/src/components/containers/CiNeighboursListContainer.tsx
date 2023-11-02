@@ -1,5 +1,6 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourSetUi, NeighboursFilterUi, useReadCiNeighbours } from '@isdd/metais-common/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
+import { NeighbourSetUi, NeighboursFilterUi, useReadCiNeighbours } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { INeighboursFilter, mapFilterToRelationApi } from '@isdd/metais-common/api/filter/filterApi'
 import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelationshipTabFilters'
 import React, { useState } from 'react'

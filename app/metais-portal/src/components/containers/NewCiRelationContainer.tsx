@@ -1,4 +1,5 @@
-import { EnumType, IncidentRelationshipSetUi, useReadRelationships } from '@isdd/metais-common/api'
+import { IncidentRelationshipSetUi, useReadRelationships } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import {

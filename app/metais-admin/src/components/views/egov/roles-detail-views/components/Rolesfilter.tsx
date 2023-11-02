@@ -1,5 +1,5 @@
 import { Filter, SimpleSelect } from '@isdd/idsk-ui-kit'
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { RelatedRoleType } from '@isdd/metais-common/api/generated/iam-swagger'
 import React from 'react'
 import { useTranslation } from 'react-i18next'

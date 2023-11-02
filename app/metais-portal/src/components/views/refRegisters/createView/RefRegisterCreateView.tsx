@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, TextArea } from '@isdd/idsk-ui-kit/index'
-import { ConfigurationItemSetUi } from '@isdd/metais-common/api'
+import { ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'

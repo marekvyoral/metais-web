@@ -1,4 +1,4 @@
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { Table, PaginatorWrapper, Filter, MultiSelect, GridRow, GridCol, Input } from '@isdd/idsk-ui-kit/index'
 import { ColumnDef } from '@tanstack/react-table'
 import { ApiCodelistHistory } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
