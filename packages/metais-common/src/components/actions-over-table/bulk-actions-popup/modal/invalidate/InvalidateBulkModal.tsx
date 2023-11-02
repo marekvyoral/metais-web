@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next'
 
 import { InvalidateBulkView } from './InvalidateBulkView'
 
-import { ConfigurationItemUi, useDeleteContentHook, useInvalidateSet } from '@isdd/metais-common/index'
+import { useDeleteContentHook } from '@isdd/metais-common/api/generated/dms-swagger'
+import { ConfigurationItemUi, useInvalidateSet } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 
 export interface IInvalidateBulkModalProps {

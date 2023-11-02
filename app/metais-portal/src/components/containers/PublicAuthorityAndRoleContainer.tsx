@@ -1,5 +1,5 @@
 import { GidRoleData, RoleOrgGroup, useAddOrGetGroup } from '@isdd/metais-common/api/generated/iam-swagger'
-import { HierarchyRightsUi } from '@isdd/metais-common/index'
+import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React, { useState } from 'react'
 
 export interface PublicAuthorityState {

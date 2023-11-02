@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useReadCiDerivedRelTypesCount, useReadNeighboursConfigurationItemsCount } from '@isdd/metais-common/api'
+import { useReadCiDerivedRelTypesCount, useReadNeighboursConfigurationItemsCount } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { isDerivedCiTypeCmdbView, isRelatedCiTypeCmdbView, removeDuplicates } from '@isdd/metais-common/hooks/common'
 import { RelatedCiTypePreview, useListRelatedCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'

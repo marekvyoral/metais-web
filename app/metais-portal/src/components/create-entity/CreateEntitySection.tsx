@@ -1,5 +1,6 @@
 import { ErrorBlockList } from '@isdd/idsk-ui-kit/error-block-list/ErrorBlockList'
-import { ConfigurationItemUiAttributes, EnumType } from '@isdd/metais-common'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import React, { useEffect, useMemo } from 'react'

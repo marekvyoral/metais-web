@@ -1,5 +1,6 @@
 import { mapReportsCiItemToOptions } from '@isdd/metais-common/componentHelpers'
-import { BASE_PAGE_SIZE, CiListFilterContainerUi, ConfigurationItemSetUi } from '@isdd/metais-common/api'
+import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
+import { CiListFilterContainerUi, ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 export const loadEnumsCiOptions = async (
     searchQuery: string,

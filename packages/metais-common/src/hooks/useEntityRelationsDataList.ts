@@ -6,7 +6,7 @@ import {
     useGetRoleParticipantBulk,
     useReadCiDerivedRelTypes,
     useReadCiNeighboursWithAllRels,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighboursWithAllRelsParams, isDerived: boolean) => {
     const {

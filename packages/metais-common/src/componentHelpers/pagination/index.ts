@@ -1,6 +1,6 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 
 export const mapConfigurationItemSetToPagination = (uiFilter?: IFilter, dataLength?: number): Pagination => {
     return {

@@ -2,7 +2,8 @@ import { UseQueryResult, useQueries } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { useEffect } from 'react'
 
-import { EnumType, getHowToDisplayConstraints } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { getHowToDisplayConstraints } from '@isdd/metais-common/api/HowToDisplay'
 
 export const useHowToDisplayConstraints = (constraintsList: (string | undefined)[]) => {
     const { i18n } = useTranslation()

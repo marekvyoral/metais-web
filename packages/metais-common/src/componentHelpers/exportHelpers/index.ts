@@ -1,5 +1,5 @@
 import { FileExtensionEnum } from '@isdd/metais-common/components/actions-over-table'
-import { ReportExecute } from '@isdd/metais-common/api'
+import { ReportExecute } from '@isdd/metais-common/api/generated/report-swagger'
 import { useExportXml5Hook, useExportCsv5Hook, useExportExcel5Hook } from '@isdd/metais-common/api/generated/impexp-cmdb-swagger'
 
 export const useReportOnExportStart = () => {

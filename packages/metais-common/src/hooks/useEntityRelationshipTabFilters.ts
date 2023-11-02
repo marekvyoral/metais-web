@@ -4,7 +4,7 @@ import { RelatedCiTypePreview, RelatedCiTypePreviewList, useListRelatedCiTypes }
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { isRelatedCiTypeCmdbView, removeDuplicates } from '@isdd/metais-common/hooks/common'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
-import { NeighboursFilterContainerUi } from '@isdd/metais-common/api'
+import { NeighboursFilterContainerUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 export const useEntityRelationshipTabFilters = (technicalName: string) => {
     const {

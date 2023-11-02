@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 
-import { useGetRequestStatus } from '@isdd/metais-common/api'
+import { useGetRequestStatus } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 enum RequestIdStatus {

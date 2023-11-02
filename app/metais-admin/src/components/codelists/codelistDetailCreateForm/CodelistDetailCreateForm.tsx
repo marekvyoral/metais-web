@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { EnumType, MutationFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import React from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'

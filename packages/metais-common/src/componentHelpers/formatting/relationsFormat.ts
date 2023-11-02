@@ -1,7 +1,7 @@
 import { TFunction, i18n } from 'i18next'
 
 import { Languages } from '@isdd/metais-common/localization/languages'
-import { CiWithRelsUi, RoleParticipantUI } from '@isdd/metais-common/api'
+import { CiWithRelsUi, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { RelationshipTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 export const formatRelationAttributes = (

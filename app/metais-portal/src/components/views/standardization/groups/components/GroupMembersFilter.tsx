@@ -1,5 +1,5 @@
 import { Filter, ILoadOptionsResponse, SelectLazyLoading, SimpleSelect } from '@isdd/idsk-ui-kit/src/index'
-import { CiListFilterContainerUi, ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/src/api'
+import { CiListFilterContainerUi, ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/src/api/generated/cmdb-swagger'
 import { Identity, useFind1Hook, useFindByUuid2 } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'

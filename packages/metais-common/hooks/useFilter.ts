@@ -34,7 +34,7 @@ import {
 import { FilterActions, useFilterContext } from '@isdd/metais-common/contexts/filter/filterContext'
 import { updateFilterInLocalStorageOnChange } from '@isdd/metais-common/componentHelpers/filter/updateFilterInLocalStorageOnChange'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
-import { FilterMetaAttributesUi } from '@isdd/metais-common/api'
+import { FilterMetaAttributesUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { isMatchWithMetaAttributeTechnicalName, mapMetaAttributeFromUrlToFitFilter } from '@isdd/metais-common/componentHelpers'
 import { isObjectEmpty } from '@isdd/metais-common/utils/utils'
 
