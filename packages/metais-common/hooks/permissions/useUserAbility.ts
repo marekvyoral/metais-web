@@ -14,9 +14,11 @@ export enum Actions {
     CHANGE_OWNER = 'change_owner',
     HISTORY = 'history',
     BULK_ACTIONS = 'bulk_actions',
+    CHANGE_STATES = 'change_states',
 }
 
 export const ADMIN = 'R_ADMIN'
+export const RR_MANAGER = 'RR_MANAGER'
 
 export const CANNOT_READ_ENTITY = ['ulohy', 'notifications', 'codelists/list']
 

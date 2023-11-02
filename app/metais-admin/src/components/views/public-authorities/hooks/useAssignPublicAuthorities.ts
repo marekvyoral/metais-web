@@ -95,7 +95,7 @@ export const useAssignPublicAuthorities = <T extends FieldValues & IFilterParams
         },
     }
 
-    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, entityName, defaultRequestApiTableData)
+    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, defaultRequestApiTableData)
 
     const { data: tableData } = useReadCiList1({
         ...filterToNeighborsApi,

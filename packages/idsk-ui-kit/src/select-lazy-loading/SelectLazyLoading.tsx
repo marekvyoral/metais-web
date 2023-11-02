@@ -3,6 +3,8 @@ import classNames from 'classnames'
 import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 import { GroupBase, MenuPosition, MultiValue, OptionProps, OptionsOrGroups, PropsValue } from 'react-select'
 import { AsyncPaginate } from 'react-select-async-paginate'
+import { useTranslation } from 'react-i18next'
+import { PopupPosition } from 'reactjs-popup/dist/types'
 
 import styles from './selectLazyLoading.module.scss'
 
@@ -24,6 +26,7 @@ export interface ISelectProps<T> {
     value?: T | MultiValue<T> | null
     onChange?: (val: T | MultiValue<T> | null) => void
     label: string
+    info?: string
     name: string
     getOptionValue: (item: T) => string
     getOptionLabel: (item: T) => string
@@ -44,7 +47,8 @@ export interface ISelectProps<T> {
     isClearable?: boolean
     menuPosition?: MenuPosition
     disabled?: boolean
-    info?: string
+    required?: boolean
+    tooltipPosition?: PopupPosition | PopupPosition[]
 }
 
 export const SelectLazyLoading = <T,>({
@@ -52,6 +56,7 @@ export const SelectLazyLoading = <T,>({
     onChange,
     label,
     name,
+    info,
     getOptionValue,
     getOptionLabel,
     defaultValue,
@@ -66,12 +71,13 @@ export const SelectLazyLoading = <T,>({
     isClearable = true,
     menuPosition = 'fixed',
     disabled,
-    info,
+    required,
+    tooltipPosition,
 }: ISelectProps<T>): JSX.Element => {
+    const { t } = useTranslation()
     const Option = (props: OptionProps<T>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
     }
-
     const handleOnChange = (selectedValue: MultiValue<T> | T | null) => {
         if (onChange) {
             onChange(selectedValue)
@@ -98,9 +104,9 @@ export const SelectLazyLoading = <T,>({
         <div className={classNames('govuk-form-group', { 'govuk-form-group--error': !!error })}>
             <div className={styles.labelDiv}>
                 <label className="govuk-label" htmlFor={id}>
-                    {label}
+                    {label} {required && t('input.requiredField')}
                 </label>
-                {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
+                {info && <Tooltip descriptionElement={info} position={tooltipPosition} altText={`Tooltip ${label}`} />}
             </div>
             {!!error && <span className="govuk-error-message">{error}</span>}
             <AsyncPaginate<T, GroupBase<T>, { page: number } | undefined, boolean>

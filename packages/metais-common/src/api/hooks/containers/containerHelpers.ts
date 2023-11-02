@@ -16,7 +16,44 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/src/api'
 
-export const useGetColumnData = (entityName: string) => {
+export const transformColumnsMap = new Map<string, string>([
+    ['Gen_Profil_nazov', 'isvsName'],
+    ['Gen_Profil_kod_metais', 'isvsCode'],
+    ['Gui_Profil_RR_rr_register_kod', 'isvsCode'],
+    ['Gui_Profil_RR_rr_register_nazov', 'isvsName'],
+    ['Gui_Profil_RR_rr_source_register', 'isvsSource'],
+    ['Gui_Profil_RR_rr_register_registrator', 'registratorName'],
+    // ['Gui_Profil_RR_rr_evidencia_po', 'managerName'],
+    ['Gui_Profil_RR_rr_creator', 'creator'],
+    ['Gui_Profil_RR_rr_ref_id', 'isvsRefId'],
+    ['Gui_Profil_RR_rr_manager', 'managerName'],
+    ['ReferenceRegister_Profile_MUK', 'muk'],
+    ['ReferenceRegister_Profile_effectiveTo', 'effectiveTo'],
+    ['ReferenceRegister_Profile_effectiveFrom', 'effectiveFrom'],
+    ['ReferenceRegister_Profile_contact', 'contact'],
+    ['ReferenceRegister_Profile_validFrom', 'validFrom'],
+    ['ReferenceRegister_Profile_contactRegistrator', 'contactRegistrator'],
+    ['ReferenceRegister_Profile_note', 'note'],
+    ['ReferenceRegister_Profile_state', 'state'],
+    ['ReferenceRegister_Profile_accessDataDescription', 'additionalData'],
+    ['ReferenceRegisterItem_Profile_subjectIdentifications', 'subjectIdentifications'],
+    ['ReferenceRegisterItem_Profile_order', 'order'],
+    ['ReferenceRegisterItem_Profile_name', 'name'],
+    ['ReferenceRegisterItem_Profile_refID', 'refID'],
+    ['ReferenceRegisterItem_Profile_note', 'note'],
+    ['ReferenceRegisterItem_Profile_dataElementRefID', 'dataElementRefID'],
+])
+
+export const columnsToIgnore = [
+    'Gui_Profil_RR_Gui_Profil_RR_rr_creator',
+    'Gui_Profil_RR_Gui_Profil_RR_rr_isvsRefId',
+    'Gui_Profil_RR_Gui_Profil_RR_rr_manager',
+    'Gui_Profil_RR_rr_evidencia_as',
+    'Gui_Profil_RR_rr_evidencia_po_poznamka',
+    'Gui_Profil_RR_rr_evidencia_as_poznamka',
+]
+
+export const useGetColumnData = (entityName: string, renameColumns?: boolean) => {
     const {
         state: { user },
     } = useAuth()
@@ -42,12 +79,31 @@ export const useGetColumnData = (entityName: string) => {
               }
     }, [columnListData])
 
+    const getKey = (value: string) => {
+        return [...transformColumnsMap].find(([, val]) => val == value)?.[0]
+    }
+
+    const transformedColumnsListData = useMemo(() => {
+        if (renameColumns) {
+            return {
+                ...mergedColumnListData,
+                attributes: mergedColumnListData?.attributes?.map((attr) => ({
+                    ...attr,
+                    name: transformColumnsMap?.get(attr?.name ?? '') ?? attr?.name,
+                })),
+            }
+        }
+        return mergedColumnListData
+    }, [mergedColumnListData, renameColumns])
+
     const storeUserSelectedColumns = useInsertUserColumns()
     const { isLoading: isStoreLoading, isError: isStoreError } = storeUserSelectedColumns
     const saveColumnSelection = async (columnSelection: FavoriteCiType) => {
         await storeUserSelectedColumns.mutateAsync({
             data: {
-                attributes: columnSelection.attributes,
+                attributes: transformColumnsMap
+                    ? columnSelection?.attributes?.map((attr) => ({ ...attr, name: getKey(attr?.name ?? '') ?? attr?.name }))
+                    : columnSelection.attributes,
                 ciType: entityName ?? '',
                 metaAttributes: columnSelection.metaAttributes,
             },
@@ -65,7 +121,7 @@ export const useGetColumnData = (entityName: string) => {
     const isError = [isQueryError, isResetError, isStoreError].some((item) => item)
 
     return {
-        columnListData: mergedColumnListData,
+        columnListData: transformedColumnsListData,
         saveColumnSelection,
         resetColumns,
         isLoading,
@@ -73,13 +129,13 @@ export const useGetColumnData = (entityName: string) => {
     }
 }
 
-export const useFilterForCiList = <T extends FieldValues & IFilterParams, V>(defaultFilterValues: T, entityName: string, defaultRequestApi?: V) => {
+export const useFilterForCiList = <T extends FieldValues & IFilterParams, V>(defaultFilterValues: T, defaultRequestApi?: V) => {
     const { filter: filterParams, handleFilterChange } = useFilterParams<T & IFilter>({
         sort: [{ orderBy: ATTRIBUTE_NAME.Gen_Profil_nazov, sortDirection: SortType.ASC }],
         ...defaultFilterValues,
     })
 
-    const filterToNeighborsApi = mapFilterToNeighborsApi(filterParams, defaultRequestApi)
+    const filterToNeighborsApi = mapFilterToNeighborsApi<V>(filterParams, defaultRequestApi)
 
     return {
         filterParams,

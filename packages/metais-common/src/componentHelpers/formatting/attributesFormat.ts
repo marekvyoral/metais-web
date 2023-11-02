@@ -1,5 +1,7 @@
 import { TFunction } from 'i18next'
 
+import { MetainformationColumns } from '../ci/getCiDefaultMetaAttributes'
+
 import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
 import { ConfigurationItemUi as ConfigurationItemUiOriginal } from '@isdd/metais-common/api/generated/iam-swagger'
 import { Attribute, AttributeConstraintEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
@@ -34,7 +36,7 @@ const formatRowValueByRowType = (
 export const pairEnumsToEnumValues = (
     attribute: Attribute | undefined,
     ciItemData: ConfigurationItemUi | ConfigurationItemUiOriginal | undefined,
-    constraintsData: (EnumType | undefined)[],
+    constraintsData: (EnumType | undefined)[] | undefined,
     t: TFunction<'translation', undefined, 'translation'>,
     unitsData: EnumType | undefined,
     matchedAttributeNamesToCiItem: Record<string, ConfigurationItemUi> | undefined,
@@ -79,4 +81,17 @@ export const pairEnumsToEnumValues = (
             }
         }) ?? []
     )?.join(',')
+}
+
+export const distinctAttributesMetaAttributes = (
+    attributes: Attribute[],
+    metaAttributes: {
+        name: string
+        attributes: {
+            name: string
+            technicalName: MetainformationColumns
+        }[]
+    },
+) => {
+    return attributes?.filter((attr) => !metaAttributes?.attributes?.find((metaAttribute) => metaAttribute?.technicalName === attr?.technicalName))
 }

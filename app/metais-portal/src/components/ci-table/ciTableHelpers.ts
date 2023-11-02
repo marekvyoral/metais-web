@@ -1,6 +1,5 @@
 import {
     ATTRIBUTE_NAME,
-    ConfigurationItemSetUi,
     ConfigurationItemUi,
     ConfigurationItemUiAttributes,
     EnumType,
@@ -53,15 +52,16 @@ export const reduceAttributesByTechnicalName = (entityStructure: CiType | undefi
 }
 
 export const mapTableData = (
-    tableData: ConfigurationItemSetUi | undefined | void,
+    tableData: ConfigurationItemUi[] | undefined | void,
     reducedAttributes: ReducedAttributes,
     t: TFunction<'translation', undefined, 'translation'>,
     unitsData: EnumType | undefined,
     constraintsData?: (EnumType | undefined)[],
     uuidsToMatchedCiItemsMap?: Record<string, Record<string, ConfigurationItemUi>> | undefined,
 ) => {
-    return (tableData?.configurationItemSet?.map((confItem: ConfigurationItemUi) => {
+    return (tableData?.map((confItem: ConfigurationItemUi) => {
         const newAttributes: { [attributeName: string]: string } = {}
+
         Object.keys(confItem?.attributes ?? {})?.map((attributeName: string) => {
             const foundAttrWithTypes = reducedAttributes[attributeName]
             const newRowValue = pairEnumsToEnumValues(

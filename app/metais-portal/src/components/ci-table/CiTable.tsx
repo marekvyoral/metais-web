@@ -42,7 +42,7 @@ interface ICiTable {
     sort: ColumnSort[]
     isLoading: boolean
     isError: boolean
-    rowSelectionState: IRowSelectionState
+    rowSelectionState?: IRowSelectionState
     uuidsToMatchedCiItemsMap?: Record<string, Record<string, ConfigurationItemUi>>
 }
 
@@ -64,14 +64,21 @@ export const CiTable: React.FC<ICiTable> = ({
     } = useAuth()
     const isUserLogged = !!user
     const location = useLocation()
-    const { rowSelection, setRowSelection } = rowSelectionState
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
-    const tableData = mapTableData(data.tableData, schemaAttributes, t, data.unitsData, data.constraintsData, uuidsToMatchedCiItemsMap)
+    const tableData = mapTableData(
+        data.tableData?.configurationItemSet,
+        schemaAttributes,
+        t,
+        data.unitsData,
+        data.constraintsData,
+        uuidsToMatchedCiItemsMap,
+    )
     const columnsAttributes = sortAndMergeCiColumns(data?.columnListData)
 
     const handleCheckboxChange = useCallback(
         (row: Row<ColumnsOutputDefinition>) => {
-            if (row.original.uuid) {
+            if (row.original.uuid && rowSelectionState) {
+                const { rowSelection, setRowSelection } = rowSelectionState
                 const newRowSelection = { ...rowSelection }
                 if (rowSelection[row.original.uuid]) {
                     delete newRowSelection[row.original.uuid]
@@ -81,31 +88,36 @@ export const CiTable: React.FC<ICiTable> = ({
                 setRowSelection(newRowSelection)
             }
         },
-        [rowSelection, setRowSelection],
+        [rowSelectionState],
     )
 
     const handleAllCheckboxChange = useCallback(
         (rows: ColumnsOutputDefinition[]) => {
-            const checked = rows.every(({ uuid }) => (uuid ? !!rowSelection[uuid] : false))
-            const newRowSelection = { ...rowSelection }
-            if (checked) {
-                rows.forEach(({ uuid }) => uuid && delete newRowSelection[uuid])
-                setRowSelection(newRowSelection)
-            } else {
-                setRowSelection((prevRowSelection) => ({ ...prevRowSelection, ...reduceTableDataToObject(rows) }))
+            if (rowSelectionState) {
+                const { rowSelection, setRowSelection } = rowSelectionState
+                const checked = rows.every(({ uuid }) => (uuid ? !!rowSelection[uuid] : false))
+                const newRowSelection = { ...rowSelection }
+                if (checked) {
+                    rows.forEach(({ uuid }) => uuid && delete newRowSelection[uuid])
+                    setRowSelection(newRowSelection)
+                } else {
+                    setRowSelection((prevRowSelection) => ({ ...prevRowSelection, ...reduceTableDataToObject(rows) }))
+                }
             }
         },
-        [rowSelection, setRowSelection],
+        [rowSelectionState],
     )
 
     const isRowSelected = useCallback(
         (row: Row<ColumnsOutputDefinition>) => {
-            return row.original.uuid ? !!rowSelection[row.original.uuid] : false
+            return row.original.uuid && rowSelectionState ? !!rowSelectionState?.rowSelection[row.original.uuid] : false
         },
-        [rowSelection],
+        [rowSelectionState],
     )
 
-    const clearSelectedRows = useCallback(() => setRowSelection({}), [setRowSelection])
+    const clearSelectedRows = useCallback(() => {
+        rowSelectionState?.setRowSelection({})
+    }, [rowSelectionState])
 
     const getColumnsFromApiCellContent = (index: number, ctx: CellContext<ColumnsOutputDefinition, unknown>, technicalName: string) => {
         const isFirstItem = index === 0
@@ -123,17 +135,17 @@ export const CiTable: React.FC<ICiTable> = ({
                     <Link
                         to={'./' + ctx?.row?.original?.uuid}
                         state={{ from: location }}
-                        className={classNames({ [styles.bold]: ctx?.row.original.uuid && !!rowSelection[ctx?.row.original.uuid] })}
+                        className={classNames({ [styles.bold]: ctx?.row.original.uuid && !!rowSelectionState?.rowSelection[ctx?.row.original.uuid] })}
                     >
                         {ctx?.getValue?.() as string}
                     </Link>
                 )
             }
-            case isInSchema: {
-                return ctx.getValue() as string
-            }
             case isState: {
                 return t(`metaAttributes.state.${ctx.getValue()}`)
+            }
+            case isInSchema: {
+                return ctx.getValue() as string
             }
             case isOwner || isGroup: {
                 return getOwnerInformation(ctx?.row?.original?.metaAttributes?.owner as string, data.gestorsData)?.configurationItemUi?.attributes?.[
@@ -175,11 +187,13 @@ export const CiTable: React.FC<ICiTable> = ({
         }) ?? []
 
     const columns: Array<ColumnDef<ColumnsOutputDefinition>> = [
-        ...(isUserLogged
+        ...(isUserLogged && rowSelectionState?.rowSelection
             ? [
                   {
                       header: ({ table }: { table: ITable<ColumnsOutputDefinition> }) => {
-                          const checked = table.getRowModel().rows.every((row) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false))
+                          const checked = table
+                              .getRowModel()
+                              .rows.every((row) => (row.original.uuid ? !!rowSelectionState?.rowSelection[row.original.uuid] : false))
                           return (
                               <div className="govuk-checkboxes govuk-checkboxes--small">
                                   <CheckBox
@@ -213,7 +227,7 @@ export const CiTable: React.FC<ICiTable> = ({
                                       handleCheckboxChange(row)
                                   }}
                                   onClick={(event) => event.stopPropagation()}
-                                  checked={row.original.uuid ? !!rowSelection[row.original.uuid] : false}
+                                  checked={row.original.uuid ? !!rowSelectionState?.rowSelection[row.original.uuid] : false}
                                   containerClassName={styles.marginBottom15}
                               />
                           </div>

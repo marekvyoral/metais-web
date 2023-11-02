@@ -92,6 +92,12 @@ export default defineConfig({
                             name: 'useClientForReadCiListUsingPOST',
                         },
                     },
+                    readCiHistoryVersions: {
+                        mutator: {
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForRefRegistersHistory',
+                        },
+                    },
                 },
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClient.ts',
@@ -381,6 +387,24 @@ export default defineConfig({
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useCodeListRepoSwaggerClient.ts',
                     name: 'useCodeListRepoSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    referenceRegisters: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_REFERENCE_REGISTERS_SWAGGER_URL ?? '',
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/reference-registers-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useReferenceRegistersSwaggerClient.ts',
+                    name: 'useReferenceRegistersSwaggerClient',
                 },
             },
             ...defaultOutputOptions,

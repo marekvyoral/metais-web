@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React from 'react'
 import ReactSelect, { GroupBase, MenuPosition, MultiValue, OptionProps, SingleValue } from 'react-select'
+import { useTranslation } from 'react-i18next'
 
 import styles from './select.module.scss'
 
@@ -33,6 +34,7 @@ interface ISelectProps<T> {
     onBlur?: React.FocusEventHandler<HTMLInputElement>
     isClearable?: boolean
     menuPosition?: MenuPosition
+    required?: boolean
 }
 
 export const Select = <T,>({
@@ -54,16 +56,18 @@ export const Select = <T,>({
     onBlur,
     isClearable = true,
     menuPosition = 'fixed',
+    required,
 }: ISelectProps<T>) => {
     const Option = (props: OptionProps<IOption<T>>) => {
         return option ? option(props) : ReactSelectDefaultOptionComponent(props)
     }
+    const { t } = useTranslation()
 
     return (
         <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
             <div className={styles.labelDiv}>
                 <label className="govuk-label" htmlFor={id}>
-                    {label}
+                    {label} {required && t('input.requiredField')}
                 </label>
                 {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
             </div>

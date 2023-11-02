@@ -30,6 +30,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
             ...searchParams,
             lang: i18n.language,
         }
+
         const params = `?${new URLSearchParams(allParams)}`
         const customHeaders: Record<string, string> = {
             'Accept-Language': i18n.language,
@@ -39,6 +40,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
         if (accessToken) {
             customHeaders['Authorization'] = `Bearer ${accessToken}`
         }
+
         const response = await fetch(`${baseURL}${url}${params}`, {
             method,
             headers: customHeaders,

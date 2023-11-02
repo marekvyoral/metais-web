@@ -66,3 +66,16 @@ export const getCiDefaultMetaAttributes = ({ t, asGroup, withoutEvidenceStatus }
 
     return defaultCiMetaAttributes
 }
+
+export const getRefRegsDefaultMetaAttributes = (t: TFunction<'translation', undefined, 'translation'>) => {
+    const defaultCiMetaAttributes = {
+        name: t('ciType.meta.metaInformationsName'),
+        attributes: [
+            {
+                name: t('ciType.meta.state'),
+                technicalName: MetainformationColumns.STATE,
+            },
+        ],
+    }
+    return defaultCiMetaAttributes
+}

@@ -1,5 +1,6 @@
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
-import { Button, ButtonGroupRow, ButtonPopup, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit/index'
+import styles from '@isdd/metais-common/components/entity-header/entityHeader.module.scss'
+import { Button, ButtonGroupRow, ButtonPopup, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { APPROVAL_PROCESS, ATTRIBUTE_NAME, ConfigurationItemUi, PROJECT_STATE_ENUM, TYPE_OF_APPROVAL_PROCESS_DEFAULT } from '@isdd/metais-common/api'
 import { useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
@@ -14,8 +15,6 @@ import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
-
-import styles from './ciEntityHeader.module.scss'
 
 interface Props {
     entityName: string

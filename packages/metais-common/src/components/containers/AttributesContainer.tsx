@@ -3,6 +3,7 @@ import React from 'react'
 import { EnumType } from '@isdd/metais-common/api'
 import { Attribute, AttributeProfile, CiType, useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
+import { transformColumnsMap } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 
 export interface AttributesContainerViewData {
     ciTypeData: CiType | undefined
@@ -10,6 +11,7 @@ export interface AttributesContainerViewData {
     unitsData?: EnumType | undefined
     attributeProfiles: AttributeProfile[] | undefined
     attributes: Attribute[] | undefined
+    renamedAttributes: Attribute[] | undefined
 }
 
 export interface IAttributesContainerView {
@@ -36,6 +38,17 @@ export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName,
 
     const attributeProfiles = ciTypeData?.attributeProfiles
     const attributes = ciTypeData?.attributes
+    const renamedAttributes =
+        ciTypeData?.attributes?.map((attr) => ({
+            ...attr,
+            technicalName: transformColumnsMap.get(attr?.technicalName ?? '') ?? attr?.technicalName,
+        })) ?? []
 
-    return <View data={{ attributeProfiles, ciTypeData, constraintsData, unitsData, attributes }} isLoading={isLoading} isError={isError} />
+    return (
+        <View
+            data={{ attributeProfiles, ciTypeData, constraintsData, unitsData, attributes, renamedAttributes }}
+            isLoading={isLoading}
+            isError={isError}
+        />
+    )
 }

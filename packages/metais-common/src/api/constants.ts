@@ -1,6 +1,8 @@
 export const BASE_PAGE_NUMBER = 1
 export const BASE_PAGE_SIZE = 10
 export const urlBase = 'https://metais.vicepremier.gov.sk'
+export const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
+export const DMS_DOWNLOAD_BASE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file`
 
 export enum GET_ENUM {
     KATEGORIA_OSOBA = 'KATEGORIA_OSOBA',
@@ -38,9 +40,15 @@ export enum ATTRIBUTE_NAME {
     Gen_Profil_EA_odkaz_na_referenciu = 'Gen_Profil_EA_odkaz_na_referenciu',
     Gen_Profil_EA_typ_replikacie = 'Gen_Profil_EA_typ_replikacie',
     Gen_Profil_EA_pocet_replikacii = 'Gen_Profil_EA_pocet_replikacii',
+    ReferenceRegisterHistory_Profile_stav = 'ReferenceRegisterHistory_Profile_stav',
+    ReferenceRegisterHistory_Profile_popis = 'ReferenceRegisterHistory_Profile_popis',
+    ReferenceRegisterHistory_Profile_prilohy = 'ReferenceRegisterHistory_Profile_prilohy',
+    ISVS_Name = 'isvsName',
 }
 
 export const Gen_Profil = 'Gen_Profil'
+export const Gui_Profil_RR = 'Gui_Profil_RR'
+export const Reference_Registers = 'ReferenceRegisters'
 
 export const TYPE_OF_APPROVAL_PROCESS_DEFAULT = 'OPTIONAL_APPROVAL'
 
@@ -69,7 +77,6 @@ export enum STATUTAR_NAME {
     Profil_PO_statutar_priezvisko = 'Profil_PO_statutar_priezvisko',
     Profil_PO_statutar_titul_za_menom = 'Profil_PO_statutar_titul_za_menom',
 }
-
 export const TOP_LEVEL_PO_ICO = '000000003001'
 
 export const MEASURE_UNIT = 'MERNA_JEDNOTKA'
@@ -97,3 +104,7 @@ export const connectedCiTabsToRemove = [
     'TP_VypoctovyZdroj',
     'TP_Zalohovanie',
 ]
+
+export enum QueryKeysByEntity {
+    REFERENCE_REGISTER = 'referenceRegisterData',
+}
