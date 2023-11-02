@@ -35,3 +35,8 @@
     flex-direction: row;
     gap: govuk-spacing(3);
 }
+
+.flexBetween {
+    display: flex;
+    justify-content: space-between;
+}

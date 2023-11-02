@@ -64,7 +64,6 @@ export const MultiSelect = <T,>({
         })
         return results
     }
-
     return (
         <Select
             id={id}

@@ -14,10 +14,10 @@ export interface IBulkActionResult {
     errorMessage?: string
 }
 
-export const useBulkAction = () => {
+export const useBulkAction = (isRelation?: boolean) => {
     const { t } = useTranslation()
 
-    const { bulkCheck, checkChangeOfOwner, ciInvalidFilter, hasOwnerRights } = useBulkActionHelpers()
+    const { bulkCheck, bulkRelationCheck, checkChangeOfOwner, ciInvalidFilter, hasOwnerRights } = useBulkActionHelpers()
 
     const [errorMessage, setErrorMessage] = useState<string | undefined>()
     const [isBulkLoading, setBulkLoading] = useState<boolean>(false)
@@ -123,7 +123,13 @@ export const useBulkAction = () => {
             return onError()
         }
 
-        const canReInvalidate = await bulkCheck(items)
+        let canReInvalidate = undefined
+        if (isRelation) {
+            canReInvalidate = await bulkRelationCheck(items)
+        } else {
+            canReInvalidate = await bulkCheck(items)
+        }
+
         setBulkLoading(false)
         if (canReInvalidate) {
             setErrorMessage(undefined)

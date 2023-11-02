@@ -94,7 +94,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
 
     const methods = useForm({
         defaultValues: formatDateForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
-        resolver: yupResolver(generateFormSchema([ciTypeData as AttributeProfile, ...attProfiles], selectedRole, t)),
+        resolver: yupResolver(generateFormSchema([ciTypeData as AttributeProfile, ...attProfiles], t, selectedRole)),
     })
 
     const { handleSubmit, setValue, reset, formState } = methods

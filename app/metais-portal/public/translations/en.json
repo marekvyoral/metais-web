@@ -355,7 +355,7 @@
         "activities": "Activities NKIVS",
         "relationships": "Relationships",
         "history": "History of changes",
-        "editEntity": "Edit component",
+        "editEntity": "Editt item of {{entityName}}",
         "chosenObject": "Chosen object (type)",
         "editButton": "Modify",
         "moreButton": "More actions",
@@ -363,7 +363,7 @@
         "revalidateItem": "Revalidate",
         "changeOfOwner": "Change owner",
         "besManagement": "BES management",
-        "createEntity": "Create new component of type {{entityName}}",
+        "createEntity": "Create item of {{entityName}}",
         "sendForApproval": "Send for approval",
         "approve": "Approve",
         "return": "Return",
@@ -633,7 +633,7 @@
         },
         "import": "Import",
         "export": "Export",
-        "addItem": "Add {{ciType}} item",
+        "addItem": "Create item {{ciType}} ",
         "selectColumn": "Columns",
         "view": "View",
         "actions": "Bulk actions",
@@ -1183,7 +1183,7 @@
         "addItems": "Add selected items",
         "selectSource": "Source (Chosen object)",
         "selectTarget": "Target (Chosen object)",
-        "newCiWithRelationHeading": "Add new item and relation",
+        "newCiWithRelationHeading": "Add new item and relation of {{entityName}}",
         "relation": "Relation",
         "errorTitle": "Error occured",
         "errorMessage": "We apologize, but an error occurred while creating new relation. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
@@ -1647,6 +1647,11 @@
         "source": "Source",
         "target": "Target",
         "evidenceStatus": "Evidence status",
-        "owner": "Owner"
+        "owner": "Owner",
+
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "editSuccess": "Edit of {{relationName}} was successful.",
+        "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support."
     }
 }

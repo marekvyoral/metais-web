@@ -11,6 +11,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 const EditProfile = () => {
     const { entityId } = useParams()
     const { t } = useTranslation()
+
     return (
         <ProfileDetailContainer
             entityName={entityId ?? ''}
@@ -39,7 +40,7 @@ const EditProfile = () => {
                                         roles: createProps?.data?.roles,
                                         existingEntityData: props?.data?.ciTypeData,
                                     }}
-                                    mutate={props?.saveAttribute}
+                                    mutate={createProps.mutateEdit}
                                     hiddenInputs={createProps?.hiddenInputs}
                                     isError={props.isError || createProps.isError}
                                     isLoading={createProps.isLoading || props.isLoading}

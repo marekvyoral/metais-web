@@ -6,7 +6,12 @@ import { useTranslation } from 'react-i18next'
 import { InvalidateBulkView } from './InvalidateBulkView'
 
 import { useDeleteContentHook } from '@isdd/metais-common/api/generated/dms-swagger'
-import { ConfigurationItemUi, useInvalidateSet } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import {
+    ConfigurationItemUi,
+    RelationshipInvalidateUi,
+    useInvalidateRelationship,
+    useInvalidateSet,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 
 export interface IInvalidateBulkModalProps {
@@ -16,13 +21,34 @@ export interface IInvalidateBulkModalProps {
     onSubmit: (result: IBulkActionResult) => void
     items: ConfigurationItemUi[]
     deleteFile?: boolean
+    isRelation?: boolean
 }
 
-export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({ items, open, multiple, onClose, onSubmit, deleteFile = false }) => {
+export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
+    items,
+    open,
+    multiple,
+    onClose,
+    onSubmit,
+    deleteFile = false,
+    isRelation,
+}) => {
     const { t } = useTranslation()
     const { register, handleSubmit, reset } = useForm()
     const deleteFileHook = useDeleteContentHook()
     const successMessage = multiple ? t('bulkActions.invalidate.successList') : t('bulkActions.invalidate.success')
+
+    const invalidateRelation = useInvalidateRelationship({
+        mutation: {
+            onSuccess() {
+                reset()
+                onSubmit({ isSuccess: true, isError: false, successMessage })
+            },
+            onError() {
+                onSubmit({ isSuccess: false, isError: true, successMessage })
+            },
+        },
+    })
 
     const { isLoading, mutateAsync: invalidateItems } = useInvalidateSet({
         mutation: {
@@ -35,6 +61,7 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({ items
             },
         },
     })
+
     const mappedItems = items.map((item) => {
         const attributes = Object.entries(item.attributes || {}).map(([key, value]) => ({ name: key, value }))
         return { ...item, attributes }
@@ -44,7 +71,12 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({ items
         if (deleteFile) {
             await items.forEach((item) => deleteFileHook(item.uuid ?? ''))
         }
-        await invalidateItems({ data: { configurationItemSet: mappedItems, invalidateReason: { comment: formValues.reason } } })
+        if (isRelation) {
+            const relationData: RelationshipInvalidateUi = { ...mappedItems[0], invalidateReason: { comment: formValues.reason } }
+            await invalidateRelation.mutateAsync({ data: relationData, params: { newState: ['INVALIDATED'] } })
+        } else {
+            await invalidateItems({ data: { configurationItemSet: mappedItems, invalidateReason: { comment: formValues.reason } } })
+        }
     }
 
     return (

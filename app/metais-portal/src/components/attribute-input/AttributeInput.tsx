@@ -18,9 +18,9 @@ import {
     UseFormTrigger,
 } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
-import { HTML_TYPE } from '@isdd/metais-common/constants'
+import { HTML_TYPE, MAX_TITLE_LENGTH } from '@isdd/metais-common/constants'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 
@@ -348,6 +348,8 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
             }
 
             case hasStringValue: {
+                const isGenProfilNazov = attribute.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov
+
                 return (
                     <Input
                         correct={isCorrect}
@@ -361,6 +363,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         type="text"
                         defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
                         hint={hint}
+                        maxLength={isGenProfilNazov ? MAX_TITLE_LENGTH : undefined}
                     />
                 )
             }

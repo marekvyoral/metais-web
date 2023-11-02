@@ -145,9 +145,6 @@ export const CiTable: React.FC<ICiTable> = ({
             case isState: {
                 return t(`metaAttributes.state.${ctx.getValue()}`)
             }
-            case isInSchema: {
-                return ctx.getValue() as string
-            }
             case isOwner || isGroup: {
                 return getOwnerInformation(ctx?.row?.original?.metaAttributes?.owner as string, data.gestorsData)?.configurationItemUi?.attributes?.[
                     ATTRIBUTE_NAME.Gen_Profil_nazov
@@ -158,6 +155,9 @@ export const CiTable: React.FC<ICiTable> = ({
             }
             case isHTML: {
                 return <SafeHtmlComponent dirtyHtml={ctx?.getValue?.() as string} />
+            }
+            case isInSchema: {
+                return ctx.getValue() as string
             }
             default: {
                 return ''
