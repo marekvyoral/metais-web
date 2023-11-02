@@ -1,5 +1,5 @@
 import { IFilter, Pagination, ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
-import { ATTRIBUTE_NAME, FavoriteCiType, Gui_Profil_RR, Reference_Registers } from '@isdd/metais-common'
+import { ATTRIBUTE_NAME, Gui_Profil_RR, Reference_Registers } from '@isdd/metais-common'
 import { mapFilterToRefRegisters } from '@isdd/metais-common/api/filter/filterApi'
 import { ApiReferenceRegister, useGetFOPReferenceRegisters1 } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import {
@@ -12,6 +12,7 @@ import {
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { FieldValues } from 'react-hook-form'
 import { Attribute, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 
 import { RefRegisterFilter } from '@/types/filters'
 
