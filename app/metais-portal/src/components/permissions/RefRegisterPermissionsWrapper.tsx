@@ -4,11 +4,13 @@ import { useRefRegisterPermissions } from '@isdd/metais-common/hooks/permissions
 
 interface iPermissionWrapper {
     state: ApiReferenceRegisterState | undefined
+    owner: string | undefined
+    managerUuid: string | undefined
     children: JSX.Element
 }
 
-export const RefRegisterPermissionsWrapper = ({ children, state }: iPermissionWrapper) => {
+export const RefRegisterPermissionsWrapper = ({ children, state, owner, managerUuid }: iPermissionWrapper) => {
     const ability = useAbilityContext()
-    useRefRegisterPermissions(state)
+    useRefRegisterPermissions(state, owner, managerUuid)
     return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
 }

@@ -85,7 +85,11 @@ const RefRegistersDetail = () => {
             />
             <MainContentWrapper>
                 <RefRegisterStateMachine.Provider value={{ stateMachineService }}>
-                    <RefRegisterPermissionsWrapper state={referenceRegisterData?.state}>
+                    <RefRegisterPermissionsWrapper
+                        state={referenceRegisterData?.state}
+                        owner={referenceRegisterData?.owner}
+                        managerUuid={referenceRegisterData?.managerUuid}
+                    >
                         <>
                             {!isLoading && (
                                 <RefRegisterIdHeader
