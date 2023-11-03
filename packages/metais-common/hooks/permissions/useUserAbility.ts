@@ -15,10 +15,12 @@ export enum Actions {
     HISTORY = 'history',
     BULK_ACTIONS = 'bulk_actions',
     CHANGE_STATES = 'change_states',
+    DELETE = 'DELETE',
 }
 
 export const ADMIN = 'R_ADMIN'
 export const RR_MANAGER = 'RR_MANAGER'
+export const RR_ADMIN_MFSR = 'RR_ADMIN_MFSR'
 
 export const CANNOT_READ_ENTITY = ['ulohy', 'notifications', 'codelists/list']
 

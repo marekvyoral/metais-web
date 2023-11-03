@@ -1235,6 +1235,12 @@
         "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia"
     },
     "refRegisters": {
+        "list": {
+            "heading": "Zoznam referenčných registrov"
+        },
+        "requests": {
+            "heading": "Zoznam žiadostí o pridanie referenčného registra"
+        },
         "title": "Referenčné registre",
         "create": {
             "title": "Pridať nový referenčný register",
@@ -1633,14 +1639,6 @@
     },
     "publicAuthorities": {
         "hierarchy": "Hierarchia orgánov riadenia"
-    },
-    "refRegisters": {
-        "list": {
-            "heading": "Zoznam referenčných registrov"
-        },
-        "requests": {
-            "heading": "Zoznam žiadostí o pridanie referenčného registra"
-        }
     },
     "publicspace": {
         "heading": "Štandardy ISVS"

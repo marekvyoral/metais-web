@@ -132,6 +132,7 @@ export const ADMIN_EGOV_RELATION_LIST_QKEY = `/relationshiptypes/list`
 export const ADMIN_EKO_LIST_QKEY = `/ekocodes`
 export const phoneOrEmptyStringRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$|^$/
 export const HTML_TYPE = 'HTML'
+export const MUK = 'muk'
 
 export const P_REALIZUJE_AKT = 'P_realizuje_AKT'
 export const ACTIVITY = 'Aktivita'

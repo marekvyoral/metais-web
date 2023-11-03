@@ -5,12 +5,13 @@ import {
     ApiReferenceRegisterState,
 } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { TFunction } from 'i18next'
-import { StateValue } from 'xstate'
 import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { CiListFilterContainerUi, ConfigurationItemSetUi, NeighbourPairUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { mapReportsCiItemToOptions } from '@isdd/metais-common/componentHelpers/filter'
 import { IOptions } from '@isdd/metais-common/components/select-cmdb-params/SelectFilterCMDBParamsOptions'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
 import { IRefRegisterCreateFormData } from '@/components/views/refRegisters/schema'
 
@@ -23,22 +24,15 @@ export const getPopupContent = (
         const translatePrefix =
             option === ApiReferenceRegisterState.IN_CONSTRUCTION ? 'refRegisters.header.inConstructionPrefix' : 'refRegisters.header.othersPrefix'
         return (
-            <ButtonLink
-                key={option.toString()}
-                label={t(translatePrefix, { itemName: t(`refRegisters.table.state.${option}`) })}
-                onClick={() => onClick(option)}
-                withoutFocus
-            />
+            <Can I={Actions.CHANGE_STATES} a={`refRegisters.${option}`} key={option.toString()}>
+                <ButtonLink
+                    label={t(translatePrefix, { itemName: t(`refRegisters.table.state.${option}`) })}
+                    onClick={() => onClick(option)}
+                    withoutFocus
+                />
+            </Can>
         )
     })
-}
-
-export const showChangeDataOfManager = (state: StateValue) => {
-    return (
-        state === ApiReferenceRegisterState.PUBLISHED ||
-        state === ApiReferenceRegisterState.READY_TO_APPROVAL ||
-        state === ApiReferenceRegisterState.APPROVAL_IN_PROGRESS
-    )
 }
 
 export const getDefaultDateRR = (date?: string) => {

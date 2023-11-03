@@ -14,7 +14,7 @@ import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
-import { HTML_TYPE } from '@isdd/metais-common/constants'
+import { HTML_TYPE, MUK } from '@isdd/metais-common/constants'
 import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 
 import styles from './ciTable.module.scss'
@@ -124,6 +124,7 @@ export const CiTable: React.FC<ICiTable> = ({
         const isFirstItem = index === 0
         const isInSchema = !!schemaAttributes[technicalName]?.name
 
+        const isMUK = technicalName === MUK
         const isState = technicalName === MetainformationColumns.STATE
         const isOwner = technicalName === MetainformationColumns.OWNER
         const isGroup = technicalName === MetainformationColumns.GROUP
@@ -144,6 +145,9 @@ export const CiTable: React.FC<ICiTable> = ({
             }
             case isState: {
                 return t(`metaAttributes.state.${ctx.getValue()}`)
+            }
+            case isMUK: {
+                return t(`refRegisters.table.muk.${ctx.getValue()}`)
             }
             case isOwner || isGroup: {
                 return getOwnerInformation(ctx?.row?.original?.metaAttributes?.owner as string, data.gestorsData)?.configurationItemUi?.attributes?.[

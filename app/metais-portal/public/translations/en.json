@@ -1191,6 +1191,12 @@
         "selectRelTypeError": "You are missing needed rights to create this relation type"
     },
     "refRegisters": {
+        "list": {
+            "heading": "List of reference registers"
+        },
+        "requests": {
+            "heading": "List of request to add a reference register"
+        },
         "title": "Referential registers",
         "create": {
             "title": "Add new referential register",
@@ -1614,14 +1620,6 @@
     },
     "publicAuthorities": {
         "hierarchy": "Hierarchy of public authorities"
-    },
-    "refRegisters": {
-        "list": {
-            "heading": "List of reference registers"
-        },
-        "requests": {
-            "heading": "List of request to add a reference register"
-        }
     },
     "publicspace": {
         "heading": "Standards of ISVS"

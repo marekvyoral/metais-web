@@ -5,8 +5,10 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useStateMachine } from '@isdd/metais-common/components/state-machine/hooks/useStateMachine'
 import { EDIT_CONTACT } from '@isdd/metais-common/navigation/searchKeys'
+import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 
-import { getPopupContent, showChangeDataOfManager } from '@/componentHelpers/refRegisters/helpers'
+import { getPopupContent } from '@/componentHelpers/refRegisters/helpers'
 import { RefRegisterStateMachine } from '@/pages/refRegisters/[entityId]'
 
 interface IRefRegisterButtonPopupContent {
@@ -26,32 +28,33 @@ export const RefRegisterButtonPopupContent = ({
     const machine = useStateMachine({ stateContext: refRegisterStateContext })
 
     const allPosibleSteps = machine?.getAllPosibleTransitions<ApiReferenceRegisterState>()
-    const currentState = machine.getCurrentState()
     const navigate = useNavigate()
     const { t } = useTranslation()
 
     return (
         <>
-            {currentState === ApiReferenceRegisterState.IN_CONSTRUCTION && (
+            <Can I={Actions.DELETE} a={'refRegisters'}>
                 <ButtonLink label={t('refRegisters.header.delete')} withoutFocus onClick={handleDeleteRefRegister} />
-            )}
+            </Can>
             {getPopupContent(allPosibleSteps, t, onClick)}
 
-            {showChangeDataOfManager(currentState) && (
+            <Can I={Actions.CREATE} a={'refRegisters.changeManagerInfo'}>
                 <ButtonLink
                     label={t('refRegisters.header.changeManagerInfo')}
                     onClick={() => navigate(`/refRegisters/${entityId}/edit`)}
                     withoutFocus
                 />
-            )}
-            <ButtonLink
-                label={t('refRegisters.header.changeContact')}
-                onClick={() => navigate({ pathname: `/refRegisters/${entityId}/edit`, search: `?${EDIT_CONTACT}=true` })}
-                withoutFocus
-            />
-            {currentState !== ApiReferenceRegisterState.REJECTED && (
+            </Can>
+            <Can I={Actions.CREATE} a={'refRegisters.changeContact'}>
+                <ButtonLink
+                    label={t('refRegisters.header.changeContact')}
+                    onClick={() => navigate({ pathname: `/refRegisters/${entityId}/edit`, search: `?${EDIT_CONTACT}=true` })}
+                    withoutFocus
+                />
+            </Can>
+            <Can I={Actions.CREATE} a={'refRegisters.generateProposition'}>
                 <ButtonLink label={t('refRegisters.header.generateProposition')} onClick={() => setOpenGeneratePropDialog(true)} withoutFocus />
-            )}
+            </Can>
         </>
     )
 }
