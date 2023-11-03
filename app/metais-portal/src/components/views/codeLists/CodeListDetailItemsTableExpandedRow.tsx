@@ -1,28 +1,33 @@
-import { ApiCodelistItem } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import { ApiCodelistItem, ApiCodelistItemLegislativeValidity } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useTranslation } from 'react-i18next'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { Button, ButtonGroupRow, IconWithText } from '@isdd/idsk-ui-kit/index'
+import { Button, ButtonGroupRow, IconWithText, InfoIconWithText } from '@isdd/idsk-ui-kit/index'
 import { InfoIcon } from '@isdd/metais-common/assets/images'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, CodeListItemState, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
+import { IItemForm } from './components/modals/ItemForm/ItemForm'
 import { InformationGridRowWrapper } from './components/InformationGridRowWrapper/InformationGridRowWrapper'
 import { findClosestDateInterval, getDescription, getName, selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
 import styles from './codeList.module.scss'
+
+import { mapCodeListItemToForm } from '@/componentHelpers/codeList'
 
 interface CodeListDetailItemsTableExpandedRowProps {
     workingLanguage: string
     codelistItem?: ApiCodelistItem
     attributeProfile?: AttributeProfile
-    handleMarkForPublish?: (ids: number[]) => void
+    handleOpenEditItem?: (item?: IItemForm) => void
+    handleMarkForPublish?: (itemCodes: string[]) => void
 }
 
 export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTableExpandedRowProps> = ({
     workingLanguage,
     codelistItem,
     attributeProfile,
+    handleOpenEditItem,
     handleMarkForPublish,
 }) => {
     const {
@@ -43,6 +48,17 @@ export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTa
         codelistItem.codelistItemState !== CodeListItemState.PUBLISHED &&
         !codelistItem.locked
 
+    const getTooltipText = (list?: { value?: string; effectiveFrom?: string; effectiveTo?: string }[]) => {
+        return list
+            ?.map(
+                (item) =>
+                    `${item.value} (${item.effectiveFrom ? t('date', { date: item.effectiveFrom }) : t('codeListDetail.unlimited')} - ${
+                        item.effectiveTo ? t('date', { date: item.effectiveTo }) : t('codeListDetail.unlimited')
+                    })\n`,
+            )
+            .join('')
+    }
+
     return (
         <div className={styles.expandableRowContent}>
             {codelistItem.locked && (
@@ -61,19 +77,37 @@ export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTa
                     key={'itemName'}
                     label={getDescription(attributeProfile, 'Gui_Profil_ZC_nazov_polozky', language)}
                     tooltip={getName(attributeProfile, 'Gui_Profil_ZC_nazov_polozky', language)}
-                    value={selectBasedOnLanguageAndDate(codelistItem.codelistItemNames, workingLanguage)}
+                    value={
+                        !!codelistItem.codelistItemNames?.length && (
+                            <InfoIconWithText tooltip={getTooltipText(codelistItem.codelistItemNames)}>
+                                {selectBasedOnLanguageAndDate(codelistItem.codelistItemNames, workingLanguage)}
+                            </InfoIconWithText>
+                        )
+                    }
                 />
                 <InformationGridRow
                     key={'itemShortName'}
                     label={getDescription(attributeProfile, 'Gui_Profil_ZC_skrateny_nazov_polozky', language)}
                     tooltip={getName(attributeProfile, 'Gui_Profil_ZC_skrateny_nazov_polozky', language)}
-                    value={selectBasedOnLanguageAndDate(codelistItem.codelistItemShortenedNames, workingLanguage)}
+                    value={
+                        !!codelistItem.codelistItemShortenedNames?.length && (
+                            <InfoIconWithText tooltip={getTooltipText(codelistItem.codelistItemShortenedNames)}>
+                                {selectBasedOnLanguageAndDate(codelistItem.codelistItemShortenedNames, workingLanguage)}
+                            </InfoIconWithText>
+                        )
+                    }
                 />
                 <InformationGridRow
                     key={'itemAbbreviation'}
                     label={getDescription(attributeProfile, 'Gui_Profil_ZC_skratka_nazvu_polozky', language)}
                     tooltip={getName(attributeProfile, 'Gui_Profil_ZC_skratka_nazvu_polozky', language)}
-                    value={selectBasedOnLanguageAndDate(codelistItem.codelistItemAbbreviatedNames, workingLanguage)}
+                    value={
+                        !!codelistItem.codelistItemAbbreviatedNames?.length && (
+                            <InfoIconWithText tooltip={getTooltipText(codelistItem.codelistItemAbbreviatedNames)}>
+                                {selectBasedOnLanguageAndDate(codelistItem.codelistItemAbbreviatedNames, workingLanguage)}
+                            </InfoIconWithText>
+                        )
+                    }
                 />
                 <InformationGridRow
                     key={'itemUri'}
@@ -85,13 +119,28 @@ export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTa
                     key={'itemAdditional'}
                     label={getDescription(attributeProfile, 'Gui_Profil_ZC_doplnujuci_obsah', language)}
                     tooltip={getName(attributeProfile, 'Gui_Profil_ZC_doplnujuci_obsah', language)}
-                    value={selectBasedOnLanguageAndDate(codelistItem.codelistItemAdditionalContents, workingLanguage)}
+                    value={
+                        !!codelistItem.codelistItemAdditionalContents?.length && (
+                            <InfoIconWithText tooltip={getTooltipText(codelistItem.codelistItemAdditionalContents)}>
+                                {selectBasedOnLanguageAndDate(codelistItem.codelistItemAdditionalContents, workingLanguage)}
+                            </InfoIconWithText>
+                        )
+                    }
                 />
                 <InformationGridRow
                     key={'itemMeasureUnit'}
                     label={getDescription(attributeProfile, 'Gui_Profil_ZC_merna_jednotka', language)}
                     tooltip={getName(attributeProfile, 'Gui_Profil_ZC_merna_jednotka', language)}
-                    value={selectBasedOnLanguageAndDate(codelistItem.codelistItemUnitsOfMeasure, workingLanguage)}
+                    value={
+                        !!codelistItem.codelistItemUnitsOfMeasure?.length && (
+                            <InfoIconWithText tooltip={getTooltipText(codelistItem.codelistItemUnitsOfMeasure)}>
+                                {(() => {
+                                    const closestInterval = findClosestDateInterval(codelistItem.codelistItemUnitsOfMeasure ?? [])
+                                    return closestInterval ? closestInterval.value : ''
+                                })()}
+                            </InfoIconWithText>
+                        )
+                    }
                 />
                 <InformationGridRow
                     key={'itemNote'}
@@ -107,37 +156,60 @@ export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTa
                     key={'itemIncludes'}
                     label={getDescription(attributeProfile, 'Gui_Profil_ZC_zahrna', language)}
                     tooltip={getName(attributeProfile, 'Gui_Profil_ZC_zahrna', language)}
-                    value={selectBasedOnLanguageAndDate(codelistItem.codelistItemIncludes, workingLanguage)}
+                    value={
+                        !!codelistItem.codelistItemIncludes?.length && (
+                            <InfoIconWithText tooltip={getTooltipText(codelistItem.codelistItemIncludes)}>
+                                {selectBasedOnLanguageAndDate(codelistItem.codelistItemIncludes, workingLanguage)}
+                            </InfoIconWithText>
+                        )
+                    }
                 />
                 <InformationGridRow
                     key={'itemIncludesAlso'}
                     label={getDescription(attributeProfile, 'Gui_Profil_ZC_tiez_zahrna', language)}
                     tooltip={getName(attributeProfile, 'Gui_Profil_ZC_tiez_zahrna', language)}
-                    value={selectBasedOnLanguageAndDate(codelistItem.codelistItemIncludesAlso, workingLanguage)}
+                    value={
+                        !!codelistItem.codelistItemIncludesAlso?.length && (
+                            <InfoIconWithText tooltip={getTooltipText(codelistItem.codelistItemIncludesAlso)}>
+                                {selectBasedOnLanguageAndDate(codelistItem.codelistItemIncludesAlso, workingLanguage)}
+                            </InfoIconWithText>
+                        )
+                    }
                 />
                 <InformationGridRow
                     key={'itemExcludes'}
                     label={getDescription(attributeProfile, 'Gui_Profil_ZC_vylucuje', language)}
                     tooltip={getName(attributeProfile, 'Gui_Profil_ZC_vylucuje', language)}
-                    value={selectBasedOnLanguageAndDate(codelistItem.codelistItemExcludes, workingLanguage)}
+                    value={
+                        !!codelistItem.codelistItemExcludes?.length && (
+                            <InfoIconWithText tooltip={getTooltipText(codelistItem.codelistItemExcludes)}>
+                                {selectBasedOnLanguageAndDate(codelistItem.codelistItemExcludes, workingLanguage)}
+                            </InfoIconWithText>
+                        )
+                    }
                 />
                 <InformationGridRow
                     key={'itemValidFrom'}
-                    label={getDescription(attributeProfile, 'Gui_Profil_ZC_datum_platnosti', language)}
-                    tooltip={getName(attributeProfile, 'Gui_Profil_ZC_datum_platnosti', language)}
+                    label={getDescription(attributeProfile, 'Gui_Profil_ZC_datum_platnosti_polozky', language)}
+                    tooltip={getName(attributeProfile, 'Gui_Profil_ZC_datum_platnosti_polozky', language)}
                     value={t('date', { date: codelistItem.validFrom })}
                 />
                 <InformationGridRow
                     key={'itemValidities'}
                     label={getDescription(attributeProfile, 'Gui_Profil_ZC_ucinnost_polozky', language)}
                     tooltip={getName(attributeProfile, 'Gui_Profil_ZC_ucinnost_polozky', language)}
-                    value={(() => {
-                        const closestInterval = findClosestDateInterval(codelistItem.codelistItemValidities ?? [])
-                        if (!closestInterval) return ''
-                        return `${t('date', { date: closestInterval.effectiveFrom })} - ${
-                            closestInterval?.effectiveTo ? t('date', { date: closestInterval.effectiveTo }) : t('codeListDetail.unlimited')
-                        }`
-                    })()}
+                    value={
+                        !!codelistItem.codelistItemValidities?.length &&
+                        (() => {
+                            const closestInterval = findClosestDateInterval(codelistItem.codelistItemValidities ?? [])
+                            if (closestInterval) {
+                                return `${t('date', { date: closestInterval.effectiveFrom })} - ${
+                                    closestInterval?.effectiveTo ? t('date', { date: closestInterval.effectiveTo }) : t('codeListDetail.unlimited')
+                                }`
+                            }
+                            return ''
+                        })()
+                    }
                 />
                 <InformationGridRow
                     key={'logicalOrder'}
@@ -154,25 +226,32 @@ export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTa
                     label={getDescription(attributeProfile, 'Gui_Profil_ZC_legislativna_uznatelnost', language)}
                     tooltip={getName(attributeProfile, 'Gui_Profil_ZC_legislativna_uznatelnost', language)}
                     value={
-                        selectBasedOnLanguageAndDate(codelistItem.codelistItemLegislativeValidities, workingLanguage)
-                            ? t('radioButton.yes')
-                            : t('radioButton.no')
+                        !!codelistItem.codelistItemLegislativeValidities?.length &&
+                        (() => {
+                            const closestInterval = findClosestDateInterval(
+                                codelistItem.codelistItemLegislativeValidities ?? [],
+                            ) as ApiCodelistItemLegislativeValidity
+                            if (closestInterval) {
+                                return closestInterval.validityValue ? t('radioButton.yes') : t('radioButton.no')
+                            }
+                            return ''
+                        })()
                     }
                 />
             </InformationGridRowWrapper>
             <ButtonGroupRow>
-                {canEditItem && (
+                {canEditItem && handleOpenEditItem && (
                     <Button
                         label={t('codeListDetail.button.edit')}
                         onClick={() => {
-                            return // add edit
+                            handleOpenEditItem(mapCodeListItemToForm(codelistItem, workingLanguage))
                         }}
                     />
                 )}
                 {handleMarkForPublish && canReadyToPublish && (
                     <Button
                         label={t('codeListDetail.button.markItemReadyForPublishing')}
-                        onClick={() => handleMarkForPublish([Number(codelistItem.id)])}
+                        onClick={() => handleMarkForPublish([codelistItem.itemCode || ''])}
                     />
                 )}
             </ButtonGroupRow>

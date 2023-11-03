@@ -111,6 +111,8 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                 ]}
             />
             <MainContentWrapper>
+                {isError && !code && <QueryFeedback error={isError} loading={false} />}
+
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <div className={styles.headerDiv}>
                         <TextHeading size="XL">{selectBasedOnLanguageAndDate(data.codeList?.codelistNames, workingLanguage)}</TextHeading>
@@ -249,12 +251,17 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                                 attributeProfile={props.attributeProfile}
                                 isLoading={props.isLoading}
                                 isError={props.isError}
-                                isErrorMutation={props.isErrorMutation}
+                                // errorItemAction={props.errorItemAction}
+                                isLoadingEditItemSubmit={props.isLoadingEditItemSubmit}
+                                isErrorEditItemSubmit={props.isErrorEditItemSubmit}
+                                isSuccessEditItemSubmit={props.isSuccessEditItemSubmit}
                                 isSuccessMutation={props.isSuccessMutation}
                                 invalidateCodeListDetailCache={props.invalidateCodeListDetailCache}
                                 handleFilterChange={props.handleFilterChange}
                                 handleMarkForPublish={props.handleMarkForPublish}
                                 handleSetDates={props.handleSetDates}
+                                handleStartItemEdit={props.handleStartItemEdit}
+                                handleSubmitItem={props.handleSubmitItem}
                             />
                         )}
                     />

@@ -13,6 +13,7 @@ import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, CodeListItemState, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 
+import { IItemForm } from './components/modals/ItemForm/ItemForm'
 import { isEffective, selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
 import { CodeListDetailItemsTableExpandedRow } from './CodeListDetailItemsTableExpandedRow'
 
@@ -26,14 +27,15 @@ export interface CodeListDetailItemsTableProps {
     setRowSelection: (item: Record<string, TableCols>) => void
     filter: IFilter
     workingLanguage: string
+    handleOpenEditItem: (item?: IItemForm) => void
     handleFilterChange: (filter: IFilter) => void
-    handleMarkForPublish: (ids: number[]) => void
+    handleMarkForPublish: (itemCodes: string[]) => void
 }
 
 function reduceRowsToObject(rows: ApiCodelistItem[]) {
     return rows.reduce<Record<string, ApiCodelistItem>>((result, item) => {
-        if (item.id) {
-            result[item.id] = item
+        if (item.itemCode) {
+            result[item.itemCode] = item
         }
         return result
     }, {})
@@ -46,6 +48,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
     setRowSelection,
     filter,
     workingLanguage,
+    handleOpenEditItem,
     handleFilterChange,
     handleMarkForPublish,
 }) => {
@@ -59,7 +62,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
             const rowsWithoutDisabled = rows.filter(
                 (row) => row.codelistItemState !== CodeListItemState.PUBLISHED && row.codelistItemState !== CodeListItemState.READY_TO_PUBLISH,
             )
-            const checked = rowsWithoutDisabled.every(({ id }) => (id ? !!rowSelection[id] : false))
+            const checked = rowsWithoutDisabled.every(({ itemCode }) => (itemCode ? !!rowSelection[itemCode] : false))
             if (checked) {
                 setRowSelection({})
             } else {
@@ -71,13 +74,13 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
 
     const handleCheckboxChange = useCallback(
         (row: Row<ApiCodelistItem>) => {
-            if (!row.original.id) return
-            const { id } = row.original
+            if (!row.original.itemCode) return
+            const { itemCode } = row.original
             const newRowSelection = { ...rowSelection }
-            if (rowSelection[id]) {
-                delete newRowSelection[id]
+            if (rowSelection[itemCode]) {
+                delete newRowSelection[itemCode]
             } else {
-                newRowSelection[id] = row.original
+                newRowSelection[itemCode] = row.original
             }
             setRowSelection(newRowSelection)
         },
@@ -88,7 +91,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
 
     const isRowSelected = useCallback(
         (row: Row<ApiCodelistItem>) => {
-            return row.original.id ? !!rowSelection[row.original.id] : false
+            return row.original.itemCode ? !!rowSelection[row.original.itemCode] : false
         },
         [rowSelection],
     )
@@ -109,7 +112,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
                         )
                     const checked =
                         rowsWithoutDisabled.length > 0 &&
-                        rowsWithoutDisabled.every((row) => (row.original.id ? !!rowSelection[row.original.id] : false))
+                        rowsWithoutDisabled.every((row) => (row.original.itemCode ? !!rowSelection[row.original.itemCode] : false))
                     return (
                         <div className="govuk-checkboxes govuk-checkboxes--small">
                             <CheckBox
@@ -132,7 +135,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
                                 id={`checkbox_${row.id}`}
                                 value="true"
                                 onChange={() => handleCheckboxChange(row)}
-                                checked={row.original.id ? !!rowSelection[row.original.id] : false}
+                                checked={row.original.itemCode ? !!rowSelection[row.original.itemCode] : false}
                                 disabled={
                                     row.original.codelistItemState === CodeListItemState.PUBLISHED ||
                                     row.original.codelistItemState === CodeListItemState.READY_TO_PUBLISH
@@ -207,6 +210,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
                         workingLanguage={workingLanguage}
                         codelistItem={items?.codelistsItems?.find((item) => item.id === row.original.id)}
                         attributeProfile={attributeProfile}
+                        handleOpenEditItem={handleOpenEditItem}
                         handleMarkForPublish={handleMarkForPublish}
                     />
                 )

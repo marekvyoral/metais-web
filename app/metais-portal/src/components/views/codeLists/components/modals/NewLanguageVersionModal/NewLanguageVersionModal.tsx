@@ -1,6 +1,5 @@
 import { BaseModal, Button, Input, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
-import * as Yup from 'yup'
-import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
 import {
@@ -16,48 +15,20 @@ import { useCallback, useEffect } from 'react'
 
 import styles from './newLanguageVersionModal.module.scss'
 
+import { NewLanguageFormData, useNewLanguageSchema, AddNewLanguageList } from '@/components/views/codeLists/useCodeListSchemas'
+
 export interface NewLanguageVersionModalProps {
     code: string
     isOpen: boolean
     onClose: () => void
 }
 
-interface FormData {
-    language: string
-    names: {
-        name: string
-        slovakName: string
-        from: string
-        to?: string | null
-    }[]
-}
-
-enum languages {
-    'en' = 'en',
-    'de' = 'de',
-    'hu' = 'hu',
-}
-
-const schema: Yup.ObjectSchema<FormData> = Yup.object({
-    language: Yup.string().trim().required().oneOf(Object.values(languages)),
-    names: Yup.array()
-        .of(
-            Yup.object().shape({
-                name: Yup.string().required(),
-                slovakName: Yup.string().required(),
-                from: Yup.string().required(),
-                to: Yup.string().nullable().notRequired(),
-            }),
-        )
-        .min(1)
-        .required(),
-}).defined()
-
 export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = ({ code, isOpen, onClose }) => {
     const { t } = useTranslation()
     const queryClient = useQueryClient()
+    const { schema } = useNewLanguageSchema()
 
-    const { register, formState, handleSubmit, setValue, reset, watch, control } = useForm({
+    const { register, formState, handleSubmit, setValue, reset, watch, control } = useForm<NewLanguageFormData>({
         shouldUnregister: true,
         resolver: yupResolver(schema),
     })
@@ -120,11 +91,11 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedLanguage])
 
-    const onSubmit = async (formValues: FieldValues) => {
+    const onSubmit = async (formValues: NewLanguageFormData) => {
         const translationAlreadyExists = names?.some((name) => name.language === selectedLanguage) ?? false
         const requestData: ApiCodelistLanguageVersion = {
             language: formValues.language,
-            codelistNames: (formValues as FormData).names.map((item) => ({
+            codelistNames: formValues.names.map((item) => ({
                 language: formValues.language,
                 value: item.name,
                 effectiveFrom: item.from,
@@ -164,7 +135,10 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
                                 label={t('codeListDetail.form.label.language')}
                                 name="language"
                                 setValue={setValue}
-                                options={Object.values(languages).map((lang) => ({ label: t(`codeListDetail.languages.${lang}`), value: lang }))}
+                                options={Object.values(AddNewLanguageList).map((lang) => ({
+                                    label: t(`codeListDetail.languages.${lang}`),
+                                    value: lang,
+                                }))}
                             />
                             {selectedLanguage && (
                                 <>
