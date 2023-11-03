@@ -7,11 +7,11 @@ import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWr
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemSetUi, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { createFullAdressFromAttributes } from '@isdd/metais-common/componentHelpers/formatting/attributesCombinations'
 import { CreateEntityButton } from '@isdd/metais-common/components/actions-over-table/actions-default/CreateEntityButton'
+import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { MoreActionsOverRow } from '@/components/views/public-authorities/actions/MoreActionsOverRow'

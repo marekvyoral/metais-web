@@ -139,7 +139,7 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                 <Controller
                     name="defaultValue"
                     control={control}
-                    render={({ field }) => <RichTextQuill {...field} value={field.value?.toString()} />}
+                    render={({ field }) => <RichTextQuill {...field} value={field.value?.toString()} id={field?.name} />}
                 />
             )}
             {selectedConstraint === StringConstraints.CI_TYPE && (

@@ -71,6 +71,11 @@
     margin-right: govuk-spacing(2);
 }
 
+.iconWithoutMargin {
+    padding: 0;
+    margin: 0;
+}
+
 .popupActions {
     display: flex;
     flex-direction: column;

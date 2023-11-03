@@ -1,5 +1,4 @@
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
-import styles from '@isdd/metais-common/components/entity-header/entityHeader.module.scss'
 import { ButtonGroupRow, ButtonPopup, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { APPROVAL_PROCESS, ATTRIBUTE_NAME, PROJECT_STATE_ENUM, TYPE_OF_APPROVAL_PROCESS_DEFAULT } from '@isdd/metais-common/api/constants'
@@ -14,6 +13,7 @@ import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useB
 import { ChangeOwnerBulkModal, InvalidateBulkModal, MutationFeedback, ReInvalidateBulkModal } from '@isdd/metais-common/index'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import styles from '@isdd/metais-common/components/entity-header/ciEntityHeader.module.scss'
 import classNames from 'classnames'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 

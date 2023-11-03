@@ -68,6 +68,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     const isUserLogged = authState.user !== null
     const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED
     const [rowSelection, setRowSelection] = useState({})
+
     const additionalColumnsNullsafe = additionalColumns ?? []
 
     const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleDeleteFile, handleUpdateFile } = useBulkAction()

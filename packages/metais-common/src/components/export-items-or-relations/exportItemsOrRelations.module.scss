@@ -38,6 +38,14 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    width: 50%;
+    form {
+        width: 100%;
+        .confirmButton {
+            display: flex;
+            justify-content: center;
+        }
+    }
 }
 
 .icon {

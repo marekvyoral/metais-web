@@ -68,7 +68,10 @@ export const useUppy = ({
     }, [allowedFileTypes, i18n.language, maxFileSize, multiple])
 
     useEffect(() => {
-        uppy.getPlugin('XHRUpload')?.setOptions({ endpoint: endpointUrl, headers: { Authorization: `Bearer ${accessToken}` } })
+        uppy.getPlugin('XHRUpload')?.setOptions({
+            endpoint: endpointUrl,
+            headers: { Authorization: `Bearer ${accessToken}` },
+        })
     }, [accessToken, endpointUrl])
 
     useEffect(() => {
@@ -76,7 +79,7 @@ export const useUppy = ({
             setErrorMessages((prev) => [...prev, error.message])
         }
         const fileAdded = (file: UppyFile<Record<string, unknown>, Record<string, unknown>>) => {
-            if (setCustomFileMeta) uppy.setFileMeta(file.id, setCustomFileMeta?.(file))
+            if (setCustomFileMeta) uppy.setFileMeta(file?.id, setCustomFileMeta?.(file))
             setCurrentFiles(() => uppy.getFiles())
             setFileImportStep(FileImportStepEnum.VALIDATE)
         }

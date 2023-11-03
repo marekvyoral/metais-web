@@ -179,6 +179,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                         name={t('meetings.form.program')}
                         label={`${t('meetings.form.program')} (${t('meetings.mandatory')}):`}
                         info={'info'}
+                        id="meeting"
                     />
                     <GridRow className={styles.proposalsButtonGridRow}>
                         <GridCol setWidth="two-thirds" className={styles.proposalsButtonGrid}>

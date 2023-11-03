@@ -5,8 +5,8 @@
  * MetaIS Enums Repo
  * OpenAPI spec version: 3.0-SNAPSHOT
  */
-import type { MutationFunction, QueryFunction, QueryKey, UseMutationOptions, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useEnumsRepoSwaggerClient } from '../hooks/useEnumsRepoSwaggerClient'
 export type ListValidEnumsWithValueParams = {
     value: string
@@ -48,6 +48,16 @@ export interface EnumType {
     enumItems?: EnumItem[]
 }
 
+export type ApiErrorData = { [key: string]: any }
+
+export interface ApiError {
+    type?: string
+    message?: string
+    data?: ApiErrorData
+    logToken?: string
+    values?: string[]
+}
+
 type AwaitedInput<T> = PromiseLike<T> | T
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
@@ -60,7 +70,7 @@ export const useUpdateEnumTypeHook = () => {
     }
 }
 
-export const useUpdateEnumTypeMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateEnumTypeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateEnumTypeHook>>>, TError, { data: EnumType }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateEnumTypeHook>>>, TError, { data: EnumType }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -78,9 +88,9 @@ export const useUpdateEnumTypeMutationOptions = <TError = unknown, TContext = un
 
 export type UpdateEnumTypeMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateEnumTypeHook>>>>
 export type UpdateEnumTypeMutationBody = EnumType
-export type UpdateEnumTypeMutationError = unknown
+export type UpdateEnumTypeMutationError = ApiError
 
-export const useUpdateEnumType = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateEnumType = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateEnumTypeHook>>>, TError, { data: EnumType }, TContext>
 }) => {
     const mutationOptions = useUpdateEnumTypeMutationOptions(options)
@@ -96,7 +106,7 @@ export const useInsertEnumTypeHook = () => {
     }
 }
 
-export const useInsertEnumTypeMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useInsertEnumTypeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInsertEnumTypeHook>>>, TError, { data: EnumType }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInsertEnumTypeHook>>>, TError, { data: EnumType }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -114,9 +124,9 @@ export const useInsertEnumTypeMutationOptions = <TError = unknown, TContext = un
 
 export type InsertEnumTypeMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useInsertEnumTypeHook>>>>
 export type InsertEnumTypeMutationBody = EnumType
-export type InsertEnumTypeMutationError = unknown
+export type InsertEnumTypeMutationError = ApiError
 
-export const useInsertEnumType = <TError = unknown, TContext = unknown>(options?: {
+export const useInsertEnumType = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInsertEnumTypeHook>>>, TError, { data: EnumType }, TContext>
 }) => {
     const mutationOptions = useInsertEnumTypeMutationOptions(options)
@@ -134,7 +144,7 @@ export const useGetValidEnumHook = () => {
 
 export const getGetValidEnumQueryKey = (code: string) => [`/enums/enum/valid/${code}`] as const
 
-export const useGetValidEnumQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetValidEnumHook>>>, TError = unknown>(
+export const useGetValidEnumQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetValidEnumHook>>>, TError = ApiError>(
     code: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetValidEnumHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetValidEnumHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -150,9 +160,9 @@ export const useGetValidEnumQueryOptions = <TData = Awaited<ReturnType<ReturnTyp
 }
 
 export type GetValidEnumQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetValidEnumHook>>>>
-export type GetValidEnumQueryError = unknown
+export type GetValidEnumQueryError = ApiError
 
-export const useGetValidEnum = <TData = Awaited<ReturnType<ReturnType<typeof useGetValidEnumHook>>>, TError = unknown>(
+export const useGetValidEnum = <TData = Awaited<ReturnType<ReturnType<typeof useGetValidEnumHook>>>, TError = ApiError>(
     code: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetValidEnumHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -173,7 +183,7 @@ export const useValidEnumTypeHook = () => {
     }
 }
 
-export const useValidEnumTypeMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useValidEnumTypeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidEnumTypeHook>>>, TError, { code: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidEnumTypeHook>>>, TError, { code: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -191,9 +201,9 @@ export const useValidEnumTypeMutationOptions = <TError = unknown, TContext = unk
 
 export type ValidEnumTypeMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useValidEnumTypeHook>>>>
 
-export type ValidEnumTypeMutationError = unknown
+export type ValidEnumTypeMutationError = ApiError
 
-export const useValidEnumType = <TError = unknown, TContext = unknown>(options?: {
+export const useValidEnumType = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidEnumTypeHook>>>, TError, { code: string }, TContext>
 }) => {
     const mutationOptions = useValidEnumTypeMutationOptions(options)
@@ -209,7 +219,7 @@ export const useUpdateEnumItemHook = () => {
     }
 }
 
-export const useUpdateEnumItemMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateEnumItemMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateEnumItemHook>>>, TError, { data: EnumItem }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateEnumItemHook>>>, TError, { data: EnumItem }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -227,9 +237,9 @@ export const useUpdateEnumItemMutationOptions = <TError = unknown, TContext = un
 
 export type UpdateEnumItemMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateEnumItemHook>>>>
 export type UpdateEnumItemMutationBody = EnumItem
-export type UpdateEnumItemMutationError = unknown
+export type UpdateEnumItemMutationError = ApiError
 
-export const useUpdateEnumItem = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateEnumItem = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateEnumItemHook>>>, TError, { data: EnumItem }, TContext>
 }) => {
     const mutationOptions = useUpdateEnumItemMutationOptions(options)
@@ -245,7 +255,7 @@ export const useValidEnumItemHook = () => {
     }
 }
 
-export const useValidEnumItemMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useValidEnumItemMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidEnumItemHook>>>, TError, { code: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidEnumItemHook>>>, TError, { code: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -263,9 +273,9 @@ export const useValidEnumItemMutationOptions = <TError = unknown, TContext = unk
 
 export type ValidEnumItemMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useValidEnumItemHook>>>>
 
-export type ValidEnumItemMutationError = unknown
+export type ValidEnumItemMutationError = ApiError
 
-export const useValidEnumItem = <TError = unknown, TContext = unknown>(options?: {
+export const useValidEnumItem = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useValidEnumItemHook>>>, TError, { code: string }, TContext>
 }) => {
     const mutationOptions = useValidEnumItemMutationOptions(options)
@@ -286,7 +296,7 @@ export const useInsertEnumItemHook = () => {
     }
 }
 
-export const useInsertEnumItemMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useInsertEnumItemMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInsertEnumItemHook>>>,
         TError,
@@ -311,9 +321,9 @@ export const useInsertEnumItemMutationOptions = <TError = unknown, TContext = un
 
 export type InsertEnumItemMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useInsertEnumItemHook>>>>
 export type InsertEnumItemMutationBody = EnumItem
-export type InsertEnumItemMutationError = unknown
+export type InsertEnumItemMutationError = ApiError
 
-export const useInsertEnumItem = <TError = unknown, TContext = unknown>(options?: {
+export const useInsertEnumItem = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useInsertEnumItemHook>>>,
         TError,
@@ -336,7 +346,7 @@ export const useGetJobListHook = () => {
 
 export const getGetJobListQueryKey = () => [`/scheduler/jobList`] as const
 
-export const useGetJobListQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetJobListHook>>>, TError = unknown>(options?: {
+export const useGetJobListQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetJobListHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetJobListHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetJobListHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -351,9 +361,9 @@ export const useGetJobListQueryOptions = <TData = Awaited<ReturnType<ReturnType<
 }
 
 export type GetJobListQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetJobListHook>>>>
-export type GetJobListQueryError = unknown
+export type GetJobListQueryError = ApiError
 
-export const useGetJobList = <TData = Awaited<ReturnType<ReturnType<typeof useGetJobListHook>>>, TError = unknown>(options?: {
+export const useGetJobList = <TData = Awaited<ReturnType<ReturnType<typeof useGetJobListHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetJobListHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useGetJobListQueryOptions(options)
@@ -375,7 +385,7 @@ export const useFireJobNowHook = () => {
 
 export const getFireJobNowQueryKey = (jobName: string) => [`/scheduler/fire/${jobName}`] as const
 
-export const useFireJobNowQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useFireJobNowHook>>>, TError = unknown>(
+export const useFireJobNowQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useFireJobNowHook>>>, TError = ApiError>(
     jobName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFireJobNowHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFireJobNowHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -391,9 +401,9 @@ export const useFireJobNowQueryOptions = <TData = Awaited<ReturnType<ReturnType<
 }
 
 export type FireJobNowQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useFireJobNowHook>>>>
-export type FireJobNowQueryError = unknown
+export type FireJobNowQueryError = ApiError
 
-export const useFireJobNow = <TData = Awaited<ReturnType<ReturnType<typeof useFireJobNowHook>>>, TError = unknown>(
+export const useFireJobNow = <TData = Awaited<ReturnType<ReturnType<typeof useFireJobNowHook>>>, TError = ApiError>(
     jobName: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFireJobNowHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -416,7 +426,7 @@ export const useListEnumsHook = () => {
 
 export const getListEnumsQueryKey = () => [`/enums/list`] as const
 
-export const useListEnumsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListEnumsHook>>>, TError = unknown>(options?: {
+export const useListEnumsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListEnumsHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListEnumsHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListEnumsHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -431,9 +441,9 @@ export const useListEnumsQueryOptions = <TData = Awaited<ReturnType<ReturnType<t
 }
 
 export type ListEnumsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListEnumsHook>>>>
-export type ListEnumsQueryError = unknown
+export type ListEnumsQueryError = ApiError
 
-export const useListEnums = <TData = Awaited<ReturnType<ReturnType<typeof useListEnumsHook>>>, TError = unknown>(options?: {
+export const useListEnums = <TData = Awaited<ReturnType<ReturnType<typeof useListEnumsHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListEnumsHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useListEnumsQueryOptions(options)
@@ -455,7 +465,10 @@ export const useListLicenseEnumsHook = () => {
 
 export const getListLicenseEnumsQueryKey = () => [`/enums/list/license`] as const
 
-export const useListLicenseEnumsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListLicenseEnumsHook>>>, TError = unknown>(options?: {
+export const useListLicenseEnumsQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useListLicenseEnumsHook>>>,
+    TError = ApiError,
+>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListLicenseEnumsHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListLicenseEnumsHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -470,9 +483,9 @@ export const useListLicenseEnumsQueryOptions = <TData = Awaited<ReturnType<Retur
 }
 
 export type ListLicenseEnumsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListLicenseEnumsHook>>>>
-export type ListLicenseEnumsQueryError = unknown
+export type ListLicenseEnumsQueryError = ApiError
 
-export const useListLicenseEnums = <TData = Awaited<ReturnType<ReturnType<typeof useListLicenseEnumsHook>>>, TError = unknown>(options?: {
+export const useListLicenseEnums = <TData = Awaited<ReturnType<ReturnType<typeof useListLicenseEnumsHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListLicenseEnumsHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useListLicenseEnumsQueryOptions(options)
@@ -494,7 +507,7 @@ export const useListValidEnumsHook = () => {
 
 export const getListValidEnumsQueryKey = () => [`/enums/list/all`] as const
 
-export const useListValidEnumsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListValidEnumsHook>>>, TError = unknown>(options?: {
+export const useListValidEnumsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useListValidEnumsHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListValidEnumsHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListValidEnumsHook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -509,9 +522,9 @@ export const useListValidEnumsQueryOptions = <TData = Awaited<ReturnType<ReturnT
 }
 
 export type ListValidEnumsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListValidEnumsHook>>>>
-export type ListValidEnumsQueryError = unknown
+export type ListValidEnumsQueryError = ApiError
 
-export const useListValidEnums = <TData = Awaited<ReturnType<ReturnType<typeof useListValidEnumsHook>>>, TError = unknown>(options?: {
+export const useListValidEnums = <TData = Awaited<ReturnType<ReturnType<typeof useListValidEnumsHook>>>, TError = ApiError>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListValidEnumsHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useListValidEnumsQueryOptions(options)
@@ -536,7 +549,7 @@ export const getListValidEnumsWithValueQueryKey = (params: ListValidEnumsWithVal
 
 export const useListValidEnumsWithValueQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     params: ListValidEnumsWithValueParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>, TError, TData> },
@@ -554,9 +567,9 @@ export const useListValidEnumsWithValueQueryOptions = <
 }
 
 export type ListValidEnumsWithValueQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>>
-export type ListValidEnumsWithValueQueryError = unknown
+export type ListValidEnumsWithValueQueryError = ApiError
 
-export const useListValidEnumsWithValue = <TData = Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>, TError = unknown>(
+export const useListValidEnumsWithValue = <TData = Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>, TError = ApiError>(
     params: ListValidEnumsWithValueParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useListValidEnumsWithValueHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -579,7 +592,7 @@ export const useGetEnumHook = () => {
 
 export const getGetEnumQueryKey = (code: string) => [`/enums/enum/all/${code}`] as const
 
-export const useGetEnumQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetEnumHook>>>, TError = unknown>(
+export const useGetEnumQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetEnumHook>>>, TError = ApiError>(
     code: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEnumHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEnumHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -595,9 +608,9 @@ export const useGetEnumQueryOptions = <TData = Awaited<ReturnType<ReturnType<typ
 }
 
 export type GetEnumQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetEnumHook>>>>
-export type GetEnumQueryError = unknown
+export type GetEnumQueryError = ApiError
 
-export const useGetEnum = <TData = Awaited<ReturnType<ReturnType<typeof useGetEnumHook>>>, TError = unknown>(
+export const useGetEnum = <TData = Awaited<ReturnType<ReturnType<typeof useGetEnumHook>>>, TError = ApiError>(
     code: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEnumHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -618,7 +631,7 @@ export const useDeleteEnumTypeHook = () => {
     }
 }
 
-export const useDeleteEnumTypeMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteEnumTypeMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEnumTypeHook>>>, TError, { code: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEnumTypeHook>>>, TError, { code: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -636,9 +649,9 @@ export const useDeleteEnumTypeMutationOptions = <TError = unknown, TContext = un
 
 export type DeleteEnumTypeMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteEnumTypeHook>>>>
 
-export type DeleteEnumTypeMutationError = unknown
+export type DeleteEnumTypeMutationError = ApiError
 
-export const useDeleteEnumType = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteEnumType = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEnumTypeHook>>>, TError, { code: string }, TContext>
 }) => {
     const mutationOptions = useDeleteEnumTypeMutationOptions(options)
@@ -654,7 +667,7 @@ export const useDeleteEnumItemHook = () => {
     }
 }
 
-export const useDeleteEnumItemMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteEnumItemMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEnumItemHook>>>, TError, { code: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEnumItemHook>>>, TError, { code: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -672,9 +685,9 @@ export const useDeleteEnumItemMutationOptions = <TError = unknown, TContext = un
 
 export type DeleteEnumItemMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteEnumItemHook>>>>
 
-export type DeleteEnumItemMutationError = unknown
+export type DeleteEnumItemMutationError = ApiError
 
-export const useDeleteEnumItem = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteEnumItem = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEnumItemHook>>>, TError, { code: string }, TContext>
 }) => {
     const mutationOptions = useDeleteEnumItemMutationOptions(options)

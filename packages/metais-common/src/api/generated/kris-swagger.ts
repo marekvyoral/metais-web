@@ -251,22 +251,22 @@ export interface NoteItemUi {
 
 export interface SortObject {
     empty?: boolean
-    unsorted?: boolean
     sorted?: boolean
+    unsorted?: boolean
 }
 
 export interface PageableObject {
     offset?: number
     sort?: SortObject
     unpaged?: boolean
-    paged?: boolean
     pageNumber?: number
     pageSize?: number
+    paged?: boolean
 }
 
 export interface PageKrisToBeIsvs {
-    totalPages?: number
     totalElements?: number
+    totalPages?: number
     size?: number
     content?: KrisToBeIsvs[]
     number?: number
@@ -288,8 +288,8 @@ export interface KrisToBeKs {
 }
 
 export interface PageKrisToBeKs {
-    totalPages?: number
     totalElements?: number
+    totalPages?: number
     size?: number
     content?: KrisToBeKs[]
     number?: number
@@ -306,8 +306,8 @@ export interface KrisToBeRights {
     inProgress?: boolean
     hasVersions?: boolean
     evaluator?: boolean
-    creator?: boolean
     municipality?: boolean
+    creator?: boolean
 }
 
 export interface ApiPermissionResult {

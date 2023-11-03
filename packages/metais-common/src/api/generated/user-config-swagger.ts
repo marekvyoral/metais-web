@@ -5,8 +5,8 @@
  * MetaIS User Config
  * OpenAPI spec version: 3.0-SNAPSHOT
  */
-import type { MutationFunction, QueryFunction, QueryKey, UseMutationOptions, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useUserConfigSwaggerClient } from '../hooks/useUserConfigSwaggerClient'
 export interface FavoriteColumn {
     name?: string
@@ -18,6 +18,16 @@ export interface FavoriteCiType {
     ciType?: string
     attributes?: FavoriteColumn[]
     metaAttributes?: FavoriteColumn[]
+}
+
+export type ApiErrorData = { [key: string]: any }
+
+export interface ApiError {
+    type?: string
+    message?: string
+    data?: ApiErrorData
+    logToken?: string
+    values?: string[]
 }
 
 type AwaitedInput<T> = PromiseLike<T> | T
@@ -32,7 +42,7 @@ export const useInsertUserColumnsHook = () => {
     }
 }
 
-export const useInsertUserColumnsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useInsertUserColumnsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInsertUserColumnsHook>>>, TError, { data: FavoriteCiType }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInsertUserColumnsHook>>>, TError, { data: FavoriteCiType }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -50,9 +60,9 @@ export const useInsertUserColumnsMutationOptions = <TError = unknown, TContext =
 
 export type InsertUserColumnsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useInsertUserColumnsHook>>>>
 export type InsertUserColumnsMutationBody = FavoriteCiType
-export type InsertUserColumnsMutationError = unknown
+export type InsertUserColumnsMutationError = ApiError
 
-export const useInsertUserColumns = <TError = unknown, TContext = unknown>(options?: {
+export const useInsertUserColumns = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInsertUserColumnsHook>>>, TError, { data: FavoriteCiType }, TContext>
 }) => {
     const mutationOptions = useInsertUserColumnsMutationOptions(options)
@@ -73,7 +83,7 @@ export const useInsertDefaultColumnsHook = () => {
     }
 }
 
-export const useInsertDefaultColumnsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useInsertDefaultColumnsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInsertDefaultColumnsHook>>>, TError, { data: FavoriteCiType }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInsertDefaultColumnsHook>>>, TError, { data: FavoriteCiType }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -91,9 +101,9 @@ export const useInsertDefaultColumnsMutationOptions = <TError = unknown, TContex
 
 export type InsertDefaultColumnsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useInsertDefaultColumnsHook>>>>
 export type InsertDefaultColumnsMutationBody = FavoriteCiType
-export type InsertDefaultColumnsMutationError = unknown
+export type InsertDefaultColumnsMutationError = ApiError
 
-export const useInsertDefaultColumns = <TError = unknown, TContext = unknown>(options?: {
+export const useInsertDefaultColumns = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useInsertDefaultColumnsHook>>>, TError, { data: FavoriteCiType }, TContext>
 }) => {
     const mutationOptions = useInsertDefaultColumnsMutationOptions(options)
@@ -111,7 +121,7 @@ export const useGetUserColumnsHook = () => {
 
 export const getGetUserColumnsQueryKey = (citype: string) => [`/columns/citype/${citype}`] as const
 
-export const useGetUserColumnsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetUserColumnsHook>>>, TError = unknown>(
+export const useGetUserColumnsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetUserColumnsHook>>>, TError = ApiError>(
     citype: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUserColumnsHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUserColumnsHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -127,9 +137,9 @@ export const useGetUserColumnsQueryOptions = <TData = Awaited<ReturnType<ReturnT
 }
 
 export type GetUserColumnsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetUserColumnsHook>>>>
-export type GetUserColumnsQueryError = unknown
+export type GetUserColumnsQueryError = ApiError
 
-export const useGetUserColumns = <TData = Awaited<ReturnType<ReturnType<typeof useGetUserColumnsHook>>>, TError = unknown>(
+export const useGetUserColumns = <TData = Awaited<ReturnType<ReturnType<typeof useGetUserColumnsHook>>>, TError = ApiError>(
     citype: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUserColumnsHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -150,7 +160,7 @@ export const useResetUserColumnsHook = () => {
     }
 }
 
-export const useResetUserColumnsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useResetUserColumnsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useResetUserColumnsHook>>>, TError, { citype: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useResetUserColumnsHook>>>, TError, { citype: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -168,9 +178,9 @@ export const useResetUserColumnsMutationOptions = <TError = unknown, TContext = 
 
 export type ResetUserColumnsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useResetUserColumnsHook>>>>
 
-export type ResetUserColumnsMutationError = unknown
+export type ResetUserColumnsMutationError = ApiError
 
-export const useResetUserColumns = <TError = unknown, TContext = unknown>(options?: {
+export const useResetUserColumns = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useResetUserColumnsHook>>>, TError, { citype: string }, TContext>
 }) => {
     const mutationOptions = useResetUserColumnsMutationOptions(options)
@@ -188,7 +198,7 @@ export const useGetDefaultColumnsHook = () => {
 
 export const getGetDefaultColumnsQueryKey = (citype: string) => [`/columns/citype/${citype}/default`] as const
 
-export const useGetDefaultColumnsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetDefaultColumnsHook>>>, TError = unknown>(
+export const useGetDefaultColumnsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetDefaultColumnsHook>>>, TError = ApiError>(
     citype: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetDefaultColumnsHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetDefaultColumnsHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -204,9 +214,9 @@ export const useGetDefaultColumnsQueryOptions = <TData = Awaited<ReturnType<Retu
 }
 
 export type GetDefaultColumnsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetDefaultColumnsHook>>>>
-export type GetDefaultColumnsQueryError = unknown
+export type GetDefaultColumnsQueryError = ApiError
 
-export const useGetDefaultColumns = <TData = Awaited<ReturnType<ReturnType<typeof useGetDefaultColumnsHook>>>, TError = unknown>(
+export const useGetDefaultColumns = <TData = Awaited<ReturnType<ReturnType<typeof useGetDefaultColumnsHook>>>, TError = ApiError>(
     citype: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetDefaultColumnsHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {

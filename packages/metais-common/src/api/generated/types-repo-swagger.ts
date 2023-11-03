@@ -344,7 +344,6 @@ export interface Attribute {
     type?: string
     displayAs?: string
     units?: string
-    isArray?: boolean
     defaultValue?: string
     technicalName?: string
     order?: number
@@ -357,6 +356,7 @@ export interface Attribute {
     engName?: string
     engDescription?: string
     array?: boolean
+    isArray?: boolean
 }
 
 export interface CiTypeFilter {

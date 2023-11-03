@@ -3,7 +3,6 @@ export const BASE_PAGE_SIZE = 10
 export const urlBase = 'https://metais.vicepremier.gov.sk'
 export const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
 export const DMS_DOWNLOAD_BASE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file`
-
 export enum GET_ENUM {
     KATEGORIA_OSOBA = 'KATEGORIA_OSOBA',
     TYP_OSOBY = 'TYP_OSOBY',
@@ -44,9 +43,83 @@ export enum ATTRIBUTE_NAME {
     ReferenceRegisterHistory_Profile_popis = 'ReferenceRegisterHistory_Profile_popis',
     ReferenceRegisterHistory_Profile_prilohy = 'ReferenceRegisterHistory_Profile_prilohy',
     ISVS_Name = 'isvsName',
+    Sr_Name = 'srName',
+    standardRequestState = 'standardRequestState',
+    requestChannel = 'requestChannel',
+    createdAt = 'createdAt',
+    name = 'name',
+    email = 'email',
+    srDescription1 = 'srDescription1',
+    relatedDocuments = 'relatedDocuments',
+}
+
+export enum API_STANDARD_REQUEST_ATTRIBUTES {
+    srName = 'srName',
+    adaptabilityDescription1 = 'adaptabilityDescription1',
+    adaptabilityDescription2 = 'adaptabilityDescription2',
+    applicabilityDescription1 = 'applicabilityDescription1',
+    applicabilityDescription2 = 'applicabilityDescription2',
+    applicabilityDescription3 = 'applicabilityDescription3',
+    applicabilityDescription4 = 'applicabilityDescription4',
+    expandabilityDescription1 = 'expandabilityDescription1',
+    expandabilityDescription2 = 'expandabilityDescription2',
+    extensionDescription1 = 'extensionDescription1',
+    extensionDescription2 = 'extensionDescription2',
+    extensionDescription3 = 'extensionDescription3',
+    extensionDescription4 = 'extensionDescription4',
+    extensionDescription5 = 'extensionDescription5',
+    extensionDescription6 = 'extensionDescription6',
+    extensionDescription7 = 'extensionDescription7',
+    impactDescription1 = 'impactDescription1',
+    impactDescription2 = 'impactDescription2',
+    impactDescription3 = 'impactDescription3',
+    impactDescription4 = 'impactDescription4',
+    impactDescription5 = 'impactDescription5',
+    impactDescription6 = 'impactDescription6',
+    impactDescription7 = 'impactDescription7',
+    impactDescription8 = 'impactDescription8',
+    impactDescription9 = 'impactDescription9',
+    impactDescription10 = 'impactDescription10',
+    impactDescription11 = 'impactDescription11',
+    impactDescription12 = 'impactDescription12',
+    maintenanceDescription1 = 'maintenanceDescription1',
+    maturityDescription1 = 'maturityDescription1',
+    maturityDescription2 = 'maturityDescription2',
+    maturityDescription3 = 'maturityDescription3',
+    outputsDescription1 = 'outputsDescription1',
+    outputsDescription2 = 'outputsDescription2',
+    outputsDescription3 = 'outputsDescription3',
+    outputsDescription4 = 'outputsDescription4',
+    outputsDescription5 = 'outputsDescription5',
+    processDescription1 = 'processDescription1',
+    processDescription2 = 'processDescription2',
+    processDescription3 = 'processDescription3',
+    processDescription4 = 'processDescription4',
+    processDescription5 = 'processDescription5',
+    processDescription6 = 'processDescription6',
+    proposalDescription1 = 'proposalDescription1',
+    proposalDescription2 = 'proposalDescription2',
+    proposalDescription3 = 'proposalDescription3',
+    relevanceDescription1 = 'relevanceDescription1',
+    reusabilityDescription1 = 'reusabilityDescription1',
+    reusabilityDescription2 = 'reusabilityDescription2',
+    scalabilityDescription1 = 'scalabilityDescription1',
+    stabilityDescription1 = 'stabilityDescription1',
+    stabilityDescription2 = 'stabilityDescription2',
+    stabilityDescription3 = 'stabilityDescription3',
+    srDescription1 = 'srDescription1',
+    srDescription2 = 'srDescription2',
+    srDescription3 = 'srDescription3',
+    srDescription4 = 'srDescription4',
+    srDescription5 = 'srDescription5',
+    srDescription6 = 'srDescription6',
+    actionDesription = 'actionDesription',
+    workGroupId = 'workGroupId',
 }
 
 export const Gen_Profil = 'Gen_Profil'
+export const Gui_Profil_Standardy = 'Gui_Profil_Standardy'
+
 export const Gui_Profil_RR = 'Gui_Profil_RR'
 export const Reference_Registers = 'ReferenceRegisters'
 
