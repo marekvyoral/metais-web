@@ -1,5 +1,14 @@
 import { GetFOPReferenceRegisters1Muk, GetFOPReferenceRegisters1State } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
+export enum DraftsListFilterItems {
+    STATE = 'state',
+    REQUEST_CHANNEL = 'requestChannel',
+    WORK_GROUP_ID = 'workGroupId',
+    DRAFT_NAME = 'draftName',
+    FROM_DATE = 'fromDate',
+    TO_DATE = 'toDate',
+    CREATED_BY = 'createdBy',
+}
 
 export interface RefRegisterFilter extends IFilterParams {
     isvsUuid: string | undefined

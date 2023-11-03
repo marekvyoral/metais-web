@@ -5,8 +5,8 @@
  * MetaIS BPM Engine
  * OpenAPI spec version: 3.0-SNAPSHOT
  */
-import type { MutationFunction, QueryFunction, QueryKey, UseMutationOptions, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useTasksSwaggerClient } from '../hooks/useTasksSwaggerClient'
 export type GetTaskByIdParams = {
     id: number
@@ -93,6 +93,16 @@ export interface SimpleTask {
     assignedToIds?: string[]
 }
 
+export type ApiErrorData = { [key: string]: any }
+
+export interface ApiError {
+    type?: string
+    message?: string
+    data?: ApiErrorData
+    logToken?: string
+    values?: string[]
+}
+
 type AwaitedInput<T> = PromiseLike<T> | T
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
@@ -110,7 +120,7 @@ export const useReassignTaskWithUserHook = () => {
     }
 }
 
-export const useReassignTaskWithUserMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReassignTaskWithUserMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReassignTaskWithUserHook>>>,
         TError,
@@ -135,9 +145,9 @@ export const useReassignTaskWithUserMutationOptions = <TError = unknown, TContex
 
 export type ReassignTaskWithUserMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReassignTaskWithUserHook>>>>
 export type ReassignTaskWithUserMutationBody = SimpleTask
-export type ReassignTaskWithUserMutationError = unknown
+export type ReassignTaskWithUserMutationError = ApiError
 
-export const useReassignTaskWithUser = <TError = unknown, TContext = unknown>(options?: {
+export const useReassignTaskWithUser = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useReassignTaskWithUserHook>>>,
         TError,
@@ -163,7 +173,7 @@ export const useReassignTaskHook = () => {
     }
 }
 
-export const useReassignTaskMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useReassignTaskMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReassignTaskHook>>>, TError, { data: SimpleTask }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReassignTaskHook>>>, TError, { data: SimpleTask }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -181,9 +191,9 @@ export const useReassignTaskMutationOptions = <TError = unknown, TContext = unkn
 
 export type ReassignTaskMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReassignTaskHook>>>>
 export type ReassignTaskMutationBody = SimpleTask
-export type ReassignTaskMutationError = unknown
+export type ReassignTaskMutationError = ApiError
 
-export const useReassignTask = <TError = unknown, TContext = unknown>(options?: {
+export const useReassignTask = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReassignTaskHook>>>, TError, { data: SimpleTask }, TContext>
 }) => {
     const mutationOptions = useReassignTaskMutationOptions(options)
@@ -199,7 +209,7 @@ export const useCloseTaskHook = () => {
     }
 }
 
-export const useCloseTaskMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useCloseTaskMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCloseTaskHook>>>, TError, { data: SimpleTask }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCloseTaskHook>>>, TError, { data: SimpleTask }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -217,9 +227,9 @@ export const useCloseTaskMutationOptions = <TError = unknown, TContext = unknown
 
 export type CloseTaskMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCloseTaskHook>>>>
 export type CloseTaskMutationBody = SimpleTask
-export type CloseTaskMutationError = unknown
+export type CloseTaskMutationError = ApiError
 
-export const useCloseTask = <TError = unknown, TContext = unknown>(options?: {
+export const useCloseTask = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCloseTaskHook>>>, TError, { data: SimpleTask }, TContext>
 }) => {
     const mutationOptions = useCloseTaskMutationOptions(options)
@@ -235,7 +245,7 @@ export const useCreateTaskHook = () => {
     }
 }
 
-export const useCreateTaskMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useCreateTaskMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateTaskHook>>>, TError, { data: Task }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateTaskHook>>>, TError, { data: Task }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -253,9 +263,9 @@ export const useCreateTaskMutationOptions = <TError = unknown, TContext = unknow
 
 export type CreateTaskMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCreateTaskHook>>>>
 export type CreateTaskMutationBody = Task
-export type CreateTaskMutationError = unknown
+export type CreateTaskMutationError = ApiError
 
-export const useCreateTask = <TError = unknown, TContext = unknown>(options?: {
+export const useCreateTask = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateTaskHook>>>, TError, { data: Task }, TContext>
 }) => {
     const mutationOptions = useCreateTaskMutationOptions(options)
@@ -274,7 +284,7 @@ export const useGetTasksHook = () => {
     }
 }
 
-export const useGetTasksMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useGetTasksMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetTasksHook>>>, TError, { data: TaskRequest }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetTasksHook>>>, TError, { data: TaskRequest }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -292,12 +302,12 @@ export const useGetTasksMutationOptions = <TError = unknown, TContext = unknown>
 
 export type GetTasksMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetTasksHook>>>>
 export type GetTasksMutationBody = TaskRequest
-export type GetTasksMutationError = unknown
+export type GetTasksMutationError = ApiError
 
 /**
  * @summary getTasks
  */
-export const useGetTasks = <TError = unknown, TContext = unknown>(options?: {
+export const useGetTasks = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetTasksHook>>>, TError, { data: TaskRequest }, TContext>
 }) => {
     const mutationOptions = useGetTasksMutationOptions(options)
@@ -315,7 +325,7 @@ export const useGetTaskByIdHook = () => {
 
 export const getGetTaskByIdQueryKey = (params: GetTaskByIdParams) => [`/tasks/detail`, ...(params ? [params] : [])] as const
 
-export const useGetTaskByIdQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetTaskByIdHook>>>, TError = unknown>(
+export const useGetTaskByIdQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetTaskByIdHook>>>, TError = ApiError>(
     params: GetTaskByIdParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTaskByIdHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTaskByIdHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -331,9 +341,9 @@ export const useGetTaskByIdQueryOptions = <TData = Awaited<ReturnType<ReturnType
 }
 
 export type GetTaskByIdQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetTaskByIdHook>>>>
-export type GetTaskByIdQueryError = unknown
+export type GetTaskByIdQueryError = ApiError
 
-export const useGetTaskById = <TData = Awaited<ReturnType<ReturnType<typeof useGetTaskByIdHook>>>, TError = unknown>(
+export const useGetTaskById = <TData = Awaited<ReturnType<ReturnType<typeof useGetTaskByIdHook>>>, TError = ApiError>(
     params: GetTaskByIdParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetTaskByIdHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {

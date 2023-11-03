@@ -1,19 +1,12 @@
 import React from 'react'
-import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { useTranslation } from 'react-i18next'
+import { Outlet } from 'react-router-dom'
 
-import { MainContentWrapper } from '@/components/MainContentWrapper'
+import draftsList from '@/pages/standardization/draftslist/list'
 
-const DraftsList = () => {
-    const { t } = useTranslation()
-    return (
-        <>
-            <BreadCrumbs withWidthContainer links={[{ label: t('breadcrumbs.home'), href: '/', icon: HomeIcon }]} />
-            <MainContentWrapper>
-                <TextHeading size="L">{t('draftsList.heading')}</TextHeading>
-            </MainContentWrapper>
-        </>
-    )
+export const INDEX_ROUTE = draftsList
+
+const DraftsListManyPage: React.FC = () => {
+    return <Outlet />
 }
 
-export default DraftsList
+export default DraftsListManyPage

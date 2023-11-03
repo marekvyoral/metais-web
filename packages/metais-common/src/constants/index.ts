@@ -87,11 +87,13 @@ export enum KSISVS_ROLES {
     STD_KSPODP = 'STD_KSPODP',
     STD_KSTAJ = 'STD_KSTAJ',
     STD_KSCLEN = 'STD_KSCLEN',
+    STD_KOORDINATOR_AGENDY = 'STD_KOORDINATOR_AGENDY',
 }
 export enum RoleEnum {
     PROJEKT_SCHVALOVATEL = 'PROJEKT_SCHVALOVATEL',
 }
 export const KSIVS_SHORT_NAME = 'KSISVS'
+export const REFID_URI_SZ = 'REFID_URI_SZ'
 export const META_PREFERENCES_KEY = 'META_'
 export const FILTER_LOCAL_STORAGE_KEY = 'filter_'
 
@@ -99,6 +101,8 @@ export const PUBLIC_ORG_CMDB_CODE = '00003010'
 export const NULL = 'null'
 
 export const USER_INFO_QUERY_KEY = 'userInfo'
+export const CONFLUENCE = 'CONFLUENCE'
+export const IS_KOORDINATOR = 'isKoordinator'
 
 export enum RequestListState {
     DRAFT = 'DRAFT',
@@ -122,6 +126,7 @@ export enum CodeListFilterOnlyBase {
 }
 export const PORTAL_URL = import.meta.env.VITE_PORTAL_URL
 export const DEFAULT_ERROR = 'Error'
+export const ROLES_CAN_CHANGE_STD_DRAFTS = [KSISVS_ROLES.STD_KSPODP, KSISVS_ROLES.STD_KSPRE, KSISVS_ROLES.STD_KSTAJ]
 
 export const STAV_PROJEKTU = 'STAV_PROJEKTU'
 export const FAZA_PROJEKTU = 'FAZA_PROJEKTU'

@@ -801,6 +801,7 @@
         "queryErrorMessage": "Ospravedlňujeme sa, ale pri načítavaní dát sa vyskytla technická chyba. Skúste stránku znova načítať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na adrese ",
         "mutationErrorTitle": "Akcia zlyhala",
         "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na ",
+        "saving": "Vykonávam akciu",
         "mutationCreateSuccessMessage": "Položka bola úspešne vytvorená"
     },
     "accordion": {
@@ -971,8 +972,8 @@
         "publicCodeListsList": "Zoznam publikovaných číselníkov",
         "ciCreate": "Vytvorenie nového komponentu typu {{entityName}}",
         "compareHistory": "Porovnávanie histórie",
-        "ciEdit": "Editácia komponentu",
-        "noName": "Bez mena"
+        "standardization": "Štandardizácia",
+        "draftsList": "Zoznam návrhov"
     },
     "codeList": {
         "descriptionError": "Popis je povinný",
@@ -1425,6 +1426,82 @@
             "submit": "Vymazať účet a moje údaje",
             "heading": "Naozaj si želáte vymazanie osobných údajov?",
             "passwordPlaceholder": "Zadajte vaše heslo"
+        }
+    },
+    "DraftsList": {
+        "title": "Zoznam návrhov",
+        "table": {
+            "version": "Verzia",
+            "name": "Predkladateľ",
+            "srName": "Názov návrhu",
+            "standardRequestState": "Stav",
+            "requestChannel": "Typ návrhu",
+            "createdAt": "Dátum zadania návrhu",
+            "workGroup": "Pracovná skupina"
+        },
+        "filter": {
+            "createdBy": "Predkladateľ",
+            "draftName": "Názov návrhu",
+            "state": {
+                "label": "Stav návrhu",
+                "REQUESTED": "Nový",
+                "ASSIGNED": "Priradený",
+                "REJECTED": "Zamietnutý",
+                "ACCEPTED": "Akceptovaný"
+            },
+            "draftType": {
+                "label": "Typ návrhu",
+                "WEB": "Všeobecný",
+                "RI": "Referencovateľný identifikátor",
+                "RR": "Referenčný register",
+                "ZC_Request": "Žiadosť o pridanie nového ZČ",
+                "ZC_Header": "Žiadosť o zmenu ZČ"
+            },
+            "fromDate": "Prijaté v období od",
+            "toDate": "Prijaté v období do",
+            "workGroupId": "Pracovná skupina"
+        },
+        "detail": {
+            "noDocuments": "Nie sú priložené žiadne dokumenty",
+            "assignedToGroup": "Pridelený skupine",
+            "missingRejectReason": "Nebol zadaný dôvod zrušenia",
+            "accordion": {
+                "basicInformation": "Základné informácie",
+                "generalDescription": "Všeobecný popis návrhu",
+                "otherDescription": "Ostatné"
+            }
+        },
+        "create": {
+            "heading": "Tvorba návrhu",
+            "warning": "Kritériá, uvádzané nižšie, je potrebné pred schválením návrhu štandardu vyhodnotiť, neznamená to však, že každé z nich musí byť „splnené“ (nie každé kritérium je relevantné pre každý návrh). Pokiaľ predkladateľ nevie niektoré kritérium posúdiť alebo ho uviesť, v odpovedi uvedie takúto informáciu. V rámci možností odpovedajte celou vetou, nie len „áno/nie“."
+        },
+        "createForm": {
+            "heading": "Znenie návrhu",
+            "name": "Meno a priezvisko",
+            "email": "Email",
+            "userHeading": "Identifikácia používateľa",
+            "submit": "Pridať návrh",
+            "cancel": "Zrušiť",
+            "links": {
+                "heading": "Dokumenty",
+                "subHeading": "Zadajte odkazy na dokumenty",
+                "linkDescription": "Popis dokumentu",
+                "linkType": "Typ dokumentu",
+                "url": "Link na dokument",
+                "linkSize": "Veľkosť dokumentu",
+                "andOrAddFile": "A/Alebo nahrajte dokumenty",
+                "addNewAttachment": "Pridať ďalší odkaz na dokument"
+            }
+        },
+        "header": {
+            "confluenceDocs": "Vložiť do ?????",
+            "ACCEPTED": "Označiť návrh ako zapracovaný",
+            "REJECTED": "Zamietnuť návrh",
+            "ASSIGNED": "Priradiť do PS",
+            "changeState": {
+                "description": "Dôvod",
+                "submit": "Odoslať formulár"
+            }
         }
     },
     "meetings": {

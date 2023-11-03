@@ -1,7 +1,21 @@
-import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { Group } from '@isdd/metais-common/api/generated/iam-swagger'
+import { ApiStandardRequestPreview } from '@isdd/metais-common/api/generated/standards-swagger'
 import { ApiReferenceRegister, ApiReferenceRegisterItemList } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IAttributesContainerView } from '@isdd/metais-common/components/containers/AttributesContainer'
+
+export interface IDraftsListTable {
+    data: {
+        draftsList: ApiStandardRequestPreview[] | undefined
+        workingGroups: (Group | undefined)[]
+    }
+    handleFilterChange: (filter: IFilter) => void
+    pagination: Pagination
+    sort: ColumnSort[]
+    isLoading: boolean
+    isError: boolean
+}
 
 export interface IRefRegisterView {
     data: {

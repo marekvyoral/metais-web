@@ -15,6 +15,7 @@ export enum Actions {
     HISTORY = 'history',
     BULK_ACTIONS = 'bulk_actions',
     CHANGE_STATES = 'change_states',
+    HAS_ROLE = 'has_role',
     DELETE = 'DELETE',
 }
 
@@ -23,6 +24,7 @@ export const RR_MANAGER = 'RR_MANAGER'
 export const RR_ADMIN_MFSR = 'RR_ADMIN_MFSR'
 
 export const CANNOT_READ_ENTITY = ['ulohy', 'notifications', 'codelists/list']
+export const CAN_CREATE_WITHOUT_LOGIN = ['draftsList']
 
 const defineAbilityForUser = (roles: string[] = [], entityName: string, create?: boolean) => {
     const { can, build } = new AbilityBuilder(createMongoAbility)
@@ -44,6 +46,8 @@ const defineAbilityForUser = (roles: string[] = [], entityName: string, create?:
         can(Actions.BULK_ACTIONS, entityName)
     }
 
+    if (entityName === 'draftsList') can(Actions.CREATE, 'ci')
+
     return build()
 }
 
@@ -55,11 +59,11 @@ export const useUserAbility = (entityName?: string) => {
     return defineAbilityForUser(user?.roles, entityName ?? 'ci')
 }
 
-export const useCreateCiAbility = (ciType?: CiType) => {
+export const useCreateCiAbility = (ciType?: CiType, entityName?: string) => {
     const auth = useAuth()
 
     if (ciType && canCreateCiForType(ciType)) {
-        return defineAbilityForUser(auth?.state?.user?.roles, 'ci', canUserCreateCi(auth?.state?.user ?? undefined, ciType?.roleList))
+        return defineAbilityForUser(auth?.state?.user?.roles, entityName ?? 'ci', canUserCreateCi(auth?.state?.user ?? undefined, ciType?.roleList))
     }
-    return defineAbilityForUser(auth.state.user?.roles, 'ci')
+    return defineAbilityForUser(auth.state.user?.roles, entityName ?? 'ci')
 }

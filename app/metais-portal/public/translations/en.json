@@ -793,6 +793,7 @@
         "queryErrorMessage": "We apologize, but a technical error occurred while data fetching. Try reloading the page. In case the error occurred repeatedly, contact the administrator by e-mail at ",
         "mutationErrorTitle": "Action failed",
         "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at",
+        "saving": "Saving",
         "mutationCreateSuccessMessage": "The item was successfully created"
     },
     "accordion": {
@@ -953,6 +954,8 @@
         "newCiAndRelation": "Add new item and relation for {{itemName}}",
         "refRegisters": "Reference registers",
         "compareHistory": "Change comparer",
+        "standardization": "Standardization",
+        "draftsList": "Drafts list",
         "refRegistersCreate": "Request to add",
         "refRegistersEdit": "Edit reference register",
         "dataObjects": "Data objects",
@@ -1408,6 +1411,82 @@
             "submit": "Delete my account and personal information",
             "heading": "Do you really wish to delete your personal information?",
             "passwordPlaceholder": "Enter your password"
+        }
+    },
+    "DraftsList": {
+        "title": "Draft list",
+        "table": {
+            "version": "Version",
+            "name": "Tenderer",
+            "srName": "Draft name",
+            "standardRequestState": "Status",
+            "requestChannel": "Draft type",
+            "createdAt": "Created at",
+            "workGroup": "Assigned working group"
+        },
+        "filter": {
+            "createdBy": "Tenderer",
+            "draftName": "Draft name",
+            "state": {
+                "label": "Draft status",
+                "REQUESTED": "New",
+                "ASSIGNED": "Assigned",
+                "REJECTED": "Rejected",
+                "ACCEPTED": "Accepted"
+            },
+            "draftType": {
+                "label": "Draft type",
+                "WEB": "Web",
+                "RI": "Reference identifier",
+                "RR": "Reference register",
+                "ZC_Request": "Request for add new codelist",
+                "ZC_Header": "Request for change new codelist"
+            },
+            "fromDate": "Accepted from date",
+            "toDate": "Accepted to date",
+            "workGroupId": "Assigned working group"
+        },
+        "detail": {
+            "noDocuments": "No documents attached",
+            "assignedToGroup": "Assigned to PS",
+            "missingRejectReason": "Reject reason is missing",
+            "accordion": {
+                "basicInformation": "Basic information",
+                "generalDescription": "General description of the proposal",
+                "otherDescription": "Other"
+            }
+        },
+        "createForm": {
+            "heading": "Draft name",
+            "name": "First/Last name",
+            "email": "Email",
+            "userHeading": "User identification",
+            "submit": "Add draft",
+            "cancel": "Cancel",
+            "links": {
+                "heading": "Documents",
+                "subHeading": "Add links on documents",
+                "linkDescription": "Document description",
+                "linkType": "Type of document",
+                "url": "Link on document",
+                "linkSize": "Document size",
+                "andOrAddFile": "And/Or upload documents",
+                "addNewAttachment": "Add another document"
+            }
+        },
+        "header": {
+            "confluenceDocs": "Insert into ?????",
+            "ACCEPTED": "Mark draft as processed",
+            "REJECTED": "Reject draft",
+            "ASSIGNED": "Add into working group",
+            "changeState": {
+                "description": "Reason",
+                "submit": "Submit form"
+            }
+        },
+        "create": {
+            "heading": "Create draft",
+            "warning": "The criteria below should be evaluated before approving the draft standard, but this does not mean that each of them must be 'met' (not every criterion is relevant to each proposal). If applicant does not know to judge a criterion, than answer the whole sentence, not just 'yes/no'."
         }
     },
     "meetings": {
