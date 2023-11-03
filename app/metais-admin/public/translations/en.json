@@ -277,7 +277,8 @@
         "organization": "Organization",
         "state": "State",
         "states": {
-            "blocked": "Blocked"
+            "BLOCKED": "Blocked",
+            "ACTIVATED": "Activated"
         },
         "block": "Block",
         "unblock": "Unblock",

@@ -96,7 +96,7 @@ export const PublicAuthoritiesHierarchyView: React.FC<IPublicAuthoritiesHierarch
                 <FlexColumnReverseWrapper>
                     <TextHeading size="L">{t('publicAuthorities.hierarchy')}</TextHeading>
                 </FlexColumnReverseWrapper>
-                <PublicAuthoritySelect onChangeAuthority={onChangeAuthority} selectedOrg={selectedOrg} />
+                <PublicAuthoritySelect onChangeAuthority={onChangeAuthority} selectedOrg={selectedOrg} isClearable />
 
                 <QueryFeedback loading={isLoading && !expandableRowIdLoading} withChildren>
                     {expandableContent(hierarchy)}

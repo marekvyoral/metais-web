@@ -11,9 +11,10 @@ import { useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplici
 interface Props {
     onChangeAuthority: (e: HierarchyRightsUi | null) => void
     selectedOrg: HierarchyRightsUi | null
+    isClearable?: boolean
 }
 
-export const PublicAuthoritySelect: React.FC<Props> = ({ onChangeAuthority, selectedOrg }) => {
+export const PublicAuthoritySelect: React.FC<Props> = ({ onChangeAuthority, selectedOrg, isClearable = false }) => {
     const { t } = useTranslation()
     const user = useAuth()
     const implicitHierarchy = useReadCiList()
@@ -52,7 +53,7 @@ export const PublicAuthoritySelect: React.FC<Props> = ({ onChangeAuthority, sele
                 <QueryFeedback loading={isLoading} error={false} indicatorProps={{ label: t('selectPublicAuthority.loading') }} withChildren />
             )}
             <SelectLazyLoading
-                isClearable={false}
+                isClearable={isClearable}
                 value={selectedOrg}
                 error={hasError ? t('selectPublicAuthority.error') : ''}
                 getOptionLabel={(item) => item.poName ?? ''}
