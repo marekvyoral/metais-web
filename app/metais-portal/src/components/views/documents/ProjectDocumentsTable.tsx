@@ -7,7 +7,7 @@ import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swag
 import { useGetMetaHook } from '@isdd/metais-common/api/generated/dms-swagger'
 import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
-import { BASE_PAGE_NUMBER, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, DEFAULT_PAGESIZE_OPTIONS, INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import {
@@ -48,6 +48,8 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
     const { state: authState } = useAuth()
     const isUserAdmin = authState.user?.roles.includes('R_ADMIN')
     const isUserLogged = authState.user !== null
+    const isInvalidated = projectData?.metaAttributes?.state === INVALIDATED
+
     const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
     const [rowSelection, setRowSelection] = useState({})
     const { errorMessage, isBulkLoading } = useBulkAction()
@@ -71,8 +73,8 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             label={t('actionOverTable.options.download')}
             onClick={async () => {
                 const item = docs ? docs[row.row.index] : {}
-                const ressponse = await getMeta(item.uuid ?? '')
-                if (ressponse) {
+                const response = await getMeta(item.uuid ?? '')
+                if (response) {
                     downloadFile(`${DMS_DOWNLOAD_FILE}${item?.uuid}`, item.name ?? item?.attributes?.Gen_Profil_nazov)
                 }
             }}
@@ -143,8 +145,8 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             label={t('actionOverTable.options.openDocument')}
             onClick={async () => {
                 const item = docs ? docs[row.row.index] : {}
-                const ressponse = await getMeta(item.uuid ?? '')
-                if (ressponse) {
+                const response = await getMeta(item.uuid ?? '')
+                if (response) {
                     downloadFile(`${DMS_DOWNLOAD_FILE}${item?.uuid}`, item.name ?? item?.attributes?.Gen_Profil_nazov)
                 }
             }}
@@ -154,8 +156,8 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             label={t('actionOverTable.options.uploadDocument')}
             onClick={async () => {
                 const item = docs ? docs[row.row.index] : {}
-                const ressponse = await getMeta(item.uuid ?? '')
-                if (ressponse) {
+                const response = await getMeta(item.uuid ?? '')
+                if (response) {
                     downloadFile(`${DMS_DOWNLOAD_FILE}${item?.uuid}`, item.name ?? item?.attributes?.Gen_Profil_nazov)
                 }
             }}
@@ -310,7 +312,12 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                 hiddenButtons={{ SELECT_COLUMNS: true, PAGING: !selectPageSize }}
                 createButton={
                     !!addButtonSectionName && (
-                        <Button label={t('documentsTab.addNewDocument')} onClick={() => setOpenAddModal({})} className={styles.bottomMargin0} />
+                        <Button
+                            disabled={isInvalidated}
+                            label={t('documentsTab.addNewDocument')}
+                            onClick={() => setOpenAddModal({})}
+                            className={styles.bottomMargin0}
+                        />
                     )
                 }
                 bulkPopup={

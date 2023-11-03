@@ -10,7 +10,8 @@ import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FilterAttribute, FilterAttributeValue } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { MetaInformationTypes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
-import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers'
+import { formatDateForDefaultValue, hasCiType } from '@isdd/metais-common/componentHelpers'
+import { CustomAttributeType } from '@isdd/metais-common/componentHelpers/filter/findAttributeType'
 
 enum RadioInputValue {
     TRUE = 'true',
@@ -18,10 +19,7 @@ enum RadioInputValue {
 }
 
 interface Props {
-    attributeType: {
-        isArray: boolean
-        type: string
-    }
+    attributeType: CustomAttributeType
     index: number
     value: FilterAttribute
     constraints: EnumType | undefined
@@ -51,6 +49,9 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
     const hasEnumItems = !!constraints?.code && constraints.enumItems && constraints.enumItems.length > 0
     const hasNumericValue = isByte || isFloat || isInteger || isDouble || isLong || isShort
 
+    const isCMDBType = !!attributeType.cmdbConstraints?.type
+    const ciTypeCMDB = attributeType.cmdbConstraints && hasCiType(attributeType.cmdbConstraints) ? attributeType.cmdbConstraints.ciType : ''
+
     const optionsForSelects =
         constraints?.enumItems?.map((item) => ({ label: item.description ? `${item.description}` : `${item.value}`, value: `${item.code}` })) ?? []
 
@@ -60,6 +61,19 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
 
     const renderContent = () => {
         switch (true) {
+            case isCMDBType: {
+                return (
+                    <div className={classNames(style.rowItem, style.lazySelect)}>
+                        <SelectPOForFilter
+                            ciType={ciTypeCMDB}
+                            label={t('customAttributeFilter.value.label')}
+                            name="atributeValue"
+                            valuesAsUuids={valueAsArray(value.value ?? '')}
+                            onChange={(val) => onChange({ ...value, value: val?.map((v) => v?.uuid ?? '') })}
+                        />
+                    </div>
+                )
+            }
             case hasEnumItems: {
                 return (
                     <div className={style.rowItem}>
