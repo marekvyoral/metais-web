@@ -14,7 +14,7 @@ import {
 import { RoleParticipantUI, getGetRoleParticipantBulkQueryKey, useGetRoleParticipantBulk } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 
 export interface CodeListDetailData {
@@ -61,8 +61,12 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
     const { t, i18n } = useTranslation()
     const queryClient = useQueryClient()
 
-    const [workingLanguage, setWorkingLanguage] = useState<string>(i18n.language)
+    const [workingLanguage, setWorkingLanguage] = useState<string>('')
     const [successMessage, setSuccessMessage] = useState<string>('')
+
+    useEffect(() => {
+        setWorkingLanguage(i18n.language)
+    }, [i18n.language])
 
     const { isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile, data: attributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
     const { isLoading: isLoadingData, isError: isErrorData, data: codeListData } = useGetCodelistHeader(Number(id))
@@ -95,7 +99,7 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
         gestors: roleParticipantsData,
     }
 
-    const codelistItemsActionMutation = useProcessAllItemsAction()
+    const itemsActionMutation = useProcessAllItemsAction()
     const codelistActionMutation = useProcessHeaderAction()
 
     const invalidateCodeListDetailCache = () => {
@@ -114,7 +118,7 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
     const handleAllItemsReadyToPublish = () => {
         const code = data.codeList?.code
         if (!code) return
-        codelistItemsActionMutation.mutate(
+        itemsActionMutation.mutate(
             { code, params: { action: ApiCodeListItemsActions.CODELIST_ITEMS_TO_PUBLISH } },
             {
                 onSuccess: () => {
@@ -184,12 +188,12 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
         isLoadingAttributeProfile,
         isLoadingData,
         isLoadingOriginal,
-        codelistItemsActionMutation.isLoading,
+        itemsActionMutation.isLoading,
         codelistActionMutation.isLoading,
     ].some((item) => item)
     const isError = [isErrorRoleParticipants, isErrorAttributeProfile, isErrorData, isErrorOriginal].some((item) => item)
-    const isErrorMutation = [codelistActionMutation, codelistItemsActionMutation].some((item) => item.isError)
-    const isSuccessMutation = [codelistActionMutation, codelistItemsActionMutation].some((item) => item.isSuccess)
+    const isErrorMutation = [codelistActionMutation, itemsActionMutation].some((item) => item.isError)
+    const isSuccessMutation = [codelistActionMutation, itemsActionMutation].some((item) => item.isSuccess)
 
     return (
         <View

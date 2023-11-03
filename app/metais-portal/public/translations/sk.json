@@ -309,7 +309,56 @@
     "errors": {
         "fixLink": "Opraviť",
         "invalidEntityId": "Nevalidná entita",
-        "NoChangesDetected": "Žiadne zmeny na položke"
+        "CL08": {
+            "cl.missing.header.name": "Nesprávna požiadavka. Názov číselníka je povinný.",
+            "cl.missing.header.master.manager": "Nesprávna požiadavka. Hlavný gestor číselníka je povinný.",
+            "cl.missing.header.validity": "Nesprávna požiadavka. Platnosť číselníka je povinná.",
+            "cl.missing.header.legislative": "Nesprávna požiadavka. Definovanie legislatívnej účinnosti číselníka je povinné.",
+            "cl.missing.item.language": "Nesprávne dáta pre položku číselníka. Chýba informácia o jazykovej verzii.",
+            "cl.required.item": "Položky číselníka sú povinné!",
+            "cl.missing.date.from": "Nesprávna požiadavka. Chýba začiatok účinnosti.",
+            "cl.missing.item": "Nesprávne dáta pre položku číselníka. Chýba názov položky.",
+            "cl.missing.value": "Nesprávne dáta pre položku číselníka. Chýba povinný parameter položky.",
+            "cl.missingdate.value": "Doplňte dátum platnosti a účinnosti číselníka a jeho položiek",
+            "cl.invalid.same.languages": "Nesprávne dáta pre položku číselníka. Dáta definujú dve hodnoty atribútu platné v rovnakom čase.",
+            "cl.invalid.date.from.before.to": "Nesprávna požiadavka. Dátum pre účinnosť od je menší ako dátum pre účinnosť do.",
+            "cl.invalid.date.same.fromto": "Nesprávna požiadavka. Dátum pre účinnosť od je rovnaký ako dátum pre účinnosť do.",
+            "cl.invalid.date.same.from": "Nesprávna požiadavka. Parameter obsahuje dve verzie s rovnakým dátumom pre účinnosť od.",
+            "cl.invalid.date.same.to": "Nesprávna požiadavka. Parameter obsahuje dve verzie s rovnakým dátumom pre účinnosť do.",
+            "cl.invalid.date.overlap": "Nesprávna požiadavka. Parameter obsahuje verzie hodnôt, ktoré sa prekrývajú v čase.",
+            "cl.xml.managertype.notexists": "Nesprávna požiadavka. Nie je zadefinovaný typ gestora.",
+            "cl.request.isnot.base": "Nesprávna požiadavka. Číselník nie je základný a teda nemá byť prerokovaný na Komisii pre štandardizáciu ISVS.",
+            "cl.request.is.base": "Nesprávna požiadavka. Základný číselník musí byť prerokovaný na Komisii pre štandardizáciu ISVS.",
+            "cl.header.inappropriate.wfstate": "Nesprávna požiadavka. Číselník nie je v korektnom stave pre danú operáciu.",
+            "cl.item.inappropriate.wfstate": "Nesprávna požiadavka. Položka číselníka nie je v korektnom stave pre danú operáciu.",
+            "cl.request.not.reject.wsstate": "Nesprávna požiadavka. Číselník s rovnakým kódom už existuje alebo existuje žiadosť na pridanie číselníka s rovnakým kódom.",
+            "cl.request.notexists": "REQUEST_CODE_DOES_NOT_EXINesprávna požiadavka. Požiadavka na číselník s daným kódom neexistuje.STS",
+            "cl.header.`": "Nesprávna požiadavka. Číselník s daným kódom neexistuje.",
+            "cl.item.notexists": "Nesprávna požiadavka. Položka číselníka s daným kódom neexistuje.",
+            "cl.header.locked": "Nesprávna požiadavka. Číselník s daným kódom je zamknutý.",
+            "cl.header.not.locked": "Nesprávna požiadavka. Číselník s daným kódom nie je zamknutý. Nie je možné vykonať danú operáciu nad odomknutým číselníkom.",
+            "cl.item.locked": "Nesprávna požiadavka. Položka číselníka s daným kódom je zamknutá.",
+            "cl.item.not.locked": "Nesprávna požiadavka. Položka číselníka s daným kódom nie je zamknutá. Nie je možné vykonať danú operáciu nad odomknutou položkou číselníka.",
+            "cl.header.temporal.notexists": "Nesprávna požiadavka. Neexistuje číselník s daným kódom v stave rozpracovaný.",
+            "cl.header.original.notexists": "Nesprávna požiadavka. Neexistuje číselník s daným kódom v stave nový.",
+            "cl.item.temporal.notexists": "Nesprávna požiadavka. Neexistuje položka číselníka s daným kódom v stave rozpracovaná.",
+            "cl.item.original.notexists": "Nesprávna požiadavka. Neexistuje položka číselníka s daným kódom v stave nová.",
+            "cl.item.already.exists": "Položka so zadaným kódom položky už existuje. Kód položky musí byť jedinečný.",
+            "cl.consistency.request.more.thanone": "Nastala interná chyba v základných číselníkoch. Existuje viacero verzií požiadavky na číselník.",
+            "cl.consistency.temporal.exists.without.origin": "Nastala interná chyba v základných číselníkoch. Existuje rozpracovaná verzia číselníka bez publikovanej verzie.",
+            "cl.permissiondenied": "Na túto operáciu momentálne nemáte práva.",
+            "cl.request.codelist.exists": "Nesprávna požiadavka. Číselník s daným kódom už existuje.",
+            "cl.language.version.alreadyexists": "Nesprávna požiadavka. Preklad číselníka je už vytvorený.",
+            "cl.language.version.notexist": "Nesprávna požiadavka. Najskôr je potrebné vytvoriť preklad číselníka.",
+            "cl.language.version.default.changing": "Nesprávna požiadavka. Nie je možné meniť slovenský preklad číselníka.",
+            "cl.header.temporal.exists": "Pri pridávaní novej jazykovej verzie nesmie existovať upravená verzia číselníka.",
+            "Check historizable lists - two FromDates in one list are equals.": "Dva dátumy začiatku účinnosti sa rovnajú.",
+            "cl.request.request.code.invalid.value": "Nesprávny kód čiselníka.",
+            "cl.wrong.date.format": "Nie je dodržaný dátový typ atribútu.",
+            "cl.missing.item.name": "Nesprávna požiadavka. Názov položky číselníka je povinný.",
+            "cl.missing.item.code": "Nesprávna požiadavka. Kód položky číselníka je povinný.",
+            "cl.missing.item.date.validation": "Pre publikovanie položiek, musia mať všetky položky vyplnení dátum platnosti a dátum začiatku účinnosti."
+        }
     },
     "mutationFeedback": {
         "successfulUpdated": "Položka bola úspešne zmenená"
@@ -947,7 +996,8 @@
                 "gestor": "Vecný gestor číselníka",
                 "history": "História zmien"
             },
-            "items": "Položky číselníka"
+            "items": "Položky číselníka",
+            "addNewItem": "Pridanie novej položky do číselníka"
         },
         "history": {
             "table": {
@@ -1061,6 +1111,11 @@
             "itemLocked": "Toto je rozpracovaná verzia oprávneným používateľom {{user}} zo dňa {{date}}",
             "workVersion": "Toto je rozpracovaná verzia",
             "updatingVersion": "Upravujete rozpracovanú verziu oprávneným používateľom {{user}} zo dňa {{day}}"
+        },
+        "validation": {
+            "code": "Kód položky je povinné pole",
+            "name": "Názov položky je povinné pole",
+            "effectiveFrom": "Začiatok účinnosti je povinné pole"
         }
     },
     "codeListList": {

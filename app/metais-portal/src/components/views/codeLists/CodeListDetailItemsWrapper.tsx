@@ -24,13 +24,14 @@ import {
 } from '@isdd/idsk-ui-kit/index'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
-import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, CodeListItemState, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 
+import { IItemForm, ItemForm } from './components/modals/ItemForm/ItemForm'
 import { CodeListDetailItemsTable, TableCols } from './CodeListDetailItemsTable'
 import { selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
+import { useSetDatesSchema } from './useCodeListSchemas'
 
 import {
     CodeListDetailFilterData,
@@ -39,57 +40,67 @@ import {
     defaultFilterValues,
 } from '@/components/containers/CodeListDetailItemsContainer'
 
-interface SetDatesFormData {
-    validFrom: Date
-    effectiveFrom: Date
-}
-
-const getSelectedIds = (rowSelection: Record<string, TableCols>): number[] => {
+const getSelectedItemCodes = (rowSelection: Record<string, TableCols>): string[] => {
     return Object.values(rowSelection)
-        .map((row) => row.id)
-        .filter((item): item is number => !!item)
+        .filter((item) => item.itemCode !== undefined)
+        .map((row) => row.itemCode || '')
 }
-
-const schema: Yup.ObjectSchema<SetDatesFormData> = Yup.object({
-    validFrom: Yup.date().required().default(null),
-    effectiveFrom: Yup.date().required().default(null),
-})
 
 export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> = ({
     items,
     attributeProfile,
     isLoading,
     isError,
-    isErrorMutation,
     isSuccessMutation,
+    isErrorEditItemSubmit,
+    isLoadingEditItemSubmit,
+    isSuccessEditItemSubmit,
     workingLanguage,
     filter,
     invalidateCodeListDetailCache,
     handleFilterChange,
     handleMarkForPublish,
     handleSetDates,
+    handleStartItemEdit,
+    handleSubmitItem,
 }) => {
     const { t } = useTranslation()
     const [rowSelection, setRowSelection] = useState<Record<string, TableCols>>({})
     const [isMarkForPublishDialogOpened, setIsMarkForPublishDialogOpened] = useState<boolean>(false)
     const [isSetDatesDialogOpened, setIsSetDatesDialogOpened] = useState<boolean>(false)
+    const [isItemEditOpen, setIsItemEditOpen] = useState(false)
+    const [editingCodeListItem, setEditingCodeListItem] = useState<IItemForm>()
+
+    const { schema } = useSetDatesSchema()
 
     const { register, formState, handleSubmit } = useForm({
         resolver: yupResolver(schema),
     })
 
     const onHandleMarkForPublish = () => {
-        handleMarkForPublish(getSelectedIds(rowSelection))
+        handleMarkForPublish(getSelectedItemCodes(rowSelection))
         setIsMarkForPublishDialogOpened(false)
         invalidateCodeListDetailCache()
     }
 
     const onSetDatesSubmit = (formValues: FieldValues) => {
-        const ids = getSelectedIds(rowSelection)
+        const itemCodes = getSelectedItemCodes(rowSelection)
         const { effectiveFrom, validFrom } = formValues
-        handleSetDates(ids, effectiveFrom, validFrom)
+        handleSetDates(itemCodes, effectiveFrom, validFrom)
         setIsSetDatesDialogOpened(false)
         invalidateCodeListDetailCache()
+    }
+
+    const handleOpenEditItem = async (item?: IItemForm) => {
+        const returnedItem = await handleStartItemEdit(Number(item?.id))
+
+        setEditingCodeListItem(returnedItem)
+        setIsItemEditOpen(true)
+    }
+
+    const handleOpenCreateItem = () => {
+        setEditingCodeListItem(undefined)
+        setIsItemEditOpen(true)
     }
 
     const selectedItemsTable = (
@@ -145,23 +156,14 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                     </div>
                 )}
             />
-            <MutationFeedback
-                success={isSuccessMutation}
-                successMessage={t('codeListDetail.feedback.editCodeListItems')}
-                error={isErrorMutation ? t('feedback.mutationErrorMessage') : undefined}
-            />
+            <MutationFeedback success={isSuccessMutation} successMessage={t('codeListDetail.feedback.editCodeListItems')} error={undefined} />
             <ActionsOverTable
                 entityName=""
                 handleFilterChange={handleFilterChange}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
                 createButton={
                     <Can I={Actions.CREATE} a={Subjects.ITEM}>
-                        <CreateEntityButton
-                            label={t('codeListDetail.button.addNewItem')}
-                            onClick={() => {
-                                return // add edit
-                            }}
-                        />
+                        <CreateEntityButton label={t('codeListDetail.button.addNewItem')} onClick={() => handleOpenCreateItem()} />
                     </Can>
                 }
                 bulkPopup={
@@ -192,6 +194,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                     attributeProfile={attributeProfile}
                     filter={filter}
                     workingLanguage={workingLanguage}
+                    handleOpenEditItem={handleOpenEditItem}
                     handleFilterChange={handleFilterChange}
                     handleMarkForPublish={handleMarkForPublish}
                 />
@@ -244,6 +247,19 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                     <TextWarning>{t('codeListDetail.modal.text.nothingSelected')}</TextWarning>
                 )}
             </BaseModal>
+            {isItemEditOpen && (
+                <ItemForm
+                    isOpen={isItemEditOpen}
+                    close={() => setIsItemEditOpen(false)}
+                    onSubmit={handleSubmitItem}
+                    isErrorMutation={isErrorEditItemSubmit}
+                    isLoadingMutation={isLoadingEditItemSubmit}
+                    isSuccessMutation={isSuccessEditItemSubmit}
+                    item={editingCodeListItem}
+                    attributeProfile={attributeProfile}
+                    defaultOrderValue={items?.codelistsItemCount ?? 1}
+                />
+            )}
         </QueryFeedback>
     )
 }
