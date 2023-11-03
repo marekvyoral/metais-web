@@ -137,6 +137,8 @@ export const MUK = 'muk'
 export const P_REALIZUJE_AKT = 'P_realizuje_AKT'
 export const ACTIVITY = 'Aktivita'
 
+export const DESCRIPTION = 'Popis'
+
 export const PROJECT_DOCUMENTS_SECTIONS_EXPANDABLE: { [key: string]: string } = {
     'Projektový iniciálny dokument (PID)': 'projektovy_inicialny_dokument_',
     'Manažérske správy, reporty, zoznamy a požiadavky': 'manazerske_spravy_reporty_',

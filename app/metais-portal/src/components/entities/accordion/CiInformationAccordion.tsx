@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
-import { HTML_TYPE } from '@isdd/metais-common/constants'
+import { DESCRIPTION, HTML_TYPE } from '@isdd/metais-common/constants'
 import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/src/hooks/useGetCiTypeConstraintsData'
@@ -60,7 +60,6 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                                     withDescription,
                                 )
                                 const isHTML = attribute.type === HTML_TYPE
-
                                 return (
                                     !attribute?.invisible && (
                                         <InformationGridRow
@@ -103,12 +102,13 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                                         currentEntityCiTypeConstraintsData,
                                         withDescription,
                                     )
-                                    const isHTML = attribute.type === HTML_TYPE
+                                    const isHTML = attribute.type === HTML_TYPE || attribute.name == DESCRIPTION
+
                                     return (
                                         <InformationGridRow
                                             key={attribute?.technicalName}
                                             label={attribute.name ?? ''}
-                                            value={isHTML ? <SafeHtmlComponent dirtyHtml={rowValue} /> : rowValue}
+                                            value={isHTML ? <SafeHtmlComponent dirtyHtml={rowValue?.replace(/\n/g, '<br>')} /> : rowValue}
                                             tooltip={attribute?.description}
                                             lang={setEnglishLangForAttr(attribute.technicalName ?? '')}
                                         />
