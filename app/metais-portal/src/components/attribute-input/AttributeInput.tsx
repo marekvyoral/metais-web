@@ -23,6 +23,7 @@ import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/Ri
 import { HTML_TYPE, MAX_TITLE_LENGTH } from '@isdd/metais-common/constants'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
+import { formatNumberWithSpaces } from '@isdd/metais-common/utils/utils'
 
 import { ArrayAttributeInput } from './ArrayAttributeInput'
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
@@ -292,18 +293,29 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
 
             case hasNumericValue: {
                 return (
-                    <Input
-                        correct={isCorrect}
-                        info={attribute.description}
-                        id={attribute.technicalName}
-                        disabled={attribute.readOnly || disabled}
-                        label={attribute.name + requiredLabel + unitsLabel}
-                        error={error?.message?.toString()}
-                        {...register(attribute.technicalName + nameSufix)}
-                        type="number"
-                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
-                        hint={hint}
-                        step={isDouble || isFloat ? 'any' : 1}
+                    <Controller
+                        control={control}
+                        name={attribute.technicalName + nameSufix}
+                        render={({ field: { onChange, value, ref } }) => (
+                            <Input
+                                name={attribute.technicalName + nameSufix}
+                                ref={ref}
+                                value={formatNumberWithSpaces(value)}
+                                onChange={(e) => {
+                                    const formattedValue = e.target.value.replace(/[^\d]/g, '').replace(/\s/g, '')
+                                    onChange(formattedValue)
+                                }}
+                                defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
+                                hint={hint}
+                                step={isDouble || isFloat ? 'any' : 1}
+                                correct={isCorrect}
+                                info={attribute.description}
+                                id={attribute.technicalName}
+                                disabled={attribute.readOnly || disabled}
+                                label={attribute.name + requiredLabel + unitsLabel}
+                                error={error?.message?.toString()}
+                            />
+                        )}
                     />
                 )
             }

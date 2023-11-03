@@ -14,7 +14,7 @@ export const mapRightsToHierarchyItem = (rights?: HierarchyRightsUi[]): PublicAu
     return {
         name: po?.poName ?? '',
         uuid: po?.poUUID ?? '',
-        address: `${address?.street} ${address?.number}, ${address?.zipCode} ${address?.village}`,
+        address: `${address?.street ?? ''} ${address?.number ? address?.number + ',' : ''} ${address?.zipCode ?? ''} ${address?.village ?? ''}`,
         children: [],
     }
 }

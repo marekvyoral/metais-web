@@ -202,7 +202,11 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
             header: t('userManagement.state'),
             accessorFn: (row) => row.identity.state,
             cell: ({ cell }) =>
-                cell.getValue() === IdentityState.BLOCKED ? <span className={styles.redColor}>{t('userManagement.states.blocked')}</span> : '',
+                cell.getValue() === IdentityState.BLOCKED ? (
+                    <span className={styles.redColor}>{t('userManagement.states.BLOCKED')}</span>
+                ) : (
+                    t(`userManagement.states.${cell.getValue()}`)
+                ),
             id: 'state',
         },
     ]

@@ -4,3 +4,8 @@ export const isObjectEmpty = (obj: unknown) => {
     }
     return false
 }
+
+export const formatNumberWithSpaces = (value: string) => {
+    const formatted = value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+    return formatted
+}

@@ -310,7 +310,8 @@
         "organization": "Povinná osoba",
         "state": "Stav",
         "states": {
-            "blocked": "Blokovaný"
+            "BLOCKED": "Blokovaný",
+            "ACTIVATED": "Aktivovaný"
         },
         "block": "Blokovať",
         "unblock": "Odblokovať",

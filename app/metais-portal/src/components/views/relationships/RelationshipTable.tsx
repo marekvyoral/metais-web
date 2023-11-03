@@ -82,6 +82,7 @@ export const RelationshipsTable: React.FC<RelationshipsTable> = ({
                             options={ciTypeOption}
                             defaultValue={defaultFilter?.neighboursFilter?.ciType}
                             setValue={setValue}
+                            disabled={ciTypeOption.length === 0}
                         />
                         <MultiSelect
                             name="relType"
@@ -90,6 +91,7 @@ export const RelationshipsTable: React.FC<RelationshipsTable> = ({
                             options={relTypeOption}
                             defaultValue={defaultFilter?.neighboursFilter?.relType}
                             setValue={setValue}
+                            disabled={relTypeOption.length === 0}
                         />
                         <MultiSelect
                             name="metaAttributes.state"
