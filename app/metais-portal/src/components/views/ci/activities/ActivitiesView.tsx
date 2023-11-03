@@ -21,6 +21,7 @@ export const ActivitiesView: React.FC<IView> = ({
     filter,
     totaltems,
     invalidateRelationActivityToProject,
+    isInvalidated,
 }) => {
     const { t } = useTranslation()
     const location = useLocation()
@@ -72,7 +73,7 @@ export const ActivitiesView: React.FC<IView> = ({
                 const ci = row.getValue() as ConfigurationItemUi
                 return (
                     <SimpleSelect
-                        disabled={!isOwnerOfCi}
+                        disabled={!isOwnerOfCi || isInvalidated}
                         label={''}
                         name={'projectActivity'}
                         defaultValue={ci ? 'true' : 'false'}

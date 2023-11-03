@@ -54,7 +54,7 @@ const getCiTypesFromConstraints = (entityStructure: CiType | undefined): Record<
         ...(attributes ?? []),
         ...(attributeProfiles?.map((profile: AttributeProfile) => profile.attributes).flat() ?? []),
     ]
-        .filter((att) => att?.constraints?.[0]?.type === 'ciType')
+        .filter((att) => att?.constraints?.[0]?.type === 'ciType' && att?.valid && !att.invisible)
         .reduce((acc: Record<AttributeTechnicalName, CiTypeConstraintTechnicalName>, att) => {
             if (isConstraintCiType(att?.constraints?.[0])) {
                 return { ...acc, [att?.technicalName ?? '']: att?.constraints?.[0]?.ciType ?? '' }

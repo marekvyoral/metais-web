@@ -19,6 +19,7 @@ import { Category, ListReportParams, Parameter, ReportExecute } from '@isdd/meta
 import { IAttributeFilters, IFilterParams, OPERATOR_OPTIONS, OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
 import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { JOIN_OPERATOR } from '@isdd/metais-common/constants'
+import { AttributeConstraintEnum, AttributeConstraintsItem } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: { [filterName: string]: T } | T): CiListFilterContainerUi => {
     const { pageNumber, pageSize, sort } = filter
@@ -356,4 +357,10 @@ export const isMatchWithMetaAttributeTechnicalName = (technicalName: string) => 
         MetainformationColumns.LAST_MODIFIED_AT,
         MetainformationColumns.CREATED_AT,
     ].some((metaAttributeName) => metaAttributeName === technicalName)
+}
+
+export const hasCiType = (
+    constraint: AttributeConstraintsItem | AttributeConstraintEnum,
+): constraint is AttributeConstraintsItem & { ciType: string } => {
+    return 'ciType' in constraint && typeof constraint['ciType'] === 'string'
 }

@@ -4,7 +4,7 @@ import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { ATTRIBUTE_NAME, MutationFeedback } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
@@ -42,14 +42,20 @@ const EntityDetailPage: React.FC = () => {
     document.title = `${t('titles.ciDetail', { ci: urlEntityName })} | MetaIS`
     const userAbility = useUserAbility()
 
-    const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: urlEntityName ?? '', entityId: entityId ?? '', t })
-
-    const { data: ciTypeData } = useGetCiType(entityName ?? '')
-    const { data: ciItemData, refetch } = useReadConfigurationItem(entityId ?? '', {
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+    const {
+        data: ciItemData,
+        isLoading: isCiItemDataLoading,
+        isError: isCiItemDataError,
+        refetch,
+    } = useReadConfigurationItem(entityId ?? '', {
         query: {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+
+    const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: urlEntityName ?? '', entityId: entityId ?? '', t })
+
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
 
     if (urlEntityName == ENTITY_PROJECT && isUserLogged) {
@@ -74,9 +80,10 @@ const EntityDetailPage: React.FC = () => {
                     },
                 ]}
             />
+
             <MainContentWrapper>
                 <CiPermissionsWrapper entityId={entityId ?? ''} entityName={entityName ?? ''}>
-                    <>
+                    <QueryFeedback loading={isCiItemDataLoading || isCiTypeDataLoading}>
                         <FlexColumnReverseWrapper>
                             <CiEntityIdHeader
                                 editButton={
@@ -93,14 +100,17 @@ const EntityDetailPage: React.FC = () => {
                                 isInvalidated={isInvalidated}
                                 refetchCi={refetch}
                             />
+                            <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
                             <MutationFeedback error={false} success={isActionSuccess.value} />
                         </FlexColumnReverseWrapper>
                         {entityName == ENTITY_PROJECT && (
                             <ProjectStateContainer configurationItemId={entityId ?? ''} View={(props) => <ProjectStateView {...props} />} />
                         )}
+
                         <Tabs tabList={tabList} />
+
                         <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} />
-                    </>
+                    </QueryFeedback>
                 </CiPermissionsWrapper>
             </MainContentWrapper>
         </>

@@ -1,9 +1,11 @@
+import { CustomAttributeType } from './findAttributeType'
+
 import { MetaInformationTypes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
 
-export const findDefaultOperator = (attType: { isArray: boolean; type: string }, attributeConstraints: EnumType | undefined) => {
+export const findDefaultOperator = (attType: CustomAttributeType, attributeConstraints: EnumType | undefined) => {
     const hasEnumItems = !!attributeConstraints?.code && attributeConstraints.enumItems && attributeConstraints.enumItems.length > 0
 
     if (attType.isArray && !hasEnumItems) {

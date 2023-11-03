@@ -12,20 +12,17 @@ import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { findAvailableOperators } from '@isdd/metais-common/componentHelpers/filter/findAvailableOperators'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { CustomAttributeType } from '@isdd/metais-common/componentHelpers/filter/findAttributeType'
 
 interface Props {
     index: number
     onChange: (data: FilterAttribute, prevData?: FilterAttribute, isNewName?: boolean) => void
     attribute: FilterAttribute
     remove: () => void
-    availableAttributes?: (Attribute | undefined)[]
     selectedAttributes: FilterAttribute[]
     attributeProfiles: AttributeProfile[] | undefined
     attributes: Attribute[] | undefined
-    attributeType: {
-        isArray: boolean
-        type: string
-    }
+    attributeType: CustomAttributeType
     attributeConstraints: EnumType | undefined
     currentAttribute: FilterAttribute
 }

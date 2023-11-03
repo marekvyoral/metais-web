@@ -12,7 +12,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/consta
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
 import { useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFilters'
-import { ACTIVITY, P_REALIZUJE_AKT } from '@isdd/metais-common/constants'
+import { ACTIVITY, INVALIDATED, P_REALIZUJE_AKT } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
@@ -39,6 +39,7 @@ export interface IView {
     }
     totaltems?: number | undefined
     invalidateRelationActivityToProject: (activityUuid?: string, uuid?: string) => Promise<void>
+    isInvalidated: boolean
 }
 
 interface IActivitiesListContainer {
@@ -58,6 +59,7 @@ export const ActivitiesListContainer: React.FC<IActivitiesListContainer> = ({ co
     const { currentPreferences } = useUserPreferences()
     const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
     const { data: ciData, isLoading: ciLoading } = useReadConfigurationItem(configurationItemId ?? '')
+    const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED
     const invalidateRelation = useInvalidateRelationshipHook()
     const storeActivity = useStoreGraphHook()
 
@@ -174,6 +176,7 @@ export const ActivitiesListContainer: React.FC<IActivitiesListContainer> = ({ co
             isLoading={isLoading || isCurrentActivitiesLoading}
             isError={isError || isCurrentActivitiesError}
             setDataRows={setDataRows}
+            isInvalidated={isInvalidated}
         />
     )
 }
