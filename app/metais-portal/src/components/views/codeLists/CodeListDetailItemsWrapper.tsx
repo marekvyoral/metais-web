@@ -26,8 +26,10 @@ import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions, CodeListItemState, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 
-import { CodeListDetailItemsTable, CodeListItemState, TableCols } from './CodeListDetailItemsTable'
+import { CodeListDetailItemsTable, TableCols } from './CodeListDetailItemsTable'
 import { selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
 
 import {
@@ -62,6 +64,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
     isSuccessMutation,
     workingLanguage,
     filter,
+    invalidateCodeListDetailCache,
     handleFilterChange,
     handleMarkForPublish,
     handleSetDates,
@@ -78,6 +81,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
     const onHandleMarkForPublish = () => {
         handleMarkForPublish(getSelectedIds(rowSelection))
         setIsMarkForPublishDialogOpened(false)
+        invalidateCodeListDetailCache()
     }
 
     const onSetDatesSubmit = (formValues: FieldValues) => {
@@ -85,6 +89,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
         const { effectiveFrom, validFrom } = formValues
         handleSetDates(ids, effectiveFrom, validFrom)
         setIsSetDatesDialogOpened(false)
+        invalidateCodeListDetailCache()
     }
 
     const selectedItemsTable = (
@@ -150,29 +155,33 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                 handleFilterChange={handleFilterChange}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
                 createButton={
-                    <CreateEntityButton
-                        label={t('codeListDetail.button.addNewItem')}
-                        onClick={() => {
-                            return // add edit
-                        }}
-                    />
+                    <Can I={Actions.CREATE} a={Subjects.ITEM}>
+                        <CreateEntityButton
+                            label={t('codeListDetail.button.addNewItem')}
+                            onClick={() => {
+                                return // add edit
+                            }}
+                        />
+                    </Can>
                 }
                 bulkPopup={
-                    <BulkPopup
-                        checkedRowItems={Object.keys(rowSelection).length}
-                        items={() => [
-                            <ButtonLink
-                                key={'markReadyForPublishing'}
-                                label={t('codeListDetail.button.markReadyForPublishingBulk')}
-                                onClick={() => setIsMarkForPublishDialogOpened(true)}
-                            />,
-                            <ButtonLink
-                                key={'setDates'}
-                                label={t('codeListDetail.button.setDatesBulk')}
-                                onClick={() => setIsSetDatesDialogOpened(true)}
-                            />,
-                        ]}
-                    />
+                    <Can I={Actions.BULK_ACTIONS} a={Subjects.ITEM}>
+                        <BulkPopup
+                            checkedRowItems={Object.keys(rowSelection).length}
+                            items={() => [
+                                <ButtonLink
+                                    key={'markReadyForPublishing'}
+                                    label={t('codeListDetail.button.markReadyForPublishingBulk')}
+                                    onClick={() => setIsMarkForPublishDialogOpened(true)}
+                                />,
+                                <ButtonLink
+                                    key={'setDates'}
+                                    label={t('codeListDetail.button.setDatesBulk')}
+                                    onClick={() => setIsSetDatesDialogOpened(true)}
+                                />,
+                            ]}
+                        />
+                    </Can>
                 }
             />
             {items && (

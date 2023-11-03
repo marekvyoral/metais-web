@@ -15,6 +15,7 @@ export interface CodeListDetailItemsViewProps {
     isSuccessMutation: boolean
     filter: IFilter
     workingLanguage: string
+    invalidateCodeListDetailCache: () => void
     handleFilterChange: (filter: IFilter) => void
     handleMarkForPublish: (ids: number[]) => void
     handleSetDates: (ids: number[], validFrom: string, effectiveFrom: string) => void
@@ -23,6 +24,7 @@ export interface CodeListDetailItemsViewProps {
 export interface CodeListDetailItemsContainerProps {
     code: string
     workingLanguage: string
+    invalidateCodeListDetailCache: () => void
     View: React.FC<CodeListDetailItemsViewProps>
 }
 
@@ -48,7 +50,12 @@ export interface CodeListDetailItemsFilterData extends IFilterParams, IFilter {
     toDate?: string
 }
 
-export const CodeListDetailItemsContainer: React.FC<CodeListDetailItemsContainerProps> = ({ code, workingLanguage, View }) => {
+export const CodeListDetailItemsContainer: React.FC<CodeListDetailItemsContainerProps> = ({
+    code,
+    workingLanguage,
+    invalidateCodeListDetailCache,
+    View,
+}) => {
     const { filter, handleFilterChange } = useFilterParams<CodeListDetailFilterData>({
         sort: [
             {
@@ -129,6 +136,7 @@ export const CodeListDetailItemsContainer: React.FC<CodeListDetailItemsContainer
             isSuccessMutation={isSuccessMutation}
             workingLanguage={workingLanguage}
             filter={filter}
+            invalidateCodeListDetailCache={invalidateCodeListDetailCache}
             handleFilterChange={handleFilterChange}
             handleMarkForPublish={handleMarkForPublish}
             handleSetDates={handleSetDates}

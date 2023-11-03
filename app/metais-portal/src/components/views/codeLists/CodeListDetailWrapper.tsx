@@ -15,9 +15,10 @@ import {
 import { useTranslation } from 'react-i18next'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useState } from 'react'
+import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 
 import { BasicInfoTabView } from './components/tabs/BasicInfoTabView'
 import { GestorTabView } from './components/tabs/GestorTabView'
@@ -35,8 +36,8 @@ import { CodeListDetailHistoryContainer } from '@/components/containers/CodeList
 import { CodeListDetailItemsContainer } from '@/components/containers/CodeListDetailItemsContainer'
 
 const getAllWorkingLanguages = (codelist?: ApiCodelistPreview): string[] => {
-    const languages = codelist?.codelistNames?.map((name) => name.language) ?? []
-    return languages.filter((item, index) => languages.indexOf(item) === index).filter((item): item is string => !!item)
+    const languages = codelist?.codelistNames?.map((name) => name.language || '') ?? []
+    return languages.filter((item, index) => languages.indexOf(item) === index)
 }
 
 export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
@@ -48,6 +49,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
     successMessage,
     workingLanguage,
     setWorkingLanguage,
+    invalidateCodeListDetailCache,
     handleAllItemsReadyToPublish,
     handleSendToIsvs,
     handlePublishCodeList,
@@ -55,9 +57,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
     handleSendToSzzc,
 }) => {
     const { t } = useTranslation()
-    const {
-        state: { user },
-    } = useAuth()
+
     const [isExportModalOpen, setIsExportModalOpen] = useState(false)
     const [isImportModalOpen, setIsImportModalOpen] = useState(false)
     const [isNewLanguageVersionModalOpen, setIsNewLanguageVersionModalOpen] = useState(false)
@@ -67,6 +67,8 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
     const [isReturnToMainGestorOpen, setIsReturnToMainGestorOpen] = useState(false)
     const [isSendToSzzcOpen, setIsSendToSzzcOpen] = useState(false)
 
+    const code = data.codeList?.code ?? ''
+
     const tabs: Tab[] = [
         {
             id: 'basic-info',
@@ -75,12 +77,9 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
         },
         { id: 'gestor', title: t('codeListDetail.title.tab.gestor'), content: <GestorTabView data={data} /> },
     ]
-
-    const isLoggedIn = !!user
-    const code = data.codeList?.code ?? ''
-
-    if (isLoggedIn) {
-        tabs.push({
+    const tabsWithHistory: Tab[] = [
+        ...tabs,
+        {
             id: 'history',
             title: t('codeListDetail.title.tab.history'),
             content: (
@@ -97,8 +96,8 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                     )}
                 />
             ),
-        })
-    }
+        },
+    ]
 
     return (
         <>
@@ -138,67 +137,80 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                                     )
                                 }}
                             />
-                            {!isLoggedIn && <Button label={t('codeListDetail.button.exportCodelist')} onClick={() => setIsExportModalOpen(true)} />}
-                            {isLoggedIn && (
-                                <>
-                                    <Button
-                                        label={t('codeListDetail.button.edit')}
-                                        onClick={() => {
-                                            return // add edit
-                                        }}
-                                    />
-                                    <ButtonPopup
-                                        buttonLabel={t('codeListDetail.button.more')}
-                                        popupPosition="right"
-                                        popupContent={() => {
-                                            return (
-                                                <div className={styles.buttonLinksDiv}>
-                                                    <ButtonLink
-                                                        key={'export'}
-                                                        label={t('codeListDetail.button.exportCodelist')}
-                                                        onClick={() => setIsExportModalOpen(true)}
-                                                    />
-                                                    <ButtonLink
-                                                        key={'import'}
-                                                        label={t('codeListDetail.button.importCodelist')}
-                                                        onClick={() => setIsImportModalOpen(true)}
-                                                    />
-                                                    <ButtonLink
-                                                        key={'sendToIsvs'}
-                                                        label={t('codeListDetail.button.sendToIsvs')}
-                                                        onClick={() => setIsSendToIsvsOpen(true)}
-                                                    />
-                                                    <ButtonLink
-                                                        key={'publishCodelist'}
-                                                        label={t('codeListDetail.button.publishCodelist')}
-                                                        onClick={() => setIsPublishCodeListOpen(true)}
-                                                    />
-                                                    <ButtonLink
-                                                        key={'publishCodelistItems'}
-                                                        label={t('codeListDetail.button.publishCodelistItems')}
-                                                        onClick={() => setIsMarkForPublishItemsModalOpen(true)}
-                                                    />
-                                                    <ButtonLink
-                                                        key={'sendToSzzc'}
-                                                        label={t('codeListDetail.button.sendToSzzc')}
-                                                        onClick={() => setIsSendToSzzcOpen(true)}
-                                                    />
-                                                    <ButtonLink
-                                                        key={'returnToMainGestor'}
-                                                        label={t('codeListDetail.button.returnToMainGestor')}
-                                                        onClick={() => setIsReturnToMainGestorOpen(true)}
-                                                    />
-                                                    <ButtonLink
-                                                        key={'addLanguage'}
-                                                        label={t('codeListDetail.button.addLanguage')}
-                                                        onClick={() => setIsNewLanguageVersionModalOpen(true)}
-                                                    />
-                                                </div>
-                                            )
-                                        }}
-                                    />
-                                </>
-                            )}
+                            <Can I={Actions.EDIT} a={Subjects.DETAIL}>
+                                <Button
+                                    label={t('codeListDetail.button.edit')}
+                                    onClick={() => {
+                                        return // add edit
+                                    }}
+                                />
+                            </Can>
+                            <ButtonPopup
+                                buttonLabel={t('codeListDetail.button.more')}
+                                popupPosition="right"
+                                popupContent={() => {
+                                    return (
+                                        <div className={styles.buttonLinksDiv}>
+                                            <Can I={Actions.EXPORT} a={Subjects.DETAIL}>
+                                                <ButtonLink
+                                                    key={'export'}
+                                                    label={t('codeListDetail.button.exportCodelist')}
+                                                    onClick={() => setIsExportModalOpen(true)}
+                                                />
+                                            </Can>
+                                            <Can I={Actions.IMPORT} a={Subjects.DETAIL}>
+                                                <ButtonLink
+                                                    key={'import'}
+                                                    label={t('codeListDetail.button.importCodelist')}
+                                                    onClick={() => setIsImportModalOpen(true)}
+                                                />
+                                            </Can>
+                                            <Can I={Actions.SEND_TO} a={Subjects.DETAIL} field="isvs">
+                                                <ButtonLink
+                                                    key={'sendToIsvs'}
+                                                    label={t('codeListDetail.button.sendToIsvs')}
+                                                    onClick={() => setIsSendToIsvsOpen(true)}
+                                                />
+                                            </Can>
+                                            <Can I={Actions.PUBLISH} a={Subjects.DETAIL}>
+                                                <ButtonLink
+                                                    key={'publishCodelist'}
+                                                    label={t('codeListDetail.button.publishCodelist')}
+                                                    onClick={() => setIsPublishCodeListOpen(true)}
+                                                />
+                                            </Can>
+                                            <Can I={Actions.PUBLISH} a={Subjects.ITEM} field="all">
+                                                <ButtonLink
+                                                    key={'publishCodelistItems'}
+                                                    label={t('codeListDetail.button.publishCodelistItems')}
+                                                    onClick={() => setIsMarkForPublishItemsModalOpen(true)}
+                                                />
+                                            </Can>
+                                            <Can I={Actions.SEND_TO} a={Subjects.DETAIL} field="szzc">
+                                                <ButtonLink
+                                                    key={'sendToSzzc'}
+                                                    label={t('codeListDetail.button.sendToSzzc')}
+                                                    onClick={() => setIsSendToSzzcOpen(true)}
+                                                />
+                                            </Can>
+                                            <Can I={Actions.SEND_TO} a={Subjects.DETAIL} field="mainGestor">
+                                                <ButtonLink
+                                                    key={'returnToMainGestor'}
+                                                    label={t('codeListDetail.button.returnToMainGestor')}
+                                                    onClick={() => setIsReturnToMainGestorOpen(true)}
+                                                />
+                                            </Can>
+                                            <Can I={Actions.CREATE} a={Subjects.DETAIL} field="languageVersion">
+                                                <ButtonLink
+                                                    key={'addLanguage'}
+                                                    label={t('codeListDetail.button.addLanguage')}
+                                                    onClick={() => setIsNewLanguageVersionModalOpen(true)}
+                                                />
+                                            </Can>
+                                        </div>
+                                    )
+                                }}
+                            />
                         </ButtonGroupRow>
                     </div>
 
@@ -219,10 +231,16 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                     {data.codeList?.temporal && !data.codeList.locked && (
                         <IconWithText icon={InfoIcon}>{t('codeListDetail.warning.workVersion')}</IconWithText>
                     )}
-                    <Tabs tabList={tabs} />
+                    <Can not I={Actions.READ} a={Subjects.DETAIL} field="history">
+                        <Tabs tabList={tabs} />
+                    </Can>
+                    <Can I={Actions.READ} a={Subjects.DETAIL} field="history">
+                        <Tabs tabList={tabsWithHistory} />
+                    </Can>
                     <CodeListDetailItemsContainer
                         workingLanguage={workingLanguage}
                         code={code}
+                        invalidateCodeListDetailCache={invalidateCodeListDetailCache}
                         View={(props) => (
                             <CodeListDetailItemsWrapper
                                 items={props.items}
@@ -233,6 +251,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                                 isError={props.isError}
                                 isErrorMutation={props.isErrorMutation}
                                 isSuccessMutation={props.isSuccessMutation}
+                                invalidateCodeListDetailCache={props.invalidateCodeListDetailCache}
                                 handleFilterChange={props.handleFilterChange}
                                 handleMarkForPublish={props.handleMarkForPublish}
                                 handleSetDates={props.handleSetDates}

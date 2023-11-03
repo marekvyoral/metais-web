@@ -5,8 +5,13 @@ import {
     useGetOriginalCodelistHeader,
     useProcessAllItemsAction,
     useProcessHeaderAction,
+    getGetCodelistItemsQueryKey,
+    getGetCodelistHeaderQueryKey,
+    getGetOriginalCodelistHeaderQueryKey,
+    getGetCodelistHistoryQueryKey,
+    getGetCodelistActionsHistoryQueryKey,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { RoleParticipantUI, useGetRoleParticipantBulk } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { RoleParticipantUI, getGetRoleParticipantBulkQueryKey, useGetRoleParticipantBulk } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
@@ -28,6 +33,7 @@ export interface CodeListDetailWrapperProps {
     successMessage?: string
     workingLanguage: string
     setWorkingLanguage: (language: string) => void
+    invalidateCodeListDetailCache: () => void
     handleAllItemsReadyToPublish: () => void
     handleSendToIsvs: () => void
     handlePublishCodeList: () => void
@@ -53,9 +59,7 @@ interface CodeListDetailContainerProps {
 
 export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = ({ id, View }) => {
     const { t, i18n } = useTranslation()
-
     const queryClient = useQueryClient()
-    const codeListListQueryKey = getGetCodelistHeadersQueryKey({ language: '', pageNumber: 0, perPage: 0 })[0]
 
     const [workingLanguage, setWorkingLanguage] = useState<string>(i18n.language)
     const [successMessage, setSuccessMessage] = useState<string>('')
@@ -69,9 +73,9 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
     } = useGetOriginalCodelistHeader(codeListData?.code ?? '', { query: { enabled: !!codeListData } })
 
     const requestGestorGids = [
-        ...(codeListData?.mainCodelistManagers?.map((gestor) => gestor.value) || []),
-        ...(codeListData?.codelistManagers?.map((gestor) => gestor.value) || []),
-    ].filter((item): item is string => !!item)
+        ...(codeListData?.mainCodelistManagers?.map((gestor) => gestor.value || '') || []),
+        ...(codeListData?.codelistManagers?.map((gestor) => gestor.value || '') || []),
+    ]
 
     const {
         isInitialLoading: isLoadingRoleParticipants,
@@ -94,6 +98,19 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
     const codelistItemsActionMutation = useProcessAllItemsAction()
     const codelistActionMutation = useProcessHeaderAction()
 
+    const invalidateCodeListDetailCache = () => {
+        const code = data.codeList?.code
+        if (code) {
+            queryClient.invalidateQueries([getGetCodelistHeaderQueryKey(Number(id))[0]])
+            queryClient.invalidateQueries([getGetOriginalCodelistHeaderQueryKey(code)[0]])
+            queryClient.invalidateQueries([getGetRoleParticipantBulkQueryKey({})[0]])
+            queryClient.invalidateQueries([getGetCodelistHeadersQueryKey({ language: '', pageNumber: 0, perPage: 0 })[0]])
+            queryClient.invalidateQueries([getGetCodelistItemsQueryKey(code, { language: '', pageNumber: 0, perPage: 0 })[0]])
+            queryClient.invalidateQueries([getGetCodelistHistoryQueryKey(code)[0]])
+            queryClient.invalidateQueries([getGetCodelistActionsHistoryQueryKey(code, '')[0]])
+        }
+    }
+
     const handleAllItemsReadyToPublish = () => {
         const code = data.codeList?.code
         if (!code) return
@@ -101,6 +118,7 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
             { code, params: { action: ApiCodeListItemsActions.CODELIST_ITEMS_TO_PUBLISH } },
             {
                 onSuccess: () => {
+                    invalidateCodeListDetailCache()
                     setSuccessMessage(t('codeListDetail.feedback.publishCodeListItems'))
                 },
             },
@@ -113,8 +131,8 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
                 { code: data.codeList?.code, params: { action: ApiCodeListActions.TEMPORAL_CODELIST_TO_ISVS_PROCESSING } },
                 {
                     onSuccess: () => {
+                        invalidateCodeListDetailCache()
                         setSuccessMessage(t('codeListDetail.feedback.sendToIsvs'))
-                        queryClient.invalidateQueries([codeListListQueryKey])
                         // navigate to CodeListList in old version
                     },
                 },
@@ -127,8 +145,8 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
                 { code: data.codeList?.code, params: { action: ApiCodeListActions.TEMPORAL_CODELIST_TO_PUBLISHED } },
                 {
                     onSuccess: () => {
+                        invalidateCodeListDetailCache()
                         setSuccessMessage(t('codeListDetail.feedback.publishCodeList'))
-                        queryClient.invalidateQueries([codeListListQueryKey])
                         // navigate to CodeListList in old version
                     },
                 },
@@ -141,6 +159,7 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
                 { code: data.codeList?.code, params: { action: ApiCodeListActions.TEMPORAL_CODELIST_TO_READY_TO_PUBLISH } },
                 {
                     onSuccess: () => {
+                        invalidateCodeListDetailCache()
                         setSuccessMessage(t('codeListDetail.feedback.sendToSzzc'))
                     },
                 },
@@ -153,6 +172,7 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
                 { code: data.codeList?.code, params: { action: ApiCodeListActions.TEMPORAL_CODELIST_TO_UPDATING } },
                 {
                     onSuccess: () => {
+                        invalidateCodeListDetailCache()
                         setSuccessMessage(t('codeListDetail.feedback.returnToMainGestor'))
                     },
                 },
@@ -181,6 +201,7 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
             successMessage={successMessage}
             workingLanguage={workingLanguage}
             setWorkingLanguage={setWorkingLanguage}
+            invalidateCodeListDetailCache={invalidateCodeListDetailCache}
             handleAllItemsReadyToPublish={handleAllItemsReadyToPublish}
             handleSendToIsvs={handleSendToIsvs}
             handlePublishCodeList={handlePublishCodeList}

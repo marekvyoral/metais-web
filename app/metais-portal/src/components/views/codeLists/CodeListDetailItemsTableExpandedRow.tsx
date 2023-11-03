@@ -4,6 +4,9 @@ import { useTranslation } from 'react-i18next'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { Button, ButtonGroupRow, IconWithText } from '@isdd/idsk-ui-kit/index'
 import { InfoIcon } from '@isdd/metais-common/assets/images'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions, CodeListItemState, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { InformationGridRowWrapper } from './components/InformationGridRowWrapper/InformationGridRowWrapper'
 import { findClosestDateInterval, getDescription, getName, selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
@@ -26,8 +29,19 @@ export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTa
         t,
         i18n: { language },
     } = useTranslation()
+    const {
+        state: { user },
+    } = useAuth()
+    const ability = useAbilityContext()
 
     if (!codelistItem || !attributeProfile) return <></>
+
+    const canEditItem = ability.can(Actions.EDIT, Subjects.ITEM) && !(codelistItem.locked && codelistItem.lockedBy !== user?.login)
+    const canReadyToPublish =
+        ability.can(Actions.EDIT, Subjects.ITEM, 'readyToPublish') &&
+        codelistItem.codelistItemState !== CodeListItemState.READY_TO_PUBLISH &&
+        codelistItem.codelistItemState !== CodeListItemState.PUBLISHED &&
+        !codelistItem.locked
 
     return (
         <div className={styles.expandableRowContent}>
@@ -146,25 +160,22 @@ export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTa
                     }
                 />
             </InformationGridRowWrapper>
-
-            {handleMarkForPublish && (
-                <ButtonGroupRow>
-                    {true && (
-                        <Button
-                            label={t('codeListDetail.button.edit')}
-                            onClick={() => {
-                                return // add edit
-                            }}
-                        />
-                    )}
-                    {true && (
-                        <Button
-                            label={t('codeListDetail.button.markItemReadyForPublishing')}
-                            onClick={() => handleMarkForPublish([Number(codelistItem.id)])}
-                        />
-                    )}
-                </ButtonGroupRow>
-            )}
+            <ButtonGroupRow>
+                {canEditItem && (
+                    <Button
+                        label={t('codeListDetail.button.edit')}
+                        onClick={() => {
+                            return // add edit
+                        }}
+                    />
+                )}
+                {handleMarkForPublish && canReadyToPublish && (
+                    <Button
+                        label={t('codeListDetail.button.markItemReadyForPublishing')}
+                        onClick={() => handleMarkForPublish([Number(codelistItem.id)])}
+                    />
+                )}
+            </ButtonGroupRow>
         </div>
     )
 }

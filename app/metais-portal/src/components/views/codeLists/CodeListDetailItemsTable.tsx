@@ -10,7 +10,8 @@ import { ColumnDef, ExpandedState, Row } from '@tanstack/react-table'
 import { Table, CheckBox, ExpandableRowCellWrapper } from '@isdd/idsk-ui-kit/index'
 import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions, CodeListItemState, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 
 import { isEffective, selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
 import { CodeListDetailItemsTableExpandedRow } from './CodeListDetailItemsTableExpandedRow'
@@ -27,13 +28,6 @@ export interface CodeListDetailItemsTableProps {
     workingLanguage: string
     handleFilterChange: (filter: IFilter) => void
     handleMarkForPublish: (ids: number[]) => void
-}
-
-export enum CodeListItemState {
-    NEW = 'NEW',
-    READY_TO_PUBLISH = 'READY_TO_PUBLISH',
-    PUBLISHED = 'PUBLISHED',
-    UPDATING = 'UPDATING',
 }
 
 function reduceRowsToObject(rows: ApiCodelistItem[]) {
@@ -58,11 +52,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
     const { t } = useTranslation()
     const [expandedState, setExpandedState] = useState<ExpandedState>({})
 
-    const {
-        state: { user },
-    } = useAuth()
-
-    const isLoggedIn = !!user
+    const ability = useAbilityContext()
 
     const handleAllCheckboxChange = useCallback(
         (rows: ApiCodelistItem[]) => {
@@ -105,7 +95,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
 
     const columns: Array<ColumnDef<ApiCodelistItem>> = []
 
-    if (isLoggedIn) {
+    if (ability.can(Actions.BULK_ACTIONS, Subjects.ITEM)) {
         columns.push(
             {
                 id: 'checkbox',
@@ -180,7 +170,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
         cell: (row) => selectBasedOnLanguageAndDate(row.getValue() as ApiCodelistItemName[], workingLanguage),
     })
 
-    if (isLoggedIn) {
+    if (ability.can(Actions.BULK_ACTIONS, Subjects.ITEM)) {
         columns.push(
             {
                 id: 'state',
