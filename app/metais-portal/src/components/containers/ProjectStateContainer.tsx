@@ -70,7 +70,7 @@ export const ProjectStateContainer: React.FC<IProjectStateContainer> = ({ config
 
     const fullSteps: IStep[] =
         projectsStates?.map((ps) => {
-            if (ps.code == FINISHED_STATE) {
+            if (ps.code == FINISHED_STATE && ciData?.attributes?.EA_Profil_Projekt_termin_ukoncenia) {
                 return { name: ps.value ?? '', date: formatDateForDefaultValue(ciData?.attributes?.EA_Profil_Projekt_termin_ukoncenia, 'dd.MM.yyyy') }
             }
             if (ps.code == RATED_STATE && ciData?.attributes?.EA_Profil_Projekt_status == RE_RATED_STATE) {
