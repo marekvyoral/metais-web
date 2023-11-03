@@ -1,6 +1,7 @@
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 
 import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
 import { InformationGridRowWrapper } from '@/components/views/codeLists/components/InformationGridRowWrapper/InformationGridRowWrapper'
@@ -15,9 +16,7 @@ export const GestorTabView: React.FC<GestorTabViewProps> = ({ data }) => {
         i18n: { language },
     } = useTranslation()
     const { codeList, attributeProfile } = data || {}
-    const {
-        state: { user },
-    } = useAuth()
+    const ability = useAbilityContext()
 
     if (!codeList || !attributeProfile) return <></>
 
@@ -35,7 +34,7 @@ export const GestorTabView: React.FC<GestorTabViewProps> = ({ data }) => {
                 tooltip={getName(attributeProfile, 'Gui_Profil_ZC_priezvisko', language)}
                 value={codeList?.contactSurname}
             />
-            {!!user && (
+            {ability.can(Actions.READ, Subjects.DETAIL, 'gestor.contact') && (
                 <>
                     <InformationGridRow
                         key={'tel'}

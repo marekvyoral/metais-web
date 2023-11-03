@@ -952,7 +952,10 @@
             "NEW": "Nová",
             "READY_TO_PUBLISH": "Pripravená na publikovanie",
             "PUBLISHED": "Publikovaná",
-            "UPDATING": "Rozpracovaná"
+            "UPDATING": "Rozpracovaná",
+            "ISVS_PROCESSING": "Spracovávaná ISVS",
+            "KS_ISVS_REJECTED": "Zamietnuté v Komisii pre štandardizáciu ISVS",
+            "KS_ISVS_ACCEPTED": "Akceptované v Komisii pre štandardizáciu ISVS"
         },
         "table": {
             "code": "Kód",

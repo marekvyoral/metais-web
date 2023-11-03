@@ -944,7 +944,10 @@
             "NEW": "New",
             "READY_TO_PUBLISH": "Ready for publishing",
             "PUBLISHED": "Published",
-            "UPDATING": "In-progress"
+            "UPDATING": "In-progress",
+            "ISVS_PROCESSING": "Processed by ISPA",
+            "KS_ISVS_REJECTED": "Rejected by Committee for Standardization ISPA",
+            "KS_ISVS_ACCEPTED": "Accepted by Committee for Standardization ISPA"
         },
         "table": {
             "code": "Code",
