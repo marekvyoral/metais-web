@@ -9,7 +9,7 @@ variables:
   #treba nastavit korektnu url adresu. Pre kazdu feature vlastnu url adresu. Ak uz nasadzujem finalne riesenie tak hodnoty v OKD_HELM_OPTS su ignorovane. OKD_HELM_OPTS je len pre feature branch
   OKD_HELM_OPTS: "--set metaisPortal.ingress.tls[0].hosts[0]=test.isdd.sk --set metaisPortal.ingress.hosts[0].host=test.isdd.sk --set metaisPortal.ingress.hosts[0].paths[0].path=/ --set metaisAdmin.ingress.tls[0].hosts[0]=test.isdd.sk --set metaisAdmin.ingress.hosts[0].host=test-admin.isdd.sk --set metaisAdmin.ingress.hosts[0].paths[0].path=/"
   APP_VERSION: 
-    value: "mirri-test-v0-1-26"
+    value: ${CI_COMMIT_REF_SLUG}
     description: 'Define image version for push to mirri cloud.'
 
 
