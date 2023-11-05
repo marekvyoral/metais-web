@@ -1,13 +1,13 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
 import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/entityNameHelpers'
 
 import { RelationshipsAccordion } from '@/components/views/relationships/RelationshipsAccordion'
 import { CiContainer } from '@/components/containers/CiContainer'
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 const RelationshipsAccordionPage: React.FC = () => {
-    const { entityId } = useParams()
-    let { entityName } = useParams()
+    const { entityId } = useGetEntityParamsFromUrl()
+    let { entityName } = useGetEntityParamsFromUrl()
     entityName = shouldEntityNameBePO(entityName ?? '')
     return (
         <CiContainer

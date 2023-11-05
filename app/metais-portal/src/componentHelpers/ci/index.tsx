@@ -1,5 +1,5 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation, useParams, Location } from 'react-router-dom'
 import { Tab } from '@isdd/idsk-ui-kit/index'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { TFunction } from 'i18next'
@@ -46,4 +46,20 @@ export const getDefaultCiEntityTabList = ({ entityName, entityId, t, userAbility
     ]
 
     return tabList
+}
+
+const getEntityName = (location: Location) => {
+    const result = /.*\/ci\/([\w-]+).*/.exec(location.pathname)
+    if (Array.isArray(result) && result.length > 0) {
+        return result[1]
+    }
+    return undefined
+}
+
+export const useGetEntityParamsFromUrl = (): { entityName: string | undefined; entityId: string | undefined } => {
+    const location = useLocation()
+    const { entityId, entityName: urlEntityName } = useParams()
+    const entityName = urlEntityName ? urlEntityName : getEntityName(location)
+
+    return { entityId, entityName }
 }

@@ -22,7 +22,7 @@ const formatRowValueByRowType = (
 ) => {
     if (attribute?.units && attribute?.type && rowValue) {
         const unitValue = findUnitValue(attribute, unitsData)
-        return t('currency', { val: rowValue, currency: unitValue })
+        return t(`units.${unitValue}`, { val: rowValue })
     }
     switch (attribute?.type) {
         case 'BOOLEAN':

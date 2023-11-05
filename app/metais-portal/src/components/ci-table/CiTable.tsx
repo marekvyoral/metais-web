@@ -127,7 +127,6 @@ export const CiTable: React.FC<ICiTable> = ({
         const isMUK = technicalName === MUK
         const isState = technicalName === MetainformationColumns.STATE
         const isOwner = technicalName === MetainformationColumns.OWNER
-        const isGroup = technicalName === MetainformationColumns.GROUP
         const isDate = technicalName === MetainformationColumns.LAST_MODIFIED_AT || technicalName === MetainformationColumns.CREATED_AT
         const isHTML = schemaAttributes?.[technicalName]?.type === HTML_TYPE
 
@@ -149,7 +148,7 @@ export const CiTable: React.FC<ICiTable> = ({
             case isMUK: {
                 return t(`refRegisters.table.muk.${ctx.getValue()}`)
             }
-            case isOwner || isGroup: {
+            case isOwner: {
                 return getOwnerInformation(ctx?.row?.original?.metaAttributes?.owner as string, data.gestorsData)?.configurationItemUi?.attributes?.[
                     ATTRIBUTE_NAME.Gen_Profil_nazov
                 ]

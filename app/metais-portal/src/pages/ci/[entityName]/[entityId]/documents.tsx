@@ -1,13 +1,13 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
 
 import { DocumentsTable } from '@/components/views/documents/DocumentsTable'
 import { DocumentsListContainer } from '@/components/containers/DocumentListContainer'
 import { ProjectDocumentsListContainer } from '@/components/containers/ProjectDocumentListContainer'
 import { ProjectDocumentsTab } from '@/components/views/documents/ProjectDocumentsTab'
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 const DocumentsListPage: React.FC = () => {
-    const { entityName, entityId } = useParams()
+    const { entityName, entityId } = useGetEntityParamsFromUrl()
 
     if (entityName == 'Projekt') {
         return (

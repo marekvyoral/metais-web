@@ -13,10 +13,12 @@ import { NewRelationView } from '@/components/views/new-relation/NewRelationView
 import { findRelationType } from '@/componentHelpers/new-relation'
 import { RelationTypePermissionWrapper } from '@/components/permissions/CreateRelationPermissionWrapper'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 const NewCiRelationPage: React.FC = () => {
-    const { entityId, tabName } = useParams()
-    let { entityName } = useParams()
+    const { tabName } = useParams()
+    const { entityId } = useGetEntityParamsFromUrl()
+    let { entityName } = useGetEntityParamsFromUrl()
     entityName = shouldEntityNameBePO(entityName ?? '')
     const { t, i18n } = useTranslation()
 

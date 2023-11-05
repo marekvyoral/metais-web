@@ -4,7 +4,6 @@ export enum MetainformationColumns {
     CREATED_AT = 'createdAt',
     LAST_MODIFIED_AT = 'lastModifiedAt',
     STATE = 'state',
-    GROUP = 'group',
     OWNER = 'owner',
 }
 
@@ -17,10 +16,8 @@ export enum MetaInformationTypes {
 
 type GetMetaAttributesProps = {
     t: TFunction
-    asGroup?: boolean
-    withoutEvidenceStatus?: boolean
 }
-export const getCiDefaultMetaAttributes = ({ t, asGroup, withoutEvidenceStatus }: GetMetaAttributesProps) => {
+export const getCiDefaultMetaAttributes = ({ t }: GetMetaAttributesProps) => {
     const defaultCiMetaAttributes = {
         name: t('ciType.meta.metaInformationsName'),
         attributes: [
@@ -43,25 +40,20 @@ export const getCiDefaultMetaAttributes = ({ t, asGroup, withoutEvidenceStatus }
             {
                 name: t('ciType.meta.owner'),
                 engName: t('ciType.meta.owner'),
-                technicalName: asGroup ? MetainformationColumns.GROUP : MetainformationColumns.OWNER,
+                technicalName: MetainformationColumns.OWNER,
                 invisible: false,
                 valid: true,
                 attributeTypeEnum: MetaInformationTypes.OWNER as string,
             },
+            {
+                name: t('ciType.meta.state'),
+                engName: t('ciType.meta.state'),
+                technicalName: MetainformationColumns.STATE,
+                invisible: false,
+                valid: true,
+                attributeTypeEnum: MetaInformationTypes.STATE as string,
+            },
         ],
-    }
-
-    if (!withoutEvidenceStatus) {
-        const evidenceStatus = {
-            name: t('ciType.meta.state'),
-            engName: t('ciType.meta.state'),
-            technicalName: MetainformationColumns.STATE,
-            invisible: false,
-            valid: true,
-            attributeTypeEnum: MetaInformationTypes.STATE as string,
-        }
-
-        defaultCiMetaAttributes.attributes.push(evidenceStatus)
     }
 
     return defaultCiMetaAttributes
