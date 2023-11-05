@@ -43,10 +43,9 @@ interface Props {
     attributes: Attribute[] | undefined
     attributeProfiles: AttributeProfile[] | undefined
     constraintsData: (EnumType | undefined)[]
-    isProject?: boolean
 }
 
-export const DynamicFilterAttributes: FC<Props> = ({ filterData, setValue, attributes, attributeProfiles, constraintsData, defaults, isProject }) => {
+export const DynamicFilterAttributes: FC<Props> = ({ filterData, setValue, attributes, attributeProfiles, constraintsData, defaults }) => {
     const attributeFiltersData = filterData?.attributeFilters
     const metaAttributeFiltersData = filterData?.metaAttributeFilters
 
@@ -58,7 +57,7 @@ export const DynamicFilterAttributes: FC<Props> = ({ filterData, setValue, attri
     const combinedAttributes = [
         ...(attributes ?? []),
         ...(attributeProfiles?.map((profile) => profile.attributes?.map((att) => att)).flat() ?? []),
-        ...(getCiDefaultMetaAttributes({ t, withoutEvidenceStatus: isProject }).attributes as Attribute[]),
+        ...(getCiDefaultMetaAttributes({ t }).attributes as Attribute[]),
     ]
     const filteredAvailable = attributeProfiles?.map((profile) => {
         const defaultKeys = Object.keys(defaults)
@@ -147,10 +146,7 @@ export const DynamicFilterAttributes: FC<Props> = ({ filterData, setValue, attri
         }
     }
 
-    const attributesWithMetaAttributes = [
-        ...(attributes ?? []),
-        ...(getCiDefaultMetaAttributes({ t, withoutEvidenceStatus: isProject }).attributes as Attribute[]),
-    ]
+    const attributesWithMetaAttributes = [...(attributes ?? []), ...(getCiDefaultMetaAttributes({ t }).attributes as Attribute[])]
 
     return (
         <div>

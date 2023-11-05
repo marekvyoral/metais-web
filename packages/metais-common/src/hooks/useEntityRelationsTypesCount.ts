@@ -107,9 +107,9 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string) 
         const countZero = 0
         return {
             tabName: `${relation.name} (${countZero})`,
-            technicalName: relation.technicalName ?? '',
+            technicalName: relation.derivedRelation ? relation.derivedRelation ?? '' : relation.technicalName ?? '',
             count: countZero,
-            isDerived: false,
+            isDerived: !!relation.derivedRelation,
         }
     })
 

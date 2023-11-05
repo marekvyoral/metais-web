@@ -12,12 +12,14 @@ import { CiHistoryPermissionsWrapper } from '@/components/permissions/CiHistoryP
 import { HistoryCompareView } from '@/components/views/history/history-compare/HistoryCompareView'
 import { HistorySingleItemCompareContainer } from '@/components/containers/HistorySingleItemCompareContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 const CompareSinglePage: React.FC = () => {
     const { t } = useTranslation()
-    const { firstId, entityId } = useParams()
+    const { firstId } = useParams()
 
-    let { entityName } = useParams()
+    let { entityName } = useGetEntityParamsFromUrl()
+    const { entityId } = useGetEntityParamsFromUrl()
     entityName = shouldEntityNameBePO(entityName ?? '')
 
     const { data: ciItemData } = useReadConfigurationItem(entityId ?? '', {

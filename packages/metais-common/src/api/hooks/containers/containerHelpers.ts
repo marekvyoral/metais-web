@@ -72,11 +72,17 @@ export const useGetColumnData = (entityName: string, renameColumns?: boolean) =>
     //Always show name and first in oreder
     const mergedColumnListData = useMemo(() => {
         const isGenProfile = columnListData?.attributes?.find((i) => i.name === ATTRIBUTE_NAME.Gen_Profil_nazov)
+        const normalizedColumnListData: typeof columnListData = {
+            ...columnListData,
+            metaAttributes: columnListData?.metaAttributes?.map((metaAttr) => {
+                return metaAttr.name === 'group' ? { ...metaAttr, name: 'owner' } : metaAttr
+            }),
+        }
         return isGenProfile
-            ? columnListData
+            ? normalizedColumnListData
             : {
-                  ...columnListData,
-                  attributes: [...(columnListData?.attributes || []), { name: ATTRIBUTE_NAME.Gen_Profil_nazov, order: 1 }],
+                  ...normalizedColumnListData,
+                  attributes: [...(normalizedColumnListData?.attributes || []), { name: ATTRIBUTE_NAME.Gen_Profil_nazov, order: 1 }],
               }
     }, [columnListData])
 

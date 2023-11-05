@@ -26,7 +26,7 @@ export const initializeI18nInstance = (basePath = '') => {
                 formatSeparator: ',',
             },
             react: {
-                useSuspense: false,
+                useSuspense: true,
             },
             returnNull: false,
         })
