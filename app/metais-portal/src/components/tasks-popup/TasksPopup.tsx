@@ -43,7 +43,6 @@ export const TasksPopup: React.FC = () => {
         <Button
             label={
                 <IconWithNotification
-                    onClick={() => undefined}
                     title={t('tasks.tasks')}
                     src={FactCheckIcon}
                     count={(tasks?.tasksCountCreated ?? 0) + (tasks?.tasksCountInProgress ?? 0)}

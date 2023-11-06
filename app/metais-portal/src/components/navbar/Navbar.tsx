@@ -26,7 +26,6 @@ export const Navbar: React.FC = () => {
     const { data: notificationsData } = useGetNotificationList({ perPage: 1, pageNumber: 1 }, { query: { enabled: !!user } })
     const Notifications = () => (
         <IconWithNotification
-            onClick={() => undefined}
             title={t('navbar.notifications')}
             src={NotificationIcon}
             count={notificationsData?.pagination?.totalUnreadedItems ?? 0}
