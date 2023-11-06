@@ -1276,7 +1276,7 @@
         "email": "metais@mirri.gov.sk",
         "errorTitle": "Nastala chyba",
         "errorMessage": "Ospravedlňujeme sa, ale pri vytváraní nového vzťahu nastala chyba. Pokúste sa zopakovať odoslanie formuláru. V prípade, že sa chyba vyskytla opakovane, kontaktujte administrátora e-mailom na ",
-        "ÏselectRelTypeError": "Na vytvorenie tohto typu vzťahu Vám chýbajú potrebné práva"
+        "selectRelTypeError": "Na vytvorenie tohto typu vzťahu Vám chýbajú potrebné práva"
     },
     "titles": {
         "mainPage": "Hlavná stránka",

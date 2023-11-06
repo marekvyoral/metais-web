@@ -4,7 +4,6 @@ import { RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-re
 import { useCanCreateRelationTypeUnderOrgAndRole } from '@isdd/metais-common/hooks/permissions/useCanCreateRelationTypeUnderOrgAndRole'
 
 interface Props extends PropsWithChildren {
-    selectedOrgId: string
     selectedRoleName: string
     selectedCiRelationType: RelatedCiTypePreview | undefined
 }

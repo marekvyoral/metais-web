@@ -103,7 +103,7 @@ const EntityDetailPage: React.FC = () => {
                             <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
                             <MutationFeedback error={false} success={isActionSuccess.value} />
                         </FlexColumnReverseWrapper>
-                        {entityName == ENTITY_PROJECT && (
+                        {entityName == ENTITY_PROJECT && isUserLogged && (
                             <ProjectStateContainer configurationItemId={entityId ?? ''} View={(props) => <ProjectStateView {...props} />} />
                         )}
 

@@ -17,14 +17,12 @@ type Story = StoryObj<typeof Button>
 export const Main: Story = {
     args: {
         label: 'Save and continue',
-        onClick: () => undefined,
     },
 }
 
 export const Error: Story = {
     args: {
         label: 'Error!',
-        onClick: () => undefined,
         variant: 'warning',
     },
 }
@@ -32,7 +30,6 @@ export const Error: Story = {
 export const Secondary: Story = {
     args: {
         label: 'I am Secondary',
-        onClick: () => undefined,
         variant: 'secondary',
     },
 }
@@ -40,7 +37,6 @@ export const Secondary: Story = {
 export const MainDisabled: Story = {
     args: {
         label: 'I am disabled',
-        onClick: () => undefined,
         disabled: true,
     },
 }
@@ -48,7 +44,6 @@ export const MainDisabled: Story = {
 export const ErrorDisabled: Story = {
     args: {
         label: 'I am disabled',
-        onClick: () => undefined,
         variant: 'warning',
         disabled: true,
     },
@@ -57,7 +52,6 @@ export const ErrorDisabled: Story = {
 export const SecondaryDisabled: Story = {
     args: {
         label: 'I am disabled',
-        onClick: () => undefined,
         variant: 'secondary',
         disabled: true,
     },
@@ -66,7 +60,6 @@ export const SecondaryDisabled: Story = {
 export const ButtonNumberLabel: Story = {
     args: {
         label: 132,
-        onClick: () => undefined,
         variant: 'secondary',
         disabled: true,
     },

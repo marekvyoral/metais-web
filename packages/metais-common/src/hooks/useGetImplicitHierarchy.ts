@@ -14,15 +14,18 @@ export interface GetImplicitHierarchyFilter {
     }[]
 }
 
-export const useGetImplicitHierarchy = (filter: HierarchyPOFilterUi) => {
+export const useGetImplicitHierarchy = (filter: HierarchyPOFilterUi, enabled: boolean) => {
     const implicitHierarchy = useReadCiList()
 
     const query: UseQueryResult<HierarchyRightsResultUi, unknown> = useQuery({
         queryKey: ['implicitHierarchy', filter.page, filter.perpage, filter.rights, filter.fullTextSearch],
         queryFn: () => implicitHierarchy.mutateAsync({ data: filter }),
         keepPreviousData: true,
+        enabled: enabled,
     })
-    const { data: implicitHierarchyData, isLoading, isError } = query
+    const { data: implicitHierarchyData, isLoading: isQueryLoading, isError, fetchStatus } = query
+
+    const isLoading = isQueryLoading && fetchStatus != 'idle'
 
     return {
         implicitHierarchyData,

@@ -108,9 +108,23 @@ export const NewRelationView: React.FC<Props> = ({
 
     useEffect(() => {
         if (!selectedRelationTypeTechnicalName) {
-            setSelectedRelationTypeTechnicalName(createSelectRelationTypeOptions(relatedListAsSources, relatedListAsTargets, t)[1]?.value)
+            setSelectedRelationTypeTechnicalName(
+                createSelectRelationTypeOptions({
+                    relatedListAsSources,
+                    relatedListAsTargets,
+                    t,
+                    currentRole: roleState.selectedRole?.roleName ?? '',
+                })[1]?.value,
+            )
         }
-    }, [relatedListAsSources, relatedListAsTargets, selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName, t])
+    }, [
+        relatedListAsSources,
+        relatedListAsTargets,
+        roleState.selectedRole?.roleName,
+        selectedRelationTypeTechnicalName,
+        setSelectedRelationTypeTechnicalName,
+        t,
+    ])
 
     const storeGraph = useStoreGraph({
         mutation: {
@@ -234,7 +248,12 @@ export const NewRelationView: React.FC<Props> = ({
                 isClearable={false}
                 label={t('newRelation.selectRelType')}
                 name="relation-type"
-                options={createSelectRelationTypeOptions(relatedListAsSources, relatedListAsTargets, t)}
+                options={createSelectRelationTypeOptions({
+                    relatedListAsSources,
+                    relatedListAsTargets,
+                    t,
+                    currentRole: roleState.selectedRole?.roleName ?? '',
+                })}
                 value={selectedRelationTypeTechnicalName}
                 onChange={(val) => setSelectedRelationTypeTechnicalName(val ?? '')}
                 error={!canCreateRelationType ? t('newRelation.selectRelTypeError') : ''}
