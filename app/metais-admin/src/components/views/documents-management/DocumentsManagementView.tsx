@@ -1,11 +1,12 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { Button, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { DocumentGroup } from '@isdd/metais-common/api/generated/kris-swagger'
-import { ActionsOverTable, EnumItem } from '@isdd/metais-common/index'
+import { ActionsOverTable } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
 import { DocumentFilterData, IView, defaultFilter } from '@/components/containers/documents-management/DocumentsManagementContaiter'
 

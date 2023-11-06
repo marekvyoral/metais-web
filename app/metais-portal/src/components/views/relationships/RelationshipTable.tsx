@@ -1,14 +1,16 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { MultiSelect } from '@isdd/idsk-ui-kit/index'
+import { IOption, MultiSelect } from '@isdd/idsk-ui-kit/index'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { NeighboursFilterUi } from '@isdd/metais-common/index'
+import { NeighboursFilterUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { INeighboursFilter } from '@isdd/metais-common/api/filter/filterApi'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 import { TableCols } from '@/components/containers/DocumentListContainer'
 
@@ -36,12 +38,18 @@ export const RelationshipsTable: React.FC<RelationshipsTable> = ({
     handleFilterChange,
 }) => {
     const { t } = useTranslation()
+    const {
+        state: { user },
+    } = useAuth()
+    const { currentPreferences } = useUserPreferences()
+
+    const canSelectInvalidated = !!user?.uuid && currentPreferences.showInvalidatedItems
 
     const ciTypeOption = filterData?.ciType?.map((type) => ({ label: type, value: type })) || []
     const relTypeOption = filterData?.relType?.map((type) => ({ label: type, value: type })) || []
-    const stateOption = [
+    const stateOption: IOption<string>[] = [
         { value: 'DRAFT', label: t('metaAttributes.state.DRAFT') },
-        { value: 'INVALIDATED', label: t('metaAttributes.state.INVALIDATED') },
+        { value: 'INVALIDATED', label: t('metaAttributes.state.INVALIDATED'), disabled: !canSelectInvalidated },
     ]
 
     const defaultValues: RelationFilterData = {
@@ -74,6 +82,7 @@ export const RelationshipsTable: React.FC<RelationshipsTable> = ({
                             options={ciTypeOption}
                             defaultValue={defaultFilter?.neighboursFilter?.ciType}
                             setValue={setValue}
+                            disabled={ciTypeOption.length === 0}
                         />
                         <MultiSelect
                             name="relType"
@@ -82,6 +91,7 @@ export const RelationshipsTable: React.FC<RelationshipsTable> = ({
                             options={relTypeOption}
                             defaultValue={defaultFilter?.neighboursFilter?.relType}
                             setValue={setValue}
+                            disabled={relTypeOption.length === 0}
                         />
                         <MultiSelect
                             name="metaAttributes.state"

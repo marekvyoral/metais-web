@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react'
-import { FieldValues } from 'react-hook-form'
+import { Controller, FieldValues } from 'react-hook-form'
 import { Button, Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
+import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
+import { HTML_TYPE } from '@isdd/metais-common/constants'
 import { CiTypeListSelect } from '@isdd/metais-common/src/components/ci-type-list-select/CiTypeListSelect'
 import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
@@ -21,7 +23,7 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
 
     const { formMethods, showUnit, showConstraint, selectedConstraint, selectedType } = useCreateAttributeForm()
 
-    const { register, formState, handleSubmit, setValue, clearErrors, watch } = formMethods
+    const { register, formState, handleSubmit, setValue, clearErrors, watch, control } = formMethods
 
     const currentSelectedConstraints = watch('constraints')?.[0]
 
@@ -123,6 +125,22 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                     <Input label={t('egov.minValue')} type="number" id="order" {...register('constraints.0.minValue')} />
                     <Input label={t('egov.maxValue')} type="number" id="order" {...register('constraints.0.maxValue')} />
                 </>
+            )}
+            {selectedType !== '' && selectedType !== 'BOOLEAN' && selectedType !== HTML_TYPE && selectedConstraint !== 'enum' && (
+                <Input
+                    label={t('egov.defaultValue')}
+                    id="defaultValue"
+                    type={getTypeForDefaultValue(selectedType)}
+                    {...register('defaultValue')}
+                    error={formState?.errors?.defaultValue?.message}
+                />
+            )}
+            {selectedType === HTML_TYPE && (
+                <Controller
+                    name="defaultValue"
+                    control={control}
+                    render={({ field }) => <RichTextQuill {...field} value={field.value?.toString()} id={field?.name} />}
+                />
             )}
             {selectedConstraint === StringConstraints.CI_TYPE && (
                 <>

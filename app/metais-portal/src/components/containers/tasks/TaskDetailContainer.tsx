@@ -88,7 +88,7 @@ export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) 
                 data: {
                     id: task?.id,
                     changedBy: user?.login,
-                    assignedTo: assignToUser ? (selectedLogin ? selectedLogin?.login : user?.login) : selectedGroup?.gid,
+                    assignedTo: assignToUser ? (selectedLogin ? selectedLogin?.login : user?.login) : selectedGroup?.orgName,
                     activity: ActivityType.USER_CHANGED,
                     assignedToIds: [user?.login || '', ...getGidsForUserOrgRoles(user), ...getGidsForUserRoles(user)],
                 },

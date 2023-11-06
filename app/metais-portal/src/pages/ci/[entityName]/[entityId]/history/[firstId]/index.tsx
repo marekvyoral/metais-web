@@ -5,16 +5,23 @@ import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useTranslation } from 'react-i18next'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
+import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/entityNameHelpers'
 
 import { CiHistoryPermissionsWrapper } from '@/components/permissions/CiHistoryPermissionsWrapper'
 import { HistoryCompareView } from '@/components/views/history/history-compare/HistoryCompareView'
 import { HistorySingleItemCompareContainer } from '@/components/containers/HistorySingleItemCompareContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 const CompareSinglePage: React.FC = () => {
     const { t } = useTranslation()
-    const { firstId, entityId, entityName } = useParams()
+    const { firstId } = useParams()
+
+    let { entityName } = useGetEntityParamsFromUrl()
+    const { entityId } = useGetEntityParamsFromUrl()
+    entityName = shouldEntityNameBePO(entityName ?? '')
+
     const { data: ciItemData } = useReadConfigurationItem(entityId ?? '', {
         query: {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
@@ -42,6 +49,9 @@ const CompareSinglePage: React.FC = () => {
                             />
                             <MainContentWrapper>
                                 <HistorySingleItemCompareContainer
+                                    entityName={entityName ?? ''}
+                                    entityId={entityId ?? ''}
+                                    firstId={firstId ?? ''}
                                     View={(props) => {
                                         return (
                                             <HistoryCompareView

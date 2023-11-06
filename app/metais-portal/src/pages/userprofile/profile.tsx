@@ -1,17 +1,32 @@
-import React from 'react'
-import { BreadCrumbs, HomeIcon, Tab, Tabs, TextHeading } from '@isdd/idsk-ui-kit/index'
+import React, { useState } from 'react'
+import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, Tab, Tabs, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { UserInformationsPage } from '@isdd/metais-common/components/views/user-profile/user-informations/UserInformationsPage'
 import { UserPreferencesPage } from '@isdd/metais-common/components/views/user-profile/user-preferences/UserPreferencesPage'
-import { UserRightsPage } from '@isdd/metais-common/components/views/user-profile/UserRightsPage'
+import { UserRightsPage } from '@isdd/metais-common/components/views/user-profile/user-rights/UserRightsPage'
 import { UserNotificationsSettings } from '@isdd/metais-common/components/views/user-profile/UserNotificationsSettings'
 import { UserPasswordChangePage } from '@isdd/metais-common/components/views/user-profile/UserPasswordChangePage'
+import { UserProfileRequestRightsModal } from '@isdd/metais-common/src/components/views/user-profile/modals/UserProfileRequestRightsModal'
+import { ClaimEvent, useProcessEvent } from '@isdd/metais-common/api/generated/claim-manager-swagger'
+import { DeletePersonalInfoModal } from '@isdd/metais-common/src/components/views/user-profile/modals/DeletePersonalInfoModal'
+import { MutationFeedback } from '@isdd/metais-common/index'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const UserProfilePage = () => {
     const { t } = useTranslation()
+    const [isRightsSettingsModalOpen, setIsRightsSettingsModalOpen] = useState(false)
+    const [isDeletePersonalInfoModalOpen, setIsDeletePersonalInfoModalOpen] = useState(false)
+
+    const { mutate: rightsRequestMutate, isLoading, isError, isSuccess } = useProcessEvent()
+
+    const processRequestMutation = (data: ClaimEvent) => {
+        rightsRequestMutate({
+            data: data,
+        })
+    }
 
     const tabList: Tab[] = [
         {
@@ -40,6 +55,7 @@ const UserProfilePage = () => {
             content: <UserPasswordChangePage />,
         },
     ]
+
     return (
         <>
             <BreadCrumbs
@@ -50,9 +66,33 @@ const UserProfilePage = () => {
                 ]}
             />
             <MainContentWrapper>
-                <TextHeading size="XL">{t('userProfile.heading')}</TextHeading>
+                <FlexColumnReverseWrapper>
+                    <TextHeading size="XL">{t('userProfile.heading')}</TextHeading>
+                    <MutationFeedback success={isSuccess} error={isError} />
+                </FlexColumnReverseWrapper>
+                <ButtonGroupRow>
+                    <Button label={t('userProfile.requests.rightsSettings')} onClick={() => setIsRightsSettingsModalOpen(true)} />
+                    <Button
+                        variant="secondary"
+                        label={t('userProfile.requests.deletePersonalInfo')}
+                        onClick={() => setIsDeletePersonalInfoModalOpen(true)}
+                    />
+                </ButtonGroupRow>
+
                 <Tabs tabList={tabList} />
             </MainContentWrapper>
+            <UserProfileRequestRightsModal
+                isLoading={isLoading}
+                mutateCallback={processRequestMutation}
+                isOpen={isRightsSettingsModalOpen}
+                onClose={() => setIsRightsSettingsModalOpen(false)}
+            />
+            <DeletePersonalInfoModal
+                isLoading={isLoading}
+                mutateCallback={processRequestMutation}
+                isOpen={isDeletePersonalInfoModalOpen}
+                onClose={() => setIsDeletePersonalInfoModalOpen(false)}
+            />
         </>
     )
 }

@@ -1,5 +1,5 @@
 import { BreadCrumbs, Button, HomeIcon, Tab, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { ApiVote, ApiVoteResult } from '@isdd/metais-common/api'
+import { ApiVote, ApiVoteResult } from '@isdd/metais-common/api/generated/standards-swagger'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'

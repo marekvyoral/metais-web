@@ -1,6 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Input, LoadingIndicator, SimpleSelect, TextArea, TextBody } from '@isdd/idsk-ui-kit/index'
-import { CategoryHeaderList, Parameter, ReportDefinition, ReportDefinitionLanguage, ReportResultObject, ScriptExecute } from '@isdd/metais-common/api'
+import {
+    CategoryHeaderList,
+    Parameter,
+    ReportDefinition,
+    ReportDefinitionLanguage,
+    ReportResultObject,
+    ScriptExecute,
+} from '@isdd/metais-common/api/generated/report-swagger'
 import { mapCategoriesToOptions } from '@isdd/metais-common/componentHelpers'
 import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'

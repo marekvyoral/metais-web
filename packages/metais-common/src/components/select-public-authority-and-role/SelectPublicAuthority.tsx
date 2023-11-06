@@ -1,37 +1,41 @@
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit'
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/src/types'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MultiValue } from 'react-select'
 
-import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api'
+import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
-import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 
 interface Props {
     onChangeAuthority: (e: HierarchyRightsUi | null) => void
     selectedOrg: HierarchyRightsUi | null
+    ciRoles: string[]
 }
 
-export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, selectedOrg }) => {
+export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, selectedOrg, ciRoles }) => {
     const { t } = useTranslation()
     const user = useAuth()
     const implicitHierarchy = useReadCiList()
-    const userDataGroups = useMemo(() => user.state.user?.groupData ?? [], [user])
+
+    const filteredUserGroupDataBasedOnRole = user.state.user?.groupData.filter((group) =>
+        ciRoles.some((ciRole) => group.roles.find((role) => role.roleName == ciRole)),
+    )
+
     const defaultFilter: HierarchyPOFilterUi = {
         perpage: 20,
         sortBy: SortBy.HIERARCHY_FROM_ROOT,
         sortType: SortType.ASC,
-        rights: userDataGroups.map((group) => ({ poUUID: group.orgId, roles: group.roles.map((role) => role.roleUuid) })),
+        //why is BE not filtering this based on rights?
+        rights: filteredUserGroupDataBasedOnRole?.map((group) => ({
+            poUUID: group.orgId,
+            roles: group.roles.filter((role) => ciRoles.includes(role.roleName)).map((role) => role.roleUuid),
+        })),
     }
 
     const { implicitHierarchyData, isError, isLoading } = useGetImplicitHierarchy(defaultFilter)
-
-    const ability = useAbilityContext()
-    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
 
     const hasError = implicitHierarchy.isError || isError
 
@@ -44,14 +48,21 @@ export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, sele
     const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
         const page = !additional?.page ? 1 : (additional?.page || 0) + 1
         const options = await implicitHierarchy.mutateAsync({ data: { ...defaultFilter, page, fullTextSearch: searchQuery } })
+
+        //filtering options based on which user has rights
+        const optionsFiltered = options.rights?.filter((option) =>
+            user.state.user?.groupData.map((group) => group.orgId).includes(option.poUUID ?? ''),
+        )
+
         return {
-            options: options.rights || [],
-            hasMore: options.rights?.length ? true : false,
+            options: optionsFiltered || [],
+            hasMore: optionsFiltered?.length ? true : false,
             additional: {
                 page: page,
             },
         }
     }
+
     return (
         <>
             {isLoading && (
@@ -60,13 +71,7 @@ export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, sele
             <SelectLazyLoading
                 isClearable={false}
                 value={selectedOrg}
-                error={
-                    !hasOrgPermission
-                        ? t('selectPublicAuthority.missingRightsError', { item: t('selectPublicAuthority.relations') })
-                        : hasError
-                        ? t('selectPublicAuthority.error')
-                        : ''
-                }
+                error={hasError ? t('selectPublicAuthority.error') : ''}
                 getOptionLabel={(item) => item.poName ?? ''}
                 getOptionValue={(item) => item.poUUID ?? ''}
                 loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}

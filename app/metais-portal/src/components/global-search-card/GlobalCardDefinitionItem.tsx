@@ -1,6 +1,7 @@
 import { TextBody } from '@isdd/idsk-ui-kit/index'
 import React from 'react'
 import classNames from 'classnames'
+import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 
 import styles from './globalSearchCard.module.scss'
 
@@ -16,20 +17,20 @@ export const GlobalCardDefinitionItem: React.FC<Props> = ({ value, label, notBol
         <div className={styles.row}>
             <dt>
                 <TextBody className={classNames(styles.noMargin, { [styles.bold]: !notBoldLabel })}>
-                    {setHtml ? <div dangerouslySetInnerHTML={{ __html: label + ':' }} /> : label}
+                    {setHtml ? <SafeHtmlComponent dirtyHtml={label + ':'} /> : label}
                 </TextBody>
             </dt>
             {Array.isArray(value) ? (
                 <dd>
-                    {value.map((v, index) => (
+                    {value.map((valueItem, index) => (
                         <TextBody key={index} className={styles.noMargin}>
-                            {setHtml ? <div dangerouslySetInnerHTML={{ __html: v }} /> : v}
+                            {setHtml ? <SafeHtmlComponent dirtyHtml={valueItem} /> : valueItem}
                         </TextBody>
                     ))}
                 </dd>
             ) : (
                 <dd>
-                    <TextBody className={styles.noMargin}>{setHtml ? <div dangerouslySetInnerHTML={{ __html: value }} /> : value}</TextBody>
+                    <TextBody className={styles.noMargin}>{setHtml ? <SafeHtmlComponent dirtyHtml={value} /> : value}</TextBody>
                 </dd>
             )}
         </div>

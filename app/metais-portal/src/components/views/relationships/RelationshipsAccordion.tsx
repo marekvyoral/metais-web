@@ -1,5 +1,5 @@
 import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
-import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,9 +20,10 @@ interface RelationshipsAccordion {
     configurationItemId?: string
     isLoading: boolean
     isError: boolean
+    entityName: string
 }
 
-export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data, configurationItemId, isError, isLoading }) => {
+export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data, configurationItemId, isError, isLoading, entityName }) => {
     const { t } = useTranslation()
 
     return (
@@ -39,6 +40,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                         }),
                         content: (
                             <CiNeighboursListContainer
+                                entityName={entityName}
                                 configurationItemId={configurationItemId}
                                 apiType={NeighboursApiType.source}
                                 View={(props) => {
@@ -65,6 +67,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                         }),
                         content: (
                             <CiNeighboursListContainer
+                                entityName={entityName}
                                 configurationItemId={configurationItemId}
                                 apiType={NeighboursApiType.target}
                                 View={(props) => {

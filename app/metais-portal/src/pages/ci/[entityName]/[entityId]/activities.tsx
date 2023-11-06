@@ -1,11 +1,11 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
 
 import { ActivitiesListContainer } from '@/components/containers/ActivitiesListContainer'
 import { ActivitiesView } from '@/components/views/ci/activities/ActivitiesView'
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 const ActivitiesListPage: React.FC = () => {
-    const { entityId } = useParams()
+    const { entityId } = useGetEntityParamsFromUrl()
 
     return (
         <ActivitiesListContainer

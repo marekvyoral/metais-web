@@ -1,17 +1,18 @@
-import { BreadCrumbs, HomeIcon, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, GridCol, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-
-import styles from './notifications.module.scss'
+import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
+import { DefinitionListItem } from '@isdd/metais-common/components/definition-list/DefinitionListItem'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 
 import { NotificationsDetailViewParams } from '@/components/containers/NotificationsDetailContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const NotificationsDetailView: React.FC<NotificationsDetailViewParams> = ({ data, id, isError, isLoading }) => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const date = new Date(data?.createdAt ?? '')
     return (
         <>
@@ -29,11 +30,15 @@ const NotificationsDetailView: React.FC<NotificationsDetailViewParams> = ({ data
                         <TextHeading size="L">{data?.messagePerex}</TextHeading>
                         {isError && <QueryFeedback loading={false} error={isError} />}
                     </FlexColumnReverseWrapper>
-                    <div className={styles.displayFlex}>
-                        <TextBody className={styles.fontWeightBolder}>{t('notifications.created')}</TextBody>
-                        <TextBody> {date.toLocaleString(i18n.language)}</TextBody>
-                    </div>
-                    <div dangerouslySetInnerHTML={{ __html: data?.message ?? '' }} />
+                    <GridCol setWidth="two-thirds">
+                        <DefinitionList>
+                            <DefinitionListItem label={t('notifications.created')} value={t('dateTime', { date: date })} />
+                            <DefinitionListItem
+                                label={t('notifications.description')}
+                                value={<SafeHtmlComponent dirtyHtml={data?.message ?? ''} />}
+                            />
+                        </DefinitionList>
+                    </GridCol>
                 </QueryFeedback>
             </MainContentWrapper>
         </>

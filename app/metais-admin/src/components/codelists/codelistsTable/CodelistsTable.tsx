@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { BaseModal, Button, ButtonLink, ButtonPopup, CheckBox, Input, PaginatorWrapper, SimpleSelect, Table, TextArea } from '@isdd/idsk-ui-kit/index'
-import { EnumTypePreview, EnumTypePreviewList } from '@isdd/metais-common/api'
+import { EnumTypePreview, EnumTypePreviewList } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { ActionsOverTable, CreateEntityButton, isRowSelected } from '@isdd/metais-common/index'
 import { useLocation, Link, useNavigate } from 'react-router-dom'

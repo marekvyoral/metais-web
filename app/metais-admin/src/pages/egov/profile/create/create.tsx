@@ -25,7 +25,7 @@ const CreateProfile = () => {
                             isError={props.isError}
                             isLoading={props.isLoading}
                             data={props?.data}
-                            mutate={props?.mutate}
+                            mutate={props?.mutateCreate}
                             hiddenInputs={props?.hiddenInputs}
                             type="profile"
                         />

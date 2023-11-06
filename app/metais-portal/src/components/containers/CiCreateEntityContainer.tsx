@@ -1,4 +1,4 @@
-import { HierarchyRightsUi } from '@isdd/metais-common/api'
+import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CiCode, useGenerateCodeAndURL } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import React, { SetStateAction } from 'react'
 

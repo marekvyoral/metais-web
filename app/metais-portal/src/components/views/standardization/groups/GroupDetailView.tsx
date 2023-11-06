@@ -66,7 +66,8 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                 withWidthContainer
                 links={[
                     { href: RouteNames.HOME, label: t('notifications.home'), icon: HomeIcon },
-                    { href: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE, label: t('navMenu.standardization') },
+                    { label: t('navMenu.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
+                    { label: t('navMenu.lists.groups'), href: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE },
                     { href: `${NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL}/${id}`, label: group?.name ?? '' },
                 ]}
             />

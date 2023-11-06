@@ -1,6 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import { CiListFilterContainerUi, getReadCiList1QueryKey, getReadCiNeighboursWithAllRelsQueryKey } from '@isdd/metais-common/api'
+import {
+    CiListFilterContainerUi,
+    getReadCiList1QueryKey,
+    getReadCiNeighboursWithAllRelsQueryKey,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import { getFindByUuid3QueryKey } from '@isdd/metais-common/api/generated/iam-swagger'
 

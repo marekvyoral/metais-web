@@ -11,15 +11,14 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SubmitWithFeedback } from '@isdd/metais-common/index'
-import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
+import { useReadConfigurationItemByMetaIsCode } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { KSIVS_SHORT_NAME, PUBLIC_ORG_CMDB_CODE } from '@isdd/metais-common/constants'
 
 import { AddMemberEnum, addMemberSchema } from './addMemberSchema'
 
 import styles from '@/components/views/standardization/groups/styles.module.scss'
 import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect'
 import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standardization/groups/defaultRoles'
-
-const proffesionalsUuid = '1734e40c-f959-4629-a699-5c0bc6ba8d55'
 
 interface AddGroupMemberModalProps {
     isOpen: boolean
@@ -38,21 +37,20 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
         watch,
         formState: { errors },
     } = useForm({ resolver: yupResolver(addMemberSchema(t)) })
+    const { data: profs } = useReadConfigurationItemByMetaIsCode(PUBLIC_ORG_CMDB_CODE)
 
     const findRole = useFindAll11Hook()
     const addRelation = useAddGroupOrgRoleIdentityRelationHook()
     const [addingGroupMember, setAddingGroupMember] = useState<boolean>(false)
     const watchMember = watch(['member'])
 
-    const [selectedMemberOrganizations, setSelectedMemberOrganizations] = useState<{ name: string; uuid: string }[]>([
-        { uuid: proffesionalsUuid, name: t('groups.professionals') },
-    ])
+    const [selectedMemberOrganizations, setSelectedMemberOrganizations] = useState<{ name: string; uuid: string }[]>([])
     const { data: relatedOrganizations } = useFindRelatedOrganizations(watchMember[0] ?? '')
 
     const onSubmit = async (form: FieldValues) => {
         setAddingGroupMember(true)
         const role = (await findRole({ name: form.role })) as Role
-        await addRelation(form.identity ?? '', group?.uuid ?? '', role.uuid ?? '', form.organization)
+        await addRelation(form.member ?? '', group?.uuid ?? '', role.uuid ?? '', form.organization)
         setAddingGroupMember(false)
         setAddedLabel(true)
         onClose()
@@ -64,9 +62,9 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
                 uuid: item.cmdbId ?? '',
                 name: (item.attributes ?? {})['Gen_Profil_nazov'],
             })),
-            { uuid: proffesionalsUuid, name: t('groups.professionals') },
+            { uuid: profs?.uuid ?? '', name: t('groups.professionals') },
         ])
-    }, [relatedOrganizations, t])
+    }, [profs, relatedOrganizations, t])
 
     return (
         <>
@@ -92,8 +90,8 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
                         disabled={!relatedOrganizations}
                         setValue={setValue}
                         clearErrors={clearErrors}
+                        error={errors[AddMemberEnum.ORGANIZATION]?.message}
                     />
-                    {errors[AddMemberEnum.ORGANIZATION]?.message}
                     <SimpleSelect
                         label={t('groups.role')}
                         name={AddMemberEnum.ROLE}

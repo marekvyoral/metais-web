@@ -13,7 +13,7 @@ import {
 } from '@isdd/idsk-ui-kit/index'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { TextLink } from '@isdd/idsk-ui-kit/typography/TextLink'
-import { RoleParticipantUI } from '@isdd/metais-common/api'
+import { RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ApiCodelistItemName, ApiCodelistManager, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { ActionsOverTable, QueryFeedback } from '@isdd/metais-common/index'
@@ -24,8 +24,8 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useNavigate } from 'react-router-dom'
+import { SelectFilterOrganization } from '@isdd/metais-common/components/select-organization/SelectFilterOrganization'
 
-import { SelectFilterOrganization } from './components/SelectFilterMainGestor/SelectFilterMainGestor'
 import { TextClickable } from './components/TextClickable/TextClickable'
 
 import {
@@ -87,7 +87,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                         {name}
                     </TextClickable>
                 ) : (
-                    <TextLink to={`${RouteNames.CODELISTS}/${id}/detail`}>{name}</TextLink>
+                    <TextLink to={`${RouteNames.CODELISTS}/${id}`}>{name}</TextLink>
                 )
             },
         },
@@ -147,33 +147,37 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
             <BreadCrumbs
                 withWidthContainer
                 links={[
-                    { label: t('codeListList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
-                    { label: t('codeListList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                    { label: t('codeListList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
+                    { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
+                    { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
+                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
                     isOnlyPublishedPage
-                        ? { label: t('codeListList.breadcrumbs.publicCodeListsList'), href: NavigationSubRoutes.PUBLIKOVANE_CISELNIKY }
-                        : { label: t('codeListList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CISELNIKY },
+                        ? { label: t('codeList.breadcrumbs.publicCodeListsList'), href: NavigationSubRoutes.PUBLIKOVANE_CISELNIKY }
+                        : { label: t('codeList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CISELNIKY },
                 ]}
             />
             <MainContentWrapper>
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <FlexColumnReverseWrapper>
-                        {isOnlyPublishedPage ? (
-                            <TextHeading size="L">{t('codeListList.publicCodeListSubtitle')}</TextHeading>
-                        ) : (
-                            <TextHeading size="L">{t('codeListList.codeListSubtitle')}</TextHeading>
-                        )}
-                        <TextHeading size="XL">{t('codeList.title')}</TextHeading>
+                        <TextHeading size="XL">{t('codeListList.title')}</TextHeading>
                         {isError && <QueryFeedback error={isError} loading={false} />}
                     </FlexColumnReverseWrapper>
-                    <TextHeading size="XL">{t('codeListList.title')}</TextHeading>
+                    {isOnlyPublishedPage ? (
+                        <TextHeading size="L">{t('codeListList.publicCodeListSubtitle')}</TextHeading>
+                    ) : (
+                        <TextHeading size="L">{t('codeListList.codeListSubtitle')}</TextHeading>
+                    )}
 
                     <Filter<CodeListListFilterData>
-                        heading={t('codeListList.filter.title')}
+                        heading={t('codeList.filter.title')}
                         defaultFilterValues={defaultFilterValues}
                         form={({ filter: formFilter, register, setValue }) => (
                             <div>
-                                <SelectFilterOrganization filter={formFilter} setValue={setValue} />
+                                <SelectFilterOrganization<CodeListListFilterData>
+                                    label={t('codeListList.filter.mainGestor')}
+                                    name="mainGestorPoUuid"
+                                    filter={formFilter}
+                                    setValue={setValue}
+                                />
                                 <Input {...register('toDate')} type="date" label={t('codeListList.filter.toDate')} />
                                 <SimpleSelect
                                     id="onlyBase"
@@ -226,11 +230,11 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                         <ButtonGroupRow>
                             <Button
                                 label={t('codeListList.lockedModal.button.lastSavedRevision')}
-                                onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}/detail`)}
+                                onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}`)}
                             />
                             <Button
                                 label={t('codeListList.lockedModal.button.currentRevision')}
-                                onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}/detail`)}
+                                onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}`)}
                             />
                         </ButtonGroupRow>
                     </BaseModal>

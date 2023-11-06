@@ -1,0 +1,15 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.centerDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: govuk-spacing(3);
+    padding-right: govuk-spacing(3);
+}
+
+.maxWidth {
+    width: 100%;
+    max-width: 630px;
+}

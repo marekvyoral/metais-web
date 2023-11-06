@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, createContext, useContext, useState } from 'react'
 import { MultiValue } from 'react-select'
 
-import { ConfigurationItemUi, ConfigurationItemUiAttributes } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 interface ColumnsOutputDefinition {
     attributes?: ConfigurationItemUiAttributes

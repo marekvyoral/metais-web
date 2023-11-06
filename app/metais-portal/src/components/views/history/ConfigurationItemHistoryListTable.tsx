@@ -5,7 +5,8 @@ import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { HistoryVersionUiConfigurationItemUi, QueryFeedback } from '@isdd/metais-common/index'
+import { QueryFeedback } from '@isdd/metais-common/index'
+import { HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Button } from '@isdd/idsk-ui-kit/index'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
@@ -82,7 +83,7 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
             accessorFn: (row) => row?.actions,
             header: t('historyTab.table.actions'),
             id: '1',
-            cell: (row) => t(`history.ACTIONS.${row.getValue() as string}`),
+            cell: (row) => (row.getValue() as string[])?.map((i) => t(`history.ACTIONS.${i as string}`)),
         },
         {
             accessorFn: (row) => row?.actionTime,

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Metadata, useGetMeta } from '@isdd/metais-common/api'
+import { Metadata, useGetMeta } from '@isdd/metais-common/api/generated/dms-swagger'
 
 export interface IView {
     data?: Metadata

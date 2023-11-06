@@ -1,4 +1,4 @@
-import { ApiVoteActorResult } from '@isdd/metais-common/api'
+import { ApiVoteActorResult } from '@isdd/metais-common/api/generated/standards-swagger'
 import { ColumnDef } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
 

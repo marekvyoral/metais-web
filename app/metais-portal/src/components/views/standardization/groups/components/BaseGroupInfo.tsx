@@ -5,6 +5,7 @@ import { Group } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 
 import styles from '@/components/views/standardization/groups/styles.module.scss'
 
@@ -42,7 +43,7 @@ const GroupDetailBaseInfo: React.FC<GroupDetailBaseInfoProps> = ({ infoData }) =
                 </GridCol>
                 <GridCol setWidth="two-thirds">
                     <TextBody>
-                        <div dangerouslySetInnerHTML={{ __html: infoData?.description ?? '' }} />
+                        <SafeHtmlComponent dirtyHtml={infoData?.description ?? ''} />
                     </TextBody>
                 </GridCol>
             </GridRow>

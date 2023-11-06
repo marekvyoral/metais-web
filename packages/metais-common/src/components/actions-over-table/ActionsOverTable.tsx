@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 
 import styles from './actionsOverTable.module.scss'
 
-import { BASE_PAGE_SIZE } from '@isdd/metais-common/api'
+import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { Attribute, AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { notificationDefaultSelectedColumns } from '@isdd/metais-common/constants'
 import { Actions, useCreateCiAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
@@ -80,7 +80,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     simpleTableColumnsSelect,
     children,
 }) => {
-    const ability = useCreateCiAbility(ciTypeData)
+    const ability = useCreateCiAbility(ciTypeData, entityName)
     const { t } = useTranslation()
     const pagingSelectId = useId()
 
@@ -89,7 +89,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
             name: attributeProfile.name || '',
             attributes:
                 attributeProfile.attributes
-                    ?.filter((attribute) => attribute.invisible === false)
+                    ?.filter((attribute) => attribute.invisible === false && attribute.valid)
                     .map((attribute) => ({
                         name: attribute.name || '',
                         technicalName: attribute.technicalName || '',
@@ -100,7 +100,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
         name: entityName || '',
         attributes:
             attributes
-                ?.filter((attribute) => attribute.invisible === false)
+                ?.filter((attribute) => attribute.invisible === false && attribute.valid)
                 ?.map((attribute) => ({
                     name: attribute.name || '',
                     technicalName: attribute.technicalName || '',
@@ -116,24 +116,24 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
             <div className={styles.buttonGroup}>
                 {children}
                 {bulkPopup && !hiddenButtons?.BULK_ACTIONS && (
-                    <Can I={Actions.BULK_ACTIONS} a={'ci'} ability={ability}>
+                    <Can I={Actions.BULK_ACTIONS} a={entityName} ability={ability}>
                         <>{bulkPopup}</>
                     </Can>
                 )}
                 <div className={classnames(styles.buttonImportExport, styles.mobileOrder2)}>
                     {importButton && (
-                        <Can I={Actions.IMPORT} a={'ci'} ability={ability}>
+                        <Can I={Actions.IMPORT} a={entityName} ability={ability}>
                             <>{importButton}</>
                         </Can>
                     )}
                     {exportButton && (
-                        <Can I={Actions.EXPORT} a={'ci'} ability={ability}>
+                        <Can I={Actions.EXPORT} a={entityName} ability={ability}>
                             <>{exportButton}</>
                         </Can>
                     )}
                 </div>
                 {createButton && (
-                    <Can I={Actions.CREATE} a={'ci'} ability={ability}>
+                    <Can I={Actions.CREATE} a={entityName} ability={ability}>
                         <>{createButton}</>
                     </Can>
                 )}
@@ -141,7 +141,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
 
             <div className={styles.buttonGroupSelect}>
                 {!hiddenButtons?.SELECT_COLUMNS && (
-                    <Can I={Actions.SELECT_COLUMNS} a={'ci'} ability={ability}>
+                    <Can I={Actions.SELECT_COLUMNS} a={entityName} ability={ability}>
                         <ButtonPopup
                             buttonLabel={t('actionOverTable.selectColumn')}
                             buttonClassName="marginBottom0"

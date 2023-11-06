@@ -1,4 +1,4 @@
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useFormContext } from 'react-hook-form'
 import { RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const RelationAttributeForm: React.FC<Props> = ({ relationSchema, hasResetState, constraintsData, unitsData }) => {
-    const { register, formState, trigger, setValue, clearErrors } = useFormContext()
+    const { register, formState, trigger, setValue, clearErrors, control } = useFormContext()
     const attributes = [
         ...(relationSchema?.attributes ?? []),
         ...(relationSchema?.attributeProfiles?.map((profile) => profile.attributes?.map((att) => att)).flat() ?? []),
@@ -40,6 +40,7 @@ export const RelationAttributeForm: React.FC<Props> = ({ relationSchema, hasRese
                         constraintsData,
                     )}
                     unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                    control={control}
                 />
             ))}
         </>

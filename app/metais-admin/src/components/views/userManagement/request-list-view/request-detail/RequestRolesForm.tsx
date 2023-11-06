@@ -1,5 +1,5 @@
 import { AccordionContainer, CheckBox, Table, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { EnumItem } from '@isdd/metais-common/api'
+import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ClaimUi } from '@isdd/metais-common/api/generated/claim-manager-swagger'
 import { useGetRolesByidentityAndOrgannizationHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'

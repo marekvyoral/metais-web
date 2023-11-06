@@ -1,11 +1,14 @@
+import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
+import { ConfigurationItemUi, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { QueryFeedback, pairEnumsToEnumValues } from '@isdd/metais-common/index'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 import { InformationGridRow } from '@isdd/metais-common/src/components/info-grid-row/InformationGridRow'
-import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
+import { DESCRIPTION, HTML_TYPE } from '@isdd/metais-common/constants'
+import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/src/hooks/useGetCiTypeConstraintsData'
 
@@ -22,7 +25,7 @@ interface CiInformationData {
 }
 // Plánované ročné prevádzkové náklady projektu v EUR
 export const CiInformationAccordion: React.FC<CiInformationData> = ({
-    data: { ciItemData, ciTypeData, constraintsData, unitsData, gestorData },
+    data: { ciItemData, ciTypeData, constraintsData, unitsData },
     isLoading,
     isError,
 }) => {
@@ -33,6 +36,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
         isError: isCiConstraintError,
         uuidsToMatchedCiItemsMap,
     } = useGetCiTypeConstraintsData(ciTypeData, [ciItemData ?? {}])
+
     const currentEntityCiTypeConstraintsData = uuidsToMatchedCiItemsMap[ciItemData?.uuid ?? '']
 
     const tabsFromApi =
@@ -46,7 +50,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                             .sort((atr1, atr2) => (atr1.order || 0) - (atr2.order || 0))
                             .map((attribute) => {
                                 const withDescription = true
-                                const rowValue = pairEnumsToEnumValues(
+                                const formattedRowValue = pairEnumsToEnumValues(
                                     attribute,
                                     ciItemData,
                                     constraintsData,
@@ -55,13 +59,13 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                                     currentEntityCiTypeConstraintsData,
                                     withDescription,
                                 )
-
+                                const isHTML = attribute.type === HTML_TYPE
                                 return (
                                     !attribute?.invisible && (
                                         <InformationGridRow
                                             key={attribute?.technicalName}
                                             label={attribute?.name ?? ''}
-                                            value={rowValue}
+                                            value={isHTML ? <SafeHtmlComponent dirtyHtml={formattedRowValue} /> : formattedRowValue}
                                             tooltip={attribute?.description}
                                             lang={setEnglishLangForAttr(attribute.technicalName ?? '')}
                                         />
@@ -87,26 +91,24 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                         onLoadOpen: true,
                         content: (
                             <DefinitionList>
-                                <InformationGridRow
-                                    label={t('ciInformationAccordion.owner')}
-                                    value={gestorData?.[0].configurationItemUi?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
-                                    tooltip={gestorData?.[0].configurationItemUi?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_popis]}
-                                />
                                 {ciTypeData?.attributes?.map((attribute) => {
                                     const withDescription = true
+                                    const rowValue = pairEnumsToEnumValues(
+                                        attribute,
+                                        ciItemData,
+                                        constraintsData,
+                                        t,
+                                        unitsData,
+                                        currentEntityCiTypeConstraintsData,
+                                        withDescription,
+                                    )
+                                    const isHTML = attribute.type === HTML_TYPE || attribute.name == DESCRIPTION
+
                                     return (
                                         <InformationGridRow
                                             key={attribute?.technicalName}
                                             label={attribute.name ?? ''}
-                                            value={pairEnumsToEnumValues(
-                                                attribute,
-                                                ciItemData,
-                                                constraintsData,
-                                                t,
-                                                unitsData,
-                                                currentEntityCiTypeConstraintsData,
-                                                withDescription,
-                                            )}
+                                            value={isHTML ? <SafeHtmlComponent dirtyHtml={rowValue?.replace(/\n/g, '<br>')} /> : rowValue}
                                             tooltip={attribute?.description}
                                             lang={setEnglishLangForAttr(attribute.technicalName ?? '')}
                                         />

@@ -4,7 +4,7 @@ import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWr
 import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { QueryFeedback, formatRelationAttributes } from '@isdd/metais-common'
-import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api'
+import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -61,84 +61,86 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
         <>
             {<TextHeading size="XL">{t('neighboursCardList.heading')}</TextHeading>}
             <QueryFeedback loading={areTypesLoading} withChildren>
-                <Tabs
-                    tabList={data?.keysToDisplay.map((key) => ({
-                        id: key?.technicalName,
-                        title: key?.tabName,
-                        meta: { isDerived: key.isDerived },
-                        content: (
-                            <QueryFeedback
-                                loading={!areTypesLoading && ((isLoading && !key.isDerived) || (isDerivedLoading && key.isDerived))}
-                                error={isError}
-                                errorProps={{ errorMessage: t('feedback.failedFetch') }}
-                                withChildren
-                            >
-                                <div className={classNames([styles.tableActionsWrapper, key.isDerived && styles.flexEnd])}>
-                                    {!key.isDerived && (
-                                        <ButtonGroupRow>
-                                            <Button
-                                                className={'marginBottom0'}
-                                                label={t('neighboursCardList.buttonAddNewRelation')}
-                                                variant="secondary"
-                                                disabled={!canCreateRelation}
-                                                onClick={() => navigate(`new-relation/${key.technicalName}`, { state: { from: location } })}
-                                            />
-                                            <Button
-                                                className={'marginBottom0'}
-                                                onClick={() => navigate(`new-ci/${key.technicalName}`, { state: { from: location } })}
-                                                label={t('neighboursCardList.buttonAddNewRelationCard')}
-                                                variant="secondary"
-                                                disabled={!canCreateRelation || !canCreateCi}
-                                            />{' '}
-                                        </ButtonGroupRow>
-                                    )}
-                                    <PageSizeSelect
-                                        id="relationPerPage"
-                                        className={styles.perPageSelectWrapper}
-                                        handlePagingSelect={(page) => {
-                                            setPageConfig((pageConfig) => {
-                                                return {
-                                                    ...pageConfig,
-                                                    perPage: Number(page),
-                                                }
-                                            })
-                                        }}
+                {!areTypesLoading && (
+                    <Tabs
+                        tabList={data?.keysToDisplay.map((key) => ({
+                            id: key?.technicalName,
+                            title: key?.tabName,
+                            meta: { isDerived: key.isDerived },
+                            content: (
+                                <QueryFeedback
+                                    loading={(isLoading && !key.isDerived) || (isDerivedLoading && key.isDerived)}
+                                    error={isError}
+                                    errorProps={{ errorMessage: t('feedback.failedFetch') }}
+                                    withChildren
+                                >
+                                    <div className={classNames([styles.tableActionsWrapper, key.isDerived && styles.flexEnd])}>
+                                        {!key.isDerived && (
+                                            <ButtonGroupRow>
+                                                <Button
+                                                    className={'marginBottom0'}
+                                                    label={t('neighboursCardList.buttonAddNewRelation')}
+                                                    variant="secondary"
+                                                    disabled={!canCreateRelation}
+                                                    onClick={() => navigate(`new-relation/${key.technicalName}`, { state: { from: location } })}
+                                                />
+                                                <Button
+                                                    className={'marginBottom0'}
+                                                    onClick={() => navigate(`new-ci/${key.technicalName}`, { state: { from: location } })}
+                                                    label={t('neighboursCardList.buttonAddNewRelationCard')}
+                                                    variant="secondary"
+                                                    disabled={!canCreateRelation || !canCreateCi}
+                                                />{' '}
+                                            </ButtonGroupRow>
+                                        )}
+                                        <PageSizeSelect
+                                            id="relationPerPage"
+                                            className={styles.perPageSelectWrapper}
+                                            handlePagingSelect={(page) => {
+                                                setPageConfig((pageConfig) => {
+                                                    return {
+                                                        ...pageConfig,
+                                                        perPage: Number(page),
+                                                    }
+                                                })
+                                            }}
+                                        />
+                                    </div>
+                                    <CardColumnList>
+                                        {relationsList?.ciWithRels?.map((ciWithRel) => {
+                                            const formatedCiWithRel = formatRelationAttributes(ciWithRel, relationTypes, owners, t, i18n)
+                                            return <RelationCard {...formatedCiWithRel} key={formatedCiWithRel?.codeMetaIS} />
+                                        })}
+                                    </CardColumnList>
+                                    <PaginatorWrapper
+                                        pageNumber={pagination.pageNumber}
+                                        pageSize={pagination.pageSize}
+                                        dataLength={pagination.dataLength}
+                                        handlePageChange={handleFilterChange}
                                     />
-                                </div>
-                                <CardColumnList>
-                                    {relationsList?.ciWithRels?.map((ciWithRel) => {
-                                        const formatedCiWithRel = formatRelationAttributes(ciWithRel, relationTypes, owners, t, i18n)
-                                        return <RelationCard {...formatedCiWithRel} key={formatedCiWithRel?.codeMetaIS} />
-                                    })}
-                                </CardColumnList>
-                                <PaginatorWrapper
-                                    pageNumber={pagination.pageNumber}
-                                    pageSize={pagination.pageSize}
-                                    dataLength={pagination.dataLength}
-                                    handlePageChange={handleFilterChange}
-                                />
-                            </QueryFeedback>
-                        ),
-                    }))}
-                    onSelect={(selected) => {
-                        setIsDerived(selected.meta?.isDerived ? true : false)
-                        setPageConfig((pageConfig) => {
-                            if (!selected.meta?.isDerived) {
-                                return {
-                                    ciTypes: !selected.meta?.isDerived ? [selected.id] : undefined,
-                                    perPage: pageConfig.perPage,
-                                    page: 1,
+                                </QueryFeedback>
+                            ),
+                        }))}
+                        onSelect={(selected) => {
+                            setIsDerived(selected.meta?.isDerived ? true : false)
+                            setPageConfig((pageConfig) => {
+                                if (!selected.meta?.isDerived) {
+                                    return {
+                                        ciTypes: !selected.meta?.isDerived ? [selected.id] : undefined,
+                                        perPage: pageConfig.perPage,
+                                        page: 1,
+                                    }
+                                } else {
+                                    return {
+                                        relTypes: selected.meta?.isDerived ? [selected.id] : undefined,
+                                        perPage: pageConfig.perPage,
+                                        page: 1,
+                                    }
                                 }
-                            } else {
-                                return {
-                                    relTypes: selected.meta?.isDerived ? [selected.id] : undefined,
-                                    perPage: pageConfig.perPage,
-                                    page: 1,
-                                }
-                            }
-                        })
-                    }}
-                />
+                            })
+                        }}
+                    />
+                )}
             </QueryFeedback>
         </>
     )

@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import {
     UserManagementActionsOverRowEnum,
@@ -20,7 +21,7 @@ import {
     UserManagementListItem,
     defaultFilterValues,
 } from '@/components/containers/ManagementList/UserManagementListUtils'
-import { SelectFilterOrganization } from '@/components/views/userManagement/components/SelectFilterOrganization/SelectFilterOrganization'
+import { SelectFilterOrganizationHierarchy } from '@/components/views/userManagement/components/SelectFilterOrganizationHierarchy/SelectFilterOrganizationHierarchy'
 import { SelectFilterRole } from '@/components/views/userManagement/components/SelectFilterRole/SelectFilterRole'
 import { UserManagementListTable } from '@/components/views/userManagement/components/UserManagementTable/UserManagementListTable'
 
@@ -56,6 +57,10 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
+    const {
+        isActionSuccess: { value: isSuccess },
+    } = useActionSuccess()
+
     const [rowSelection, setRowSelection] = useState<Record<string, UserManagementListItem>>({})
     const handleUpdateIdentitiesState = useCallback(
         (activate: boolean) =>
@@ -80,6 +85,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                 {(isMutationError || isMutationSuccess) && (
                     <MutationFeedback success={isMutationSuccess} error={isMutationError && t('userManagement.error.mutation')} />
                 )}
+                {isSuccess && <MutationFeedback success error={false} />}
             </FlexColumnReverseWrapper>
             <Filter<UserManagementFilterData>
                 defaultFilterValues={defaultFilterValues}
@@ -106,7 +112,7 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                             setValue={setValue}
                         />
                         <SelectFilterRole filter={filter} setValue={setValue} />
-                        <SelectFilterOrganization filter={filter} setValue={setValue} />
+                        <SelectFilterOrganizationHierarchy filter={filter} setValue={setValue} />
                     </>
                 )}
             />

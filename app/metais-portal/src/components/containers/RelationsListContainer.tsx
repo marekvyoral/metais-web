@@ -1,5 +1,5 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ReadCiNeighboursWithAllRelsParams, RoleParticipantUI } from '@isdd/metais-common/api'
+import { ReadCiNeighboursWithAllRelsParams, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useEntityRelationsDataList } from '@isdd/metais-common/hooks/useEntityRelationsDataList'
 import { IKeyToDisplay, useEntityRelationsTypesCount } from '@isdd/metais-common/hooks/useEntityRelationsTypesCount'
 import React, { SetStateAction, useEffect, useMemo, useState } from 'react'
@@ -35,29 +35,41 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
     const { data: relationTypes } = useListRelationshipTypes({ filter: { role: undefined } })
 
     const { currentPreferences } = useUserPreferences()
+
     const defaultCiType = keysToDisplay?.[0]?.technicalName
+    const defaultIsDerived = keysToDisplay?.[0]?.isDerived
     const defaultCiTypes: string[] = useMemo((): string[] => {
         return defaultCiType ? [defaultCiType] : []
     }, [defaultCiType])
 
     const defaultPageConfig: ReadCiNeighboursWithAllRelsParams = useMemo(() => {
         const state = currentPreferences.showInvalidatedItems ? ['DRAFT', 'INVALIDATED'] : ['DRAFT']
-        return {
-            ciTypes: defaultCiTypes,
-            page: BASE_PAGE_NUMBER,
-            perPage: BASE_PAGE_SIZE,
-            state,
+        if (!defaultIsDerived) {
+            return {
+                ciTypes: defaultCiTypes,
+                page: BASE_PAGE_NUMBER,
+                perPage: BASE_PAGE_SIZE,
+                state,
+            }
+        } else {
+            return {
+                relTypes: defaultCiTypes,
+                page: BASE_PAGE_NUMBER,
+                perPage: BASE_PAGE_SIZE,
+                state,
+            }
         }
-    }, [currentPreferences.showInvalidatedItems, defaultCiTypes])
+    }, [currentPreferences.showInvalidatedItems, defaultCiTypes, defaultIsDerived])
 
     const [pageConfig, setPageConfig] = useState<ReadCiNeighboursWithAllRelsParams>(defaultPageConfig)
     const [isDerived, setIsDerived] = useState<boolean>(false)
 
     useEffect(() => {
         if (defaultCiType) {
+            setIsDerived(defaultIsDerived)
             setPageConfig(defaultPageConfig)
         }
-    }, [defaultCiType, defaultPageConfig])
+    }, [defaultCiType, defaultIsDerived, defaultPageConfig])
 
     const handleFilterChange = (filter: IFilter) => {
         setPageConfig(mapFilterToNeighboursWithAllRelsApi(pageConfig, filter))
@@ -85,7 +97,7 @@ export const RelationsListContainer: React.FC<IRelationsListContainer> = ({ enti
             isLoading={areRelationsLoading}
             isDerivedLoading={areDerivedLoading}
             isError={isError}
-            relationsList={relationsList}
+            relationsList={{ ...relationsList }}
             data={{
                 owners,
                 keysToDisplay: keysToDisplay ?? [],

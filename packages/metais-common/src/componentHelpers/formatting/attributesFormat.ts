@@ -1,7 +1,12 @@
 import { TFunction } from 'i18next'
 
+import { MetainformationColumns } from '../ci/getCiDefaultMetaAttributes'
+
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { ConfigurationItemUi as ConfigurationItemUiOriginal } from '@isdd/metais-common/api/generated/iam-swagger'
 import { Attribute, AttributeConstraintEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
 
 const findUnitValue = (attribute: Attribute | undefined, unitsData: EnumType | undefined) => {
     const unit = unitsData?.enumItems?.find((item) => item.code === attribute?.units)?.value ?? ''
@@ -17,7 +22,7 @@ const formatRowValueByRowType = (
 ) => {
     if (attribute?.units && attribute?.type && rowValue) {
         const unitValue = findUnitValue(attribute, unitsData)
-        return t('currency', { val: rowValue, currency: unitValue })
+        return t(`units.${unitValue}`, { val: rowValue })
     }
     switch (attribute?.type) {
         case 'BOOLEAN':
@@ -32,14 +37,20 @@ const formatRowValueByRowType = (
 
 export const pairEnumsToEnumValues = (
     attribute: Attribute | undefined,
-    ciItemData: ConfigurationItemUi | undefined,
-    constraintsData: (EnumType | undefined)[],
+    ciItemData: ConfigurationItemUi | ConfigurationItemUiOriginal | undefined,
+    constraintsData: (EnumType | undefined)[] | undefined,
     t: TFunction<'translation', undefined, 'translation'>,
     unitsData: EnumType | undefined,
-    matchedAttributeNamesToCiItem: Record<string, ConfigurationItemUi>,
+    matchedAttributeNamesToCiItem: Record<string, ConfigurationItemUi> | undefined,
     withDescription?: boolean,
 ) => {
-    const rowValue = ciItemData?.attributes?.[attribute?.technicalName ?? attribute?.name ?? '']
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let rowValue: any
+    if (Array.isArray(ciItemData?.attributes)) {
+        rowValue = ciItemData?.attributes?.find((i) => i.name === attribute?.technicalName || i.name === attribute?.name)?.value || ''
+    } else {
+        rowValue = ciItemData?.attributes?.[attribute?.technicalName ?? attribute?.name ?? '']
+    }
     const formattedRowValue = formatRowValueByRowType(attribute, rowValue, t, unitsData)
     if (!attribute?.constraints || !attribute?.constraints?.length) return formattedRowValue
     return (
@@ -72,4 +83,17 @@ export const pairEnumsToEnumValues = (
             }
         }) ?? []
     )?.join(',')
+}
+
+export const distinctAttributesMetaAttributes = (
+    attributes: Attribute[],
+    metaAttributes: {
+        name: string
+        attributes: {
+            name: string
+            technicalName: MetainformationColumns
+        }[]
+    },
+) => {
+    return attributes?.filter((attr) => !metaAttributes?.attributes?.find((metaAttribute) => metaAttribute?.technicalName === attr?.technicalName))
 }

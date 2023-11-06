@@ -8,7 +8,8 @@ import {
     SimpleSelect,
     TextHeading,
 } from '@isdd/idsk-ui-kit/index'
-import { ATTRIBUTE_NAME, ConfigurationItemUi, useStoreGraph } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
 import { JOIN_OPERATOR, metaisEmail } from '@isdd/metais-common/constants'
@@ -68,7 +69,6 @@ export const NewRelationView: React.FC<Props> = ({
     const navigate = useNavigate()
 
     const ability = useAbilityContext()
-    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
     const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
 
     const [hasReset, setHasReset] = useState(false)
@@ -80,8 +80,9 @@ export const NewRelationView: React.FC<Props> = ({
     const relatedListAsTargets = relationData?.relatedListAsTargets
     const constraintsData = relationData?.constraintsData ?? []
     const unitsData = relationData?.unitsData
+    const ciTypeData = relationData?.ciTypeData
 
-    const { register, handleSubmit: handleFormSubmit, formState, setValue, clearErrors, trigger } = useForm()
+    const { register, handleSubmit: handleFormSubmit, formState, setValue, clearErrors, trigger, control } = useForm()
     const relationSchema = relationData?.relationTypeData
 
     const relationSchemaCombinedAttributes = [
@@ -207,6 +208,7 @@ export const NewRelationView: React.FC<Props> = ({
                                       constraintsData,
                                   )}
                                   unitsData={attribute?.units ? getAttributeUnits(attribute.units ?? '', unitsData) : undefined}
+                                  control={control}
                               />
                           ))}
                       </>
@@ -224,8 +226,9 @@ export const NewRelationView: React.FC<Props> = ({
             <SelectPublicAuthorityAndRole
                 onChangeAuthority={(e) => publicAuthorityState.setSelectedPublicAuthority(e)}
                 onChangeRole={(val) => roleState.setSelectedRole(val)}
-                selectedRoleId={roleState.selectedRole}
+                selectedRole={roleState.selectedRole ?? {}}
                 selectedOrg={publicAuthorityState.selectedPublicAuthority}
+                ciRoles={ciTypeData?.roleList ?? []}
             />
 
             <SimpleSelect
@@ -267,7 +270,7 @@ export const NewRelationView: React.FC<Props> = ({
                     submitButtonLabel={t('newRelation.save')}
                     additionalButtons={[<Button key={1} label={t('newRelation.cancel')} type="reset" variant="secondary" onClick={handleReset} />]}
                     loading={storeGraph.isLoading}
-                    disabled={isSubmitDisabled || !hasOrgPermission || !canCreateRelationType}
+                    disabled={isSubmitDisabled || !canCreateRelationType || !roleState?.selectedRole?.roleUuid}
                 />
             </form>
         </QueryFeedback>

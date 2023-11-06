@@ -9,7 +9,8 @@ import styles from './styles.module.scss'
 
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 import { formatBytes } from '@isdd/metais-common/components/file-import/fileImportUtils'
-import { ConfigurationItemUi, MetaVersion, useGetContentHook } from '@isdd/metais-common/api'
+import { MetaVersion, useGetContentHook } from '@isdd/metais-common/api/generated/dms-swagger'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 

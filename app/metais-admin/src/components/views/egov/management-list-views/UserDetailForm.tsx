@@ -103,7 +103,12 @@ export const UserDetailForm: React.FC<Props> = ({ userData, handleBackNavigate, 
                 </div>
             )}
 
-            <UserManagementFormButtons handleBackNavigate={handleBackNavigate} handleResetForm={handleResetForm} isError={isError} />
+            <UserManagementFormButtons
+                handleBackNavigate={handleBackNavigate}
+                handleResetForm={handleResetForm}
+                isError={isError}
+                hideCancelButton={!isCreate}
+            />
         </>
     )
 }

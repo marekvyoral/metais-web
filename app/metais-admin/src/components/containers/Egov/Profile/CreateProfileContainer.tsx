@@ -1,6 +1,11 @@
 import { SortType } from '@isdd/idsk-ui-kit/types'
-import { Role } from '@isdd/metais-common/api'
-import { AttributeProfile, CiType, getListAttrProfile1QueryKey, useStoreNewAttrProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Role } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import {
+    AttributeProfile,
+    getListAttrProfile1QueryKey,
+    useStoreExistAttrProfile,
+    useStoreNewAttrProfile,
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import React from 'react'
 import { useQueryClient } from '@tanstack/react-query'
@@ -11,7 +16,8 @@ export interface ICreateEntityView {
     data: {
         roles?: Role[]
     }
-    mutate: (data: CiType) => Promise<void>
+    mutateCreate: (formData: AttributeProfile) => Promise<void>
+    mutateEdit: (formData: AttributeProfile) => Promise<void>
     hiddenInputs?: Partial<HiddenInputs>
     isLoading: boolean
     isError: boolean
@@ -29,7 +35,8 @@ export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreat
     const profileListQueryKey = getListAttrProfile1QueryKey({})
 
     const { data, isLoading, isError } = useFindAll1(pageNumber, pageSize, { direction: SortType.ASC, orderBy: 'name' })
-    const { mutateAsync } = useStoreNewAttrProfile({
+
+    const { mutateAsync: mutateEdit } = useStoreExistAttrProfile({
         mutation: {
             onSuccess() {
                 queryClient.invalidateQueries([profileListQueryKey[0]])
@@ -37,8 +44,24 @@ export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreat
         },
     })
 
-    const storeProfile = async (formData: AttributeProfile) => {
-        await mutateAsync({
+    const { mutateAsync: mutateCreate } = useStoreNewAttrProfile({
+        mutation: {
+            onSuccess() {
+                queryClient.invalidateQueries([profileListQueryKey[0]])
+            },
+        },
+    })
+
+    const editProfile = async (formData: AttributeProfile) => {
+        await mutateEdit({
+            data: {
+                ...formData,
+            },
+        })
+    }
+
+    const createProfile = async (formData: AttributeProfile) => {
+        await mutateCreate({
             data: {
                 ...formData,
             },
@@ -50,7 +73,8 @@ export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreat
             data={{
                 roles: (data as Role[]) ?? [],
             }}
-            mutate={storeProfile}
+            mutateCreate={createProfile}
+            mutateEdit={editProfile}
             hiddenInputs={{ ENG_NAME: true, CODE_PREFIX: true, URI_PREFIX: true, ATTRIBUTE_PROFILES: true, SOURCES: true, TARGETS: true }}
             isLoading={isLoading}
             isError={isError}

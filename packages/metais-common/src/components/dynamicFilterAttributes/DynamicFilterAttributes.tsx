@@ -10,17 +10,20 @@ import style from './customFilterAttribute.module.scss'
 import { IAttributeFilters, IFilterParams, OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
 import { DynamicFilterAttributeRow } from '@isdd/metais-common/components/dynamicFilterAttributeRow/DynamicFilterAttributeRow'
 import { MAX_DYNAMIC_ATTRIBUTES_LENGHT, OPERATOR_SEPARATOR_TYPE } from '@isdd/metais-common/constants/index'
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { FilterMetaAttributesUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { formatAttributeOperatorString } from '@isdd/metais-common/componentHelpers/filter/formatAttirbuteOperatorString'
-import { transformOperatorsFromUrl } from '@isdd/metais-common/componentHelpers/filter/transformOperators'
 import { findDefaultOperator } from '@isdd/metais-common/componentHelpers/filter/findDefaultOperator'
 import { findAvailableOperators } from '@isdd/metais-common/componentHelpers/filter/findAvailableOperators'
 import { findAttributeType } from '@isdd/metais-common/componentHelpers/filter/findAttributeType'
 import { findAttributeConstraints } from '@isdd/metais-common/componentHelpers/filter/findAttributeConstraints'
+import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
+import { formatAttributeFiltersToFilterAttributeType, formatMetaAttributesToFilterAttributeType } from '@isdd/metais-common/componentHelpers'
 
+export type FilterAttributeValue = string | string[] | Date | null
 export interface FilterAttribute {
-    value?: string | string[] | Date | null
+    value?: FilterAttributeValue
     operator?: string
     name?: string
 }
@@ -28,9 +31,12 @@ export interface FilterAttribute {
 export interface ColumnAttribute {
     name: string
 }
-
+type FilterData = {
+    attributeFilters: IAttributeFilters
+    metaAttributeFilters: FilterMetaAttributesUi
+}
 interface Props {
-    data?: IAttributeFilters
+    filterData?: FilterData
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     defaults: { [key: string]: any }
     setValue: UseFormSetValue<IFilterParams>
@@ -39,14 +45,20 @@ interface Props {
     constraintsData: (EnumType | undefined)[]
 }
 
-export const DynamicFilterAttributes: FC<Props> = ({ data = {}, setValue, attributes, attributeProfiles, constraintsData, defaults }) => {
-    const [dynamicAttributes, setDynamicAttributes] = useState<FilterAttribute[]>([])
+export const DynamicFilterAttributes: FC<Props> = ({ filterData, setValue, attributes, attributeProfiles, constraintsData, defaults }) => {
+    const attributeFiltersData = filterData?.attributeFilters
+    const metaAttributeFiltersData = filterData?.metaAttributeFilters
 
+    const [dynamicAttributes, setDynamicAttributes] = useState<FilterAttribute[]>([])
     const { t } = useTranslation()
     const [searchParams, setSearchParams] = useSearchParams()
 
     const [addRowError, setAddRowError] = useState<string>('')
-    const combinedAttributes = [...(attributes ?? []), ...(attributeProfiles?.map((profile) => profile.attributes?.map((att) => att)).flat() ?? [])]
+    const combinedAttributes = [
+        ...(attributes ?? []),
+        ...(attributeProfiles?.map((profile) => profile.attributes?.map((att) => att)).flat() ?? []),
+        ...(getCiDefaultMetaAttributes({ t }).attributes as Attribute[]),
+    ]
     const filteredAvailable = attributeProfiles?.map((profile) => {
         const defaultKeys = Object.keys(defaults)
         const newProfile = { ...profile }
@@ -58,30 +70,22 @@ export const DynamicFilterAttributes: FC<Props> = ({ data = {}, setValue, attrib
         // this should happened only on mount is one time thing which restore params from url
         const filterAttributes: FilterAttribute[] = []
 
-        Object.keys(data).forEach((name) => {
-            if (data[name].length > 1) {
-                const values = data[name].map((attr) => attr.value as string)
+        if (metaAttributeFiltersData) {
+            const formattedMetaAttributes = formatMetaAttributesToFilterAttributeType(metaAttributeFiltersData)
+            formattedMetaAttributes.forEach((attribute) => {
+                filterAttributes.push(attribute)
+                setValue(formatAttributeOperatorString(attribute?.name ?? '', attribute.operator ?? ''), attribute.value)
+            })
+        }
 
-                const operators = data[name].map((attr) => attr.operator)
-                const uniqueOperators = [...new Set(operators)]
+        if (attributeFiltersData) {
+            const formattedAttributeFilters = formatAttributeFiltersToFilterAttributeType(attributeFiltersData)
 
-                //this means it is multiSelect
-                if (uniqueOperators.length > 1) {
-                    uniqueOperators.forEach((operator, index) => {
-                        filterAttributes.push({ name, operator: transformOperatorsFromUrl(operator), value: values[index] })
-                        setValue(formatAttributeOperatorString(name, transformOperatorsFromUrl(operator)), values[index])
-                    })
-                } else {
-                    filterAttributes.push({ name, operator: transformOperatorsFromUrl(operators[0]), value: values })
-                    setValue(formatAttributeOperatorString(name, transformOperatorsFromUrl(operators[0])), values)
-                }
-            } else {
-                data[name].forEach((attr) => {
-                    filterAttributes.push({ name, operator: transformOperatorsFromUrl(attr.operator), value: attr.value })
-                    setValue(formatAttributeOperatorString(name, transformOperatorsFromUrl(attr.operator)), attr.value)
-                })
-            }
-        })
+            formattedAttributeFilters.forEach((attribute) => {
+                filterAttributes.push(attribute)
+                setValue(formatAttributeOperatorString(attribute?.name ?? '', attribute.operator ?? ''), attribute.value)
+            })
+        }
 
         setDynamicAttributes(filterAttributes)
         // eslint-disable-next-line
@@ -142,6 +146,8 @@ export const DynamicFilterAttributes: FC<Props> = ({ data = {}, setValue, attrib
         }
     }
 
+    const attributesWithMetaAttributes = [...(attributes ?? []), ...(getCiDefaultMetaAttributes({ t }).attributes as Attribute[])]
+
     return (
         <div>
             {dynamicAttributes.map((attribute, index) => (
@@ -150,7 +156,7 @@ export const DynamicFilterAttributes: FC<Props> = ({ data = {}, setValue, attrib
                     index={index}
                     selectedAttributes={dynamicAttributes}
                     attributeProfiles={filteredAvailable}
-                    attributes={attributes}
+                    attributes={attributesWithMetaAttributes}
                     remove={() => removeAttrRow(index, attribute)}
                     onChange={(attr, prevData, isNewName) => handleAttrChange(index, attr, prevData, isNewName)}
                     attribute={attribute}

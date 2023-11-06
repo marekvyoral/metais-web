@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { GeneralElasticItemSet, SearchAllParams, useSearchAll } from '@isdd/metais-common/api'
+import { GeneralElasticItemSet, SearchAllParams, useSearchAll } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useNavigate, useSearchParams } from 'react-router-dom'

@@ -1,11 +1,7 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import {
-    BASE_PAGE_NUMBER,
-    BASE_PAGE_SIZE,
-    HistoryVersionsListUiConfigurationItemUi,
-    NeighbourSetUi,
-    ReportResultObject,
-} from '@isdd/metais-common/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
+import { ReportResultObject } from '@isdd/metais-common/api/generated/report-swagger'
+import { HistoryVersionsListUiConfigurationItemUi, NeighbourSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 export const mapNeighboursSetSourceToPagination = (uiFilter?: IFilter, data?: NeighbourSetUi | void): Pagination => {
     return {

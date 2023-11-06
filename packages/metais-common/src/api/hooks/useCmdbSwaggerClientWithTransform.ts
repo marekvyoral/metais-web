@@ -1,7 +1,14 @@
-import { CiWithRelsResultUi, ConfigurationItemUi, NeighbourSetUi, RoleParticipantUI, ConfigurationItemSetUi } from '../generated/cmdb-swagger'
-
 import { transformAttributesKeyValue } from './transform'
 import { useCustomClient } from './use-custom-client'
+
+import {
+    CiWithRelsResultUi,
+    ConfigurationItemUi,
+    NeighbourSetUi,
+    RoleParticipantUI,
+    ConfigurationItemSetUi,
+    HistoryVersionsListUiConfigurationItemUi,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 const baseURL = import.meta.env.VITE_REST_CLIENT_CMDB_TARGET_URL
 
@@ -50,5 +57,12 @@ export const useClientForreadCiNeighboursUsingPOST = <T extends NeighbourSetUi>(
         body.toNodes?.neighbourPairs?.forEach((nP) => {
             transformAttributesKeyValue(nP.configurationItem)
             transformAttributesKeyValue(nP.relationship)
+        })
+    })
+
+export const useClientForRefRegistersHistory = <T extends HistoryVersionsListUiConfigurationItemUi>() =>
+    useCustomClient<T>(baseURL, (body) => {
+        body.historyVersions?.forEach((nP) => {
+            transformAttributesKeyValue(nP.item)
         })
     })

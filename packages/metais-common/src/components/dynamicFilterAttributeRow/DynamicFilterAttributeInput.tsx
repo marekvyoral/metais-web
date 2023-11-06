@@ -1,12 +1,17 @@
 import { Input, MultiSelect, RadioButton, RadioButtonGroup } from '@isdd/idsk-ui-kit'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import classNames from 'classnames'
 
 import style from './customFilterAttribute.module.scss'
 
-import { EnumType } from '@isdd/metais-common/api'
+import { SelectPOForFilter } from '@isdd/metais-common/components/select-po/SelectPOForFilter'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { FilterAttribute, FilterAttributeValue } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { MetaInformationTypes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
+import { formatDateForDefaultValue, hasCiType } from '@isdd/metais-common/componentHelpers'
+import { CustomAttributeType } from '@isdd/metais-common/componentHelpers/filter/findAttributeType'
 
 enum RadioInputValue {
     TRUE = 'true',
@@ -14,10 +19,7 @@ enum RadioInputValue {
 }
 
 interface Props {
-    attributeType: {
-        isArray: boolean
-        type: string
-    }
+    attributeType: CustomAttributeType
     index: number
     value: FilterAttribute
     constraints: EnumType | undefined
@@ -26,6 +28,11 @@ interface Props {
 
 export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, index, value, onChange, constraints }) => {
     const { t } = useTranslation()
+
+    const isOwner = attributeType.type === MetaInformationTypes.OWNER
+    const isState = attributeType.type === MetaInformationTypes.STATE
+    const lastModified = attributeType.type === MetaInformationTypes.LAST_MODIFIED
+    const createdAt = attributeType.type === MetaInformationTypes.CREATED_AT
 
     const isBoolean = attributeType.type === AttributeAttributeTypeEnum.BOOLEAN
     const isInteger = attributeType.type === AttributeAttributeTypeEnum.INTEGER
@@ -42,11 +49,31 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
     const hasEnumItems = !!constraints?.code && constraints.enumItems && constraints.enumItems.length > 0
     const hasNumericValue = isByte || isFloat || isInteger || isDouble || isLong || isShort
 
+    const isCMDBType = !!attributeType.cmdbConstraints?.type
+    const ciTypeCMDB = attributeType.cmdbConstraints && hasCiType(attributeType.cmdbConstraints) ? attributeType.cmdbConstraints.ciType : ''
+
     const optionsForSelects =
         constraints?.enumItems?.map((item) => ({ label: item.description ? `${item.description}` : `${item.value}`, value: `${item.code}` })) ?? []
 
+    const valueAsArray = (filterValue: FilterAttributeValue) => {
+        return Array.isArray(filterValue) ? filterValue.map((val) => val.toString() ?? '') : [filterValue?.toString() ?? '']
+    }
+
     const renderContent = () => {
         switch (true) {
+            case isCMDBType: {
+                return (
+                    <div className={classNames(style.rowItem, style.lazySelect)}>
+                        <SelectPOForFilter
+                            ciType={ciTypeCMDB}
+                            label={t('customAttributeFilter.value.label')}
+                            name="atributeValue"
+                            valuesAsUuids={valueAsArray(value.value ?? '')}
+                            onChange={(val) => onChange({ ...value, value: val?.map((v) => v?.uuid ?? '') })}
+                        />
+                    </div>
+                )
+            }
             case hasEnumItems: {
                 return (
                     <div className={style.rowItem}>
@@ -66,16 +93,15 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
                 )
             }
 
-            case isDate: {
-                //right now this returns 400
-                //how to send date info I communicate with BE
+            case lastModified || createdAt || isDate: {
                 return (
                     <Input
                         className={style.rowItem}
                         id={`attribute-value-${index}-date`}
-                        label={t('customAttributeFilter.value.label.date')}
+                        label={t('customAttributeFilter.value.label')}
                         name="atributeValueDate"
-                        onChange={(e) => onChange({ ...value, value: e.target.value })}
+                        onChange={(e) => onChange({ ...value, value: formatDateForDefaultValue(e.target.value, 'yyyy-MM-dd HH:mm:ss') })}
+                        value={formatDateForDefaultValue(value.value?.toString() ?? '')}
                         type="date"
                     />
                 )
@@ -107,6 +133,38 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
                     </div>
                 )
             }
+
+            case isOwner: {
+                return (
+                    <div className={classNames(style.rowItem, style.lazySelect)}>
+                        <SelectPOForFilter
+                            ciType="PO"
+                            label={t('customAttributeFilter.value.label')}
+                            name="atributeValue"
+                            valuesAsUuids={valueAsArray(value.value ?? '')}
+                            onChange={(val) => onChange({ ...value, value: val?.map((v) => v?.uuid ?? '') })}
+                        />
+                    </div>
+                )
+            }
+
+            case isState: {
+                return (
+                    <div className={style.rowItem}>
+                        <MultiSelect
+                            label={t('customAttributeFilter.value.label')}
+                            name="atributeValue"
+                            options={[
+                                { value: 'INVALIDATED', label: t('metaAttributes.state.INVALIDATED') },
+                                { value: 'DRAFT', label: t('metaAttributes.state.DRAFT') },
+                            ]}
+                            value={valueAsArray(value.value ?? '')}
+                            onChange={(val) => onChange({ ...value, value: val })}
+                        />
+                    </div>
+                )
+            }
+
             default: {
                 return (
                     <Input

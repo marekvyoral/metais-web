@@ -3,9 +3,10 @@ import { useParams } from 'react-router-dom'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { Languages } from '@isdd/metais-common/localization/languages'
-import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
+import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/entityNameHelpers'
 
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiContainer } from '@/components/containers/CiContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { EditCiEntityView } from '@/components/views/ci/edit/EditCiEntityView'
@@ -13,7 +14,9 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const EditEntityPage = () => {
     const { t, i18n } = useTranslation()
-    const { entityName, entityId } = useParams()
+    const { entityId } = useParams()
+    let { entityName } = useParams()
+    entityName = shouldEntityNameBePO(entityName ?? '')
     document.title = `${t('titles.ciEdit', { ci: entityName })} | MetaIS`
 
     return (

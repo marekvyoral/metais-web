@@ -1,13 +1,9 @@
-import {
-    ATTRIBUTE_NAME,
-    ConfigurationItemSetUi,
-    ConfigurationItemUi,
-    ConfigurationItemUiAttributes,
-    EnumType,
-    FavoriteCiType,
-    RoleParticipantUI,
-} from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { ConfigurationItemUi, ConfigurationItemUiAttributes, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { Attribute, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { pairEnumsToEnumValues } from '@isdd/metais-common/index'
 import { ColumnOrderState } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
@@ -52,15 +48,16 @@ export const reduceAttributesByTechnicalName = (entityStructure: CiType | undefi
 }
 
 export const mapTableData = (
-    tableData: ConfigurationItemSetUi | undefined | void,
+    tableData: ConfigurationItemUi[] | undefined | void,
     reducedAttributes: ReducedAttributes,
     t: TFunction<'translation', undefined, 'translation'>,
     unitsData: EnumType | undefined,
     constraintsData?: (EnumType | undefined)[],
     uuidsToMatchedCiItemsMap?: Record<string, Record<string, ConfigurationItemUi>> | undefined,
 ) => {
-    return (tableData?.configurationItemSet?.map((confItem: ConfigurationItemUi) => {
+    return (tableData?.map((confItem: ConfigurationItemUi) => {
         const newAttributes: { [attributeName: string]: string } = {}
+
         Object.keys(confItem?.attributes ?? {})?.map((attributeName: string) => {
             const foundAttrWithTypes = reducedAttributes[attributeName]
             const newRowValue = pairEnumsToEnumValues(
@@ -126,4 +123,13 @@ export const reduceTableDataToObject = <T extends { uuid?: string }>(array: T[])
 export const getOwnerInformation = (ownerGid: string, ownerList: RoleParticipantUI[] | undefined) => {
     const foundOwner = ownerList?.find((item) => item.gid === ownerGid)
     return foundOwner
+}
+
+export const isMetaAttribute = (metaTechnicalName: string) => {
+    return (
+        metaTechnicalName === MetainformationColumns.OWNER ||
+        metaTechnicalName === MetainformationColumns.STATE ||
+        metaTechnicalName === MetainformationColumns.CREATED_AT ||
+        metaTechnicalName === MetainformationColumns.LAST_MODIFIED_AT
+    )
 }

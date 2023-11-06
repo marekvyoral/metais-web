@@ -2,7 +2,7 @@ import { AccordionContainer, CheckBox, SelectLazyLoading, Table, TextHeading } f
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Row } from '@tanstack/react-table'
-import { EnumItem } from '@isdd/metais-common/api'
+import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
 import styles from './userView.module.scss'
 import { SelectableColumnsSpec } from './userManagementUtils'

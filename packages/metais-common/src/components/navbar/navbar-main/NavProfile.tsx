@@ -17,7 +17,9 @@ export const NavProfile: React.FC = () => {
 
     const handleLogout = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault()
-        dispatch({ type: AuthActions.LOGOUT })
+        fetch(`${import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL}/logout`, { method: 'POST' }).finally(() =>
+            dispatch({ type: AuthActions.LOGOUT }),
+        )
     }
     const location = useLocation()
     return (

@@ -3,9 +3,10 @@ import { useParams } from 'react-router-dom'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { Languages } from '@isdd/metais-common/localization/languages'
-import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
+import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/entityNameHelpers'
 
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiContainer } from '@/components/containers/CiContainer'
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
 import { NewCiRelationContainer } from '@/components/containers/NewCiRelationContainer'
@@ -14,9 +15,13 @@ import { NewCiWithRelationView } from '@/components/views/new-ci-with-relation/N
 import { RelationTypePermissionWrapper } from '@/components/permissions/CreateRelationPermissionWrapper'
 import { findRelationType } from '@/componentHelpers/new-relation'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 const CreateCiItemAndRelation: React.FC = () => {
-    const { entityName, entityId, tabName } = useParams()
+    const { tabName } = useParams()
+    const { entityId } = useGetEntityParamsFromUrl()
+    let { entityName } = useGetEntityParamsFromUrl()
+    entityName = shouldEntityNameBePO(entityName ?? '')
     const { t, i18n } = useTranslation()
 
     return (
@@ -45,10 +50,10 @@ const CreateCiItemAndRelation: React.FC = () => {
                             />
                             <MainContentWrapper>
                                 <AttributesContainer
-                                    entityName={entityName ?? ''}
+                                    entityName={tabName ?? ''}
                                     View={({ data: attributesData, isError: attError, isLoading: attLoading }) => (
                                         <CiCreateEntityContainer
-                                            entityName={entityName ?? ''}
+                                            entityName={tabName ?? ''}
                                             View={({
                                                 data: generatedEntityId,
                                                 isError: isGeneratedEntityIdError,

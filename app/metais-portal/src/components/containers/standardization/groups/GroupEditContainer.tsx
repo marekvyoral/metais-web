@@ -1,9 +1,12 @@
 import { Group, useFindByUuid3, useUpdateOrCreate2 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { QueryFeedback } from '@isdd/metais-common/index'
-import React from 'react'
+import { ApiError } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import React, { useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useInvalidateGroupsDetailCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
+import { useTranslation } from 'react-i18next'
 
 import { GroupCreateEditView } from '@/components/views/standardization/groups/GroupCreateEditView'
 import { GroupFormEnum } from '@/components/views/standardization/groups/groupSchema'
@@ -16,21 +19,34 @@ export interface IGroupForm {
     orgSelect: string
 }
 
+interface IResultApiCall {
+    isSuccess: boolean
+    isError: boolean
+    message: React.ReactNode
+}
 export interface IGroupEditViewParams {
     onSubmit: (formData: FieldValues) => void
     goBack: () => void
     infoData: Group | undefined
     isEdit?: boolean
     id?: string
+    resultApiCall?: IResultApiCall
 }
 
-interface IGroupEditContainer {
+export interface IGroupEditContainer {
     id?: string
     View: React.FC<IGroupEditViewParams>
 }
 
 export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
     const navigate = useNavigate()
+    const { t } = useTranslation()
+
+    const [resultApiCall, setResultApiCall] = useState<IResultApiCall>({
+        isError: false,
+        isSuccess: false,
+        message: undefined,
+    })
 
     const { data: infoData, isLoading, isError } = useFindByUuid3(id ?? '')
     const invalidateGroupDetailCache = useInvalidateGroupsDetailCache(id ?? '')
@@ -38,11 +54,18 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
     const goBack = () => {
         navigate(-1)
     }
-    const { mutate: updateGroup } = useUpdateOrCreate2({
+    const { mutate: updateGroup, isLoading: isUpdating } = useUpdateOrCreate2({
         mutation: {
             onSuccess() {
                 goBack()
                 invalidateGroupDetailCache.invalidate()
+            },
+            onError(error: ApiError) {
+                setResultApiCall({
+                    isError: true,
+                    isSuccess: false,
+                    message: error?.type === 'NoChangesDetected' ? t(`errors.${ReponseErrorCodeEnum.DEFAULT}`) : t(`errors.NoChangesDetected`),
+                })
             },
         },
     })
@@ -59,8 +82,10 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
     }
 
     return (
-        <QueryFeedback loading={isLoading} error={isError}>
-            <GroupCreateEditView onSubmit={onSubmit} goBack={goBack} infoData={infoData} isEdit />
-        </QueryFeedback>
+        <>
+            <QueryFeedback loading={isLoading || isUpdating} error={isError} withChildren>
+                <GroupCreateEditView onSubmit={onSubmit} goBack={goBack} infoData={infoData} isEdit resultApiCall={resultApiCall} />
+            </QueryFeedback>
+        </>
     )
 }

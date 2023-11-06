@@ -1,9 +1,8 @@
-import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ReportHeader } from '@isdd/metais-common/api'
+import { ReportHeader } from '@isdd/metais-common/api/generated/report-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
@@ -27,16 +26,6 @@ export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handle
     } = useAuth()
     const isUserLogged = !!user
     const columns: Array<ColumnDef<TableCols>> = [
-        {
-            accessorFn: (row) => row.selected,
-            header: () => (
-                <>
-                    <CheckBox label="" name="header.selected" id="header.selected" value="header.selected" />
-                </>
-            ),
-            id: 'selected',
-            cell: (row) => <CheckBox label={row.getValue() as string} name="cell.selected" id="cell.selected" value="cell.selected" />,
-        },
         {
             header: t('reports.table.name'),
             meta: {

@@ -26,7 +26,7 @@ export const CodelistsCreateForm: React.FC<Props> = ({ onSubmit, isLoading, clos
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className={styles.center}>
-                <TextHeading size="L"> Create new codelist</TextHeading>
+                <TextHeading size="L">{t('codelists.createNewCodelist')}</TextHeading>
             </div>
             <Input error={errors[CodelistEnum.CODE]?.message} label={t('codelists.code')} {...register(CodelistEnum.CODE)} />
             <Input error={errors[CodelistEnum.NAME]?.message} label={t('codelists.name')} {...register(CodelistEnum.NAME)} />

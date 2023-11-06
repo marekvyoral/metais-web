@@ -19,6 +19,7 @@ interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<
     info?: string
     correct?: boolean
     className?: string
+    inputClassName?: string
     isUpload?: boolean
     hasInputIcon?: boolean
 }
@@ -38,6 +39,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
             className,
             isUpload = false,
             hasInputIcon = false,
+            inputClassName,
             ...rest
         },
         ref,
@@ -63,7 +65,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                         <span className="govuk-error-message">{error}</span>
                     </>
                 )}
-                <div className={styles.inputWrapper} style={{ position: 'relative' }}>
+                <div className={classNames(styles.inputWrapper, inputClassName)} style={{ position: 'relative' }}>
                     <input
                         className={classNames({ 'govuk-input--error': !!error, 'govuk-input': !isUpload, 'govuk-file-upload': isUpload })}
                         id={id}

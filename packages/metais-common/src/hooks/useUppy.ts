@@ -24,7 +24,7 @@ interface iUseUppy {
     allowedFileTypes?: string[] // if undefined all file types are allowed
     maxFileSize?: number
     multiple: boolean
-    endpointUrl: string
+    endpointUrl?: string
     fileImportStep: FileImportStepEnum
     setFileImportStep: (value: FileImportStepEnum) => void
     setCustomFileMeta?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => { [metaKey: string]: string | number }
@@ -68,7 +68,10 @@ export const useUppy = ({
     }, [allowedFileTypes, i18n.language, maxFileSize, multiple])
 
     useEffect(() => {
-        uppy.getPlugin('XHRUpload')?.setOptions({ endpoint: endpointUrl, headers: { Authorization: `Bearer ${accessToken}` } })
+        uppy.getPlugin('XHRUpload')?.setOptions({
+            endpoint: endpointUrl,
+            headers: { Authorization: `Bearer ${accessToken}` },
+        })
     }, [accessToken, endpointUrl])
 
     useEffect(() => {
@@ -76,7 +79,7 @@ export const useUppy = ({
             setErrorMessages((prev) => [...prev, error.message])
         }
         const fileAdded = (file: UppyFile<Record<string, unknown>, Record<string, unknown>>) => {
-            if (setCustomFileMeta) uppy.setFileMeta(file.id, setCustomFileMeta?.(file))
+            if (setCustomFileMeta) uppy.setFileMeta(file?.id, setCustomFileMeta?.(file))
             setCurrentFiles(() => uppy.getFiles())
             setFileImportStep(FileImportStepEnum.VALIDATE)
         }
@@ -108,7 +111,7 @@ export const useUppy = ({
             })
         })
         try {
-            uppy.upload().then((result) => {
+            await uppy.upload().then((result) => {
                 if (result.successful.length > 0) {
                     setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
                 }

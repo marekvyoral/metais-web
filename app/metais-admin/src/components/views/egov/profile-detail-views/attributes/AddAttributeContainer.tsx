@@ -1,11 +1,12 @@
 import React from 'react'
-import { EnumType, EnumTypePreviewList, useGetEnum, useListEnums } from '@isdd/metais-common/api'
+import { EnumType, EnumTypePreviewList, useGetEnum, useListEnums } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
 import { Attribute, useStoreNewAttribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 export interface IAddAttributeView {
     data: {
-        measureUnit?: EnumType | undefined
-        allEnumsData?: EnumTypePreviewList | undefined
+        measureUnit?: EnumType
+        allEnumsData?: EnumTypePreviewList
         entityName?: string
     }
     storeNewAttribute: (attributeTechnicalName?: string, newAttribute?: Attribute) => Promise<void>
@@ -21,14 +22,22 @@ const AddAttributeContainer = ({ View }: IAddAttributeContainer) => {
     const { data: allEnumsData } = useListEnums()
 
     const { mutateAsync: storeAttribute } = useStoreNewAttribute()
+    const deleteCacheMutation = useDeleteCacheForCi()
 
     const storeNewAttribute = async (attributeTechnicalName?: string, newAttribute?: Attribute) => {
-        await storeAttribute({
-            atrProfTechnicalName: attributeTechnicalName ?? '',
-            data: {
-                ...newAttribute,
-                technicalName: attributeTechnicalName + underscore + newAttribute?.technicalName,
-            },
+        const handleStoreAttribute = async () => {
+            await storeAttribute({
+                atrProfTechnicalName: attributeTechnicalName ?? '',
+                data: {
+                    ...newAttribute,
+                    constraints: newAttribute?.constraints ?? [],
+                    technicalName: attributeTechnicalName + underscore + newAttribute?.technicalName,
+                },
+            })
+        }
+
+        deleteCacheMutation.mutateAsync(undefined, {
+            onSuccess: () => handleStoreAttribute(),
         })
     }
 

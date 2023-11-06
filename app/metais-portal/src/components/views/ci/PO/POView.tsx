@@ -7,13 +7,13 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { IListData } from '@isdd/metais-common/types/list'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { FavoriteCiType } from '@isdd/metais-common/api'
+import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { AttributesContainerViewData } from '@isdd/metais-common/components/containers/AttributesContainer'
 
 import { CiTable } from '@/components/ci-table/CiTable'
-import { AttributesContainerViewData } from '@/components/containers/AttributesContainer'
 import { FilterPO, POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
 import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 
@@ -68,7 +68,7 @@ export const POView: React.FC<Props> = ({
                 codePrefix={ciTypeData?.codePrefix}
             />
             <ActionsOverTable
-                metaAttributesColumnSection={getCiDefaultMetaAttributes(t)}
+                metaAttributesColumnSection={getCiDefaultMetaAttributes({ t })}
                 handleFilterChange={handleFilterChange}
                 storeUserSelectedColumns={storeUserSelectedColumns}
                 resetUserSelectedColumns={resetUserSelectedColumns}

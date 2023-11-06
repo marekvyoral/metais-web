@@ -1,5 +1,7 @@
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
-import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { SubHeading } from '@isdd/metais-common/src/components/sub-heading/SubHeading'
 import React from 'react'
@@ -46,7 +48,7 @@ export const EditCiEntityView: React.FC<Props> = ({
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
-                <TextHeading size="XL">{t('ciType.editEntity')}</TextHeading>
+                <TextHeading size="XL">{t('ciType.editEntity', { entityName: entityName })}</TextHeading>
                 {isError && <QueryFeedback loading={false} error={isError} />}
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />

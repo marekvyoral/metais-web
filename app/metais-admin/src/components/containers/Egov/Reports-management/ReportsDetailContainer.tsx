@@ -8,7 +8,7 @@ import {
     useListCategories,
     useRun,
     useSaveReport,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/report-swagger'
 import { REPORTS_LIST_QUERY_KEY } from '@isdd/metais-common/constants'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useQueryClient } from '@tanstack/react-query'

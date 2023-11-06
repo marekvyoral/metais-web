@@ -1,4 +1,5 @@
-import { ConfigurationItemUiAttributes, EnumType, useStoreConfigurationItem } from '@isdd/metais-common/api'
+import { ConfigurationItemUiAttributes, useStoreConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useRedirectAfterSuccess } from '@isdd/metais-common/src/hooks/useRedirectAfterSucces'
@@ -8,6 +9,8 @@ import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
 import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
+import { isObjectEmpty } from '@isdd/metais-common/src/utils/utils'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
@@ -87,16 +90,21 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         }
     }, [performRedirection, requestId])
 
+    const deleteCacheMutation = useDeleteCacheForCi(entityName)
+
     const onSubmit = async (formAttributes: FieldValues) => {
         setRequestId('')
         setUploadError(false)
         resetRedirect()
         const formAttributesKeys = Object.keys(formAttributes)
 
-        const formattedAttributesToSend = formAttributesKeys.map((key) => ({
-            name: key,
-            value: formatFormAttributeValue(formAttributes, key),
-        }))
+        const formattedAttributesToSend = formAttributesKeys
+            .map((key) => ({
+                name: key,
+                value: formatFormAttributeValue(formAttributes, key),
+            }))
+            .filter((att) => !isObjectEmpty(att.value))
+
         const type = entityName
         const ownerId = data.ownerId
         const uuid = updateCiItemId ? updateCiItemId : uuidV4()
@@ -113,8 +121,14 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
             owner: ownerId,
         }
 
-        storeConfigurationItem.mutate({
-            data: updateCiItemId ? dataToUpdate : dataToCreate,
+        const handleStoreConfigurationItem = () => {
+            storeConfigurationItem.mutate({
+                data: updateCiItemId ? dataToUpdate : dataToCreate,
+            })
+        }
+
+        deleteCacheMutation.mutateAsync(undefined, {
+            onSuccess: () => handleStoreConfigurationItem(),
         })
     }
 
@@ -140,10 +154,11 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
             >
                 {!updateCiItemId && publicAuthorityState && roleState && (
                     <SelectPublicAuthorityAndRole
-                        selectedRoleId={roleState.selectedRole}
+                        selectedRole={roleState.selectedRole ?? {}}
                         onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
                         onChangeRole={roleState.setSelectedRole}
                         selectedOrg={publicAuthorityState.selectedPublicAuthority}
+                        ciRoles={ciTypeData?.roleList ?? []}
                     />
                 )}
 
@@ -157,6 +172,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                     defaultItemAttributeValues={defaultItemAttributeValues}
                     updateCiItemId={updateCiItemId}
                     isProcessing={storeConfigurationItem.isLoading}
+                    selectedRole={roleState?.selectedRole ?? null}
                 />
             </QueryFeedback>
         </>

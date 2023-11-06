@@ -1,17 +1,18 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tab } from '@isdd/idsk-ui-kit/tabs/Tabs'
-import { getTabsFromApi, QueryFeedback } from '@isdd/metais-common'
+import { getTabsFromApi, MutationFeedback, QueryFeedback } from '@isdd/metais-common'
 import { Button, ButtonGroupRow } from '@isdd/idsk-ui-kit'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { EntityDetailViewAttributes } from './attributes/EntityDetailViewAttributes'
 import { SummarizingCard } from './SummarizingCard'
 
 import styles from '@/components/views/egov/detailViews.module.scss'
 import { BasicInformations } from '@/components/views/egov/BasicInformations'
-import { IAtrributesContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'
+import { IAttributesContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'
 import { ProfileTabs } from '@/components/ProfileTabs'
 
 export const EntityDetailView = ({
@@ -22,10 +23,13 @@ export const EntityDetailView = ({
     resetExistingAttribute,
     isError,
     isLoading,
-}: IAtrributesContainerView) => {
+    roles,
+}: IAttributesContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
+    const { isActionSuccess } = useActionSuccess()
+
     const tabsFromApi = getTabsFromApi(
         keysToDisplay,
         EntityDetailViewAttributes,
@@ -46,6 +50,7 @@ export const EntityDetailView = ({
             title: t('egov.detail.genericProfile'),
             content: (
                 <EntityDetailViewAttributes
+                    roles={roles}
                     data={ciTypeData}
                     attributesOverridesData={attributesOverridesData}
                     saveExistingAttribute={saveExistingAttribute}
@@ -60,7 +65,7 @@ export const EntityDetailView = ({
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <div className={styles.basicInformationSpace}>
                 <FlexColumnReverseWrapper>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div className={styles.flexBetween}>
                         <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
                         <ButtonGroupRow>
                             <Button
@@ -76,8 +81,9 @@ export const EntityDetailView = ({
                         </ButtonGroupRow>
                     </div>
                     {isError && <QueryFeedback error loading={false} />}
+                    <MutationFeedback success={isActionSuccess.value} error={false} />
                 </FlexColumnReverseWrapper>
-                <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
+                <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} roles={roles} />
             </div>
             <ProfileTabs tabList={tabList} />
         </QueryFeedback>

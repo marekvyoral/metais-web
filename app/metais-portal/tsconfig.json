@@ -3,6 +3,11 @@
     "compilerOptions": {
         "baseUrl": "."
     },
-    "include": ["src", "src/components/ci-table"],
+    "include": [
+        "src",
+        "src/components/ci-table",
+        "../../packages/metais-common/src/components/containers/AttributesContainer.tsx",
+        "../../packages/metais-common/src/components/select-organization"
+    ],
     "exclude": ["**/api/generated/*.ts", "node_modules", "dist"]
 }

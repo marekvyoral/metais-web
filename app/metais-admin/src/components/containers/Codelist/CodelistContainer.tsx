@@ -6,7 +6,7 @@ import {
     useListValidEnums,
     useUpdateEnumType,
     useValidEnumType,
-} from '@isdd/metais-common/api'
+} from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { UseMutationResult, useQueryClient } from '@tanstack/react-query'
 import React from 'react'

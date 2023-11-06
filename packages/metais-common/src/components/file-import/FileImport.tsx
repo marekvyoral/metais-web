@@ -4,11 +4,11 @@ import { BaseModal } from '@isdd/idsk-ui-kit/index'
 
 import { FileImportView } from './FileImportView'
 
-import { OrgPermissionsWrapper } from '@isdd/metais-common/components/permissions/OrgPermissionsWrapper'
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { HierarchyRightsUi } from '@isdd/metais-common/api'
+import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { FileImportEditOptions } from '@isdd/metais-common/src/components/file-import/FileImportHeader'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
+import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 
 interface IFileImport {
     allowedFileTypes: string[]
@@ -42,7 +42,7 @@ export const FileImport: React.FC<IFileImport> = ({
 
     const [radioButtonMetaData, setRadioButtonMetaData] = useState<FileImportEditOptions>(FileImportEditOptions.EXISTING_ONLY)
 
-    const [selectedRoleId, setSelectedRoleId] = useState<string>('')
+    const [selectedRole, setSelectedRole] = useState<GidRoleData | null>(null)
     const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
     const {
         uppy,
@@ -64,7 +64,7 @@ export const FileImport: React.FC<IFileImport> = ({
     })
 
     const handleValidate = useCallback(async () => {
-        uppy.setMeta({ editType: radioButtonMetaData, type: ciType, poId: selectedOrg?.poUUID, roleId: selectedRoleId })
+        uppy.setMeta({ editType: radioButtonMetaData, type: ciType, poId: selectedOrg?.poUUID, roleId: selectedRole?.roleUuid })
         try {
             uppy.upload().then((result) => {
                 if (result.successful.length > 0) {
@@ -94,7 +94,7 @@ export const FileImport: React.FC<IFileImport> = ({
         fileImportStep,
         radioButtonMetaData,
         selectedOrg?.poUUID,
-        selectedRoleId,
+        selectedRole?.roleUuid,
         setErrorMessages,
         setFileImportStep,
         setUploadFileProgressInfo,
@@ -110,26 +110,24 @@ export const FileImport: React.FC<IFileImport> = ({
 
     return (
         <BaseModal isOpen={isOpen} close={handleCancelImport}>
-            <OrgPermissionsWrapper selectedOrganizationId={selectedOrg?.poUUID ?? ''}>
-                <FileImportView
-                    uppy={uppy}
-                    currentFiles={currentFiles}
-                    handleUpload={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : handleUpload}
-                    uploadFileProgressInfo={uploadFileProgressInfo}
-                    handleCancelImport={handleCancelImport}
-                    handleRemoveFile={handleRemoveFile}
-                    setRadioButtonMetaData={setRadioButtonMetaData}
-                    setErrorMessages={setErrorMessages}
-                    errorMessages={errorMessages}
-                    fileImportStep={fileImportStep}
-                    radioButtonMetaData={radioButtonMetaData}
-                    ciType={ciType}
-                    setSelectedRoleId={setSelectedRoleId}
-                    setSelectedOrg={setSelectedOrg}
-                    selectedOrg={selectedOrg}
-                    selectedRoleId={selectedRoleId}
-                />
-            </OrgPermissionsWrapper>
+            <FileImportView
+                uppy={uppy}
+                currentFiles={currentFiles}
+                handleUpload={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : handleUpload}
+                uploadFileProgressInfo={uploadFileProgressInfo}
+                handleCancelImport={handleCancelImport}
+                handleRemoveFile={handleRemoveFile}
+                setRadioButtonMetaData={setRadioButtonMetaData}
+                setErrorMessages={setErrorMessages}
+                errorMessages={errorMessages}
+                fileImportStep={fileImportStep}
+                radioButtonMetaData={radioButtonMetaData}
+                ciType={ciType}
+                setSelectedRole={setSelectedRole}
+                setSelectedOrg={setSelectedOrg}
+                selectedOrg={selectedOrg}
+                selectedRole={selectedRole ?? {}}
+            />
         </BaseModal>
     )
 }

@@ -1,8 +1,10 @@
 import React from 'react'
 
 import { CiType, AttributeProfile, Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { FindAll11200 } from '@isdd/metais-common/api/generated/iam-swagger'
 
 export interface IEntityDetailViewAttributes {
+    roles?: FindAll11200
     data: CiType | AttributeProfile | undefined
     attributesOverridesData?: Attribute[] | undefined
     removeProfileAttribute?: (technicalName: string) => void

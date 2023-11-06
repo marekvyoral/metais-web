@@ -1,6 +1,7 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { Input, MultiSelect, RadioButton, RadioGroupWithLabel } from '@isdd/idsk-ui-kit/index'
-import { ATTRIBUTE_NAME, EnumType } from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ColumnAttribute, DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { SelectPersonCategory } from '@isdd/metais-common/components/select-person-category/SelectPersonCategory'
@@ -71,7 +72,7 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
                         attributeProfiles={attributeProfiles}
                         constraintsData={constraintsData}
                         setValue={setValue}
-                        data={filter.attributeFilters}
+                        filterData={{ attributeFilters: filter.attributeFilters ?? {}, metaAttributeFilters: filter.metaAttributeFilters ?? {} }}
                     />
                 </div>
             )}

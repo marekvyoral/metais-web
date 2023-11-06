@@ -1,18 +1,18 @@
 import { BreadCrumbs, Button, Filter, HomeIcon, Input, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { ApiVotePreviewList, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
 import { ActionsOverTable } from '@isdd/metais-common/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useLocation, useNavigate } from 'react-router-dom'
-
-import { getVoteStateExplanation } from '../voteProps'
+import { ApiVotePreviewList } from '@isdd/metais-common/api/generated/standards-swagger'
 
 import styles from './voteList.module.scss'
 
 import { voteListColumns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/standardization/votes/votesList/voteListProps'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { getVoteStateExplanation } from '@/components/views/standardization/votes/voteProps'
 
 export interface IVotesListFilterData extends IFilterParams, IFilter {
     votesTypeToShow: string
@@ -47,6 +47,7 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
     return (
         <>
             <BreadCrumbs
+                withWidthContainer
                 links={[
                     { label: t('votes.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('votes.breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },

@@ -1,4 +1,4 @@
-import { ConfigurationItemUi, useReadCiList1 } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 type AttributeTechnicalName = string
@@ -54,7 +54,7 @@ const getCiTypesFromConstraints = (entityStructure: CiType | undefined): Record<
         ...(attributes ?? []),
         ...(attributeProfiles?.map((profile: AttributeProfile) => profile.attributes).flat() ?? []),
     ]
-        .filter((att) => att?.constraints?.[0]?.type === 'ciType')
+        .filter((att) => att?.constraints?.[0]?.type === 'ciType' && att?.valid && !att.invisible)
         .reduce((acc: Record<AttributeTechnicalName, CiTypeConstraintTechnicalName>, att) => {
             if (isConstraintCiType(att?.constraints?.[0])) {
                 return { ...acc, [att?.technicalName ?? '']: att?.constraints?.[0]?.ciType ?? '' }
@@ -91,6 +91,7 @@ export const useGetCiTypeConstraintsData = (entityStructure: CiType | undefined,
         .map((pair) => Object.values(pair))
         .flat()
 
+    const isQueryEnabled = listOfAllCiUuidsToSearch.length > 0
     const { data, isLoading, isError, fetchStatus } = useReadCiList1(
         {
             filter: {
@@ -99,7 +100,7 @@ export const useGetCiTypeConstraintsData = (entityStructure: CiType | undefined,
             },
             perpage: 999,
         },
-        { query: { enabled: listOfAllCiUuidsToSearch.length > 0 } },
+        { query: { enabled: isQueryEnabled } },
     )
 
     const uuidsToMatchedCiItemsMap: Record<string, Record<string, ConfigurationItemUi>> = {}

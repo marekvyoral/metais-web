@@ -1,4 +1,5 @@
-import { EnumType, IncidentRelationshipSetUi, useReadRelationships } from '@isdd/metais-common/api'
+import { IncidentRelationshipSetUi, useReadRelationships } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import {
@@ -6,6 +7,8 @@ import {
     RelationshipType,
     useListRelatedCiTypes,
     useGetRelationshipType,
+    useGetCiType,
+    CiType,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { filterRelatedList } from '@/componentHelpers/new-relation'
@@ -17,6 +20,7 @@ export interface INewCiRelationData {
     relationTypeData: RelationshipType | undefined
     constraintsData: (EnumType | undefined)[]
     unitsData: EnumType | undefined
+    ciTypeData: CiType | undefined
 }
 
 export interface ISelectedRelationTypeState {
@@ -40,6 +44,8 @@ interface INewCiRelationContainer {
 
 export const NewCiRelationContainer: React.FC<INewCiRelationContainer> = ({ configurationItemId, entityName, tabName, View }) => {
     const [selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName] = useState<string>('')
+
+    const { data: ciTypeData, isLoading: isCiTypeLoading, isError: isCiTypeError } = useGetCiType(entityName ?? '')
 
     const { data: relatedListData, isLoading: isRelatedListLoading, isError: isRelatedListError } = useListRelatedCiTypes(entityName)
 
@@ -76,8 +82,10 @@ export const NewCiRelationContainer: React.FC<INewCiRelationContainer> = ({ conf
         isEntityStructureError: isRelationTypeDataError,
     })
 
-    const isLoading = [isReadRelationshipsLoading, isRelatedListLoading, isRelationTypeDataLoading, isDetailDataLoading].some((item) => item)
-    const isError = [isReadRelationshipsError, isRelatedListError, isRelationTypeDataError, isDetailDataError].some((item) => item)
+    const isLoading = [isReadRelationshipsLoading, isRelatedListLoading, isRelationTypeDataLoading, isDetailDataLoading, isCiTypeLoading].some(
+        (item) => item,
+    )
+    const isError = [isReadRelationshipsError, isRelatedListError, isRelationTypeDataError, isDetailDataError, isCiTypeError].some((item) => item)
 
     if (!configurationItemId)
         return (
@@ -85,7 +93,7 @@ export const NewCiRelationContainer: React.FC<INewCiRelationContainer> = ({ conf
         )
     return (
         <View
-            data={{ relatedListAsSources, relatedListAsTargets, readRelationShipsData, relationTypeData, constraintsData, unitsData }}
+            data={{ relatedListAsSources, relatedListAsTargets, readRelationShipsData, relationTypeData, constraintsData, unitsData, ciTypeData }}
             selectedRelationTypeState={{ selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName }}
             isLoading={isLoading}
             isError={isError}

@@ -145,7 +145,7 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
             accessorFn: (row) => row?.type,
             enableSorting: true,
             id: 'type',
-            cell: (ctx) => <span>{t(`type.${ctx.row?.original?.type}`)}</span>,
+            cell: (ctx) => <span>{t(`tooltips.type.${ctx.row?.original?.type}`)}</span>,
         },
         {
             header: t('egov.state'),

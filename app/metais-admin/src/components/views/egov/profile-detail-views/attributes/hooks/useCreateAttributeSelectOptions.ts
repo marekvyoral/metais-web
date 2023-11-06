@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import { EnumType, EnumTypePreviewList } from '@isdd/metais-common/api'
+import { EnumType, EnumTypePreviewList } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IOption } from '@isdd/idsk-ui-kit'
+import { HTML_TYPE } from '@isdd/metais-common/constants'
 
 interface iUseCreateAttribute {
     measureUnit?: EnumType | undefined
@@ -9,11 +10,11 @@ interface iUseCreateAttribute {
 }
 
 interface iUseCreateAttributeOutput {
-    attributeTypes: IOption[]
-    measureUnits: IOption[]
-    allEnumsSelectOptions: IOption[]
-    stringConstraints: IOption[]
-    integerConstraints: IOption[]
+    attributeTypes: IOption<string>[]
+    measureUnits: IOption<string>[]
+    allEnumsSelectOptions: IOption<string>[]
+    stringConstraints: IOption<string>[]
+    integerConstraints: IOption<string>[]
 }
 
 export enum StringConstraints {
@@ -30,7 +31,7 @@ export enum IntegerConstraints {
 export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: iUseCreateAttribute): iUseCreateAttributeOutput => {
     const { t } = useTranslation()
 
-    const attributeTypes: IOption[] = [
+    const attributeTypes: IOption<string>[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
         { label: t('egov.create.integer'), value: AttributeAttributeTypeEnum.INTEGER },
         { label: t('egov.create.long'), value: AttributeAttributeTypeEnum.LONG },
@@ -38,9 +39,10 @@ export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: i
         { label: t('egov.create.string'), value: AttributeAttributeTypeEnum.STRING },
         { label: t('egov.create.boolean'), value: AttributeAttributeTypeEnum.BOOLEAN },
         { label: t('egov.create.date'), value: AttributeAttributeTypeEnum.DATE },
+        { label: HTML_TYPE, value: HTML_TYPE },
     ]
 
-    const measureUnits: IOption[] = [
+    const measureUnits: IOption<string>[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
         ...(measureUnit?.enumItems?.map((enumItem) => ({
             label: [enumItem?.description, `(${enumItem?.value})`].join(' '),
@@ -48,7 +50,7 @@ export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: i
         })) ?? []),
     ]
 
-    const allEnumsSelectOptions: IOption[] = [
+    const allEnumsSelectOptions: IOption<string>[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
         ...(allEnumsData?.results?.map((allEnumsEnumItem) => ({
             label: allEnumsEnumItem?.name ?? '',
@@ -56,7 +58,7 @@ export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: i
         })) ?? []),
     ]
 
-    const stringConstraints: IOption[] = [
+    const stringConstraints: IOption<string>[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
         { label: t('egov.create.enum'), value: StringConstraints.ENUM },
         { label: t('egov.create.regex'), value: StringConstraints.REGEX },
@@ -64,7 +66,7 @@ export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: i
         { label: t('egov.create.ciType'), value: StringConstraints.CI_TYPE },
     ]
 
-    const integerConstraints: IOption[] = [
+    const integerConstraints: IOption<string>[] = [
         { label: t('egov.detail.selectOption'), value: '', disabled: true },
         { label: t('egov.create.interval'), value: IntegerConstraints.INTERVAL },
     ]

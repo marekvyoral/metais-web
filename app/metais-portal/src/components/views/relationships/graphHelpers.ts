@@ -2,7 +2,7 @@ import * as d3 from 'd3'
 import React, { MouseEvent, RefObject } from 'react'
 import Canvg from 'canvg'
 import { jsPDF } from 'jspdf'
-import { CiWithRelsResultUi, CiWithRelsUi, ConfigurationItemUi } from '@isdd/metais-common/api'
+import { CiWithRelsResultUi, CiWithRelsUi, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 import { CiItem, RelsItem, TypeFilter } from './RelationshipGraph'
 
@@ -315,6 +315,13 @@ export const generateNodes = (svg: d3.Selection<SVGGElement, unknown, null, unde
     return node
 }
 
+const getLinksThatHasMatchingNode = ({ nodes, links }: { nodes: CiItem[]; links: RelsItem[] }) => {
+    const nodeUuids = new Set(nodes.map((node) => node.uuid))
+    const filteredLinks = links.filter((link) => nodeUuids.has(link.source.toString()) && nodeUuids.has(link.target.toString()))
+
+    return filteredLinks
+}
+
 export const drawGraph = (
     graphWrapperRef: RefObject<HTMLDivElement>,
     setSelectedId: React.Dispatch<React.SetStateAction<ConfigurationItemUi | undefined>>,
@@ -369,6 +376,12 @@ export const drawGraph = (
         .style('background-color', 'white')
         .attr('class', styles.tooltip)
 
+    tooltip
+        .on('mouseover', () => {
+            tooltip.interrupt().style('visibility', 'visible')
+        })
+        .on('mouseout', () => tooltip_out(tooltip))
+
     const link = generateLinks(container, data.links)
 
     // wrapper for nodes
@@ -404,7 +417,10 @@ export const drawGraph = (
         }
     }
 
-    node.on('mouseover', (e, d) => tooltip_in(e, d, tooltip, setNodeDetail))
+    node.on('mouseover', (e, d) => {
+        tooltip.interrupt().style('visibility', 'visible')
+        tooltip_in(e, d, tooltip, setNodeDetail)
+    })
         .on('mouseout', () => tooltip_out(tooltip))
         .on('dblclick', (e, d) => {
             tooltip_out(tooltip, 0)
@@ -421,7 +437,7 @@ export const drawGraph = (
                 .forceLink<CiItem, RelsItem>()
                 .id((d: CiItem) => d.uuid)
                 .distance(() => linkDistance)
-                .links(data.links),
+                .links(getLinksThatHasMatchingNode({ nodes: data.nodes, links: data.links })),
         )
         .force('charge', d3.forceManyBody().strength(charge))
         .force('center', d3.forceCenter(width / 2, height / 2))

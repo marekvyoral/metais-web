@@ -1,6 +1,6 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query'
 
-import { HierarchyPOFilterUi, HierarchyRightsResultUi, useReadCiList } from '@isdd/metais-common/api'
+import { HierarchyPOFilterUi, HierarchyRightsResultUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 export interface GetImplicitHierarchyFilter {
     fullTextSearch: string

@@ -9,6 +9,10 @@
     width: 100%;
 }
 
+.invalidated {
+    color: govuk-colour('red') !important;
+}
+
 .buttonWithIcon {
     display: flex;
     align-items: center;
@@ -67,6 +71,11 @@
     margin-right: govuk-spacing(2);
 }
 
+.iconWithoutMargin {
+    padding: 0;
+    margin: 0;
+}
+
 .popupActions {
     display: flex;
     flex-direction: column;
@@ -118,4 +127,8 @@
 
 .warningText {
     color: govuk-colour('red') !important;
+}
+
+.bottomMargin0 {
+    margin-bottom: 0 !important;
 }

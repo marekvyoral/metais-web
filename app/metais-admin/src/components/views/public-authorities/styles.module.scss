@@ -1,0 +1,10 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.boldText {
+    font-weight: bold !important;
+}

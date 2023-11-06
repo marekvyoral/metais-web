@@ -1,0 +1,9 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.submitButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: govuk-spacing(4);
+    margin-top: govuk-spacing(4);
+}

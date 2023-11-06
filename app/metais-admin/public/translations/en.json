@@ -46,6 +46,14 @@
         "appVersion": "App version"
     },
     "navbar": {
+        "factChecker": "Fact-checker",
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu",
+        "linksToWebs": "links to websites of public authorities",
+        "linkToHomePage": "Link to home page",
+        "ministryName": "Ministry of Investments, Regional Development and Informatization of the Slovak Republic",
+        "showInformationAboutSite": "Show information about site",
+        "hideInformationAboutSite": "Hide information about site",
         "home": "Home",
         "skip": "Skip to main content",
         "official": "Official Website",
@@ -85,6 +93,7 @@
         "viewButton": "View"
     },
     "table": {
+        "selectAllItems": "Select all items",
         "title": "Cities",
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
         "heading": "Filter Content",
@@ -225,7 +234,8 @@
             "enum": "Internal codelist",
             "regex": "Regex",
             "interval": "Interval",
-            "ciType": "Entity"
+            "ciType": "Entity",
+            "mustBeNumber": "Must be a number"
         },
         "entity": {
             "editHeader": "Edit entity",
@@ -253,13 +263,11 @@
             "relation": "Add new relation"
         }
     },
-
     "state": {
         "removeProfile": "Remove profile",
         "addConnection": "Add connection",
         "addAttribute": "Add attribute"
     },
-
     "userManagement": {
         "title": "Users",
         "fullName": "Name and surname",
@@ -269,7 +277,8 @@
         "organization": "Organization",
         "state": "State",
         "states": {
-            "blocked": "Blocked"
+            "BLOCKED": "Blocked",
+            "ACTIVATED": "Activated"
         },
         "block": "Block",
         "unblock": "Unblock",
@@ -317,6 +326,7 @@
     },
     "codelists": {
         "createNew": "Add item",
+        "createNewCodelist": "Create new codelist",
         "code": "Code",
         "name": "Name",
         "description": "Description",
@@ -358,29 +368,27 @@
         "isvs": {
             "name": "Name of information system"
         },
-
         "egov": {
             "name": "Name",
             "technicalName": "Technical name",
             "type": "Type",
             "valid": "State"
         },
-
         "metaisCode": {
             "label": "Code MetaIS",
             "placeholder": "ks_"
         },
         "reset": "Clear Filter",
         "submit": "Filter",
-
         "chooseState": "Select status",
         "chooseValue": "Select value",
-        "organizations": {
+        "publicAuthorities": {
             "name": "Name",
             "ICO": "ICO",
-            "onlyFreePO": "Only free organizations"
+            "onlyFreePO": "Only free organizations",
+            "state": "State",
+            "poName": "Obliged person"
         },
-
         "PO": {
             "name": "Name",
             "itIsChapter": "It is a chapter",
@@ -412,12 +420,16 @@
         "assignment": "Assignment"
     },
     "navMenu": {
+        "hide": "Hide",
+        "show": "Show",
+        "innerNav": "Inner navigation",
+        "mainNav": "Main navigation",
+
         "dashboard": "Dashboard",
         "assignment": "Assignments",
         "notifications": "Notifications",
         "settings": "Settings",
         "admin": "Administration",
-        "organizations": "Organizations",
         "userManagement": {
             "users": "Users",
             "userManagement": "User management",
@@ -453,7 +465,8 @@
         "publicAuthorities": {
             "management": "Public authorities management",
             "publicAuthorities": "Public authorities",
-            "massActualizations": "Mass updates"
+            "massActualizations": "Mass updates",
+            "massUpdate": "Mass update"
         }
     },
     "tooltips": {
@@ -543,7 +556,8 @@
         "mutationErrorTitle": "Action failed",
         "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at",
         "executingScript": "Executing script",
-        "saving": "Saving..."
+        "saving": "Saving...",
+        "failedFetch": "There was a problem with fetching data. Please try again."
     },
     "adminRolesPage": {
         "addNewRole": "Add new role",
@@ -571,7 +585,7 @@
         "show": "Show",
         "entities": "entities"
     },
-    "organizations": {
+    "publicAuthorities": {
         "detail": {
             "title": "Detail of organization",
             "statutoryOfficer": "Statutory officer"
@@ -632,6 +646,29 @@
             "isCycleInHierarchy": "Organization can not be superior and subject at the same time for one organization!",
             "warningInfo": "You can not create relationship between similar identity!",
             "topLevelOrg": "You can not assign organization main organization!"
+        },
+        "massUpdate": {
+            "title": "Mass update of mandatory persons",
+            "state": "State",
+            "stateEnum": {
+                "NEW": "Created",
+                "PROCESSED": "Approved",
+                "REJECTED": "Rejected"
+            },
+            "actions": {
+                "approve": "Approve",
+                "reject": "Reject"
+            },
+            "feedback": {
+                "approve": {
+                    "success": "Organizational changes were accepted",
+                    "error": "Error accepting changes"
+                },
+                "reject": {
+                    "success": "Organizational changes were rejected",
+                    "error": "Error rejecting changes"
+                }
+            }
         }
     },
     "PO_Attributes": {
@@ -684,6 +721,11 @@
         "detailHeading": "User detail",
         "detailEditHeading": "Editing of exisitng user",
         "detailCreateHeading": "Creation of user",
+        "password": "Password",
+        "passwordChange": "Password change",
+        "newPassword": "New password",
+        "passwordChangeInProgress": "Password is being changed",
+        "passwordChangeError": "Changing the password ended in an error",
         "save": "Save",
         "cancel": "Cancel",
         "back": "Back",
@@ -692,18 +734,19 @@
         "tableHeaderRole": "Role",
         "tableHeaderDescription": "Role description",
         "userRolesHeading": "Assigned roles",
-        "giveRolesToUserHeading": "Assigning of organisation and role to user",
+        "giveRolesToUserHeading": "Assigning of organization and role to user",
         "delete": "Delete",
         "edit": "Edit",
-        "publicAuthority": "Organisation",
+        "publicAuthority": "Organization",
         "roleGroups": "Role groups",
         "singleRoles": "Individual roles",
-        "selectPlaceholder": "Choose organisation...",
+        "selectPlaceholder": "Choose organization...",
         "formError": "Error while checking available login",
         "required": "The {{value}} is required",
         "containerQueryError": "Loading of data for user management failed.",
         "noUserId": "There was mistake in fetching data.",
-        "mutationError": "Error while performing action."
+        "mutationError": "Error while performing action.",
+        "emailFormat": "Bad email format"
     },
     "accordion": {
         "openAll": "Open all",
@@ -834,7 +877,10 @@
         "changedUserInformationError": "Error occurred while changing personal information. Please try again."
     },
     "validation": {
-        "required": "This field is required"
+        "required": "This field is required",
+        "minCharacters": "{{itemName}} must be at least {{min}} characters",
+        "maxCharacters": "{{itemName}} must be at most {{max}} characters",
+        "password": "Password must meet the criteria: at least one uppercase, one lowercase, and one other character."
     },
     "documentsManagement": {
         "heading": "Project document management",
@@ -872,5 +918,28 @@
     },
     "homePage": {
         "placeholder": "Home - login to see navigation items"
+    },
+    "notifications": {
+        "column": "Column"
+    },
+    "monitoring": {
+        "heading": "Monitoring mangement",
+        "params": {
+            "heading": "Monitoring parameters"
+        },
+        "list": {
+            "heading": "Monitoring records"
+        }
+    },
+    "projects": {
+        "financeManagement": {
+            "heading": "Finance limits of approval process"
+        }
+    },
+    "templateReferenceIdentifiers": {
+        "heading": "Template reference identifiers"
+    },
+    "titles": {
+        "mainPage": "MetaIS Admin"
     }
 }

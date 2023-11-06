@@ -87,17 +87,46 @@ export enum KSISVS_ROLES {
     STD_KSPODP = 'STD_KSPODP',
     STD_KSTAJ = 'STD_KSTAJ',
     STD_KSCLEN = 'STD_KSCLEN',
+    STD_KOORDINATOR_AGENDY = 'STD_KOORDINATOR_AGENDY',
 }
-
+export enum RoleEnum {
+    PROJEKT_SCHVALOVATEL = 'PROJEKT_SCHVALOVATEL',
+}
 export const KSIVS_SHORT_NAME = 'KSISVS'
+export const REFID_URI_SZ = 'REFID_URI_SZ'
 export const META_PREFERENCES_KEY = 'META_'
 export const FILTER_LOCAL_STORAGE_KEY = 'filter_'
+
+export const PUBLIC_ORG_CMDB_CODE = '00003010'
 export const NULL = 'null'
 
 export const USER_INFO_QUERY_KEY = 'userInfo'
+export const CONFLUENCE = 'CONFLUENCE'
+export const IS_KOORDINATOR = 'isKoordinator'
 
+export enum RequestListState {
+    DRAFT = 'DRAFT',
+    ACCEPTED = 'ACCEPTED',
+    NEW_REQUEST = 'NEW_REQUEST',
+    REJECTED = 'REJECTED',
+    PUBLISHED = 'PUBLISHED',
+    UPDATING = 'UPDATING',
+    READY_TO_PUBLISH = 'READY_TO_PUBLISH',
+    ISVS_PROCESSING = 'ISVS_PROCESSING',
+    ISVS_REJECTED = 'ISVS_REJECTED',
+    ISVS_ACCEPTED = 'ISVS_ACCEPTED',
+    KS_ISVS_REJECTED = 'KS_ISVS_REJECTED',
+    KS_ISVS_ACCEPTED = 'KS_ISVS_ACCEPTED',
+    ACCEPTED_SZZC = 'ACCEPTED_SZZC',
+}
+
+export enum CodeListFilterOnlyBase {
+    TRUE = 'TRUE',
+    FALSE = 'FALSE',
+}
 export const PORTAL_URL = import.meta.env.VITE_PORTAL_URL
 export const DEFAULT_ERROR = 'Error'
+export const ROLES_CAN_CHANGE_STD_DRAFTS = [KSISVS_ROLES.STD_KSPODP, KSISVS_ROLES.STD_KSPRE, KSISVS_ROLES.STD_KSTAJ]
 
 export const STAV_PROJEKTU = 'STAV_PROJEKTU'
 export const FAZA_PROJEKTU = 'FAZA_PROJEKTU'
@@ -106,6 +135,43 @@ export const REPORTS_LIST_QUERY_KEY = '/reports/list'
 export const ADMIN_EGOV_ENTITY_LIST_QKEY = `/citypes/list`
 export const ADMIN_EGOV_RELATION_LIST_QKEY = `/relationshiptypes/list`
 export const ADMIN_EKO_LIST_QKEY = `/ekocodes`
+export const phoneOrEmptyStringRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$|^$/
+export const HTML_TYPE = 'HTML'
+export const MUK = 'muk'
 
 export const P_REALIZUJE_AKT = 'P_realizuje_AKT'
 export const ACTIVITY = 'Aktivita'
+
+export const DESCRIPTION = 'Popis'
+
+export const PROJECT_DOCUMENTS_SECTIONS_EXPANDABLE: { [key: string]: string } = {
+    'Projektový iniciálny dokument (PID)': 'projektovy_inicialny_dokument_',
+    'Manažérske správy, reporty, zoznamy a požiadavky': 'manazerske_spravy_reporty_',
+    'Dokumenty architektúry': 'dokumenty_architektury_',
+}
+export const FINISHED_STATE = 'c_stav_projektu_9'
+export const RATED_STATE = 'c_stav_projektu_4'
+export const NOT_APPROVED_STATE = 'c_stav_projektu_12'
+export const RE_RATED_STATE = 'c_stav_projektu_11'
+export const RETURNED_STATE = 'c_stav_projektu_5'
+
+export const PROJECT_STATUS = 'EA_Profil_Projekt_status'
+
+export const ACTION_CREATE = 'CREATE'
+export const ACTION_UPDATE = 'UPDATE'
+export const ENTITY_PROJECT = 'Projekt'
+
+export const API_CALL_RETRY_COUNT = 50
+export const PO_IS = 'PO_IS'
+export const PO_PO = 'PO_PO'
+export const PO_IS_PO = 'PO_IS_PO'
+export const PO = 'PO'
+export const ENTITY_KS = 'KS'
+export const ENTITY_AS = 'AS'
+export const ENTITY_MIGRATION = 'Migracia'
+
+export const MAX_TITLE_LENGTH = 100
+export const INVALIDATED = 'INVALIDATED'
+
+export const ENITTY_CIEL = 'Ciel'
+export const ENTITY_PRINCIP = 'Princip'

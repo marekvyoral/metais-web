@@ -1,5 +1,14 @@
 @import '@isdd/idsk-ui-kit/src/utils.scss';
 
-.marginBottom {
-    margin-bottom: govuk-spacing(4) !important;
+.withMargin {
+    margin-bottom: govuk-spacing(6) !important;
+    margin-top: govuk-spacing(2) !important;
+}
+
+.myPODiv {
+    display: flex;
+    align-items: center;
+    @include mq($until: tablet) {
+        display: block;
+    }
 }

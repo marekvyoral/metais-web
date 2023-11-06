@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, ButtonGroupRow, Tab, Tabs } from '@isdd/idsk-ui-kit'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import ConnectionView from './connections/ConnectionView'
 import { AddConnectionModal } from './connections/AddConnectionModal'
@@ -12,7 +13,7 @@ import createEntityStyles from '@/components/views/egov/entity-detail-views/crea
 import { EntityDetailViewAttributes } from '@/components/views/egov/entity-detail-views/attributes/EntityDetailViewAttributes'
 import { BasicInformations } from '@/components/views/egov/BasicInformations'
 import styles from '@/components/views/egov/detailViews.module.scss'
-import { IAtrributesContainerView } from '@/components/containers/Egov/Relation/RelationsDetailContainer'
+import { IAttributesContainerView } from '@/components/containers/Egov/Relation/RelationsDetailContainer'
 
 export const RelationDetailView = ({
     data: { ciTypeData, constraintsData, unitsData, keysToDisplay, attributeOverridesData },
@@ -22,10 +23,12 @@ export const RelationDetailView = ({
     resetExistingAttribute,
     isLoading,
     isError,
-}: IAtrributesContainerView) => {
+}: IAttributesContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
+    const { isActionSuccess } = useActionSuccess()
+
     const [connectionsOpen, setConnectionsOpen] = useState(false)
 
     const tabsNames = Array.from(keysToDisplay?.keys() ?? new Map())
@@ -71,7 +74,7 @@ export const RelationDetailView = ({
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <div className={styles.basicInformationSpace}>
                 <FlexColumnReverseWrapper>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div className={styles.flexBetween}>
                         <h2 className="govuk-heading-l">{t('egov.detail.entityHeading') + ` - ${ciTypeData?.name}`}</h2>
                         <ButtonGroupRow>
                             <Button
@@ -87,6 +90,7 @@ export const RelationDetailView = ({
                         </ButtonGroupRow>
                     </div>
                     {isError && <QueryFeedback error loading={false} />}
+                    <MutationFeedback success={isActionSuccess.value} error={false} />
                 </FlexColumnReverseWrapper>
                 <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
             </div>

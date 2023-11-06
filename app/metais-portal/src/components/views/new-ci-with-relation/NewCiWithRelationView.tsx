@@ -3,7 +3,9 @@ import { RoleOrgGroup } from '@isdd/metais-common/api/generated/iam-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
-import { ATTRIBUTE_NAME, ConfigurationItemUi, EnumType, MutationFeedback, QueryFeedback, useStoreGraph } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { ConfigurationItemUi, useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
@@ -52,7 +54,7 @@ interface Props {
     isError: boolean
 }
 
-export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, data, states, isError, isLoading }) => {
+export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, data, states, isError, isLoading, tabName }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
@@ -131,7 +133,7 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
                 name: key,
                 value: formatFormAttributeValue(formAttributes, key),
             }))
-        const type = entityName
+        const type = tabName
         const ownerId = groupData?.gid
         const newEntityUuid = uuidV4()
 
@@ -164,7 +166,7 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
-                <TextHeading size="XL">{t('newRelation.newCiWithRelationHeading')}</TextHeading>
+                <TextHeading size="XL">{t('newRelation.newCiWithRelationHeading', { entityName: tabName })}</TextHeading>
                 {isError && <QueryFeedback loading={false} error={isError} />}
                 {(storeGraph.isError || storeGraph.isSuccess) && (
                     <MutationFeedback success={storeGraph.isSuccess} error={storeGraph.isError ? t('newRelation.mutationError') : ''} />
@@ -173,10 +175,11 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
 
             <SelectPublicAuthorityAndRole
-                selectedRoleId={selectedRole}
+                selectedRole={selectedRole ?? {}}
                 onChangeAuthority={setSelectedPublicAuthority}
                 onChangeRole={setSelectedRole}
                 selectedOrg={selectedPublicAuthority}
+                ciRoles={ciTypeData?.roleList ?? []}
             />
 
             <SimpleSelect
@@ -198,6 +201,7 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
                 onSubmit={onSubmit}
                 relationSchema={relationSchema}
                 isProcessing={storeGraph.isLoading}
+                selectedRole={selectedRole}
                 withRelation
             />
         </QueryFeedback>

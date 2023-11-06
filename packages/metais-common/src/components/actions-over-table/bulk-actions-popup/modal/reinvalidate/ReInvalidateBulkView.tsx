@@ -3,7 +3,7 @@ import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { BulkList } from '@isdd/metais-common/components/actions-over-table/bulk-actions-popup/BulkList'

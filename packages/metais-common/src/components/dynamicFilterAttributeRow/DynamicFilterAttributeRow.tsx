@@ -8,23 +8,21 @@ import { DynamicFilterAttributeInput } from './DynamicFilterAttributeInput'
 
 import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { findAvailableOperators } from '@isdd/metais-common/componentHelpers/filter/findAvailableOperators'
+import { Languages } from '@isdd/metais-common/localization/languages'
+import { CustomAttributeType } from '@isdd/metais-common/componentHelpers/filter/findAttributeType'
 
 interface Props {
     index: number
     onChange: (data: FilterAttribute, prevData?: FilterAttribute, isNewName?: boolean) => void
     attribute: FilterAttribute
     remove: () => void
-    availableAttributes?: (Attribute | undefined)[]
     selectedAttributes: FilterAttribute[]
     attributeProfiles: AttributeProfile[] | undefined
     attributes: Attribute[] | undefined
-    attributeType: {
-        isArray: boolean
-        type: string
-    }
+    attributeType: CustomAttributeType
     attributeConstraints: EnumType | undefined
     currentAttribute: FilterAttribute
 }
@@ -41,8 +39,10 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
     attributes,
     attributeProfiles,
 }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
 
+    const language = i18n.language
+    const isLangSK = language === Languages.SLOVAK
     const currentAvailableOperators = selectedAttributes.filter((item) => item.name === currentAttribute.name).map((item) => item.operator)
     const operatorsToDisable = findAvailableOperators(
         attributeType,
@@ -55,21 +55,20 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
         attributeProfiles?.map(
             (attributeProfile) =>
                 attributeProfile.attributes
-                    ?.filter((attr) => attr.invisible === false)
+                    ?.filter((attr) => attr.invisible === false && attr.valid)
                     .map((attr) => ({
-                        label: attr.name ?? '',
+                        label: isLangSK ? attr.name ?? '' : attr.engName ?? '',
                         value: attr.technicalName ?? '',
                     })) || [],
         ) ?? []
 
     const attributesColumnSection =
         attributes
-            ?.filter((attr) => attr.invisible === false)
+            ?.filter((attr) => attr.invisible === false && attr.valid)
             ?.map((attr) => ({
-                label: attr.name ?? '',
+                label: isLangSK ? attr.name ?? '' : attr.engName ?? '',
                 value: attr.technicalName ?? '',
             })) ?? []
-
     const availableOperators = findAvailableOperators(attributeType, attributeConstraints, Object.values(OPERATOR_OPTIONS_URL)).map((option) => ({
         value: option,
         label: t(`customAttributeFilter.operator.${option}`),
@@ -79,6 +78,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
     return (
         <div className={style.customFilterWrapper}>
             <SimpleSelect
+                isClearable={false}
                 className={style.rowItem}
                 id={`attribute-name-${index}`}
                 label={t('customAttributeFilter.attribute.label')}
@@ -89,6 +89,7 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 onChange={(val) => onChange({ ...attribute, name: val }, attribute, true)}
             />
             <SimpleSelect
+                isClearable={false}
                 className={style.rowItem}
                 id={`attribute-operator-${index}`}
                 name={`attribute-operator-${index}`}

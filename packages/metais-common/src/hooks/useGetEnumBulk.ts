@@ -1,6 +1,6 @@
 import { UseQueryResult, useQueries } from '@tanstack/react-query'
 
-import { EnumType, useGetValidEnumHook } from '@isdd/metais-common/api'
+import { EnumType, useGetValidEnumHook } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
 export const useGetEnumBulk = (enumCodeList: (string | undefined)[]) => {
     const getEnum = useGetValidEnumHook()

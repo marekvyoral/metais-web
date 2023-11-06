@@ -2,12 +2,12 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { ListWrapper } from '@/components/list-wrapper/ListWrapper'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 interface Props {
     importantEntityName?: string
@@ -18,7 +18,7 @@ export interface CIFilterData extends IFilterParams {
     Gen_Profil_kod_metais?: string
 }
 const CiListPage: React.FC<Props> = ({ importantEntityName, noSideMenu }) => {
-    const { entityName: ciType } = useParams()
+    const { entityName: ciType } = useGetEntityParamsFromUrl()
     const { t } = useTranslation()
     document.title = `${t('titles.ciList', { ci: ciType })} | MetaIS`
     const defaultFilterValues: CIFilterData = { Gen_Profil_nazov: '', Gen_Profil_kod_metais: '' }

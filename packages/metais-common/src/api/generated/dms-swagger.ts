@@ -5,8 +5,8 @@
  * MetaIS DMS
  * OpenAPI spec version: 3.0-SNAPSHOT
  */
-import type { MutationFunction, QueryFunction, QueryKey, UseMutationOptions, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import type { UseQueryOptions, UseMutationOptions, QueryFunction, MutationFunction, UseQueryResult, QueryKey } from '@tanstack/react-query'
 import { useDmsSwaggerClient } from '../hooks/useDmsSwaggerClient'
 export type GetMetaParams = {
     version?: string
@@ -68,6 +68,16 @@ export interface Metadata {
     lastModifiedBy?: string
 }
 
+export type ApiErrorData = { [key: string]: any }
+
+export interface ApiError {
+    type?: string
+    message?: string
+    data?: ApiErrorData
+    logToken?: string
+    values?: string[]
+}
+
 type AwaitedInput<T> = PromiseLike<T> | T
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
@@ -82,7 +92,7 @@ export const useGetContentHook = () => {
 
 export const getGetContentQueryKey = (uuid: string, params?: GetContentParams) => [`/file/${uuid}`, ...(params ? [params] : [])] as const
 
-export const useGetContentQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetContentHook>>>, TError = unknown>(
+export const useGetContentQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetContentHook>>>, TError = ApiError>(
     uuid: string,
     params?: GetContentParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetContentHook>>>, TError, TData> },
@@ -99,9 +109,9 @@ export const useGetContentQueryOptions = <TData = Awaited<ReturnType<ReturnType<
 }
 
 export type GetContentQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetContentHook>>>>
-export type GetContentQueryError = unknown
+export type GetContentQueryError = ApiError
 
-export const useGetContent = <TData = Awaited<ReturnType<ReturnType<typeof useGetContentHook>>>, TError = unknown>(
+export const useGetContent = <TData = Awaited<ReturnType<ReturnType<typeof useGetContentHook>>>, TError = ApiError>(
     uuid: string,
     params?: GetContentParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetContentHook>>>, TError, TData> },
@@ -126,7 +136,7 @@ export const useUpdateContent1Hook = () => {
     }
 }
 
-export const useUpdateContent1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateContent1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateContent1Hook>>>,
         TError,
@@ -156,9 +166,9 @@ export const useUpdateContent1MutationOptions = <TError = unknown, TContext = un
 
 export type UpdateContent1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateContent1Hook>>>>
 export type UpdateContent1MutationBody = UpdateContent1Body
-export type UpdateContent1MutationError = unknown
+export type UpdateContent1MutationError = ApiError
 
-export const useUpdateContent1 = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateContent1 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateContent1Hook>>>,
         TError,
@@ -182,7 +192,7 @@ export const useUpdateContentHook = () => {
     }
 }
 
-export const useUpdateContentMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateContentMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateContentHook>>>,
         TError,
@@ -207,9 +217,9 @@ export const useUpdateContentMutationOptions = <TError = unknown, TContext = unk
 
 export type UpdateContentMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateContentHook>>>>
 export type UpdateContentMutationBody = UpdateContentBody
-export type UpdateContentMutationError = unknown
+export type UpdateContentMutationError = ApiError
 
-export const useUpdateContent = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateContent = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateContentHook>>>,
         TError,
@@ -230,7 +240,7 @@ export const useDeleteContentHook = () => {
     }
 }
 
-export const useDeleteContentMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteContentMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteContentHook>>>, TError, { uuid: string }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteContentHook>>>, TError, { uuid: string }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -248,12 +258,46 @@ export const useDeleteContentMutationOptions = <TError = unknown, TContext = unk
 
 export type DeleteContentMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteContentHook>>>>
 
-export type DeleteContentMutationError = unknown
+export type DeleteContentMutationError = ApiError
 
-export const useDeleteContent = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteContent = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteContentHook>>>, TError, { uuid: string }, TContext>
 }) => {
     const mutationOptions = useDeleteContentMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
+export const useCreateContentHook = () => {
+    const createContent = useDmsSwaggerClient<Metadata>()
+
+    return () => {
+        return createContent({ url: `/file`, method: 'post' })
+    }
+}
+
+export const useCreateContentMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateContentHook>>>, TError, TVariables, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateContentHook>>>, TError, TVariables, TContext> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const createContent = useCreateContentHook()
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useCreateContentHook>>>, TVariables> = () => {
+        return createContent()
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type CreateContentMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCreateContentHook>>>>
+
+export type CreateContentMutationError = ApiError
+
+export const useCreateContent = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateContentHook>>>, TError, TVariables, TContext>
+}) => {
+    const mutationOptions = useCreateContentMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
@@ -266,7 +310,7 @@ export const useDeleteDocumentsHook = () => {
     }
 }
 
-export const useDeleteDocumentsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteDocumentsMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteDocumentsHook>>>, TError, { data: FileSetUi }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteDocumentsHook>>>, TError, { data: FileSetUi }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -284,9 +328,9 @@ export const useDeleteDocumentsMutationOptions = <TError = unknown, TContext = u
 
 export type DeleteDocumentsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteDocumentsHook>>>>
 export type DeleteDocumentsMutationBody = FileSetUi
-export type DeleteDocumentsMutationError = unknown
+export type DeleteDocumentsMutationError = ApiError
 
-export const useDeleteDocuments = <TError = unknown, TContext = unknown>(options?: {
+export const useDeleteDocuments = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteDocumentsHook>>>, TError, { data: FileSetUi }, TContext>
 }) => {
     const mutationOptions = useDeleteDocumentsMutationOptions(options)
@@ -304,7 +348,7 @@ export const useGetMetaHook = () => {
 
 export const getGetMetaQueryKey = (uuid: string, params?: GetMetaParams) => [`/file/meta/${uuid}`, ...(params ? [params] : [])] as const
 
-export const useGetMetaQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError = unknown>(
+export const useGetMetaQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError = ApiError>(
     uuid: string,
     params?: GetMetaParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError, TData> },
@@ -321,9 +365,9 @@ export const useGetMetaQueryOptions = <TData = Awaited<ReturnType<ReturnType<typ
 }
 
 export type GetMetaQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>>
-export type GetMetaQueryError = unknown
+export type GetMetaQueryError = ApiError
 
-export const useGetMeta = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError = unknown>(
+export const useGetMeta = <TData = Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError = ApiError>(
     uuid: string,
     params?: GetMetaParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMetaHook>>>, TError, TData> },
@@ -347,7 +391,7 @@ export const useGetHistoryHook = () => {
 
 export const getGetHistoryQueryKey = (uuid: string) => [`/file/history/${uuid}`] as const
 
-export const useGetHistoryQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetHistoryHook>>>, TError = unknown>(
+export const useGetHistoryQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetHistoryHook>>>, TError = ApiError>(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetHistoryHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetHistoryHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -363,9 +407,9 @@ export const useGetHistoryQueryOptions = <TData = Awaited<ReturnType<ReturnType<
 }
 
 export type GetHistoryQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetHistoryHook>>>>
-export type GetHistoryQueryError = unknown
+export type GetHistoryQueryError = ApiError
 
-export const useGetHistory = <TData = Awaited<ReturnType<ReturnType<typeof useGetHistoryHook>>>, TError = unknown>(
+export const useGetHistory = <TData = Awaited<ReturnType<ReturnType<typeof useGetHistoryHook>>>, TError = ApiError>(
     uuid: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetHistoryHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {

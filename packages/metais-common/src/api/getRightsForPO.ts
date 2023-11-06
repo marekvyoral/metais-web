@@ -4,9 +4,9 @@ export const getRightsForPO = (userId: string, orgId: string, token: string) => 
         cmdbId: orgId,
     }
 
-    const baseUrl = import.meta.env.VITE_REST_CLIENT_METAIS_IAM_REST_TARGET_URL
+    const baseUrl = import.meta.env.VITE_REST_CLIENT_IAM_TARGET_URL
 
-    return fetch(baseUrl + `/metaisiam-rest/organizations/getRightsForPO`, {
+    return fetch(baseUrl + `/organizations/getRightsForPO`, {
         method: 'POST',
         body: JSON.stringify(queryBody),
         headers: {

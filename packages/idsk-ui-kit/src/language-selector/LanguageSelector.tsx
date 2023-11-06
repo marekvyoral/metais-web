@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import classnames from 'classnames'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { LANGUAGE_STORE_KEY } from '@isdd/metais-common/src/localization/i18next'
 interface ILanguageItem {
     handleClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, lng: Languages) => void
     value: Languages
@@ -37,9 +38,10 @@ export const LanguageSelector: React.FC = () => {
 
     const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, lng: Languages) => {
         document.documentElement.setAttribute('lang', lng)
+        localStorage.setItem(LANGUAGE_STORE_KEY, lng)
         event.preventDefault()
         setIsMenuExpanded(false)
-        i18n.changeLanguage(lng, () => navigate(window.location, { state: { from: location } }))
+        i18n.changeLanguage(lng, () => navigate(location.pathname, { state: { from: location } }))
     }
 
     const handleWrapperBlur = (event: React.FocusEvent<HTMLDivElement, Element>) => {

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { IEntityDetailViewAttributes, filterSelectedRowsFromApi, isRowSelected } from '@isdd/metais-common'
+import { Gen_Profil, IEntityDetailViewAttributes, filterSelectedRowsFromApi, isRowSelected } from '@isdd/metais-common'
 import { ColumnDef } from '@tanstack/react-table'
 import { Button, Input, Table } from '@isdd/idsk-ui-kit'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Link } from 'react-router-dom'
 
 import styles from '../../detailViews.module.scss'
 
@@ -16,6 +17,7 @@ export const EntityDetailViewAttributes = ({
     removeProfileAttribute,
     saveExistingAttribute,
     resetExistingAttribute,
+    roles,
 }: IEntityDetailViewAttributes) => {
     const { t } = useTranslation()
     const selectedFromApi = filterSelectedRowsFromApi(attributesOverridesData, data?.attributes)
@@ -141,12 +143,31 @@ export const EntityDetailViewAttributes = ({
                     />
                 )}
                 <DefinitionList>
-                    <InformationGridRow key={'name'} label={t('egov.name')} value={data?.name} />
-                    <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={data?.technicalName} />
-                    <InformationGridRow key={'type'} label={t('egov.type')} value={t(`type.${data?.type}`)} />
+                    <InformationGridRow
+                        key={'name'}
+                        label={t('egov.name')}
+                        value={
+                            <Link target="_blank" to="/egov/profile/Gen_Profil">
+                                {t('egov.detail.genericProfile')}
+                            </Link>
+                        }
+                    />
+                    <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={Gen_Profil} />
+                    <InformationGridRow key={'type'} label={t('egov.type')} value={data?.type ? t(`tooltips.type.${data.type}`) : ''} />
                     <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`validity.${data?.valid}`)} />
                     <InformationGridRow key={'description'} label={t('egov.description')} value={data?.description} />
-                    <InformationGridRow key={'roles'} label={t('egov.roles')} value={data?.roleList} />
+                    {Array.isArray(roles) ? (
+                        data?.roleList?.map((role, index) => (
+                            <InformationGridRow
+                                key={'roles' + index}
+                                label={index == 0 ? t('egov.roles') : ''}
+                                hideIcon={index != 0}
+                                value={<>{roles.find((r) => r.name == role)?.description}</>}
+                            />
+                        ))
+                    ) : (
+                        <InformationGridRow key={'roles'} label={t('egov.roles')} value={<>{roles?.description}</>} />
+                    )}{' '}
                 </DefinitionList>
             </div>
             <h3 className="govuk-heading-m">{t('egov.detail.profileAttributes')}</h3>

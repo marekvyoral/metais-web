@@ -6,6 +6,8 @@ import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/g
 import classnames from 'classnames'
 import React from 'react'
 import {
+    Control,
+    Controller,
     FieldError,
     FieldErrorsImpl,
     FieldValues,
@@ -16,9 +18,12 @@ import {
     UseFormTrigger,
 } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
+import { HTML_TYPE, MAX_TITLE_LENGTH } from '@isdd/metais-common/constants'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
+import { formatNumberWithSpaces } from '@isdd/metais-common/utils/utils'
 
 import { ArrayAttributeInput } from './ArrayAttributeInput'
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
@@ -71,6 +76,8 @@ interface IAttributeInput {
     defaultValueFromCiItem?: string | boolean | string[] | number
     hasResetState: HasResetState
     disabled?: boolean
+    isUpdate?: boolean
+    control: Control
 }
 
 export const AttributeInput: React.FC<IAttributeInput> = ({
@@ -88,6 +95,8 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     clearErrors,
     disabled,
     nameSufix = '',
+    isUpdate,
+    control,
 }) => {
     const { t } = useTranslation()
 
@@ -114,6 +123,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     const isFile = attribute.attributeTypeEnum === AttributeAttributeTypeEnum.IMAGE
 
     const isArray = attribute.array
+    const isHTML = attribute.type === HTML_TYPE
 
     const isEnum = attribute?.constraints && attribute.constraints.length > 0 && attribute?.constraints[0].type === ConstraintTypes.ENUM
 
@@ -128,7 +138,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
         const options =
             constraintItem?.enumItems?.map((item) => ({
                 value: item.code ?? '',
-                label: `${item.value} - ${item.description}` ?? '',
+                label: `${item.value} - ${item.description}`,
                 disabled: !item.valid,
             })) ?? []
         return options
@@ -162,7 +172,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         requiredLabel={requiredLabel}
                         setValue={setValue}
                         trigger={trigger}
-                        defaultValue={getDefaultArrayValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
+                        defaultValue={getDefaultArrayValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
                         hasResetState={hasResetState}
                         disabled={disabled}
                         nameSufix={nameSufix}
@@ -170,7 +180,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                 )
             }
             case isDate: {
-                const formattedDate = formatDateForDefaultValue(getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem))
+                const formattedDate = formatDateForDefaultValue(getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate))
 
                 return (
                     <Input
@@ -251,7 +261,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 placeholder={t('createEntity.select')}
                                 defaultValue={createDefaultValuesForMulti(
                                     constraints,
-                                    getDefaultArrayValue(attribute.defaultValue ?? '', defaultValueFromCiItem),
+                                    getDefaultArrayValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate),
                                 )}
                                 menuPosition="absolute"
                             />
@@ -268,7 +278,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 disabled={attribute.readOnly || disabled}
                                 defaultValue={getDefaultValueForSimple(
                                     constraints,
-                                    getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem),
+                                    getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate),
                                 )}
                                 name={attribute.technicalName + nameSufix}
                                 setValue={setValue}
@@ -284,18 +294,51 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
 
             case hasNumericValue: {
                 return (
-                    <Input
-                        correct={isCorrect}
-                        info={attribute.description}
-                        id={attribute.technicalName}
-                        disabled={attribute.readOnly || disabled}
-                        label={attribute.name + requiredLabel + unitsLabel}
-                        error={error?.message?.toString()}
-                        {...register(attribute.technicalName + nameSufix)}
-                        type="number"
-                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
-                        hint={hint}
-                        step={isDouble || isFloat ? 'any' : 1}
+                    <Controller
+                        control={control}
+                        name={attribute.technicalName + nameSufix}
+                        render={({ field: { onChange, value, ref } }) => (
+                            <Input
+                                name={attribute.technicalName + nameSufix}
+                                ref={ref}
+                                value={formatNumberWithSpaces(value)}
+                                onChange={(e) => {
+                                    const formattedValue = e.target.value.replace(/[^\d]/g, '').replace(/\s/g, '')
+                                    onChange(formattedValue)
+                                }}
+                                defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
+                                hint={hint}
+                                step={isDouble || isFloat ? 'any' : 1}
+                                correct={isCorrect}
+                                info={attribute.description}
+                                id={attribute.technicalName}
+                                disabled={attribute.readOnly || disabled}
+                                label={attribute.name + requiredLabel + unitsLabel}
+                                error={error?.message?.toString()}
+                            />
+                        )}
+                    />
+                )
+            }
+
+            case isHTML: {
+                return (
+                    <Controller
+                        name={attribute.technicalName + nameSufix}
+                        control={control}
+                        render={({ field }) => {
+                            return (
+                                <RichTextQuill
+                                    id={attribute.technicalName ?? ''}
+                                    label={attribute.name + requiredLabel}
+                                    error={error?.message?.toString()}
+                                    info={attribute.description}
+                                    readOnly={attribute.readOnly || disabled}
+                                    defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
+                                    {...field}
+                                />
+                            )
+                        }}
                     />
                 )
             }
@@ -311,13 +354,15 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         label={attribute.name + requiredLabel}
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName + nameSufix)}
-                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
+                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
                         hint={hint}
                     />
                 )
             }
 
             case hasStringValue: {
+                const isGenProfilNazov = attribute.technicalName === ATTRIBUTE_NAME.Gen_Profil_nazov
+
                 return (
                     <Input
                         correct={isCorrect}
@@ -329,8 +374,9 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName + nameSufix)}
                         type="text"
-                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
+                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
                         hint={hint}
+                        maxLength={isGenProfilNazov ? MAX_TITLE_LENGTH : undefined}
                     />
                 )
             }
@@ -348,7 +394,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName + nameSufix)}
                         type="text"
-                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem)}
+                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
                         hint={hint}
                     />
                 )

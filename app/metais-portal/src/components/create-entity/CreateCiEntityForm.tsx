@@ -3,15 +3,18 @@ import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { ErrorBlock } from '@isdd/idsk-ui-kit/error-block/ErrorBlock'
 import { Stepper } from '@isdd/idsk-ui-kit/src/stepper/Stepper'
 import { ISection, IStepLabel } from '@isdd/idsk-ui-kit/stepper/StepperSection'
-import { ConfigurationItemUiAttributes, EnumType, Gen_Profil } from '@isdd/metais-common/api'
+import { Gen_Profil } from '@isdd/metais-common/api/constants'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { SubmitWithFeedback } from '@isdd/metais-common/index'
+import { SubmitWithFeedback, formatDateForFormDefaultValues } from '@isdd/metais-common/index'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { CiCode, CiType, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { AttributeProfile, CiCode, CiType, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 
 import { CreateEntitySection } from './CreateEntitySection'
 import { generateFormSchema } from './createCiEntityFormSchema'
@@ -23,7 +26,6 @@ export interface HasResetState {
     hasReset: boolean
     setHasReset: Dispatch<SetStateAction<boolean>>
 }
-
 interface ICreateCiEntityForm {
     generatedEntityId: CiCode
     constraintsData: (EnumType | undefined)[]
@@ -36,6 +38,7 @@ interface ICreateCiEntityForm {
     relationSchema?: RelationshipType
     isProcessing: boolean
     withRelation?: boolean
+    selectedRole: GidRoleData | null
 }
 
 export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
@@ -50,22 +53,22 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     relationSchema,
     isProcessing,
     withRelation,
+    selectedRole,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
 
     const ability = useAbilityContext()
-    const hasOrgPermission = ability?.can(Actions.CREATE, `ci.create.org`)
     const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
 
-    const isSubmitDisabled = (!hasOrgPermission && !updateCiItemId) || (withRelation ? !canCreateRelationType : false)
+    const isSubmitDisabled = (!selectedRole?.roleUuid && !updateCiItemId) || (withRelation ? !canCreateRelationType : false)
+    const isUpdate = !!updateCiItemId
 
     const [hasReset, setHasReset] = useState(false)
     const genProfilTechName = Gen_Profil
     const metaisEmail = 'metais@mirri.gov.sk'
     const location = useLocation()
     const attProfiles = ciTypeData?.attributeProfiles?.map((profile) => profile) ?? []
-    const attributes = [...(ciTypeData?.attributes ?? []), ...attProfiles.map((profile) => profile.attributes).flat()]
 
     const attProfileTechNames = attProfiles.map((profile) => profile.technicalName)
     const mappedProfileTechNames: Record<string, boolean> = attProfileTechNames.reduce<Record<string, boolean>>((accumulator, attributeName) => {
@@ -74,6 +77,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
         }
         return accumulator
     }, {})
+    const attributes = [...(ciTypeData?.attributes ?? []), ...attProfiles.map((profile) => profile.attributes).flat()]
 
     const sectionErrorDefaultConfig: { [x: string]: boolean } = {
         [genProfilTechName]: false,
@@ -81,10 +85,18 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     }
     const [sectionError, setSectionError] = useState<{ [x: string]: boolean }>(sectionErrorDefaultConfig)
 
+    const defaultValuesFromSchema = attributes.reduce((acc, att) => {
+        if (att?.defaultValue) {
+            return { ...acc, [att?.technicalName?.toString() ?? '']: att?.defaultValue }
+        }
+        return acc
+    }, {})
+
     const methods = useForm({
-        defaultValues: defaultItemAttributeValues ?? {},
-        resolver: yupResolver(generateFormSchema(attributes, t)),
+        defaultValues: formatDateForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
+        resolver: yupResolver(generateFormSchema([ciTypeData as AttributeProfile, ...attProfiles], t, selectedRole)),
     })
+
     const { handleSubmit, setValue, reset, formState } = methods
 
     const referenceIdValue = generatedEntityId?.ciurl?.split('/').pop()
@@ -97,7 +109,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     const sections: ISection[] =
         [
             {
-                title: ciTypeData?.name ?? '',
+                title: t('ciInformationAccordion.basicInformation'),
                 error: sectionError[genProfilTechName] === true,
                 stepLabel: { label: '1', variant: 'circle' },
                 content: (
@@ -111,11 +123,13 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                         defaultItemAttributeValues={defaultItemAttributeValues}
                         hasResetState={{ hasReset, setHasReset }}
                         updateCiItemId={updateCiItemId}
+                        sectionRoles={ciTypeData?.roleList ?? []}
+                        selectedRole={selectedRole}
                     />
                 ),
             },
             ...attProfiles.map((profile, index) => ({
-                title: profile.name ?? '',
+                title: profile.description ?? profile.name ?? '',
                 stepLabel: { label: (index + 2).toString(), variant: 'circle' } as IStepLabel,
                 last: relationSchema ? false : attProfiles.length === index + 1 ? true : false,
                 error: sectionError[profile.technicalName ?? ''] === true,
@@ -130,6 +144,8 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                         defaultItemAttributeValues={defaultItemAttributeValues}
                         hasResetState={{ hasReset, setHasReset }}
                         updateCiItemId={updateCiItemId}
+                        sectionRoles={profile.roleList ?? []}
+                        selectedRole={selectedRole}
                     />
                 ),
             })),

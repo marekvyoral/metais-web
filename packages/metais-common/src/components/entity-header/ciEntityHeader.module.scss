@@ -1,0 +1,22 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+.headerDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include mq($until: tablet) {
+        display: block;
+    }
+}
+.buttonLinksDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: govuk-spacing(2);
+}
+.noWrap {
+    white-space: nowrap;
+}
+.invalidated {
+    color: govuk-colour('red') !important;
+    text-decoration: line-through;
+}

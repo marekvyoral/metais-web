@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 
 import { BulkList } from '@isdd/metais-common/components/actions-over-table/bulk-actions-popup/BulkList'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
-import { ChangeOwnerDataUi, ChangeOwnerDataUiChangeType, ConfigurationItemUi } from '@isdd/metais-common/api'
+import { ChangeOwnerDataUi, ChangeOwnerDataUiChangeType, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ISelectPublicAuthorityAndRole, SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { CHANGE_OWNER_CHANGE_REASON, CHANGE_OWNER_CHANGE_TYPE } from '@isdd/metais-common/constants'
 
@@ -20,12 +20,13 @@ interface IChangeOwnerBulkView extends ISelectPublicAuthorityAndRole {
 export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
     items,
     selectedOrg,
-    selectedRoleId,
+    selectedRole,
     multiple,
     onChangeAuthority,
     onChangeRole,
     onSubmit,
     onClose,
+    ciRoles,
 }) => {
     const { t } = useTranslation()
 
@@ -46,7 +47,8 @@ export const ChangeOwnerBulkView: React.FC<IChangeOwnerBulkView> = ({
                 onChangeAuthority={onChangeAuthority}
                 onChangeRole={onChangeRole}
                 selectedOrg={selectedOrg}
-                selectedRoleId={selectedRoleId}
+                selectedRole={selectedRole}
+                ciRoles={ciRoles}
             />
             <RadioGroupWithLabel label={t('bulkActions.changeOwner.reason')}>
                 {CHANGE_OWNER_CHANGE_REASON.map((item) => (

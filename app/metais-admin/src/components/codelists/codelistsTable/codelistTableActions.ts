@@ -1,4 +1,4 @@
-import { EnumTypePreview } from '@isdd/metais-common/api'
+import { EnumTypePreview } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { TFunction } from 'i18next'
 import { object, string, ValidationError } from 'yup'
 

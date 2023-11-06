@@ -1,5 +1,5 @@
 import React from 'react'
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { useEntityProfiles } from '@isdd/metais-common/hooks/useEntityProfiles'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
@@ -14,8 +14,9 @@ import {
     useStoreAttributeTextation,
     useDeleteAttributeTextation,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { FindAll11200, useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
 
-export interface IAtrributesContainerView {
+export interface IAttributesContainerView {
     data: {
         ciTypeData: CiType | undefined
         constraintsData: (EnumType | undefined)[]
@@ -29,12 +30,13 @@ export interface IAtrributesContainerView {
     saveExistingAttribute: (attributeTechnicalName?: string, attribute?: Attribute) => void
     resetExistingAttribute: (attributeTechnicalName?: string) => void
     isLoading: boolean
+    roles?: FindAll11200
     isError: boolean
 }
 
 interface AttributesContainer {
     entityName: string
-    View: React.FC<IAtrributesContainerView>
+    View: React.FC<IAttributesContainerView>
 }
 
 export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {
@@ -47,7 +49,7 @@ export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityNam
         keysToDisplay,
         refetch,
     } = useEntityProfiles(entityName)
-
+    const { data: roles, isLoading: isRolesLoading, isError: isRolesError } = useFindAll11()
     const { mutateAsync: setEntityAsInvalid } = useStoreUnvalid()
     const { mutateAsync: setEntityAsValid } = useStoreValid()
     const { mutateAsync: setShowOwner } = useSetSummarizingCard()
@@ -115,8 +117,9 @@ export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityNam
             setSummarizingCardData={setSummarizingCardData}
             saveExistingAttribute={saveExistingAttribute}
             resetExistingAttribute={resetExistingAttribute}
-            isLoading={isLoading}
-            isError={isError}
+            isLoading={isLoading || isRolesLoading}
+            isError={isError || isRolesError}
+            roles={roles}
         />
     )
 }

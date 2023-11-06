@@ -1,4 +1,4 @@
-import { AttributeUi } from '@isdd/metais-common/api'
+import { AttributeUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 export type AttributeValue = string | number | boolean | string[]
 interface TransformedInterface {

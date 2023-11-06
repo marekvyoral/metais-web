@@ -1,7 +1,7 @@
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
-import { EkoCode } from '@isdd/metais-common/api'
+import { EkoCode } from '@isdd/metais-common/api/generated/tco-swagger'
 import { ColumnDef, Table as ITable, Row } from '@tanstack/react-table'
 import classNames from 'classnames'
 import { TFunction } from 'i18next'

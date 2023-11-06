@@ -3,7 +3,8 @@ import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { IColumn, Input, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ConfigurationItemSetUi, EnumType, RoleParticipantUI } from '@isdd/metais-common/api'
+import { ConfigurationItemSetUi, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
 import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import {
@@ -142,37 +143,42 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     <MutationFeedback
                         success={bulkActionResult?.isSuccess}
                         successMessage={bulkActionResult?.successMessage}
-                        error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                        error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
                     />
                 )}
             </FlexColumnReverseWrapper>
 
             <Filter<CIFilterData>
                 defaultFilterValues={defaultFilterValues}
-                form={({ register, filter, setValue }) => (
-                    <div>
-                        <Input
-                            id="name"
-                            label={t(`filter.${ciType}.name`)}
-                            placeholder={t(`filter.namePlaceholder`)}
-                            {...register('Gen_Profil_nazov')}
-                        />
-                        <Input
-                            id="metais-code"
-                            label={t('filter.metaisCode.label')}
-                            placeholder={ciTypeData?.codePrefix}
-                            {...register('Gen_Profil_kod_metais')}
-                        />
-                        <DynamicFilterAttributes
-                            setValue={setValue}
-                            defaults={defaultFilterValues}
-                            data={filter.attributeFilters}
-                            attributes={attributes}
-                            attributeProfiles={attributeProfiles}
-                            constraintsData={constraintsData}
-                        />
-                    </div>
-                )}
+                form={({ register, filter, setValue }) => {
+                    return (
+                        <div>
+                            <Input
+                                id="name"
+                                label={t(`filter.${ciType}.name`)}
+                                placeholder={t(`filter.namePlaceholder`)}
+                                {...register('Gen_Profil_nazov')}
+                            />
+                            <Input
+                                id="metais-code"
+                                label={t('filter.metaisCode.label')}
+                                placeholder={ciTypeData?.codePrefix}
+                                {...register('Gen_Profil_kod_metais')}
+                            />
+                            <DynamicFilterAttributes
+                                setValue={setValue}
+                                defaults={defaultFilterValues}
+                                filterData={{
+                                    attributeFilters: filter.attributeFilters ?? {},
+                                    metaAttributeFilters: filter.metaAttributeFilters ?? {},
+                                }}
+                                attributes={attributes}
+                                attributeProfiles={attributeProfiles}
+                                constraintsData={constraintsData}
+                            />
+                        </div>
+                    )
+                }}
             />
             {isNewRelationModal && (
                 <ActionsOverTable
@@ -190,7 +196,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
             )}
             {!isNewRelationModal && (
                 <ActionsOverTable
-                    metaAttributesColumnSection={getCiDefaultMetaAttributes(t)}
+                    metaAttributesColumnSection={getCiDefaultMetaAttributes({ t })}
                     handleFilterChange={handleFilterChange}
                     storeUserSelectedColumns={storeUserSelectedColumns}
                     resetUserSelectedColumns={resetUserSelectedColumns}
@@ -273,6 +279,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 multiple
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowChangeOwner)}
                 onClose={() => setShowChangeOwner(false)}
+                ciRoles={ciTypeData?.roleList ?? []}
             />
 
             <CiTable

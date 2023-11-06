@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { matchPath, useLocation, useNavigate } from 'react-router-dom'
 
-import { ButtonPopup } from '..'
-
 import styles from './tabs.module.scss'
 import { changeTabOrder } from './tabsUtils'
+
+import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
 
 export interface Tab {
     id: string
@@ -105,21 +105,23 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
         }
     }
 
-    // update new tabs when tabs are loaded
     useEffect(() => {
         setNewTabList(tabList)
         setSelected((prev) => {
             if (prev === undefined || !tabList?.find((tab: Tab) => tab?.id === prev?.id)) return tabList[0]
             return prev
         })
-    }, [tabList])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const handleSubListSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: Tab) => {
         event.preventDefault()
         changeTabOrder(value, MAX_SHOWN_TABS - 1, newTabList, setNewTabList)
+
         if (value.path) {
             navigate(value.path, { state: { from: location } })
         } else {
+            onSelected?.(value)
             setSelected(value)
         }
     }

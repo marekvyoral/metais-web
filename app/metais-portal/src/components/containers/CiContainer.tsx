@@ -1,4 +1,9 @@
-import { ConfigurationItemUi, RoleParticipantUI, useGetRoleParticipantBulk, useReadConfigurationItem } from '@isdd/metais-common/api'
+import {
+    ConfigurationItemUi,
+    RoleParticipantUI,
+    useGetRoleParticipantBulk,
+    useReadConfigurationItem,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import React from 'react'
 

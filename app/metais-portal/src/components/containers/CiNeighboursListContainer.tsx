@@ -1,9 +1,9 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourSetUi, NeighboursFilterUi, useReadCiNeighbours } from '@isdd/metais-common/api'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
+import { NeighbourSetUi, NeighboursFilterUi, useReadCiNeighbours } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { INeighboursFilter, mapFilterToRelationApi } from '@isdd/metais-common/api/filter/filterApi'
 import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelationshipTabFilters'
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
 
 import { NeighboursApiType } from '@/components/views/relationships/RelationshipsAccordion'
 import { mapNeighboursSetSourceToPagination, mapNeighboursSetTargetToPagination } from '@/componentHelpers/pagination'
@@ -22,15 +22,15 @@ interface ICiNeighboursListContainer {
     configurationItemId?: string
     View: React.FC<ICiNeighboursListContainerView>
     apiType: NeighboursApiType
+    entityName: string
 }
 
 export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = ({
     configurationItemId,
     View,
     apiType = NeighboursApiType.source,
+    entityName,
 }) => {
-    const { entityName } = useParams()
-
     const [uiFilterState, setUiFilterState] = useState<INeighboursFilter>({
         pageNumber: BASE_PAGE_NUMBER,
         pageSize: BASE_PAGE_SIZE,

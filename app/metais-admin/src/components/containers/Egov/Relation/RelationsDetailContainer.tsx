@@ -15,9 +15,9 @@ import {
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
 import { createTabNamesAndValuesMap } from '@isdd/metais-common/hooks/useEntityProfiles'
-import { EnumType } from '@isdd/metais-common/api'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
-export interface IAtrributesContainerView {
+export interface IAttributesContainerView {
     data: {
         ciTypeData: RelationshipType | undefined
         attributeOverridesData: Attribute[] | undefined
@@ -35,7 +35,7 @@ export interface IAtrributesContainerView {
 
 interface AttributesContainer {
     entityName: string
-    View: React.FC<IAtrributesContainerView>
+    View: React.FC<IAttributesContainerView>
 }
 
 export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {

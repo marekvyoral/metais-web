@@ -157,7 +157,7 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
                 navigate(`${AdminRouteNames.USER_MANAGEMENT}/edit/${identity.uuid}`, { state: { from: location } })
             }
             if (action === UserManagementActionsOverRowEnum.CHANGE_PASSWORD) {
-                navigate(`${AdminRouteNames.USER_MANAGEMENT}/pass/${identity.uuid}`, { state: { from: location } })
+                navigate(`${AdminRouteNames.USER_MANAGEMENT}/password/${identity.uuid}`, { state: { from: location } })
             }
             if (action === UserManagementActionsOverRowEnum.BLOCK && isCurrentlyBlocked !== undefined) {
                 if (identity.uuid) {

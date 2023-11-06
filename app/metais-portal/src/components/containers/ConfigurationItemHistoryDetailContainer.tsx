@@ -1,5 +1,5 @@
 import React from 'react'
-import { ConfigurationItemUi, useGetRoleParticipant } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, useGetRoleParticipant } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 import { ConfigurationItemHistoryDetailView } from '../views/history/ConfigurationItemHistoryDetailView'
 

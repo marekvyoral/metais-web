@@ -97,7 +97,7 @@ export type GetFOPStandardRequestsParams = {
     draftName?: string
 }
 
-export type UpdateVoteRole200 = { [key: string]: any }
+export type UpdateVoteRole1200 = { [key: string]: any }
 
 export type CancelVote200 = { [key: string]: any }
 
@@ -264,6 +264,26 @@ export interface ApiVotePreviewList {
     votes?: ApiVotePreview[]
 }
 
+export interface Group {
+    uuid?: string
+    shortName?: string
+    name?: string
+    description?: string
+}
+
+export interface GroupMeetings {
+    group?: Group
+    lastMeetingDate?: string
+    nextMeetingDate?: string
+}
+
+export interface UpdateVoteRequest {
+    userIdLogin?: string
+    newRoleUuid?: string
+    newRoleName?: string
+    newRoleDesc?: string
+}
+
 export interface ApiMeetingResult {
     linkUrl?: string
 }
@@ -341,6 +361,62 @@ export interface ApiAttribute {
     attributeValue?: string
 }
 
+export interface ApiVoteChoice {
+    id?: number
+    value?: string
+    description?: string
+}
+
+export interface ApiVoteActorPendingChange {
+    userId?: string
+    groupId?: string
+    userRoleId?: string
+    userOrgId?: string
+    changeAction?: string
+    changeActionDescription?: string
+    changeDate?: string
+    userName?: string
+    userRoleName?: string
+    userRoleDesc?: string
+    userOrgName?: string
+    groupName?: string
+    groupShortName?: string
+}
+
+export interface ApiVoteActor {
+    userId?: string
+    groupId?: string
+    substitutorIds?: string[]
+    userRoleId?: string
+    userOrgId?: string
+    userName?: string
+    userRoleName?: string
+    userRoleDesc?: string
+    userOrgName?: string
+    groupName?: string
+    groupShortName?: string
+    sendNotification?: boolean
+}
+
+export interface ApiLink {
+    id?: number
+    url?: string
+    name?: string
+    type?: string
+    linkType?: string
+    linkSize?: string
+    linkDescription?: string
+}
+
+export interface ApiAttachment {
+    id?: number
+    attachmentId?: string
+    attachmentName?: string
+    attachmentSize?: number
+    attachmentType?: string
+    attachmentDescription?: string
+}
+
 export interface ApiStandardRequest {
     version?: number
     name?: string
@@ -416,62 +492,6 @@ export interface ApiStandardRequest {
     id?: number
 }
 
-export interface ApiVoteChoice {
-    id?: number
-    value?: string
-    description?: string
-}
-
-export interface ApiVoteActorPendingChange {
-    userId?: string
-    groupId?: string
-    userRoleId?: string
-    userOrgId?: string
-    changeAction?: string
-    changeActionDescription?: string
-    changeDate?: string
-    userName?: string
-    userRoleName?: string
-    userRoleDesc?: string
-    userOrgName?: string
-    groupName?: string
-    groupShortName?: string
-}
-
-export interface ApiVoteActor {
-    userId?: string
-    groupId?: string
-    substitutorIds?: string[]
-    userRoleId?: string
-    userOrgId?: string
-    userName?: string
-    userRoleName?: string
-    userRoleDesc?: string
-    userOrgName?: string
-    groupName?: string
-    groupShortName?: string
-    sendNotification?: boolean
-}
-
-export interface ApiLink {
-    id?: number
-    url?: string
-    name?: string
-    type?: string
-    linkType?: string
-    linkSize?: string
-    linkDescription?: string
-}
-
-export interface ApiAttachment {
-    id?: number
-    attachmentId?: string
-    attachmentName?: string
-    attachmentSize?: number
-    attachmentType?: string
-    attachmentDescription?: string
-}
-
 export interface ApiVote {
     id?: number
     name?: string
@@ -495,6 +515,16 @@ export interface ApiVote {
     descriptionOfChange?: string
 }
 
+export type ApiErrorData = { [key: string]: any }
+
+export interface ApiError {
+    type?: string
+    message?: string
+    data?: ApiErrorData
+    logToken?: string
+    values?: string[]
+}
+
 type AwaitedInput<T> = PromiseLike<T> | T
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never
@@ -509,7 +539,7 @@ export const useGetVoteDetailHook = () => {
 
 export const getGetVoteDetailQueryKey = (voteId: number) => [`/standards/votes/${voteId}`] as const
 
-export const useGetVoteDetailQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetVoteDetailHook>>>, TError = unknown>(
+export const useGetVoteDetailQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetVoteDetailHook>>>, TError = ApiError>(
     voteId: number,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVoteDetailHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVoteDetailHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -525,9 +555,9 @@ export const useGetVoteDetailQueryOptions = <TData = Awaited<ReturnType<ReturnTy
 }
 
 export type GetVoteDetailQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetVoteDetailHook>>>>
-export type GetVoteDetailQueryError = unknown
+export type GetVoteDetailQueryError = ApiError
 
-export const useGetVoteDetail = <TData = Awaited<ReturnType<ReturnType<typeof useGetVoteDetailHook>>>, TError = unknown>(
+export const useGetVoteDetail = <TData = Awaited<ReturnType<ReturnType<typeof useGetVoteDetailHook>>>, TError = ApiError>(
     voteId: number,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVoteDetailHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -548,7 +578,7 @@ export const useUpdateVoteHook = () => {
     }
 }
 
-export const useUpdateVoteMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateVoteMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateVoteHook>>>, TError, { voteId: number; data: ApiVote }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateVoteHook>>>, TError, { voteId: number; data: ApiVote }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -566,9 +596,9 @@ export const useUpdateVoteMutationOptions = <TError = unknown, TContext = unknow
 
 export type UpdateVoteMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateVoteHook>>>>
 export type UpdateVoteMutationBody = ApiVote
-export type UpdateVoteMutationError = unknown
+export type UpdateVoteMutationError = ApiError
 
-export const useUpdateVote = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateVote = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateVoteHook>>>, TError, { voteId: number; data: ApiVote }, TContext>
 }) => {
     const mutationOptions = useUpdateVoteMutationOptions(options)
@@ -589,7 +619,7 @@ export const useUpdateActorsVoteHook = () => {
     }
 }
 
-export const useUpdateActorsVoteMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateActorsVoteMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateActorsVoteHook>>>,
         TError,
@@ -614,9 +644,9 @@ export const useUpdateActorsVoteMutationOptions = <TError = unknown, TContext = 
 
 export type UpdateActorsVoteMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateActorsVoteHook>>>>
 export type UpdateActorsVoteMutationBody = ApiVote
-export type UpdateActorsVoteMutationError = unknown
+export type UpdateActorsVoteMutationError = ApiError
 
-export const useUpdateActorsVote = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateActorsVote = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateActorsVoteHook>>>,
         TError,
@@ -641,7 +671,7 @@ export const getGetStandardRequestDetailQueryKey = (standardRequestId: number) =
 
 export const useGetStandardRequestDetailQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetStandardRequestDetailHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     standardRequestId: number,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetStandardRequestDetailHook>>>, TError, TData> },
@@ -659,9 +689,9 @@ export const useGetStandardRequestDetailQueryOptions = <
 }
 
 export type GetStandardRequestDetailQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetStandardRequestDetailHook>>>>
-export type GetStandardRequestDetailQueryError = unknown
+export type GetStandardRequestDetailQueryError = ApiError
 
-export const useGetStandardRequestDetail = <TData = Awaited<ReturnType<ReturnType<typeof useGetStandardRequestDetailHook>>>, TError = unknown>(
+export const useGetStandardRequestDetail = <TData = Awaited<ReturnType<ReturnType<typeof useGetStandardRequestDetailHook>>>, TError = ApiError>(
     standardRequestId: number,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetStandardRequestDetailHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -687,7 +717,7 @@ export const useUpdateStandardRequestHook = () => {
     }
 }
 
-export const useUpdateStandardRequestMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateStandardRequestMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateStandardRequestHook>>>,
         TError,
@@ -718,9 +748,9 @@ export const useUpdateStandardRequestMutationOptions = <TError = unknown, TConte
 
 export type UpdateStandardRequestMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateStandardRequestHook>>>>
 export type UpdateStandardRequestMutationBody = ApiStandardRequest
-export type UpdateStandardRequestMutationError = unknown
+export type UpdateStandardRequestMutationError = ApiError
 
-export const useUpdateStandardRequest = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateStandardRequest = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateStandardRequestHook>>>,
         TError,
@@ -741,7 +771,7 @@ export const useAssignStandardRequestHook = () => {
     }
 }
 
-export const useAssignStandardRequestMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useAssignStandardRequestMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useAssignStandardRequestHook>>>,
         TError,
@@ -772,9 +802,9 @@ export const useAssignStandardRequestMutationOptions = <TError = unknown, TConte
 
 export type AssignStandardRequestMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useAssignStandardRequestHook>>>>
 
-export type AssignStandardRequestMutationError = unknown
+export type AssignStandardRequestMutationError = ApiError
 
-export const useAssignStandardRequest = <TError = unknown, TContext = unknown>(options?: {
+export const useAssignStandardRequest = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useAssignStandardRequestHook>>>,
         TError,
@@ -801,7 +831,7 @@ export const useActionStandardRequestHook = () => {
     }
 }
 
-export const useActionStandardRequestMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useActionStandardRequestMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useActionStandardRequestHook>>>,
         TError,
@@ -832,9 +862,9 @@ export const useActionStandardRequestMutationOptions = <TError = unknown, TConte
 
 export type ActionStandardRequestMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useActionStandardRequestHook>>>>
 export type ActionStandardRequestMutationBody = ApiDescription
-export type ActionStandardRequestMutationError = unknown
+export type ActionStandardRequestMutationError = ApiError
 
-export const useActionStandardRequest = <TError = unknown, TContext = unknown>(options?: {
+export const useActionStandardRequest = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useActionStandardRequestHook>>>,
         TError,
@@ -860,7 +890,7 @@ export const useAddUserToActiveVotesHook = () => {
     }
 }
 
-export const useAddUserToActiveVotesMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useAddUserToActiveVotesMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useAddUserToActiveVotesHook>>>,
         TError,
@@ -891,9 +921,9 @@ export const useAddUserToActiveVotesMutationOptions = <TError = unknown, TContex
 
 export type AddUserToActiveVotesMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useAddUserToActiveVotesHook>>>>
 export type AddUserToActiveVotesMutationBody = AddUserToActiveVotesBody
-export type AddUserToActiveVotesMutationError = unknown
+export type AddUserToActiveVotesMutationError = ApiError
 
-export const useAddUserToActiveVotes = <TError = unknown, TContext = unknown>(options?: {
+export const useAddUserToActiveVotes = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useAddUserToActiveVotesHook>>>,
         TError,
@@ -918,7 +948,7 @@ export const getGetMeetingRequestDetailQueryKey = (meetingRequestId: number) => 
 
 export const useGetMeetingRequestDetailQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestDetailHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     meetingRequestId: number,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestDetailHook>>>, TError, TData> },
@@ -936,9 +966,9 @@ export const useGetMeetingRequestDetailQueryOptions = <
 }
 
 export type GetMeetingRequestDetailQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestDetailHook>>>>
-export type GetMeetingRequestDetailQueryError = unknown
+export type GetMeetingRequestDetailQueryError = ApiError
 
-export const useGetMeetingRequestDetail = <TData = Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestDetailHook>>>, TError = unknown>(
+export const useGetMeetingRequestDetail = <TData = Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestDetailHook>>>, TError = ApiError>(
     meetingRequestId: number,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestDetailHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -964,7 +994,7 @@ export const useUpdateMeetingRequestHook = () => {
     }
 }
 
-export const useUpdateMeetingRequestMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateMeetingRequestMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateMeetingRequestHook>>>,
         TError,
@@ -995,9 +1025,9 @@ export const useUpdateMeetingRequestMutationOptions = <TError = unknown, TContex
 
 export type UpdateMeetingRequestMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateMeetingRequestHook>>>>
 export type UpdateMeetingRequestMutationBody = ApiMeetingRequest
-export type UpdateMeetingRequestMutationError = unknown
+export type UpdateMeetingRequestMutationError = ApiError
 
-export const useUpdateMeetingRequest = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateMeetingRequest = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateMeetingRequestHook>>>,
         TError,
@@ -1023,7 +1053,7 @@ export const useUpdateSummarizeDataHook = () => {
     }
 }
 
-export const useUpdateSummarizeDataMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateSummarizeDataMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateSummarizeDataHook>>>,
         TError,
@@ -1054,9 +1084,9 @@ export const useUpdateSummarizeDataMutationOptions = <TError = unknown, TContext
 
 export type UpdateSummarizeDataMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateSummarizeDataHook>>>>
 export type UpdateSummarizeDataMutationBody = ApiMeetingResult
-export type UpdateSummarizeDataMutationError = unknown
+export type UpdateSummarizeDataMutationError = ApiError
 
-export const useUpdateSummarizeData = <TError = unknown, TContext = unknown>(options?: {
+export const useUpdateSummarizeData = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useUpdateSummarizeDataHook>>>,
         TError,
@@ -1082,7 +1112,7 @@ export const useSummarizeMeetingRequestHook = () => {
     }
 }
 
-export const useSummarizeMeetingRequestMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useSummarizeMeetingRequestMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useSummarizeMeetingRequestHook>>>,
         TError,
@@ -1113,9 +1143,9 @@ export const useSummarizeMeetingRequestMutationOptions = <TError = unknown, TCon
 
 export type SummarizeMeetingRequestMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useSummarizeMeetingRequestHook>>>>
 export type SummarizeMeetingRequestMutationBody = ApiMeetingResult
-export type SummarizeMeetingRequestMutationError = unknown
+export type SummarizeMeetingRequestMutationError = ApiError
 
-export const useSummarizeMeetingRequest = <TError = unknown, TContext = unknown>(options?: {
+export const useSummarizeMeetingRequest = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useSummarizeMeetingRequestHook>>>,
         TError,
@@ -1138,7 +1168,7 @@ export const useGetVotesHook = () => {
 
 export const getGetVotesQueryKey = (params: GetVotesParams) => [`/standards/votes`, ...(params ? [params] : [])] as const
 
-export const useGetVotesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetVotesHook>>>, TError = unknown>(
+export const useGetVotesQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetVotesHook>>>, TError = ApiError>(
     params: GetVotesParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVotesHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVotesHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -1154,9 +1184,9 @@ export const useGetVotesQueryOptions = <TData = Awaited<ReturnType<ReturnType<ty
 }
 
 export type GetVotesQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetVotesHook>>>>
-export type GetVotesQueryError = unknown
+export type GetVotesQueryError = ApiError
 
-export const useGetVotes = <TData = Awaited<ReturnType<ReturnType<typeof useGetVotesHook>>>, TError = unknown>(
+export const useGetVotes = <TData = Awaited<ReturnType<ReturnType<typeof useGetVotesHook>>>, TError = ApiError>(
     params: GetVotesParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVotesHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -1177,7 +1207,7 @@ export const useCreateVoteHook = () => {
     }
 }
 
-export const useCreateVoteMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useCreateVoteMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateVoteHook>>>, TError, { data: ApiVote }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateVoteHook>>>, TError, { data: ApiVote }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1195,9 +1225,9 @@ export const useCreateVoteMutationOptions = <TError = unknown, TContext = unknow
 
 export type CreateVoteMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCreateVoteHook>>>>
 export type CreateVoteMutationBody = ApiVote
-export type CreateVoteMutationError = unknown
+export type CreateVoteMutationError = ApiError
 
-export const useCreateVote = <TError = unknown, TContext = unknown>(options?: {
+export const useCreateVote = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateVoteHook>>>, TError, { data: ApiVote }, TContext>
 }) => {
     const mutationOptions = useCreateVoteMutationOptions(options)
@@ -1218,7 +1248,7 @@ export const useVetoVoteHook = () => {
     }
 }
 
-export const useVetoVoteMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useVetoVoteMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useVetoVoteHook>>>,
         TError,
@@ -1249,9 +1279,9 @@ export const useVetoVoteMutationOptions = <TError = unknown, TContext = unknown>
 
 export type VetoVoteMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useVetoVoteHook>>>>
 export type VetoVoteMutationBody = ApiDescription
-export type VetoVoteMutationError = unknown
+export type VetoVoteMutationError = ApiError
 
-export const useVetoVote = <TError = unknown, TContext = unknown>(options?: {
+export const useVetoVote = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useVetoVoteHook>>>,
         TError,
@@ -1277,7 +1307,7 @@ export const useCastVoteHook = () => {
     }
 }
 
-export const useCastVoteMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useCastVoteMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useCastVoteHook>>>,
         TError,
@@ -1308,9 +1338,9 @@ export const useCastVoteMutationOptions = <TError = unknown, TContext = unknown>
 
 export type CastVoteMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCastVoteHook>>>>
 export type CastVoteMutationBody = ApiDescription
-export type CastVoteMutationError = unknown
+export type CastVoteMutationError = ApiError
 
-export const useCastVote = <TError = unknown, TContext = unknown>(options?: {
+export const useCastVote = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useCastVoteHook>>>,
         TError,
@@ -1336,7 +1366,7 @@ export const useSummarizeVoteHook = () => {
     }
 }
 
-export const useSummarizeVoteMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useSummarizeVoteMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useSummarizeVoteHook>>>,
         TError,
@@ -1361,9 +1391,9 @@ export const useSummarizeVoteMutationOptions = <TError = unknown, TContext = unk
 
 export type SummarizeVoteMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useSummarizeVoteHook>>>>
 export type SummarizeVoteMutationBody = ApiDescription
-export type SummarizeVoteMutationError = unknown
+export type SummarizeVoteMutationError = ApiError
 
-export const useSummarizeVote = <TError = unknown, TContext = unknown>(options?: {
+export const useSummarizeVote = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useSummarizeVoteHook>>>,
         TError,
@@ -1389,7 +1419,7 @@ export const useCancelVoteHook = () => {
     }
 }
 
-export const useCancelVoteMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useCancelVoteMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useCancelVoteHook>>>,
         TError,
@@ -1414,9 +1444,9 @@ export const useCancelVoteMutationOptions = <TError = unknown, TContext = unknow
 
 export type CancelVoteMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCancelVoteHook>>>>
 export type CancelVoteMutationBody = ApiDescription
-export type CancelVoteMutationError = unknown
+export type CancelVoteMutationError = ApiError
 
-export const useCancelVote = <TError = unknown, TContext = unknown>(options?: {
+export const useCancelVote = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useCancelVoteHook>>>,
         TError,
@@ -1430,58 +1460,105 @@ export const useCancelVote = <TError = unknown, TContext = unknown>(options?: {
 }
 
 export const useUpdateVoteRoleHook = () => {
-    const updateVoteRole = useStandardsSwaggerClient<UpdateVoteRole200>()
+    const updateVoteRole = useStandardsSwaggerClient<void>()
 
-    return (userIdLogin: string, newRoleUuid: string, newRoleName: string, newRoleDesc: string) => {
+    return (updateVoteRequest: UpdateVoteRequest) => {
         return updateVoteRole({
-            url: `/standards/votes/updateVoteRole/userIdLogin/${userIdLogin}/newRoleUuid/${newRoleUuid}/newRoleName/${newRoleName}/newRoleDesc/${newRoleDesc}`,
+            url: `/standards/votes/updateVoteRole`,
             method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            data: updateVoteRequest,
         })
     }
 }
 
-export const useUpdateVoteRoleMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useUpdateVoteRoleHook>>>,
-        TError,
-        { userIdLogin: string; newRoleUuid: string; newRoleName: string; newRoleDesc: string },
-        TContext
-    >
-}): UseMutationOptions<
-    Awaited<ReturnType<ReturnType<typeof useUpdateVoteRoleHook>>>,
-    TError,
-    { userIdLogin: string; newRoleUuid: string; newRoleName: string; newRoleDesc: string },
-    TContext
-> => {
+export const useUpdateVoteRoleMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateVoteRoleHook>>>, TError, { data: UpdateVoteRequest }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateVoteRoleHook>>>, TError, { data: UpdateVoteRequest }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
 
     const updateVoteRole = useUpdateVoteRoleHook()
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<ReturnType<typeof useUpdateVoteRoleHook>>>,
-        { userIdLogin: string; newRoleUuid: string; newRoleName: string; newRoleDesc: string }
-    > = (props) => {
-        const { userIdLogin, newRoleUuid, newRoleName, newRoleDesc } = props ?? {}
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useUpdateVoteRoleHook>>>, { data: UpdateVoteRequest }> = (props) => {
+        const { data } = props ?? {}
 
-        return updateVoteRole(userIdLogin, newRoleUuid, newRoleName, newRoleDesc)
+        return updateVoteRole(data)
     }
 
     return { mutationFn, ...mutationOptions }
 }
 
 export type UpdateVoteRoleMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateVoteRoleHook>>>>
+export type UpdateVoteRoleMutationBody = UpdateVoteRequest
+export type UpdateVoteRoleMutationError = ApiError
 
-export type UpdateVoteRoleMutationError = unknown
+export const useUpdateVoteRole = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useUpdateVoteRoleHook>>>, TError, { data: UpdateVoteRequest }, TContext>
+}) => {
+    const mutationOptions = useUpdateVoteRoleMutationOptions(options)
 
-export const useUpdateVoteRole = <TError = unknown, TContext = unknown>(options?: {
+    return useMutation(mutationOptions)
+}
+
+/**
+ * @deprecated
+ */
+export const useUpdateVoteRole1Hook = () => {
+    const updateVoteRole1 = useStandardsSwaggerClient<UpdateVoteRole1200>()
+
+    return (userIdLogin: string, newRoleUuid: string, newRoleName: string, newRoleDesc: string) => {
+        return updateVoteRole1({
+            url: `/standards/votes/updateVoteRole/userIdLogin/${userIdLogin}/newRoleUuid/${newRoleUuid}/newRoleName/${newRoleName}/newRoleDesc/${newRoleDesc}`,
+            method: 'post',
+        })
+    }
+}
+
+export const useUpdateVoteRole1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<ReturnType<typeof useUpdateVoteRoleHook>>>,
+        Awaited<ReturnType<ReturnType<typeof useUpdateVoteRole1Hook>>>,
+        TError,
+        { userIdLogin: string; newRoleUuid: string; newRoleName: string; newRoleDesc: string },
+        TContext
+    >
+}): UseMutationOptions<
+    Awaited<ReturnType<ReturnType<typeof useUpdateVoteRole1Hook>>>,
+    TError,
+    { userIdLogin: string; newRoleUuid: string; newRoleName: string; newRoleDesc: string },
+    TContext
+> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const updateVoteRole1 = useUpdateVoteRole1Hook()
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<ReturnType<typeof useUpdateVoteRole1Hook>>>,
+        { userIdLogin: string; newRoleUuid: string; newRoleName: string; newRoleDesc: string }
+    > = (props) => {
+        const { userIdLogin, newRoleUuid, newRoleName, newRoleDesc } = props ?? {}
+
+        return updateVoteRole1(userIdLogin, newRoleUuid, newRoleName, newRoleDesc)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type UpdateVoteRole1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useUpdateVoteRole1Hook>>>>
+
+export type UpdateVoteRole1MutationError = ApiError
+
+/**
+ * @deprecated
+ */
+export const useUpdateVoteRole1 = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<ReturnType<typeof useUpdateVoteRole1Hook>>>,
         TError,
         { userIdLogin: string; newRoleUuid: string; newRoleName: string; newRoleDesc: string },
         TContext
     >
 }) => {
-    const mutationOptions = useUpdateVoteRoleMutationOptions(options)
+    const mutationOptions = useUpdateVoteRole1MutationOptions(options)
 
     return useMutation(mutationOptions)
 }
@@ -1499,7 +1576,7 @@ export const getGetFOPStandardRequestsQueryKey = (params: GetFOPStandardRequests
 
 export const useGetFOPStandardRequestsQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetFOPStandardRequestsHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     params: GetFOPStandardRequestsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetFOPStandardRequestsHook>>>, TError, TData> },
@@ -1517,9 +1594,9 @@ export const useGetFOPStandardRequestsQueryOptions = <
 }
 
 export type GetFOPStandardRequestsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetFOPStandardRequestsHook>>>>
-export type GetFOPStandardRequestsQueryError = unknown
+export type GetFOPStandardRequestsQueryError = ApiError
 
-export const useGetFOPStandardRequests = <TData = Awaited<ReturnType<ReturnType<typeof useGetFOPStandardRequestsHook>>>, TError = unknown>(
+export const useGetFOPStandardRequests = <TData = Awaited<ReturnType<ReturnType<typeof useGetFOPStandardRequestsHook>>>, TError = ApiError>(
     params: GetFOPStandardRequestsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetFOPStandardRequestsHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -1545,7 +1622,7 @@ export const useCreateStandardRequestHook = () => {
     }
 }
 
-export const useCreateStandardRequestMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useCreateStandardRequestMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useCreateStandardRequestHook>>>,
         TError,
@@ -1570,9 +1647,9 @@ export const useCreateStandardRequestMutationOptions = <TError = unknown, TConte
 
 export type CreateStandardRequestMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCreateStandardRequestHook>>>>
 export type CreateStandardRequestMutationBody = ApiStandardRequest
-export type CreateStandardRequestMutationError = unknown
+export type CreateStandardRequestMutationError = ApiError
 
-export const useCreateStandardRequest = <TError = unknown, TContext = unknown>(options?: {
+export const useCreateStandardRequest = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useCreateStandardRequestHook>>>,
         TError,
@@ -1604,7 +1681,7 @@ export const useCreateStandardRequestUploadHook = () => {
     }
 }
 
-export const useCreateStandardRequestUploadMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useCreateStandardRequestUploadMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useCreateStandardRequestUploadHook>>>,
         TError,
@@ -1635,9 +1712,9 @@ export const useCreateStandardRequestUploadMutationOptions = <TError = unknown, 
 
 export type CreateStandardRequestUploadMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCreateStandardRequestUploadHook>>>>
 export type CreateStandardRequestUploadMutationBody = CreateStandardRequestUploadBody
-export type CreateStandardRequestUploadMutationError = unknown
+export type CreateStandardRequestUploadMutationError = ApiError
 
-export const useCreateStandardRequestUpload = <TError = unknown, TContext = unknown>(options?: {
+export const useCreateStandardRequestUpload = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useCreateStandardRequestUploadHook>>>,
         TError,
@@ -1658,7 +1735,7 @@ export const useReindexHook = () => {
     }
 }
 
-export const useReindexMutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useReindexMutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1674,9 +1751,9 @@ export const useReindexMutationOptions = <TError = unknown, TVariables = void, T
 
 export type ReindexMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>>
 
-export type ReindexMutationError = unknown
+export type ReindexMutationError = ApiError
 
-export const useReindex = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useReindex = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindexHook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useReindexMutationOptions(options)
@@ -1692,7 +1769,7 @@ export const useReindex1Hook = () => {
     }
 }
 
-export const useReindex1MutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useReindex1MutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindex1Hook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindex1Hook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1708,9 +1785,9 @@ export const useReindex1MutationOptions = <TError = unknown, TVariables = void, 
 
 export type Reindex1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindex1Hook>>>>
 
-export type Reindex1MutationError = unknown
+export type Reindex1MutationError = ApiError
 
-export const useReindex1 = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useReindex1 = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindex1Hook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useReindex1MutationOptions(options)
@@ -1726,7 +1803,7 @@ export const useReindex2Hook = () => {
     }
 }
 
-export const useReindex2MutationOptions = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useReindex2MutationOptions = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindex2Hook>>>, TError, TVariables, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindex2Hook>>>, TError, TVariables, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1742,9 +1819,9 @@ export const useReindex2MutationOptions = <TError = unknown, TVariables = void, 
 
 export type Reindex2MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useReindex2Hook>>>>
 
-export type Reindex2MutationError = unknown
+export type Reindex2MutationError = ApiError
 
-export const useReindex2 = <TError = unknown, TVariables = void, TContext = unknown>(options?: {
+export const useReindex2 = <TError = ApiError, TVariables = void, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useReindex2Hook>>>, TError, TVariables, TContext>
 }) => {
     const mutationOptions = useReindex2MutationOptions(options)
@@ -1762,7 +1839,7 @@ export const useGetMeetingRequestsHook = () => {
 
 export const getGetMeetingRequestsQueryKey = (params: GetMeetingRequestsParams) => [`/meetings`, ...(params ? [params] : [])] as const
 
-export const useGetMeetingRequestsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestsHook>>>, TError = unknown>(
+export const useGetMeetingRequestsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestsHook>>>, TError = ApiError>(
     params: GetMeetingRequestsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestsHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestsHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -1779,9 +1856,9 @@ export const useGetMeetingRequestsQueryOptions = <TData = Awaited<ReturnType<Ret
 }
 
 export type GetMeetingRequestsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestsHook>>>>
-export type GetMeetingRequestsQueryError = unknown
+export type GetMeetingRequestsQueryError = ApiError
 
-export const useGetMeetingRequests = <TData = Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestsHook>>>, TError = unknown>(
+export const useGetMeetingRequests = <TData = Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestsHook>>>, TError = ApiError>(
     params: GetMeetingRequestsParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetMeetingRequestsHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -1802,7 +1879,7 @@ export const useCreateVote1Hook = () => {
     }
 }
 
-export const useCreateVote1MutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useCreateVote1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>, TError, { data: ApiMeetingRequest }, TContext>
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>, TError, { data: ApiMeetingRequest }, TContext> => {
     const { mutation: mutationOptions } = options ?? {}
@@ -1820,9 +1897,9 @@ export const useCreateVote1MutationOptions = <TError = unknown, TContext = unkno
 
 export type CreateVote1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>>
 export type CreateVote1MutationBody = ApiMeetingRequest
-export type CreateVote1MutationError = unknown
+export type CreateVote1MutationError = ApiError
 
-export const useCreateVote1 = <TError = unknown, TContext = unknown>(options?: {
+export const useCreateVote1 = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useCreateVote1Hook>>>, TError, { data: ApiMeetingRequest }, TContext>
 }) => {
     const mutationOptions = useCreateVote1MutationOptions(options)
@@ -1838,7 +1915,7 @@ export const useParticipateMeetingRequestHook = () => {
     }
 }
 
-export const useParticipateMeetingRequestMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useParticipateMeetingRequestMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useParticipateMeetingRequestHook>>>,
         TError,
@@ -1869,9 +1946,9 @@ export const useParticipateMeetingRequestMutationOptions = <TError = unknown, TC
 
 export type ParticipateMeetingRequestMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useParticipateMeetingRequestHook>>>>
 
-export type ParticipateMeetingRequestMutationError = unknown
+export type ParticipateMeetingRequestMutationError = ApiError
 
-export const useParticipateMeetingRequest = <TError = unknown, TContext = unknown>(options?: {
+export const useParticipateMeetingRequest = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useParticipateMeetingRequestHook>>>,
         TError,
@@ -1897,7 +1974,7 @@ export const useCancelMeetingRequestHook = () => {
     }
 }
 
-export const useCancelMeetingRequestMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+export const useCancelMeetingRequestMutationOptions = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useCancelMeetingRequestHook>>>,
         TError,
@@ -1928,9 +2005,9 @@ export const useCancelMeetingRequestMutationOptions = <TError = unknown, TContex
 
 export type CancelMeetingRequestMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useCancelMeetingRequestHook>>>>
 export type CancelMeetingRequestMutationBody = ApiDescription
-export type CancelMeetingRequestMutationError = unknown
+export type CancelMeetingRequestMutationError = ApiError
 
-export const useCancelMeetingRequest = <TError = unknown, TContext = unknown>(options?: {
+export const useCancelMeetingRequest = <TError = ApiError, TContext = unknown>(options?: {
     mutation?: UseMutationOptions<
         Awaited<ReturnType<ReturnType<typeof useCancelMeetingRequestHook>>>,
         TError,
@@ -1943,6 +2020,48 @@ export const useCancelMeetingRequest = <TError = unknown, TContext = unknown>(op
     return useMutation(mutationOptions)
 }
 
+export const useGroupsWithMeetingsHook = () => {
+    const groupsWithMeetings = useStandardsSwaggerClient<GroupMeetings[]>()
+
+    return (signal?: AbortSignal) => {
+        return groupsWithMeetings({ url: `/user-groups/meetings`, method: 'get', signal })
+    }
+}
+
+export const getGroupsWithMeetingsQueryKey = () => [`/user-groups/meetings`] as const
+
+export const useGroupsWithMeetingsQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>,
+    TError = ApiError,
+>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>, TError, TData>
+}): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGroupsWithMeetingsQueryKey()
+
+    const groupsWithMeetings = useGroupsWithMeetingsHook()
+
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>> = ({ signal }) => groupsWithMeetings(signal)
+
+    return { queryKey, queryFn, ...queryOptions }
+}
+
+export type GroupsWithMeetingsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>>
+export type GroupsWithMeetingsQueryError = ApiError
+
+export const useGroupsWithMeetings = <TData = Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>, TError = ApiError>(options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGroupsWithMeetingsHook>>>, TError, TData>
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGroupsWithMeetingsQueryOptions(options)
+
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
+}
+
 export const useGetVoteResultHook = () => {
     const getVoteResult = useStandardsSwaggerClient<ApiVoteResult>()
 
@@ -1953,7 +2072,7 @@ export const useGetVoteResultHook = () => {
 
 export const getGetVoteResultQueryKey = (voteId: number) => [`/standards/votes/${voteId}/result`] as const
 
-export const useGetVoteResultQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetVoteResultHook>>>, TError = unknown>(
+export const useGetVoteResultQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetVoteResultHook>>>, TError = ApiError>(
     voteId: number,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVoteResultHook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVoteResultHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -1969,9 +2088,9 @@ export const useGetVoteResultQueryOptions = <TData = Awaited<ReturnType<ReturnTy
 }
 
 export type GetVoteResultQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetVoteResultHook>>>>
-export type GetVoteResultQueryError = unknown
+export type GetVoteResultQueryError = ApiError
 
-export const useGetVoteResult = <TData = Awaited<ReturnType<ReturnType<typeof useGetVoteResultHook>>>, TError = unknown>(
+export const useGetVoteResult = <TData = Awaited<ReturnType<ReturnType<typeof useGetVoteResultHook>>>, TError = ApiError>(
     voteId: number,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVoteResultHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -1996,7 +2115,7 @@ export const getGetUserVoteActorResultsQueryKey = (voteId: number) => [`/standar
 
 export const useGetUserVoteActorResultsQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetUserVoteActorResultsHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     voteId: number,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUserVoteActorResultsHook>>>, TError, TData> },
@@ -2014,9 +2133,9 @@ export const useGetUserVoteActorResultsQueryOptions = <
 }
 
 export type GetUserVoteActorResultsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetUserVoteActorResultsHook>>>>
-export type GetUserVoteActorResultsQueryError = unknown
+export type GetUserVoteActorResultsQueryError = ApiError
 
-export const useGetUserVoteActorResults = <TData = Awaited<ReturnType<ReturnType<typeof useGetUserVoteActorResultsHook>>>, TError = unknown>(
+export const useGetUserVoteActorResults = <TData = Awaited<ReturnType<ReturnType<typeof useGetUserVoteActorResultsHook>>>, TError = ApiError>(
     voteId: number,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetUserVoteActorResultsHook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -2040,7 +2159,7 @@ export const useGetVoteActorResultHook = () => {
 export const getGetVoteActorResultQueryKey = (voteId: number, castedUserId: string) =>
     [`/standards/votes/${voteId}/actorresult/${castedUserId}`] as const
 
-export const useGetVoteActorResultQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetVoteActorResultHook>>>, TError = unknown>(
+export const useGetVoteActorResultQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetVoteActorResultHook>>>, TError = ApiError>(
     voteId: number,
     castedUserId: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVoteActorResultHook>>>, TError, TData> },
@@ -2058,9 +2177,9 @@ export const useGetVoteActorResultQueryOptions = <TData = Awaited<ReturnType<Ret
 }
 
 export type GetVoteActorResultQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetVoteActorResultHook>>>>
-export type GetVoteActorResultQueryError = unknown
+export type GetVoteActorResultQueryError = ApiError
 
-export const useGetVoteActorResult = <TData = Awaited<ReturnType<ReturnType<typeof useGetVoteActorResultHook>>>, TError = unknown>(
+export const useGetVoteActorResult = <TData = Awaited<ReturnType<ReturnType<typeof useGetVoteActorResultHook>>>, TError = ApiError>(
     voteId: number,
     castedUserId: string,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetVoteActorResultHook>>>, TError, TData> },
@@ -2086,7 +2205,7 @@ export const getGetAllStandardRequestsQueryKey = () => [`/standards/requests/all
 
 export const useGetAllStandardRequestsQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useGetAllStandardRequestsHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAllStandardRequestsHook>>>, TError, TData>
 }): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAllStandardRequestsHook>>>, TError, TData> & { queryKey: QueryKey } => {
@@ -2103,9 +2222,12 @@ export const useGetAllStandardRequestsQueryOptions = <
 }
 
 export type GetAllStandardRequestsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetAllStandardRequestsHook>>>>
-export type GetAllStandardRequestsQueryError = unknown
+export type GetAllStandardRequestsQueryError = ApiError
 
-export const useGetAllStandardRequests = <TData = Awaited<ReturnType<ReturnType<typeof useGetAllStandardRequestsHook>>>, TError = unknown>(options?: {
+export const useGetAllStandardRequests = <
+    TData = Awaited<ReturnType<ReturnType<typeof useGetAllStandardRequestsHook>>>,
+    TError = ApiError,
+>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetAllStandardRequestsHook>>>, TError, TData>
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useGetAllStandardRequestsQueryOptions(options)
@@ -2128,7 +2250,7 @@ export const useRejectMeetingRequestHook = () => {
 export const getRejectMeetingRequestQueryKey = (id: number, params: RejectMeetingRequestParams) =>
     [`/meetings/participate/${id}/reject`, ...(params ? [params] : [])] as const
 
-export const useRejectMeetingRequestQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestHook>>>, TError = unknown>(
+export const useRejectMeetingRequestQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestHook>>>, TError = ApiError>(
     id: number,
     params: RejectMeetingRequestParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestHook>>>, TError, TData> },
@@ -2146,9 +2268,9 @@ export const useRejectMeetingRequestQueryOptions = <TData = Awaited<ReturnType<R
 }
 
 export type RejectMeetingRequestQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestHook>>>>
-export type RejectMeetingRequestQueryError = unknown
+export type RejectMeetingRequestQueryError = ApiError
 
-export const useRejectMeetingRequest = <TData = Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestHook>>>, TError = unknown>(
+export const useRejectMeetingRequest = <TData = Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestHook>>>, TError = ApiError>(
     id: number,
     params: RejectMeetingRequestParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestHook>>>, TError, TData> },
@@ -2173,7 +2295,7 @@ export const useAcceptMeetingRequestHook = () => {
 export const getAcceptMeetingRequestQueryKey = (id: number, params: AcceptMeetingRequestParams) =>
     [`/meetings/participate/${id}/accept`, ...(params ? [params] : [])] as const
 
-export const useAcceptMeetingRequestQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestHook>>>, TError = unknown>(
+export const useAcceptMeetingRequestQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestHook>>>, TError = ApiError>(
     id: number,
     params: AcceptMeetingRequestParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestHook>>>, TError, TData> },
@@ -2191,9 +2313,9 @@ export const useAcceptMeetingRequestQueryOptions = <TData = Awaited<ReturnType<R
 }
 
 export type AcceptMeetingRequestQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestHook>>>>
-export type AcceptMeetingRequestQueryError = unknown
+export type AcceptMeetingRequestQueryError = ApiError
 
-export const useAcceptMeetingRequest = <TData = Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestHook>>>, TError = unknown>(
+export const useAcceptMeetingRequest = <TData = Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestHook>>>, TError = ApiError>(
     id: number,
     params: AcceptMeetingRequestParams,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestHook>>>, TError, TData> },
@@ -2220,7 +2342,7 @@ export const getRejectMeetingRequestInternalActorQueryKey = (userId: string, par
 
 export const useRejectMeetingRequestInternalActorQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestInternalActorHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     userId: string,
     params: RejectMeetingRequestInternalActorParams,
@@ -2241,11 +2363,11 @@ export const useRejectMeetingRequestInternalActorQueryOptions = <
 export type RejectMeetingRequestInternalActorQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestInternalActorHook>>>
 >
-export type RejectMeetingRequestInternalActorQueryError = unknown
+export type RejectMeetingRequestInternalActorQueryError = ApiError
 
 export const useRejectMeetingRequestInternalActor = <
     TData = Awaited<ReturnType<ReturnType<typeof useRejectMeetingRequestInternalActorHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     userId: string,
     params: RejectMeetingRequestInternalActorParams,
@@ -2273,7 +2395,7 @@ export const getAcceptMeetingRequestInternalActorQueryKey = (userId: string, par
 
 export const useAcceptMeetingRequestInternalActorQueryOptions = <
     TData = Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestInternalActorHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     userId: string,
     params: AcceptMeetingRequestInternalActorParams,
@@ -2294,11 +2416,11 @@ export const useAcceptMeetingRequestInternalActorQueryOptions = <
 export type AcceptMeetingRequestInternalActorQueryResult = NonNullable<
     Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestInternalActorHook>>>
 >
-export type AcceptMeetingRequestInternalActorQueryError = unknown
+export type AcceptMeetingRequestInternalActorQueryError = ApiError
 
 export const useAcceptMeetingRequestInternalActor = <
     TData = Awaited<ReturnType<ReturnType<typeof useAcceptMeetingRequestInternalActorHook>>>,
-    TError = unknown,
+    TError = ApiError,
 >(
     userId: string,
     params: AcceptMeetingRequestInternalActorParams,

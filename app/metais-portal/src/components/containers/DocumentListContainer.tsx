@@ -1,5 +1,5 @@
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, NeighbourPairUi, useReadCiNeighbours } from '@isdd/metais-common/api'
+import { ConfigurationItemUi, NeighbourPairUi, useReadCiNeighbours, useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useGetIdentitiesByLoginsBulkHook } from '@isdd/metais-common/api/generated/iam-swagger'
@@ -7,6 +7,7 @@ import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import uniq from 'lodash/uniq'
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 
 import { mapNeighboursSetSourceToPagination } from '@/componentHelpers/pagination'
 
@@ -15,6 +16,7 @@ export interface TableCols extends NeighbourPairUi {
 }
 
 export interface IView {
+    ciData?: ConfigurationItemUi
     data?: NeighbourPairUi[]
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
@@ -45,6 +47,7 @@ export const defaultFilter = {
 export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ configurationItemId, View }) => {
     const { currentPreferences } = useUserPreferences()
     const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
+    const { data: ciData, isLoading: isCiLoading } = useReadConfigurationItem(configurationItemId ?? '')
 
     const [defaultRequestApi, setDefaultRequestApi] = useState({
         neighboursFilter: {
@@ -110,12 +113,13 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
         )
     return (
         <View
+            ciData={ciData}
             namesData={namesData}
             refetch={refetch}
             data={documentCiData?.fromNodes?.neighbourPairs}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
-            isLoading={isLoading}
+            isLoading={isLoading || isCiLoading}
             isError={isError}
             selectedItems={selectedItems}
             setSelectedItems={setSelectedItems}
