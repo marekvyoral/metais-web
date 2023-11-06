@@ -26,7 +26,8 @@ export const PublicAuthoritySelect: React.FC<Props> = ({ onChangeAuthority, sele
         rights: userDataGroups.map((group) => ({ poUUID: group.orgId, roles: group.roles.map((role) => role.roleUuid) })),
     }
 
-    const { implicitHierarchyData, isError, isLoading } = useGetImplicitHierarchy(defaultFilter)
+    const isEnabled = defaultFilter?.rights?.[0]?.roles && defaultFilter?.rights?.[0]?.roles.length > 0
+    const { implicitHierarchyData, isError, isLoading } = useGetImplicitHierarchy(defaultFilter, !!isEnabled)
 
     const hasError = implicitHierarchy.isError || isError
 

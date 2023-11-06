@@ -78,7 +78,6 @@ const CreateCiItemAndRelation: React.FC = () => {
                                                                 isLoading: isPublicAuthAndRoleLoading,
                                                             }) => (
                                                                 <RelationTypePermissionWrapper
-                                                                    selectedOrgId={publicAuthorityState.selectedPublicAuthority?.poUUID ?? ''}
                                                                     selectedRoleName={groupData?.roleName ?? ''}
                                                                     selectedCiRelationType={findRelationType(
                                                                         selectedRelationTypeState.selectedRelationTypeTechnicalName,

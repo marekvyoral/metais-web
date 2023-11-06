@@ -27,7 +27,7 @@ import { formatFormAttributeValue } from '@/components/create-entity/createEntit
 interface AttrributesData {
     ciTypeData: CiType | undefined
     constraintsData: (EnumType | undefined)[]
-    unitsData?: EnumType | undefined
+    unitsData?: EnumType
 }
 
 interface NewCiWithRelationData {
@@ -96,9 +96,19 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
 
     useEffect(() => {
         if (!selectedRelationTypeTechnicalName) {
-            setSelectedRelationTypeTechnicalName(createSelectRelationTypeOptions(relatedListAsSources, relatedListAsTargets, t)[1]?.value)
+            setSelectedRelationTypeTechnicalName(
+                createSelectRelationTypeOptions({ relatedListAsSources, relatedListAsTargets, t, currentRole: selectedRole?.roleName ?? '' })[1]
+                    ?.value,
+            )
         }
-    }, [relatedListAsSources, relatedListAsTargets, selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName, t])
+    }, [
+        relatedListAsSources,
+        relatedListAsTargets,
+        selectedRelationTypeTechnicalName,
+        selectedRole?.roleName,
+        setSelectedRelationTypeTechnicalName,
+        t,
+    ])
 
     const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCache(entityId)
 
@@ -186,7 +196,12 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
                 isClearable={false}
                 label={t('newRelation.selectRelType')}
                 name="relation-type"
-                options={createSelectRelationTypeOptions(relatedListAsSources, relatedListAsTargets, t)}
+                options={createSelectRelationTypeOptions({
+                    relatedListAsSources,
+                    relatedListAsTargets,
+                    t,
+                    currentRole: selectedRole?.roleName ?? '',
+                })}
                 value={selectedRelationTypeTechnicalName}
                 onChange={(val) => setSelectedRelationTypeTechnicalName(val ?? '')}
                 error={!canCreateRelationType ? t('newRelation.selectRelTypeError') : ''}

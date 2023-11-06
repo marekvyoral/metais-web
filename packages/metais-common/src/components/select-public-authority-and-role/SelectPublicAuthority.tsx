@@ -35,7 +35,8 @@ export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, sele
         })),
     }
 
-    const { implicitHierarchyData, isError, isLoading } = useGetImplicitHierarchy(defaultFilter)
+    const isEnabled = defaultFilter?.rights?.[0]?.roles && defaultFilter?.rights?.[0]?.roles.length > 0
+    const { implicitHierarchyData, isError, isLoading } = useGetImplicitHierarchy(defaultFilter, !!isEnabled)
 
     const hasError = implicitHierarchy.isError || isError
 
@@ -49,14 +50,9 @@ export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, sele
         const page = !additional?.page ? 1 : (additional?.page || 0) + 1
         const options = await implicitHierarchy.mutateAsync({ data: { ...defaultFilter, page, fullTextSearch: searchQuery } })
 
-        //filtering options based on which user has rights
-        const optionsFiltered = options.rights?.filter((option) =>
-            user.state.user?.groupData.map((group) => group.orgId).includes(option.poUUID ?? ''),
-        )
-
         return {
-            options: optionsFiltered || [],
-            hasMore: optionsFiltered?.length ? true : false,
+            options: options.rights || [],
+            hasMore: options.rights?.length ? true : false,
             additional: {
                 page: page,
             },
