@@ -1,41 +1,23 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
-import {
-    ATTRIBUTE_NAME,
-    CiWithRelsResultUi,
-    ConfigurationItemUi,
-    ConfigurationItemUiAttributes,
-    Gen_Profil,
-    RelationshipUi,
-} from '@isdd/metais-common/api'
+import { ATTRIBUTE_NAME, Gen_Profil } from '@isdd/metais-common/api'
 import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
-import { AccordionContainer, Button, ButtonGroupRow, ButtonLink, IAccordionSection, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { isError } from '@tanstack/react-query'
-import { SelectCiItem } from '@isdd/metais-common/components/select-ci-item/SelectCiItem'
-import { INewRelationData, NewRelationDataProvider, useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
-import { JOIN_OPERATOR } from '@isdd/metais-common/constants'
-import classNames from 'classnames'
-import { MultiValue } from 'react-select'
-import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
+import { Button } from '@isdd/idsk-ui-kit/index'
+import { NewRelationDataProvider } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
-import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CiWithRelsResultUi, ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import classNames from 'classnames'
 
 import styles from './styles.module.scss'
 
 import { CreateEntityData } from '@/components/create-entity/CreateEntity'
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
 import { CreateEntitySection } from '@/components/create-entity/CreateEntitySection'
-import { RelationAttributeForm } from '@/components/relations-attribute-form/RelationAttributeForm'
-import { createSelectRelationTypeOptions, filterRelatedList } from '@/componentHelpers/new-relation'
-import CiListPage from '@/pages/ci/[entityName]/entity'
-import { AttributeInput } from '@/components/attribute-input/AttributeInput'
-import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
-import { getAttributeInputErrorMessage, findAttributeConstraint, getAttributeUnits } from '@/components/create-entity/createEntityHelpers'
-import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
+import { INewCiRelationData } from '@/components/containers/NewCiRelationContainer'
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
 import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
 import { ISVSRelationSelect } from '@/components/containers/ITVS-exceptions/ISVSRelationSelect'
@@ -79,7 +61,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     relationshipSetState,
     existingRelations,
 }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const navigate = useNavigate()
 
     const { attributesData, generatedEntityId } = data
@@ -92,8 +74,6 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
             attr.technicalName === ATTRIBUTE_NAME.Gen_Profil_ref_id
         )
     })
-
-    const attributes = [...(filtredAttributes ?? []), ...attProfiles.map((profile) => profile.attributes).flat()]
 
     const genProfilTechName = Gen_Profil
     const attProfileTechNames = attProfiles.map((profile) => profile.technicalName)
@@ -128,7 +108,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
 
     const methods = useForm({
         defaultValues: defaultItemAttributeValues ?? {},
-        resolver: yupResolver(generateFormSchema([...attributes, ...relationSchemaCombinedAttributes], t)),
+        resolver: yupResolver(generateFormSchema([ciTypeData as AttributeProfile, ...attProfiles], t)),
     })
     const { register, clearErrors, trigger, handleSubmit, setValue, reset, formState } = methods
 
@@ -141,12 +121,13 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
 
     return (
         <>
-            {publicAuthorityState && roleState && (
+            {!updateCiItemId && publicAuthorityState && roleState && (
                 <SelectPublicAuthorityAndRole
-                    selectedRoleId={roleState.selectedRole}
+                    selectedRole={roleState.selectedRole ?? {}}
                     onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
                     onChangeRole={roleState.setSelectedRole}
                     selectedOrg={publicAuthorityState.selectedPublicAuthority}
+                    ciRoles={ciTypeData?.roleList ?? []}
                 />
             )}
             <QueryFeedback loading={isLoading} error={false} withChildren>
@@ -162,9 +143,11 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                             defaultItemAttributeValues={defaultItemAttributeValues}
                             hasResetState={{ hasReset, setHasReset }}
                             updateCiItemId={updateCiItemId}
+                            sectionRoles={ciTypeData?.roleList ?? []}
+                            selectedRole={roleState?.selectedRole ?? {}}
                         />
 
-                        {...attProfiles.map((profile, index) => (
+                        {...attProfiles.map((profile) => (
                             <div key={profile.id}>
                                 <CreateEntitySection
                                     sectionId={profile.technicalName ?? ''}
@@ -176,6 +159,8 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                     defaultItemAttributeValues={defaultItemAttributeValues}
                                     hasResetState={{ hasReset, setHasReset }}
                                     updateCiItemId={updateCiItemId}
+                                    sectionRoles={ciTypeData?.roleList ?? []}
+                                    selectedRole={roleState?.selectedRole ?? {}}
                                 />
                             </div>
                         ))}
@@ -192,13 +177,27 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                 unitsData={unitsData}
                                 relationType="osobitny_postup_vztah_ISVS"
                                 relationshipSetState={relationshipSetState}
+                                label={t('ITVSExceptions.relatedISVS')}
                             />
                         </NewRelationDataProvider>
-                        {existingRelations?.ciWithRels
-                            ?.filter((ciRel) => ciRel.ci?.type === 'ISVS')
-                            .map((ciWithRel) => (
-                                <div key={ciWithRel.ci?.uuid}>{ciWithRel.ci?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}</div>
-                            ))}
+                        <div className={styles.margin30}>
+                            {existingRelations?.ciWithRels
+                                ?.filter((ciRel) => ciRel.ci?.type === 'ISVS')
+                                .map((ciWithRel) => (
+                                    <div className={classNames(['govuk-accordion__section'])} key={ciWithRel.ci?.uuid}>
+                                        <div className={classNames(['govuk-accordion__section-header', styles.existingRelWrapper])}>
+                                            <a className="govuk-accordion__section-button">
+                                                {ciWithRel.ci?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
+                                            </a>
+                                            {ciWithRel.rels?.[0].attributes?.[0]?.value && (
+                                                <small>
+                                                    {t('ITVSExceptions.note')}: {ciWithRel.rels?.[0].attributes?.[0]?.value?.toString() ?? ''}
+                                                </small>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                        </div>
                         <NewRelationDataProvider>
                             <ISVSRelationSelect
                                 ciType="PO"
@@ -212,17 +211,22 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                 unitsData={unitsData}
                                 relationType="osobitny_postup_vztah_ISVS"
                                 relationshipSetState={relationshipSetState}
+                                label={t('ITVSExceptions.relatedPO')}
                             />
                         </NewRelationDataProvider>
                         {existingRelations?.ciWithRels
                             ?.filter((ciRel) => ciRel.ci?.type === 'PO')
                             .map((ciWithRel) => (
-                                <div className={'govuk-accordion__section'} key={ciWithRel.ci?.uuid}>
-                                    <div className="govuk-accordion__section-header">
+                                <div className={classNames(['govuk-accordion__section'])} key={ciWithRel.ci?.uuid}>
+                                    <div className={classNames(['govuk-accordion__section-header', styles.existingRelWrapper])}>
                                         <a className="govuk-accordion__section-button">
                                             {ciWithRel.ci?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
                                         </a>
-                                        <small>Poznamka: {ciWithRel.rels?.[0].attributes?.[0]?.value?.toString() ?? ''}</small>
+                                        {ciWithRel.rels?.[0].attributes?.[0]?.value && (
+                                            <small>
+                                                {t('ITVSExceptions.note')}: {ciWithRel.rels?.[0].attributes?.[0]?.value?.toString() ?? ''}
+                                            </small>
+                                        )}
                                     </div>
                                 </div>
                             ))}

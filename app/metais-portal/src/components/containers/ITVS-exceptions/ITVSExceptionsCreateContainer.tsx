@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from 'react'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import {
-    ATTRIBUTE_NAME,
-    ConfigurationItemUi,
     RelationshipUi,
+    ConfigurationItemUi,
     useReadCiNeighboursWithAllRels,
     useReadRelationships,
-    useStoreConfigurationItem,
     useStoreGraph,
-} from '@isdd/metais-common/api'
+    useStoreConfigurationItem,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useRedirectAfterSuccess } from '@isdd/metais-common/hooks/useRedirectAfterSucces'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
-import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { FieldValues } from 'react-hook-form'
 import { v4 as uuidV4 } from 'uuid'
-import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { JOIN_OPERATOR } from '@isdd/metais-common/constants'
 import { useListRelatedCiTypes, useGetRelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
@@ -63,7 +61,6 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const [uploadError, setUploadError] = useState(false)
 
     const [requestId, setRequestId] = useState<string>('')
-    const [selectedCITypeForRelationTechnicalName, setSelectedCITypeForRelationTechnicalName] = useState<string>('')
     const [relationshipSet, setRelationshipSet] = useState<RelationshipWithCiType[]>([])
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
@@ -120,7 +117,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
             onSuccess() {
                 // setIsISVSListPageOpen(false)
                 // setSelectedISVSs(null)
-                //invalidateCilistFilteredCache.invalidate({ ciType: entityName })
+                invalidateCilistFilteredCache.invalidate({ ciType: entityName })
                 invalidateCiByUuidCache.invalidate()
             },
             onError() {
@@ -131,7 +128,6 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
 
     const saveRelations = async () => {
         const formAttributesKeys = Object.keys(formData)
-        console.log(formData)
 
         const formattedAttributesToSend = formAttributesKeys
             .map((key) => ({
@@ -166,7 +162,6 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                     : [],
             },
         }
-        console.log(relationRequestData)
 
         await storeGraph.mutateAsync({ data: relationRequestData })
     }
@@ -203,13 +198,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
         }
     }, [performRedirection, requestId])
 
-    useEffect(() => {
-        console.log(relationshipSet)
-    }, [relationshipSet])
-
     const onSubmit = async (formAttributes: FieldValues) => {
-        console.log(formAttributes)
-
         setFormData(formAttributes)
 
         setRequestId('')
@@ -269,20 +258,26 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                 withChildren
             >
                 <FlexColumnReverseWrapper>
-                    <TextHeading size="XL">{!updateCiItemId ? t('ciType.createEntity') : t('ciType.editEntity')}</TextHeading>
+                    <TextHeading size="XL">
+                        {!updateCiItemId
+                            ? t('ciType.createEntity', { entityName: t('ITVSExceptions.vynimky_ITVS') })
+                            : t('ciType.editEntity', { entityName: t('ITVSExceptions.vynimky_ITVS') })}
+                    </TextHeading>
                     {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
                 </FlexColumnReverseWrapper>
-                {!updateCiItemId && publicAuthorityState && roleState && (
-                    <SelectPublicAuthorityAndRole
-                        selectedRoleId={roleState.selectedRole}
-                        onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
-                        onChangeRole={roleState.setSelectedRole}
-                        selectedOrg={publicAuthorityState.selectedPublicAuthority}
-                    />
-                )}
                 <ITVSExceptionsCreateView
                     data={{ ...data, ownerId, generatedEntityId: updateCiItemId ? entityIdToUpdate : data.generatedEntityId }}
-                    relationData={{ relatedListAsSources, relatedListAsTargets, readRelationShipsData, relationTypeData, constraintsData, unitsData }}
+                    relationData={{
+                        relatedListAsSources,
+                        relatedListAsTargets,
+                        readRelationShipsData,
+                        relationTypeData,
+                        constraintsData,
+                        unitsData,
+                        ciTypeData: undefined,
+                    }}
+                    roleState={roleState}
+                    publicAuthorityState={publicAuthorityState}
                     onSubmit={onSubmit}
                     isProcessing={false}
                     isLoading={isLoading || isRelatedListLoading}

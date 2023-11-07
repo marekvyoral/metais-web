@@ -1818,5 +1818,11 @@
         "cancel": "Zrušiť",
         "editSuccess": "Úprava {{relationName}} prebehla úspešne.",
         "editError": "Pri úprave {{relationName}} sa vyskytla chyba. Skúste akciu zopakovať a ak chyba pretrváva, kontaktujte podporu."
+    },
+    "ITVSExceptions": {
+        "vynimky_ITVS": "Osobitný postup",
+        "relatedISVS": "Súvisiace ISVS",
+        "relatedPO": "Súvisiace Orgány riadenia",
+        "note": "Poznámka"
     }
 }

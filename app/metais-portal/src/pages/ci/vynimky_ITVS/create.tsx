@@ -1,14 +1,11 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import React from 'react'
-import { useParams } from 'react-router-dom'
-import { OrgPermissionsWrapper } from '@isdd/metais-common/components/permissions/OrgPermissionsWrapper'
+import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
-import { AttributesContainer } from '@/components/containers/AttributesContainer'
 import { PublicAuthorityAndRoleContainer } from '@/components/containers/PublicAuthorityAndRoleContainer'
-import { ITVSExceptionsCreateView } from '@/components/views/ci/ITVSExceptions/ITVSExceptionsCreateView'
 import { ITVSExceptionsCreateContainer } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
 
 const CreateEntityPage: React.FC = () => {
@@ -21,7 +18,7 @@ const CreateEntityPage: React.FC = () => {
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
                     { label: entityName ?? '', href: `/ci/${entityName}` },
-                    { label: t('breadcrumbs.ciCreate'), href: `/ci/create` },
+                    { label: `${t('breadcrumbs.ciCreate', { entityName: t('ITVSExceptions.vynimky_ITVS') })}`, href: `/ci/create` },
                 ]}
             />
             <MainContentWrapper>
@@ -39,17 +36,15 @@ const CreateEntityPage: React.FC = () => {
                                         isError: publicAuthAndRoleError,
                                         isLoading: publicAuthAndRoleLoading,
                                     }) => (
-                                        <OrgPermissionsWrapper selectedOrganizationId={publicAuthorityState?.selectedPublicAuthority?.poUUID ?? ''}>
-                                            <ITVSExceptionsCreateContainer
-                                                entityName={entityName}
-                                                data={{ attributesData, generatedEntityId }}
-                                                ownerId={groupData?.gid ?? ''}
-                                                isLoading={[attLoading, generatedIdLoading, publicAuthAndRoleLoading].some((item) => item)}
-                                                isError={[attError, generatedIdError, publicAuthAndRoleError].some((item) => item)}
-                                                roleState={roleState}
-                                                publicAuthorityState={publicAuthorityState}
-                                            />
-                                        </OrgPermissionsWrapper>
+                                        <ITVSExceptionsCreateContainer
+                                            entityName={entityName}
+                                            data={{ attributesData, generatedEntityId }}
+                                            ownerId={groupData?.gid ?? ''}
+                                            isLoading={[attLoading, generatedIdLoading, publicAuthAndRoleLoading].some((item) => item)}
+                                            isError={[attError, generatedIdError, publicAuthAndRoleError].some((item) => item)}
+                                            roleState={roleState}
+                                            publicAuthorityState={publicAuthorityState}
+                                        />
                                     )}
                                 />
                             )}
