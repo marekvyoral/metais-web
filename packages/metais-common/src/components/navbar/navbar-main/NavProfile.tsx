@@ -15,11 +15,13 @@ export const NavProfile: React.FC = () => {
         dispatch,
     } = useAuth()
 
+    const logoutURL =
+        import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL +
+        (import.meta.env.VITE_IAM_OIDC_PATH ? `/${import.meta.env.VITE_IAM_OIDC_PATH}/logout` : '/logout')
+
     const handleLogout = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault()
-        fetch(`${import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL}/logout`, { method: 'POST' }).finally(() =>
-            dispatch({ type: AuthActions.LOGOUT }),
-        )
+        fetch(logoutURL, { method: 'POST' }).finally(() => dispatch({ type: AuthActions.LOGOUT }))
     }
     const location = useLocation()
     return (
