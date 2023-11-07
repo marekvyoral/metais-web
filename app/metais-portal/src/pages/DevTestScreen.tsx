@@ -4,12 +4,19 @@ import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { Paginator } from '@isdd/idsk-ui-kit/paginator/Paginator'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 import { DocumentsListContainer } from '@/components/containers/DocumentListContainer'
 import { DocsView } from '@/components/containers/DocumentListContainer.stories'
 import { ExportItemsOrRelations } from '@/components/export-items-or-relations/ExportItemsOrRelations'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-// import { ActionsOverTable } from '@/components/actions-over-table/ActionsOverTable'
+import { SelectMeetingGroupWithActors } from '@/components/views/standardization/meetings/SelectMeetingGroupWithActors'
+import { MeetingFormEnum } from '@/components/views/standardization/meetings/meetingSchema'
+
+export interface IForm {
+    [MeetingFormEnum.MEETING_ACTORS]: string[]
+    [MeetingFormEnum.GROUP]: string[]
+}
 
 export const DevTestScreen: React.FC = () => {
     const [page, setPage] = useState(5)
@@ -25,16 +32,20 @@ export const DevTestScreen: React.FC = () => {
         console.log(exportValue, extension)
     }
 
+    const { handleSubmit, setValue, formState, watch } = useForm<IForm>()
+
+    const onSubmit = (data: IForm) => {
+        // eslint-disable-next-line no-console
+        console.log({ [MeetingFormEnum.MEETING_ACTORS]: data[MeetingFormEnum.MEETING_ACTORS], [MeetingFormEnum.GROUP]: data[MeetingFormEnum.GROUP] })
+    }
+
     return (
         <MainContentWrapper>
             <h4>Obrazovka na testovanie komponentov</h4>
-            {/* <ActionsOverTable entityName={'abc'} /> */}
-            {/* <AttributesContainer
-                entityName="KRIS"
-                View={() => {
-                    return <CiContainer configurationItemId="0d80f45b-f3ff-47f5-9ff6-4a0a43c65c4e" View={View} />
-                }}
-            /> */}
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <SelectMeetingGroupWithActors setValue={setValue} errors={formState.errors} watch={watch} />
+                <button type="submit"> Ulozit</button>
+            </form>
             <RichTextQuill id="rich" name="rich" />
             {/* <ActionsOverTable /> */}
             <Button label={'Modal open'} onClick={openModal} />
