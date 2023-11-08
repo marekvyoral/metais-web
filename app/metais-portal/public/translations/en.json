@@ -977,10 +977,6 @@
         "requestCreate": "Create request to add a codelist",
         "codeListsList": "List of codelists",
         "publicCodeListsList": "List of published codelists",
-        "ciCreate": "Create new component of type {{entityName}}",
-        "compareHistory": "Compare history",
-        "ciEdit": "Edit of component",
-        "noName": "Without name"
     },
     "codeList": {
         "descriptionError": "Description is required",

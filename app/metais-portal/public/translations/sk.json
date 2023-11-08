@@ -983,8 +983,6 @@
         "requestCreate": "Žiadosť o zaradenie číselníka",
         "codeListsList": "Zoznam číselníkov",
         "publicCodeListsList": "Zoznam publikovaných číselníkov",
-        "ciCreate": "Vytvorenie nového komponentu typu {{entityName}}",
-        "compareHistory": "Porovnávanie histórie",
         "standardization": "Štandardizácia",
         "draftsList": "Zoznam návrhov"
     },
