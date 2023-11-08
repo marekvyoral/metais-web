@@ -243,6 +243,10 @@
         "Program": {
             "name": "Name"
         },
+        "vynimky_ITVS":
+        {
+            "name": "Name of ITVS exception"
+        },
         "reset": "Clear Filter",
         "submit": "Filter"
     },

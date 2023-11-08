@@ -243,6 +243,9 @@
         "Program": {
             "name": "Názov"
         },
+        "vynimky_ITVS": {
+            "name": "Názov osobitného postupu"
+        },
         "reset": "Vyčistiť kritéria filtrovania",
         "submit": "Vyfiltrovať"
     },
