@@ -17,11 +17,11 @@ export enum Roles {
 }
 export const useRequestPermissions = (entityName: string) => {
     const abilityContext = useAbilityContext()
-    const auth = useAuth()
+    const { userInfo } = useAuth()
 
     useEffect(() => {
         const { can, rules } = new AbilityBuilder(createMongoAbility)
-        const myRoles = auth?.state?.user?.roles ?? []
+        const myRoles = userInfo?.roles ?? []
         const hasPermission = myRoles.find((role) => role === Roles.SZCHLGES || role === Roles.SZCVEDGES)
 
         if (hasPermission) {
@@ -31,6 +31,6 @@ export const useRequestPermissions = (entityName: string) => {
         }
 
         abilityContext.update(rules)
-    }, [auth, abilityContext, entityName])
+    }, [abilityContext, entityName, userInfo?.roles])
     return {}
 }

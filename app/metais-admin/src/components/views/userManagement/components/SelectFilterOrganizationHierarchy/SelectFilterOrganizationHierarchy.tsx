@@ -39,7 +39,7 @@ const formatOption = (props: OptionProps<SelectFilterOrganizationHierarchyOption
 
 export const SelectFilterOrganizationHierarchy: React.FC<SelectFilterOrganizationHierarchyProps> = ({ filter, setValue }) => {
     const { t } = useTranslation()
-    const auth = useAuth()
+    const { userInfo } = useAuth()
 
     const { mutate, mutateAsync, isError } = useReadCiList()
     const [defaultValue, setDefaultValue] = useState<SelectFilterOrganizationHierarchyOptionType | undefined>(undefined)
@@ -51,7 +51,7 @@ export const SelectFilterOrganizationHierarchy: React.FC<SelectFilterOrganizatio
             additional: { page: number } | undefined,
         ): Promise<ILoadOptionsResponse<SelectFilterOrganizationHierarchyOptionType>> => {
             const page = !additional?.page ? 1 : (additional?.page || 0) + 1
-            const userDataGroups = auth.state.user?.groupData || []
+            const userDataGroups = userInfo?.groupData || []
             const params: HierarchyPOFilterUi = {
                 page,
                 perpage: DEFAULT_LAZY_LOAD_PER_PAGE,
@@ -69,12 +69,12 @@ export const SelectFilterOrganizationHierarchy: React.FC<SelectFilterOrganizatio
                 },
             }
         },
-        [auth.state.user?.groupData, mutateAsync],
+        [userInfo?.groupData, mutateAsync],
     )
 
     useEffect(() => {
         if (!defaultValue && filter.orgId) {
-            const userDataGroups = auth.state.user?.groupData || []
+            const userDataGroups = userInfo?.groupData || []
             const queryParams: HierarchyPOFilterUi = {
                 poUUID: filter.orgId,
                 rights: userDataGroups.map((group) => ({ poUUID: group.orgId, roles: group.roles.map((role) => role.roleUuid) })),
@@ -95,7 +95,7 @@ export const SelectFilterOrganizationHierarchy: React.FC<SelectFilterOrganizatio
                 },
             )
         }
-    }, [auth.state.user?.groupData, defaultValue, filter.orgId, mutate])
+    }, [userInfo?.groupData, defaultValue, filter.orgId, mutate])
 
     useEffect(() => {
         // SelectLazyLoading component does not rerender on defaultValue change.

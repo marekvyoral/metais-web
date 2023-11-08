@@ -38,9 +38,7 @@ export const RelationshipsTable: React.FC<RelationshipsTable> = ({
     handleFilterChange,
 }) => {
     const { t } = useTranslation()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const { currentPreferences } = useUserPreferences()
 
     const canSelectInvalidated = !!user?.uuid && currentPreferences.showInvalidatedItems

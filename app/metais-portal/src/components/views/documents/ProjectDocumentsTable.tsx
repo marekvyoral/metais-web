@@ -45,9 +45,9 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
     totalLength,
 }) => {
     const { t } = useTranslation()
-    const { state: authState } = useAuth()
-    const isUserAdmin = authState.user?.roles.includes('R_ADMIN')
-    const isUserLogged = authState.user !== null
+    const { userInfo, token } = useAuth()
+    const isUserAdmin = userInfo?.roles.includes('R_ADMIN')
+    const isUserLogged = userInfo !== null
     const isInvalidated = projectData?.metaAttributes?.state === INVALIDATED
 
     const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
@@ -334,7 +334,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                                             disabled={!isUserLogged}
                                             onClick={async () => {
                                                 const filtered = await filterAsync(selectedItems, async (item) => {
-                                                    const meta = await isMeta(item.uuid ?? '', authState.accessToken)
+                                                    const meta = await isMeta(item.uuid ?? '', token)
                                                     return meta
                                                 })
 

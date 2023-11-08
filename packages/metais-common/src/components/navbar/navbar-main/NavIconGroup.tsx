@@ -10,9 +10,7 @@ interface INavIconGroup {
 }
 
 export const NavIconGroup: React.FC<INavIconGroup> = ({ isMobile, iconGroupItems }) => {
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
 
     return (
         <>

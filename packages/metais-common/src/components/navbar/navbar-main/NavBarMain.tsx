@@ -23,9 +23,7 @@ interface INavBarMain {
 
 export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExpanded, iconGroupItems, isLoginApp, isAdmin }) => {
     const { t } = useTranslation()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const location = useLocation()
     return (
         <div className="idsk-header-web__main">

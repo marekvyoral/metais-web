@@ -9,9 +9,7 @@ import { getAdminNavItems } from './Navbar'
 
 export const MainContentWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { t } = useTranslation()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
 
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true)
     const sidebarSections = getAdminNavItems(t, user?.roles ?? null)

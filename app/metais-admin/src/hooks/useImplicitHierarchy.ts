@@ -4,9 +4,7 @@ import { GetImplicitHierarchyFilter, useGetImplicitHierarchy } from '@isdd/metai
 import { useMemo, useState } from 'react'
 
 export const useImplicitHierarchy = () => {
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
 
     const [filter, setFilter] = useState<GetImplicitHierarchyFilter>({

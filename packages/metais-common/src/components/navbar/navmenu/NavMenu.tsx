@@ -22,9 +22,7 @@ export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, setIsMenuExpanded,
     const { t } = useTranslation()
 
     const [activeTab, setActiveTab] = useState<string | undefined>()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const location = useLocation()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const paths = useMemo(() => navItems.map((item) => item.path), [])

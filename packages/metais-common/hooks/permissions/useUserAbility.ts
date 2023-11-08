@@ -52,18 +52,16 @@ const defineAbilityForUser = (roles: string[] = [], entityName: string, create?:
 }
 
 export const useUserAbility = (entityName?: string) => {
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
 
     return defineAbilityForUser(user?.roles, entityName ?? 'ci')
 }
 
 export const useCreateCiAbility = (ciType?: CiType, entityName?: string) => {
-    const auth = useAuth()
+    const { userInfo: user } = useAuth()
 
     if (ciType && canCreateCiForType(ciType)) {
-        return defineAbilityForUser(auth?.state?.user?.roles, entityName ?? 'ci', canUserCreateCi(auth?.state?.user ?? undefined, ciType?.roleList))
+        return defineAbilityForUser(user?.roles, entityName ?? 'ci', canUserCreateCi(user ?? undefined, ciType?.roleList))
     }
-    return defineAbilityForUser(auth.state.user?.roles, entityName ?? 'ci')
+    return defineAbilityForUser(user?.roles, entityName ?? 'ci')
 }

@@ -72,14 +72,14 @@ interface DetailRequestContainerProps {
 }
 
 export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ View }) => {
-    const user = useAuth()
+    const { userInfo: user } = useAuth()
     const { i18n } = useTranslation()
     const { requestId } = useParams()
     const navigate = useNavigate()
 
     const [isLoadingCheck, setLoadingCheck] = useState<boolean>()
     const [isErrorCheck, setErrorCheck] = useState<boolean>()
-    const userDataGroups = useMemo(() => user.state.user?.groupData ?? [], [user])
+    const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
     const implicitHierarchy = useReadCiList()
     const { setIsActionSuccess } = useActionSuccess()
 
@@ -124,7 +124,7 @@ export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ 
     const actions: IActionDetailRequest = {
         canEdit:
             (data &&
-                (data.lockedBy === null || data.lockedBy === user.state.user?.login) &&
+                (data.lockedBy === null || data.lockedBy === user?.login) &&
                 (data.codelistState === RequestListState.DRAFT ||
                     data.codelistState === RequestListState.REJECTED ||
                     data.codelistState === RequestListState.KS_ISVS_ACCEPTED ||
@@ -139,14 +139,12 @@ export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ 
             false,
         accept_SZZC: (data && !data.base && data.codelistState === RequestListState.NEW_REQUEST) ?? false,
         cancelRequest:
-            (data?.lockedBy === null || data?.lockedBy === user.state.user?.login) &&
+            (data?.lockedBy === null || data?.lockedBy === user?.login) &&
             (data?.codelistState === RequestListState.DRAFT ||
                 data?.codelistState === RequestListState.REJECTED ||
                 data?.codelistState === RequestListState.KS_ISVS_ACCEPTED ||
                 data?.codelistState === RequestListState.ACCEPTED_SZZC),
-        send:
-            data?.lockedBy === user.state.user?.login &&
-            (data?.codelistState === RequestListState.DRAFT || data?.codelistState === RequestListState.REJECTED),
+        send: data?.lockedBy === user?.login && (data?.codelistState === RequestListState.DRAFT || data?.codelistState === RequestListState.REJECTED),
     }
 
     const handleAcceptRequest = async (action: RequestActions, note?: string) => {

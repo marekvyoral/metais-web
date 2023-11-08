@@ -34,9 +34,7 @@ export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTa
         t,
         i18n: { language },
     } = useTranslation()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const ability = useAbilityContext()
 
     if (!codelistItem || !attributeProfile) return <></>

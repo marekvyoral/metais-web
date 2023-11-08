@@ -55,7 +55,7 @@ export const defaultFilter = {
 }
 
 export const ActivitiesListContainer: React.FC<IActivitiesListContainer> = ({ configurationItemId, View }) => {
-    const auth = useAuth()
+    const { token, userInfo } = useAuth()
     const { currentPreferences } = useUserPreferences()
     const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
     const { data: ciData, isLoading: ciLoading } = useReadConfigurationItem(configurationItemId ?? '')
@@ -66,9 +66,9 @@ export const ActivitiesListContainer: React.FC<IActivitiesListContainer> = ({ co
     const { data: isOwnerByGid } = useIsOwnerByGid(
         {
             gids: [ciData?.metaAttributes?.owner ?? ''],
-            login: auth?.state?.user?.login,
+            login: userInfo?.login,
         },
-        { query: { enabled: !ciLoading && auth?.state?.accessToken !== null } },
+        { query: { enabled: !ciLoading && token !== null } },
     )
 
     const generateUuid = useGetUuidHook()

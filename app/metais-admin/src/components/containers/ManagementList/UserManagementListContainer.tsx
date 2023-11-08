@@ -26,9 +26,7 @@ interface UserManagementContainerProps {
 }
 
 const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ View }) => {
-    const {
-        state: { accessToken, user },
-    } = useAuth()
+    const { token, userInfo: user } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
     const { filter, handleFilterChange } = useFilterParams<UserManagementFilterData>({
@@ -144,11 +142,11 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
             if (identities && identities.length) {
                 updateIdentityStateBatchMutation.mutate({ uuids: identities.map((identity) => identity.uuid), activate })
                 if (!activate) {
-                    revokeUserBatchMutation(identities.map((identity) => ({ token: accessToken, login: identity.login })))
+                    revokeUserBatchMutation(identities.map((identity) => ({ token: token, login: identity.login })))
                 }
             }
         },
-        [revokeUserBatchMutation, updateIdentityStateBatchMutation, accessToken],
+        [revokeUserBatchMutation, updateIdentityStateBatchMutation, token],
     )
 
     const handleRowAction = useCallback(
@@ -162,13 +160,13 @@ const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ V
             if (action === UserManagementActionsOverRowEnum.BLOCK && isCurrentlyBlocked !== undefined) {
                 if (identity.uuid) {
                     updateIdentityStateBatchMutation.mutate({ uuids: [identity.uuid], activate: isCurrentlyBlocked === true })
-                    if (identity.login && accessToken && !isCurrentlyBlocked) {
-                        revokeUserBatchMutation([{ token: accessToken, login: identity.login }])
+                    if (identity.login && token && !isCurrentlyBlocked) {
+                        revokeUserBatchMutation([{ token: token, login: identity.login }])
                     }
                 }
             }
         },
-        [navigate, revokeUserBatchMutation, updateIdentityStateBatchMutation, accessToken, location],
+        [navigate, revokeUserBatchMutation, updateIdentityStateBatchMutation, token, location],
     )
 
     const handleExport = useCallback(() => {

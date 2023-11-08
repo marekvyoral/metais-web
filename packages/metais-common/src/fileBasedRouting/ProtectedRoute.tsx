@@ -12,10 +12,10 @@ interface iProtectedRoute {
 const ProtectedRoute = ({ element, slug }: iProtectedRoute) => {
     const [notAuthorized, setNotAuthorized] = useState(false)
     const navigate = useNavigate()
-    const auth = useAuth()
+    const { token } = useAuth()
     const actions = Object.values(Actions)
     const selectedAbility = actions?.find((action) => slug.includes(action))
-    const isUserLogged = !!auth?.state?.accessToken
+    const isUserLogged = !!token
     const isCannotReadPage = CANNOT_READ_ENTITY?.some((entity) => slug.includes(entity))
     const isCanWithoutLogin = CAN_CREATE_WITHOUT_LOGIN.some((entity) => slug.includes(entity))
 
@@ -23,7 +23,7 @@ const ProtectedRoute = ({ element, slug }: iProtectedRoute) => {
         if (!isUserLogged && selectedAbility && !isCanWithoutLogin) setNotAuthorized(true)
         else if (!isUserLogged && isCannotReadPage) setNotAuthorized(true)
         else setNotAuthorized(false)
-    }, [isUserLogged, navigate, selectedAbility, isCannotReadPage, setNotAuthorized, auth, isCanWithoutLogin])
+    }, [isUserLogged, navigate, selectedAbility, isCannotReadPage, setNotAuthorized, isCanWithoutLogin])
 
     if (notAuthorized) return <Navigate to={'/'} />
 

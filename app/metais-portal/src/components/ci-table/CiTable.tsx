@@ -60,9 +60,7 @@ export const CiTable: React.FC<ICiTable> = ({
 }) => {
     const { t } = useTranslation()
 
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const isUserLogged = !!user
     const location = useLocation()
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
