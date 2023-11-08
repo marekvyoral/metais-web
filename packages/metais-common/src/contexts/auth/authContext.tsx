@@ -1,5 +1,5 @@
-import React, { useContext, useState, useMemo } from 'react'
-import { AuthProvider, TAuthConfig, AuthContext, IAuthContext } from 'react-oauth2-code-pkce'
+import React, { Reducer, createContext, useContext, useReducer, useEffect } from 'react'
+import { IAuthContext, AuthContext } from 'react-oauth2-code-pkce'
 
 export interface Role {
     gid: string
@@ -31,42 +31,77 @@ export interface User {
     groupData: Group[]
 }
 
-export interface ICustomAuthContext extends IAuthContext {
-    userInfo?: User
-    setUserInfo?: (user: User) => void
+export interface ICustomAuthContext {
+    userInfo: User | null
+    userContext: IAuthContext
 }
 
-const baseUrl =
-    import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL + (import.meta.env.VITE_IAM_OIDC_PATH ? `/${import.meta.env.VITE_IAM_OIDC_PATH}` : '')
-
-const authConfig: TAuthConfig = {
-    clientId: 'webPortalClient',
-    extraAuthParameters: { response_type: 'code' },
-    authorizationEndpoint: baseUrl + '/authorize',
-    tokenEndpoint: baseUrl + '/token',
-    redirectUri: window.location.protocol + '//' + window.location.host + '/',
-    scope: 'openid profile c_ui',
-    autoLogin: false,
+const initialState: ICustomAuthContext = {
+    userInfo: null,
+    userContext: {
+        login: () => null,
+        logOut: () => null,
+        token: '',
+        error: null,
+        loginInProgress: false,
+    },
 }
+
+export enum CustomAuthActions {
+    SET_USER_INFO,
+    SET_USER_CONTEXT,
+    LOGOUT_USER,
+}
+
+interface SetUserInfo {
+    type: CustomAuthActions.SET_USER_INFO
+    value: User
+}
+
+interface SetUserToken {
+    type: CustomAuthActions.SET_USER_CONTEXT
+    value: IAuthContext
+}
+
+interface LogoutUser {
+    type: CustomAuthActions.LOGOUT_USER
+    value: IAuthContext
+}
+type Action = SetUserInfo | SetUserToken | LogoutUser
+
+const reducer = (state: ICustomAuthContext, action: Action) => {
+    switch (action.type) {
+        case CustomAuthActions.SET_USER_INFO:
+            return { ...state, userInfo: action.value }
+        case CustomAuthActions.SET_USER_CONTEXT:
+            return { ...state, userContext: action.value }
+        case CustomAuthActions.LOGOUT_USER:
+            return { userContext: action.value, userInfo: null }
+        default:
+            return state
+    }
+}
+
+const CustomAuthContext = createContext<{ state: ICustomAuthContext; dispatch: React.Dispatch<Action> }>({
+    state: initialState,
+    dispatch: () => null,
+})
 
 const AuthContextProvider: React.FC<React.PropsWithChildren> = (props) => {
-    return <AuthProvider authConfig={authConfig}>{props.children}</AuthProvider>
+    const authContext = useContext<IAuthContext>(AuthContext)
+    const [state, dispatch] = useReducer<Reducer<ICustomAuthContext, Action>>(reducer, { userInfo: null, userContext: authContext })
+
+    useEffect(() => {
+        if (authContext.token) {
+            dispatch({ type: CustomAuthActions.SET_USER_CONTEXT, value: authContext })
+        } else if (state.userContext.token || state.userInfo) {
+            dispatch({ type: CustomAuthActions.LOGOUT_USER, value: authContext })
+        }
+    }, [authContext, state.userContext.token, state.userInfo])
+
+    return <CustomAuthContext.Provider value={{ state, dispatch }}>{props.children}</CustomAuthContext.Provider>
 }
 
-const useAuth = () => {
-    const [userInfo, setUserInfo] = useState<User>()
-    const defContext = useContext<ICustomAuthContext>(AuthContext)
+const useAuth = () => useContext(CustomAuthContext)
 
-    const extendedContext = useMemo(
-        () => ({
-            ...defContext,
-            setUserInfo,
-            userInfo,
-        }),
-        [defContext, userInfo],
-    )
-
-    return extendedContext
-}
-
-export { AuthContextProvider, useAuth }
+export { useAuth, AuthContextProvider }

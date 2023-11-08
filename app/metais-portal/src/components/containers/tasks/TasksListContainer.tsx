@@ -34,7 +34,9 @@ const defaultFilterValues: TasksFilter = {
 export const TasksListContainer: React.FC = () => {
     const { t } = useTranslation()
     const location = useLocation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     const columns: ColumnDef<Task>[] = [
         {

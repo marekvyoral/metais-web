@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
 import { useReadCiDerivedRelTypesCount, useReadNeighboursConfigurationItemsCount } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { isDerivedCiTypeCmdbView, isRelatedCiTypeCmdbView, removeDuplicates } from '@isdd/metais-common/hooks/common'
 import { RelatedCiTypePreview, useListRelatedCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export interface IKeyToDisplay {
     tabName: string
@@ -27,7 +27,9 @@ interface IRelationCount {
 const DERIVED_PREFIX = 'DERIVED_'
 
 export const useEntityRelationsTypesCount = (id: string, technicalName: string) => {
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const { currentPreferences } = useUserPreferences()
     const isUserLogged = !!user
     const includeInvalidated = currentPreferences.showInvalidatedItems

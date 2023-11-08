@@ -7,11 +7,11 @@ import { NavIconGroup } from './NavIconGroup'
 import { NavSearchBar } from './NavSearchBar'
 import { NavLogin } from './NavLogin'
 
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { LogoMirri } from '@isdd/metais-common/assets/images'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 import { PORTAL_URL } from '@isdd/metais-common/constants'
 import { RegistrationRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 interface INavBarMain {
     isMenuExpanded: boolean
@@ -23,7 +23,9 @@ interface INavBarMain {
 
 export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExpanded, iconGroupItems, isLoginApp, isAdmin }) => {
     const { t } = useTranslation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const location = useLocation()
     return (
         <div className="idsk-header-web__main">

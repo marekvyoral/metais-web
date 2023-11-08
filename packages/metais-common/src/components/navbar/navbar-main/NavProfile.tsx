@@ -10,7 +10,11 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const NavProfile: React.FC = () => {
     const { t } = useTranslation()
-    const { logOut, tokenData } = useAuth()
+    const {
+        state: {
+            userContext: { tokenData, logOut },
+        },
+    } = useAuth()
 
     const logoutURL =
         import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL +
@@ -21,6 +25,7 @@ export const NavProfile: React.FC = () => {
         fetch(logoutURL, { method: 'POST' }).finally(() => logOut())
     }
     const location = useLocation()
+
     return (
         <div
             className={classnames(styles.loginProfile, tokenData ? styles.displayFlex : styles.displayNone, {

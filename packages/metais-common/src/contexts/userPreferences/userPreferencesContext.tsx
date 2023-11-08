@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useAuth } from '../auth/authContext'
+
 import { META_PREFERENCES_KEY } from '@isdd/metais-common/constants'
 
 export enum UserPreferencesFormNamesEnum {
@@ -42,7 +43,9 @@ const UserPreferences = createContext<UserPreferencesContextValue>({
 
 const UserPreferencesProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { i18n } = useTranslation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     const storedPreferences = localStorage.getItem(META_PREFERENCES_KEY + user?.login)
     const currentPreferences: IUserPreferences = storedPreferences ? JSON.parse(storedPreferences) : {}

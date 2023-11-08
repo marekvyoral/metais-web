@@ -10,7 +10,9 @@ type Props = {
 }
 
 export const UserRightsPOItem: React.FC<Props> = ({ poItem }) => {
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     return (
         <li>
             <TextHeading size="M">{poItem?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}</TextHeading>

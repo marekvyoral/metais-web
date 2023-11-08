@@ -8,9 +8,9 @@ import sk_SK from '@uppy/locales/lib/sk_SK'
 import en_US from '@uppy/locales/lib/en_US'
 import { useEffect, useState } from 'react'
 
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table'
 import { ProgressInfoList } from '@isdd/metais-common/components/file-import/FileImportList'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 const uppy = new Uppy({
     autoProceed: false,
@@ -39,7 +39,9 @@ export const useUppy = ({
     setCustomFileMeta,
     fileImportStep,
 }: iUseUppy) => {
-    const { token } = useAuth()
+    const {
+        state: { userContext: token },
+    } = useAuth()
     const { i18n, t } = useTranslation()
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>([])
     const [errorMessages, setErrorMessages] = useState<string[]>([])

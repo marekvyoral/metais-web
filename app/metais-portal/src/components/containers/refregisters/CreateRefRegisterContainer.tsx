@@ -11,6 +11,7 @@ import { useUserInfo } from '@isdd/metais-common/hooks/useUserInfo'
 import { MutationFeedback } from '@isdd/metais-common/index'
 import { useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useTranslation } from 'react-i18next'
+import { Group } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { IRefRegisterCreateView } from '@/components/views/refregisters/createView/RefRegisterCreateView'
 
@@ -53,7 +54,7 @@ export const CreateRefRegisterContainer = ({ View }: ICreateRefRegisterContainer
             metaAttributes: {
                 state: ['DRAFT'],
             },
-            uuid: userInfo?.groupData.map((group) => group.orgId),
+            uuid: userInfo?.groupData.map((group: Group) => group.orgId),
         },
     }
 

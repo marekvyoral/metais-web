@@ -46,7 +46,9 @@ interface MeetingDetailContainer {
 }
 
 const MeetingDetailContainer: React.FC<MeetingDetailContainer> = ({ View, meetingId }) => {
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     const { filter, handleFilterChange } = useFilterParams<FilterParams>(identitiesFilter)
 

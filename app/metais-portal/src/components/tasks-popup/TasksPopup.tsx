@@ -17,7 +17,9 @@ import { getGidsForUserOrgRoles, getUuidsForUserOrgRoles } from '@/componentHelp
 export const TasksPopup: React.FC = () => {
     const { t } = useTranslation()
     const location = useLocation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     const { data: tasks, mutate } = useGetTasks()
     useEffect(() => {

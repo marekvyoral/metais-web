@@ -31,7 +31,9 @@ interface EditRequestContainerProps {
 }
 
 export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View }) => {
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const { i18n } = useTranslation()
     const { requestId } = useParams()
     const navigate = useNavigate()

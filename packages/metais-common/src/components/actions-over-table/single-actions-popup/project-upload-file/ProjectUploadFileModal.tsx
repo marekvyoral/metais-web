@@ -7,11 +7,11 @@ import { v4 as uuidV4 } from 'uuid'
 import { ProjectUploadFileView } from './ProjectUploadFileView'
 
 import { ConfigurationItemUi, useGetDocumentHook, useGetRequestStatusHook, useStoreGraphHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useIsOwnerByGidHook } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import { useGenerateCodeAndURLHook } from '@isdd/metais-common/src/api/generated/types-repo-swagger'
 import { API_CALL_RETRY_COUNT } from '@isdd/metais-common/constants'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export interface IDocType extends ConfigurationItemUi {
     confluence?: boolean
@@ -44,7 +44,12 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
     const { t } = useTranslation()
     const { register, handleSubmit, reset, formState } = useForm()
     const baseURL = import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL
-    const { userInfo, token } = useAuth()
+    const {
+        state: {
+            userInfo,
+            userContext: { token },
+        },
+    } = useAuth()
     const genetateCodeAndUrl = useGenerateCodeAndURLHook()
     const storeActivity = useStoreGraphHook()
     const [isLoading, setIsLoading] = useState(false)

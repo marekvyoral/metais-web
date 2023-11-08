@@ -1,7 +1,7 @@
 import { AbilityBuilder, createMongoAbility } from '@casl/ability'
 
-import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { canCreateCiForType, canUserCreateCi } from '@isdd/metais-common/permissions/ci'
 
 export enum Actions {
@@ -52,13 +52,17 @@ const defineAbilityForUser = (roles: string[] = [], entityName: string, create?:
 }
 
 export const useUserAbility = (entityName?: string) => {
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     return defineAbilityForUser(user?.roles, entityName ?? 'ci')
 }
 
 export const useCreateCiAbility = (ciType?: CiType, entityName?: string) => {
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     if (ciType && canCreateCiForType(ciType)) {
         return defineAbilityForUser(user?.roles, entityName ?? 'ci', canUserCreateCi(user ?? undefined, ciType?.roleList))

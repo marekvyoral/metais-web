@@ -21,7 +21,11 @@ const deleteCacheCmdb = async (accessToken: string) => {
 }
 
 export const useDeleteCacheForCi = (entityName?: string, onSuccess?: () => void) => {
-    const { token } = useAuth()
+    const {
+        state: {
+            userContext: { token },
+        },
+    } = useAuth()
 
     return useMutation({
         mutationFn: () => deleteCacheCmdb(token ?? ''),

@@ -58,7 +58,9 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
     const [nodeDetail, setNodeDetail] = useState<CiItem | null>(null)
     const [cannotDisplayAll, setCannotDisplayAll] = useState(false)
     const { t } = useTranslation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const { currentPreferences } = useUserPreferences()
     const [filterTypes, setFilterTypes] = useState<TypeFilter>({})
     const graphWrapperRef = useRef<HTMLDivElement>(null)

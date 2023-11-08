@@ -7,13 +7,18 @@ import { Actions } from './useUserAbility'
 import { Gen_Profil } from '@isdd/metais-common/api/constants'
 import { useGetRoleParticipant, useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useGetRightsForPO, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useHistoryCiPermissions = (entityName: string, entityId: string) => {
     const abilityContext = useAbilityContext()
-    const { userInfo, token } = useAuth()
+    const {
+        state: {
+            userInfo,
+            userContext: { token },
+        },
+    } = useAuth()
     const identityUuid = userInfo?.uuid
     const { data: ciTypeData, isLoading: ciTypeLoading } = useGetCiType(entityName ?? '')
 

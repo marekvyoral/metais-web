@@ -37,7 +37,9 @@ interface IEgovTable {
 
 export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) => {
     const { t } = useTranslation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const isUserLogged = !!user
     const navigate = useNavigate()
     const location = useLocation()

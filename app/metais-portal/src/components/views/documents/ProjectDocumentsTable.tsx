@@ -45,7 +45,12 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
     totalLength,
 }) => {
     const { t } = useTranslation()
-    const { userInfo, token } = useAuth()
+    const {
+        state: {
+            userInfo,
+            userContext: { token },
+        },
+    } = useAuth()
     const isUserAdmin = userInfo?.roles.includes('R_ADMIN')
     const isUserLogged = userInfo !== null
     const isInvalidated = projectData?.metaAttributes?.state === INVALIDATED

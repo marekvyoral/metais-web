@@ -81,7 +81,9 @@ interface GroupDetailContainer {
 }
 
 const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const isUserLogged = !!user
 
     const { groupId } = useParams()
