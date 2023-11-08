@@ -41,7 +41,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
-    const auth = useAuth()
+    const { userInfo: user } = useAuth()
     const userAbility = useAbilityContext()
 
     const [lockedDialogData, setLockedDialogData] = useState<{ id?: number; lockedBy?: string; isOpened: boolean }>({ isOpened: false })
@@ -71,7 +71,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                 const { id, locked, lockedBy } = row.row.original
                 const name = selectBasedOnLanguage(row.getValue() as ApiCodelistItemName[], i18n.language)
 
-                return locked && auth.state.user?.login !== lockedBy ? (
+                return locked && user?.login !== lockedBy ? (
                     <TextClickable
                         onClick={() => {
                             setLockedDialogData({ lockedBy, id, isOpened: true })

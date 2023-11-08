@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 import { useAbilityContext } from './useAbilityContext'
 
-import { User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { Group, User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ApiCodelistManager, useGetCodelistHeader, useGetOriginalCodelistHeader } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useGetRoleIdsForRole } from '@isdd/metais-common/hooks/useGetRoleIdsForRole'
 import { useGetTopLevelPoUuid } from '@isdd/metais-common/hooks/useGetTopLevelPoUuid'
@@ -52,21 +52,19 @@ const getCurrentGestorsIds = (gestors: ApiCodelistManager[]): string[] => {
 export const useCodeListPermissions = (id: string) => {
     const abilityContext = useAbilityContext()
 
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
 
     const { data: codeListData, isSuccess: isSuccessCodeListData } = useGetCodelistHeader(Number(id))
     const { data: codeListOriginalData } = useGetOriginalCodelistHeader(codeListData?.code ?? '', {
         query: { enabled: isSuccessCodeListData },
     })
     const { data: mainGestorIds } = useGetRoleIdsForRole({
-        identityGids: getRoleIdsForRole('SZC_HLGES', user),
+        identityGids: getRoleIdsForRole('SZC_HLGES', user ?? null),
         gids: getCurrentGestorsIds(codeListData?.mainCodelistManagers ?? []),
         enabled: !!user,
     })
     const { data: secondaryGestorIds } = useGetRoleIdsForRole({
-        identityGids: getRoleIdsForRole('SZC_VEDGES', user),
+        identityGids: getRoleIdsForRole('SZC_VEDGES', user ?? null),
         gids: getCurrentGestorsIds(codeListData?.codelistManagers ?? []),
         enabled: !!user,
     })
@@ -75,10 +73,10 @@ export const useCodeListPermissions = (id: string) => {
     useEffect(() => {
         const { can, rules } = new AbilityBuilder(createMongoAbility)
         const isLoggedIn = !!user
-        const isGarant = user?.groupData.some((group) => group.orgId === topLevelPoUuid)
+        const isGarant = user?.groupData.some((group: Group) => group.orgId === topLevelPoUuid)
         const isMainGestor = mainGestorIds?.gids?.some((gid) => gid.assigned) ?? false
         const isGestor = secondaryGestorIds?.gids?.some((gid) => gid.assigned) ?? false
-        const isManager = user?.roles.some((role) => role === 'SZC_SZZC') ?? false
+        const isManager = user?.roles.some((role: string) => role === 'SZC_SZZC') ?? false
         const state = codeListData?.codelistState ?? ''
         const baseOnTempAndOrigin = !codeListOriginalData?.base && !codeListData?.base
         const isTemporal = codeListData?.temporal

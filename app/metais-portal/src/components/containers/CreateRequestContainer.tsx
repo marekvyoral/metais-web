@@ -54,7 +54,7 @@ interface CreateRequestContainerProps {
 }
 
 export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ View }) => {
-    const user = useAuth()
+    const { userInfo: user } = useAuth()
     const { i18n } = useTranslation()
     const checkHook = useExistsCodelistHook()
     const navigate = useNavigate()
@@ -62,7 +62,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
 
     const addOrGetGroupHook = useAddOrGetGroupHook()
 
-    const userDataGroups = useMemo(() => user.state.user?.groupData ?? [], [user])
+    const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
     const [isLoadingCheck, setLoadingCheck] = useState<boolean>()
     const [isErrorCheck, setErrorCheck] = useState<boolean>()
     const implicitHierarchy = useReadCiList()
@@ -107,7 +107,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     }
 
     const onSave = async (formData: IRequestForm) => {
-        const uuid = getUUID(user?.state?.user?.groupData ?? [])
+        const uuid = getUUID(user?.groupData ?? [])
         const saveData = mapFormToSave(formData, i18n.language, uuid)
         addOrGetGroupHook(uuid, formData?.mainGestor)
             .then(() => {
@@ -126,7 +126,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     }
 
     const onSend = async (formData: IRequestForm) => {
-        const uuid = getUUID(user?.state?.user?.groupData ?? [])
+        const uuid = getUUID(user?.groupData ?? [])
         addOrGetGroupHook(uuid, formData?.mainGestor)
             .then(() => {
                 mutateSendASync({ data: mapFormToSave(formData, i18n.language, uuid) })

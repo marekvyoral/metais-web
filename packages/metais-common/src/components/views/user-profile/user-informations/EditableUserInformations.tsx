@@ -36,9 +36,7 @@ type UserInformationForm = {
 
 export const EditableUserInformations: React.FC<Props> = ({ setIsEditable, setIsChangeSuccess }) => {
     const { t } = useTranslation()
-    const {
-        state: { user, accessToken },
-    } = useAuth()
+    const { userInfo, token } = useAuth()
     const queryClient = useQueryClient()
 
     const phoneOrEmptyStringRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{1,6}$|^$/
@@ -58,10 +56,10 @@ export const EditableUserInformations: React.FC<Props> = ({ setIsEditable, setIs
         formState: { isSubmitting, isValidating, errors },
     } = useForm<UserInformationForm>({
         defaultValues: {
-            [UserInformationFormKeysEnum.NAME]: user?.displayName,
-            [UserInformationFormKeysEnum.POSITION]: user?.position != NULL ? user?.position ?? '' : '',
-            [UserInformationFormKeysEnum.PHONE]: user?.phone,
-            [UserInformationFormKeysEnum.EMAIL]: user?.email,
+            [UserInformationFormKeysEnum.NAME]: userInfo?.displayName,
+            [UserInformationFormKeysEnum.POSITION]: userInfo?.position != NULL ? userInfo?.position ?? '' : '',
+            [UserInformationFormKeysEnum.PHONE]: userInfo?.phone,
+            [UserInformationFormKeysEnum.EMAIL]: userInfo?.email,
         },
         resolver: yupResolver(userInformationsSchema),
     })
@@ -75,7 +73,7 @@ export const EditableUserInformations: React.FC<Props> = ({ setIsEditable, setIs
             onSuccess(data, context) {
                 setIsEditable(false)
                 setIsChangeSuccess(true)
-                queryClient.setQueryData([USER_INFO_QUERY_KEY, accessToken], (oldData: { data: User; statusCode: number } | undefined) => {
+                queryClient.setQueryData([USER_INFO_QUERY_KEY, token], (oldData: { data: User; statusCode: number } | undefined) => {
                     if (oldData == null) return oldData
 
                     return { data: { ...oldData.data, ...context.data }, statusCode: oldData.statusCode }

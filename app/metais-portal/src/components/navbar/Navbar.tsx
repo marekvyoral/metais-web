@@ -17,9 +17,7 @@ import { TasksPopup } from '@/components/tasks-popup/TasksPopup'
 
 export const Navbar: React.FC = () => {
     const { t } = useTranslation()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
     const [showDropDown, setShowDropDown] = useState<boolean>(false)
 

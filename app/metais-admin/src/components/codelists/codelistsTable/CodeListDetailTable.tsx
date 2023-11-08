@@ -58,9 +58,7 @@ export interface IResultCreateEnum {
 
 export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredData, mutations, isLoading, isError, enumCode, refetch }) => {
     const { t } = useTranslation()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const isUserLogged = !!user
     const { createEnumItem, validateEnumItem, updateEnumItem, deleteEnumItem } = mutations
 

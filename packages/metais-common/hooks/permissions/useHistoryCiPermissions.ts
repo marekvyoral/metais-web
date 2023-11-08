@@ -13,8 +13,8 @@ import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 
 export const useHistoryCiPermissions = (entityName: string, entityId: string) => {
     const abilityContext = useAbilityContext()
-    const auth = useAuth()
-    const identityUuid = auth.state.user?.uuid
+    const { userInfo, token } = useAuth()
+    const identityUuid = userInfo?.uuid
     const { data: ciTypeData, isLoading: ciTypeLoading } = useGetCiType(entityName ?? '')
 
     const {
@@ -40,7 +40,7 @@ export const useHistoryCiPermissions = (entityName: string, entityId: string) =>
         },
         {
             query: {
-                enabled: !ciLoading && !roleParticipantLoading && !ciError && !roleParticipantError && auth?.state?.accessToken !== null,
+                enabled: !ciLoading && !roleParticipantLoading && !ciError && !roleParticipantError && token !== null,
             },
         },
     )
@@ -48,14 +48,14 @@ export const useHistoryCiPermissions = (entityName: string, entityId: string) =>
     const { data: isOwnerByGid } = useIsOwnerByGid(
         {
             gids: [ciData?.metaAttributes?.owner ?? ''],
-            login: auth?.state?.user?.login,
+            login: userInfo?.login,
         },
-        { query: { enabled: !ciLoading && auth?.state?.accessToken !== null } },
+        { query: { enabled: !ciLoading && token !== null } },
     )
 
     useEffect(() => {
         const { can, rules } = new AbilityBuilder(createMongoAbility)
-        const myRoles = auth?.state?.user?.roles ?? []
+        const myRoles = userInfo?.roles ?? []
         // CAN EDIT ENTITY
         const canHistoryCi = rightsData?.find((val) => myRoles?.indexOf(val?.roleName ?? '') > -1)
         const allProfileAttributes = ciTypeData?.attributeProfiles
@@ -74,6 +74,6 @@ export const useHistoryCiPermissions = (entityName: string, entityId: string) =>
         if (canHistoryCi) can(Actions.HISTORY, `ci.${ciData?.uuid}`)
 
         abilityContext.update(rules)
-    }, [rightsData, auth, abilityContext, ciTypeData, isOwnerByGid, ciData])
+    }, [rightsData, abilityContext, ciTypeData, isOwnerByGid, ciData, userInfo?.roles])
     return {}
 }

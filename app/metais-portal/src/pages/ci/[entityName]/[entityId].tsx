@@ -33,9 +33,7 @@ const EntityDetailPage: React.FC = () => {
 
     const entityName = shouldEntityNameBePO(urlEntityName ?? '')
 
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
 
     const isUserLogged = !!user
 

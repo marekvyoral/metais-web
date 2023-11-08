@@ -10,9 +10,7 @@ import { KSISVS_ROLES, GROUP_ROLES } from '@isdd/metais-common/constants/index'
 
 export const useGroupsPermissions = (groupId?: string) => {
     const abilityContext = useAbilityContext()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const identityUuid = user?.uuid
     const { data: membershipData } = useFindMembershipData(identityUuid ?? '')
     useEffect(() => {

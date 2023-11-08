@@ -11,9 +11,7 @@ import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/Que
 
 export const UserRightsPage = () => {
     const { t } = useTranslation()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
 
     const userPoUuids = user?.groupData.map((po) => po.orgId) ?? []
 

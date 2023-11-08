@@ -17,10 +17,10 @@ interface Props {
 
 export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, selectedOrg, ciRoles }) => {
     const { t } = useTranslation()
-    const user = useAuth()
+    const { userInfo } = useAuth()
     const implicitHierarchy = useReadCiList()
 
-    const filteredUserGroupDataBasedOnRole = user.state.user?.groupData.filter((group) =>
+    const filteredUserGroupDataBasedOnRole = userInfo?.groupData.filter((group) =>
         ciRoles.some((ciRole) => group.roles.find((role) => role.roleName == ciRole)),
     )
 

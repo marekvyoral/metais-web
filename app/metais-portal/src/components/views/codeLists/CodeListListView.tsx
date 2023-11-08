@@ -61,7 +61,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
-    const auth = useAuth()
+    const { userInfo } = useAuth()
 
     const [lockedDialogData, setLockedDialogData] = useState<{ id?: number; lockedBy?: string; isOpened: boolean }>({ isOpened: false })
 
@@ -78,7 +78,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                 const { id, locked, lockedBy } = row.row.original
                 const name = selectBasedOnLanguage(row.getValue() as ApiCodelistItemName[], i18n.language)
 
-                return locked && auth.state.user?.login !== lockedBy ? (
+                return locked && userInfo?.login !== lockedBy ? (
                     <TextClickable
                         onClick={() => {
                             setLockedDialogData({ lockedBy, id, isOpened: true })

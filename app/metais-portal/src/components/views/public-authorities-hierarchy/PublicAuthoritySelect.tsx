@@ -16,9 +16,9 @@ interface Props {
 
 export const PublicAuthoritySelect: React.FC<Props> = ({ onChangeAuthority, selectedOrg, isClearable = false }) => {
     const { t } = useTranslation()
-    const user = useAuth()
+    const { userInfo: user } = useAuth()
     const implicitHierarchy = useReadCiList()
-    const userDataGroups = useMemo(() => user.state.user?.groupData ?? [], [user])
+    const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
     const defaultFilter: HierarchyPOFilterUi = {
         perpage: 20,
         sortBy: SortBy.HIERARCHY_FROM_ROOT,

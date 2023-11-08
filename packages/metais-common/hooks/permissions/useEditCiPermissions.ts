@@ -15,8 +15,8 @@ import { CAN_CREATE_GRAPH_QUERY_KEY, CI_ITEM_QUERY_KEY, INVALIDATED } from '@isd
 
 export const useEditCiPermissions = (entityName: string, entityId: string) => {
     const abilityContext = useAbilityContext()
-    const auth = useAuth()
-    const identityUuid = auth.state.user?.uuid
+    const { userInfo: user, token } = useAuth()
+    const identityUuid = user?.uuid
     const { data: ciTypeData, isLoading: ciTypeLoading } = useGetCiType(entityName ?? '')
 
     const {
@@ -42,7 +42,7 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
         },
         {
             query: {
-                enabled: !ciLoading && !roleParticipantLoading && !ciError && !roleParticipantError && auth?.state?.accessToken !== null,
+                enabled: !ciLoading && !roleParticipantLoading && !ciError && !roleParticipantError && token !== null,
             },
         },
     )
@@ -50,19 +50,19 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
     const { data: isOwnerByGid } = useIsOwnerByGid(
         {
             gids: [ciData?.metaAttributes?.owner ?? ''],
-            login: auth?.state?.user?.login,
+            login: user?.login,
         },
-        { query: { enabled: !ciLoading && auth?.state?.accessToken !== null } },
+        { query: { enabled: !ciLoading && token !== null } },
     )
 
     const { data: canCreateGraph } = useQuery({
-        queryKey: [CAN_CREATE_GRAPH_QUERY_KEY, auth.state.user?.uuid],
-        queryFn: () => fetchCanCreateGraph(auth.state.accessToken ?? ''),
+        queryKey: [CAN_CREATE_GRAPH_QUERY_KEY, user?.uuid],
+        queryFn: () => fetchCanCreateGraph(token ?? ''),
     })
 
     useEffect(() => {
         const { can, rules } = new AbilityBuilder(createMongoAbility)
-        const myRoles = auth?.state?.user?.roles ?? []
+        const myRoles = user?.roles ?? []
         const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED
 
         // CAN EDIT ENTITY
@@ -90,6 +90,6 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
         if (canCreateGraph && !isInvalidated) can(Actions.CREATE, `ci.create.newRelation`)
 
         abilityContext.update(rules)
-    }, [rightsData, auth, abilityContext, ciTypeData, isOwnerByGid, ciData, canCreateGraph])
+    }, [rightsData, abilityContext, ciTypeData, isOwnerByGid, ciData, canCreateGraph, user?.roles])
     return {}
 }

@@ -27,11 +27,8 @@ interface IRelationCount {
 const DERIVED_PREFIX = 'DERIVED_'
 
 export const useEntityRelationsTypesCount = (id: string, technicalName: string) => {
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const { currentPreferences } = useUserPreferences()
-
     const isUserLogged = !!user
     const includeInvalidated = currentPreferences.showInvalidatedItems
 

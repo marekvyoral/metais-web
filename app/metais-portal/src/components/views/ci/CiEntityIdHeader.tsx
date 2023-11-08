@@ -44,16 +44,14 @@ export const CiEntityIdHeader: React.FC<Props> = ({
 }) => {
     const { t } = useTranslation()
 
-    const {
-        state: { user, accessToken },
-    } = useAuth()
+    const { token, userInfo: user } = useAuth()
 
     const { data: isOwnerByGid } = useIsOwnerByGid(
         {
             gids: [entityData?.metaAttributes?.owner ?? ''],
             login: user?.login,
         },
-        { query: { enabled: entityData && accessToken !== null } },
+        { query: { enabled: entityData && token !== null } },
     )
     const isOwnerOfCi = isOwnerByGid?.isOwner?.[0]?.owner
     const typeOfApprovalProcess = entityData?.attributes?.[ATTRIBUTE_NAME.EA_Profil_Projekt_schvalovaci_proces] ?? TYPE_OF_APPROVAL_PROCESS_DEFAULT

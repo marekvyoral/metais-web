@@ -31,7 +31,7 @@ interface EditRequestContainerProps {
 }
 
 export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View }) => {
-    const user = useAuth()
+    const { userInfo: user } = useAuth()
     const { i18n } = useTranslation()
     const { requestId } = useParams()
     const navigate = useNavigate()
@@ -43,7 +43,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
 
     const [isLoadingCheck, setLoadingCheck] = useState<boolean>()
     const [isErrorCheck, setErrorCheck] = useState<boolean>()
-    const userDataGroups = useMemo(() => user.state.user?.groupData ?? [], [user])
+    const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
 
     const defaultFilter: HierarchyPOFilterUi = {
         perpage: 20,
@@ -101,7 +101,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     )
 
     const onSave = async (formData: IRequestForm) => {
-        const uuid = getUUID(user?.state?.user?.groupData ?? [])
+        const uuid = getUUID(user?.groupData ?? [])
         const mappedData = mapFormToSave(formData, i18n.language, uuid)
         if (
             mappedData.code &&
@@ -131,7 +131,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     }
 
     const onSend = async (formData: IRequestForm) => {
-        const uuid = getUUID(user?.state?.user?.groupData ?? [])
+        const uuid = getUUID(user?.groupData ?? [])
         mutateSendASync({ data: mapFormToSave(formData, i18n.language, uuid) })
             .then(() => {
                 setIsActionSuccess({ value: true, path: RouteNames.REQUESTLIST })
@@ -169,13 +169,13 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
 
     const canEditDate =
         data &&
-        (data.lockedBy === null || data.lockedBy !== user.state.user?.login) &&
+        (data.lockedBy === null || data.lockedBy !== user?.login) &&
         (data.codelistState === RequestListState.DRAFT ||
             data.codelistState === RequestListState.REJECTED ||
             data.codelistState === RequestListState.KS_ISVS_ACCEPTED ||
             data.codelistState === RequestListState.ACCEPTED_SZZC)
 
-    const canEdit = data && (data.lockedBy === null || data.lockedBy === user.state.user?.login) && data.codelistState === RequestListState.DRAFT
+    const canEdit = data && (data.lockedBy === null || data.lockedBy === user?.login) && data.codelistState === RequestListState.DRAFT
 
     return !isLoading && defaultData ? (
         <RequestListPermissionsWrapper entityName={_entityName}>

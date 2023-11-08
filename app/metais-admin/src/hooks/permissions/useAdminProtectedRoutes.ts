@@ -20,9 +20,7 @@ const getCurrentRouteRoles = (locationPathname: string, adminRoutes: NavigationI
 export const useAdminProtectedRoutes = (adminRoutes: NavigationItem[]) => {
     const location = useLocation()
     const navigate = useNavigate()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
 
     const currentRoles = getCurrentRouteRoles(location.pathname, adminRoutes) ?? []
     const hasUserPermissionsToEnter = currentRoles?.some((role) => user?.roles.includes(role))

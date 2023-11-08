@@ -17,7 +17,6 @@ export const GestorTabView: React.FC<GestorTabViewProps> = ({ data }) => {
     } = useTranslation()
     const { codeList, attributeProfile } = data || {}
     const ability = useAbilityContext()
-
     if (!codeList || !attributeProfile) return <></>
 
     return (
