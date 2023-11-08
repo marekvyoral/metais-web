@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 
 interface IIconWithNotification {
-    onClick: () => void
+    onClick?: () => void
     count: number
     src: string
     title: string

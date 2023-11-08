@@ -17,16 +17,13 @@ import { TasksPopup } from '@/components/tasks-popup/TasksPopup'
 
 export const Navbar: React.FC = () => {
     const { t } = useTranslation()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
     const [showDropDown, setShowDropDown] = useState<boolean>(false)
 
     const { data: notificationsData } = useGetNotificationList({ perPage: 1, pageNumber: 1 }, { query: { enabled: !!user } })
     const Notifications = () => (
         <IconWithNotification
-            onClick={() => undefined}
             title={t('navbar.notifications')}
             src={NotificationIcon}
             count={notificationsData?.pagination?.totalUnreadedItems ?? 0}

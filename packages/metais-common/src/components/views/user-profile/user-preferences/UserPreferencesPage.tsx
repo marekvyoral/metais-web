@@ -21,9 +21,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 export const UserPreferencesPage: React.FC = () => {
     const { t, i18n } = useTranslation()
     const location = useLocation()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
 
     const { isActionSuccess, setIsActionSuccess } = useActionSuccess()
     const { currentPreferences, updateUserPreferences } = useUserPreferences()

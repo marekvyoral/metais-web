@@ -44,7 +44,7 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
     const { t } = useTranslation()
     const { register, handleSubmit, reset, formState } = useForm()
     const baseURL = import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL
-    const auth = useAuth()
+    const { userInfo, token } = useAuth()
     const genetateCodeAndUrl = useGenerateCodeAndURLHook()
     const storeActivity = useStoreGraphHook()
     const [isLoading, setIsLoading] = useState(false)
@@ -92,7 +92,7 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
         try {
             let docExists = false
             const isOwner = await checkIsOwnerByGid({
-                login: auth.state.user?.login,
+                login: userInfo?.login,
                 gids: [project?.metaAttributes?.owner ?? ''],
             })
             if (isOwner.isOwner?.[0].owner) {
@@ -100,7 +100,7 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
                     method: 'POST',
                     body: formData,
                     headers: {
-                        Authorization: `Bearer ${auth.state.accessToken}`,
+                        Authorization: `Bearer ${token}`,
                     },
                 })
 

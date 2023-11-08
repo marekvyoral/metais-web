@@ -16,8 +16,8 @@ interface IVotesListContainer {
 }
 
 export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
-    const { state: authState } = useAuth()
-    const isUserLogged = authState.user !== null
+    const { userInfo: user } = useAuth()
+    const isUserLogged = user !== null
 
     const defaultFilterValues: IVotesListFilterData = {
         votesTypeToShow: isUserLogged ? VotesListShowEnum.ONLY_MY : VotesListShowEnum.EVERYONE,

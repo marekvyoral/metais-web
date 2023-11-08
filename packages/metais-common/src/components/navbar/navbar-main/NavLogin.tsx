@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import { NavProfile } from './NavProfile'
 
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useLogin } from '@isdd/metais-common/hooks/useLogin'
 
 type NavLoginProps = {
     isLoginApp?: boolean
@@ -13,17 +12,14 @@ type NavLoginProps = {
 
 export const NavLogin: React.FC<NavLoginProps> = ({ isLoginApp }) => {
     const { t } = useTranslation()
-    const { mutateAuthorize } = useLogin()
+    const { login, tokenData } = useAuth()
     const navigate = useNavigate()
-    const {
-        state: { user },
-    } = useAuth()
 
     return (
         <div className="idsk-header-web__main--login">
-            {!user && (
+            {!tokenData && (
                 <button
-                    onClick={() => (isLoginApp ? navigate('/prelogin') : mutateAuthorize())}
+                    onClick={() => (isLoginApp ? navigate('/prelogin') : login())}
                     type="button"
                     className="idsk-button idsk-header-web__main--login-loginbtn"
                     data-module="idsk-button"

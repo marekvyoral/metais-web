@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-import { AuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export type BodyType<BodyData> = BodyData & { headers?: object }
 
@@ -17,10 +17,7 @@ export type CustomClient<T> = (data: {
 }) => Promise<T>
 
 export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T) => void): CustomClient<T> => {
-    const {
-        state: { accessToken },
-        dispatch,
-    } = useAuth()
+    const { token, logOut } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
     const { i18n } = useTranslation()
@@ -37,8 +34,8 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
             ...headers,
             ...data?.headers,
         }
-        if (accessToken) {
-            customHeaders['Authorization'] = `Bearer ${accessToken}`
+        if (token) {
+            customHeaders['Authorization'] = `Bearer ${token}`
         }
 
         const response = await fetch(`${baseURL}${url}${params}`, {
@@ -61,7 +58,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
         const contentType = response.headers.get('Content-Type')
 
         if (response.status === 401) {
-            dispatch({ type: AuthActions.LOGOUT })
+            logOut()
             navigate('/?token_expired=true', { state: { from: location } })
         }
         if (!response.ok) {

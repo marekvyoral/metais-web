@@ -1,27 +1,40 @@
 import { RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 
-export const createSelectRelationTypeOptions = (
-    relatedListAsSources: RelatedCiTypePreview[] | undefined,
-    relatedListAsTargets: RelatedCiTypePreview[] | undefined,
-    t: TFunction<'translation', undefined, 'translation'>,
-) => {
+type CreateSelectRelationTypeOptionsProps = {
+    relatedListAsSources: RelatedCiTypePreview[] | undefined
+    relatedListAsTargets: RelatedCiTypePreview[] | undefined
+    t: TFunction<'translation', undefined, 'translation'>
+    currentRole: string
+}
+
+export const createSelectRelationTypeOptions = ({
+    relatedListAsSources,
+    relatedListAsTargets,
+    t,
+    currentRole,
+}: CreateSelectRelationTypeOptionsProps) => {
     const isSourceArray = relatedListAsSources && relatedListAsSources?.length > 0
+
     const sourceArray = [
         {
-            label: t('newRelation.selectSource'),
+            label: t('newRelation.selectTarget'),
             value: '',
             disabled: true,
         },
-        ...(relatedListAsSources?.map((item) => ({ label: item.relationshipTypeName ?? '', value: item.relationshipTypeTechnicalName ?? '' })) ?? []),
+        ...(relatedListAsSources
+            ?.filter((rel) => rel.relationshipRoleList?.includes(currentRole))
+            .map((item) => ({ label: item.relationshipTypeName ?? '', value: item.relationshipTypeTechnicalName ?? '' })) ?? []),
     ]
     const isTargetArray = relatedListAsTargets && relatedListAsTargets?.length > 0
     const targetArray = [
-        { label: t('newRelation.selectTarget'), value: '', disabled: true },
-        ...(relatedListAsTargets?.map((item) => ({ label: item.relationshipTypeName ?? '', value: item.relationshipTypeTechnicalName ?? '' })) ?? []),
+        { label: t('newRelation.selectSource'), value: '', disabled: true },
+        ...(relatedListAsTargets
+            ?.filter((rel) => rel.relationshipRoleList?.includes(currentRole))
+            .map((item) => ({ label: item.relationshipTypeName ?? '', value: item.relationshipTypeTechnicalName ?? '' })) ?? []),
     ]
 
-    const combinedOptions = [...(isSourceArray ? sourceArray : []), ...(isTargetArray ? targetArray : [])]
+    const combinedOptions = [...(isTargetArray ? targetArray : []), ...(isSourceArray ? sourceArray : [])]
 
     return combinedOptions
 }

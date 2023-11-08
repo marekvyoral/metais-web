@@ -20,9 +20,7 @@ interface IUseStandardDraftsListPermissions {
 
 export const useStandardDraftsListPermissions = ({ data: { state, groupId, links, requestChannel } }: IUseStandardDraftsListPermissions) => {
     const abilityContext = useAbilityContext()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const identityUuid = user?.uuid
     const { data: membershipData } = useFindMembershipData(identityUuid ?? '')
 

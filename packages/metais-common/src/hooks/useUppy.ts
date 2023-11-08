@@ -39,9 +39,7 @@ export const useUppy = ({
     setCustomFileMeta,
     fileImportStep,
 }: iUseUppy) => {
-    const {
-        state: { accessToken },
-    } = useAuth()
+    const { token } = useAuth()
     const { i18n, t } = useTranslation()
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>([])
     const [errorMessages, setErrorMessages] = useState<string[]>([])
@@ -70,9 +68,9 @@ export const useUppy = ({
     useEffect(() => {
         uppy.getPlugin('XHRUpload')?.setOptions({
             endpoint: endpointUrl,
-            headers: { Authorization: `Bearer ${accessToken}` },
+            headers: { Authorization: `Bearer ${token}` },
         })
-    }, [accessToken, endpointUrl])
+    }, [token, endpointUrl])
 
     useEffect(() => {
         const fileErrorCallback = (_file: UppyFile | undefined, error: Error) => {

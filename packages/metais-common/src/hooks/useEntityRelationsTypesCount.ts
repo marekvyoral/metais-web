@@ -4,6 +4,7 @@ import { useReadCiDerivedRelTypesCount, useReadNeighboursConfigurationItemsCount
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { isDerivedCiTypeCmdbView, isRelatedCiTypeCmdbView, removeDuplicates } from '@isdd/metais-common/hooks/common'
 import { RelatedCiTypePreview, useListRelatedCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 
 export interface IKeyToDisplay {
     tabName: string
@@ -26,11 +27,12 @@ interface IRelationCount {
 const DERIVED_PREFIX = 'DERIVED_'
 
 export const useEntityRelationsTypesCount = (id: string, technicalName: string) => {
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
+    const { currentPreferences } = useUserPreferences()
     const isUserLogged = !!user
-    const { isLoading, isError, data: countData } = useReadNeighboursConfigurationItemsCount(id)
+    const includeInvalidated = currentPreferences.showInvalidatedItems
+
+    const { isLoading, isError, data: countData } = useReadNeighboursConfigurationItemsCount(id, { includeInvalidated })
     const { isLoading: isLoadingDerived, isError: isErrorDerived, data: countDerivedData } = useReadCiDerivedRelTypesCount(id)
     const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName)
 
@@ -103,7 +105,6 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string) 
                 isDerived: true,
             }
         }
-
         const countZero = 0
         return {
             tabName: `${relation.name} (${countZero})`,

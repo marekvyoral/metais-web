@@ -13,9 +13,7 @@ export const useRefRegisterPermissions = (
     managerUuid: string | undefined,
 ) => {
     const abilityContext = useAbilityContext()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
 
     const hasRoleMFSR = () => {
         return user?.roles?.some((role) => role === RR_ADMIN_MFSR)

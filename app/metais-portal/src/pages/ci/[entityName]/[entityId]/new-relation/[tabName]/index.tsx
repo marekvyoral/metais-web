@@ -60,7 +60,6 @@ const NewCiRelationPage: React.FC = () => {
                                             isLoading: publicAuthAndRoleLoading,
                                         }) => (
                                             <RelationTypePermissionWrapper
-                                                selectedOrgId={publicAuthorityState.selectedPublicAuthority?.poUUID ?? ''}
                                                 selectedRoleName={groupData?.roleName ?? ''}
                                                 selectedCiRelationType={findRelationType(
                                                     selectedRelationTypeState.selectedRelationTypeTechnicalName,

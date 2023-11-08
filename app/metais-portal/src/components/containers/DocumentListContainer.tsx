@@ -69,7 +69,7 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
     } = useReadCiNeighbours(configurationItemId ?? '', mapFilterToNeighborsApi(filter, defaultRequestApi), {})
 
     const getNames = useGetIdentitiesByLoginsBulkHook()
-    const auth = useAuth()
+    const { userInfo: user } = useAuth()
     const [namesData, setNamesData] = useState<{ login: string; fullName: string }[]>()
 
     const loadNames = async (names: string[]) => {
@@ -87,7 +87,7 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
     }, [defaultRequestApi.neighboursFilter, filter])
 
     useEffect(() => {
-        if (documentCiData !== undefined && auth.state.user !== null && namesData === undefined) {
+        if (documentCiData !== undefined && user !== null && namesData === undefined) {
             const createdBy = documentCiData.fromNodes?.neighbourPairs?.map((item) => item.configurationItem?.metaAttributes?.createdBy ?? '') ?? []
             const modifiedBy =
                 documentCiData.fromNodes?.neighbourPairs?.map((item) => item.configurationItem?.metaAttributes?.lastModifiedBy ?? '') ?? []

@@ -7,9 +7,7 @@ import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences
 import { NeighboursFilterContainerUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 export const useEntityRelationshipTabFilters = (technicalName: string) => {
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
     const { currentPreferences } = useUserPreferences()
     const isUserLogged = !!user
     const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName ?? '')

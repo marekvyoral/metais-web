@@ -1,12 +1,5 @@
-import jwt from 'jwt-decode'
-import React, { Reducer, createContext, useContext, useEffect, useReducer } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-
-export enum AuthActions {
-    SET_USER_INFO,
-    SET_TOKEN,
-    LOGOUT,
-}
+import React, { useContext, useState, useMemo } from 'react'
+import { AuthProvider, TAuthConfig, AuthContext, IAuthContext } from 'react-oauth2-code-pkce'
 
 export interface Role {
     gid: string
@@ -38,99 +31,42 @@ export interface User {
     groupData: Group[]
 }
 
-interface AuthContextState {
-    user: User | null
-    accessToken: string | null
+export interface ICustomAuthContext extends IAuthContext {
+    userInfo?: User
+    setUserInfo?: (user: User) => void
 }
 
-interface SetUserAction {
-    type: AuthActions.SET_USER_INFO
-    value: User
+const baseUrl =
+    import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL + (import.meta.env.VITE_IAM_OIDC_PATH ? `/${import.meta.env.VITE_IAM_OIDC_PATH}` : '')
+
+const authConfig: TAuthConfig = {
+    clientId: 'webPortalClient',
+    extraAuthParameters: { response_type: 'code' },
+    authorizationEndpoint: baseUrl + '/authorize',
+    tokenEndpoint: baseUrl + '/token',
+    redirectUri: window.location.protocol + '//' + window.location.host + '/',
+    scope: 'openid profile c_ui',
+    autoLogin: false,
 }
-
-interface SetTokenAction {
-    type: AuthActions.SET_TOKEN
-    value: string
-}
-
-interface EmptyAction {
-    type: AuthActions.LOGOUT
-}
-
-type Action = SetTokenAction | SetUserAction | EmptyAction
-
-const ACCESS_TOKEN = 'token'
-
-const initialState: AuthContextState = {
-    user: null,
-    accessToken: localStorage.getItem(ACCESS_TOKEN) || null,
-}
-
-const reducer = (state: AuthContextState, action: Action) => {
-    switch (action.type) {
-        case AuthActions.SET_USER_INFO:
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    ...action.value,
-                },
-            }
-        case AuthActions.SET_TOKEN:
-            localStorage.setItem(ACCESS_TOKEN, action.value)
-            return { ...state, accessToken: action.value }
-        case AuthActions.LOGOUT:
-            localStorage.removeItem(ACCESS_TOKEN)
-            return {
-                user: null,
-                accessToken: null,
-            }
-        default:
-            return state
-    }
-}
-
-const isTokenExpired = (accessToken: string | null) => {
-    if (!accessToken) {
-        return true
-    }
-    try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const decodedJwt: Record<string, any> = jwt(accessToken)
-        if (decodedJwt.exp * 1000 < new Date().getTime()) {
-            localStorage.removeItem(ACCESS_TOKEN)
-            return true
-        }
-        return false
-    } catch {
-        //invalid access token
-        localStorage.removeItem(ACCESS_TOKEN)
-        return true
-    }
-}
-
-const AuthContext = createContext<{ state: AuthContextState; dispatch: React.Dispatch<Action> }>({ state: initialState, dispatch: () => null })
 
 const AuthContextProvider: React.FC<React.PropsWithChildren> = (props) => {
-    const locationCurrent = useLocation()
-
-    const authInitialState = { ...initialState, accessToken: isTokenExpired(initialState.accessToken) ? null : initialState.accessToken }
-    const [state, dispatch] = useReducer<Reducer<AuthContextState, Action>>(reducer, authInitialState)
-    const { hash } = useLocation()
-    const navigate = useNavigate()
-    const searchParams = new URLSearchParams(hash)
-    const accessToken = searchParams.get('#access_token')
-
-    useEffect(() => {
-        if (accessToken && isTokenExpired(state.accessToken)) {
-            dispatch({ type: AuthActions.SET_TOKEN, value: accessToken })
-        }
-    }, [accessToken, state.accessToken])
-
-    if (accessToken) navigate(locationCurrent.pathname, { state: { from: locationCurrent } })
-    return <AuthContext.Provider value={{ state, dispatch }}>{props.children}</AuthContext.Provider>
+    return <AuthProvider authConfig={authConfig}>{props.children}</AuthProvider>
 }
 
-const useAuth = () => useContext(AuthContext)
+const useAuth = () => {
+    const [userInfo, setUserInfo] = useState<User>()
+    const defContext = useContext<ICustomAuthContext>(AuthContext)
+
+    const extendedContext = useMemo(
+        () => ({
+            ...defContext,
+            setUserInfo,
+            userInfo,
+        }),
+        [defContext, userInfo],
+    )
+
+    return extendedContext
+}
 
 export { AuthContextProvider, useAuth }

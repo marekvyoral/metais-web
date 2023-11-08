@@ -32,8 +32,8 @@ export const FileHistoryView: React.FC<IFileHistoryViewProps> = ({ data, item, h
         downloadBlobAsFile(new Blob([blobData]), data[row.index].filename ?? '')
         setFileLoading(false)
     }
-    const { state: authState } = useAuth()
-    const isUserLogged = authState.user !== null
+    const { userInfo } = useAuth()
+    const isUserLogged = userInfo !== null
     const columns: ColumnDef<MetaVersion>[] = [
         {
             header: t('fileHistory.filename'),

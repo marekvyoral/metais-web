@@ -17,9 +17,7 @@ import { getGidsForUserOrgRoles, getUuidsForUserOrgRoles } from '@/componentHelp
 export const TasksPopup: React.FC = () => {
     const { t } = useTranslation()
     const location = useLocation()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
 
     const { data: tasks, mutate } = useGetTasks()
     useEffect(() => {
@@ -43,7 +41,6 @@ export const TasksPopup: React.FC = () => {
         <Button
             label={
                 <IconWithNotification
-                    onClick={() => undefined}
                     title={t('tasks.tasks')}
                     src={FactCheckIcon}
                     count={(tasks?.tasksCountCreated ?? 0) + (tasks?.tasksCountInProgress ?? 0)}

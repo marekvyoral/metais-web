@@ -3,35 +3,34 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 
-import { AuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ProfileIcon } from '@isdd/metais-common/assets/images'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const NavProfile: React.FC = () => {
     const { t } = useTranslation()
-    const {
-        state: { user },
-        dispatch,
-    } = useAuth()
+    const { logOut, tokenData } = useAuth()
+
+    const logoutURL =
+        import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL +
+        (import.meta.env.VITE_IAM_OIDC_PATH ? `/${import.meta.env.VITE_IAM_OIDC_PATH}/logout` : '/logout')
 
     const handleLogout = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault()
-        fetch(`${import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL}/logout`, { method: 'POST' }).finally(() =>
-            dispatch({ type: AuthActions.LOGOUT }),
-        )
+        fetch(logoutURL, { method: 'POST' }).finally(() => logOut())
     }
     const location = useLocation()
     return (
         <div
-            className={classnames(styles.loginProfile, user ? styles.displayFlex : styles.displayNone, {
-                'idsk-header-web__main--login-action--active': user,
-                'idsk-header-web__main--login-action': !user,
+            className={classnames(styles.loginProfile, tokenData ? styles.displayFlex : styles.displayNone, {
+                'idsk-header-web__main--login-action--active': tokenData?.user_id,
+                'idsk-header-web__main--login-action': !tokenData?.user_id,
             })}
         >
             <img className="idsk-header-web__main--login-action-profile-img" src={ProfileIcon} alt="User profile icon" />
             <div className="idsk-header-web__main--login-action-text">
-                {user?.displayName && <span className="govuk-body-s idsk-header-web__main--login-action-text-user-name">{user.displayName}</span>}
+                {tokenData?.user_id && <span className="govuk-body-s idsk-header-web__main--login-action-text-user-name">{tokenData?.user_id}</span>}
                 <div className="govuk-!-margin-bottom-1">
                     <Link
                         onClick={handleLogout}
@@ -39,7 +38,7 @@ export const NavProfile: React.FC = () => {
                         className={classnames(
                             'govuk-link',
                             'idsk-header-web__main--login-action-text-logout',
-                            user ? 'idsk-header-web__main--login-logoutbtn--active' : 'idsk-header-web__main--login-logoutbtn',
+                            tokenData ? 'idsk-header-web__main--login-logoutbtn--active' : 'idsk-header-web__main--login-logoutbtn',
                         )}
                         to="#"
                         title={t('navbar.logout') ?? ''}
@@ -52,7 +51,7 @@ export const NavProfile: React.FC = () => {
                         className={classnames(
                             'govuk-link',
                             'idsk-header-web__main--login-action-text-profile',
-                            user ? 'idsk-header-web__main--login-profilebtn--active' : 'idsk-header-web__main--login-profilebtn',
+                            tokenData ? 'idsk-header-web__main--login-profilebtn--active' : 'idsk-header-web__main--login-profilebtn',
                         )}
                         to={RouteNames.USER_PROFILE}
                         title={t('navbar.profile') ?? ''}

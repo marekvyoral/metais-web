@@ -20,11 +20,15 @@ export interface INewRelationData {
     setIsListPageOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+const noopSetState = () => {
+    // intentionally empty
+}
+
 const NewRelationContext = createContext<INewRelationData>({
     selectedItems: {},
-    setSelectedItems: () => undefined,
     isListPageOpen: false,
-    setIsListPageOpen: () => undefined,
+    setSelectedItems: () => noopSetState(),
+    setIsListPageOpen: () => noopSetState(),
 })
 
 export const useNewRelationData = () => useContext(NewRelationContext)

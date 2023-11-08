@@ -36,9 +36,7 @@ type Props = {
 
 export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose, mutateCallback, isLoading }) => {
     const { t } = useTranslation()
-    const {
-        state: { user },
-    } = useAuth()
+    const { userInfo: user } = useAuth()
 
     const requiredString = ` (${t('userProfile.requests.required')})`
 
