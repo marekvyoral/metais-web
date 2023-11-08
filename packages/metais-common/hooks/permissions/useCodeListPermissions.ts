@@ -3,10 +3,10 @@ import { useEffect } from 'react'
 
 import { useAbilityContext } from './useAbilityContext'
 
-import { Group, User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ApiCodelistManager, useGetCodelistHeader, useGetOriginalCodelistHeader } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useGetRoleIdsForRole } from '@isdd/metais-common/hooks/useGetRoleIdsForRole'
 import { useGetTopLevelPoUuid } from '@isdd/metais-common/hooks/useGetTopLevelPoUuid'
+import { Group, User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export enum CodeListItemState {
     NEW = 'NEW',
@@ -52,7 +52,9 @@ const getCurrentGestorsIds = (gestors: ApiCodelistManager[]): string[] => {
 export const useCodeListPermissions = (id: string) => {
     const abilityContext = useAbilityContext()
 
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     const { data: codeListData, isSuccess: isSuccessCodeListData } = useGetCodelistHeader(Number(id))
     const { data: codeListOriginalData } = useGetOriginalCodelistHeader(codeListData?.code ?? '', {

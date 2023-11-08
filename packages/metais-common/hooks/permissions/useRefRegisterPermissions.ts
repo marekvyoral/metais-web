@@ -4,8 +4,8 @@ import { useEffect } from 'react'
 import { useAbilityContext } from './useAbilityContext'
 import { Actions, RR_ADMIN_MFSR, RR_MANAGER } from './useUserAbility'
 
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ApiReferenceRegisterState } from '@isdd/metais-common/api/generated/reference-registers-swagger'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useRefRegisterPermissions = (
     state: ApiReferenceRegisterState | undefined,
@@ -13,7 +13,9 @@ export const useRefRegisterPermissions = (
     managerUuid: string | undefined,
 ) => {
     const abilityContext = useAbilityContext()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     const hasRoleMFSR = () => {
         return user?.roles?.some((role) => role === RR_ADMIN_MFSR)

@@ -6,7 +6,9 @@ import { useGetRightsForPOBulkHook, useIsInPoByGid1Hook, useIsOwnerByGidHook } f
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useBulkActionHelpers = () => {
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     const getRightsForPOBulk = useGetRightsForPOBulkHook()
     const getCiType = useGetCiTypeHook()

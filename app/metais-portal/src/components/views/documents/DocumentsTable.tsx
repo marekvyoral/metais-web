@@ -63,7 +63,9 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     ciData,
 }) => {
     const { t } = useTranslation()
-    const { userInfo } = useAuth()
+    const {
+        state: { userInfo },
+    } = useAuth()
     const isUserAdmin = userInfo?.roles.includes('R_ADMIN')
     const isUserLogged = userInfo !== null
     const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED

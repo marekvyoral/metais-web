@@ -12,12 +12,15 @@ type NavLoginProps = {
 
 export const NavLogin: React.FC<NavLoginProps> = ({ isLoginApp }) => {
     const { t } = useTranslation()
-    const { login, tokenData } = useAuth()
+    const {
+        state: {
+            userContext: { login, token },
+        },
+    } = useAuth()
     const navigate = useNavigate()
-
     return (
         <div className="idsk-header-web__main--login">
-            {!tokenData && (
+            {!token && (
                 <button
                     onClick={() => (isLoginApp ? navigate('/prelogin') : login())}
                     type="button"

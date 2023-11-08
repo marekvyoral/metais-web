@@ -41,7 +41,9 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const isUserLogged = !!user
     const dataLength = data?.length ?? 0
     const { rowSelection, setRowSelection } = rowSelectionState

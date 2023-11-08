@@ -4,19 +4,25 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import { getUserInfo } from '@isdd/metais-common/api/userInfoApi'
 import { USER_INFO_QUERY_KEY } from '@isdd/metais-common/constants'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { CustomAuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useUserInfo = () => {
-    const { logOut, token, setUserInfo, userInfo: userInfoAuth } = useAuth()
+    const {
+        state: {
+            userInfo,
+            userContext: { logOut, token },
+        },
+        dispatch,
+    } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
 
     const { data, isLoading, isError, error } = useQuery({
         queryKey: [USER_INFO_QUERY_KEY, token],
         queryFn: () => getUserInfo(token || ''),
-        enabled: !!token && !userInfoAuth,
+        enabled: !!token && !userInfo,
     })
-    const userInfo = data?.data
+    const userInfoData = data?.data
 
     useEffect(() => {
         if (data?.statusCode === 401) {
@@ -26,10 +32,10 @@ export const useUserInfo = () => {
     }, [data?.statusCode, logOut, location, navigate])
 
     useEffect(() => {
-        if (userInfo && data?.statusCode === 200) {
-            setUserInfo?.(userInfo)
+        if (userInfoData && data?.statusCode === 200) {
+            dispatch({ type: CustomAuthActions.SET_USER_INFO, value: userInfoData })
         }
-    }, [userInfo, data?.statusCode, setUserInfo])
+    }, [userInfoData, data?.statusCode, dispatch, data])
 
     return {
         userInfo,

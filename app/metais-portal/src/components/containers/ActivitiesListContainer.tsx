@@ -55,7 +55,12 @@ export const defaultFilter = {
 }
 
 export const ActivitiesListContainer: React.FC<IActivitiesListContainer> = ({ configurationItemId, View }) => {
-    const { token, userInfo } = useAuth()
+    const {
+        state: {
+            userInfo,
+            userContext: { token },
+        },
+    } = useAuth()
     const { currentPreferences } = useUserPreferences()
     const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
     const { data: ciData, isLoading: ciLoading } = useReadConfigurationItem(configurationItemId ?? '')

@@ -41,7 +41,9 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const userAbility = useAbilityContext()
 
     const [lockedDialogData, setLockedDialogData] = useState<{ id?: number; lockedBy?: string; isOpened: boolean }>({ isOpened: false })

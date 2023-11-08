@@ -21,7 +21,9 @@ interface IReportsTable {
 export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handleFilterChange }) => {
     const { t } = useTranslation()
     const location = useLocation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const isUserLogged = !!user
     const columns: Array<ColumnDef<TableCols>> = [
         {

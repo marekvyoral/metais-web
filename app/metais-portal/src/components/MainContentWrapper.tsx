@@ -17,7 +17,9 @@ type MainContentWrapperProps = React.PropsWithChildren & {
 
 export const MainContentWrapper: React.FC<MainContentWrapperProps> = ({ children, globalSearch, noSideMenu }) => {
     const { t } = useTranslation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true)
     const isSideMenu = true

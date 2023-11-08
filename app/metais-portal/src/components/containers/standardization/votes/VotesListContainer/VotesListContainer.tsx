@@ -16,7 +16,9 @@ interface IVotesListContainer {
 }
 
 export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const isUserLogged = user !== null
 
     const defaultFilterValues: IVotesListFilterData = {

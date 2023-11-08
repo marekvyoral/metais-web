@@ -8,14 +8,19 @@ import { Actions } from './useUserAbility'
 import { useGetRoleParticipant, useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Gen_Profil } from '@isdd/metais-common/api/constants'
 import { useGetRightsForPO, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { fetchCanCreateGraph } from '@isdd/metais-common/api/fetchCanCreateGraph'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CAN_CREATE_GRAPH_QUERY_KEY, CI_ITEM_QUERY_KEY, INVALIDATED } from '@isdd/metais-common/constants'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useEditCiPermissions = (entityName: string, entityId: string) => {
     const abilityContext = useAbilityContext()
-    const { userInfo: user, token } = useAuth()
+    const {
+        state: {
+            userInfo: user,
+            userContext: { token },
+        },
+    } = useAuth()
     const identityUuid = user?.uuid
     const { data: ciTypeData, isLoading: ciTypeLoading } = useGetCiType(entityName ?? '')
 
