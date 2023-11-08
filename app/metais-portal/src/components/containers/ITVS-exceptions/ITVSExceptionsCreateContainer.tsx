@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import {
     RelationshipUi,
@@ -44,6 +44,10 @@ interface Props {
     ciItemData?: ConfigurationItemUi | undefined
 }
 
+const relationSuffix = 'RELATION'
+const relationNodes = ['ISVS', 'PO']
+const relationType = 'osobitny_postup_vztah_ISVS'
+
 export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     entityName,
     data,
@@ -58,16 +62,10 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const { t } = useTranslation()
     const navigate = useNavigate()
 
-    const relationSuffix = 'RELATION'
-    const relationNodes = ['ISVS', 'PO']
-    const relationType = 'osobitny_postup_vztah_ISVS'
-
     const [uploadError, setUploadError] = useState(false)
 
     const [relationshipSet, setRelationshipSet] = useState<RelationshipWithCiType[]>([])
     const [configurationItemId, setConfigurationItemId] = useState<string>(updateCiItemId ? updateCiItemId : '')
-
-    const [allCIsInRelations, setCIsInRelations] = useState<CiWithRelsUi[]>()
 
     const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
     const invalidateCiByUuidCache = useInvalidateCiItemCache(updateCiItemId ? updateCiItemId : configurationItemId)
@@ -79,14 +77,9 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const relatedListAsTargets = filterRelatedList(relatedListData?.cisAsTargets, relationNodes)
 
     const { data: rels } = useReadCiNeighboursWithAllRels(updateCiItemId ?? '')
+    const allCIsInRelations: CiWithRelsUi[] = rels?.ciWithRels ?? []
 
     const { data: relationTypeData, isLoading: isRelationTypeDataLoading, isError: isRelationTypeDataError } = useGetRelationshipType(relationType)
-
-    useEffect(() => {
-        return () => {
-            setCIsInRelations(rels?.ciWithRels)
-        }
-    }, [rels])
 
     const entityIdToUpdate = {
         cicode: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais],
@@ -100,8 +93,6 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
         isLoading: isReadRelationshipsLoading,
         isError: isReadRelationshipsError,
     } = useReadRelationships(configurationItemId ?? '')
-
-    //load relationship type detail data
 
     const { constraintsData, unitsData } = useDetailData({
         entityStructure: relationTypeData,

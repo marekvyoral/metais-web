@@ -108,10 +108,13 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         }
         return acc
     }, {})
+    console.log(defaultItemAttributeValues)
+
     const methods = useForm({
         defaultValues: formatDateForFormDefaultValues(updateCiItemId ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
         resolver: yupResolver(generateFormSchema([ciTypeData as AttributeProfile, ...attProfiles], t, roleState?.selectedRole)),
     })
+
     const { handleSubmit, setValue, reset, formState } = methods
 
     const referenceIdValue = generatedEntityId?.ciurl?.split('/').pop()
@@ -199,7 +202,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                     </div>
                                 ))}
                         </div>
-                        {/* <NewRelationDataProvider>
+                        <NewRelationDataProvider>
                             <RelationForITVSExceptionSelect
                                 ciType="PO"
                                 relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
@@ -212,7 +215,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                 label={t('ITVSExceptions.relatedPO')}
                                 existingRelations={existingRelations}
                             />
-                        </NewRelationDataProvider> */}
+                        </NewRelationDataProvider>
                         {allCIsInRelations
                             ?.filter((ciRel) => ciRel.ci?.type === 'PO')
                             .map((ciWithRel) => (
