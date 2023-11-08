@@ -151,8 +151,7 @@ push-azure-registry:
   stage: push-azure-registry
   variables:
     APP_VERSION: "$APP_VERSION_T"  
-  script:
-      - echo "$APP_VERSION_T"
+  
   trigger:
     project: cd/metais3/azure-infrastructure/cd_applications/metais3-azure-registry
     branch: frontend
