@@ -41,7 +41,7 @@ root.render(
             <BrowserRouter>
                 <I18nextProvider i18n={initializeI18nInstance()}>
                     <QueryClientProvider client={queryClient}>
-                        <AuthProvider authConfig={authConfig}>
+                        <AuthProvider authConfig={authConfig()}>
                             <AuthContextProvider>
                                 <FilterContextProvider>
                                     <ActionSuccessProvider>
