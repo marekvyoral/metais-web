@@ -33,9 +33,9 @@ export const FileHistoryView: React.FC<IFileHistoryViewProps> = ({ data, item, h
         setFileLoading(false)
     }
     const {
-        state: { userInfo },
+        state: { user },
     } = useAuth()
-    const isUserLogged = userInfo !== null
+    const isUserLogged = user !== null
     const columns: ColumnDef<MetaVersion>[] = [
         {
             header: t('fileHistory.filename'),

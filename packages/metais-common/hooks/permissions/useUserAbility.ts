@@ -53,7 +53,7 @@ const defineAbilityForUser = (roles: string[] = [], entityName: string, create?:
 
 export const useUserAbility = (entityName?: string) => {
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
 
     return defineAbilityForUser(user?.roles, entityName ?? 'ci')
@@ -61,7 +61,7 @@ export const useUserAbility = (entityName?: string) => {
 
 export const useCreateCiAbility = (ciType?: CiType, entityName?: string) => {
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
 
     if (ciType && canCreateCiForType(ciType)) {

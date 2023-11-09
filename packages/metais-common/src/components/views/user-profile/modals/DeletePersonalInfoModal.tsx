@@ -23,7 +23,7 @@ type Props = {
 export const DeletePersonalInfoModal: React.FC<Props> = ({ isOpen, onClose, mutateCallback, isLoading }) => {
     const { t } = useTranslation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const {
         handleSubmit,

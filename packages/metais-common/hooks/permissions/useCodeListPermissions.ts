@@ -53,7 +53,7 @@ export const useCodeListPermissions = (id: string) => {
     const abilityContext = useAbilityContext()
 
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
 
     const { data: codeListData, isSuccess: isSuccessCodeListData } = useGetCodelistHeader(Number(id))
@@ -61,12 +61,12 @@ export const useCodeListPermissions = (id: string) => {
         query: { enabled: isSuccessCodeListData },
     })
     const { data: mainGestorIds } = useGetRoleIdsForRole({
-        identityGids: getRoleIdsForRole('SZC_HLGES', user ?? null),
+        identityGids: getRoleIdsForRole('SZC_HLGES', user),
         gids: getCurrentGestorsIds(codeListData?.mainCodelistManagers ?? []),
         enabled: !!user,
     })
     const { data: secondaryGestorIds } = useGetRoleIdsForRole({
-        identityGids: getRoleIdsForRole('SZC_VEDGES', user ?? null),
+        identityGids: getRoleIdsForRole('SZC_VEDGES', user),
         gids: getCurrentGestorsIds(codeListData?.codelistManagers ?? []),
         enabled: !!user,
     })

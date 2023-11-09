@@ -14,12 +14,9 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 export const useHistoryCiPermissions = (entityName: string, entityId: string) => {
     const abilityContext = useAbilityContext()
     const {
-        state: {
-            userInfo,
-            userContext: { token },
-        },
+        state: { user, token },
     } = useAuth()
-    const identityUuid = userInfo?.uuid
+    const identityUuid = user?.uuid
     const { data: ciTypeData, isLoading: ciTypeLoading } = useGetCiType(entityName ?? '')
 
     const {
@@ -53,14 +50,14 @@ export const useHistoryCiPermissions = (entityName: string, entityId: string) =>
     const { data: isOwnerByGid } = useIsOwnerByGid(
         {
             gids: [ciData?.metaAttributes?.owner ?? ''],
-            login: userInfo?.login,
+            login: user?.login,
         },
         { query: { enabled: !ciLoading && token !== null } },
     )
 
     useEffect(() => {
         const { can, rules } = new AbilityBuilder(createMongoAbility)
-        const myRoles = userInfo?.roles ?? []
+        const myRoles = user?.roles ?? []
         // CAN EDIT ENTITY
         const canHistoryCi = rightsData?.find((val) => myRoles?.indexOf(val?.roleName ?? '') > -1)
         const allProfileAttributes = ciTypeData?.attributeProfiles
@@ -79,6 +76,6 @@ export const useHistoryCiPermissions = (entityName: string, entityId: string) =>
         if (canHistoryCi) can(Actions.HISTORY, `ci.${ciData?.uuid}`)
 
         abilityContext.update(rules)
-    }, [rightsData, abilityContext, ciTypeData, isOwnerByGid, ciData, userInfo?.roles])
+    }, [rightsData, abilityContext, ciTypeData, isOwnerByGid, ciData, user?.roles])
     return {}
 }

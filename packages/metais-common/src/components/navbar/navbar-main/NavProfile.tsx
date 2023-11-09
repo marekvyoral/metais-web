@@ -1,20 +1,17 @@
 import classnames from 'classnames'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
+import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce'
 
 import { ProfileIcon } from '@isdd/metais-common/assets/images'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const NavProfile: React.FC = () => {
     const { t } = useTranslation()
-    const {
-        state: {
-            userContext: { tokenData, logOut },
-        },
-    } = useAuth()
+
+    const { logOut, tokenData } = useContext<IAuthContext>(AuthContext)
 
     const logoutURL =
         import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL +

@@ -46,13 +46,10 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
 }) => {
     const { t } = useTranslation()
     const {
-        state: {
-            userInfo,
-            userContext: { token },
-        },
+        state: { user, token },
     } = useAuth()
-    const isUserAdmin = userInfo?.roles.includes('R_ADMIN')
-    const isUserLogged = userInfo !== null
+    const isUserAdmin = user?.roles.includes('R_ADMIN')
+    const isUserLogged = user !== null
     const isInvalidated = projectData?.metaAttributes?.state === INVALIDATED
 
     const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`

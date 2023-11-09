@@ -42,7 +42,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
     const navigate = useNavigate()
     const location = useLocation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const userAbility = useAbilityContext()
 

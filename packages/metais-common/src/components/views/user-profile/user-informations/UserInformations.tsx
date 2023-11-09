@@ -17,7 +17,7 @@ type Props = {
 export const UserInformations: React.FC<Props> = ({ setIsEditable, setIsChangeSuccess }) => {
     const { t } = useTranslation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
 
     return (

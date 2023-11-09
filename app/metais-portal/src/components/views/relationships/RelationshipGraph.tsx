@@ -59,7 +59,7 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
     const [cannotDisplayAll, setCannotDisplayAll] = useState(false)
     const { t } = useTranslation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const { currentPreferences } = useUserPreferences()
     const [filterTypes, setFilterTypes] = useState<TypeFilter>({})

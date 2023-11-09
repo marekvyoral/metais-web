@@ -64,10 +64,10 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
 }) => {
     const { t } = useTranslation()
     const {
-        state: { userInfo },
+        state: { user },
     } = useAuth()
-    const isUserAdmin = userInfo?.roles.includes('R_ADMIN')
-    const isUserLogged = userInfo !== null
+    const isUserAdmin = user?.roles.includes('R_ADMIN')
+    const isUserLogged = user !== null
     const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED
     const [rowSelection, setRowSelection] = useState({})
 

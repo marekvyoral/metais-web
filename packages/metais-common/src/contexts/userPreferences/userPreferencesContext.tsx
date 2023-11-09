@@ -44,9 +44,8 @@ const UserPreferences = createContext<UserPreferencesContextValue>({
 const UserPreferencesProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { i18n } = useTranslation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
-
     const storedPreferences = localStorage.getItem(META_PREFERENCES_KEY + user?.login)
     const currentPreferences: IUserPreferences = storedPreferences ? JSON.parse(storedPreferences) : {}
 

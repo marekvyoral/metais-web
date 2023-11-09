@@ -21,7 +21,7 @@ interface ITaskDetailContainer {
 export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) => {
     const { t } = useTranslation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const historyColumns: ColumnDef<TaskHistory>[] = [
         {
@@ -90,7 +90,7 @@ export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) 
                     changedBy: user?.login,
                     assignedTo: assignToUser ? (selectedLogin ? selectedLogin?.login : user?.login) : selectedGroup?.orgName,
                     activity: ActivityType.USER_CHANGED,
-                    assignedToIds: [user?.login || '', ...getGidsForUserOrgRoles(user ?? null), ...getGidsForUserRoles(user ?? null)],
+                    assignedToIds: [user?.login || '', ...getGidsForUserOrgRoles(user), ...getGidsForUserRoles(user)],
                 },
             },
             {

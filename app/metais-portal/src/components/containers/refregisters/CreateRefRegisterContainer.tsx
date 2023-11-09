@@ -48,13 +48,13 @@ const POFilter = {
 export const CreateRefRegisterContainer = ({ View }: ICreateRefRegisterContainer) => {
     const { t } = useTranslation()
 
-    const { userInfo } = useUserInfo()
+    const { user } = useUserInfo()
     const userGroupsFilter = {
         filter: {
             metaAttributes: {
                 state: ['DRAFT'],
             },
-            uuid: userInfo?.groupData.map((group: Group) => group.orgId),
+            uuid: user?.groupData.map((group: Group) => group.orgId),
         },
     }
 

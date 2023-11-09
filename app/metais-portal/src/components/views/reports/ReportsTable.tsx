@@ -22,7 +22,7 @@ export const ReportsTable: React.FC<IReportsTable> = ({ data, pagination, handle
     const { t } = useTranslation()
     const location = useLocation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const isUserLogged = !!user
     const columns: Array<ColumnDef<TableCols>> = [
