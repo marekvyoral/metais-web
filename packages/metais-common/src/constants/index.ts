@@ -175,3 +175,6 @@ export const INVALIDATED = 'INVALIDATED'
 
 export const ENITTY_CIEL = 'Ciel'
 export const ENTITY_PRINCIP = 'Princip'
+
+export const INACTIVE_LOGOUT_TIME = import.meta.env.VITE_INACTIVE_LOGOUT_TIME
+export const INACTIVE_WARNING_TIME = import.meta.env.VITE_INACTIVE_WARNING_TIME

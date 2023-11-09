@@ -1801,5 +1801,9 @@
         "cancel": "Cancel",
         "editSuccess": "Edit of {{relationName}} was successful.",
         "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support."
+    },
+    "autoLogout": {
+        "warningMessage": "In {{countDown}} you will be logged out due to inactitvity.",
+        "loading": "Proccessing logout"
     }
 }

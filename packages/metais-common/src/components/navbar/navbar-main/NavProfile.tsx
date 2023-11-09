@@ -1,29 +1,26 @@
 import classnames from 'classnames'
-import React, { useContext } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
-import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce'
 
 import { ProfileIcon } from '@isdd/metais-common/assets/images'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useHandleLogout } from '@isdd/metais-common/hooks/useHandleLogout'
+import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 export const NavProfile: React.FC = () => {
     const { t } = useTranslation()
 
-    const { logOut } = useContext<IAuthContext>(AuthContext)
     const {
         state: { user },
     } = useAuth()
 
-    const logoutURL =
-        import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL +
-        (import.meta.env.VITE_IAM_OIDC_PATH ? `/${import.meta.env.VITE_IAM_OIDC_PATH}/logout` : '/logout')
+    const { logoutUser } = useHandleLogout()
 
     const handleLogout = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault()
-        fetch(logoutURL, { method: 'POST' }).finally(() => logOut())
+        logoutUser()
     }
     const location = useLocation()
 

@@ -1820,5 +1820,9 @@
         "cancel": "Zrušiť",
         "editSuccess": "Úprava {{relationName}} prebehla úspešne.",
         "editError": "Pri úprave {{relationName}} sa vyskytla chyba. Skúste akciu zopakovať a ak chyba pretrváva, kontaktujte podporu."
+    },
+    "autoLogout": {
+        "warningMessage": "O {{countDown}} sekúnd budete kvôli inaktivite odhlásený.",
+        "loading": "Spracúvame odhlásenie"
     }
 }

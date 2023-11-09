@@ -12,6 +12,7 @@ import { FilterContextProvider } from '@isdd/metais-common/contexts/filter/filte
 import { ActionSuccessProvider } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { UserPreferencesProvider } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { AuthProvider } from 'react-oauth2-code-pkce'
+import { AutoLogout } from '@isdd/metais-common/src/components/auto-logout/AutoLogout'
 
 import { App } from '@/App'
 import { reportWebVitals } from '@/reportWebVitals'
@@ -20,9 +21,17 @@ import './index.scss'
 
 document.body.classList.add('js-enabled')
 const root = createRoot(document.getElementById('root') as HTMLElement)
+
+const CACHE_TIME = import.meta.env.VITE_CACHE_TIME
+const STALE_TIME = import.meta.env.VITE_CACHE_TIME
+
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
+            enabled: true,
+            keepPreviousData: true,
+            staleTime: CACHE_TIME,
+            cacheTime: STALE_TIME,
             refetchOnWindowFocus: false,
         },
     },
@@ -39,15 +48,17 @@ root.render(
                 <QueryClientProvider client={queryClient}>
                     <AuthProvider authConfig={authConfig({ clientId: CLIENT_ID, redirectUri: BASENAME + '/', scope: SCOPE })}>
                         <AuthContextProvider>
-                            <FilterContextProvider>
-                                <ActionSuccessProvider>
-                                    <UserPreferencesProvider>
-                                        <DndProvider backend={HTML5Backend}>
-                                            <App />
-                                        </DndProvider>
-                                    </UserPreferencesProvider>
-                                </ActionSuccessProvider>
-                            </FilterContextProvider>
+                            <AutoLogout>
+                                <FilterContextProvider>
+                                    <ActionSuccessProvider>
+                                        <UserPreferencesProvider>
+                                            <DndProvider backend={HTML5Backend}>
+                                                <App />
+                                            </DndProvider>
+                                        </UserPreferencesProvider>
+                                    </ActionSuccessProvider>
+                                </FilterContextProvider>
+                            </AutoLogout>
                         </AuthContextProvider>
                     </AuthProvider>
                 </QueryClientProvider>
