@@ -35,7 +35,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError, isLoa
     const [openCreateFormDialog, setOpenCreateFormDialog] = useState<boolean>(false)
     const navigate = useNavigate()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const { register, handleSubmit, setValue, watch, getValues, formState } = useForm({
         defaultValues: {

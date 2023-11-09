@@ -82,7 +82,7 @@ interface GroupDetailContainer {
 
 const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const isUserLogged = !!user
 
@@ -182,7 +182,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
             setAddModalOpen={setAddModalOpen}
             successfulUpdatedData={successfulUpdatedData}
             setSuccessfulUpdatedData={setSuccessfulUpdatedData}
-            user={user ?? null}
+            user={user}
             rowSelection={rowSelection}
             isIdentitiesLoading={isLoading}
             selectableColumnsSpec={columnsWithPermissions}

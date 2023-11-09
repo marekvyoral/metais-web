@@ -11,7 +11,7 @@ type Props = {
 
 export const UserRightsPOItem: React.FC<Props> = ({ poItem }) => {
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     return (
         <li>

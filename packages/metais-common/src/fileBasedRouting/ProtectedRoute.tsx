@@ -13,9 +13,7 @@ const ProtectedRoute = ({ element, slug }: iProtectedRoute) => {
     const [notAuthorized, setNotAuthorized] = useState(false)
     const navigate = useNavigate()
     const {
-        state: {
-            userContext: { token },
-        },
+        state: { token },
     } = useAuth()
     const actions = Object.values(Actions)
     const selectedAbility = actions?.find((action) => slug.includes(action))

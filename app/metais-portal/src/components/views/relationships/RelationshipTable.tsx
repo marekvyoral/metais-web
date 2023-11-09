@@ -39,7 +39,7 @@ export const RelationshipsTable: React.FC<RelationshipsTable> = ({
 }) => {
     const { t } = useTranslation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const { currentPreferences } = useUserPreferences()
 

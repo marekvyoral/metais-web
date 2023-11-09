@@ -28,7 +28,7 @@ const DERIVED_PREFIX = 'DERIVED_'
 
 export const useEntityRelationsTypesCount = (id: string, technicalName: string) => {
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const { currentPreferences } = useUserPreferences()
     const isUserLogged = !!user

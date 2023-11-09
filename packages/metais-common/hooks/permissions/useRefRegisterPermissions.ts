@@ -14,7 +14,7 @@ export const useRefRegisterPermissions = (
 ) => {
     const abilityContext = useAbilityContext()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
 
     const hasRoleMFSR = () => {

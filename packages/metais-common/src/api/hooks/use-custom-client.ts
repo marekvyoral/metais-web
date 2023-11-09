@@ -1,5 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce'
+import { useContext } from 'react'
 
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
@@ -18,10 +20,9 @@ export type CustomClient<T> = (data: {
 
 export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T) => void): CustomClient<T> => {
     const {
-        state: {
-            userContext: { token, logOut },
-        },
+        state: { token },
     } = useAuth()
+    const { logOut } = useContext<IAuthContext>(AuthContext)
     const navigate = useNavigate()
     const location = useLocation()
     const { i18n } = useTranslation()

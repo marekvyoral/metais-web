@@ -45,10 +45,7 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
     const { register, handleSubmit, reset, formState } = useForm()
     const baseURL = import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL
     const {
-        state: {
-            userInfo,
-            userContext: { token },
-        },
+        state: { user, token },
     } = useAuth()
     const genetateCodeAndUrl = useGenerateCodeAndURLHook()
     const storeActivity = useStoreGraphHook()
@@ -97,7 +94,7 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
         try {
             let docExists = false
             const isOwner = await checkIsOwnerByGid({
-                login: userInfo?.login,
+                login: user?.login,
                 gids: [project?.metaAttributes?.owner ?? ''],
             })
             if (isOwner.isOwner?.[0].owner) {

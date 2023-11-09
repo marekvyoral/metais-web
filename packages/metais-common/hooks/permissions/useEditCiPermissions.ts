@@ -16,10 +16,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 export const useEditCiPermissions = (entityName: string, entityId: string) => {
     const abilityContext = useAbilityContext()
     const {
-        state: {
-            userInfo: user,
-            userContext: { token },
-        },
+        state: { user, token },
     } = useAuth()
     const identityUuid = user?.uuid
     const { data: ciTypeData, isLoading: ciTypeLoading } = useGetCiType(entityName ?? '')

@@ -11,7 +11,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 export const useGroupsPermissions = (groupId?: string) => {
     const abilityContext = useAbilityContext()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const identityUuid = user?.uuid
     const { data: membershipData } = useFindMembershipData(identityUuid ?? '')

@@ -22,7 +22,7 @@ export const UserPreferencesPage: React.FC = () => {
     const { t, i18n } = useTranslation()
     const location = useLocation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
 
     const { isActionSuccess, setIsActionSuccess } = useActionSuccess()

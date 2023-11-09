@@ -27,10 +27,7 @@ interface UserManagementContainerProps {
 
 const UserManagementListContainer: React.FC<UserManagementContainerProps> = ({ View }) => {
     const {
-        state: {
-            userInfo: user,
-            userContext: { token },
-        },
+        state: { user, token },
     } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()

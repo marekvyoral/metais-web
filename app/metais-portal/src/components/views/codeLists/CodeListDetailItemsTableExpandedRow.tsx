@@ -35,7 +35,7 @@ export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTa
         i18n: { language },
     } = useTranslation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const ability = useAbilityContext()
 

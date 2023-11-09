@@ -37,10 +37,7 @@ type UserInformationForm = {
 export const EditableUserInformations: React.FC<Props> = ({ setIsEditable, setIsChangeSuccess }) => {
     const { t } = useTranslation()
     const {
-        state: {
-            userInfo,
-            userContext: { token },
-        },
+        state: { user, token },
     } = useAuth()
     const queryClient = useQueryClient()
 
@@ -61,10 +58,10 @@ export const EditableUserInformations: React.FC<Props> = ({ setIsEditable, setIs
         formState: { isSubmitting, isValidating, errors },
     } = useForm<UserInformationForm>({
         defaultValues: {
-            [UserInformationFormKeysEnum.NAME]: userInfo?.displayName,
-            [UserInformationFormKeysEnum.POSITION]: userInfo?.position != NULL ? userInfo?.position ?? '' : '',
-            [UserInformationFormKeysEnum.PHONE]: userInfo?.phone,
-            [UserInformationFormKeysEnum.EMAIL]: userInfo?.email,
+            [UserInformationFormKeysEnum.NAME]: user?.displayName,
+            [UserInformationFormKeysEnum.POSITION]: user?.position != NULL ? user?.position ?? '' : '',
+            [UserInformationFormKeysEnum.PHONE]: user?.phone,
+            [UserInformationFormKeysEnum.EMAIL]: user?.email,
         },
         resolver: yupResolver(userInformationsSchema),
     })

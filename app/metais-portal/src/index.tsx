@@ -11,7 +11,8 @@ import { createRoot } from 'react-dom/client'
 import { I18nextProvider } from 'react-i18next'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthContextProvider } from '@isdd/metais-common/contexts/auth/authContext'
-import { AuthProvider, TAuthConfig } from 'react-oauth2-code-pkce'
+import { authConfig } from '@isdd/metais-common/contexts/auth/authConfig'
+import { AuthProvider } from 'react-oauth2-code-pkce'
 
 import { App } from '@/App'
 import '@/index.scss'
@@ -33,19 +34,6 @@ const queryClient = new QueryClient({
         },
     },
 })
-
-const baseUrl =
-    import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL + (import.meta.env.VITE_IAM_OIDC_PATH ? `/${import.meta.env.VITE_IAM_OIDC_PATH}` : '')
-
-const authConfig: TAuthConfig = {
-    clientId: 'webPortalClient',
-    extraAuthParameters: { response_type: 'code' },
-    authorizationEndpoint: baseUrl + '/authorize',
-    tokenEndpoint: baseUrl + '/token',
-    redirectUri: window.location.protocol + '//' + window.location.host,
-    scope: 'openid profile c_ui',
-    autoLogin: false,
-}
 
 root.render(
     <React.StrictMode>

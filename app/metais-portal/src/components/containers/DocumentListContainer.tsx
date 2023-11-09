@@ -70,7 +70,7 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
 
     const getNames = useGetIdentitiesByLoginsBulkHook()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const [namesData, setNamesData] = useState<{ login: string; fullName: string }[]>()
 
