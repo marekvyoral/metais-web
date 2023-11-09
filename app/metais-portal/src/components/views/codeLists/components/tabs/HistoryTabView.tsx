@@ -91,7 +91,16 @@ export const HistoryTabView: React.FC<CodeListDetailHistoryViewProps> = ({ data,
                     </div>
                 )}
             />
-            <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
+            <ActionsOverTable
+                pagination={{
+                    pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+                    pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
+                    dataLength: data?.history?.codelistHistoriesCount ?? 0,
+                }}
+                entityName=""
+                handleFilterChange={handleFilterChange}
+                hiddenButtons={{ SELECT_COLUMNS: true }}
+            />
             <Table
                 data={data?.history?.codelistHistories}
                 columns={columns}

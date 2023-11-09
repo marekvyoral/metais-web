@@ -3,14 +3,13 @@ import { ISelectColumnType, TableSelectColumns } from '@isdd/idsk-ui-kit'
 import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
 import { PageSizeSelect } from '@isdd/idsk-ui-kit/page-size-select/PageSizeSelect'
 import { CiTableSelectColumns, IColumnSectionType } from '@isdd/idsk-ui-kit/src/ci-table-select-columns/CiTableSelectColumns'
-import { IFilter } from '@isdd/idsk-ui-kit/types'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import classnames from 'classnames'
 import { PropsWithChildren, default as React, useId } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './actionsOverTable.module.scss'
 
-import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { Attribute, AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { notificationDefaultSelectedColumns } from '@isdd/metais-common/constants'
 import { Actions, useCreateCiAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
@@ -32,7 +31,6 @@ export type HiddenButtons = {
 }
 interface IActionsOverTableProps extends PropsWithChildren {
     pagingOptions?: { value: string; label: string; disabled?: boolean }[]
-    pageSize?: number
     handleFilterChange?: (filter: IFilter) => void
     entityName: string
     storeUserSelectedColumns?: (columnSelection: {
@@ -53,6 +51,7 @@ interface IActionsOverTableProps extends PropsWithChildren {
     metaAttributesColumnSection?: IColumnSectionType
     handlePagingSelect?: (page: string) => void
     simpleTableColumnsSelect?: ISimpleTableSelectParams
+    pagination: Pagination
 }
 
 export enum FileImportStepEnum {
@@ -79,6 +78,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     handlePagingSelect,
     simpleTableColumnsSelect,
     children,
+    pagination,
 }) => {
     const ability = useCreateCiAbility(ciTypeData, entityName)
     const { t } = useTranslation()
@@ -108,7 +108,13 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
     }
 
     const defaultHandlePagingSelect = (page: string) => {
-        handleFilterChange?.({ pageSize: parseInt(page) ?? BASE_PAGE_SIZE })
+        const parsedNewPageSize = parseInt(page)
+
+        if (pagination.pageNumber * parsedNewPageSize - parsedNewPageSize > pagination.dataLength) {
+            handleFilterChange?.({ pageSize: parsedNewPageSize, pageNumber: 1 })
+        } else {
+            handleFilterChange?.({ pageSize: parsedNewPageSize })
+        }
     }
 
     return (
@@ -169,7 +175,7 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                         />
                     </Can>
                 )}
-                {!hiddenButtons?.PAGING && (
+                {!hiddenButtons?.PAGING && pagingOptions && (
                     <PageSizeSelect
                         id={pagingSelectId}
                         pagingOptions={pagingOptions}

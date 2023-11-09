@@ -76,7 +76,12 @@ export const MeetingActorsTable = ({ data, error, isLoading }: MeetingActorsTabl
     ]
     return (
         <div>
-            <ActionsOverTable handlePagingSelect={handlePagingSelect} entityName={''} hiddenButtons={{ SELECT_COLUMNS: true }} />
+            <ActionsOverTable
+                pagination={{ pageNumber: currentPage, pageSize, dataLength: data?.meetingActors?.length ?? 0 }}
+                handlePagingSelect={handlePagingSelect}
+                entityName={''}
+                hiddenButtons={{ SELECT_COLUMNS: true }}
+            />
             <Table data={data?.meetingActors?.slice(startOfList, endOfList)} columns={columns} isLoading={isLoading} error={error} />
             <PaginatorWrapper
                 pageSize={pageSize}

@@ -14,6 +14,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 const DetailUserManagement: React.FC = () => {
     const { userId } = useParams()
     const { t } = useTranslation()
+
     return (
         <>
             <BreadCrumbs

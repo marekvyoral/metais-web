@@ -62,6 +62,7 @@ export interface NotificationsListViewParams {
     >
     handleFilterChange: (changedFilter: IFilter) => void
     isMutateSuccess: boolean
+    filterParams: FilterData
 }
 
 interface INotificationsListContainer {
@@ -226,6 +227,7 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
             isMutateLoading={isMutateLoading}
             isMutateError={isMutateError}
             isMutateSuccess={isMutateSuccess}
+            filterParams={filter}
         />
     )
 }

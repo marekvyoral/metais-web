@@ -117,6 +117,11 @@ export const UserManagementListPageView: React.FC<UserManagementListPageViewProp
                 )}
             />
             <ActionsOverTable
+                pagination={{
+                    pageNumber: userManagementFilter.pageNumber ?? BASE_PAGE_NUMBER,
+                    pageSize: userManagementFilter.pageSize ?? BASE_PAGE_SIZE,
+                    dataLength: data.dataLength,
+                }}
                 handleFilterChange={handleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 createButton={

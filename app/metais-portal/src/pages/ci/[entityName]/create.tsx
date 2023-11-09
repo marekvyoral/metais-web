@@ -15,7 +15,7 @@ const CreateEntityPage: React.FC = () => {
 
     let { entityName } = useGetEntityParamsFromUrl()
     entityName = shouldEntityNameBePO(entityName ?? '')
-    document.title = `${t('titles.ciCreate', { ci: entityName })} | MetaIS`
+    document.title = `${t('titles.ciCreateEntity', { ci: entityName })} | MetaIS`
     return (
         <>
             <BreadCrumbs
@@ -23,7 +23,7 @@ const CreateEntityPage: React.FC = () => {
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
                     { label: entityName ?? '', href: `/ci/${entityName}` },
-                    { label: t('breadcrumbs.ciCreate', { entityName: entityName }), href: `/ci/create` },
+                    { label: t('breadcrumbs.ciCreateEntity', { entityName: entityName }), href: `/ci/create` },
                 ]}
             />
             <MainContentWrapper>

@@ -292,6 +292,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                 />
             )}
             <ActionsOverTable
+                pagination={pagination}
                 handleFilterChange={handleFilterChange}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}
@@ -318,7 +319,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                             onClick={() => {
                                                 handleReInvalidate(
                                                     Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
-                                                    setShowReInvalidate,
+                                                    () => setShowReInvalidate(true),
                                                     open,
                                                 )
                                             }}
@@ -330,7 +331,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                             onClick={() => {
                                                 handleInvalidate(
                                                     Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
-                                                    setShowInvalidate,
+                                                    () => setShowInvalidate(true),
                                                     open,
                                                     isDocumentsUpdatable(Object.values(selectedItems).flatMap((i) => i)),
                                                 )

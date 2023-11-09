@@ -214,7 +214,7 @@ export const UserManagementListTable: React.FC<UserManagementTableProps> = ({
     return (
         <Table
             data={data.list}
-            columns={columns}
+            columns={columns.map((item) => ({ ...item, size: 150 }))}
             pagination={{ pageIndex: pageNumber ?? BASE_PAGE_NUMBER, pageSize: pageSize ?? BASE_PAGE_SIZE }}
             sort={filter.sort ?? []}
             isRowSelected={isRowSelected}

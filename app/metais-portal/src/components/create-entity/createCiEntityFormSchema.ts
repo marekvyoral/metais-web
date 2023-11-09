@@ -75,7 +75,7 @@ export const generateFormSchema = (
         const isEmail = attribute?.name?.toLowerCase() === 'email'
         const isPhone = attribute?.name?.toLowerCase() === 'phone'
 
-        const isRequired = attribute?.mandatory?.type === 'critical'
+        const isRequired = attribute?.mandatory?.type === 'critical' && !attribute.readOnly
 
         const hasConstraints = attribute?.constraints && attribute.constraints.length > 0
 

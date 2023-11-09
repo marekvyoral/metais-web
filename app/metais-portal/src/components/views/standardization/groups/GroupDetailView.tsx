@@ -7,6 +7,7 @@ import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/
 import { Row } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 
 import GroupMembersFilter from './components/GroupMembersFilter'
 import { sendBatchEmail } from './groupMembersTableUtils'
@@ -74,9 +75,10 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
             <MainContentWrapper>
                 <GroupDetailBaseInfo infoData={group} />
                 <TextHeading size="L">{t('groups.listOfMembers')}</TextHeading>
-                <GroupMembersFilter defaultFilterValues={identitiesFilter} isKsisvs={group?.shortName === 'KSISCS'} filter={filter} />
+                <GroupMembersFilter defaultFilterValues={identitiesFilter} isKsisvs={group?.shortName === KSIVS_SHORT_NAME} filter={filter} />
 
                 <ActionsOverTable
+                    pagination={{ dataLength: identitiesData?.count ?? 0, pageNumber: Number(filter.pageNumber), pageSize: Number(filter.pageSize) }}
                     handleFilterChange={handleFilterChange}
                     entityName="group"
                     hiddenButtons={{ SELECT_COLUMNS: true }}
@@ -112,7 +114,7 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                         }}
                         isLoading={isIdentitiesLoading}
                         sort={filter.sort ?? defaultSort}
-                        columns={selectableColumnsSpec}
+                        columns={selectableColumnsSpec.map((item) => ({ ...item, size: 200 }))}
                         data={tableData}
                         isRowSelected={isRowSelected}
                     />

@@ -311,6 +311,7 @@
         "saveChanges": "Save changes"
     },
     "errors": {
+        "NoChangesDetected": "No changes detected",
         "fixLink": "Correct",
         "invalidEntityId": "Invalid entity",
         "CL08": {
@@ -642,15 +643,15 @@
         "role": "Role",
         "addNewRow": "Add new row",
         "units": "(Value in {{units}})",
-        "redirectLoading": "Processing creation of new component",
-        "redirectLoadingEdit": "Updating data on component",
-        "redirectError": "Failed to process new component creation. Check notifications for more information.",
-        "redirectErrorEdit": "Failed to process updating of current component. Check notifications for more information.",
+        "redirectLoading": "Processing creation of new item",
+        "redirectLoadingEdit": "Updating data on item",
+        "redirectError": "Failed to process new item creation. Check notifications for more information.",
+        "redirectErrorEdit": "Failed to process updating of current item. Check notifications for more information.",
         "mutationError": "Error while executing your action. Please try again or contact support.",
         "tooManyFetchesError": "There was a mistake during processing. Action took too long. Check notifications for more information.",
         "orgAndRoleError": {
             "title": "Missing rights for organization",
-            "message": "You are missing rights for creating component under this organization"
+            "message": "You are missing rights for creating item under this organization"
         }
     },
     "table": {
@@ -977,6 +978,9 @@
         "requestCreate": "Create request to add a codelist",
         "codeListsList": "List of codelists",
         "publicCodeListsList": "List of published codelists",
+        "ciCreateEntity": "Create new item of type {{entityName}}",
+        "compareHistory": "Compare history",
+        "ciEditEntity": "Edit of component"
     },
     "codeList": {
         "descriptionError": "Description is required",
@@ -1357,7 +1361,7 @@
         "reportDetail": "Report detail",
         "ciList": "List of {{ci}} items",
         "ciDetail": "Detail of {{ci}} item",
-        "ciCreate": "Creation of {{ci}} item",
+        "ciCreateEntity": "Creation of {{ci}} item",
         "ciEdit": "Edit of {{ci}} item",
         "PO_IS": "Processors of IT development concepts",
         "PO_ISDetail": "Detail of IS",

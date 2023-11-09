@@ -212,7 +212,16 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                             </div>
                         )}
                     />
-                    <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
+                    <ActionsOverTable
+                        pagination={{
+                            pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+                            pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
+                            dataLength: data?.dataLength ?? 0,
+                        }}
+                        entityName=""
+                        handleFilterChange={handleFilterChange}
+                        hiddenButtons={{ SELECT_COLUMNS: true }}
+                    />
                     <Table
                         data={data?.list}
                         columns={columns}

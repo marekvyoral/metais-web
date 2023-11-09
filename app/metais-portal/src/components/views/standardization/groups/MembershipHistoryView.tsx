@@ -66,7 +66,12 @@ export const MembershipHistoryView: React.FC<IMembershipHistoryView> = ({
                     <Button label={t('groups.show')} className={'idsk-button'} type="submit" disabled={!selectedGroup || !selectedDate} />
                 </form>
             </div>
-            <ActionsOverTable entityName="" hiddenButtons={{ SELECT_COLUMNS: true }} handleFilterChange={handlePerPageChange} />
+            <ActionsOverTable
+                pagination={{ pageNumber, pageSize, dataLength: membershipHistory?.length ?? 0 }}
+                entityName=""
+                hiddenButtons={{ SELECT_COLUMNS: true }}
+                handleFilterChange={handlePerPageChange}
+            />
             <QueryFeedback loading={isLoading}>
                 <Table<StdHistory> columns={columns} data={membershipHistory?.slice(start, end)} />
             </QueryFeedback>
