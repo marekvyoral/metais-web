@@ -307,6 +307,7 @@
         "moreTabs": "Viac"
     },
     "errors": {
+        "NoChangesDetected": "Nezaznamenali sme žiadne zmeny",
         "fixLink": "Opraviť",
         "invalidEntityId": "Nevalidná entita",
         "CL08": {
@@ -645,15 +646,15 @@
         "role": "Rola",
         "addNewRow": "Pridať nový riadok",
         "units": "(Hodnota v {{units}})",
-        "redirectLoading": "Spracúva sa vytvorenie nového komponentu",
+        "redirectLoading": "Spracúva sa vytvorenie novej položky",
         "redirectLoadingEdit": "Prebieha aktualizácia údajov na entite",
-        "redirectError": "Nepodarilo sa spracovať vytvorenie nového komponentu. Ďalšie informácie nájdete v upozorneniach.",
-        "redirectErrorEdit": "Nepodarila sa spracovať aktualizáciu nového komponentu. Ďalšie informácie nájdete v upozorneniach.",
+        "redirectError": "Nepodarilo sa spracovať vytvorenie novej položky. Ďalšie informácie nájdete v upozorneniach.",
+        "redirectErrorEdit": "Nepodarila sa spracovať aktualizáciu novej položky. Ďalšie informácie nájdete v upozorneniach.",
         "mutationError": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.",
         "tooManyFetchesError": "Pri spracovaní došlo k chybe. Akcia trvala príliš dlho. Ďalšie informácie nájdete v upozorneniach.",
         "orgAndRoleError": {
             "title": "Chýbajúce práva pre organizáciu",
-            "message": "Chýbajú vám práva na vytvorenie komponentu pod touto organizáciou"
+            "message": "Chýbajú vám práva na vytvorenie položky pod touto organizáciou"
         }
     },
     "table": {
@@ -983,8 +984,11 @@
         "requestCreate": "Žiadosť o zaradenie číselníka",
         "codeListsList": "Zoznam číselníkov",
         "publicCodeListsList": "Zoznam publikovaných číselníkov",
+        "ciCreateEntity": "Vytvorenie novej položky typu {{entityName}}",
+        "compareHistory": "Porovnávanie histórie",
         "standardization": "Štandardizácia",
-        "draftsList": "Zoznam návrhov"
+        "draftsList": "Zoznam návrhov",
+        "ciEditEntity": "Editácia položky"
     },
     "codeList": {
         "descriptionError": "Popis je povinný",
@@ -1290,7 +1294,7 @@
         "reportDetail": "Detail reportu",
         "ciList": "Zoznam položiek {{ci}}",
         "ciDetail": "Detail položky {{ci}}",
-        "ciCreate": "Vytvorenie položky {{ci}}",
+        "ciCreateEntity": "Vytvorenie položky {{ci}}",
         "ciEdit": "Úprava položky {{ci}}",
         "PO_IS": "Spracovatelia koncepcií rozvoja IT",
         "PO_ISDetail": "Detail IS",

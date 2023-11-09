@@ -15,7 +15,7 @@ import {
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { TextLink } from '@isdd/idsk-ui-kit/typography/TextLink'
 import { ApiCodelistItemName, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, RequestListState } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
 import { ActionsOverTable, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
@@ -156,7 +156,13 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                             )}
                         />
                         <ActionsOverTable
+                            pagination={{
+                                pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+                                pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
+                                dataLength: data?.dataLength || 0,
+                            }}
                             entityName="requestList"
+                            pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                             createButton={
                                 userAbility.can(RequestListActions.CREATE, entityName) && (
                                     <CreateEntityButton

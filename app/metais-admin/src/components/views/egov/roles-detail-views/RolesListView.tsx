@@ -67,7 +67,15 @@ const RoleListView: React.FC<RoleListViewParams> = ({
                 getCellContext: (ctx: CellContext<Role, unknown>) => ctx?.getValue?.(),
             },
         },
-    ].map((e) => ({ id: e.technicalName, header: e.name, accessorKey: e.technicalName, enableSorting: true, key: e.technicalName, meta: e.meta }))
+    ].map((e) => ({
+        id: e.technicalName,
+        header: e.name,
+        accessorKey: e.technicalName,
+        enableSorting: true,
+        key: e.technicalName,
+        meta: e.meta,
+        size: 200,
+    }))
 
     const { handleFilterChange } = useFilterParams(defaultFilterValues)
     const myHandleFilterChange = (myFilter: IFilter) => {
@@ -79,7 +87,7 @@ const RoleListView: React.FC<RoleListViewParams> = ({
         {
             id: 'edit',
             header: () => <></>,
-            size: 210,
+            size: 200,
             cell: ({ cell }) => (
                 <ButtonPopup
                     key={cell.id}
@@ -148,6 +156,7 @@ const RoleListView: React.FC<RoleListViewParams> = ({
                     </FlexColumnReverseWrapper>
                     <RolesFilter tableRoleGroups={tableRoleGroups} />
                     <ActionsOverTable
+                        pagination={{ ...pagination, dataLength: rolesPages ?? 0 }}
                         entityName=""
                         pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                         handleFilterChange={myHandleFilterChange}
@@ -157,6 +166,7 @@ const RoleListView: React.FC<RoleListViewParams> = ({
                                 onClick={() => navigate(AdminRouteNames.ROLE_NEW, { state: { from: location } })}
                             />
                         }
+                        hiddenButtons={{ SELECT_COLUMNS: true }}
                     />
                     <Table<Role>
                         onSortingChange={(newSort) => {

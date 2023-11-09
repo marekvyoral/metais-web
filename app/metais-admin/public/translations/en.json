@@ -746,7 +746,8 @@
         "containerQueryError": "Loading of data for user management failed.",
         "noUserId": "There was mistake in fetching data.",
         "mutationError": "Error while performing action.",
-        "emailFormat": "Bad email format"
+        "emailFormat": "Bad email format",
+        "noChangesDetected": "No changes were detected."
     },
     "accordion": {
         "openAll": "Open all",

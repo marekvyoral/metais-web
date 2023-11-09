@@ -186,6 +186,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoad
                 )}
             />
             <ActionsOverTable
+                pagination={{ pageNumber: currentPage, pageSize, dataLength: meetingsCount ?? 0 }}
                 createButton={
                     <CreateEntityButton
                         label={t('meetings.addNewMeeting')}

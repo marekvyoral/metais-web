@@ -158,6 +158,11 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
             />
             <MutationFeedback success={isSuccessMutation} successMessage={t('codeListDetail.feedback.editCodeListItems')} error={undefined} />
             <ActionsOverTable
+                pagination={{
+                    pageNumber: filter.pageNumber || BASE_PAGE_NUMBER,
+                    pageSize: filter.pageSize || BASE_PAGE_SIZE,
+                    dataLength: items?.codelistsItemCount || 0,
+                }}
                 entityName=""
                 handleFilterChange={handleFilterChange}
                 hiddenButtons={{ SELECT_COLUMNS: true }}

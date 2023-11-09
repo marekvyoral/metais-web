@@ -1,6 +1,6 @@
-import { BreadCrumbs, Button, CheckBox, Filter, HomeIcon, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, CheckBox, Filter, HomeIcon, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Notification } from '@isdd/metais-common/api/generated/notifications-swagger'
-import { ALL_EVENT_TYPES } from '@isdd/metais-common/constants'
+import { ALL_EVENT_TYPES, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { Row } from '@tanstack/react-table'
@@ -30,6 +30,7 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
     isMutateError,
     isMutateLoading,
     isMutateSuccess,
+    filterParams,
 }) => {
     const { t } = useTranslation()
 
@@ -81,6 +82,11 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
                     />
 
                     <ActionsOverTable
+                        pagination={{
+                            pageNumber: filterParams.pageNumber ?? BASE_PAGE_NUMBER,
+                            pageSize: filterParams.pageSize ?? BASE_PAGE_SIZE,
+                            dataLength: data?.pagination?.totalItems ?? 0,
+                        }}
                         entityName="notification"
                         simpleTableColumnsSelect={{ selectedColumns, setSelectedColumns }}
                         handleFilterChange={handleFilterChange}
@@ -119,6 +125,12 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
                         data={data?.notifications}
                         isRowSelected={isRowSelected}
                         isRowBold={isRowBold}
+                    />
+                    <PaginatorWrapper
+                        pageNumber={filterParams.pageNumber ?? BASE_PAGE_NUMBER}
+                        pageSize={filterParams.pageSize ?? BASE_PAGE_SIZE}
+                        dataLength={data?.pagination?.totalItems ?? 0}
+                        handlePageChange={(filterChange) => handleFilterChange({ pageNumber: filterChange.pageNumber })}
                     />
                 </QueryFeedback>
             </MainContentWrapper>

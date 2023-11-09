@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useUpdateOrCreateWithGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { InputNames, UserDetailForm } from './UserDetailForm'
 import { OrgData, UserRolesForm } from './UserRolesForm'
@@ -28,9 +30,13 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
+
+    const { setIsActionSuccess } = useActionSuccess()
+
     const managementListPath = '/managementList'
     const detailPath = '/detail'
     const userIdPath = `/${detailData?.userData?.uuid}`
+    const NO_CHANGES_DETECTED = 'NoChangesDetected'
 
     const methods = useForm({ resolver: yupResolver(getUserManagementFormSchema(t)) })
 
@@ -38,10 +44,16 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     const [loginValue, setLoginValue] = useState<string>('')
     const [shouldReset, setShouldReset] = useState(false)
 
+    const [errorType, setErrorType] = useState<string>('')
+
     const values = methods.watch()
     const loginString = `${values[InputNames.FIRST_NAME]}${values[InputNames.LAST_NAME] ? '.' + values[InputNames.LAST_NAME] : ''}`
 
     const { isError: availableLoginError, isFetching } = useGetAvailableLogin(loginString, setLoginValue, 500, isCreate)
+
+    useEffect(() => {
+        methods.reset(detailData?.userData)
+    }, [detailData, methods])
 
     const handleBackNavigate = () => {
         if (isCreate) {
@@ -61,6 +73,18 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
             onSuccess() {
                 if (isCreate) {
                     navigate(managementListPath, { state: { from: location } })
+                    setIsActionSuccess({ value: true, path: managementListPath })
+                } else {
+                    navigate(`${AdminRouteNames.USER_MANAGEMENT}/detail/${detailData?.userData?.uuid}`)
+                    setIsActionSuccess({ value: true, path: `${AdminRouteNames.USER_MANAGEMENT}/detail/${detailData?.userData?.uuid}` })
+                }
+            },
+            onError(error) {
+                if (error instanceof Error && typeof error.message === 'string') {
+                    const errorData = JSON.parse(error.message)
+                    if (errorData.type === NO_CHANGES_DETECTED) {
+                        setErrorType(NO_CHANGES_DETECTED)
+                    }
                 }
             },
         },
@@ -93,7 +117,13 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
             <QueryFeedback loading={isLoading} error={isError} withChildren>
                 <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
                     {(updateOrCreate.isError || updateOrCreate.isSuccess) && (
-                        <MutationFeedback error={t('managementList.mutationError')} success={updateOrCreate.isSuccess} />
+                        <MutationFeedback
+                            error={
+                                !updateOrCreate.isSuccess &&
+                                (errorType === NO_CHANGES_DETECTED ? t('managementList.noChangesDetected') : t('managementList.mutationError'))
+                            }
+                            success={updateOrCreate.isSuccess}
+                        />
                     )}
                     <UserDetailForm
                         isCreate={isCreate}

@@ -116,6 +116,11 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
         <>
             {isLoading && <LoadingIndicator fullscreen />}
             <ActionsOverTable
+                pagination={{
+                    pageNumber: defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER,
+                    pageSize: defaultFilterParams.pageSize ?? BASE_PAGE_SIZE,
+                    dataLength,
+                }}
                 handleFilterChange={handleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName={entityName ?? ''}

@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 
 import { DocumentFilterData, IView, defaultFilter } from '@/components/containers/documents-management/DocumentsManagementContaiter'
 
@@ -129,9 +130,9 @@ export const DocumentsManagementView: React.FC<IView> = ({
                     )
                 }}
             />
+
             <ActionsOverTable
-                handleFilterChange={handleFilterChange}
-                pageSize={filter.pageSize}
+                pagination={{ pageNumber: BASE_PAGE_NUMBER, pageSize: BASE_PAGE_SIZE, dataLength: 0 }}
                 entityName={''}
                 simpleTableColumnsSelect={{ selectedColumns, setSelectedColumns }}
             >

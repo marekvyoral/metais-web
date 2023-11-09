@@ -46,6 +46,7 @@ const ReportsDetailPage: React.FC = () => {
                                     filterEnumData={props.filterEmumData}
                                 />
                                 <ActionsOverTable
+                                    pagination={props.pagination}
                                     handleFilterChange={props.handleFilterChange}
                                     pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                                     entityName={props?.data?.lookupKey ?? ''}

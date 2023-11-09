@@ -68,6 +68,7 @@ export const POView: React.FC<Props> = ({
                 codePrefix={ciTypeData?.codePrefix}
             />
             <ActionsOverTable
+                pagination={pagination}
                 metaAttributesColumnSection={getCiDefaultMetaAttributes({ t })}
                 handleFilterChange={handleFilterChange}
                 storeUserSelectedColumns={storeUserSelectedColumns}

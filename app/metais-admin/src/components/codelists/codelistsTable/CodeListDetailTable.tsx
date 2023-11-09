@@ -403,6 +403,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                 />
             </BaseModal>
             <ActionsOverTable
+                pagination={{ pageSize, pageNumber: currentPage, dataLength: filteredData?.enumItems?.length ?? 0 }}
                 createButton={<CreateEntityButton label={t('codelists.addNewCodelistDetail')} onClick={() => setIsCreateModalOpen(true)} />}
                 handlePagingSelect={handlePagingSelect}
                 hiddenButtons={{ SELECT_COLUMNS: true }}

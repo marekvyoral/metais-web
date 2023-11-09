@@ -198,7 +198,12 @@ export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({
                         {t('meetings.form.heading.proposals')}
                     </TextHeading>
                     <Filter defaultFilterValues={filter} onlySearch form={() => <></>} />
-                    <ActionsOverTable handlePagingSelect={handlePagingSelect} entityName={''} hiddenButtons={{ SELECT_COLUMNS: true }} />
+                    <ActionsOverTable
+                        pagination={{ pageNumber: currentPage, pageSize, dataLength: filteredData?.length ?? 0 }}
+                        handlePagingSelect={handlePagingSelect}
+                        entityName={''}
+                        hiddenButtons={{ SELECT_COLUMNS: true }}
+                    />
                     <Table data={filteredData?.slice(startOfList, endOfList)} columns={columns} isLoading={isLoading} error={error} />
 
                     <PaginatorWrapper

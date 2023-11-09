@@ -6,6 +6,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 
 import styles from './styles.module.scss'
 
@@ -159,10 +160,9 @@ export const DocumentsGroupView: React.FC<IView> = ({
             <Tabs tabList={tabList} />
             <TextHeading size="L">{t('documentsManagement.documents')}</TextHeading>
             <ActionsOverTable
+                pagination={{ pageNumber: BASE_PAGE_NUMBER, pageSize: BASE_PAGE_SIZE, dataLength: 0 }}
                 entityName={''}
                 simpleTableColumnsSelect={{ selectedColumns, setSelectedColumns }}
-                handleFilterChange={handleFilterChange}
-                pageSize={filter.pageSize}
             >
                 <Button
                     bottomMargin={false}

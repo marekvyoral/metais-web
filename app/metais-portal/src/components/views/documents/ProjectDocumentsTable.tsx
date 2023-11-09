@@ -302,13 +302,17 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                 />
             )}
             <ActionsOverTable
+                pagination={{
+                    pageNumber: page ?? BASE_PAGE_NUMBER,
+                    pageSize: pageSize ?? BASE_PAGE_SIZE,
+                    dataLength: totalLength ?? 0,
+                }}
                 handleFilterChange={(filter) => {
                     if (setPageSize) setPageSize(filter.pageSize ?? BASE_PAGE_SIZE)
                     if ((page ?? 0) * (filter.pageSize ?? BASE_PAGE_SIZE) > (totalLength ?? 0)) {
                         setPage && setPage(BASE_PAGE_NUMBER)
                     }
                 }}
-                pageSize={pageSize}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, PAGING: !selectPageSize }}

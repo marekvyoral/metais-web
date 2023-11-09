@@ -18,7 +18,7 @@ import { MoreActionsOverRow } from '@/components/views/public-authorities/action
 import { IActions } from '@/components/containers/Egov/Entity/PublicAuthoritiesListContainer'
 
 type PublicAuthoritiesTableProps = {
-    data?: void | ConfigurationItemSetUi | undefined
+    data?: void | ConfigurationItemSetUi
     entityName?: string
     handleFilterChange: (filter: IFilter) => void
     storeUserSelectedColumns: (columnSelection: FavoriteCiType) => void
@@ -89,6 +89,7 @@ export const PublicAuthoritiesTable = ({
     return (
         <div>
             <ActionsOverTable
+                pagination={pagination}
                 handleFilterChange={handleFilterChange}
                 storeUserSelectedColumns={storeUserSelectedColumns}
                 resetUserSelectedColumns={resetUserSelectedColumns}
@@ -100,7 +101,7 @@ export const PublicAuthoritiesTable = ({
                         label={t('publicAuthorities.create.addNewOrganization')}
                     />
                 }
-                // createHref="/organizations/find"
+                hiddenButtons={{ SELECT_COLUMNS: true }}
             />
             <Table data={data?.configurationItemSet} columns={columns} sort={sort} isLoading={isLoading} error={error} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />

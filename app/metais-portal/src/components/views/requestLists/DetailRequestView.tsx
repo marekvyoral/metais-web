@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
 import { ExpandedState, Row } from '@tanstack/react-table'
 import { RequestListActions } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
@@ -380,7 +380,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                             </GridRow>
                             <TextHeading size="L">{t('codeListList.requestCreate.codeListTableTitle')}</TextHeading>
                             <ActionsOverTable
-                                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                                pagination={{ pageNumber: BASE_PAGE_NUMBER, pageSize: BASE_PAGE_SIZE, dataLength: 0 }}
                                 entityName={'codelists'}
                                 hiddenButtons={{ SELECT_COLUMNS: true }}
                             />

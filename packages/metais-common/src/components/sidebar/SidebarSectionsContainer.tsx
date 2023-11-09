@@ -18,8 +18,11 @@ export const SidebarSectionsContainer = ({ isSidebarExpanded, setIsSidebarExpand
     const [expandedSectionIndexes, setExpandedSectionIndexes] = useState<boolean[]>(() => Array(sections.length).fill(false))
 
     const location = useLocation()
+
     const defaultOpenedMenuItems = useMemo(() => {
-        return findDefaultOpenedNavItems(sections, location.pathname)
+        const locationPOException = location.pathname.replace('/PO/', '/PO_IS/')
+
+        return findDefaultOpenedNavItems(sections, locationPOException)
     }, [location.pathname, sections])
 
     useEffect(() => {
