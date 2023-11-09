@@ -7,10 +7,10 @@ import { NavMenuList } from './NavMenuList'
 import { closeOnClickOutside, closeOnEscapeKey } from './navMenuUtils'
 
 import { useCurrentTab } from '@isdd/metais-common/hooks/useCurrentTab'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { NavLogin } from '@isdd/metais-common/components/navbar/navbar-main/NavLogin'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
 import { NavigationItem } from '@isdd/metais-common/navigation/routeNames'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 interface INavMenu {
     isMenuExpanded: boolean
@@ -22,7 +22,9 @@ export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, setIsMenuExpanded,
     const { t } = useTranslation()
 
     const [activeTab, setActiveTab] = useState<string | undefined>()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const location = useLocation()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const paths = useMemo(() => navItems.map((item) => item.path), [])

@@ -3,11 +3,11 @@ import { useEffect } from 'react'
 
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { MembershipData, useFindMembershipData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { StandardDraftsDraftStates } from '@isdd/metais-common/types/api'
 import { CONFLUENCE, GROUP_ROLES, IS_KOORDINATOR, KSISVS_ROLES, REFID_URI_SZ, ROLES_CAN_CHANGE_STD_DRAFTS } from '@isdd/metais-common/constants'
 import { ApiLink, ApiStandardRequestPreviewRequestChannel } from '@isdd/metais-common/api/generated/standards-swagger'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 interface IUseStandardDraftsListPermissions {
     data: {
@@ -20,7 +20,9 @@ interface IUseStandardDraftsListPermissions {
 
 export const useStandardDraftsListPermissions = ({ data: { state, groupId, links, requestChannel } }: IUseStandardDraftsListPermissions) => {
     const abilityContext = useAbilityContext()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const identityUuid = user?.uuid
     const { data: membershipData } = useFindMembershipData(identityUuid ?? '')
 

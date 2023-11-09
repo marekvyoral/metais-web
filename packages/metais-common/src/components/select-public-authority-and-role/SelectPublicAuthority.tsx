@@ -6,8 +6,8 @@ import { MultiValue } from 'react-select'
 
 import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useGetImplicitHierarchy } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 interface Props {
     onChangeAuthority: (e: HierarchyRightsUi | null) => void
@@ -17,7 +17,9 @@ interface Props {
 
 export const SelectPublicAuthority: React.FC<Props> = ({ onChangeAuthority, selectedOrg, ciRoles }) => {
     const { t } = useTranslation()
-    const { userInfo } = useAuth()
+    const {
+        state: { userInfo },
+    } = useAuth()
     const implicitHierarchy = useReadCiList()
 
     const filteredUserGroupDataBasedOnRole = userInfo?.groupData.filter((group) =>

@@ -17,7 +17,9 @@ export enum Roles {
 }
 export const useRequestPermissions = (entityName: string) => {
     const abilityContext = useAbilityContext()
-    const { userInfo } = useAuth()
+    const {
+        state: { userInfo },
+    } = useAuth()
 
     useEffect(() => {
         const { can, rules } = new AbilityBuilder(createMongoAbility)

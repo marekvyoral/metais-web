@@ -17,7 +17,11 @@ export type CustomClient<T> = (data: {
 }) => Promise<T>
 
 export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T) => void): CustomClient<T> => {
-    const { token, logOut } = useAuth()
+    const {
+        state: {
+            userContext: { token, logOut },
+        },
+    } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
     const { i18n } = useTranslation()

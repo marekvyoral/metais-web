@@ -16,7 +16,9 @@ interface Props {
 
 export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selectedRole, ciRoles }) => {
     const { t } = useTranslation()
-    const { userInfo } = useAuth()
+    const {
+        state: { userInfo },
+    } = useAuth()
     const [seed, setSeed] = useState(1)
     const [defaultValue, setDefaultValue] = useState<GidRoleData | null>(null)
 

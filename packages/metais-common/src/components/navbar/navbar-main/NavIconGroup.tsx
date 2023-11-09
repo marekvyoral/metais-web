@@ -1,8 +1,8 @@
 import classnames from 'classnames'
 import React from 'react'
 
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 interface INavIconGroup {
     isMobile: boolean
@@ -10,7 +10,9 @@ interface INavIconGroup {
 }
 
 export const NavIconGroup: React.FC<INavIconGroup> = ({ isMobile, iconGroupItems }) => {
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     return (
         <>

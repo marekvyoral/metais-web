@@ -54,7 +54,9 @@ interface CreateRequestContainerProps {
 }
 
 export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ View }) => {
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const { i18n } = useTranslation()
     const checkHook = useExistsCodelistHook()
     const navigate = useNavigate()

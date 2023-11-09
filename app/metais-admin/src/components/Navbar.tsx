@@ -155,7 +155,9 @@ type NavbarProps = {
 
 export const Navbar: React.FC<NavbarProps> = ({ isAdmin }) => {
     const { t } = useTranslation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
     const [showDropDown, setShowDropDown] = useState<boolean>(false)
 

@@ -12,10 +12,10 @@ import {
     useResetUserColumns,
 } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { mapConfigurationItemSetToPagination } from '@isdd/metais-common/componentHelpers/pagination'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/src/api'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const transformColumnsMap = new Map<string, string>([
     ['Gen_Profil_nazov', 'isvsName'],
@@ -55,7 +55,9 @@ export const columnsToIgnore = [
 ]
 
 export const useGetColumnData = (entityName: string, renameColumns?: boolean) => {
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const isUserLogged = !!user
 
     const getUserColumns = useGetUserColumns(entityName, { query: { enabled: isUserLogged } })

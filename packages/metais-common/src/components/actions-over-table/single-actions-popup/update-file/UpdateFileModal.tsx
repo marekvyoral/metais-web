@@ -21,7 +21,11 @@ export const UpdateFileModal: React.FC<IUpdateFileModalProps> = ({ item, open, o
     const { t } = useTranslation()
     const { register, handleSubmit, reset, formState } = useForm()
     const baseURL = import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL
-    const { token } = useAuth()
+    const {
+        state: {
+            userContext: { token },
+        },
+    } = useAuth()
     const [isLoading, setIsLoading] = useState(false)
     const handleUpdateFile = async (formData1: FieldValues) => {
         setIsLoading(true)

@@ -44,7 +44,12 @@ export const CiEntityIdHeader: React.FC<Props> = ({
 }) => {
     const { t } = useTranslation()
 
-    const { token, userInfo: user } = useAuth()
+    const {
+        state: {
+            userContext: { token },
+            userInfo: user,
+        },
+    } = useAuth()
 
     const { data: isOwnerByGid } = useIsOwnerByGid(
         {

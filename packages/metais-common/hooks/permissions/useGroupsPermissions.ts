@@ -5,12 +5,14 @@ import { useAbilityContext } from './useAbilityContext'
 import { Actions } from './useUserAbility'
 
 import { MembershipData, useFindMembershipData } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { KSISVS_ROLES, GROUP_ROLES } from '@isdd/metais-common/constants/index'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useGroupsPermissions = (groupId?: string) => {
     const abilityContext = useAbilityContext()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const identityUuid = user?.uuid
     const { data: membershipData } = useFindMembershipData(identityUuid ?? '')
     useEffect(() => {

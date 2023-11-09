@@ -11,9 +11,9 @@ import styles from './userInformation.module.scss'
 import { useChangeIdentityProfile } from '@isdd/metais-common/api/generated/iam-swagger'
 import { MutationFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { NULL, USER_INFO_QUERY_KEY } from '@isdd/metais-common/constants'
+import { User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 enum UserInformationFormKeysEnum {
     NAME = 'name',
@@ -36,7 +36,12 @@ type UserInformationForm = {
 
 export const EditableUserInformations: React.FC<Props> = ({ setIsEditable, setIsChangeSuccess }) => {
     const { t } = useTranslation()
-    const { userInfo, token } = useAuth()
+    const {
+        state: {
+            userInfo,
+            userContext: { token },
+        },
+    } = useAuth()
     const queryClient = useQueryClient()
 
     const phoneOrEmptyStringRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{1,6}$|^$/

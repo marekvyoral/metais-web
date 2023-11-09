@@ -61,7 +61,9 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
-    const { userInfo } = useAuth()
+    const {
+        state: { userInfo },
+    } = useAuth()
 
     const [lockedDialogData, setLockedDialogData] = useState<{ id?: number; lockedBy?: string; isOpened: boolean }>({ isOpened: false })
 

@@ -39,7 +39,9 @@ const formatOption = (props: OptionProps<SelectFilterOrganizationHierarchyOption
 
 export const SelectFilterOrganizationHierarchy: React.FC<SelectFilterOrganizationHierarchyProps> = ({ filter, setValue }) => {
     const { t } = useTranslation()
-    const { userInfo } = useAuth()
+    const {
+        state: { userInfo },
+    } = useAuth()
 
     const { mutate, mutateAsync, isError } = useReadCiList()
     const [defaultValue, setDefaultValue] = useState<SelectFilterOrganizationHierarchyOptionType | undefined>(undefined)

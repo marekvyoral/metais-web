@@ -20,7 +20,9 @@ interface ITaskDetailContainer {
 
 export const TaskDetailContainer: React.FC<ITaskDetailContainer> = ({ taskId }) => {
     const { t } = useTranslation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const historyColumns: ColumnDef<TaskHistory>[] = [
         {
             id: 'activity',

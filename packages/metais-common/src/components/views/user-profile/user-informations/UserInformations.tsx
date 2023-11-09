@@ -4,10 +4,10 @@ import { Button } from '@isdd/idsk-ui-kit/index'
 
 import styles from './userInformation.module.scss'
 
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import { NULL } from '@isdd/metais-common/constants'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 type Props = {
     setIsEditable: Dispatch<SetStateAction<boolean>>
@@ -16,7 +16,9 @@ type Props = {
 
 export const UserInformations: React.FC<Props> = ({ setIsEditable, setIsChangeSuccess }) => {
     const { t } = useTranslation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     return (
         <>

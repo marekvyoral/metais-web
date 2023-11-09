@@ -69,7 +69,9 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
     } = useReadCiNeighbours(configurationItemId ?? '', mapFilterToNeighborsApi(filter, defaultRequestApi), {})
 
     const getNames = useGetIdentitiesByLoginsBulkHook()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
     const [namesData, setNamesData] = useState<{ login: string; fullName: string }[]>()
 
     const loadNames = async (names: string[]) => {

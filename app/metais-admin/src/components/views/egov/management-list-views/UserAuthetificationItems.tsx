@@ -25,7 +25,9 @@ enum AuthConfigTypeEnum {
 
 export const UserAuthetificationItems: React.FC<Props> = ({ userData }) => {
     const { t } = useTranslation()
-    const { userInfo: user } = useAuth()
+    const {
+        state: { userInfo: user },
+    } = useAuth()
 
     const {
         mutateAsync: removeAuthResource,
