@@ -83,7 +83,7 @@ const CustomAuthContext = createContext<{ state: ICustomAuthContext; dispatch: R
 
 const AuthContextProvider: React.FC<React.PropsWithChildren> = (props) => {
     const authContext = useContext<IAuthContext>(AuthContext)
-    const [state, dispatch] = useReducer<Reducer<ICustomAuthContext, Action>>(reducer, initialState)
+    const [state, dispatch] = useReducer<Reducer<ICustomAuthContext, Action>>(reducer, { ...initialState, token: authContext.token })
 
     useEffect(() => {
         if (authContext.token) {
