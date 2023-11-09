@@ -1,0 +1,9 @@
+@import '@isdd/metais-common/src/utils.scss';
+
+.messageDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding-top: govuk-spacing(4);
+}
