@@ -23,6 +23,8 @@ document.body.classList.add('js-enabled')
 const root = createRoot(document.getElementById('root') as HTMLElement)
 const CACHE_TIME = import.meta.env.VITE_CACHE_TIME
 const STALE_TIME = import.meta.env.VITE_CACHE_TIME
+const CLIENT_ID = import.meta.env.VITE_PORTAL_AUTH_CLIENT_ID
+const SCOPE = import.meta.env.VITE_PORTAL_AUTH_SCOPE
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
@@ -41,7 +43,7 @@ root.render(
             <BrowserRouter>
                 <I18nextProvider i18n={initializeI18nInstance()}>
                     <QueryClientProvider client={queryClient}>
-                        <AuthProvider authConfig={authConfig()}>
+                        <AuthProvider authConfig={authConfig({ clientId: CLIENT_ID, scope: SCOPE })}>
                             <AuthContextProvider>
                                 <FilterContextProvider>
                                     <ActionSuccessProvider>
