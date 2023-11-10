@@ -20,24 +20,21 @@ import { ImportButton } from '@isdd/metais-common/components/actions-over-table/
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { CiType, AttributeProfile, Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
+import { CiTable } from '@isdd/metais-common/components/ci-table/CiTable'
+import { ColumnsOutputDefinition, IStoreColumnSelection } from '@isdd/metais-common/components/ci-table/ciTableHelpers'
 
-import { AddItemsButtonGroup } from '@/components/add-items-button-group/AddItemsButtonGroup'
-import { CiTable } from '@/components/ci-table/CiTable'
-import { ColumnsOutputDefinition, IStoreColumnSelection } from '@/components/ci-table/ciTableHelpers'
 import { CIFilterData } from '@/pages/ci/[entityName]/entity'
 
 interface IListWrapper {
-    isNewRelationModal?: boolean
     defaultFilterValues: CIFilterData
     ciType: string | undefined
     columnListData: IColumn | undefined
@@ -77,7 +74,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     gestorsData,
     isLoading,
     isError,
-    isNewRelationModal,
 }) => {
     const { t, i18n } = useTranslation()
 
@@ -91,7 +87,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
 
     const navigate = useNavigate()
     const location = useLocation()
-    const { setSelectedItems, setIsListPageOpen, selectedItems } = useNewRelationData()
     const [rowSelection, setRowSelection] = useState<Record<string, ColumnsOutputDefinition>>({})
 
     const checkedRowItems = Object.keys(rowSelection).length
@@ -109,27 +104,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         closeFunction(false)
         refetch()
         setBulkActionResult(actionResult)
-    }
-
-    useEffect(() => {
-        if (isNewRelationModal && selectedItems) {
-            if (Array.isArray(selectedItems))
-                setRowSelection(
-                    selectedItems.reduce(
-                        (acc: Record<string, ColumnsOutputDefinition>, item: ColumnsOutputDefinition) => ({
-                            ...acc,
-                            [item.uuid ?? '']: item,
-                        }),
-                        {},
-                    ),
-                )
-        }
-    }, [isNewRelationModal, selectedItems, setRowSelection])
-
-    const handleRelationItemsChange = () => {
-        const selectedItemsKeys = Object.keys(rowSelection)
-        setSelectedItems(selectedItemsKeys.map((key) => rowSelection[key]))
-        setIsListPageOpen(false)
     }
 
     return (
@@ -180,84 +154,68 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     )
                 }}
             />
-            {isNewRelationModal && (
-                <ActionsOverTable
-                    pagination={pagination}
-                    handleFilterChange={handleFilterChange}
-                    storeUserSelectedColumns={storeUserSelectedColumns}
-                    resetUserSelectedColumns={resetUserSelectedColumns}
-                    pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                    entityName={ciTypeData?.name ?? ''}
-                    attributeProfiles={attributeProfiles ?? []}
-                    attributes={attributes ?? []}
-                    columnListData={columnListData}
-                    ciTypeData={ciTypeData}
-                    bulkPopup={<AddItemsButtonGroup handleItemsChange={handleRelationItemsChange} />}
-                />
-            )}
-            {!isNewRelationModal && (
-                <ActionsOverTable
-                    pagination={pagination}
-                    metaAttributesColumnSection={getCiDefaultMetaAttributes({ t })}
-                    handleFilterChange={handleFilterChange}
-                    storeUserSelectedColumns={storeUserSelectedColumns}
-                    resetUserSelectedColumns={resetUserSelectedColumns}
-                    pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                    entityName={ciTypeData?.name ?? ''}
-                    attributeProfiles={attributeProfiles ?? []}
-                    attributes={attributes ?? []}
-                    columnListData={columnListData}
-                    ciTypeData={ciTypeData}
-                    createButton={
-                        <CreateEntityButton ciType={ciType ?? ''} onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })} />
-                    }
-                    importButton={<ImportButton ciType={ciType ?? ''} />}
-                    exportButton={<ExportButton />}
-                    bulkPopup={
-                        <Tooltip
-                            descriptionElement={errorMessage}
-                            position={'center center'}
-                            tooltipContent={(open) => (
-                                <div>
-                                    <BulkPopup
-                                        disabled={isDisabledBulkButton}
-                                        checkedRowItems={checkedRowItems}
-                                        items={() => [
-                                            <ButtonLink
-                                                key={'invalidate'}
-                                                className={styles.buttonLinkWithIcon}
-                                                onClick={() => {
-                                                    handleInvalidate(checkedItemList, () => setShowInvalidate(true), open)
-                                                }}
-                                                icon={CrossInACircleIcon}
-                                                label={t('actionOverTable.invalidateItems')}
-                                            />,
-                                            <ButtonLink
-                                                key={'reInvalidate'}
-                                                className={styles.buttonLinkWithIcon}
-                                                onClick={() => {
-                                                    handleReInvalidate(checkedItemList, () => setShowReInvalidate(true), open)
-                                                }}
-                                                icon={CheckInACircleIcon}
-                                                label={t('actionOverTable.validateItems')}
-                                            />,
-                                            <ButtonLink
-                                                key={'changeOwner'}
-                                                className={styles.buttonLinkWithIcon}
-                                                onClick={() => {
-                                                    handleChangeOwner(checkedItemList, () => setShowChangeOwner(true), open)
-                                                }}
-                                                icon={ChangeIcon}
-                                                label={t('actionOverTable.changeOwner')}
-                                            />,
-                                        ]}
-                                    />
-                                </div>
-                            )}
-                        />
-                    }
-                />
-            )}
+
+            <ActionsOverTable
+                pagination={pagination}
+                metaAttributesColumnSection={getCiDefaultMetaAttributes({ t })}
+                handleFilterChange={handleFilterChange}
+                storeUserSelectedColumns={storeUserSelectedColumns}
+                resetUserSelectedColumns={resetUserSelectedColumns}
+                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                entityName={ciTypeData?.name ?? ''}
+                attributeProfiles={attributeProfiles ?? []}
+                attributes={attributes ?? []}
+                columnListData={columnListData}
+                ciTypeData={ciTypeData}
+                createButton={
+                    <CreateEntityButton ciType={ciType ?? ''} onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })} />
+                }
+                importButton={<ImportButton ciType={ciType ?? ''} />}
+                exportButton={<ExportButton />}
+                bulkPopup={
+                    <Tooltip
+                        descriptionElement={errorMessage}
+                        position={'center center'}
+                        tooltipContent={(open) => (
+                            <div>
+                                <BulkPopup
+                                    disabled={isDisabledBulkButton}
+                                    checkedRowItems={checkedRowItems}
+                                    items={() => [
+                                        <ButtonLink
+                                            key={'invalidate'}
+                                            className={styles.buttonLinkWithIcon}
+                                            onClick={() => {
+                                                handleInvalidate(checkedItemList, () => setShowInvalidate(true), open)
+                                            }}
+                                            icon={CrossInACircleIcon}
+                                            label={t('actionOverTable.invalidateItems')}
+                                        />,
+                                        <ButtonLink
+                                            key={'reInvalidate'}
+                                            className={styles.buttonLinkWithIcon}
+                                            onClick={() => {
+                                                handleReInvalidate(checkedItemList, () => setShowReInvalidate(true), open)
+                                            }}
+                                            icon={CheckInACircleIcon}
+                                            label={t('actionOverTable.validateItems')}
+                                        />,
+                                        <ButtonLink
+                                            key={'changeOwner'}
+                                            className={styles.buttonLinkWithIcon}
+                                            onClick={() => {
+                                                handleChangeOwner(checkedItemList, () => setShowChangeOwner(true), open)
+                                            }}
+                                            icon={ChangeIcon}
+                                            label={t('actionOverTable.changeOwner')}
+                                        />,
+                                    ]}
+                                />
+                            </div>
+                        )}
+                    />
+                }
+            />
 
             {isBulkLoading && <LoadingIndicator fullscreen />}
 
@@ -295,7 +253,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 isError={isError || isCiTypeConstraintsError}
                 uuidsToMatchedCiItemsMap={uuidsToMatchedCiItemsMap}
             />
-            {isNewRelationModal && <AddItemsButtonGroup handleItemsChange={handleRelationItemsChange} isUnderTable />}
         </QueryFeedback>
     )
 }

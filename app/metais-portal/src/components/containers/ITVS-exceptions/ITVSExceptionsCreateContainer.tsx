@@ -93,6 +93,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
         data: readRelationShipsData,
         isLoading: isReadRelationshipsLoading,
         isError: isReadRelationshipsError,
+        fetchStatus,
     } = useReadRelationships(configurationItemId ?? '')
 
     const { constraintsData, unitsData } = useDetailData({
@@ -207,7 +208,11 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
         })
     }
 
-    const isDataLoading = [isRelatedListLoading, isRelationTypeDataLoading, updateCiItemId ? isReadRelationshipsLoading : false].some((item) => item)
+    const isDataLoading = [
+        isRelatedListLoading,
+        isRelationTypeDataLoading,
+        updateCiItemId ? isReadRelationshipsLoading && fetchStatus == 'fetching' : false,
+    ].some((item) => item)
     const isDataError = [isReadRelationshipsError, isRelatedListError, isRelationTypeDataError].some((item) => item)
 
     return (

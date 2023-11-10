@@ -2,7 +2,6 @@ import { SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { RoleOrgGroup } from '@isdd/metais-common/api/generated/iam-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
-import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ConfigurationItemUi, useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -86,7 +85,6 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
     ]
 
     const { constraintsData, ciTypeData, unitsData } = attributesData
-    const { setIsListPageOpen, setSelectedItems } = useNewRelationData()
     const [uploadError, setUploadError] = useState(false)
 
     const currentName =
@@ -116,8 +114,6 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
         mutation: {
             onSuccess() {
                 navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
-                setIsListPageOpen(false)
-                setSelectedItems(null)
                 invalidateRelationListCacheByUuid.invalidate()
             },
             onError() {

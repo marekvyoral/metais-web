@@ -1,3 +1,6 @@
+import { ColumnOrderState } from '@tanstack/react-table'
+import { TFunction } from 'i18next'
+
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ConfigurationItemUi, ConfigurationItemUiAttributes, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -5,8 +8,6 @@ import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-sw
 import { Attribute, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { pairEnumsToEnumValues } from '@isdd/metais-common/index'
-import { ColumnOrderState } from '@tanstack/react-table'
-import { TFunction } from 'i18next'
 
 interface ReducedAttributes {
     [technicalName: string]: Attribute

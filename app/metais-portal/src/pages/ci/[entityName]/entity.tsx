@@ -10,35 +10,31 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 interface Props {
-    importantEntityName?: string
     noSideMenu?: boolean
 }
 export interface CIFilterData extends IFilterParams {
     Gen_Profil_nazov?: string
     Gen_Profil_kod_metais?: string
 }
-const CiListPage: React.FC<Props> = ({ importantEntityName, noSideMenu }) => {
+const CiListPage: React.FC<Props> = ({ noSideMenu }) => {
     const { entityName: ciType } = useGetEntityParamsFromUrl()
     const { t } = useTranslation()
     document.title = `${t('titles.ciList', { ci: ciType })} | MetaIS`
     const defaultFilterValues: CIFilterData = { Gen_Profil_nazov: '', Gen_Profil_kod_metais: '' }
 
-    const entityName = importantEntityName ? importantEntityName : ciType ?? ''
     return (
         <>
-            {!importantEntityName && (
-                <BreadCrumbs
-                    withWidthContainer
-                    links={[
-                        { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                        { label: ciType ?? '', href: `/ci/${ciType}` },
-                    ]}
-                />
-            )}
+            <BreadCrumbs
+                withWidthContainer
+                links={[
+                    { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                    { label: ciType ?? '', href: `/ci/${ciType}` },
+                ]}
+            />
 
             <MainContentWrapper noSideMenu={noSideMenu}>
                 <AttributesContainer
-                    entityName={entityName}
+                    entityName={ciType ?? ''}
                     View={({
                         data: { attributeProfiles, constraintsData, unitsData, ciTypeData, attributes },
                         isError: attError,
@@ -47,7 +43,7 @@ const CiListPage: React.FC<Props> = ({ importantEntityName, noSideMenu }) => {
                         return (
                             <>
                                 <CiListContainer<CIFilterData>
-                                    entityName={entityName}
+                                    entityName={ciType ?? ''}
                                     defaultFilterValues={defaultFilterValues}
                                     ListComponent={({
                                         data: { columnListData, tableData, gestorsData },
@@ -61,7 +57,6 @@ const CiListPage: React.FC<Props> = ({ importantEntityName, noSideMenu }) => {
                                         isLoading: ciListLoading,
                                     }) => (
                                         <ListWrapper
-                                            isNewRelationModal={!!importantEntityName}
                                             defaultFilterValues={defaultFilterValues}
                                             sort={sort}
                                             columnListData={columnListData}

@@ -1,4 +1,4 @@
-import { RelatedCiTypePreview } from '@isdd/metais-common/api'
+import { RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { JOIN_OPERATOR } from '@isdd/metais-common/constants'
 import { TFunction } from 'i18next'
 

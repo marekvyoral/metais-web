@@ -13,7 +13,6 @@ import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
 import { JOIN_OPERATOR, metaisEmail } from '@isdd/metais-common/constants'
-import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { SelectCiItem } from '@isdd/metais-common/src/components/select-ci-item/SelectCiItem'
@@ -27,16 +26,15 @@ import { v4 as uuidV4 } from 'uuid'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { ColumnsOutputDefinition } from '@isdd/metais-common/components/ci-table/ciTableHelpers'
 
 import styles from './newRelationView.module.scss'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
-import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
 import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
 import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits } from '@/components/create-entity/createEntityHelpers'
-import CiListPage from '@/pages/ci/[entityName]/entity'
 
 interface Props {
     ciItemData: ConfigurationItemUi | undefined
@@ -74,7 +72,9 @@ export const NewRelationView: React.FC<Props> = ({
     const [hasReset, setHasReset] = useState(false)
     const [hasMutationError, setHasMutationError] = useState(false)
     const location = useLocation()
-    const { selectedItems, setSelectedItems, setIsListPageOpen } = useNewRelationData()
+
+    const [selectedItems, setSelectedItems] = useState<ConfigurationItemUi | MultiValue<ConfigurationItemUi> | ColumnsOutputDefinition | null>(null)
+    const [isOpen, setIsOpen] = useState(false)
 
     const relatedListAsSources = relationData?.relatedListAsSources
     const relatedListAsTargets = relationData?.relatedListAsTargets
@@ -131,7 +131,7 @@ export const NewRelationView: React.FC<Props> = ({
         mutation: {
             onSuccess() {
                 navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
-                setIsListPageOpen(false)
+                setIsOpen(false)
                 setSelectedItems(null)
             },
             onError() {
@@ -173,7 +173,7 @@ export const NewRelationView: React.FC<Props> = ({
     }
 
     const handleReset = () => {
-        setIsListPageOpen(false)
+        setIsOpen(false)
         setSelectedItems(null)
         navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
     }
@@ -261,12 +261,13 @@ export const NewRelationView: React.FC<Props> = ({
             />
 
             <SelectCiItem
-                filterTypeEntityName={tabName}
+                ciType={tabName}
+                isOpen={isOpen}
+                selectedItems={selectedItems}
                 onChangeSelectedCiItem={(val) => setSelectedItems(val)}
-                onCloseModal={() => setIsListPageOpen(false)}
-                onOpenModal={() => setIsListPageOpen(true)}
+                onCloseModal={() => setIsOpen(false)}
+                onOpenModal={() => setIsOpen(true)}
                 existingRelations={existingRelations}
-                modalContent={<CiListPage importantEntityName={tabName} noSideMenu />}
             />
 
             <form onSubmit={handleFormSubmit(handleSubmit)}>

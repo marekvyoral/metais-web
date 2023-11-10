@@ -12,10 +12,10 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { AttributesContainerViewData } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { CiTable } from '@isdd/metais-common/components/ci-table/CiTable'
+import { ColumnsOutputDefinition } from '@isdd/metais-common/components/ci-table/ciTableHelpers'
 
-import { CiTable } from '@/components/ci-table/CiTable'
 import { FilterPO, POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
-import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 
 interface Props {
     attributesData: AttributesContainerViewData

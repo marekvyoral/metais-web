@@ -7,34 +7,36 @@ import { MultiValue } from 'react-select'
 
 import styles from './selectCiItem.module.scss'
 
+import { CiListPageForModal } from '@isdd/metais-common/components/ciListPageForModal/CiListPageForModal'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUi, IncidentRelationshipSetUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 
 interface Props {
     onChangeSelectedCiItem: (val: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | null) => void
-    filterTypeEntityName: string
+    selectedItems: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | null
     perPage?: number
     onCloseModal: () => void
     onOpenModal: () => void
     existingRelations: IncidentRelationshipSetUi | undefined
-    modalContent?: React.ReactNode
     label?: string
+    isOpen: boolean
+    ciType: string
+    error?: string
 }
 
 export const SelectCiItem: React.FC<Props> = ({
     onChangeSelectedCiItem,
-    filterTypeEntityName,
     perPage = 20,
     onCloseModal,
     onOpenModal,
-    modalContent,
     existingRelations,
     label,
+    isOpen,
+    selectedItems,
+    ciType,
+    error,
 }) => {
     const { t } = useTranslation()
-    const { selectedItems, isListPageOpen } = useNewRelationData()
-
     const readCiListFetch = useReadCiList1Hook()
 
     const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
@@ -43,7 +45,7 @@ export const SelectCiItem: React.FC<Props> = ({
         const response = await readCiListFetch({
             filter: {
                 fullTextSearch: searchQuery,
-                type: [filterTypeEntityName],
+                type: [ciType],
                 uuid: [],
                 metaAttributes: {
                     state: [MetaAttributesState.DRAFT],
@@ -76,8 +78,7 @@ export const SelectCiItem: React.FC<Props> = ({
             <div className={styles.rowDiv}>
                 <div className={styles.selectDiv}>
                     <SelectLazyLoading
-                        error={''}
-                        key={filterTypeEntityName}
+                        error={error}
                         isMulti
                         getOptionLabel={(item) => item.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}
                         getOptionValue={(item) => item.uuid ?? ''}
@@ -92,11 +93,14 @@ export const SelectCiItem: React.FC<Props> = ({
                 <Button className={styles.marginTop} variant="secondary" label={t('newRelation.pickItems')} onClick={onOpenModal} />
             </div>
 
-            {modalContent && (
-                <BaseModal isOpen={isListPageOpen} close={onCloseModal}>
-                    {modalContent}
-                </BaseModal>
-            )}
+            <BaseModal isOpen={isOpen} close={onCloseModal}>
+                <CiListPageForModal
+                    ciType={ciType}
+                    selectedItems={selectedItems}
+                    onSelectedSubmit={(val) => onChangeSelectedCiItem(val)}
+                    closeOnClick={onCloseModal}
+                />
+            </BaseModal>
         </>
     )
 }

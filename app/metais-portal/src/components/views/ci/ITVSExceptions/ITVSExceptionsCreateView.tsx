@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
 import { ATTRIBUTE_NAME, Gen_Profil } from '@isdd/metais-common/api'
 import { QueryFeedback, SubmitWithFeedback, formatDateForFormDefaultValues } from '@isdd/metais-common/index'
 import { Button, ErrorBlock } from '@isdd/idsk-ui-kit/index'
-import { NewRelationDataProvider } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CiWithRelsUi, ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -169,7 +168,6 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                 />
                             </div>
                         ))}
-                        {/* <NewRelationDataProvider> */}
                         <RelationForITVSExceptionSelect
                             ciType="ISVS"
                             relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
@@ -182,7 +180,6 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                             label={t('ITVSExceptions.relatedISVS')}
                             existingRelations={existingRelations}
                         />
-                        {/* </NewRelationDataProvider> */}
                         <div className={styles.margin30}>
                             {allCIsInRelations
                                 ?.filter((ciRel) => ciRel.ci?.type === 'ISVS')
@@ -201,20 +198,18 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                     </div>
                                 ))}
                         </div>
-                        {/* <NewRelationDataProvider>
-                            <RelationForITVSExceptionSelect
-                                ciType="PO"
-                                relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
-                                methods={methods}
-                                hasResetState={{ hasReset, setHasReset }}
-                                constraintsData={relationData?.constraintsData ?? []}
-                                unitsData={unitsData}
-                                relationType="osobitny_postup_vztah_ISVS"
-                                relationshipSetState={relationshipSetState}
-                                label={t('ITVSExceptions.relatedPO')}
-                                existingRelations={existingRelations}
-                            />
-                        </NewRelationDataProvider>
+                        <RelationForITVSExceptionSelect
+                            ciType="PO"
+                            relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
+                            methods={methods}
+                            hasResetState={{ hasReset, setHasReset }}
+                            constraintsData={relationData?.constraintsData ?? []}
+                            unitsData={unitsData}
+                            relationType="osobitny_postup_vztah_ISVS"
+                            relationshipSetState={relationshipSetState}
+                            label={t('ITVSExceptions.relatedPO')}
+                            existingRelations={existingRelations}
+                        />
                         {allCIsInRelations
                             ?.filter((ciRel) => ciRel.ci?.type === 'PO')
                             .map((ciWithRel) => (
@@ -230,7 +225,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                         )}
                                     </div>
                                 </div>
-                            ))} */}
+                            ))}
                         {uploadError && (
                             <ErrorBlock
                                 errorTitle={t('createEntity.errorTitle')}

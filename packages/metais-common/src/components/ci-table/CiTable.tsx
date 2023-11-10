@@ -3,18 +3,11 @@ import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
-import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { IListData } from '@isdd/metais-common/types/list'
 import { CellContext, ColumnDef, ColumnOrderState, Table as ITable, Row, Updater } from '@tanstack/react-table'
 import classNames from 'classnames'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
-import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
-import { HTML_TYPE, MUK } from '@isdd/metais-common/constants'
 import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 
 import styles from './ciTable.module.scss'
@@ -29,6 +22,14 @@ import {
     reduceTableDataToObject,
     sortAndMergeCiColumns,
 } from './ciTableHelpers'
+
+import { HTML_TYPE, MUK } from '@isdd/metais-common/constants'
+import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
+import { IListData } from '@isdd/metais-common/types/list'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 export interface IRowSelectionState {
     rowSelection: Record<string, ColumnsOutputDefinition>
