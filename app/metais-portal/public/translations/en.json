@@ -967,7 +967,6 @@
         "newRelation": "Add new relation of {{itemName}}",
         "newCiAndRelation": "Add new item and relation for {{itemName}}",
         "refRegisters": "Reference registers",
-        "compareHistory": "Change comparer",
         "standardization": "Standardization",
         "draftsList": "Drafts list",
         "refRegistersCreate": "Request to add",
