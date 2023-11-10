@@ -34,7 +34,7 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string) 
     const isUserLogged = !!user
     const includeInvalidated = currentPreferences.showInvalidatedItems
 
-    const { isLoading, isError, data: countData } = useReadNeighboursConfigurationItemsCount(id, { includeInvalidated })
+    const { isLoading, isError, data: countData } = useReadNeighboursConfigurationItemsCount(id, { includeInvalidated: !!includeInvalidated })
     const { isLoading: isLoadingDerived, isError: isErrorDerived, data: countDerivedData } = useReadCiDerivedRelTypesCount(id)
     const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName)
 

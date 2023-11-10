@@ -27,6 +27,7 @@ import { CreateEntityData } from '@/components/create-entity/CreateEntity'
 import { ITVSExceptionsCreateView } from '@/components/views/ci/ITVSExceptions/ITVSExceptionsCreateView'
 import { filterRelatedList } from '@/componentHelpers/new-relation'
 import { formatFormAttributeValue } from '@/components/create-entity/createEntityHelpers'
+import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 
 export interface RelationshipWithCiType extends RelationshipUi {
     ciType: string
@@ -219,6 +220,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                 </TextHeading>
                 {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
             </FlexColumnReverseWrapper>
+
             <ITVSExceptionsCreateView
                 data={{ ...data, ownerId, generatedEntityId: updateCiItemId ? entityIdToUpdate : data.generatedEntityId }}
                 relationData={{
@@ -240,6 +242,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                 relationshipSetState={{ relationshipSet, setRelationshipSet }}
                 uploadError={uploadError}
                 allCIsInRelations={allCIsInRelations ?? []}
+                updateCiItemId={updateCiItemId}
             />
         </>
     )

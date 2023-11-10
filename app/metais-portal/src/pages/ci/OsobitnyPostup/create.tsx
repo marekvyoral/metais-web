@@ -7,10 +7,12 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
 import { PublicAuthorityAndRoleContainer } from '@/components/containers/PublicAuthorityAndRoleContainer'
 import { ITVSExceptionsCreateContainer } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 const CreateEntityPage: React.FC = () => {
     const { t } = useTranslation()
-    const entityName = 'vynimky_ITVS'
+    const { entityName } = useGetEntityParamsFromUrl()
+
     return (
         <>
             <BreadCrumbs
@@ -37,7 +39,7 @@ const CreateEntityPage: React.FC = () => {
                                         isLoading: publicAuthAndRoleLoading,
                                     }) => (
                                         <ITVSExceptionsCreateContainer
-                                            entityName={entityName}
+                                            entityName={entityName ?? ''}
                                             data={{ attributesData, generatedEntityId }}
                                             ownerId={groupData?.gid ?? ''}
                                             isLoading={[attLoading, generatedIdLoading, publicAuthAndRoleLoading].some((item) => item)}

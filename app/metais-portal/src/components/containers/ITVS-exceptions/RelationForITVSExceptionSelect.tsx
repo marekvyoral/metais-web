@@ -52,7 +52,7 @@ export const RelationForITVSExceptionSelect: React.FC<Props> = ({
 
     const { register, clearErrors, trigger, setValue, formState } = methods
     const { selectedItems, setSelectedItems, setIsListPageOpen, isListPageOpen } = useNewRelationData()
-    console.log(isListPageOpen)
+    // console.log(isListPageOpen)
 
     const { relationshipSet, setRelationshipSet } = relationshipSetState
 

@@ -9,11 +9,13 @@ import { PublicAuthorityAndRoleContainer } from '@/components/containers/PublicA
 import { ITVSExceptionsCreateContainer } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
 import { CiContainer } from '@/components/containers/CiContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 const EditEntityPage: React.FC = () => {
     const { t, i18n } = useTranslation()
-    const { entityId } = useParams()
-    const entityName = 'vynimky_ITVS'
+    const { entityId, entityName } = useGetEntityParamsFromUrl()
+    // const entityName = 'vynimky_ITVS'
     return (
         <>
             <CiContainer
@@ -48,17 +50,19 @@ const EditEntityPage: React.FC = () => {
                                                 isError: publicAuthAndRoleError,
                                                 isLoading: publicAuthAndRoleLoading,
                                             }) => (
-                                                <ITVSExceptionsCreateContainer
-                                                    entityName={entityName ?? ''}
-                                                    data={{ attributesData }}
-                                                    ownerId={groupData?.gid ?? ''}
-                                                    isLoading={[attLoading, publicAuthAndRoleLoading].some((item) => item)}
-                                                    isError={[attError, publicAuthAndRoleError].some((item) => item)}
-                                                    roleState={roleState}
-                                                    publicAuthorityState={publicAuthorityState}
-                                                    updateCiItemId={ciItemData?.uuid}
-                                                    ciItemData={ciItemData}
-                                                />
+                                                <CiPermissionsWrapper entityName={entityName ?? ''} entityId={ciItemData?.uuid ?? ''}>
+                                                    <ITVSExceptionsCreateContainer
+                                                        entityName={entityName ?? ''}
+                                                        data={{ attributesData }}
+                                                        ownerId={groupData?.gid ?? ''}
+                                                        isLoading={[attLoading, publicAuthAndRoleLoading].some((item) => item)}
+                                                        isError={[attError, publicAuthAndRoleError].some((item) => item)}
+                                                        roleState={roleState}
+                                                        publicAuthorityState={publicAuthorityState}
+                                                        updateCiItemId={ciItemData?.uuid}
+                                                        ciItemData={ciItemData}
+                                                    />
+                                                </CiPermissionsWrapper>
                                             )}
                                         />
                                     )}

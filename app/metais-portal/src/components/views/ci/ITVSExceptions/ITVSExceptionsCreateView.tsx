@@ -61,7 +61,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     uploadError,
 }) => {
     const { t } = useTranslation()
-    const navigate = useNavigate()
+    //const navigate = useNavigate()
 
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
@@ -108,7 +108,6 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
         }
         return acc
     }, {})
-    console.log(defaultItemAttributeValues)
 
     const methods = useForm({
         defaultValues: formatDateForFormDefaultValues(updateCiItemId ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
@@ -150,7 +149,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                             hasResetState={{ hasReset, setHasReset }}
                             updateCiItemId={updateCiItemId}
                             sectionRoles={ciTypeData?.roleList ?? []}
-                            selectedRole={roleState?.selectedRole ?? {}}
+                            selectedRole={roleState?.selectedRole ?? null}
                         />
 
                         {...attProfiles.map((profile) => (
@@ -166,24 +165,24 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                     hasResetState={{ hasReset, setHasReset }}
                                     updateCiItemId={updateCiItemId}
                                     sectionRoles={ciTypeData?.roleList ?? []}
-                                    selectedRole={roleState?.selectedRole ?? {}}
+                                    selectedRole={roleState?.selectedRole ?? null}
                                 />
                             </div>
                         ))}
-                        <NewRelationDataProvider>
-                            <RelationForITVSExceptionSelect
-                                ciType="ISVS"
-                                relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
-                                methods={methods}
-                                hasResetState={{ hasReset, setHasReset }}
-                                constraintsData={relationData?.constraintsData ?? []}
-                                unitsData={unitsData}
-                                relationType="osobitny_postup_vztah_ISVS"
-                                relationshipSetState={relationshipSetState}
-                                label={t('ITVSExceptions.relatedISVS')}
-                                existingRelations={existingRelations}
-                            />
-                        </NewRelationDataProvider>
+                        {/* <NewRelationDataProvider> */}
+                        <RelationForITVSExceptionSelect
+                            ciType="ISVS"
+                            relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
+                            methods={methods}
+                            hasResetState={{ hasReset, setHasReset }}
+                            constraintsData={relationData?.constraintsData ?? []}
+                            unitsData={unitsData}
+                            relationType="osobitny_postup_vztah_ISVS"
+                            relationshipSetState={relationshipSetState}
+                            label={t('ITVSExceptions.relatedISVS')}
+                            existingRelations={existingRelations}
+                        />
+                        {/* </NewRelationDataProvider> */}
                         <div className={styles.margin30}>
                             {allCIsInRelations
                                 ?.filter((ciRel) => ciRel.ci?.type === 'ISVS')
@@ -202,7 +201,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                     </div>
                                 ))}
                         </div>
-                        <NewRelationDataProvider>
+                        {/* <NewRelationDataProvider>
                             <RelationForITVSExceptionSelect
                                 ciType="PO"
                                 relationSchemaCombinedAttributes={relationSchemaCombinedAttributes}
@@ -231,7 +230,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                         )}
                                     </div>
                                 </div>
-                            ))}
+                            ))} */}
                         {uploadError && (
                             <ErrorBlock
                                 errorTitle={t('createEntity.errorTitle')}
@@ -256,7 +255,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
                                         reset()
                                         setHasReset(true)
                                         //back to where we came from
-                                        navigate(-1)
+                                        //navigate(-1)
                                     }}
                                 />,
                             ]}
