@@ -32,7 +32,7 @@ interface EditRequestContainerProps {
 
 export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View }) => {
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const { i18n } = useTranslation()
     const { requestId } = useParams()

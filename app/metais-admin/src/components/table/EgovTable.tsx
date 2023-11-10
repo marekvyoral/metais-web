@@ -38,7 +38,7 @@ interface IEgovTable {
 export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) => {
     const { t } = useTranslation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const isUserLogged = !!user
     const navigate = useNavigate()
@@ -224,6 +224,7 @@ export const EgovTable = ({ data, entityName, refetch, isFetching }: IListData) 
             <div style={{ position: 'relative' }}>
                 {(isFetching || isLoading) && <LoadingIndicator />}
                 <ActionsOverTable
+                    pagination={{ pageSize, pageNumber, dataLength: data?.length || 0 }}
                     handleFilterChange={handleSetPageSize}
                     pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                     entityName={entityName ?? ''}

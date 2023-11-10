@@ -100,7 +100,16 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
                 />
                 <div className={styles.inline}>
                     {isUserLogged && <Button type="submit" label={t('votes.voteDetail.newVote')} onClick={() => newVoteHandler()} />}
-                    <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
+                    <ActionsOverTable
+                        pagination={{
+                            pageNumber: filter.pageNumber || BASE_PAGE_NUMBER,
+                            pageSize: filter.pageSize || BASE_PAGE_SIZE,
+                            dataLength: votesListData?.votesCount || 0,
+                        }}
+                        entityName=""
+                        handleFilterChange={handleFilterChange}
+                        hiddenButtons={{ SELECT_COLUMNS: true }}
+                    />
                 </div>
 
                 <Table

@@ -210,6 +210,7 @@ export const PublicAuthoritiesMassUpdateTable = ({
     return (
         <div>
             <ActionsOverTable
+                pagination={pagination}
                 handleFilterChange={handleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName={entityName ?? ''}

@@ -64,10 +64,10 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
 }) => {
     const { t } = useTranslation()
     const {
-        state: { userInfo },
+        state: { user },
     } = useAuth()
-    const isUserAdmin = userInfo?.roles.includes('R_ADMIN')
-    const isUserLogged = userInfo !== null
+    const isUserAdmin = user?.roles.includes('R_ADMIN')
+    const isUserLogged = user !== null
     const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED
     const [rowSelection, setRowSelection] = useState({})
 
@@ -292,6 +292,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                 />
             )}
             <ActionsOverTable
+                pagination={pagination}
                 handleFilterChange={handleFilterChange}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}
@@ -318,7 +319,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                             onClick={() => {
                                                 handleReInvalidate(
                                                     Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
-                                                    setShowReInvalidate,
+                                                    () => setShowReInvalidate(true),
                                                     open,
                                                 )
                                             }}
@@ -330,7 +331,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                             onClick={() => {
                                                 handleInvalidate(
                                                     Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {})),
-                                                    setShowInvalidate,
+                                                    () => setShowInvalidate(true),
                                                     open,
                                                     isDocumentsUpdatable(Object.values(selectedItems).flatMap((i) => i)),
                                                 )

@@ -13,7 +13,7 @@ interface IVoteDetailContainer {
 export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) => {
     const { voteIdParam } = useParams()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const isUserLogged = !!user
     const userId = user?.uuid ?? ''

@@ -62,7 +62,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
     const {
-        state: { userInfo },
+        state: { user },
     } = useAuth()
 
     const [lockedDialogData, setLockedDialogData] = useState<{ id?: number; lockedBy?: string; isOpened: boolean }>({ isOpened: false })
@@ -80,7 +80,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                 const { id, locked, lockedBy } = row.row.original
                 const name = selectBasedOnLanguage(row.getValue() as ApiCodelistItemName[], i18n.language)
 
-                return locked && userInfo?.login !== lockedBy ? (
+                return locked && user?.login !== lockedBy ? (
                     <TextClickable
                         onClick={() => {
                             setLockedDialogData({ lockedBy, id, isOpened: true })
@@ -212,7 +212,16 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                             </div>
                         )}
                     />
-                    <ActionsOverTable entityName="" handleFilterChange={handleFilterChange} hiddenButtons={{ SELECT_COLUMNS: true }} />
+                    <ActionsOverTable
+                        pagination={{
+                            pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+                            pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
+                            dataLength: data?.dataLength ?? 0,
+                        }}
+                        entityName=""
+                        handleFilterChange={handleFilterChange}
+                        hiddenButtons={{ SELECT_COLUMNS: true }}
+                    />
                     <Table
                         data={data?.list}
                         columns={columns}

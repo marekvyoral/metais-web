@@ -18,7 +18,7 @@ export const TasksPopup: React.FC = () => {
     const { t } = useTranslation()
     const location = useLocation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
 
     const { data: tasks, mutate } = useGetTasks()

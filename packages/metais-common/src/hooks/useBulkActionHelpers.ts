@@ -7,7 +7,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useBulkActionHelpers = () => {
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
 
     const getRightsForPOBulk = useGetRightsForPOBulkHook()

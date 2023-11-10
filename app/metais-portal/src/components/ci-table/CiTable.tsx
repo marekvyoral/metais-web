@@ -61,7 +61,7 @@ export const CiTable: React.FC<ICiTable> = ({
     const { t } = useTranslation()
 
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const isUserLogged = !!user
 

@@ -46,13 +46,10 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
 }) => {
     const { t } = useTranslation()
     const {
-        state: {
-            userInfo,
-            userContext: { token },
-        },
+        state: { user, token },
     } = useAuth()
-    const isUserAdmin = userInfo?.roles.includes('R_ADMIN')
-    const isUserLogged = userInfo !== null
+    const isUserAdmin = user?.roles.includes('R_ADMIN')
+    const isUserLogged = user !== null
     const isInvalidated = projectData?.metaAttributes?.state === INVALIDATED
 
     const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
@@ -305,13 +302,17 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                 />
             )}
             <ActionsOverTable
+                pagination={{
+                    pageNumber: page ?? BASE_PAGE_NUMBER,
+                    pageSize: pageSize ?? BASE_PAGE_SIZE,
+                    dataLength: totalLength ?? 0,
+                }}
                 handleFilterChange={(filter) => {
                     if (setPageSize) setPageSize(filter.pageSize ?? BASE_PAGE_SIZE)
                     if ((page ?? 0) * (filter.pageSize ?? BASE_PAGE_SIZE) > (totalLength ?? 0)) {
                         setPage && setPage(BASE_PAGE_NUMBER)
                     }
                 }}
-                pageSize={pageSize}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, PAGING: !selectPageSize }}

@@ -7,11 +7,11 @@ export const generateSchemaForCreateDraft = (t: TFunction<'translation', undefin
         srName: yup.string().required(t('validation.required')),
         srDescription1: yup.string().required(t('validation.required')),
         attachments: yup.array<ApiAttachment>(),
-        proposalDescription2: yup.string(),
-        proposalDescription3: yup.string(),
-        impactDescription1: yup.string(),
-        impactDescription5: yup.string(),
-        impactDescription7: yup.string(),
+        proposalDescription2: yup.string().required(t('validation.required')),
+        proposalDescription3: yup.string().required(t('validation.required')),
+        impactDescription1: yup.string().required(t('validation.required')),
+        impactDescription5: yup.string().required(t('validation.required')),
+        impactDescription7: yup.string().required(t('validation.required')),
         links: yup.array().of(
             yup.object().shape({
                 linkDescription: yup.string().required(t('validation.required')),

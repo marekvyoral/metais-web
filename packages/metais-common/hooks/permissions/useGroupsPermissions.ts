@@ -11,7 +11,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 export const useGroupsPermissions = (groupId?: string) => {
     const abilityContext = useAbilityContext()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const identityUuid = user?.uuid
     const { data: membershipData } = useFindMembershipData(identityUuid ?? '')
@@ -37,7 +37,7 @@ export const useGroupsPermissions = (groupId?: string) => {
             myRoles?.includes(KSISVS_ROLES.STD_KSPRE) ||
             myRoles?.includes(KSISVS_ROLES.STD_KSPODP) ||
             myRoles?.includes(KSISVS_ROLES.STD_KSTAJ)
-        const canSendEmail = userGroupData
+        const canSendEmail = userGroupData || myRoles?.includes(KSISVS_ROLES.STD_KOORDINATOR_AGENDY)
 
         if (canCreateGroup) can(Actions.CREATE, 'groups')
         if (canEditGroup) can(Actions.EDIT, 'groups')

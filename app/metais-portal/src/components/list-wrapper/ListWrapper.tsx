@@ -182,6 +182,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
             />
             {isNewRelationModal && (
                 <ActionsOverTable
+                    pagination={pagination}
                     handleFilterChange={handleFilterChange}
                     storeUserSelectedColumns={storeUserSelectedColumns}
                     resetUserSelectedColumns={resetUserSelectedColumns}
@@ -196,6 +197,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
             )}
             {!isNewRelationModal && (
                 <ActionsOverTable
+                    pagination={pagination}
                     metaAttributesColumnSection={getCiDefaultMetaAttributes({ t })}
                     handleFilterChange={handleFilterChange}
                     storeUserSelectedColumns={storeUserSelectedColumns}
@@ -225,7 +227,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                                 key={'invalidate'}
                                                 className={styles.buttonLinkWithIcon}
                                                 onClick={() => {
-                                                    handleInvalidate(checkedItemList, setShowInvalidate, open)
+                                                    handleInvalidate(checkedItemList, () => setShowInvalidate(true), open)
                                                 }}
                                                 icon={CrossInACircleIcon}
                                                 label={t('actionOverTable.invalidateItems')}
@@ -234,7 +236,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                                 key={'reInvalidate'}
                                                 className={styles.buttonLinkWithIcon}
                                                 onClick={() => {
-                                                    handleReInvalidate(checkedItemList, setShowReInvalidate, open)
+                                                    handleReInvalidate(checkedItemList, () => setShowReInvalidate(true), open)
                                                 }}
                                                 icon={CheckInACircleIcon}
                                                 label={t('actionOverTable.validateItems')}
@@ -243,7 +245,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                                 key={'changeOwner'}
                                                 className={styles.buttonLinkWithIcon}
                                                 onClick={() => {
-                                                    handleChangeOwner(checkedItemList, () => setShowChangeOwner(false), open)
+                                                    handleChangeOwner(checkedItemList, () => setShowChangeOwner(true), open)
                                                 }}
                                                 icon={ChangeIcon}
                                                 label={t('actionOverTable.changeOwner')}

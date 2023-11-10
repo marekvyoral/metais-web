@@ -184,6 +184,11 @@ export const RequestListView: React.FC<IRequestListView> = ({
                     )}
                 />
                 <ActionsOverTable
+                    pagination={{
+                        pageNumber: defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER,
+                        pageSize: defaultFilterParams.pageSize ?? BASE_PAGE_SIZE,
+                        dataLength: data?.pagination?.totalItems ?? 0,
+                    }}
                     handleFilterChange={handleFilterChange}
                     pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                     entityName={entityName}
@@ -193,7 +198,7 @@ export const RequestListView: React.FC<IRequestListView> = ({
                     key={'requestListTable'}
                     rowHref={(row) => `./detail/${listType.toLowerCase()}/${row?.original?.uuid}`}
                     data={data?.claimSet || []}
-                    columns={columns}
+                    columns={columns.map((item) => ({ ...item, size: 150 }))}
                     sort={[
                         { orderBy: defaultFilterParams.sortAttribute, sortDirection: defaultFilterParams.ascending ? SortType.ASC : SortType.DESC },
                     ]}

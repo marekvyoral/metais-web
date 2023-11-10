@@ -17,7 +17,7 @@ interface Props {
 export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selectedRole, ciRoles }) => {
     const { t } = useTranslation()
     const {
-        state: { userInfo },
+        state: { user },
     } = useAuth()
     const [seed, setSeed] = useState(1)
     const [defaultValue, setDefaultValue] = useState<GidRoleData | null>(null)
@@ -26,7 +26,7 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
         data: rightsForPOData,
         isLoading: isRightsForPOLoading,
         isError: isRightsForPOError,
-    } = useGetRightsForPO({ identityUuid: userInfo?.uuid ?? '', cmdbId: selectedOrg?.poUUID ?? '' }, { query: { enabled: !!selectedOrg?.poUUID } })
+    } = useGetRightsForPO({ identityUuid: user?.uuid ?? '', cmdbId: selectedOrg?.poUUID ?? '' }, { query: { enabled: !!selectedOrg?.poUUID } })
 
     const roleSelectOptions = useMemo(() => {
         return (

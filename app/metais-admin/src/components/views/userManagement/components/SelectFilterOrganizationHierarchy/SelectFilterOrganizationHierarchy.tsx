@@ -40,7 +40,7 @@ const formatOption = (props: OptionProps<SelectFilterOrganizationHierarchyOption
 export const SelectFilterOrganizationHierarchy: React.FC<SelectFilterOrganizationHierarchyProps> = ({ filter, setValue }) => {
     const { t } = useTranslation()
     const {
-        state: { userInfo },
+        state: { user },
     } = useAuth()
 
     const { mutate, mutateAsync, isError } = useReadCiList()
@@ -53,7 +53,7 @@ export const SelectFilterOrganizationHierarchy: React.FC<SelectFilterOrganizatio
             additional: { page: number } | undefined,
         ): Promise<ILoadOptionsResponse<SelectFilterOrganizationHierarchyOptionType>> => {
             const page = !additional?.page ? 1 : (additional?.page || 0) + 1
-            const userDataGroups = userInfo?.groupData || []
+            const userDataGroups = user?.groupData || []
             const params: HierarchyPOFilterUi = {
                 page,
                 perpage: DEFAULT_LAZY_LOAD_PER_PAGE,
@@ -71,12 +71,12 @@ export const SelectFilterOrganizationHierarchy: React.FC<SelectFilterOrganizatio
                 },
             }
         },
-        [userInfo?.groupData, mutateAsync],
+        [user?.groupData, mutateAsync],
     )
 
     useEffect(() => {
         if (!defaultValue && filter.orgId) {
-            const userDataGroups = userInfo?.groupData || []
+            const userDataGroups = user?.groupData || []
             const queryParams: HierarchyPOFilterUi = {
                 poUUID: filter.orgId,
                 rights: userDataGroups.map((group) => ({ poUUID: group.orgId, roles: group.roles.map((role) => role.roleUuid) })),
@@ -97,7 +97,7 @@ export const SelectFilterOrganizationHierarchy: React.FC<SelectFilterOrganizatio
                 },
             )
         }
-    }, [userInfo?.groupData, defaultValue, filter.orgId, mutate])
+    }, [user?.groupData, defaultValue, filter.orgId, mutate])
 
     useEffect(() => {
         // SelectLazyLoading component does not rerender on defaultValue change.

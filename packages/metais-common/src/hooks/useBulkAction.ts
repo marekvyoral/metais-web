@@ -25,12 +25,7 @@ export const useBulkAction = (isRelation?: boolean) => {
     const { mutateAsync: confirmProjectMutate } = useConfirm()
     const { mutateAsync: mutateReturnProject } = useReturnProject()
 
-    const handleInvalidate = async (
-        items: ConfigurationItemUi[],
-        onSuccess: (value: boolean) => void,
-        onError: () => void,
-        isDocTypeValid?: boolean,
-    ) => {
+    const handleInvalidate = async (items: ConfigurationItemUi[], onSuccess: () => void, onError: () => void, isDocTypeValid?: boolean) => {
         setBulkLoading(true)
         const isValid = items.every((item) => !ciInvalidFilter(item))
 
@@ -51,7 +46,7 @@ export const useBulkAction = (isRelation?: boolean) => {
 
             if (hasRights) {
                 setErrorMessage(undefined)
-                return onSuccess(true)
+                return onSuccess()
             } else {
                 setBulkLoading(false)
                 setErrorMessage(t('tooltip.rights.missingPermission'))
@@ -113,7 +108,7 @@ export const useBulkAction = (isRelation?: boolean) => {
         }
     }
 
-    const handleReInvalidate = async (items: ConfigurationItemUi[], onSuccess: (value: boolean) => void, onError: () => void) => {
+    const handleReInvalidate = async (items: ConfigurationItemUi[], onSuccess: () => void, onError: () => void) => {
         setBulkLoading(true)
         const isValid = items.every((item) => ciInvalidFilter(item))
 
@@ -133,7 +128,7 @@ export const useBulkAction = (isRelation?: boolean) => {
         setBulkLoading(false)
         if (canReInvalidate) {
             setErrorMessage(undefined)
-            return onSuccess(true)
+            return onSuccess()
         } else return setErrorMessage(t('tooltip.rights.missingPermission'))
     }
 

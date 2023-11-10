@@ -105,7 +105,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
 
     const isCorrect = !error && isSubmitted
 
-    const isRequired = attribute.mandatory?.type === MandatoryType.CRITICAL
+    const isRequired = attribute.mandatory?.type === MandatoryType.CRITICAL && !attribute.readOnly
     const requiredText = ` (${t('createEntity.required')})`
     const requiredLabel = `${isRequired ? requiredText : ''}`
 

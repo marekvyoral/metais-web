@@ -23,7 +23,7 @@ export const NavMenu: React.FC<INavMenu> = ({ isMenuExpanded, setIsMenuExpanded,
 
     const [activeTab, setActiveTab] = useState<string | undefined>()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const location = useLocation()
     // eslint-disable-next-line react-hooks/exhaustive-deps

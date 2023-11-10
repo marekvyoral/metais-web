@@ -25,14 +25,15 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
         watch,
         clearErrors,
         formState: { errors },
-    } = useForm({ resolver: yupResolver(isEdit ? editGroupSchema(t) : createGroupSchema(t)) })
+    } = useForm({
+        resolver: yupResolver(isEdit ? editGroupSchema(t) : createGroupSchema(t)),
+        values: { name: infoData?.name ?? '', short_name: infoData?.shortName ?? '', description: infoData?.description, organization: '', user: '' },
+    })
 
     const orgOptionsHook = useFindRelatedOrganizationsHook()
 
     const [selectedIdentity, setSelectedIdentity] = useState<string | undefined>(undefined)
     const [organizationOptions, setOrganizationOptions] = useState<IOption<string>[] | undefined>(undefined)
-
-    const [richText, setRichText] = useState<string | undefined>(infoData?.description)
 
     const watchUser = watch([GroupFormEnum.USER])
 
@@ -117,9 +118,8 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
                         id={GroupFormEnum.DESCRIPTION}
                         name={GroupFormEnum.DESCRIPTION}
                         setValue={setValue}
-                        value={richText}
+                        value={infoData?.description}
                         error={errors[GroupFormEnum.DESCRIPTION]?.message}
-                        onChange={setRichText}
                     />
 
                     {!isEdit && (

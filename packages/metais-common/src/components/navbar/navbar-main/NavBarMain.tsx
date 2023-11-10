@@ -24,7 +24,7 @@ interface INavBarMain {
 export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExpanded, iconGroupItems, isLoginApp, isAdmin }) => {
     const { t } = useTranslation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const location = useLocation()
     return (

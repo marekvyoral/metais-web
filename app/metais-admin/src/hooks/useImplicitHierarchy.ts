@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react'
 
 export const useImplicitHierarchy = () => {
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
 

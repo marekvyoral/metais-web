@@ -59,7 +59,7 @@ export interface IResultCreateEnum {
 export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredData, mutations, isLoading, isError, enumCode, refetch }) => {
     const { t } = useTranslation()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const isUserLogged = !!user
     const { createEnumItem, validateEnumItem, updateEnumItem, deleteEnumItem } = mutations
@@ -403,6 +403,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                 />
             </BaseModal>
             <ActionsOverTable
+                pagination={{ pageSize, pageNumber: currentPage, dataLength: filteredData?.enumItems?.length ?? 0 }}
                 createButton={<CreateEntityButton label={t('codelists.addNewCodelistDetail')} onClick={() => setIsCreateModalOpen(true)} />}
                 handlePagingSelect={handlePagingSelect}
                 hiddenButtons={{ SELECT_COLUMNS: true }}

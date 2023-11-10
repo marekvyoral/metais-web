@@ -40,7 +40,7 @@ export const useUppy = ({
     fileImportStep,
 }: iUseUppy) => {
     const {
-        state: { userContext: token },
+        state: { token },
     } = useAuth()
     const { i18n, t } = useTranslation()
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>([])

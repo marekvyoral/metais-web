@@ -49,6 +49,7 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
     })
 
     const { data: infoData, isLoading, isError } = useFindByUuid3(id ?? '')
+
     const invalidateGroupDetailCache = useInvalidateGroupsDetailCache(id ?? '')
 
     const goBack = () => {
@@ -82,10 +83,8 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
     }
 
     return (
-        <>
-            <QueryFeedback loading={isLoading || isUpdating} error={isError} withChildren>
-                <GroupCreateEditView onSubmit={onSubmit} goBack={goBack} infoData={infoData} isEdit resultApiCall={resultApiCall} />
-            </QueryFeedback>
-        </>
+        <QueryFeedback loading={isLoading || isUpdating} error={isError} withChildren>
+            <GroupCreateEditView onSubmit={onSubmit} goBack={goBack} infoData={{ ...infoData }} isEdit resultApiCall={resultApiCall} />
+        </QueryFeedback>
     )
 }

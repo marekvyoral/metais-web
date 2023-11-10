@@ -8,7 +8,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useEntityRelationshipTabFilters = (technicalName: string) => {
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const { currentPreferences } = useUserPreferences()
     const isUserLogged = !!user

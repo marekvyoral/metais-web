@@ -45,10 +45,7 @@ export const CiEntityIdHeader: React.FC<Props> = ({
     const { t } = useTranslation()
 
     const {
-        state: {
-            userContext: { token },
-            userInfo: user,
-        },
+        state: { token, user },
     } = useAuth()
 
     const { data: isOwnerByGid } = useIsOwnerByGid(
@@ -148,7 +145,7 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                                             <div>
                                                 <ButtonLink
                                                     disabled={isInvalidated}
-                                                    onClick={() => handleInvalidate(entityListData, setShowInvalidate, open)}
+                                                    onClick={() => handleInvalidate(entityListData, () => setShowInvalidate(true), open)}
                                                     label={t('ciType.invalidateItem')}
                                                 />
                                             </div>
@@ -162,7 +159,7 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                                         tooltipContent={(open) => (
                                             <div>
                                                 <ButtonLink
-                                                    onClick={() => handleReInvalidate(entityListData, setShowReInvalidate, open)}
+                                                    onClick={() => handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)}
                                                     label={t('ciType.revalidateItem')}
                                                 />
                                             </div>

@@ -2,18 +2,23 @@ import React from 'react'
 import { ActionsOverTable } from '@isdd/metais-common/src/components/actions-over-table/ActionsOverTable'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/src/constants'
 import { GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
-import { CreateEntityButton, QueryFeedback } from '@isdd/metais-common'
+import { CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { DraftsListContainer } from '@/components/containers/draftslist/DraftsListContainer'
 import { DraftsListTable } from '@/components/entities/draftslist/DraftsListTable'
 import { DraftsListFilter } from '@/components/entities/draftslist/DraftsListFilter'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+
 const DraftsListListPage: React.FC = () => {
     const navigate = useNavigate()
+    const { isActionSuccess } = useActionSuccess()
+
     const entityName = 'draftsList'
     const location = useLocation()
     const { t } = useTranslation()
@@ -44,9 +49,13 @@ const DraftsListListPage: React.FC = () => {
                     />
                     <MainContentWrapper>
                         <QueryFeedback loading={isLoading} error={isError}>
-                            <TextHeading size="XL">{t('draftsList.heading')}</TextHeading>
+                            <FlexColumnReverseWrapper>
+                                <TextHeading size="XL">{t('draftsList.heading')}</TextHeading>
+                                <MutationFeedback success={isActionSuccess.value} error={false} />
+                            </FlexColumnReverseWrapper>
                             <DraftsListFilter defaultFilterValues={defaultFilterValues} />
                             <ActionsOverTable
+                                pagination={pagination}
                                 entityName={entityName}
                                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: true }}

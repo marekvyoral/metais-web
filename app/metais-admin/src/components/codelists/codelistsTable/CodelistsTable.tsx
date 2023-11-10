@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { BaseModal, Button, ButtonLink, ButtonPopup, CheckBox, Input, PaginatorWrapper, SimpleSelect, Table, TextArea } from '@isdd/idsk-ui-kit/index'
 import { EnumTypePreview, EnumTypePreviewList } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { ActionsOverTable, CreateEntityButton, isRowSelected } from '@isdd/metais-common/index'
 import { useLocation, Link, useNavigate } from 'react-router-dom'
 import { ColumnDef } from '@tanstack/react-table'
@@ -315,12 +315,19 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                 />
             </BaseModal>
             <ActionsOverTable
+                pagination={{ pageSize, pageNumber: currentPage, dataLength: filteredData?.results?.length ?? 0 }}
                 createButton={<CreateEntityButton label={t('codelists.createNew')} onClick={() => setIsCreateModalOpen(true)} />}
                 handlePagingSelect={handlePagingSelect}
+                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
                 entityName=""
             />
-            <Table data={filteredData?.results?.slice(startOfList, endOfList)} columns={columns} isLoading={isLoading} error={isError} />
+            <Table
+                data={filteredData?.results?.slice(startOfList, endOfList)}
+                columns={columns.map((item) => ({ ...item, size: 150 }))}
+                isLoading={isLoading}
+                error={isError}
+            />
             <PaginatorWrapper
                 pageSize={pageSize}
                 pageNumber={currentPage}

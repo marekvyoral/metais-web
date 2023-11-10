@@ -56,7 +56,7 @@ export const columnsToIgnore = [
 
 export const useGetColumnData = (entityName: string, renameColumns?: boolean) => {
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const isUserLogged = !!user
 

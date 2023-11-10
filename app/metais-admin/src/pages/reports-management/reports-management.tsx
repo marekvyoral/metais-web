@@ -53,6 +53,7 @@ const ReportsListPage: React.FC = () => {
                                     )}
                                 />
                                 <ActionsOverTable
+                                    pagination={props.pagination}
                                     handleFilterChange={props.handleFilterChange}
                                     pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                                     entityName={'reports'}

@@ -67,6 +67,11 @@ export const GlobalSearchView: React.FC<GlobalSearchViewProps> = ({ data, isErro
                         {isError && <QueryFeedback loading={false} error />}
                     </FlexColumnReverseWrapper>
                     <ActionsOverTable
+                        pagination={{
+                            pageNumber: pagination.page ?? BASE_PAGE_NUMBER,
+                            pageSize: pagination.perPage ?? BASE_PAGE_SIZE,
+                            dataLength: pagination.totalItems ?? 0,
+                        }}
                         entityName=""
                         handlePagingSelect={(pageSize) => handleUpdateSearchParams(pageSize, GlobalSearchParams.PER_PAGE)}
                         hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: true }}

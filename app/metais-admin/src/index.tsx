@@ -7,10 +7,12 @@ import { initializeI18nInstance } from '@isdd/metais-common/localization/i18next
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
 import { AuthContextProvider } from '@isdd/metais-common/contexts/auth/authContext'
+import { authConfig } from '@isdd/metais-common/contexts/auth/authConfig'
 import { FilterContextProvider } from '@isdd/metais-common/contexts/filter/filterContext'
 import { ActionSuccessProvider } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { UserPreferencesProvider } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
-import { AuthProvider, TAuthConfig } from 'react-oauth2-code-pkce'
+import { AuthProvider } from 'react-oauth2-code-pkce'
+import { AutoLogout } from '@isdd/metais-common/src/components/auto-logout/AutoLogout'
 
 import { App } from '@/App'
 import { reportWebVitals } from '@/reportWebVitals'
@@ -19,44 +21,44 @@ import './index.scss'
 
 document.body.classList.add('js-enabled')
 const root = createRoot(document.getElementById('root') as HTMLElement)
+
+const CACHE_TIME = import.meta.env.VITE_CACHE_TIME
+const STALE_TIME = import.meta.env.VITE_CACHE_TIME
+
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
+            enabled: true,
+            keepPreviousData: true,
+            staleTime: CACHE_TIME,
+            cacheTime: STALE_TIME,
             refetchOnWindowFocus: false,
         },
     },
 })
 
-const basename = import.meta.env.VITE_ADMIN_URL
-const baseUrl =
-    import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL + (import.meta.env.VITE_IAM_OIDC_PATH ? `/${import.meta.env.VITE_IAM_OIDC_PATH}` : '')
-
-const authConfig: TAuthConfig = {
-    clientId: 'webPortalClient',
-    extraAuthParameters: { response_type: 'code' },
-    authorizationEndpoint: baseUrl + '/authorize',
-    tokenEndpoint: baseUrl + '/token',
-    redirectUri: window.location.protocol + '//' + window.location.host,
-    scope: 'openid profile c_ui',
-    autoLogin: false,
-}
+const BASENAME = import.meta.env.VITE_ADMIN_URL
+const CLIENT_ID = import.meta.env.VITE_ADMIN_AUTH_CLIENT_ID
+const SCOPE = import.meta.env.VITE_ADMIN_AUTH_SCOPE
 
 root.render(
     <React.StrictMode>
-        <BrowserRouter basename={basename}>
-            <I18nextProvider i18n={initializeI18nInstance(basename)}>
+        <BrowserRouter basename={BASENAME}>
+            <I18nextProvider i18n={initializeI18nInstance(BASENAME)}>
                 <QueryClientProvider client={queryClient}>
-                    <AuthProvider authConfig={authConfig}>
+                    <AuthProvider authConfig={authConfig({ clientId: CLIENT_ID, redirectUri: BASENAME + '/', scope: SCOPE })}>
                         <AuthContextProvider>
-                            <FilterContextProvider>
-                                <ActionSuccessProvider>
-                                    <UserPreferencesProvider>
-                                        <DndProvider backend={HTML5Backend}>
-                                            <App />
-                                        </DndProvider>
-                                    </UserPreferencesProvider>
-                                </ActionSuccessProvider>
-                            </FilterContextProvider>
+                            <AutoLogout>
+                                <FilterContextProvider>
+                                    <ActionSuccessProvider>
+                                        <UserPreferencesProvider>
+                                            <DndProvider backend={HTML5Backend}>
+                                                <App />
+                                            </DndProvider>
+                                        </UserPreferencesProvider>
+                                    </ActionSuccessProvider>
+                                </FilterContextProvider>
+                            </AutoLogout>
                         </AuthContextProvider>
                     </AuthProvider>
                 </QueryClientProvider>

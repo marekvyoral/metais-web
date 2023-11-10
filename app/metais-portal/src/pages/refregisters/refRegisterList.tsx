@@ -49,6 +49,7 @@ const ReferenceRegisters = () => {
                                     <TextHeading size="XL">{t('refRegisters.title')}</TextHeading>
                                     <RefRegistersFilter defaultFilterValues={defaultFilterValues} />
                                     <ActionsOverTable
+                                        pagination={pagination}
                                         handleFilterChange={handleFilterChange}
                                         pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                                         entityName={Reference_Registers}

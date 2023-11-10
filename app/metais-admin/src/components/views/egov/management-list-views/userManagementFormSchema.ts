@@ -4,7 +4,6 @@ import { TFunction } from 'i18next'
 import { InputNames } from './UserDetailForm'
 
 export const getUserManagementFormSchema = (t: TFunction<'translation', undefined, 'translation'>) => {
-    //one of phone or mobile
     const userManagementFormSchema = object().shape({
         [InputNames.FIRST_NAME]: string().required(t('managementList.required', { value: t('managementList.firstName') })),
         [InputNames.LAST_NAME]: string().required(t('managementList.required', { value: t('managementList.lastName') })),

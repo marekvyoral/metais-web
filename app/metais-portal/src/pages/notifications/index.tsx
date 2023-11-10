@@ -7,30 +7,7 @@ import NotificationsListView from '@/components/views/notifications/Notification
 const NotificationsPage = () => {
     const { t } = useTranslation()
     document.title = `${t('titles.notifications')} | MetaIS`
-    return (
-        <NotificationsListContainer
-            View={(props) => (
-                <NotificationsListView
-                    data={props.data}
-                    isError={props.isError}
-                    isLoading={props.isLoading}
-                    defaultFilterValues={props.defaultFilterValues}
-                    columns={props.columns}
-                    selectedColumns={props.selectedColumns}
-                    setSelectedColumns={props.setSelectedColumns}
-                    sort={props.sort}
-                    setSort={props.setSort}
-                    mutateAllDelete={props.mutateAllDelete}
-                    mutateAllRead={props.mutateAllRead}
-                    mutateDelete={props.mutateDelete}
-                    handleFilterChange={props.handleFilterChange}
-                    isMutateError={props.isMutateError}
-                    isMutateLoading={props.isMutateLoading}
-                    isMutateSuccess={props.isMutateSuccess}
-                />
-            )}
-        />
-    )
+    return <NotificationsListContainer View={(props) => <NotificationsListView {...props} />} />
 }
 
 export default NotificationsPage

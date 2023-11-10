@@ -32,24 +32,18 @@ export interface User {
 }
 
 export interface ICustomAuthContext {
-    userInfo: User | null
-    userContext: IAuthContext
+    user: User | null
+    token: string | null
 }
 
 const initialState: ICustomAuthContext = {
-    userInfo: null,
-    userContext: {
-        login: () => null,
-        logOut: () => null,
-        token: '',
-        error: null,
-        loginInProgress: false,
-    },
+    user: null,
+    token: null,
 }
 
 export enum CustomAuthActions {
     SET_USER_INFO,
-    SET_USER_CONTEXT,
+    SET_USER_TOKEN,
     LOGOUT_USER,
 }
 
@@ -59,24 +53,24 @@ interface SetUserInfo {
 }
 
 interface SetUserToken {
-    type: CustomAuthActions.SET_USER_CONTEXT
-    value: IAuthContext
+    type: CustomAuthActions.SET_USER_TOKEN
+    token: string
 }
 
 interface LogoutUser {
     type: CustomAuthActions.LOGOUT_USER
-    value: IAuthContext
 }
+
 type Action = SetUserInfo | SetUserToken | LogoutUser
 
 const reducer = (state: ICustomAuthContext, action: Action) => {
     switch (action.type) {
         case CustomAuthActions.SET_USER_INFO:
-            return { ...state, userInfo: action.value }
-        case CustomAuthActions.SET_USER_CONTEXT:
-            return { ...state, userContext: action.value }
+            return { ...state, user: action.value }
+        case CustomAuthActions.SET_USER_TOKEN:
+            return { ...state, token: action.token }
         case CustomAuthActions.LOGOUT_USER:
-            return { userContext: action.value, userInfo: null }
+            return initialState
         default:
             return state
     }
@@ -89,15 +83,15 @@ const CustomAuthContext = createContext<{ state: ICustomAuthContext; dispatch: R
 
 const AuthContextProvider: React.FC<React.PropsWithChildren> = (props) => {
     const authContext = useContext<IAuthContext>(AuthContext)
-    const [state, dispatch] = useReducer<Reducer<ICustomAuthContext, Action>>(reducer, { userInfo: null, userContext: authContext })
+    const [state, dispatch] = useReducer<Reducer<ICustomAuthContext, Action>>(reducer, { ...initialState, token: authContext.token })
 
     useEffect(() => {
         if (authContext.token) {
-            dispatch({ type: CustomAuthActions.SET_USER_CONTEXT, value: authContext })
-        } else if (state.userContext.token || state.userInfo) {
-            dispatch({ type: CustomAuthActions.LOGOUT_USER, value: authContext })
+            dispatch({ type: CustomAuthActions.SET_USER_TOKEN, token: authContext.token })
+        } else if (state.token || state.user) {
+            dispatch({ type: CustomAuthActions.LOGOUT_USER })
         }
-    }, [authContext, state.userContext.token, state.userInfo])
+    }, [authContext, state.token, state.user])
 
     return <CustomAuthContext.Provider value={{ state, dispatch }}>{props.children}</CustomAuthContext.Provider>
 }

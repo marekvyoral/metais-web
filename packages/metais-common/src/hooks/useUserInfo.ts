@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce'
 
 import { getUserInfo } from '@isdd/metais-common/api/userInfoApi'
 import { USER_INFO_QUERY_KEY } from '@isdd/metais-common/constants'
@@ -8,19 +9,17 @@ import { CustomAuthActions, useAuth } from '@isdd/metais-common/contexts/auth/au
 
 export const useUserInfo = () => {
     const {
-        state: {
-            userInfo,
-            userContext: { logOut, token },
-        },
+        state: { user, token },
         dispatch,
     } = useAuth()
+    const { logOut } = useContext<IAuthContext>(AuthContext)
     const navigate = useNavigate()
     const location = useLocation()
 
     const { data, isLoading, isError, error } = useQuery({
         queryKey: [USER_INFO_QUERY_KEY, token],
         queryFn: () => getUserInfo(token || ''),
-        enabled: !!token && !userInfo,
+        enabled: !!token && !user,
     })
     const userInfoData = data?.data
 
@@ -38,7 +37,7 @@ export const useUserInfo = () => {
     }, [userInfoData, data?.statusCode, dispatch, data])
 
     return {
-        userInfo,
+        user,
         isLoading,
         isError,
         error,

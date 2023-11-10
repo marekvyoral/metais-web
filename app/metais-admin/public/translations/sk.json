@@ -494,7 +494,8 @@
         "containerQueryError": "Loading of data for user management failed.",
         "noUserId": "There was mistake in fetching data.",
         "mutationError": "Počas akcie došlo k chybe.",
-        "emailFormat": "Formát emailu je zlý"
+        "emailFormat": "Formát emailu je zlý",
+        "noChangesDetected": "Neboli zaznamenané žiadne zmeny."
     },
     "accordion": {
         "openAll": "Otvoriť všetko",

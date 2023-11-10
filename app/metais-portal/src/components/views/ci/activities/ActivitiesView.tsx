@@ -94,6 +94,7 @@ export const ActivitiesView: React.FC<IView> = ({
     return (
         <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
             <ActionsOverTable
+                pagination={{ pageNumber: filter.pageNumber, pageSize: filter.pageSize, dataLength: totaltems ?? 0 }}
                 handleFilterChange={handleFilterChange}
                 entityName="documents"
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}

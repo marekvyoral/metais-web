@@ -3,10 +3,10 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { Input } from '@isdd/idsk-ui-kit/src/input/Input'
 import { useTranslation } from 'react-i18next'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
-import { Button, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useNavigate } from 'react-router-dom'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { API_STANDARD_REQUEST_ATTRIBUTES, DMS_DOWNLOAD_BASE, FileImportStepEnum, MutationFeedback } from '@isdd/metais-common/index'
+import { API_STANDARD_REQUEST_ATTRIBUTES, DMS_DOWNLOAD_BASE, FileImportStepEnum, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ApiLink, ApiStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 import { getInfoGuiProfilStandardRequest } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
@@ -14,6 +14,7 @@ import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { v4 as uuidV4 } from 'uuid'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import styles from '@/components/entities/draftslist/draftsListCreateForm.module.scss'
 import { DraftListCreateFormDialog } from '@/components/entities/draftslist/DraftListCreateFormDialog'
@@ -26,16 +27,15 @@ interface CreateForm {
         defaultData: ApiStandardRequest | undefined
     }
     onSubmit(data: FieldValues): Promise<void>
-    isSuccess: boolean
     isError: boolean
     isLoading: boolean
 }
-export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError, isLoading }: CreateForm) => {
+export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: CreateForm) => {
     const { t } = useTranslation()
     const [openCreateFormDialog, setOpenCreateFormDialog] = useState<boolean>(false)
     const navigate = useNavigate()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const { register, handleSubmit, setValue, watch, getValues, formState } = useForm({
         defaultValues: {
@@ -151,17 +151,20 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError, isLoa
     const errors = formState?.errors
 
     return (
-        <div>
+        <QueryFeedback loading={isLoading} withChildren>
             <DraftListCreateFormDialog
                 openCreateFormDialog={openCreateFormDialog}
                 closeCreateFormDialog={() => setOpenCreateFormDialog(false)}
                 handleSubmit={handleSubmit(handleSubmitForm)}
                 register={register}
             />
-            {isLoading && <LoadingIndicator fullscreen />}
-            <MutationFeedback error={isError} success={isSuccess} />
-            <TextHeading size="L">{t('DraftsList.createForm.heading')}</TextHeading>
-            <form onSubmit={handleSubmit(handleSubmitForm)}>
+
+            <FlexColumnReverseWrapper>
+                <TextHeading size="L">{t('DraftsList.createForm.heading')}</TextHeading>
+                {isError && <MutationFeedback error={t('feedback.mutationErrorMessage')} success={false} />}
+            </FlexColumnReverseWrapper>
+
+            <form onSubmit={handleSubmit(handleSubmitForm)} noValidate>
                 <Input
                     {...register(API_STANDARD_REQUEST_ATTRIBUTES.srName)}
                     label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.srName, data?.guiAttributes)}
@@ -186,6 +189,8 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError, isLoa
                     label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2, data?.guiAttributes)}
                     info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2, data?.guiAttributes)}
                     value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription2)}
+                    error={formState?.errors?.proposalDescription2?.message}
+                    isRequired
                 />
                 <RichTextQuill
                     id={API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription3}
@@ -194,6 +199,8 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError, isLoa
                     label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription3, data?.guiAttributes)}
                     info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription3, data?.guiAttributes)}
                     value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.proposalDescription3)}
+                    error={formState?.errors?.proposalDescription3?.message}
+                    isRequired
                 />
                 <RichTextQuill
                     id={API_STANDARD_REQUEST_ATTRIBUTES.impactDescription1}
@@ -202,6 +209,8 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError, isLoa
                     label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription1, data?.guiAttributes)}
                     info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription1, data?.guiAttributes)}
                     value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription1)}
+                    error={formState?.errors?.impactDescription1?.message}
+                    isRequired
                 />
                 <RichTextQuill
                     id={API_STANDARD_REQUEST_ATTRIBUTES.impactDescription5}
@@ -210,6 +219,8 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError, isLoa
                     label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription5, data?.guiAttributes)}
                     info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription5, data?.guiAttributes)}
                     value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription5)}
+                    error={formState?.errors?.impactDescription5?.message}
+                    isRequired
                 />
                 <RichTextQuill
                     id={API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7}
@@ -218,6 +229,8 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError, isLoa
                     label={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7, data?.guiAttributes)}
                     info={getInfoGuiProfilStandardRequest(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7, data?.guiAttributes)}
                     value={getValues(API_STANDARD_REQUEST_ATTRIBUTES.impactDescription7)}
+                    error={formState?.errors?.impactDescription7?.message}
+                    isRequired
                 />
                 <DraftsListAttachmentsZone
                     links={links}
@@ -240,6 +253,6 @@ export const DraftsListCreateForm = ({ onSubmit, data, isSuccess, isError, isLoa
                     />
                 </div>
             </form>
-        </div>
+        </QueryFeedback>
     )
 }

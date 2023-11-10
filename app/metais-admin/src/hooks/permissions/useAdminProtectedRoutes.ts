@@ -21,7 +21,7 @@ export const useAdminProtectedRoutes = (adminRoutes: NavigationItem[]) => {
     const location = useLocation()
     const navigate = useNavigate()
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
 
     const currentRoles = getCurrentRouteRoles(location.pathname, adminRoutes) ?? []

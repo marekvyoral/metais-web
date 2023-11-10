@@ -73,7 +73,7 @@ interface DetailRequestContainerProps {
 
 export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ View }) => {
     const {
-        state: { userInfo: user },
+        state: { user },
     } = useAuth()
     const { i18n } = useTranslation()
     const { requestId } = useParams()
