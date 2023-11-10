@@ -159,7 +159,7 @@ export enum FooterRouteNames {
     CONTENT_ADMIN = '/technical/manager',
     RSS = '/rss',
     IDSK_DIZAJN = 'https://idsk.gov.sk',
-    EXCEPTIONS_LEGISLATION = '/ci/vynimky_ITVS',
+    EXCEPTIONS_LEGISLATION = '/ci/OsobitnyPostup',
 }
 
 export enum RegistrationRoutes {
