@@ -112,7 +112,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
             return prev
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [tabList])
 
     const handleSubListSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: Tab) => {
         event.preventDefault()

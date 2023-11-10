@@ -101,10 +101,7 @@ export const getPortalNavigationItems = (
                 {
                     title: t('navMenu.lists.registers'),
                     path: NavigationSubRoutes.HOW_TO_REFERENCE_REGISTERS,
-                    subItems: [
-                        { title: t('navMenu.lists.registersList'), path: NavigationSubRoutes.REFERENCE_REGISTRE },
-                        { title: t('navMenu.lists.registersRequestsList'), path: NavigationSubRoutes.REFERENCE_REGISTERS_REQUESTS },
-                    ],
+                    subItems: [{ title: t('navMenu.lists.registersList'), path: NavigationSubRoutes.REFERENCE_REGISTRE }],
                 },
                 {
                     title: t('navMenu.lists.codelists'),

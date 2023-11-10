@@ -13,6 +13,7 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { FieldValues } from 'react-hook-form'
 import { Attribute, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { RefRegisterFilter } from '@/types/filters'
 
@@ -38,14 +39,18 @@ interface IRefRegisterListContainer<T> {
 }
 
 export const RefRegisterListContainer = <T extends FieldValues & IFilterParams>({ View, defaultFilterValues }: IRefRegisterListContainer<T>) => {
+    const {
+        state: { user },
+    } = useAuth()
     const { filterParams, handleFilterChange } = useFilterForCiList<T, RefRegisterFilter>({
         ...defaultFilterValues,
         sort: [{ orderBy: ATTRIBUTE_NAME.ISVS_Name, sortDirection: SortType.ASC }],
     })
+
     const { columnListData, saveColumnSelection, resetColumns } = useGetColumnData(Reference_Registers, true)
     const { data: guiData } = useGetAttributeProfile(Gui_Profil_RR)
 
-    const { data, isLoading, isError } = useGetFOPReferenceRegisters1(mapFilterToRefRegisters(filterParams))
+    const { data, isLoading, isError } = useGetFOPReferenceRegisters1(mapFilterToRefRegisters(filterParams, user))
 
     const pagination = usePagination({ pagination: { totaltems: data?.referenceRegistersCount ?? 0 } }, filterParams)
 

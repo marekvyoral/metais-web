@@ -21,6 +21,7 @@ export const useRefRegisterPermissions = (
         return user?.roles?.some((role) => role === RR_ADMIN_MFSR)
     }
 
+    const isManager = user?.roles?.some((role) => role === RR_MANAGER)
     const userGroupData = user?.groupData
     const groupRoles = userGroupData?.flatMap((groupData) => groupData?.roles?.filter((role) => role?.roleName === RR_MANAGER))
     const groupRolesIds = groupRoles?.map((role) => role?.gid)
@@ -73,8 +74,11 @@ export const useRefRegisterPermissions = (
         if (canApproveRR) can(Actions.CHANGE_STATES, `refRegisters.${ApiReferenceRegisterState.PUBLISHED}`)
         if (canRejectRR) can(Actions.CHANGE_STATES, `refRegisters.${ApiReferenceRegisterState.REJECTED}`)
 
-        can(Actions.CREATE, 'refRegisters')
-        if (user?.roles?.some((role) => role === RR_MANAGER)) abilityContext.update(rules)
+        if (isManager) {
+            can(Actions.CREATE, 'refRegisters')
+            if (state === ApiReferenceRegisterState.IN_CONSTRUCTION) can(Actions.EDIT, 'refRegisters.items')
+        }
+        abilityContext.update(rules)
     }, [
         abilityContext,
         state,
@@ -91,6 +95,7 @@ export const useRefRegisterPermissions = (
         canApproveRR,
         canRejectRR,
         user?.roles,
+        isManager,
     ])
     return {}
 }

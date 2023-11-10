@@ -1,0 +1,10 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.inputPadding {
+    padding: 0 govuk-spacing(4);
+}
+
+.closeButton {
+    margin-right: govuk-spacing(1);
+    cursor: pointer;
+}

@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useParams } from 'react-router-dom'
 import { InterpreterFrom } from 'xstate'
 import { QueryKeysByEntity } from '@isdd/metais-common/index'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { RefRegisterItemsContainer } from '@/components/containers/refregisters/RefRegisterItemsContainer'
 import { RefRegisterIdHeader } from '@/components/views/refregisters/RefRegisterIdHeader'
@@ -25,30 +26,36 @@ export const RefRegisterStateMachine = createContext({
 const RefRegistersDetail = () => {
     const { t } = useTranslation()
     const { entityId } = useParams()
+    const {
+        state: { user },
+    } = useAuth()
     const location = useLocation()
     const stateMachineService = useInterpret(refRegisterStateMachine)
     const currentState = stateMachineService?.getSnapshot()?.value
+    const informationTab = {
+        id: 'informations',
+        path: `/refregisters/${entityId}/`,
+        title: t('refRegisters.detail.informations'),
+        content: <Outlet />,
+    }
 
-    const tabList: Tab[] = [
-        {
-            id: 'informations',
-            path: `/refregisters/${entityId}/`,
-            title: t('refRegisters.detail.informations'),
-            content: <Outlet />,
-        },
-        {
-            id: 'history',
-            path: `/refregisters/${entityId}/history`,
-            title: t('refRegisters.detail.history'),
-            content: <Outlet />,
-        },
-        {
-            id: 'historyChanges',
-            path: `/refregisters/${entityId}/historyChanges`,
-            title: t('refRegisters.detail.historyChanges'),
-            content: <Outlet />,
-        },
-    ]
+    const tabList: Tab[] = user
+        ? [
+              informationTab,
+              {
+                  id: 'history',
+                  path: `/refregisters/${entityId}/history`,
+                  title: t('refRegisters.detail.history'),
+                  content: <Outlet />,
+              },
+              {
+                  id: 'historyChanges',
+                  path: `/refregisters/${entityId}/historyChanges`,
+                  title: t('refRegisters.detail.historyChanges'),
+                  content: <Outlet />,
+              },
+          ]
+        : [informationTab]
 
     const {
         data: referenceRegisterData,

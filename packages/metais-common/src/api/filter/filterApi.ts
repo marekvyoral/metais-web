@@ -2,11 +2,12 @@ import { IFilter, SortType } from '@isdd/idsk-ui-kit/src/types'
 import { FieldValues } from 'react-hook-form'
 
 import { GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
-import { GetFOPReferenceRegisters1Params } from '@isdd/metais-common/api/generated/reference-registers-swagger'
+import { ApiChangeStateTargetState, GetFOPReferenceRegisters1Params } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { CiListFilterContainerUi, NeighboursFilterContainerUi, NeighboursFilterUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { DEFAULT_PAGESIZE_OPTIONS, FIRST_PAGE_NUMBER } from '@isdd/metais-common/constants'
+import { User } from '@isdd/metais-common/contexts/auth/authContext'
 
 export interface INeighboursFilter extends IFilter {
     neighboursFilter?: NeighboursFilterUi
@@ -85,7 +86,7 @@ export const mapFilterToStandardDrafts = (filterParams: FieldValues & IFilterPar
     return mappedFilter
 }
 
-export const mapFilterToRefRegisters = (filterParams: FieldValues & IFilterParams & IFilter): GetFOPReferenceRegisters1Params => {
+export const mapFilterToRefRegisters = (filterParams: FieldValues & IFilterParams & IFilter, user?: User | null): GetFOPReferenceRegisters1Params => {
     const { pageNumber, pageSize, sort } = filterParams
 
     const mappedFilter: GetFOPReferenceRegisters1Params = {
@@ -109,6 +110,9 @@ export const mapFilterToRefRegisters = (filterParams: FieldValues & IFilterParam
     }
     if (filterParams?.muk) {
         mappedFilter.muk = filterParams?.muk
+    }
+    if (!user) {
+        mappedFilter.state = ApiChangeStateTargetState.PUBLISHED
     }
 
     return mappedFilter

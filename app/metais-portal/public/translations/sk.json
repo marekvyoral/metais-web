@@ -1363,6 +1363,12 @@
             "isvsRefId": "Referenčný identifikátor",
             "isvsRefTooltip": "Tooltip pre referenčný identifikátor",
             "items": {
+                "edit": "Zmeniť",
+                "delete": "Zmazať",
+                "save": "Uložiť",
+                "cancel": "Zrušiť",
+                "selectedPOCi": "Registrátor zdrojového registra",
+                "addNewItem": "Pridať novú položku",
                 "heading": "Zoznam referenčných údajov registra",
                 "order": "Poradie",
                 "itemName": "Referenčný údaj",
@@ -1371,7 +1377,8 @@
                 "subjectIdentification": "Identifikácia subjektu, ku ktorému sa RÚ viaže",
                 "refID": "Referencovateľný identifikátor referenčného údaja",
                 "dataElementRefID": "Názov a kód dátového prvku",
-                "note": "Poznámka"
+                "note": "Poznámka",
+                "sourceElementHolders": "Zdrojový register a registrátor zdrojového registra"
             }
         },
         "header": {
