@@ -1,0 +1,22 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.buttonsWrapper {
+    display: flex;
+    .buttonsGroup {
+        display: flex;
+        margin-left: govuk-spacing(2);
+        gap: govuk-spacing(2);
+        flex: 1.75;
+    }
+
+    .checkedButtons {
+        display: flex;
+        margin-left: govuk-spacing(4);
+        margin-top: govuk-spacing(2);
+        gap: govuk-spacing(2);
+    }
+
+    .buttonsPadding {
+        flex: 1;
+    }
+}

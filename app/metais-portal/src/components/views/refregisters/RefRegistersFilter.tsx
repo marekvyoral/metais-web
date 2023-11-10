@@ -11,6 +11,7 @@ import {
     SelectFilterOrganization,
     SelectFilterOrganizationOptionType,
 } from '@isdd/metais-common/components/select-organization/SelectFilterOrganization'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { RefRegisterFilter, RefRegisterFilterItems } from '@/types/filters'
 
@@ -20,6 +21,9 @@ interface IRefRegistersFilter {
 
 export const RefRegistersFilter = ({ defaultFilterValues }: IRefRegistersFilter) => {
     const { t } = useTranslation()
+    const {
+        state: { user },
+    } = useAuth()
 
     const states: IOption<string>[] = Object.keys(GetFOPReferenceRegisters1State)?.map((val) => ({
         label: t(`refRegisters.table.state.${val}`),
@@ -98,13 +102,15 @@ export const RefRegistersFilter = ({ defaultFilterValues }: IRefRegistersFilter)
                         }}
                     />
 
-                    <SimpleSelect
-                        label={t('refRegisters.table.state.heading')}
-                        name={RefRegisterFilterItems.STATE}
-                        options={states}
-                        setValue={setValue}
-                        defaultValue={filter.state}
-                    />
+                    {user && (
+                        <SimpleSelect
+                            label={t('refRegisters.table.state.heading')}
+                            name={RefRegisterFilterItems.STATE}
+                            options={states}
+                            setValue={setValue}
+                            defaultValue={filter.state}
+                        />
+                    )}
                     <SimpleSelect
                         label={t('refRegisters.table.muk.heading')}
                         name={RefRegisterFilterItems.MUK}

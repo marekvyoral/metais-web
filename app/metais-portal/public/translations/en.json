@@ -1319,6 +1319,12 @@
             "isvsRefId": "Reference ID",
             "isvsRefTooltip": "Reference ID tooltip",
             "items": {
+                "edit": "Edit",
+                "delete": "Delete",
+                "save": "Save",
+                "cancel": "Cancel",
+                "selectedPOCi": "Source information has registrator PO",
+                "addNewItem": "Add new item",
                 "heading": "List of register references data",
                 "order": "Order",
                 "itemName": "Referential data",
@@ -1327,7 +1333,8 @@
                 "subjectIdentification": "Subject identification",
                 "refID": "Reference identifier of reference item",
                 "dataElementRefID": "Reference item name and code",
-                "note": "Note"
+                "note": "Note",
+                "sourceElementHolders": "Source register and source register registrar"
             }
         },
         "header": {

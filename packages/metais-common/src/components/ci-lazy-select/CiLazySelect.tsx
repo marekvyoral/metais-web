@@ -1,10 +1,17 @@
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 import React, { SetStateAction, useCallback, useEffect, useState } from 'react'
-import { MultiValue, OptionProps, components } from 'react-select'
+import { MultiValue, OptionProps } from 'react-select'
+import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { FieldValues, UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
 
-import { ConfigurationItemUi, FilterMetaAttributesUi, useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import {
+    ConfigurationItemUi,
+    FilterAttributesUi,
+    FilterMetaAttributesUi,
+    useReadCiList1,
+    useReadCiList1Hook,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 interface ICiLazySelect<T extends FieldValues> {
     ciType: string
@@ -20,6 +27,8 @@ interface ICiLazySelect<T extends FieldValues> {
     defaultValue?: string
     info?: string
     metaAttributes?: FilterMetaAttributesUi
+    attributes?: FilterAttributesUi[]
+    option?: (props: OptionProps<ConfigurationItemUi>) => JSX.Element
 }
 
 export const CiLazySelect = <T extends FieldValues>({
@@ -36,6 +45,8 @@ export const CiLazySelect = <T extends FieldValues>({
     defaultValue,
     info,
     metaAttributes,
+    attributes,
+    option,
 }: ICiLazySelect<T>) => {
     const ciOptionsHook = useReadCiList1Hook()
 
@@ -46,7 +57,7 @@ export const CiLazySelect = <T extends FieldValues>({
     const [seed, setSeed] = useState(1)
     useEffect(() => {
         setSeed(Math.random())
-    }, [data, defaultValue, ciType])
+    }, [data, defaultValue, ciType, selectedCi])
 
     const loadCiOptions = useCallback(
         async (searchQuery: string, additional: { page: number } | undefined) => {
@@ -62,6 +73,7 @@ export const CiLazySelect = <T extends FieldValues>({
                     searchFields: ['Gen_Profil_nazov'],
                     fullTextSearch: searchQuery,
                     metaAttributes: { ...(metaAttributes ?? undefined) },
+                    attributes: attributes ?? [],
                 },
             })
 
@@ -73,16 +85,16 @@ export const CiLazySelect = <T extends FieldValues>({
                 },
             }
         },
-        [ciOptionsHook, ciType, metaAttributes],
+        [ciOptionsHook, ciType, metaAttributes, attributes],
     )
 
     const selectLazyLoadingCiOption = (props: OptionProps<ConfigurationItemUi>) => {
         return (
-            <components.Option {...props}>
+            <Option {...props}>
                 <div>
                     <span>{props.data.attributes?.Gen_Profil_nazov}</span>
                 </div>
-            </components.Option>
+            </Option>
         )
     }
 
@@ -103,7 +115,7 @@ export const CiLazySelect = <T extends FieldValues>({
             label={label + ':'}
             getOptionValue={(item) => item.uuid?.toString() || ''}
             getOptionLabel={(item) => (item.attributes ? item.attributes?.Gen_Profil_nazov : '')}
-            option={(props) => selectLazyLoadingCiOption(props)}
+            option={(props) => (option ? option(props) : selectLazyLoadingCiOption(props))}
             loadOptions={(searchTerm, _, additional) => loadCiOptions(searchTerm, additional)}
             {...onChangeProps}
             setValue={setValue}

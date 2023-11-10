@@ -35,4 +35,17 @@ export enum RefRegisterItemItems {
     REF_ID = 'refID',
     DATA_ELEMENT_REF_ID = 'dataElementRefID',
     NOTE = 'note',
+    sourceElementHolders = 'sourceElementHolders',
+}
+
+export enum RefRegisterItemItemsFieldNames {
+    ORDER = 'order',
+    ITEM_NAME = 'itemName',
+    GROUP = 'referenceRegisterGroup.groupName',
+    SUB_GROUP_NAME = 'referenceRegisterSubGroup.groupName',
+    SUBJECT_IDENTIFICATION = 'subjectIdentification',
+    REF_ID = 'refID',
+    DATA_ELEMENT_REF_ID = 'dataElementRefID',
+    NOTE = 'note',
+    sourceReferenceHolders = 'sourceReferenceHolders',
 }
