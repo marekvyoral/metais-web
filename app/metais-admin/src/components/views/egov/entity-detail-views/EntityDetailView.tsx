@@ -8,7 +8,6 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { EntityDetailViewAttributes } from './attributes/EntityDetailViewAttributes'
-import { SummarizingCard } from './SummarizingCard'
 
 import styles from '@/components/views/egov/detailViews.module.scss'
 import { BasicInformations } from '@/components/views/egov/BasicInformations'
@@ -16,9 +15,16 @@ import { IAttributesContainerView } from '@/components/containers/Egov/Entity/En
 import { ProfileTabs } from '@/components/ProfileTabs'
 
 export const EntityDetailView = ({
-    data: { ciTypeData, constraintsData, unitsData, keysToDisplay, summarizingCardData, attributesOverridesData },
+    data: {
+        ciTypeData,
+        constraintsData,
+        unitsData,
+        keysToDisplay,
+        attributesOverridesData,
+        // summarizingCardData,
+    },
     setValidityOfEntity,
-    setSummarizingCardData,
+    // setSummarizingCardData,
     saveExistingAttribute,
     resetExistingAttribute,
     isError,
@@ -40,11 +46,12 @@ export const EntityDetailView = ({
     )
 
     const tabList: Tab[] = [
-        {
-            id: 'summarizingCard',
-            title: t('egov.detail.summarizingCard'),
-            content: <SummarizingCard data={summarizingCardData} setSummarizingCardData={setSummarizingCardData} />,
-        },
+        // HIDDEN UNTIL WE FIND OUT WHY IT IS HERE
+        // {
+        //     id: 'summarizingCard',
+        //     title: t('egov.detail.summarizingCard'),
+        //     content: <SummarizingCard data={summarizingCardData} setSummarizingCardData={setSummarizingCardData} />,
+        // },
         {
             id: 'genericProfile',
             title: t('egov.detail.genericProfile'),
@@ -62,7 +69,7 @@ export const EntityDetailView = ({
     ]
 
     return (
-        <QueryFeedback loading={isLoading} error={false} withChildren>
+        <QueryFeedback loading={isLoading} error={false}>
             <div className={styles.basicInformationSpace}>
                 <FlexColumnReverseWrapper>
                     <div className={styles.flexBetween}>
