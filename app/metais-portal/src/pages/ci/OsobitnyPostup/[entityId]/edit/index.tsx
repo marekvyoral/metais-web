@@ -13,8 +13,7 @@ import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 const EditEntityPage: React.FC = () => {
     const { t, i18n } = useTranslation()
-    const { entityId } = useGetEntityParamsFromUrl()
-    const entityName = 'vynimky_ITVS'
+    const { entityId, entityName } = useGetEntityParamsFromUrl()
 
     const { ciItemData, isError: isCiError, isLoading: isCiLoading } = useCiContainer(entityId ?? '')
     const { ciTypeData, constraintsData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesContainer(entityName ?? '')

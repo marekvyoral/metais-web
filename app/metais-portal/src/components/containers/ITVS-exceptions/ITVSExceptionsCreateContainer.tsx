@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import {
     RelationshipUi,
@@ -10,7 +10,7 @@ import {
     CiWithRelsUi,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
@@ -19,15 +19,14 @@ import { FieldValues } from 'react-hook-form'
 import { v4 as uuidV4 } from 'uuid'
 import { JOIN_OPERATOR } from '@isdd/metais-common/constants'
 import { useListRelatedCiTypes, useGetRelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { useNavigate } from 'react-router-dom'
+import { useRedirectAfterSuccess } from '@isdd/metais-common/hooks/useRedirectAfterSucces'
 
 import { PublicAuthorityState, RoleState } from '../PublicAuthorityAndRoleContainer'
 
+import { formatFormAttributeValue } from '@/components/create-entity/createEntityHelpers'
 import { CreateEntityData } from '@/components/create-entity/CreateEntity'
 import { ITVSExceptionsCreateView } from '@/components/views/ci/ITVSExceptions/ITVSExceptionsCreateView'
 import { filterRelatedList } from '@/componentHelpers/new-relation'
-import { formatFormAttributeValue } from '@/components/create-entity/createEntityHelpers'
-import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 
 export interface RelationshipWithCiType extends RelationshipUi {
     ciType: string
@@ -61,7 +60,6 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     ciItemData,
 }) => {
     const { t } = useTranslation()
-    const navigate = useNavigate()
 
     const [uploadError, setUploadError] = useState(false)
 
@@ -70,6 +68,9 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
 
     const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
     const invalidateCiByUuidCache = useInvalidateCiItemCache(updateCiItemId ? updateCiItemId : configurationItemId)
+
+    const [isCreationLoading, setIsCreationLoading] = useState(false)
+    const [requestId, setRequestId] = useState<string>('')
 
     //load all relationship types for CI - /related
     const { data: relatedListData, isLoading: isRelatedListLoading, isError: isRelatedListError } = useListRelatedCiTypes(entityName)
@@ -102,15 +103,34 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
         isEntityStructureError: isRelationTypeDataError,
     })
 
+    const {
+        performRedirection,
+        reset: resetRedirect,
+        isLoading: isRedirectLoading,
+        isError: isRedirectError,
+        isFetched: isRedirectFetched,
+        isProcessedError,
+        isTooManyFetchesError,
+    } = useRedirectAfterSuccess(requestId, configurationItemId, entityName)
+
+    useEffect(() => {
+        if (requestId != null) {
+            performRedirection()
+        }
+    }, [performRedirection, requestId])
+
     const storeGraph = useStoreGraph({
         mutation: {
-            onSuccess(successData) {
+            async onSuccess(successData) {
                 if (successData.requestId) {
-                    navigate(`/ci/${entityName}/${configurationItemId}`)
+                    setRequestId(successData.requestId)
                     invalidateCilistFilteredCache.invalidate({ ciType: entityName })
                     invalidateCiByUuidCache.invalidate()
+
+                    setIsCreationLoading(false)
                 } else {
                     setUploadError(true)
+                    setIsCreationLoading(false)
                 }
             },
             onError() {
@@ -142,7 +162,7 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                     ? relationshipSet.map((rel) => ({
                           ...rel,
                           startUuid: configurationItemId,
-                          owner: ownerId,
+                          owner: updateCiItemId ? ciItemData?.metaAttributes?.owner : ownerId,
                           attributes: [
                               ...formattedAttributesToSend
                                   .filter((key) => key.id == rel.endUuid)
@@ -176,8 +196,9 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
 
     const onSubmit = async (formAttributes: FieldValues) => {
         setFormData(formAttributes)
+        resetRedirect()
         setUploadError(false)
-
+        setIsCreationLoading(true)
         const formAttributesKeys = Object.keys(formAttributes)
 
         const formattedAttributesToSend = formAttributesKeys
@@ -225,30 +246,49 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                 </TextHeading>
                 {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
             </FlexColumnReverseWrapper>
-
-            <ITVSExceptionsCreateView
-                data={{ ...data, ownerId, generatedEntityId: updateCiItemId ? entityIdToUpdate : data.generatedEntityId }}
-                relationData={{
-                    relatedListAsSources,
-                    relatedListAsTargets,
-                    readRelationShipsData,
-                    relationTypeData,
-                    constraintsData,
-                    unitsData,
-                    ciTypeData: data.attributesData.ciTypeData,
+            {!(isRedirectError || isProcessedError || isRedirectLoading) && (
+                <MutationFeedback success={false} error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''} />
+            )}
+            <QueryFeedback
+                loading={(isRedirectFetched && isRedirectLoading) || isCreationLoading}
+                error={isRedirectFetched && (isRedirectError || isProcessedError || isTooManyFetchesError)}
+                indicatorProps={{
+                    label: updateCiItemId ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
                 }}
-                roleState={roleState}
-                publicAuthorityState={publicAuthorityState}
-                onSubmit={onSubmit}
-                isProcessing={false}
-                isLoading={isLoading || isDataLoading}
-                isError={isError || isDataError}
-                defaultItemAttributeValues={ciItemData?.attributes}
-                relationshipSetState={{ relationshipSet, setRelationshipSet }}
-                uploadError={uploadError}
-                allCIsInRelations={allCIsInRelations ?? []}
-                updateCiItemId={updateCiItemId}
-            />
+                errorProps={{
+                    errorMessage: isTooManyFetchesError
+                        ? t('createEntity.tooManyFetchesError')
+                        : updateCiItemId
+                        ? t('createEntity.redirectErrorEdit')
+                        : t('createEntity.redirectError'),
+                }}
+                withChildren
+            >
+                {/* <QueryFeedback loading={isCreationLoading} withChildren> */}
+                <ITVSExceptionsCreateView
+                    data={{ ...data, ownerId, generatedEntityId: updateCiItemId ? entityIdToUpdate : data.generatedEntityId }}
+                    relationData={{
+                        relatedListAsSources,
+                        relatedListAsTargets,
+                        readRelationShipsData,
+                        relationTypeData,
+                        constraintsData,
+                        unitsData,
+                        ciTypeData: data.attributesData.ciTypeData,
+                    }}
+                    roleState={roleState}
+                    publicAuthorityState={publicAuthorityState}
+                    onSubmit={onSubmit}
+                    isProcessing={false}
+                    isLoading={isLoading || isDataLoading}
+                    isError={isError || isDataError}
+                    defaultItemAttributeValues={ciItemData?.attributes}
+                    relationshipSetState={{ relationshipSet, setRelationshipSet }}
+                    uploadError={uploadError}
+                    allCIsInRelations={allCIsInRelations ?? []}
+                    updateCiItemId={updateCiItemId}
+                />
+            </QueryFeedback>
         </>
     )
 }

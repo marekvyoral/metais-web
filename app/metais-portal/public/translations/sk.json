@@ -243,7 +243,7 @@
         "Program": {
             "name": "Názov"
         },
-        "vynimky_ITVS": {
+        "OsobitnyPostup": {
             "name": "Názov osobitného postupu"
         },
         "reset": "Vyčistiť kritéria filtrovania",
@@ -978,7 +978,6 @@
         "newRelation": "Pridanie nového vzťahu k {{itemName}}",
         "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}",
         "refRegisters": "Referenčné registre",
-        "compareHistory": "Porovnanie zmien",
         "refRegistersCreate": "Žiadosť na pridanie",
         "refRegistersEdit": "Zmena údajov o referenčnom registri",
         "dataObjects": "Dátové objekty",
