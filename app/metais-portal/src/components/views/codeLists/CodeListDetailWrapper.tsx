@@ -1,37 +1,39 @@
 import {
-    TextHeading,
-    Tab,
-    Tabs,
     BreadCrumbs,
+    Button,
+    ButtonGroupRow,
+    ButtonLink,
+    ButtonPopup,
+    ConfirmationModal,
     HomeIcon,
     IconWithText,
     InfoIcon,
-    ButtonGroupRow,
-    Button,
-    ButtonPopup,
-    ButtonLink,
-    ConfirmationModal,
+    Tab,
+    Tabs,
+    TextHeading,
 } from '@isdd/idsk-ui-kit/index'
-import { useTranslation } from 'react-i18next'
-import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { useState } from 'react'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
-import { BasicInfoTabView } from './components/tabs/BasicInfoTabView'
-import { GestorTabView } from './components/tabs/GestorTabView'
-import { HistoryTabView } from './components/tabs/HistoryTabView'
+import { CodeListDetailItemsWrapper } from './CodeListDetailItemsWrapper'
 import { selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
 import styles from './codeList.module.scss'
 import { ExportCodeListModal } from './components/modals/ExportCodeListModal/ExportCodeListModal'
 import { ImportCodeListModal } from './components/modals/ImportCodeListModal/ImportCodeListModal'
-import { CodeListDetailItemsWrapper } from './CodeListDetailItemsWrapper'
 import { NewLanguageVersionModal } from './components/modals/NewLanguageVersionModal/NewLanguageVersionModal'
+import { BasicInfoTabView } from './components/tabs/BasicInfoTabView'
+import { GestorTabView } from './components/tabs/GestorTabView'
+import { HistoryTabView } from './components/tabs/HistoryTabView'
 
-import { CodeListDetailWrapperProps } from '@/components/containers/CodeListDetailContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { CodeListDetailWrapperProps } from '@/components/containers/CodeListDetailContainer'
 import { CodeListDetailHistoryContainer } from '@/components/containers/CodeListDetailHistoryContainer'
 import { CodeListDetailItemsContainer } from '@/components/containers/CodeListDetailItemsContainer'
 
@@ -57,6 +59,12 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
     handleSendToSzzc,
 }) => {
     const { t } = useTranslation()
+    const { id: codeId } = useParams()
+    const navigate = useNavigate()
+
+    const {
+        isActionSuccess: { value: isSuccess },
+    } = useActionSuccess()
 
     const [isExportModalOpen, setIsExportModalOpen] = useState(false)
     const [isImportModalOpen, setIsImportModalOpen] = useState(false)
@@ -99,6 +107,10 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
         },
     ]
 
+    const handleEdit = () => {
+        navigate(`${RouteNames.CODELISTS}/${codeId}/edit`)
+    }
+
     return (
         <>
             <BreadCrumbs
@@ -112,7 +124,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
             />
             <MainContentWrapper>
                 {isError && !code && <QueryFeedback error={isError} loading={false} />}
-
+                {isSuccess && <MutationFeedback success error={false} />}
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     <div className={styles.headerDiv}>
                         <TextHeading size="XL">{selectBasedOnLanguageAndDate(data.codeList?.codelistNames, workingLanguage)}</TextHeading>
@@ -140,12 +152,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                                 }}
                             />
                             <Can I={Actions.EDIT} a={Subjects.DETAIL}>
-                                <Button
-                                    label={t('codeListDetail.button.edit')}
-                                    onClick={() => {
-                                        return // add edit
-                                    }}
-                                />
+                                <Button label={t('codeListDetail.button.edit')} onClick={handleEdit} />
                             </Can>
                             <ButtonPopup
                                 buttonLabel={t('codeListDetail.button.more')}

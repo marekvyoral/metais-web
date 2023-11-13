@@ -23,7 +23,6 @@
         "RSS": "RSS",
         "appVersion": "Verzia aplikácie",
         "home": "Home",
-
         "services": {
             "title": "Služby a informácie",
             "rations": "Dávky",
@@ -778,7 +777,6 @@
         "eventType": "Typ notifikaci",
         "created": "Vytvorené",
         "description": "Popis",
-
         "columnsNames": {
             "messagePerex": "Názov",
             "createdAt": "Dátum vytvorenia",
@@ -982,7 +980,6 @@
         "codeLists": "Číselníky",
         "requestList": "Zoznam žiadostí založenia číselníka",
         "requestCreate": "Žiadosť o zaradenie číselníka",
-        "codeListsList": "Zoznam číselníkov",
         "publicCodeListsList": "Zoznam publikovaných číselníkov",
         "ciCreateEntity": "Vytvorenie novej položky typu {{entityName}}",
         "compareHistory": "Porovnávanie histórie",
@@ -996,6 +993,7 @@
             "home": "Domov",
             "dataObjects": "Dátové objekty",
             "codeLists": "Číselníky",
+            "codeListsList": "Zoznam číselníkov",
             "publicCodeListsList": "Zoznam publikovaných číselníkov",
             "requestList": "Zoznam žiadostí číselníkov",
             "requestCreate": "Vytvoriť žiadosť číselníka",
@@ -1146,6 +1144,31 @@
                 "currentRevision": "Zobraziť aktuálne publikovnú verziu"
             }
         },
+        "edit": {
+            "title": "Upraviť číselník",
+            "base": "Základný číselník",
+            "codeListName": "Názov číselníka",
+            "newCodeListName": "Nový názov číselníka",
+            "dateValid": "Dátum platnosti",
+            "dateFrom": "Dátum platnosti",
+            "dateTo": " Dátum platnosti do",
+            "codeListId": "Kód číselníka",
+            "refIndicator": "Referencovateľný identifikátor",
+            "mainGestor": "Hlavný gestor",
+            "newMainGestor": "Nový hlavný gestor",
+            "nextGestor": "Vedľajší gestor",
+            "addNewGestor": "Pridať nového hlavného gestora",
+            "cancelAddNewGestor": "Zrušiť pridanie nového hlavného gestora",
+            "sourceCode": "Zdrojový číselník",
+            "dateStartValid": "Začiatok účinnosti",
+            "dateEndValid": "Koniec účinnosti",
+            "noteCode": "Poznámka pre číselník",
+            "addNewRow": "Pridať nový riadok",
+            "addNewVersionName": "Pridať novú verziu názvu",
+            "cancelAddNewVersionName": "Zrušiť pridanie novej verzie názvu",
+            "removeLock": "Zrušiť zámok",
+            "discardUpdating": "Zahodiť rozpracovanú verziu"
+        },
         "requestCreate": {
             "base": "Základný číselník",
             "btnCheck": "Overiť dostupnosť",
@@ -1171,11 +1194,14 @@
             "codelistIdFormat": "Kód číselníka je v zlom formáte",
             "codelistId": "Kód číselníka je povinné pole",
             "resortCode": "Rezortný kód je povinné pole",
+            "refIndicator": "Referencovateľný identifikátor je povinné pole",
             "mainGestor": "Hlavný gestor je povinné pole",
             "name": "Meno je povinné pole",
             "lastName": "Priezvisko je povinné pole",
             "email": "Email je povinné pole",
-            "phone": "Telefónne číslo je povinné pole"
+            "phone": "Telefónne číslo je povinné pole",
+            "codeListSource": "Zdrojový číselník je povinné pole",
+            "codeListNotes": "Poznámka pre číselník je povinné pole"
         },
         "requestModal": {
             "yes": "Áno",
