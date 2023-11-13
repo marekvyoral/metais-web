@@ -67,7 +67,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
         setShouldReset((prev) => !prev)
         methods.reset()
     }
-
+    const [isMutation, setIsMutation] = useState(false)
     const updateOrCreate = useUpdateOrCreateWithGid({
         mutation: {
             onSuccess() {
@@ -78,6 +78,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                     navigate(`${AdminRouteNames.USER_MANAGEMENT}/detail/${detailData?.userData?.uuid}`)
                     setIsActionSuccess({ value: true, path: `${AdminRouteNames.USER_MANAGEMENT}/detail/${detailData?.userData?.uuid}` })
                 }
+                setIsMutation(false)
             },
             onError(error) {
                 if (error instanceof Error && typeof error.message === 'string') {
@@ -86,6 +87,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                         setErrorType(NO_CHANGES_DETECTED)
                     }
                 }
+                setIsMutation(false)
             },
         },
     })
@@ -108,7 +110,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
               }
 
         const gids = formatGidsData(editedUserOrgAndRoles)
-
+        setIsMutation(true)
         updateOrCreate.mutateAsync({ data: { identity: identity, gids: gids } })
     }
 
@@ -131,7 +133,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                         handleBackNavigate={handleBackNavigate}
                         handleResetForm={handleResetForm}
                         isError={availableLoginError}
-                        isFetching={isFetching}
+                        isFetching={isFetching || isMutation}
                         loginValue={loginValue}
                     />
                     <UserRolesForm

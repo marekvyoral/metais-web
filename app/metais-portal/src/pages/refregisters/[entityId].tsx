@@ -9,15 +9,16 @@ import { Outlet, useLocation, useParams } from 'react-router-dom'
 import { InterpreterFrom } from 'xstate'
 import { QueryKeysByEntity } from '@isdd/metais-common/index'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { ciInformationTab } from '@isdd/metais-common/constants'
 
 import { RefRegisterItemsContainer } from '@/components/containers/refregisters/RefRegisterItemsContainer'
 import { RefRegisterIdHeader } from '@/components/views/refregisters/RefRegisterIdHeader'
 import { RefRegistersItemTable } from '@/components/views/refregisters/RefRegistersItemTable'
-import Informations from '@/pages/refregisters/[entityId]/informations'
+import Information from '@/pages/refregisters/[entityId]/information'
 import { RefRegisterPermissionsWrapper } from '@/components/permissions/RefRegisterPermissionsWrapper'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-export const INDEX_ROUTE = Informations
+export const INDEX_ROUTE = Information
 
 export const RefRegisterStateMachine = createContext({
     stateMachineService: {} as InterpreterFrom<typeof refRegisterStateMachine>,
@@ -33,7 +34,7 @@ const RefRegistersDetail = () => {
     const stateMachineService = useInterpret(refRegisterStateMachine)
     const currentState = stateMachineService?.getSnapshot()?.value
     const informationTab = {
-        id: 'informations',
+        id: ciInformationTab,
         path: `/refregisters/${entityId}/`,
         title: t('refRegisters.detail.informations'),
         content: <Outlet />,

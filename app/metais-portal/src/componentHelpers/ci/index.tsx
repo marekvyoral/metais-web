@@ -4,6 +4,7 @@ import { Tab } from '@isdd/idsk-ui-kit/index'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { TFunction } from 'i18next'
 import { AbilityTuple, MongoAbility, MongoQuery } from '@casl/ability'
+import { ciInformationTab } from '@isdd/metais-common/constants'
 
 type GetDefaultCiEntityTabListProps = {
     t: TFunction
@@ -15,7 +16,7 @@ type GetDefaultCiEntityTabListProps = {
 export const getDefaultCiEntityTabList = ({ entityName, entityId, t, userAbility }: GetDefaultCiEntityTabListProps): Tab[] => {
     const tabList: Tab[] = [
         {
-            id: 'informations',
+            id: ciInformationTab,
             path: `/ci/${entityName}/${entityId}/`,
             title: t('ciType.informations'),
             content: <Outlet />,

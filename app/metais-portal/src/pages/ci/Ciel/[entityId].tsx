@@ -12,14 +12,14 @@ import { CI_ITEM_QUERY_KEY, INVALIDATED } from '@isdd/metais-common/constants'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
-import Informations from './[entityId]/informations'
+import Information from './[entityId]/information'
 
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
-export const INDEX_ROUTE = Informations
+export const INDEX_ROUTE = Information
 
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()

@@ -18,7 +18,7 @@ interface ProjectInformationData {
     }
 }
 
-export const BasicInformations = ({ data: { ciTypeData }, roles }: ProjectInformationData) => {
+export const BasicInformation = ({ data: { ciTypeData }, roles }: ProjectInformationData) => {
     const { t } = useTranslation()
     return (
         <DefinitionList>

@@ -1,13 +1,14 @@
-import React from 'react'
+import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/entityNameHelpers'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { CiContainer } from '@/components/containers/CiContainer'
 import { CiInformationAccordion } from '@/components/entities/accordion/CiInformationAccordion'
-import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
-const Informations = () => {
-    const { entityId, entityName } = useGetEntityParamsFromUrl()
-
+const Information = () => {
+    const { entityId } = useGetEntityParamsFromUrl()
+    let { entityName } = useGetEntityParamsFromUrl()
+    entityName = shouldEntityNameBePO(entityName ?? '')
     return (
         <>
             <CiContainer
@@ -37,4 +38,4 @@ const Informations = () => {
     )
 }
 
-export default Informations
+export default Information
