@@ -23,7 +23,6 @@
         "RSS": "RSS",
         "appVersion": "App version",
         "home": "Home",
-
         "services": {
             "title": "Services and Information",
             "rations": "Rations",
@@ -770,7 +769,6 @@
         "eventType": "Event Type",
         "created": "Created",
         "description": "Description",
-
         "columnsNames": {
             "messagePerex": "Name",
             "createdAt": "Created at",
@@ -983,7 +981,6 @@
     },
     "codeList": {
         "descriptionError": "Description is required",
-
         "breadcrumbs": {
             "home": "Home",
             "dataObjects": "Data objects",
@@ -1137,6 +1134,31 @@
                 "currentRevision": "View the currently published version"
             }
         },
+        "edit": {
+            "title": "Edit code list",
+            "base": "Base code list",
+            "codeListName": "Name of codelist",
+            "newCodeListName": "New name of codelist",
+            "dateValid": "Expiration date",
+            "dateFrom": "From",
+            "dateTo": " To",
+            "codeListId": "Code of codelist",
+            "refIndicator": "Reference indicator",
+            "mainGestor": "Main manager",
+            "newMainGestor": "New main manager",
+            "nextGestor": "Secondary manager",
+            "addNewGestor": "Add a new main manager",
+            "cancelAddNewGestor": "Cancel adding a new main manager",
+            "sourceCode": "Source codelist",
+            "dateStartValid": "Effective date",
+            "dateEndValid": "End of effectiveness",
+            "noteCode": "Note for codelist",
+            "addNewRow": "Add a new row",
+            "addNewVersionName": "Add a new version of the title",
+            "cancelAddNewVersionName": "Cancel new version of name",
+            "removeLock": "Cancel lock",
+            "discardUpdating": "Discard version in-progress"
+        },
         "requestCreate": {
             "base": "Base code list",
             "btnCheck": "Check",
@@ -1162,11 +1184,14 @@
             "codelistIdFormat": "Codelist ID has wrong format",
             "codelistId": "Codelist ID is required field",
             "resortCode": "Resort code is required field",
+            "refIndicator": "Reference indicator is required field",
             "mainGestor": "Main gestor is required field",
             "name": "Name is required field",
             "lastName": "Lastname is required field",
             "email": "Email is required field",
-            "phone": "Phone is required field"
+            "phone": "Phone is required field",
+            "codeListSource": "Codelist source is required field",
+            "codeListNotes": "Note je povinné pole"
         },
         "requestModal": {
             "yes": "Yes",
@@ -1802,7 +1827,6 @@
         "target": "Target",
         "evidenceStatus": "Evidence status",
         "owner": "Owner",
-
         "submit": "Submit",
         "cancel": "Cancel",
         "editSuccess": "Edit of {{relationName}} was successful.",
