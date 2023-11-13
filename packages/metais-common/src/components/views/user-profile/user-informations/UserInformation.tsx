@@ -14,7 +14,7 @@ type Props = {
     setIsChangeSuccess: Dispatch<SetStateAction<boolean>>
 }
 
-export const UserInformations: React.FC<Props> = ({ setIsEditable, setIsChangeSuccess }) => {
+export const UserInformation: React.FC<Props> = ({ setIsEditable, setIsChangeSuccess }) => {
     const { t } = useTranslation()
     const {
         state: { user },

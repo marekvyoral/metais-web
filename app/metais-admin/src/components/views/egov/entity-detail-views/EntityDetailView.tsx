@@ -10,7 +10,7 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { EntityDetailViewAttributes } from './attributes/EntityDetailViewAttributes'
 
 import styles from '@/components/views/egov/detailViews.module.scss'
-import { BasicInformations } from '@/components/views/egov/BasicInformations'
+import { BasicInformation } from '@/components/views/egov/BasicInformation'
 import { IAttributesContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'
 import { ProfileTabs } from '@/components/ProfileTabs'
 
@@ -90,7 +90,7 @@ export const EntityDetailView = ({
                     {isError && <QueryFeedback error loading={false} />}
                     <MutationFeedback success={isActionSuccess.value} error={false} />
                 </FlexColumnReverseWrapper>
-                <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} roles={roles} />
+                <BasicInformation data={{ ciTypeData, constraintsData, unitsData }} roles={roles} />
             </div>
             <ProfileTabs tabList={tabList} />
         </QueryFeedback>

@@ -11,7 +11,7 @@ import { AddConnectionModal } from './connections/AddConnectionModal'
 
 import createEntityStyles from '@/components/views/egov/entity-detail-views/createEntityView.module.scss'
 import { EntityDetailViewAttributes } from '@/components/views/egov/entity-detail-views/attributes/EntityDetailViewAttributes'
-import { BasicInformations } from '@/components/views/egov/BasicInformations'
+import { BasicInformation } from '@/components/views/egov/BasicInformation'
 import styles from '@/components/views/egov/detailViews.module.scss'
 import { IAttributesContainerView } from '@/components/containers/Egov/Relation/RelationsDetailContainer'
 
@@ -92,7 +92,7 @@ export const RelationDetailView = ({
                     {isError && <QueryFeedback error loading={false} />}
                     <MutationFeedback success={isActionSuccess.value} error={false} />
                 </FlexColumnReverseWrapper>
-                <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
+                <BasicInformation data={{ ciTypeData, constraintsData, unitsData }} />
             </div>
             <div className={createEntityStyles.addConnection}>
                 <Button label={t('egov.create.addConnection')} onClick={() => setConnectionsOpen(true)} className={styles.addConnection} />

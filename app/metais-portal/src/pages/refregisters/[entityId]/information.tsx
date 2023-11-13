@@ -4,7 +4,7 @@ import { AttributesContainer } from '@isdd/metais-common/components/containers/A
 import { RefRegisterContainer } from '@/components/containers/refregisters/RefRegisterContainer'
 import { RefRegisterView } from '@/components/views/refregisters/RefRegisterView'
 
-const Informations = () => {
+const Information = () => {
     const { entityId } = useParams()
     const entityName = 'ReferenceRegister'
 
@@ -41,4 +41,4 @@ const Informations = () => {
     )
 }
 
-export default Informations
+export default Information

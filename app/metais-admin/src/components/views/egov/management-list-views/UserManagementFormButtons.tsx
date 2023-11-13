@@ -18,7 +18,16 @@ export const UserManagementFormButtons: React.FC<Props> = ({ handleBackNavigate,
         <div className={styles.formButtonsWrapper}>
             <Button label={saveButtonLabel ?? t('managementList.save')} type="submit" disabled={isError} />
             {!hideCancelButton && (
-                <Button className={styles.cancelButton} variant="warning" label={t('managementList.cancel')} type="reset" onClick={handleResetForm} />
+                <Button
+                    className={styles.cancelButton}
+                    variant="warning"
+                    label={t('managementList.cancel')}
+                    type="reset"
+                    onClick={() => {
+                        handleResetForm()
+                        handleBackNavigate()
+                    }}
+                />
             )}
             <Button className={styles.backButton} variant="secondary" label={t('managementList.back')} onClick={handleBackNavigate} />
         </div>
