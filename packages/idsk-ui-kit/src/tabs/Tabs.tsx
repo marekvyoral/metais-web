@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { matchPath, useLocation, useNavigate } from 'react-router-dom'
 
@@ -105,9 +105,14 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
         }
     }
 
+    const onSelectedCallback = useCallback((tab: Tab) => {
+        onSelected?.(tab)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     useEffect(() => {
-        activeTab && onSelected?.(activeTab)
-    }, [activeTab, onSelected])
+        activeTab && onSelectedCallback?.(activeTab)
+    }, [activeTab, onSelectedCallback])
 
     useEffect(() => {
         setNewTabList(tabList)
