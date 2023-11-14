@@ -401,6 +401,7 @@
     },
     "ciType": {
         "informations": "Information",
+        "evaluation": "Evaluation KRIT_TO_BE",
         "documents": "Documents",
         "activities": "Activities NKIVS",
         "relationships": "Relationships",

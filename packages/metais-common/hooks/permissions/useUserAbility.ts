@@ -17,6 +17,7 @@ export enum Actions {
     CHANGE_STATES = 'change_states',
     HAS_ROLE = 'has_role',
     DELETE = 'DELETE',
+    EVALUATION = 'EVALUATION',
 }
 
 export const ADMIN = 'R_ADMIN'

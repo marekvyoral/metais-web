@@ -402,6 +402,7 @@
     },
     "ciType": {
         "informations": "Informácie",
+        "evaluation": "Hodnotenie KRIT_TO_BE",
         "documents": "Dokumenty",
         "activities": "Aktivity NKIVS",
         "relationships": "Vzťahy",
