@@ -8,7 +8,9 @@ import { useTranslation } from 'react-i18next'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Button } from '@isdd/idsk-ui-kit/index'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 export interface TableCols extends HistoryVersionUiConfigurationItemUi {
     selected?: boolean
@@ -34,7 +36,7 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
     const navigate = useNavigate()
     const location = useLocation()
     const [selectedColumns, setSelectedColumns] = useState<string[]>([])
-    const { entityId, entityName } = useParams()
+    const { entityId, entityName } = useGetEntityParamsFromUrl()
     const additionalColumnsNullSafe = additionalColumns ?? []
 
     const handleCheckRow = useCallback(

@@ -476,7 +476,8 @@
         "newRelationHeading": "New relation - {{relationEntityName}}",
         "PO_PO_Heading": "Subordinates",
         "PO_IS_Heading": "Processors of IT development concepts",
-        "PO_IS_PO_Heading": "IS operators"
+        "PO_IS_PO_Heading": "IS operators",
+        "goals": "Goals"
     },
     "relationType": {
         "as": "Application service"
@@ -1769,11 +1770,11 @@
         },
         "error": "Error while executing your action. Please try again or contact support."
     },
-    "activities": {
+    "Aktivita": {
         "target": "Objective of the activity",
         "name": "Activities NKIVS",
         "description": "Description of activity",
-        "projectActivity": "In relation with selected project"
+        "action": "In relation with selected project"
     },
     "publicAuthorities": {
         "hierarchy": "Hierarchy of public authorities"
@@ -1812,5 +1813,11 @@
     "autoLogout": {
         "warningMessage": "In {{countDown}} you will be logged out due to inactitvity.",
         "loading": "Proccessing logout"
+    },
+    "Ciel": {
+        "target": "Goal",
+        "name": "Sub-goal",
+        "description": "Goal description",
+        "action": ""
     }
 }

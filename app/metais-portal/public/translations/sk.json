@@ -476,7 +476,8 @@
         },
         "PO_PO_Heading": "Podriadené osoby",
         "PO_IS_Heading": "Spracovatelia koncepcií rozvoja IT",
-        "PO_IS_PO_Heading": "Prevádzkovatelia IS"
+        "PO_IS_PO_Heading": "Prevádzkovatelia IS",
+        "goals": "Ciele"
     },
     "relationType": {
         "as": "Aplikačná služba"
@@ -1789,11 +1790,11 @@
         },
         "error": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
     },
-    "activities": {
+    "Aktivita": {
         "target": "Cieľ aktivity",
         "name": "Aktivity NKIVS",
         "description": "Popis aktivity",
-        "projectActivity": "V relácií s vybraným Projektom"
+        "action": "V relácií s vybraným Projektom"
     },
     "publicAuthorities": {
         "hierarchy": "Hierarchia orgánov riadenia"
@@ -1832,5 +1833,11 @@
     "autoLogout": {
         "warningMessage": "O {{countDown}} sekúnd budete kvôli inaktivite odhlásený.",
         "loading": "Spracúvame odhlásenie"
+    },
+    "Ciel": {
+        "target": "Cieľ",
+        "name": "Pod-cieľ",
+        "description": "Popis cieľa",
+        "action": ""
     }
 }

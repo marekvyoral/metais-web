@@ -173,7 +173,8 @@ export const ENTITY_MIGRATION = 'Migracia'
 export const MAX_TITLE_LENGTH = 100
 export const INVALIDATED = 'INVALIDATED'
 
-export const ENITTY_CIEL = 'Ciel'
+export const ENTITY_CIEL = 'Ciel'
+export const KRIS_stanovuje_Ciel = 'KRIS_stanovuje_Ciel'
 export const ENTITY_PRINCIP = 'Princip'
 
 export const INACTIVE_LOGOUT_TIME = import.meta.env.VITE_INACTIVE_LOGOUT_TIME

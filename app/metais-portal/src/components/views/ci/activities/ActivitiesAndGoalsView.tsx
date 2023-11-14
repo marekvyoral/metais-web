@@ -8,20 +8,24 @@ import { ColumnDef } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
+import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_CIEL } from '@isdd/metais-common/constants'
 
-import { IView, TableCols, defaultFilter } from '@/components/containers/ActivitiesListContainer'
+import { IView, TableCols, defaultFilter } from '@/components/containers/ActivitiesAndGoalsListContainer'
+import { CommitmentToComplyingWithGoals } from '@/components/commitment-to-complying-with-goals/CommitmentToComplyingWithGoals'
 
-export const ActivitiesView: React.FC<IView> = ({
+export const ActivitiesAndGoalsView: React.FC<IView> = ({
     activities,
     isLoading,
     isError,
     handleFilterChange,
     isOwnerOfCi,
-    relateActivityToProject,
+    relateItemToProject,
     filter,
     totaltems,
-    invalidateRelationActivityToProject,
+    invalidateItemRelationToProject,
     isInvalidated,
+    ciType,
+    ciItemData,
 }) => {
     const { t } = useTranslation()
     const location = useLocation()
@@ -30,8 +34,8 @@ export const ActivitiesView: React.FC<IView> = ({
 
     const columns: Array<ColumnDef<TableCols>> = [
         {
-            accessorFn: (row) => row?.attributes?.Profil_Aktivita_kategoria,
-            header: t('activities.target'),
+            accessorFn: (row) => row?.attributes?.[`Profil_${ciType}_kategoria`],
+            header: t(`${ciType}.target`),
             id: 'target',
             size: 100,
             enableSorting: true,
@@ -41,7 +45,7 @@ export const ActivitiesView: React.FC<IView> = ({
         },
         {
             accessorFn: (row) => row?.attributes?.Gen_Profil_nazov,
-            header: t('activities.name'),
+            header: t(`${ciType}.name`),
             id: 'name',
             size: 200,
             enableSorting: true,
@@ -56,7 +60,7 @@ export const ActivitiesView: React.FC<IView> = ({
         },
         {
             accessorFn: (row) => row?.attributes?.Gen_Profil_popis,
-            header: t('activities.description'),
+            header: t(`${ciType}.description`),
             id: 'description',
             size: 100,
             enableSorting: true,
@@ -66,7 +70,7 @@ export const ActivitiesView: React.FC<IView> = ({
         },
         {
             accessorFn: (row) => row?.checked,
-            header: t('activities.projectActivity'),
+            header: t(`${ciType}.action`),
             id: 'activities.projectActivity',
             size: 80,
             cell: (row) => {
@@ -83,8 +87,8 @@ export const ActivitiesView: React.FC<IView> = ({
                         ]}
                         onChange={async (newValue) => {
                             newValue == 'true'
-                                ? relateActivityToProject(row.cell.row.original.uuid)
-                                : invalidateRelationActivityToProject(row.cell.row.original.uuid, row.cell.row.original.relationUuid)
+                                ? relateItemToProject(row.cell.row.original.uuid)
+                                : invalidateItemRelationToProject(row.cell.row.original.uuid, row.cell.row.original.relationUuid)
                         }}
                     />
                 )
@@ -97,10 +101,16 @@ export const ActivitiesView: React.FC<IView> = ({
                 pagination={{ pageNumber: filter.pageNumber, pageSize: filter.pageSize, dataLength: totaltems ?? 0 }}
                 handleFilterChange={handleFilterChange}
                 entityName="documents"
+                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: Object.keys(rowSelection).length === 0 }}
             />
 
             <Filter form={() => <></>} defaultFilterValues={defaultFilter} onlySearch />
+
+            {ciType == ENTITY_CIEL && (
+                <CommitmentToComplyingWithGoals isOwner={!!isOwnerOfCi} ciItemData={ciItemData} isCiItemInvalidated={isInvalidated} />
+            )}
+
             <Table<TableCols>
                 rowSelection={rowSelection}
                 onRowSelectionChange={setRowSelection}

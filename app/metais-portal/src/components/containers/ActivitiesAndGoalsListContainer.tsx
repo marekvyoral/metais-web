@@ -12,7 +12,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/consta
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
 import { useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFilters'
-import { ACTIVITY, INVALIDATED, P_REALIZUJE_AKT } from '@isdd/metais-common/constants'
+import { INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
@@ -30,7 +30,7 @@ export interface IView {
     isError: boolean
     setDataRows: React.Dispatch<React.SetStateAction<TableCols[]>>
     isOwnerOfCi: boolean | undefined
-    relateActivityToProject: (activityUuid?: string) => Promise<void>
+    relateItemToProject: (activityUuid?: string) => Promise<void>
     filter: {
         sort: never[]
         pageNumber: number
@@ -38,12 +38,16 @@ export interface IView {
         fullTextSearch: string
     }
     totaltems?: number | undefined
-    invalidateRelationActivityToProject: (activityUuid?: string, uuid?: string) => Promise<void>
+    invalidateItemRelationToProject: (activityUuid?: string, uuid?: string) => Promise<void>
     isInvalidated: boolean
+    ciType: string
+    ciItemData: ConfigurationItemUi | undefined
 }
 
-interface IActivitiesListContainer {
+interface IActivitiesAndGoalsListContainer {
     configurationItemId?: string
+    ciType: string
+    relType: string
     View: React.FC<IView>
 }
 
@@ -54,16 +58,17 @@ export const defaultFilter = {
     fullTextSearch: '',
 }
 
-export const ActivitiesListContainer: React.FC<IActivitiesListContainer> = ({ configurationItemId, View }) => {
+export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListContainer> = ({ configurationItemId, View, ciType, relType }) => {
     const {
         state: { user, token },
     } = useAuth()
+
     const { currentPreferences } = useUserPreferences()
     const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
     const { data: ciData, isLoading: ciLoading } = useReadConfigurationItem(configurationItemId ?? '')
     const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED
     const invalidateRelation = useInvalidateRelationshipHook()
-    const storeActivity = useStoreGraphHook()
+    const storeGraph = useStoreGraphHook()
 
     const { data: isOwnerByGid } = useIsOwnerByGid(
         {
@@ -79,18 +84,17 @@ export const ActivitiesListContainer: React.FC<IActivitiesListContainer> = ({ co
 
     const [defaultRequestApi, setDefaultRequestApi] = useState({
         filter: {
-            type: [ACTIVITY],
+            type: [ciType],
             metaAttributes,
             fullTextSearch: '',
         },
         getIncidentRelations: true,
     })
 
-    const currentActivitiesFilter = {
+    const currentNeighboursFilter = {
         neighboursFilter: {
-            ciType: [ACTIVITY],
-            metaAttributes,
-            reltype: [P_REALIZUJE_AKT],
+            ciType: [ciType],
+            reltype: [relType],
         },
     }
 
@@ -105,22 +109,22 @@ export const ActivitiesListContainer: React.FC<IActivitiesListContainer> = ({ co
         }
     }, [defaultRequestApi, filter.fullTextSearch])
 
-    const { isLoading, isError, data: activities } = useReadCiList1(mapFilterToNeighborsApi(filter, defaultRequestApi))
+    const { isLoading, isError, data: listData } = useReadCiList1(mapFilterToNeighborsApi(filter, defaultRequestApi))
 
-    //Load related activities
+    //Load related
     const {
-        isLoading: isCurrentActivitiesLoading,
-        isError: isCurrentActivitiesError,
-        data: currentActivities,
-    } = useReadCiNeighbours(configurationItemId ?? '', currentActivitiesFilter)
+        isLoading: isCurrentNeighboursLoading,
+        isError: isCurrentNeighboursError,
+        data: currentNeighbours,
+    } = useReadCiNeighbours(configurationItemId ?? '', currentNeighboursFilter)
 
     const [dataRows, setDataRows] = useState<TableCols[]>([])
 
     useEffect(() => {
-        if (activities && currentActivities) {
+        if (listData && currentNeighbours) {
             setDataRows(
-                activities?.configurationItemSet?.map((ci) => {
-                    const related = currentActivities.fromNodes?.neighbourPairs?.find((np) => np.configurationItem?.uuid == ci.uuid)
+                listData?.configurationItemSet?.map((ci) => {
+                    const related = currentNeighbours.fromNodes?.neighbourPairs?.find((np) => np.configurationItem?.uuid == ci.uuid)
                     return {
                         ...ci,
                         checked: !!related,
@@ -129,20 +133,20 @@ export const ActivitiesListContainer: React.FC<IActivitiesListContainer> = ({ co
                 }) ?? [],
             )
         }
-    }, [activities, currentActivities])
+    }, [listData, currentNeighbours])
 
     //Add relation
-    const relateActivityToProject = async (activityUuid: string | undefined) => {
+    const relateItemToProject = async (itemUuid: string | undefined) => {
         const uuid = await generateUuid()
-        storeActivity({
+        storeGraph({
             storeSet: {
                 relationshipSet: [
                     {
                         attributes: [],
-                        endUuid: activityUuid,
+                        endUuid: itemUuid,
                         owner: ciData?.metaAttributes?.owner,
                         startUuid: configurationItemId,
-                        type: P_REALIZUJE_AKT,
+                        type: relType,
                         uuid: uuid,
                     },
                 ],
@@ -150,16 +154,16 @@ export const ActivitiesListContainer: React.FC<IActivitiesListContainer> = ({ co
         })
     }
 
-    const invalidateRelationActivityToProject = async (activityUuid: string | undefined, uuid: string | undefined) => {
+    const invalidateItemRelationToProject = async (itemUuid: string | undefined, uuid: string | undefined) => {
         invalidateRelation(
             {
                 attributes: [],
-                endUuid: activityUuid,
+                endUuid: itemUuid,
                 invalidateReason: {
                     comment: 'KRIS/SU',
                 },
                 startUuid: configurationItemId,
-                type: P_REALIZUJE_AKT,
+                type: relType,
                 uuid: uuid,
             },
             { newState: [] },
@@ -168,17 +172,19 @@ export const ActivitiesListContainer: React.FC<IActivitiesListContainer> = ({ co
 
     return (
         <View
-            invalidateRelationActivityToProject={invalidateRelationActivityToProject}
-            totaltems={activities?.pagination?.totaltems}
+            invalidateItemRelationToProject={invalidateItemRelationToProject}
+            totaltems={listData?.pagination?.totaltems}
             filter={filter}
-            relateActivityToProject={relateActivityToProject}
+            relateItemToProject={relateItemToProject}
             isOwnerOfCi={isOwnerOfCi}
             activities={dataRows}
             handleFilterChange={handleFilterChange}
-            isLoading={isLoading || isCurrentActivitiesLoading}
-            isError={isError || isCurrentActivitiesError}
+            isLoading={isLoading || isCurrentNeighboursLoading}
+            isError={isError || isCurrentNeighboursError}
             setDataRows={setDataRows}
             isInvalidated={isInvalidated}
+            ciType={ciType}
+            ciItemData={ciData}
         />
     )
 }
