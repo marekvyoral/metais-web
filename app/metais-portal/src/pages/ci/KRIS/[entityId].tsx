@@ -88,7 +88,7 @@ const EntityDetailPage: React.FC = () => {
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} />
 
-                        <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} />
+                        {/* <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} /> */}
                     </QueryFeedback>
                 </CiPermissionsWrapper>
             </MainContentWrapper>
