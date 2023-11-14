@@ -112,6 +112,7 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
     const { isLoading, isError, data: listData } = useReadCiList1(mapFilterToNeighborsApi(filter, defaultRequestApi))
 
     //Load related
+    //400 error report bug
     const {
         isLoading: isCurrentNeighboursLoading,
         isError: isCurrentNeighboursError,
@@ -155,6 +156,7 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
     }
 
     const invalidateItemRelationToProject = async (itemUuid: string | undefined, uuid: string | undefined) => {
+        //500 error report
         invalidateRelation(
             {
                 attributes: [],
