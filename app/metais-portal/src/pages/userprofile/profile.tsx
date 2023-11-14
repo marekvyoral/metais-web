@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { BreadCrumbs, Button, ButtonGroupRow, HomeIcon, Tab, Tabs, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { UserInformationsPage } from '@isdd/metais-common/components/views/user-profile/user-informations/UserInformationsPage'
 import { UserPreferencesPage } from '@isdd/metais-common/components/views/user-profile/user-preferences/UserPreferencesPage'
 import { UserRightsPage } from '@isdd/metais-common/components/views/user-profile/user-rights/UserRightsPage'
 import { UserNotificationsSettings } from '@isdd/metais-common/components/views/user-profile/UserNotificationsSettings'
@@ -12,6 +11,9 @@ import { ClaimEvent, useProcessEvent } from '@isdd/metais-common/api/generated/c
 import { DeletePersonalInfoModal } from '@isdd/metais-common/src/components/views/user-profile/modals/DeletePersonalInfoModal'
 import { MutationFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { ciInformationTab } from '@isdd/metais-common/constants'
+
+import { UserInformationPage } from '../../../../../packages/metais-common/src/components/views/user-profile/user-informations/UserInformationPage'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
@@ -30,9 +32,9 @@ const UserProfilePage = () => {
 
     const tabList: Tab[] = [
         {
-            id: 'informations',
+            id: ciInformationTab,
             title: t('userProfile.information.header'),
-            content: <UserInformationsPage />,
+            content: <UserInformationPage />,
         },
         {
             id: 'settings',

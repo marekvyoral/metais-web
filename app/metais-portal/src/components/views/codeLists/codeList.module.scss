@@ -16,3 +16,26 @@
     align-items: start;
     gap: govuk-spacing(2);
 }
+
+.buttonGroupEdit {
+    margin-top: govuk-spacing(4);
+    align-items: baseline;
+}
+
+.buttonLock {
+    color: govuk-colour('blue');
+    text-decoration: none;
+}
+
+.buttonDiscard {
+    color: govuk-colour('red');
+    margin: 0 0 0 auto;
+}
+
+.bottomGap {
+    margin-bottom: govuk-spacing(5);
+}
+.dateGap {
+    padding-right: govuk-spacing(5);
+    padding-left: govuk-spacing(5);
+}

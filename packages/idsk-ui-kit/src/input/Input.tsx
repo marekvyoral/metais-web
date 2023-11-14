@@ -15,7 +15,6 @@ interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<
     hint?: string
     error?: string
     disabled?: boolean
-    type?: string
     info?: string
     correct?: boolean
     className?: string

@@ -180,3 +180,5 @@ export const ENTITY_PRINCIP = 'Princip'
 
 export const INACTIVE_LOGOUT_TIME = import.meta.env.VITE_INACTIVE_LOGOUT_TIME
 export const INACTIVE_WARNING_TIME = import.meta.env.VITE_INACTIVE_WARNING_TIME
+
+export const ciInformationTab = 'information'

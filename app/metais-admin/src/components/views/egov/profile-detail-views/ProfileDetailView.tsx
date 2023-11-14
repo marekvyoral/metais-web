@@ -17,7 +17,7 @@ import { AddAttributeModal } from './attributes/AddAttributeModal'
 
 import styles from '@/components/views/egov/detailViews.module.scss'
 import { IAttributesContainerView } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
-import { BasicInformations } from '@/components/views/egov/BasicInformations'
+import { BasicInformation } from '@/components/views/egov/BasicInformation'
 
 export const ProfileDetailView = <T,>({
     data: { ciTypeData, constraintsData, unitsData },
@@ -250,7 +250,7 @@ export const ProfileDetailView = <T,>({
                     </div>
                     <MutationFeedback success={isActionSuccess.value} error={false} />
                 </FlexColumnReverseWrapper>
-                <BasicInformations data={{ ciTypeData, constraintsData, unitsData }} />
+                <BasicInformation data={{ ciTypeData, constraintsData, unitsData }} />
             </div>
             <div>
                 <h3 className="govuk-heading-m">{t('egov.detail.profileAttributes')}</h3>
