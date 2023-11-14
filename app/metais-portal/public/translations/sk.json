@@ -399,6 +399,15 @@
         "owner": "Správca",
         "error": "Pri načítavaní dát sa vyskytla technická chyba a niektoré položky nemusia mať priradené hodnoty. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom."
     },
+    "evaluation": {
+        "accordion": {
+            "goals": "Ciele a podciele",
+            "suggestion": "Hromadná pripomienka",
+            "isvs": "ISVS",
+            "services": "Koncové služby",
+            "krit": "KRIT Základné informácie"
+        }
+    },
     "ciType": {
         "informations": "Informácie",
         "evaluation": "Hodnotenie KRIT_TO_BE",

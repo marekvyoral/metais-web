@@ -105,9 +105,9 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
         }
     }
 
-    useEffect(() => {
-        activeTab && onSelected?.(activeTab)
-    }, [activeTab, onSelected])
+    // useEffect(() => {
+    //     activeTab && onSelected?.(activeTab)
+    // }, [activeTab, onSelected])
 
     useEffect(() => {
         setNewTabList(tabList)

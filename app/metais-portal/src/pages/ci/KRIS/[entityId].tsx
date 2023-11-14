@@ -36,7 +36,13 @@ const EntityDetailPage: React.FC = () => {
     document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
     const userAbility = useUserAbility()
 
-    const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: entityName ?? '', entityId: entityId ?? '', t, showEvaluation: true })
+    const tabList: Tab[] = getDefaultCiEntityTabList({
+        userAbility,
+        entityName: entityName ?? '',
+        entityId: entityId ?? '',
+        t,
+        showEvaluation,
+    })
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
     const {
@@ -66,7 +72,11 @@ const EntityDetailPage: React.FC = () => {
             />
             <MainContentWrapper>
                 <CiPermissionsWrapper entityId={entityId ?? ''} entityName={entityName ?? ''}>
-                    <QueryFeedback loading={isCiItemDataLoading || isCiTypeDataLoading || isLoadingEvaluation}>
+                    <QueryFeedback
+                        loading={isCiItemDataLoading || isCiTypeDataLoading || isLoadingEvaluation}
+                        error={isCiItemDataError || isCiTypeDataError || IsErrorEvaluation}
+                        withChildren
+                    >
                         <FlexColumnReverseWrapper>
                             <CiEntityIdHeader
                                 editButton={
@@ -83,12 +93,11 @@ const EntityDetailPage: React.FC = () => {
                                 isInvalidated={isInvalidated}
                                 refetchCi={refetch}
                             />
-                            <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError || IsErrorEvaluation} />
                             <MutationFeedback error={false} success={isActionSuccess.value} />
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} />
 
-                        {/* <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} /> */}
+                        <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} />
                     </QueryFeedback>
                 </CiPermissionsWrapper>
             </MainContentWrapper>

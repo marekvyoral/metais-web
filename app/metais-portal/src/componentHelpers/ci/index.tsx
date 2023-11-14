@@ -38,16 +38,7 @@ export const getDefaultCiEntityTabList = ({ entityName, entityId, t, userAbility
                   },
               ]
             : []),
-        // ...(entityName === ENTITY_KRIS && showEvaluation
-        //     ? [
-        //           {
-        //               id: 'evaluation',
-        //               path: `/ci/${entityName}/${entityId}/evaluation`,
-        //               title: t('ciType.evaluation'),
-        //               content: <Outlet />,
-        //           },
-        //       ]
-        //     : []),
+
         {
             id: 'relationships',
             path: `/ci/${entityName}/${entityId}/relationships`,
@@ -60,6 +51,16 @@ export const getDefaultCiEntityTabList = ({ entityName, entityId, t, userAbility
                       id: 'history',
                       path: `/ci/${entityName}/${entityId}/history`,
                       title: t('ciType.history'),
+                      content: <Outlet />,
+                  },
+              ]
+            : []),
+        ...(entityName === ENTITY_KRIS && showEvaluation
+            ? [
+                  {
+                      id: 'evaluation',
+                      path: `/ci/${entityName}/${entityId}/evaluation`,
+                      title: t('ciType.evaluation'),
                       content: <Outlet />,
                   },
               ]
