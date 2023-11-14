@@ -3,7 +3,7 @@ import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
@@ -32,17 +32,7 @@ const EntityDetailPage: React.FC = () => {
     document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
     const userAbility = useUserAbility()
 
-    const goalsTab = {
-        id: 'goals',
-        path: `/ci/${entityName}/${entityId}/goals`,
-        title: t('ciType.goals'),
-        content: <Outlet />,
-    }
-    const tabList: Tab[] = [
-        ...getDefaultCiEntityTabList({ userAbility, entityName: entityName ?? '', entityId: entityId ?? '', t }).slice(0, 2),
-        goalsTab,
-        ...getDefaultCiEntityTabList({ userAbility, entityName: entityName ?? '', entityId: entityId ?? '', t }).slice(2),
-    ]
+    const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: entityName ?? '', entityId: entityId ?? '', t })
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
     const {

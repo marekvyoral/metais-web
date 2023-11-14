@@ -174,6 +174,7 @@ export const MAX_TITLE_LENGTH = 100
 export const INVALIDATED = 'INVALIDATED'
 
 export const ENTITY_CIEL = 'Ciel'
+export const ENTITY_KRIS = 'KRIS'
 export const KRIS_stanovuje_Ciel = 'KRIS_stanovuje_Ciel'
 export const ENTITY_PRINCIP = 'Princip'
 
