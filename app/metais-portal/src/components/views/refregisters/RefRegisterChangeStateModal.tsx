@@ -48,7 +48,7 @@ export const RefRegisterChangeStateModal = ({
         setFileImportStep,
         setCustomFileMeta: () => {
             const id = uuidV4()
-            return { 'x-Content-Uuid': id }
+            return { 'x-content-uuid': id }
         },
     })
 
@@ -61,8 +61,7 @@ export const RefRegisterChangeStateModal = ({
             }
 
             if (currentFiles?.length > 0) await handleUpload()
-            const currentFilesIds = currentFiles?.map((file: UppyFile) => file?.meta?.uuid as string)
-
+            const currentFilesIds = currentFiles?.map((file: UppyFile) => file.meta['x-content-uuid'] as string)
             await handleChangeState(currentFilesIds ?? [], formValues?.description)
             machine.changeState(targetState)
             reset()
