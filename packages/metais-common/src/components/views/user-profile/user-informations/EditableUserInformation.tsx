@@ -34,7 +34,7 @@ type UserInformationForm = {
     position?: string
 }
 
-export const EditableUserInformations: React.FC<Props> = ({ setIsEditable, setIsChangeSuccess }) => {
+export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsChangeSuccess }) => {
     const { t } = useTranslation()
     const {
         state: { user, token },

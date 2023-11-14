@@ -5,7 +5,7 @@ import { CiContainer } from '@/components/containers/CiContainer'
 import { CiInformationAccordion } from '@/components/entities/accordion/CiInformationAccordion'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
-const Informations = () => {
+const Information = () => {
     const { entityId, entityName } = useGetEntityParamsFromUrl()
 
     return (
@@ -37,4 +37,4 @@ const Informations = () => {
     )
 }
 
-export default Informations
+export default Information

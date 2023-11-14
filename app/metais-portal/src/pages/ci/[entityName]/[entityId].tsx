@@ -1,26 +1,26 @@
 import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import React from 'react'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { CI_ITEM_QUERY_KEY, ENTITY_PROJECT, INVALIDATED, ciInformationTab } from '@isdd/metais-common/constants'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { shouldEntityNameBePO } from '@isdd/metais-common/src/componentHelpers/ci/entityNameHelpers'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
-import { CI_ITEM_QUERY_KEY, ENTITY_PROJECT, INVALIDATED } from '@isdd/metais-common/constants'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { shouldEntityNameBePO } from '@isdd/metais-common/src/componentHelpers/ci/entityNameHelpers'
 
-import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
-import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
-import Informations from '@/pages/ci/[entityName]/[entityId]/informations'
+import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { ProjectStateContainer } from '@/components/containers/ProjectStateContainer'
-import { ProjectStateView } from '@/components/views/ci/project/ProjectStateView'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
-import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
+import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
+import { ProjectStateView } from '@/components/views/ci/project/ProjectStateView'
+import Informations from '@/pages/ci/[entityName]/[entityId]/information'
 
 export const INDEX_ROUTE = Informations
 
@@ -30,6 +30,7 @@ const EntityDetailPage: React.FC = () => {
     const { entityId, entityName: urlEntityName } = useGetEntityParamsFromUrl()
     const navigate = useNavigate()
     const location = useLocation()
+    const [selectedTab, setSelectedTab] = useState<string>()
 
     const entityName = shouldEntityNameBePO(urlEntityName ?? '')
 
@@ -107,9 +108,9 @@ const EntityDetailPage: React.FC = () => {
                             <ProjectStateContainer configurationItemId={entityId ?? ''} View={(props) => <ProjectStateView {...props} />} />
                         )}
 
-                        <Tabs tabList={tabList} />
+                        <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
 
-                        <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} />
+                        {selectedTab === ciInformationTab && <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} />}
                     </QueryFeedback>
                 </CiPermissionsWrapper>
             </MainContentWrapper>

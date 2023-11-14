@@ -106,6 +106,10 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
     }
 
     useEffect(() => {
+        activeTab && onSelected?.(activeTab)
+    }, [activeTab, onSelected])
+
+    useEffect(() => {
         setNewTabList(tabList)
         setSelected((prev) => {
             if (prev === undefined || !tabList?.find((tab: Tab) => tab?.id === prev?.id)) return tabList[0]
