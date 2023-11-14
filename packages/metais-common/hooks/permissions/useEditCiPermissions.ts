@@ -12,14 +12,13 @@ import { fetchCanCreateGraph } from '@isdd/metais-common/api/fetchCanCreateGraph
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CAN_CREATE_GRAPH_QUERY_KEY, CI_ITEM_QUERY_KEY, INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useGetRights } from '@/api/generated/kris-swagger'
 
 export const useEditCiPermissions = (entityName: string, entityId: string) => {
     const abilityContext = useAbilityContext()
     const {
         state: { user, token },
     } = useAuth()
-    const { data: evaluationData, isLoading: isLoadingEvaluation } = useGetRights(entityId)
+
     const identityUuid = user?.uuid
     const { data: ciTypeData, isLoading: ciTypeLoading } = useGetCiType(entityName ?? '')
 
@@ -85,11 +84,6 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
                 can(Actions.EDIT, `ci.${ciData?.uuid}.attributeProfile.${profileAttr?.technicalName}`)
         })
 
-        console.log('EVALUATION', evaluationData)
-        if (evaluationData && evaluationData.hasVersions && !evaluationData.municipality && (evaluationData.creator || evaluationData.evaluator)) {
-            can(Actions.EVALUATION, entityName)
-        }
-
         const isOwnerOfCi = isOwnerByGid?.isOwner?.[0]?.owner
         if (isOwnerOfCi && !isInvalidated) can(Actions.CHANGE_OWNER, `ci.${ciData?.uuid}`)
 
@@ -99,6 +93,6 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
         if (canCreateGraph && !isInvalidated) can(Actions.CREATE, `ci.create.newRelation`)
 
         abilityContext.update(rules)
-    }, [rightsData, abilityContext, ciTypeData, isLoadingEvaluation, isOwnerByGid, ciData, canCreateGraph, user?.roles, evaluationData, entityName])
+    }, [rightsData, abilityContext, ciTypeData, isOwnerByGid, ciData, canCreateGraph, user?.roles, entityName])
     return {}
 }

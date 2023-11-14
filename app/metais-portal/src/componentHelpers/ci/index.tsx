@@ -10,10 +10,11 @@ type GetDefaultCiEntityTabListProps = {
     t: TFunction
     entityName: string
     entityId: string
+    showEvaluation?: boolean
     userAbility: MongoAbility<AbilityTuple, MongoQuery>
 }
 
-export const getDefaultCiEntityTabList = ({ entityName, entityId, t, userAbility }: GetDefaultCiEntityTabListProps): Tab[] => {
+export const getDefaultCiEntityTabList = ({ entityName, entityId, t, userAbility, showEvaluation }: GetDefaultCiEntityTabListProps): Tab[] => {
     const tabList: Tab[] = [
         {
             id: ciInformationTab,
@@ -35,6 +36,10 @@ export const getDefaultCiEntityTabList = ({ entityName, entityId, t, userAbility
                       title: t('ciType.goals'),
                       content: <Outlet />,
                   },
+              ]
+            : []),
+        ...(entityName === ENTITY_KRIS && showEvaluation
+            ? [
                   {
                       id: 'evaluation',
                       path: `/ci/${entityName}/${entityId}/evaluation`,

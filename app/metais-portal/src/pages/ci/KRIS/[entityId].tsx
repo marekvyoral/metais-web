@@ -11,6 +11,7 @@ import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbi
 import { CI_ITEM_QUERY_KEY, INVALIDATED } from '@isdd/metais-common/constants'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useGetRights } from '@isdd/metais-common/api/generated/kris-swagger'
 
 import Informations from './[entityId]/informations'
 
@@ -28,11 +29,13 @@ const EntityDetailPage: React.FC = () => {
     const location = useLocation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId, entityName } = useGetEntityParamsFromUrl()
-
+    const { data: evaluationData, isLoading: isLoadingEvaluation, isError: IsErrorEvaluation } = useGetRights(entityId ?? '')
+    const showEvaluation =
+        evaluationData && evaluationData.hasVersions && !evaluationData.municipality && (evaluationData.creator || evaluationData.evaluator)
     document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
     const userAbility = useUserAbility()
 
-    const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: entityName ?? '', entityId: entityId ?? '', t })
+    const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: entityName ?? '', entityId: entityId ?? '', t, showEvaluation })
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
     const {
@@ -62,7 +65,7 @@ const EntityDetailPage: React.FC = () => {
             />
             <MainContentWrapper>
                 <CiPermissionsWrapper entityId={entityId ?? ''} entityName={entityName ?? ''}>
-                    <QueryFeedback loading={isCiItemDataLoading || isCiTypeDataLoading}>
+                    <QueryFeedback loading={isCiItemDataLoading || isCiTypeDataLoading || isLoadingEvaluation}>
                         <FlexColumnReverseWrapper>
                             <CiEntityIdHeader
                                 editButton={
@@ -79,7 +82,7 @@ const EntityDetailPage: React.FC = () => {
                                 isInvalidated={isInvalidated}
                                 refetchCi={refetch}
                             />
-                            <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
+                            <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError || IsErrorEvaluation} />
                             <MutationFeedback error={false} success={isActionSuccess.value} />
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} />
