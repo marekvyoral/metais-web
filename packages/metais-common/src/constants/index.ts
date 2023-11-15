@@ -72,6 +72,7 @@ export enum ReponseErrorCodeEnum {
     GNR412 = 'gnr412',
 }
 export const REPORTS = 'reports'
+export const MONITORING = 'monitoring'
 export const FIRST_PAGE_NUMBER = 1
 
 export enum GROUP_ROLES {

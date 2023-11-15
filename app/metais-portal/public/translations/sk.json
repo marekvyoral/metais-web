@@ -149,6 +149,7 @@
             "prud": "Register dátových oprávnení a povinností",
             "sdg": "Jednotná digitálna brána",
             "overviews": "Prehľady",
+            "monitoring": "Monitoring",
             "monitoringEnd": "Monitorované parametre KS",
             "monitoringApp": "Monitorované parametre AS",
             "monitoringSet": "Zostava monitorovaných parametrov",
@@ -609,6 +610,10 @@
             "description": "Popis",
             "category": "Kategória"
         }
+    },
+    "monitoring": {
+        "title": "Monitoring",
+        "heading": "Monitoring"
     },
     "history": {
         "ACTIONS": {
@@ -1306,7 +1311,8 @@
         "PO_IS_PODetail": "Detail IS PO",
         "PO_IS_POCreate": "Vytvorenie IS PO",
         "meetings": "Zoznam zasadnutí",
-        "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia"
+        "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia",
+        "monitoring": "Monitoring"
     },
     "refRegisters": {
         "list": {

@@ -149,6 +149,7 @@
             "prud": "Register of data permissions and responsibilities",
             "sdg": "Uniform digital gate",
             "overviews": "Overviews",
+            "monitoring": "Monitoring",
             "monitoringEnd": "Monitored parameters of KS",
             "monitoringApp": "Monitored parameters of AS",
             "monitoringSet": "Set of monitoring parameters",
@@ -606,6 +607,9 @@
             "description": "Description",
             "category": "Category"
         }
+    },
+    "monitoring": {
+        "heading": "Monitoring"
     },
     "history": {
         "ACTIONS": {
@@ -1379,7 +1383,8 @@
         "PO_IS_PODetail": "Detail of IS PO",
         "PO_IS_POCreate": "Creation of IS PO",
         "meetings": "Meetings",
-        "publicAuthoritiesHierarchy": "Hierarchy of public authorities"
+        "publicAuthoritiesHierarchy": "Hierarchy of public authorities",
+        "monitoring": "Monitoring"
     },
     "todo": {
         "header": "Under construction",
