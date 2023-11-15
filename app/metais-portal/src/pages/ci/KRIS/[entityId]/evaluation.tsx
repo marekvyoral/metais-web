@@ -17,7 +17,15 @@ const EvaluationAccordionPage: React.FC = () => {
         <CiEvaluationContainer
             entityId={entityId ?? ''}
             View={(props) => {
-                return <EvaluationView entityName={entityName ?? ''} entityId={entityId} isError={props.isError} isLoading={props.isLoading} />
+                return (
+                    <EvaluationView
+                        entityName={entityName ?? ''}
+                        entityId={entityId}
+                        isError={props.isError}
+                        isLoading={props.isLoading}
+                        versionData={props.versionData}
+                    />
+                )
             }}
         />
     ) : (
