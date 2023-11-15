@@ -406,7 +406,13 @@
             "isvs": "ISVS",
             "services": "Koncové služby",
             "krit": "KRIT Základné informácie"
-        }
+        },
+        "evaluatedBy": "Vyhodnotil",
+        "version": "Verzia",
+        "created": "Začiatok hodnotenia",
+        "evaluated": "Koniec hodnotenia",
+        "evaluatAll": "Vyhodnotiť všetko",
+        "changeBtn": "Zmeniť"
     },
     "ciType": {
         "informations": "Informácie",
