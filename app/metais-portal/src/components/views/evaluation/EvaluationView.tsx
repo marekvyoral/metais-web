@@ -8,6 +8,7 @@ import { KrisToBeRights, NoteVersionUi } from '@isdd/metais-common/api/generated
 import { GoalsEvaluationAccordion } from './components/GoalsEvaluationAccordion'
 import styles from './evaluationView.module.scss'
 import { SuggestionEvaluationAccordion } from './components/SuggestionEvaluationAccordion'
+import { IsvsEvaluationAccordion } from './components/IsvsEvaluationAccordion'
 
 import { EContainerType } from '@/components/containers/CiEvaluationContainer'
 
@@ -138,7 +139,14 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                         },
                         {
                             title: t('evaluation.accordion.isvs'),
-                            content: <>{'tretet 2 ' + entityId}</>,
+                            content: (
+                                <IsvsEvaluationAccordion
+                                    versionData={versionData}
+                                    onApproveGoals={onApproveGoals}
+                                    dataRights={dataRights}
+                                    entityId={entityId ?? ''}
+                                />
+                            ),
                         },
                         {
                             title: t('evaluation.accordion.services'),

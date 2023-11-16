@@ -419,7 +419,14 @@
         "cancelBtn": "Zrušiť",
         "lastVerUPPVII": "Posledná verzia Hodnotenia ÚPPVII",
         "evalUPPVII": "Hodnotenie ÚPPVII",
-        "editor": "Zadávateľ KRIT_TO_BE"
+        "editor": "Zadávateľ KRIT_TO_BE",
+        "table": {
+            "isvsCode": "Kód ISVS",
+            "name": "Názov ISVS",
+            "state": "Stav evidencie",
+            "type": "Typ ISVS",
+            "modulIsvs": "Je modulom materského ISVS"
+        }
     },
     "ciType": {
         "informations": "Informácie",
