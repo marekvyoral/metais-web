@@ -8,11 +8,13 @@ import debounce from 'lodash/debounce'
 
 import styles from '../evaluationView.module.scss'
 
+import { EContainerType } from '@/components/containers/CiEvaluationContainer'
+
 interface IGoalsEvaluationAccordionProps {
     entityId: string
     versionData?: NoteVersionUi[]
     dataRights?: KrisToBeRights
-    onApproveGoals: (approve: boolean, note: string, refetchData: () => void) => Promise<void>
+    onApproveGoals: (approve: boolean, note: string, type: EContainerType, refetchData: () => void) => Promise<void>
     onResponseGoals: (note: string, refetchData: () => void) => Promise<void>
 }
 
@@ -38,7 +40,7 @@ export const GoalsEvaluationAccordion: React.FC<IGoalsEvaluationAccordionProps> 
     const [changeValidate, setChangeValidate] = useState<boolean>(false)
     const [selectedVersion, setSelectedVersion] = useState<NoteVersionUi>()
     const [goalsViewData, setGoalsViewData] = useState<IGolasViewData>()
-    const { data: dataCommon, isError, isLoading, refetch, isFetching } = useGetEvaluations(entityId, entityId, 'GOALS')
+    const { data: dataCommon, isError, isLoading, refetch, isFetching } = useGetEvaluations(entityId, entityId, EContainerType.GOALS)
 
     const debouncedHandlerEvaluation = useRef(
         debounce((value) => {
@@ -68,7 +70,6 @@ export const GoalsEvaluationAccordion: React.FC<IGoalsEvaluationAccordionProps> 
             dataCommon?.responses?.find((item) => item.noteVersionUi?.versionNumber === (versionData?.length ? versionData?.length - 1 : 0))
                 ?.values?.[0]?.value ?? ''
 
-        console.log(currentResponse)
         const currentNote =
             dataCommon?.evaluations?.find((item) => item.noteVersionUi?.versionNumber === (versionData?.length ?? 0))?.values?.[0]?.value ?? ''
 
@@ -137,7 +138,7 @@ export const GoalsEvaluationAccordion: React.FC<IGoalsEvaluationAccordionProps> 
                                 label={t('evaluation.saveBtn')}
                                 onClick={() => {
                                     if (dataRights?.inEvaluation) {
-                                        onApproveGoals(isApprove, note, refetchData)
+                                        onApproveGoals(isApprove, note, EContainerType.GOALS, refetchData)
                                     } else if (dataRights?.inProgress) {
                                         onResponseGoals(response, refetchData)
                                     }

@@ -7,6 +7,9 @@ import { KrisToBeRights, NoteVersionUi } from '@isdd/metais-common/api/generated
 
 import { GoalsEvaluationAccordion } from './components/GoalsEvaluationAccordion'
 import styles from './evaluationView.module.scss'
+import { SuggestionEvaluationAccordion } from './components/SuggestionEvaluationAccordion'
+
+import { EContainerType } from '@/components/containers/CiEvaluationContainer'
 
 interface IEvaluationView {
     versionData?: NoteVersionUi[]
@@ -16,7 +19,7 @@ interface IEvaluationView {
     isError: boolean
     entityName: string
     onApprove: (approve: boolean) => Promise<void>
-    onApproveGoals: (approve: boolean, note: string, refetchData: () => void) => Promise<void>
+    onApproveGoals: (approve: boolean, note: string, type: EContainerType, refetchData: () => void) => Promise<void>
     onResponseGoals: (note: string, refetchData: () => void) => Promise<void>
 }
 
@@ -124,7 +127,14 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                         },
                         {
                             title: t('evaluation.accordion.suggestion'),
-                            content: <>{'tretet 2 ' + entityId}</>,
+                            content: (
+                                <SuggestionEvaluationAccordion
+                                    versionData={versionData}
+                                    onApproveGoals={onApproveGoals}
+                                    dataRights={dataRights}
+                                    entityId={entityId ?? ''}
+                                />
+                            ),
                         },
                         {
                             title: t('evaluation.accordion.isvs'),

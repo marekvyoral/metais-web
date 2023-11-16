@@ -11,15 +11,23 @@ import {
 } from '@isdd/metais-common/api/generated/kris-swagger'
 import React, { useState } from 'react'
 
+export enum EContainerType {
+    COMMON = 'COMMON',
+    GOALS = 'GOALS',
+    KRIS = 'KRIS',
+    KS = 'KS',
+    ISVS = 'ISVS',
+}
 export interface ICiContainerView {
     versionData?: NoteVersionUi[]
     dataRights?: KrisToBeRights
     isLoading: boolean
     isError: boolean
     onApprove: (approve: boolean) => Promise<void>
-    onApproveGoals: (approve: boolean, note: string, refetchData: () => void) => Promise<void>
+    onApproveGoals: (approve: boolean, note: string, type: EContainerType, refetchData: () => void) => Promise<void>
     onResponseGoals: (note: string, refetchData: () => void) => Promise<void>
 }
+
 interface ICiEvaluationContainer {
     entityId: string
     View: React.FC<ICiContainerView>
@@ -48,9 +56,9 @@ export const CiEvaluationContainer: React.FC<ICiEvaluationContainer> = ({ entity
                 setApproveLoading(false)
             })
     }
-    const handleApproveGoals = async (approve: boolean, note: string, refetchData: () => void) => {
+    const handleApproveGoals = async (approve: boolean, note: string, type: EContainerType, refetchData: () => void) => {
         setApproveLoading(true)
-        await addEvaluationHook(entityId, entityId, 'GOALS', {
+        await addEvaluationHook(entityId, entityId, type, {
             state: { values: [{ name: 'common', value: approve }] },
             values: [{ name: 'common', value: note }],
         })
