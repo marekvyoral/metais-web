@@ -28,6 +28,7 @@ interface iUseUppy {
     fileImportStep: FileImportStepEnum
     setFileImportStep: (value: FileImportStepEnum) => void
     setCustomFileMeta?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => { [metaKey: string]: string | number }
+    setFileUuidAsync?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => Promise<{ uuid: string }>
 }
 
 export const useUppy = ({
@@ -37,6 +38,7 @@ export const useUppy = ({
     endpointUrl,
     setFileImportStep,
     setCustomFileMeta,
+    setFileUuidAsync,
     fileImportStep,
 }: iUseUppy) => {
     const {
@@ -78,8 +80,19 @@ export const useUppy = ({
         const fileErrorCallback = (_file: UppyFile | undefined, error: Error) => {
             setErrorMessages((prev) => [...prev, error.message])
         }
-        const fileAdded = (file: UppyFile<Record<string, unknown>, Record<string, unknown>>) => {
+        const fileAdded = async (file: UppyFile<Record<string, unknown>, Record<string, unknown>>) => {
             if (setCustomFileMeta) uppy.setFileMeta(file?.id, setCustomFileMeta?.(file))
+
+            if (setFileUuidAsync) {
+                const fileUuid = await setFileUuidAsync?.(file)
+                uppy.setFileMeta(file.id, { uuid: fileUuid.uuid })
+                uppy.setFileState(file.id, {
+                    xhrUpload: {
+                        endpoint: `${endpointUrl}${encodeURIComponent(fileUuid.uuid)}`,
+                    },
+                })
+            }
+
             setCurrentFiles(() => uppy.getFiles())
             setFileImportStep(FileImportStepEnum.VALIDATE)
         }
@@ -102,7 +115,7 @@ export const useUppy = ({
             uppy.off('file-removed', fileRemoved)
             uppy.off('restriction-failed', fileErrorCallback)
         }
-    }, [setCustomFileMeta, setFileImportStep])
+    }, [endpointUrl, setCustomFileMeta, setFileImportStep, setFileUuidAsync])
 
     const handleUpload = async () => {
         uppy.getFiles().forEach((file) => {
