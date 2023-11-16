@@ -9,8 +9,8 @@ import { useTranslation } from 'react-i18next'
 interface ICastVote {
     voteProcessing: boolean
     voteData: ApiVote | undefined
-    handleCastVote: (voteId: number | undefined, choiceId: number | undefined, description: string | undefined) => Promise<void>
-    handleVetoVote: (voteId: number | undefined, description: string | undefined) => Promise<void>
+    handleCastVote: (choiceId: number | undefined, description: string | undefined) => Promise<void>
+    handleVetoVote: (description: string | undefined) => Promise<void>
     canCast: boolean
     canVeto: boolean
     castedVoteId: number | undefined
@@ -70,7 +70,6 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
         if (voteData === undefined || voteData?.id === undefined) {
             return
         }
-        const voteId = voteData.id
         const choiceId: number | undefined | null = formData['voteChoice']
         const choiceDescription: string | undefined = formData['voteDescription']
         if (choiceId == undefined) {
@@ -81,10 +80,10 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
         try {
             setVotesProcessingError(false)
             if (isVeto) {
-                await handleVetoVote(voteId, choiceDescription)
+                await handleVetoVote(choiceDescription)
                 return
             }
-            await handleCastVote(voteId, choiceId, choiceDescription)
+            await handleCastVote(choiceId, choiceDescription)
         } catch {
             setVotesProcessingError(true)
         }

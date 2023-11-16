@@ -1,18 +1,19 @@
-import { BreadCrumbs, Button, Filter, HomeIcon, Input, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
-import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { useTranslation } from 'react-i18next'
-import { ActionsOverTable } from '@isdd/metais-common/index'
+import { Button, Filter, Input, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { ApiVotePreviewList } from '@isdd/metais-common/api/generated/standards-swagger'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 
 import styles from './voteList.module.scss'
 
-import { voteListColumns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/standardization/votes/votesList/voteListProps'
-import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { getVoteStateExplanation } from '@/components/views/standardization/votes/voteProps'
+import { voteListColumns, voteStateOptions, votesTypeToShowOptions } from '@/components/views/standardization/votes/votesList/voteListProps'
 
 export interface IVotesListFilterData extends IFilterParams, IFilter {
     votesTypeToShow: string
@@ -26,16 +27,27 @@ export interface IVotesListView {
     votesListData: ApiVotePreviewList | undefined
     defaultFilterValues: IVotesListFilterData
     filter: IFilter
+    isLoadingNextPage: boolean
     handleFilterChange: (filter: IFilter) => void
 }
 
-export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesListData, filter, defaultFilterValues, handleFilterChange }) => {
+export const VotesListView: React.FC<IVotesListView> = ({
+    isUserLogged,
+    votesListData,
+    filter,
+    defaultFilterValues,
+    isLoadingNextPage,
+    handleFilterChange,
+}) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
+    const {
+        isActionSuccess: { value: isSuccess },
+    } = useActionSuccess()
 
     const newVoteHandler = () => {
-        navigate(`${NavigationSubRoutes.VOTE_EDIT}/0`, { state: { from: location } })
+        navigate(`${NavigationSubRoutes.VOTE_CREATE}`, { state: { from: location } })
     }
 
     const votesList = votesListData?.votes?.map((vote) => {
@@ -46,72 +58,60 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
 
     return (
         <>
-            <BreadCrumbs
-                withWidthContainer
-                links={[
-                    { label: t('votes.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
-                    { label: t('votes.breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
-                    { label: t('votes.breadcrumbs.VotesLists'), href: NavigationSubRoutes.ZOZNAM_HLASOV },
-                ]}
-            />
-            <MainContentWrapper>
-                <TextHeading size="XL">{t('votes.votesList.title')}</TextHeading>
-                <Filter<IVotesListFilterData>
-                    heading={t('votes.votesList.filter.title')}
-                    defaultFilterValues={defaultFilterValues}
-                    form={({ filter: listFilter, register, setValue }) => (
-                        <div>
-                            {isUserLogged && (
-                                <SimpleSelect
-                                    id="votesTypeToShow"
-                                    label={t('votes.votesList.filter.votesTypeToShow')}
-                                    options={votesTypeToShowOptions(t)}
-                                    setValue={setValue}
-                                    defaultValue={listFilter?.votesTypeToShow}
-                                    name="votesTypeToShow"
-                                />
-                            )}
+            <TextHeading size="XL">{t('votes.votesList.title')}</TextHeading>
+            {isSuccess && <MutationFeedback success error={false} />}
+            <Filter<IVotesListFilterData>
+                heading={t('votes.votesList.filter.title')}
+                defaultFilterValues={defaultFilterValues}
+                form={({ filter: listFilter, register, setValue }) => (
+                    <div>
+                        {isUserLogged && (
                             <SimpleSelect
-                                id="voteState"
-                                label={t('votes.votesList.filter.voteState')}
-                                options={voteStateOptions(t)}
+                                id="votesTypeToShow"
+                                label={t('votes.votesList.filter.votesTypeToShow')}
+                                options={votesTypeToShowOptions(t)}
                                 setValue={setValue}
-                                defaultValue={listFilter?.voteState}
-                                name="voteState"
+                                defaultValue={listFilter?.votesTypeToShow}
+                                name="votesTypeToShow"
                             />
+                        )}
+                        <SimpleSelect
+                            id="voteState"
+                            label={t('votes.votesList.filter.voteState')}
+                            options={voteStateOptions(t)}
+                            setValue={setValue}
+                            defaultValue={listFilter?.voteState}
+                            name="voteState"
+                        />
 
-                            <div className={styles.inline}>
-                                <Input
-                                    {...register('effectiveFrom')}
-                                    type="date"
-                                    label={t('votes.votesList.filter.fromDate')}
-                                    className={styles.stretch}
-                                />
-                                <div className={styles.space} />
-                                <Input
-                                    {...register('effectiveTo')}
-                                    type="date"
-                                    label={t('votes.votesList.filter.toDate')}
-                                    className={styles.stretch}
-                                />
-                            </div>
+                        <div className={styles.inline}>
+                            <Input
+                                {...register('effectiveFrom')}
+                                type="date"
+                                label={t('votes.votesList.filter.fromDate')}
+                                className={styles.stretch}
+                            />
+                            <div className={styles.space} />
+                            <Input {...register('effectiveTo')} type="date" label={t('votes.votesList.filter.toDate')} className={styles.stretch} />
                         </div>
-                    )}
+                    </div>
+                )}
+            />
+            <div className={styles.inline}>
+                {isUserLogged ? <Button type="submit" label={t('votes.voteDetail.newVote')} onClick={() => newVoteHandler()} /> : <div />}
+                <ActionsOverTable
+                    pagination={{
+                        pageNumber: filter.pageNumber || BASE_PAGE_NUMBER,
+                        pageSize: filter.pageSize || BASE_PAGE_SIZE,
+                        dataLength: votesListData?.votesCount || 0,
+                    }}
+                    pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                    entityName=""
+                    handleFilterChange={handleFilterChange}
+                    hiddenButtons={{ SELECT_COLUMNS: true }}
                 />
-                <div className={styles.inline}>
-                    {isUserLogged && <Button type="submit" label={t('votes.voteDetail.newVote')} onClick={() => newVoteHandler()} />}
-                    <ActionsOverTable
-                        pagination={{
-                            pageNumber: filter.pageNumber || BASE_PAGE_NUMBER,
-                            pageSize: filter.pageSize || BASE_PAGE_SIZE,
-                            dataLength: votesListData?.votesCount || 0,
-                        }}
-                        entityName=""
-                        handleFilterChange={handleFilterChange}
-                        hiddenButtons={{ SELECT_COLUMNS: true }}
-                    />
-                </div>
-
+            </div>
+            <QueryFeedback loading={isLoadingNextPage} withChildren>
                 <Table
                     data={votesList}
                     columns={voteListColumns(t, isUserLogged)}
@@ -119,16 +119,14 @@ export const VotesListView: React.FC<IVotesListView> = ({ isUserLogged, votesLis
                     onSortingChange={(columnSort) => {
                         handleFilterChange({ sort: columnSort })
                     }}
-                    isLoading={false}
-                    error={undefined}
                 />
-                <PaginatorWrapper
-                    pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
-                    pageSize={filter.pageSize || BASE_PAGE_SIZE}
-                    dataLength={votesListData?.votesCount || 0}
-                    handlePageChange={handleFilterChange}
-                />
-            </MainContentWrapper>
+            </QueryFeedback>
+            <PaginatorWrapper
+                pageNumber={filter.pageNumber || BASE_PAGE_NUMBER}
+                pageSize={filter.pageSize || BASE_PAGE_SIZE}
+                dataLength={votesListData?.votesCount || 0}
+                handlePageChange={handleFilterChange}
+            />
         </>
     )
 }

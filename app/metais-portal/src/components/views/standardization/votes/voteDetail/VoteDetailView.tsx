@@ -1,42 +1,47 @@
-import { BreadCrumbs, Button, HomeIcon, Tab, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { ApiVote, ApiVoteResult } from '@isdd/metais-common/api/generated/standards-swagger'
+import { AccordionContainer, Button, Tab, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { ApiStandardRequest, ApiVote, ApiVoteResult } from '@isdd/metais-common/api/generated/standards-swagger'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Collapsible } from './voteDetailComponents/Collapsible/Collapsible'
+import { CancelVoteButton } from '../components/CancelVoteButton'
+import { VoteStateOptionEnum, getVoteStateEnum } from '../voteProps'
+
 import { voteActorResultsColumns } from './voteActorResultsColumns'
 import { voteActorsColumns } from './voteActorsColumns'
 import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
-import { Spacer } from './voteDetailComponents/Spacer'
-import { VoteOverViewItems } from './voteDetailComponents/VoteOverViewItems'
 
-import { SimpleTable } from '@/components/views/standardization/votes/voteDetail/voteDetailComponents/SimpleTable'
+import { Spacer } from '@/components/Spacer/Spacer'
+import { VoteOverViewItems } from '@/components/views/standardization/votes/components/VoteOverViewItems'
+import { TableWithPagination } from '@/components/views/standardization/votes/components/TableWithPagination/TableWithPagination'
 import styles from '@/components/views/standardization/votes/voteDetail/voteDetail.module.scss'
-import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { VotesHandler } from '@/components/views/standardization/votes/voteDetail/voteDetailComponents/VotesHandling'
-import { VoteDetailItems } from '@/components/views/standardization/votes/voteDetail/voteDetailComponents/VoteDetailItems'
+import { VotesHandler } from '@/components/views/standardization/votes/components/VotesHandling'
+import { VoteDetailItems } from '@/components/views/standardization/votes/components/VoteDetailItems'
 
 export interface IVoteDetailView {
     voteData: ApiVote | undefined
+    srData: ApiStandardRequest | undefined
     voteResultData: ApiVoteResult | undefined
     canCastVote: boolean
     castedVoteId: number | undefined
     isUserLoggedIn: boolean
     votesProcessing: boolean
-    castVote: (voteIdentifier: number, choiceId: number, description: string) => Promise<void>
-    vetoVote: (voteIdentifier: number, description: string) => Promise<void>
+    castVote: (choiceId: number, description: string) => Promise<void>
+    vetoVote: (description: string) => Promise<void>
+    cancelVote: (description: string) => Promise<void>
 }
 
 export const VoteDetailView: React.FC<IVoteDetailView> = ({
     voteData,
     isUserLoggedIn,
     voteResultData,
+    srData,
     canCastVote,
     castedVoteId,
     castVote,
     vetoVote,
+    cancelVote,
     votesProcessing,
 }) => {
     const { t } = useTranslation()
@@ -61,17 +66,24 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
             return {
                 id: key?.id?.toString() ?? '',
                 title: getTabTitle(key?.value, key?.votedActorsCount),
-                content: <SimpleTable tableColumns={actorResultsColumns} tableData={actorResultsList} sort={undefined} />,
+                content: (
+                    <TableWithPagination
+                        tableColumns={actorResultsColumns}
+                        tableData={actorResultsList}
+                        sort={undefined}
+                        hiddenButtons={{ SELECT_COLUMNS: true }}
+                    />
+                ),
             }
         })
     }, [actorResultsColumns, selectedTab, voteResultData?.actorResults, voteResultData?.choiceResults])
 
-    const handleCastVote = async (voteId: number | undefined, choiceId: number | undefined, description: string | undefined) => {
-        await castVote(voteId ?? 0, choiceId ?? 0, description ?? '')
+    const handleCastVote = async (choiceId: number | undefined, description: string | undefined) => {
+        await castVote(choiceId ?? 0, description ?? '')
     }
 
-    const handleVetoVote = async (voteId: number | undefined, description: string | undefined) => {
-        await vetoVote(voteId ?? 0, description ?? '')
+    const handleVetoVote = async (description: string | undefined) => {
+        await vetoVote(description ?? '')
     }
 
     const changeDescription = (name: string, changeAction: string): string => {
@@ -96,77 +108,97 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
         navigate(`${NavigationSubRoutes.VOTE_EDIT}/${voteData?.id}`, { state: { from: location } })
     }
 
+    const voteState = useMemo(() => {
+        return getVoteStateEnum(voteData?.voteState, voteData?.effectiveFrom ?? '', voteData?.effectiveTo ?? '')
+    }, [voteData?.effectiveFrom, voteData?.effectiveTo, voteData?.voteState])
+
+    const canCancelVote = useMemo(() => {
+        return voteState == VoteStateOptionEnum.PLANNED
+    }, [voteState])
+
+    const canModifyVote = useMemo(() => {
+        return voteState == VoteStateOptionEnum.PLANNED || (voteState !== VoteStateOptionEnum.SUMMARIZED && voteState !== VoteStateOptionEnum.VETOED)
+    }, [voteState])
+
+    const hideVoteModifyingButtons = useMemo(() => {
+        return voteState == VoteStateOptionEnum.CANCELED
+    }, [voteState])
+
     return (
         <>
-            <BreadCrumbs
-                links={[
-                    { label: t('votes.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
-                    { label: t('votes.breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
-                    { label: t('votes.breadcrumbs.VotesLists'), href: NavigationSubRoutes.ZOZNAM_HLASOV },
-                    { label: t('votes.breadcrumbs.VoteDetail'), href: NavigationSubRoutes.VOTE_DETAIL },
+            <div className={styles.inlineSpaceBetween}>
+                <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
+                {isUserLoggedIn && !hideVoteModifyingButtons && (
+                    <div className={styles.inlineSpaceBetween}>
+                        <Button type="submit" label={t('votes.voteDetail.editVote')} onClick={() => editVoteHandler()} disabled={!canModifyVote} />
+                        <Spacer horizontal />
+                        <CancelVoteButton disabled={!canCancelVote || !canModifyVote} cancelVote={cancelVote} />
+                    </div>
+                )}
+            </div>
+
+            <VoteDetailItems voteData={voteData} srData={srData} />
+
+            <Spacer vertical />
+
+            <TextHeading size="L">{t('votes.voteDetail.voteDescription')}</TextHeading>
+            <TextBody>{voteData?.description ?? ''}</TextBody>
+            <Spacer vertical />
+
+            <TextHeading size="L">{t('votes.voteDetail.votesHandlingTitle')}</TextHeading>
+
+            <VotesHandler
+                voteData={voteData}
+                handleCastVote={handleCastVote}
+                handleVetoVote={handleVetoVote}
+                canCast={(isUserLoggedIn && canCastVote) ?? false}
+                canVeto={(isUserLoggedIn && canCastVote && voteData?.veto) ?? false}
+                voteProcessing={votesProcessing}
+                castedVoteId={castedVoteId}
+            />
+            <Spacer vertical />
+
+            <AccordionContainer
+                sections={[
+                    {
+                        title: t('votes.voteDetail.voteActorsTitle'),
+                        summary: null,
+                        content: voteData?.voteActors && <TableWithPagination tableColumns={actorColumns} tableData={voteData?.voteActors} />,
+                    },
                 ]}
             />
-            <MainContentWrapper>
-                <div className={styles.inlineSpaceBetween}>
-                    <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
-                    {isUserLoggedIn && <Button type="submit" label={t('votes.voteDetail.editVote')} onClick={() => editVoteHandler()} />}
-                </div>
+            <Spacer vertical />
 
-                <VoteDetailItems voteData={voteData} />
+            <TextHeading size="L">{t('votes.voteDetail.voteOverview')}</TextHeading>
+            <VoteOverViewItems voteData={voteData} voteResultData={voteResultData} />
 
-                <Spacer />
+            <Spacer vertical />
 
-                <TextHeading size="L">{t('votes.voteDetail.voteDescription')}</TextHeading>
-                <TextBody>{voteData?.description ?? ''}</TextBody>
+            <Tabs
+                tabList={tabList}
+                onSelect={(selected) => {
+                    setSelectedTab(selected.id)
+                }}
+            />
 
-                <Spacer />
-
-                <TextHeading size="L">{t('votes.voteDetail.votesHandlingTitle')}</TextHeading>
-
-                <VotesHandler
-                    voteData={voteData}
-                    handleCastVote={handleCastVote}
-                    handleVetoVote={handleVetoVote}
-                    canCast={(isUserLoggedIn && canCastVote) ?? false}
-                    canVeto={(isUserLoggedIn && canCastVote && voteData?.veto) ?? false}
-                    voteProcessing={votesProcessing}
-                    castedVoteId={castedVoteId}
+            <Spacer vertical />
+            {pendingChangesData.length !== 0 && (
+                <AccordionContainer
+                    sections={[
+                        {
+                            title: t('votes.voteDetail.changeInfo'),
+                            summary: null,
+                            content: voteData?.voteActors && (
+                                <TableWithPagination
+                                    tableColumns={actorPendingChangesColumns}
+                                    tableData={pendingChangesData}
+                                    hiddenButtons={{ SELECT_COLUMNS: true }}
+                                />
+                            ),
+                        },
+                    ]}
                 />
-
-                <Spacer />
-
-                <Collapsible
-                    collapseSign={<div className={styles.collapsableSign}>-</div>}
-                    expandSign={<div className={styles.collapsableSign}>+</div>}
-                    heading={<div className={styles.textFormat}>{t('votes.voteDetail.voteActorsTitle')}</div>}
-                >
-                    {voteData?.voteActors && <SimpleTable tableColumns={actorColumns} tableData={voteData?.voteActors} sort={undefined} />}
-                </Collapsible>
-                <Spacer />
-
-                <TextHeading size="L">{t('votes.voteDetail.voteOverview')}</TextHeading>
-                <VoteOverViewItems voteData={voteData} voteResultData={voteResultData} />
-
-                <Spacer />
-
-                <Tabs
-                    tabList={tabList}
-                    onSelect={(selected) => {
-                        setSelectedTab(selected.id)
-                    }}
-                />
-
-                <Spacer />
-                {pendingChangesData.length !== 0 && (
-                    <Collapsible
-                        collapseSign={<div className={styles.collapsableSign}>-</div>}
-                        expandSign={<div className={styles.collapsableSign}>+</div>}
-                        heading={<div className={styles.textFormat}>{t('votes.voteDetail.changeInfo')}</div>}
-                    >
-                        <SimpleTable tableColumns={actorPendingChangesColumns} tableData={pendingChangesData} sort={undefined} />
-                    </Collapsible>
-                )}
-            </MainContentWrapper>
+            )}
         </>
     )
 }

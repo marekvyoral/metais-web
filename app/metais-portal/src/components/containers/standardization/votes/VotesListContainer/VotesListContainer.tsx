@@ -3,6 +3,9 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-co
 import React, { useMemo } from 'react'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useTranslation } from 'react-i18next'
 import { GetVotesParams, useGetVotes } from '@isdd/metais-common/api/generated/standards-swagger'
 
 import { getVoteParamsData } from './votesListFunc'
@@ -10,12 +13,14 @@ import { getVoteParamsData } from './votesListFunc'
 import { IVotesListFilterData, IVotesListView } from '@/components/views/standardization/votes/votesList/VoteListView'
 import { VotesListShowEnum } from '@/components/views/standardization/votes/votesList/voteListProps'
 import { VotesListColumnsEnum } from '@/components/views/standardization/votes/voteProps'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 interface IVotesListContainer {
     View: React.FC<IVotesListView>
 }
 
 export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
+    const { t } = useTranslation()
     const {
         state: { user },
     } = useAuth()
@@ -53,17 +58,30 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
         return votesParamValues
     }, [filter.effectiveFrom, filter.effectiveTo, filter.pageNumber, filter.pageSize, filter.sort, filter.voteState, filter.votesTypeToShow])
 
-    const { data: votesList, isLoading, isError } = useGetVotes(getVotesParamValues)
+    const { data: votesList, isLoading, isFetching, isError } = useGetVotes(getVotesParamValues)
 
     return (
-        <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent' }}>
-            <View
-                isUserLogged={isUserLogged}
-                votesListData={votesList}
-                filter={filter}
-                defaultFilterValues={defaultFilterValues}
-                handleFilterChange={handleFilterChange}
+        <>
+            <BreadCrumbs
+                withWidthContainer
+                links={[
+                    { label: t('votes.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
+                    { label: t('votes.breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
+                    { label: t('votes.breadcrumbs.VotesLists'), href: NavigationSubRoutes.ZOZNAM_HLASOV },
+                ]}
             />
-        </QueryFeedback>
+            <MainContentWrapper>
+                <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent' }}>
+                    <View
+                        isUserLogged={isUserLogged}
+                        votesListData={votesList}
+                        filter={filter}
+                        defaultFilterValues={defaultFilterValues}
+                        isLoadingNextPage={isFetching}
+                        handleFilterChange={handleFilterChange}
+                    />
+                </QueryFeedback>
+            </MainContentWrapper>
+        </>
     )
 }

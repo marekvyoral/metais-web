@@ -9,10 +9,11 @@ interface ITextLinkProps extends PropsWithChildren {
     noUnderline?: boolean
     to: string
     className?: string
+    newTab?: boolean
 }
 
 export const TextLink = forwardRef<HTMLAnchorElement, ITextLinkProps>(
-    ({ children, className, linkBack, noVisitedState, inverse, noUnderline, to }, ref) => {
+    ({ children, className, linkBack, noVisitedState, inverse, noUnderline, to, newTab }, ref) => {
         const location = useLocation()
         return (
             <Link
@@ -26,6 +27,7 @@ export const TextLink = forwardRef<HTMLAnchorElement, ITextLinkProps>(
                     { 'link-back': !!linkBack },
                     className,
                 )}
+                target={newTab ? '_blank' : '_self'}
                 to={to}
             >
                 {children}
