@@ -24,6 +24,10 @@ const EvaluationAccordionPage: React.FC = () => {
                         isError={props.isError}
                         isLoading={props.isLoading}
                         versionData={props.versionData}
+                        dataRights={props.dataRights}
+                        onApprove={props.onApprove}
+                        onApproveGoals={props.onApproveGoals}
+                        onResponseGoals={props.onResponseGoals}
                     />
                 )
             }}

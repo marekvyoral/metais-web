@@ -412,7 +412,13 @@
         "created": "Začiatok hodnotenia",
         "evaluated": "Koniec hodnotenia",
         "evaluatAll": "Vyhodnotiť všetko",
-        "changeBtn": "Zmeniť"
+        "evaluatSection": "Vyhodnotenie",
+        "changeBtn": "Zmeniť",
+        "saveBtn": "Uložiť",
+        "cancelBtn": "Zrušiť",
+        "lastVerUPPVII": "Posledná verzia Hodnotenia ÚPPVII",
+        "evalUPPVII": "Hodnotenie ÚPPVII",
+        "editor": "Zadávateľ KRIT_TO_BE"
     },
     "ciType": {
         "informations": "Informácie",

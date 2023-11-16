@@ -1,28 +1,39 @@
 import { QueryFeedback } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { AccordionContainer, Button, CheckBox, GridCol, GridRow, Input, MultiSelect, SimpleSelect, TextArea, TextBody } from '@isdd/idsk-ui-kit/index'
+import { AccordionContainer, Button, CheckBox, GridCol, GridRow, SimpleSelect } from '@isdd/idsk-ui-kit/index'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { NoteVersionUi } from '@isdd/metais-common/api/generated/kris-swagger'
-import { use } from 'i18next'
-import { useForm } from 'react-hook-form'
-import { validate } from 'uuid'
+import { KrisToBeRights, NoteVersionUi } from '@isdd/metais-common/api/generated/kris-swagger'
 
 import { GoalsEvaluationAccordion } from './components/GoalsEvaluationAccordion'
 import styles from './evaluationView.module.scss'
 
 interface IEvaluationView {
     versionData?: NoteVersionUi[]
+    dataRights?: KrisToBeRights
     entityId?: string
     isLoading: boolean
     isError: boolean
     entityName: string
+    onApprove: (approve: boolean) => Promise<void>
+    onApproveGoals: (approve: boolean, note: string, refetchData: () => void) => Promise<void>
+    onResponseGoals: (note: string, refetchData: () => void) => Promise<void>
 }
 
-export const EvaluationView: React.FC<IEvaluationView> = ({ entityId, isError, isLoading, entityName, versionData }) => {
+export const EvaluationView: React.FC<IEvaluationView> = ({
+    entityId,
+    isError,
+    isLoading,
+    entityName,
+    versionData,
+    dataRights,
+    onApprove,
+    onApproveGoals,
+    onResponseGoals,
+}) => {
     const { t } = useTranslation()
     const [selectedVersion, setSelectedVersion] = useState<NoteVersionUi>()
-    const [changeValidateAll, setChangeValidateAll] = useState<boolean>(true)
+    const [changeValidateAll, setChangeValidateAll] = useState<boolean>()
 
     useEffect(() => {
         versionData?.length && setSelectedVersion(versionData[0])
@@ -68,16 +79,48 @@ export const EvaluationView: React.FC<IEvaluationView> = ({ entityId, isError, i
                     </GridCol>
                     <GridCol>
                         <div className="govuk-checkboxes govuk-checkboxes--small">
-                            <CheckBox disabled={changeValidateAll} label={t('evaluation.evaluatAll')} id={'evaluatAll'} name={'evaluatAll'} />
+                            <CheckBox
+                                disabled={!changeValidateAll}
+                                label={t('evaluation.evaluatAll')}
+                                id={'evaluatAll'}
+                                name={'evaluatAll'}
+                                onChange={(val) => {
+                                    setChangeValidateAll(false)
+                                    onApprove(val.target.checked)
+                                }}
+                            />
                         </div>
-                        <Button label={t('evaluation.changeBtn')} onClick={() => setChangeValidateAll(!changeValidateAll)} />
+                        {!changeValidateAll ? (
+                            <Button
+                                label={t('evaluation.changeBtn')}
+                                onClick={() => {
+                                    setChangeValidateAll(!changeValidateAll)
+                                }}
+                            />
+                        ) : (
+                            <Button
+                                variant="secondary"
+                                label={t('evaluation.cancelBtn')}
+                                onClick={() => {
+                                    setChangeValidateAll(!changeValidateAll)
+                                }}
+                            />
+                        )}
                     </GridCol>
                 </GridRow>
                 <AccordionContainer
                     sections={[
                         {
                             title: t('evaluation.accordion.goals'),
-                            content: <GoalsEvaluationAccordion entityId={entityId ?? ''} />,
+                            content: (
+                                <GoalsEvaluationAccordion
+                                    entityId={entityId ?? ''}
+                                    versionData={versionData}
+                                    onApproveGoals={onApproveGoals}
+                                    onResponseGoals={onResponseGoals}
+                                    dataRights={dataRights}
+                                />
+                            ),
                         },
                         {
                             title: t('evaluation.accordion.suggestion'),
