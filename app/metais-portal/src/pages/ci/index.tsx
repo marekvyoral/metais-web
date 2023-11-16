@@ -1,7 +1,9 @@
-import React from 'react'
-
-const index = () => {
-    return <div>index</div>
+const CIindex = () => {
+    return (
+        <div>
+            <h1>CIindex</h1>
+        </div>
+    )
 }
 
-export default index
+export default CIindex

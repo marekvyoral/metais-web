@@ -7,6 +7,7 @@ import { RootRouteContainer } from '@/navigation/route-containers/RootRouteConta
 import { TodoPage } from '@/components/views/todo-page/TodoPage'
 
 export const Router: React.FC = () => {
+    console.log(computedRoutes())
     return (
         <Routes>
             <Route path="/" element={<RootRouteContainer />}>

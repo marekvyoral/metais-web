@@ -79,10 +79,16 @@ export const getIndexFilePaths = (filePaths: string[], globExports?: FileBasedPa
 
 // for ex. /ci/:entityName/:entityId, /ci/:entityName/:entityId/*, ...
 export const calcNestedPath = (slug: string, filePathsOnLevelBefore: string[]) => {
+    console.log('slug', slug)
     const splittedSlug = slug?.split('/')
+    // console.log('splittedSlug', splittedSlug)
     const fileParent = splittedSlug?.[splittedSlug?.length - 2]
-    const fileExistsInLevelBefore = filePathsOnLevelBefore?.some((filePath) => parseSlugFromFilePath(filePath)?.endsWith(fileParent))
-    return fileExistsInLevelBefore ? splittedSlug[splittedSlug?.length - 1] : slug
+    // console.log('fileParent', fileParent)
+    const fileExistsInLevelBefore = filePathsOnLevelBefore?.some((filePath) => parseSlugFromFilePath(filePath)?.endsWith(fileParent)) //TU JE CHYBA
+    // console.log('fileExistsInLevelBefore', fileExistsInLevelBefore)
+    const result = fileExistsInLevelBefore ? splittedSlug[splittedSlug?.length - 1] : slug
+    console.log('RESULT', result)
+    return result
 }
 
 const isModuleExportReactFC = (globExports: unknown, slug: string) => {

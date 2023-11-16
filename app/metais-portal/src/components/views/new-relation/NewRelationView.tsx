@@ -36,7 +36,6 @@ import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
 import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
 import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
 import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits } from '@/components/create-entity/createEntityHelpers'
-import CiListPage from '@/pages/ci/[entityName]/entity'
 
 interface Props {
     ciItemData: ConfigurationItemUi | undefined
@@ -257,15 +256,6 @@ export const NewRelationView: React.FC<Props> = ({
                 value={selectedRelationTypeTechnicalName}
                 onChange={(val) => setSelectedRelationTypeTechnicalName(val ?? '')}
                 error={!canCreateRelationType ? t('newRelation.selectRelTypeError') : ''}
-            />
-
-            <SelectCiItem
-                filterTypeEntityName={tabName}
-                onChangeSelectedCiItem={(val) => setSelectedItems(val)}
-                onCloseModal={() => setIsListPageOpen(false)}
-                onOpenModal={() => setIsListPageOpen(true)}
-                existingRelations={existingRelations}
-                modalContent={<CiListPage importantEntityName={tabName} noSideMenu />}
             />
 
             <form onSubmit={handleFormSubmit(handleSubmit)}>

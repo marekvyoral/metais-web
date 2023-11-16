@@ -30,7 +30,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
     isError,
 }) => {
     const { t } = useTranslation()
-
+    console.log('SME TU')
     const {
         isLoading: isCiConstraintLoading,
         isError: isCiConstraintError,
