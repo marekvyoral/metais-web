@@ -107,6 +107,7 @@ export enum NavigationSubRoutes {
     MONITORING_IMPORT = '/todo',
     VOTE_DETAIL = '/standardization/votedetail',
     VOTE_EDIT = '/standardization/vote',
+    VOTE_CREATE = '/standardization/vote/create',
     NOTIFICATIONS = '/notifications',
     LICENCIE = '/howto/LICENCE.LICENCE_TITLE/LICENSE_HOWTO',
     SERVERY = '/servers',

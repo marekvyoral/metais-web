@@ -13,6 +13,7 @@ const VotesList: React.FC = () => {
                     filter={props.filter}
                     handleFilterChange={props.handleFilterChange}
                     isUserLogged={props.isUserLogged}
+                    isLoadingNextPage={props.isLoadingNextPage}
                 />
             )}
         />

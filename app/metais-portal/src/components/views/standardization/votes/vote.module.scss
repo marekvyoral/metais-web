@@ -1,0 +1,69 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.inline {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.spaceBetween {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stretch {
+    width: 100%;
+}
+
+.stretchGrow {
+    flex-grow: 5;
+}
+
+.space {
+    flex-grow: 1;
+}
+
+.center {
+    align-items: center;
+}
+
+.marginLeft {
+    margin-left: govuk-spacing(4);
+}
+
+/***************/
+
+.itemTitle {
+    font-weight: bold !important;
+    margin: 0 !important;
+    padding-right: govuk-spacing(8);
+}
+
+.itemsTableWrapper {
+    width: 100%;
+    position: relative;
+}
+
+.itemsTable {
+    position: relative;
+    border: 0px solid;
+}
+
+.itemsTableRow {
+    text-align: left;
+    height: 50px;
+}
+
+.itemsTableCellContent {
+    display: contents;
+}
+
+.linkAlign {
+    display: inline;
+    padding-right: govuk-spacing(4);
+}
+
+.spaceVertical {
+    padding-top: govuk-spacing(6);
+}
+

@@ -1,10 +1,5 @@
 @import '@isdd/idsk-ui-kit/src/utils.scss';
 
-.textFormat {
-    font-weight: 700;
-    font-size: 1.5rem;
-}
-
 .inlineSpaceBetween {
     display: flex;
     align-items: center;
@@ -12,6 +7,13 @@
     flex-direction: row;
 }
 
-.collapsibleSign {
-    font-size: xx-large;
+.inline {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
 }
+
+.marginLeft {
+    margin-left: govuk-spacing(4);
+}
+

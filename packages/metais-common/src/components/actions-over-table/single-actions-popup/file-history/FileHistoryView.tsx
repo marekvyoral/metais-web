@@ -29,7 +29,7 @@ export const FileHistoryView: React.FC<IFileHistoryViewProps> = ({ data, item, h
     const [isFileLoading, setFileLoading] = useState<boolean>(false)
     const downloadFile = async (row: Row<MetaVersion>) => {
         const blobData = await downloadVersionFile(item.uuid ?? '', { version: data[row.index].version })
-        downloadBlobAsFile(new Blob([blobData]), data[row.index].filename ?? '')
+        downloadBlobAsFile(new Blob([blobData]), data[row.index].filename ?? '', false)
         setFileLoading(false)
     }
     const {

@@ -5,7 +5,7 @@ import classNames from 'classnames'
 
 import styles from './breadCrumbs.module.scss'
 
-type BreadCrumbsItemProps = {
+export type BreadCrumbsItemProps = {
     icon?: string
     href: string
     label: string

@@ -1703,7 +1703,6 @@
         },
         "votesList": {
             "title": "Zoznam Hlasovaní",
-            "votesListSubtitle": "nejake blabla kecy",
             "tooltipText": "Pre neprihláseného sa nezobrazia stĺpce Právo hlasovať a Hlasoval za subjekt.",
             "table": {
                 "effectiveFrom": "Dátum spustenia",
@@ -1725,13 +1724,17 @@
             "date": "Dátum",
             "voteType": "Typ Hlasovania",
             "relatedDocuments": "Súvisiace dokumenty",
-            "relatedVoteLinks": "Hlasovanie sa týka návrhu",
+            "standardRequestTitle": "Hlasovanie sa týka návrhu",
+            "links": "Linky na dokumenty",
             "secret": "Tajné",
             "public": "Verejné",
             "downloadingFile": "Stahujem súbor",
             "submitVote": "Hlasovať",
             "editVote": "Upraviť hlasovanie",
-            "newVote": "+   Pridať nové hlasovanie",
+            "newVote": "Pridať nové hlasovanie",
+            "cancelVote": "Zrušiť hlasovanie",
+            "cancel": "Zrušiť",
+            "back": "Späť",
             "voteProcessing": "Spracovávam hlasovanie",
             "voteDescription": "Predkladaný návrh",
             "votesHandlingTitle": "Hlasovanie",
@@ -1748,7 +1751,7 @@
             "voteVetoChoiceLabel": "Vetovať hlasovanie",
             "description": "Poznámka",
             "voteConclusion": "Záver hlasovania",
-            "voteDetailExplanationPrefix": "Stav hlasovania ",
+            "voteState": "Stav hlasovania ",
             "vetoed": "Návrh bol vetovaný",
             "vetoedBy": "Vetoval",
             "vetoedDescription": "Dôvod",
@@ -1758,9 +1761,60 @@
                 "role": "Pozícia"
             }
         },
+        "voteEdit": {
+            "newVoteTitle": "Pridať nové hlasovanie",
+            "editVoteTitle": "Upraviť hlasovanie",
+            "subject": "Predmet hlasovania (znenie otázky) (povinné): ",
+            "relatedDraft": "Hlasovanie sa týka návrhu:",
+            "selectFromList": "Vybrať zo zoznamu",
+            "description": "Popis",
+            "generalPlaceholder": "Zadajte",
+            "documents": {
+                "title": "Dokumenty",
+                "subtitle": "Zadajte odkazy na dokumenty",
+                "generalInputPlaceholder": "Zadajte",
+                "linkInputPlaceholder": "Zadajte vo formáte http://url-adresa-k-dokumentu",
+                "descriptionLabel": "Popis dokumentu",
+                "typeLabel": "Typ dokumentu",
+                "linkLabel": "Link na dokument",
+                "sizeLabel": "Veľkosť dokumentu"
+            },
+            "invited": {
+                "title": "Pozvaní",
+                "invitedGroups": "Pozvané skupiny (povinné):",
+                "invitedUsers": "Pozvaní používatelia (povinné):"
+            },
+            "secretVote": "Tajné hlasovanie",
+            "date": {
+                "fromDate": "Dátum spustenia (povinné):",
+                "toDate": "Dátum ukončenia (povinné):"
+            },
+            "answers": {
+                "title": "Definícia odpovedí",
+                "particularAnswerTitle": "odpoveď",
+                "addNext": "Pridať ďalšiu definíciu",
+                "veto": "Povoliť právo veta",
+                "yes": "Áno",
+                "no": "Nie",
+                "didNotVote": "Zdržal sa hlasovania"
+            },
+            "cancel": "Zrušiť",
+            "callVote": "Vytvoriť hlasovanie",
+            "updateVote": "Upraviť hlasovanie",
+            "addNextDocumentItem": "Pridať ďalší odkaz na dokument",
+            "standardRequestsTable": {
+                "srName": "Názov návrhu",
+                "createdAt": "Vytvorené",
+                "name": "Meno",
+                "version": "Verzia",
+                "standardRequestState": "Stav"
+            }
+        },
         "type": {
             "yes": "Áno",
             "no": "Nie",
+            "enter": "Zadajte",
+            "selectOption": "Vyberte možnosť",
             "toShow": {
                 "onlyMyVotes": "Len moje hlasovania",
                 "allVotes": "Všetky hlasovania"
@@ -1775,7 +1829,15 @@
             },
             "changeAction": {
                 "added": "bol pridaný do hlasovania"
-            }
+            },
+            "cancel": "Zrušiť",
+            "select": "Vybrať",
+            "loadingData": "Načítavam údaje",
+            "callingVote": "Spracovávam hlasovanie"
+        },
+        "error": {
+            "errorTitle": "Nastala chyba",
+            "errorMessage": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
         }
     },
     "registration": {

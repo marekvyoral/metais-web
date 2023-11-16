@@ -1704,13 +1704,17 @@
             "date": "Date",
             "voteType": "Vote type",
             "relatedDocuments": "Related documents",
-            "relatedVoteLinks": "Related Draft",
+            "standardRequestTitle": "Hlasovanie sa týka návrhu",
+            "links": "Related Draft",
             "secret": "Secret",
             "public": "Public",
             "downloadingFile": "Downloading File",
             "submitVote": "Submit",
             "editVote": "Edit vote",
-            "newVote": "+  New vote",
+            "newVote": "New vote",
+            "cancelVote": "Cancel vote",
+            "cancel": "Cancel",
+            "back": "Back",
             "voteProcessing": "Processing",
             "voteDescription": "Description",
             "votesHandlingTitle": "Voting",
@@ -1719,15 +1723,15 @@
             "changeDate": "Change Date",
             "changeInfo": "Information about changed actors during vote",
             "changeDescription": "Description Of Change",
-            "voteChoiseLabel": {
+            "voteChoiceLabel": {
                 "cannotCast": "Only logged in user with autorization can cast vote",
                 "canCast": "You are authorized to vote",
                 "alreadyVoted": "You already casted vote for this draft"
             },
-            "voteVetoChoiseLabel": "Veto Vote",
+            "voteVetoChoiceLabel": "Veto Vote",
             "description": "Note",
             "voteConclusion": "Conclusion",
-            "voteDetailExplanationPrefix": "Vote state ",
+            "voteState": "Vote state ",
             "vetoed": "Draft was vetoed",
             "vetoedBy": "Vetoed by",
             "vetoedDescription": "Reason",
@@ -1737,9 +1741,60 @@
                 "role": "Role"
             }
         },
+        "voteEdit": {
+            "newVoteTitle": "Add new vote",
+            "editVoteTitle": "Edit vote",
+            "subject": "Vote subject (required): ",
+            "relatedDraft": "Related Draft:",
+            "selectFromList": "Select from list",
+            "description": "Description",
+            "generalPlaceholder": "Enter",
+            "documents": {
+                "title": "Documents",
+                "subtitle": "Enter documents links ",
+                "generalInputPlaceholder": "Enter",
+                "linkInputPlaceholder": "Enetr on following format: http://url-document-address",
+                "descriptionLabel": "Document description",
+                "typeLabel": "Document type",
+                "linkLabel": "Document Link",
+                "sizeLabel": "Document Size"
+            },
+            "invited": {
+                "title": "Invited",
+                "invitedGroups": "Invited groups (reqired):",
+                "invitedUsers": "Invited users (reqiured):"
+            },
+            "secretVote": "Secret vote",
+            "date": {
+                "fromDate": "Date from (required):",
+                "toDate": "Date to (required):"
+            },
+            "answers": {
+                "title": "Answer definitions",
+                "particularAnswerTitle": "Answer",
+                "addNext": "Add next definition",
+                "veto": "Allow veto right",
+                "yes": "Yes",
+                "no": "No",
+                "didNotVote": "He abstained from voting"
+            },
+            "cancel": "Cancel",
+            "callVote": "Create vote",
+            "updateVote": "Edit vote",
+            "addNextDocumentItem": "Add next document",
+            "standardRequestsTable": {
+                "srName": "Draft name",
+                "createdAt": "created At",
+                "name": "Mame",
+                "version": "Verion",
+                "standardRequestState": "State"
+            }
+        },
         "type": {
             "yes": "Yes",
             "no": "No",
+            "enter": "Enter",
+            "selectOption": "Select option",
             "toShow": {
                 "onlyMyVotes": "My votes only",
                 "allVotes": "All votes"
@@ -1747,14 +1802,22 @@
             "state": {
                 "planned": "Planned",
                 "ended": "Finished",
-                "upcomming": "Upcomming",
+                "upcoming": "Upcomming",
                 "canceled": "Canceled",
                 "summarized": "Sumarized",
                 "vetoed": "Vetoed"
             },
             "changeAction": {
                 "added": "was added to vote"
-            }
+            },
+            "cancel": "Cancel",
+            "select": "Select",
+            "loadingData": "Loading data",
+            "callingVote": "Processing vote"
+        },
+        "error": {
+            "errorTitle": "Error occured",
+            "errorMessage": "We apologize, but an error occurred durring processing. Try submitting the form again. If the error occurs repeatedly, contact the administrator"
         }
     },
     "registration": {

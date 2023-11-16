@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { ButtonLink } from '@isdd/idsk-ui-kit/index'
 import { ApiAttachment } from '@isdd/metais-common/api/generated/standards-swagger'
 
-import styles from '@/components/views/standardization/votes/voteDetail/voteDetail.module.scss'
+import styles from '@/components/views/standardization/votes/vote.module.scss'
 
 interface IAttachmentLink {
     attachments: ApiAttachment[] | undefined
@@ -22,7 +22,7 @@ export const AttachmentLinks: React.FC<IAttachmentLink> = ({ attachments }) => {
             setFileError(false)
             setIsLoading(true)
             const blobData = await downloadAttachmentFile(attachment.attachmentId ?? '')
-            downloadBlobAsFile(new Blob([blobData]), attachment.attachmentName ?? '')
+            downloadBlobAsFile(new Blob([blobData]), attachment.attachmentName ?? '', true)
         } catch {
             setFileError(true)
         } finally {

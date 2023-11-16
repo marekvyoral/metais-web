@@ -4,7 +4,24 @@ import { VoteEditView } from '@/components/views/standardization/votes/voteEdit/
 import { VoteEditContainer } from '@/components/containers/standardization/votes/VoteEditContainer'
 
 const VoteDetail: React.FC = () => {
-    return <VoteEditContainer View={(props) => <VoteEditView voteId={props.voteId} />} />
+    return (
+        <VoteEditContainer
+            View={(props) => (
+                <VoteEditView
+                    user={props.user}
+                    existingVoteDataToEdit={props.existingVoteDataToEdit}
+                    allStandardRequestData={props.allStandardRequestData}
+                    groupWithIdentitiesData={props.groupWithIdentitiesData}
+                    isSubmitLoading={props.isSubmitLoading}
+                    isSubmitError={props.isSubmitError}
+                    isIdentifiersLoading={props.isIdentifiersLoading}
+                    createVote={props.createVote}
+                    updateVote={props.updateVote}
+                    onCancel={props.onCancel}
+                />
+            )}
+        />
+    )
 }
 
 export default VoteDetail
