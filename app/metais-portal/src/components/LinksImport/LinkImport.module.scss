@@ -1,0 +1,20 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.inline {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.longer {
+    flex-grow: 5;
+}
+
+.shorter {
+    flex-grow: 2;
+}
+
+.spaceHorizontal {
+    padding-right: govuk-spacing(6);
+}
+

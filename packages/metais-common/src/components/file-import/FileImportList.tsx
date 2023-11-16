@@ -14,7 +14,7 @@ export interface ProgressInfoList {
 
 interface IFileImportList {
     fileList: UppyFile[]
-    uppy: Uppy
+    uppy?: Uppy
     handleRemoveFile: (fileId: string) => void
     progressInfoList: ProgressInfoList[]
 }
