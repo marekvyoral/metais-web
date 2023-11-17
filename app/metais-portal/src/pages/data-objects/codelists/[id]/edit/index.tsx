@@ -9,6 +9,7 @@ const EditCodeListPage = () => {
                     data={props.data}
                     entityName={props.entityName}
                     isError={props.isError}
+                    errorMessages={props.errorMessages}
                     isLoading={props.isLoading}
                     loadOptions={props.loadOptions}
                     handleSave={props.handleSave}

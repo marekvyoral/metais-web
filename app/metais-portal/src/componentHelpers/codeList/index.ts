@@ -1,10 +1,29 @@
 import { ApiCodelistItem } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
-import { CodeListItemState } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 
-import { IItemForm } from '@/components/views/codeLists/components/modals/ItemForm/ItemForm'
+import { IItemForm } from '@/components/views/codeLists/components/modals/ItemFormModal/ItemFormModal'
 
 export const _entityName = 'requestList'
+
+export enum ApiCodeListActions {
+    TEMPORAL_CODELIST_TO_ISVS_PROCESSING = 'temporalCodelistToIsvsProcessing',
+    TEMPORAL_CODELIST_TO_PUBLISHED = 'temporalCodelistToPublished',
+    TEMPORAL_CODELIST_TO_READY_TO_PUBLISH = 'temporalCodelistToReadyToPublish',
+    TEMPORAL_CODELIST_TO_UPDATING = 'temporalCodelistToUpdating',
+}
+
+export enum ApiCodeListItemsActions {
+    CODELIST_ITEMS_TO_PUBLISH = 'codelistItemsToPublish',
+    SET_DATES = 'setDates',
+    CODELIST_ITEM_BACK_FROM_READY_TO_PUBLISH = 'codelistItemBackFromReadyToPublish',
+}
+
+export enum CodeListItemState {
+    NEW = 'NEW',
+    READY_TO_PUBLISH = 'READY_TO_PUBLISH',
+    PUBLISHED = 'PUBLISHED',
+    UPDATING = 'UPDATING',
+}
 
 const pushOrInit = (currentValue: object[] | undefined, newValue: object) => {
     if (Array.isArray(currentValue)) {
@@ -146,4 +165,13 @@ export const mapToCodeListDetail = (language: string, item: IItemForm, oldItem?:
     })
 
     return newItem
+}
+
+export const getErrorTranslateKeys = (errors: { message: string }[]): string[] => {
+    return errors
+        .filter((error) => !!error && error.message)
+        .map((error) => {
+            const message = JSON.parse(error.message)
+            return `errors.codeList.${message.message}`
+        })
 }

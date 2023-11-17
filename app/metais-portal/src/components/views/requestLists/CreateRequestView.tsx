@@ -14,9 +14,9 @@ import {
     TextArea,
     TextHeading,
 } from '@isdd/idsk-ui-kit/index'
-import { ActionsOverTable, BulkPopup, CreateEntityButton, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, BulkPopup, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useGetRoleParticipantHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -26,6 +26,8 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, RequestListState } from '@isdd/metais
 import { CellContext, ColumnDef, ExpandedState, Row } from '@tanstack/react-table'
 import { RequestListActions } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+
+import { getDescription, getName } from '../codeLists/CodeListDetailUtils'
 
 import { RequestDetailItemsTableExpandedRow } from '@/components/views/requestLists/components/RequestDetailItemsTableExpandedRow'
 import { IItemForm, ModalItem } from '@/components/views/requestLists/components/modalItem/ModalItem'
@@ -74,6 +76,7 @@ export enum RequestFormEnum {
 export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     entityName,
     isError,
+    errorMessages,
     isLoading,
     editData,
     onCheckIfCodeListExist,
@@ -87,7 +90,10 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     onSaveDates,
     requestId,
 }) => {
-    const { t, i18n } = useTranslation()
+    const {
+        t,
+        i18n: { language },
+    } = useTranslation()
     const navigate = useNavigate()
     const { schema } = useCreateRequestSchema()
     const getRoleParticipantHook = useGetRoleParticipantHook()
@@ -124,6 +130,10 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     const closeDate = () => {
         setIsSetDatesDialogOpened(false)
     }
+
+    useEffect(() => {
+        if (firstNotUsedCode) setValue('codeListId', firstNotUsedCode)
+    }, [firstNotUsedCode, setValue])
 
     const addItem = (data: IItemForm) => {
         if (data.id) {
@@ -278,10 +288,10 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                     links={[
                         { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                         { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                        { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
-                        { label: t('codeList.breadcrumbs.requestList'), href: RouteNames.REQUESTLIST },
-                        { label: editData?.codeListId ?? '', href: `${RouteNames.REQUESTLIST}/${requestId}` },
-                        { label: t('codeList.breadcrumbs.requestEdit'), href: `${RouteNames.EDITREQUEST}/${requestId}` },
+                        { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
+                        { label: t('codeList.breadcrumbs.requestList'), href: NavigationSubRoutes.REQUESTLIST },
+                        { label: editData?.codeListId ?? '', href: `${NavigationSubRoutes.REQUESTLIST}/${requestId}` },
+                        { label: t('codeList.breadcrumbs.requestEdit'), href: `${NavigationSubRoutes.REQUESTLIST}/${requestId}/edit` },
                     ]}
                 />
             ) : (
@@ -290,9 +300,9 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                     links={[
                         { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                         { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                        { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
-                        { label: t('codeList.breadcrumbs.requestList'), href: RouteNames.REQUESTLIST },
-                        { label: t('codeList.breadcrumbs.requestCreate'), href: `${RouteNames.CREATEREQUEST}/create` },
+                        { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
+                        { label: t('codeList.breadcrumbs.requestList'), href: NavigationSubRoutes.REQUESTLIST },
+                        { label: t('codeList.breadcrumbs.requestCreate'), href: `${NavigationSubRoutes.REQUESTLIST}/create` },
                     ]}
                 />
             )}
@@ -304,7 +314,8 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             <div className={styles.bottomGap}>
                                 <CheckBox
                                     disabled={!canEdit}
-                                    label={t('codeListList.requestCreate.base')}
+                                    label={getDescription('Gui_Profil_ZC_zakladny_ciselnik', language, attributeProfile)}
+                                    info={getName('Gui_Profil_ZC_zakladny_ciselnik', language, attributeProfile)}
                                     id={RequestFormEnum.BASE}
                                     {...register(RequestFormEnum.BASE)}
                                     name={RequestFormEnum.BASE}
@@ -313,7 +324,8 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             <Input
                                 required
                                 disabled={!canEdit}
-                                label={t('codeListList.requestCreate.codeListName')}
+                                label={getDescription('Gui_Profil_ZC_nazov_ciselnika', language, attributeProfile)}
+                                info={getName('Gui_Profil_ZC_nazov_ciselnika', language, attributeProfile)}
                                 id={RequestFormEnum.CODELISTNAME}
                                 {...register(RequestFormEnum.CODELISTNAME)}
                                 error={formState.errors[RequestFormEnum.CODELISTNAME]?.message}
@@ -321,8 +333,8 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             <Input
                                 required
                                 disabled={!canEdit}
-                                label={t('codeListList.requestCreate.codeListId')}
-                                defaultValue={firstNotUsedCode}
+                                label={getDescription('Gui_Profil_ZC_kod_ciselnika', language, attributeProfile)}
+                                info={getName('Gui_Profil_ZC_kod_ciselnika', language, attributeProfile)}
                                 id={RequestFormEnum.CODELISTID}
                                 {...register(RequestFormEnum.CODELISTID)}
                                 error={formState.errors[RequestFormEnum.CODELISTID]?.message}
@@ -331,7 +343,8 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             <Input
                                 required
                                 disabled={!canEdit}
-                                label={t('codeListList.requestCreate.refIndicator')}
+                                label={getDescription('Gui_Profil_ZC_uri', language, attributeProfile)}
+                                info={getName('Gui_Profil_ZC_uri', language, attributeProfile)}
                                 id={RequestFormEnum.REFINDICATOR}
                                 {...register(RequestFormEnum.REFINDICATOR)}
                                 error={formState.errors[RequestFormEnum.REFINDICATOR]?.message}
@@ -344,7 +357,8 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
                                 getOptionLabel={(item) => item.poName ?? ''}
                                 getOptionValue={(item) => item.poUUID ?? ''}
-                                label={t('codeListList.requestCreate.mainGestor')}
+                                label={getDescription('Gui_Profil_ZC_hlavny_gestor', language, attributeProfile)}
+                                info={getName('Gui_Profil_ZC_hlavny_gestor', language, attributeProfile)}
                                 isMulti={false}
                                 setValue={setValue}
                                 error={formState.errors[RequestFormEnum.MAINGESTOR]?.message}
@@ -353,22 +367,25 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             <Input
                                 required
                                 disabled={!canEdit}
-                                label={t('codeListList.requestCreate.resortCode')}
+                                label={getDescription('Gui_Profil_ZC_rezort', language, attributeProfile)}
+                                info={getName('Gui_Profil_ZC_rezort', language, attributeProfile)}
                                 id={RequestFormEnum.RESORTCODE}
                                 {...register(RequestFormEnum.RESORTCODE)}
                                 error={formState.errors[RequestFormEnum.RESORTCODE]?.message}
                             />
-                            {editData?.codeListSate === RequestListState.ACCEPTED_SZZC ||
-                                (editData?.codeListSate === RequestListState.KS_ISVS_ACCEPTED && (
+                            {editData?.codeListState === RequestListState.ACCEPTED_SZZC ||
+                                (editData?.codeListState === RequestListState.KS_ISVS_ACCEPTED && (
                                     <>
                                         <Input
-                                            label={t('codeListList.requestModal.startDate')}
+                                            label={getDescription('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
+                                            info={getName('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
                                             id={RequestFormEnum.EFFECTIVEFROM}
                                             name={RequestFormEnum.EFFECTIVEFROM}
                                             type="datetime-local"
                                         />
                                         <Input
-                                            label={t('codeListDetail.modal.form.validFrom')}
+                                            label={getDescription('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
+                                            info={getName('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
                                             id={RequestFormEnum.VALIDDATE}
                                             {...register(RequestFormEnum.VALIDDATE)}
                                             type="datetime-local"
@@ -382,7 +399,10 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                         key={index}
                                         defaultValue={note.text}
                                         rows={5}
-                                        label={`${t('codeListList.requestCreate.note')} ${notes.length > 1 ? index + 1 : ''}`}
+                                        label={`${getDescription('Gui_Profil_ZC_poznamka_pre_ciselnik', language, attributeProfile)}  ${
+                                            notes.length > 1 ? index + 1 : ''
+                                        }`}
+                                        info={getName('Gui_Profil_ZC_poznamka_pre_ciselnik', language, attributeProfile)}
                                         id={name}
                                         error={formState.errors[RequestFormEnum.NOTES]?.message}
                                         name={name}
@@ -404,7 +424,8 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                     <Input
                                         required
                                         disabled={!canEdit}
-                                        label={t('codeListList.requestCreate.name')}
+                                        label={getDescription('Gui_Profil_ZC_meno', language, attributeProfile)}
+                                        info={getName('Gui_Profil_ZC_meno', language, attributeProfile)}
                                         id={RequestFormEnum.NAME}
                                         {...register(RequestFormEnum.NAME)}
                                         error={formState.errors[RequestFormEnum.NAME]?.message}
@@ -414,7 +435,8 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                     <Input
                                         required
                                         disabled={!canEdit}
-                                        label={t('codeListList.requestCreate.lastName')}
+                                        label={getDescription('Gui_Profil_ZC_priezvisko', language, attributeProfile)}
+                                        info={getName('Gui_Profil_ZC_priezvisko', language, attributeProfile)}
                                         id={RequestFormEnum.LASTNAME}
                                         {...register(RequestFormEnum.LASTNAME)}
                                         error={formState.errors[RequestFormEnum.LASTNAME]?.message}
@@ -426,7 +448,8 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                     <Input
                                         required
                                         disabled={!canEdit}
-                                        label={t('codeListList.requestCreate.phone')}
+                                        label={getDescription('Gui_Profil_ZC_tel_cislo', language, attributeProfile)}
+                                        info={getName('Gui_Profil_ZC_tel_cislo', language, attributeProfile)}
                                         id={RequestFormEnum.PHONE}
                                         {...register(RequestFormEnum.PHONE)}
                                         error={formState.errors[RequestFormEnum.PHONE]?.message}
@@ -436,7 +459,8 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                     <Input
                                         required
                                         disabled={!canEdit}
-                                        label={t('codeListList.requestCreate.email')}
+                                        label={getDescription('Gui_Profil_ZC_email', language, attributeProfile)}
+                                        info={getName('Gui_Profil_ZC_email', language, attributeProfile)}
                                         id={RequestFormEnum.EMAIL}
                                         {...register(RequestFormEnum.EMAIL)}
                                         error={formState.errors[RequestFormEnum.EMAIL]?.message}
@@ -484,9 +508,9 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 getExpandedRow={(row: Row<IItemForm>) => {
                                     return (
                                         <RequestDetailItemsTableExpandedRow
-                                            workingLanguage={i18n.language}
+                                            workingLanguage={language}
                                             codelistItem={mapToCodeListDetail(
-                                                i18n.language,
+                                                language,
                                                 codeList?.find((item) => item.codeItem === row.original.codeItem),
                                             )}
                                             attributeProfile={attributeProfile}
@@ -503,17 +527,20 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                     closeDate()
                                 }}
                             />
+                            {errorMessages.map((errorMessage, index) => (
+                                <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
+                            ))}
                             <ButtonGroupRow>
                                 <Button
                                     label={t('form.cancel')}
                                     type="reset"
                                     variant="secondary"
-                                    onClick={() => navigate(`${RouteNames.REQUESTLIST}`)}
+                                    onClick={() => navigate(`${NavigationSubRoutes.REQUESTLIST}`)}
                                 />
                                 {(canEdit || canEditDate) &&
                                     userAbility.can(RequestListActions.EDIT, entityName) &&
-                                    editData?.codeListSate !== RequestListState.KS_ISVS_ACCEPTED &&
-                                    editData?.codeListSate !== RequestListState.ACCEPTED_SZZC && (
+                                    editData?.codeListState !== RequestListState.KS_ISVS_ACCEPTED &&
+                                    editData?.codeListState !== RequestListState.ACCEPTED_SZZC && (
                                         <Button label={t('form.submit')} type="submit" variant="secondary" onClick={() => setSend(true)} />
                                     )}
                                 {(canEdit || canEditDate) && userAbility.can(RequestListActions.EDIT, entityName) && (
@@ -528,6 +555,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 isCreate={!editData}
                                 onSubmit={addItem}
                                 item={codeListItem}
+                                attributeProfile={attributeProfile}
                                 canEdit={!!canEdit}
                                 canEditDate={!!canEditDate}
                             />

@@ -50,9 +50,9 @@ export const useSetDatesSchema = (): ISetDates => {
 export const useItemSchema = (): IItem => {
     const { t } = useTranslation()
     const schema = object().shape({
-        code: string().required(t('codeListDetail.validations.codeItem')),
-        name: string().required(t('codeListDetail.validations.codelistName')),
-        effectiveFrom: string().required(t('codeListDetail.validations.validFrom')),
+        code: string().required(t('codeListDetail.validation.code')),
+        name: string().required(t('codeListDetail.validation.name')),
+        effectiveFrom: string().required(t('codeListDetail.validation.effectiveFrom')),
     })
 
     return {

@@ -1,9 +1,9 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-import List from './publiclist'
+import Detail from './detail'
 
-export const INDEX_ROUTE = List
+export const INDEX_ROUTE = Detail
 
 const index: React.FC = () => {
     return <Outlet />

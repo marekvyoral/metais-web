@@ -2,11 +2,21 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import {
     CiListFilterContainerUi,
+    getGetRoleParticipantBulkQueryKey,
     getReadCiList1QueryKey,
     getReadCiNeighboursWithAllRelsQueryKey,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import { getFindByUuid3QueryKey } from '@isdd/metais-common/api/generated/iam-swagger'
+import {
+    getGetCodelistHeaderQueryKey,
+    getGetOriginalCodelistHeaderQueryKey,
+    getGetCodelistHeadersQueryKey,
+    getGetCodelistItemsQueryKey,
+    getGetCodelistHistoryQueryKey,
+    getGetCodelistActionsHistoryQueryKey,
+    getGetTemporalCodelistHeaderWithLockQueryKey,
+} from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 
 const isCiListFilterContainerUi = (obj: unknown): obj is CiListFilterContainerUi => {
     return !!obj && typeof obj === 'object'
@@ -75,6 +85,24 @@ export const useInvalidateGroupsDetailCache = (id: string) => {
 
     const invalidate = () => {
         queryClient.invalidateQueries(findByUuid3QueryKey)
+    }
+
+    return { invalidate }
+}
+
+export const useInvalidateCodeListCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (code: string, id: number) => {
+        queryClient.invalidateQueries([getGetCodelistHeaderQueryKey(id)[0]])
+        queryClient.invalidateQueries([getGetOriginalCodelistHeaderQueryKey(code)[0]])
+        queryClient.invalidateQueries([getGetRoleParticipantBulkQueryKey({})[0]])
+        queryClient.invalidateQueries([getGetCodelistHeadersQueryKey({ language: '', pageNumber: 0, perPage: 0 })[0]])
+        queryClient.invalidateQueries([getGetCodelistItemsQueryKey(code, { language: '', pageNumber: 0, perPage: 0 })[0]])
+        queryClient.invalidateQueries([getGetCodelistHistoryQueryKey(code)[0]])
+        queryClient.invalidateQueries(getGetCodelistActionsHistoryQueryKey(code, 'actions'))
+        queryClient.invalidateQueries(getGetCodelistActionsHistoryQueryKey(code, 'modifiedBy'))
+        queryClient.invalidateQueries(getGetTemporalCodelistHeaderWithLockQueryKey(code))
     }
 
     return { invalidate }

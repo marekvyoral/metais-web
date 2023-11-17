@@ -24,7 +24,7 @@ export interface IRequestForm {
     codeLists?: IItemForm[]
     startDate?: Date
     validDate?: Date
-    codeListSate?: RequestListState
+    codeListState?: RequestListState
 }
 
 export const mapFormToSave = (formData: IRequestForm, language: string, uuid: string): ApiCodelistPreview => {
@@ -230,7 +230,7 @@ export const mapToForm = (language: string, itemList?: ApiCodelistItemList, data
         notes: data?.codelistNotes?.map((item) => ({ text: item.value, id: item.id } as INoteRow)) ?? [],
         validDate: data?.validFrom ? new Date(data.validFrom) : undefined,
         startDate: data?.fromDate ? new Date(data.fromDate) : undefined,
-        codeListSate: data?.codelistState ?? '',
+        codeListState: data?.codelistState ?? '',
     } as IRequestForm
 }
 

@@ -17,34 +17,33 @@ export const GestorTabView: React.FC<GestorTabViewProps> = ({ data }) => {
     } = useTranslation()
     const { codeList, attributeProfile } = data || {}
     const ability = useAbilityContext()
-    if (!codeList || !attributeProfile) return <></>
 
     return (
         <InformationGridRowWrapper>
             <InformationGridRow
                 key={'name'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_meno', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_meno', language)}
+                label={getDescription('Gui_Profil_ZC_meno', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_meno', language, attributeProfile)}
                 value={codeList?.contactFirstName}
             />
             <InformationGridRow
                 key={'surname'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_priezvisko', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_priezvisko', language)}
+                label={getDescription('Gui_Profil_ZC_priezvisko', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_priezvisko', language, attributeProfile)}
                 value={codeList?.contactSurname}
             />
             {ability.can(Actions.READ, Subjects.DETAIL, 'gestor.contact') && (
                 <>
                     <InformationGridRow
                         key={'tel'}
-                        label={getDescription(attributeProfile, 'Gui_Profil_ZC_tel_cislo', language)}
-                        tooltip={getName(attributeProfile, 'Gui_Profil_ZC_tel_cislo', language)}
+                        label={getDescription('Gui_Profil_ZC_tel_cislo', language, attributeProfile)}
+                        tooltip={getName('Gui_Profil_ZC_tel_cislo', language, attributeProfile)}
                         value={codeList?.contactPhone}
                     />
                     <InformationGridRow
                         key={'email'}
-                        label={getDescription(attributeProfile, 'Gui_Profil_ZC_email', language)}
-                        tooltip={getName(attributeProfile, 'Gui_Profil_ZC_email', language)}
+                        label={getDescription('Gui_Profil_ZC_email', language, attributeProfile)}
+                        tooltip={getName('Gui_Profil_ZC_email', language, attributeProfile)}
                         value={codeList?.contactMail}
                     />
                 </>

@@ -4,7 +4,7 @@ import {
     ApiCodelistPreview,
     useDeleteTemporalCodelistHeader,
     useGetCodelistHeader,
-    useGetOriginalCodelistHeader,
+    useGetTemporalCodelistHeaderWithLock,
     useGetUnlockTemporalCodelistHeader,
     useUpdateAndUnlockTemporalCodelistHeader,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
@@ -12,19 +12,20 @@ import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swag
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { IEditCodeListForm, mapEditFormDataToCodeList } from '@/componentHelpers'
 import { _entityName } from '@/componentHelpers/requests'
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { IOption } from '@/components/views/codeLists/CodeListEditView'
+import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 export interface CodeListDetailData {
     codeList?: ApiCodelistPreview
-    codeListOriginal?: ApiCodelistPreview
     attributeProfile?: AttributeProfile
     defaultManagers?: IOption[]
 }
@@ -35,6 +36,7 @@ export interface EditCodeListContainerViewProps {
     requestId?: string
     isLoading: boolean
     isError: boolean
+    errorMessages: string[]
     handleSave: (formData: IEditCodeListForm) => Promise<void>
     handleRemoveLock: () => void
     handleDiscardChanges: () => void
@@ -60,27 +62,42 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
     const { id: codeId } = useParams()
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
-
-    const returnPath = `${RouteNames.CODELISTS}/${codeId}`
+    const { invalidate } = useInvalidateCodeListCache()
 
     const [defaultManagers, setDefaultManagers] = useState<IOption[]>([])
-    const [isErrorCheck, setErrorCheck] = useState<boolean>()
+    const [errorCheck, setErrorCheck] = useState<{ message: string }>()
 
     const userDataGroups = useMemo(() => user.state.user?.groupData ?? [], [user])
     const { mutateAsync: mutateAsyncImplicitHierarchy } = useReadCiList()
 
-    const { mutateAsync: mutateAsyncUnlock, isLoading: isLoadingUnlock, isError: isErrorUnlock } = useGetUnlockTemporalCodelistHeader()
-    const { mutateAsync: mutateAsyncDiscard, isLoading: isLoadingDiscard, isError: isErrorDiscard } = useDeleteTemporalCodelistHeader()
-    const { mutateAsync: mutateAsyncSave, isLoading: isLoadingSave, isError: isErrorSave } = useUpdateAndUnlockTemporalCodelistHeader()
+    const {
+        mutateAsync: mutateAsyncUnlock,
+        isLoading: isLoadingUnlock,
+        isError: isErrorUnlock,
+        error: errorUnlock,
+    } = useGetUnlockTemporalCodelistHeader()
+    const {
+        mutateAsync: mutateAsyncDiscard,
+        isLoading: isLoadingDiscard,
+        isError: isErrorDiscard,
+        error: errorDiscard,
+    } = useDeleteTemporalCodelistHeader()
+    const {
+        mutateAsync: mutateAsyncSave,
+        isLoading: isLoadingSave,
+        isError: isErrorSave,
+        error: errorSave,
+    } = useUpdateAndUnlockTemporalCodelistHeader()
     const canGetGroup = useAddOrGetGroupHook()
     const { isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile, data: attributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
 
     const { isLoading: isLoadingData, isError: isErrorData, data: codeListData } = useGetCodelistHeader(Number(codeId))
     const {
-        isInitialLoading: isLoadingOriginal,
-        isError: isErrorOriginal,
-        data: codeListOriginalData,
-    } = useGetOriginalCodelistHeader(codeListData?.code ?? '', { query: { enabled: !!codeListData } })
+        isInitialLoading: isLoadingTemporalLocked,
+        isError: isErrorTemporalLocked,
+        error: errorTemporalLocked,
+        data: codeListTemporalLockedData,
+    } = useGetTemporalCodelistHeaderWithLock(codeListData?.code ?? '', { query: { enabled: !!codeListData } })
 
     const defaultFilter: HierarchyPOFilterUi = {
         perpage: 20,
@@ -107,8 +124,7 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
     }, [codeListData])
 
     const data = {
-        codeList: codeListData,
-        codeListOriginal: codeListOriginalData,
+        codeList: codeListTemporalLockedData,
         attributeProfile: attributeProfile,
         defaultManagers: defaultManagers,
     }
@@ -127,22 +143,27 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
 
     const handleRemoveLock = () => {
         mutateAsyncUnlock({ code: codeListData?.code ?? '' }).then(() => {
-            setIsActionSuccess({ value: true, path: returnPath })
-            navigate(returnPath)
+            invalidate(codeListData?.code ?? '', Number(codeListData?.id))
+            const path = `${NavigationSubRoutes.CODELIST}/${data.codeList?.id}`
+            setIsActionSuccess({ value: true, path })
+            navigate(path)
         })
     }
 
     const handleDiscardChanges = () => {
         mutateAsyncDiscard({ code: codeListData?.code ?? '' }).then(() => {
-            setIsActionSuccess({ value: true, path: returnPath })
-            navigate(returnPath)
+            const path = `${NavigationSubRoutes.CODELIST}`
+            setIsActionSuccess({ value: true, path })
+            navigate(path)
         })
     }
 
     const saveData = (requestData: ApiCodelistPreview) => {
         mutateAsyncSave({ code: codeListData?.code ?? '', data: requestData }).then(() => {
-            setIsActionSuccess({ value: true, path: returnPath })
-            navigate(returnPath)
+            invalidate(codeListData?.code ?? '', Number(codeListData?.id))
+            const path = `${NavigationSubRoutes.CODELIST}/${data.codeList?.id}`
+            setIsActionSuccess({ value: true, path })
+            navigate(path)
         })
     }
 
@@ -158,6 +179,7 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
             canGetGroup(item?.value?.substring(37) ?? '', item?.value?.substring(0, 36) ?? ''),
         )
         if (nextGestorPromises.length > 0) {
+            setErrorCheck(undefined)
             Promise.all(nextGestorPromises)
                 .then(() => {
                     if (mainGestorPromises.length > 0)
@@ -165,26 +187,29 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
                             .then(() => {
                                 saveData(normalizedData)
                             })
-                            .catch(() => {
-                                setErrorCheck(true)
+                            .catch((error) => {
+                                setErrorCheck(error)
                             })
                     else {
                         saveData(normalizedData)
                     }
                 })
-                .catch(() => {
-                    setErrorCheck(true)
+                .catch((error) => {
+                    setErrorCheck(error)
                 })
         } else {
             saveData(normalizedData)
         }
     }
 
-    const isLoading = [isLoadingSave, isLoadingUnlock, isLoadingDiscard, isLoadingData, isLoadingOriginal, isLoadingAttributeProfile].some(
+    const isLoading = [isLoadingSave, isLoadingUnlock, isLoadingDiscard, isLoadingData, isLoadingTemporalLocked, isLoadingAttributeProfile].some(
         (item) => item,
     )
-    const isError = [isErrorSave, isErrorCheck, isErrorDiscard, isErrorUnlock, isErrorOriginal, isErrorData, isErrorAttributeProfile].some(
+    const isError = [isErrorSave, errorCheck, isErrorDiscard, isErrorUnlock, isErrorTemporalLocked, isErrorData, isErrorAttributeProfile].some(
         (item) => item,
+    )
+    const errorMessages = getErrorTranslateKeys(
+        [errorTemporalLocked, errorCheck, errorUnlock, errorDiscard, errorSave].map((item) => item as { message: string }),
     )
 
     return (
@@ -192,6 +217,7 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
             <View
                 data={data}
                 isError={isError}
+                errorMessages={errorMessages}
                 entityName={_entityName}
                 isLoading={isLoading}
                 loadOptions={loadOptions}

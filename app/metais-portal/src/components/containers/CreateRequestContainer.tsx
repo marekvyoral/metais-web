@@ -13,7 +13,7 @@ import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/ap
 import { RequestListState } from '@isdd/metais-common/constants'
 import { useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
@@ -21,12 +21,14 @@ import { IItemForm } from '@/components/views/requestLists/components/modalItem/
 import { IItemDates } from '@/components/views/requestLists/components/modalItem/DateModalItem'
 import { IOption } from '@/components/views/requestLists/CreateRequestView'
 import { IRequestForm, _entityName, getUUID, mapFormToSave } from '@/componentHelpers/requests'
+import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 export interface CreateRequestViewProps {
     entityName: string
     requestId?: string
     isLoading: boolean
     isError: boolean
+    errorMessages: string[]
     attributeProfile: AttributeProfile
     canEditDate?: boolean
     canEdit?: boolean
@@ -66,12 +68,17 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
 
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
     const [isLoadingCheck, setLoadingCheck] = useState<boolean>()
-    const [isErrorCheck, setErrorCheck] = useState<boolean>()
+    const [errorCheck, setErrorCheck] = useState<{ message: string }>()
     const implicitHierarchy = useReadCiList()
-    const { mutateAsync, isLoading: isLoadingSave, isError: isErrorSave } = useCreateCodelistRequest()
-    const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, isError: isErrorSend } = useSaveAndSendCodelist()
-    const { data: firstNotUsedCode, isLoading: isLoadinfgGetFirstNotUsedCode, isError: isErrorGetFirstNotUsedCode } = useGetFirstNotUsedCode()
-    const { isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile, data: attributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
+    const { mutateAsync, isLoading: isLoadingSave, isError: isErrorSave, error: errorSave } = useCreateCodelistRequest()
+    const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, isError: isErrorSend, error: errorSend } = useSaveAndSendCodelist()
+    const {
+        data: firstNotUsedCode,
+        isLoading: isLoadingGetFirstNotUsedCode,
+        isError: isErrorGetFirstNotUsedCode,
+        error: errorFirstNotUsed,
+    } = useGetFirstNotUsedCode()
+    const { data: attributeProfile, isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
 
     const defaultFilter: HierarchyPOFilterUi = {
         perpage: 20,
@@ -95,13 +102,13 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
 
     const handleCheckIfCodeListExist = async (code: string) => {
         setLoadingCheck(true)
-        setErrorCheck(false)
+        setErrorCheck(undefined)
         await checkHook({ code: code, codelistState: RequestListState.NEW_REQUEST })
             .then(() => {
                 return
             })
-            .catch(() => {
-                setErrorCheck(true)
+            .catch((error) => {
+                setErrorCheck(error)
             })
             .finally(() => {
                 setLoadingCheck(false)
@@ -115,15 +122,15 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
             .then(() => {
                 mutateAsync({ data: saveData })
                     .then(() => {
-                        setIsActionSuccess({ value: true, path: RouteNames.REQUESTLIST })
-                        navigate(`${RouteNames.REQUESTLIST}`)
+                        setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
+                        navigate(`${NavigationSubRoutes.REQUESTLIST}`)
                     })
-                    .catch(() => {
-                        setErrorCheck(true)
+                    .catch((error) => {
+                        setErrorCheck(error)
                     })
             })
-            .catch(() => {
-                setErrorCheck(true)
+            .catch((error) => {
+                setErrorCheck(error)
             })
     }
 
@@ -133,25 +140,27 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
             .then(() => {
                 mutateSendASync({ data: mapFormToSave(formData, i18n.language, uuid) })
                     .then(() => {
-                        setIsActionSuccess({ value: true, path: RouteNames.REQUESTLIST })
-                        navigate(`${RouteNames.REQUESTLIST}`)
+                        setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
+                        navigate(`${NavigationSubRoutes.REQUESTLIST}`)
                     })
-                    .catch(() => {
-                        setErrorCheck(true)
+                    .catch((error) => {
+                        setErrorCheck(error)
                     })
             })
-            .catch(() => {
-                setErrorCheck(true)
+            .catch((error) => {
+                setErrorCheck(error)
             })
     }
 
-    const isLoading = [isLoadingCheck, isLoadingSave, isLoadingSend, isLoadinfgGetFirstNotUsedCode, isLoadingAttributeProfile].some((item) => item)
-    const isError = [isErrorCheck, isErrorSave, isErrorSend, isErrorGetFirstNotUsedCode, isErrorAttributeProfile].some((item) => item)
+    const isLoading = [isLoadingCheck, isLoadingSave, isLoadingSend, isLoadingGetFirstNotUsedCode, isLoadingAttributeProfile].some((item) => item)
+    const isError = [errorCheck, isErrorSave, isErrorSend, isErrorGetFirstNotUsedCode, isErrorAttributeProfile].some((item) => item)
+    const errorMessages = getErrorTranslateKeys([errorCheck, errorFirstNotUsed, errorSend, errorSave].map((item) => item as { message: string }))
 
     return (
         <RequestListPermissionsWrapper entityName={_entityName}>
             <View
                 isError={isError}
+                errorMessages={errorMessages}
                 entityName={_entityName}
                 isLoading={isLoading}
                 firstNotUsedCode={firstNotUsedCode?.code}

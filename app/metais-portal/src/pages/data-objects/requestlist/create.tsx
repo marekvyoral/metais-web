@@ -1,29 +1,27 @@
-import { EditRequestContainer } from '@/components/containers/EditRequestContainer'
+import { CreateRequestContainer } from '@/components/containers/CreateRequestContainer'
 import { CreateRequestView } from '@/components/views/requestLists/CreateRequestView'
 
-const EditPage = () => {
+const CreatePage = () => {
     return (
-        <EditRequestContainer
+        <CreateRequestContainer
             View={(props) => (
                 <CreateRequestView
                     canEdit={props.canEdit}
                     canEditDate={props.canEditDate}
                     entityName={props.entityName}
                     isError={props.isError}
+                    errorMessages={props.errorMessages}
                     isLoading={props.isLoading}
                     firstNotUsedCode={props.firstNotUsedCode}
                     onCheckIfCodeListExist={props.onCheckIfCodeListExist}
                     loadOptions={props.loadOptions}
                     onSave={props.onSave}
                     onSend={props.onSend}
-                    editData={props.editData}
                     attributeProfile={props.attributeProfile}
-                    onSaveDates={props.onSaveDates}
-                    requestId={props.requestId}
                 />
             )}
         />
     )
 }
 
-export default EditPage
+export default CreatePage
