@@ -1,17 +1,17 @@
 import React from 'react'
-import { ACTIVITY, P_REALIZUJE_AKT } from '@isdd/metais-common/constants'
+import { ENTITY_CIEL, KRIS_stanovuje_Ciel } from '@isdd/metais-common/constants'
 
 import { ActivitiesAndGoalsListContainer } from '@/components/containers/ActivitiesAndGoalsListContainer'
 import { ActivitiesAndGoalsView } from '@/components/views/ci/activities/ActivitiesAndGoalsView'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
-const ActivitiesListPage: React.FC = () => {
+const Goals: React.FC = () => {
     const { entityId } = useGetEntityParamsFromUrl()
 
     return (
         <ActivitiesAndGoalsListContainer
-            ciType={ACTIVITY}
-            relType={P_REALIZUJE_AKT}
+            ciType={ENTITY_CIEL}
+            relType={KRIS_stanovuje_Ciel}
             configurationItemId={entityId}
             View={(props) => {
                 return <ActivitiesAndGoalsView {...props} />
@@ -20,4 +20,4 @@ const ActivitiesListPage: React.FC = () => {
     )
 }
 
-export default ActivitiesListPage
+export default Goals

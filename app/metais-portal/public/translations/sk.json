@@ -475,7 +475,8 @@
         },
         "PO_PO_Heading": "Podriadené osoby",
         "PO_IS_Heading": "Spracovatelia koncepcií rozvoja IT",
-        "PO_IS_PO_Heading": "Prevádzkovatelia IS"
+        "PO_IS_PO_Heading": "Prevádzkovatelia IS",
+        "goals": "Ciele"
     },
     "relationType": {
         "as": "Aplikačná služba"
@@ -1901,11 +1902,11 @@
         },
         "error": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
     },
-    "activities": {
+    "Aktivita": {
         "target": "Cieľ aktivity",
         "name": "Aktivity NKIVS",
         "description": "Popis aktivity",
-        "projectActivity": "V relácií s vybraným Projektom"
+        "action": "V relácií s vybraným Projektom"
     },
     "publicAuthorities": {
         "hierarchy": "Hierarchia orgánov riadenia"
@@ -1944,5 +1945,15 @@
     "autoLogout": {
         "warningMessage": "O {{countDown}} sekúnd budete kvôli inaktivite odhlásený.",
         "loading": "Spracúvame odhlásenie"
+    },
+    "Ciel": {
+        "target": "Cieľ",
+        "name": "Pod-cieľ",
+        "description": "Popis cieľa",
+        "action": "V relácií s vybraným KRIS",
+        "haveNoRights": "Na editovanie tejto položky nemáte prísluľné práva.",
+        "commitmentHeader": "Záväzok dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy",
+        "commitmentLabel": "Týmto prehlasujeme, že pri budovaní a rozvoji ISVS budeme napĺňať nami definované ciele, podciele a dodržiavať princípy Národnej koncepcie informatizácie verejnej správy.",
+        "noCheckedItems": "Pred potvrdením záväzku dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy je potrebné vybrať aspoň jeden cieľ."
     }
 }
