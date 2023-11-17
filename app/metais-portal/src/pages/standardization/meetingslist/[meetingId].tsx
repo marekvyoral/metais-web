@@ -22,6 +22,7 @@ const MeetingDetailPage: React.FC = () => {
                     user={props.user}
                     meetingId={props.meetingId}
                     meetingDetailData={props.meetingDetailData}
+                    refetch={props.refetch}
                 />
             )}
         />

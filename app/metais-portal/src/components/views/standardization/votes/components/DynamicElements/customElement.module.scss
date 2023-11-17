@@ -1,0 +1,44 @@
+@import '@isdd/metais-common/src/utils.scss';
+
+.addButton {
+    color: govuk-colour('blue');
+    display: inline-block;
+
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+        color: govuk-colour('dark-blue');
+    }
+}
+
+.addRowErrorDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+
+    div {
+        margin-bottom: govuk-spacing(5) !important;
+    }
+
+    Button {
+        margin-bottom: govuk-spacing(5) !important;
+        color: govuk-colour('red');
+    }
+}
+
+.inline {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.stretch {
+    width: 100%;
+}
+
+.spaceVertical {
+    padding-top: govuk-spacing(6);
+}

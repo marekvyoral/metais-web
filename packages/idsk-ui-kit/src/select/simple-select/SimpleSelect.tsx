@@ -63,8 +63,8 @@ export const SimpleSelect = <T,>({
             id={id}
             name={name}
             label={label}
-            value={options.find((opt) => opt.value === value)}
-            defaultValue={options.find((opt) => opt.value === defaultValue)}
+            value={value === null ? null : options.find((opt) => opt.value === value)}
+            defaultValue={options.find((opt) => opt.value === defaultValue) || null}
             placeholder={placeholder || ''}
             className={className}
             error={error}

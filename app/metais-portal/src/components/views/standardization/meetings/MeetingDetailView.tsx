@@ -8,7 +8,7 @@ import MeetingDetailBaseInfo from './MeetingDetailBaseInfo'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { MeetingDetailViewProps } from '@/components/containers/standardization/meetings/MeetingDetailContainer'
 
-const MeetingDetailView: React.FC<MeetingDetailViewProps> = ({ meetingDetailData, meetingId }) => {
+const MeetingDetailView: React.FC<MeetingDetailViewProps> = ({ meetingDetailData, meetingId, refetch }) => {
     const { t } = useTranslation()
 
     return (
@@ -23,7 +23,7 @@ const MeetingDetailView: React.FC<MeetingDetailViewProps> = ({ meetingDetailData
                 ]}
             />
             <MainContentWrapper>
-                <MeetingDetailBaseInfo infoData={meetingDetailData} />
+                <MeetingDetailBaseInfo infoData={meetingDetailData} refetch={refetch} />
             </MainContentWrapper>
         </>
     )

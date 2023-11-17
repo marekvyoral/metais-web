@@ -24,8 +24,8 @@ interface ISelectProps<T> {
     onChange: (newValue: MultiValue<IOption<T>> | SingleValue<IOption<T>>) => void
     placeholder?: string
     className?: string
-    defaultValue?: IOption<T> | IOption<T>[]
-    value?: IOption<T> | IOption<T>[]
+    defaultValue?: IOption<T> | IOption<T>[] | null
+    value?: IOption<T> | IOption<T>[] | null
     error?: string
     info?: string
     correct?: boolean
