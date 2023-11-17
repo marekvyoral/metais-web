@@ -27,3 +27,22 @@
 .proposalsButton {
     margin: 0 !important;
 }
+
+.externalActorsForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.externalActorsFields {
+    display: flex;
+    flex-direction: row;
+}
+
+.externalActorsButton {
+    display: flex;
+}
+
+.externalActorsInputs {
+    width: 100%;
+    margin-right: govuk-spacing(5);
+}

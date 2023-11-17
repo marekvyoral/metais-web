@@ -12,7 +12,15 @@ const MeetingEditPage = () => {
     return (
         <MeetingEditContainer
             id={meetingId ?? ''}
-            View={(props) => <MeetingCreateEditView onSubmit={props.onSubmit} goBack={props.goBack} infoData={props.infoData} />}
+            View={(props) => (
+                <MeetingCreateEditView
+                    onSubmit={props.onSubmit}
+                    goBack={props.goBack}
+                    infoData={props.infoData}
+                    isLoading={props.isLoading}
+                    isError={props.isError}
+                />
+            )}
         />
     )
 }

@@ -307,7 +307,8 @@
     "button": {
         "saveAndContinue": "Save and continue",
         "cancel": "Cancel",
-        "saveChanges": "Save changes"
+        "saveChanges": "Save changes",
+        "back": "Back"
     },
     "errors": {
         "NoChangesDetected": "No changes detected",
@@ -1404,6 +1405,8 @@
         "PO_IS_PODetail": "Detail of IS PO",
         "PO_IS_POCreate": "Creation of IS PO",
         "meetings": "Meetings",
+        "meetingsCreate": "Creation of meeting",
+        "meetingDetail": "Detail of meeting",
         "publicAuthoritiesHierarchy": "Hierarchy of public authorities"
     },
     "todo": {
@@ -1540,6 +1543,11 @@
         "end": "End of the meeting",
         "place": "Location",
         "vote": "I will participate",
+        "changeVote": "Modify",
+        "voteValue": {
+            "ACCEPTED": "Yes",
+            "DECLINED": "No"
+        },
         "program": "Agenda",
         "description": "Description",
         "editItem": "Edit meeting",
@@ -1551,9 +1559,12 @@
         "meetingExternalActors": "Guests",
         "userName": "Name",
         "email": "Email address",
+        "linkChange": "Change entry",
+        "linkSave": "Save entry",
         "participation": "Confirmation of participation",
         "participationValue": {
-            "ACCEPTED": "Confirmed participation"
+            "ACCEPTED": "Accepted",
+            "DECLINED": "Declined"
         },
         "groupShortName": "Working group abbreviation",
         "userOrgName": "Organisation",
@@ -1569,6 +1580,8 @@
         },
         "addNewMeeting": "Add a meeting",
         "mandatory": "mandatory",
+        "editMeeting": "Edit meeting",
+        "reasonOfCanceling": "Reason of canceling",
         "form": {
             "heading": {
                 "dateTime": "Time and place",
@@ -1635,6 +1648,22 @@
             "state": "State",
             "startDate": "Accepted in the period from",
             "endDate": "Accepted in the period up to"
+        },
+        "canseledMeeting": "Meeting was canceled",
+        "canseledMeetingReason": "Reason of canceling",
+        "noDocumentsAttached": "No documents attached",
+        "noDocumentsLinkAttached": "No links to documents attached",
+        "documentLinks": "Document links",
+        "errors": {
+            "meetingNameRequired": "The name of the meeting is required",
+            "meetingDateRequired": "Date of the meeting is required",
+            "meetingTimeStartRequired": "Time is required",
+            "meetingTimeEndRequired": "Time is required",
+            "meetingPlaceRequired": "Meeting place is required",
+            "meetingActorsRequired": "Invited users are required",
+            "meetingDescriptionRequired": "Meeting description is required",
+            "meetingExternalActorsNameRequired": "User name is required",
+            "meetingExternalActorsEmailRequired": "Email is required"
         },
         "": ""
     },

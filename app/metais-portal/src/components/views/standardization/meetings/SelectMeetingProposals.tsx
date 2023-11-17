@@ -2,6 +2,7 @@ import { MultiSelect } from '@isdd/idsk-ui-kit'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useGetAllStandardRequests } from '@isdd/metais-common/api/generated/standards-swagger'
+import { QueryFeedback } from '@isdd/metais-common/index'
 
 interface ISelectMeetingProposal {
     meetingProposals: string[]
@@ -13,7 +14,7 @@ interface ISelectMeetingProposal {
 export const SelectMeetingProposals = ({ meetingProposals, id, label, setSelectedProposals }: ISelectMeetingProposal) => {
     const { t } = useTranslation()
 
-    const { data: proposalsList } = useGetAllStandardRequests()
+    const { data: proposalsList, isLoading, isError } = useGetAllStandardRequests()
     const optionsProposals = useMemo(
         () =>
             proposalsList?.standardRequests?.map((proposal) => ({
@@ -24,7 +25,7 @@ export const SelectMeetingProposals = ({ meetingProposals, id, label, setSelecte
     )
 
     return (
-        <>
+        <QueryFeedback loading={isLoading} error={isError} withChildren>
             <MultiSelect
                 key={id}
                 name={id}
@@ -37,6 +38,6 @@ export const SelectMeetingProposals = ({ meetingProposals, id, label, setSelecte
                     setSelectedProposals(value)
                 }}
             />
-        </>
+        </QueryFeedback>
     )
 }

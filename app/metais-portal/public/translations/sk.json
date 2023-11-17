@@ -366,7 +366,8 @@
     "button": {
         "saveAndContinue": "Uložiť a pokračovať",
         "cancel": "Zrušiť",
-        "saveChanges": "Uložiť zmeny"
+        "saveChanges": "Uložiť zmeny",
+        "back": "Späť"
     },
     "relationCard": {
         "name": "Názov",
@@ -1332,6 +1333,8 @@
         "PO_IS_PODetail": "Detail IS PO",
         "PO_IS_POCreate": "Vytvorenie IS PO",
         "meetings": "Zoznam zasadnutí",
+        "meetingsCreate": "Vytvorenie zasadnutia",
+        "meetingDetail": "Detail zasadnutia",
         "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia"
     },
     "refRegisters": {
@@ -1559,6 +1562,11 @@
         "end": "Koniec zasadnutia",
         "place": "Miesto zasadnutia",
         "vote": "Zúčastním sa",
+        "changeVote": "Zmeniť",
+        "voteValue": {
+            "ACCEPTED": "Áno",
+            "DECLINED": "Nie"
+        },
         "program": "Program zasadnutia",
         "description": "Popis",
         "editItem": "Upraviť zasadnutie",
@@ -1570,9 +1578,12 @@
         "meetingExternalActors": "Hostia",
         "userName": "Meno",
         "email": "Emailová adresa",
+        "linkChange": "Zmeniť záznam",
+        "linkSave": "Uložiť záznam",
         "participation": "Potvrdenie o účasti",
         "participationValue": {
-            "ACCEPTED": "Potvrdil účasť"
+            "ACCEPTED": "Potvrdil účasť",
+            "DECLINED": "Zamietol účasť"
         },
         "groupShortName": "Skratka pracovnej skupiny",
         "userOrgName": "Organizácia",
@@ -1589,6 +1600,7 @@
         "addNewMeeting": "Pridať zasadnutie",
         "mandatory": "povinné",
         "editMeeting": "Zmeniť zasadnutie",
+        "reasonOfCanceling": "Dôvod zamietnutia",
         "form": {
             "heading": {
                 "dateTime": "Čas a miesto",
@@ -1656,6 +1668,22 @@
             "startDate": "Prijaté v období od",
             "endDate": "Prijaté v období do"
         },
+        "canseledMeeting": "Zasadnutie bolo zrušené",
+        "canseledMeetingReason": "Dôvod zrušenia",
+        "noDocumentsAttached": "Nie sú priložené žiadne dokumenty",
+        "noDocumentsLinkAttached": "Nie sú priložené žiadne odkazy na dokumenty",
+        "documentLinks": "Linky na dokumenty",
+        "errors": {
+            "meetingNameRequired": "Názov stretnutia je povinný",
+            "meetingDateRequired": "Dátum stretnutia je povinný",
+            "meetingTimeStartRequired": "Čas je povinný",
+            "meetingTimeEndRequired": "Čas je povinný",
+            "meetingPlaceRequired": "Miesto stretnutia je povinné",
+            "meetingActorsRequired": "Pozvaní používatelia sú povinní",
+            "meetingDescriptionRequired": "Opis stretnutia je povinný",
+            "meetingExternalActorsNameRequired": "Meno použivateľa je povinné",
+            "meetingExternalActorsEmailRequired": "Email je povinný"
+        },
         "": ""
     },
     "globalSearch": {
@@ -1688,9 +1716,6 @@
             "otd": "OTD",
             "submitButton": "Filtrovať výsledky"
         }
-    },
-    "input": {
-        "requiredField": "(povinné)"
     },
     "votes": {
         "breadcrumbs": {

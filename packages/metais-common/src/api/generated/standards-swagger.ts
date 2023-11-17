@@ -1911,7 +1911,11 @@ export const useParticipateMeetingRequestHook = () => {
     const participateMeetingRequest = useStandardsSwaggerClient<ParticipateMeetingRequest200>()
 
     return (meetingRequestId: number, params: ParticipateMeetingRequestParams) => {
-        return participateMeetingRequest({ url: `/meetings/${meetingRequestId}/participate`, method: 'post', params })
+        return participateMeetingRequest({
+            url: `/meetings/${meetingRequestId}/participate`,
+            method: 'post',
+            params,
+        })
     }
 }
 

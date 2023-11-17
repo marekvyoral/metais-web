@@ -56,3 +56,18 @@
     flex-direction: column;
     gap: govuk-spacing(3);
 }
+.documentIcon {
+    height: 25px;
+    width: 25px;
+    margin-right: govuk-spacing(2);
+}
+
+.documentLinkIcon {
+    height: 15px;
+    width: 15px;
+    margin-right: govuk-spacing(1);
+}
+
+.buttonMargin {
+    margin-top: govuk-spacing(3) !important;
+}
