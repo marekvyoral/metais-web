@@ -934,7 +934,14 @@
     },
     "projects": {
         "financeManagement": {
-            "heading": "Finance limits of approval process"
+            "heading": "Finance limits of approval process",
+            "program": "Program:",
+            "investmentType": "Investment type:",
+            "tableTitleMin": "Planned budget min.",
+            "tableTitleMax": "Planned budget max.",
+            "approvalProcess": "Approval process",
+            "approvalProcessName": "Approval process name",
+            "more": "More"
         }
     },
     "templateReferenceIdentifiers": {
@@ -942,5 +949,14 @@
     },
     "titles": {
         "mainPage": "MetaIS Admin"
+    },
+    "financesValidations": {
+        "startWithZero": "The approval process must start with an amount of 0 euros.",
+        "allNumbers": "The approval process must cover the range of all values.",
+        "minMax": "The values are not correct - the minimum value must not exceed the maximum."
+    },
+    "relationDetail": {
+        "editSuccess": "Edit of {{relationName}} was successful.",
+        "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support."
     }
 }

@@ -1,11 +1,12 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
+import { Outlet } from 'react-router-dom'
 
-import { TodoPage } from '@/components/views/todo-page/TodoPage'
+import ProjectFinanceManagementPage from './finance-management-page'
 
-const FinanceManagement = () => {
-    const { t } = useTranslation()
-    return <TodoPage heading={t('projects.financeManagement.heading')} />
+export const INDEX_ROUTE = ProjectFinanceManagementPage
+
+const index: React.FC = () => {
+    return <Outlet />
 }
 
-export default FinanceManagement
+export default index
