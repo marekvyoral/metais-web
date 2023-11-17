@@ -1673,6 +1673,7 @@
         "noDocumentsAttached": "Nie sú priložené žiadne dokumenty",
         "noDocumentsLinkAttached": "Nie sú priložené žiadne odkazy na dokumenty",
         "documentLinks": "Linky na dokumenty",
+        "otherDocuments": "Iné dokumenty",
         "errors": {
             "meetingNameRequired": "Názov stretnutia je povinný",
             "meetingDateRequired": "Dátum stretnutia je povinný",

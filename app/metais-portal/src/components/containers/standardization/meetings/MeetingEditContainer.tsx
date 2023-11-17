@@ -1,7 +1,12 @@
 import React from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { ApiMeetingRequest, useGetMeetingRequestDetail, useUpdateMeetingRequest } from '@isdd/metais-common/api/generated/standards-swagger'
+import {
+    ApiAttachment,
+    ApiMeetingRequest,
+    useGetMeetingRequestDetail,
+    useUpdateMeetingRequest,
+} from '@isdd/metais-common/api/generated/standards-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
@@ -17,7 +22,7 @@ export interface IMeetingForm {
 }
 
 export interface IMeetingEditViewParams {
-    onSubmit: (formData: FieldValues) => void
+    onSubmit: (formData: FieldValues, attachments: ApiAttachment[]) => void
     goBack: () => void
     infoData: ApiMeetingRequest | undefined
     isEdit?: boolean
@@ -53,7 +58,7 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
     })
     const isLoading = meetingDetailLoading || updateMeetingLoading
     const isError = meetingDetailError || updateMeetingError
-    const onSubmit = (formData: FieldValues) => {
+    const onSubmit = (formData: FieldValues, attachments: ApiAttachment[]) => {
         // console.log('dadt', formData)
         updateMeeting({
             data: {
@@ -70,8 +75,8 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
                 notifNewUsers: formData[MeetingFormEnum.NOTIF_NEW_USERS],
                 ignorePersonalSettings: formData[MeetingFormEnum.IGNORE_PERSONAL_SETTINGS],
                 meetingExternalActors: formData[MeetingFormEnum.MEETING_EXTERNAL_ACTORS],
-                meetingAttachments: formData[MeetingFormEnum.MEETING_ATTACHMENTS],
                 meetingLinks: formData[MeetingFormEnum.MEETING_LINKS],
+                meetingAttachments: attachments,
             },
             meetingRequestId: infoData?.id || 0,
         })

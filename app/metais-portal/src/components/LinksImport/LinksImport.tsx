@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Input } from '@isdd/idsk-ui-kit/index'
 import classNames from 'classnames'
-import { FieldErrors, FieldValues, UseFormRegister, UseFormUnregister } from 'react-hook-form'
+import { FieldErrors, UseFormRegister, UseFormUnregister } from 'react-hook-form'
 import { ApiLink } from '@isdd/metais-common/api/generated/standards-swagger'
 import { useEffect } from 'react'
 
@@ -15,16 +15,20 @@ export type LinkImportLineTypeDatas = {
 
 export interface ILinkImport {
     defaultValues?: ApiLink[]
-    register: UseFormRegister<FieldValues>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    register: UseFormRegister<any>
     errors: FieldErrors<{ documentLinks: ApiLink[] }>
-    unregister?: UseFormUnregister<FieldValues>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    unregister?: UseFormUnregister<any>
 }
 
 type LinkImportLineType = {
     index?: number
-    register: UseFormRegister<FieldValues>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    register: UseFormRegister<any>
     errors: FieldErrors<{ documentLinks: ApiLink[] }>
-    unregister?: UseFormUnregister<FieldValues>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    unregister?: UseFormUnregister<any>
 }
 
 const LinkImportLine: React.FC<LinkImportLineType> = ({ index, register, errors, unregister }) => {
@@ -83,7 +87,6 @@ const LinkImportLine: React.FC<LinkImportLineType> = ({ index, register, errors,
 }
 export const LinksImport: React.FC<ILinkImport> = ({ defaultValues, register, errors, unregister }) => {
     const { t } = useTranslation()
-
     return (
         <DynamicElements<ApiLink>
             renderableComponent={(index) => <LinkImportLine index={index} register={register} errors={errors} unregister={unregister} />}

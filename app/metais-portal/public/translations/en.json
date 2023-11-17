@@ -1654,6 +1654,7 @@
         "noDocumentsAttached": "No documents attached",
         "noDocumentsLinkAttached": "No links to documents attached",
         "documentLinks": "Document links",
+        "otherDocuments": "Other documents",
         "errors": {
             "meetingNameRequired": "The name of the meeting is required",
             "meetingDateRequired": "Date of the meeting is required",
