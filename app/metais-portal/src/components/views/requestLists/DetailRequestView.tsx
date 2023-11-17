@@ -18,7 +18,7 @@ import {
 } from '@isdd/idsk-ui-kit/index'
 import { ActionsOverTable, QueryFeedback } from '@isdd/metais-common/index'
 import { useGetRoleParticipantHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -142,9 +142,9 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                 links={[
                     { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
-                    { label: t('codeList.breadcrumbs.requestList'), href: RouteNames.REQUESTLIST },
-                    { label: data?.codeListId ?? '', href: `${RouteNames.REQUESTLIST}/${data?.codeListId}` },
+                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
+                    { label: t('codeList.breadcrumbs.requestList'), href: NavigationSubRoutes.REQUESTLIST },
+                    { label: data?.codeListId ?? '', href: `${NavigationSubRoutes.REQUESTLIST}/${data?.codeListId}` },
                 ]}
             />
             {userAbility.can(RequestListActions.SHOW, entityName) && (
@@ -156,7 +156,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                 {actions.canEdit && (
                                     <Button
                                         label={t('codeListList.buttons.EDIT')}
-                                        onClick={() => navigate(`${RouteNames.REQUESTLIST}/edit/${requestId}`, { state: location.state })}
+                                        onClick={() => navigate(`${NavigationSubRoutes.REQUESTLIST}/${requestId}/edit`, { state: location.state })}
                                     />
                                 )}
 
@@ -255,7 +255,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                         <form>
                             <div className={styles.bottomGap}>
                                 <Tooltip
-                                    descriptionElement={getName(attributeProfile, 'Gui_Profil_ZC_kod_polozky', i18n.language)}
+                                    descriptionElement={getName('Gui_Profil_ZC_kod_polozky', i18n.language, attributeProfile)}
                                     tooltipContent={() => (
                                         <CheckBox
                                             disabled
@@ -424,7 +424,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                     label={t('form.cancel')}
                                     type="reset"
                                     variant="secondary"
-                                    onClick={() => navigate(`${RouteNames.REQUESTLIST}`)}
+                                    onClick={() => navigate(`${NavigationSubRoutes.REQUESTLIST}`)}
                                 />
                             </ButtonGroupRow>
                         </form>
@@ -469,7 +469,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                     }
                                 }
                                 setConfirmationModal({ action: RequestState.DRAFT, isOpen: false, title: '', description: '' })
-                                navigate(`${RouteNames.REQUESTLIST}`)
+                                navigate(`${NavigationSubRoutes.REQUESTLIST}`)
                             }}
                         />
                     </QueryFeedback>

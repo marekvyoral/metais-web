@@ -1,43 +1,33 @@
+import { useState } from 'react'
 import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import {
-    ApiCodelistItemList,
-    useGetCodelistItems,
-    useGetTemporalCodelistItemWithLockHook,
-    useProcessItemAction,
-    useCreateCodelistItem,
-    useUpdateCodelistItemLangExtended,
-    useUpdateAndUnlockTemporalCodelistItem,
-    ApiCodelistItem,
-    useCreateNewCodelistItemLangExtended,
-} from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import { ApiCodelistItemList, useGetCodelistItems, useProcessItemAction } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { useMutation } from '@tanstack/react-query'
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
-import { CodeListItemState } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
-import { useState } from 'react'
+import { PromiseStatus } from '@isdd/metais-common/types/api'
 
-import { IItemForm } from '@/components/views/codeLists/components/modals/ItemForm/ItemForm'
-import { mapCodeListItemToForm, mapToCodeListDetail } from '@/componentHelpers/codeList'
+import { ApiCodeListItemsActions } from '@/componentHelpers/codeList'
 
+export interface itemActionError {
+    itemCode: string
+    message: string
+}
 export interface CodeListDetailItemsViewProps {
+    code: string
     items?: ApiCodelistItemList
     attributeProfile?: AttributeProfile
     isLoading: boolean
+    isLoadingItemAction: boolean
     isError: boolean
-    isSuccessMutation: boolean
-    isLoadingEditItemSubmit: boolean
-    isErrorEditItemSubmit: boolean
-    isSuccessEditItemSubmit: boolean
+    itemActionErrors: itemActionError[]
+    isSuccessItemActionMutation: boolean
     filter: IFilter
     workingLanguage: string
     invalidateCodeListDetailCache: () => void
     handleFilterChange: (filter: IFilter) => void
     handleMarkForPublish: (itemCodes: string[]) => void
     handleSetDates: (itemCodes: string[], validFrom: string, effectiveFrom: string) => void
-    handleStartItemEdit: (itemId: number) => Promise<IItemForm>
-    handleSubmitItem: (form: IItemForm) => void
 }
 
 export interface CodeListDetailItemsContainerProps {
@@ -84,14 +74,17 @@ export const CodeListDetailItemsContainer: React.FC<CodeListDetailItemsContainer
         ],
         ...defaultFilterValues,
     })
-    const [editingApiItem, setEditingApiItem] = useState<ApiCodelistItem | undefined>(undefined)
-
-    const { isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile, data: attributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
+    const [mutationErrors, setMutationErrors] = useState<itemActionError[]>([])
 
     const {
-        isLoading: isLoadingItems,
+        isFetching: isLoadingAttributeProfile,
+        isError: isErrorAttributeProfile,
+        data: attributeProfile,
+    } = useGetAttributeProfile('Gui_Profil_ZC')
+
+    const {
+        isFetching: isLoadingItems,
         isError: isErrorItems,
-        refetch: refetchItems,
         data: itemsData,
     } = useGetCodelistItems(code ?? '', {
         language: 'sk',
@@ -104,126 +97,74 @@ export const CodeListDetailItemsContainer: React.FC<CodeListDetailItemsContainer
     })
 
     const mutationItemAction = useProcessItemAction()
-    const mutationCreateItem = useCreateCodelistItem()
-    const mutationUpdateAndUnlockItem = useUpdateAndUnlockTemporalCodelistItem()
-    const mutationUpdateItemLangExtended = useUpdateCodelistItemLangExtended()
-    const mutationCreateItemLangExtended = useCreateNewCodelistItemLangExtended()
-    const getTemporalItemWithLock = useGetTemporalCodelistItemWithLockHook()
-
-    const itemsActionsMutation = useMutation({
-        mutationFn: (variables: { itemCodes: string[]; action: string; effectiveFrom?: string; validFrom?: string }) => {
-            const { itemCodes, action, effectiveFrom, validFrom } = variables
-            const promises = itemCodes.map((itemCode) =>
-                mutationItemAction.mutate({
-                    code,
-                    itemCode,
-                    params: { action, ...(effectiveFrom && { effectiveFrom }), ...(validFrom && { validFrom }) },
-                }),
-            )
-            return Promise.all(promises)
-        },
-    })
-
-    const handleStartItemEdit = async (itemId: number): Promise<IItemForm> => {
-        const existingItem = itemsData?.codelistsItems?.find((item) => item.id === itemId)
-        const itemCode = existingItem?.itemCode || ''
-
-        if (existingItem?.codelistItemState === CodeListItemState.READY_TO_PUBLISH) {
-            mutationItemAction.mutate({ code, itemCode, params: { action: 'codelistItemBackFromReadyToPublish' } })
-        }
-
-        const item = await getTemporalItemWithLock(code, itemCode)
-        setEditingApiItem(item)
-
-        return mapCodeListItemToForm(item, workingLanguage)
-    }
-
-    const handleSubmitItem = (form: IItemForm) => {
-        if (form.id) {
-            // edit
-            const item = mapToCodeListDetail(workingLanguage, form, editingApiItem)
-            const itemCode = item.itemCode || ''
-            if (editingApiItem?.codelistItemNames?.some((name) => name.language === workingLanguage)) {
-                // update existing
-                mutationUpdateAndUnlockItem.mutate({ code, itemCode, data: item })
-            } else {
-                // add language version
-                mutationCreateItemLangExtended.mutate({ code, itemCode, data: item, actualLang: workingLanguage })
-                mutationUpdateItemLangExtended.mutate({ code, itemCode, data: item })
-            }
-        } else {
-            // create
-            const item = mapToCodeListDetail(workingLanguage, form)
-            mutationCreateItem.mutate({ code, data: item })
-        }
-
-        refetchItems()
-        // close popup / show feedback?
-    }
 
     const handleMarkForPublish = (itemCodes: string[]) => {
-        itemsActionsMutation.mutate({ itemCodes, action: 'codelistItemToReadyToPublish' })
-        refetchItems()
-    }
-
-    const handleSetDates = (itemCodes: string[], validFrom: string, effectiveFrom: string) => {
-        itemsActionsMutation.mutate({
-            itemCodes,
-            action: 'setDates',
-            validFrom: formatDateForDefaultValue(validFrom, 'dd.MM.yyyy'),
-            effectiveFrom: formatDateForDefaultValue(effectiveFrom, 'dd.MM.yyyy'),
+        Promise.allSettled(
+            itemCodes.map(async (itemCode) => {
+                return mutationItemAction.mutateAsync({
+                    code,
+                    itemCode,
+                    params: {
+                        action: ApiCodeListItemsActions.CODELIST_ITEMS_TO_PUBLISH,
+                    },
+                })
+            }),
+        ).then((results) => {
+            const errors = results
+                .filter((result) => result.status === PromiseStatus.REJECTED)
+                .map((error, index) => {
+                    return { itemCode: itemCodes[index], message: JSON.parse((error as PromiseRejectedResult).reason.message).message }
+                })
+            setMutationErrors(errors)
         })
-        refetchItems()
+
+        invalidateCodeListDetailCache()
     }
 
-    const isLoadingEditItemSubmit = [
-        mutationCreateItem,
-        mutationUpdateAndUnlockItem,
-        mutationUpdateItemLangExtended,
-        mutationCreateItemLangExtended,
-    ].some((item) => item.isLoading)
-    const isErrorEditItemSubmit = [
-        mutationCreateItem,
-        mutationUpdateAndUnlockItem,
-        mutationUpdateItemLangExtended,
-        mutationCreateItemLangExtended,
-    ].some((item) => item.isError)
-    const isSuccessEditItemSubmit = [
-        mutationCreateItem,
-        mutationUpdateAndUnlockItem,
-        mutationUpdateItemLangExtended,
-        mutationCreateItemLangExtended,
-    ].some((item) => item.isSuccess)
+    const handleSetDates = async (itemCodes: string[], validFrom: string, effectiveFrom: string) => {
+        Promise.allSettled(
+            itemCodes.map(async (itemCode) => {
+                return mutationItemAction.mutateAsync({
+                    code,
+                    itemCode,
+                    params: {
+                        action: ApiCodeListItemsActions.SET_DATES,
+                        effectiveFrom: formatDateForDefaultValue(validFrom, 'dd.MM.yyyy'),
+                        validFrom: formatDateForDefaultValue(effectiveFrom, 'dd.MM.yyyy'),
+                    },
+                })
+            }),
+        ).then((results) => {
+            const errors = results
+                .filter((result) => result.status === PromiseStatus.REJECTED)
+                .map((error, index) => {
+                    return { itemCode: itemCodes[index], message: JSON.parse((error as PromiseRejectedResult).reason.message).message }
+                })
+            setMutationErrors(errors)
+        })
 
-    const isLoading = [
-        isLoadingItems,
-        isLoadingAttributeProfile,
-        mutationItemAction.isLoading,
-        isLoadingEditItemSubmit,
-        itemsActionsMutation.isLoading,
-    ].some((item) => item)
-    const isError = [isErrorItems, isErrorAttributeProfile, isErrorEditItemSubmit, itemsActionsMutation.isError].some((item) => item)
-    const isSuccessMutation = [mutationItemAction.isSuccess, itemsActionsMutation.isSuccess].some((item) => item)
+        invalidateCodeListDetailCache()
+    }
+
+    const isLoading = [isLoadingItems, isLoadingAttributeProfile].some((item) => item)
+    const isError = [isErrorItems, isErrorAttributeProfile, mutationItemAction.isError].some((item) => item)
 
     return (
         <View
+            code={code}
             items={itemsData}
             attributeProfile={attributeProfile}
             isLoading={isLoading}
+            isLoadingItemAction={mutationItemAction.isLoading}
             isError={isError}
-            // errorItemAction={errorItemAction}
-            isSuccessMutation={isSuccessMutation}
-            isLoadingEditItemSubmit={isLoadingEditItemSubmit}
-            isErrorEditItemSubmit={isErrorEditItemSubmit}
-            isSuccessEditItemSubmit={isSuccessEditItemSubmit}
+            itemActionErrors={mutationErrors}
+            isSuccessItemActionMutation={mutationItemAction.isSuccess}
             workingLanguage={workingLanguage}
             filter={filter}
             invalidateCodeListDetailCache={invalidateCodeListDetailCache}
             handleFilterChange={handleFilterChange}
             handleMarkForPublish={handleMarkForPublish}
             handleSetDates={handleSetDates}
-            handleStartItemEdit={handleStartItemEdit}
-            handleSubmitItem={handleSubmitItem}
         />
     )
 }

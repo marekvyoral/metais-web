@@ -6,8 +6,8 @@ import {
     ButtonPopup,
     ConfirmationModal,
     HomeIcon,
-    IconWithText,
-    InfoIcon,
+    TextWarning,
+    LoadingIndicator,
     Tab,
     Tabs,
     TextHeading,
@@ -45,8 +45,9 @@ const getAllWorkingLanguages = (codelist?: ApiCodelistPreview): string[] => {
 export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
     data,
     isLoading,
+    isLoadingMutation,
     isError,
-    isErrorMutation,
+    actionsErrorMessages,
     isSuccessMutation,
     successMessage,
     workingLanguage,
@@ -63,7 +64,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
     const navigate = useNavigate()
 
     const {
-        isActionSuccess: { value: isSuccess },
+        isActionSuccess: { value: isSuccessEdit },
     } = useActionSuccess()
 
     const [isExportModalOpen, setIsExportModalOpen] = useState(false)
@@ -108,8 +109,10 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
     ]
 
     const handleEdit = () => {
-        navigate(`${RouteNames.CODELISTS}/${codeId}/edit`)
+        navigate(`${NavigationSubRoutes.CODELIST}/${codeId}/edit`)
     }
+
+    const title = selectBasedOnLanguageAndDate(data.codeList?.codelistNames, workingLanguage) ?? ''
 
     return (
         <>
@@ -118,16 +121,17 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                 links={[
                     { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
-                    { label: t('codeList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CISELNIKY },
+                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
+                    { label: t('codeList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CODELIST },
+                    { label: String(title), href: `${NavigationSubRoutes.CODELIST}/${data.codeList?.id}` },
                 ]}
             />
             <MainContentWrapper>
                 {isError && !code && <QueryFeedback error={isError} loading={false} />}
-                {isSuccess && <MutationFeedback success error={false} />}
                 <QueryFeedback loading={isLoading} error={false} withChildren>
+                    {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                     <div className={styles.headerDiv}>
-                        <TextHeading size="XL">{selectBasedOnLanguageAndDate(data.codeList?.codelistNames, workingLanguage)}</TextHeading>
+                        <TextHeading size="XL">{title}</TextHeading>
                         <ButtonGroupRow>
                             <ButtonPopup
                                 buttonLabel={t('codeListDetail.button.language')}
@@ -223,23 +227,20 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                         </ButtonGroupRow>
                     </div>
 
-                    {isError && <QueryFeedback error={isError} loading={false} />}
-                    <MutationFeedback
-                        success={isSuccessMutation}
-                        successMessage={successMessage}
-                        error={isErrorMutation ? t('feedback.mutationErrorMessage') : undefined}
-                    />
+                    <QueryFeedback error={isError} loading={false} />
+                    <MutationFeedback success={isSuccessMutation || isSuccessEdit} successMessage={successMessage} error={null} />
+                    {actionsErrorMessages.map((errorMessage, index) => (
+                        <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
+                    ))}
                     {data.codeList?.temporal && data.codeList.locked && (
-                        <IconWithText icon={InfoIcon}>
+                        <TextWarning>
                             {t('codeListDetail.warning.itemLocked', {
                                 user: data.codeList.lockedBy,
                                 date: t('date', { date: data.codeList.lockedFrom }),
                             })}
-                        </IconWithText>
+                        </TextWarning>
                     )}
-                    {data.codeList?.temporal && !data.codeList.locked && (
-                        <IconWithText icon={InfoIcon}>{t('codeListDetail.warning.workVersion')}</IconWithText>
-                    )}
+                    {data.codeList?.temporal && !data.codeList.locked && <TextWarning>{t('codeListDetail.warning.workVersion')}</TextWarning>}
                     <Can not I={Actions.READ} a={Subjects.DETAIL} field="history">
                         <Tabs tabList={tabs} />
                     </Can>
@@ -252,23 +253,20 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                         invalidateCodeListDetailCache={invalidateCodeListDetailCache}
                         View={(props) => (
                             <CodeListDetailItemsWrapper
+                                code={props.code}
                                 items={props.items}
                                 filter={props.filter}
                                 workingLanguage={props.workingLanguage}
                                 attributeProfile={props.attributeProfile}
                                 isLoading={props.isLoading}
+                                isLoadingItemAction={props.isLoadingItemAction}
                                 isError={props.isError}
-                                // errorItemAction={props.errorItemAction}
-                                isLoadingEditItemSubmit={props.isLoadingEditItemSubmit}
-                                isErrorEditItemSubmit={props.isErrorEditItemSubmit}
-                                isSuccessEditItemSubmit={props.isSuccessEditItemSubmit}
-                                isSuccessMutation={props.isSuccessMutation}
+                                itemActionErrors={props.itemActionErrors}
+                                isSuccessItemActionMutation={props.isSuccessItemActionMutation}
                                 invalidateCodeListDetailCache={props.invalidateCodeListDetailCache}
                                 handleFilterChange={props.handleFilterChange}
                                 handleMarkForPublish={props.handleMarkForPublish}
                                 handleSetDates={props.handleSetDates}
-                                handleStartItemEdit={props.handleStartItemEdit}
-                                handleSubmitItem={props.handleSubmitItem}
                             />
                         )}
                     />
@@ -277,30 +275,21 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                     <ConfirmationModal
                         isOpen={isMarkForPublishItemsModalOpen}
                         onClose={() => setIsMarkForPublishItemsModalOpen(false)}
-                        onConfirm={() => {
-                            handleAllItemsReadyToPublish()
-                            setIsMarkForPublishItemsModalOpen(false)
-                        }}
+                        onConfirm={() => handleAllItemsReadyToPublish(() => setIsMarkForPublishItemsModalOpen(false))}
                         title={t('codeListDetail.modal.title.markForPublishAllItems')}
                         okButtonLabel={t('codeListDetail.modal.button.confirm')}
                     />
                     <ConfirmationModal
                         isOpen={isSendToIsvsOpen}
                         onClose={() => setIsSendToIsvsOpen(false)}
-                        onConfirm={() => {
-                            handleSendToIsvs()
-                            setIsSendToIsvsOpen(false)
-                        }}
+                        onConfirm={() => handleSendToIsvs(() => setIsSendToIsvsOpen(false))}
                         title={t('codeListDetail.modal.title.sendToIsvs')}
                         okButtonLabel={t('codeListDetail.modal.button.confirm')}
                     />
                     <ConfirmationModal
                         isOpen={isPublishCodeListOpen}
                         onClose={() => setIsPublishCodeListOpen(false)}
-                        onConfirm={() => {
-                            handlePublishCodeList()
-                            setIsPublishCodeListOpen(false)
-                        }}
+                        onConfirm={() => handlePublishCodeList(() => setIsPublishCodeListOpen(false))}
                         title={t('codeListDetail.modal.title.publishCodeList')}
                         okButtonLabel={t('codeListDetail.modal.button.confirm')}
                     />
@@ -308,8 +297,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                         isOpen={isReturnToMainGestorOpen}
                         onClose={() => setIsReturnToMainGestorOpen(false)}
                         onConfirm={() => {
-                            handleReturnToMainGestor()
-                            setIsReturnToMainGestorOpen(false)
+                            handleReturnToMainGestor(() => setIsReturnToMainGestorOpen(false))
                         }}
                         title={t('codeListDetail.modal.title.returnToMainGestor')}
                         okButtonLabel={t('codeListDetail.modal.button.confirm')}
@@ -318,8 +306,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                         isOpen={isSendToSzzcOpen}
                         onClose={() => setIsSendToSzzcOpen(false)}
                         onConfirm={() => {
-                            handleSendToSzzc()
-                            setIsSendToSzzcOpen(false)
+                            handleSendToSzzc(() => setIsSendToSzzcOpen(false))
                         }}
                         title={t('codeListDetail.modal.title.sendToSzzc')}
                         okButtonLabel={t('codeListDetail.modal.button.confirm')}

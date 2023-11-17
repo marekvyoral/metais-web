@@ -43,7 +43,7 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
         onClose()
     }, [onClose, reset])
 
-    const { isLoading: isLoadingOriginal, isError, data: codeListOriginalData } = useGetOriginalCodelistHeader(code)
+    const { isFetching: isLoadingOriginal, isError, data: codeListOriginalData } = useGetOriginalCodelistHeader(code)
 
     const queryOnSuccess = () => {
         queryClient.invalidateQueries([getGetOriginalCodelistHeaderQueryKey(code)])
@@ -121,15 +121,15 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
             <QueryFeedback loading={isLoading} error={false} withChildren>
                 <div className={styles.modalContainer}>
                     <div className={styles.content}>
+                        <TextHeading size="L" className={styles.heading}>
+                            {t('codeListDetail.modal.title.addLanguageVersion')}
+                        </TextHeading>
                         {isError && <QueryFeedback error={isError} loading={false} />}
                         <MutationFeedback
                             success={isMutationSuccess}
                             successMessage={t('codeListDetail.feedback.translationCreated')}
                             error={isMutationError ? t('feedback.mutationErrorMessage') : undefined}
                         />
-                        <TextHeading size="L" className={styles.heading}>
-                            {t('codeListDetail.modal.title.addLanguageVersion')}
-                        </TextHeading>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <SimpleSelect
                                 label={t('codeListDetail.form.label.language')}

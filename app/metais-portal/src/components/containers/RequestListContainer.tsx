@@ -25,7 +25,7 @@ export interface RequestListViewProps {
     entityName: string
 }
 
-export interface CodeListListFilterData extends IFilterParams, IFilter {
+export interface RequestListFilterData extends IFilterParams, IFilter {
     language?: string
     sortBy?: string
     ascending?: boolean
@@ -52,7 +52,7 @@ export const defaultFilterValues = {
 export const RequestListContainer: React.FC<RequestListContainerProps> = ({ View }) => {
     const { i18n } = useTranslation()
 
-    const { filter, handleFilterChange } = useFilterParams<CodeListListFilterData>({
+    const { filter, handleFilterChange } = useFilterParams<RequestListFilterData>({
         sort: [
             {
                 orderBy: 'id',

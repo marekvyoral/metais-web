@@ -13,14 +13,15 @@ import {
     TextArea,
     TextHeading,
 } from '@isdd/idsk-ui-kit/index'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { useEditCodeListSchema } from './useEditCodeListSchemas'
+import { getDescription, getName } from './CodeListDetailUtils'
 
 import { IEditCodeListForm } from '@/componentHelpers'
 import { DEFAULT_EMPTY_NOTE, mapCodeListToEditForm } from '@/componentHelpers/code-list'
@@ -42,7 +43,7 @@ export interface IOption {
 
 export interface IFieldTextRow {
     id: number
-    text: string
+    text?: string
 }
 
 export enum RequestFormEnum {
@@ -67,20 +68,23 @@ export enum RequestFormEnum {
 export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
     data,
     isError,
+    errorMessages,
     isLoading,
     loadOptions,
     handleSave,
     handleDiscardChanges,
     handleRemoveLock,
 }) => {
-    const { t, i18n } = useTranslation()
+    const {
+        t,
+        i18n: { language },
+    } = useTranslation()
     const navigate = useNavigate()
-    const { id: codeId } = useParams()
     const { schema } = useEditCodeListSchema()
-    const { codeList, defaultManagers } = data
+    const { codeList, defaultManagers, attributeProfile } = data
     const mappedData = useMemo(() => {
-        return mapCodeListToEditForm(codeList, i18n.language)
-    }, [codeList, i18n.language])
+        return mapCodeListToEditForm(codeList, language)
+    }, [codeList, language])
     const [isNewGestor, setNewGestor] = useState<boolean>(false)
     const [isNewCodeListName, setNewCodeListName] = useState<boolean>(false)
     const [nextGestorList, setNextGestorList] = useState<IOption[]>(defaultManagers || [])
@@ -92,6 +96,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
         defaultValues: mappedData,
     })
 
+    const codeId = data.codeList?.id
     const nextGestorFormList = watch(RequestFormEnum.NEXT_GESTOR)
 
     useEffect(() => {
@@ -109,8 +114,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
     }
 
     const codeListName = useMemo(() => {
-        return data?.codeList?.codelistNames?.find((i) => i.language == i18n.language)?.value
-    }, [data?.codeList?.codelistNames, i18n.language])
+        return data?.codeList?.codelistNames?.find((i) => i.language == language)?.value
+    }, [data?.codeList?.codelistNames, language])
 
     const nextGestorDefault = useMemo(() => {
         const val = defaultManagers?.filter((item) => mappedData?.nextGestor?.find((gestor) => item.poUUID === gestor.value?.substring(37)))
@@ -127,9 +132,9 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                 links={[
                     { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
-                    { label: t('codeList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CISELNIKY },
-                    { label: codeListName ?? t('codeList.breadcrumbs.codeListsList'), href: '' },
+                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
+                    { label: t('codeList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CODELIST },
+                    { label: codeListName ?? t('codeList.breadcrumbs.codeListsList'), href: `${NavigationSubRoutes.CODELIST}/${codeId}` },
                 ]}
             />
 
@@ -139,7 +144,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                     <form onSubmit={handleSubmit(onHandleSubmit)}>
                         <div className={styles.bottomGap}>
                             <CheckBox
-                                label={t('codeListList.edit.base')}
+                                label={getDescription('Gui_Profil_ZC_zakladny_ciselnik', language, attributeProfile)}
+                                info={getName('Gui_Profil_ZC_zakladny_ciselnik', language, attributeProfile)}
                                 id={RequestFormEnum.BASE}
                                 {...register(RequestFormEnum.BASE)}
                                 name={RequestFormEnum.BASE}
@@ -147,7 +153,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                         </div>
                         <Input
                             required
-                            label={t('codeListList.edit.codeListName')}
+                            label={getDescription('Gui_Profil_ZC_nazov_ciselnika', language, attributeProfile)}
+                            info={getName('Gui_Profil_ZC_nazov_ciselnika', language, attributeProfile)}
                             id={`${RequestFormEnum.CODE_LIST_NAME}.value`}
                             {...register(`${RequestFormEnum.CODE_LIST_NAME}.value`)}
                             error={formState.errors[RequestFormEnum.CODE_LIST_NAME]?.value?.message}
@@ -178,7 +185,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                         {isNewCodeListName && (
                             <>
                                 <Input
-                                    label={t('codeListList.edit.newCodeListName')}
+                                    label={getDescription('Gui_Profil_ZC_nazov_ciselnika', language, attributeProfile)}
+                                    info={getName('Gui_Profil_ZC_nazov_ciselnika', language, attributeProfile)}
                                     id={`${RequestFormEnum.NEW_CODE_LIST_NAME}.value`}
                                     {...register(`${RequestFormEnum.NEW_CODE_LIST_NAME}.value`)}
                                     error={formState.errors[RequestFormEnum.NEW_CODE_LIST_NAME]?.value?.message}
@@ -209,14 +217,16 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                         <Input
                             required
                             disabled
-                            label={t('codeListList.edit.codeListId')}
+                            label={getDescription('Gui_Profil_ZC_kod_ciselnika', language, attributeProfile)}
+                            info={getName('Gui_Profil_ZC_kod_ciselnika', language, attributeProfile)}
                             id={RequestFormEnum.CODE}
                             {...register(RequestFormEnum.CODE)}
                             error={formState.errors[RequestFormEnum.CODE]?.message}
                         />
                         <Input
                             disabled
-                            label={t('codeListList.edit.refIndicator')}
+                            label={getDescription('Gui_Profil_ZC_uri', language, attributeProfile)}
+                            info={getName('Gui_Profil_ZC_uri', language, attributeProfile)}
                             id={RequestFormEnum.REF_INDICATOR}
                             {...register(RequestFormEnum.REF_INDICATOR)}
                             error={formState.errors[RequestFormEnum.REF_INDICATOR]?.message}
@@ -233,7 +243,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                         loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
                                         getOptionLabel={(item) => item.poName ?? ''}
                                         getOptionValue={(item) => item.poUUID ?? ''}
-                                        label={`${t('codeListList.edit.mainGestor')} ${index + 1}`}
+                                        label={`${getDescription('Gui_Profil_ZC_hlavny_gestor', language, attributeProfile)}  ${index + 1}`}
+                                        info={getName('Gui_Profil_ZC_hlavny_gestor', language, attributeProfile)}
                                         isMulti={false}
                                         setValue={setValue}
                                         error={formState.errors[RequestFormEnum.MAIN_GESTOR]?.[index]?.value?.message}
@@ -272,6 +283,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                     getOptionLabel={(item) => item.poName ?? ''}
                                     getOptionValue={(item) => item.poUUID ?? ''}
                                     label={t('codeListList.edit.newMainGestor')}
+                                    info={getName('Gui_Profil_ZC_hlavny_gestor', language, attributeProfile)}
                                     isMulti={false}
                                     setValue={setValue}
                                     error={formState.errors[RequestFormEnum.NEW_MAIN_GESTOR]?.value?.message}
@@ -306,7 +318,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                 loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
                                 getOptionLabel={(item) => item.poName ?? ''}
                                 getOptionValue={(item) => item.poUUID ?? ''}
-                                label={t('codeListList.edit.nextGestor')}
+                                label={getDescription('Gui_Profil_ZC_vedlajsi_gestor', language, attributeProfile)}
+                                info={getName('Gui_Profil_ZC_vedlajsi_gestor', language, attributeProfile)}
                                 isMulti
                                 onChange={(options) => {
                                     setNextGestorList(options as IOption[])
@@ -353,7 +366,10 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                 <TextArea
                                     key={`sourceCode-${index}`}
                                     rows={5}
-                                    label={`${t('codeListList.edit.sourceCode')} ${sourceCodeList.length > 1 ? index + 1 : ''}`}
+                                    label={`${getDescription('Gui_Profil_ZC_zdrojovy_ciselnik', language, attributeProfile)}  ${
+                                        sourceCodeList.length > 1 ? index + 1 : ''
+                                    }`}
+                                    info={getName('Gui_Profil_ZC_zdrojovy_ciselnik', language, attributeProfile)}
                                     id={name}
                                     {...register(name)}
                                     error={formState.errors[RequestFormEnum.CODE_LIST_SOURCE]?.[index]?.text?.message}
@@ -372,7 +388,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                         <GridRow>
                             <GridCol setWidth="one-half">
                                 <Input
-                                    label={t('codeListList.edit.dateStartValid')}
+                                    label={getDescription('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
+                                    info={getName('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
                                     id={RequestFormEnum.DATE_FROM}
                                     {...register(RequestFormEnum.DATE_FROM)}
                                     type="date"
@@ -381,7 +398,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                             </GridCol>
                             <GridCol setWidth="one-half">
                                 <Input
-                                    label={t('codeListList.edit.dateEndValid')}
+                                    label={getDescription('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
+                                    info={getName('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
                                     id={RequestFormEnum.DATE_TO}
                                     {...register(RequestFormEnum.DATE_TO)}
                                     type="date"
@@ -397,7 +415,10 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                     key={index}
                                     defaultValue={note.text}
                                     rows={5}
-                                    label={`${t('codeListList.edit.noteCode')} ${notes.length > 1 ? index + 1 : ''}`}
+                                    label={`${getDescription('Gui_Profil_ZC_poznamka_pre_ciselnik', language, attributeProfile)}  ${
+                                        notes.length > 1 ? index + 1 : ''
+                                    }`}
+                                    info={getName('Gui_Profil_ZC_poznamka_pre_ciselnik', language, attributeProfile)}
                                     id={name}
                                     {...register(name)}
                                     error={formState.errors[RequestFormEnum.CODE_LIST_NOTES]?.[index]?.text?.message}
@@ -418,7 +439,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                             <GridCol setWidth="one-half">
                                 <Input
                                     required
-                                    label={t('codeListList.requestCreate.name')}
+                                    label={getDescription('Gui_Profil_ZC_meno', language, attributeProfile)}
+                                    info={getName('Gui_Profil_ZC_meno', language, attributeProfile)}
                                     id={RequestFormEnum.NAME}
                                     {...register(RequestFormEnum.NAME)}
                                     error={formState.errors[RequestFormEnum.NAME]?.message}
@@ -427,7 +449,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                             <GridCol setWidth="one-half">
                                 <Input
                                     required
-                                    label={t('codeListList.requestCreate.lastName')}
+                                    label={getDescription('Gui_Profil_ZC_priezvisko', language, attributeProfile)}
+                                    info={getName('Gui_Profil_ZC_priezvisko', language, attributeProfile)}
                                     id={RequestFormEnum.LAST_NAME}
                                     {...register(RequestFormEnum.LAST_NAME)}
                                     error={formState.errors[RequestFormEnum.LAST_NAME]?.message}
@@ -438,7 +461,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                             <GridCol setWidth="one-half">
                                 <Input
                                     required
-                                    label={t('codeListList.requestCreate.phone')}
+                                    label={getDescription('Gui_Profil_ZC_tel_cislo', language, attributeProfile)}
+                                    info={getName('Gui_Profil_ZC_tel_cislo', language, attributeProfile)}
                                     id={RequestFormEnum.PHONE}
                                     {...register(RequestFormEnum.PHONE)}
                                     error={formState.errors[RequestFormEnum.PHONE]?.message}
@@ -447,13 +471,18 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                             <GridCol setWidth="one-half">
                                 <Input
                                     required
-                                    label={t('codeListList.requestCreate.email')}
+                                    label={getDescription('Gui_Profil_ZC_email', language, attributeProfile)}
+                                    info={getName('Gui_Profil_ZC_email', language, attributeProfile)}
                                     id={RequestFormEnum.EMAIL}
                                     {...register(RequestFormEnum.EMAIL)}
                                     error={formState.errors[RequestFormEnum.EMAIL]?.message}
                                 />
                             </GridCol>
                         </GridRow>
+
+                        {errorMessages.map((errorMessage, index) => (
+                            <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
+                        ))}
 
                         <ButtonGroupRow className={styles.buttonGroupEdit}>
                             <ButtonLink className={styles.buttonLock} label={t('codeListList.edit.removeLock')} onClick={handleRemoveLock} />
@@ -462,7 +491,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                 label={t('form.cancel')}
                                 type="reset"
                                 variant="secondary"
-                                onClick={() => navigate(`${RouteNames.CODELISTS}/${codeId}`)}
+                                onClick={() => navigate(`${NavigationSubRoutes.CODELIST}/${data.codeList?.id}`)}
                             />
 
                             <Button label={t('form.submit')} type="submit" />

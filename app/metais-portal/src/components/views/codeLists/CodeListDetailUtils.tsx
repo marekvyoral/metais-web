@@ -90,16 +90,16 @@ export const selectBasedOnLanguageAndDate = (
     return null
 }
 
-const findProfileAttribute = (profile: AttributeProfile, technicalName: string): Attribute | undefined => {
+const findProfileAttribute = (technicalName: string, profile?: AttributeProfile): Attribute | undefined => {
     return profile?.attributes?.find((attribute) => attribute.technicalName === technicalName)
 }
 
-export const getDescription = (profile: AttributeProfile, technicalName: string, language: string) => {
-    return findProfileAttribute(profile, technicalName)?.[language === 'en' ? 'engName' : 'name'] ?? ''
+export const getDescription = (technicalName: string, language: string, profile?: AttributeProfile) => {
+    return findProfileAttribute(technicalName, profile)?.[language === 'en' ? 'engName' : 'name'] ?? ''
 }
 
-export const getName = (profile: AttributeProfile, technicalName: string, language: string) => {
-    return findProfileAttribute(profile, technicalName)?.[language === 'en' ? 'engDescription' : 'description'] ?? ''
+export const getName = (technicalName: string, language: string, profile?: AttributeProfile) => {
+    return findProfileAttribute(technicalName, profile)?.[language === 'en' ? 'engDescription' : 'description'] ?? ''
 }
 
 export const getGestorName = (gestors?: RoleParticipantUI[], gid?: string): string => {

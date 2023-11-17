@@ -18,23 +18,21 @@ export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({ data, workin
     } = useTranslation()
     const { codeList, attributeProfile, gestors } = data || {}
 
-    if (!codeList || !attributeProfile) return <></>
-
     return (
         <InformationGridRowWrapper>
             <InformationGridRow
                 key={'isBase'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_zakladny_ciselnik', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_zakladny_ciselnik', language)}
-                value={codeList.base ? t('radioButton.yes') : t('radioButton.no')}
+                label={getDescription('Gui_Profil_ZC_zakladny_ciselnik', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_zakladny_ciselnik', language, attributeProfile)}
+                value={codeList?.base ? t('radioButton.yes') : t('radioButton.no')}
             />
             <InformationGridRow
                 key={'name'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_nazov_ciselnika', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_nazov_ciselnika', language)}
+                label={getDescription('Gui_Profil_ZC_nazov_ciselnika', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_nazov_ciselnika', language, attributeProfile)}
                 value={
                     <InfoIconWithText
-                        tooltip={codeList.codelistNames
+                        tooltip={codeList?.codelistNames
                             ?.filter((item) => item.language === workingLanguage)
                             .map(
                                 (item) =>
@@ -44,36 +42,36 @@ export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({ data, workin
                             )
                             .join('\n')}
                     >
-                        {selectBasedOnLanguageAndDate(codeList.codelistNames, workingLanguage, true)}
+                        {selectBasedOnLanguageAndDate(codeList?.codelistNames, workingLanguage, true)}
                     </InfoIconWithText>
                 }
             />
             <InformationGridRow
                 key={'code'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_kod_ciselnika', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_kod_ciselnika', language)}
-                value={codeList.code}
+                label={getDescription('Gui_Profil_ZC_kod_ciselnika', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_kod_ciselnika', language, attributeProfile)}
+                value={codeList?.code}
             />
             <InformationGridRow
                 key={'resortCode'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_rezort', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_rezort', language)}
-                value={codeList.resortCode}
+                label={getDescription('Gui_Profil_ZC_rezort', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_rezort', language, attributeProfile)}
+                value={codeList?.resortCode}
             />
             <InformationGridRow
                 key={'uri'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_uri', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_uri', language)}
-                value={codeList.uri}
+                label={getDescription('Gui_Profil_ZC_uri', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_uri', language, attributeProfile)}
+                value={codeList?.uri}
             />
             <InformationGridRow
                 key={'mainGestor'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_hlavny_gestor', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_hlavny_gestor', language)}
+                label={getDescription('Gui_Profil_ZC_hlavny_gestor', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_hlavny_gestor', language, attributeProfile)}
                 value={
-                    !!codeList.mainCodelistManagers?.length && (
+                    !!codeList?.mainCodelistManagers?.length && (
                         <InfoIconWithText
-                            tooltip={codeList.mainCodelistManagers
+                            tooltip={codeList?.mainCodelistManagers
                                 ?.map(
                                     (item) =>
                                         `${getGestorName(gestors, item.value)} (${
@@ -89,12 +87,12 @@ export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({ data, workin
             />
             <InformationGridRow
                 key={'gestor'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_vedlajsi_gestor', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_vedlajsi_gestor', language)}
+                label={getDescription('Gui_Profil_ZC_vedlajsi_gestor', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_vedlajsi_gestor', language, attributeProfile)}
                 value={
-                    !!codeList.codelistManagers?.length && (
+                    !!codeList?.codelistManagers?.length && (
                         <InfoIconWithText
-                            tooltip={codeList.codelistManagers
+                            tooltip={codeList?.codelistManagers
                                 ?.map(
                                     (item) =>
                                         `${getGestorName(gestors, item.value)} (${
@@ -103,7 +101,7 @@ export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({ data, workin
                                 )
                                 .join('<br />')}
                         >
-                            {codeList.codelistManagers?.map((gestor) => (
+                            {codeList?.codelistManagers?.map((gestor) => (
                                 <p key={gestor.id}>{getGestorName(gestors, gestor.value)}</p>
                             ))}
                         </InfoIconWithText>
@@ -112,35 +110,35 @@ export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({ data, workin
             />
             <InformationGridRow
                 key={'sourceCodelist'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_zdrojovy_ciselnik', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_zdrojovy_ciselnik', language)}
-                value={codeList.codelistSource?.map((source, index) => (
+                label={getDescription('Gui_Profil_ZC_zdrojovy_ciselnik', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_zdrojovy_ciselnik', language, attributeProfile)}
+                value={codeList?.codelistSource?.map((source, index) => (
                     <p key={index}>{source}</p>
                 ))}
             />
             <InformationGridRow
                 key={'validFrom'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_datum_platnosti_polozky', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_datum_platnosti_polozky', language)}
-                value={codeList.validFrom ? t('date', { date: codeList.validFrom }) : t('codeListDetail.unlimited')}
+                label={getDescription('Gui_Profil_ZC_datum_platnosti_polozky', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_datum_platnosti_polozky', language, attributeProfile)}
+                value={codeList?.validFrom ? t('date', { date: codeList?.validFrom }) : t('codeListDetail.unlimited')}
             />
             <InformationGridRow
                 key={'effectiveFrom'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language)}
-                value={codeList.effectiveFrom ? t('date', { date: codeList.effectiveFrom }) : t('codeListDetail.unlimited')}
+                label={getDescription('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
+                value={codeList?.effectiveFrom ? t('date', { date: codeList?.effectiveFrom }) : t('codeListDetail.unlimited')}
             />
             <InformationGridRow
                 key={'effectiveTo'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_koniec_ucinnosti_polozky', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_koniec_ucinnosti_polozky', language)}
-                value={codeList.effectiveTo ? t('date', { date: codeList.effectiveTo }) : t('codeListDetail.unlimited')}
+                label={getDescription('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
+                value={codeList?.effectiveTo ? t('date', { date: codeList?.effectiveTo }) : t('codeListDetail.unlimited')}
             />
             <InformationGridRow
                 key={'notes'}
-                label={getDescription(attributeProfile, 'Gui_Profil_ZC_poznamka_pre_ciselnik', language)}
-                tooltip={getName(attributeProfile, 'Gui_Profil_ZC_poznamka_pre_ciselnik', language)}
-                value={selectBasedOnLanguageAndDate(codeList.codelistNotes, workingLanguage)}
+                label={getDescription('Gui_Profil_ZC_poznamka_pre_ciselnik', language, attributeProfile)}
+                tooltip={getName('Gui_Profil_ZC_poznamka_pre_ciselnik', language, attributeProfile)}
+                value={selectBasedOnLanguageAndDate(codeList?.codelistNotes, workingLanguage)}
             />
         </InformationGridRowWrapper>
     )

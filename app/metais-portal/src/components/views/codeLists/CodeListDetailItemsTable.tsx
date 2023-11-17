@@ -11,11 +11,12 @@ import { Table, CheckBox, ExpandableRowCellWrapper } from '@isdd/idsk-ui-kit/ind
 import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { Actions, CodeListItemState, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
+import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 
-import { IItemForm } from './components/modals/ItemForm/ItemForm'
 import { isEffective, selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
 import { CodeListDetailItemsTableExpandedRow } from './CodeListDetailItemsTableExpandedRow'
+
+import { CodeListItemState } from '@/componentHelpers/codeList'
 
 export interface TableCols extends ApiCodelistItem {
     selected?: boolean
@@ -27,7 +28,7 @@ export interface CodeListDetailItemsTableProps {
     setRowSelection: (item: Record<string, TableCols>) => void
     filter: IFilter
     workingLanguage: string
-    handleOpenEditItem: (item?: IItemForm) => void
+    handleOpenEditItem: (item: ApiCodelistItem) => void
     handleFilterChange: (filter: IFilter) => void
     handleMarkForPublish: (itemCodes: string[]) => void
 }
@@ -134,6 +135,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
                                 name="checkbox"
                                 id={`checkbox_${row.id}`}
                                 value="true"
+                                onClick={(event) => event.stopPropagation()}
                                 onChange={() => handleCheckboxChange(row)}
                                 checked={row.original.itemCode ? !!rowSelection[row.original.itemCode] : false}
                                 disabled={

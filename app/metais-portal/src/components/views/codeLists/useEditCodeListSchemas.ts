@@ -48,13 +48,13 @@ export const useEditCodeListSchema = (): IOutput => {
         codeListNotes: array().of(
             object().shape({
                 id: number().required(),
-                text: string().required(t('codeListList.requestValidations.codeListNotes')),
+                text: string(),
             }),
         ),
         codeListSource: array().of(
             object().shape({
                 id: number().required(),
-                text: string().required(t('codeListList.requestValidations.codeListSource')),
+                text: string(),
             }),
         ),
         mainGestor: array().of(
@@ -85,7 +85,7 @@ export const useEditCodeListSchema = (): IOutput => {
         name: string().required(t('codeListList.requestValidations.name')),
         lastName: string().required(t('codeListList.requestValidations.lastName')),
         phone: string().required(t('codeListList.requestValidations.phone')),
-        email: string().required(t('codeListList.requestValidations.email')).email(),
+        email: string().required(t('codeListList.requestValidations.email')).email(t('codeListList.requestValidations.emailFormat')),
     })
 
     return {

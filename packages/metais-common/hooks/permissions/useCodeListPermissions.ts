@@ -8,12 +8,11 @@ import { useGetRoleIdsForRole } from '@isdd/metais-common/hooks/useGetRoleIdsFor
 import { useGetTopLevelPoUuid } from '@isdd/metais-common/hooks/useGetTopLevelPoUuid'
 import { Group, User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
-export enum CodeListItemState {
-    NEW = 'NEW',
-    READY_TO_PUBLISH = 'READY_TO_PUBLISH',
-    PUBLISHED = 'PUBLISHED',
+export enum CodeListState {
     UPDATING = 'UPDATING',
+    READY_TO_PUBLISH = 'READY_TO_PUBLISH',
     ISVS_PROCESSING = 'ISVS_PROCESSING',
+    PUBLISHED = 'PUBLISHED',
     KS_ISVS_REJECTED = 'KS_ISVS_REJECTED',
     KS_ISVS_ACCEPTED = 'KS_ISVS_ACCEPTED',
 }
@@ -86,21 +85,18 @@ export const useCodeListPermissions = (id: string) => {
         if (isMainGestor || isManager) can(Actions.IMPORT, Subjects.DETAIL)
         if (
             (isMainGestor || isManager) &&
-            state !== CodeListItemState.KS_ISVS_REJECTED &&
-            state !== CodeListItemState.KS_ISVS_ACCEPTED &&
-            state !== CodeListItemState.ISVS_PROCESSING &&
-            state !== CodeListItemState.READY_TO_PUBLISH
+            state !== CodeListState.KS_ISVS_REJECTED &&
+            state !== CodeListState.KS_ISVS_ACCEPTED &&
+            state !== CodeListState.ISVS_PROCESSING &&
+            state !== CodeListState.READY_TO_PUBLISH
         )
             can(Actions.EDIT, Subjects.DETAIL)
-        if (
-            (isMainGestor && baseOnTempAndOrigin && state === CodeListItemState.UPDATING) ||
-            (isMainGestor && state === CodeListItemState.KS_ISVS_ACCEPTED)
-        )
+        if ((isMainGestor && baseOnTempAndOrigin && state === CodeListState.UPDATING) || (isMainGestor && state === CodeListState.KS_ISVS_ACCEPTED))
             can(Actions.PUBLISH, Subjects.DETAIL)
         if (isMainGestor || isManager) can(Actions.PUBLISH, Subjects.ITEM, 'all')
-        if (isMainGestor && state === CodeListItemState.READY_TO_PUBLISH && !baseOnTempAndOrigin) can(Actions.SEND_TO, Subjects.DETAIL, 'isvs')
-        if (isMainGestor && state === CodeListItemState.UPDATING && !baseOnTempAndOrigin) can(Actions.SEND_TO, Subjects.DETAIL, 'szzc')
-        if (isManager && state === CodeListItemState.KS_ISVS_REJECTED) can(Actions.SEND_TO, Subjects.DETAIL, 'mainGestor')
+        if (isMainGestor && state === CodeListState.READY_TO_PUBLISH && !baseOnTempAndOrigin) can(Actions.SEND_TO, Subjects.DETAIL, 'isvs')
+        if (isMainGestor && state === CodeListState.UPDATING && !baseOnTempAndOrigin) can(Actions.SEND_TO, Subjects.DETAIL, 'szzc')
+        if (isManager && state === CodeListState.KS_ISVS_REJECTED) can(Actions.SEND_TO, Subjects.DETAIL, 'mainGestor')
         if (!isTemporal && isMainGestor) can(Actions.CREATE, Subjects.DETAIL, 'languageVersion')
         if ((isManager && isGarant) || isMainGestor || isGestor) can(Actions.EDIT, Subjects.ITEM)
         if (isMainGestor || isGestor) can(Actions.EDIT, Subjects.ITEM, 'readyToPublish')

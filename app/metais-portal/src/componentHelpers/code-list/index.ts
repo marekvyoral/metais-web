@@ -104,7 +104,7 @@ export const mapEditFormDataToCodeList = (
                 : []),
         ],
         codelistNotes: formData.codeListNotes?.map((note) => ({ id: note.id, value: note.text, language })),
-        codelistSource: formData.codeListSource?.map((source) => source.text),
+        codelistSource: formData.codeListSource?.map((source) => source.text ?? ''),
         uri: formData.refIndicator,
         effectiveFrom: formData.effectiveFrom ? new Date(formData.effectiveFrom).toISOString() : '',
         effectiveTo: formData.effectiveTo ? new Date(formData.effectiveTo).toISOString() : '',

@@ -1,11 +1,15 @@
 import { useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { CodeListDetailContainer } from '@/components/containers/CodeListDetailContainer'
 import { CodeListDetailWrapper } from '@/components/views/codeLists/CodeListDetailWrapper'
 import { CodeListPermissionsWrapper } from '@/components/permissions/CodeListPermissionsWrapper'
 
 const NotificationsDetailPage = () => {
+    const { t } = useTranslation()
     const { id } = useParams()
+
+    document.title = `${t('titles.codeListDetail')} | MetaIS`
 
     return (
         <CodeListPermissionsWrapper id={id ?? ''}>
@@ -15,8 +19,9 @@ const NotificationsDetailPage = () => {
                     <CodeListDetailWrapper
                         data={props.data}
                         isLoading={props.isLoading}
+                        isLoadingMutation={props.isLoadingMutation}
                         isError={props.isError}
-                        isErrorMutation={props.isErrorMutation}
+                        actionsErrorMessages={props.actionsErrorMessages}
                         isSuccessMutation={props.isSuccessMutation}
                         successMessage={props.successMessage}
                         workingLanguage={props.workingLanguage}
