@@ -6,12 +6,13 @@ import { v4 as uuidV4 } from 'uuid'
 
 import { ProjectUploadFileView } from './ProjectUploadFileView'
 
-import { ConfigurationItemUi, useGetDocumentHook, useGetRequestStatusHook, useStoreGraphHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ConfigurationItemUi, useGetDocumentHook, useStoreGraphHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useIsOwnerByGidHook } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import { useGenerateCodeAndURLHook } from '@isdd/metais-common/src/api/generated/types-repo-swagger'
 import { API_CALL_RETRY_COUNT } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 export interface IDocType extends ConfigurationItemUi {
     confluence?: boolean
@@ -51,24 +52,10 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
     const storeActivity = useStoreGraphHook()
     const [isLoading, setIsLoading] = useState(false)
     const checkIsOwnerByGid = useIsOwnerByGidHook()
-    const requestStatus = useGetRequestStatusHook()
     const getDocument = useGetDocumentHook()
-    const getStatus = async (requestId: string) => {
-        let done = false
-        for (let index = 0; index < API_CALL_RETRY_COUNT; index++) {
-            const status = await requestStatus(requestId)
-            if (status.processed) {
-                done = true
-                break
-            }
 
-            if (index < API_CALL_RETRY_COUNT - 1) {
-                const delay = 500
-                await new Promise((resolve) => setTimeout(resolve, delay))
-            }
-        }
-        return done
-    }
+    const { callStatusInCycles: getStatus } = useGetStatus()
+
     const getDocumentExists = async (docId: string) => {
         let done = false
         for (let index = 0; index < API_CALL_RETRY_COUNT; index++) {
