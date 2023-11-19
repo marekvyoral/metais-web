@@ -9,13 +9,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { ApiAttachment } from '@isdd/metais-common/api/generated/standards-swagger'
 
-import {
-    ExistingFileData,
-    ExistingFilesHandler,
-    IExistingFilesHandlerRef,
-} from '../votes/voteEdit/components/ExistingFilesHandler/ExistingFilesHandler'
-import { mapProcessedExistingFilesToApiAttachment, mapUploadedFilesToApiAttachment } from '../votes/voteEdit/functions/voteEditFunc'
-
 import styles from './createEditView.module.scss'
 import { MeetingFormEnum, createMeetingSchema, editMeetingSchema } from './meetingSchema'
 import { MeetingExternalActorsForm } from './MeetingExternalActorsForm'
@@ -24,6 +17,15 @@ import { MeetingProposalsGroup } from './MeetingProposalsGroup'
 import { SelectMeetingGroupWithActors } from './SelectMeetingGroupWithActors'
 import { MeetingProposalsModal } from './MeetingProposalsModal'
 
+import {
+    mapProcessedExistingFilesToApiAttachment,
+    mapUploadedFilesToApiAttachment,
+} from '@/components/views/standardization/votes/voteEdit/functions/voteEditFunc'
+import {
+    ExistingFileData,
+    ExistingFilesHandler,
+    IExistingFilesHandlerRef,
+} from '@/components/views/standardization/votes/voteEdit/components/ExistingFilesHandler/ExistingFilesHandler'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { IMeetingEditViewParams } from '@/components/containers/standardization/meetings/MeetingEditContainer'
 import { LinksImport } from '@/components/LinksImport/LinksImport'
