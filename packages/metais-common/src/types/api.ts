@@ -11,3 +11,8 @@ export enum StandardDraftsDraftAction {
     REJECTED = 'REJECT',
     ACCEPTED = 'ACCEPT',
 }
+
+export enum PromiseStatus {
+    FULFILLED = 'fulfilled',
+    REJECTED = 'rejected',
+}

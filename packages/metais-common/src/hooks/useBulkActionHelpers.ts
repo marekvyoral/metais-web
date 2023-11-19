@@ -9,6 +9,7 @@ export const useBulkActionHelpers = () => {
     const {
         state: { user },
     } = useAuth()
+    const isLoggedIn = !!user?.uuid
 
     const getRightsForPOBulk = useGetRightsForPOBulkHook()
     const getCiType = useGetCiTypeHook()
@@ -17,6 +18,7 @@ export const useBulkActionHelpers = () => {
     const checkIsOwnerByGid = useIsOwnerByGidHook()
 
     const hasOwnerRights = async (items: ConfigurationItemUi[]) => {
+        if (!isLoggedIn) return false
         const gids = uniq(items.filter((item) => !!item.attributes).map((item) => item.metaAttributes?.owner || ''))
         const response = await checkIsOwnerByGid({
             login: user?.login,

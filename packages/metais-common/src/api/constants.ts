@@ -42,6 +42,7 @@ export enum ATTRIBUTE_NAME {
     ReferenceRegisterHistory_Profile_stav = 'ReferenceRegisterHistory_Profile_stav',
     ReferenceRegisterHistory_Profile_popis = 'ReferenceRegisterHistory_Profile_popis',
     ReferenceRegisterHistory_Profile_prilohy = 'ReferenceRegisterHistory_Profile_prilohy',
+    ReferenceRegister_Profile_name = 'ReferenceRegister_Profile_name',
     ISVS_Name = 'isvsName',
     Sr_Name = 'srName',
     standardRequestState = 'standardRequestState',
@@ -51,6 +52,8 @@ export enum ATTRIBUTE_NAME {
     email = 'email',
     srDescription1 = 'srDescription1',
     relatedDocuments = 'relatedDocuments',
+    Profil_Ciel_kategoria = 'Profil_Ciel_kategoria',
+    Profil_KRIS_Zavazok_ciele_principy_stav = 'Profil_KRIS_Zavazok_ciele_principy_stav',
 }
 
 export enum API_STANDARD_REQUEST_ATTRIBUTES {

@@ -8,7 +8,9 @@ import { useTranslation } from 'react-i18next'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Button } from '@isdd/idsk-ui-kit/index'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 export interface TableCols extends HistoryVersionUiConfigurationItemUi {
     selected?: boolean
@@ -20,6 +22,7 @@ interface ConfigurationItemHistoryListTable {
     additionalColumns?: Array<ColumnDef<TableCols>>
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
+    basePath?: string
 }
 
 export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistoryListTable> = ({
@@ -29,12 +32,13 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
     isError,
     pagination,
     handleFilterChange,
+    basePath,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
     const [selectedColumns, setSelectedColumns] = useState<string[]>([])
-    const { entityId, entityName } = useParams()
+    const { entityId, entityName } = useGetEntityParamsFromUrl()
     const additionalColumnsNullSafe = additionalColumns ?? []
 
     const handleCheckRow = useCallback(
@@ -52,13 +56,15 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
         [selectedColumns],
     )
 
+    const path = basePath ? basePath : `/ci/${entityName}`
+
     const handleCompareHistory = useCallback(() => {
         if (selectedColumns.length === 1) {
-            navigate(`/ci/${entityName}/${entityId}/history/${selectedColumns[0]}`, { state: { from: location } })
+            navigate(`${path}/${entityId}/history/${selectedColumns[0]}`, { state: { from: location } })
         } else {
-            navigate(`/ci/${entityName}/${entityId}/history/${selectedColumns[0]}/${selectedColumns[1]}`, { state: { from: location } })
+            navigate(`${path}/${entityId}/history/${selectedColumns[0]}/${selectedColumns[1]}`, { state: { from: location } })
         }
-    }, [entityId, entityName, location, navigate, selectedColumns])
+    }, [entityId, location, navigate, selectedColumns, path])
 
     const columns: Array<ColumnDef<TableCols>> = [
         {

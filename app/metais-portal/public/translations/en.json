@@ -314,7 +314,7 @@
         "NoChangesDetected": "No changes detected",
         "fixLink": "Correct",
         "invalidEntityId": "Invalid entity",
-        "CL08": {
+        "codeList": {
             "cl.missing.header.name": "Invalid request. Name of the codelist is required.",
             "cl.missing.header.master.manager": "Invalid request. Main authority of codelist is mandatory.",
             "cl.missing.header.validity": "Invalid request. Validity of the codelist is required.",
@@ -475,7 +475,8 @@
         "newRelationHeading": "New relation - {{relationEntityName}}",
         "PO_PO_Heading": "Subordinates",
         "PO_IS_Heading": "Processors of IT development concepts",
-        "PO_IS_PO_Heading": "IS operators"
+        "PO_IS_PO_Heading": "IS operators",
+        "goals": "Goals"
     },
     "relationType": {
         "as": "Application service"
@@ -974,8 +975,6 @@
         "codeLists": "Codelists",
         "requestList": "List of requests to add a codelist",
         "requestCreate": "Create request to add a codelist",
-        "codeListsList": "List of codelists",
-        "publicCodeListsList": "List of published codelists",
         "ciCreateEntity": "Create new item of type {{entityName}}",
         "compareHistory": "Compare history",
         "ciEditEntity": "Edit of component"
@@ -1002,6 +1001,7 @@
                 "history": "History of changes"
             },
             "items": "Codelist items",
+            "editItem": "Edit codelist item",
             "addNewItem": "Add new item to codelist"
         },
         "history": {
@@ -1061,8 +1061,6 @@
             "translationCreated": "The language version of codelist has been created. You can now add translation of items in this language. The language version of the codelist should be published only when completely translated.",
             "returnToMainGestor": "Codelist was returned for revision.",
             "sendToSzzc": "Request has been sent to administrator of BC list.",
-            "sendToIsvs": "Codelist was sent for approval to the Committee for Standardization ISPA.",
-            "publishCodeList": "Codelist was published.",
             "publishCodeListItems": "Codelist items were published."
         },
         "modal": {
@@ -1137,23 +1135,12 @@
         },
         "edit": {
             "title": "Edit code list",
-            "base": "Base code list",
-            "codeListName": "Name of codelist",
-            "newCodeListName": "New name of codelist",
             "dateValid": "Expiration date",
             "dateFrom": "From",
             "dateTo": " To",
-            "codeListId": "Code of codelist",
-            "refIndicator": "Reference indicator",
-            "mainGestor": "Main manager",
             "newMainGestor": "New main manager",
-            "nextGestor": "Secondary manager",
             "addNewGestor": "Add a new main manager",
             "cancelAddNewGestor": "Cancel adding a new main manager",
-            "sourceCode": "Source codelist",
-            "dateStartValid": "Effective date",
-            "dateEndValid": "End of effectiveness",
-            "noteCode": "Note for codelist",
             "addNewRow": "Add a new row",
             "addNewVersionName": "Add a new version of the title",
             "cancelAddNewVersionName": "Cancel new version of name",
@@ -1161,19 +1148,8 @@
             "discardUpdating": "Discard version in-progress"
         },
         "requestCreate": {
-            "base": "Base code list",
             "btnCheck": "Check",
-            "codeListName": "Name of codelist",
-            "refIndicator": "Reference indicator",
-            "mainGestor": "Main authority",
-            "resortCode": "Resort code",
-            "note": "Note",
             "addNote": "+ Add note",
-            "codeListId": "Code of codelist",
-            "name": "Name",
-            "lastName": "Last name",
-            "phone": "Phone",
-            "email": "Email",
             "contactTitle": "Kontakt na vecného gestora číselníka",
             "codeListTableTitle": "codelist items",
             "codeId": "Code",
@@ -1190,26 +1166,12 @@
             "name": "Name is required field",
             "lastName": "Lastname is required field",
             "email": "Email is required field",
-            "phone": "Phone is required field",
-            "codeListSource": "Codelist source is required field",
-            "codeListNotes": "Note je povinné pole"
+            "emailFormat": "Invalid email format",
+            "phone": "Phone is required field"
         },
         "requestModal": {
             "yes": "Yes",
             "no": "No",
-            "shortcut": "Skrátený názov položky",
-            "codeItem": "Kód položky",
-            "codeName": "Názov položky",
-            "shortname": "Skratka názvu položky",
-            "refident": "Referencovateľný identifikátor",
-            "addData": "Doplňujúci obsah",
-            "unit": "Merná jednotka",
-            "note": "Poznámka pre položku",
-            "contain": "Zahŕňa",
-            "alsoContain": "Tiež zahŕňa",
-            "exclude": "Vylučuje",
-            "order": "Logické poradie položky",
-            "law": "Legislatívna uznateľnosť",
             "validate": "Dátum platnosti",
             "startDate": "Začiatok účinnosti",
             "endDate": "Koniec účinnosti",
@@ -1323,7 +1285,8 @@
                 "PUBLISHED": "Approved and published",
                 "IN_CONSTRUCTION": "in-progress/optional",
                 "READY_TO_APPROVAL": "Request for registration in the list of reference registers",
-                "REJECTED": "Registration in the list of reference registers rejected"
+                "REJECTED": "Registration in the list of reference registers rejected",
+                "FETCHING": ""
             },
             "muk": {
                 "heading": "MUK",
@@ -1405,6 +1368,8 @@
         "PO_IS_PODetail": "Detail of IS PO",
         "PO_IS_POCreate": "Creation of IS PO",
         "meetings": "Meetings",
+        "codeList": "Codelist list",
+        "codeListDetail": "Detail codelist",
         "meetingsCreate": "Creation of meeting",
         "meetingDetail": "Detail of meeting",
         "publicAuthoritiesHierarchy": "Hierarchy of public authorities"
@@ -1886,11 +1851,11 @@
         },
         "error": "Error while executing your action. Please try again or contact support."
     },
-    "activities": {
+    "Aktivita": {
         "target": "Objective of the activity",
         "name": "Activities NKIVS",
         "description": "Description of activity",
-        "projectActivity": "In relation with selected project"
+        "action": "In relation with selected project"
     },
     "publicAuthorities": {
         "hierarchy": "Hierarchy of public authorities"
@@ -1902,16 +1867,7 @@
         "heading": "Drafts list"
     },
     "howto": {
-        "codelists": "Codelists",
-        "refRegisters": "Reference registers",
-        "monitoring": "Reports and monitoring",
-        "guides": "Procedures and guides",
-        "dataObjects": "Data objects",
-        "standardization": "Standardization",
-        "programProjectsActivities": "Programs, projects and activities",
-        "kris": "Goals, principles, activites and KRIT",
-        "po": "Public authorities",
-        "egov": "e-Government components"
+        "guides": "Procedures and guides"
     },
     "relationDetail": {
         "heading": "Detail of relationship: {{item}}",
@@ -1928,5 +1884,15 @@
     "autoLogout": {
         "warningMessage": "In {{countDown}} you will be logged out due to inactitvity.",
         "loading": "Proccessing logout"
+    },
+    "Ciel": {
+        "target": "Goal",
+        "name": "Sub-goal",
+        "description": "Goal description",
+        "action": "In relation with selected KRIS",
+        "haveNoRights": "You do not have rights to edit this input.",
+        "commitmentHeader": "Commitment to the observance of the goals and principles of the National Informatization Concept of Public Administration",
+        "commitmentLabel": "We declare that the building and developing ISVS will meet our defined objectives, sub-objectives and adhere to the principles of the National Informatization Concept of Public Administration",
+        "noCheckedItems": "Before confirming the commitment to comply with the goals and principles of the National Concept of Informatization of Public Administration, it is necessary to select at least one goal."
     }
 }

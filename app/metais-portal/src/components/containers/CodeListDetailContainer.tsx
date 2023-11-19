@@ -1,21 +1,20 @@
 import {
     ApiCodelistPreview,
-    getGetCodelistHeadersQueryKey,
     useGetCodelistHeader,
     useGetOriginalCodelistHeader,
     useProcessAllItemsAction,
     useProcessHeaderAction,
-    getGetCodelistItemsQueryKey,
-    getGetCodelistHeaderQueryKey,
-    getGetOriginalCodelistHeaderQueryKey,
-    getGetCodelistHistoryQueryKey,
-    getGetCodelistActionsHistoryQueryKey,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { RoleParticipantUI, getGetRoleParticipantBulkQueryKey, useGetRoleParticipantBulk } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { RoleParticipantUI, useGetRoleParticipantBulk } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
+
+import { ApiCodeListActions, ApiCodeListItemsActions, getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 export interface CodeListDetailData {
     codeList?: ApiCodelistPreview
@@ -27,29 +26,19 @@ export interface CodeListDetailData {
 export interface CodeListDetailWrapperProps {
     data: CodeListDetailData
     isLoading: boolean
+    isLoadingMutation: boolean
     isError: boolean
-    isErrorMutation: boolean
+    actionsErrorMessages: string[]
     isSuccessMutation: boolean
     successMessage?: string
     workingLanguage: string
     setWorkingLanguage: (language: string) => void
     invalidateCodeListDetailCache: () => void
-    handleAllItemsReadyToPublish: () => void
-    handleSendToIsvs: () => void
-    handlePublishCodeList: () => void
-    handleSendToSzzc: () => void
-    handleReturnToMainGestor: () => void
-}
-
-enum ApiCodeListItemsActions {
-    CODELIST_ITEMS_TO_PUBLISH = 'codelistItemsToPublish',
-}
-
-enum ApiCodeListActions {
-    TEMPORAL_CODELIST_TO_ISVS_PROCESSING = 'temporalCodelistToIsvsProcessing',
-    TEMPORAL_CODELIST_TO_PUBLISHED = 'temporalCodelistToPublished',
-    TEMPORAL_CODELIST_TO_READY_TO_PUBLISH = 'temporalCodelistToReadyToPublish',
-    TEMPORAL_CODELIST_TO_UPDATING = 'temporalCodelistToUpdating',
+    handleAllItemsReadyToPublish: (close: () => void) => void
+    handleSendToIsvs: (close: () => void) => void
+    handlePublishCodeList: (close: () => void) => void
+    handleSendToSzzc: (close: () => void) => void
+    handleReturnToMainGestor: (close: () => void) => void
 }
 
 interface CodeListDetailContainerProps {
@@ -59,19 +48,27 @@ interface CodeListDetailContainerProps {
 
 export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = ({ id, View }) => {
     const { t, i18n } = useTranslation()
-    const queryClient = useQueryClient()
+    const location = useLocation()
+    const navigate = useNavigate()
+    const { setIsActionSuccess } = useActionSuccess()
 
     const [workingLanguage, setWorkingLanguage] = useState<string>('')
     const [successMessage, setSuccessMessage] = useState<string>('')
+
+    const { invalidate } = useInvalidateCodeListCache()
 
     useEffect(() => {
         setWorkingLanguage(i18n.language)
     }, [i18n.language])
 
-    const { isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile, data: attributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
-    const { isLoading: isLoadingData, isError: isErrorData, data: codeListData } = useGetCodelistHeader(Number(id))
     const {
-        isInitialLoading: isLoadingOriginal,
+        isFetching: isLoadingAttributeProfile,
+        isError: isErrorAttributeProfile,
+        data: attributeProfile,
+    } = useGetAttributeProfile('Gui_Profil_ZC')
+    const { isFetching: isLoadingData, isError: isErrorData, data: codeListData } = useGetCodelistHeader(Number(id))
+    const {
+        isFetching: isLoadingOriginal,
         isError: isErrorOriginal,
         data: codeListOriginalData,
     } = useGetOriginalCodelistHeader(codeListData?.code ?? '', { query: { enabled: !!codeListData } })
@@ -82,7 +79,7 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
     ]
 
     const {
-        isInitialLoading: isLoadingRoleParticipants,
+        isFetching: isLoadingRoleParticipants,
         isError: isErrorRoleParticipants,
         data: roleParticipantsData,
     } = useGetRoleParticipantBulk(
@@ -103,19 +100,11 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
     const codelistActionMutation = useProcessHeaderAction()
 
     const invalidateCodeListDetailCache = () => {
-        const code = data.codeList?.code
-        if (code) {
-            queryClient.invalidateQueries([getGetCodelistHeaderQueryKey(Number(id))[0]])
-            queryClient.invalidateQueries([getGetOriginalCodelistHeaderQueryKey(code)[0]])
-            queryClient.invalidateQueries([getGetRoleParticipantBulkQueryKey({})[0]])
-            queryClient.invalidateQueries([getGetCodelistHeadersQueryKey({ language: '', pageNumber: 0, perPage: 0 })[0]])
-            queryClient.invalidateQueries([getGetCodelistItemsQueryKey(code, { language: '', pageNumber: 0, perPage: 0 })[0]])
-            queryClient.invalidateQueries([getGetCodelistHistoryQueryKey(code)[0]])
-            queryClient.invalidateQueries([getGetCodelistActionsHistoryQueryKey(code, '')[0]])
-        }
+        invalidate(data.codeList?.code ?? '', Number(id))
     }
 
-    const handleAllItemsReadyToPublish = () => {
+    const handleAllItemsReadyToPublish = (close: () => void) => {
+        close()
         const code = data.codeList?.code
         if (!code) return
         itemsActionMutation.mutate(
@@ -129,35 +118,40 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
         )
     }
 
-    const handleSendToIsvs = () => {
+    const handleSendToIsvs = (close: () => void) => {
+        close()
         data.codeList?.code &&
             codelistActionMutation.mutate(
                 { code: data.codeList?.code, params: { action: ApiCodeListActions.TEMPORAL_CODELIST_TO_ISVS_PROCESSING } },
                 {
                     onSuccess: () => {
                         invalidateCodeListDetailCache()
-                        setSuccessMessage(t('codeListDetail.feedback.sendToIsvs'))
-                        // navigate to CodeListList in old version
+                        const path = NavigationSubRoutes.CODELIST
+                        setIsActionSuccess({ value: true, path })
+                        navigate(path, { state: { from: location } })
                     },
                 },
             )
     }
 
-    const handlePublishCodeList = () => {
+    const handlePublishCodeList = (close: () => void) => {
+        close()
         data.codeList?.code &&
             codelistActionMutation.mutate(
                 { code: data.codeList?.code, params: { action: ApiCodeListActions.TEMPORAL_CODELIST_TO_PUBLISHED } },
                 {
                     onSuccess: () => {
                         invalidateCodeListDetailCache()
-                        setSuccessMessage(t('codeListDetail.feedback.publishCodeList'))
-                        // navigate to CodeListList in old version
+                        const path = NavigationSubRoutes.CODELIST
+                        setIsActionSuccess({ value: true, path })
+                        navigate(path, { state: { from: location } })
                     },
                 },
             )
     }
 
-    const handleSendToSzzc = () => {
+    const handleSendToSzzc = (close: () => void) => {
+        close()
         data.codeList?.code &&
             codelistActionMutation.mutate(
                 { code: data.codeList?.code, params: { action: ApiCodeListActions.TEMPORAL_CODELIST_TO_READY_TO_PUBLISH } },
@@ -170,7 +164,8 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
             )
     }
 
-    const handleReturnToMainGestor = () => {
+    const handleReturnToMainGestor = (close: () => void) => {
+        close()
         data.codeList?.code &&
             codelistActionMutation.mutate(
                 { code: data.codeList?.code, params: { action: ApiCodeListActions.TEMPORAL_CODELIST_TO_UPDATING } },
@@ -183,24 +178,19 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
             )
     }
 
-    const isLoading = [
-        isLoadingRoleParticipants,
-        isLoadingAttributeProfile,
-        isLoadingData,
-        isLoadingOriginal,
-        itemsActionMutation.isLoading,
-        codelistActionMutation.isLoading,
-    ].some((item) => item)
+    const isLoading = [isLoadingRoleParticipants, isLoadingAttributeProfile, isLoadingData, isLoadingOriginal].some((item) => item)
     const isError = [isErrorRoleParticipants, isErrorAttributeProfile, isErrorData, isErrorOriginal].some((item) => item)
-    const isErrorMutation = [codelistActionMutation, itemsActionMutation].some((item) => item.isError)
+    const isLoadingMutation = [codelistActionMutation, itemsActionMutation].some((item) => item.isLoading)
     const isSuccessMutation = [codelistActionMutation, itemsActionMutation].some((item) => item.isSuccess)
+    const actionsErrorMessages = getErrorTranslateKeys([codelistActionMutation, itemsActionMutation].map((item) => item.error as { message: string }))
 
     return (
         <View
             data={data}
             isLoading={isLoading}
+            isLoadingMutation={isLoadingMutation}
             isError={isError}
-            isErrorMutation={isErrorMutation}
+            actionsErrorMessages={actionsErrorMessages}
             isSuccessMutation={isSuccessMutation}
             successMessage={successMessage}
             workingLanguage={workingLanguage}

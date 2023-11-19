@@ -1,6 +1,6 @@
 import React from 'react'
 import { ActionsOverTable } from '@isdd/metais-common/src/components/actions-over-table/ActionsOverTable'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/src/constants'
+import { DEFAULT_PAGESIZE_OPTIONS, STANDARDIZATION_DRAFTS_LIST } from '@isdd/metais-common/src/constants'
 import { GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
 import { CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -19,7 +19,6 @@ const DraftsListListPage: React.FC = () => {
     const navigate = useNavigate()
     const { isActionSuccess } = useActionSuccess()
 
-    const entityName = 'draftsList'
     const location = useLocation()
     const { t } = useTranslation()
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -56,7 +55,7 @@ const DraftsListListPage: React.FC = () => {
                             <DraftsListFilter defaultFilterValues={defaultFilterValues} />
                             <ActionsOverTable
                                 pagination={pagination}
-                                entityName={entityName}
+                                entityName={STANDARDIZATION_DRAFTS_LIST}
                                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                                 hiddenButtons={{ SELECT_COLUMNS: true, BULK_ACTIONS: true }}
                                 handleFilterChange={handleFilterChange}

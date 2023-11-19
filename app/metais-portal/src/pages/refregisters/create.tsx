@@ -9,7 +9,7 @@ import { RefRegisterContainer } from '@/components/containers/refregisters/RefRe
 import { RefRegisterCreateView } from '@/components/views/refregisters/createView/RefRegisterCreateView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-const Create = () => {
+const RefRegistersCreate = () => {
     const entityName = 'ReferenceRegister'
     const { t } = useTranslation()
 
@@ -62,4 +62,4 @@ const Create = () => {
     )
 }
 
-export default Create
+export default RefRegistersCreate

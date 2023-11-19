@@ -5,11 +5,11 @@ import { useParams } from 'react-router-dom'
 
 import { HistoryAccordion } from '@/components/views/history/HistoryAccordeon'
 
-const History: React.FC = () => {
+const RefRegistersHistory: React.FC = () => {
     const { t } = useTranslation()
     const { entityId } = useParams()
 
-    return entityId ? <HistoryAccordion entityId={entityId} /> : <TextWarning>{t('errors.invalidEntityId')}</TextWarning>
+    return entityId ? <HistoryAccordion basePath="/refregisters" entityId={entityId} /> : <TextWarning>{t('errors.invalidEntityId')}</TextWarning>
 }
 
-export default History
+export default RefRegistersHistory

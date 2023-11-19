@@ -2,6 +2,7 @@ import classnames from 'classnames'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { matchPath, useLocation, useNavigate } from 'react-router-dom'
+import { useWindowWidthBreakpoints } from '@isdd/metais-common/src/hooks/window-size/useWindowWidthBreakpoints'
 
 import styles from './tabs.module.scss'
 import { changeTabOrder } from './tabsUtils'
@@ -33,13 +34,15 @@ const TabItemDesktop: React.FC<ITabItemDesktop> = ({ handleSelect, tab, isSelect
     )
 }
 
-interface ITabItemMobile {
+interface ITabItemContent {
     tab: Tab
     handleMobileSelect: (value: Tab) => void
     isSelected: boolean
 }
 
-const TabItemMobile: React.FC<ITabItemMobile> = ({ tab, handleMobileSelect, isSelected }) => {
+const TabItemContent: React.FC<ITabItemContent> = ({ tab, handleMobileSelect, isSelected }) => {
+    const windowWidth = useWindowWidthBreakpoints()
+
     return (
         <li key={tab.id} className="idsk-tabs__list-item--mobile" role="presentation">
             <button
@@ -53,14 +56,18 @@ const TabItemMobile: React.FC<ITabItemMobile> = ({ tab, handleMobileSelect, isSe
                 <span className="idsk-tabs__tab-arrow-mobile" />
             </button>
             <section className={classnames('idsk-tabs__panel', { 'idsk-tabs__panel--hidden': !isSelected })} id={tab.id}>
-                <div className="idsk-tabs__panel-content">{tab.content}</div>
-                <div
-                    className={classnames('idsk-tabs__mobile-tab-content', {
-                        'idsk-tabs__mobile-tab-content--hidden': !isSelected,
-                    })}
-                >
-                    {tab?.content}
-                </div>
+                {windowWidth &&
+                    (windowWidth.desktop || windowWidth.tablet ? (
+                        <div className="idsk-tabs__panel-content">{tab.content}</div>
+                    ) : (
+                        <div
+                            className={classnames('idsk-tabs__mobile-tab-content', {
+                                'idsk-tabs__mobile-tab-content--hidden': !isSelected,
+                            })}
+                        >
+                            {tab?.content}
+                        </div>
+                    ))}
             </section>
         </li>
     )
@@ -184,7 +191,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
             </ul>
             <ul className="idsk-tabs__list--mobile" role="tablist">
                 {tabList.map((tab) => (
-                    <TabItemMobile key={tab.id} handleMobileSelect={handleMobileSelect} tab={tab} isSelected={activeTab?.id === tab.id} />
+                    <TabItemContent key={tab.id} handleMobileSelect={handleMobileSelect} tab={tab} isSelected={activeTab?.id === tab.id} />
                 ))}
             </ul>
         </div>

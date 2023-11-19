@@ -60,7 +60,7 @@ export const CodeListDetailHistoryContainer: React.FC<CodeListDetailHistoryConta
     }
 
     const {
-        isInitialLoading: isLoadingHistory,
+        isFetching: isLoadingHistory,
         isError: isErrorHistory,
         data: historyData,
     } = useGetCodelistHistory(code, {
@@ -75,13 +75,13 @@ export const CodeListDetailHistoryContainer: React.FC<CodeListDetailHistoryConta
     })
 
     const {
-        isLoading: isLoadingFilterActions,
+        isFetching: isLoadingFilterActions,
         isError: isErrorFilterActions,
         data: filterActionsData,
     } = useGetCodelistActionsHistory(code, 'actions')
 
     const {
-        isLoading: isLoadingFilterModifiedBy,
+        isFetching: isLoadingFilterModifiedBy,
         isError: isErrorFilterModifiedBy,
         data: filterModifiedByData,
     } = useGetCodelistActionsHistory(code, 'modifiedBy')

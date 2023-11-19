@@ -134,7 +134,7 @@ export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({ ciTypeD
                             valueFirst={`${t('history.ACTIONS.' + dataFirst?.actions ?? '')}:  ${
                                 dataFirst?.actionTime && new Date(dataFirst?.actionTime).toLocaleString(i18n.language)
                             }`}
-                            valueSec={`${t('history.ACTIONS.' + dataSec?.actions ?? '')}:  ${
+                            valueSec={`${dataSec && t('history.ACTIONS.' + dataSec?.actions ?? '')}:  ${
                                 dataSec?.actionTime && new Date(dataSec?.actionTime).toLocaleString(i18n.language)
                             }`}
                             withoutCompare

@@ -309,7 +309,7 @@
         "NoChangesDetected": "Nezaznamenali sme žiadne zmeny",
         "fixLink": "Opraviť",
         "invalidEntityId": "Nevalidná entita",
-        "CL08": {
+        "codeList": {
             "cl.missing.header.name": "Nesprávna požiadavka. Názov číselníka je povinný.",
             "cl.missing.header.master.manager": "Nesprávna požiadavka. Hlavný gestor číselníka je povinný.",
             "cl.missing.header.validity": "Nesprávna požiadavka. Platnosť číselníka je povinná.",
@@ -475,7 +475,8 @@
         },
         "PO_PO_Heading": "Podriadené osoby",
         "PO_IS_Heading": "Spracovatelia koncepcií rozvoja IT",
-        "PO_IS_PO_Heading": "Prevádzkovatelia IS"
+        "PO_IS_PO_Heading": "Prevádzkovatelia IS",
+        "goals": "Ciele"
     },
     "relationType": {
         "as": "Aplikačná služba"
@@ -974,14 +975,11 @@
         "newRelation": "Pridanie nového vzťahu k {{itemName}}",
         "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}",
         "refRegisters": "Referenčné registre",
-        "compareHistory": "Porovnanie zmien",
         "refRegistersCreate": "Žiadosť na pridanie",
         "refRegistersEdit": "Zmena údajov o referenčnom registri",
         "dataObjects": "Dátové objekty",
-        "codeLists": "Číselníky",
         "requestList": "Zoznam žiadostí založenia číselníka",
         "requestCreate": "Žiadosť o zaradenie číselníka",
-        "publicCodeListsList": "Zoznam publikovaných číselníkov",
         "ciCreateEntity": "Vytvorenie novej položky typu {{entityName}}",
         "compareHistory": "Porovnávanie histórie",
         "standardization": "Štandardizácia",
@@ -1012,6 +1010,7 @@
                 "history": "História zmien"
             },
             "items": "Položky číselníka",
+            "editItem": "Úprava položky číselníka",
             "addNewItem": "Pridanie novej položky do číselníka"
         },
         "history": {
@@ -1071,8 +1070,6 @@
             "translationCreated": "Jazyková verzia číselníka bola vytvorená. Teraz môžete pridávať preklad položiek v tomto jazyku. Jazyková verzia číselníka by mala byť publikovaná len kompletne preložená.",
             "returnToMainGestor": "Číselník bol vrátený na prepracovanie.",
             "sendToSzzc": "Požiadavka bola odoslaná správcovi zoznamu ZČ.",
-            "sendToIsvs": "Číselník bol odoslaný na schválenie Komisii pre štandardizáciu ISVS.",
-            "publishCodeList": "Číselník bol zverejnený.",
             "publishCodeListItems": "Položky číselníka boli zverejnené."
         },
         "modal": {
@@ -1147,23 +1144,12 @@
         },
         "edit": {
             "title": "Upraviť číselník",
-            "base": "Základný číselník",
-            "codeListName": "Názov číselníka",
-            "newCodeListName": "Nový názov číselníka",
             "dateValid": "Dátum platnosti",
             "dateFrom": "Dátum platnosti",
             "dateTo": " Dátum platnosti do",
-            "codeListId": "Kód číselníka",
-            "refIndicator": "Referencovateľný identifikátor",
-            "mainGestor": "Hlavný gestor",
             "newMainGestor": "Nový hlavný gestor",
-            "nextGestor": "Vedľajší gestor",
             "addNewGestor": "Pridať nového hlavného gestora",
             "cancelAddNewGestor": "Zrušiť pridanie nového hlavného gestora",
-            "sourceCode": "Zdrojový číselník",
-            "dateStartValid": "Začiatok účinnosti",
-            "dateEndValid": "Koniec účinnosti",
-            "noteCode": "Poznámka pre číselník",
             "addNewRow": "Pridať nový riadok",
             "addNewVersionName": "Pridať novú verziu názvu",
             "cancelAddNewVersionName": "Zrušiť pridanie novej verzie názvu",
@@ -1171,19 +1157,8 @@
             "discardUpdating": "Zahodiť rozpracovanú verziu"
         },
         "requestCreate": {
-            "base": "Základný číselník",
             "btnCheck": "Overiť dostupnosť",
-            "codeListName": "Názov číselníka",
-            "refIndicator": "Referencovateľný identifikátor",
-            "mainGestor": "Hlavný gestor",
-            "resortCode": "Rezortný kód",
-            "note": "Poznámka",
             "addNote": "+ Pridať poznámku",
-            "codeListId": "Kód číselníka",
-            "name": "Meno",
-            "lastName": "Priezvisko",
-            "phone": "Telefónne číslo",
-            "email": "Emailová adresa",
             "contactTitle": "Kontakt na vecného gestora číselníka",
             "codeListTableTitle": "Položky číselníka",
             "codeId": "Kód",
@@ -1200,26 +1175,12 @@
             "name": "Meno je povinné pole",
             "lastName": "Priezvisko je povinné pole",
             "email": "Email je povinné pole",
-            "phone": "Telefónne číslo je povinné pole",
-            "codeListSource": "Zdrojový číselník je povinné pole",
-            "codeListNotes": "Poznámka pre číselník je povinné pole"
+            "emailFormat": "Email je v nesprávnom tvare",
+            "phone": "Telefónne číslo je povinné pole"
         },
         "requestModal": {
             "yes": "Áno",
             "no": "Nie",
-            "shortcut": "Skrátený názov položky",
-            "codeItem": "Kód položky",
-            "codeName": "Názov položky",
-            "shortname": "Skratka názvu položky",
-            "refident": "Referencovateľný identifikátor",
-            "addData": "Doplňujúci obsah",
-            "unit": "Merná jednotka",
-            "note": "Poznámka pre položku",
-            "contain": "Zahŕňa",
-            "alsoContain": "Tiež zahŕňa",
-            "exclude": "Vylučuje",
-            "order": "Logické poradie položky",
-            "law": "Legislatívna uznateľnosť",
             "validate": "Dátum platnosti",
             "startDate": "Začiatok účinnosti",
             "endDate": "Koniec účinnosti",
@@ -1333,9 +1294,11 @@
         "PO_IS_PODetail": "Detail IS PO",
         "PO_IS_POCreate": "Vytvorenie IS PO",
         "meetings": "Zoznam zasadnutí",
+        "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia",
+        "codeListList": "Zoznam číselníkov",
+        "codeListDetail": "Detail číselníka",
         "meetingsCreate": "Vytvorenie zasadnutia",
-        "meetingDetail": "Detail zasadnutia",
-        "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia"
+        "meetingDetail": "Detail zasadnutia"
     },
     "refRegisters": {
         "list": {
@@ -1371,7 +1334,8 @@
                 "PUBLISHED": "Schválený a publikovaný",
                 "IN_CONSTRUCTION": "rozpracovaný/nepovinný",
                 "READY_TO_APPROVAL": "Návrh na zaradenie do zoznamu referenčných registrov",
-                "REJECTED": "Zamietnutý na zaradenie do zoznamu referenčných registrov"
+                "REJECTED": "Zamietnutý na zaradenie do zoznamu referenčných registrov",
+                "FETCHING": ""
             },
             "muk": {
                 "heading": "MUK",
@@ -1902,11 +1866,11 @@
         },
         "error": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
     },
-    "activities": {
+    "Aktivita": {
         "target": "Cieľ aktivity",
         "name": "Aktivity NKIVS",
         "description": "Popis aktivity",
-        "projectActivity": "V relácií s vybraným Projektom"
+        "action": "V relácií s vybraným Projektom"
     },
     "publicAuthorities": {
         "hierarchy": "Hierarchia orgánov riadenia"
@@ -1918,16 +1882,7 @@
         "heading": "Zoznam návrhov predložených prostredníctvom MetaIS"
     },
     "howto": {
-        "codelists": "Číselníky",
-        "refRegisters": "Referenčné registre",
-        "monitoring": "Zostavy a monitoring",
-        "guides": "Postupy a návody",
-        "dataObjects": "Dátové objekty",
-        "standardization": "Štandardizácia",
-        "programProjectsActivities": "Programy, projekty a aktivity",
-        "kris": "Ciele, princípy, aktivity a KRIT",
-        "po": "Orgány riadenia",
-        "egov": "e-Government komponenty"
+        "guides": "Postupy a návody"
     },
     "relationDetail": {
         "heading": "Detail vzťahu: {{item}}",
@@ -1945,5 +1900,15 @@
     "autoLogout": {
         "warningMessage": "O {{countDown}} sekúnd budete kvôli inaktivite odhlásený.",
         "loading": "Spracúvame odhlásenie"
+    },
+    "Ciel": {
+        "target": "Cieľ",
+        "name": "Pod-cieľ",
+        "description": "Popis cieľa",
+        "action": "V relácií s vybraným KRIS",
+        "haveNoRights": "Na editovanie tejto položky nemáte prísluľné práva.",
+        "commitmentHeader": "Záväzok dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy",
+        "commitmentLabel": "Týmto prehlasujeme, že pri budovaní a rozvoji ISVS budeme napĺňať nami definované ciele, podciele a dodržiavať princípy Národnej koncepcie informatizácie verejnej správy.",
+        "noCheckedItems": "Pred potvrdením záväzku dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy je potrebné vybrať aspoň jeden cieľ."
     }
 }

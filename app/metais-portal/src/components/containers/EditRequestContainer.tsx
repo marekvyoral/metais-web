@@ -18,13 +18,14 @@ import { RequestListState } from '@isdd/metais-common/constants'
 import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { CreateRequestViewProps } from '@/components/containers/CreateRequestContainer'
 import { IItemDates } from '@/components/views/requestLists/components/modalItem/DateModalItem'
 import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
 import { IRequestForm, _entityName, getUUID, mapFormToSave, mapToForm } from '@/componentHelpers/requests'
+import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 interface EditRequestContainerProps {
     View: React.FC<CreateRequestViewProps>
@@ -40,11 +41,11 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
 
     const checkHook = useExistsCodelistHook()
     const setItemsDatesHook = useProcessItemRequestAction1Hook()
-    const saaveDatesHook = useSaveDatesHook()
+    const saveDatesHook = useSaveDatesHook()
     const { setIsActionSuccess } = useActionSuccess()
 
     const [isLoadingCheck, setLoadingCheck] = useState<boolean>()
-    const [isErrorCheck, setErrorCheck] = useState<boolean>()
+    const [errorCheck, setErrorCheck] = useState<{ message: string }>()
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
 
     const defaultFilter: HierarchyPOFilterUi = {
@@ -55,9 +56,14 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     }
 
     const implicitHierarchy = useReadCiList()
-    const { data, isLoading: isLoadingDetail, isError: isErrorDetail } = useGetCodelistRequestDetail(Number.parseInt(requestId || ''))
-    const { mutateAsync, isLoading: isLoadingSave, isError: isErrorSave } = useCreateCodelistRequest()
-    const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, isError: isErrorSend } = useSaveAndSendCodelist()
+    const {
+        data,
+        isLoading: isLoadingDetail,
+        isError: isErrorDetail,
+        error: errorDetail,
+    } = useGetCodelistRequestDetail(Number.parseInt(requestId || ''))
+    const { mutateAsync, isLoading: isLoadingSave, isError: isErrorSave, error: errorSave } = useCreateCodelistRequest()
+    const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, isError: isErrorSend, error: errorSend } = useSaveAndSendCodelist()
     const { isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile, data: attributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
 
     const {
@@ -87,19 +93,19 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     const handleCheckIfCodeListExist = useCallback(
         async (code: string) => {
             setLoadingCheck(true)
-            setErrorCheck(false)
-            await checkHook({ code: code, codelistState: RequestListState.NEW_REQUEST })
+            setErrorCheck(undefined)
+            await checkHook({ code: code, id: Number(requestId), codelistState: RequestListState.NEW_REQUEST })
                 .then(() => {
                     return
                 })
-                .catch(() => {
-                    setErrorCheck(true)
+                .catch((error) => {
+                    setErrorCheck(error)
                 })
                 .finally(() => {
                     setLoadingCheck(false)
                 })
         },
-        [checkHook],
+        [checkHook, requestId],
     )
 
     const onSave = async (formData: IRequestForm) => {
@@ -109,25 +115,25 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
             mappedData.code &&
             (data?.codelistState === RequestListState.ACCEPTED_SZZC || data?.codelistState === RequestListState.KS_ISVS_ACCEPTED)
         ) {
-            saaveDatesHook(mappedData.code, [], {
+            saveDatesHook(mappedData.code, [], {
                 effectiveFrom: mappedData.effectiveFrom && formatDateForDefaultValue(mappedData.effectiveFrom, 'dd.MM.yyyy'),
                 validFrom: mappedData.validFrom && formatDateForDefaultValue(mappedData.validFrom, 'dd.MM.yyyy'),
             })
                 .then(() => {
-                    setIsActionSuccess({ value: true, path: RouteNames.REQUESTLIST })
-                    navigate(`${RouteNames.REQUESTLIST}`)
+                    setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
+                    navigate(`${NavigationSubRoutes.REQUESTLIST}`)
                 })
-                .catch(() => {
-                    setErrorCheck(true)
+                .catch((error) => {
+                    setErrorCheck(error)
                 })
         } else {
             mutateAsync({ data: mappedData })
                 .then(() => {
-                    setIsActionSuccess({ value: true, path: RouteNames.REQUESTLIST })
-                    navigate(`${RouteNames.REQUESTLIST}`)
+                    setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
+                    navigate(`${NavigationSubRoutes.REQUESTLIST}`)
                 })
-                .catch(() => {
-                    setErrorCheck(true)
+                .catch((error) => {
+                    setErrorCheck(error)
                 })
         }
     }
@@ -136,11 +142,11 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
         const uuid = getUUID(user?.groupData ?? [])
         mutateSendASync({ data: mapFormToSave(formData, i18n.language, uuid) })
             .then(() => {
-                setIsActionSuccess({ value: true, path: RouteNames.REQUESTLIST })
-                navigate(`${RouteNames.REQUESTLIST}`)
+                setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
+                navigate(`${NavigationSubRoutes.REQUESTLIST}`)
             })
-            .catch(() => {
-                setErrorCheck(true)
+            .catch((error) => {
+                setErrorCheck(error)
             })
     }
 
@@ -156,18 +162,19 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
             { fromIndex: 0, toIndex: Object.keys(items).length },
         )
             .then(() => {
-                setIsActionSuccess({ value: true, path: RouteNames.REQUESTLIST })
-                navigate(`${RouteNames.REQUESTLIST}`)
+                setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
+                navigate(`${NavigationSubRoutes.REQUESTLIST}`)
             })
-            .catch(() => {
-                setErrorCheck(true)
+            .catch((error) => {
+                setErrorCheck(error)
             })
     }
 
     const isLoading = [isLoadingCheck, isLoadingSave, isLoadingSend, isLoadingDetail, isLoadingItemList, isLoadingAttributeProfile].some(
         (item) => item,
     )
-    const isError = [isErrorCheck, isErrorSave, isErrorDetail, isErrorSend, isErrorItemList, isErrorAttributeProfile].some((item) => item)
+    const isError = [errorCheck, isErrorSave, isErrorDetail, isErrorSend, isErrorItemList, isErrorAttributeProfile].some((item) => item)
+    const errorMessages = getErrorTranslateKeys([errorDetail, errorCheck, errorSend, errorSave].map((item) => item as { message: string }))
 
     const canEditDate =
         data &&
@@ -188,7 +195,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
                 canEditDate={canEditDate}
                 isError={isError}
                 isLoading={isLoading}
-                firstNotUsedCode={requestId}
+                errorMessages={errorMessages}
                 onCheckIfCodeListExist={handleCheckIfCodeListExist}
                 loadOptions={loadOptions}
                 onSave={onSave}
