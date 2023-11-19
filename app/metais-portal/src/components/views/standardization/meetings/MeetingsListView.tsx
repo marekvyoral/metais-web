@@ -12,7 +12,10 @@ import { CellContext, ColumnDef } from '@tanstack/react-table'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-
+export enum SortType {
+    ASC = 'ASC',
+    DESC = 'DESC',
+}
 interface IMeetingsListView {
     meetings: ApiMeetingRequestPreview[] | undefined
     isLoading: boolean
@@ -35,6 +38,8 @@ export interface MeetingsFilterData extends IFilterParams, IFilter {
     state?: string
     startDate?: string
     endDate?: string
+    sortBy?: string
+    ascending?: boolean
 }
 export enum MeetingFilter {
     MY_MEETINGS = 'my',
@@ -58,6 +63,8 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoad
         endDate: '',
         pageNumber: BASE_PAGE_NUMBER,
         pageSize: BASE_PAGE_SIZE,
+        sortBy: 'beginDate',
+        ascending: false,
     }
     const [meetingOption, setMeetingOption] = useState(defaultFilterValues.meetingOption)
     const [group, setGroup] = useState<string | null | undefined>(defaultFilterValues.group)
@@ -72,6 +79,8 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoad
             if (!filter.group) delete newParams.workGroupId
             if (!filter.startDate) delete newParams.fromDate
             if (!filter.endDate) delete newParams.toDate
+            if (!filter.sortBy) delete newParams.sortBy
+            if (!filter.ascending) delete newParams.ascending
             setMeetingOption(filter.meetingOption)
             setGroup(filter.group || null)
             setState(filter.state || null)
@@ -82,6 +91,8 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoad
                 ...(filter?.state && { state: filter?.state }),
                 ...(filter?.startDate && { fromDate: filter?.startDate }),
                 ...(filter?.endDate && { toDate: filter?.endDate }),
+                ...(filter?.sortBy && { sortBy: filter.sort?.[0]?.orderBy ?? 'bedinDate' }),
+                ...(filter?.ascending && { ascending: filter.sort?.[0]?.sortDirection === SortType.DESC ?? false }),
             }
         })
     }, [
@@ -92,6 +103,9 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoad
         filter?.state,
         filter?.pageNumber,
         filter?.pageSize,
+        filter?.sortBy,
+        filter?.ascending,
+        filter.sort,
         setMeetingsRequestParams,
     ])
 

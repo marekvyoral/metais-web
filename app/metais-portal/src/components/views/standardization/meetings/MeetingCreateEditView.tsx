@@ -1,12 +1,13 @@
 import { BreadCrumbs, Button, ButtonGroupRow, ButtonLink, GridCol, GridRow, HomeIcon, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import React, { useEffect, useRef, useState } from 'react'
-import { useFieldArray, useForm } from 'react-hook-form'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { QueryFeedback } from '@isdd/metais-common/index'
+import { ApiAttachment } from '@isdd/metais-common/api/generated/standards-swagger'
 
 import styles from './createEditView.module.scss'
 import { MeetingFormEnum, createMeetingSchema, editMeetingSchema } from './meetingSchema'
@@ -16,33 +17,31 @@ import { MeetingProposalsGroup } from './MeetingProposalsGroup'
 import { SelectMeetingGroupWithActors } from './SelectMeetingGroupWithActors'
 import { MeetingProposalsModal } from './MeetingProposalsModal'
 
+import {
+    mapProcessedExistingFilesToApiAttachment,
+    mapUploadedFilesToApiAttachment,
+} from '@/components/views/standardization/votes/voteEdit/functions/voteEditFunc'
+import {
+    ExistingFileData,
+    ExistingFilesHandler,
+    IExistingFilesHandlerRef,
+} from '@/components/views/standardization/votes/voteEdit/components/ExistingFilesHandler/ExistingFilesHandler'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { IMeetingEditViewParams } from '@/components/containers/standardization/meetings/MeetingEditContainer'
+import { LinksImport } from '@/components/LinksImport/LinksImport'
+import { FileUpload, FileUploadData, IFileUploadRef } from '@/components/FileUpload/FileUpload'
 
 export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubmit, goBack, infoData, isEdit, isLoading, isError }) => {
     const { t } = useTranslation()
     const formRef = useRef<HTMLFormElement>(null)
+    //files
+    const fileUploadRef = useRef<IFileUploadRef>(null)
+    const formDataRef = useRef<FieldValues>([])
+    const existingFilesProcessRef = useRef<IExistingFilesHandlerRef>(null)
+    const attachmentsDataRef = useRef<ApiAttachment[]>([])
 
-    // const fileUploadRef = useRef<IFileUploadRef>(null)
-
-    // const mapUploadedFilesToApiAttachment = (uploadData: FileUploadData[]): standards.ApiAttachment[] => {
-    //     const filteredFilesUploadData = uploadData.filter((ud) => !ud.hasError)
-    //     const apiAttachmentData = new Array<FileUploadData>(...filteredFilesUploadData).map((uploadedData) => {
-    //         return {
-    //             attachmentId: uploadedData.fileId,
-    //             attachmentName: uploadedData.fileName,
-    //             attachmentSize: uploadedData.fileSize,
-    //             attachmentType: uploadedData.fileType,
-    //             attachmentDescription: '',
-    //         }
-    //     })
-    //     return apiAttachmentData
-    // }
-    // const handleUploadSuccess = (data: FileUploadData[]) => {
-    //     const attachmentsData = mapUploadedFilesToApiAttachment(data)
-    //     //callApi(formDataRef.current, attachmentsData)
-    // }
     const [selectedProposals, setSelectedProposals] = useState(infoData?.standardRequestIds?.map((o) => o.toString()) ?? [])
+    // modals
     const [modalOpenProposal, setModalOpenProposal] = useState(false)
     const openModalProposal = () => {
         setModalOpenProposal(true)
@@ -57,15 +56,56 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
     const onCloseReason = () => {
         setModalOpenReason(false)
     }
+    // files
+    const handleUploadData = useCallback(() => {
+        fileUploadRef.current?.startUploading()
+    }, [])
+    const handleDeleteFiles = () => {
+        existingFilesProcessRef?.current?.startFilesProcessing()
+    }
+    const handleDeleteSuccess = () => {
+        onSubmit(
+            formDataRef.current,
+            attachmentsDataRef.current.concat(
+                mapProcessedExistingFilesToApiAttachment(existingFilesProcessRef.current?.getRemainingFileList() ?? []),
+            ),
+        )
+    }
+    // forms
     const {
         register,
         handleSubmit,
         control,
         setValue,
         watch,
+        unregister,
         formState: { errors },
     } = useForm({
         resolver: yupResolver(isEdit ? editMeetingSchema(t) : createMeetingSchema(t)),
+        defaultValues: {
+            [MeetingFormEnum.DESCRIPTION]: infoData?.description || '',
+            [MeetingFormEnum.MEETING_ACTORS]:
+                infoData?.meetingActors?.map((actor) => ({
+                    userId: actor.userId,
+                    groupId: actor.groupId,
+                    userRoleId: actor.userRoleId,
+                    userOrgId: actor.userOrgId,
+                })) || [],
+            [MeetingFormEnum.MEETING_EXTERNAL_ACTORS]:
+                infoData?.meetingExternalActors?.map((actor) => ({
+                    name: actor.name || '',
+                    email: actor.email || '',
+                    description: actor.description || '',
+                })) || [],
+            [MeetingFormEnum.GROUP]: infoData?.groups || [],
+            [MeetingFormEnum.NAME]: infoData?.name || '',
+            [MeetingFormEnum.DATE]: formatDateForDefaultValue(infoData?.beginDate ?? ''),
+            [MeetingFormEnum.TIME_START]: formatDateTimeForDefaultValue(infoData?.beginDate ?? '', 'HH:mm'),
+            [MeetingFormEnum.TIME_END]: formatDateTimeForDefaultValue(infoData?.endDate ?? '', 'HH:mm'),
+            [MeetingFormEnum.PLACE]: infoData?.place || '',
+            [MeetingFormEnum.MEETING_LINKS]: infoData?.meetingLinks || [],
+            // [MeetingFormEnum.MEETING_ATTACHMENTS]: infoData?.meetingAttachments || [],
+        },
     })
     const meetingDescription = watch(MeetingFormEnum.DESCRIPTION)
     const { fields, append, remove } = useFieldArray({
@@ -73,12 +113,33 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
         name: 'meetingExternalActors',
     })
 
+    const callSubmit = (data: FieldValues) => {
+        formDataRef.current = { ...data }
+        if (fileUploadRef.current?.getFilesToUpload()?.length ?? 0 > 0) {
+            handleUploadData()
+            return
+        }
+        if (existingFilesProcessRef.current?.hasDataToProcess()) {
+            handleDeleteFiles()
+            return
+        }
+
+        onSubmit(data, [])
+    }
     const submit = () => {
-        handleSubmit((d) => {
-            onSubmit(d)
+        handleSubmit((data) => {
+            callSubmit(data)
         })()
     }
-
+    const handleUploadSuccess = (data: FileUploadData[]) => {
+        const attachmentsData = mapUploadedFilesToApiAttachment(data)
+        if (existingFilesProcessRef.current?.hasDataToProcess()) {
+            attachmentsDataRef.current = attachmentsData
+            handleDeleteFiles()
+        } else {
+            onSubmit(formDataRef.current, attachmentsData)
+        }
+    }
     useEffect(() => {
         setValue(MeetingFormEnum.DESCRIPTION, infoData?.description || '')
         setValue(
@@ -99,8 +160,13 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
             })) || [],
         )
         setValue(MeetingFormEnum.GROUP, infoData?.groups || [])
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        setValue(MeetingFormEnum.NAME, infoData?.name || '')
+        setValue(MeetingFormEnum.DATE, formatDateForDefaultValue(infoData?.beginDate ?? ''))
+        setValue(MeetingFormEnum.TIME_START, formatDateTimeForDefaultValue(infoData?.beginDate ?? '', 'HH:mm'))
+        setValue(MeetingFormEnum.TIME_END, formatDateTimeForDefaultValue(infoData?.endDate ?? '', 'HH:mm'))
+        setValue(MeetingFormEnum.PLACE, infoData?.place || '')
+        setSelectedProposals(infoData?.standardRequestIds?.map((o) => o.toString()) ?? [])
+    }, [infoData, setValue])
     return (
         <>
             {!isEdit && (
@@ -137,7 +203,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
             <MainContentWrapper>
                 <TextHeading size="XL">{isEdit ? `${t('meetings.editMeeting')} - ${infoData?.name}` : t('meetings.addNewMeeting')}</TextHeading>
                 <QueryFeedback loading={isLoading} error={isError} withChildren>
-                    <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
+                    <form onSubmit={handleSubmit(callSubmit)} ref={formRef}>
                         <TextHeading size="L">{t('meetings.form.heading.dateTime')}</TextHeading>
                         <Input
                             label={`${t('meetings.form.name')} (${t('meetings.mandatory')}):`}
@@ -230,15 +296,29 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                         <TextHeading size="L">{t('meetings.form.heading.documents')}</TextHeading>
                         <TextHeading size="M">{t('meetings.form.heading.documentsDetail')}</TextHeading>
 
-                        {/* <LinksImport defaultValues={infoData?.meetingLinks} register={register} errors={formState.errors} /> */}
+                        <LinksImport defaultValues={infoData?.meetingLinks} register={register} unregister={unregister} errors={errors} />
                         <TextHeading size="M">{t('meetings.form.heading.documentsExport')}</TextHeading>
-                        {/* <FileUpload
-                        ref={fileUploadRef}
-                        allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
-                        multiple
-                        isUsingUuidInFilePath
-                        onUploadSuccess={handleUploadSuccess}
-                    /> */}
+                        <FileUpload
+                            ref={fileUploadRef}
+                            allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
+                            multiple
+                            isUsingUuidInFilePath
+                            onUploadSuccess={handleUploadSuccess}
+                        />
+                        <ExistingFilesHandler
+                            existingFiles={
+                                infoData?.meetingAttachments?.map<ExistingFileData>((attachment) => {
+                                    return {
+                                        fileId: attachment.attachmentId,
+                                        fileName: attachment.attachmentName,
+                                        fileSize: attachment.attachmentSize,
+                                        fileType: attachment.attachmentType,
+                                    }
+                                }) ?? []
+                            }
+                            ref={existingFilesProcessRef}
+                            onFilesProcessingSuccess={handleDeleteSuccess}
+                        />
                         {isEdit ? (
                             <>
                                 <ButtonGroupRow>
