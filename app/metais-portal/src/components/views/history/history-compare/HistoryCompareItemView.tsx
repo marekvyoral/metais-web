@@ -103,16 +103,12 @@ export const HistoryCompareItemView: React.FC<IHistoryCompareItemViewProps> = ({
                     </TextBody>
                 )
             }
-            value={
-                <TextBody size="S" className={classNames(styles.textRow)}>
-                    {valueFirst} &nbsp;
-                </TextBody>
-            }
+            value={<span className={classNames(styles.textRow, 'govuk-body-s')}>{valueFirst} &nbsp;</span>}
             secColValue={
                 !isSimple && (
-                    <TextBody size="S" className={classNames(styles.textRow)}>
-                        {withoutCompare ? valueSec : <div dangerouslySetInnerHTML={{ __html: makeDiffHtml() }} />}
-                    </TextBody>
+                    <span className={classNames(styles.textRow, 'govuk-body-s')}>
+                        {withoutCompare ? valueSec : <span dangerouslySetInnerHTML={{ __html: makeDiffHtml() }} />}
+                    </span>
                 )
             }
         />

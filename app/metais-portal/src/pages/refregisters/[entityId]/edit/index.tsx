@@ -11,7 +11,7 @@ import { RefRegisterCreateView } from '@/components/views/refregisters/createVie
 import { RefRegisterContainer } from '@/components/containers/refregisters/RefRegisterContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-const Edit = () => {
+const RefRegistersEdit = () => {
     const [urlParams] = useSearchParams()
     const isContact = urlParams.get(EDIT_CONTACT) === 'true' ? true : false
 
@@ -83,4 +83,4 @@ const Edit = () => {
     )
 }
 
-export default Edit
+export default RefRegistersEdit

@@ -3,6 +3,7 @@ import { AbilityBuilder, createMongoAbility } from '@casl/ability'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { canCreateCiForType, canUserCreateCi } from '@isdd/metais-common/permissions/ci'
+import { STANDARDIZATION_DRAFTS_LIST } from '@isdd/metais-common/constants'
 
 export enum Actions {
     READ = 'read',
@@ -24,7 +25,7 @@ export const RR_MANAGER = 'RR_MANAGER'
 export const RR_ADMIN_MFSR = 'RR_ADMIN_MFSR'
 
 export const CANNOT_READ_ENTITY = ['ulohy', 'notifications']
-export const CAN_CREATE_WITHOUT_LOGIN = ['draftsList']
+export const CAN_CREATE_WITHOUT_LOGIN = [STANDARDIZATION_DRAFTS_LIST]
 
 const defineAbilityForUser = (roles: string[] = [], entityName: string, create?: boolean) => {
     const { can, build } = new AbilityBuilder(createMongoAbility)
@@ -46,7 +47,7 @@ const defineAbilityForUser = (roles: string[] = [], entityName: string, create?:
         can(Actions.BULK_ACTIONS, entityName)
     }
 
-    if (entityName === 'draftsList') can(Actions.CREATE, 'ci')
+    if (entityName === STANDARDIZATION_DRAFTS_LIST) can(Actions.CREATE, 'ci')
 
     return build()
 }

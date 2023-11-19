@@ -154,7 +154,7 @@ export const HTML_TYPE = 'HTML'
 export const MUK = 'muk'
 
 export const P_REALIZUJE_AKT = 'P_realizuje_AKT'
-export const ACTIVITY = 'Aktivita'
+export const ENTITY_ACTIVITY = 'Aktivita'
 
 export const DESCRIPTION = 'Popis'
 
@@ -183,6 +183,7 @@ export const PO = 'PO'
 export const ENTITY_KS = 'KS'
 export const ENTITY_AS = 'AS'
 export const ENTITY_MIGRATION = 'Migracia'
+export const STANDARDIZATION_DRAFTS_LIST = 'draftsList'
 
 export const MAX_TITLE_LENGTH = 100
 export const INVALIDATED = 'INVALIDATED'

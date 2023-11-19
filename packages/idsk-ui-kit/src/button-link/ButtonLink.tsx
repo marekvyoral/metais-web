@@ -12,9 +12,10 @@ interface ButtonLinkProps {
     icon?: string
     disabled?: boolean
     withoutFocus?: boolean
+    hidden?: boolean
 }
 
-export const ButtonLink: React.FC<ButtonLinkProps> = ({ onClick, label, className, icon, type, disabled, withoutFocus }) => {
+export const ButtonLink: React.FC<ButtonLinkProps> = ({ onClick, label, className, icon, type, disabled, withoutFocus, hidden = false }) => {
     const { t } = useTranslation()
     const ref = useRef<HTMLButtonElement>(null)
 
@@ -23,15 +24,19 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({ onClick, label, classNam
     }, [withoutFocus])
 
     return (
-        <button
-            className={classNames(styles.buttonLink, className, !!disabled && styles.disabled)}
-            onClick={(e) => (onClick ? onClick(e) : null)}
-            type={type}
-            disabled={disabled}
-            ref={ref}
-        >
-            {icon && <img className={styles.iconInButtonLink} src={icon} />}
-            {label ?? t('errors.fixLink')}
-        </button>
+        <>
+            {!hidden && (
+                <button
+                    className={classNames(styles.buttonLink, className, !!disabled && styles.disabled)}
+                    onClick={(e) => (onClick ? onClick(e) : null)}
+                    type={type}
+                    disabled={disabled}
+                    ref={ref}
+                >
+                    {icon && <img className={styles.iconInButtonLink} src={icon} />}
+                    {label ?? t('errors.fixLink')}
+                </button>
+            )}
+        </>
     )
 }

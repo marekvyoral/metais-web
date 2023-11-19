@@ -22,6 +22,7 @@ interface ConfigurationItemHistoryListTable {
     additionalColumns?: Array<ColumnDef<TableCols>>
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
+    basePath?: string
 }
 
 export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistoryListTable> = ({
@@ -31,6 +32,7 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
     isError,
     pagination,
     handleFilterChange,
+    basePath,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -54,13 +56,15 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
         [selectedColumns],
     )
 
+    const path = basePath ? basePath : `/ci/${entityName}`
+
     const handleCompareHistory = useCallback(() => {
         if (selectedColumns.length === 1) {
-            navigate(`/ci/${entityName}/${entityId}/history/${selectedColumns[0]}`, { state: { from: location } })
+            navigate(`${path}/${entityId}/history/${selectedColumns[0]}`, { state: { from: location } })
         } else {
-            navigate(`/ci/${entityName}/${entityId}/history/${selectedColumns[0]}/${selectedColumns[1]}`, { state: { from: location } })
+            navigate(`${path}/${entityId}/history/${selectedColumns[0]}/${selectedColumns[1]}`, { state: { from: location } })
         }
-    }, [entityId, entityName, location, navigate, selectedColumns])
+    }, [entityId, location, navigate, selectedColumns, path])
 
     const columns: Array<ColumnDef<TableCols>> = [
         {

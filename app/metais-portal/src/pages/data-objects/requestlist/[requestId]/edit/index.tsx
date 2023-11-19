@@ -1,7 +1,7 @@
 import { EditRequestContainer } from '@/components/containers/EditRequestContainer'
 import { CreateRequestView } from '@/components/views/requestLists/CreateRequestView'
 
-const EditPage = () => {
+const RequestListEditPage = () => {
     return (
         <EditRequestContainer
             View={(props) => (
@@ -27,4 +27,4 @@ const EditPage = () => {
     )
 }
 
-export default EditPage
+export default RequestListEditPage

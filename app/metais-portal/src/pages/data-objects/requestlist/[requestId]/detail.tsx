@@ -2,7 +2,7 @@
 import { DetailRequestContainer } from '@/components/containers/DetailRequestContainer'
 import { DetailRequestView } from '@/components/views/requestLists/DetailRequestView'
 
-const DetailPage = () => {
+const RequestListDetailPage = () => {
     return (
         <DetailRequestContainer
             View={(props) => (
@@ -22,4 +22,4 @@ const DetailPage = () => {
     )
 }
 
-export default DetailPage
+export default RequestListDetailPage

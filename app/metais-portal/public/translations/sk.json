@@ -1334,7 +1334,8 @@
                 "PUBLISHED": "Schválený a publikovaný",
                 "IN_CONSTRUCTION": "rozpracovaný/nepovinný",
                 "READY_TO_APPROVAL": "Návrh na zaradenie do zoznamu referenčných registrov",
-                "REJECTED": "Zamietnutý na zaradenie do zoznamu referenčných registrov"
+                "REJECTED": "Zamietnutý na zaradenie do zoznamu referenčných registrov",
+                "FETCHING": ""
             },
             "muk": {
                 "heading": "MUK",
@@ -1880,16 +1881,7 @@
         "heading": "Zoznam návrhov predložených prostredníctvom MetaIS"
     },
     "howto": {
-        "codelists": "Číselníky",
-        "refRegisters": "Referenčné registre",
-        "monitoring": "Zostavy a monitoring",
-        "guides": "Postupy a návody",
-        "dataObjects": "Dátové objekty",
-        "standardization": "Štandardizácia",
-        "programProjectsActivities": "Programy, projekty a aktivity",
-        "kris": "Ciele, princípy, aktivity a KRIT",
-        "po": "Orgány riadenia",
-        "egov": "e-Government komponenty"
+        "guides": "Postupy a návody"
     },
     "relationDetail": {
         "heading": "Detail vzťahu: {{item}}",

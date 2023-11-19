@@ -1,6 +1,7 @@
 import { ButtonGroupRow, ButtonPopup, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { ApiError, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import styles from '@isdd/metais-common/components/entity-header/ciEntityHeader.module.scss'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
@@ -9,11 +10,10 @@ import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useB
 import { ChangeOwnerBulkModal, InvalidateBulkModal, MutationFeedback, ReInvalidateBulkModal } from '@isdd/metais-common/index'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 import classNames from 'classnames'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
-    entityName: string
     entityId: string
     entityItemName: string
     entityData?: ConfigurationItemUi
@@ -26,7 +26,7 @@ interface Props {
     editButton: React.ReactNode
 }
 
-export const CiEntityIdHeader: React.FC<Props> = ({
+export const MigrationEntityIdHeader: React.FC<Props> = ({
     entityData,
     entityId,
     entityItemName,
@@ -55,6 +55,14 @@ export const CiEntityIdHeader: React.FC<Props> = ({
     }
 
     const entityListData = entityData ? [entityData] : []
+
+    const migrationState = useMemo(() => {
+        const currentState = entityData?.attributes?.[ATTRIBUTE_NAME.IKT_Profil_Schvalenie_stav_migracie]
+        return currentState
+    }, [entityData])
+
+    const canSendForApproval = migrationState === 'c_stav_mig.1' || migrationState === 'c_stav_mig.3'
+    const canMigrationAction = migrationState === 'c_stav_mig.2'
 
     return (
         <>
@@ -114,13 +122,21 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                                     <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
                                         <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
                                     </Can>
+                                    {canSendForApproval && <ButtonLink label={t('ciType.sendForApproval')} />}
+
+                                    {canMigrationAction && (
+                                        <>
+                                            <ButtonLink label={t('ciType.approve')} />
+                                            <ButtonLink label={t('ciType.return')} />
+                                            <ButtonLink label={t('ciType.reject')} />
+                                        </>
+                                    )}
                                 </div>
                             )
                         }}
                     />
                 </ButtonGroupRow>
                 {isBulkLoading && <LoadingIndicator fullscreen />}
-
                 <InvalidateBulkModal
                     items={entityListData}
                     open={showInvalidate}

@@ -5,7 +5,7 @@ import { CodeListDetailContainer } from '@/components/containers/CodeListDetailC
 import { CodeListDetailWrapper } from '@/components/views/codeLists/CodeListDetailWrapper'
 import { CodeListPermissionsWrapper } from '@/components/permissions/CodeListPermissionsWrapper'
 
-const NotificationsDetailPage = () => {
+const CodeListDetailPage = () => {
     const { t } = useTranslation()
     const { id } = useParams()
 
@@ -39,4 +39,4 @@ const NotificationsDetailPage = () => {
     )
 }
 
-export default NotificationsDetailPage
+export default CodeListDetailPage
