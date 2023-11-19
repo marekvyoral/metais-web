@@ -184,6 +184,7 @@ export const ENTITY_KS = 'KS'
 export const ENTITY_AS = 'AS'
 export const ENTITY_MIGRATION = 'Migracia'
 export const STANDARDIZATION_DRAFTS_LIST = 'draftsList'
+export const REFERENCE_REGISTER = 'ReferenceRegister'
 
 export const MAX_TITLE_LENGTH = 100
 export const INVALIDATED = 'INVALIDATED'

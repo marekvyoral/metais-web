@@ -59,7 +59,6 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
     const isLoading = meetingDetailLoading || updateMeetingLoading
     const isError = meetingDetailError || updateMeetingError
     const onSubmit = (formData: FieldValues, attachments: ApiAttachment[]) => {
-        // console.log('dadt', formData)
         updateMeeting({
             data: {
                 id: infoData?.id,
@@ -68,7 +67,6 @@ export const MeetingEditContainer: React.FC<IMeetingEditContainer> = ({ id }) =>
                 beginDate: `${formData[MeetingFormEnum.DATE]}T${formData[MeetingFormEnum.TIME_START]}:00.000Z`,
                 endDate: `${formData[MeetingFormEnum.DATE]}T${formData[MeetingFormEnum.TIME_END]}:00.000Z`,
                 place: formData[MeetingFormEnum.PLACE],
-                //groups: formData[MeetingFormEnum.GROUP],
                 meetingActors: formData[MeetingFormEnum.MEETING_ACTORS],
                 standardRequestIds: formData[MeetingFormEnum.MEETING_PROPOSAL],
                 descriptionOfChange: formData[MeetingFormEnum.MEETING_CHANGE_REASON],

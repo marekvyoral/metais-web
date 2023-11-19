@@ -5,6 +5,7 @@ import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { EDIT_CONTACT } from '@isdd/metais-common/src/navigation/searchKeys'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { REFERENCE_REGISTER } from '@isdd/metais-common/constants'
 
 import { CreateRefRegisterContainer } from '@/components/containers/refregisters/CreateRefRegisterContainer'
 import { RefRegisterCreateView } from '@/components/views/refregisters/createView/RefRegisterCreateView'
@@ -16,7 +17,7 @@ const RefRegistersEdit = () => {
     const isContact = urlParams.get(EDIT_CONTACT) === 'true' ? true : false
 
     const { entityId } = useParams()
-    const entityName = 'ReferenceRegister'
+    const entityName = REFERENCE_REGISTER
     const { t } = useTranslation()
 
     return (
