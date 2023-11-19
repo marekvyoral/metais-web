@@ -1,7 +1,7 @@
 import { CreateRequestContainer } from '@/components/containers/CreateRequestContainer'
 import { CreateRequestView } from '@/components/views/requestLists/CreateRequestView'
 
-const CreatePage = () => {
+const RequestListCreatePage = () => {
     return (
         <CreateRequestContainer
             View={(props) => (
@@ -24,4 +24,4 @@ const CreatePage = () => {
     )
 }
 
-export default CreatePage
+export default RequestListCreatePage

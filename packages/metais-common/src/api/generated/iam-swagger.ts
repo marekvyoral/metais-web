@@ -3169,35 +3169,45 @@ export const useGetIdentitiesByLoginsBulkHook = () => {
     }
 }
 
-export const useGetIdentitiesByLoginsBulkMutationOptions = <TError = OperationResult, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>, TError, { data: string[] }, TContext>
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>, TError, { data: string[] }, TContext> => {
-    const { mutation: mutationOptions } = options ?? {}
+export const getGetIdentitiesByLoginsBulkQueryKey = (getIdentitiesByLoginsBulkBody: string[]) =>
+    [`/identities/getIdentitiesByLoginsBulk/`, getIdentitiesByLoginsBulkBody] as const
+
+export const useGetIdentitiesByLoginsBulkQueryOptions = <
+    TData = Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>,
+    TError = ApiError,
+>(
+    getIdentitiesByLoginsBulkBody: string[],
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>, TError, TData> },
+): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>, TError, TData> & { queryKey: QueryKey } => {
+    const { query: queryOptions } = options ?? {}
+
+    const queryKey = queryOptions?.queryKey ?? getGetIdentitiesByLoginsBulkQueryKey(getIdentitiesByLoginsBulkBody)
 
     const getIdentitiesByLoginsBulk = useGetIdentitiesByLoginsBulkHook()
 
-    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>, { data: string[] }> = (props) => {
-        const { data } = props ?? {}
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>> = () =>
+        getIdentitiesByLoginsBulk(getIdentitiesByLoginsBulkBody)
 
-        return getIdentitiesByLoginsBulk(data)
-    }
-
-    return { mutationFn, ...mutationOptions }
+    return { queryKey, queryFn, ...queryOptions }
 }
 
-export type GetIdentitiesByLoginsBulkMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>>
-export type GetIdentitiesByLoginsBulkMutationBody = string[]
-export type GetIdentitiesByLoginsBulkMutationError = OperationResult
+export type GetIdentitiesByLoginsBulkQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>>
+export type GetIdentitiesByLoginsBulkQueryError = ApiError
 
 /**
  * @summary getIdentitiesByLoginsBulk
  */
-export const useGetIdentitiesByLoginsBulk = <TError = OperationResult, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>, TError, { data: string[] }, TContext>
-}) => {
-    const mutationOptions = useGetIdentitiesByLoginsBulkMutationOptions(options)
+export const useGetIdentitiesByLoginsBulk = <TData = Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>, TError = ApiError>(
+    getIdentitiesByLoginsBulkBody: string[],
+    options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetIdentitiesByLoginsBulkHook>>>, TError, TData> },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+    const queryOptions = useGetIdentitiesByLoginsBulkQueryOptions(getIdentitiesByLoginsBulkBody, options)
 
-    return useMutation(mutationOptions)
+    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+    query.queryKey = queryOptions.queryKey
+
+    return query
 }
 
 /**

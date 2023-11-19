@@ -89,14 +89,17 @@ export const FileHistoryView: React.FC<IFileHistoryViewProps> = ({ data, item, h
                 }
             },
         },
-        {
-            header: t('fileHistory.lastModifiedBy'),
-            id: 'lastModifiedBy',
-            accessorKey: 'lastModifiedBy',
-            cell: (cellItem) => namesData?.find((namesItem) => namesItem.login == (cellItem.getValue() as string))?.fullName,
-        },
+        ...(isUserLogged
+            ? [
+                  {
+                      header: t('fileHistory.lastModifiedBy'),
+                      id: 'lastModifiedBy',
+                      accessorKey: 'lastModifiedBy',
+                      cell: (cellItem) => namesData?.find((namesItem) => namesItem.login == (cellItem.getValue() as string))?.fullName,
+                  } as ColumnDef<MetaVersion>,
+              ]
+            : []),
     ]
-    const filteredColumns = isUserLogged ? columns : columns.filter((column) => column.id !== 'lastModifiedBy')
     return (
         <div>
             {(isLoading || isFileLoading) && <LoadingIndicator label={t('form.waitSending')} />}
@@ -105,7 +108,7 @@ export const FileHistoryView: React.FC<IFileHistoryViewProps> = ({ data, item, h
                 <TextBody className={styles.marginBottom0}>{item.attributes?.Gen_Profil_nazov}</TextBody>
                 <PageSizeSelect id="pageSizeSelect" className={styles.selectGroup} handlePagingSelect={handlePagingSelect} />
             </div>
-            <Table<MetaVersion> data={data} columns={filteredColumns} />
+            <Table<MetaVersion> data={data} columns={columns} />
         </div>
     )
 }

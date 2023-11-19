@@ -1,10 +1,9 @@
-import React from 'react'
-import { Outlet, useLocation, useParams, Location } from 'react-router-dom'
+import { AbilityTuple, MongoAbility, MongoQuery } from '@casl/ability'
 import { Tab } from '@isdd/idsk-ui-kit/index'
+import { ciInformationTab } from '@isdd/metais-common/constants'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { TFunction } from 'i18next'
-import { AbilityTuple, MongoAbility, MongoQuery } from '@casl/ability'
-import { ENTITY_KRIS, ciInformationTab } from '@isdd/metais-common/constants'
+import { Location, Outlet, useLocation, useParams } from 'react-router-dom'
 
 type GetDefaultCiEntityTabListProps = {
     t: TFunction
@@ -27,16 +26,6 @@ export const getDefaultCiEntityTabList = ({ entityName, entityId, t, userAbility
             title: t('ciType.documents'),
             content: <Outlet />,
         },
-        ...(entityName === ENTITY_KRIS
-            ? [
-                  {
-                      id: 'goals',
-                      path: `/ci/${entityName}/${entityId}/goals`,
-                      title: t('ciType.goals'),
-                      content: <Outlet />,
-                  },
-              ]
-            : []),
         {
             id: 'relationships',
             path: `/ci/${entityName}/${entityId}/relationships`,

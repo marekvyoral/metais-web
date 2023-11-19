@@ -299,6 +299,11 @@ export default defineConfig({
                             useQuery: true,
                         },
                     },
+                    getIdentitiesByLoginsBulk: {
+                        query: {
+                            useQuery: true,
+                        },
+                    },
                 },
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useIAmSwaggerClient.ts',

@@ -13,7 +13,6 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
-    entityName: string
     entityId: string
     entityItemName: string
     entityData?: ConfigurationItemUi
@@ -24,9 +23,10 @@ interface Props {
     ) => Promise<QueryObserverResult<ConfigurationItemUi, ApiError>>
     isRelation?: boolean
     editButton: React.ReactNode
+    tooltipLabel: string
 }
 
-export const CiEntityIdHeader: React.FC<Props> = ({
+export const EndOrApplicationServiceEntityIdHeader: React.FC<Props> = ({
     entityData,
     entityId,
     entityItemName,
@@ -35,6 +35,7 @@ export const CiEntityIdHeader: React.FC<Props> = ({
     refetchCi,
     isRelation,
     editButton,
+    tooltipLabel,
 }) => {
     const { t } = useTranslation()
 
@@ -114,13 +115,23 @@ export const CiEntityIdHeader: React.FC<Props> = ({
                                     <Can I={Actions.CHANGE_OWNER} a={`ci.${entityId}`}>
                                         <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
                                     </Can>
+
+                                    <Tooltip
+                                        key={'cloneCI'}
+                                        descriptionElement={errorMessage}
+                                        position={'top center'}
+                                        tooltipContent={() => (
+                                            <div>
+                                                <ButtonLink label={tooltipLabel} />
+                                            </div>
+                                        )}
+                                    />
                                 </div>
                             )
                         }}
                     />
                 </ButtonGroupRow>
                 {isBulkLoading && <LoadingIndicator fullscreen />}
-
                 <InvalidateBulkModal
                     items={entityListData}
                     open={showInvalidate}

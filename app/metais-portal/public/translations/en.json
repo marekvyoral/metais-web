@@ -1285,7 +1285,8 @@
                 "PUBLISHED": "Approved and published",
                 "IN_CONSTRUCTION": "in-progress/optional",
                 "READY_TO_APPROVAL": "Request for registration in the list of reference registers",
-                "REJECTED": "Registration in the list of reference registers rejected"
+                "REJECTED": "Registration in the list of reference registers rejected",
+                "FETCHING": ""
             },
             "muk": {
                 "heading": "MUK",
@@ -1865,16 +1866,7 @@
         "heading": "Drafts list"
     },
     "howto": {
-        "codelists": "Codelists",
-        "refRegisters": "Reference registers",
-        "monitoring": "Reports and monitoring",
-        "guides": "Procedures and guides",
-        "dataObjects": "Data objects",
-        "standardization": "Standardization",
-        "programProjectsActivities": "Programs, projects and activities",
-        "kris": "Goals, principles, activites and KRIT",
-        "po": "Public authorities",
-        "egov": "e-Government components"
+        "guides": "Procedures and guides"
     },
     "relationDetail": {
         "heading": "Detail of relationship: {{item}}",

@@ -10,5 +10,5 @@ type SafeHtmlProps = {
 export const SafeHtmlComponent: React.FC<SafeHtmlProps> = ({ dirtyHtml }) => {
     const sanitizedHtml = sanitizeHtml(dirtyHtml)
 
-    return <div className={styles.fontFamily} dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
+    return <span className={styles.fontFamily} dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
 }

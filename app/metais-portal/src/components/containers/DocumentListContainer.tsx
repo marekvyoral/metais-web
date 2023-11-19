@@ -2,7 +2,7 @@ import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ConfigurationItemUi, NeighbourPairUi, useReadCiNeighbours, useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
-import { useGetIdentitiesByLoginsBulkHook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useGetIdentitiesByLoginsBulk } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import uniq from 'lodash/uniq'
 import React, { useEffect, useState } from 'react'
@@ -68,35 +68,31 @@ export const DocumentsListContainer: React.FC<IDocumentsListContainer> = ({ conf
         refetch,
     } = useReadCiNeighbours(configurationItemId ?? '', mapFilterToNeighborsApi(filter, defaultRequestApi), {})
 
-    const getNames = useGetIdentitiesByLoginsBulkHook()
     const {
         state: { user },
     } = useAuth()
-    const [namesData, setNamesData] = useState<{ login: string; fullName: string }[]>()
 
-    const loadNames = async (names: string[]) => {
-        const data = await getNames(names)
-        setNamesData(
-            data.map((item) => {
-                return { login: item.input ?? '', fullName: (item.identity?.firstName ?? '') + ' ' + (item.identity?.lastName ?? '') }
-            }),
-        )
-    }
+    const { data: userIdentitiesData } = useGetIdentitiesByLoginsBulk(
+        uniq([
+            ...(documentCiData?.fromNodes?.neighbourPairs?.map((item) => item.configurationItem?.metaAttributes?.createdBy ?? '') ?? []),
+            ...(documentCiData?.fromNodes?.neighbourPairs?.map((item) => item.configurationItem?.metaAttributes?.lastModifiedBy ?? '') ?? []),
+        ]),
+        {
+            query: {
+                enabled: documentCiData !== undefined && user !== null,
+            },
+        },
+    )
+
+    const namesData = userIdentitiesData?.map((item) => {
+        return { login: item.input ?? '', fullName: (item.identity?.firstName ?? '') + ' ' + (item.identity?.lastName ?? '') }
+    })
+
     useEffect(() => {
         if (defaultRequestApi.neighboursFilter.fullTextSearch !== filter.fullTextSearch) {
             setDefaultRequestApi({ neighboursFilter: { ...defaultRequestApi.neighboursFilter, fullTextSearch: filter.fullTextSearch } })
         }
     }, [defaultRequestApi.neighboursFilter, filter])
-
-    useEffect(() => {
-        if (documentCiData !== undefined && user !== null && namesData === undefined) {
-            const createdBy = documentCiData.fromNodes?.neighbourPairs?.map((item) => item.configurationItem?.metaAttributes?.createdBy ?? '') ?? []
-            const modifiedBy =
-                documentCiData.fromNodes?.neighbourPairs?.map((item) => item.configurationItem?.metaAttributes?.lastModifiedBy ?? '') ?? []
-            const names = uniq([...createdBy, ...modifiedBy])
-            loadNames(names)
-        }
-    })
 
     const pagination = mapNeighboursSetSourceToPagination(filter, documentCiData)
     const [selectedItems, setSelectedItems] = useState<{ [key: number]: TableCols[] }>([])
