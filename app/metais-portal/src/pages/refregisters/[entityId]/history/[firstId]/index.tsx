@@ -4,7 +4,7 @@ import { BreadCrumbs } from '@isdd/idsk-ui-kit/bread-crumbs/BreadCrumbs'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useTranslation } from 'react-i18next'
-import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
+import { CI_ITEM_QUERY_KEY, REFERENCE_REGISTER } from '@isdd/metais-common/constants'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 import { HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
@@ -20,7 +20,7 @@ const RefRegistersCompareSinglePage: React.FC = () => {
     const { firstId } = useParams()
 
     const { entityId } = useGetEntityParamsFromUrl()
-    const entityName = 'ReferenceRegister'
+    const entityName = REFERENCE_REGISTER
 
     const { data: ciItemData } = useReadConfigurationItem(entityId ?? '', {
         query: {

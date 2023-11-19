@@ -104,7 +104,6 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
             [MeetingFormEnum.TIME_END]: formatDateTimeForDefaultValue(infoData?.endDate ?? '', 'HH:mm'),
             [MeetingFormEnum.PLACE]: infoData?.place || '',
             [MeetingFormEnum.MEETING_LINKS]: infoData?.meetingLinks || [],
-            // [MeetingFormEnum.MEETING_ATTACHMENTS]: infoData?.meetingAttachments || [],
         },
     })
     const meetingDescription = watch(MeetingFormEnum.DESCRIPTION)

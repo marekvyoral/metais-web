@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { REFERENCE_REGISTER } from '@isdd/metais-common/constants'
 
 import { CreateRefRegisterContainer } from '@/components/containers/refregisters/CreateRefRegisterContainer'
 import { RefRegisterContainer } from '@/components/containers/refregisters/RefRegisterContainer'
@@ -10,7 +11,7 @@ import { RefRegisterCreateView } from '@/components/views/refregisters/createVie
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const RefRegistersCreate = () => {
-    const entityName = 'ReferenceRegister'
+    const entityName = REFERENCE_REGISTER
     const { t } = useTranslation()
 
     return (

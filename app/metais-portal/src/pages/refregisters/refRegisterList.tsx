@@ -1,6 +1,6 @@
 import { ActionsOverTable, CreateEntityButton, Reference_Registers, distinctAttributesMetaAttributes } from '@isdd/metais-common'
 import { getRefRegsDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { DEFAULT_PAGESIZE_OPTIONS, REFERENCE_REGISTER } from '@isdd/metais-common/constants'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
@@ -18,7 +18,7 @@ const ReferenceRegisters = () => {
     const defaultFilterValues: RefRegisterFilter = { isvsUuid: '', managerUuid: '', registratorUuid: '', state: undefined, muk: undefined }
     const navigate = useNavigate()
     const location = useLocation()
-    const entityName = 'ReferenceRegister'
+    const entityName = REFERENCE_REGISTER
     return (
         <>
             <BreadCrumbs

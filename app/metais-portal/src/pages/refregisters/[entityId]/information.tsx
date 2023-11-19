@@ -1,12 +1,13 @@
 import { useParams } from 'react-router-dom'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { REFERENCE_REGISTER } from '@isdd/metais-common/constants'
 
 import { RefRegisterContainer } from '@/components/containers/refregisters/RefRegisterContainer'
 import { RefRegisterView } from '@/components/views/refregisters/RefRegisterView'
 
 const RefRegistersInformation = () => {
     const { entityId } = useParams()
-    const entityName = 'ReferenceRegister'
+    const entityName = REFERENCE_REGISTER
 
     return (
         <>
