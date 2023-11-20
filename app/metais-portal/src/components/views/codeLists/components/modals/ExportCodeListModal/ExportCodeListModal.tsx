@@ -7,6 +7,7 @@ import { ExportIcon } from '@isdd/metais-common/assets/images'
 import { LoadingIndicator } from '@isdd/idsk-ui-kit/loading-indicator/LoadingIndicator'
 import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 import { useDownloadInternalCodelistHook, useDownloadInternalCodelistRequestHook } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 
 import styles from './exportCodeListModal.module.scss'
 
@@ -30,6 +31,7 @@ const generateExportFileName = (code: string, extension: CodeListExportExtension
 export const ExportCodeListModal: React.FC<ExportCodeListModalProps> = ({ code, isOpen, onClose, isRequest }) => {
     const { t } = useTranslation()
     const [isLoading, setLoading] = useState<boolean>(false)
+    const [isError, setIsError] = useState<boolean>(false)
 
     const downloadFunction = useDownloadInternalCodelistHook()
     const downloadRequestFunction = useDownloadInternalCodelistRequestHook()
@@ -37,16 +39,17 @@ export const ExportCodeListModal: React.FC<ExportCodeListModalProps> = ({ code, 
     if (!code) return <></>
 
     const exportAndDownloadBlob = async (extension: CodeListExportExtensionEnum) => {
-        const blobData = !isRequest ? await downloadFunction(code) : await downloadRequestFunction(code)
-
-        downloadBlobAsFile(new Blob([blobData]), generateExportFileName(code, extension), false)
-        setLoading(false)
-    }
-
-    const startExport = (extension: CodeListExportExtensionEnum) => {
         setLoading(true)
-        exportAndDownloadBlob(extension)
-        onClose()
+        setIsError(false)
+        try {
+            const blobData = !isRequest ? await downloadFunction(code) : await downloadRequestFunction(code)
+            downloadBlobAsFile(new Blob([blobData]), generateExportFileName(code, extension), false)
+            onClose()
+        } catch (error) {
+            setIsError(true)
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -61,24 +64,25 @@ export const ExportCodeListModal: React.FC<ExportCodeListModalProps> = ({ code, 
                     <TextHeading size={'L'} className={styles.heading}>
                         {t('codeListDetail.modal.title.export')}
                     </TextHeading>
+                    {isError && <MutationFeedback success={false} error={t('feedback.mutationErrorMessage')} />}
                     <div className={styles.buttonGroup}>
                         <Button
                             label={t('codeListDetail.modal.button.xml')}
                             variant="secondary"
                             className={styles.buttons}
-                            onClick={() => startExport(CodeListExportExtensionEnum.XML)}
+                            onClick={() => exportAndDownloadBlob(CodeListExportExtensionEnum.XML)}
                         />
                         <Button
                             label={t('codeListDetail.modal.button.csv')}
                             variant="secondary"
                             className={styles.buttons}
-                            onClick={() => startExport(CodeListExportExtensionEnum.CSV)}
+                            onClick={() => exportAndDownloadBlob(CodeListExportExtensionEnum.CSV)}
                         />
                         <Button
                             label={t('codeListDetail.modal.button.xlsx')}
                             variant="secondary"
                             className={styles.buttons}
-                            onClick={() => startExport(CodeListExportExtensionEnum.XLSX)}
+                            onClick={() => exportAndDownloadBlob(CodeListExportExtensionEnum.XLSX)}
                         />
                     </div>
                 </div>
