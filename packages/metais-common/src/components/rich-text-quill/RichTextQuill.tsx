@@ -68,6 +68,9 @@ export interface ICustomToolBarProps {
     id: string
 }
 
+// https://github.com/quilljs/quill/issues/1328
+const QUILL_INTENDED_EMPTY_VALUE = '<p><br></p>'
+
 const formats = ['header', 'bold', 'italic', 'underline', 'list', 'bullet', 'link']
 
 const CustomToolbar: React.FC<ICustomToolBarProps> = ({ excludeOptions, id }) => {
@@ -123,6 +126,7 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
     )
 
     const handleContentChange = (newValue: string, delta: DeltaStatic, source: Sources, editor: ReactQuill.UnprivilegedEditor) => {
+        newValue = newValue.replaceAll(QUILL_INTENDED_EMPTY_VALUE, '')
         onChange && onChange(newValue, delta, source, editor)
         setValue && setValue(name, newValue)
     }
