@@ -93,33 +93,37 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     }
 
     const columns: Array<ColumnDef<TableCols>> = [
-        {
-            accessorFn: (row) => row.selected,
-            header: ({ table }) => (
-                <div className="govuk-checkboxes govuk-checkboxes--small">
-                    <CheckBox
-                        checked={table.getIsAllRowsSelected()}
-                        label=""
-                        name="checkbox"
-                        id="checkbox-all"
-                        onChange={table.getToggleAllRowsSelectedHandler()}
-                    />
-                </div>
-            ),
-            size: 45,
-            id: CHECKBOX_CELL,
-            cell: ({ row }) => (
-                <div className="govuk-checkboxes govuk-checkboxes--small">
-                    <CheckBox
-                        label=""
-                        name="checkbox"
-                        id={`checkbox_${row.id}`}
-                        onChange={row.getToggleSelectedHandler()}
-                        checked={row.getIsSelected()}
-                    />
-                </div>
-            ),
-        },
+        ...(isUserLogged
+            ? [
+                  {
+                      accessorFn: (row) => row.selected,
+                      header: ({ table }) => (
+                          <div className="govuk-checkboxes govuk-checkboxes--small">
+                              <CheckBox
+                                  checked={table.getIsAllRowsSelected()}
+                                  label=""
+                                  name="checkbox"
+                                  id="checkbox-all"
+                                  onChange={table.getToggleAllRowsSelectedHandler()}
+                              />
+                          </div>
+                      ),
+                      size: 45,
+                      id: CHECKBOX_CELL,
+                      cell: ({ row }) => (
+                          <div className="govuk-checkboxes govuk-checkboxes--small">
+                              <CheckBox
+                                  label=""
+                                  name="checkbox"
+                                  id={`checkbox_${row.id}`}
+                                  onChange={row.getToggleSelectedHandler()}
+                                  checked={row.getIsSelected()}
+                              />
+                          </div>
+                      ),
+                  } as ColumnDef<TableCols>,
+              ]
+            : []),
         {
             accessorFn: (row) => row?.configurationItem,
             header: t('documentsTab.table.name'),
@@ -160,13 +164,17 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             size: 100,
             cell: (row) => formatDateTimeForDefaultValue(row.getValue() as string),
         },
-        {
-            accessorFn: (row) => row?.configurationItem?.metaAttributes?.createdBy,
-            header: t('documentsTab.table.createdBy'),
-            id: 'documentsTab.table.createdBy',
-            size: 100,
-            cell: (row) => namesData?.find((item) => item.login == (row.getValue() as string))?.fullName,
-        },
+        ...(isUserLogged
+            ? [
+                  {
+                      accessorFn: (row) => row?.configurationItem?.metaAttributes?.createdBy,
+                      header: t('documentsTab.table.createdBy'),
+                      id: 'documentsTab.table.createdBy',
+                      size: 100,
+                      cell: (row) => namesData?.find((item) => item.login == (row.getValue() as string))?.fullName,
+                  } as ColumnDef<TableCols>,
+              ]
+            : []),
         {
             accessorFn: (row) => row?.configurationItem?.metaAttributes?.lastModifiedAt,
             header: t('documentsTab.table.lastModifiedAt'),
@@ -174,13 +182,17 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             size: 100,
             cell: (row) => formatDateTimeForDefaultValue(row.getValue() as string),
         },
-        {
-            accessorFn: (row) => row?.configurationItem?.metaAttributes?.lastModifiedBy,
-            header: t('documentsTab.table.lastModifiedBy'),
-            id: 'documentsTab.table.lastModifiedBy',
-            size: 100,
-            cell: (row) => namesData?.find((item) => item.login == (row.getValue() as string))?.fullName,
-        },
+        ...(isUserLogged
+            ? [
+                  {
+                      accessorFn: (row) => row?.configurationItem?.metaAttributes?.lastModifiedBy,
+                      header: t('documentsTab.table.lastModifiedBy'),
+                      id: 'documentsTab.table.lastModifiedBy',
+                      size: 100,
+                      cell: (row) => namesData?.find((item) => item.login == (row.getValue() as string))?.fullName,
+                  } as ColumnDef<TableCols>,
+              ]
+            : []),
         {
             accessorKey: 'bulkActions',
             header: '',
@@ -214,6 +226,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                     if (updateFile !== undefined) handleUpdateFile([updateFile], () => setUpdateFile(undefined), open)
                                 }
                             }}
+                            hidden={!isUserLogged}
                         />,
                         <ButtonLink
                             key={'buttonInvalidate'}
@@ -229,6 +242,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                         handleInvalidate([invalidateSingle], () => setInvalidateSingle(undefined), open, isDocumentUpdatable(item))
                                 }
                             }}
+                            hidden={!isUserLogged}
                         />,
 
                         <ButtonLink
@@ -245,6 +259,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                         handleDeleteFile([deleteSingle], () => setDeleteSingle(undefined), open, isDocumentUpdatable(item))
                                 }
                             }}
+                            hidden={!isUserLogged}
                         />,
 
                         <ButtonLink
@@ -279,9 +294,6 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    const filteredColumns = isUserLogged
-        ? columns
-        : columns.filter((column) => column.id != 'documentsTab.table.lastModifiedBy').filter((column) => column.id != 'documentsTab.table.createdBy')
     return (
         <QueryFeedback loading={isLoading || isBulkLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
             {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
@@ -419,7 +431,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
 
             {singleItemHistory && <FileHistoryModal item={singleItemHistory} onClose={() => setSingleItemHistory(undefined)} />}
             <Filter form={() => <></>} defaultFilterValues={defaultFilter} onlySearch />
-            <Table<TableCols> rowSelection={rowSelection} onRowSelectionChange={setRowSelection} columns={filteredColumns} data={data} />
+            <Table<TableCols> rowSelection={rowSelection} onRowSelectionChange={setRowSelection} columns={columns} data={data} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </QueryFeedback>
     )

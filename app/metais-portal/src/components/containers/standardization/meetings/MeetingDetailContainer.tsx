@@ -38,6 +38,7 @@ export interface MeetingDetailViewProps {
     isLoading: boolean
     meetingId: number
     group: Group | undefined
+    refetch: () => void
 }
 
 interface MeetingDetailContainer {
@@ -52,7 +53,7 @@ const MeetingDetailContainer: React.FC<MeetingDetailContainer> = ({ View, meetin
 
     const { filter, handleFilterChange } = useFilterParams<FilterParams>(identitiesFilter)
 
-    const { data: meetingDetailData, isLoading } = useGetMeetingRequestDetail(meetingId)
+    const { data: meetingDetailData, isLoading, refetch } = useGetMeetingRequestDetail(meetingId)
     const { data: groups } = useFind2111({})
 
     const group = useMemo(() => {
@@ -70,6 +71,7 @@ const MeetingDetailContainer: React.FC<MeetingDetailContainer> = ({ View, meetin
             meetingDetailData={meetingDetailData}
             meetingId={meetingId}
             group={group}
+            refetch={() => refetch()}
         />
     )
 }

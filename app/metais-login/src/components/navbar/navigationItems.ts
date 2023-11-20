@@ -102,8 +102,8 @@ export const getLoginNavigationItems = (t: TFunction, ksisvsGroupId: string | un
                     title: t('navMenu.lists.codelists'),
                     path: PORTAL_URL + RouteNames.HOW_TO_CODELIST,
                     subItems: [
-                        { title: t('navMenu.lists.codelistsList'), path: PORTAL_URL + NavigationSubRoutes.CISELNIKY },
-                        { title: t('navMenu.lists.codelistsRequestsList'), path: PORTAL_URL + NavigationSubRoutes.CODELIST_REQUESTS },
+                        { title: t('navMenu.lists.codelistsList'), path: PORTAL_URL + NavigationSubRoutes.CODELIST },
+                        { title: t('navMenu.lists.codelistsRequestsList'), path: PORTAL_URL + NavigationSubRoutes.REQUESTLIST },
                     ],
                 },
                 /* {

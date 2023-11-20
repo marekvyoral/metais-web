@@ -307,13 +307,14 @@
     "button": {
         "saveAndContinue": "Save and continue",
         "cancel": "Cancel",
-        "saveChanges": "Save changes"
+        "saveChanges": "Save changes",
+        "back": "Back"
     },
     "errors": {
         "NoChangesDetected": "No changes detected",
         "fixLink": "Correct",
         "invalidEntityId": "Invalid entity",
-        "CL08": {
+        "codeList": {
             "cl.missing.header.name": "Invalid request. Name of the codelist is required.",
             "cl.missing.header.master.manager": "Invalid request. Main authority of codelist is mandatory.",
             "cl.missing.header.validity": "Invalid request. Validity of the codelist is required.",
@@ -400,7 +401,6 @@
     },
     "ciType": {
         "informations": "Information",
-        "evaluation": "Evaluation KRIT_TO_BE",
         "documents": "Documents",
         "activities": "Activities NKIVS",
         "relationships": "Relationships",
@@ -975,8 +975,6 @@
         "codeLists": "Codelists",
         "requestList": "List of requests to add a codelist",
         "requestCreate": "Create request to add a codelist",
-        "codeListsList": "List of codelists",
-        "publicCodeListsList": "List of published codelists",
         "ciCreateEntity": "Create new item of type {{entityName}}",
         "compareHistory": "Compare history",
         "ciEditEntity": "Edit of component"
@@ -1003,6 +1001,7 @@
                 "history": "History of changes"
             },
             "items": "Codelist items",
+            "editItem": "Edit codelist item",
             "addNewItem": "Add new item to codelist"
         },
         "history": {
@@ -1062,8 +1061,6 @@
             "translationCreated": "The language version of codelist has been created. You can now add translation of items in this language. The language version of the codelist should be published only when completely translated.",
             "returnToMainGestor": "Codelist was returned for revision.",
             "sendToSzzc": "Request has been sent to administrator of BC list.",
-            "sendToIsvs": "Codelist was sent for approval to the Committee for Standardization ISPA.",
-            "publishCodeList": "Codelist was published.",
             "publishCodeListItems": "Codelist items were published."
         },
         "modal": {
@@ -1138,23 +1135,12 @@
         },
         "edit": {
             "title": "Edit code list",
-            "base": "Base code list",
-            "codeListName": "Name of codelist",
-            "newCodeListName": "New name of codelist",
             "dateValid": "Expiration date",
             "dateFrom": "From",
             "dateTo": " To",
-            "codeListId": "Code of codelist",
-            "refIndicator": "Reference indicator",
-            "mainGestor": "Main manager",
             "newMainGestor": "New main manager",
-            "nextGestor": "Secondary manager",
             "addNewGestor": "Add a new main manager",
             "cancelAddNewGestor": "Cancel adding a new main manager",
-            "sourceCode": "Source codelist",
-            "dateStartValid": "Effective date",
-            "dateEndValid": "End of effectiveness",
-            "noteCode": "Note for codelist",
             "addNewRow": "Add a new row",
             "addNewVersionName": "Add a new version of the title",
             "cancelAddNewVersionName": "Cancel new version of name",
@@ -1162,19 +1148,8 @@
             "discardUpdating": "Discard version in-progress"
         },
         "requestCreate": {
-            "base": "Base code list",
             "btnCheck": "Check",
-            "codeListName": "Name of codelist",
-            "refIndicator": "Reference indicator",
-            "mainGestor": "Main authority",
-            "resortCode": "Resort code",
-            "note": "Note",
             "addNote": "+ Add note",
-            "codeListId": "Code of codelist",
-            "name": "Name",
-            "lastName": "Last name",
-            "phone": "Phone",
-            "email": "Email",
             "contactTitle": "Kontakt na vecného gestora číselníka",
             "codeListTableTitle": "codelist items",
             "codeId": "Code",
@@ -1191,26 +1166,12 @@
             "name": "Name is required field",
             "lastName": "Lastname is required field",
             "email": "Email is required field",
-            "phone": "Phone is required field",
-            "codeListSource": "Codelist source is required field",
-            "codeListNotes": "Note je povinné pole"
+            "emailFormat": "Invalid email format",
+            "phone": "Phone is required field"
         },
         "requestModal": {
             "yes": "Yes",
             "no": "No",
-            "shortcut": "Skrátený názov položky",
-            "codeItem": "Kód položky",
-            "codeName": "Názov položky",
-            "shortname": "Skratka názvu položky",
-            "refident": "Referencovateľný identifikátor",
-            "addData": "Doplňujúci obsah",
-            "unit": "Merná jednotka",
-            "note": "Poznámka pre položku",
-            "contain": "Zahŕňa",
-            "alsoContain": "Tiež zahŕňa",
-            "exclude": "Vylučuje",
-            "order": "Logické poradie položky",
-            "law": "Legislatívna uznateľnosť",
             "validate": "Dátum platnosti",
             "startDate": "Začiatok účinnosti",
             "endDate": "Koniec účinnosti",
@@ -1324,7 +1285,8 @@
                 "PUBLISHED": "Approved and published",
                 "IN_CONSTRUCTION": "in-progress/optional",
                 "READY_TO_APPROVAL": "Request for registration in the list of reference registers",
-                "REJECTED": "Registration in the list of reference registers rejected"
+                "REJECTED": "Registration in the list of reference registers rejected",
+                "FETCHING": ""
             },
             "muk": {
                 "heading": "MUK",
@@ -1406,6 +1368,10 @@
         "PO_IS_PODetail": "Detail of IS PO",
         "PO_IS_POCreate": "Creation of IS PO",
         "meetings": "Meetings",
+        "codeList": "Codelist list",
+        "codeListDetail": "Detail codelist",
+        "meetingsCreate": "Creation of meeting",
+        "meetingDetail": "Detail of meeting",
         "publicAuthoritiesHierarchy": "Hierarchy of public authorities"
     },
     "todo": {
@@ -1542,6 +1508,11 @@
         "end": "End of the meeting",
         "place": "Location",
         "vote": "I will participate",
+        "changeVote": "Modify",
+        "voteValue": {
+            "ACCEPTED": "Yes",
+            "DECLINED": "No"
+        },
         "program": "Agenda",
         "description": "Description",
         "editItem": "Edit meeting",
@@ -1553,9 +1524,12 @@
         "meetingExternalActors": "Guests",
         "userName": "Name",
         "email": "Email address",
+        "linkChange": "Change entry",
+        "linkSave": "Save entry",
         "participation": "Confirmation of participation",
         "participationValue": {
-            "ACCEPTED": "Confirmed participation"
+            "ACCEPTED": "Accepted",
+            "DECLINED": "Declined"
         },
         "groupShortName": "Working group abbreviation",
         "userOrgName": "Organisation",
@@ -1571,6 +1545,8 @@
         },
         "addNewMeeting": "Add a meeting",
         "mandatory": "mandatory",
+        "editMeeting": "Edit meeting",
+        "reasonOfCanceling": "Reason of canceling",
         "form": {
             "heading": {
                 "dateTime": "Time and place",
@@ -1637,6 +1613,23 @@
             "state": "State",
             "startDate": "Accepted in the period from",
             "endDate": "Accepted in the period up to"
+        },
+        "canseledMeeting": "Meeting was canceled",
+        "canseledMeetingReason": "Reason of canceling",
+        "noDocumentsAttached": "No documents attached",
+        "noDocumentsLinkAttached": "No links to documents attached",
+        "documentLinks": "Document links",
+        "otherDocuments": "Other documents",
+        "errors": {
+            "meetingNameRequired": "The name of the meeting is required",
+            "meetingDateRequired": "Date of the meeting is required",
+            "meetingTimeStartRequired": "Time is required",
+            "meetingTimeEndRequired": "Time is required",
+            "meetingPlaceRequired": "Meeting place is required",
+            "meetingActorsRequired": "Invited users are required",
+            "meetingDescriptionRequired": "Meeting description is required",
+            "meetingExternalActorsNameRequired": "User name is required",
+            "meetingExternalActorsEmailRequired": "Email is required"
         },
         "": ""
     },
@@ -1706,13 +1699,17 @@
             "date": "Date",
             "voteType": "Vote type",
             "relatedDocuments": "Related documents",
-            "relatedVoteLinks": "Related Draft",
+            "standardRequestTitle": "Hlasovanie sa týka návrhu",
+            "links": "Related Draft",
             "secret": "Secret",
             "public": "Public",
             "downloadingFile": "Downloading File",
             "submitVote": "Submit",
             "editVote": "Edit vote",
-            "newVote": "+  New vote",
+            "newVote": "New vote",
+            "cancelVote": "Cancel vote",
+            "cancel": "Cancel",
+            "back": "Back",
             "voteProcessing": "Processing",
             "voteDescription": "Description",
             "votesHandlingTitle": "Voting",
@@ -1721,15 +1718,15 @@
             "changeDate": "Change Date",
             "changeInfo": "Information about changed actors during vote",
             "changeDescription": "Description Of Change",
-            "voteChoiseLabel": {
+            "voteChoiceLabel": {
                 "cannotCast": "Only logged in user with autorization can cast vote",
                 "canCast": "You are authorized to vote",
                 "alreadyVoted": "You already casted vote for this draft"
             },
-            "voteVetoChoiseLabel": "Veto Vote",
+            "voteVetoChoiceLabel": "Veto Vote",
             "description": "Note",
             "voteConclusion": "Conclusion",
-            "voteDetailExplanationPrefix": "Vote state ",
+            "voteState": "Vote state ",
             "vetoed": "Draft was vetoed",
             "vetoedBy": "Vetoed by",
             "vetoedDescription": "Reason",
@@ -1739,9 +1736,60 @@
                 "role": "Role"
             }
         },
+        "voteEdit": {
+            "newVoteTitle": "Add new vote",
+            "editVoteTitle": "Edit vote",
+            "subject": "Vote subject (required): ",
+            "relatedDraft": "Related Draft:",
+            "selectFromList": "Select from list",
+            "description": "Description",
+            "generalPlaceholder": "Enter",
+            "documents": {
+                "title": "Documents",
+                "subtitle": "Enter documents links ",
+                "generalInputPlaceholder": "Enter",
+                "linkInputPlaceholder": "Enetr on following format: http://url-document-address",
+                "descriptionLabel": "Document description",
+                "typeLabel": "Document type",
+                "linkLabel": "Document Link",
+                "sizeLabel": "Document Size"
+            },
+            "invited": {
+                "title": "Invited",
+                "invitedGroups": "Invited groups (reqired):",
+                "invitedUsers": "Invited users (reqiured):"
+            },
+            "secretVote": "Secret vote",
+            "date": {
+                "fromDate": "Date from (required):",
+                "toDate": "Date to (required):"
+            },
+            "answers": {
+                "title": "Answer definitions",
+                "particularAnswerTitle": "Answer",
+                "addNext": "Add next definition",
+                "veto": "Allow veto right",
+                "yes": "Yes",
+                "no": "No",
+                "didNotVote": "He abstained from voting"
+            },
+            "cancel": "Cancel",
+            "callVote": "Create vote",
+            "updateVote": "Edit vote",
+            "addNextDocumentItem": "Add next document",
+            "standardRequestsTable": {
+                "srName": "Draft name",
+                "createdAt": "created At",
+                "name": "Mame",
+                "version": "Verion",
+                "standardRequestState": "State"
+            }
+        },
         "type": {
             "yes": "Yes",
             "no": "No",
+            "enter": "Enter",
+            "selectOption": "Select option",
             "toShow": {
                 "onlyMyVotes": "My votes only",
                 "allVotes": "All votes"
@@ -1749,14 +1797,22 @@
             "state": {
                 "planned": "Planned",
                 "ended": "Finished",
-                "upcomming": "Upcomming",
+                "upcoming": "Upcomming",
                 "canceled": "Canceled",
                 "summarized": "Sumarized",
                 "vetoed": "Vetoed"
             },
             "changeAction": {
                 "added": "was added to vote"
-            }
+            },
+            "cancel": "Cancel",
+            "select": "Select",
+            "loadingData": "Loading data",
+            "callingVote": "Processing vote"
+        },
+        "error": {
+            "errorTitle": "Error occured",
+            "errorMessage": "We apologize, but an error occurred durring processing. Try submitting the form again. If the error occurs repeatedly, contact the administrator"
         }
     },
     "registration": {
@@ -1811,16 +1867,7 @@
         "heading": "Drafts list"
     },
     "howto": {
-        "codelists": "Codelists",
-        "refRegisters": "Reference registers",
-        "monitoring": "Reports and monitoring",
-        "guides": "Procedures and guides",
-        "dataObjects": "Data objects",
-        "standardization": "Standardization",
-        "programProjectsActivities": "Programs, projects and activities",
-        "kris": "Goals, principles, activites and KRIT",
-        "po": "Public authorities",
-        "egov": "e-Government components"
+        "guides": "Procedures and guides"
     },
     "relationDetail": {
         "heading": "Detail of relationship: {{item}}",
@@ -1842,6 +1889,10 @@
         "target": "Goal",
         "name": "Sub-goal",
         "description": "Goal description",
-        "action": ""
+        "action": "In relation with selected KRIS",
+        "haveNoRights": "You do not have rights to edit this input.",
+        "commitmentHeader": "Commitment to the observance of the goals and principles of the National Informatization Concept of Public Administration",
+        "commitmentLabel": "We declare that the building and developing ISVS will meet our defined objectives, sub-objectives and adhere to the principles of the National Informatization Concept of Public Administration",
+        "noCheckedItems": "Before confirming the commitment to comply with the goals and principles of the National Concept of Informatization of Public Administration, it is necessary to select at least one goal."
     }
 }

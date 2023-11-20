@@ -16,6 +16,7 @@ import {
     ButtonLink,
     Filter,
     Input,
+    LoadingIndicator,
     PaginatorWrapper,
     SimpleSelect,
     Table,
@@ -26,9 +27,10 @@ import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { Actions, CodeListItemState, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
+import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
+import { ApiCodelistItem } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 
-import { IItemForm, ItemForm } from './components/modals/ItemForm/ItemForm'
+import { ItemFormModal } from './components/modals/ItemFormModal/ItemFormModal'
 import { CodeListDetailItemsTable, TableCols } from './CodeListDetailItemsTable'
 import { selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
 import { useSetDatesSchema } from './useCodeListSchemas'
@@ -39,6 +41,7 @@ import {
     CodeListFilterEffective,
     defaultFilterValues,
 } from '@/components/containers/CodeListDetailItemsContainer'
+import { CodeListItemState } from '@/componentHelpers/codeList'
 
 const getSelectedItemCodes = (rowSelection: Record<string, TableCols>): string[] => {
     return Object.values(rowSelection)
@@ -47,29 +50,27 @@ const getSelectedItemCodes = (rowSelection: Record<string, TableCols>): string[]
 }
 
 export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> = ({
+    code,
     items,
     attributeProfile,
     isLoading,
+    isLoadingItemAction,
     isError,
-    isSuccessMutation,
-    isErrorEditItemSubmit,
-    isLoadingEditItemSubmit,
-    isSuccessEditItemSubmit,
+    itemActionErrors,
+    isSuccessItemActionMutation,
     workingLanguage,
     filter,
     invalidateCodeListDetailCache,
     handleFilterChange,
     handleMarkForPublish,
     handleSetDates,
-    handleStartItemEdit,
-    handleSubmitItem,
 }) => {
     const { t } = useTranslation()
     const [rowSelection, setRowSelection] = useState<Record<string, TableCols>>({})
     const [isMarkForPublishDialogOpened, setIsMarkForPublishDialogOpened] = useState<boolean>(false)
     const [isSetDatesDialogOpened, setIsSetDatesDialogOpened] = useState<boolean>(false)
     const [isItemEditOpen, setIsItemEditOpen] = useState(false)
-    const [editingCodeListItem, setEditingCodeListItem] = useState<IItemForm>()
+    const [editingCodeListItem, setEditingCodeListItem] = useState<ApiCodelistItem>()
 
     const { schema } = useSetDatesSchema()
 
@@ -79,28 +80,27 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
 
     const onHandleMarkForPublish = () => {
         handleMarkForPublish(getSelectedItemCodes(rowSelection))
-        setIsMarkForPublishDialogOpened(false)
-        invalidateCodeListDetailCache()
     }
 
     const onSetDatesSubmit = (formValues: FieldValues) => {
         const itemCodes = getSelectedItemCodes(rowSelection)
         const { effectiveFrom, validFrom } = formValues
         handleSetDates(itemCodes, effectiveFrom, validFrom)
-        setIsSetDatesDialogOpened(false)
-        invalidateCodeListDetailCache()
     }
 
-    const handleOpenEditItem = async (item?: IItemForm) => {
-        const returnedItem = await handleStartItemEdit(Number(item?.id))
-
-        setEditingCodeListItem(returnedItem)
+    const handleOpenEditItem = async (item: ApiCodelistItem) => {
+        setEditingCodeListItem(item)
         setIsItemEditOpen(true)
     }
 
     const handleOpenCreateItem = () => {
         setEditingCodeListItem(undefined)
         setIsItemEditOpen(true)
+    }
+
+    const handleCloseItemEditModal = () => {
+        invalidateCodeListDetailCache()
+        setIsItemEditOpen(false)
     }
 
     const selectedItemsTable = (
@@ -156,7 +156,6 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                     </div>
                 )}
             />
-            <MutationFeedback success={isSuccessMutation} successMessage={t('codeListDetail.feedback.editCodeListItems')} error={undefined} />
             <ActionsOverTable
                 pagination={{
                     pageNumber: filter.pageNumber || BASE_PAGE_NUMBER,
@@ -211,6 +210,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                 handlePageChange={handleFilterChange}
             />
             <BaseModal isOpen={isSetDatesDialogOpened} close={() => setIsSetDatesDialogOpened(false)}>
+                {isLoadingItemAction && <LoadingIndicator label={t('feedback.saving')} />}
                 <TextHeading size="M">{t(`codeListDetail.modal.title.setDates`)}</TextHeading>
                 {Object.keys(rowSelection).length > 0 ? (
                     <form onSubmit={handleSubmit(onSetDatesSubmit)}>
@@ -237,8 +237,24 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                 ) : (
                     <TextWarning>{t('codeListDetail.modal.text.nothingSelected')}</TextWarning>
                 )}
+                {itemActionErrors.map((error, index) => (
+                    <QueryFeedback
+                        key={index}
+                        error
+                        loading={false}
+                        errorProps={{
+                            errorMessage: `${error.itemCode}: ${t([`errors.codeList.${error.message}`, 'feedback.mutationErrorTitle'])}`,
+                        }}
+                    />
+                ))}
+                <MutationFeedback
+                    success={isSuccessItemActionMutation}
+                    successMessage={t('codeListDetail.feedback.editCodeListItems')}
+                    error={undefined}
+                />
             </BaseModal>
             <BaseModal isOpen={isMarkForPublishDialogOpened} close={() => setIsMarkForPublishDialogOpened(false)}>
+                {isLoadingItemAction && <LoadingIndicator label={t('feedback.saving')} />}
                 <TextHeading size="M">{t(`codeListDetail.modal.title.markForPublish`)}</TextHeading>
                 {Object.keys(rowSelection).length > 0 ? (
                     <>
@@ -251,17 +267,30 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                 ) : (
                     <TextWarning>{t('codeListDetail.modal.text.nothingSelected')}</TextWarning>
                 )}
+                {itemActionErrors.map((error, index) => (
+                    <QueryFeedback
+                        key={index}
+                        error
+                        loading={false}
+                        errorProps={{
+                            errorMessage: `${error.itemCode}: ${t([`errors.codeList.${error.message}`, 'feedback.mutationErrorTitle'])}`,
+                        }}
+                    />
+                ))}
+                <MutationFeedback
+                    success={isSuccessItemActionMutation}
+                    successMessage={t('codeListDetail.feedback.editCodeListItems')}
+                    error={undefined}
+                />
             </BaseModal>
             {isItemEditOpen && (
-                <ItemForm
+                <ItemFormModal
                     isOpen={isItemEditOpen}
-                    close={() => setIsItemEditOpen(false)}
-                    onSubmit={handleSubmitItem}
-                    isErrorMutation={isErrorEditItemSubmit}
-                    isLoadingMutation={isLoadingEditItemSubmit}
-                    isSuccessMutation={isSuccessEditItemSubmit}
+                    close={handleCloseItemEditModal}
+                    codeListCode={code}
                     item={editingCodeListItem}
                     attributeProfile={attributeProfile}
+                    workingLanguage={workingLanguage}
                     defaultOrderValue={items?.codelistsItemCount ?? 1}
                 />
             )}

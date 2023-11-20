@@ -2,11 +2,11 @@ import { IFilter } from '@isdd/idsk-ui-kit/types'
 import {
     ConfigurationItemUi,
     useGetUuidHook,
-    useInvalidateRelationshipHook,
+    useInvalidateRelationship,
     useReadCiList1,
     useReadCiNeighbours,
     useReadConfigurationItem,
-    useStoreGraphHook,
+    useStoreGraph,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
@@ -16,7 +16,9 @@ import { INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCanCreateGraph } from '@isdd/metais-common/src/hooks/useCanCreateGraph'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 export interface TableCols extends ConfigurationItemUi {
     checked?: boolean
@@ -24,7 +26,7 @@ export interface TableCols extends ConfigurationItemUi {
 }
 
 export interface IView {
-    activities?: ConfigurationItemUi[]
+    tableData?: TableCols[]
     handleFilterChange: (filter: IFilter) => void
     isLoading: boolean
     isError: boolean
@@ -42,6 +44,10 @@ export interface IView {
     isInvalidated: boolean
     ciType: string
     ciItemData: ConfigurationItemUi | undefined
+    canCreateGraph: boolean
+    isMutateLoading: boolean
+    isMutateSuccess: boolean
+    isMutateError: boolean
 }
 
 interface IActivitiesAndGoalsListContainer {
@@ -63,20 +69,28 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
         state: { user, token },
     } = useAuth()
 
+    const { getRequestStatus, isError: isRequestError, isLoading: isRequestLoading, isSuccess: isRequestSuccess } = useGetStatus()
     const { currentPreferences } = useUserPreferences()
     const metaAttributes = currentPreferences.showInvalidatedItems ? { state: ['DRAFT', 'INVALIDATED'] } : { state: ['DRAFT'] }
     const { data: ciData, isLoading: ciLoading } = useReadConfigurationItem(configurationItemId ?? '')
     const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED
-    const invalidateRelation = useInvalidateRelationshipHook()
-    const storeGraph = useStoreGraphHook()
 
-    const { data: isOwnerByGid } = useIsOwnerByGid(
+    const isLoggedIn = !!user?.uuid
+
+    const {
+        data: isOwnerByGid,
+        isLoading: isOwnerByGidLoading,
+        isError: isOwnerByGidError,
+        fetchStatus: isOwnerByGidFetchStatus,
+    } = useIsOwnerByGid(
         {
             gids: [ciData?.metaAttributes?.owner ?? ''],
             login: user?.login,
         },
-        { query: { enabled: !ciLoading && token !== null } },
+        { query: { enabled: !ciLoading && token !== null && isLoggedIn } },
     )
+
+    const { data: canCreateGraph, isError: isCanCreateGraphError, isLoading: isCanCreateGraphLoading } = useCanCreateGraph()
 
     const generateUuid = useGetUuidHook()
 
@@ -91,12 +105,14 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
         getIncidentRelations: true,
     })
 
-    const currentNeighboursFilter = {
-        neighboursFilter: {
-            ciType: [ciType],
-            reltype: [relType],
-        },
-    }
+    const currentNeighboursFilter = useMemo(() => {
+        return {
+            neighboursFilter: {
+                ciType: [ciType],
+                reltype: [relType],
+            },
+        }
+    }, [ciType, relType])
 
     const { filter, handleFilterChange } = useFilterParams(defaultFilter)
 
@@ -109,14 +125,15 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
         }
     }, [defaultRequestApi, filter.fullTextSearch])
 
-    const { isLoading, isError, data: listData } = useReadCiList1(mapFilterToNeighborsApi(filter, defaultRequestApi))
+    const filterForCiList = useMemo(() => mapFilterToNeighborsApi(filter, defaultRequestApi), [defaultRequestApi, filter])
+    const { isLoading, isError, data: listData, isFetching } = useReadCiList1(filterForCiList)
 
     //Load related
-    //400 error report bug
     const {
         isLoading: isCurrentNeighboursLoading,
         isError: isCurrentNeighboursError,
         data: currentNeighbours,
+        refetch,
     } = useReadCiNeighbours(configurationItemId ?? '', currentNeighboursFilter)
 
     const [dataRows, setDataRows] = useState<TableCols[]>([])
@@ -136,41 +153,70 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
         }
     }, [listData, currentNeighbours])
 
-    //Add relation
-    const relateItemToProject = async (itemUuid: string | undefined) => {
-        const uuid = await generateUuid()
-        storeGraph({
-            storeSet: {
-                relationshipSet: [
-                    {
-                        attributes: [],
-                        endUuid: itemUuid,
-                        owner: ciData?.metaAttributes?.owner,
-                        startUuid: configurationItemId,
-                        type: relType,
-                        uuid: uuid,
-                    },
-                ],
+    const invalidateRelation = useInvalidateRelationship({
+        mutation: {
+            onSuccess(data) {
+                if (data.requestId) {
+                    getRequestStatus(data.requestId, () => refetch())
+                }
             },
-        })
-    }
+        },
+    })
+    const storeGraph = useStoreGraph({
+        mutation: {
+            onSuccess(data) {
+                if (data.requestId) {
+                    getRequestStatus(data.requestId, () => refetch())
+                }
+            },
+        },
+    })
 
-    const invalidateItemRelationToProject = async (itemUuid: string | undefined, uuid: string | undefined) => {
-        //500 error report
-        invalidateRelation(
-            {
-                attributes: [],
-                endUuid: itemUuid,
-                invalidateReason: {
-                    comment: 'KRIS/SU',
+    //Add relation
+    const relateItemToProject = useCallback(
+        async (itemUuid: string | undefined) => {
+            const uuid = await generateUuid()
+            storeGraph.mutateAsync({
+                data: {
+                    storeSet: {
+                        relationshipSet: [
+                            {
+                                attributes: [],
+                                endUuid: itemUuid,
+                                owner: ciData?.metaAttributes?.owner,
+                                startUuid: configurationItemId,
+                                type: relType,
+                                uuid: uuid,
+                            },
+                        ],
+                    },
                 },
-                startUuid: configurationItemId,
-                type: relType,
-                uuid: uuid,
-            },
-            { newState: [] },
-        )
-    }
+            })
+        },
+        [ciData?.metaAttributes?.owner, configurationItemId, generateUuid, relType, storeGraph],
+    )
+
+    const invalidateItemRelationToProject = useCallback(
+        async (itemUuid: string | undefined, uuid: string | undefined) => {
+            //500 error report
+            invalidateRelation.mutateAsync({
+                data: {
+                    attributes: [],
+                    endUuid: itemUuid,
+                    invalidateReason: {
+                        comment: 'KRIS/SU',
+                    },
+                    startUuid: configurationItemId,
+                    type: relType,
+                    uuid: uuid,
+                },
+                params: {
+                    newState: [],
+                },
+            })
+        },
+        [configurationItemId, invalidateRelation, relType],
+    )
 
     return (
         <View
@@ -179,14 +225,24 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
             filter={filter}
             relateItemToProject={relateItemToProject}
             isOwnerOfCi={isOwnerOfCi}
-            activities={dataRows}
+            tableData={dataRows}
             handleFilterChange={handleFilterChange}
-            isLoading={isLoading || isCurrentNeighboursLoading}
-            isError={isError || isCurrentNeighboursError}
+            isLoading={
+                isLoading ||
+                isFetching ||
+                isCurrentNeighboursLoading ||
+                isCanCreateGraphLoading ||
+                (isOwnerByGidLoading && isOwnerByGidFetchStatus != 'idle')
+            }
+            isError={isError || isCurrentNeighboursError || isCanCreateGraphError || isOwnerByGidError}
+            isMutateLoading={invalidateRelation.isLoading || storeGraph.isLoading || isRequestLoading}
+            isMutateSuccess={(invalidateRelation.isSuccess || storeGraph.isSuccess) && isRequestSuccess}
+            isMutateError={invalidateRelation.isError || storeGraph.isError || isRequestError}
             setDataRows={setDataRows}
             isInvalidated={isInvalidated}
             ciType={ciType}
             ciItemData={ciData}
+            canCreateGraph={!!canCreateGraph}
         />
     )
 }

@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { ApiMeetingActor, ApiMeetingRequest } from '@isdd/metais-common/api/generated/standards-swagger'
 
 type MeetingActorsTableProps = {
@@ -15,18 +15,29 @@ type MeetingActorsTableProps = {
     error?: boolean
     isLoading?: boolean
 }
+const defaultPagination: Pagination = {
+    pageNumber: BASE_PAGE_NUMBER,
+    pageSize: BASE_PAGE_SIZE,
+    dataLength: 0,
+}
 
 export const MeetingActorsTable = ({ data, error, isLoading }: MeetingActorsTableProps) => {
     const { t } = useTranslation()
+    const [pagination, setPagination] = useState(defaultPagination)
 
-    const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
-    const [currentPage, setCurrentPage] = useState(1)
-    const startOfList = currentPage * pageSize - pageSize
-    const endOfList = currentPage * pageSize
-    const handlePagingSelect = (value: string) => {
-        setPageSize(Number(value))
+    const filteredData = useMemo(() => {
+        const startOfList = pagination.pageNumber * pagination.pageSize - pagination.pageSize
+        const endOfList = pagination.pageNumber * pagination.pageSize
+        return data?.meetingActors?.slice(startOfList, endOfList) || []
+    }, [data?.meetingActors, pagination.pageNumber, pagination.pageSize])
+
+    const myHandleFilterChange = (myFilter: IFilter) => {
+        setPagination({
+            ...pagination,
+            pageSize: myFilter.pageSize ?? BASE_PAGE_SIZE,
+            pageNumber: myFilter.pageNumber ?? defaultPagination.pageNumber,
+        })
     }
-
     const columns: Array<ColumnDef<ApiMeetingActor>> = [
         {
             header: t('meetings.userName'),
@@ -77,17 +88,18 @@ export const MeetingActorsTable = ({ data, error, isLoading }: MeetingActorsTabl
     return (
         <div>
             <ActionsOverTable
-                pagination={{ pageNumber: currentPage, pageSize, dataLength: data?.meetingActors?.length ?? 0 }}
-                handlePagingSelect={handlePagingSelect}
+                pagination={{ ...pagination, dataLength: data?.meetingActors?.length ?? 0 }}
                 entityName={''}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
+                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                handleFilterChange={myHandleFilterChange}
             />
-            <Table data={data?.meetingActors?.slice(startOfList, endOfList)} columns={columns} isLoading={isLoading} error={error} />
+            <Table data={filteredData} columns={columns} isLoading={isLoading} error={error} />
             <PaginatorWrapper
-                pageSize={pageSize}
-                pageNumber={currentPage}
                 dataLength={data?.meetingActors?.length ?? 0}
-                handlePageChange={(page) => setCurrentPage(page.pageNumber ?? -1)}
+                pageNumber={pagination.pageNumber}
+                pageSize={pagination.pageSize}
+                handlePageChange={(page) => setPagination({ ...pagination, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })}
             />
         </div>
     )

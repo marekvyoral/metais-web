@@ -5,18 +5,19 @@ import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { EDIT_CONTACT } from '@isdd/metais-common/src/navigation/searchKeys'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { REFERENCE_REGISTER } from '@isdd/metais-common/constants'
 
 import { CreateRefRegisterContainer } from '@/components/containers/refregisters/CreateRefRegisterContainer'
 import { RefRegisterCreateView } from '@/components/views/refregisters/createView/RefRegisterCreateView'
 import { RefRegisterContainer } from '@/components/containers/refregisters/RefRegisterContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-const Edit = () => {
+const RefRegistersEdit = () => {
     const [urlParams] = useSearchParams()
     const isContact = urlParams.get(EDIT_CONTACT) === 'true' ? true : false
 
     const { entityId } = useParams()
-    const entityName = 'ReferenceRegister'
+    const entityName = REFERENCE_REGISTER
     const { t } = useTranslation()
 
     return (
@@ -83,4 +84,4 @@ const Edit = () => {
     )
 }
 
-export default Edit
+export default RefRegistersEdit

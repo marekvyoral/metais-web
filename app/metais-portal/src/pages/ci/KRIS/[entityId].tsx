@@ -1,5 +1,6 @@
 import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
+<<<<<<< HEAD
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -45,6 +46,37 @@ const EntityDetailPage: React.FC = () => {
     })
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
+=======
+import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { CI_ITEM_QUERY_KEY, ENTITY_KRIS, INVALIDATED, ciInformationTab } from '@isdd/metais-common/constants'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+
+import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
+import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
+import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
+
+const KrisEntityDetailPage: React.FC = () => {
+    const { t } = useTranslation()
+    const { isActionSuccess } = useActionSuccess()
+    const { entityId } = useGetEntityParamsFromUrl()
+    const navigate = useNavigate()
+    const location = useLocation()
+    const [selectedTab, setSelectedTab] = useState<string>()
+
+    document.title = `${t('titles.ciDetail', { ci: ENTITY_KRIS })} | MetaIS`
+    const userAbility = useUserAbility()
+
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_KRIS)
+>>>>>>> origin/develop
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,
@@ -55,6 +87,19 @@ const EntityDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
+<<<<<<< HEAD
+=======
+
+    const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: ENTITY_KRIS, entityId: entityId ?? '', t })
+
+    tabList.splice(2, 0, {
+        id: 'goals',
+        path: `/ci/${ENTITY_KRIS}/${entityId}/goals`,
+        title: t('ciType.goals'),
+        content: <Outlet />,
+    })
+
+>>>>>>> origin/develop
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
 
     return (
@@ -63,6 +108,7 @@ const EntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+<<<<<<< HEAD
                     { label: entityName, href: `/ci/${entityName}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
@@ -77,27 +123,58 @@ const EntityDetailPage: React.FC = () => {
                         error={isCiItemDataError || isCiTypeDataError || IsErrorEvaluation}
                         withChildren
                     >
+=======
+                    { label: ENTITY_KRIS, href: `/ci/${ENTITY_KRIS}` },
+                    {
+                        label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
+                        href: `/ci/${ENTITY_KRIS}/${entityId}`,
+                    },
+                ]}
+            />
+
+            <MainContentWrapper>
+                <CiPermissionsWrapper entityId={entityId ?? ''} entityName={ENTITY_KRIS ?? ''}>
+                    <QueryFeedback loading={isCiItemDataLoading || isCiTypeDataLoading}>
+>>>>>>> origin/develop
                         <FlexColumnReverseWrapper>
                             <CiEntityIdHeader
                                 editButton={
                                     <Button
                                         label={t('ciType.editButton')}
+<<<<<<< HEAD
                                         onClick={() => navigate(`/ci/${entityName}/${entityId}/edit`, { state: location.state })}
                                     />
                                 }
                                 entityData={ciItemData}
                                 entityName={entityName ?? ''}
+=======
+                                        onClick={() => navigate(`/ci/${ENTITY_KRIS}/${entityId}/edit`, { state: location.state })}
+                                    />
+                                }
+                                entityData={ciItemData}
+                                entityName={ENTITY_KRIS}
+>>>>>>> origin/develop
                                 entityId={entityId ?? ''}
                                 entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
                                 ciRoles={ciTypeData?.roleList ?? []}
                                 isInvalidated={isInvalidated}
                                 refetchCi={refetch}
                             />
+<<<<<<< HEAD
                             <MutationFeedback error={false} success={isActionSuccess.value} />
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} />
 
                         <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} />
+=======
+                            <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
+                            <MutationFeedback error={false} success={isActionSuccess.value} />
+                        </FlexColumnReverseWrapper>
+
+                        <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
+
+                        {selectedTab === ciInformationTab && <RelationsListContainer entityId={entityId ?? ''} technicalName={ENTITY_KRIS} />}
+>>>>>>> origin/develop
                     </QueryFeedback>
                 </CiPermissionsWrapper>
             </MainContentWrapper>
@@ -105,4 +182,8 @@ const EntityDetailPage: React.FC = () => {
     )
 }
 
+<<<<<<< HEAD
 export default EntityDetailPage
+=======
+export default KrisEntityDetailPage
+>>>>>>> origin/develop

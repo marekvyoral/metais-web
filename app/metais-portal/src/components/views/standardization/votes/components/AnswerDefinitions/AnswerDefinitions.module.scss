@@ -1,0 +1,10 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+.flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.spaceVertical {
+    padding-top: govuk-spacing(6);
+}
+

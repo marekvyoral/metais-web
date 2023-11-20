@@ -936,7 +936,16 @@
     },
     "projects": {
         "financeManagement": {
-            "heading": "Finančné limity schvaľovacieho procesu"
+            "heading": "Finančné limity schvaľovacieho procesu",
+            "program": "Program:",
+            "selectProgram": "Vyberte program",
+            "investmentType": "Typ Investície:",
+            "selectInvestmentType": "Vyberte typ investície",
+            "tableTitleMin": "Plánovaný rozpočet min.",
+            "tableTitleMax": "Plánovaný rozpočet max.",
+            "approvalProcess": "Schvalovací proces",
+            "approvalProcessName": "Názov schvaľovacieho procesu",
+            "more": "Viac"
         }
     },
     "templateReferenceIdentifiers": {
@@ -944,5 +953,14 @@
     },
     "titles": {
         "mainPage": "MetaIS Admin"
+    },
+    "financesValidations": {
+        "startWithZero": "Schvalovací proces musí začínať sumou 0 eur.",
+        "allNumbers": "Schvalovací proces musí zahŕňať rozsah všetkých hodnôt.",
+        "minMax": "Hodnoty nie sú korektné - minimálna hodnota nesmie prekročiť maximálnu."
+    },
+    "relationDetail": {
+        "editSuccess": "Úprava {{relationName}} prebehla úspešne.",
+        "editError": "Pri úprave {{relationName}} sa vyskytla chyba. Skúste akciu zopakovať a ak chyba pretrváva, kontaktujte podporu."
     }
 }

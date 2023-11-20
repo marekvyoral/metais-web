@@ -309,7 +309,7 @@
         "NoChangesDetected": "Nezaznamenali sme žiadne zmeny",
         "fixLink": "Opraviť",
         "invalidEntityId": "Nevalidná entita",
-        "CL08": {
+        "codeList": {
             "cl.missing.header.name": "Nesprávna požiadavka. Názov číselníka je povinný.",
             "cl.missing.header.master.manager": "Nesprávna požiadavka. Hlavný gestor číselníka je povinný.",
             "cl.missing.header.validity": "Nesprávna požiadavka. Platnosť číselníka je povinná.",
@@ -366,7 +366,8 @@
     "button": {
         "saveAndContinue": "Uložiť a pokračovať",
         "cancel": "Zrušiť",
-        "saveChanges": "Uložiť zmeny"
+        "saveChanges": "Uložiť zmeny",
+        "back": "Späť"
     },
     "relationCard": {
         "name": "Názov",
@@ -430,7 +431,6 @@
     },
     "ciType": {
         "informations": "Informácie",
-        "evaluation": "Hodnotenie KRIT_TO_BE",
         "documents": "Dokumenty",
         "activities": "Aktivity NKIVS",
         "relationships": "Vzťahy",
@@ -1004,14 +1004,11 @@
         "newRelation": "Pridanie nového vzťahu k {{itemName}}",
         "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}",
         "refRegisters": "Referenčné registre",
-        "compareHistory": "Porovnanie zmien",
         "refRegistersCreate": "Žiadosť na pridanie",
         "refRegistersEdit": "Zmena údajov o referenčnom registri",
         "dataObjects": "Dátové objekty",
-        "codeLists": "Číselníky",
         "requestList": "Zoznam žiadostí založenia číselníka",
         "requestCreate": "Žiadosť o zaradenie číselníka",
-        "publicCodeListsList": "Zoznam publikovaných číselníkov",
         "ciCreateEntity": "Vytvorenie novej položky typu {{entityName}}",
         "compareHistory": "Porovnávanie histórie",
         "standardization": "Štandardizácia",
@@ -1042,6 +1039,7 @@
                 "history": "História zmien"
             },
             "items": "Položky číselníka",
+            "editItem": "Úprava položky číselníka",
             "addNewItem": "Pridanie novej položky do číselníka"
         },
         "history": {
@@ -1101,8 +1099,6 @@
             "translationCreated": "Jazyková verzia číselníka bola vytvorená. Teraz môžete pridávať preklad položiek v tomto jazyku. Jazyková verzia číselníka by mala byť publikovaná len kompletne preložená.",
             "returnToMainGestor": "Číselník bol vrátený na prepracovanie.",
             "sendToSzzc": "Požiadavka bola odoslaná správcovi zoznamu ZČ.",
-            "sendToIsvs": "Číselník bol odoslaný na schválenie Komisii pre štandardizáciu ISVS.",
-            "publishCodeList": "Číselník bol zverejnený.",
             "publishCodeListItems": "Položky číselníka boli zverejnené."
         },
         "modal": {
@@ -1177,23 +1173,12 @@
         },
         "edit": {
             "title": "Upraviť číselník",
-            "base": "Základný číselník",
-            "codeListName": "Názov číselníka",
-            "newCodeListName": "Nový názov číselníka",
             "dateValid": "Dátum platnosti",
             "dateFrom": "Dátum platnosti",
             "dateTo": " Dátum platnosti do",
-            "codeListId": "Kód číselníka",
-            "refIndicator": "Referencovateľný identifikátor",
-            "mainGestor": "Hlavný gestor",
             "newMainGestor": "Nový hlavný gestor",
-            "nextGestor": "Vedľajší gestor",
             "addNewGestor": "Pridať nového hlavného gestora",
             "cancelAddNewGestor": "Zrušiť pridanie nového hlavného gestora",
-            "sourceCode": "Zdrojový číselník",
-            "dateStartValid": "Začiatok účinnosti",
-            "dateEndValid": "Koniec účinnosti",
-            "noteCode": "Poznámka pre číselník",
             "addNewRow": "Pridať nový riadok",
             "addNewVersionName": "Pridať novú verziu názvu",
             "cancelAddNewVersionName": "Zrušiť pridanie novej verzie názvu",
@@ -1201,19 +1186,8 @@
             "discardUpdating": "Zahodiť rozpracovanú verziu"
         },
         "requestCreate": {
-            "base": "Základný číselník",
             "btnCheck": "Overiť dostupnosť",
-            "codeListName": "Názov číselníka",
-            "refIndicator": "Referencovateľný identifikátor",
-            "mainGestor": "Hlavný gestor",
-            "resortCode": "Rezortný kód",
-            "note": "Poznámka",
             "addNote": "+ Pridať poznámku",
-            "codeListId": "Kód číselníka",
-            "name": "Meno",
-            "lastName": "Priezvisko",
-            "phone": "Telefónne číslo",
-            "email": "Emailová adresa",
             "contactTitle": "Kontakt na vecného gestora číselníka",
             "codeListTableTitle": "Položky číselníka",
             "codeId": "Kód",
@@ -1230,26 +1204,12 @@
             "name": "Meno je povinné pole",
             "lastName": "Priezvisko je povinné pole",
             "email": "Email je povinné pole",
-            "phone": "Telefónne číslo je povinné pole",
-            "codeListSource": "Zdrojový číselník je povinné pole",
-            "codeListNotes": "Poznámka pre číselník je povinné pole"
+            "emailFormat": "Email je v nesprávnom tvare",
+            "phone": "Telefónne číslo je povinné pole"
         },
         "requestModal": {
             "yes": "Áno",
             "no": "Nie",
-            "shortcut": "Skrátený názov položky",
-            "codeItem": "Kód položky",
-            "codeName": "Názov položky",
-            "shortname": "Skratka názvu položky",
-            "refident": "Referencovateľný identifikátor",
-            "addData": "Doplňujúci obsah",
-            "unit": "Merná jednotka",
-            "note": "Poznámka pre položku",
-            "contain": "Zahŕňa",
-            "alsoContain": "Tiež zahŕňa",
-            "exclude": "Vylučuje",
-            "order": "Logické poradie položky",
-            "law": "Legislatívna uznateľnosť",
             "validate": "Dátum platnosti",
             "startDate": "Začiatok účinnosti",
             "endDate": "Koniec účinnosti",
@@ -1363,7 +1323,11 @@
         "PO_IS_PODetail": "Detail IS PO",
         "PO_IS_POCreate": "Vytvorenie IS PO",
         "meetings": "Zoznam zasadnutí",
-        "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia"
+        "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia",
+        "codeListList": "Zoznam číselníkov",
+        "codeListDetail": "Detail číselníka",
+        "meetingsCreate": "Vytvorenie zasadnutia",
+        "meetingDetail": "Detail zasadnutia"
     },
     "refRegisters": {
         "list": {
@@ -1399,7 +1363,8 @@
                 "PUBLISHED": "Schválený a publikovaný",
                 "IN_CONSTRUCTION": "rozpracovaný/nepovinný",
                 "READY_TO_APPROVAL": "Návrh na zaradenie do zoznamu referenčných registrov",
-                "REJECTED": "Zamietnutý na zaradenie do zoznamu referenčných registrov"
+                "REJECTED": "Zamietnutý na zaradenie do zoznamu referenčných registrov",
+                "FETCHING": ""
             },
             "muk": {
                 "heading": "MUK",
@@ -1590,6 +1555,11 @@
         "end": "Koniec zasadnutia",
         "place": "Miesto zasadnutia",
         "vote": "Zúčastním sa",
+        "changeVote": "Zmeniť",
+        "voteValue": {
+            "ACCEPTED": "Áno",
+            "DECLINED": "Nie"
+        },
         "program": "Program zasadnutia",
         "description": "Popis",
         "editItem": "Upraviť zasadnutie",
@@ -1601,9 +1571,12 @@
         "meetingExternalActors": "Hostia",
         "userName": "Meno",
         "email": "Emailová adresa",
+        "linkChange": "Zmeniť záznam",
+        "linkSave": "Uložiť záznam",
         "participation": "Potvrdenie o účasti",
         "participationValue": {
-            "ACCEPTED": "Potvrdil účasť"
+            "ACCEPTED": "Potvrdil účasť",
+            "DECLINED": "Zamietol účasť"
         },
         "groupShortName": "Skratka pracovnej skupiny",
         "userOrgName": "Organizácia",
@@ -1620,6 +1593,7 @@
         "addNewMeeting": "Pridať zasadnutie",
         "mandatory": "povinné",
         "editMeeting": "Zmeniť zasadnutie",
+        "reasonOfCanceling": "Dôvod zamietnutia",
         "form": {
             "heading": {
                 "dateTime": "Čas a miesto",
@@ -1687,6 +1661,23 @@
             "startDate": "Prijaté v období od",
             "endDate": "Prijaté v období do"
         },
+        "canseledMeeting": "Zasadnutie bolo zrušené",
+        "canseledMeetingReason": "Dôvod zrušenia",
+        "noDocumentsAttached": "Nie sú priložené žiadne dokumenty",
+        "noDocumentsLinkAttached": "Nie sú priložené žiadne odkazy na dokumenty",
+        "documentLinks": "Linky na dokumenty",
+        "otherDocuments": "Iné dokumenty",
+        "errors": {
+            "meetingNameRequired": "Názov stretnutia je povinný",
+            "meetingDateRequired": "Dátum stretnutia je povinný",
+            "meetingTimeStartRequired": "Čas je povinný",
+            "meetingTimeEndRequired": "Čas je povinný",
+            "meetingPlaceRequired": "Miesto stretnutia je povinné",
+            "meetingActorsRequired": "Pozvaní používatelia sú povinní",
+            "meetingDescriptionRequired": "Opis stretnutia je povinný",
+            "meetingExternalActorsNameRequired": "Meno použivateľa je povinné",
+            "meetingExternalActorsEmailRequired": "Email je povinný"
+        },
         "": ""
     },
     "globalSearch": {
@@ -1720,9 +1711,6 @@
             "submitButton": "Filtrovať výsledky"
         }
     },
-    "input": {
-        "requiredField": "(povinné)"
-    },
     "votes": {
         "breadcrumbs": {
             "home": "Domov",
@@ -1734,7 +1722,6 @@
         },
         "votesList": {
             "title": "Zoznam Hlasovaní",
-            "votesListSubtitle": "nejake blabla kecy",
             "tooltipText": "Pre neprihláseného sa nezobrazia stĺpce Právo hlasovať a Hlasoval za subjekt.",
             "table": {
                 "effectiveFrom": "Dátum spustenia",
@@ -1756,13 +1743,17 @@
             "date": "Dátum",
             "voteType": "Typ Hlasovania",
             "relatedDocuments": "Súvisiace dokumenty",
-            "relatedVoteLinks": "Hlasovanie sa týka návrhu",
+            "standardRequestTitle": "Hlasovanie sa týka návrhu",
+            "links": "Linky na dokumenty",
             "secret": "Tajné",
             "public": "Verejné",
             "downloadingFile": "Stahujem súbor",
             "submitVote": "Hlasovať",
             "editVote": "Upraviť hlasovanie",
-            "newVote": "+   Pridať nové hlasovanie",
+            "newVote": "Pridať nové hlasovanie",
+            "cancelVote": "Zrušiť hlasovanie",
+            "cancel": "Zrušiť",
+            "back": "Späť",
             "voteProcessing": "Spracovávam hlasovanie",
             "voteDescription": "Predkladaný návrh",
             "votesHandlingTitle": "Hlasovanie",
@@ -1779,7 +1770,7 @@
             "voteVetoChoiceLabel": "Vetovať hlasovanie",
             "description": "Poznámka",
             "voteConclusion": "Záver hlasovania",
-            "voteDetailExplanationPrefix": "Stav hlasovania ",
+            "voteState": "Stav hlasovania ",
             "vetoed": "Návrh bol vetovaný",
             "vetoedBy": "Vetoval",
             "vetoedDescription": "Dôvod",
@@ -1789,9 +1780,60 @@
                 "role": "Pozícia"
             }
         },
+        "voteEdit": {
+            "newVoteTitle": "Pridať nové hlasovanie",
+            "editVoteTitle": "Upraviť hlasovanie",
+            "subject": "Predmet hlasovania (znenie otázky) (povinné): ",
+            "relatedDraft": "Hlasovanie sa týka návrhu:",
+            "selectFromList": "Vybrať zo zoznamu",
+            "description": "Popis",
+            "generalPlaceholder": "Zadajte",
+            "documents": {
+                "title": "Dokumenty",
+                "subtitle": "Zadajte odkazy na dokumenty",
+                "generalInputPlaceholder": "Zadajte",
+                "linkInputPlaceholder": "Zadajte vo formáte http://url-adresa-k-dokumentu",
+                "descriptionLabel": "Popis dokumentu",
+                "typeLabel": "Typ dokumentu",
+                "linkLabel": "Link na dokument",
+                "sizeLabel": "Veľkosť dokumentu"
+            },
+            "invited": {
+                "title": "Pozvaní",
+                "invitedGroups": "Pozvané skupiny (povinné):",
+                "invitedUsers": "Pozvaní používatelia (povinné):"
+            },
+            "secretVote": "Tajné hlasovanie",
+            "date": {
+                "fromDate": "Dátum spustenia (povinné):",
+                "toDate": "Dátum ukončenia (povinné):"
+            },
+            "answers": {
+                "title": "Definícia odpovedí",
+                "particularAnswerTitle": "odpoveď",
+                "addNext": "Pridať ďalšiu definíciu",
+                "veto": "Povoliť právo veta",
+                "yes": "Áno",
+                "no": "Nie",
+                "didNotVote": "Zdržal sa hlasovania"
+            },
+            "cancel": "Zrušiť",
+            "callVote": "Vytvoriť hlasovanie",
+            "updateVote": "Upraviť hlasovanie",
+            "addNextDocumentItem": "Pridať ďalší odkaz na dokument",
+            "standardRequestsTable": {
+                "srName": "Názov návrhu",
+                "createdAt": "Vytvorené",
+                "name": "Meno",
+                "version": "Verzia",
+                "standardRequestState": "Stav"
+            }
+        },
         "type": {
             "yes": "Áno",
             "no": "Nie",
+            "enter": "Zadajte",
+            "selectOption": "Vyberte možnosť",
             "toShow": {
                 "onlyMyVotes": "Len moje hlasovania",
                 "allVotes": "Všetky hlasovania"
@@ -1806,7 +1848,15 @@
             },
             "changeAction": {
                 "added": "bol pridaný do hlasovania"
-            }
+            },
+            "cancel": "Zrušiť",
+            "select": "Vybrať",
+            "loadingData": "Načítavam údaje",
+            "callingVote": "Spracovávam hlasovanie"
+        },
+        "error": {
+            "errorTitle": "Nastala chyba",
+            "errorMessage": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu."
         }
     },
     "registration": {
@@ -1861,16 +1911,7 @@
         "heading": "Zoznam návrhov predložených prostredníctvom MetaIS"
     },
     "howto": {
-        "codelists": "Číselníky",
-        "refRegisters": "Referenčné registre",
-        "monitoring": "Zostavy a monitoring",
-        "guides": "Postupy a návody",
-        "dataObjects": "Dátové objekty",
-        "standardization": "Štandardizácia",
-        "programProjectsActivities": "Programy, projekty a aktivity",
-        "kris": "Ciele, princípy, aktivity a KRIT",
-        "po": "Orgány riadenia",
-        "egov": "e-Government komponenty"
+        "guides": "Postupy a návody"
     },
     "relationDetail": {
         "heading": "Detail vzťahu: {{item}}",
@@ -1893,6 +1934,10 @@
         "target": "Cieľ",
         "name": "Pod-cieľ",
         "description": "Popis cieľa",
-        "action": ""
+        "action": "V relácií s vybraným KRIS",
+        "haveNoRights": "Na editovanie tejto položky nemáte prísluľné práva.",
+        "commitmentHeader": "Záväzok dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy",
+        "commitmentLabel": "Týmto prehlasujeme, že pri budovaní a rozvoji ISVS budeme napĺňať nami definované ciele, podciele a dodržiavať princípy Národnej koncepcie informatizácie verejnej správy.",
+        "noCheckedItems": "Pred potvrdením záväzku dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy je potrebné vybrať aspoň jeden cieľ."
     }
 }

@@ -5,13 +5,16 @@ import { useTranslation } from 'react-i18next'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { CellContext, ColumnDef, Row } from '@tanstack/react-table'
-import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
+import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 import { ApiStandardRequestPreview, useGetAllStandardRequests } from '@isdd/metais-common/api/generated/standards-swagger'
 import { Filter } from '@isdd/idsk-ui-kit/filter/Filter'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { Button, CheckBox } from '@isdd/idsk-ui-kit/index'
+import { Button, CheckBox, TextLinkExternal } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFilters'
+import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 
 import styles from './meetingProposalsModal.module.scss'
 
@@ -19,8 +22,6 @@ interface IMeetingProposalsModalProps {
     isOpen: boolean
     className?: string
     close: () => void
-    isLoading?: boolean
-    error?: boolean
     setSelectedProposals: React.Dispatch<string[]>
     selectedProposals: string[]
 }
@@ -28,23 +29,37 @@ interface IMeetingProposalsModalProps {
 export interface FilterMeetingData extends IFilterParams {
     srName: string
 }
+const defaultPagination: Pagination = {
+    pageNumber: BASE_PAGE_NUMBER,
+    pageSize: BASE_PAGE_SIZE,
+    dataLength: 0,
+}
 
-export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({
-    isOpen,
-    close,
-    isLoading,
-    error,
-    setSelectedProposals,
-    selectedProposals,
-}) => {
+export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({ isOpen, close, setSelectedProposals, selectedProposals }) => {
     const { t } = useTranslation()
-    const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
-    const [currentPage, setCurrentPage] = useState(1)
-    const startOfList = currentPage * pageSize - pageSize
-    const endOfList = currentPage * pageSize
+    // const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
+    // const [currentPage, setCurrentPage] = useState(1)
+    // const startOfList = currentPage * pageSize - pageSize
+    // const endOfList = currentPage * pageSize
 
-    const handlePagingSelect = (value: string) => {
-        setPageSize(Number(value))
+    // const handlePagingSelect = (value: string) => {
+    //     setPageSize(Number(value))
+    // }
+
+    const [pagination, setPagination] = useState(defaultPagination)
+
+    // const filteredData = useMemo(() => {
+    //     const startOfList = pagination.pageNumber * pagination.pageSize - pagination.pageSize
+    //     const endOfList = pagination.pageNumber * pagination.pageSize
+    //     return data?.slice(startOfList, endOfList) || []
+    // }, [data, pagination.pageNumber, pagination.pageSize])
+
+    const myHandleFilterChange = (myFilter: IFilter) => {
+        setPagination({
+            ...pagination,
+            pageSize: myFilter.pageSize ?? BASE_PAGE_SIZE,
+            pageNumber: myFilter.pageNumber ?? defaultPagination.pageNumber,
+        })
     }
     const defaultFilterValues = {
         sort: [],
@@ -54,11 +69,22 @@ export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({
         srName: '',
     }
     const { filter, handleFilterChange } = useFilterParams<FilterMeetingData>(defaultFilterValues)
-    const { data } = useGetAllStandardRequests()
+    const { data, isLoading, isError } = useGetAllStandardRequests()
     const [rowSelection, setRowSelection] = useState<Array<string>>(selectedProposals)
+
     const filteredData = useMemo(() => {
-        return data?.standardRequests?.filter((request) => latiniseString(request.srName ?? '').includes(latiniseString(filter.fullTextSearch ?? '')))
+        return (
+            data?.standardRequests?.filter((request) => latiniseString(request.srName ?? '').includes(latiniseString(filter.fullTextSearch ?? ''))) ||
+            []
+        )
     }, [data?.standardRequests, filter.fullTextSearch])
+
+    const tableData = useMemo(() => {
+        const startOfList = pagination.pageNumber * pagination.pageSize - pagination.pageSize
+        const endOfList = pagination.pageNumber * pagination.pageSize
+        return filteredData?.slice(startOfList, endOfList) || []
+    }, [filteredData, pagination.pageNumber, pagination.pageSize])
+
     const handleCheckboxChange = useCallback(
         (row: Row<ApiStandardRequestPreview>) => {
             if (row.original.id) {
@@ -137,7 +163,16 @@ export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({
             meta: {
                 getCellContext: (ctx: CellContext<ApiStandardRequestPreview, unknown>) => ctx?.getValue?.(),
             },
-            cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            cell: (ctx) => (
+                <TextLinkExternal
+                    href={NavigationSubRoutes.ZOZNAM_NAVRHOV + '/' + ctx.row.original.id}
+                    newTab
+                    title={ctx.getValue() as string}
+                    textLink={ctx.getValue() as string}
+                >
+                    {ctx.getValue() as string}
+                </TextLinkExternal>
+            ),
         },
         {
             header: t('meetings.proposals.createdAt'),
@@ -199,19 +234,22 @@ export const MeetingProposalsModal: React.FC<IMeetingProposalsModalProps> = ({
                     </TextHeading>
                     <Filter defaultFilterValues={filter} onlySearch form={() => <></>} />
                     <ActionsOverTable
-                        pagination={{ pageNumber: currentPage, pageSize, dataLength: filteredData?.length ?? 0 }}
-                        handlePagingSelect={handlePagingSelect}
+                        pagination={{ ...pagination, dataLength: filteredData?.length ?? 0 }}
                         entityName={''}
                         hiddenButtons={{ SELECT_COLUMNS: true }}
+                        pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                        handleFilterChange={myHandleFilterChange}
                     />
-                    <Table data={filteredData?.slice(startOfList, endOfList)} columns={columns} isLoading={isLoading} error={error} />
+                    <QueryFeedback loading={isLoading} error={isError} withChildren>
+                        <Table data={tableData} columns={columns} isLoading={isLoading} error={isError} />
 
-                    <PaginatorWrapper
-                        pageSize={pageSize}
-                        pageNumber={currentPage}
-                        dataLength={filteredData?.length ?? 0}
-                        handlePageChange={(page) => setCurrentPage(page.pageNumber ?? -1)}
-                    />
+                        <PaginatorWrapper
+                            dataLength={filteredData.length ?? 0}
+                            pageNumber={pagination.pageNumber}
+                            pageSize={pagination.pageSize}
+                            handlePageChange={(page) => setPagination({ ...pagination, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })}
+                        />
+                    </QueryFeedback>
                     <div className={styles.submitButton}>
                         <Button
                             label={t('button.saveChanges')}

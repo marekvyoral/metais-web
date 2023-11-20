@@ -13,7 +13,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, RequestListState } from '@isdd/metais
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { IRequestForm, _entityName, mapToForm } from '@/componentHelpers/requests'
@@ -159,8 +159,8 @@ export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ 
             { action: action },
         )
             .then(() => {
-                setIsActionSuccess({ value: true, path: RouteNames.REQUESTLIST })
-                navigate(`${RouteNames.REQUESTLIST}`)
+                setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
+                navigate(`${NavigationSubRoutes.REQUESTLIST}`)
             })
             .catch(() => {
                 setErrorCheck(true)

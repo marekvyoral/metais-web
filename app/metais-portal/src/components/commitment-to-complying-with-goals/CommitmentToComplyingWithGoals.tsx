@@ -3,6 +3,8 @@ import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { ConfigurationItemUi, useStoreConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import React, { useEffect, useState } from 'react'
+import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
+import { useTranslation } from 'react-i18next'
 
 import styles from './commitment.module.scss'
 
@@ -10,9 +12,11 @@ type Props = {
     ciItemData: ConfigurationItemUi | undefined
     isOwner: boolean
     isCiItemInvalidated: boolean
+    hasSomeCheckedTableItem: boolean
 }
 
-export const CommitmentToComplyingWithGoals: React.FC<Props> = ({ ciItemData, isOwner, isCiItemInvalidated }) => {
+export const CommitmentToComplyingWithGoals: React.FC<Props> = ({ ciItemData, isOwner, isCiItemInvalidated, hasSomeCheckedTableItem }) => {
+    const { t } = useTranslation()
     const {
         state: { user },
     } = useAuth()
@@ -21,6 +25,10 @@ export const CommitmentToComplyingWithGoals: React.FC<Props> = ({ ciItemData, is
 
     const hasCiData = !!ciItemData?.uuid
     const isLoggedIn = !!user?.uuid
+
+    const hasRightsToEditCommitment = !hasCiData || !isLoggedIn || !isOwner || isCiItemInvalidated || !hasSomeCheckedTableItem
+    const canOpenTooltip = !isLoggedIn || !isOwner || !hasSomeCheckedTableItem
+    const tooltipMessage = !hasSomeCheckedTableItem ? t('Ciel.noCheckedItems') : t('Ciel.haveNoRights')
 
     useEffect(() => {
         setChecked(ciItemData?.attributes?.[ATTRIBUTE_NAME.Profil_KRIS_Zavazok_ciele_principy_stav])
@@ -43,16 +51,23 @@ export const CommitmentToComplyingWithGoals: React.FC<Props> = ({ ciItemData, is
     }
 
     return (
-        <div className={styles.marginBottom}>
-            <TextHeading size="S">{'Záväzok dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy'}</TextHeading>
-            <CheckBox
-                disabled={!hasCiData || !isLoggedIn || !isOwner || isCiItemInvalidated}
-                id="commitment"
-                label="Týmto prehlasujeme, že pri budovaní a rozvoji ISVS budeme napĺňať nami definované ciele, podciele a dodržiavať princípy Národnej koncepcie informatizácie verejnej správy."
-                name="commitment"
-                onChange={(e) => handleCheckboxChange(e.target.checked)}
-                checked={checked}
-            />
-        </div>
+        <Tooltip
+            descriptionElement={tooltipMessage}
+            position={'center center'}
+            disabled={!canOpenTooltip}
+            tooltipContent={() => (
+                <div className={styles.marginBottom}>
+                    <TextHeading size="S">{t('Ciel.commitmentHeader')}</TextHeading>
+                    <CheckBox
+                        disabled={hasRightsToEditCommitment}
+                        id="commitment"
+                        label={t('Ciel.commitmentLabel')}
+                        name="commitment"
+                        onChange={(e) => handleCheckboxChange(e.target.checked)}
+                        checked={checked}
+                    />
+                </div>
+            )}
+        />
     )
 }

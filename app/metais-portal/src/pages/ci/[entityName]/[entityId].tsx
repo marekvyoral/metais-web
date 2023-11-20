@@ -1,28 +1,22 @@
 import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { CI_ITEM_QUERY_KEY, ENTITY_PROJECT, INVALIDATED, ciInformationTab } from '@isdd/metais-common/constants'
+import { CI_ITEM_QUERY_KEY, INVALIDATED, ciInformationTab } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { shouldEntityNameBePO } from '@isdd/metais-common/src/componentHelpers/ci/entityNameHelpers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { ProjectStateContainer } from '@/components/containers/ProjectStateContainer'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
-import { ProjectStateView } from '@/components/views/ci/project/ProjectStateView'
-import Informations from '@/pages/ci/[entityName]/[entityId]/information'
-
-export const INDEX_ROUTE = Informations
 
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -33,12 +27,6 @@ const EntityDetailPage: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState<string>()
 
     const entityName = shouldEntityNameBePO(urlEntityName ?? '')
-
-    const {
-        state: { user },
-    } = useAuth()
-
-    const isUserLogged = !!user
 
     document.title = `${t('titles.ciDetail', { ci: urlEntityName })} | MetaIS`
     const userAbility = useUserAbility()
@@ -58,15 +46,6 @@ const EntityDetailPage: React.FC = () => {
     const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: urlEntityName ?? '', entityId: entityId ?? '', t })
 
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
-
-    if (urlEntityName == ENTITY_PROJECT && isUserLogged) {
-        tabList.splice(2, 0, {
-            id: 'activities',
-            path: `/ci/${urlEntityName}/${entityId}/activities`,
-            title: t('ciType.activities'),
-            content: <Outlet />,
-        })
-    }
 
     return (
         <>
@@ -104,9 +83,6 @@ const EntityDetailPage: React.FC = () => {
                             <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
                             <MutationFeedback error={false} success={isActionSuccess.value} />
                         </FlexColumnReverseWrapper>
-                        {entityName == ENTITY_PROJECT && isUserLogged && (
-                            <ProjectStateContainer configurationItemId={entityId ?? ''} View={(props) => <ProjectStateView {...props} />} />
-                        )}
 
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
 

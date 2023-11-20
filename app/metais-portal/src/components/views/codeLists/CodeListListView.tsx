@@ -1,32 +1,17 @@
-import {
-    BaseModal,
-    BreadCrumbs,
-    Button,
-    ButtonGroupRow,
-    Filter,
-    HomeIcon,
-    Input,
-    PaginatorWrapper,
-    SimpleSelect,
-    TextBody,
-    TextHeading,
-} from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Filter, HomeIcon, Input, PaginatorWrapper, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { TextLink } from '@isdd/idsk-ui-kit/typography/TextLink'
 import { RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ApiCodelistItemName, ApiCodelistManager, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
-import { ActionsOverTable, QueryFeedback } from '@isdd/metais-common/index'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { useNavigate } from 'react-router-dom'
 import { SelectFilterOrganization } from '@isdd/metais-common/components/select-organization/SelectFilterOrganization'
-
-import { TextClickable } from './components/TextClickable/TextClickable'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import {
     CodeListFilterOnlyBase,
@@ -60,12 +45,9 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
     isLoading,
 }) => {
     const { t, i18n } = useTranslation()
-    const navigate = useNavigate()
     const {
-        state: { user },
-    } = useAuth()
-
-    const [lockedDialogData, setLockedDialogData] = useState<{ id?: number; lockedBy?: string; isOpened: boolean }>({ isOpened: false })
+        isActionSuccess: { value: isExternalSuccess },
+    } = useActionSuccess()
 
     const columns: Array<ColumnDef<ApiCodelistPreview>> = [
         {
@@ -77,20 +59,8 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                 getCellContext: (ctx) => selectBasedOnLanguage(ctx.getValue() as ApiCodelistItemName[], i18n.language),
             },
             cell: (row) => {
-                const { id, locked, lockedBy } = row.row.original
                 const name = selectBasedOnLanguage(row.getValue() as ApiCodelistItemName[], i18n.language)
-
-                return locked && user?.login !== lockedBy ? (
-                    <TextClickable
-                        onClick={() => {
-                            setLockedDialogData({ lockedBy, id, isOpened: true })
-                        }}
-                    >
-                        {name}
-                    </TextClickable>
-                ) : (
-                    <TextLink to={`${RouteNames.CODELISTS}/${id}`}>{name}</TextLink>
-                )
+                return <TextLink to={`${NavigationSubRoutes.CODELIST}/${row.row.original.id}`}>{name}</TextLink>
             },
         },
         {
@@ -151,10 +121,11 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                 links={[
                     { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
-                    isOnlyPublishedPage
-                        ? { label: t('codeList.breadcrumbs.publicCodeListsList'), href: NavigationSubRoutes.PUBLIKOVANE_CISELNIKY }
-                        : { label: t('codeList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CISELNIKY },
+                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
+                    {
+                        label: isOnlyPublishedPage ? t('codeList.breadcrumbs.publicCodeListsList') : t('codeList.breadcrumbs.codeListsList'),
+                        href: NavigationSubRoutes.CODELIST,
+                    },
                 ]}
             />
             <MainContentWrapper>
@@ -162,6 +133,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                     <FlexColumnReverseWrapper>
                         <TextHeading size="XL">{t('codeListList.title')}</TextHeading>
                         {isError && <QueryFeedback error={isError} loading={false} />}
+                        {isExternalSuccess && <MutationFeedback success error={false} />}
                     </FlexColumnReverseWrapper>
                     {isOnlyPublishedPage ? (
                         <TextHeading size="L">{t('codeListList.publicCodeListSubtitle')}</TextHeading>
@@ -236,19 +208,6 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                         dataLength={data?.dataLength || 0}
                         handlePageChange={handleFilterChange}
                     />
-                    <BaseModal isOpen={lockedDialogData.isOpened} close={() => setLockedDialogData({ ...lockedDialogData, isOpened: false })}>
-                        <TextBody>{t('codeListList.lockedModal.text', { lockedBy: lockedDialogData.lockedBy })}</TextBody>
-                        <ButtonGroupRow>
-                            <Button
-                                label={t('codeListList.lockedModal.button.lastSavedRevision')}
-                                onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}`)}
-                            />
-                            <Button
-                                label={t('codeListList.lockedModal.button.currentRevision')}
-                                onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}`)}
-                            />
-                        </ButtonGroupRow>
-                    </BaseModal>
                 </QueryFeedback>
             </MainContentWrapper>
         </>

@@ -11,9 +11,10 @@ import { ConfigurationItemHistoryListContainer } from '@/components/containers/C
 
 interface RelationshipsAccordion {
     entityId: string
+    basePath?: string
 }
 
-export const HistoryAccordion: React.FC<RelationshipsAccordion> = ({ entityId }) => {
+export const HistoryAccordion: React.FC<RelationshipsAccordion> = ({ entityId, basePath }) => {
     const { t } = useTranslation()
 
     return (
@@ -51,6 +52,7 @@ export const HistoryAccordion: React.FC<RelationshipsAccordion> = ({ entityId })
                                         isLoading={props.isLoading}
                                         isError={props.isError}
                                         pagination={props.pagination}
+                                        basePath={basePath}
                                     />
                                 )
                             }}

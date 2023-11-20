@@ -1,0 +1,19 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.inlineSpaceBetween {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.inline {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.marginLeft {
+    margin-left: govuk-spacing(4);
+}
+

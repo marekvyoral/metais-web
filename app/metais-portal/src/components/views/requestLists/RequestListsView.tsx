@@ -18,7 +18,7 @@ import { ApiCodelistItemName, ApiCodelistPreview } from '@isdd/metais-common/api
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
 import { ActionsOverTable, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -28,9 +28,9 @@ import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbil
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { TextClickable } from '@/components/views/codeLists/components/TextClickable/TextClickable'
-import { CodeListFilterOnlyBase, CodeListListFilterData, defaultFilterValues } from '@/components/containers/CodeListListContainer'
+import { CodeListFilterOnlyBase } from '@/components/containers/CodeListListContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { RequestListViewProps } from '@/components/containers/RequestListContainer'
+import { RequestListFilterData, RequestListViewProps, defaultFilterValues } from '@/components/containers/RequestListContainer'
 
 const selectBasedOnLanguage = (languageData: Array<ApiCodelistItemName>, appLanguage: string) => {
     const translatedName = languageData?.find((item) => item.language === appLanguage)?.value
@@ -82,7 +82,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                         {name}
                     </TextClickable>
                 ) : (
-                    <TextLink to={`${RouteNames.REQUESTLIST}/${id}`}>{name}</TextLink>
+                    <TextLink to={`${NavigationSubRoutes.REQUESTLIST}/${id}`}>{name}</TextLink>
                 )
             },
         },
@@ -113,8 +113,8 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                 links={[
                     { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.CODELISTS },
-                    { label: t('codeList.breadcrumbs.requestList'), href: RouteNames.REQUESTLIST },
+                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
+                    { label: t('codeList.breadcrumbs.requestList'), href: NavigationSubRoutes.REQUESTLIST },
                 ]}
             />
             {userAbility.can(RequestListActions.SHOW, entityName) && (
@@ -123,7 +123,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                     <QueryFeedback loading={isLoading} error={false} withChildren>
                         <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>
 
-                        <Filter<CodeListListFilterData>
+                        <Filter<RequestListFilterData>
                             heading={t('codeListList.filter.title')}
                             defaultFilterValues={defaultFilterValues}
                             form={({ filter: formFilter, register, setValue }) => (
@@ -137,7 +137,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                                             label: t(`codeListList.state.${state}`),
                                         }))}
                                         setValue={setValue}
-                                        defaultValue={[...(formFilter.wfState || defaultFilterValues.wfState)]}
+                                        defaultValue={formFilter.wfState || defaultFilterValues.wfState}
                                     />
                                     <Input {...register('code')} type="text" label={t('codeListList.filter.code')} />
                                     <Input {...register('name')} type="text" label={t('codeListList.filter.name')} />
@@ -166,7 +166,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                             createButton={
                                 userAbility.can(RequestListActions.CREATE, entityName) && (
                                     <CreateEntityButton
-                                        onClick={() => navigate(`${RouteNames.CREATEREQUEST}`, { state: { from: location } })}
+                                        onClick={() => navigate(`${NavigationSubRoutes.REQUESTLIST}/create`, { state: { from: location } })}
                                         label={t('codeListList.requestCreate.addItemBtn')}
                                     />
                                 )
@@ -193,11 +193,11 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                             <ButtonGroupRow>
                                 <Button
                                     label={t('codeListList.lockedModal.button.lastSavedRevision')}
-                                    onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}/detail`)}
+                                    onClick={() => navigate(`${NavigationSubRoutes.CODELIST}/${lockedDialogData.id}/detail`)}
                                 />
                                 <Button
                                     label={t('codeListList.lockedModal.button.currentRevision')}
-                                    onClick={() => navigate(`${RouteNames.CODELISTS}/${lockedDialogData.id}/detail`)}
+                                    onClick={() => navigate(`${NavigationSubRoutes.CODELIST}/${lockedDialogData.id}/detail`)}
                                 />
                             </ButtonGroupRow>
                         </BaseModal>

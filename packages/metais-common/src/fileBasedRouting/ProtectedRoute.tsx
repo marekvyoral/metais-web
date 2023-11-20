@@ -6,7 +6,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 interface iProtectedRoute {
     element: JSX.Element
-    slug: string
+    slug?: string
 }
 
 const ProtectedRoute = ({ element, slug }: iProtectedRoute) => {
@@ -16,10 +16,10 @@ const ProtectedRoute = ({ element, slug }: iProtectedRoute) => {
         state: { token },
     } = useAuth()
     const actions = Object.values(Actions)
-    const selectedAbility = actions?.find((action) => slug.includes(action))
+    const selectedAbility = actions?.find((action) => slug?.includes(action))
     const isUserLogged = !!token
-    const isCannotReadPage = CANNOT_READ_ENTITY?.some((entity) => slug.includes(entity))
-    const isCanWithoutLogin = CAN_CREATE_WITHOUT_LOGIN.some((entity) => slug.includes(entity))
+    const isCannotReadPage = CANNOT_READ_ENTITY?.some((entity) => slug?.includes(entity))
+    const isCanWithoutLogin = CAN_CREATE_WITHOUT_LOGIN.some((entity) => slug?.includes(entity))
 
     useEffect(() => {
         if (!isUserLogged && selectedAbility && !isCanWithoutLogin) setNotAuthorized(true)

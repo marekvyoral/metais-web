@@ -1,3 +1,5 @@
+import { TFunction } from 'i18next'
+
 export const BASE_PAGE_NUMBER = 1
 export const BASE_PAGE_SIZE = 10
 
@@ -54,6 +56,18 @@ export const documentsManagementGroupDocumentsDefaultSelectedColumns = [
     { technicalName: 'required', name: 'Required', selected: true },
     { technicalName: 'documentGroup', name: 'Document group', selected: false },
     { technicalName: 'type', name: 'Type', selected: false },
+]
+
+export const getProjectsFinanceManagementSelectedColumns = (t: TFunction<'translation', undefined, 'translation'>) => [
+    { technicalName: 'name', name: t('projects.financeManagement.approvalProcessName'), selected: false },
+    { technicalName: 'approvalProcess', name: t('projects.financeManagement.approvalProcess'), selected: true },
+    { technicalName: 'min', name: t('projects.financeManagement.tableTitleMin'), selected: true },
+    { technicalName: 'max', name: t('projects.financeManagement.tableTitleMax'), selected: true },
+]
+
+export const projectsFinanceManagementInvestmentType = [
+    { label: 'Project', value: 'c_projekt' },
+    { label: 'Zmenová požiadavka', value: 'c_zmenova_poziadavka' },
 ]
 
 export const ROLES_GROUP = 'SKUPINA_ROL'
@@ -140,7 +154,7 @@ export const HTML_TYPE = 'HTML'
 export const MUK = 'muk'
 
 export const P_REALIZUJE_AKT = 'P_realizuje_AKT'
-export const ACTIVITY = 'Aktivita'
+export const ENTITY_ACTIVITY = 'Aktivita'
 
 export const DESCRIPTION = 'Popis'
 
@@ -169,6 +183,8 @@ export const PO = 'PO'
 export const ENTITY_KS = 'KS'
 export const ENTITY_AS = 'AS'
 export const ENTITY_MIGRATION = 'Migracia'
+export const STANDARDIZATION_DRAFTS_LIST = 'draftsList'
+export const REFERENCE_REGISTER = 'ReferenceRegister'
 
 export const MAX_TITLE_LENGTH = 100
 export const INVALIDATED = 'INVALIDATED'

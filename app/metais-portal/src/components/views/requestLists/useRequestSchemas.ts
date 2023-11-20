@@ -60,8 +60,8 @@ export const useCreateRequestSchema = (): IOutput => {
         name: string().required(t('codeListList.requestValidations.name')),
         lastName: string().required(t('codeListList.requestValidations.lastName')),
         phone: string().required(t('codeListList.requestValidations.phone')),
-        email: string().required(t('codeListList.requestValidations.email')).email(),
-        codeListSate: string(),
+        email: string().required(t('codeListList.requestValidations.email')).email(t('codeListList.requestValidations.emailFormat')),
+        codeListState: string(),
     })
 
     return {

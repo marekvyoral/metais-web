@@ -107,8 +107,8 @@ export const getPortalNavigationItems = (
                     title: t('navMenu.lists.codelists'),
                     path: RouteNames.HOW_TO_CODELIST,
                     subItems: [
-                        { title: t('navMenu.lists.codelistsList'), path: NavigationSubRoutes.CISELNIKY },
-                        { title: t('navMenu.lists.codelistsRequestsList'), path: NavigationSubRoutes.CODELIST_REQUESTS },
+                        { title: t('navMenu.lists.codelistsList'), path: NavigationSubRoutes.CODELIST },
+                        { title: t('navMenu.lists.codelistsRequestsList'), path: NavigationSubRoutes.REQUESTLIST, isLoginRequired: true },
                     ],
                 },
                 /* {

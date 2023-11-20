@@ -9,7 +9,7 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import { ConfigurationItemHistoryListContainer } from '@/components/containers/ConfigurationItemHistoryListContainer'
 import { RefRegistersHistoryChangesTable } from '@/components/views/history/RefRegistersHistoryChangesTable'
 
-const HistoryChanges = () => {
+const RefRegistersHistoryChanges = () => {
     const { t } = useTranslation()
     const { entityId } = useParams()
 
@@ -55,4 +55,4 @@ const HistoryChanges = () => {
     )
 }
 
-export default HistoryChanges
+export default RefRegistersHistoryChanges
