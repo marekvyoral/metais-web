@@ -15,7 +15,7 @@ import { AttributesContainerViewData } from '@isdd/metais-common/components/cont
 
 import { CiTable } from '@/components/ci-table/CiTable'
 import { FilterPO, POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
-import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
+import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
 
 interface Props {
     attributesData: AttributesContainerViewData

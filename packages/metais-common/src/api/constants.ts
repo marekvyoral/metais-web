@@ -52,8 +52,13 @@ export enum ATTRIBUTE_NAME {
     email = 'email',
     srDescription1 = 'srDescription1',
     relatedDocuments = 'relatedDocuments',
+    Profil_KRIS_stav_kris = 'Profil_KRIS_stav_kris',
     Profil_Ciel_kategoria = 'Profil_Ciel_kategoria',
     Profil_KRIS_Zavazok_ciele_principy_stav = 'Profil_KRIS_Zavazok_ciele_principy_stav',
+}
+
+export enum ATTRIBUTE_PROFILE_NAME {
+    Profil_KRIS = 'Profil_KRIS',
 }
 
 export enum API_STANDARD_REQUEST_ATTRIBUTES {

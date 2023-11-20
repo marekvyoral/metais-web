@@ -12,12 +12,13 @@ interface ISelectPO {
     onChange: (val: ConfigurationItemUi[]) => void
     placeholder?: string
     name: string
+    isMulti: boolean
 }
 
-export const SelectPOForFilter: React.FC<ISelectPO> = ({ ciType, valuesAsUuids, label, onChange, placeholder, name }) => {
+export const SelectPOForFilter: React.FC<ISelectPO> = ({ ciType, valuesAsUuids, label, onChange, placeholder, name, isMulti = false }) => {
     const ciOptionsHook = useReadCiList1Hook()
 
-    const { data } = useReadCiList1(
+    const { data, isLoading, isError } = useReadCiList1(
         {
             filter: { type: [ciType], uuid: valuesAsUuids },
         },
@@ -32,11 +33,11 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({ ciType, valuesAsUuids, 
     }, [value])
 
     useEffect(() => {
-        if (data?.configurationItemSet) {
+        if (data?.configurationItemSet && (!isLoading || !isError)) {
             setValue(data?.configurationItemSet)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [isLoading, isError])
 
     const loadCiOptions = useCallback(
         async (searchQuery: string, additional: { page: number } | undefined) => {
@@ -63,7 +64,7 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({ ciType, valuesAsUuids, 
 
     return (
         <SelectLazyLoading<ConfigurationItemUi>
-            isMulti
+            isMulti={isMulti}
             placeholder={placeholder}
             name={name}
             label={label}

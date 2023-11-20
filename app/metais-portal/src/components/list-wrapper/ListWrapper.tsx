@@ -33,7 +33,7 @@ import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiT
 
 import { AddItemsButtonGroup } from '@/components/add-items-button-group/AddItemsButtonGroup'
 import { CiTable } from '@/components/ci-table/CiTable'
-import { ColumnsOutputDefinition, IStoreColumnSelection } from '@/components/ci-table/ciTableHelpers'
+import { ColumnsOutputDefinition, IStoreColumnSelection } from '@/componentHelpers/ci/ciTableHelpers'
 import { CIFilterData } from '@/pages/ci/[entityName]/entity'
 
 interface IListWrapper {

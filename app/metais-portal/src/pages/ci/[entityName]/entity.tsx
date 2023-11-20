@@ -35,7 +35,6 @@ const CiListPage: React.FC<Props> = ({ importantEntityName, noSideMenu }) => {
                     ]}
                 />
             )}
-
             <MainContentWrapper noSideMenu={noSideMenu}>
                 <AttributesContainer
                     entityName={entityName}

@@ -120,34 +120,32 @@ const parseCustomAttributes = (urlParams: URLSearchParams): ParsedCustomAttribut
         const [name, operator] = queryKey.split(OPERATOR_SEPARATOR)
         const value = urlParams.get(queryKey)
 
-        const isMetaAttribute = isMatchWithMetaAttributeTechnicalName(name)
+        const isMetaAttribute = isMatchWithMetaAttributeTechnicalName(name) && value
 
-        if (value && queryKey.includes(OPERATOR_SEPARATOR)) {
-            if (!isMetaAttribute) {
-                if (!name || !operator) continue
-                if (!attributeFilters) attributeFilters = {}
-                if (attributeFilters && !attributeFilters[name]) {
-                    attributeFilters = {
-                        ...attributeFilters,
-                        [name]: [],
-                    }
+        if (value && isMetaAttribute) {
+            const { metaAttributeName, metaAttributeValue } = mapMetaAttributeFromUrlToFitFilter(name, operator, value)
+            if (metaAttributeName != null && metaAttributeValue != null) {
+                metaAttributeFilters = { ...metaAttributeFilters, [metaAttributeName]: metaAttributeValue }
+            }
+        } else if (value && queryKey.includes(OPERATOR_SEPARATOR) && !isMetaAttribute) {
+            if (!name || !operator) continue
+            if (!attributeFilters) attributeFilters = {}
+            if (attributeFilters && !attributeFilters[name]) {
+                attributeFilters = {
+                    ...attributeFilters,
+                    [name]: [],
                 }
+            }
 
-                if (Object.values(OPERATOR_OPTIONS_URL).includes(operator as OPERATOR_OPTIONS_URL)) {
-                    if (value.includes(JOIN_OPERATOR)) {
-                        const convertedArrayAttribute = convertUrlArrayAttribute(transformOperatorsToUrl(operator) as OPERATOR_OPTIONS, value)
-                        attributeFilters[name] = convertedArrayAttribute.filter((attribute) => Boolean(attribute))
-                    } else {
-                        attributeFilters[name].push({
-                            operator: transformOperatorsToUrl(operator) as OPERATOR_OPTIONS,
-                            value: value,
-                        })
-                    }
-                }
-            } else if (isMetaAttribute) {
-                const { metaAttributeName, metaAttributeValue } = mapMetaAttributeFromUrlToFitFilter(name, operator, value)
-                if (metaAttributeName != null && metaAttributeValue != null) {
-                    metaAttributeFilters = { ...metaAttributeFilters, [metaAttributeName]: metaAttributeValue }
+            if (Object.values(OPERATOR_OPTIONS_URL).includes(operator as OPERATOR_OPTIONS_URL)) {
+                if (value.includes(JOIN_OPERATOR)) {
+                    const convertedArrayAttribute = convertUrlArrayAttribute(transformOperatorsToUrl(operator) as OPERATOR_OPTIONS, value)
+                    attributeFilters[name] = convertedArrayAttribute.filter((attribute) => Boolean(attribute))
+                } else {
+                    attributeFilters[name].push({
+                        operator: transformOperatorsToUrl(operator) as OPERATOR_OPTIONS,
+                        value: value,
+                    })
                 }
             }
         }

@@ -1901,6 +1901,15 @@
         "warningMessage": "O {{countDown}} sekúnd budete kvôli inaktivite odhlásený.",
         "loading": "Spracúvame odhlásenie"
     },
+    "KRIS": {
+        "heading": "Zoznam koncepcií KRIT",
+        "responsibleAuthority": "Aktuálne zodpovedná povinná osoba",
+        "table": {
+            "code": "Kód",
+            "name": "Názov",
+            "state": "Stav"
+        }
+    },
     "Ciel": {
         "target": "Cieľ",
         "name": "Pod-cieľ",
@@ -1910,5 +1919,8 @@
         "commitmentHeader": "Záväzok dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy",
         "commitmentLabel": "Týmto prehlasujeme, že pri budovaní a rozvoji ISVS budeme napĺňať nami definované ciele, podciele a dodržiavať princípy Národnej koncepcie informatizácie verejnej správy.",
         "noCheckedItems": "Pred potvrdením záväzku dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy je potrebné vybrať aspoň jeden cieľ."
+    },
+    "input": {
+        "requiredField": "(Povinné)"
     }
 }

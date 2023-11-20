@@ -13,9 +13,9 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
+import { KrisRelatedContainer } from '@/components/containers/KrisRelatedContainer'
 
 const KrisEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -90,7 +90,7 @@ const KrisEntityDetailPage: React.FC = () => {
 
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
 
-                        {selectedTab === ciInformationTab && <RelationsListContainer entityId={entityId ?? ''} technicalName={ENTITY_KRIS} />}
+                        {selectedTab === ciInformationTab && <KrisRelatedContainer currentKrisUuid={entityId ?? ''} />}
                     </QueryFeedback>
                 </CiPermissionsWrapper>
             </MainContentWrapper>

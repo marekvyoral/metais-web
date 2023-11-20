@@ -78,6 +78,7 @@ import KrisEntityDetailPage from '@/pages/ci/KRIS/[entityId]'
 import { TodoPage } from '@/components/views/todo-page/TodoPage'
 import RefRegistersCompareSinglePage from '@/pages/refregisters/[entityId]/history/[firstId]'
 import RefRegistersComparePage from '@/pages/refregisters/[entityId]/history/[firstId]/[secondId]'
+import KRISListPage from '@/pages/ci/KRIS'
 
 export interface RouteConfig {
     path?: string
@@ -460,6 +461,11 @@ export const routesConfig: RouteConfig[] = [
                 slug: RouterRoutes.CI_ACTIVITY_DETAIL,
                 component: ActivityEntityDetailPage,
                 subRoutes: [generalCiDetailInformationOutlet],
+            },
+            {
+                path: RouterRoutes.CI_KRIS_LIST,
+                slug: RouterRoutes.CI_KRIS_LIST,
+                component: KRISListPage,
             },
             {
                 path: RouterRoutes.CI_ACTIVITY_CREATE,

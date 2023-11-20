@@ -5,8 +5,17 @@ import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-sw
 import { Attribute, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { pairEnumsToEnumValues } from '@isdd/metais-common/index'
-import { ColumnOrderState } from '@tanstack/react-table'
+import { CellContext, ColumnOrderState } from '@tanstack/react-table'
 import { TFunction } from 'i18next'
+import { Link, useLocation } from 'react-router-dom'
+import classNames from 'classnames'
+import { HTML_TYPE, MUK } from '@isdd/metais-common/constants'
+import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
+import { IListData } from '@isdd/metais-common/types/list'
+import { useTranslation } from 'react-i18next'
+
+import { IRowSelectionState } from '@/components/ci-table/CiTable'
+import styles from '@/components/ci-table/ciTable.module.scss'
 
 interface ReducedAttributes {
     [technicalName: string]: Attribute
@@ -132,4 +141,76 @@ export const isMetaAttribute = (metaTechnicalName: string) => {
         metaTechnicalName === MetainformationColumns.CREATED_AT ||
         metaTechnicalName === MetainformationColumns.LAST_MODIFIED_AT
     )
+}
+
+type GetColumnsFromApiCellContentProps = {
+    index: number
+    ctx: CellContext<ColumnsOutputDefinition, unknown>
+    technicalName: string
+    schemaAttributes: ReducedAttributes
+    data: IListData
+    rowSelectionState: IRowSelectionState | undefined
+    isKRIS?: boolean
+}
+
+export const useGetColumnsFromApiCellContent = () => {
+    const { t } = useTranslation()
+    const location = useLocation()
+
+    const getColumnsFromApiCellContent = ({
+        index,
+        ctx,
+        technicalName,
+        schemaAttributes,
+        data,
+        rowSelectionState,
+    }: GetColumnsFromApiCellContentProps) => {
+        const isFirstItem = index === 0
+        const isInSchema = !!schemaAttributes[technicalName]?.name
+
+        const isMUK = technicalName === MUK
+        const isState = technicalName === MetainformationColumns.STATE
+        const isOwner = technicalName === MetainformationColumns.OWNER
+        const isDate = technicalName === MetainformationColumns.LAST_MODIFIED_AT || technicalName === MetainformationColumns.CREATED_AT
+        const isHTML = schemaAttributes?.[technicalName]?.type === HTML_TYPE
+
+        switch (true) {
+            case isFirstItem: {
+                return (
+                    <Link
+                        to={'./' + ctx?.row?.original?.uuid}
+                        state={{ from: location }}
+                        className={classNames({ [styles.bold]: ctx?.row.original.uuid && !!rowSelectionState?.rowSelection[ctx?.row.original.uuid] })}
+                    >
+                        {ctx?.getValue?.() as string}
+                    </Link>
+                )
+            }
+            case isState: {
+                return t(`metaAttributes.state.${ctx.getValue()}`)
+            }
+            case isMUK: {
+                return t(`refRegisters.table.muk.${ctx.getValue()}`)
+            }
+            case isOwner: {
+                return getOwnerInformation(ctx?.row?.original?.metaAttributes?.owner as string, data.gestorsData)?.configurationItemUi?.attributes?.[
+                    ATTRIBUTE_NAME.Gen_Profil_nazov
+                ]
+            }
+            case isDate: {
+                return t('dateTime', { date: ctx.getValue() as string })
+            }
+            case isHTML: {
+                return <SafeHtmlComponent dirtyHtml={ctx?.getValue?.() as string} />
+            }
+            case isInSchema: {
+                return ctx.getValue() as string
+            }
+            default: {
+                return ''
+            }
+        }
+    }
+
+    return { getColumnsFromApiCellContent }
 }
