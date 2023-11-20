@@ -65,6 +65,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
                 return (
                     <div className={classNames(style.rowItem, style.lazySelect)}>
                         <SelectPOForFilter
+                            isMulti
                             ciType={ciTypeCMDB}
                             label={t('customAttributeFilter.value.label')}
                             name="atributeValue"
@@ -76,7 +77,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
             }
             case hasEnumItems: {
                 return (
-                    <div className={style.rowItem}>
+                    <div className={classNames(style.rowItem, style.lazySelect)}>
                         <MultiSelect
                             options={optionsForSelects}
                             id={`attribute-value-${index}`}
@@ -138,6 +139,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
                 return (
                     <div className={classNames(style.rowItem, style.lazySelect)}>
                         <SelectPOForFilter
+                            isMulti
                             ciType="PO"
                             label={t('customAttributeFilter.value.label')}
                             name="atributeValue"
@@ -150,7 +152,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
 
             case isState: {
                 return (
-                    <div className={style.rowItem}>
+                    <div className={classNames(style.rowItem, style.lazySelect)}>
                         <MultiSelect
                             label={t('customAttributeFilter.value.label')}
                             name="atributeValue"

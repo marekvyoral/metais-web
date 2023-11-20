@@ -20,6 +20,7 @@ import { findAttributeType } from '@isdd/metais-common/componentHelpers/filter/f
 import { findAttributeConstraints } from '@isdd/metais-common/componentHelpers/filter/findAttributeConstraints'
 import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { formatAttributeFiltersToFilterAttributeType, formatMetaAttributesToFilterAttributeType } from '@isdd/metais-common/componentHelpers'
+import { filterAttributesBasedOnIgnoreList } from '@isdd/metais-common/componentHelpers/ci/filter'
 
 export type FilterAttributeValue = string | string[] | Date | null
 export interface FilterAttribute {
@@ -43,9 +44,18 @@ interface Props {
     attributes: Attribute[] | undefined
     attributeProfiles: AttributeProfile[] | undefined
     constraintsData: (EnumType | undefined)[]
+    ignoreInputNames?: string[]
 }
 
-export const DynamicFilterAttributes: FC<Props> = ({ filterData, setValue, attributes, attributeProfiles, constraintsData, defaults }) => {
+export const DynamicFilterAttributes: FC<Props> = ({
+    filterData,
+    setValue,
+    attributes,
+    attributeProfiles,
+    constraintsData,
+    defaults,
+    ignoreInputNames,
+}) => {
     const attributeFiltersData = filterData?.attributeFilters
     const metaAttributeFiltersData = filterData?.metaAttributeFilters
 
@@ -71,7 +81,10 @@ export const DynamicFilterAttributes: FC<Props> = ({ filterData, setValue, attri
         const filterAttributes: FilterAttribute[] = []
 
         if (metaAttributeFiltersData) {
-            const formattedMetaAttributes = formatMetaAttributesToFilterAttributeType(metaAttributeFiltersData)
+            const formattedMetaAttributes = filterAttributesBasedOnIgnoreList(
+                formatMetaAttributesToFilterAttributeType(metaAttributeFiltersData),
+                ignoreInputNames ?? [],
+            )
             formattedMetaAttributes.forEach((attribute) => {
                 filterAttributes.push(attribute)
                 setValue(formatAttributeOperatorString(attribute?.name ?? '', attribute.operator ?? ''), attribute.value)
@@ -79,7 +92,10 @@ export const DynamicFilterAttributes: FC<Props> = ({ filterData, setValue, attri
         }
 
         if (attributeFiltersData) {
-            const formattedAttributeFilters = formatAttributeFiltersToFilterAttributeType(attributeFiltersData)
+            const formattedAttributeFilters = filterAttributesBasedOnIgnoreList(
+                formatAttributeFiltersToFilterAttributeType(attributeFiltersData),
+                ignoreInputNames ?? [],
+            )
 
             formattedAttributeFilters.forEach((attribute) => {
                 filterAttributes.push(attribute)
@@ -146,7 +162,11 @@ export const DynamicFilterAttributes: FC<Props> = ({ filterData, setValue, attri
         }
     }
 
-    const attributesWithMetaAttributes = [...(attributes ?? []), ...(getCiDefaultMetaAttributes({ t }).attributes as Attribute[])]
+    const metaAttributes = getCiDefaultMetaAttributes({ t }).attributes.filter(
+        (item) => !ignoreInputNames?.includes(item.technicalName),
+    ) as Attribute[]
+
+    const attributesWithMetaAttributes = [...(attributes ?? []), ...metaAttributes]
 
     return (
         <div>

@@ -1885,6 +1885,15 @@
         "warningMessage": "In {{countDown}} you will be logged out due to inactitvity.",
         "loading": "Proccessing logout"
     },
+    "KRIS": {
+        "heading": "List of KRIT approaches",
+        "responsibleAuthority": "Current responsible authority",
+        "table": {
+            "code": "Code",
+            "name": "Name",
+            "state": "State"
+        }
+    },
     "Ciel": {
         "target": "Goal",
         "name": "Sub-goal",

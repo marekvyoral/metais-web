@@ -1,5 +1,8 @@
 import { TFunction } from 'i18next'
 
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
+
 export const BASE_PAGE_NUMBER = 1
 export const BASE_PAGE_SIZE = 10
 
@@ -182,6 +185,7 @@ export const PO_IS_PO = 'PO_IS_PO'
 export const PO = 'PO'
 export const ENTITY_KS = 'KS'
 export const ENTITY_AS = 'AS'
+export const ENTITY_ISVS = 'ISVS'
 export const ENTITY_MIGRATION = 'Migracia'
 export const STANDARDIZATION_DRAFTS_LIST = 'draftsList'
 export const REFERENCE_REGISTER = 'ReferenceRegister'
@@ -193,8 +197,19 @@ export const ENTITY_CIEL = 'Ciel'
 export const ENTITY_KRIS = 'KRIS'
 export const KRIS_stanovuje_Ciel = 'KRIS_stanovuje_Ciel'
 export const ENTITY_PRINCIP = 'Princip'
+export const PO_predklada_KRIS = 'PO_predklada_KRIS'
+export const ENTITY_ZS = 'ZS'
+export const ENTITY_AGENDA = 'Agenda'
 
 export const INACTIVE_LOGOUT_TIME = import.meta.env.VITE_INACTIVE_LOGOUT_TIME
 export const INACTIVE_WARNING_TIME = import.meta.env.VITE_INACTIVE_WARNING_TIME
 
 export const ciInformationTab = 'information'
+export const KRIScolumnsTechNames = [
+    ATTRIBUTE_NAME.Gen_Profil_nazov,
+    ATTRIBUTE_NAME.Gen_Profil_kod_metais,
+    ATTRIBUTE_NAME.Profil_KRIS_stav_kris,
+    MetainformationColumns.OWNER,
+    MetainformationColumns.LAST_MODIFIED_AT,
+]
+export const krisRelatedCiTabsNames = [ENTITY_KS, ENTITY_ISVS, ENTITY_PROJECT, ENTITY_ZS, ENTITY_AGENDA]

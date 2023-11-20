@@ -4,31 +4,26 @@ import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWr
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
-import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IListData } from '@isdd/metais-common/types/list'
 import { CellContext, ColumnDef, ColumnOrderState, Table as ITable, Row, Updater } from '@tanstack/react-table'
-import classNames from 'classnames'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useLocation } from 'react-router-dom'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
-import { HTML_TYPE, MUK } from '@isdd/metais-common/constants'
-import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 
 import styles from './ciTable.module.scss'
+
 import {
     ColumnsOutputDefinition,
     IStoreColumnSelection,
     getOrderCiColumns,
-    getOwnerInformation,
     isMetaAttribute,
     mapTableData,
     reduceAttributesByTechnicalName,
     reduceTableDataToObject,
     sortAndMergeCiColumns,
-} from './ciTableHelpers'
+    useGetColumnsFromApiCellContent,
+} from '@/componentHelpers/ci/ciTableHelpers'
 
 export interface IRowSelectionState {
     rowSelection: Record<string, ColumnsOutputDefinition>
@@ -59,13 +54,13 @@ export const CiTable: React.FC<ICiTable> = ({
     uuidsToMatchedCiItemsMap,
 }) => {
     const { t } = useTranslation()
+    const { getColumnsFromApiCellContent } = useGetColumnsFromApiCellContent()
 
     const {
         state: { user },
     } = useAuth()
     const isUserLogged = !!user
 
-    const location = useLocation()
     const schemaAttributes = reduceAttributesByTechnicalName(data?.entityStructure)
     const tableData = mapTableData(
         data.tableData?.configurationItemSet,
@@ -121,54 +116,6 @@ export const CiTable: React.FC<ICiTable> = ({
         rowSelectionState?.setRowSelection({})
     }, [rowSelectionState])
 
-    const getColumnsFromApiCellContent = (index: number, ctx: CellContext<ColumnsOutputDefinition, unknown>, technicalName: string) => {
-        const isFirstItem = index === 0
-        const isInSchema = !!schemaAttributes[technicalName]?.name
-
-        const isMUK = technicalName === MUK
-        const isState = technicalName === MetainformationColumns.STATE
-        const isOwner = technicalName === MetainformationColumns.OWNER
-        const isDate = technicalName === MetainformationColumns.LAST_MODIFIED_AT || technicalName === MetainformationColumns.CREATED_AT
-        const isHTML = schemaAttributes?.[technicalName]?.type === HTML_TYPE
-
-        switch (true) {
-            case isFirstItem: {
-                return (
-                    <Link
-                        to={'./' + ctx?.row?.original?.uuid}
-                        state={{ from: location }}
-                        className={classNames({ [styles.bold]: ctx?.row.original.uuid && !!rowSelectionState?.rowSelection[ctx?.row.original.uuid] })}
-                    >
-                        {ctx?.getValue?.() as string}
-                    </Link>
-                )
-            }
-            case isState: {
-                return t(`metaAttributes.state.${ctx.getValue()}`)
-            }
-            case isMUK: {
-                return t(`refRegisters.table.muk.${ctx.getValue()}`)
-            }
-            case isOwner: {
-                return getOwnerInformation(ctx?.row?.original?.metaAttributes?.owner as string, data.gestorsData)?.configurationItemUi?.attributes?.[
-                    ATTRIBUTE_NAME.Gen_Profil_nazov
-                ]
-            }
-            case isDate: {
-                return t('dateTime', { date: ctx.getValue() as string })
-            }
-            case isHTML: {
-                return <SafeHtmlComponent dirtyHtml={ctx?.getValue?.() as string} />
-            }
-            case isInSchema: {
-                return ctx.getValue() as string
-            }
-            default: {
-                return ''
-            }
-        }
-    }
-
     const columnsFromApi =
         columnsAttributes?.map((attribute, index) => {
             const technicalName = attribute.name ?? ''
@@ -181,11 +128,12 @@ export const CiTable: React.FC<ICiTable> = ({
                 size: index === 0 ? 300 : 200,
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
                     <TextBody lang={setEnglishLangForAttr(technicalName ?? '')} size="S" className={'marginBottom0'}>
-                        {getColumnsFromApiCellContent(index, ctx, technicalName)}
+                        {getColumnsFromApiCellContent({ index, ctx, technicalName, schemaAttributes, data, rowSelectionState })}
                     </TextBody>
                 ),
                 meta: {
-                    getCellContext: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => getColumnsFromApiCellContent(index, ctx, technicalName),
+                    getCellContext: (ctx: CellContext<ColumnsOutputDefinition, unknown>) =>
+                        getColumnsFromApiCellContent({ index, ctx, technicalName, schemaAttributes, data, rowSelectionState }),
                 },
                 enableSorting: true,
             }

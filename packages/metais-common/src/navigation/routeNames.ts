@@ -98,6 +98,7 @@ export enum RouterRoutes {
     CI_GOAL_DETAIL = 'ci/Ciel/:entityId',
     CI_GOAL_CREATE = 'ci/Ciel/create',
     CI_ACTIVITY_DETAIL = 'ci/Aktivita/:entityId',
+    CI_KRIS_LIST = 'ci/KRIS',
     CI_ACTIVITY_CREATE = 'ci/Aktivita/:create',
     CI_KRIS_DETAIL = 'ci/Kris/:entityId',
     CI_KRIS_CREATE = 'ci/Kris/create',

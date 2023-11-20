@@ -32,7 +32,7 @@ import styles from './newRelationView.module.scss'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
-import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
+import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
 import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
 import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
 import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits } from '@/components/create-entity/createEntityHelpers'

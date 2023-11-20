@@ -126,7 +126,7 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
     }, [defaultRequestApi, filter.fullTextSearch])
 
     const filterForCiList = useMemo(() => mapFilterToNeighborsApi(filter, defaultRequestApi), [defaultRequestApi, filter])
-    const { isLoading, isError, data: listData, isFetching } = useReadCiList1(filterForCiList)
+    const { isLoading, isError, data: listData } = useReadCiList1(filterForCiList)
 
     //Load related
     const {
@@ -134,15 +134,17 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
         isError: isCurrentNeighboursError,
         data: currentNeighbours,
         refetch,
+        isFetching: areNeighboursFetching,
     } = useReadCiNeighbours(configurationItemId ?? '', currentNeighboursFilter)
 
     const [dataRows, setDataRows] = useState<TableCols[]>([])
-
     useEffect(() => {
-        if (listData && currentNeighbours) {
+        if (listData && currentNeighbours && !areNeighboursFetching) {
             setDataRows(
                 listData?.configurationItemSet?.map((ci) => {
-                    const related = currentNeighbours.fromNodes?.neighbourPairs?.find((np) => np.configurationItem?.uuid == ci.uuid)
+                    const related = currentNeighbours.fromNodes?.neighbourPairs?.find(
+                        (np) => np.configurationItem?.uuid == ci.uuid && np.relationship?.metaAttributes?.state !== INVALIDATED,
+                    )
                     return {
                         ...ci,
                         checked: !!related,
@@ -151,7 +153,7 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
                 }) ?? [],
             )
         }
-    }, [listData, currentNeighbours])
+    }, [listData, currentNeighbours, areNeighboursFetching])
 
     const invalidateRelation = useInvalidateRelationship({
         mutation: {
@@ -162,6 +164,7 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
             },
         },
     })
+
     const storeGraph = useStoreGraph({
         mutation: {
             onSuccess(data) {
@@ -211,7 +214,7 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
                     uuid: uuid,
                 },
                 params: {
-                    newState: [],
+                    newState: [INVALIDATED],
                 },
             })
         },
@@ -229,7 +232,7 @@ export const ActivitiesAndGoalsListContainer: React.FC<IActivitiesAndGoalsListCo
             handleFilterChange={handleFilterChange}
             isLoading={
                 isLoading ||
-                isFetching ||
+                areNeighboursFetching ||
                 isCurrentNeighboursLoading ||
                 isCanCreateGraphLoading ||
                 (isOwnerByGidLoading && isOwnerByGidFetchStatus != 'idle')

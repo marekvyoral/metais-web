@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from 'react'
 
-import { ColumnsOutputDefinition } from '@/components/ci-table/ciTableHelpers'
+import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
 import { CiTable } from '@/components/ci-table/CiTable'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 
