@@ -103,6 +103,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     const {
         data: identitiesData,
         isLoading,
+        isFetching,
         isError: isIdentitiesError,
         error,
         refetch,
@@ -184,7 +185,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
             setSuccessfulUpdatedData={setSuccessfulUpdatedData}
             user={user}
             rowSelection={rowSelection}
-            isIdentitiesLoading={isLoading}
+            isIdentitiesLoading={isLoading || isFetching}
             selectableColumnsSpec={columnsWithPermissions}
             tableData={tableData}
             identitiesData={identitiesData}

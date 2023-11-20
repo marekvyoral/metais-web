@@ -766,8 +766,8 @@
     },
     "notifications": {
         "all": "Všetky",
-        "INFO": "INFO",
-        "ERROR": "ERROR",
+        "INFO": "Informácie",
+        "ERROR": "Chyby",
         "onlyUnread": "Iba neprečítané",
         "home": "Domov",
         "notifications": "Upozornenia",
@@ -776,7 +776,7 @@
         "deleteAll": "Vymazať všetko",
         "columns": "Stĺpce",
         "column": "Stĺpec",
-        "eventType": "Typ notifikaci",
+        "eventType": "Typ notifikacií",
         "created": "Vytvorené",
         "description": "Popis",
         "columnsNames": {

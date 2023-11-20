@@ -333,8 +333,11 @@
         "error": {
             "query": "Chyba pri načítavaní údajov",
             "mutation": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.",
-            "export": "Chyba pri príprave exportu"
-        }
+            "export": "Chyba pri príprave exportu",
+            "uniqueLogin": "Login musí byť jedinečný"
+        },
+        "creationLoading": "Vytváram nového použivateľa",
+        "editLoading": "Upravujem používateľa"
     },
     "validity": {
         "true": "Platný",

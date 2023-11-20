@@ -2,10 +2,16 @@
 
 .actionsWrapper {
     display: flex;
-    justify-content: space-between;
     align-items: flex-end;
 }
 
+.justifySpaceBetween {
+    justify-content: space-between;
+}
+
+.justifyFlexEnd {
+    justify-content: flex-end;
+}
 .selectOption {
     padding: govuk-spacing(1) !important;
 }

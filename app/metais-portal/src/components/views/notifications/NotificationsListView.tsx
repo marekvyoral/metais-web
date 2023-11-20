@@ -68,7 +68,7 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
                                     id="eventType"
                                     label={t('notifications.eventType')}
                                     options={[
-                                        { value: ALL_EVENT_TYPES, label: ALL_EVENT_TYPES },
+                                        { value: ALL_EVENT_TYPES, label: t('notifications.all') },
                                         { value: 'INFO', label: t('notifications.INFO') },
                                         { value: 'ERROR', label: t('notifications.ERROR') },
                                     ]}

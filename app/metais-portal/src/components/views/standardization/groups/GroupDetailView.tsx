@@ -103,7 +103,7 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                     </IconWithText>
                 )}
                 <QueryFeedback
-                    loading={isLoading}
+                    loading={isLoading || isIdentitiesLoading}
                     error={isIdentitiesError}
                     errorProps={{ errorMessage: error?.message, errorTitle: error?.type }}
                     withChildren
@@ -112,7 +112,7 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                         onSortingChange={(columnSort) => {
                             handleFilterChange({ sort: columnSort })
                         }}
-                        isLoading={isIdentitiesLoading}
+                        isLoading={isIdentitiesLoading || isIdentitiesLoading}
                         sort={filter.sort ?? defaultSort}
                         columns={selectableColumnsSpec.map((item) => ({ ...item, size: 200 }))}
                         data={tableData}

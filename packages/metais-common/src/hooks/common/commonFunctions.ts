@@ -25,12 +25,12 @@ export const isDerivedInBlackList = (derived: DerivedCiTypePreview): boolean => 
     return isContainedInBlacList
 }
 
-export const isRelatedCiTypeCmdbView = (relatedCiType: RelatedCiTypePreview, isLogged: boolean): boolean => {
+export const isRelatedCiTypeCmdbView = (relatedCiType: RelatedCiTypePreview, isLogged: boolean, useBlackList = true): boolean => {
     const isValid = relatedCiType.ciTypeValid === true && relatedCiType.relationshipTypeValid === true
     const isCategory = relatedCiType.ciCategory !== CATEGORY_ENUM.NOT_VISIBLE && relatedCiType.relationshipCategory !== CATEGORY_ENUM.NOT_VISIBLE
     const isTypeOk = relatedCiType.ciTypeUsageType !== TYPES_ENUM.SYSTEM && relatedCiType.relationshipTypeUsageType !== TYPES_ENUM.SYSTEM
     const isViewForLogged = isLogged || NOT_PUBLIC_ENTITIES.indexOf(relatedCiType.ciTypeTechnicalName || '') === -1
-    const isNotBlacklisted = !isInBlackList(relatedCiType)
+    const isNotBlacklisted = useBlackList ? !isInBlackList(relatedCiType) : true
     return isValid && isCategory && isTypeOk && isViewForLogged && isNotBlacklisted
 }
 

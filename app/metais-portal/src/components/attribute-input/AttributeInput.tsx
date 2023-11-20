@@ -24,6 +24,7 @@ import { HTML_TYPE, MAX_TITLE_LENGTH } from '@isdd/metais-common/constants'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 import { formatNumberWithSpaces } from '@isdd/metais-common/utils/utils'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { ArrayAttributeInput } from './ArrayAttributeInput'
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
@@ -98,7 +99,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
     isUpdate,
     control,
 }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
 
     const hasUnits = !!attribute.units && !!unitsData
     const unitsLabel = hasUnits ? ' ' + t('createEntity.units', { units: unitsData.value }) : ''
@@ -189,7 +190,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         info={attribute.description}
                         disabled={attribute.readOnly || disabled}
                         id={attribute.technicalName}
-                        label={attribute.name + requiredLabel}
+                        label={i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName + requiredLabel}
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName + nameSufix)}
                         defaultValue={formattedDate}
@@ -207,7 +208,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         info={attribute.description}
                         id={attribute.technicalName}
                         disabled={attribute.readOnly || disabled}
-                        label={attribute.name + requiredLabel}
+                        label={i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName + requiredLabel}
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName + nameSufix)}
                         hint={defaultValueFromCiItem?.toString()}
@@ -217,7 +218,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
             case isBoolean: {
                 return (
                     <CheckBox
-                        label={attribute.name ?? ''}
+                        label={(i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName) ?? ''}
                         error={error?.message?.toString()}
                         id={attribute.technicalName}
                         info={attribute.description}
@@ -232,7 +233,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
             case isCiTypeConstraint && !!ciType: {
                 return (
                     <CiLazySelect
-                        label={attribute.name + requiredLabel}
+                        label={(i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName) ?? '' + requiredLabel}
                         name={attribute.technicalName ?? '' + nameSufix}
                         ciType={ciType}
                         setValue={setValue}
@@ -251,7 +252,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                             <MultiSelect
                                 id={attribute.technicalName ?? ''}
                                 name={attribute.technicalName ?? '' + nameSufix}
-                                label={attribute.name + requiredLabel}
+                                label={(i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName) ?? '' + requiredLabel}
                                 correct={isCorrect}
                                 options={createOptions(constraints)}
                                 setValue={setValue}
@@ -269,7 +270,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         return (
                             <SimpleSelect
                                 id={attribute.technicalName ?? ''}
-                                label={attribute.name + requiredLabel}
+                                label={(i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName) ?? '' + requiredLabel}
                                 error={error?.message?.toString()}
                                 info={attribute.description}
                                 correct={isCorrect}
@@ -312,7 +313,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                                 info={attribute.description}
                                 id={attribute.technicalName}
                                 disabled={attribute.readOnly || disabled}
-                                label={attribute.name + requiredLabel + unitsLabel}
+                                label={i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName + requiredLabel + unitsLabel}
                                 error={error?.message?.toString()}
                             />
                         )}
@@ -329,7 +330,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                             return (
                                 <RichTextQuill
                                     id={attribute.technicalName ?? ''}
-                                    label={attribute.name + requiredLabel}
+                                    label={i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName + requiredLabel}
                                     error={error?.message?.toString()}
                                     info={attribute.description}
                                     readOnly={attribute.readOnly || disabled}
@@ -350,7 +351,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         correct={isCorrect}
                         id={attribute.technicalName}
                         disabled={attribute.readOnly || disabled}
-                        label={attribute.name + requiredLabel}
+                        label={i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName + requiredLabel}
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName + nameSufix)}
                         defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
@@ -369,7 +370,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         className={classnames(attClassNameConfig.attributes[attribute.technicalName]?.className || '')}
                         id={attribute.technicalName}
                         disabled={attribute.technicalName === AttributesConfigTechNames.METAIS_CODE || attribute.readOnly || disabled}
-                        label={attribute.name + requiredLabel}
+                        label={i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName + requiredLabel}
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName + nameSufix)}
                         type="text"
@@ -389,7 +390,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         info={attribute.description}
                         id={attribute.technicalName}
                         disabled={attribute.readOnly || disabled}
-                        label={attribute.name + requiredLabel}
+                        label={i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName + requiredLabel}
                         error={error?.message?.toString()}
                         {...register(attribute.technicalName + nameSufix)}
                         type="text"

@@ -11,6 +11,7 @@ import { DESCRIPTION, HTML_TYPE } from '@isdd/metais-common/constants'
 import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/src/hooks/useGetCiTypeConstraintsData'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 interface CiInformationData {
     data: {
@@ -29,7 +30,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
     isLoading,
     isError,
 }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
 
     const {
         isLoading: isCiConstraintLoading,
@@ -42,7 +43,10 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
     const tabsFromApi =
         ciTypeData?.attributeProfiles?.map((attributesProfile) => {
             return {
-                title: attributesProfile?.description ?? '',
+                title:
+                    (i18n.language === Languages.SLOVAK ? attributesProfile.description : attributesProfile.engDescription) ??
+                    attributesProfile.name ??
+                    '',
                 content: (
                     <DefinitionList>
                         {attributesProfile?.attributes
@@ -64,7 +68,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                                     !attribute?.invisible && (
                                         <InformationGridRow
                                             key={attribute?.technicalName}
-                                            label={attribute?.name ?? ''}
+                                            label={(i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName) ?? ''}
                                             value={isHTML ? <SafeHtmlComponent dirtyHtml={formattedRowValue} /> : formattedRowValue}
                                             tooltip={attribute?.description}
                                             lang={setEnglishLangForAttr(attribute.technicalName ?? '')}
@@ -107,7 +111,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                                     return (
                                         <InformationGridRow
                                             key={attribute?.technicalName}
-                                            label={attribute.name ?? ''}
+                                            label={(i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName) ?? ''}
                                             value={isHTML ? <SafeHtmlComponent dirtyHtml={rowValue?.replace(/\n/g, '<br>')} /> : rowValue}
                                             tooltip={attribute?.description}
                                             lang={setEnglishLangForAttr(attribute.technicalName ?? '')}

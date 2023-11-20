@@ -15,6 +15,7 @@ import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { AttributeProfile, CiCode, CiType, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { CreateEntitySection } from './CreateEntitySection'
 import { generateFormSchema } from './createCiEntityFormSchema'
@@ -55,7 +56,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     withRelation,
     selectedRole,
 }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const navigate = useNavigate()
 
     const ability = useAbilityContext()
@@ -129,7 +130,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                 ),
             },
             ...attProfiles.map((profile, index) => ({
-                title: profile.description ?? profile.name ?? '',
+                title: (i18n.language === Languages.SLOVAK ? profile.description : profile.engDescription) ?? profile.name ?? '',
                 stepLabel: { label: (index + 2).toString(), variant: 'circle' } as IStepLabel,
                 last: relationSchema ? false : attProfiles.length === index + 1 ? true : false,
                 error: sectionError[profile.technicalName ?? ''] === true,

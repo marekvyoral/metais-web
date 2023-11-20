@@ -300,8 +300,11 @@
         "error": {
             "query": "Error while fetching data",
             "mutation": "Error while performing action. Please try again or contact support.",
-            "export": "Error while preparing export"
-        }
+            "export": "Error while preparing export",
+            "uniqueLogin": "Property login must be unique"
+        },
+        "creationLoading": "Creating new user",
+        "editLoading": "Updating user data"
     },
     "validity": {
         "true": "Valid",
