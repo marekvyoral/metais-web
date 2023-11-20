@@ -440,16 +440,31 @@ export const routesConfig: RouteConfig[] = [
                 subRoutes: [generalCiDetailInformationOutlet],
             },
             {
+                path: RouterRoutes.CI_PRINCIPLE_CREATE,
+                slug: RouterRoutes.CI_PRINCIPLE_CREATE,
+                component: CreateEntityPage,
+            },
+            {
                 path: RouterRoutes.CI_GOAL_DETAIL,
                 slug: RouterRoutes.CI_GOAL_DETAIL,
                 component: GoalEntityDetailPage,
                 subRoutes: [generalCiDetailInformationOutlet],
             },
             {
+                path: RouterRoutes.CI_GOAL_CREATE,
+                slug: RouterRoutes.CI_GOAL_CREATE,
+                component: CreateEntityPage,
+            },
+            {
                 path: RouterRoutes.CI_ACTIVITY_DETAIL,
                 slug: RouterRoutes.CI_ACTIVITY_DETAIL,
                 component: ActivityEntityDetailPage,
                 subRoutes: [generalCiDetailInformationOutlet],
+            },
+            {
+                path: RouterRoutes.CI_ACTIVITY_CREATE,
+                slug: RouterRoutes.CI_ACTIVITY_CREATE,
+                component: CreateEntityPage,
             },
             {
                 path: RouterRoutes.CI_KRIS_DETAIL,
@@ -463,6 +478,11 @@ export const routesConfig: RouteConfig[] = [
                         component: Goals,
                     },
                 ],
+            },
+            {
+                path: RouterRoutes.CI_KRIS_CREATE,
+                slug: RouterRoutes.CI_KRIS_CREATE,
+                component: CreateEntityPage,
             },
             {
                 path: RouterRoutes.CI_PROJECT_DETAIL,
@@ -483,10 +503,20 @@ export const routesConfig: RouteConfig[] = [
                 ],
             },
             {
+                path: RouterRoutes.CI_PROJECT_CREATE,
+                slug: RouterRoutes.CI_PROJECT_CREATE,
+                component: CreateEntityPage,
+            },
+            {
                 path: RouterRoutes.CI_KS_DETAIL,
                 slug: RouterRoutes.CI_KS_DETAIL,
                 component: KsEntityDetailPage,
                 subRoutes: [generalCiDetailInformationOutlet],
+            },
+            {
+                path: RouterRoutes.CI_KS_CREATE,
+                slug: RouterRoutes.CI_KS_CREATE,
+                component: CreateEntityPage,
             },
             {
                 path: RouterRoutes.CI_AS_DETAIL,
@@ -495,10 +525,20 @@ export const routesConfig: RouteConfig[] = [
                 subRoutes: [generalCiDetailInformationOutlet],
             },
             {
+                path: RouterRoutes.CI_AS_CREATE,
+                slug: RouterRoutes.CI_AS_CREATE,
+                component: CreateEntityPage,
+            },
+            {
                 path: RouterRoutes.CI_MIGRATION_DETAIL,
                 slug: RouterRoutes.CI_MIGRATION_DETAIL,
                 component: MigrationEntityDetailPage,
                 subRoutes: [generalCiDetailInformationOutlet],
+            },
+            {
+                path: RouterRoutes.CI_MIGRATION_CREATE,
+                slug: RouterRoutes.CI_MIGRATION_CREATE,
+                component: CreateEntityPage,
             },
             ...generalCiRoutes,
             {
