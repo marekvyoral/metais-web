@@ -37,7 +37,7 @@ export const UserDetailForm: React.FC<Props> = ({ userData, handleBackNavigate, 
         <>
             <TextHeading size="L">{isCreate ? t('managementList.detailCreateHeading') : t('managementList.detailEditHeading')}</TextHeading>
 
-            <QueryFeedback loading={isFetching} error={isError} errorProps={{ errorMessage: t('managementList.formError') }} withChildren>
+            <QueryFeedback loading={isFetching} error={isError} errorProps={{ errorMessage: isError }} withChildren>
                 <Input
                     label={t('managementList.firstName')}
                     error={errors[InputNames.FIRST_NAME]?.message?.toString()}
@@ -58,10 +58,9 @@ export const UserDetailForm: React.FC<Props> = ({ userData, handleBackNavigate, 
                     error={errors[InputNames.LOGIN]?.message?.toString()}
                     label={t('managementList.login')}
                     correct={!errors[InputNames.LOGIN] && isSubmitted && (!!loginValue || !!userData?.login)}
-                    disabled={!isCreate}
+                    // disabled={!isCreate}
                     {...register(InputNames.LOGIN)}
-                    defaultValue={userData?.login}
-                    value={isCreate ? loginValue : userData?.login}
+                    defaultValue={isCreate ? loginValue : userData?.login}
                     type="text"
                 />
                 <Input

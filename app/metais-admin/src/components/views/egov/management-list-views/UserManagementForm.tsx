@@ -37,6 +37,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     const detailPath = '/detail'
     const userIdPath = `/${detailData?.userData?.uuid}`
     const NO_CHANGES_DETECTED = 'NoChangesDetected'
+    const UNIQUE_LOGIN = 'UniqueLogin'
 
     const methods = useForm({ resolver: yupResolver(getUserManagementFormSchema(t)) })
 
@@ -86,6 +87,9 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                     if (errorData.type === NO_CHANGES_DETECTED) {
                         setErrorType(NO_CHANGES_DETECTED)
                     }
+                    if (errorData.type === 'UniqueConstraintException' && errorData.property === 'login') {
+                        setErrorType(UNIQUE_LOGIN)
+                    }
                 }
                 setIsMutation(false)
             },
@@ -116,13 +120,24 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
 
     return (
         <FormProvider {...methods}>
-            <QueryFeedback loading={isLoading} error={isError} withChildren>
+            <QueryFeedback
+                loading={isLoading || updateOrCreate.isLoading}
+                error={isError}
+                withChildren
+                indicatorProps={{
+                    label: updateOrCreate.isLoading ? (isCreate ? t('userManagement.creationLoading') : t('userManagement.editLoading')) : undefined,
+                }}
+            >
                 <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
                     {(updateOrCreate.isError || updateOrCreate.isSuccess) && (
                         <MutationFeedback
                             error={
                                 !updateOrCreate.isSuccess &&
-                                (errorType === NO_CHANGES_DETECTED ? t('managementList.noChangesDetected') : t('managementList.mutationError'))
+                                (errorType === NO_CHANGES_DETECTED
+                                    ? t('managementList.noChangesDetected')
+                                    : errorType === UNIQUE_LOGIN
+                                    ? t('userManagement.error.uniqueLogin')
+                                    : t('managementList.mutationError'))
                             }
                             success={updateOrCreate.isSuccess}
                         />

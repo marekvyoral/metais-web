@@ -1,14 +1,15 @@
 import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import { PopupActions } from 'reactjs-popup/dist/types'
 import { useTranslation } from 'react-i18next'
 import { Popup } from 'reactjs-popup'
 import { Link, useLocation } from 'react-router-dom'
 import { FactCheckIcon } from '@isdd/metais-common/assets/images'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useGetTasks, TaskState } from '@isdd/metais-common/api/generated/tasks-swagger'
+import { Task } from '@isdd/metais-common/api/generated/tasks-swagger'
 import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { IconWithNotification } from '@isdd/metais-common/components/navbar/navbar-main/IconWithNotification'
+import { useGetTasksWithRefresh } from '@isdd/metais-common/hooks/useGetTasksWithRefresh'
 
 import styles from './TasksPopup.module.scss'
 
@@ -21,22 +22,8 @@ export const TasksPopup: React.FC = () => {
         state: { user },
     } = useAuth()
 
-    const { data: tasks, mutate } = useGetTasks()
-    useEffect(() => {
-        if (user) {
-            const assignedTo = [user.login, ...getGidsForUserOrgRoles(user), ...getUuidsForUserOrgRoles(user)]
-            mutate({
-                data: {
-                    assignedTo: [...new Set(assignedTo)],
-                    sortBy: 'id',
-                    perPage: 10,
-                    pageNumber: 1,
-                    ascending: false,
-                    states: [TaskState.CREATED, TaskState.IN_PROGRESS],
-                },
-            })
-        }
-    }, [user, mutate])
+    const assignedTo = [user?.login ?? '', ...getGidsForUserOrgRoles(user), ...getUuidsForUserOrgRoles(user)]
+    const { data: tasks } = useGetTasksWithRefresh({ assignedTo: assignedTo && assignedTo.length > 0 ? [...new Set(assignedTo)] : [] })
 
     const popupRef = useRef<PopupActions>(null)
     const popupTrigger = (
@@ -62,7 +49,7 @@ export const TasksPopup: React.FC = () => {
                     {t('tasks.youHaveTasks', { numberOfTasks: (tasks?.tasksCountCreated ?? 0) + (tasks?.tasksCountInProgress ?? 0) })}
                 </TextHeading>
                 <ul className={styles.tasksList}>
-                    {tasks?.tasks?.map((task) => {
+                    {tasks?.tasks?.map((task: Task) => {
                         return (
                             <li key={task.id}>
                                 <Link to={`${RouteNames.TASKS}/${task.id}`} state={{ from: location }} onClick={() => popupRef.current?.close()}>

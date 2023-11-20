@@ -12,6 +12,8 @@ import React, { SetStateAction, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import classNames from 'classnames'
 
 import styles from '@/components/views/standardization/groups/groupslist.module.scss'
 import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect'
@@ -44,6 +46,10 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const {
+        state: { user },
+    } = useAuth()
+    const isUserLogged = !!user
 
     const label = <span>+ {t('groups.addNewGroup')}</span>
 
@@ -67,48 +73,50 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
 
     return (
         <>
-            <div className="idsk-table-filter idsk-table-filter__panel">
-                <form onSubmit={handleSubmit}>
-                    <IdentitySelect
-                        placeholder={t('groups.select')}
-                        name="memberSelect"
-                        onChange={(val) => {
-                            setSelectedIdentity(Array.isArray(val) ? val[0] : val)
-                        }}
-                        label={t('groups.member')}
-                    />
-                    <CiLazySelect
-                        ciType="PO"
-                        selectedCi={selectedOrg}
-                        setSelectedCi={setSelectedOrg}
-                        placeholder={t('groups.select')}
-                        label={t('groups.organization')}
-                    />
-                    <Button label={t('groups.show')} className={'idsk-button'} type="submit" />
-                </form>
-            </div>
-            <div className={styles.actionsWrapper}>
-                <Can I={Actions.CREATE} a={'groups'}>
-                    <Button
-                        label={label}
-                        className={'idsk-button'}
-                        onClick={() => {
-                            navigate(NavigationSubRoutes.PRACOVNA_SKUPINA_CREATE)
-                        }}
-                    />
-                </Can>
-                <SimpleSelect
-                    name="groupsPerPageSelect"
-                    label={t('actionOverTable.view')}
-                    value={pageSize.toString()}
-                    id="groupsPerPageSelect"
-                    options={DEFAULT_PAGESIZE_OPTIONS}
-                    onChange={handlePerPageChange}
-                    isClearable={false}
-                />
-            </div>
-
+            {isUserLogged && (
+                <div className="idsk-table-filter idsk-table-filter__panel">
+                    <form onSubmit={handleSubmit}>
+                        <IdentitySelect
+                            placeholder={t('groups.select')}
+                            name="memberSelect"
+                            onChange={(val) => {
+                                setSelectedIdentity(Array.isArray(val) ? val[0] : val)
+                            }}
+                            label={t('groups.member')}
+                        />
+                        <CiLazySelect
+                            ciType="PO"
+                            selectedCi={selectedOrg}
+                            setSelectedCi={setSelectedOrg}
+                            placeholder={t('groups.select')}
+                            label={t('groups.organization')}
+                        />
+                        <Button label={t('groups.show')} className={'idsk-button'} type="submit" />
+                    </form>
+                </div>
+            )}
             <QueryFeedback loading={isLoading} error={isError}>
+                <div className={classNames([styles.actionsWrapper, isUserLogged ? styles.justifySpaceBetween : styles.justifyFlexEnd])}>
+                    <Can I={Actions.CREATE} a={'groups'}>
+                        <Button
+                            label={label}
+                            className={'idsk-button'}
+                            onClick={() => {
+                                navigate(NavigationSubRoutes.PRACOVNA_SKUPINA_CREATE)
+                            }}
+                        />
+                    </Can>
+                    <SimpleSelect
+                        name="groupsPerPageSelect"
+                        label={t('actionOverTable.view')}
+                        value={pageSize.toString()}
+                        id="groupsPerPageSelect"
+                        options={DEFAULT_PAGESIZE_OPTIONS}
+                        onChange={handlePerPageChange}
+                        isClearable={false}
+                    />
+                </div>
+
                 <Table<GroupWithMeetings> columns={columns} data={groups?.slice(start, end)} sort={sort} onSortingChange={setSort} />
             </QueryFeedback>
             <PaginatorWrapper pageNumber={pageNumber} pageSize={pageSize} dataLength={groups?.length ?? 0} handlePageChange={handlePageChange} />

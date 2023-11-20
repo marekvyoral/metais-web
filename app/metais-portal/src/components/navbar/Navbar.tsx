@@ -1,5 +1,4 @@
 import { useFind2111 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useGetNotificationList } from '@isdd/metais-common/api/generated/notifications-swagger'
 import { NotificationIcon } from '@isdd/metais-common/assets/images'
 import { NavBarHeader } from '@isdd/metais-common/components/navbar/navbar-header/NavBarHeader'
 import { IconWithNotification } from '@isdd/metais-common/components/navbar/navbar-main/IconWithNotification'
@@ -10,6 +9,7 @@ import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
+import { useGetNotificationsWithRefresh } from '@isdd/metais-common/hooks/useGetNotificationsWithRefresh'
 
 import { getPortalNavigationItems } from './navigationItems'
 
@@ -20,10 +20,12 @@ export const Navbar: React.FC = () => {
     const {
         state: { user },
     } = useAuth()
+    const isUserLogged = !!user
     const [isMenuExpanded, setIsMenuExpanded] = useState<boolean>(false)
     const [showDropDown, setShowDropDown] = useState<boolean>(false)
 
-    const { data: notificationsData } = useGetNotificationList({ perPage: 1, pageNumber: 1 }, { query: { enabled: !!user } })
+    const { data: notificationsData } = useGetNotificationsWithRefresh({ filter: { perPage: 1, pageNumber: 1 }, enabled: isUserLogged })
+
     const Notifications = () => (
         <IconWithNotification
             title={t('navbar.notifications')}

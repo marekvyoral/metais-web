@@ -758,8 +758,8 @@
     },
     "notifications": {
         "all": "All",
-        "INFO": "INFO",
-        "ERROR": "ERROR",
+        "INFO": "Informations",
+        "ERROR": "Errors",
         "onlyUnread": "Only unread",
         "home": "Home",
         "notifications": "Notifications",
