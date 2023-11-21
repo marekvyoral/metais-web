@@ -184,7 +184,7 @@ export const useBulkAction = (isRelation?: boolean) => {
                     } else if (errorData.message === 'not_allowed_approve') {
                         m = 'ciType.messages.errorNotAllowedApprove'
                     }
-                    return handleResult({ isSuccess: false, isError: true, successMessage: t(m) })
+                    return handleResult({ isSuccess: false, isError: true, errorMessage: t(m) })
                 },
                 onSettled: () => setBulkLoading(false),
             },

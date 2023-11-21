@@ -923,7 +923,8 @@
         "type": "Typ"
     },
     "homePage": {
-        "placeholder": "Domov - na zobrazenie navigacie je potrebne sa prihlasit"
+        "placeholder": "Domov - na zobrazenie navigacie je potrebne sa prihlasit",
+        "loggedInPlaceholder": "Vitajte."
     },
     "notifications": {
         "column": "Stĺpec"

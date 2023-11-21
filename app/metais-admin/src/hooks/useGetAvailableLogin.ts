@@ -5,6 +5,7 @@ import { useDebounce } from './useDebounce'
 
 export const useGetAvailableLogin = (value: string, setValue: Dispatch<SetStateAction<string>>, debounceTime: number, enabled: boolean) => {
     const debouncedValue = useDebounce(value, debounceTime)
+    const UNDEFINED_STRING = 'undefined'
 
     useEffect(() => {
         if (!value && enabled) {
@@ -22,7 +23,7 @@ export const useGetAvailableLogin = (value: string, setValue: Dispatch<SetStateA
         { login: stripAccentQuery ?? '' },
         {
             query: {
-                enabled: !!stripAccentQuery && enabled,
+                enabled: !!stripAccentQuery && stripAccentQuery !== UNDEFINED_STRING && enabled,
                 onSuccess(data) {
                     setValue(data.toLocaleLowerCase())
                 },

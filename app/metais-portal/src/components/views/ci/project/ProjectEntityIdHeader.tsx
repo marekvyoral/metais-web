@@ -83,9 +83,18 @@ export const ProjectEntityIdHeader: React.FC<Props> = ({
         handleBulkAction(actionResult)
     }
 
+    const isInBackState = (): boolean => {
+        if (projectStatus === PROJECT_STATE_ENUM.c_stav_projektu_1) {
+            return false
+        } else {
+            return typeOfApprovalProcess === APPROVAL_PROCESS.MANDATORY_APPROVAL ? true : !(projectStatus === PROJECT_STATE_ENUM.c_stav_projektu_12)
+        }
+    }
+
     const entityListData = entityData ? [entityData] : []
 
-    const canProjectReturn = !(!entityData || entityData?.metaAttributes?.state === 'INVALIDATED') && userHasRoleByName(RoleEnum.PROJEKT_SCHVALOVATEL)
+    const canProjectReturn =
+        !(!entityData || entityData?.metaAttributes?.state === 'INVALIDATED') && userHasRoleByName(RoleEnum.PROJEKT_SCHVALOVATEL) && isInBackState()
 
     const canProjectConfirm = !(!entityData || entityData?.metaAttributes?.state === 'INVALIDATED' || !isOwnerOfCi)
 
@@ -97,7 +106,7 @@ export const ProjectEntityIdHeader: React.FC<Props> = ({
                 <MutationFeedback
                     success={bulkActionResult?.isSuccess}
                     successMessage={bulkActionResult?.successMessage}
-                    error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                    error={bulkActionResult?.isError ? bulkActionResult.errorMessage : ''}
                 />
             )}
             <div className={styles.headerDiv}>

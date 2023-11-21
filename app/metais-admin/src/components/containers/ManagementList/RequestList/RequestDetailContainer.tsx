@@ -17,6 +17,7 @@ import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enu
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useInvalidateRequestsListCache } from '@isdd/metais-common/hooks/useGetRequestList'
 
 import { RoleItem } from '@/components/views/userManagement/request-list-view/request-detail/RequestRolesForm'
 
@@ -53,6 +54,8 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
 
     const isLoading = [isLoadingRequest, isAllRolesLoading, isRoleGroupsLoading, isLoadingUpdatePo, isLoadingPE].some((item) => item)
     const isError = [isErrorRequest, isAllRolesError, isRoleGroupsError].some((item) => item)
+
+    const invalidateRequestList = useInvalidateRequestsListCache()
 
     const handleApprove = useCallback(
         async (selectedRoles: RoleItem[], request?: ClaimUi) => {
@@ -109,13 +112,14 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
                 },
             })
                 .then(() => {
+                    invalidateRequestList.invalidate()
                     navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
                 })
                 .catch((error) => {
                     setErrorMessage(error.message)
                 })
         },
-        [navigate, processEventMutationAsync, userId],
+        [invalidateRequestList, navigate, processEventMutationAsync, userId],
     )
 
     return allRolesData ? (

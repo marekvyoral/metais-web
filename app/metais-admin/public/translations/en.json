@@ -921,7 +921,8 @@
         "type": "Type"
     },
     "homePage": {
-        "placeholder": "Home - login to see navigation items"
+        "placeholder": "Home - login to see navigation items",
+        "loggedInPlaceholder": "Welcome."
     },
     "notifications": {
         "column": "Column"
