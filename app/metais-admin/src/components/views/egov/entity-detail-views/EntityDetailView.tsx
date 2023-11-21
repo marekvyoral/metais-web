@@ -43,6 +43,7 @@ export const EntityDetailView = ({
         undefined,
         saveExistingAttribute,
         resetExistingAttribute,
+        roles,
     )
 
     const tabList: Tab[] = [
