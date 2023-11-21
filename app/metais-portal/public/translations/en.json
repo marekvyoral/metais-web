@@ -545,9 +545,14 @@
             "ciType": "Item type",
             "evidenceStatus": "Evidence status",
             "source": "Source (Type)",
-            "sourceItemName": "Source item name"
+            "sourceItemName": "Source item name",
+            "owner": "Owner",
+            "relationState": "Evidence status"
         },
         "select": {
+            "sectionInfo": "Information about item",
+            "sectionGeneric": "Attributes of generic profile of relationships",
+            "sectionMeta": "Meta information of item",
             "ciType": "Select item type",
             "relationshipType": "Select relationship type",
             "evidenceStatus": "Select evidence status"

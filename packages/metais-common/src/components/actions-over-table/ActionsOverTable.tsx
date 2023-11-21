@@ -1,5 +1,5 @@
 import { Can } from '@casl/react'
-import { ISelectColumnType, TableSelectColumns } from '@isdd/idsk-ui-kit'
+import { ISelectColumnType, ISelectSectionType, TableSelectColumns } from '@isdd/idsk-ui-kit'
 import { ButtonPopup } from '@isdd/idsk-ui-kit/button-popup/ButtonPopup'
 import { PageSizeSelect } from '@isdd/idsk-ui-kit/page-size-select/PageSizeSelect'
 import { CiTableSelectColumns, IColumnSectionType } from '@isdd/idsk-ui-kit/src/ci-table-select-columns/CiTableSelectColumns'
@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next'
 import styles from './actionsOverTable.module.scss'
 
 import { Attribute, AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { notificationDefaultSelectedColumns } from '@isdd/metais-common/constants'
 import { Actions, useCreateCiAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { IColumn } from '@isdd/metais-common/hooks/useColumnList'
 
@@ -22,8 +21,10 @@ export enum ActionNames {
 }
 
 export interface ISimpleTableSelectParams {
-    selectedColumns: ISelectColumnType[]
-    setSelectedColumns: React.Dispatch<React.SetStateAction<ISelectColumnType[]>>
+    sections?: ISelectSectionType[]
+    selectedColumns?: ISelectColumnType[]
+    saveSelectedColumns: (columns: ISelectColumnType[]) => void
+    resetSelectedColumns: () => void
 }
 
 export type HiddenButtons = {
@@ -155,9 +156,10 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
                                 return simpleTableColumnsSelect ? (
                                     <TableSelectColumns
                                         onClose={closePopup}
-                                        resetDefaultOrder={() => simpleTableColumnsSelect.setSelectedColumns(notificationDefaultSelectedColumns)}
-                                        showSelectedColumns={simpleTableColumnsSelect.setSelectedColumns}
+                                        onReset={simpleTableColumnsSelect.resetSelectedColumns}
+                                        onSave={simpleTableColumnsSelect.saveSelectedColumns}
                                         columns={simpleTableColumnsSelect.selectedColumns}
+                                        sections={simpleTableColumnsSelect.sections}
                                         header={t('notifications.column')}
                                     />
                                 ) : (

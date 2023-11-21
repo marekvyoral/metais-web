@@ -41,6 +41,7 @@ export interface NotificationsListViewParams {
     columns: ColumnDef<Notification>[]
     selectedColumns: ISelectColumnType[]
     setSelectedColumns: React.Dispatch<React.SetStateAction<ISelectColumnType[]>>
+    resetSelectedColumns: () => void
     sort: ColumnSort[]
     setSort: React.Dispatch<React.SetStateAction<ColumnSort[]>>
     mutateAllRead: UseMutateFunction<SetAllNotificationsAsRead200, unknown, void, unknown>
@@ -219,6 +220,7 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
             columns={columns}
             selectedColumns={selectedColumns}
             setSelectedColumns={setSelectedColumns}
+            resetSelectedColumns={() => setSelectedColumns(translateColumns(notificationDefaultSelectedColumns))}
             sort={sort}
             setSort={setSort}
             mutateAllDelete={mutateAllDelete}

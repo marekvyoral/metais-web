@@ -21,6 +21,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
     resetOrder,
     selectedColumns,
     setSelectedColumns,
+    resetSelectedColumns,
     handleFilterChange,
 }) => {
     const { t } = useTranslation()
@@ -134,7 +135,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
             <ActionsOverTable
                 pagination={{ pageNumber: BASE_PAGE_NUMBER, pageSize: BASE_PAGE_SIZE, dataLength: 0 }}
                 entityName={''}
-                simpleTableColumnsSelect={{ selectedColumns, setSelectedColumns }}
+                simpleTableColumnsSelect={{ selectedColumns, resetSelectedColumns, saveSelectedColumns: setSelectedColumns }}
             >
                 {!editingRowsPositions ? (
                     <Button

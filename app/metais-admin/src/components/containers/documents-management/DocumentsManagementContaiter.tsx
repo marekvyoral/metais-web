@@ -34,6 +34,7 @@ export interface IView {
     resetOrder: () => void
     selectedColumns: ISelectColumnType[]
     setSelectedColumns: Dispatch<SetStateAction<ISelectColumnType[]>>
+    resetSelectedColumns: () => void
     handleFilterChange: (changedFilter: IFilter) => void
 }
 
@@ -106,6 +107,7 @@ export const DocumentsManagementContainer: React.FC<IDocumentsManagementContaine
             resetOrder={resetOrder}
             selectedColumns={selectedColumns}
             setSelectedColumns={setSelectedColumns}
+            resetSelectedColumns={() => setSelectedColumns([...documentsManagementDefaultSelectedColumns])}
             handleFilterChange={handleFilterChange}
         />
     )
