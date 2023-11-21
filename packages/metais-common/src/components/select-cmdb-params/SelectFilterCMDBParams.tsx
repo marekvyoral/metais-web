@@ -35,7 +35,7 @@ export const SelectFilterCMDBParams: React.FC<ISelectFilterCMDBParams> = ({
     const { currentPreferences } = useUserPreferences()
 
     useEffect(() => {
-        const promises = defaultValueKey?.map((i) => readConfigurationItem(i))
+        const promises = defaultValueKey?.filter((ci) => !!ci).map((i) => readConfigurationItem(i))
         if (promises)
             Promise.all(promises).then((res) => {
                 setDefaultValue(mapReportsCiItemToOptions(res))
