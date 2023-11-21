@@ -54,6 +54,7 @@ export const RefRegisterCreateManagerContactSection: React.FC<IProps> = ({
                 error={formState.errors?.refRegisters?.manager?.PO?.message}
                 disabled={!isRRFieldEditable(defaultData?.state) || isContact || creatorNotSet || !!entityId}
                 required
+                isClearable={false}
             />
 
             <GridRow>

@@ -48,6 +48,7 @@ export const RefRegisterSourceRegisterSectionView: React.FC<IProps> = ({
                     clearErrors={clearErrors}
                     error={formState.errors?.refRegisters?.sourceRegister?.message}
                     disabled={creatorNotSet}
+                    isClearable={false}
                     required
                 />
             )}
@@ -56,7 +57,6 @@ export const RefRegisterSourceRegisterSectionView: React.FC<IProps> = ({
                 label={getLabelRR(RefRegisterViewItems.ISVS_CODE, renamedAttributes) ?? ''}
                 info={getInfoRR(RefRegisterViewItems.ISVS_CODE, renamedAttributes)}
                 {...register('refRegisters.codeMetaIS')}
-                error={formState.errors?.refRegisters?.codeMetaIS?.message}
                 disabled
                 required
             />
@@ -64,7 +64,6 @@ export const RefRegisterSourceRegisterSectionView: React.FC<IProps> = ({
                 label={getLabelRR(RefRegisterViewItems.ISVS_REF_ID, renamedAttributes) ?? ''}
                 info={getInfoRR(RefRegisterViewItems.ISVS_REF_ID, renamedAttributes)}
                 {...register('refRegisters.refId')}
-                error={formState.errors?.refRegisters?.refId?.message}
                 disabled
                 required
             />

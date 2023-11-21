@@ -57,6 +57,7 @@ export const RefRegisterCreateRegistrarContactSection: React.FC<IProps> = ({
                 disabled={!isRRFieldEditable(defaultData?.state) || isContact || creatorNotSet}
                 required
                 tooltipPosition={'top center'}
+                isClearable={false}
             />
             <GridRow>
                 <GridCol setWidth="one-half">

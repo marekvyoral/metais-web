@@ -127,6 +127,7 @@ export const RefRegisterCreateView: React.FC<IRefRegisterCreateView> = ({
                         rows={3}
                         {...register('refRegisters.additionalData')}
                         disabled={!isRRFieldEditable(defaultData?.state, isContact, true) || isContact || creatorNotSet}
+                        error={formState.errors?.refRegisters?.additionalData?.message}
                         required
                     />
                     <InformationGridRow
