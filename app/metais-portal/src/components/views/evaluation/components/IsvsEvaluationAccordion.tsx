@@ -1,13 +1,14 @@
-import { ExpandableRowCellWrapper, PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
+import { ExpandableRowCellWrapper, GridCol, PaginatorWrapper, SimpleSelect, Table } from '@isdd/idsk-ui-kit/index'
 import { KrisToBeIsvs, KrisToBeRights, NoteVersionUi, useGetIsvs } from '@isdd/metais-common/api/generated/kris-swagger'
 import { ActionsOverTable, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ColumnDef, ExpandedState } from '@tanstack/react-table'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { Link } from 'react-router-dom'
 import { useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 
 import { IsvsEvaluationRow } from './IsvsEvaluationRow'
 

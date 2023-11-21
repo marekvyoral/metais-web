@@ -427,12 +427,19 @@
             "state": "Stav evidencie",
             "type": "Typ ISVS",
             "modulIsvs": "Je modulom materského ISVS"
+        },
+        "detailTable": {
+            "lastEvaluation": "Posledná verzia Hodnotenia ÚPPVII",
+            "createdBy": "Zadávateľ KRIT_TO_BE",
+            "isApproved": "Schvalené",
+            "evaluation": "Hodnotenie ÚPPVII"
         }
     },
     "ciType": {
         "informations": "Informácie",
         "documents": "Dokumenty",
         "activities": "Aktivity NKIVS",
+        "evaluation": "Hodnotenie KRIT_TO_BE",
         "relationships": "Vzťahy",
         "history": "História zmien",
         "editEntity": "Úprava položky {{entityName}}",

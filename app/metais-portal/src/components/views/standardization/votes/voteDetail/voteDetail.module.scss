@@ -1,57 +1,3 @@
-<<<<<<< HEAD
-@import '@isdd/idsk-ui-kit/src/utils.scss';
-
-.itemTitle {
-    font-weight: bold !important;
-    margin: 0 !important;
-    padding-right: 50px;
-}
-
-.inlineSpaceBetween {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row;
-}
-
-.itemsTableWrapper {
-    width: 100%;
-    position: relative;
-}
-
-.itemsTable {
-    position: relative;
-    border: 0px solid;
-}
-
-.itemsTableRow {
-    text-align: left;
-    height: 50px;
-}
-
-.itemsTableCellContent {
-    display: contents;
-}
-
-.linkAlign {
-    display: inline;
-    padding-right: 20px;
-}
-
-.spaceVertical {
-    padding-top: 30px;
-}
-
-.collapsableSign {
-    font-size: xx-large;
-}
-
-.textFormat {
-    font-family: "Source Sans Pro", "Arial", sans-serif;
-    font-weight: 700;
-    font-size: 1.5rem;
-}
-=======
 @import '@isdd/idsk-ui-kit/src/utils.scss';
 
 .textFormat {
@@ -69,4 +15,3 @@
 .collapsibleSign {
     font-size: xx-large;
 }
->>>>>>> origin/develop

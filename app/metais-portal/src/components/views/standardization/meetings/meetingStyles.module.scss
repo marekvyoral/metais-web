@@ -1,63 +1,3 @@
-<<<<<<< HEAD
-@import '@isdd/idsk-ui-kit/src/utils.scss';
-.row {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-}
-
-.boldText {
-    font-weight: bold !important;
-    white-space: nowrap;
-}
-.marginLeftAuto {
-    margin-left: auto;
-}
-
-.displayFlex {
-    display: flex;
-}
-
-.cursorPointer {
-    cursor: pointer;
-}
-
-.greenBoldText {
-    color: govuk-colour('green') !important;
-    font-weight: bold !important;
-    margin: 0 !important;
-}
-
-.verticalAlignBaseline {
-    vertical-align: baseline;
-}
-
-.checkboxWrapper {
-    padding: govuk-spacing(1) 0;
-}
-
-.flexEnd {
-    justify-content: flex-end;
-}
-
-.tableActionsWrapper {
-    display: flex;
-    justify-content: space-between;
-}
-
-.perPageSelectWrapper {
-    display: flex;
-    gap: 10px;
-}
-.marginBottom0 {
-    margin-bottom: 0px !important;
-}
-.actions {
-    display: flex;
-    flex-direction: column;
-    gap: govuk-spacing(3);
-}
-=======
 @import '@isdd/idsk-ui-kit/src/utils.scss';
 .row {
     display: flex;
@@ -131,4 +71,3 @@
 .buttonMargin {
     margin-top: govuk-spacing(3) !important;
 }
->>>>>>> origin/develop
