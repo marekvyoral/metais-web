@@ -139,20 +139,22 @@ export const TYPE_OF_APPROVAL_PROCESS_DEFAULT = 'OPTIONAL_APPROVAL'
 export enum APPROVAL_PROCESS {
     OPTIONAL_APPROVAL = 'OPTIONAL_APPROVAL',
     WITHOUT_APPROVAL = 'WITHOUT_APPROVAL',
+    MANDATORY_APPROVAL = 'MANDATORY_APPROVAL',
 }
 
 export enum PROJECT_STATE_ENUM {
     c_stav_projektu_1 = 'c_stav_projektu_1',
-    c_stav_projektu_2 = 'c_stav_projektu_1',
-    c_stav_projektu_3 = 'c_stav_projektu_1',
-    c_stav_projektu_4 = 'c_stav_projektu_1',
-    c_stav_projektu_5 = 'c_stav_projektu_1',
-    c_stav_projektu_6 = 'c_stav_projektu_1',
-    c_stav_projektu_7 = 'c_stav_projektu_1',
-    c_stav_projektu_8 = 'c_stav_projektu_1',
-    c_stav_projektu_9 = 'c_stav_projektu_1',
-    c_stav_projektu_10 = 'c_stav_projektu_1',
-    c_stav_projektu_11 = 'c_stav_projektu_1',
+    c_stav_projektu_2 = 'c_stav_projektu_2',
+    c_stav_projektu_3 = 'c_stav_projektu_3',
+    c_stav_projektu_4 = 'c_stav_projektu_4',
+    c_stav_projektu_5 = 'c_stav_projektu_5',
+    c_stav_projektu_6 = 'c_stav_projektu_6',
+    c_stav_projektu_7 = 'c_stav_projektu_7',
+    c_stav_projektu_8 = 'c_stav_projektu_8',
+    c_stav_projektu_9 = 'c_stav_projektu_9',
+    c_stav_projektu_10 = 'c_stav_projektu_10',
+    c_stav_projektu_11 = 'c_stav_projektu_11',
+    c_stav_projektu_12 = 'c_stav_projektu_12',
 }
 
 export enum STATUTAR_NAME {

@@ -127,10 +127,10 @@ export const RequestRolesForm: React.FC<RequestRolesFormProps> = ({ roleData, re
     }
 
     const roleTableData = allRolesData?.map((role) => ({
-        uuid: role.uuid ?? '',
-        name: role.name ?? '',
-        description: role.description ?? '',
-        assignedGroup: role.assignedGroup ?? '',
+        uuid: role?.uuid ?? '',
+        name: role?.name ?? '',
+        description: role?.description ?? '',
+        assignedGroup: role?.assignedGroup ?? '',
     }))
 
     const sections = [

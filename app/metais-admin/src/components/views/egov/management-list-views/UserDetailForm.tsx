@@ -51,7 +51,7 @@ export const UserDetailForm: React.FC<Props> = ({ userData, handleBackNavigate, 
                     label={t('managementList.lastName')}
                     correct={!errors[InputNames.LAST_NAME] && isSubmitted}
                     {...register(InputNames.LAST_NAME)}
-                    defaultValue={userData?.lastName}
+                    // defaultValue={userData?.lastName}
                     type="text"
                 />
                 <Input

@@ -7,7 +7,7 @@ export const getUserManagementFormSchema = (t: TFunction<'translation', undefine
     const userManagementFormSchema = object().shape({
         [InputNames.FIRST_NAME]: string().required(t('managementList.required', { value: t('managementList.firstName') })),
         [InputNames.LAST_NAME]: string().required(t('managementList.required', { value: t('managementList.lastName') })),
-        [InputNames.LOGIN]: string(),
+        [InputNames.LOGIN]: string().required(t('managementList.required', { value: t('managementList.login') })),
         [InputNames.EMAIL]: string()
             .email(t('managementList.emailFormat'))
             .required(t('managementList.required', { value: t('managementList.email') })),

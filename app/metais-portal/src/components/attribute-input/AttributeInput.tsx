@@ -224,7 +224,6 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         info={attribute.description}
                         disabled={attribute.readOnly || disabled}
                         {...register(attribute.technicalName + nameSufix)}
-                        value="true"
                         defaultChecked={!!defaultValueFromCiItem}
                         containerClassName={styles.withInfoCheckbox}
                     />

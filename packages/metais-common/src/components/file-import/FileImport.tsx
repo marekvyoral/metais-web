@@ -85,6 +85,10 @@ export const FileImport: React.FC<IFileImport> = ({
                     const notUpdated = prev.filter((x) => !updatedFileIds.includes(x.id))
                     return [...notUpdated, ...successfulFilesInfo, ...failedFilesInfo]
                 })
+                if (result.failed.length > 0) {
+                    const msg = result.failed[0].response?.body.message as string
+                    setErrorMessages((prev) => [...prev, msg])
+                }
             })
         } catch (error) {
             setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])

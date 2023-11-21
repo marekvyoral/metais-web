@@ -39,7 +39,9 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     const NO_CHANGES_DETECTED = 'NoChangesDetected'
     const UNIQUE_LOGIN = 'UniqueLogin'
 
-    const methods = useForm({ resolver: yupResolver(getUserManagementFormSchema(t)) })
+    const methods = useForm({
+        resolver: yupResolver(getUserManagementFormSchema(t)),
+    })
 
     const [editedUserOrgAndRoles, setEditedUserOrgAndRoles] = useState<Record<string, OrgData>>({})
     const [loginValue, setLoginValue] = useState<string>('')
@@ -49,6 +51,10 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
 
     const values = methods.watch()
     const loginString = `${values[InputNames.FIRST_NAME]}${values[InputNames.LAST_NAME] ? '.' + values[InputNames.LAST_NAME] : ''}`
+
+    useEffect(() => {
+        methods.setValue(InputNames.LOGIN, loginValue ? loginValue : '')
+    }, [loginValue, methods])
 
     const { isError: availableLoginError, isFetching } = useGetAvailableLogin(loginString, setLoginValue, 500, isCreate)
 
@@ -105,7 +111,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                   uuid: userData?.uuid,
                   state: userData?.state,
                   type: userData?.type,
-                  login: userData?.login,
+                  //login: userData?.login,
                   authResourceLP: userData?.authResourceLP,
                   authResourceEid: userData?.authResourceEid,
                   authResourceKrb: userData?.authResourceKrb,

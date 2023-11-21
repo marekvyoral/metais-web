@@ -56,7 +56,7 @@ export const FileImportView: React.FC<IFileImportView> = ({
     ciType,
 }) => {
     const { t } = useTranslation()
-    const isSubmitDisabled = currentFiles.length === 0 || !selectedRole.roleUuid
+    const isSubmitDisabled = currentFiles.length === 0 || (radioButtonMetaData === FileImportEditOptions.EXISTING_AND_NEW && !selectedRole.roleUuid)
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ciType)
 
