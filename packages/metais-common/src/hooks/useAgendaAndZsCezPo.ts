@@ -4,10 +4,13 @@ import { useMemo } from 'react'
 import { useAgendaCezPo, useZsCezPo } from '@isdd/metais-common/api/generated/kris-swagger'
 import { UserPreferencesFormNamesEnum, useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { ENTITY_AGENDA, ENTITY_ZS } from '@isdd/metais-common/constants'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
-export const useAgendaAndZsCezPo = (neighboursUuid: string) => {
+export const useAgendaAndZsCezPo = (neighboursUuid?: string) => {
     const { currentPreferences } = useUserPreferences()
-
+    const {
+        state: { user },
+    } = useAuth()
     const showInvalidated = currentPreferences?.[UserPreferencesFormNamesEnum.SHOW_INVALIDATED] ?? false
 
     const agendaCezPo = useAgendaCezPo()
@@ -32,7 +35,7 @@ export const useAgendaAndZsCezPo = (neighboursUuid: string) => {
                 data: filterForAgendaAndZs,
             }),
         queryKey: [ENTITY_AGENDA, neighboursUuid, filterForAgendaAndZs],
-        enabled: !!neighboursUuid,
+        enabled: !!neighboursUuid && !!user?.uuid,
     })
 
     const {
@@ -46,7 +49,7 @@ export const useAgendaAndZsCezPo = (neighboursUuid: string) => {
                 data: filterForAgendaAndZs,
             }),
         queryKey: [ENTITY_ZS, neighboursUuid, filterForAgendaAndZs],
-        enabled: !!neighboursUuid,
+        enabled: !!neighboursUuid && !!user?.uuid,
     })
 
     const isLoading = (isZsLoading && zsFetchStatus != 'idle') || (isAgendaLoading && agendaFetchStatus != 'idle')

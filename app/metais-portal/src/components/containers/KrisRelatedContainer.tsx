@@ -68,7 +68,7 @@ export const KrisRelatedContainer: React.FC<Props> = ({ currentKrisUuid }) => {
         includeInvalidated: showInvalidated,
     })
 
-    const neighboursUuid = ciNeighboursData?.toCiSet?.[0].uuid ?? ''
+    const neighboursUuid = ciNeighboursData?.toCiSet?.[0]?.uuid ?? ''
 
     const defaultPagination: KrisRelatedPagination = useMemo(() => {
         return {
