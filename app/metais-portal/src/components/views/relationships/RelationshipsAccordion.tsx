@@ -5,8 +5,6 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { RelationshipsTable } from './RelationshipTable'
-import { sourceTableColumns } from './RelationshipsSourceTableColumns'
-import { targetTableColumns } from './RelationshipsTargetTableColumns'
 
 import { CiNeighboursListContainer } from '@/components/containers/CiNeighboursListContainer'
 import RelationshipGraph from '@/components/views/relationships/RelationshipGraph'
@@ -44,18 +42,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                                 configurationItemId={configurationItemId}
                                 apiType={NeighboursApiType.source}
                                 View={(props) => {
-                                    return (
-                                        <RelationshipsTable
-                                            data={props?.data?.fromNodes?.neighbourPairs}
-                                            defaultFilter={props?.filter}
-                                            filterData={props?.apiFilterData}
-                                            columns={targetTableColumns(t)}
-                                            isLoading={props.isLoading}
-                                            isError={props.isError}
-                                            pagination={props.pagination}
-                                            handleFilterChange={props.handleFilterChange}
-                                        />
-                                    )
+                                    return <RelationshipsTable {...props} />
                                 }}
                             />
                         ),
@@ -71,18 +58,7 @@ export const RelationshipsAccordion: React.FC<RelationshipsAccordion> = ({ data,
                                 configurationItemId={configurationItemId}
                                 apiType={NeighboursApiType.target}
                                 View={(props) => {
-                                    return (
-                                        <RelationshipsTable
-                                            data={props?.data?.toNodes?.neighbourPairs}
-                                            columns={sourceTableColumns(t)}
-                                            defaultFilter={props?.filter}
-                                            filterData={props?.apiFilterData}
-                                            isLoading={props.isLoading}
-                                            isError={props.isError}
-                                            pagination={props.pagination}
-                                            handleFilterChange={props.handleFilterChange}
-                                        />
-                                    )
+                                    return <RelationshipsTable {...props} />
                                 }}
                             />
                         ),

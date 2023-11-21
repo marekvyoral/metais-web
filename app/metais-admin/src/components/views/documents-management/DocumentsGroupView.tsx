@@ -22,6 +22,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
     handleFilterChange,
     selectedColumns,
     setSelectedColumns,
+    resetSelectedColumns,
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
@@ -162,7 +163,11 @@ export const DocumentsGroupView: React.FC<IView> = ({
             <ActionsOverTable
                 pagination={{ pageNumber: BASE_PAGE_NUMBER, pageSize: BASE_PAGE_SIZE, dataLength: 0 }}
                 entityName={''}
-                simpleTableColumnsSelect={{ selectedColumns, setSelectedColumns }}
+                simpleTableColumnsSelect={{
+                    selectedColumns,
+                    resetSelectedColumns,
+                    saveSelectedColumns: setSelectedColumns,
+                }}
             >
                 <Button
                     bottomMargin={false}

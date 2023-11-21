@@ -39,6 +39,10 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
         },
     })
 
+    const resetSelectedColumns = () => {
+        setSelectedColumns([...getProjectsFinanceManagementSelectedColumns(t)])
+    }
+
     const handleMinErrors = useCallback(() => {
         program?.partFinances?.forEach((_, index) => {
             const currentIndex: `program.partFinances.${number}.min` = `program.partFinances.${index}.min`
@@ -232,7 +236,7 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
                 <form>
                     <ActionsOverTable
                         entityName={''}
-                        simpleTableColumnsSelect={{ selectedColumns, setSelectedColumns }}
+                        simpleTableColumnsSelect={{ selectedColumns, saveSelectedColumns: setSelectedColumns, resetSelectedColumns }}
                         pagination={{
                             pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
                             pageSize: filter.pageSize ?? BASE_PAGE_SIZE,

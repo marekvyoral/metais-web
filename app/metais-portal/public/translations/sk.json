@@ -545,9 +545,14 @@
             "ciType": "Typ položky",
             "evidenceStatus": "Stav evidencie",
             "source": "Zdroj (Typ)",
-            "sourceItemName": "Názov zdrojovej položky"
+            "sourceItemName": "Názov zdrojovej položky",
+            "owner": "Vlastník",
+            "relationState": "Evidence status"
         },
         "select": {
+            "sectionInfo": "Informácie o položke",
+            "sectionGeneric": "Atribúty generického profilu vzťahu",
+            "sectionMeta": "Metainformácie položky",
             "ciType": "Vyberte typ položky",
             "relationshipType": "Vyberte typ vzťahu",
             "evidenceStatus": "Vyberte stav"
@@ -1421,7 +1426,6 @@
         "myPoSelect": "Vyberte PO",
         "isMyPoEnabled": "Zobrazovať položky mojej PO",
         "rightsHeading": "Moje role a zastupujúce subjekty",
-
         "requests": {
             "po": "Povinná osoba",
             "phone": "Telefónne číslo",
@@ -1891,7 +1895,6 @@
         "target": "Cieľ",
         "evidenceStatus": "Stav evidencie",
         "owner": "Vlastník",
-
         "submit": "Odoslať",
         "cancel": "Zrušiť",
         "editSuccess": "Úprava {{relationName}} prebehla úspešne.",

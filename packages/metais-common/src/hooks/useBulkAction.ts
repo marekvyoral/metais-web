@@ -40,7 +40,6 @@ export const useBulkAction = (isRelation?: boolean) => {
             setBulkLoading(false)
             return onError()
         }
-
         try {
             const hasRights = await hasOwnerRights(items)
 
@@ -111,7 +110,6 @@ export const useBulkAction = (isRelation?: boolean) => {
     const handleReInvalidate = async (items: ConfigurationItemUi[], onSuccess: () => void, onError: () => void) => {
         setBulkLoading(true)
         const isValid = items.every((item) => ciInvalidFilter(item))
-
         if (!isValid) {
             setErrorMessage(t('tooltip.rights.validSelectedList'))
             setBulkLoading(false)

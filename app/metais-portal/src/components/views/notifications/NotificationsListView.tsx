@@ -21,6 +21,7 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
     columns,
     selectedColumns,
     setSelectedColumns,
+    resetSelectedColumns,
     sort,
     setSort,
     mutateAllDelete,
@@ -88,7 +89,7 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
                             dataLength: data?.pagination?.totalItems ?? 0,
                         }}
                         entityName="notification"
-                        simpleTableColumnsSelect={{ selectedColumns, setSelectedColumns }}
+                        simpleTableColumnsSelect={{ selectedColumns, saveSelectedColumns: setSelectedColumns, resetSelectedColumns }}
                         handleFilterChange={handleFilterChange}
                     >
                         <div className={styles.buttonGroup}>

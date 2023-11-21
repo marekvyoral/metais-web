@@ -48,6 +48,7 @@ export interface IView {
     handleFilterChange: (changedFilter: IFilter) => void
     selectedColumns: ISelectColumnType[]
     setSelectedColumns: Dispatch<SetStateAction<ISelectColumnType[]>>
+    resetSelectedColumns: () => void
 }
 
 export interface IDocumentsGroupContainerProps {
@@ -96,6 +97,7 @@ export const DocumentsGroupContainer: React.FC<IDocumentsGroupContainerProps> = 
             handleFilterChange={handleFilterChange}
             selectedColumns={selectedColumns}
             setSelectedColumns={setSelectedColumns}
+            resetSelectedColumns={() => setSelectedColumns([...documentsManagementGroupDocumentsDefaultSelectedColumns])}
             refetchInfoData={refetchInfoData}
         />
     )
