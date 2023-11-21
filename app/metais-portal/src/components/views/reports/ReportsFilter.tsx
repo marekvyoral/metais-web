@@ -31,7 +31,7 @@ export const ReportsFilter: React.FC<IReportsFilterProps> = ({ parameters, filte
                                 label={parameter.name ?? ''}
                                 name={parameter.key ?? ''}
                                 id={parameter.key}
-                                key={parameter.key}
+                                key={'p' + parameter.id}
                                 getOptionValue={(item) => item?.value}
                                 getOptionLabel={(item) => item?.label}
                                 setValue={setValue}
@@ -53,6 +53,7 @@ export const ReportsFilter: React.FC<IReportsFilterProps> = ({ parameters, filte
                             error={control._formState.errors?.[parameter?.key ?? 0]?.message}
                             setValue={setValue}
                             clearErrors={clearErrors}
+                            key={'p' + parameter.id}
                         />
                     )
                 if (parameter.type && (parameter?.type === ParameterType.NUMBER || parameter.type === ParameterType.STRING))
@@ -62,6 +63,7 @@ export const ReportsFilter: React.FC<IReportsFilterProps> = ({ parameters, filte
                             defaultValue={parameter?.defaultValue}
                             {...register(parameter?.key ?? '')}
                             error={control._formState.errors?.[parameter?.key ?? 0]?.message}
+                            key={'p' + parameter.id}
                         />
                     )
                 if (parameter.type === ParameterType.BOOLEAN)
@@ -74,6 +76,7 @@ export const ReportsFilter: React.FC<IReportsFilterProps> = ({ parameters, filte
                                     {...register(parameter?.key ?? '')}
                                     checked={parameter?.defaultValue === 'true'}
                                     error={control._formState.errors?.[parameter?.key ?? 0]?.message}
+                                    key={'p' + parameter.id}
                                 />
                             </div>
                         </div>
@@ -89,6 +92,7 @@ export const ReportsFilter: React.FC<IReportsFilterProps> = ({ parameters, filte
                             error={control._formState.errors?.[parameter?.key ?? 0]?.message}
                             setValue={setValue}
                             clearErrors={clearErrors}
+                            key={'p' + parameter.id}
                         />
                     )
             })}
