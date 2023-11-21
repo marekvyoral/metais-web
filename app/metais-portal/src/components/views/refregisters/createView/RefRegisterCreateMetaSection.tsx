@@ -59,6 +59,7 @@ export const RefRegisterCreateMetaSection: React.FC<IProps> = ({
                     clearErrors={clearErrors}
                     error={formState.errors?.refRegisters?.creator?.message}
                     required
+                    isClearable={false}
                 />
             )}
             <Input

@@ -1,7 +1,7 @@
 import { BaseModal, Button, ButtonLink, ButtonPopup, CheckBox, InfoIcon, Input, PaginatorWrapper, Table, TextArea } from '@isdd/idsk-ui-kit/index'
-import { BASE_PAGE_SIZE, ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
 import { ActionsOverTable, CreateEntityButton, isRowSelected, QueryFeedback } from '@isdd/metais-common/index'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FieldValues, useForm } from 'react-hook-form'
 import { ColumnDef } from '@tanstack/react-table'
@@ -9,6 +9,7 @@ import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 import { EnumItem, EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 
 import styles from './codelistsTable.module.scss'
 import { validateRowDetailData } from './codelistTableDetailActions'
@@ -22,6 +23,12 @@ export interface CodelistsDetailRefs {
     engDescriptionRefInput: React.MutableRefObject<HTMLTextAreaElement[]>
     valueRefInput: React.MutableRefObject<HTMLTextAreaElement[]>
     engValueRefInput: React.MutableRefObject<HTMLTextAreaElement[]>
+}
+
+const defaultPagination: Pagination = {
+    pageNumber: BASE_PAGE_NUMBER,
+    pageSize: BASE_PAGE_SIZE,
+    dataLength: 0,
 }
 
 interface ICodeListDetailTable {
@@ -64,18 +71,32 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
     const isUserLogged = !!user
     const { createEnumItem, validateEnumItem, updateEnumItem, deleteEnumItem } = mutations
 
-    const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
-    const [currentPage, setCurrentPage] = useState(1)
     const [errorsState, setErrorsState] = useState<IErrorsDetailState[]>([])
+    const [pagination, setPagination] = useState(defaultPagination)
 
     const [selectedRows, setSelectedRows] = useState<Array<number>>([])
     const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false)
-    const indexModificator = currentPage * pageSize - pageSize
-    const startOfList = currentPage * pageSize - pageSize
-    const endOfList = currentPage * pageSize
+    const indexModificator = pagination.pageNumber * pagination.pageSize - pagination.pageSize
 
     const [dataRows, setDataRows] = useState(filteredData?.enumItems?.sort((a, b) => (a.orderList || 0) - (b.orderList || 0)) || [])
 
+    const sortedData = useMemo(
+        () => filteredData?.enumItems?.sort((a, b) => (a.orderList || 0) - (b.orderList || 0)) || [],
+        [filteredData?.enumItems],
+    )
+    const filteredTableData = useMemo(() => {
+        const startOfList = pagination.pageNumber * pagination.pageSize - pagination.pageSize
+        const endOfList = pagination.pageNumber * pagination.pageSize
+        return sortedData.slice(startOfList, endOfList) || []
+    }, [pagination.pageNumber, pagination.pageSize, sortedData])
+
+    const myHandleFilterChange = (myFilter: IFilter) => {
+        setPagination({
+            ...pagination,
+            pageSize: myFilter.pageSize ?? BASE_PAGE_SIZE,
+            pageNumber: myFilter.pageNumber ?? defaultPagination.pageNumber,
+        })
+    }
     const { register, getValues, setValue } = useForm({
         defaultValues: {
             filteredData,
@@ -87,10 +108,6 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
 
     const handleValidate = (codeEnum: string) => {
         validateEnumItem.mutateAsync({ code: codeEnum })
-    }
-
-    const handlePagingSelect = (value: string) => {
-        setPageSize(Number(value))
     }
 
     const editRow = useCallback(
@@ -403,20 +420,21 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                 />
             </BaseModal>
             <ActionsOverTable
-                pagination={{ pageSize, pageNumber: currentPage, dataLength: filteredData?.enumItems?.length ?? 0 }}
+                pagination={{ ...pagination, dataLength: filteredData?.enumItems?.length ?? 0 }}
                 createButton={<CreateEntityButton label={t('codelists.addNewCodelistDetail')} onClick={() => setIsCreateModalOpen(true)} />}
-                handlePagingSelect={handlePagingSelect}
+                handleFilterChange={myHandleFilterChange}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
                 entityName=""
+                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
             />
             <QueryFeedback loading={isLoading || updateEnumItem.isLoading || isTableDataLoading} error={isError} withChildren>
-                <Table<EnumItem> data={dataRows?.slice(startOfList, endOfList)} columns={columns} canDragRow={isUserLogged} reorderRow={reorderRow} />
+                <Table<EnumItem> data={filteredTableData} columns={columns} canDragRow={isUserLogged} reorderRow={reorderRow} />
             </QueryFeedback>
             <PaginatorWrapper
-                pageSize={pageSize}
-                pageNumber={currentPage}
+                pageSize={pagination.pageSize}
+                pageNumber={pagination.pageNumber}
                 dataLength={filteredData?.enumItems?.length ?? 0}
-                handlePageChange={(page) => setCurrentPage(page.pageNumber ?? -1)}
+                handlePageChange={(page) => setPagination({ ...pagination, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })}
             />
         </>
     )

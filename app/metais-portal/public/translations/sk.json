@@ -1686,6 +1686,9 @@
             "submitButton": "Filtrovať výsledky"
         }
     },
+    "input": {
+        "requiredField": "(povinné)"
+    },
     "votes": {
         "breadcrumbs": {
             "home": "Domov",
