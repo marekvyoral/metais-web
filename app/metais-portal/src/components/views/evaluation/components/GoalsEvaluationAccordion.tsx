@@ -6,8 +6,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import debounce from 'lodash/debounce'
 
-import styles from '../evaluationView.module.scss'
-
+import styles from '@/components/views/evaluation/evaluationView.module.scss'
 import { EContainerType } from '@/components/containers/CiEvaluationContainer'
 
 interface IGoalsEvaluationAccordionProps {

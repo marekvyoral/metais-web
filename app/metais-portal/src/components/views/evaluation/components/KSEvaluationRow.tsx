@@ -9,7 +9,7 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 
 import styles from '@/components/views/evaluation/evaluationView.module.scss'
 
-interface IIsvsEvaluationRowProps {
+interface IKSEvaluationRowProps {
     uuid?: string
     entityId: string
     isvsAttributes?: AttributeProfile
@@ -26,9 +26,9 @@ interface IDetailISVSColumn {
     evaluation?: string
 }
 
-export const IsvsEvaluationRow: React.FC<IIsvsEvaluationRowProps> = ({ uuid, entityId, isvsAttributes, dataRights }) => {
+export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityId, isvsAttributes, dataRights }) => {
     const { t } = useTranslation()
-    const { data: evalData, isError, isLoading, refetch, isFetching } = useGetEvaluations(entityId, uuid ?? '', 'ISVS')
+    const { data: evalData, isError, isLoading, refetch, isFetching } = useGetEvaluations(entityId, uuid ?? '', 'KS')
     const { register, handleSubmit } = useForm<Array<IDetailISVSColumn>>()
     const [rowSelection, setRowSelection] = useState<Array<string>>([])
     const [isLoadingAddData, setLoadingAddData] = useState<boolean>(false)
@@ -50,7 +50,7 @@ export const IsvsEvaluationRow: React.FC<IIsvsEvaluationRowProps> = ({ uuid, ent
                 }),
             },
         }
-        saveIsvsHook(entityId, uuid ?? '', 'ISVS', fetchData)
+        saveIsvsHook(entityId, uuid ?? '', 'KS', fetchData)
             .then(() => {
                 refetch()
             })

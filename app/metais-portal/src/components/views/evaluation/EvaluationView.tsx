@@ -5,11 +5,11 @@ import { AccordionContainer, Button, CheckBox, GridCol, GridRow, SimpleSelect } 
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { KrisToBeRights, NoteVersionUi } from '@isdd/metais-common/api/generated/kris-swagger'
 
-import { GoalsEvaluationAccordion } from './components/GoalsEvaluationAccordion'
-import styles from './evaluationView.module.scss'
-import { SuggestionEvaluationAccordion } from './components/SuggestionEvaluationAccordion'
-import { IsvsEvaluationAccordion } from './components/IsvsEvaluationAccordion'
-
+import { KSEvaluationAccordion } from '@/components/views/evaluation/components/KSEvaluationAccordion'
+import styles from '@/components/views/evaluation/evaluationView.module.scss'
+import { GoalsEvaluationAccordion } from '@/components/views/evaluation/components/GoalsEvaluationAccordion'
+import { SuggestionEvaluationAccordion } from '@/components/views/evaluation/components/SuggestionEvaluationAccordion'
+import { IsvsEvaluationAccordion } from '@/components/views/evaluation/components/IsvsEvaluationAccordion'
 import { EContainerType } from '@/components/containers/CiEvaluationContainer'
 
 interface IEvaluationView {
@@ -150,7 +150,14 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                         },
                         {
                             title: t('evaluation.accordion.services'),
-                            content: <>{'tretet 2 ' + entityId}</>,
+                            content: (
+                                <KSEvaluationAccordion
+                                    versionData={versionData}
+                                    onApproveGoals={onApproveGoals}
+                                    dataRights={dataRights}
+                                    entityId={entityId ?? ''}
+                                />
+                            ),
                         },
                         {
                             title: t('evaluation.accordion.krit'),

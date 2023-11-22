@@ -1,5 +1,5 @@
 import { ExpandableRowCellWrapper, PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
-import { KrisToBeIsvs, KrisToBeRights, NoteVersionUi, useGetIsvs } from '@isdd/metais-common/api/generated/kris-swagger'
+import { KrisToBeIsvs, KrisToBeRights, NoteVersionUi, useGetKs } from '@isdd/metais-common/api/generated/kris-swagger'
 import { ActionsOverTable, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -9,17 +9,17 @@ import { Link } from 'react-router-dom'
 import { useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
-import { IsvsEvaluationRow } from '@/components/views/evaluation/components/IsvsEvaluationRow'
+import { KSEvaluationRow } from '@/components/views/evaluation/components/KSEvaluationRow'
 import { EContainerType } from '@/components/containers/CiEvaluationContainer'
 
-interface IIsvsEvaluationAccordionProps {
+interface IKSEvaluationAccordionProps {
     entityId: string
     versionData?: NoteVersionUi[]
     dataRights?: KrisToBeRights
     onApproveGoals: (approve: boolean, note: string, type: EContainerType, refetchData: () => void) => Promise<void>
 }
 
-export const IsvsEvaluationAccordion: React.FC<IIsvsEvaluationAccordionProps> = ({ entityId, versionData, dataRights, onApproveGoals }) => {
+export const KSEvaluationAccordion: React.FC<IKSEvaluationAccordionProps> = ({ entityId, versionData, dataRights, onApproveGoals }) => {
     const { t } = useTranslation()
     const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
     const [currentPage, setCurrentPage] = useState(0)
@@ -37,7 +37,7 @@ export const IsvsEvaluationAccordion: React.FC<IIsvsEvaluationAccordionProps> = 
         isLoading: isLoadingData,
         refetch,
         isRefetching,
-    } = useGetIsvs(entityId, {
+    } = useGetKs(entityId, {
         page: currentPage,
         count: pageSize,
         order: 'CODE',
@@ -61,7 +61,7 @@ export const IsvsEvaluationAccordion: React.FC<IIsvsEvaluationAccordionProps> = 
             id: 'isvsCode',
             cell: (ctx) => (
                 <ExpandableRowCellWrapper row={ctx.row}>
-                    <Link to={`/ci/ISVS/${ctx.row?.original?.uuid}`} state={{ from: location }} className="govuk-link">
+                    <Link to={`/ci/ks/${ctx.row?.original?.uuid}`} state={{ from: location }} className="govuk-link">
                         {ctx.row?.original?.code}
                     </Link>
                 </ExpandableRowCellWrapper>
@@ -116,7 +116,7 @@ export const IsvsEvaluationAccordion: React.FC<IIsvsEvaluationAccordionProps> = 
                 onExpandedChange={setExpandedState}
                 getExpandedRow={(row) => {
                     return (
-                        <IsvsEvaluationRow entityId={entityId} uuid={row?.original?.uuid} isvsAttributes={krisToBeIsvsData} dataRights={dataRights} />
+                        <KSEvaluationRow entityId={entityId} uuid={row?.original?.uuid} isvsAttributes={krisToBeIsvsData} dataRights={dataRights} />
                     )
                 }}
             />
