@@ -106,12 +106,10 @@ export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityI
             id: 'name',
             cell: ({ row }) => {
                 return (
-                    <>
-                        <InfoIconWithText key={row?.original?.name} tooltip={row?.original?.tooltip}>
-                            {row?.original?.name}
-                        </InfoIconWithText>
-                        <Input readOnly hidden {...register(`${row?.index}.id`)} key={row?.original?.id} value={row?.original?.id} />
-                    </>
+                    <InfoIconWithText key={row?.original?.name} tooltip={row?.original?.tooltip}>
+                        {row?.original?.name}
+                        <input readOnly hidden {...register(`${row?.index}.id`)} key={row?.original?.id} value={row?.original?.id} />
+                    </InfoIconWithText>
                 )
             },
         },
@@ -166,19 +164,22 @@ export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityI
             accessorFn: (row) => row?.evaluation,
             header: () => {
                 return (
-                    <>
-                        <GridRow>{t('evaluation.detailTable.evaluation')}</GridRow>
-                        <GridRow>
-                            {!isEditRow ? (
-                                <Button label={t('evaluation.changeBtn')} onClick={() => setEditRow(!isEditRow)} />
-                            ) : (
-                                <ButtonGroupRow>
-                                    <Button label={t('evaluation.saveBtn')} type="submit" />
-                                    <Button variant="secondary" label={t('evaluation.cancelBtn')} onClick={() => setEditRow(false)} />
-                                </ButtonGroupRow>
-                            )}
-                        </GridRow>
-                    </>
+                    <div className={styles.customHEader}>
+                        {t('evaluation.detailTable.evaluation')}
+                        {!isEditRow ? (
+                            <Button className={styles.headerBtn} label={t('evaluation.changeBtn')} onClick={() => setEditRow(!isEditRow)} />
+                        ) : (
+                            <ButtonGroupRow>
+                                <Button label={t('evaluation.saveBtn')} className={styles.headerBtn} type="submit" />
+                                <Button
+                                    variant="secondary"
+                                    className={styles.headerBtn}
+                                    label={t('evaluation.cancelBtn')}
+                                    onClick={() => setEditRow(false)}
+                                />
+                            </ButtonGroupRow>
+                        )}
+                    </div>
                 )
             },
             id: 'evaluation',

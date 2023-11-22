@@ -66,3 +66,13 @@
 .expandableRowContent {
     padding: govuk-spacing(4);
 }
+
+.customHEader {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+}
+.headerBtn {
+    margin-bottom: 0 !important;
+}

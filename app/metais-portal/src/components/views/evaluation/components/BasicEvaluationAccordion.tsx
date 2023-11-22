@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next'
 import { ColumnDef, Row } from '@tanstack/react-table'
 
 import styles from '@/components/views/evaluation/evaluationView.module.scss'
-
 interface IBasicEvaluationAccordionProps {
     entityId: string
 }
@@ -104,12 +103,10 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
             id: 'name',
             cell: ({ row }) => {
                 return (
-                    <>
-                        <InfoIconWithText key={row?.original?.name} tooltip={row?.original?.tooltip}>
-                            {row?.original?.name}
-                        </InfoIconWithText>
-                        <Input readOnly hidden {...register(`${row?.index}.id`)} key={row?.original?.id} value={row?.original?.id} />
-                    </>
+                    <InfoIconWithText key={row?.original?.name} tooltip={row?.original?.tooltip}>
+                        {row?.original?.name}
+                        <input readOnly hidden {...register(`${row?.index}.id`)} key={row?.original?.id} value={row?.original?.id} />
+                    </InfoIconWithText>
                 )
             },
         },
@@ -164,19 +161,22 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
             accessorFn: (row) => row?.evaluation,
             header: () => {
                 return (
-                    <>
-                        <GridRow>{t('evaluation.detailTable.evaluation')}</GridRow>
-                        <GridRow>
-                            {!isEditRow ? (
-                                <Button label={t('evaluation.changeBtn')} onClick={() => setEditRow(!isEditRow)} />
-                            ) : (
-                                <ButtonGroupRow>
-                                    <Button label={t('evaluation.saveBtn')} type="submit" />
-                                    <Button variant="secondary" label={t('evaluation.cancelBtn')} onClick={() => setEditRow(false)} />
-                                </ButtonGroupRow>
-                            )}
-                        </GridRow>
-                    </>
+                    <div className={styles.customHEader}>
+                        {t('evaluation.detailTable.evaluation')}
+                        {!isEditRow ? (
+                            <Button className={styles.headerBtn} label={t('evaluation.changeBtn')} onClick={() => setEditRow(!isEditRow)} />
+                        ) : (
+                            <ButtonGroupRow>
+                                <Button label={t('evaluation.saveBtn')} className={styles.headerBtn} type="submit" />
+                                <Button
+                                    variant="secondary"
+                                    className={styles.headerBtn}
+                                    label={t('evaluation.cancelBtn')}
+                                    onClick={() => setEditRow(false)}
+                                />
+                            </ButtonGroupRow>
+                        )}
+                    </div>
                 )
             },
             id: 'evaluation',
