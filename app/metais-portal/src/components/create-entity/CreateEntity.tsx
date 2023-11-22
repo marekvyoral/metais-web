@@ -10,6 +10,7 @@ import { v4 as uuidV4 } from 'uuid'
 import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
 import { isObjectEmpty } from '@isdd/metais-common/src/utils/utils'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
@@ -126,10 +127,19 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         })
     }
 
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    useEffect(() => {
+        if (!(isRedirectError || isProcessedError || isRedirectLoading)) {
+            scrollToMutationFeedback()
+        }
+    }, [isProcessedError, isRedirectError, isRedirectLoading, scrollToMutationFeedback])
+
     return (
         <>
             {!(isRedirectError || isProcessedError || isRedirectLoading) && (
-                <MutationFeedback success={false} error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''} />
+                <div ref={wrapperRef}>
+                    <MutationFeedback success={false} error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''} />
+                </div>
             )}
             <QueryFeedback
                 loading={isRedirectFetched && isRedirectLoading}

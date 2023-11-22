@@ -11,9 +11,16 @@ export interface ILoadingIndicatorProps {
     fullscreen?: boolean
     transparentMask?: boolean
     layer?: 'parent' | 'dialog' | 'always-top'
+    className?: string
 }
 
-export const LoadingIndicator: React.FC<ILoadingIndicatorProps> = ({ fullscreen = false, transparentMask = false, label, layer = 'always-top' }) => {
+export const LoadingIndicator: React.FC<ILoadingIndicatorProps> = ({
+    fullscreen = false,
+    transparentMask = false,
+    label,
+    layer = 'always-top',
+    className,
+}) => {
     const { t } = useTranslation()
     const getMaskLayerClassName = () => {
         switch (layer) {
@@ -29,6 +36,7 @@ export const LoadingIndicator: React.FC<ILoadingIndicatorProps> = ({ fullscreen 
     }
 
     const classNamesList = classNames(
+        className,
         styles.loadingIndicator,
         fullscreen && styles.loadingIndicatorFullscreen,
         transparentMask && styles.transparentBackgroundMask,

@@ -3,13 +3,14 @@ import { Button, ButtonLink, PaginatorWrapper } from '@isdd/idsk-ui-kit/index'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
+import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useGetMetaHook } from '@isdd/metais-common/api/generated/dms-swagger'
-import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { BASE_PAGE_NUMBER, DEFAULT_PAGESIZE_OPTIONS, INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import {
     ActionsOverTable,
     BulkPopup,
@@ -292,14 +293,24 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
               .filter((column) => column.id != 'documentsTab.table.lastModifiedBy')
               .filter((column) => column.id != 'documentsTab.table.createdBy')
               .filter((column) => column.id != 'bulkActions')
+
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        if (bulkActionResult?.isError || bulkActionResult?.isSuccess) {
+            scrollToMutationFeedback()
+        }
+    }, [bulkActionResult, scrollToMutationFeedback])
     return (
         <QueryFeedback loading={isLoading || isBulkLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
             {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <MutationFeedback
-                    success={bulkActionResult?.isSuccess}
-                    successMessage={bulkActionResult?.successMessage}
-                    error={bulkActionResult?.isError ? bulkActionResult.errorMessage ?? t('feedback.mutationErrorMessage') : ''}
-                />
+                <div ref={wrapperRef}>
+                    <MutationFeedback
+                        success={bulkActionResult?.isSuccess}
+                        successMessage={bulkActionResult?.successMessage}
+                        error={bulkActionResult?.isError ? bulkActionResult.errorMessage ?? t('feedback.mutationErrorMessage') : ''}
+                    />
+                </div>
             )}
             <ActionsOverTable
                 pagination={{

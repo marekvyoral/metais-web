@@ -361,7 +361,8 @@
         }
     },
     "mutationFeedback": {
-        "successfulUpdated": "Položka bola úspešne zmenená"
+        "successfulUpdated": "Položka bola úspešne zmenená",
+        "successfulUpdatedList": "Položky boli úspešne zmenené"
     },
     "button": {
         "saveAndContinue": "Uložiť a pokračovať",

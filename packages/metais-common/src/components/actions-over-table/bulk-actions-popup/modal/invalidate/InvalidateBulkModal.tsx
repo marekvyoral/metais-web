@@ -1,5 +1,5 @@
 import { BaseModal, LoadingIndicator } from '@isdd/idsk-ui-kit'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -13,6 +13,7 @@ import {
     useInvalidateSet,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 export interface IInvalidateBulkModalProps {
     open: boolean
@@ -36,7 +37,15 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
     const { t } = useTranslation()
     const { register, handleSubmit, reset } = useForm()
     const deleteFileHook = useDeleteContentHook()
-    const successMessage = multiple ? t('bulkActions.invalidate.successList') : t('bulkActions.invalidate.success')
+    const successMessage = multiple ? t('mutationFeedback.successfulUpdatedList') : t('mutationFeedback.successfulUpdated')
+    const { getRequestStatus, isError } = useGetStatus()
+
+    useEffect(() => {
+        if (isError) {
+            onSubmit({ isSuccess: false, isError: true })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isError])
 
     const invalidateRelation = useInvalidateRelationship({
         mutation: {
@@ -52,12 +61,10 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
 
     const { isLoading, mutateAsync: invalidateItems } = useInvalidateSet({
         mutation: {
-            onSuccess() {
-                reset()
-                onSubmit({ isSuccess: true, isError: false, successMessage })
-            },
-            onError() {
-                onSubmit({ isSuccess: false, isError: true, successMessage })
+            async onSuccess(data) {
+                if (data.requestId) {
+                    await getRequestStatus(data.requestId, () => onSubmit({ isSuccess: true, isError: false, successMessage }))
+                }
             },
         },
     })
@@ -69,13 +76,15 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
 
     const handleInvalidate = async (formValues: FieldValues) => {
         if (deleteFile) {
-            await items.forEach((item) => deleteFileHook(item.uuid ?? ''))
+            items.forEach(async (item) => {
+                return await deleteFileHook(item.uuid ?? '')
+            })
         }
         if (isRelation) {
             const relationData: RelationshipInvalidateUi = { ...mappedItems[0], invalidateReason: { comment: formValues.reason } }
             await invalidateRelation.mutateAsync({ data: relationData, params: { newState: ['INVALIDATED'] } })
         } else {
-            await invalidateItems({ data: { configurationItemSet: mappedItems, invalidateReason: { comment: formValues.reason } } })
+            invalidateItems({ data: { configurationItemSet: mappedItems, invalidateReason: { comment: formValues.reason } } })
         }
     }
 

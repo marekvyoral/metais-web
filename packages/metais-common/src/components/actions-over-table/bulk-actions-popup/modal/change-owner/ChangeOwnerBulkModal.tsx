@@ -1,5 +1,5 @@
 import { BaseModal, LoadingIndicator } from '@isdd/idsk-ui-kit'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ChangeOwnerBulkView } from './ChangeOwnerBulkView'
@@ -13,6 +13,7 @@ import {
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { GidRoleData, useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 export interface IChangeOwnerBulkModalProps {
     open: boolean
@@ -27,15 +28,22 @@ export interface IChangeOwnerBulkModalProps {
 export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ items, open, multiple, onSubmit, onClose, ciRoles, isRelation }) => {
     const { t } = useTranslation()
 
-    const successMessage = multiple ? t('bulkActions.changeOwner.successList') : t('bulkActions.changeOwner.success')
+    const successMessage = multiple ? t('mutationFeedback.successfulUpdatedList') : t('mutationFeedback.successfulUpdated')
+    const { getRequestStatus, isError } = useGetStatus()
+
+    useEffect(() => {
+        if (isError) {
+            onSubmit({ isSuccess: false, isError: true })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isError])
 
     const { isLoading, mutateAsync: changeOwner } = useChangeOwnerSet({
         mutation: {
-            onSuccess() {
-                onSubmit({ isSuccess: true, isError: false, successMessage })
-            },
-            onError() {
-                onSubmit({ isSuccess: false, isError: true, successMessage })
+            async onSuccess(data) {
+                if (data.requestId) {
+                    await getRequestStatus(data.requestId, () => onSubmit({ isSuccess: true, isError: false, successMessage }))
+                }
             },
         },
     })

@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { FieldValues, FormProvider, useForm } from 'react-hook-form'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup'
 import {
     getFindByUuid2QueryKey,
     getFindRelatedRoles1QueryKey,
     getFindRoleOrgRelationsQueryKey,
     useUpdateOrCreateWithGid,
 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useTranslation } from 'react-i18next'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useQueryClient } from '@tanstack/react-query'
+import React, { useEffect, useState } from 'react'
+import { FieldValues, FormProvider, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { InputNames, UserDetailForm } from './UserDetailForm'
-import { OrgData, UserRolesForm } from './UserRolesForm'
 import { UserManagementFormButtons } from './UserManagementFormButtons'
+import { OrgData, UserRolesForm } from './UserRolesForm'
 import { formatGidsData } from './managementListHelpers'
 import { getUserManagementFormSchema } from './userManagementFormSchema'
 
@@ -36,9 +37,9 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
-
     const { setIsActionSuccess } = useActionSuccess()
     const managedUserUuid = detailData?.userData?.uuid
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
     const managementListPath = '/managementList'
     const detailPath = '/detail'
@@ -126,7 +127,6 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                   uuid: userData?.uuid,
                   state: userData?.state,
                   type: userData?.type,
-                  //login: userData?.login,
                   authResourceLP: userData?.authResourceLP,
                   authResourceEid: userData?.authResourceEid,
                   authResourceKrb: userData?.authResourceKrb,
@@ -137,6 +137,10 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
         const gids = formatGidsData(editedUserOrgAndRoles)
         updateOrCreate.mutateAsync({ data: { identity: identity, gids: gids } })
     }
+
+    useEffect(() => {
+        scrollToMutationFeedback()
+    }, [updateOrCreate.isError, updateOrCreate.isSuccess, scrollToMutationFeedback])
 
     return (
         <FormProvider {...methods}>
@@ -150,17 +154,19 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
             >
                 <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
                     {(updateOrCreate.isError || updateOrCreate.isSuccess) && (
-                        <MutationFeedback
-                            error={
-                                !updateOrCreate.isSuccess &&
-                                (errorType === NO_CHANGES_DETECTED
-                                    ? t('managementList.noChangesDetected')
-                                    : errorType === UNIQUE_LOGIN
-                                    ? t('userManagement.error.uniqueLogin')
-                                    : t('managementList.mutationError'))
-                            }
-                            success={updateOrCreate.isSuccess}
-                        />
+                        <div ref={wrapperRef}>
+                            <MutationFeedback
+                                error={
+                                    !updateOrCreate.isSuccess &&
+                                    (errorType === NO_CHANGES_DETECTED
+                                        ? t('managementList.noChangesDetected')
+                                        : errorType === UNIQUE_LOGIN
+                                        ? t('userManagement.error.uniqueLogin')
+                                        : t('managementList.mutationError'))
+                                }
+                                success={updateOrCreate.isSuccess}
+                            />
+                        </div>
                     )}
                     <UserDetailForm
                         isCreate={isCreate}
