@@ -982,7 +982,8 @@
         "requestCreate": "Create request to add a codelist",
         "ciCreateEntity": "Create new item of type {{entityName}}",
         "compareHistory": "Compare history",
-        "ciEditEntity": "Edit of component"
+        "ciEditEntity": "Edit of component",
+        "404": "Error"
     },
     "codeList": {
         "descriptionError": "Description is required",
@@ -1380,7 +1381,8 @@
         "publicAuthoritiesHierarchy": "Hierarchy of public authorities"
     },
     "todo": {
-        "header": "Under construction",
+        "header": "Page not found",
+        "description": "Page you are looking for was not found or does not exist.",
         "homeButton": "Home page"
     },
     "userProfile": {
@@ -1908,5 +1910,11 @@
         "commitmentHeader": "Commitment to the observance of the goals and principles of the National Informatization Concept of Public Administration",
         "commitmentLabel": "We declare that the building and developing ISVS will meet our defined objectives, sub-objectives and adhere to the principles of the National Informatization Concept of Public Administration",
         "noCheckedItems": "Before confirming the commitment to comply with the goals and principles of the National Concept of Informatization of Public Administration, it is necessary to select at least one goal."
+    },
+    "crash": {
+        "heading": "Ups, unexpected error occured",
+        "description": "We noticed an internal problem with the application",
+        "reload": "Reload page",
+        "copyError": "Copy error message"
     }
 }

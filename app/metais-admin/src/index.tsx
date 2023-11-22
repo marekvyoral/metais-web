@@ -13,6 +13,8 @@ import { ActionSuccessProvider } from '@isdd/metais-common/contexts/actionSucces
 import { UserPreferencesProvider } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { AuthProvider } from 'react-oauth2-code-pkce'
 import { AutoLogout } from '@isdd/metais-common/src/components/auto-logout/AutoLogout'
+import { CrashFallback } from '@isdd/metais-common/src/components/crash-fallback/CrashFallback'
+import { ErrorBoundary } from 'react-error-boundary'
 
 import { App } from '@/App'
 import { reportWebVitals } from '@/reportWebVitals'
@@ -48,17 +50,19 @@ root.render(
                 <QueryClientProvider client={queryClient}>
                     <AuthProvider authConfig={authConfig({ clientId: CLIENT_ID, redirectUri: BASENAME + '/', scope: SCOPE })}>
                         <AuthContextProvider>
-                            <AutoLogout>
-                                <FilterContextProvider>
-                                    <ActionSuccessProvider>
-                                        <UserPreferencesProvider>
-                                            <DndProvider backend={HTML5Backend}>
-                                                <App />
-                                            </DndProvider>
-                                        </UserPreferencesProvider>
-                                    </ActionSuccessProvider>
-                                </FilterContextProvider>
-                            </AutoLogout>
+                            <ErrorBoundary fallbackRender={({ error }) => <CrashFallback error={error} />}>
+                                <AutoLogout>
+                                    <FilterContextProvider>
+                                        <ActionSuccessProvider>
+                                            <UserPreferencesProvider>
+                                                <DndProvider backend={HTML5Backend}>
+                                                    <App />
+                                                </DndProvider>
+                                            </UserPreferencesProvider>
+                                        </ActionSuccessProvider>
+                                    </FilterContextProvider>
+                                </AutoLogout>
+                            </ErrorBoundary>
                         </AuthContextProvider>
                     </AuthProvider>
                 </QueryClientProvider>
