@@ -29,22 +29,25 @@ interface IUserDetailContainer {
 
 export const UserDetailContainer: React.FC<IUserDetailContainer> = ({ userId, View, passwordChange }) => {
     const { t } = useTranslation()
-    const { data: userData, isLoading: isUserDataLoading, isError: isUserDataError } = useFindByUuid2(userId)
+    const { data: userData, isLoading: isUserDataLoading, isFetching: isUserDataFetching, isError: isUserDataError } = useFindByUuid2(userId)
     const {
         data: userRelatedRoles,
         isLoading: isRolesLoading,
+        isFetching: isRolesFetching,
         isError: isRolesError,
     } = useFindRelatedRoles1(userId, { query: { enabled: !passwordChange } })
     const {
         data: userOrganizations,
         isLoading: isUserOrganizationsLoading,
         isError: isUserOrganizationsError,
+        isFetching: isUserOrganizationsFetching,
     } = useFindRoleOrgRelations(userId, {}, { query: { enabled: !passwordChange } })
 
     const isLoading = [isUserDataLoading, isRolesLoading && !passwordChange, isUserOrganizationsLoading && !passwordChange].some((item) => item)
+    const isFetching = [isUserDataFetching, isRolesFetching && !passwordChange, isUserOrganizationsFetching && !passwordChange].some((item) => item)
     const isError = [isUserDataError, isRolesError, isUserOrganizationsError].some((item) => item)
 
     if (!userId) return <QueryFeedback loading={false} error errorProps={{ errorMessage: t('managementList.noUserId') }} />
 
-    return <View data={{ userData, userRelatedRoles, userOrganizations }} isLoading={isLoading} isError={isError} />
+    return <View data={{ userData, userRelatedRoles, userOrganizations }} isLoading={isLoading || isFetching} isError={isError} />
 }

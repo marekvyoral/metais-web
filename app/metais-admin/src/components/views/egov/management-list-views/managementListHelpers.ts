@@ -1,8 +1,11 @@
-import { Dispatch, SetStateAction } from 'react'
+import { useMemo } from 'react'
 import { RelatedRole, RoleOrgIdentity } from '@isdd/metais-common/api/generated/iam-swagger'
-import { GetImplicitHierarchyFilter } from '@isdd/metais-common/hooks/useGetImplicitHierarchy'
+import { HierarchyRightsUi, useReadCiListHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
+import { BASE_PAGE_SIZE } from '@isdd/metais-common/api'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
-import { HierarchyItem, OrgData, RoleTable } from './UserRolesForm'
+import { OrgData, RoleTable } from './UserRolesForm'
 
 export const formatGidsData = (data: Record<string, OrgData>) => {
     const formatedData: { roleId: string; orgId: string }[] = []
@@ -20,16 +23,16 @@ export const getUniqueUserOrg = (userOrganizations: RoleOrgIdentity[] | undefine
     return uniqueUserOrg
 }
 
-export const formatOrgData = (data: Record<string, OrgData>, selectedOrg: HierarchyItem | null, rowSelection: Record<string, RoleTable>) => {
+export const formatOrgData = (data: Record<string, OrgData>, selectedOrg: HierarchyRightsUi | null, rowSelection: Record<string, RoleTable>) => {
     const formatedData = {
         ...data,
         [selectedOrg?.poUUID ?? '']: {
             orgId: selectedOrg?.poUUID ?? '',
             orgName: selectedOrg?.poName ?? '',
-            orgStreet: selectedOrg?.address.street ?? '',
-            orgVillage: selectedOrg?.address.village ?? '',
-            orgZIP: selectedOrg?.address.zipCode ?? '',
-            orgNumber: selectedOrg?.address.number ?? '',
+            orgStreet: selectedOrg?.address?.street ?? '',
+            orgVillage: selectedOrg?.address?.village ?? '',
+            orgZIP: selectedOrg?.address?.zipCode ?? '',
+            orgNumber: selectedOrg?.address?.number ?? '',
             roles: rowSelection,
         },
     }
@@ -79,18 +82,19 @@ export const getDefaultRolesKeys = (
     return defaultRolesKeys
 }
 
-export const getLoadOptions = (
-    setFilter: Dispatch<SetStateAction<GetImplicitHierarchyFilter>>,
-    userOrganizations: RoleOrgIdentity[] | undefined,
-    implicitHierarchyDataRights: HierarchyItem[],
-) => {
-    const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
-        const page = searchQuery && !additional?.page ? 1 : (additional?.page || 0) + 1
-        setFilter((prev) => ({ ...prev, page: page + 1, fullTextSearch: searchQuery }))
+export const useGetLoadOptions = (userOrganizations: RoleOrgIdentity[] | undefined) => {
+    const {
+        state: { user },
+    } = useAuth()
+    const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
 
+    const readCiListFetch = useReadCiListHook()
+
+    const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
+        const page = !additional?.page ? 1 : (additional?.page || 0) + 1
         const uniqueUserOrg = getUniqueUserOrg(userOrganizations)
 
-        const userOptions: HierarchyItem[] =
+        const userOptions: HierarchyRightsUi[] =
             uniqueUserOrg.map((item) => ({
                 HIERARCHY_FROM_ROOT: -1,
                 poName: item.orgName ?? '',
@@ -105,7 +109,16 @@ export const getLoadOptions = (
                 },
             })) ?? []
 
-        const options: HierarchyItem[] = [...userOptions, ...implicitHierarchyDataRights]
+        const response = await readCiListFetch({
+            fullTextSearch: searchQuery,
+            page,
+            perpage: BASE_PAGE_SIZE,
+            sortBy: SortBy.HIERARCHY_FROM_ROOT,
+            sortType: SortType.ASC,
+            rights: userDataGroups.map((group) => ({ poUUID: group.orgId, roles: group.roles.map((role) => role.roleUuid) })),
+        })
+
+        const options = [...userOptions, ...(response.rights ?? [])]
 
         return {
             options: options || [],
@@ -115,7 +128,7 @@ export const getLoadOptions = (
             },
         }
     }
-    return loadOptions
+    return { loadOptions }
 }
 
 export const getDataForUserRolesTable = (userOrganizations: RoleOrgIdentity[] | undefined, org: RoleOrgIdentity) => {

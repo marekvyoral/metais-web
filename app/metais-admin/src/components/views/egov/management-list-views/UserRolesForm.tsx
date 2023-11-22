@@ -3,41 +3,16 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Row } from '@tanstack/react-table'
 import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 import styles from './userView.module.scss'
 import { SelectableColumnsSpec } from './userManagementUtils'
 import { UserRolesEditable } from './UserRolesEditable'
-import { formatOrgData, getDefaultRolesKeys, getLoadOptions, getUniqueUserOrg } from './managementListHelpers'
+import { formatOrgData, getDefaultRolesKeys, getUniqueUserOrg, useGetLoadOptions } from './managementListHelpers'
 
 import { UserDetailData } from '@/components/containers/ManagementList/UserDetailContainer'
 import { UserManagementData } from '@/components/containers/ManagementList/UserManagementContainer'
 import { useImplicitHierarchy } from '@/hooks/useImplicitHierarchy'
-
-export interface ImplicitHierarchyPagination {
-    page: number
-    perPage: number
-    totalPages: number
-    totalItems: number
-}
-
-export interface HierarchyItem {
-    HIERARCHY_FROM_ROOT: number
-    address: {
-        number: string
-        street: string
-        village: string
-        zipCode: string
-    }
-    path: string
-    poName: string
-    poUUID: string
-    roles: unknown[]
-}
-
-export interface ImplicitHierarchyData {
-    pagination: ImplicitHierarchyPagination
-    rights: HierarchyItem[]
-}
 
 export interface RoleTable {
     uuid: string
@@ -77,12 +52,13 @@ export const UserRolesForm: React.FC<Props> = ({
 }) => {
     const { t } = useTranslation()
 
-    const { implicitHierarchyData, setFilter } = useImplicitHierarchy()
+    const { implicitHierarchyData } = useImplicitHierarchy()
+    const { loadOptions } = useGetLoadOptions(detailData?.userOrganizations)
 
     const roleGroupsData = managementData?.roleGroupsData
     const allRolesData = managementData?.allRolesData
 
-    const [selectedOrg, setSelectedOrg] = useState<HierarchyItem | null>(null)
+    const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
     const [selectedGroups, setSelectedGroups] = useState<Record<string, boolean>>({})
     const [rowSelection, setRowSelection] = useState<Record<string, RoleTable>>({})
 
@@ -97,7 +73,7 @@ export const UserRolesForm: React.FC<Props> = ({
     useEffect(() => {
         if (isCreate) {
             if (implicitHierarchyData?.rights != null) {
-                setSelectedOrg(implicitHierarchyData.rights[0] as HierarchyItem)
+                setSelectedOrg(implicitHierarchyData.rights[0])
             }
         }
     }, [implicitHierarchyData?.rights, isCreate])
@@ -203,7 +179,7 @@ export const UserRolesForm: React.FC<Props> = ({
     }
 
     //handle change of selected organisation
-    const handleSelectedOrganizationChange = (value: HierarchyItem) => {
+    const handleSelectedOrganizationChange = (value: HierarchyRightsUi) => {
         setSelectedOrg(value)
         setSelectedGroups((prev) => {
             const acc: Record<string, boolean> = {}
@@ -213,8 +189,8 @@ export const UserRolesForm: React.FC<Props> = ({
             return acc
         })
         setRowSelection({})
-        if (Object.keys(editedUserOrgAndRoles[value.poUUID]).length > 0) {
-            setRowSelection(editedUserOrgAndRoles[value.poUUID].roles)
+        if (Object.keys(editedUserOrgAndRoles[value?.poUUID ?? '']).length > 0) {
+            setRowSelection(editedUserOrgAndRoles[value?.poUUID ?? ''].roles)
         }
         return
     }
@@ -247,8 +223,6 @@ export const UserRolesForm: React.FC<Props> = ({
         }
     }
 
-    //load options for lazy select
-    const loadOptions = getLoadOptions(setFilter, detailData?.userOrganizations, implicitHierarchyData?.rights as HierarchyItem[])
     const isRowSelected = (row: Row<RoleTable>) => {
         return row.original.uuid ? !!rowSelection[row.original.uuid] : false
     }

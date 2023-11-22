@@ -497,7 +497,8 @@
         "noUserId": "There was mistake in fetching data.",
         "mutationError": "Počas akcie došlo k chybe.",
         "emailFormat": "Formát emailu je zlý",
-        "noChangesDetected": "Neboli zaznamenané žiadne zmeny."
+        "noChangesDetected": "Neboli zaznamenané žiadne zmeny.",
+        "noSpacesError": "Položka {{value}} nesmie obsahovať medzery"
     },
     "accordion": {
         "openAll": "Otvoriť všetko",
