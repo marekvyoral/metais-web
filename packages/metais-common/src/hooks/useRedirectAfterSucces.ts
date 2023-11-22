@@ -92,7 +92,7 @@ export const useRedirectAfterSuccess = (requestId: string, configurationItemId: 
         setIsActionSuccess,
     ])
 
-    const isLoading = !isError && !data?.processed
+    const isLoading = !isError && !data?.processed && !isTooManyFetchesError
 
     return { isLoading, isError, performRedirection, isFetched, isProcessedError, isTooManyFetchesError, reset }
 }

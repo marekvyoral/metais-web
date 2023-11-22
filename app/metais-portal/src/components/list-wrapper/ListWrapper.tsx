@@ -3,8 +3,9 @@ import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { IColumn, Input, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ConfigurationItemSetUi, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ConfigurationItemSetUi, RoleParticipantUI, getReadCiList1QueryKey } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Attribute, AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
 import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import {
@@ -19,17 +20,18 @@ import { ExportButton } from '@isdd/metais-common/components/actions-over-table/
 import { ImportButton } from '@isdd/metais-common/components/actions-over-table/actions-default/ImportButton'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
+import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { Languages } from '@isdd/metais-common/localization/languages'
+import { useQueryClient } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { Languages } from '@isdd/metais-common/localization/languages'
-import { CiType, AttributeProfile, Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 
 import { AddItemsButtonGroup } from '@/components/add-items-button-group/AddItemsButtonGroup'
 import { CiTable } from '@/components/ci-table/CiTable'
@@ -88,7 +90,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     } = useGetCiTypeConstraintsData(ciTypeData, tableData?.configurationItemSet ?? [])
 
     const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner } = useBulkAction()
-
+    const queryKey = getReadCiList1QueryKey({})
     const navigate = useNavigate()
     const location = useLocation()
     const { setSelectedItems, setIsListPageOpen, selectedItems } = useNewRelationData()
@@ -104,9 +106,11 @@ export const ListWrapper: React.FC<IListWrapper> = ({
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
 
     const checkedItemList = tableData?.configurationItemSet?.filter((i) => Object.keys(rowSelection).includes(i.uuid || '')) || []
+    const queryClient = useQueryClient()
 
     const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: (value: React.SetStateAction<boolean>) => void) => {
         closeFunction(false)
+        queryClient.invalidateQueries([queryKey[0]])
         refetch()
         setBulkActionResult(actionResult)
     }
@@ -132,6 +136,12 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         setIsListPageOpen(false)
     }
 
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        scrollToMutationFeedback()
+    }, [bulkActionResult, scrollToMutationFeedback])
+
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
@@ -140,14 +150,15 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     <QueryFeedback loading={false} error errorProps={{ errorMessage: t('feedback.failedFetch') }} />
                 )}
                 {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                    <MutationFeedback
-                        success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage}
-                        error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
-                    />
+                    <div ref={wrapperRef}>
+                        <MutationFeedback
+                            success={bulkActionResult?.isSuccess}
+                            successMessage={bulkActionResult?.successMessage}
+                            error={bulkActionResult?.isError ? bulkActionResult?.errorMessage || t('feedback.mutationErrorMessage') : ''}
+                        />
+                    </div>
                 )}
             </FlexColumnReverseWrapper>
-
             <Filter<CIFilterData>
                 defaultFilterValues={defaultFilterValues}
                 form={({ register, filter, setValue }) => {
@@ -258,9 +269,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     }
                 />
             )}
-
             {isBulkLoading && <LoadingIndicator fullscreen />}
-
             <ReInvalidateBulkModal
                 items={checkedItemList}
                 open={showReInvalidate}
@@ -283,7 +292,6 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                 onClose={() => setShowChangeOwner(false)}
                 ciRoles={ciTypeData?.roleList ?? []}
             />
-
             <CiTable
                 data={{ columnListData, tableData, constraintsData, unitsData, entityStructure: ciTypeData, gestorsData }}
                 handleFilterChange={handleFilterChange}

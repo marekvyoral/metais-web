@@ -1,4 +1,4 @@
-import { BaseModal, LoadingIndicator } from '@isdd/idsk-ui-kit'
+import { BaseModal } from '@isdd/idsk-ui-kit'
 import React, { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -165,8 +165,13 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
 
     return (
         <BaseModal isOpen={open} close={onClose}>
-            {isLoading && <LoadingIndicator label={t('form.waitSending')} />}
-            <ProjectUploadFileView register={register} onClose={onClose} onSubmit={handleSubmit(handleUploadFile)} formState={formState} />
+            <ProjectUploadFileView
+                register={register}
+                onClose={onClose}
+                onSubmit={handleSubmit(handleUploadFile)}
+                formState={formState}
+                isLoading={isLoading}
+            />
         </BaseModal>
     )
 }

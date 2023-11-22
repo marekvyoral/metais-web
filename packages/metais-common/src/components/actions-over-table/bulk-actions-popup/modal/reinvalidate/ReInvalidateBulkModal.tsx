@@ -1,11 +1,12 @@
 import { BaseModal, LoadingIndicator } from '@isdd/idsk-ui-kit'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ReInvalidateView } from './ReInvalidateBulkView'
 
 import { ConfigurationItemUi, useRecycleInvalidatedCisBiznis, useRecycleInvalidatedRels } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 export interface IReInvalidateBulkModalProps {
     open: boolean
@@ -18,8 +19,9 @@ export interface IReInvalidateBulkModalProps {
 
 export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ items, open, multiple, onSubmit, onClose, isRelation }) => {
     const { t } = useTranslation()
+    const { getRequestStatus, isError } = useGetStatus()
 
-    const successMessage = multiple ? t('bulkActions.reInvalidate.successList') : t('bulkActions.reInvalidate.success')
+    const successMessage = multiple ? t('mutationFeedback.successfulUpdatedList') : t('mutationFeedback.successfulUpdated')
 
     const recycleRelation = useRecycleInvalidatedRels({
         mutation: {
@@ -27,18 +29,24 @@ export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ i
                 onSubmit({ isSuccess: true, isError: false, successMessage })
             },
             onError() {
-                onSubmit({ isSuccess: false, isError: true, successMessage })
+                onSubmit({ isSuccess: false, isError: true })
             },
         },
     })
 
+    useEffect(() => {
+        if (isError) {
+            onSubmit({ isSuccess: false, isError: true })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isError])
+
     const { isLoading, mutateAsync: reInvalidate } = useRecycleInvalidatedCisBiznis({
         mutation: {
-            onSuccess() {
-                onSubmit({ isSuccess: true, isError: false, successMessage })
-            },
-            onError() {
-                onSubmit({ isSuccess: false, isError: true, successMessage })
+            async onSuccess(data) {
+                if (data.requestId) {
+                    await getRequestStatus(data.requestId, () => onSubmit({ isSuccess: true, isError: false, successMessage }))
+                }
             },
         },
     })

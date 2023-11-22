@@ -1,15 +1,15 @@
-import { Identity } from '@isdd/metais-common/api/generated/iam-swagger'
-import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Identity } from '@isdd/metais-common/api/generated/iam-swagger'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
-import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { MutationFeedback } from '@isdd/metais-common/index'
-
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate } from 'react-router-dom'
 interface IUserDetail {
     userData: Identity | undefined
     userId: string
@@ -32,11 +32,19 @@ export const UserDetail: React.FC<IUserDetail> = ({ userData, userId }) => {
         { label: t('managementList.login'), value: userData?.login },
     ]
 
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        scrollToMutationFeedback()
+    }, [isActionSuccess, scrollToMutationFeedback])
+
     return (
         <>
             <FlexColumnReverseWrapper>
                 <TextHeading size="L">{t('managementList.detailHeading')}</TextHeading>
-                <MutationFeedback error={false} success={isActionSuccess.value} />
+                <div ref={wrapperRef}>
+                    <MutationFeedback error={false} success={isActionSuccess.value} />
+                </div>
             </FlexColumnReverseWrapper>
 
             <DefinitionList>

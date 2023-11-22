@@ -17,10 +17,11 @@ import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { CodeListDetailItemsWrapper } from './CodeListDetailItemsWrapper'
 import { selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
@@ -113,6 +114,13 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
     }
 
     const title = selectBasedOnLanguageAndDate(data.codeList?.codelistNames, workingLanguage) ?? ''
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        if (isSuccessMutation || isSuccessEdit || actionsErrorMessages.length > 0) {
+            scrollToMutationFeedback()
+        }
+    }, [actionsErrorMessages.length, isSuccessEdit, isSuccessMutation, scrollToMutationFeedback])
 
     return (
         <>
@@ -228,10 +236,12 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                     </div>
 
                     <QueryFeedback error={isError} loading={false} />
-                    <MutationFeedback success={isSuccessMutation || isSuccessEdit} successMessage={successMessage} error={null} />
-                    {actionsErrorMessages.map((errorMessage, index) => (
-                        <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
-                    ))}
+                    <div ref={wrapperRef}>
+                        <MutationFeedback success={isSuccessMutation || isSuccessEdit} successMessage={successMessage} error={null} />
+                        {actionsErrorMessages.map((errorMessage, index) => (
+                            <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
+                        ))}
+                    </div>
                     {data.codeList?.temporal && data.codeList.locked && (
                         <TextWarning>
                             {t('codeListDetail.warning.itemLocked', {

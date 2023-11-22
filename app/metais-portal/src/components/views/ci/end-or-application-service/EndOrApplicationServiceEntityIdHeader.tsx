@@ -6,10 +6,11 @@ import styles from '@isdd/metais-common/components/entity-header/ciEntityHeader.
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ChangeOwnerBulkModal, InvalidateBulkModal, MutationFeedback, ReInvalidateBulkModal } from '@isdd/metais-common/index'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 import classNames from 'classnames'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
@@ -56,15 +57,24 @@ export const EndOrApplicationServiceEntityIdHeader: React.FC<Props> = ({
     }
 
     const entityListData = entityData ? [entityData] : []
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        if (bulkActionResult?.isError || bulkActionResult?.isSuccess) {
+            scrollToMutationFeedback()
+        }
+    }, [bulkActionResult, scrollToMutationFeedback])
 
     return (
         <>
             {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <MutationFeedback
-                    success={bulkActionResult?.isSuccess}
-                    successMessage={bulkActionResult?.successMessage}
-                    error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
-                />
+                <div ref={wrapperRef}>
+                    <MutationFeedback
+                        success={bulkActionResult?.isSuccess}
+                        successMessage={bulkActionResult?.successMessage}
+                        error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                    />
+                </div>
             )}
             <div className={styles.headerDiv}>
                 {isBulkLoading && <LoadingIndicator fullscreen />}

@@ -6,9 +6,10 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import { CI_ITEM_QUERY_KEY, INVALIDATED, ciInformationTab } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { shouldEntityNameBePO } from '@isdd/metais-common/src/componentHelpers/ci/entityNameHelpers'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -17,7 +18,6 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
-
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
@@ -46,6 +46,14 @@ const EntityDetailPage: React.FC = () => {
     const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: urlEntityName ?? '', entityId: entityId ?? '', t })
 
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
+
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        if (isActionSuccess.value) {
+            scrollToMutationFeedback()
+        }
+    }, [isActionSuccess, scrollToMutationFeedback])
 
     return (
         <>
@@ -81,7 +89,9 @@ const EntityDetailPage: React.FC = () => {
                                 refetchCi={refetch}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
-                            <MutationFeedback error={false} success={isActionSuccess.value} />
+                            <div ref={wrapperRef}>
+                                <MutationFeedback error={false} success={isActionSuccess.value} />
+                            </div>
                         </FlexColumnReverseWrapper>
 
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />

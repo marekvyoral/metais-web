@@ -59,7 +59,13 @@ export const UserAuthetificationItems: React.FC<Props> = ({ userData }) => {
             id: 'checkbox',
             accessorFn: (row) => row.checkbox,
             cell: ({ row }) => (
-                <CheckBox disabled id={row.getValue('uuid')} label="" name={row.getValue('uuid')} checked={row.getValue('checkbox')} />
+                <CheckBox
+                    disabled
+                    id={row.original.uuid.toString()}
+                    label=""
+                    name={row.original.uuid.toString()}
+                    checked={row.getValue('checkbox')}
+                />
             ),
             header: t('managementList.authTableCheckbox'),
         },

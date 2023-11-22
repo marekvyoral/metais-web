@@ -4,18 +4,19 @@ import { ErrorBlock } from '@isdd/idsk-ui-kit/error-block/ErrorBlock'
 import { Stepper } from '@isdd/idsk-ui-kit/src/stepper/Stepper'
 import { ISection, IStepLabel } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { Gen_Profil } from '@isdd/metais-common/api/constants'
-import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
+import { AttributeProfile, CiCode, CiType, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { SubmitWithFeedback, formatDateForFormDefaultValues } from '@isdd/metais-common/index'
+import { Languages } from '@isdd/metais-common/localization/languages'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { SubmitWithFeedback, formatDateForFormDefaultValues } from '@isdd/metais-common/index'
-import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
-import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { AttributeProfile, CiCode, CiType, RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
-import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { CreateEntitySection } from './CreateEntitySection'
 import { generateFormSchema } from './createCiEntityFormSchema'
@@ -169,23 +170,34 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
         },
     ]
 
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        if (uploadError) {
+            scrollToMutationFeedback()
+        }
+    }, [scrollToMutationFeedback, uploadError])
+
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                <Stepper subtitleTitle="" stepperList={relationSchema ? newRelationSections : sections} />
                 {uploadError && (
-                    <ErrorBlock
-                        errorTitle={t('createEntity.errorTitle')}
-                        errorMessage={
-                            <>
-                                {t('createEntity.errorMessage')}
-                                <Link className="govuk-link" state={{ from: location }} to={`mailto:${metaisEmail}`}>
-                                    {t('createEntity.email')}
-                                </Link>
-                            </>
-                        }
-                    />
+                    <div ref={wrapperRef}>
+                        <ErrorBlock
+                            errorTitle={t('createEntity.errorTitle')}
+                            errorMessage={
+                                <>
+                                    {t('createEntity.errorMessage')}
+                                    <Link className="govuk-link" state={{ from: location }} to={`mailto:${metaisEmail}`}>
+                                        {t('createEntity.email')}
+                                    </Link>
+                                </>
+                            }
+                        />
+                    </div>
                 )}
+                <Stepper subtitleTitle="" stepperList={relationSchema ? newRelationSections : sections} />
+
                 <SubmitWithFeedback
                     className={styles.buttonGroup}
                     additionalButtons={[

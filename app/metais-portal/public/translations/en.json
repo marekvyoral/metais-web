@@ -366,7 +366,8 @@
         }
     },
     "mutationFeedback": {
-        "successfulUpdated": "The item was successfully changed"
+        "successfulUpdated": "The item was successfully changed",
+        "successfulUpdatedList": "Items have been changed successfully"
     },
     "relationCard": {
         "name": "Title",

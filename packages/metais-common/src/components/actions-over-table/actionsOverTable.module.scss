@@ -19,6 +19,14 @@
     justify-content: center;
 }
 
+.positionRelative {
+    position: relative;
+}
+
+.marginTopIndicator {
+    margin-top: govuk-spacing(1);
+}
+
 .selectGroup {
     display: flex;
     align-items: center;

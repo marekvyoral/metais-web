@@ -6,7 +6,7 @@ import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { DMS_DOWNLOAD_FILE } from '@isdd/metais-common/api/constants'
-import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ConfigurationItemUi, getReadCiNeighboursQueryKey } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { formatDateTimeForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
@@ -27,6 +27,8 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styles from '@isdd/metais-common/src/components/actions-over-table/single-actions-popup/file-history/styles.module.scss'
 import { INVALIDATED } from '@isdd/metais-common/constants'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { downloadFile, isDocumentUpdatable, isDocumentsUpdatable, listToMap } from '@/components/views/documents/utils'
 import { TableCols, defaultFilter } from '@/components/containers/DocumentListContainer'
@@ -85,10 +87,14 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     const [deleteSingle, setDeleteSingle] = useState<ConfigurationItemUi>()
     const [updateFile, setUpdateFile] = useState<ConfigurationItemUi>()
     const [singleItemHistory, setSingleItemHistory] = useState<ConfigurationItemUi>()
+    const queryClient = useQueryClient()
+    const queryKey = getReadCiNeighboursQueryKey(ciData?.uuid ?? '', {})
 
     const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: () => void) => {
         closeFunction()
         refetch()
+        queryClient.invalidateQueries([queryKey[0]])
+
         setBulkActionResult(actionResult)
     }
 
@@ -294,14 +300,25 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        if (bulkActionResult?.isError || bulkActionResult?.isSuccess) {
+            scrollToMutationFeedback()
+        }
+    }, [bulkActionResult, scrollToMutationFeedback])
+
     return (
         <QueryFeedback loading={isLoading || isBulkLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
             {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
-                <MutationFeedback
-                    success={bulkActionResult?.isSuccess}
-                    successMessage={bulkActionResult?.successMessage}
-                    error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
-                />
+                <div ref={wrapperRef}>
+                    <MutationFeedback
+                        success={bulkActionResult?.isSuccess}
+                        successMessage={bulkActionResult?.successMessage}
+                        error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
+                    />
+                </div>
             )}
             <ActionsOverTable
                 pagination={pagination}
@@ -376,7 +393,6 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setShowInvalidate(false))}
                 onClose={() => setShowInvalidate(false)}
             />
-
             <ReInvalidateBulkModal
                 items={Object.values(selectedItems).flatMap((item) => item.map((i) => i.configurationItem ?? {}))}
                 open={showReInvalidate}
@@ -391,7 +407,6 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                 onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setShowDeleteFile(false))}
                 onClose={() => setShowDeleteFile(false)}
             />
-
             {/* Single items */}
             {invalidateSingle && (
                 <InvalidateBulkModal
@@ -428,7 +443,6 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                     onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setOpenAddModal(undefined))}
                 />
             )}
-
             {singleItemHistory && <FileHistoryModal item={singleItemHistory} onClose={() => setSingleItemHistory(undefined)} />}
             <Filter form={() => <></>} defaultFilterValues={defaultFilter} onlySearch />
             <Table<TableCols> rowSelection={rowSelection} onRowSelectionChange={setRowSelection} columns={columns} data={data} />
