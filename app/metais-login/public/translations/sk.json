@@ -215,9 +215,9 @@
     "prelogin": {
         "heading": "Vyberte spôsob prihlásenia",
         "nameAndPassword": "Meno a heslo",
-        "nameAndPasswordDescription": "Lorem ipsum dolor sit amet consectetur. Duis integer sit lectus consequat .",
+        "nameAndPasswordDescription": "Prihláste sa pomocou vašho mena a hesla.",
         "eID": "eID",
-        "eIDDescription": "Lorem ipsum dolor sit amet consectetur. Duis integer sit lectus consequat ."
+        "eIDDescription": "Prihláste sa občianskym preukazom s čipom, dokladom o pobyte s čipom alebo alternatívnym autentifikátorom pomocou čítačky kariet."
     },
     "loginProblems": {
         "heading": "Máte problémy s prihlásením sa do systému?",
