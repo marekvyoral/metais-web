@@ -1,6 +1,6 @@
 import { Button, ButtonGroupRow, CheckBox, GridRow, InfoIconWithText, Input, Table, TextArea } from '@isdd/idsk-ui-kit/index'
-import { KrisToBeRights, NewNoteUi, NoteItemUi, useAddEvaluationHook, useGetEvaluations } from '@isdd/metais-common/api/generated/kris-swagger'
-import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { NewNoteUi, NoteItemUi, useAddEvaluationHook, useGetEvaluations } from '@isdd/metais-common/api/generated/kris-swagger'
+import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -9,11 +9,8 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 
 import styles from '@/components/views/evaluation/evaluationView.module.scss'
 
-interface IKSEvaluationRowProps {
-    uuid?: string
+interface IBasicEvaluationAccordionProps {
     entityId: string
-    isvsAttributes?: AttributeProfile
-    dataRights?: KrisToBeRights
 }
 
 interface IDetailISVSColumn {
@@ -26,9 +23,10 @@ interface IDetailISVSColumn {
     evaluation?: string
 }
 
-export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityId, isvsAttributes, dataRights }) => {
+export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> = ({ entityId }) => {
     const { t } = useTranslation()
-    const { data: evalData, isError, isLoading, refetch, isFetching } = useGetEvaluations(entityId, uuid ?? '', 'KS')
+    const { data: evalData, isError, isLoading, refetch, isFetching } = useGetEvaluations(entityId, entityId ?? '', 'KRIS')
+    const { data: krisToBeData, isLoading: isLoadingKrisToBeData, isError: isErrorKrisToBeData } = useGetAttributeProfile('Profil_KRIS_TO_BE')
     const { register, handleSubmit, setValue } = useForm<Array<IDetailISVSColumn>>()
     const [rowSelection, setRowSelection] = useState<Array<string>>([])
     const [isLoadingAddData, setLoadingAddData] = useState<boolean>(false)
@@ -50,7 +48,7 @@ export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityI
                 }),
             },
         }
-        saveIsvsHook(entityId, uuid ?? '', 'KS', fetchData)
+        saveIsvsHook(entityId, entityId ?? '', 'KRIS', fetchData)
             .then(() => {
                 refetch()
             })
@@ -185,14 +183,14 @@ export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityI
     ]
     const mappedData = (apiData?: NoteItemUi): Array<IDetailISVSColumn> => {
         return (
-            apiData?.state?.values?.map((item) => {
+            evalData?.state?.values?.map((item) => {
                 return {
-                    id: item.name,
-                    name: isvsAttributes?.attributes?.find((att) => att.technicalName === item.name)?.name ?? '',
-                    tooltip: isvsAttributes?.attributes?.find((att) => att.technicalName === item.name)?.description ?? '',
+                    id: krisToBeData?.attributes?.find((att) => att.technicalName === item.name)?.technicalName ?? '',
+                    name: krisToBeData?.attributes?.find((att) => att.technicalName === item.name)?.name,
+                    tooltip: krisToBeData?.attributes?.find((att) => att.technicalName === item.name)?.description,
                     lastEvaliation: apiData?.evaluations?.[apiData?.evaluations?.length - 1]?.values?.find((e) => e.name === item.name)?.value ?? '',
-                    createdBy: apiData?.evaluations?.[apiData?.evaluations?.length - 1]?.noteVersionUi?.createdBy ?? '',
-                    isApproved: apiData?.state?.values?.find((e) => e.name === item.name)?.value,
+                    createdBy: evalData?.evaluations?.[evalData?.evaluations?.length - 1]?.noteVersionUi?.createdBy ?? '',
+                    isApproved: item?.value,
                     evaluation: apiData?.evaluations?.[apiData?.evaluations?.length - 1]?.values?.find((e) => e.name === item.name)?.value ?? '',
                 } as IDetailISVSColumn
             }) ?? []
@@ -200,7 +198,10 @@ export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityI
     }
 
     return (
-        <QueryFeedback loading={isLoading || isLoadingAddData || isFetching} error={isError || isErrorAddData}>
+        <QueryFeedback
+            loading={isLoading || isLoadingAddData || isFetching || isLoadingKrisToBeData}
+            error={isError || isErrorAddData || isErrorKrisToBeData}
+        >
             <div className={styles.expandableRowContent}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Table columns={columnsDetail} data={mappedData(evalData)} />

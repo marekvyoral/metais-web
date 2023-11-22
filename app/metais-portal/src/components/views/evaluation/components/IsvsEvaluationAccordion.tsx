@@ -1,5 +1,5 @@
 import { ExpandableRowCellWrapper, PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
-import { KrisToBeIsvs, KrisToBeRights, NoteVersionUi, useGetIsvs } from '@isdd/metais-common/api/generated/kris-swagger'
+import { KrisToBeIsvs, KrisToBeRights, useGetIsvs } from '@isdd/metais-common/api/generated/kris-swagger'
 import { ActionsOverTable, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -10,16 +10,13 @@ import { useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger
 import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { IsvsEvaluationRow } from '@/components/views/evaluation/components/IsvsEvaluationRow'
-import { EContainerType } from '@/components/containers/CiEvaluationContainer'
 
 interface IIsvsEvaluationAccordionProps {
     entityId: string
-    versionData?: NoteVersionUi[]
     dataRights?: KrisToBeRights
-    onApproveGoals: (approve: boolean, note: string, type: EContainerType, refetchData: () => void) => Promise<void>
 }
 
-export const IsvsEvaluationAccordion: React.FC<IIsvsEvaluationAccordionProps> = ({ entityId, versionData, dataRights, onApproveGoals }) => {
+export const IsvsEvaluationAccordion: React.FC<IIsvsEvaluationAccordionProps> = ({ entityId, dataRights }) => {
     const { t } = useTranslation()
     const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
     const [currentPage, setCurrentPage] = useState(0)

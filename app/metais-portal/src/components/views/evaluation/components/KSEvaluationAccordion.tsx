@@ -1,31 +1,25 @@
 import { ExpandableRowCellWrapper, PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
-import { KrisToBeIsvs, KrisToBeKs, KrisToBeRights, NoteVersionUi, useGetKs } from '@isdd/metais-common/api/generated/kris-swagger'
+import { KrisToBeKs, KrisToBeRights, useGetKs } from '@isdd/metais-common/api/generated/kris-swagger'
 import { ActionsOverTable, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ColumnDef, ExpandedState } from '@tanstack/react-table'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { Link } from 'react-router-dom'
-import { useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { KSEvaluationRow } from '@/components/views/evaluation/components/KSEvaluationRow'
-import { EContainerType } from '@/components/containers/CiEvaluationContainer'
 
 interface IKSEvaluationAccordionProps {
     entityId: string
-    versionData?: NoteVersionUi[]
     dataRights?: KrisToBeRights
-    onApproveGoals: (approve: boolean, note: string, type: EContainerType, refetchData: () => void) => Promise<void>
 }
 
-export const KSEvaluationAccordion: React.FC<IKSEvaluationAccordionProps> = ({ entityId, versionData, dataRights, onApproveGoals }) => {
+export const KSEvaluationAccordion: React.FC<IKSEvaluationAccordionProps> = ({ entityId, dataRights }) => {
     const { t } = useTranslation()
     const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
     const [currentPage, setCurrentPage] = useState(0)
     const [expandedState, setExpandedState] = useState<ExpandedState>({})
-    const { data: dataEnumsState, isError: isErrorEnum, isLoading: isLoadingEnum } = useGetEnum('STAV_ISVS')
-    const { data: dataEnumsType, isError: isErrorEnumTyp, isLoading: isLoadingEnuTyp } = useGetEnum('TYP_ISVS')
     const {
         data: krisToBeIsvsData,
         isLoading: isLoadingKrisToBeIsvsData,
@@ -85,8 +79,8 @@ export const KSEvaluationAccordion: React.FC<IKSEvaluationAccordionProps> = ({ e
         },
     ]
 
-    const isLoading = [isRefetching, isLoadingEnum, isLoadingEnuTyp, isLoadingData, isLoadingKrisToBeIsvsData].some((item) => item)
-    const isError = [isErrorEnum, isErrorEnum, isErrorEnumTyp, isErrorData, isErrorKrisToBeIsvsData].some((item) => item)
+    const isLoading = [isRefetching, isLoadingData, isLoadingKrisToBeIsvsData].some((item) => item)
+    const isError = [isErrorData, isErrorKrisToBeIsvsData].some((item) => item)
 
     return (
         <QueryFeedback loading={isLoading} error={isError} withChildren>

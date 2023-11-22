@@ -5,6 +5,7 @@ import { AccordionContainer, Button, CheckBox, GridCol, GridRow, SimpleSelect } 
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { KrisToBeRights, NoteVersionUi } from '@isdd/metais-common/api/generated/kris-swagger'
 
+import { BasicEvaluationAccordion } from '@/components/views/evaluation/components/BasicEvaluationAccordion'
 import { KSEvaluationAccordion } from '@/components/views/evaluation/components/KSEvaluationAccordion'
 import styles from '@/components/views/evaluation/evaluationView.module.scss'
 import { GoalsEvaluationAccordion } from '@/components/views/evaluation/components/GoalsEvaluationAccordion'
@@ -28,7 +29,6 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
     entityId,
     isError,
     isLoading,
-    entityName,
     versionData,
     dataRights,
     onApprove,
@@ -139,29 +139,15 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                         },
                         {
                             title: t('evaluation.accordion.isvs'),
-                            content: (
-                                <IsvsEvaluationAccordion
-                                    versionData={versionData}
-                                    onApproveGoals={onApproveGoals}
-                                    dataRights={dataRights}
-                                    entityId={entityId ?? ''}
-                                />
-                            ),
+                            content: <IsvsEvaluationAccordion dataRights={dataRights} entityId={entityId ?? ''} />,
                         },
                         {
                             title: t('evaluation.accordion.services'),
-                            content: (
-                                <KSEvaluationAccordion
-                                    versionData={versionData}
-                                    onApproveGoals={onApproveGoals}
-                                    dataRights={dataRights}
-                                    entityId={entityId ?? ''}
-                                />
-                            ),
+                            content: <KSEvaluationAccordion dataRights={dataRights} entityId={entityId ?? ''} />,
                         },
                         {
                             title: t('evaluation.accordion.krit'),
-                            content: <>{'tretet 2 ' + entityId}</>,
+                            content: <BasicEvaluationAccordion entityId={entityId ?? ''} />,
                         },
                     ]}
                 />
