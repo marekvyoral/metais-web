@@ -35,7 +35,7 @@ export const useEntityRelationsTypesCount = (id: string, technicalName: string) 
     const includeInvalidated = currentPreferences.showInvalidatedItems ?? false
 
     const { isLoading, isError, data: countData } = useReadNeighboursConfigurationItemsCount(id, { includeInvalidated })
-    const { isLoading: isLoadingDerived, isError: isErrorDerived, data: countDerivedData } = useReadCiDerivedRelTypesCount(id)
+    const { isLoading: isLoadingDerived, isError: isErrorDerived, data: countDerivedData } = useReadCiDerivedRelTypesCount(id, { includeInvalidated })
     const { isLoading: isRelatedLoading, isError: isRelatedError, data: relatedData } = useListRelatedCiTypes(technicalName)
 
     const allCounts = useMemo((): IRelationCount | undefined => {
