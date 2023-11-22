@@ -29,7 +29,7 @@ interface IDetailISVSColumn {
 export const IsvsEvaluationRow: React.FC<IIsvsEvaluationRowProps> = ({ uuid, entityId, isvsAttributes, dataRights }) => {
     const { t } = useTranslation()
     const { data: evalData, isError, isLoading, refetch, isFetching } = useGetEvaluations(entityId, uuid ?? '', 'ISVS')
-    const { register, handleSubmit } = useForm<Array<IDetailISVSColumn>>()
+    const { register, handleSubmit, setValue } = useForm<Array<IDetailISVSColumn>>()
     const [rowSelection, setRowSelection] = useState<Array<string>>([])
     const [isLoadingAddData, setLoadingAddData] = useState<boolean>(false)
     const [isErrorAddData, setErrorAddData] = useState<boolean>(false)
@@ -67,12 +67,14 @@ export const IsvsEvaluationRow: React.FC<IIsvsEvaluationRowProps> = ({ uuid, ent
             if (row.original.id) {
                 if (rowSelection.includes(row.original.id)) {
                     setRowSelection((prev) => prev.filter((id) => id !== row.original.id))
+                    setValue(`${row?.index}.isApproved`, false)
                 } else {
                     setRowSelection((prev) => [...prev, row.original.id || ''])
+                    setValue(`${row?.index}.isApproved`, true)
                 }
             }
         },
-        [rowSelection, setRowSelection],
+        [rowSelection, setValue],
     )
 
     const handleAllCheckboxChange = () => {
@@ -141,12 +143,12 @@ export const IsvsEvaluationRow: React.FC<IIsvsEvaluationRowProps> = ({ uuid, ent
                 return (
                     <div className="govuk-checkboxes govuk-checkboxes--small">
                         <CheckBox
-                            {...register(`${row?.index}.isApproved`)}
                             label=""
                             disabled={!isEditRow}
                             id={`${row?.index}.isApproved`}
-                            onChange={() => handleCheckboxChange(row)}
                             checked={rowSelection.includes(row.original.id)}
+                            {...register(`${row?.index}.isApproved`)}
+                            onChange={() => handleCheckboxChange(row)}
                         />
                     </div>
                 )

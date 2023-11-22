@@ -433,6 +433,11 @@
             "createdBy": "Zadávateľ KRIT_TO_BE",
             "isApproved": "Schvalené",
             "evaluation": "Hodnotenie ÚPPVII"
+        },
+        "ksTable": {
+            "ksCode": "Kód KS",
+            "ksName": "Názov KS",
+            "ksPhases": "Názov fázy životného cyklu KS"
         }
     },
     "ciType": {

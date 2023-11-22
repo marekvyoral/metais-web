@@ -1,5 +1,5 @@
 import { ExpandableRowCellWrapper, PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
-import { KrisToBeIsvs, KrisToBeRights, NoteVersionUi, useGetKs } from '@isdd/metais-common/api/generated/kris-swagger'
+import { KrisToBeIsvs, KrisToBeKs, KrisToBeRights, NoteVersionUi, useGetKs } from '@isdd/metais-common/api/generated/kris-swagger'
 import { ActionsOverTable, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -30,7 +30,7 @@ export const KSEvaluationAccordion: React.FC<IKSEvaluationAccordionProps> = ({ e
         data: krisToBeIsvsData,
         isLoading: isLoadingKrisToBeIsvsData,
         isError: isErrorKrisToBeIsvsData,
-    } = useGetAttributeProfile('Profil_KRIS_TO_BE_ISVS')
+    } = useGetAttributeProfile('Profil_KRIS_TO_BE_KS')
     const {
         data,
         isError: isErrorData,
@@ -54,10 +54,10 @@ export const KSEvaluationAccordion: React.FC<IKSEvaluationAccordionProps> = ({ e
         refetch()
     }
 
-    const columns: Array<ColumnDef<KrisToBeIsvs>> = [
+    const columns: Array<ColumnDef<KrisToBeKs>> = [
         {
             accessorFn: (row) => row?.code,
-            header: t('evaluation.table.isvsCode'),
+            header: t('evaluation.ksTable.ksCode'),
             id: 'isvsCode',
             cell: (ctx) => (
                 <ExpandableRowCellWrapper row={ctx.row}>
@@ -69,29 +69,17 @@ export const KSEvaluationAccordion: React.FC<IKSEvaluationAccordionProps> = ({ e
         },
         {
             accessorFn: (row) => row?.code,
-            header: t('evaluation.table.name'),
+            header: t('evaluation.ksTable.ksName'),
             id: 'name',
             cell: (ctx) => ctx.row?.original?.name,
         },
         {
             accessorFn: (row) => row?.code,
-            header: t('evaluation.table.state'),
+            header: t('evaluation.ksTable.ksPhases'),
             id: 'state',
-            cell: (ctx) => dataEnumsState?.enumItems?.find((item) => item.code === ctx.row?.original?.isvsState)?.description,
-        },
-        {
-            accessorFn: (row) => row?.code,
-            header: t('evaluation.table.type'),
-            id: 'type',
-            cell: (ctx) => dataEnumsType?.enumItems?.find((item) => item.code === ctx.row?.original?.isvsType)?.description,
-        },
-        {
-            accessorFn: (row) => row?.code,
-            header: t('evaluation.table.modulIsvs'),
-            id: 'modulIsvs',
             cell: (ctx) => (
-                <Link to={`/ci/ISVS/${ctx.row?.original?.modulUuid}`} state={{ from: location }} className="govuk-link">
-                    {ctx.row?.original?.modulName}
+                <Link to={`/ci/FazaZivotnehoCyklu/${ctx.row?.original?.fazaUuid}`} state={{ from: location }} className="govuk-link">
+                    {ctx.row?.original?.fazaName}
                 </Link>
             ),
         },

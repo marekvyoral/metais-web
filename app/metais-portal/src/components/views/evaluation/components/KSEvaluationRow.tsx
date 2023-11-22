@@ -29,7 +29,7 @@ interface IDetailISVSColumn {
 export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityId, isvsAttributes, dataRights }) => {
     const { t } = useTranslation()
     const { data: evalData, isError, isLoading, refetch, isFetching } = useGetEvaluations(entityId, uuid ?? '', 'KS')
-    const { register, handleSubmit } = useForm<Array<IDetailISVSColumn>>()
+    const { register, handleSubmit, setValue } = useForm<Array<IDetailISVSColumn>>()
     const [rowSelection, setRowSelection] = useState<Array<string>>([])
     const [isLoadingAddData, setLoadingAddData] = useState<boolean>(false)
     const [isErrorAddData, setErrorAddData] = useState<boolean>(false)
@@ -67,8 +67,10 @@ export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityI
             if (row.original.id) {
                 if (rowSelection.includes(row.original.id)) {
                     setRowSelection((prev) => prev.filter((id) => id !== row.original.id))
+                    setValue(`${row?.index}.isApproved`, false)
                 } else {
                     setRowSelection((prev) => [...prev, row.original.id || ''])
+                    setValue(`${row?.index}.isApproved`, true)
                 }
             }
         },
