@@ -235,7 +235,7 @@ export const NewRelationView: React.FC<Props> = ({
                 <TextHeading size="XL">{t('newRelation.heading', { relationEntityName: tabName })}</TextHeading>
                 {isError && <QueryFeedback loading={false} error={isError} />}
             </FlexColumnReverseWrapper>
-            <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
+            <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} ciType={ciItemData?.type ?? ''} />
             <SelectPublicAuthorityAndRole
                 onChangeAuthority={(e) => publicAuthorityState.setSelectedPublicAuthority(e)}
                 onChangeRole={(val) => roleState.setSelectedRole(val)}

@@ -8,9 +8,10 @@ interface Props {
     entityName: string
     entityId: string
     currentName: string
+    ciType?: string
 }
 
-export const SubHeading: React.FC<Props> = ({ entityName, entityId, currentName }) => {
+export const SubHeading: React.FC<Props> = ({ entityName, entityId, currentName, ciType }) => {
     const { t } = useTranslation()
     return (
         <div className={styles.subHeading}>
@@ -18,7 +19,7 @@ export const SubHeading: React.FC<Props> = ({ entityName, entityId, currentName 
                 <strong>{t('ciType.chosenObject')} </strong>
             </TextBody>
             <TextBody>
-                <TextLink to={`/ci/${entityName}/${entityId}`}>{currentName ? currentName : t('breadcrumbs.noName')}</TextLink>
+                <TextLink to={`/ci/${entityName}/${entityId}`}>{currentName ? `${currentName} (${ciType})` : t('breadcrumbs.noName')}</TextLink>
             </TextBody>
         </div>
     )

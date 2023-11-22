@@ -1933,8 +1933,5 @@
         "description": "Zaznamenali sme interný problém s aplikáciou",
         "reload": "Obnoviť stránku",
         "copyError": "Skopírovať error"
-    },
-    "input": {
-        "requiredField": "(Povinné)"
     }
 }
