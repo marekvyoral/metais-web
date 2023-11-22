@@ -1,4 +1,4 @@
-import { Button, ButtonGroupRow, CheckBox, GridRow, InfoIconWithText, Input, Table, TextArea } from '@isdd/idsk-ui-kit/index'
+import { Button, ButtonGroupRow, CheckBox, InfoIconWithText, Table, TextArea } from '@isdd/idsk-ui-kit/index'
 import { KrisToBeRights, NewNoteUi, NoteItemUi, useAddEvaluationHook, useGetEvaluations } from '@isdd/metais-common/api/generated/kris-swagger'
 import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { QueryFeedback } from '@isdd/metais-common/index'
@@ -166,25 +166,26 @@ export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityI
                 return (
                     <div className={styles.customHEader}>
                         {t('evaluation.detailTable.evaluation')}
-                        {!isEditRow ? (
-                            <Button className={styles.headerBtn} label={t('evaluation.changeBtn')} onClick={() => setEditRow(!isEditRow)} />
-                        ) : (
-                            <ButtonGroupRow>
-                                <Button label={t('evaluation.saveBtn')} className={styles.headerBtn} type="submit" />
-                                <Button
-                                    variant="secondary"
-                                    className={styles.headerBtn}
-                                    label={t('evaluation.cancelBtn')}
-                                    onClick={() => setEditRow(false)}
-                                />
-                            </ButtonGroupRow>
-                        )}
+                        {dataRights?.inEvaluation &&
+                            (!isEditRow ? (
+                                <Button className={styles.headerBtn} label={t('evaluation.changeBtn')} onClick={() => setEditRow(!isEditRow)} />
+                            ) : (
+                                <ButtonGroupRow>
+                                    <Button label={t('evaluation.saveBtn')} className={styles.headerBtn} type="submit" />
+                                    <Button
+                                        variant="secondary"
+                                        className={styles.headerBtn}
+                                        label={t('evaluation.cancelBtn')}
+                                        onClick={() => setEditRow(false)}
+                                    />
+                                </ButtonGroupRow>
+                            ))}
                     </div>
                 )
             },
             id: 'evaluation',
             cell: ({ row }) => {
-                return isEditRow ? (
+                return isEditRow && dataRights?.inEvaluation ? (
                     <TextArea {...register(`${row?.index}.evaluation`)} rows={3} defaultValue={row?.original?.evaluation} />
                 ) : (
                     <>{row?.original?.evaluation}</>

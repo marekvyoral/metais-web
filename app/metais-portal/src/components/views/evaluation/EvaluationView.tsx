@@ -1,4 +1,4 @@
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { QueryFeedback, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AccordionContainer, Button, CheckBox, GridCol, GridRow, SimpleSelect } from '@isdd/idsk-ui-kit/index'
@@ -51,7 +51,12 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                         <InformationGridRow hideIcon key={'evaluatedBy'} label={t('evaluation.evaluatedBy')} value={selectedVersion?.evaluatedBy} />
                     </GridCol>
                     <GridCol setWidth="one-half">
-                        <InformationGridRow hideIcon key={'created'} label={t('evaluation.created')} value={selectedVersion?.created} />
+                        <InformationGridRow
+                            hideIcon
+                            key={'created'}
+                            label={t('evaluation.created')}
+                            value={selectedVersion?.created ? formatDateTimeForDefaultValue(selectedVersion?.created, 'dd.MM.yyyy HH:mm') : ''}
+                        />
                     </GridCol>
                 </GridRow>
                 <GridRow className={styles.heading}>
@@ -79,7 +84,12 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                         />
                     </GridCol>
                     <GridCol setWidth="one-half">
-                        <InformationGridRow hideIcon key={'key4'} label={t('evaluation.evaluated')} value={selectedVersion?.evaluated} />
+                        <InformationGridRow
+                            hideIcon
+                            key={'key4'}
+                            label={t('evaluation.evaluated')}
+                            value={selectedVersion?.evaluated ? formatDateTimeForDefaultValue(selectedVersion?.evaluated, 'dd.MM.yyyy HH:mm') : ''}
+                        />
                     </GridCol>
                     <GridCol>
                         <div className="govuk-checkboxes govuk-checkboxes--small">
@@ -147,7 +157,7 @@ export const EvaluationView: React.FC<IEvaluationView> = ({
                         },
                         {
                             title: t('evaluation.accordion.krit'),
-                            content: <BasicEvaluationAccordion entityId={entityId ?? ''} />,
+                            content: <BasicEvaluationAccordion dataRights={dataRights} entityId={entityId ?? ''} />,
                         },
                     ]}
                 />

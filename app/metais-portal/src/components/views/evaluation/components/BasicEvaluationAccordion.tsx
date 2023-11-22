@@ -1,5 +1,5 @@
-import { Button, ButtonGroupRow, CheckBox, GridRow, InfoIconWithText, Input, Table, TextArea } from '@isdd/idsk-ui-kit/index'
-import { NewNoteUi, NoteItemUi, useAddEvaluationHook, useGetEvaluations } from '@isdd/metais-common/api/generated/kris-swagger'
+import { Button, ButtonGroupRow, CheckBox, InfoIconWithText, Table, TextArea } from '@isdd/idsk-ui-kit/index'
+import { KrisToBeRights, NewNoteUi, NoteItemUi, useAddEvaluationHook, useGetEvaluations } from '@isdd/metais-common/api/generated/kris-swagger'
 import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import React, { useCallback, useState } from 'react'
@@ -10,6 +10,7 @@ import { ColumnDef, Row } from '@tanstack/react-table'
 import styles from '@/components/views/evaluation/evaluationView.module.scss'
 interface IBasicEvaluationAccordionProps {
     entityId: string
+    dataRights?: KrisToBeRights
 }
 
 interface IDetailISVSColumn {
@@ -22,7 +23,7 @@ interface IDetailISVSColumn {
     evaluation?: string
 }
 
-export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> = ({ entityId }) => {
+export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> = ({ entityId, dataRights }) => {
     const { t } = useTranslation()
     const { data: evalData, isError, isLoading, refetch, isFetching } = useGetEvaluations(entityId, entityId ?? '', 'KRIS')
     const { data: krisToBeData, isLoading: isLoadingKrisToBeData, isError: isErrorKrisToBeData } = useGetAttributeProfile('Profil_KRIS_TO_BE')
@@ -163,25 +164,26 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
                 return (
                     <div className={styles.customHEader}>
                         {t('evaluation.detailTable.evaluation')}
-                        {!isEditRow ? (
-                            <Button className={styles.headerBtn} label={t('evaluation.changeBtn')} onClick={() => setEditRow(!isEditRow)} />
-                        ) : (
-                            <ButtonGroupRow>
-                                <Button label={t('evaluation.saveBtn')} className={styles.headerBtn} type="submit" />
-                                <Button
-                                    variant="secondary"
-                                    className={styles.headerBtn}
-                                    label={t('evaluation.cancelBtn')}
-                                    onClick={() => setEditRow(false)}
-                                />
-                            </ButtonGroupRow>
-                        )}
+                        {dataRights?.inEvaluation &&
+                            (!isEditRow ? (
+                                <Button className={styles.headerBtn} label={t('evaluation.changeBtn')} onClick={() => setEditRow(!isEditRow)} />
+                            ) : (
+                                <ButtonGroupRow>
+                                    <Button label={t('evaluation.saveBtn')} className={styles.headerBtn} type="submit" />
+                                    <Button
+                                        variant="secondary"
+                                        className={styles.headerBtn}
+                                        label={t('evaluation.cancelBtn')}
+                                        onClick={() => setEditRow(false)}
+                                    />
+                                </ButtonGroupRow>
+                            ))}
                     </div>
                 )
             },
             id: 'evaluation',
             cell: ({ row }) => {
-                return isEditRow ? (
+                return dataRights?.inEvaluation && isEditRow ? (
                     <TextArea {...register(`${row?.index}.evaluation`)} rows={3} defaultValue={row?.original?.evaluation} />
                 ) : (
                     <>{row?.original?.evaluation}</>

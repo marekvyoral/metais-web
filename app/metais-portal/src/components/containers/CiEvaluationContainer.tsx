@@ -3,8 +3,6 @@ import {
     NoteVersionUi,
     useAddEvaluationHook,
     useAddResponseHook,
-    useGetEvaluations,
-    useGetKris,
     useGetRights,
     useGetVersions,
     useUpdateManualApprovmentHook,
@@ -35,7 +33,6 @@ interface ICiEvaluationContainer {
 
 export const CiEvaluationContainer: React.FC<ICiEvaluationContainer> = ({ entityId, View }) => {
     const { data: dataRights, isError: isErrorRoles, isLoading: isLoadingRoles } = useGetRights(entityId)
-    const { data: krisData, isError: isErrorKrisData, isLoading: isLoadingKrisData } = useGetKris(entityId)
     const { data: versionData, isError: isErrorVersionData, isLoading: isLoadingVersionData } = useGetVersions(entityId)
     const [isApproveLoading, setApproveLoading] = useState<boolean>(false)
     const [isApproveError, setApproveError] = useState<string>()
@@ -89,8 +86,8 @@ export const CiEvaluationContainer: React.FC<ICiEvaluationContainer> = ({ entity
             })
     }
 
-    const isLoading = [isLoadingRoles, isLoadingKrisData, isLoadingVersionData, isApproveLoading].some((item) => item)
-    const isError = [isErrorRoles, isErrorKrisData, isErrorVersionData, isApproveError].some((item) => item)
+    const isLoading = [isLoadingRoles, isLoadingVersionData, isApproveLoading].some((item) => item)
+    const isError = [isErrorRoles, isErrorVersionData, isApproveError].some((item) => item)
 
     return (
         <View
