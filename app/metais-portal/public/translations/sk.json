@@ -989,7 +989,8 @@
         "compareHistory": "Porovnávanie histórie",
         "standardization": "Štandardizácia",
         "draftsList": "Zoznam návrhov",
-        "ciEditEntity": "Editácia položky"
+        "ciEditEntity": "Editácia položky",
+        "404": "Chyba"
     },
     "codeList": {
         "descriptionError": "Popis je povinný",
@@ -1397,7 +1398,8 @@
         }
     },
     "todo": {
-        "header": "Vo výstavbe",
+        "header": "Stránka nenájdená",
+        "description": "Stránka, ktorú hľadáte nebola nájdená alebo neexistuje",
         "homeButton": "Domovská stránka"
     },
     "userProfile": {
@@ -1925,6 +1927,12 @@
         "commitmentHeader": "Záväzok dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy",
         "commitmentLabel": "Týmto prehlasujeme, že pri budovaní a rozvoji ISVS budeme napĺňať nami definované ciele, podciele a dodržiavať princípy Národnej koncepcie informatizácie verejnej správy.",
         "noCheckedItems": "Pred potvrdením záväzku dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy je potrebné vybrať aspoň jeden cieľ."
+    },
+    "crash": {
+        "heading": "Ups, niečo sa pokazilo",
+        "description": "Zaznamenali sme interný problém s aplikáciou",
+        "reload": "Obnoviť stránku",
+        "copyError": "Skopírovať error"
     },
     "input": {
         "requiredField": "(Povinné)"

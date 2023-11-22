@@ -845,7 +845,8 @@
         "gnr412": "Podmienka nie je splnená."
     },
     "todo": {
-        "header": "Vo výstavbe",
+        "header": "Stránka nenájdená",
+        "description": "Stránka, ktorú hľadáte nebola nájdená alebo neexistuje",
         "homeButton": "Domovská stránka"
     },
     "breadcrumbs": {
@@ -857,7 +858,9 @@
         "newCiAndRelation": "Pridanie novej položky a vzťahu pre {{itemName}}",
         "reports-management": "Správa zostáv",
         "reportsCreate": "Nový report",
-        "reportsEdit": "Upraviť report"
+        "reportsEdit": "Upraviť report",
+        "ciEditEntity": "Editácia položky",
+        "404": "Chyba"
     },
     "userProfile": {
         "heading": "Profil a oprávnenia",
@@ -965,5 +968,11 @@
     "relationDetail": {
         "editSuccess": "Úprava {{relationName}} prebehla úspešne.",
         "editError": "Pri úprave {{relationName}} sa vyskytla chyba. Skúste akciu zopakovať a ak chyba pretrváva, kontaktujte podporu."
+    },
+    "crash": {
+        "heading": "Ups, niečo sa pokazilo",
+        "description": "Zaznamenali sme interný problém s aplikáciou",
+        "reload": "Obnoviť stránku",
+        "copyError": "Skopírovať error"
     }
 }

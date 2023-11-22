@@ -843,7 +843,8 @@
         "gnr412": "Condition not met."
     },
     "todo": {
-        "header": "Under construction",
+        "header": "Page not found",
+        "description": "Page you are looking for was not found or does not exist.",
         "homeButton": "Home page"
     },
     "breadcrumbs": {
@@ -855,7 +856,9 @@
         "newCiAndRelation": "Add new item and relation for {{itemName}}",
         "reports-management": "Reports management",
         "reportsCreate": "New report",
-        "reportsEdit": "Edit report"
+        "reportsEdit": "Edit report",
+        "ciEditEntity": "Edit of component",
+        "404": "Error"
     },
     "userProfile": {
         "heading": "Profile and rights",
@@ -961,5 +964,11 @@
     "relationDetail": {
         "editSuccess": "Edit of {{relationName}} was successful.",
         "editError": "There was error during edit of {{relationName}}. Try your action again and if error persists, please contact support."
+    },
+    "crash": {
+        "heading": "Ups, unexpected error occured",
+        "description": "We noticed an internal problem with the application",
+        "reload": "Reload page",
+        "copyError": "Copy error message"
     }
 }
