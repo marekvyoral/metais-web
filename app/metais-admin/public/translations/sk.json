@@ -806,7 +806,7 @@
     "requestList": {
         "title": "Zoznam žiadostí",
         "registrationLitle": "Zoznam registrácií",
-        "gdprTitle": "Zoznam žiadostí",
+        "gdprTitle": "Zoznam GDPR žiadostí",
         "fullName": "Meno a priezvisko",
         "identityLogin": "Login",
         "telephone": "Telefón",

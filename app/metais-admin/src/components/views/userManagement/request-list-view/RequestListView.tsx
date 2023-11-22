@@ -179,6 +179,7 @@ export const RequestListView: React.FC<IRequestListView> = ({
                                 defaultValue={filter?.listType}
                                 name="listType"
                                 setValue={setValue}
+                                isClearable={false}
                             />
                         </>
                     )}

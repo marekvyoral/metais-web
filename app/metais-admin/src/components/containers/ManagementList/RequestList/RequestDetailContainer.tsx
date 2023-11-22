@@ -113,7 +113,7 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
             })
                 .then(() => {
                     invalidateRequestList.invalidate()
-                    navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
+                    navigate(-1)
                 })
                 .catch((error) => {
                     setErrorMessage(error.message)
