@@ -216,9 +216,9 @@
     "prelogin": {
         "heading": "Choose a login method",
         "nameAndPassword": "Name and password",
-        "nameAndPasswordDescription": "Lorem ipsum dolor sit amet consectetur. Duis integer sit lectus consequat .",
+        "nameAndPasswordDescription": "Log in with your username and password.",
         "eID": "eID",
-        "eIDDescription": "Lorem ipsum dolor sit amet consectetur. Duis integer sit lectus consequat ."
+        "eIDDescription": "Log in with your eID (residence card or alternative authenticator) using a card reader."
     },
     "loginProblems": {
         "heading": "Do you have problems logging into the system?",
