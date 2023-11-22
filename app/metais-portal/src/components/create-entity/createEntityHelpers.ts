@@ -3,6 +3,7 @@ import { TFunction } from 'i18next'
 import { FieldErrors, FieldValues } from 'react-hook-form'
 import { AnyObject, NumberSchema } from 'yup'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { isDate } from '@isdd/metais-common/utils/utils'
 
 import { ByteInterval, ShortInterval } from './createCiEntityFormSchema'
 
@@ -82,7 +83,9 @@ export const formatFormAttributeValue = (formAttributes: FieldValues, key: strin
     if (Array.isArray(formAttributes[key]) && formAttributes[key][0] && formAttributes[key][0].value != null) {
         return formAttributes[key].map((item: { value: string; label: string; disabled: boolean }) => item.value)
     }
-
+    if (isDate(formAttributes[key])) {
+        return new Date(formAttributes[key]).toISOString()
+    }
     return formAttributes[key] === '' ? null : formAttributes[key]
 }
 

@@ -57,11 +57,11 @@ export const useInvalidateCiListFilteredCache = () => {
     return { invalidate }
 }
 
-export const useInvalidateCiItemCache = (ciItemUuid: string) => {
+export const useInvalidateCiItemCache = () => {
     const queryClient = useQueryClient()
-    const ciItemQueryKey = [CI_ITEM_QUERY_KEY, ciItemUuid]
 
-    const invalidate = () => {
+    const invalidate = (ciItemUuid: string) => {
+        const ciItemQueryKey = [CI_ITEM_QUERY_KEY, ciItemUuid]
         queryClient.invalidateQueries(ciItemQueryKey)
     }
 
