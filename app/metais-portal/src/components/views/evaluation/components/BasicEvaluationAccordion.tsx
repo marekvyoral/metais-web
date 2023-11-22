@@ -27,7 +27,7 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
     const { t } = useTranslation()
     const { data: evalData, isError, isLoading, refetch, isFetching } = useGetEvaluations(entityId, entityId ?? '', 'KRIS')
     const { data: krisToBeData, isLoading: isLoadingKrisToBeData, isError: isErrorKrisToBeData } = useGetAttributeProfile('Profil_KRIS_TO_BE')
-    const { register, handleSubmit, setValue } = useForm<Array<IDetailISVSColumn>>()
+    const { register, handleSubmit, setValue, getValues } = useForm<Array<IDetailISVSColumn>>()
     const [rowSelection, setRowSelection] = useState<Array<string>>([])
     const [isLoadingAddData, setLoadingAddData] = useState<boolean>(false)
     const [isErrorAddData, setErrorAddData] = useState<boolean>(false)
@@ -77,15 +77,23 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
 
     const handleAllCheckboxChange = () => {
         if (!evalData) return
-        const checkedAll = evalData.state?.values?.every((i) => i.value === true)
+
+        const values = Object.values(getValues())
+        const checkedAll = values?.every((i) => i.isApproved === true)
 
         if (checkedAll) {
+            let count = 0
+            for (const _ of values ?? []) {
+                setValue(`${count++}.isApproved`, false)
+            }
             setRowSelection([])
             return
         }
-
-        const customRows = evalData.state?.values?.map((row) => row.name || '') || []
-
+        let count = 0
+        for (const _ of values ?? []) {
+            setValue(`${count++}.isApproved`, true)
+        }
+        const customRows = values?.map((row) => row.name || '') || []
         setRowSelection(customRows)
     }
 
@@ -121,7 +129,7 @@ export const BasicEvaluationAccordion: React.FC<IBasicEvaluationAccordionProps> 
             accessorFn: (row) => row?.isApproved,
             id: 'isApproved',
             header: () => {
-                const checkedAll = evalData?.state?.values?.every((row) => rowSelection.includes(row.name || ''))
+                const checkedAll = Object.values(getValues())?.every((row) => rowSelection.includes(row.name || ''))
 
                 return (
                     <div className="govuk-checkboxes govuk-checkboxes--small">
