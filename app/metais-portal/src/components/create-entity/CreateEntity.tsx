@@ -8,7 +8,6 @@ import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
 import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
 import { isObjectEmpty } from '@isdd/metais-common/src/utils/utils'
 
@@ -54,9 +53,6 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     const [requestId, setRequestId] = useState<string>('')
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
-    const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
-    const invalidateCiByUuidCache = useInvalidateCiItemCache(updateCiItemId ? updateCiItemId : configurationItemId)
-
     const storeConfigurationItem = useStoreConfigurationItem({
         mutation: {
             onError() {
@@ -65,8 +61,6 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
             onSuccess(successData) {
                 if (successData.requestId != null) {
                     setRequestId(successData.requestId)
-                    invalidateCilistFilteredCache.invalidate({ ciType: entityName })
-                    invalidateCiByUuidCache.invalidate()
                 } else {
                     setUploadError(true)
                 }
