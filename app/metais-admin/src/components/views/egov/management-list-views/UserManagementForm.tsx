@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useUpdateOrCreateWithGid } from '@isdd/metais-common/api/generated/iam-swagger'
+import {
+    getFindByUuid2QueryKey,
+    getFindRelatedRoles1QueryKey,
+    getFindRoleOrgRelationsQueryKey,
+    useUpdateOrCreateWithGid,
+} from '@isdd/metais-common/api/generated/iam-swagger'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { InputNames, UserDetailForm } from './UserDetailForm'
 import { OrgData, UserRolesForm } from './UserRolesForm'
@@ -32,10 +38,11 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     const location = useLocation()
 
     const { setIsActionSuccess } = useActionSuccess()
+    const managedUserUuid = detailData?.userData?.uuid
 
     const managementListPath = '/managementList'
     const detailPath = '/detail'
-    const userIdPath = `/${detailData?.userData?.uuid}`
+    const userIdPath = `/${managedUserUuid}`
     const NO_CHANGES_DETECTED = 'NoChangesDetected'
     const UNIQUE_LOGIN = 'UniqueLogin'
 
@@ -50,7 +57,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     const [errorType, setErrorType] = useState<string>('')
 
     const values = methods.watch()
-    const loginString = `${values[InputNames.FIRST_NAME]}${values[InputNames.LAST_NAME] ? '.' + values[InputNames.LAST_NAME] : ''}`
+    const loginString = `${values[InputNames.FIRST_NAME]?.trim()}${values[InputNames.LAST_NAME] ? '.' + values[InputNames.LAST_NAME]?.trim() : ''}`
 
     useEffect(() => {
         methods.setValue(InputNames.LOGIN, loginValue ? loginValue : '')
@@ -74,7 +81,13 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
         setShouldReset((prev) => !prev)
         methods.reset()
     }
-    const [isMutation, setIsMutation] = useState(false)
+
+    const userDataQueryKey = getFindByUuid2QueryKey(managedUserUuid ?? '')
+    const userRolesQueryKey = getFindRelatedRoles1QueryKey(managedUserUuid ?? '')
+    const userOrgRelationsQueryKey = getFindRoleOrgRelationsQueryKey(managedUserUuid ?? '')
+
+    const queryClient = useQueryClient()
+
     const updateOrCreate = useUpdateOrCreateWithGid({
         mutation: {
             onSuccess() {
@@ -82,10 +95,13 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                     navigate(managementListPath, { state: { from: location } })
                     setIsActionSuccess({ value: true, path: managementListPath })
                 } else {
-                    navigate(`${AdminRouteNames.USER_MANAGEMENT}/detail/${detailData?.userData?.uuid}`)
-                    setIsActionSuccess({ value: true, path: `${AdminRouteNames.USER_MANAGEMENT}/detail/${detailData?.userData?.uuid}` })
+                    navigate(`${AdminRouteNames.USER_MANAGEMENT}/detail/${managedUserUuid}`)
+                    setIsActionSuccess({ value: true, path: `${AdminRouteNames.USER_MANAGEMENT}/detail/${managedUserUuid}` })
+
+                    queryClient.invalidateQueries({ queryKey: userDataQueryKey })
+                    queryClient.invalidateQueries({ queryKey: userRolesQueryKey })
+                    queryClient.invalidateQueries({ queryKey: userOrgRelationsQueryKey })
                 }
-                setIsMutation(false)
             },
             onError(error) {
                 if (error instanceof Error && typeof error.message === 'string') {
@@ -97,7 +113,6 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                         setErrorType(UNIQUE_LOGIN)
                     }
                 }
-                setIsMutation(false)
             },
         },
     })
@@ -120,7 +135,6 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
               }
 
         const gids = formatGidsData(editedUserOrgAndRoles)
-        setIsMutation(true)
         updateOrCreate.mutateAsync({ data: { identity: identity, gids: gids } })
     }
 
@@ -154,7 +168,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
                         handleBackNavigate={handleBackNavigate}
                         handleResetForm={handleResetForm}
                         isError={availableLoginError}
-                        isFetching={isFetching || isMutation}
+                        isFetching={isFetching}
                         loginValue={loginValue}
                     />
                     <UserRolesForm
