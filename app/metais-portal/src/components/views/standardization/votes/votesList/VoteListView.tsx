@@ -47,7 +47,7 @@ export const VotesListView: React.FC<IVotesListView> = ({
     } = useActionSuccess()
 
     const newVoteHandler = () => {
-        navigate(`${NavigationSubRoutes.VOTE_CREATE}`, { state: { from: location } })
+        navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV_CREATE}`, { state: { from: location } })
     }
 
     const votesList = votesListData?.votes?.map((vote) => {

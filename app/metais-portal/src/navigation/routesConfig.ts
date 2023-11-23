@@ -61,9 +61,9 @@ import MeetingsListPage from '@/pages/standardization/meetingslist'
 import MeetingDetailPage from '@/pages/standardization/meetingslist/[meetingId]'
 import MeetingEditPage from '@/pages/standardization/meetingslist/[meetingId]/edit'
 import CreateMeetingPage from '@/pages/standardization/meetingslist/create'
-import VoteEdit from '@/pages/standardization/vote/[voteIdParam]'
-import VoteDetail from '@/pages/standardization/votedetail/[voteIdParam]'
-import VotesList from '@/pages/standardization/voteslist/voteslist'
+import VoteEditPage from '@/pages/standardization/voteslist/[voteIdParam]/edit'
+import VoteDetailPage from '@/pages/standardization/voteslist/[voteIdParam]'
+import VotesListPage from '@/pages/standardization/voteslist'
 import TasksPage from '@/pages/ulohy'
 import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
@@ -79,6 +79,7 @@ import { TodoPage } from '@/components/views/todo-page/TodoPage'
 import RefRegistersCompareSinglePage from '@/pages/refregisters/[entityId]/history/[firstId]'
 import RefRegistersComparePage from '@/pages/refregisters/[entityId]/history/[firstId]/[secondId]'
 import KRISListPage from '@/pages/ci/KRIS'
+import VoteCreatePage from '@/pages/standardization/voteslist/create'
 
 export interface RouteConfig {
     path?: string
@@ -190,17 +191,22 @@ export const routesConfig: RouteConfig[] = [
             {
                 path: RouterRoutes.STANDARDIZATION_VOTE_LIST,
                 slug: RouterRoutes.STANDARDIZATION_VOTE_LIST,
-                component: VotesList,
+                component: VotesListPage,
             },
             {
                 path: RouterRoutes.STANDARDIZATION_VOTE_DETAIL,
                 slug: RouterRoutes.STANDARDIZATION_VOTE_DETAIL,
-                component: VoteDetail,
+                component: VoteDetailPage,
+            },
+            {
+                path: RouterRoutes.STANDARDIZATION_VOTE_CREATE,
+                slug: RouterRoutes.STANDARDIZATION_VOTE_CREATE,
+                component: VoteCreatePage,
             },
             {
                 path: RouterRoutes.STANDARDIZATION_VOTE_EDIT,
                 slug: RouterRoutes.STANDARDIZATION_VOTE_EDIT,
-                component: VoteEdit,
+                component: VoteEditPage,
             },
             {
                 path: RouterRoutes.STANDARDIZATION_MEETINGS_LIST,

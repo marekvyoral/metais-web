@@ -3,7 +3,7 @@ import React from 'react'
 import { VoteDetailContainer } from '@/components/containers/standardization/votes/VoteDetailContainer'
 import { VoteDetailView } from '@/components/views/standardization/votes/voteDetail/VoteDetailView'
 
-const VoteDetail: React.FC = () => {
+const VoteDetailPage: React.FC = () => {
     return (
         <VoteDetailContainer
             View={(props) => (
@@ -24,4 +24,4 @@ const VoteDetail: React.FC = () => {
     )
 }
 
-export default VoteDetail
+export default VoteDetailPage

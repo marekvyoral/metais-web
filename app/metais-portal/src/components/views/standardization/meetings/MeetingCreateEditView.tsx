@@ -20,12 +20,12 @@ import { MeetingProposalsModal } from './MeetingProposalsModal'
 import {
     mapProcessedExistingFilesToApiAttachment,
     mapUploadedFilesToApiAttachment,
-} from '@/components/views/standardization/votes/voteEdit/functions/voteEditFunc'
+} from '@/components/views/standardization/votes/VoteComposeForm/functions/voteEditFunc'
 import {
     ExistingFileData,
     ExistingFilesHandler,
     IExistingFilesHandlerRef,
-} from '@/components/views/standardization/votes/voteEdit/components/ExistingFilesHandler/ExistingFilesHandler'
+} from '@/components/views/standardization/votes/VoteComposeForm/components/ExistingFilesHandler/ExistingFilesHandler'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { IMeetingEditViewParams } from '@/components/containers/standardization/meetings/MeetingEditContainer'
 import { LinksImport } from '@/components/LinksImport/LinksImport'

@@ -22,7 +22,7 @@ export const voteListColumns = (t: TFunction, isUserLogged: boolean): Array<Colu
             cell: (ctx) => {
                 const { id } = ctx.row.original
                 const name = ctx.getValue() as string
-                return <TextLink to={`${NavigationSubRoutes.VOTE_DETAIL}/${id}`}>{name}</TextLink>
+                return <TextLink to={`${NavigationSubRoutes.ZOZNAM_HLASOV_DETAIL}/${id}`}>{name}</TextLink>
             },
         },
         {
