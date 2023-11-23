@@ -1,24 +1,27 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
+    ApiCodelistItemList,
+    ApiCodelistPreview,
     useGetCodelistRequestDetail,
     useGetCodelistRequestItems,
-    useProcessRequestActionHook,
+    useProcessRequestAction,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import React, { useMemo, useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { useNavigate, useParams } from 'react-router-dom'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, RequestListState } from '@isdd/metais-common/constants'
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { RoleParticipantUI, useGetRoleParticipantBulk } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
+import { useInvalidateCodeListRequestCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
-import { IRequestForm, _entityName, mapToForm } from '@/componentHelpers/requests'
+import { API_DATE_FORMAT } from '@/componentHelpers/requests'
+import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
-export enum RequestActions {
+export enum ApiRequestAction {
     ACCEPT = 'requestToAccepted',
     ACCEPTSZZC = 'requestToAcceptedSZZC',
     ACCEPTKSISVS = 'requestToIsvsProcessing',
@@ -26,45 +29,22 @@ export enum RequestActions {
     REJECT = 'requestToRejected',
     SEND = 'requestToSended',
 }
-export enum RequestState {
-    DRAFT,
-    ACCEPT,
-    CANCEL,
-    REJECT,
-    ACCEPTKSISVS,
-    ACCEPTSZZC,
-    SEND,
-}
 
-export interface IActionDetailRequest {
-    canEdit: boolean
-    moveToKSISVS: boolean
-    reject: boolean
-    accept: boolean
-    accept_SZZC: boolean
-    cancelRequest: boolean
-    send: boolean
+export interface RequestDetailData {
+    detail: ApiCodelistPreview
+    gestors: RoleParticipantUI[]
+    attributeProfile: AttributeProfile
+    items: ApiCodelistItemList
 }
 
 export interface DetailRequestViewProps {
-    data?: IRequestForm
-    actions: IActionDetailRequest
+    data: RequestDetailData
     isLoading: boolean
+    isLoadingMutation: boolean
     isError: boolean
-    attributeProfile: AttributeProfile
-    entityName: string
+    actionsErrorMessages: string[]
     requestId?: string
-    loadOptions: (
-        searchQuery: string,
-        additional: { page: number } | undefined,
-    ) => Promise<{
-        options: HierarchyRightsUi[]
-        hasMore: boolean
-        additional: {
-            page: number
-        }
-    }>
-    onAccept: (action: RequestActions, note?: string) => void
+    onAccept: (action: ApiRequestAction, note?: string) => void
 }
 
 interface DetailRequestContainerProps {
@@ -72,116 +52,82 @@ interface DetailRequestContainerProps {
 }
 
 export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ View }) => {
-    const {
-        state: { user },
-    } = useAuth()
     const { i18n } = useTranslation()
     const { requestId } = useParams()
     const navigate = useNavigate()
 
-    const [isLoadingCheck, setLoadingCheck] = useState<boolean>()
-    const [isErrorCheck, setErrorCheck] = useState<boolean>()
-    const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
-    const implicitHierarchy = useReadCiList()
     const { setIsActionSuccess } = useActionSuccess()
+    const { invalidate } = useInvalidateCodeListRequestCache()
 
-    const { data, isLoading: isLoadingDetail, isError: isErrorDetail } = useGetCodelistRequestDetail(Number.parseInt(requestId || ''))
+    const { data: detailData, isLoading: isLoadingDetail, isError: isErrorDetail } = useGetCodelistRequestDetail(Number.parseInt(requestId || ''))
     const { data: attributeProfile, isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
-    const acceptRequest = useProcessRequestActionHook()
-
+    const { mutate: requestActionMutation, isLoading: isLoadingRequestAction, error: errorRequestAction } = useProcessRequestAction()
     const {
         data: itemList,
         isLoading: isLoadingItemList,
         isError: isErrorItemList,
-    } = useGetCodelistRequestItems(Number.parseInt(requestId || '0'), {
+    } = useGetCodelistRequestItems(Number(requestId), {
         language: i18n.language,
         pageNumber: BASE_PAGE_NUMBER,
         perPage: BASE_PAGE_SIZE,
     })
+    const requestGestorGids = [
+        ...(detailData?.mainCodelistManagers?.map((gestor) => gestor.value || '') || []),
+        ...(detailData?.codelistManagers?.map((gestor) => gestor.value || '') || []),
+    ]
+    const {
+        isFetching: isLoadingRoleParticipants,
+        isError: isErrorRoleParticipants,
+        data: roleParticipantsData,
+    } = useGetRoleParticipantBulk(
+        { gids: requestGestorGids },
+        {
+            query: { enabled: requestGestorGids.length > 0 },
+        },
+    )
 
-    const defaultData = mapToForm(i18n.language, itemList, data)
+    const isLoading = [isLoadingDetail, isLoadingAttributeProfile, isLoadingItemList, isLoadingRoleParticipants].some((item) => item)
+    const isError = [isErrorDetail, isErrorAttributeProfile, isErrorItemList, isErrorRoleParticipants].some((item) => item)
+    const actionsErrorMessages = getErrorTranslateKeys([errorRequestAction as { message: string }])
 
-    const isLoading = [isLoadingCheck, isLoadingDetail, isLoadingAttributeProfile, isLoadingItemList].some((item) => item)
-    const isError = [isErrorCheck, isErrorDetail, isErrorAttributeProfile, isErrorItemList].some((item) => item)
-
-    const defaultFilter: HierarchyPOFilterUi = {
-        perpage: 20,
-        sortBy: SortBy.HIERARCHY_FROM_ROOT,
-        sortType: SortType.ASC,
-        rights: userDataGroups.map((group) => ({ poUUID: group.orgId, roles: group.roles.map((role) => role.roleUuid) })),
-    }
-
-    const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
-        const page = !additional?.page ? 1 : (additional?.page || 0) + 1
-        const options = await implicitHierarchy.mutateAsync({ data: { ...defaultFilter, page, fullTextSearch: searchQuery } })
-        return {
-            options: options.rights || [],
-            hasMore: options.rights?.length ? true : false,
-            additional: {
-                page: page,
-            },
-        }
-    }
-
-    const actions: IActionDetailRequest = {
-        canEdit:
-            (data &&
-                (data.lockedBy === null || data.lockedBy === user?.login) &&
-                (data.codelistState === RequestListState.DRAFT ||
-                    data.codelistState === RequestListState.REJECTED ||
-                    data.codelistState === RequestListState.KS_ISVS_ACCEPTED ||
-                    data.codelistState === RequestListState.ACCEPTED_SZZC)) ??
-            false,
-        moveToKSISVS: (data?.base && data.codelistState === RequestListState.NEW_REQUEST) ?? false,
-        reject:
-            (!data?.base && (data?.codelistState === RequestListState.NEW_REQUEST || data?.codelistState === RequestListState.KS_ISVS_REJECTED)) ??
-            false,
-        accept:
-            ((!data?.base && data?.codelistState === RequestListState.ACCEPTED_SZZC) || data?.codelistState === RequestListState.KS_ISVS_ACCEPTED) ??
-            false,
-        accept_SZZC: (data && !data.base && data.codelistState === RequestListState.NEW_REQUEST) ?? false,
-        cancelRequest:
-            (data?.lockedBy === null || data?.lockedBy === user?.login) &&
-            (data?.codelistState === RequestListState.DRAFT ||
-                data?.codelistState === RequestListState.REJECTED ||
-                data?.codelistState === RequestListState.KS_ISVS_ACCEPTED ||
-                data?.codelistState === RequestListState.ACCEPTED_SZZC),
-        send: data?.lockedBy === user?.login && (data?.codelistState === RequestListState.DRAFT || data?.codelistState === RequestListState.REJECTED),
-    }
-
-    const handleAcceptRequest = async (action: RequestActions, note?: string) => {
-        acceptRequest(
-            defaultData.codeListId ?? '',
+    const handleAcceptRequest = async (action: ApiRequestAction, note?: string) => {
+        requestActionMutation(
             {
-                comment: note,
-                commentDate: new Date().toISOString(),
+                code: detailData?.code ?? '',
+                data: {
+                    comment: note,
+                    commentDate: formatDateForDefaultValue(new Date().toISOString(), API_DATE_FORMAT),
+                },
+                params: { action: action },
             },
-            { action: action },
+            {
+                onSuccess: () => {
+                    invalidate(detailData?.id)
+                    setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
+                    navigate(`${NavigationSubRoutes.REQUESTLIST}`)
+                },
+            },
         )
-            .then(() => {
-                setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
-                navigate(`${NavigationSubRoutes.REQUESTLIST}`)
-            })
-            .catch(() => {
-                setErrorCheck(true)
-            })
     }
 
-    return !isLoading && defaultData ? (
-        <RequestListPermissionsWrapper entityName={_entityName}>
+    const data: RequestDetailData = {
+        detail: detailData ?? {},
+        gestors: roleParticipantsData ?? [],
+        attributeProfile: attributeProfile ?? {},
+        items: itemList ?? {},
+    }
+
+    return (
+        <RequestListPermissionsWrapper id={requestId ?? ''}>
             <View
                 requestId={requestId}
-                actions={actions}
-                data={defaultData}
-                entityName={_entityName}
+                data={data}
                 isLoading={isLoading}
+                isLoadingMutation={isLoadingRequestAction}
+                actionsErrorMessages={actionsErrorMessages}
                 isError={isError}
-                attributeProfile={attributeProfile ?? {}}
-                loadOptions={loadOptions}
                 onAccept={handleAcceptRequest}
             />
         </RequestListPermissionsWrapper>
-    ) : (
-        <></>
     )
 }

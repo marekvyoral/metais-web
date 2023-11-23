@@ -2,12 +2,12 @@ import { AbilityContext, useAbilityContext } from '@isdd/metais-common/hooks/per
 import { useRequestPermissions } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
 
 interface iRequestWrapper {
-    entityName: string
+    id?: string
     children: JSX.Element
 }
 
-export const RequestListPermissionsWrapper = ({ children, entityName }: iRequestWrapper) => {
+export const RequestListPermissionsWrapper = ({ id, children }: iRequestWrapper) => {
     const ability = useAbilityContext()
-    useRequestPermissions(entityName)
+    useRequestPermissions(id)
     return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
 }

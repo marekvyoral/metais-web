@@ -1,9 +1,33 @@
-import { ApiCodelistItem } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import { ApiCodelistItem, ApiCodelistManager, ApiCodelistName, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 
+import { IFieldTextRow } from '@/components/views/codeLists/CodeListEditView'
 import { IItemForm } from '@/components/views/codeLists/components/modals/ItemFormModal/ItemFormModal'
 
 export const _entityName = 'requestList'
+export const API_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+export const DEFAULT_EMPTY_NOTE: IFieldTextRow[] = [{ id: 0, text: '' }]
+
+export interface IEditCodeListForm {
+    base?: boolean
+    code: string
+    codeListName?: ApiCodelistName
+    newCodeListName?: ApiCodelistName
+    codeListNotes?: IFieldTextRow[]
+    codeListSource?: IFieldTextRow[]
+    mainGestor?: ApiCodelistManager[]
+    newMainGestor?: ApiCodelistManager
+    nextGestor?: ApiCodelistManager[]
+    refIndicator?: string
+    effectiveFrom?: string
+    effectiveTo?: string
+    name: string
+    lastName: string
+    email: string
+    phone: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [x: string]: any
+}
 
 export enum ApiCodeListActions {
     TEMPORAL_CODELIST_TO_ISVS_PROCESSING = 'temporalCodelistToIsvsProcessing',
@@ -76,9 +100,8 @@ export const mapCodeListItemToForm = (apiItem: ApiCodelistItem, language: string
 }
 
 export const mapToCodeListDetail = (language: string, item: IItemForm, oldItem?: ApiCodelistItem): ApiCodelistItem => {
-    const apiDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
-    const effectiveFrom = item.effectiveFrom ? formatDateTimeForDefaultValue(item.effectiveFrom, apiDateFormat) : undefined
-    const effectiveTo = item.effectiveTo ? formatDateTimeForDefaultValue(item.effectiveTo, apiDateFormat) : undefined
+    const effectiveFrom = item.effectiveFrom ? formatDateTimeForDefaultValue(item.effectiveFrom, API_DATE_FORMAT) : undefined
+    const effectiveTo = item.effectiveTo ? formatDateTimeForDefaultValue(item.effectiveTo, API_DATE_FORMAT) : undefined
 
     let newItem = {
         temporal: false,
@@ -100,7 +123,7 @@ export const mapToCodeListDetail = (language: string, item: IItemForm, oldItem?:
     newItem.id = item.id ? Number(item.id) : undefined
     newItem.itemCode = item.code
     newItem.itemUri = item.refIdent
-    newItem.validFrom = item.effectiveFrom ? formatDateTimeForDefaultValue(item.effectiveFrom, apiDateFormat) : ''
+    newItem.validFrom = item.effectiveFrom ? formatDateTimeForDefaultValue(item.effectiveFrom, API_DATE_FORMAT) : ''
 
     if (item.name) {
         newItem.codelistItemNames = pushOrInit(newItem.codelistItemNames, { value: item.name, language, effectiveFrom, effectiveTo })
@@ -174,4 +197,95 @@ export const getErrorTranslateKeys = (errors: { message: string }[]): string[] =
             const message = JSON.parse(error.message)
             return `errors.codeList.${message.message}`
         })
+}
+
+export const mapCodeListToEditForm = (code: ApiCodelistPreview | undefined, language: string): IEditCodeListForm | undefined => {
+    if (!code) return undefined
+    return {
+        base: code.base || false,
+        code: code.code ?? '',
+        codeListName: code.codelistNames
+            ?.filter((item) => item.language === language)
+            .map((name) => ({
+                ...name,
+                effectiveFrom: name.effectiveFrom ? formatDateForDefaultValue(name.effectiveFrom) : '',
+                effectiveTo: name.effectiveTo ? formatDateForDefaultValue(name.effectiveTo) : '',
+            }))
+            ?.at(0),
+        codeListNotes:
+            code?.codelistNotes?.length === 0
+                ? DEFAULT_EMPTY_NOTE
+                : code.codelistNotes?.map((note) => ({
+                      id: note.id ?? 0,
+                      text: note.value ?? '',
+                  })) ?? DEFAULT_EMPTY_NOTE,
+        codeListSource:
+            code.codelistSource?.length === 0
+                ? DEFAULT_EMPTY_NOTE
+                : code.codelistSource?.map((item, index) => ({
+                      id: index,
+                      text: item,
+                  })) ?? DEFAULT_EMPTY_NOTE,
+        mainGestor: code.mainCodelistManagers?.map((gestor) => ({
+            ...gestor,
+            effectiveFrom: gestor.effectiveFrom ? formatDateForDefaultValue(gestor.effectiveFrom) : '',
+            effectiveTo: gestor.effectiveTo ? formatDateForDefaultValue(gestor.effectiveTo) : '',
+        })),
+        newMainGestor: undefined,
+        nextGestor: code.codelistManagers?.map((gestor) => ({
+            ...gestor,
+            effectiveFrom: gestor.effectiveFrom ? formatDateForDefaultValue(gestor.effectiveFrom) : '',
+            effectiveTo: gestor.effectiveTo ? formatDateForDefaultValue(gestor.effectiveTo) : '',
+        })),
+        refIndicator: code.uri ?? '',
+        name: code.contactFirstName ?? '',
+        lastName: code.contactSurname ?? '',
+        phone: code.contactPhone ?? '',
+        email: code.contactMail ?? '',
+    }
+}
+
+export const mapEditFormDataToCodeList = (
+    formData: IEditCodeListForm,
+    code: ApiCodelistPreview | undefined,
+    language: string,
+): ApiCodelistPreview => {
+    return {
+        ...code,
+        base: formData.base,
+        code: formData.code,
+        codelistNames: [
+            {
+                ...formData.codeListName,
+                effectiveFrom: formData.codeListName?.effectiveFrom
+                    ? formatDateTimeForDefaultValue(formData.codeListName.effectiveFrom, API_DATE_FORMAT)
+                    : '',
+                effectiveTo: formData.codeListName?.effectiveTo
+                    ? formatDateTimeForDefaultValue(formData.codeListName.effectiveTo, API_DATE_FORMAT)
+                    : '',
+            },
+            ...(formData.newCodeListName?.value
+                ? [
+                      {
+                          ...formData.newCodeListName,
+                          effectiveFrom: formData.newCodeListName?.effectiveFrom
+                              ? formatDateTimeForDefaultValue(formData.newCodeListName.effectiveFrom, API_DATE_FORMAT)
+                              : '',
+                          effectiveTo: formData.newCodeListName?.effectiveTo
+                              ? formatDateTimeForDefaultValue(formData.newCodeListName.effectiveTo, API_DATE_FORMAT)
+                              : '',
+                      },
+                  ]
+                : []),
+        ],
+        codelistNotes: formData.codeListNotes?.map((note) => ({ id: note.id, value: note.text, language })),
+        codelistSource: formData.codeListSource?.map((source) => source.text ?? ''),
+        uri: formData.refIndicator,
+        effectiveFrom: formData.effectiveFrom ? formatDateTimeForDefaultValue(formData.effectiveFrom, API_DATE_FORMAT) : '',
+        effectiveTo: formData.effectiveTo ? formatDateTimeForDefaultValue(formData.effectiveTo, API_DATE_FORMAT) : '',
+        contactFirstName: formData.name,
+        contactSurname: formData.lastName,
+        contactPhone: formData.phone,
+        contactMail: formData.email,
+    }
 }

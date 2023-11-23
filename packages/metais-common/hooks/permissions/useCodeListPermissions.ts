@@ -7,6 +7,7 @@ import { ApiCodelistManager, useGetCodelistHeader, useGetOriginalCodelistHeader 
 import { useGetRoleIdsForRole } from '@isdd/metais-common/hooks/useGetRoleIdsForRole'
 import { useGetTopLevelPoUuid } from '@isdd/metais-common/hooks/useGetTopLevelPoUuid'
 import { Group, User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { Roles } from '@isdd/metais-common/api/constants'
 
 export enum CodeListState {
     UPDATING = 'UPDATING',
@@ -23,7 +24,7 @@ export enum Actions {
     READ = 'read',
     EXPORT = 'export',
     IMPORT = 'import',
-    SEND_TO = 'sendToIsvs',
+    SEND_TO = 'sendTo',
     PUBLISH = 'publish',
     BULK_ACTIONS = 'bulk_actions',
 }
@@ -60,12 +61,12 @@ export const useCodeListPermissions = (id: string) => {
         query: { enabled: isSuccessCodeListData },
     })
     const { data: mainGestorIds } = useGetRoleIdsForRole({
-        identityGids: getRoleIdsForRole('SZC_HLGES', user),
+        identityGids: getRoleIdsForRole(Roles.SZC_HLGES, user),
         gids: getCurrentGestorsIds(codeListData?.mainCodelistManagers ?? []),
         enabled: !!user,
     })
     const { data: secondaryGestorIds } = useGetRoleIdsForRole({
-        identityGids: getRoleIdsForRole('SZC_VEDGES', user),
+        identityGids: getRoleIdsForRole(Roles.SZC_VEDGES, user),
         gids: getCurrentGestorsIds(codeListData?.codelistManagers ?? []),
         enabled: !!user,
     })

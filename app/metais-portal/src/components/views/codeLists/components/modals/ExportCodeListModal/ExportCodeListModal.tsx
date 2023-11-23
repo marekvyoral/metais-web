@@ -42,7 +42,7 @@ export const ExportCodeListModal: React.FC<ExportCodeListModalProps> = ({ code, 
         setLoading(true)
         setIsError(false)
         try {
-            const blobData = !isRequest ? await downloadFunction(code) : await downloadRequestFunction(code)
+            const blobData = !isRequest ? await downloadFunction(code, { type: extension }) : await downloadRequestFunction(code, { type: extension })
             downloadBlobAsFile(new Blob([blobData]), generateExportFileName(code, extension), false)
             onClose()
         } catch (error) {

@@ -7,10 +7,10 @@ const EditCodeListPage = () => {
             View={(props) => (
                 <CodeListEditView
                     data={props.data}
-                    entityName={props.entityName}
                     isError={props.isError}
                     errorMessages={props.errorMessages}
                     isLoading={props.isLoading}
+                    isLoadingMutation={props.isLoadingMutation}
                     loadOptions={props.loadOptions}
                     handleSave={props.handleSave}
                     handleDiscardChanges={props.handleDiscardChanges}

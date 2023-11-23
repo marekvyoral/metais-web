@@ -9,6 +9,7 @@ import {
     GridRow,
     HomeIcon,
     Input,
+    LoadingIndicator,
     SelectLazyLoading,
     Table,
     TextArea,
@@ -24,11 +25,10 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, RequestListState } from '@isdd/metais-common/constants'
 import { CellContext, ColumnDef, ExpandedState, Row } from '@tanstack/react-table'
-import { RequestListActions } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
+import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
-import { getDescription, getName } from '../codeLists/CodeListDetailUtils'
-
+import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
 import { RequestDetailItemsTableExpandedRow } from '@/components/views/requestLists/components/RequestDetailItemsTableExpandedRow'
 import { IItemForm, ModalItem } from '@/components/views/requestLists/components/modalItem/ModalItem'
 import styles from '@/components/views/requestLists/requestView.module.scss'
@@ -59,7 +59,7 @@ export interface INoteRow {
 export enum RequestFormEnum {
     BASE = 'base',
     CODELISTNAME = 'codeListName',
-    CODELISTID = 'codeListId',
+    CODELISTCODE = 'codeListCode',
     RESORTCODE = 'resortCode',
     MAINGESTOR = 'mainGestor',
     REFINDICATOR = 'refIndicator',
@@ -74,12 +74,12 @@ export enum RequestFormEnum {
 }
 
 export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
-    entityName,
     isError,
     errorMessages,
     isLoading,
+    isLoadingMutation,
     editData,
-    onCheckIfCodeListExist,
+    onHandleCheckIfCodeIsAvailable,
     firstNotUsedCode,
     loadOptions,
     onSend,
@@ -108,7 +108,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     const [isSetDatesDialogOpened, setIsSetDatesDialogOpened] = useState<boolean>(false)
     const [defaultSelectOrg, setDefaultSelectOrg] = useState<IOption>()
     const [expanded, setExpanded] = useState<ExpandedState>({})
-    const { register, handleSubmit, formState, getValues, setValue } = useForm<IRequestForm>({
+    const { register, handleSubmit, formState, getValues, setValue, setError, clearErrors } = useForm<IRequestForm>({
         resolver: yupResolver(schema),
         defaultValues: editData,
     })
@@ -119,8 +119,16 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     }
 
     const onClickCheck = async () => {
-        const code = getValues(RequestFormEnum.CODELISTID)
-        await onCheckIfCodeListExist(code)
+        const code = getValues(RequestFormEnum.CODELISTCODE)
+        const result = await onHandleCheckIfCodeIsAvailable(code)
+
+        if (result.isAvailable) {
+            clearErrors('codeListCode')
+        } else {
+            result.errorTranslateKeys?.forEach((error) => {
+                setError('codeListCode', { message: t([error, 'feedback.mutationErrorMessage']) })
+            })
+        }
     }
 
     const close = () => {
@@ -132,7 +140,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     }
 
     useEffect(() => {
-        if (firstNotUsedCode) setValue('codeListId', firstNotUsedCode)
+        if (firstNotUsedCode) setValue('codeListCode', firstNotUsedCode)
     }, [firstNotUsedCode, setValue])
 
     const addItem = (data: IItemForm) => {
@@ -280,6 +288,8 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
         },
     ]
 
+    const canUse = requestId ? userAbility.can(Actions.EDIT, Subjects.DETAIL) : userAbility.can(Actions.CREATE, Subjects.DETAIL)
+
     return (
         <>
             {editData ? (
@@ -290,7 +300,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                         { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
                         { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
                         { label: t('codeList.breadcrumbs.requestList'), href: NavigationSubRoutes.REQUESTLIST },
-                        { label: editData?.codeListId ?? '', href: `${NavigationSubRoutes.REQUESTLIST}/${requestId}` },
+                        { label: editData?.codeListCode ?? '', href: `${NavigationSubRoutes.REQUESTLIST}/${requestId}` },
                         { label: t('codeList.breadcrumbs.requestEdit'), href: `${NavigationSubRoutes.REQUESTLIST}/${requestId}/edit` },
                     ]}
                 />
@@ -306,9 +316,10 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                     ]}
                 />
             )}
-            {userAbility.can(RequestListActions.SHOW, entityName) && (
+            {canUse && (
                 <MainContentWrapper>
                     <QueryFeedback loading={isLoading} error={isError} withChildren>
+                        {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                         <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>
                         <form onSubmit={handleSubmit(onHandleSubmit)}>
                             <div className={styles.bottomGap}>
@@ -335,9 +346,9 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 disabled={!canEdit}
                                 label={getDescription('Gui_Profil_ZC_kod_ciselnika', language, attributeProfile)}
                                 info={getName('Gui_Profil_ZC_kod_ciselnika', language, attributeProfile)}
-                                id={RequestFormEnum.CODELISTID}
-                                {...register(RequestFormEnum.CODELISTID)}
-                                error={formState.errors[RequestFormEnum.CODELISTID]?.message}
+                                id={RequestFormEnum.CODELISTCODE}
+                                {...register(RequestFormEnum.CODELISTCODE)}
+                                error={formState.errors[RequestFormEnum.CODELISTCODE]?.message}
                             />
                             {!!canEdit && <Button label={t('codeListList.requestCreate.btnCheck')} variant="secondary" onClick={onClickCheck} />}
                             <Input
@@ -412,8 +423,8 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             <ButtonGroupRow className={styles.bottomGap}>
                                 <ButtonLink
                                     label={t('codeListList.requestCreate.addNote')}
-                                    onClick={(e) => {
-                                        e.preventDefault()
+                                    type="button"
+                                    onClick={() => {
                                         setNotes([...notes, { id: notes.length, text: '' }])
                                     }}
                                 />
@@ -538,14 +549,11 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                     onClick={() => navigate(`${NavigationSubRoutes.REQUESTLIST}`)}
                                 />
                                 {(canEdit || canEditDate) &&
-                                    userAbility.can(RequestListActions.EDIT, entityName) &&
                                     editData?.codeListState !== RequestListState.KS_ISVS_ACCEPTED &&
                                     editData?.codeListState !== RequestListState.ACCEPTED_SZZC && (
                                         <Button label={t('form.submit')} type="submit" variant="secondary" onClick={() => setSend(true)} />
                                     )}
-                                {(canEdit || canEditDate) && userAbility.can(RequestListActions.EDIT, entityName) && (
-                                    <Button label={t('form.save')} type="submit" onClick={() => setSend(false)} />
-                                )}
+                                {(canEdit || canEditDate) && <Button label={t('form.save')} type="submit" onClick={() => setSend(false)} />}
                             </ButtonGroupRow>
                         </form>
                         {isOpen && (

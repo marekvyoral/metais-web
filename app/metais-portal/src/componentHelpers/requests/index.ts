@@ -1,5 +1,5 @@
 import { ApiCodelistItem, ApiCodelistItemList, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 import { RequestListState } from '@isdd/metais-common/constants'
 import { Roles } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
 import { Group } from '@isdd/metais-common/contexts/auth/authContext'
@@ -7,12 +7,13 @@ import { Group } from '@isdd/metais-common/contexts/auth/authContext'
 import { INoteRow } from '@/components/views/requestLists/CreateRequestView'
 import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
 
-export const _entityName = 'requestList'
+export const API_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+
 export interface IRequestForm {
     base?: boolean
     gid?: string
     codeListName: string
-    codeListId: string
+    codeListCode: string
     resortCode: string
     mainGestor: string
     refIndicator?: string
@@ -27,9 +28,10 @@ export interface IRequestForm {
     codeListState?: RequestListState
 }
 
-export const mapFormToSave = (formData: IRequestForm, language: string, uuid: string): ApiCodelistPreview => {
+export const mapFormToSave = (formData: IRequestForm, language: string, uuid: string, id?: number): ApiCodelistPreview => {
     const res: ApiCodelistPreview = {
-        code: formData.codeListId,
+        ...(id && { id }),
+        code: formData.codeListCode,
         codelistState: RequestListState.NEW_REQUEST,
         base: formData.base,
         codelistNames: [
@@ -157,7 +159,7 @@ export const mapFormToSave = (formData: IRequestForm, language: string, uuid: st
                 value: `${uuid}-${formData?.mainGestor}`,
                 language: language,
                 effectiveTo: undefined,
-                effectiveFrom: new Date().toISOString(),
+                effectiveFrom: formatDateTimeForDefaultValue(new Date().toISOString(), API_DATE_FORMAT),
             },
         ],
         uri: formData.refIndicator,
@@ -218,7 +220,7 @@ export const mapToCodeListDetail = (language: string, item?: IItemForm): ApiCode
 export const mapToForm = (language: string, itemList?: ApiCodelistItemList, data?: ApiCodelistPreview): IRequestForm => {
     return {
         base: data?.base,
-        codeListId: data?.code ?? '',
+        codeListCode: data?.code ?? '',
         codeListName: data?.codelistNames?.find((item) => item.language === language)?.value ?? '',
         email: data?.contactMail ?? '',
         lastName: data?.contactSurname ?? '',

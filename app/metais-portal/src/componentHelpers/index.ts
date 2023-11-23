@@ -1,5 +1,5 @@
 export * from './download'
 export * from './pagination'
 export * from './reports'
-export * from './code-list'
+export * from './codeList'
 export * from './draftList'

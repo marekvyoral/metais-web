@@ -15,18 +15,19 @@ import { useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useInvalidateCodeListRequestCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
 import { IItemDates } from '@/components/views/requestLists/components/modalItem/DateModalItem'
 import { IOption } from '@/components/views/requestLists/CreateRequestView'
-import { IRequestForm, _entityName, getUUID, mapFormToSave } from '@/componentHelpers/requests'
+import { IRequestForm, getUUID, mapFormToSave } from '@/componentHelpers/requests'
 import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 export interface CreateRequestViewProps {
-    entityName: string
     requestId?: string
     isLoading: boolean
+    isLoadingMutation: boolean
     isError: boolean
     errorMessages: string[]
     attributeProfile: AttributeProfile
@@ -34,7 +35,7 @@ export interface CreateRequestViewProps {
     canEdit?: boolean
     firstNotUsedCode?: string
     editData?: IRequestForm
-    onCheckIfCodeListExist: (code: string) => Promise<void>
+    onHandleCheckIfCodeIsAvailable: (code: string) => Promise<{ isAvailable: boolean; errorTranslateKeys: string[] }>
     onGetMainGestor?: (gid: string) => Promise<IOption>
     onSend: (formData: IRequestForm) => Promise<void>
     onSave: (formData: IRequestForm) => Promise<void>
@@ -65,6 +66,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     const { setIsActionSuccess } = useActionSuccess()
 
     const addOrGetGroupHook = useAddOrGetGroupHook()
+    const { invalidate } = useInvalidateCodeListRequestCache()
 
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
     const [isLoadingCheck, setLoadingCheck] = useState<boolean>()
@@ -72,12 +74,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     const implicitHierarchy = useReadCiList()
     const { mutateAsync, isLoading: isLoadingSave, isError: isErrorSave, error: errorSave } = useCreateCodelistRequest()
     const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, isError: isErrorSend, error: errorSend } = useSaveAndSendCodelist()
-    const {
-        data: firstNotUsedCode,
-        isLoading: isLoadingGetFirstNotUsedCode,
-        isError: isErrorGetFirstNotUsedCode,
-        error: errorFirstNotUsed,
-    } = useGetFirstNotUsedCode()
+    const { data: firstNotUsedCode, isLoading: isLoadingGetFirstNotUsedCode } = useGetFirstNotUsedCode({ query: { cacheTime: 0 } })
     const { data: attributeProfile, isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
 
     const defaultFilter: HierarchyPOFilterUi = {
@@ -100,15 +97,21 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
         }
     }
 
-    const handleCheckIfCodeListExist = async (code: string) => {
+    const handleCheckIfCodeIsAvailable = async (code: string) => {
         setLoadingCheck(true)
-        setErrorCheck(undefined)
-        await checkHook({ code: code, codelistState: RequestListState.NEW_REQUEST })
+        return checkHook({ code: code, codelistState: RequestListState.NEW_REQUEST })
             .then(() => {
-                return
+                return {
+                    isAvailable: true,
+                    errorTranslateKeys: [],
+                }
             })
             .catch((error) => {
-                setErrorCheck(error)
+                const errorTranslateKeys = getErrorTranslateKeys([error as { message: string }])
+                return {
+                    isAvailable: false,
+                    errorTranslateKeys,
+                }
             })
             .finally(() => {
                 setLoadingCheck(false)
@@ -122,6 +125,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
             .then(() => {
                 mutateAsync({ data: saveData })
                     .then(() => {
+                        invalidate()
                         setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
                         navigate(`${NavigationSubRoutes.REQUESTLIST}`)
                     })
@@ -140,6 +144,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
             .then(() => {
                 mutateSendASync({ data: mapFormToSave(formData, i18n.language, uuid) })
                     .then(() => {
+                        invalidate()
                         setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
                         navigate(`${NavigationSubRoutes.REQUESTLIST}`)
                     })
@@ -152,19 +157,20 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
             })
     }
 
-    const isLoading = [isLoadingCheck, isLoadingSave, isLoadingSend, isLoadingGetFirstNotUsedCode, isLoadingAttributeProfile].some((item) => item)
-    const isError = [errorCheck, isErrorSave, isErrorSend, isErrorGetFirstNotUsedCode, isErrorAttributeProfile].some((item) => item)
-    const errorMessages = getErrorTranslateKeys([errorCheck, errorFirstNotUsed, errorSend, errorSave].map((item) => item as { message: string }))
+    const isLoading = [isLoadingCheck, isLoadingGetFirstNotUsedCode, isLoadingAttributeProfile].some((item) => item)
+    const isLoadingMutation = [isLoadingSave, isLoadingSend].some((item) => item)
+    const isError = [errorCheck, isErrorSave, isErrorSend, isErrorAttributeProfile].some((item) => item)
+    const errorMessages = getErrorTranslateKeys([errorCheck, errorSend, errorSave].map((item) => item as { message: string }))
 
     return (
-        <RequestListPermissionsWrapper entityName={_entityName}>
+        <RequestListPermissionsWrapper>
             <View
                 isError={isError}
                 errorMessages={errorMessages}
-                entityName={_entityName}
                 isLoading={isLoading}
+                isLoadingMutation={isLoadingMutation}
                 firstNotUsedCode={firstNotUsedCode?.code}
-                onCheckIfCodeListExist={handleCheckIfCodeListExist}
+                onHandleCheckIfCodeIsAvailable={handleCheckIfCodeIsAvailable}
                 loadOptions={loadOptions}
                 onSave={onSave}
                 onSend={onSend}

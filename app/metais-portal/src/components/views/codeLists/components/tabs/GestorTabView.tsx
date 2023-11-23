@@ -1,21 +1,23 @@
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
+import { Actions as CodeListActions, Subjects as CodeListSubjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
+import { Actions as RequestActions, Subjects as RequestSubjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
+import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 
 import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
 import { InformationGridRowWrapper } from '@/components/views/codeLists/components/InformationGridRowWrapper/InformationGridRowWrapper'
-import { CodeListDetailData } from '@/components/containers/CodeListDetailContainer'
 
 export interface GestorTabViewProps {
-    data?: CodeListDetailData
+    codeList: ApiCodelistPreview
+    attributeProfile: AttributeProfile
 }
 
-export const GestorTabView: React.FC<GestorTabViewProps> = ({ data }) => {
+export const GestorTabView: React.FC<GestorTabViewProps> = ({ codeList, attributeProfile }) => {
     const {
         i18n: { language },
     } = useTranslation()
-    const { codeList, attributeProfile } = data || {}
     const ability = useAbilityContext()
 
     return (
@@ -32,7 +34,8 @@ export const GestorTabView: React.FC<GestorTabViewProps> = ({ data }) => {
                 tooltip={getName('Gui_Profil_ZC_priezvisko', language, attributeProfile)}
                 value={codeList?.contactSurname}
             />
-            {ability.can(Actions.READ, Subjects.DETAIL, 'gestor.contact') && (
+            {(ability.can(CodeListActions.READ, CodeListSubjects.DETAIL, 'gestor.contact') ||
+                ability.can(RequestActions.SHOW, RequestSubjects.DETAIL, 'gestor.contact')) && (
                 <>
                     <InformationGridRow
                         key={'tel'}

@@ -8,12 +8,10 @@ const RequestListDetailPage = () => {
             View={(props) => (
                 <DetailRequestView
                     data={props.data}
-                    actions={props.actions}
                     isLoading={props.isLoading}
+                    isLoadingMutation={props.isLoadingMutation}
+                    actionsErrorMessages={props.actionsErrorMessages}
                     isError={props.isError}
-                    entityName={props.entityName}
-                    attributeProfile={props.attributeProfile}
-                    loadOptions={props.loadOptions}
                     requestId={props.requestId}
                     onAccept={props.onAccept}
                 />

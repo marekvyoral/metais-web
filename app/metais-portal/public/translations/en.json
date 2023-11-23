@@ -995,7 +995,8 @@
             "codeLists": "Codelists",
             "codeListsList": "List of codelists",
             "publicCodeListsList": "List of published codelists",
-            "requestList": "List of requests to add a codelist"
+            "requestList": "List of requests to add a codelist",
+            "detail": "Codelist detail"
         },
         "filter": {
             "title": "Filter"
@@ -1132,6 +1133,7 @@
     "codeListList": {
         "title": "Codelists",
         "requestTitle": "List of requests to add a codelist",
+        "requestTitleContact": "Codelist contact person",
         "codeListSubtitle": "List of codelists",
         "publicCodeListSubtitle": "List of published codelists",
         "lockedModal": {
@@ -1166,8 +1168,8 @@
         },
         "requestValidations": {
             "codelistName": "Codelist name is required field",
-            "codelistIdFormat": "Codelist ID has wrong format",
-            "codelistId": "Codelist ID is required field",
+            "codelistCodeFormat": "Codelist ID has wrong format",
+            "codelistCode": "Codelist ID is required field",
             "resortCode": "Resort code is required field",
             "refIndicator": "Reference indicator is required field",
             "mainGestor": "Main gestor is required field",
@@ -1175,7 +1177,11 @@
             "lastName": "Lastname is required field",
             "email": "Email is required field",
             "emailFormat": "Invalid email format",
-            "phone": "Phone is required field"
+            "phone": "Phone is required field",
+            "dateFrom": "From is required field",
+            "effectiveFrom": "Entry into force is required field",
+            "itemCode": "Codelist ID is required field",
+            "itemName": "Codelist name is required field"
         },
         "requestModal": {
             "yes": "Yes",

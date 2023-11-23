@@ -33,7 +33,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, IInputProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label} {required && t('input.requiredField')}
                     </label>
-                    {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
+                    {info && <Tooltip altText={`Tooltip ${label}`} descriptionElement={<div className="tooltipWidth500">{info}</div>} />}
                 </div>
 
                 {hint && (
