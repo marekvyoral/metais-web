@@ -1,5 +1,6 @@
 import { GreenCheckOutlineIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { BreadCrumbs, Button, HomeIcon, IconWithText, PaginatorWrapper, Table, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { ActionsOverTable, QueryFeedback } from '@isdd/metais-common/index'
@@ -7,7 +8,6 @@ import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/
 import { Row } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 
 import GroupMembersFilter from './components/GroupMembersFilter'
 import { sendBatchEmail } from './groupMembersTableUtils'
@@ -16,8 +16,8 @@ import DeleteGroupMemberModal from './modals/DeleteGroupMemberModal'
 import styles from './styles.module.scss'
 
 import { defaultSort, GroupDetailViewProps, identitiesFilter, TableData } from '@/components/containers/standardization/groups/GroupDetailContainer'
-import GroupDetailBaseInfo from '@/components/views/standardization/groups/components/BaseGroupInfo'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import GroupDetailBaseInfo from '@/components/views/standardization/groups/components/BaseGroupInfo'
 
 const GroupDetailView: React.FC<GroupDetailViewProps> = ({
     id,
@@ -42,7 +42,15 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
 }) => {
     const { t } = useTranslation()
     const isRowSelected = (row: Row<TableData>) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false)
+    const breadCrumbsLinks = [
+        { href: RouteNames.HOME, label: t('notifications.home'), icon: HomeIcon },
+        { label: t('navMenu.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
 
+        { href: `${NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL}/${id}`, label: group?.name ?? '' },
+    ]
+    if (group?.shortName !== KSIVS_SHORT_NAME) {
+        breadCrumbsLinks.splice(2, 0, { label: t('navMenu.lists.groups'), href: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE })
+    }
     return (
         <>
             <DeleteGroupMemberModal
@@ -63,15 +71,7 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                 setAddedLabel={setSuccessfulUpdatedData}
                 group={group}
             />
-            <BreadCrumbs
-                withWidthContainer
-                links={[
-                    { href: RouteNames.HOME, label: t('notifications.home'), icon: HomeIcon },
-                    { label: t('navMenu.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
-                    { label: t('navMenu.lists.groups'), href: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE },
-                    { href: `${NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL}/${id}`, label: group?.name ?? '' },
-                ]}
-            />
+            <BreadCrumbs withWidthContainer links={breadCrumbsLinks} />
             <MainContentWrapper>
                 <GroupDetailBaseInfo infoData={group} />
                 <TextHeading size="L">{t('groups.listOfMembers')}</TextHeading>
