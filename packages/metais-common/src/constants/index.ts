@@ -213,3 +213,6 @@ export const KRIScolumnsTechNames = [
     MetainformationColumns.LAST_MODIFIED_AT,
 ]
 export const krisRelatedCiTabsNames = [ENTITY_KS, ENTITY_ISVS, ENTITY_PROJECT, ENTITY_ZS, ENTITY_AGENDA]
+export enum ROLES {
+    EA_GARPO = 'EA_GARPO',
+}

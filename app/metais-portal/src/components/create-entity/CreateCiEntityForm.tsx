@@ -21,6 +21,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { CreateEntitySection } from './CreateEntitySection'
 import { generateFormSchema } from './createCiEntityFormSchema'
 import styles from './createEntity.module.scss'
+import { canCreateProject, getFilteredAttributeProfilesBasedOnRole } from './createEntityHelpers'
 
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
 import { RelationAttributeForm } from '@/components/relations-attribute-form/RelationAttributeForm'
@@ -62,8 +63,10 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
 
     const ability = useAbilityContext()
     const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
+    const hasRightsToCreateProject = canCreateProject(ciTypeData?.technicalName ?? '', selectedRole?.roleName ?? '')
 
-    const isSubmitDisabled = (!selectedRole?.roleUuid && !updateCiItemId) || (withRelation ? !canCreateRelationType : false)
+    const isSubmitDisabled =
+        (!selectedRole?.roleUuid && !updateCiItemId) || (withRelation ? !canCreateRelationType : false) || !hasRightsToCreateProject
     const isUpdate = !!updateCiItemId
 
     const [hasReset, setHasReset] = useState(false)
@@ -94,9 +97,16 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
         return acc
     }, {})
 
+    const combinedProfiles = [ciTypeData as AttributeProfile, ...attProfiles]
+
     const methods = useForm({
         defaultValues: formatDateForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
-        resolver: yupResolver(generateFormSchema([ciTypeData as AttributeProfile, ...attProfiles], t, selectedRole)),
+        resolver: yupResolver(
+            generateFormSchema(
+                isUpdate ? combinedProfiles : getFilteredAttributeProfilesBasedOnRole(combinedProfiles, selectedRole?.roleName ?? ''),
+                t,
+            ),
+        ),
     })
 
     const { handleSubmit, setValue, reset, formState } = methods
