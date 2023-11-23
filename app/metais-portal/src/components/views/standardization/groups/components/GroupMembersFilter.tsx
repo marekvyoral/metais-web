@@ -4,6 +4,7 @@ import { Identity, useFind1Hook, useFindByUuid2 } from '@isdd/metais-common/src/
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { FilterParams } from '@/components/containers/standardization/groups/GroupDetailContainer'
 import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standardization/groups/defaultRoles'
@@ -45,6 +46,11 @@ const GroupMembersFilter: React.FC<FilterProps> = ({ defaultFilterValues, isKsis
         },
         [loadMembers],
     )
+
+    const {
+        state: { user },
+    } = useAuth()
+    const isLoggedIn = !!user
 
     const loadOrgOptions = useCallback(
         async (searchQuery: string, additional: { page: number } | undefined): Promise<ILoadOptionsResponse<ConfigurationItemUi>> => {
@@ -110,6 +116,7 @@ const GroupMembersFilter: React.FC<FilterProps> = ({ defaultFilterValues, isKsis
                 form={({ setValue }) => (
                     <>
                         <SelectLazyLoading<Identity>
+                            disabled={!isLoggedIn}
                             key={seed1}
                             defaultValue={selectedIdentity}
                             placeholder={t('groups.select')}
