@@ -1704,6 +1704,10 @@
         "requiredField": "(povinné)"
     },
     "votes": {
+        "actions": {
+            "sent": "Váš hlas bol odoslaný.",
+            "failedToSend": "Váš hlas sa nepodarilo odoslať."
+        },
         "breadcrumbs": {
             "home": "Domov",
             "standardization": "Štandardizácia",

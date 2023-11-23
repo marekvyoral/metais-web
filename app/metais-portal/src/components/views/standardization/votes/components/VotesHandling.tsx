@@ -1,6 +1,6 @@
 import { Button, RadioButton, RadioGroupWithLabel, TextArea } from '@isdd/idsk-ui-kit/index'
 import { ApiVote } from '@isdd/metais-common/api/generated/standards-swagger'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import classNames from 'classnames'
 import { useCallback, useMemo, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -29,6 +29,7 @@ const VETO_VOTE_ID = -1
 export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, handleVetoVote, canCast, canVeto, castedVoteId, voteProcessing }) => {
     const { t } = useTranslation()
     const [votesProcessingError, setVotesProcessingError] = useState<boolean>(false)
+    const [voted, setVoted] = useState<boolean>(false)
     const { register, handleSubmit } = useForm()
 
     const alreadyVoted = !!castedVoteId
@@ -78,14 +79,15 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
         const isVeto = choiceId === VETO_VOTE_ID
 
         try {
-            setVotesProcessingError(false)
             if (isVeto) {
                 await handleVetoVote(choiceDescription)
                 return
             }
             await handleCastVote(choiceId, choiceDescription)
+            setVoted(true)
         } catch {
             setVotesProcessingError(true)
+            setVoted(false)
         }
     }
 
@@ -96,6 +98,13 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
             error={votesProcessingError}
             indicatorProps={{ transparentMask: true, layer: 'dialog', label: t('votes.voteDetail.voteProcessing') }}
         >
+            {voted && (
+                <MutationFeedback
+                    success={voted}
+                    error={votesProcessingError && t('votes.actions.failedToSend')}
+                    successMessage={t('votes.actions.sent')}
+                />
+            )}
             <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
                 <RadioGroupWithLabel
                     hint={
@@ -114,15 +123,22 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
                                 value={choice.id}
                                 label={choice.value ?? ''}
                                 {...register('voteChoice')}
-                                disabled={choice.disabled}
+                                disabled={choice.disabled || voted}
                                 defaultChecked={choice.id == castedVoteId}
                             />
                         )
                     })}
-                    {canCast && <TextArea rows={3} label={t('votes.voteDetail.description')} {...register('voteDescription')} />}
+                    {canCast && (
+                        <TextArea
+                            rows={3}
+                            label={t('votes.voteDetail.description')}
+                            {...register('voteDescription')}
+                            disabled={alreadyVoted || voted}
+                        />
+                    )}
                 </RadioGroupWithLabel>
 
-                {canCast && <Button type="submit" label={t('votes.voteDetail.submitVote')} />}
+                {canCast && <Button type="submit" label={t('votes.voteDetail.submitVote')} disabled={alreadyVoted || voted} />}
             </form>
         </QueryFeedback>
     )

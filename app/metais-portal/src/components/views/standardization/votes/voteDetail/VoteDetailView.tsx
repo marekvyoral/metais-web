@@ -1,23 +1,23 @@
 import { AccordionContainer, Button, Tab, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ApiStandardRequest, ApiVote, ApiVoteResult } from '@isdd/metais-common/api/generated/standards-swagger'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { CancelVoteButton } from '../components/CancelVoteButton'
 import { VoteStateOptionEnum, getVoteStateEnum } from '../voteProps'
 
+import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
 import { voteActorResultsColumns } from './voteActorResultsColumns'
 import { voteActorsColumns } from './voteActorsColumns'
-import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
 
 import { Spacer } from '@/components/Spacer/Spacer'
-import { VoteOverViewItems } from '@/components/views/standardization/votes/components/VoteOverViewItems'
 import { TableWithPagination } from '@/components/views/standardization/votes/components/TableWithPagination/TableWithPagination'
-import styles from '@/components/views/standardization/votes/voteDetail/voteDetail.module.scss'
-import { VotesHandler } from '@/components/views/standardization/votes/components/VotesHandling'
 import { VoteDetailItems } from '@/components/views/standardization/votes/components/VoteDetailItems'
+import { VoteOverViewItems } from '@/components/views/standardization/votes/components/VoteOverViewItems'
+import { VotesHandler } from '@/components/views/standardization/votes/components/VotesHandling'
+import styles from '@/components/views/standardization/votes/voteDetail/voteDetail.module.scss'
 
 export interface IVoteDetailView {
     voteData: ApiVote | undefined
