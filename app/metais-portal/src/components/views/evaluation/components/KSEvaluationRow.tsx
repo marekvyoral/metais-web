@@ -85,16 +85,16 @@ export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityI
 
         if (checkedAll) {
             let count = 0
-            for (const _ of values ?? []) {
+            values.map(() => {
                 setValue(`${count++}.isApproved`, false)
-            }
+            })
             setRowSelection([])
             return
         }
         let count = 0
-        for (const _ of values ?? []) {
+        values.map(() => {
             setValue(`${count++}.isApproved`, true)
-        }
+        })
         const customRows = values?.map((row) => row.name || '') || []
         setRowSelection(customRows)
     }
