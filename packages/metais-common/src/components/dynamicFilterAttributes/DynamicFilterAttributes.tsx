@@ -2,14 +2,19 @@ import React, { FC, useEffect, useState, MouseEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { UseFormSetValue } from 'react-hook-form'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import { TextWarning } from '@isdd/idsk-ui-kit'
 
 import style from './customFilterAttribute.module.scss'
 
 import { IAttributeFilters, IFilterParams, OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
 import { DynamicFilterAttributeRow } from '@isdd/metais-common/components/dynamicFilterAttributeRow/DynamicFilterAttributeRow'
-import { MAX_DYNAMIC_ATTRIBUTES_LENGHT, OPERATOR_SEPARATOR_TYPE } from '@isdd/metais-common/constants/index'
+import {
+    BASE_PAGE_NUMBER,
+    FILTER_LOCAL_STORAGE_KEY,
+    MAX_DYNAMIC_ATTRIBUTES_LENGHT,
+    OPERATOR_SEPARATOR_TYPE,
+} from '@isdd/metais-common/constants/index'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { FilterMetaAttributesUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
@@ -62,7 +67,8 @@ export const DynamicFilterAttributes: FC<Props> = ({
     const [dynamicAttributes, setDynamicAttributes] = useState<FilterAttribute[]>([])
     const { t } = useTranslation()
     const [searchParams, setSearchParams] = useSearchParams()
-
+    const location = useLocation()
+    const currentFilterKey = FILTER_LOCAL_STORAGE_KEY + location.pathname
     const [addRowError, setAddRowError] = useState<string>('')
     const combinedAttributes = [
         ...(attributes ?? []),
@@ -116,6 +122,16 @@ export const DynamicFilterAttributes: FC<Props> = ({
         if (searchParams.get(formName)) {
             searchParams.delete(formName)
             setSearchParams(searchParams)
+
+            const localStorageValue = localStorage.getItem(currentFilterKey)
+            if (localStorageValue) {
+                const localStorageValueJson = JSON.parse(localStorageValue)
+                delete localStorageValueJson[formName]
+                localStorage.setItem(currentFilterKey, JSON.stringify(localStorageValueJson))
+            } else {
+                const searchParamsFilterDataWithoutPageSize = { ...searchParams, pageNumber: BASE_PAGE_NUMBER, pageSize: undefined }
+                localStorage.setItem(currentFilterKey, JSON.stringify(searchParamsFilterDataWithoutPageSize))
+            }
         }
     }
 
