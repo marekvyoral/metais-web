@@ -69,7 +69,11 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
 
     useEffect(() => {
         if (createSuccess || updateSuccess) {
-            setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_HLASOV })
+            setIsActionSuccess({
+                value: true,
+                path: NavigationSubRoutes.ZOZNAM_HLASOV,
+                type: createSuccess ? 'create' : 'edit',
+            })
             navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV}`, { state: { from: location } })
         }
     }, [createSuccess, location, navigate, setIsActionSuccess, updateSuccess])
