@@ -11,6 +11,7 @@ export interface ISelectPublicAuthorityAndRole {
     selectedOrg: HierarchyRightsUi | null
     selectedRole: GidRoleData
     ciRoles: string[]
+    disableRoleSelect?: boolean
 }
 
 export const SelectPublicAuthorityAndRole: React.FC<ISelectPublicAuthorityAndRole> = ({
@@ -19,11 +20,18 @@ export const SelectPublicAuthorityAndRole: React.FC<ISelectPublicAuthorityAndRol
     selectedOrg,
     selectedRole,
     ciRoles,
+    disableRoleSelect,
 }) => {
     return (
         <>
             <SelectPublicAuthority onChangeAuthority={onChangeAuthority} selectedOrg={selectedOrg} ciRoles={ciRoles} />
-            <SelectRole onChangeRole={onChangeRole} selectedOrg={selectedOrg} selectedRole={selectedRole} ciRoles={ciRoles} />
+            <SelectRole
+                onChangeRole={onChangeRole}
+                selectedOrg={selectedOrg}
+                selectedRole={selectedRole}
+                ciRoles={ciRoles}
+                disabled={disableRoleSelect}
+            />
         </>
     )
 }

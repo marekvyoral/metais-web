@@ -17,5 +17,5 @@ export const isDate = (value: unknown): value is Date => {
 }
 
 export const isFalsyStringValue = (value: unknown): boolean => {
-    return value === '0' || value === 'false'
+    return value === '0' || value === 'false' || value === 'FALSE'
 }
