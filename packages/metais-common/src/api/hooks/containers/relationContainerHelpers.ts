@@ -7,6 +7,7 @@ import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { EnumType, useGetEnumHook } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute, AttributeConstraintEnum, useGetAttributeProfileHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { IAttributeEnum, useGetRelationColumnsHook, useUpdateRelationColumnsHook } from '@isdd/metais-common/api/userConfigKvRepo'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 const PROFILE_LIST = [ATTRIBUTE_NAME.Gen_Profil_Rel, ATTRIBUTE_NAME.EA_Profil_Rel, ATTRIBUTE_NAME.Profil_Rel_FazaZivotnehoCyklu]
 
@@ -39,6 +40,10 @@ const defaultColumns = [
 
 export const useGetRelationColumnData = (entityName: string, isSource: boolean) => {
     const { t } = useTranslation()
+
+    const {
+        state: { user },
+    } = useAuth()
 
     const infoSection: ISelectSectionType = useMemo(
         () => ({
@@ -112,6 +117,7 @@ export const useGetRelationColumnData = (entityName: string, isSource: boolean) 
     }
 
     useEffect(() => {
+        if (!user) return
         loadGenericAttributes()
             .then(async ({ attributes, enums }) => {
                 const mappedAttributes: ISelectColumnType[] = attributes.map((attribute) => ({
@@ -155,7 +161,7 @@ export const useGetRelationColumnData = (entityName: string, isSource: boolean) 
                 )
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [user])
 
     const restoreColumns = (): Promise<void> => {
         const defaultSelectedNames = relationDefaultSelectedColumns.filter((i) => i.selected).map((i) => i.technicalName)
