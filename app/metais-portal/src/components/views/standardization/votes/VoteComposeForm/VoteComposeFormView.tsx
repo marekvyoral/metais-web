@@ -94,7 +94,7 @@ const defaultAnswerDefinitionsValues = (t: TFunction<'translation', undefined, '
     { value: t('votes.voteEdit.answers.didNotVote') },
 ]
 
-export const VoteEditView: React.FC<IVoteEditView> = ({
+export const VoteComposeFormView: React.FC<IVoteEditView> = ({
     user,
     existingVoteDataToEdit,
     allStandardRequestData,

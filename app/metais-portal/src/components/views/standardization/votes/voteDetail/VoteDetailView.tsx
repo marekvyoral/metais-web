@@ -105,7 +105,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
         }) ?? []
 
     const editVoteHandler = () => {
-        navigate(`${NavigationSubRoutes.VOTE_EDIT}/${voteData?.id}`, { state: { from: location } })
+        navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV_EDIT}/${voteData?.id}/edit`, { state: { from: location } })
     }
 
     const voteState = useMemo(() => {

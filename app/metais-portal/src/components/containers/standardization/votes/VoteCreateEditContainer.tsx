@@ -1,5 +1,5 @@
 import { QueryFeedback } from '@isdd/metais-common/index'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { FindAllWithIdentities1Params, useFindAllWithIdentities1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
@@ -15,14 +15,15 @@ import {
     useUpdateVote,
 } from '@isdd/metais-common/api/generated/standards-swagger'
 
-import { IVoteEditView } from '@/components/views/standardization/votes/voteEdit/VoteEditView'
+import { IVoteEditView } from '@/components/views/standardization/votes/VoteComposeForm/VoteComposeFormView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 interface IVoteEditContainer {
     View: React.FC<IVoteEditView>
+    isNewVote?: boolean
 }
 
-export const VoteEditContainer: React.FC<IVoteEditContainer> = ({ View }) => {
+export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, isNewVote }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
@@ -31,15 +32,9 @@ export const VoteEditContainer: React.FC<IVoteEditContainer> = ({ View }) => {
     const { state: user } = useAuth()
     const isUserLogged = !!user
 
-    const { voteIdParam } = useParams()
-    const voteId = useMemo(() => {
-        if (voteIdParam == 'create') {
-            return 0
-        }
-        const voteIdValue = voteIdParam ? parseInt(voteIdParam) : 0
-        return isNaN(voteIdValue) ? 0 : voteIdValue
-    }, [voteIdParam])
-    const isNewVote = voteId == 0
+    const { voteId: voteIdParam } = useParams()
+    const voteId = isNewVote ? 0 : Number(voteIdParam)
+
     const { data: voteData, isLoading: voteDataLoading, isError: voteDataError } = useGetVoteDetail(voteId, { query: { enabled: !isNewVote } })
     const { data: allStandardRequestsData, isLoading: allStandardRequestsLoading, isError: allStandardRequestsError } = useGetAllStandardRequests()
     const groupsWithIdentitiesRequestParams: FindAllWithIdentities1Params = {
@@ -92,10 +87,13 @@ export const VoteEditContainer: React.FC<IVoteEditContainer> = ({ View }) => {
         ]
 
         if (newVote) {
-            links.push({ label: t('votes.breadcrumbs.NewVote'), href: NavigationSubRoutes.VOTE_CREATE })
+            links.push({ label: t('votes.breadcrumbs.NewVote'), href: NavigationSubRoutes.ZOZNAM_HLASOV_CREATE })
         } else {
-            links.push({ label: voteData?.name ?? t('votes.breadcrumbs.VoteDetail'), href: `${NavigationSubRoutes.VOTE_DETAIL}/${voteIdParam}` })
-            links.push({ label: t('votes.breadcrumbs.VoteEdit'), href: `${NavigationSubRoutes.VOTE_EDIT}/${voteIdParam}` })
+            links.push({
+                label: voteData?.name ?? t('votes.breadcrumbs.VoteDetail'),
+                href: `${NavigationSubRoutes.ZOZNAM_HLASOV_DETAIL}/${voteIdParam}`,
+            })
+            links.push({ label: t('votes.breadcrumbs.VoteEdit'), href: `${NavigationSubRoutes.ZOZNAM_HLASOV_EDIT}/${voteIdParam}` })
         }
 
         return links
@@ -105,7 +103,7 @@ export const VoteEditContainer: React.FC<IVoteEditContainer> = ({ View }) => {
         <>
             {isUserLogged && (
                 <>
-                    <BreadCrumbs links={getBreadCrumbLinks(isNewVote)} withWidthContainer />
+                    <BreadCrumbs links={getBreadCrumbLinks(!!isNewVote)} withWidthContainer />
                     <MainContentWrapper>
                         <QueryFeedback
                             loading={isLoading}

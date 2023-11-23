@@ -1781,7 +1781,7 @@
             },
             "invited": {
                 "title": "Pozvaní",
-                "invitedGroups": "Pozvané skupiny (povinné):",
+                "invitedGroups": "Pozvané skupiny :",
                 "invitedUsers": "Pozvaní používatelia (povinné):"
             },
             "secretVote": "Tajné hlasovanie",

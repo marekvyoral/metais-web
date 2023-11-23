@@ -23,29 +23,26 @@ interface IVoteDetailContainer {
 
 export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) => {
     const { t } = useTranslation()
-    const { voteIdParam } = useParams()
+    const { voteId } = useParams()
     const {
         state: { user },
     } = useAuth()
     const isUserLogged = !!user
     const userId = user?.uuid ?? ''
     const userLogin = user?.login ?? ''
-    const voteId = useMemo(() => {
-        const voteIdValue = voteIdParam ? parseInt(voteIdParam) : 0
-        return isNaN(voteIdValue) ? 0 : voteIdValue
-    }, [voteIdParam])
 
-    const { data: voteData, isLoading: voteDataLoading, isError: voteDataError } = useGetVoteDetail(voteId)
+    const { data: voteData, isLoading: voteDataLoading, isError: voteDataError, refetch } = useGetVoteDetail(Number(voteId))
+    const { isLoading: cancelVoteLoading, mutateAsync: cancelVoteAsyncMutation } = useCancelVote({ mutation: { onSuccess: () => refetch() } })
+
     const {
         data: srData,
         isLoading: srLoading,
         isError: srError,
     } = useGetStandardRequestDetail(voteData?.standardRequestId ?? 0, { query: { enabled: !!voteData?.standardRequestId } })
     const standardRequestLoading = !!voteData?.standardRequestId && srLoading
-    const { data: voteResultData, isLoading: voteResultDataLoading, isError: voteResultDataError } = useGetVoteResult(voteId)
+    const { data: voteResultData, isLoading: voteResultDataLoading, isError: voteResultDataError } = useGetVoteResult(Number(voteId))
     const { isLoading: castVoteLoading, mutateAsync: castVoteAsyncMutation } = useCastVote()
     const { isLoading: vetoVoteLoading, mutateAsync: vetoVoteAsyncMutation } = useVetoVote()
-    const { isLoading: cancelVoteLoading, mutateAsync: cancelVoteAsyncMutation } = useCancelVote()
 
     const castVote = async (choiceId: number, description: string) => {
         if (!voteData?.id) {
@@ -101,7 +98,10 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
                     { label: t('votes.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
                     { label: t('votes.breadcrumbs.standardization'), href: RouteNames.HOW_TO_STANDARDIZATION },
                     { label: t('votes.breadcrumbs.VotesLists'), href: NavigationSubRoutes.ZOZNAM_HLASOV },
-                    { label: voteData?.name ?? t('votes.breadcrumbs.VoteDetail'), href: `${NavigationSubRoutes.VOTE_DETAIL}/${voteIdParam}` },
+                    {
+                        label: voteData?.name ?? t('votes.breadcrumbs.VoteDetail'),
+                        href: `${NavigationSubRoutes.ZOZNAM_HLASOV_DETAIL}/${voteId}`,
+                    },
                 ]}
                 withWidthContainer
             />

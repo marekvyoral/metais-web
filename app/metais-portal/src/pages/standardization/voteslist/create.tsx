@@ -1,13 +1,14 @@
 import React from 'react'
 
-import { VoteEditView } from '@/components/views/standardization/votes/voteEdit/VoteEditView'
-import { VoteEditContainer } from '@/components/containers/standardization/votes/VoteEditContainer'
+import { VoteComposeFormView } from '@/components/views/standardization/votes/VoteComposeForm/VoteComposeFormView'
+import { VoteCreateEditContainer } from '@/components/containers/standardization/votes/VoteCreateEditContainer'
 
-const VoteEdit: React.FC = () => {
+const VoteCreatePage: React.FC = () => {
     return (
-        <VoteEditContainer
+        <VoteCreateEditContainer
+            isNewVote
             View={(props) => (
-                <VoteEditView
+                <VoteComposeFormView
                     user={props.user}
                     existingVoteDataToEdit={props.existingVoteDataToEdit}
                     allStandardRequestData={props.allStandardRequestData}
@@ -24,4 +25,4 @@ const VoteEdit: React.FC = () => {
     )
 }
 
-export default VoteEdit
+export default VoteCreatePage

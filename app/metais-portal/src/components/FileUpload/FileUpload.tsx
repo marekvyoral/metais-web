@@ -78,6 +78,14 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
 
         const [isLoading, setIsLoading] = useState<boolean>(false)
 
+        useEffect(
+            () => () => {
+                cancelImport()
+            },
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            [],
+        )
+
         useEffect(() => {
             onErrorOccurred?.(errorMessages)
         }, [errorMessages, onErrorOccurred])
