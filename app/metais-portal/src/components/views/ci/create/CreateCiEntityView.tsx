@@ -24,7 +24,7 @@ export const CreateCiEntityView: React.FC<Props> = ({ data, entityName, ownerId,
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
-                <TextHeading size="XL">{t('ciType.createEntity', { entityName: entityName })}</TextHeading>
+                <TextHeading size="XL">{t('ciType.createEntity', { entityName: data.attributesData.ciTypeData?.name })}</TextHeading>
                 {isError && <QueryFeedback loading={false} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }} />}
             </FlexColumnReverseWrapper>
             <CreateEntity

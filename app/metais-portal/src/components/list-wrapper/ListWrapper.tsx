@@ -220,7 +220,10 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     columnListData={columnListData}
                     ciTypeData={ciTypeData}
                     createButton={
-                        <CreateEntityButton ciType={ciType ?? ''} onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })} />
+                        <CreateEntityButton
+                            ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
+                            onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })}
+                        />
                     }
                     importButton={<ImportButton ciType={ciType ?? ''} />}
                     exportButton={<ExportButton />}

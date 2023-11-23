@@ -1,23 +1,19 @@
-import { useLocation, useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 
-import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from './invalidate-cache'
-
 import { useGetRequestStatus } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 enum RequestIdStatus {
     PROCESSED = 'PROCESSED',
     FAILED = 'FAILED',
 }
 
-export const useRedirectAfterSuccess = (requestId: string, configurationItemId: string, ciType: string) => {
-    const navigate = useNavigate()
-    const location = useLocation()
-    const { setIsActionSuccess } = useActionSuccess()
+type RedirectAfterSuccessProps = {
+    requestId: string
+    onSuccess: () => void
+}
+
+export const useRedirectAfterSuccess = ({ requestId, onSuccess }: RedirectAfterSuccessProps) => {
     const requestStatusQuery = useGetRequestStatus(requestId, { query: { enabled: !!requestId } })
-    const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
-    const invalidateCiByUuidCache = useInvalidateCiItemCache()
 
     const [isProcessedError, setIsProcessedError] = useState(false)
     const [isTooManyFetchesError, setIsTooManyFetchesError] = useState(false)
@@ -66,11 +62,7 @@ export const useRedirectAfterSuccess = (requestId: string, configurationItemId: 
                     return
                 }
                 case data.status === RequestIdStatus.PROCESSED: {
-                    const toPath = `/ci/${ciType}/${configurationItemId}`
-                    setIsActionSuccess({ value: true, path: toPath })
-                    navigate(toPath, { state: { from: location } })
-                    invalidateCilistFilteredCache.invalidate({ ciType })
-                    invalidateCiByUuidCache.invalidate(configurationItemId)
+                    onSuccess()
                     return
                 }
                 case data.status === RequestIdStatus.FAILED: {
@@ -79,18 +71,7 @@ export const useRedirectAfterSuccess = (requestId: string, configurationItemId: 
                 }
             }
         }
-    }, [
-        ciType,
-        configurationItemId,
-        data?.processed,
-        data?.status,
-        fetchStatusCount,
-        invalidateCiByUuidCache,
-        invalidateCilistFilteredCache,
-        location,
-        navigate,
-        setIsActionSuccess,
-    ])
+    }, [data?.processed, data?.status, fetchStatusCount, onSuccess])
 
     const isLoading = !isError && !data?.processed && !isTooManyFetchesError
 

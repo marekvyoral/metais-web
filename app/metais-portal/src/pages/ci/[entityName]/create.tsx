@@ -16,47 +16,53 @@ const CreateEntityPage: React.FC = () => {
     let { entityName } = useGetEntityParamsFromUrl()
     entityName = shouldEntityNameBePO(entityName ?? '')
     document.title = `${t('titles.ciCreateEntity', { ci: entityName })} | MetaIS`
+
     return (
         <>
-            <BreadCrumbs
-                withWidthContainer
-                links={[
-                    { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: entityName ?? '', href: `/ci/${entityName}` },
-                    { label: t('breadcrumbs.ciCreateEntity', { entityName: entityName }), href: `/ci/create` },
-                ]}
-            />
-            <MainContentWrapper>
-                <CiCreateEntityContainer
-                    entityName={entityName ?? ''}
-                    View={({ data: generatedEntityId, isError: generatedIdError, isLoading: generatedIdLoading }) => (
-                        <AttributesContainer
-                            entityName={entityName ?? ''}
-                            View={({ data: attributesData, isError: attError, isLoading: attLoading }) => (
-                                <PublicAuthorityAndRoleContainer
-                                    View={({
-                                        data: groupData,
-                                        roleState,
-                                        publicAuthorityState,
-                                        isError: publicAuthAndRoleError,
-                                        isLoading: publicAuthAndRoleLoading,
-                                    }) => (
-                                        <CreateCiEntityView
-                                            data={{ attributesData, generatedEntityId }}
-                                            ownerId={groupData?.gid ?? ''}
-                                            roleState={roleState}
-                                            publicAuthorityState={publicAuthorityState}
-                                            entityName={entityName ?? ''}
-                                            isLoading={[attLoading, generatedIdLoading, publicAuthAndRoleLoading].some((item) => item)}
-                                            isError={[attError, generatedIdError, publicAuthAndRoleError].some((item) => item)}
+            <CiCreateEntityContainer
+                entityName={entityName ?? ''}
+                View={({ data: generatedEntityId, isError: generatedIdError, isLoading: generatedIdLoading }) => (
+                    <AttributesContainer
+                        entityName={entityName ?? ''}
+                        View={({ data: attributesData, isError: attError, isLoading: attLoading }) => (
+                            <PublicAuthorityAndRoleContainer
+                                View={({
+                                    data: groupData,
+                                    roleState,
+                                    publicAuthorityState,
+                                    isError: publicAuthAndRoleError,
+                                    isLoading: publicAuthAndRoleLoading,
+                                }) => (
+                                    <>
+                                        <BreadCrumbs
+                                            withWidthContainer
+                                            links={[
+                                                { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                                                { label: entityName ?? '', href: `/ci/${entityName}` },
+                                                {
+                                                    label: t('breadcrumbs.ciCreateEntity', { entityName: attributesData.ciTypeData?.name }),
+                                                    href: `/ci/create`,
+                                                },
+                                            ]}
                                         />
-                                    )}
-                                />
-                            )}
-                        />
-                    )}
-                />
-            </MainContentWrapper>
+                                        <MainContentWrapper>
+                                            <CreateCiEntityView
+                                                data={{ attributesData, generatedEntityId }}
+                                                ownerId={groupData?.gid ?? ''}
+                                                roleState={roleState}
+                                                publicAuthorityState={publicAuthorityState}
+                                                entityName={entityName ?? ''}
+                                                isLoading={[attLoading, generatedIdLoading, publicAuthAndRoleLoading].some((item) => item)}
+                                                isError={[attError, generatedIdError, publicAuthAndRoleError].some((item) => item)}
+                                            />
+                                        </MainContentWrapper>
+                                    </>
+                                )}
+                            />
+                        )}
+                    />
+                )}
+            />
         </>
     )
 }

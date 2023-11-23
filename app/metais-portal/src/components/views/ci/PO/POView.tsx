@@ -12,6 +12,7 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import { TextHeading } from '@isdd/idsk-ui-kit/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { AttributesContainerViewData } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { CiTable } from '@/components/ci-table/CiTable'
 import { FilterPO, POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
@@ -46,7 +47,7 @@ export const POView: React.FC<Props> = ({
     isError,
     POType,
 }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
     const { attributeProfiles, constraintsData, unitsData, ciTypeData, attributes } = attributesData
@@ -79,7 +80,10 @@ export const POView: React.FC<Props> = ({
                 attributes={attributes ?? []}
                 columnListData={columnListData}
                 createButton={
-                    <CreateEntityButton ciType={entityName} onClick={() => navigate(`/ci/${entityName}/create`, { state: { from: location } })} />
+                    <CreateEntityButton
+                        ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
+                        onClick={() => navigate(`/ci/${entityName}/create`, { state: { from: location } })}
+                    />
                 }
                 exportButton={<ExportButton />}
                 importButton={<ImportButton ciType={entityName} />}
