@@ -1719,6 +1719,7 @@
             }
         },
         "voteDetail": {
+            "created": "Vote has been created",
             "date": "Date",
             "voteType": "Vote type",
             "relatedDocuments": "Related documents",

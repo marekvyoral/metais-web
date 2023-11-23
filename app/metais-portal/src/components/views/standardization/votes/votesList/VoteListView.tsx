@@ -9,6 +9,8 @@ import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { useEffect } from 'react'
 
 import styles from './voteList.module.scss'
 
@@ -43,7 +45,7 @@ export const VotesListView: React.FC<IVotesListView> = ({
     const navigate = useNavigate()
     const location = useLocation()
     const {
-        isActionSuccess: { value: isSuccess },
+        isActionSuccess: { value: isSuccess, type: successType },
     } = useActionSuccess()
 
     const newVoteHandler = () => {
@@ -56,10 +58,26 @@ export const VotesListView: React.FC<IVotesListView> = ({
         return { ...vote, voteState: newVoteState, hasCast: newHasCast }
     })
 
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        if (isSuccess) {
+            scrollToMutationFeedback()
+        }
+    }, [isSuccess, scrollToMutationFeedback])
+
     return (
         <>
             <TextHeading size="XL">{t('votes.votesList.title')}</TextHeading>
-            {isSuccess && <MutationFeedback success error={false} />}
+            {isSuccess && (
+                <div ref={wrapperRef}>
+                    <MutationFeedback
+                        success
+                        error={false}
+                        successMessage={successType == 'create' ? t('votes.voteDetail.created') : t('mutationFeedback.successfulUpdated')}
+                    />
+                </div>
+            )}
             <Filter<IVotesListFilterData>
                 heading={t('votes.votesList.filter.title')}
                 defaultFilterValues={defaultFilterValues}
