@@ -43,10 +43,10 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
     const requiredString = ` (${t('userProfile.requests.required')})`
 
     const schema = object().shape({
-        [RequestFormFields.PO]: mixed().required(),
-        [RequestFormFields.PHONE]: string().required(),
-        [RequestFormFields.EMAIL]: string().required(),
-        [RequestFormFields.DESCRIPTION]: string().required(),
+        [RequestFormFields.PO]: mixed().required(t('userProfile.requests.poRequired')),
+        [RequestFormFields.PHONE]: string().required(t('userProfile.requests.phoneRequired')),
+        [RequestFormFields.EMAIL]: string().required(t('userProfile.requests.emailRequired')),
+        [RequestFormFields.DESCRIPTION]: string().required(t('userProfile.requests.descriptionRequired')),
     })
 
     const {
