@@ -1,5 +1,5 @@
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, Roles } from '@isdd/metais-common/api/constants'
 import { HierarchyPOFilterUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     useCreateCodelistRequest,
@@ -19,12 +19,13 @@ import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useInvalidateCodeListRequestCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { CreateRequestViewProps } from '@/components/containers/CreateRequestContainer'
 import { IItemDates } from '@/components/views/requestLists/components/modalItem/DateModalItem'
 import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
-import { IRequestForm, _entityName, getUUID, mapFormToSave, mapToForm } from '@/componentHelpers/requests'
+import { IRequestForm, getUUID, mapFormToSave, mapToForm } from '@/componentHelpers/requests'
 import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 interface EditRequestContainerProps {
@@ -43,6 +44,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     const setItemsDatesHook = useProcessItemRequestAction1Hook()
     const saveDatesHook = useSaveDatesHook()
     const { setIsActionSuccess } = useActionSuccess()
+    const { invalidate } = useInvalidateCodeListRequestCache()
 
     const [isLoadingCheck, setLoadingCheck] = useState<boolean>()
     const [errorCheck, setErrorCheck] = useState<{ message: string }>()
@@ -52,7 +54,14 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
         perpage: 20,
         sortBy: SortBy.HIERARCHY_FROM_ROOT,
         sortType: SortType.ASC,
-        rights: userDataGroups.map((group) => ({ poUUID: group.orgId, roles: group.roles.map((role) => role.roleUuid) })),
+        rights: userDataGroups
+            .filter((group) => group.roles.some((role) => role.roleName === Roles.SZC_HLGES || role.roleName === Roles.SZC_VEDGES))
+            .map((group) => ({
+                poUUID: group.orgId,
+                roles: group.roles
+                    .filter((role) => role.roleName === Roles.SZC_HLGES || role.roleName === Roles.SZC_VEDGES)
+                    .map((role) => role.roleUuid),
+            })),
     }
 
     const implicitHierarchy = useReadCiList()
@@ -90,16 +99,22 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
         }
     }
 
-    const handleCheckIfCodeListExist = useCallback(
+    const handleCheckIfCodeIsAvailable = useCallback(
         async (code: string) => {
             setLoadingCheck(true)
-            setErrorCheck(undefined)
-            await checkHook({ code: code, id: Number(requestId), codelistState: RequestListState.NEW_REQUEST })
+            return checkHook({ code: code, id: Number(requestId), codelistState: RequestListState.NEW_REQUEST })
                 .then(() => {
-                    return
+                    return {
+                        isAvailable: true,
+                        errorTranslateKeys: [],
+                    }
                 })
                 .catch((error) => {
-                    setErrorCheck(error)
+                    const errorTranslateKeys = getErrorTranslateKeys([error as { message: string }])
+                    return {
+                        isAvailable: false,
+                        errorTranslateKeys,
+                    }
                 })
                 .finally(() => {
                     setLoadingCheck(false)
@@ -110,7 +125,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
 
     const onSave = async (formData: IRequestForm) => {
         const uuid = getUUID(user?.groupData ?? [])
-        const mappedData = mapFormToSave(formData, i18n.language, uuid)
+        const mappedData = mapFormToSave(formData, i18n.language, uuid, data?.id)
         if (
             mappedData.code &&
             (data?.codelistState === RequestListState.ACCEPTED_SZZC || data?.codelistState === RequestListState.KS_ISVS_ACCEPTED)
@@ -120,6 +135,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
                 validFrom: mappedData.validFrom && formatDateForDefaultValue(mappedData.validFrom, 'dd.MM.yyyy'),
             })
                 .then(() => {
+                    invalidate(Number(requestId))
                     setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
                     navigate(`${NavigationSubRoutes.REQUESTLIST}`)
                 })
@@ -129,6 +145,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
         } else {
             mutateAsync({ data: mappedData })
                 .then(() => {
+                    invalidate(Number(requestId))
                     setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
                     navigate(`${NavigationSubRoutes.REQUESTLIST}`)
                 })
@@ -140,8 +157,9 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
 
     const onSend = async (formData: IRequestForm) => {
         const uuid = getUUID(user?.groupData ?? [])
-        mutateSendASync({ data: mapFormToSave(formData, i18n.language, uuid) })
+        mutateSendASync({ data: mapFormToSave(formData, i18n.language, uuid, data?.id) })
             .then(() => {
+                invalidate(Number(requestId))
                 setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
                 navigate(`${NavigationSubRoutes.REQUESTLIST}`)
             })
@@ -152,7 +170,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
 
     const onSaveDates = (dates: IItemDates, items: Record<string, IItemForm>) => {
         setItemsDatesHook(
-            defaultData.codeListId,
+            defaultData.codeListCode,
             false,
             {
                 effectiveFrom: formatDateForDefaultValue(dates.effectiveFrom, 'dd.MM.yyyy'),
@@ -162,6 +180,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
             { fromIndex: 0, toIndex: Object.keys(items).length },
         )
             .then(() => {
+                invalidate(Number(requestId))
                 setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
                 navigate(`${NavigationSubRoutes.REQUESTLIST}`)
             })
@@ -170,9 +189,8 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
             })
     }
 
-    const isLoading = [isLoadingCheck, isLoadingSave, isLoadingSend, isLoadingDetail, isLoadingItemList, isLoadingAttributeProfile].some(
-        (item) => item,
-    )
+    const isLoading = [isLoadingCheck, isLoadingDetail, isLoadingItemList, isLoadingAttributeProfile].some((item) => item)
+    const isLoadingMutation = [isLoadingSave, isLoadingSend].some((item) => item)
     const isError = [errorCheck, isErrorSave, isErrorDetail, isErrorSend, isErrorItemList, isErrorAttributeProfile].some((item) => item)
     const errorMessages = getErrorTranslateKeys([errorDetail, errorCheck, errorSend, errorSave].map((item) => item as { message: string }))
 
@@ -186,17 +204,17 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
 
     const canEdit = data && (data.lockedBy === null || data.lockedBy === user?.login) && data.codelistState === RequestListState.DRAFT
 
-    return !isLoading && defaultData ? (
-        <RequestListPermissionsWrapper entityName={_entityName}>
+    return (
+        <RequestListPermissionsWrapper id={requestId ?? ''}>
             <View
                 requestId={requestId}
-                entityName={_entityName}
                 canEdit={canEdit}
                 canEditDate={canEditDate}
                 isError={isError}
                 isLoading={isLoading}
+                isLoadingMutation={isLoadingMutation}
                 errorMessages={errorMessages}
-                onCheckIfCodeListExist={handleCheckIfCodeListExist}
+                onHandleCheckIfCodeIsAvailable={handleCheckIfCodeIsAvailable}
                 loadOptions={loadOptions}
                 onSave={onSave}
                 onSend={onSend}
@@ -205,7 +223,5 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
                 onSaveDates={onSaveDates}
             />
         </RequestListPermissionsWrapper>
-    ) : (
-        <></>
     )
 }

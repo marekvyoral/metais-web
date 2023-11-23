@@ -8,7 +8,7 @@ interface IOutput {
         base?: boolean
         gid?: string
         codeListName: string
-        codeListId: string
+        codeListCode: string
         resortCode: string
         mainGestor: string
         refIndicator?: string
@@ -48,10 +48,10 @@ export const useCreateRequestSchema = (): IOutput => {
     const schema = object().shape({
         base: boolean(),
         codeListName: string().required(t('codeListList.requestValidations.codelistName')),
-        codeListId: string()
-            .required(t('codeListList.requestValidations.codelistId'))
-            .matches(/CL0[0-9]{5}/, t('codeListList.requestValidations.codelistIdFormat'))
-            .length(8, t('codeListList.requestValidations.codelistIdFormat')),
+        codeListCode: string()
+            .required(t('codeListList.requestValidations.codelistCode'))
+            .matches(/CL0[0-9]{5}/, t('codeListList.requestValidations.codelistCodeFormat'))
+            .length(8, t('codeListList.requestValidations.codelistCodeFormat')),
         resortCode: string().required(t('codeListList.requestValidations.resortCode')),
         mainGestor: string().required(t('codeListList.requestValidations.mainGestor')),
         gid: string(),
@@ -72,8 +72,8 @@ export const useCreateRequestSchema = (): IOutput => {
 export const useItemSchema = (): IItem => {
     const { t } = useTranslation()
     const schema = object().shape({
-        codeItem: string().required(t('codeListList.requestValidations.codelistName')),
-        codeName: string().required(t('codeListList.requestValidations.codelistName')),
+        codeItem: string().required(t('codeListList.requestValidations.itemCode')),
+        codeName: string().required(t('codeListList.requestValidations.itemName')),
     })
 
     return {
@@ -84,10 +84,10 @@ export const useItemSchema = (): IItem => {
 export const useItemEditSchema = (): IItemEdit => {
     const { t } = useTranslation()
     const schema = object().shape({
-        codeItem: string().required(t('codeListList.requestValidations.codelistName')),
-        codeName: string().required(t('codeListList.requestValidations.codelistName')),
-        validDate: string().required(t('codeListList.requestValidations.startDate')),
-        effectiveFrom: string().required(t('codeListList.requestValidations.startDate')),
+        codeItem: string().required(t('codeListList.requestValidations.itemCode')),
+        codeName: string().required(t('codeListList.requestValidations.itemName')),
+        validDate: string().required(t('codeListList.requestValidations.effectiveFrom')),
+        effectiveFrom: string().required(t('codeListList.requestValidations.effectiveFrom')),
     })
 
     return {
@@ -98,8 +98,8 @@ export const useItemEditSchema = (): IItemEdit => {
 export const useItemDateSchema = (): IItemDate => {
     const { t } = useTranslation()
     const schema = object().shape({
-        effectiveFrom: string().required(t('codeListList.requestValidations.codelistName')),
-        validDate: string().required(t('codeListList.requestValidations.codelistName')),
+        effectiveFrom: string().required(t('codeListList.requestValidations.effectiveFrom')),
+        validDate: string().required(t('codeListList.requestValidations.dateFrom')),
     })
 
     return {

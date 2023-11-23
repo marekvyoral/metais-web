@@ -1,33 +1,18 @@
-import {
-    BaseModal,
-    BreadCrumbs,
-    Button,
-    ButtonGroupRow,
-    Filter,
-    HomeIcon,
-    Input,
-    MultiSelect,
-    PaginatorWrapper,
-    SimpleSelect,
-    TextBody,
-    TextHeading,
-} from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Filter, HomeIcon, Input, MultiSelect, PaginatorWrapper, SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { TextLink } from '@isdd/idsk-ui-kit/typography/TextLink'
 import { ApiCodelistItemName, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
 import { ActionsOverTable, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { RequestListActions } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
+import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
-import { TextClickable } from '@/components/views/codeLists/components/TextClickable/TextClickable'
 import { CodeListFilterOnlyBase } from '@/components/containers/CodeListListContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { RequestListFilterData, RequestListViewProps, defaultFilterValues } from '@/components/containers/RequestListContainer'
@@ -37,30 +22,17 @@ const selectBasedOnLanguage = (languageData: Array<ApiCodelistItemName>, appLang
     return translatedName ?? languageData?.find(() => true)?.value
 }
 
-export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter, handleFilterChange, isLoading, entityName }) => {
+export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter, handleFilterChange, isLoading }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
-    const {
-        state: { user },
-    } = useAuth()
     const userAbility = useAbilityContext()
 
-    const [lockedDialogData, setLockedDialogData] = useState<{ id?: number; lockedBy?: string; isOpened: boolean }>({ isOpened: false })
     const {
         isActionSuccess: { value: isSuccess },
     } = useActionSuccess()
 
     const columns: Array<ColumnDef<ApiCodelistPreview>> = [
-        {
-            id: 'code',
-            header: t('codeListList.table.code'),
-            accessorFn: (row) => row.code,
-            meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
-            },
-            enableSorting: true,
-        },
         {
             id: 'codelistName',
             header: t('codeListList.table.name'),
@@ -70,21 +42,18 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                 getCellContext: (ctx) => selectBasedOnLanguage(ctx.getValue() as ApiCodelistItemName[], i18n.language),
             },
             cell: (row) => {
-                const { id, locked, lockedBy } = row.row.original
                 const name = selectBasedOnLanguage(row.getValue() as ApiCodelistItemName[], i18n.language)
-
-                return locked && user?.login !== lockedBy ? (
-                    <TextClickable
-                        onClick={() => {
-                            setLockedDialogData({ lockedBy, id, isOpened: true })
-                        }}
-                    >
-                        {name}
-                    </TextClickable>
-                ) : (
-                    <TextLink to={`${NavigationSubRoutes.REQUESTLIST}/${id}`}>{name}</TextLink>
-                )
+                return <TextLink to={`${NavigationSubRoutes.REQUESTLIST}/${row.row.original.id}`}>{name}</TextLink>
             },
+        },
+        {
+            id: 'id',
+            header: t('codeListList.table.code'),
+            accessorFn: (row) => row.code,
+            meta: {
+                getCellContext: (ctx) => ctx?.getValue?.(),
+            },
+            enableSorting: true,
         },
         {
             id: 'base',
@@ -117,7 +86,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                     { label: t('codeList.breadcrumbs.requestList'), href: NavigationSubRoutes.REQUESTLIST },
                 ]}
             />
-            {userAbility.can(RequestListActions.SHOW, entityName) && (
+            {userAbility.can(Actions.SHOW, Subjects.LIST) && (
                 <MainContentWrapper>
                     {isSuccess && <MutationFeedback success error={false} />}
                     <QueryFeedback loading={isLoading} error={false} withChildren>
@@ -164,7 +133,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                             entityName="requestList"
                             pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                             createButton={
-                                userAbility.can(RequestListActions.CREATE, entityName) && (
+                                userAbility.can(Actions.CREATE, Subjects.DETAIL) && (
                                     <CreateEntityButton
                                         onClick={() => navigate(`${NavigationSubRoutes.REQUESTLIST}/create`, { state: { from: location } })}
                                         label={t('codeListList.requestCreate.addItemBtn')}
@@ -188,19 +157,6 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                             dataLength={data?.dataLength || 0}
                             handlePageChange={handleFilterChange}
                         />
-                        <BaseModal isOpen={lockedDialogData.isOpened} close={() => setLockedDialogData({ ...lockedDialogData, isOpened: false })}>
-                            <TextBody>{t('codeListList.lockedModal.text', { lockedBy: lockedDialogData.lockedBy })}</TextBody>
-                            <ButtonGroupRow>
-                                <Button
-                                    label={t('codeListList.lockedModal.button.lastSavedRevision')}
-                                    onClick={() => navigate(`${NavigationSubRoutes.CODELIST}/${lockedDialogData.id}/detail`)}
-                                />
-                                <Button
-                                    label={t('codeListList.lockedModal.button.currentRevision')}
-                                    onClick={() => navigate(`${NavigationSubRoutes.CODELIST}/${lockedDialogData.id}/detail`)}
-                                />
-                            </ButtonGroupRow>
-                        </BaseModal>
                     </QueryFeedback>
                 </MainContentWrapper>
             )}

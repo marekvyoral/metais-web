@@ -1004,7 +1004,8 @@
             "publicCodeListsList": "Zoznam publikovaných číselníkov",
             "requestList": "Zoznam žiadostí číselníkov",
             "requestCreate": "Vytvoriť žiadosť číselníka",
-            "requestEdit": "Editovať žiadosť číselníka"
+            "requestEdit": "Editovať žiadosť číselníka",
+            "detail": "Detail číselníka"
         },
         "filter": {
             "title": "Filter"
@@ -1141,6 +1142,7 @@
     "codeListList": {
         "title": "Číselníky",
         "requestTitle": "Žiadosť o zaradenie číselníka",
+        "requestTitleContact": "Kontaktná osoba k číselníku",
         "codeListSubtitle": "Zoznam číselníkov",
         "publicCodeListSubtitle": "Zoznam publikovaných číselníkov",
         "lockedModal": {
@@ -1175,8 +1177,8 @@
         },
         "requestValidations": {
             "codelistName": "Názov číselníka je povinné pole",
-            "codelistIdFormat": "Kód číselníka je v zlom formáte",
-            "codelistId": "Kód číselníka je povinné pole",
+            "codelistCodeFormat": "Kód číselníka je v zlom formáte",
+            "codelistCode": "Kód číselníka je povinné pole",
             "resortCode": "Rezortný kód je povinné pole",
             "refIndicator": "Referencovateľný identifikátor je povinné pole",
             "mainGestor": "Hlavný gestor je povinné pole",
@@ -1184,7 +1186,11 @@
             "lastName": "Priezvisko je povinné pole",
             "email": "Email je povinné pole",
             "emailFormat": "Email je v nesprávnom tvare",
-            "phone": "Telefónne číslo je povinné pole"
+            "phone": "Telefónne číslo je povinné pole",
+            "dateFrom": "Dátum platnosti je povinné pole",
+            "effectiveFrom": "Začiatok účinnosti je povinné pole",
+            "itemCode": "Kód položky je povinné pole",
+            "itemName": "Názov položky je povinné pole"
         },
         "requestModal": {
             "yes": "Áno",

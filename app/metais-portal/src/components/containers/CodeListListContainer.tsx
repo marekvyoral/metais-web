@@ -75,7 +75,7 @@ export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ isOnly
     })
 
     const {
-        isLoading: isLoadingCodelistHeaders,
+        isFetching: isLoadingCodelistHeaders,
         isError: isErrorCodelistHeaders,
         data: codelistHeadersData,
     } = useGetCodelistHeaders({
@@ -99,7 +99,7 @@ export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ isOnly
 
     const {
         data: roleParticipantsData,
-        isLoading: isLoadingRoleParticipants,
+        isFetching: isLoadingRoleParticipants,
         isError: isErrorRoleParticipants,
         isFetching: isFetchingCiList,
     } = useGetRoleParticipantBulk({ gids }, { query: { enabled: !!codelistHeadersData?.codelists?.length } })

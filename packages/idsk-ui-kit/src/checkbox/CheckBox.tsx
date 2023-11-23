@@ -46,8 +46,8 @@ export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
                         ) : (
                             <span className={classNames('govuk-label govuk-checkboxes__label', labelClassName)}>{label}</span>
                         )}
+                        {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
                     </div>
-                    {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
                 </div>
             </div>
         )

@@ -13,6 +13,7 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import { SelectFilterOrganization } from '@isdd/metais-common/components/select-organization/SelectFilterOrganization'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
+import { selectBasedOnLanguageAndDate } from '@/components/views/codeLists/CodeListDetailUtils'
 import {
     CodeListFilterOnlyBase,
     CodeListListFilterData,
@@ -21,11 +22,6 @@ import {
     defaultFilterValues,
 } from '@/components/containers/CodeListListContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-
-const selectBasedOnLanguage = (languageData: Array<ApiCodelistItemName>, appLanguage: string) => {
-    const translatedName = languageData?.find((item) => item.language === appLanguage)?.value
-    return translatedName ?? languageData?.find(() => true)?.value
-}
 
 const getMainGestor = (codeListManager: ApiCodelistManager[], roleParticipants: RoleParticipantUI[]) => {
     if (!codeListManager.length) {
@@ -56,10 +52,10 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
             accessorFn: (row) => row.codelistNames,
             enableSorting: true,
             meta: {
-                getCellContext: (ctx) => selectBasedOnLanguage(ctx.getValue() as ApiCodelistItemName[], i18n.language),
+                getCellContext: (ctx) => selectBasedOnLanguageAndDate(ctx.getValue() as ApiCodelistItemName[], i18n.language),
             },
             cell: (row) => {
-                const name = selectBasedOnLanguage(row.getValue() as ApiCodelistItemName[], i18n.language)
+                const name = selectBasedOnLanguageAndDate(row.getValue() as ApiCodelistItemName[], i18n.language)
                 return <TextLink to={`${NavigationSubRoutes.CODELIST}/${row.row.original.id}`}>{name}</TextLink>
             },
         },

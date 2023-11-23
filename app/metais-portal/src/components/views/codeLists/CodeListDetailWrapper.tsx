@@ -83,9 +83,20 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
         {
             id: 'basic-info',
             title: t('codeListDetail.title.tab.info'),
-            content: <BasicInfoTabView data={data} workingLanguage={workingLanguage} />,
+            content: (
+                <BasicInfoTabView
+                    codeList={data.codeList ?? {}}
+                    gestorList={data.gestors}
+                    attributeProfile={data.attributeProfile ?? {}}
+                    workingLanguage={workingLanguage}
+                />
+            ),
         },
-        { id: 'gestor', title: t('codeListDetail.title.tab.gestor'), content: <GestorTabView data={data} /> },
+        {
+            id: 'gestor',
+            title: t('codeListDetail.title.tab.gestor'),
+            content: <GestorTabView codeList={data.codeList ?? {}} attributeProfile={data.attributeProfile ?? {}} />,
+        },
     ]
     const tabsWithHistory: Tab[] = [
         ...tabs,

@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next'
 import { RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
-import { _entityName } from '@/componentHelpers/requests'
 
 interface CodeListData {
     list?: ApiCodelistPreview[]
@@ -22,7 +21,6 @@ export interface RequestListViewProps {
     handleFilterChange: (filter: IFilter) => void
     isLoading: boolean
     isError: boolean
-    entityName: string
 }
 
 export interface RequestListFilterData extends IFilterParams, IFilter {
@@ -63,7 +61,7 @@ export const RequestListContainer: React.FC<RequestListContainerProps> = ({ View
     })
 
     const {
-        isLoading: isLoadingCodelistHeaders,
+        isFetching: isLoadingCodelistHeaders,
         isError: isErrorCodelistHeaders,
         data: requestListHeadersData,
     } = useGetCodelistRequests({
@@ -84,10 +82,9 @@ export const RequestListContainer: React.FC<RequestListContainerProps> = ({ View
     }
 
     return (
-        <RequestListPermissionsWrapper entityName={_entityName}>
+        <RequestListPermissionsWrapper>
             <View
                 data={data}
-                entityName={_entityName}
                 filter={filter}
                 handleFilterChange={handleFilterChange}
                 isError={isErrorCodelistHeaders}

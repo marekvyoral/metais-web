@@ -16,6 +16,9 @@ import {
     getGetCodelistHistoryQueryKey,
     getGetCodelistActionsHistoryQueryKey,
     getGetTemporalCodelistHeaderWithLockQueryKey,
+    getGetCodelistRequestsQueryKey,
+    getGetCodelistRequestItemsQueryKey,
+    getGetCodelistRequestDetailQueryKey,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 
 const isCiListFilterContainerUi = (obj: unknown): obj is CiListFilterContainerUi => {
@@ -100,9 +103,23 @@ export const useInvalidateCodeListCache = () => {
         queryClient.invalidateQueries([getGetCodelistHeadersQueryKey({ language: '', pageNumber: 0, perPage: 0 })[0]])
         queryClient.invalidateQueries([getGetCodelistItemsQueryKey(code, { language: '', pageNumber: 0, perPage: 0 })[0]])
         queryClient.invalidateQueries([getGetCodelistHistoryQueryKey(code)[0]])
-        queryClient.invalidateQueries(getGetCodelistActionsHistoryQueryKey(code, 'actions'))
-        queryClient.invalidateQueries(getGetCodelistActionsHistoryQueryKey(code, 'modifiedBy'))
-        queryClient.invalidateQueries(getGetTemporalCodelistHeaderWithLockQueryKey(code))
+        queryClient.invalidateQueries([getGetCodelistActionsHistoryQueryKey(code, 'actions')[0]])
+        queryClient.invalidateQueries([getGetCodelistActionsHistoryQueryKey(code, 'modifiedBy')[0]])
+        queryClient.invalidateQueries([getGetTemporalCodelistHeaderWithLockQueryKey(code)[0]])
+    }
+
+    return { invalidate }
+}
+
+export const useInvalidateCodeListRequestCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (id?: number) => {
+        queryClient.invalidateQueries([getGetCodelistRequestsQueryKey({ language: '', pageNumber: 0, perPage: 0 })][0])
+        if (id) {
+            queryClient.invalidateQueries([getGetCodelistRequestDetailQueryKey(id)[0]])
+            queryClient.invalidateQueries([getGetCodelistRequestItemsQueryKey(id, { language: '', pageNumber: 0, perPage: 0 })][0])
+        }
     }
 
     return { invalidate }

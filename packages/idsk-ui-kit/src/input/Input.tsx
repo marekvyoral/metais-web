@@ -4,8 +4,9 @@ import { forwardRef } from 'react'
 import { v4 as uuidV4 } from 'uuid'
 import { useTranslation } from 'react-i18next'
 
+import styles from './input.module.scss'
+
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
-import styles from '@isdd/idsk-ui-kit/styles/InfoAndCheckInput.module.scss'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
 interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
@@ -51,7 +52,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label} {required && t('input.requiredField')}
                     </label>
-                    {info && <Tooltip descriptionElement={info} altText={`Tooltip ${label}`} />}
+                    {info && <Tooltip altText={`Tooltip ${label}`} descriptionElement={<div className="tooltipWidth500">{info}</div>} />}
                 </div>
 
                 {hint && (

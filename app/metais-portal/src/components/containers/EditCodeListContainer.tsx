@@ -1,5 +1,5 @@
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
-import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { HierarchyPOFilterUi, HierarchyRightsUi, useGetRoleParticipantBulk, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     ApiCodelistPreview,
     useDeleteTemporalCodelistHeader,
@@ -13,14 +13,14 @@ import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/ap
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { Roles } from '@isdd/metais-common/api'
 
+import { CodeListPermissionsWrapper } from '@/components/permissions/CodeListPermissionsWrapper'
 import { IEditCodeListForm, mapEditFormDataToCodeList } from '@/componentHelpers'
-import { _entityName } from '@/componentHelpers/requests'
-import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { IOption } from '@/components/views/codeLists/CodeListEditView'
 import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
@@ -31,10 +31,10 @@ export interface CodeListDetailData {
 }
 
 export interface EditCodeListContainerViewProps {
-    entityName: string
     data: CodeListDetailData
     requestId?: string
     isLoading: boolean
+    isLoadingMutation: boolean
     isError: boolean
     errorMessages: string[]
     handleSave: (formData: IEditCodeListForm) => Promise<void>
@@ -64,7 +64,6 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
     const { setIsActionSuccess } = useActionSuccess()
     const { invalidate } = useInvalidateCodeListCache()
 
-    const [defaultManagers, setDefaultManagers] = useState<IOption[]>([])
     const [errorCheck, setErrorCheck] = useState<{ message: string }>()
 
     const userDataGroups = useMemo(() => user.state.user?.groupData ?? [], [user])
@@ -103,31 +102,41 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
         perpage: 20,
         sortBy: SortBy.HIERARCHY_FROM_ROOT,
         sortType: SortType.ASC,
-        rights: userDataGroups.map((group) => ({ poUUID: group.orgId, roles: group.roles.map((role) => role.roleUuid) })),
+        rights: userDataGroups
+            .filter((group) => group.roles.some((role) => role.roleName === Roles.SZC_HLGES || role.roleName === Roles.SZC_VEDGES))
+            .map((group) => ({
+                poUUID: group.orgId,
+                roles: group.roles
+                    .filter((role) => role.roleName === Roles.SZC_HLGES || role.roleName === Roles.SZC_VEDGES)
+                    .map((role) => role.roleUuid),
+            })),
     }
 
-    useEffect(() => {
-        if (codeListData) {
-            const promises = codeListData.mainCodelistManagers?.map(
-                async (i) => await mutateAsyncImplicitHierarchy({ data: { ...defaultFilter, poUUID: i.value?.substring(37) } }),
-            )
-            const nextGestorPromises = codeListData.codelistManagers?.map(
-                async (i) => await mutateAsyncImplicitHierarchy({ data: { ...defaultFilter, poUUID: i.value?.substring(37) } }),
-            )
-            Promise.all([...(promises || []), ...(nextGestorPromises || [])]).then((data) => {
-                const mainManagersResponse = data.map((response) => response.rights || [])
-                const mergedManagers = mainManagersResponse.reduce((acc, val) => acc.concat(val), [])
-                setDefaultManagers(mergedManagers)
-            })
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [codeListData])
+    const requestGestorGids = [
+        ...(codeListData?.mainCodelistManagers?.map((gestor) => gestor.value || '') || []),
+        ...(codeListData?.codelistManagers?.map((gestor) => gestor.value || '') || []),
+    ]
 
-    const data = {
+    const {
+        isFetching: isLoadingRoleParticipants,
+        isError: isErrorRoleParticipants,
+        data: roleParticipantsData,
+    } = useGetRoleParticipantBulk(
+        { gids: requestGestorGids },
+        {
+            query: { enabled: requestGestorGids.length > 0 },
+        },
+    )
+
+    const data: CodeListDetailData = {
         codeList: codeListTemporalLockedData,
         attributeProfile: attributeProfile,
-        defaultManagers: defaultManagers,
+        defaultManagers: roleParticipantsData?.map((item) => ({
+            poName: item.configurationItemUi?.attributes?.Gen_Profil_nazov,
+            poUUID: item.configurationItemUi?.uuid,
+        })),
     }
+
     const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
         const page = !additional?.page ? 1 : (additional?.page || 0) + 1
         const options = await mutateAsyncImplicitHierarchy({ data: { ...defaultFilter, page, fullTextSearch: searchQuery } })
@@ -202,29 +211,35 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
         }
     }
 
-    const isLoading = [isLoadingSave, isLoadingUnlock, isLoadingDiscard, isLoadingData, isLoadingTemporalLocked, isLoadingAttributeProfile].some(
-        (item) => item,
-    )
-    const isError = [isErrorSave, errorCheck, isErrorDiscard, isErrorUnlock, isErrorTemporalLocked, isErrorData, isErrorAttributeProfile].some(
-        (item) => item,
-    )
+    const isLoading = [isLoadingData, isLoadingTemporalLocked, isLoadingAttributeProfile, isLoadingRoleParticipants].some((item) => item)
+    const isLoadingMutation = [isLoadingUnlock, isLoadingSave, isLoadingDiscard].some((item) => item)
+    const isError = [
+        isErrorSave,
+        errorCheck,
+        isErrorDiscard,
+        isErrorUnlock,
+        isErrorTemporalLocked,
+        isErrorData,
+        isErrorAttributeProfile,
+        isErrorRoleParticipants,
+    ].some((item) => item)
     const errorMessages = getErrorTranslateKeys(
         [errorTemporalLocked, errorCheck, errorUnlock, errorDiscard, errorSave].map((item) => item as { message: string }),
     )
 
     return (
-        <RequestListPermissionsWrapper entityName={_entityName}>
+        <CodeListPermissionsWrapper id={codeId ?? ''}>
             <View
                 data={data}
                 isError={isError}
                 errorMessages={errorMessages}
-                entityName={_entityName}
                 isLoading={isLoading}
+                isLoadingMutation={isLoadingMutation}
                 loadOptions={loadOptions}
                 handleSave={handleSave}
                 handleRemoveLock={handleRemoveLock}
                 handleDiscardChanges={handleDiscardChanges}
             />
-        </RequestListPermissionsWrapper>
+        </CodeListPermissionsWrapper>
     )
 }

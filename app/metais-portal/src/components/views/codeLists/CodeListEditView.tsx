@@ -9,6 +9,7 @@ import {
     GridRow,
     HomeIcon,
     Input,
+    LoadingIndicator,
     SelectLazyLoading,
     TextArea,
     TextHeading,
@@ -23,8 +24,7 @@ import { useNavigate } from 'react-router-dom'
 import { useEditCodeListSchema } from './useEditCodeListSchemas'
 import { getDescription, getName } from './CodeListDetailUtils'
 
-import { IEditCodeListForm } from '@/componentHelpers'
-import { DEFAULT_EMPTY_NOTE, mapCodeListToEditForm } from '@/componentHelpers/code-list'
+import { IEditCodeListForm, DEFAULT_EMPTY_NOTE, mapCodeListToEditForm } from '@/componentHelpers/codeList'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { EditCodeListContainerViewProps } from '@/components/containers/EditCodeListContainer'
 import styles from '@/components/views/codeLists/codeList.module.scss'
@@ -57,8 +57,8 @@ export enum RequestFormEnum {
     NEW_MAIN_GESTOR = 'newMainGestor',
     NEXT_GESTOR = 'nextGestor',
     REF_INDICATOR = 'refIndicator',
-    DATE_FROM = 'fromDate',
-    DATE_TO = 'toDate',
+    EFFECTIVE_FROM = 'effectiveFrom',
+    EFFECTIVE_TO = 'effectiveTo',
     NAME = 'name',
     LAST_NAME = 'lastName',
     PHONE = 'phone',
@@ -70,6 +70,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
     isError,
     errorMessages,
     isLoading,
+    isLoadingMutation,
     loadOptions,
     handleSave,
     handleDiscardChanges,
@@ -134,12 +135,13 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                     { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
                     { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
                     { label: t('codeList.breadcrumbs.codeListsList'), href: NavigationSubRoutes.CODELIST },
-                    { label: codeListName ?? t('codeList.breadcrumbs.codeListsList'), href: `${NavigationSubRoutes.CODELIST}/${codeId}` },
+                    { label: codeListName ?? t('codeList.breadcrumbs.detail'), href: `${NavigationSubRoutes.CODELIST}/${codeId}` },
                 ]}
             />
 
             <MainContentWrapper>
                 <QueryFeedback loading={isLoading} error={isError} withChildren>
+                    {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                     <TextHeading size="XL">{t('codeListList.edit.title')}</TextHeading>
                     <form onSubmit={handleSubmit(onHandleSubmit)}>
                         <div className={styles.bottomGap}>
@@ -180,7 +182,15 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                             </GridCol>
                         </GridRow>
 
-                        <ButtonLink className={styles.bottomGap} label={newCodeListNameLabel} onClick={() => setNewCodeListName((prev) => !prev)} />
+                        <ButtonLink
+                            className={styles.bottomGap}
+                            label={newCodeListNameLabel}
+                            type="button"
+                            onClick={() => {
+                                setValue(RequestFormEnum.NEW_CODE_LIST_NAME, undefined)
+                                setNewCodeListName((prev) => !prev)
+                            }}
+                        />
 
                         {isNewCodeListName && (
                             <>
@@ -272,7 +282,15 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                 </>
                             ))}
 
-                        <ButtonLink className={styles.bottomGap} label={newGestorLabel} onClick={() => setNewGestor((prev) => !prev)} />
+                        <ButtonLink
+                            className={styles.bottomGap}
+                            label={newGestorLabel}
+                            type="button"
+                            onClick={() => {
+                                setValue(RequestFormEnum.NEW_MAIN_GESTOR, undefined)
+                                setNewGestor((prev) => !prev)
+                            }}
+                        />
 
                         {isNewGestor && (
                             <>
@@ -379,8 +397,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                         <ButtonGroupRow className={styles.bottomGap}>
                             <ButtonLink
                                 label={t('codeListList.edit.addNewRow')}
-                                onClick={(e) => {
-                                    e.preventDefault()
+                                type="button"
+                                onClick={() => {
                                     setSourceCodeList([...sourceCodeList, { id: notes.length, text: '' }])
                                 }}
                             />
@@ -390,20 +408,20 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                 <Input
                                     label={getDescription('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
                                     info={getName('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
-                                    id={RequestFormEnum.DATE_FROM}
-                                    {...register(RequestFormEnum.DATE_FROM)}
+                                    id={RequestFormEnum.EFFECTIVE_FROM}
+                                    {...register(RequestFormEnum.EFFECTIVE_FROM)}
                                     type="date"
-                                    error={formState.errors[RequestFormEnum.DATE_FROM]?.message}
+                                    error={formState.errors[RequestFormEnum.EFFECTIVE_FROM]?.message}
                                 />
                             </GridCol>
                             <GridCol setWidth="one-half">
                                 <Input
                                     label={getDescription('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
                                     info={getName('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
-                                    id={RequestFormEnum.DATE_TO}
-                                    {...register(RequestFormEnum.DATE_TO)}
+                                    id={RequestFormEnum.EFFECTIVE_TO}
+                                    {...register(RequestFormEnum.EFFECTIVE_TO)}
                                     type="date"
-                                    error={formState.errors[RequestFormEnum.DATE_TO]?.message}
+                                    error={formState.errors[RequestFormEnum.EFFECTIVE_TO]?.message}
                                 />
                             </GridCol>
                         </GridRow>
@@ -428,8 +446,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                         <ButtonGroupRow className={styles.bottomGap}>
                             <ButtonLink
                                 label={t('codeListList.edit.addNewRow')}
-                                onClick={(e) => {
-                                    e.preventDefault()
+                                type="button"
+                                onClick={() => {
                                     setNotes([...notes, { id: notes.length, text: '' }])
                                 }}
                             />
@@ -485,7 +503,12 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                         ))}
 
                         <ButtonGroupRow className={styles.buttonGroupEdit}>
-                            <ButtonLink className={styles.buttonLock} label={t('codeListList.edit.removeLock')} onClick={handleRemoveLock} />
+                            <ButtonLink
+                                type="button"
+                                className={styles.buttonLock}
+                                label={t('codeListList.edit.removeLock')}
+                                onClick={handleRemoveLock}
+                            />
 
                             <Button
                                 label={t('form.cancel')}
@@ -499,6 +522,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                             <ButtonLink
                                 className={styles.buttonDiscard}
                                 label={t('codeListList.edit.discardUpdating')}
+                                type="button"
                                 onClick={handleDiscardChanges}
                             />
                         </ButtonGroupRow>

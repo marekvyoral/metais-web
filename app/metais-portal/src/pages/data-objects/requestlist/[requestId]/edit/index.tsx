@@ -8,12 +8,12 @@ const RequestListEditPage = () => {
                 <CreateRequestView
                     canEdit={props.canEdit}
                     canEditDate={props.canEditDate}
-                    entityName={props.entityName}
                     isError={props.isError}
                     errorMessages={props.errorMessages}
                     isLoading={props.isLoading}
+                    isLoadingMutation={props.isLoadingMutation}
                     firstNotUsedCode={props.firstNotUsedCode}
-                    onCheckIfCodeListExist={props.onCheckIfCodeListExist}
+                    onHandleCheckIfCodeIsAvailable={props.onHandleCheckIfCodeIsAvailable}
                     loadOptions={props.loadOptions}
                     onSave={props.onSave}
                     onSend={props.onSend}

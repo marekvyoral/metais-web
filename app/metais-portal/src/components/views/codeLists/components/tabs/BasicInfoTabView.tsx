@@ -1,25 +1,37 @@
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useTranslation } from 'react-i18next'
 import { InfoIconWithText } from '@isdd/idsk-ui-kit/index'
+import { RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 
-import { InformationGridRowWrapper } from '@/components/views/codeLists/components/InformationGridRowWrapper/InformationGridRowWrapper'
 import { selectBasedOnLanguageAndDate, getDescription, getName, getGestorName } from '@/components/views/codeLists/CodeListDetailUtils'
-import { CodeListDetailData } from '@/components/containers/CodeListDetailContainer'
+import { InformationGridRowWrapper } from '@/components/views/codeLists/components/InformationGridRowWrapper/InformationGridRowWrapper'
 
 export interface BasicInfoTabViewProps {
-    data?: CodeListDetailData
+    codeList: ApiCodelistPreview
+    attributeProfile: AttributeProfile
+    gestorList?: RoleParticipantUI[]
     workingLanguage: string
+    showState?: boolean
 }
 
-export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({ data, workingLanguage }) => {
+export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({ codeList, attributeProfile, gestorList, workingLanguage, showState = false }) => {
     const {
         t,
         i18n: { language },
     } = useTranslation()
-    const { codeList, attributeProfile, gestors } = data || {}
 
     return (
         <InformationGridRowWrapper>
+            {showState && (
+                <InformationGridRow
+                    key={'requestState'}
+                    label={getDescription('Gui_Profil_ZC_stav', language, attributeProfile)}
+                    tooltip={getName('Gui_Profil_ZC_stav', language, attributeProfile)}
+                    value={t(`codeListList.state.${codeList?.codelistState}`)}
+                />
+            )}
             <InformationGridRow
                 key={'isBase'}
                 label={getDescription('Gui_Profil_ZC_zakladny_ciselnik', language, attributeProfile)}
@@ -74,13 +86,13 @@ export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({ data, workin
                             tooltip={codeList?.mainCodelistManagers
                                 ?.map(
                                     (item) =>
-                                        `${getGestorName(gestors, item.value)} (${
+                                        `${getGestorName(gestorList, item.value)} (${
                                             item.effectiveFrom ? t('date', { date: item.effectiveFrom }) : t('codeListDetail.unlimited')
                                         } - ${item.effectiveTo ? t('date', { date: item.effectiveTo }) : t('codeListDetail.unlimited')})\n`,
                                 )
                                 .join('<br />')}
                         >
-                            {getGestorName(gestors, codeList.mainCodelistManagers?.[0]?.value)}
+                            {getGestorName(gestorList, codeList.mainCodelistManagers?.[0]?.value)}
                         </InfoIconWithText>
                     )
                 }
@@ -95,14 +107,14 @@ export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({ data, workin
                             tooltip={codeList?.codelistManagers
                                 ?.map(
                                     (item) =>
-                                        `${getGestorName(gestors, item.value)} (${
+                                        `${getGestorName(gestorList, item.value)} (${
                                             item.effectiveFrom ? t('date', { date: item.effectiveFrom }) : t('codeListDetail.unlimited')
                                         } - ${item.effectiveTo ? t('date', { date: item.effectiveTo }) : t('codeListDetail.unlimited')})\n`,
                                 )
                                 .join('<br />')}
                         >
                             {codeList?.codelistManagers?.map((gestor) => (
-                                <p key={gestor.id}>{getGestorName(gestors, gestor.value)}</p>
+                                <p key={gestor.id}>{getGestorName(gestorList, gestor.value)}</p>
                             ))}
                         </InfoIconWithText>
                     )

@@ -6,7 +6,6 @@ const RequestListPage = () => {
         <RequestListContainer
             View={(props) => (
                 <RequestListsView
-                    entityName={props.entityName}
                     isError={props.isError}
                     isLoading={props.isLoading}
                     data={props.data}

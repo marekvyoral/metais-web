@@ -67,6 +67,12 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
                     error: true,
                 }))
 
+                result.failed.forEach((item) => {
+                    if (item.response?.body.message) {
+                        setErrorMessages((prev) => [...prev, `${item.name}: ${t(`errors.codeList.${item.response?.body.message}`)}`])
+                    }
+                })
+
                 const updatedFileIds = [...successfulFilesInfo.map((x) => x.id), ...failedFilesInfo.map((x) => x.id)]
                 setUploadFileProgressInfo((prev) => {
                     const notUpdated = prev.filter((x) => !updatedFileIds.includes(x.id))

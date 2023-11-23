@@ -18,8 +18,6 @@ interface IOutput {
         refIndicator?: string
         effectiveFrom?: string
         effectiveTo?: string
-        fromDate?: string
-        toDate?: string
         name: string
         lastName: string
         email: string
@@ -32,17 +30,20 @@ export const useEditCodeListSchema = (): IOutput => {
     const schema = object().shape({
         base: boolean(),
         code: string()
-            .required(t('codeListList.requestValidations.codelistId'))
-            .matches(/CL0[0-9]{5}/, t('codeListList.requestValidations.codelistIdFormat'))
-            .length(8, t('codeListList.requestValidations.codelistIdFormat')),
+            .required(t('codeListList.requestValidations.codelistCode'))
+            .matches(/CL0[0-9]{5}/, t('codeListList.requestValidations.codelistCodeFormat'))
+            .length(8, t('codeListList.requestValidations.codelistCodeFormat')),
         codeListName: object().shape({
             value: string().required(t('codeListList.requestValidations.codelistName')),
-            effectiveFrom: string(),
+            effectiveFrom: string().required(t('codeListList.requestValidations.dateFrom')),
             effectiveTo: string(),
         }),
         newCodeListName: object().shape({
             value: string(),
-            effectiveFrom: string(),
+            effectiveFrom: string().when('value', {
+                is: (value: string | undefined) => value && value.length > 0,
+                then: () => string().required(t('codeListList.requestValidations.dateFrom')),
+            }),
             effectiveTo: string(),
         }),
         codeListNotes: array().of(
@@ -60,13 +61,16 @@ export const useEditCodeListSchema = (): IOutput => {
         mainGestor: array().of(
             object().shape({
                 value: string().required(t('codeListList.requestValidations.mainGestor')),
-                effectiveFrom: string(),
+                effectiveFrom: string().required(t('codeListList.requestValidations.dateFrom')),
                 effectiveTo: string(),
             }),
         ),
         newMainGestor: object().shape({
             value: string(),
-            effectiveFrom: string(),
+            effectiveFrom: string().when('value', {
+                is: (value: string | undefined) => value && value.length > 0,
+                then: () => string().required(t('codeListList.requestValidations.dateFrom')),
+            }),
             effectiveTo: string(),
         }),
         nextGestor: array().of(
@@ -77,10 +81,8 @@ export const useEditCodeListSchema = (): IOutput => {
             }),
         ),
         refIndicator: string(),
-        effectiveFrom: string(),
+        effectiveFrom: string().required(t('codeListList.requestValidations.effectiveFrom')),
         effectiveTo: string(),
-        fromDate: string(),
-        toDate: string(),
 
         name: string().required(t('codeListList.requestValidations.name')),
         lastName: string().required(t('codeListList.requestValidations.lastName')),
