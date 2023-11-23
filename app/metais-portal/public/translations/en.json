@@ -1687,6 +1687,10 @@
         "requiredField": "(required)"
     },
     "votes": {
+        "actions": {
+            "sent": "Your vote was sent.",
+            "failedToSend": "Failed to send your vote."
+        },
         "breadcrumbs": {
             "home": "Home",
             "standardization": "Standardization",
