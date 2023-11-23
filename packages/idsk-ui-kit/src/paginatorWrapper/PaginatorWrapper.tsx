@@ -16,7 +16,7 @@ interface IPaginatorWrapper {
 
 export const PaginatorWrapper: React.FC<IPaginatorWrapper> = ({ pageNumber, pageSize, dataLength, handlePageChange }) => {
     const { t } = useTranslation()
-    const start = (pageNumber - 1) * pageSize
+    const start = (pageNumber - 1) * pageSize + 1
     const end = pageNumber * pageSize < dataLength ? pageNumber * pageSize : dataLength
 
     return (
