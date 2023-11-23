@@ -9,10 +9,10 @@ export interface ICreateEntityButtonProps {
     onClick: () => void
     icon?: string
     label?: string
-    ciType?: string
+    ciTypeName?: string
 }
 
-export const CreateEntityButton: React.FC<ICreateEntityButtonProps> = ({ onClick, label, icon = PlusIcon, ciType = '' }) => {
+export const CreateEntityButton: React.FC<ICreateEntityButtonProps> = ({ onClick, label, icon = PlusIcon, ciTypeName = '' }) => {
     const { t } = useTranslation()
     return (
         <Button
@@ -20,9 +20,9 @@ export const CreateEntityButton: React.FC<ICreateEntityButtonProps> = ({ onClick
             onClick={onClick}
             label={
                 <IconLabel
-                    label={label ?? t('actionOverTable.addItem', { ciType })}
+                    label={label ?? t('actionOverTable.addItem', { ciTypeName })}
                     icon={icon}
-                    alt={label ?? t('actionOverTable.addItem', { ciType })}
+                    alt={label ?? t('actionOverTable.addItem', { ciTypeName })}
                 />
             }
         />

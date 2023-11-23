@@ -211,7 +211,7 @@
             "name": "Názov princípu"
         },
         "Ciel": {
-            "name": "Názov cieľu"
+            "name": "Názov cieľa"
         },
         "KS": {
             "name": "Názov koncovej služby"
@@ -242,7 +242,7 @@
         "Program": {
             "name": "Názov"
         },
-        "reset": "Vyčistiť kritéria filtrovania",
+        "reset": "Vyčistiť kritériá filtrovania",
         "submit": "Vyfiltrovať"
     },
     "customAttributeFilter": {
@@ -362,6 +362,7 @@
     },
     "mutationFeedback": {
         "successfulUpdated": "Položka bola úspešne zmenená",
+        "successfulCreated": "Položka bola úspešne vytvorená",
         "successfulUpdatedList": "Položky boli úspešne zmenené"
     },
     "button": {
@@ -696,7 +697,7 @@
         },
         "import": "Import",
         "export": "Export",
-        "addItem": "Vytvoriť položku {{ciType}} ",
+        "addItem": "Vytvoriť položku {{ciTypeName}} ",
         "selectColumn": "Stĺpce",
         "view": "Zobraziť",
         "actions": "Hromadné úkony",

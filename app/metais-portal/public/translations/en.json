@@ -367,6 +367,7 @@
     },
     "mutationFeedback": {
         "successfulUpdated": "The item was successfully changed",
+        "successfulCreated": "The item was successfully created",
         "successfulUpdatedList": "Items have been changed successfully"
     },
     "relationCard": {
@@ -689,7 +690,7 @@
         },
         "import": "Import",
         "export": "Export",
-        "addItem": "Create item {{ciType}} ",
+        "addItem": "Create item {{ciTypeName}} ",
         "selectColumn": "Columns",
         "view": "View",
         "actions": "Bulk actions",

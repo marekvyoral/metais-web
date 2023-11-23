@@ -90,7 +90,15 @@ const EntityDetailPage: React.FC = () => {
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
                             <div ref={wrapperRef}>
-                                <MutationFeedback error={false} success={isActionSuccess.value} />
+                                <MutationFeedback
+                                    error={false}
+                                    success={isActionSuccess.value}
+                                    successMessage={
+                                        isActionSuccess.type === 'create'
+                                            ? t('mutationFeedback.successfulCreated')
+                                            : t('mutationFeedback.successfulUpdated')
+                                    }
+                                />
                             </div>
                         </FlexColumnReverseWrapper>
 

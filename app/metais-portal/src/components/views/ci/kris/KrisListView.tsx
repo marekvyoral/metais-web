@@ -144,7 +144,10 @@ export const KrisListView: React.FC<IKrisListView> = ({
                 entityName={ciTypeData?.name ?? ''}
                 ciTypeData={ciTypeData}
                 createButton={
-                    <CreateEntityButton ciType={ciType ?? ''} onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })} />
+                    <CreateEntityButton
+                        ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
+                        onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })}
+                    />
                 }
                 hiddenButtons={{ SELECT_COLUMNS: true }}
             />

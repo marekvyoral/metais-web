@@ -11,6 +11,9 @@ import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swa
 import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
 import { isObjectEmpty } from '@isdd/metais-common/src/utils/utils'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
@@ -47,6 +50,11 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     publicAuthorityState,
 }) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { setIsActionSuccess } = useActionSuccess()
+    const isUpdate = !!updateCiItemId
+
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
 
@@ -69,6 +77,17 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         },
     })
 
+    const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
+    const invalidateCiByUuidCache = useInvalidateCiItemCache()
+
+    const onRedirectSuccess = () => {
+        const toPath = `/ci/${entityName}/${configurationItemId}`
+        invalidateCilistFilteredCache.invalidate({ ciType: entityName })
+        invalidateCiByUuidCache.invalidate(configurationItemId)
+        setIsActionSuccess({ value: true, path: toPath, type: isUpdate ? 'edit' : 'create' })
+        navigate(toPath, { state: { from: location } })
+    }
+
     const {
         performRedirection,
         reset: resetRedirect,
@@ -77,7 +96,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         isFetched: isRedirectFetched,
         isProcessedError,
         isTooManyFetchesError,
-    } = useRedirectAfterSuccess(requestId, configurationItemId, entityName)
+    } = useRedirectAfterSuccess({ requestId, onSuccess: onRedirectSuccess })
 
     useEffect(() => {
         if (requestId != null) {
@@ -102,7 +121,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
 
         const type = entityName
         const ownerId = data.ownerId
-        const uuid = updateCiItemId ? updateCiItemId : uuidV4()
+        const uuid = isUpdate ? updateCiItemId : uuidV4()
         setConfigurationItemId(uuid)
 
         const dataToUpdate = {
@@ -118,7 +137,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
 
         const handleStoreConfigurationItem = () => {
             storeConfigurationItem.mutate({
-                data: updateCiItemId ? dataToUpdate : dataToCreate,
+                data: isUpdate ? dataToUpdate : dataToCreate,
             })
         }
 
@@ -145,18 +164,18 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                 loading={isRedirectFetched && isRedirectLoading}
                 error={isRedirectFetched && (isRedirectError || isProcessedError || isTooManyFetchesError)}
                 indicatorProps={{
-                    label: updateCiItemId ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
+                    label: isUpdate ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
                 }}
                 errorProps={{
                     errorMessage: isTooManyFetchesError
                         ? t('createEntity.tooManyFetchesError')
-                        : updateCiItemId
+                        : isUpdate
                         ? t('createEntity.redirectErrorEdit')
                         : t('createEntity.redirectError'),
                 }}
                 withChildren
             >
-                {!updateCiItemId && publicAuthorityState && roleState && (
+                {!isUpdate && publicAuthorityState && roleState && (
                     <SelectPublicAuthorityAndRole
                         selectedRole={roleState.selectedRole ?? {}}
                         onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
