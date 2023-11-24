@@ -2,15 +2,26 @@ import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { RootRouteContainer } from './route-containers/RootRouteContainer'
 
+import { TodoPage } from '@/components/views/todo-page/TodoPage'
 import { DevTestScreen } from '@/pages/DevTestScreen'
 import { Home } from '@/pages/Home'
+import AsEntityDetailPage from '@/pages/ci/AS/[entityId]'
+import CloneEntityPage from '@/pages/ci/AS/[entityId]/clone'
+import ActivityEntityDetailPage from '@/pages/ci/Aktivita/[entityId]'
+import GoalEntityDetailPage from '@/pages/ci/Ciel/[entityId]'
+import KRISListPage from '@/pages/ci/KRIS'
+import KrisEntityDetailPage from '@/pages/ci/KRIS/[entityId]'
+import Evaluation from '@/pages/ci/KRIS/[entityId]/evaluation'
+import Goals from '@/pages/ci/KRIS/[entityId]/goals'
+import KsEntityDetailPage from '@/pages/ci/KS/[entityId]'
 import POIsListPage from '@/pages/ci/PO_IS'
 import POIsPOListPage from '@/pages/ci/PO_IS_PO'
 import POPOListPage from '@/pages/ci/PO_PO'
 import PrincipleEntityDetailPage from '@/pages/ci/Princip/[entityId]'
 import ProjectEntityDetailPage from '@/pages/ci/Projekt/[entityId]'
-import EntityDetailPage from '@/pages/ci/[entityName]/[entityId]'
 import ActivitiesListPage from '@/pages/ci/Projekt/[entityId]/activities'
+import ProjectDocumentsListPage from '@/pages/ci/Projekt/[entityId]/documents'
+import EntityDetailPage from '@/pages/ci/[entityName]/[entityId]'
 import DocumentsListPage from '@/pages/ci/[entityName]/[entityId]/documents'
 import EditEntityPage from '@/pages/ci/[entityName]/[entityId]/edit'
 import History from '@/pages/ci/[entityName]/[entityId]/history'
@@ -39,6 +50,8 @@ import ITVSStandards from '@/pages/publicspace'
 import RefRegistersDetail from '@/pages/refregisters/[entityId]'
 import RefRegistersEdit from '@/pages/refregisters/[entityId]/edit'
 import RefRegistersHistory from '@/pages/refregisters/[entityId]/history'
+import RefRegistersCompareSinglePage from '@/pages/refregisters/[entityId]/history/[firstId]'
+import RefRegistersComparePage from '@/pages/refregisters/[entityId]/history/[firstId]/[secondId]'
 import RefRegistersHistoryChanges from '@/pages/refregisters/[entityId]/historyChanges'
 import RefRegistersInformation from '@/pages/refregisters/[entityId]/information'
 import RefRegistersCreate from '@/pages/refregisters/create'
@@ -61,26 +74,13 @@ import MeetingsListPage from '@/pages/standardization/meetingslist'
 import MeetingDetailPage from '@/pages/standardization/meetingslist/[meetingId]'
 import MeetingEditPage from '@/pages/standardization/meetingslist/[meetingId]/edit'
 import CreateMeetingPage from '@/pages/standardization/meetingslist/create'
-import VoteEditPage from '@/pages/standardization/voteslist/[voteIdParam]/edit'
-import VoteDetailPage from '@/pages/standardization/voteslist/[voteIdParam]'
 import VotesListPage from '@/pages/standardization/voteslist'
+import VoteDetailPage from '@/pages/standardization/voteslist/[voteIdParam]'
+import VoteEditPage from '@/pages/standardization/voteslist/[voteIdParam]/edit'
+import VoteCreatePage from '@/pages/standardization/voteslist/create'
 import TasksPage from '@/pages/ulohy'
 import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
-import Goals from '@/pages/ci/KRIS/[entityId]/goals'
-import Evaluation from '@/pages/ci/KRIS/[entityId]/evaluation'
-import GoalEntityDetailPage from '@/pages/ci/Ciel/[entityId]'
-import ActivityEntityDetailPage from '@/pages/ci/Aktivita/[entityId]'
-import KsEntityDetailPage from '@/pages/ci/KS/[entityId]'
-import AsEntityDetailPage from '@/pages/ci/AS/[entityId]'
-import ProjectDocumentsListPage from '@/pages/ci/Projekt/[entityId]/documents'
-import MigrationEntityDetailPage from '@/pages/ci/Migracia/[entityId]'
-import KrisEntityDetailPage from '@/pages/ci/KRIS/[entityId]'
-import { TodoPage } from '@/components/views/todo-page/TodoPage'
-import RefRegistersCompareSinglePage from '@/pages/refregisters/[entityId]/history/[firstId]'
-import RefRegistersComparePage from '@/pages/refregisters/[entityId]/history/[firstId]/[secondId]'
-import KRISListPage from '@/pages/ci/KRIS'
-import VoteCreatePage from '@/pages/standardization/voteslist/create'
 
 export interface RouteConfig {
     path?: string
@@ -130,6 +130,11 @@ const generalCiRoutes: RouteConfig[] = [
         path: RouterRoutes.CI_EDIT,
         slug: RouterRoutes.CI_EDIT,
         component: EditEntityPage,
+    },
+    {
+        path: RouterRoutes.CI_CLONE,
+        slug: RouterRoutes.CI_CLONE,
+        component: CloneEntityPage,
     },
     {
         path: RouterRoutes.CI_DETAIL,
@@ -545,17 +550,6 @@ export const routesConfig: RouteConfig[] = [
             {
                 path: RouterRoutes.CI_AS_CREATE,
                 slug: RouterRoutes.CI_AS_CREATE,
-                component: CreateEntityPage,
-            },
-            {
-                path: RouterRoutes.CI_MIGRATION_DETAIL,
-                slug: RouterRoutes.CI_MIGRATION_DETAIL,
-                component: MigrationEntityDetailPage,
-                subRoutes: [generalCiDetailInformationOutlet],
-            },
-            {
-                path: RouterRoutes.CI_MIGRATION_CREATE,
-                slug: RouterRoutes.CI_MIGRATION_CREATE,
                 component: CreateEntityPage,
             },
             ...generalCiRoutes,

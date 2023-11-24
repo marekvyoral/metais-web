@@ -19,7 +19,9 @@ export const SubHeading: React.FC<Props> = ({ entityName, entityId, currentName,
                 <strong>{t('ciType.chosenObject')} </strong>
             </TextBody>
             <TextBody>
-                <TextLink to={`/ci/${entityName}/${entityId}`}>{currentName ? `${currentName} (${ciType})` : t('breadcrumbs.noName')}</TextLink>
+                <TextLink to={`/ci/${entityName}/${entityId}`}>
+                    {currentName ? `${currentName} ${ciType ? `(${ciType})` : ''}` : t('breadcrumbs.noName')}
+                </TextLink>
             </TextBody>
         </div>
     )

@@ -44,6 +44,13 @@ const AsEntityDetailPage: React.FC = () => {
 
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
 
+    const getSuccessMessage = (type?: string) => {
+        if (type === 'create') return t('mutationFeedback.successfulCreated')
+        if (type === 'update') return t('mutationFeedback.successfulUpdated')
+        if (type === 'clone') return t('mutationFeedback.successfulCloned')
+        return ''
+    }
+
     return (
         <>
             <BreadCrumbs
@@ -69,6 +76,7 @@ const AsEntityDetailPage: React.FC = () => {
                                         onClick={() => navigate(`/ci/${ENTITY_AS}/${entityId}/edit`, { state: location.state })}
                                     />
                                 }
+                                clonePath={`/ci/${ENTITY_AS}/${entityId}/clone`}
                                 entityData={ciItemData}
                                 entityId={entityId ?? ''}
                                 entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
@@ -78,7 +86,11 @@ const AsEntityDetailPage: React.FC = () => {
                                 tooltipLabel={t('ciType.cloneAS')}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
-                            <MutationFeedback error={false} success={isActionSuccess.value} />
+                            <MutationFeedback
+                                error={false}
+                                success={isActionSuccess.value}
+                                successMessage={getSuccessMessage(isActionSuccess.type)}
+                            />
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
                         {selectedTab === ciInformationTab && <RelationsListContainer entityId={entityId ?? ''} technicalName={ENTITY_AS} />}
