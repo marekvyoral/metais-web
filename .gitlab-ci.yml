@@ -93,6 +93,13 @@ build-node-mirri-test:
     rules:
         - if: $CI_COMMIT_TAG =~ /^mirri-test.+$/
 
+build-node-mirri-prod:
+    extends: .build-node
+    variables: 
+        BUILD_ENV: mirri-prod
+    rules:
+        - if: $CI_COMMIT_TAG =~ /^mirri-prod.+$/
+
 build-docker-feature:
     extends: .build_docker_template
     variables: 
@@ -154,3 +161,4 @@ push-azure-registry:
     branch: frontend
   rules:
     - if: $CI_COMMIT_TAG =~ /^mirri-test.+$/
+    - if: $CI_COMMIT_TAG =~ /^mirri-prod.+$/
