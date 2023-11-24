@@ -123,9 +123,8 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     const [successfulUpdatedData, setSuccessfulUpdatedData] = useState(false)
 
     const [tableData, setTableData] = useState<TableData[]>()
-
     const getRoleFromIdentityGids = (identity: IdentityInGroupData) => {
-        return identity?.gids ? identity.gids[0].roleName : ''
+        return identity?.gids ? identity.gids[identity.gids.length - 1].roleName : ''
     }
     useEffect(() => {
         if (identities !== identitiesData) {
@@ -138,7 +137,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
             identities?.map((item) => ({
                 uuid: item.identity?.uuid ?? '',
                 firstName_lastName: item.identity?.lastName + ' ' + item.identity?.firstName,
-                organization: item.gids?.map((org) => org.orgName)?.toString() ?? '',
+                organization: item.gids?.[item.gids.length - 1].orgName?.toString() ?? '',
                 roleName: getRoleFromIdentityGids(item) ?? '',
                 email: item.identity?.email ?? '',
                 orgId: item.gids?.map((org) => org.orgId)?.toString() ?? '',
