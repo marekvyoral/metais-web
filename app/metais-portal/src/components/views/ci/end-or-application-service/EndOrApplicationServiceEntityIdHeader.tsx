@@ -12,6 +12,7 @@ import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanst
 import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface Props {
     entityId: string
@@ -19,6 +20,7 @@ interface Props {
     entityData?: ConfigurationItemUi
     ciRoles: string[]
     isInvalidated: boolean
+    clonePath: string
     refetchCi: <TPageData>(
         options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
     ) => Promise<QueryObserverResult<ConfigurationItemUi, ApiError>>
@@ -33,14 +35,17 @@ export const EndOrApplicationServiceEntityIdHeader: React.FC<Props> = ({
     entityItemName,
     ciRoles,
     isInvalidated,
+    clonePath,
     refetchCi,
     isRelation,
     editButton,
     tooltipLabel,
 }) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
+    const location = useLocation()
 
-    const { handleReInvalidate, handleInvalidate, errorMessage, isBulkLoading } = useBulkAction(isRelation)
+    const { handleReInvalidate, handleInvalidate, handleClone, errorMessage, isBulkLoading } = useBulkAction(isRelation)
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
     const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
     const [showChangeOwner, setShowChangeOwner] = useState<boolean>(false)
@@ -126,16 +131,23 @@ export const EndOrApplicationServiceEntityIdHeader: React.FC<Props> = ({
                                         <ButtonLink onClick={() => setShowChangeOwner(true)} label={t('ciType.changeOfOwner')} />
                                     </Can>
 
-                                    <Tooltip
-                                        key={'cloneCI'}
-                                        descriptionElement={errorMessage}
-                                        position={'top center'}
-                                        tooltipContent={() => (
-                                            <div>
-                                                <ButtonLink label={tooltipLabel} />
-                                            </div>
-                                        )}
-                                    />
+                                    <Can I={Actions.EDIT} a={`ci.${entityId}`}>
+                                        <Tooltip
+                                            key={'cloneCI'}
+                                            descriptionElement={errorMessage}
+                                            position={'top center'}
+                                            tooltipContent={() => (
+                                                <div>
+                                                    <ButtonLink
+                                                        onClick={() =>
+                                                            handleClone(entityData, () => navigate(clonePath, { state: location.state }), open)
+                                                        }
+                                                        label={tooltipLabel}
+                                                    />
+                                                </div>
+                                            )}
+                                        />
+                                    </Can>
                                 </div>
                             )
                         }}
