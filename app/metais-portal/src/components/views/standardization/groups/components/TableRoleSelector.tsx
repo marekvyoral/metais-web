@@ -49,7 +49,11 @@ const GroupMemberTableRoleSelector: React.FC<GroupMemberTableRoleSelectorProps> 
         setSelectedRole(value ?? '')
         const oldRole: Role = (await findRoleRequest({ name: row.original.roleName })) as Role
         const newRole: Role = (await findRoleRequest({ name: value })) as Role
-        await updateGroupRequest(row.original.uuid, id ?? '', oldRole.uuid ?? '', newRole.uuid ?? '', row.original.orgId)
+
+        const orgIds = row.original.orgId.split(',')
+
+        await updateGroupRequest(row.original.uuid, id ?? '', oldRole.uuid ?? '', newRole.uuid ?? '', orgIds[orgIds.length - 1])
+
         setSelectorShown(false)
         setMembersUpdated(true)
         const refetchData = await refetch()
