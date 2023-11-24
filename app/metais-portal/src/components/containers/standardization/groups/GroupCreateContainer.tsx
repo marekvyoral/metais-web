@@ -1,9 +1,11 @@
 import { useAddGroupOrgRoleIdentityRelationHook, useFindAll11, useUpdateOrCreate2 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { NavigationSubRoutes, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { GROUP_ROLES } from '@isdd/metais-common/constants'
 import { FieldValues } from 'react-hook-form'
+import { useInvalidateGroupsListCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { GroupCreateEditView } from '@/components/views/standardization/groups/GroupCreateEditView'
 import { GroupFormEnum } from '@/components/views/standardization/groups/groupSchema'
@@ -17,12 +19,14 @@ interface INewGroupRelationRequest {
 
 export const GroupCreateContainer: React.FC = () => {
     const navigate = useNavigate()
+    const { setIsActionSuccess } = useActionSuccess()
 
     const goBack = () => {
         navigate(NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE)
     }
 
     const createNewGroupRelationsHook = useAddGroupOrgRoleIdentityRelationHook()
+
     const { data: chairmanRoleData } = useFindAll11({ name: GROUP_ROLES.STD_PSPRE })
 
     const [newGroupRelationRequest, setNewGroupRelationRequest] = useState<INewGroupRelationRequest>({
@@ -31,13 +35,23 @@ export const GroupCreateContainer: React.FC = () => {
         roleUuid: '',
         orgId: '',
     })
-
-    const { mutate: createGroup } = useUpdateOrCreate2({
+    const [creatingRelation, setCreatingRelation] = useState(false)
+    const invalidateCache = useInvalidateGroupsListCache({ sortBy: 'name', ascending: false })
+    const { mutateAsync: createGroup, isLoading: creatingGroupLoading } = useUpdateOrCreate2({
         mutation: {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            onSuccess(res: any) {
-                createNewGroupRelationsHook(newGroupRelationRequest.uuid, res.uuid, newGroupRelationRequest.roleUuid, newGroupRelationRequest.orgId)
-                goBack()
+            async onSuccess(res: any) {
+                setCreatingRelation(true)
+                await createNewGroupRelationsHook(
+                    newGroupRelationRequest.uuid,
+                    res.uuid,
+                    newGroupRelationRequest.roleUuid,
+                    newGroupRelationRequest.orgId,
+                )
+                setCreatingRelation(false)
+                invalidateCache.invalidate()
+                setIsActionSuccess({ value: true, path: `${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${res?.uuid}`, type: 'create' })
+                navigate(`${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${res?.uuid}`)
             },
         },
     })
@@ -60,5 +74,13 @@ export const GroupCreateContainer: React.FC = () => {
         })
     }
 
-    return <GroupCreateEditView onSubmit={onSubmit} goBack={goBack} infoData={undefined} isEdit={false} />
+    return (
+        <GroupCreateEditView
+            onSubmit={onSubmit}
+            goBack={goBack}
+            infoData={undefined}
+            isEdit={false}
+            isLoading={[creatingGroupLoading, creatingRelation].some((item) => item)}
+        />
+    )
 }
