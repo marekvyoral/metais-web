@@ -933,9 +933,12 @@
         "errors": {
             "groupNameRequired": "Názov skupiny je povinný",
             "groupShortNameRequired": "Skratka skupiny je povinná",
+            "descriptionRequired": "Popis je povinný",
             "chairmanRequired": "Predseda skupiny je povinný",
             "organizationRequired": "Organizácia je povinná"
-        }
+        },
+        "creatingGroup": "Vytváram novú skupinu",
+        "editingGroup": "Upravujem skupinu"
     },
     "tooltip": {
         "rights": {

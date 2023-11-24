@@ -925,9 +925,12 @@
         "errors": {
             "groupNameRequired": "Group name is required",
             "groupShortNameRequired": "Abbreviation of group is required",
+            "descriptionRequired": "Description is required",
             "chairmanRequired": "Chairman is required",
             "organizationRequired": "Organization is required"
-        }
+        },
+        "creatingGroup": "Creating group",
+        "editingGroup": "Editing group"
     },
     "tooltip": {
         "rights": {

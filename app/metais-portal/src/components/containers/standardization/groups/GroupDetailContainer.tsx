@@ -93,7 +93,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     const { t } = useTranslation()
 
     const { filter, handleFilterChange } = useFilterParams<FilterParams>(identitiesFilter)
-    const { data: group } = useFindByUuid3(groupId ?? '')
+    const { data: group, isLoading: isGroupLoading } = useFindByUuid3(groupId ?? '')
 
     const [rowSelection, setRowSelection] = useState<Record<string, TableData>>({})
 
@@ -172,7 +172,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     return (
         <View
             isIdentitiesError={isIdentitiesError}
-            isLoading={isLoading}
+            isLoading={[isLoading, isGroupLoading].some((item) => item)}
             error={error}
             filter={filter}
             handleFilterChange={handleFilterChange}

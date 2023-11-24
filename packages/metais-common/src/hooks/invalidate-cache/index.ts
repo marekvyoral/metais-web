@@ -7,7 +7,7 @@ import {
     getReadCiNeighboursWithAllRelsQueryKey,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
-import { getFindByUuid3QueryKey } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Find2111Params, getFind2111QueryKey, getFindByUuid3QueryKey } from '@isdd/metais-common/api/generated/iam-swagger'
 import {
     getGetCodelistHeaderQueryKey,
     getGetOriginalCodelistHeaderQueryKey,
@@ -122,5 +122,14 @@ export const useInvalidateCodeListRequestCache = () => {
         }
     }
 
+    return { invalidate }
+}
+
+export const useInvalidateGroupsListCache = (params: Find2111Params) => {
+    const find2111QueryKey = getFind2111QueryKey(params)
+    const queryClient = useQueryClient()
+    const invalidate = () => {
+        queryClient.invalidateQueries(find2111QueryKey)
+    }
     return { invalidate }
 }

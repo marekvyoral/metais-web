@@ -12,7 +12,7 @@ const GroupEditPage = () => {
     return (
         <GroupEditContainer
             id={groupId}
-            View={(props) => <GroupCreateEditView onSubmit={props.onSubmit} goBack={props.goBack} infoData={props.infoData} />}
+            View={(props) => <GroupCreateEditView onSubmit={props.onSubmit} goBack={props.goBack} infoData={props.infoData} isLoading={false} />}
         />
     )
 }
