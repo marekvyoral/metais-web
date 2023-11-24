@@ -401,10 +401,52 @@
         "owner": "Manager",
         "error": "Technical error occurred while fetching data and some items might not have assigned value. In case the error occurred repeatedly, contact the administrator by e-mail."
     },
+    "evaluation": {
+        "accordion": {
+            "goals": "Goals",
+            "suggestion": "Global suggestion",
+            "isvs": "ISVS",
+            "services": "eGov services",
+            "krit": "KRIT Basic information"
+        },
+        "evaluatedBy": "User",
+        "version": "Version",
+        "created": "Start of evaluation",
+        "evaluated": "End of evaluation",
+        "evaluatAll": "Evaluate all",
+        "evaluatSection": "Evaluation",
+        "suggestionNote": "Note",
+        "changeBtn": "Change",
+        "saveBtn": "Save",
+        "cancelBtn": "Cancel",
+        "lastVerUPPVII": "Last version of ÚPPVII evaluation",
+        "evalUPPVII": "ÚPPVII evaluation",
+        "editor": "Owner KRIT_TO_BE",
+        "table": {
+            "isvsCode": "Code of ISVS",
+            "name": "Name of ISVS",
+            "state": "State of ISVS",
+            "type": "Type of ISVS",
+            "modulIsvs": "Modul of ISVS"
+        },
+        "detailTable": {
+            "lastEvaluation": "Last version of ÚPPVII evaluation",
+            "createdBy": "Owner KRIT_TO_BE",
+            "isApproved": "Approved",
+            "evaluation": "ÚPPVII evaluation"
+        },
+        "ksTable": {
+            "ksCode": "Code of eGov",
+            "ksName": "Name of eGov",
+            "ksPhases": "Name of life cycle of eGov"
+        },
+        "saveSuccess": "Data has been saved"
+    },
     "ciType": {
         "informations": "Information",
         "documents": "Documents",
         "activities": "Activities NKIVS",
+        "evaluation": "Evaluation KRIT_TO_BE",
         "relationships": "Relationships",
         "history": "History of changes",
         "editEntity": "Editt item of {{entityName}}",

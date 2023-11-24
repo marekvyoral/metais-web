@@ -402,10 +402,52 @@
         "owner": "Správca",
         "error": "Pri načítavaní dát sa vyskytla technická chyba a niektoré položky nemusia mať priradené hodnoty. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom."
     },
+    "evaluation": {
+        "accordion": {
+            "goals": "Ciele a podciele",
+            "suggestion": "Hromadná pripomienka",
+            "isvs": "ISVS",
+            "services": "Koncové služby",
+            "krit": "KRIT Základné informácie"
+        },
+        "evaluatedBy": "Vyhodnotil",
+        "version": "Verzia",
+        "created": "Začiatok hodnotenia",
+        "evaluated": "Koniec hodnotenia",
+        "evaluatAll": "Vyhodnotiť všetko",
+        "evaluatSection": "Vyhodnotenie",
+        "suggestionNote": "Poznámka",
+        "changeBtn": "Zmeniť",
+        "saveBtn": "Uložiť",
+        "cancelBtn": "Zrušiť",
+        "lastVerUPPVII": "Posledná verzia Hodnotenia ÚPPVII",
+        "evalUPPVII": "Hodnotenie ÚPPVII",
+        "editor": "Zadávateľ KRIT_TO_BE",
+        "table": {
+            "isvsCode": "Kód ISVS",
+            "name": "Názov ISVS",
+            "state": "Stav evidencie",
+            "type": "Typ ISVS",
+            "modulIsvs": "Je modulom materského ISVS"
+        },
+        "detailTable": {
+            "lastEvaluation": "Posledná verzia Hodnotenia ÚPPVII",
+            "createdBy": "Zadávateľ KRIT_TO_BE",
+            "isApproved": "Schvalené",
+            "evaluation": "Hodnotenie ÚPPVII"
+        },
+        "ksTable": {
+            "ksCode": "Kód KS",
+            "ksName": "Názov KS",
+            "ksPhases": "Názov fázy životného cyklu KS"
+        },
+        "saveSuccess": "Zmena bola úspešne uložená"
+    },
     "ciType": {
         "informations": "Informácie",
         "documents": "Dokumenty",
         "activities": "Aktivity NKIVS",
+        "evaluation": "Hodnotenie KRIT_TO_BE",
         "relationships": "Vzťahy",
         "history": "História zmien",
         "editEntity": "Úprava položky {{entityName}}",

@@ -68,6 +68,7 @@ import TasksPage from '@/pages/ulohy'
 import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
 import Goals from '@/pages/ci/KRIS/[entityId]/goals'
+import Evaluation from '@/pages/ci/KRIS/[entityId]/evaluation'
 import GoalEntityDetailPage from '@/pages/ci/Ciel/[entityId]'
 import ActivityEntityDetailPage from '@/pages/ci/Aktivita/[entityId]'
 import KsEntityDetailPage from '@/pages/ci/KS/[entityId]'
@@ -488,6 +489,11 @@ export const routesConfig: RouteConfig[] = [
                         path: RouterRoutes.GOALS_OUTLET,
                         slug: RouterRoutes.GOALS_OUTLET,
                         component: Goals,
+                    },
+                    {
+                        path: RouterRoutes.EVALUATION_OUTLET,
+                        slug: RouterRoutes.EVALUATION_OUTLET,
+                        component: Evaluation,
                     },
                 ],
             },
