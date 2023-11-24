@@ -19,9 +19,12 @@ export const authConfig: (props: AuthConfig) => TAuthConfig = ({ clientId, scope
     tokenEndpoint: baseUrl + '/token',
     redirectUri: window.location.protocol + '//' + window.location.host + redirectUri,
     autoLogin: false,
-    preLogin: () => localStorage.setItem(PRE_LOGIN_PATH, window.location.pathname),
+    preLogin: () => window.location.pathname !== '/' && localStorage.setItem(PRE_LOGIN_PATH, window.location.pathname),
     postLogin: () => {
-        window.location.replace(localStorage.getItem(PRE_LOGIN_PATH) || '')
-        localStorage.removeItem(PRE_LOGIN_PATH)
+        const preLoginPath = localStorage.getItem(PRE_LOGIN_PATH)
+        if (preLoginPath) {
+            window.location.replace(preLoginPath)
+            localStorage.removeItem(PRE_LOGIN_PATH)
+        }
     },
 })
