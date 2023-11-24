@@ -1,3 +1,4 @@
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { DataObjectsIcon, EgovComponentsIcon, InstructionsIcon, MonitoringIcon, StandartsIcon } from '@isdd/metais-common/assets/images'
 import { NavigationItem, NavigationSubItem, NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { TFunction } from 'i18next'
@@ -47,7 +48,10 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
                     path: NavigationSubRoutes.PROCESSORS_OF_IT_DEVELOPMENT_CONCEPTS,
                 },
                 { title: t('navMenu.lists.subordinates'), path: NavigationSubRoutes.SUBORDINATES },
-                { title: t('navMenu.lists.notInOVM'), path: NavigationSubRoutes.NOT_OVM },
+                {
+                    title: t('navMenu.lists.notInOVM'),
+                    path: `${NavigationSubRoutes.NOT_OVM}?${ATTRIBUTE_NAME.EA_Profil_PO_kategoria_osoby}=c_kategoria_osoba.1`,
+                },
                 { title: t('navMenu.lists.publicAuthorityHierarchy'), path: NavigationSubRoutes.PUBLIC_AUTHORITY_HIERARCHY },
             ],
         },

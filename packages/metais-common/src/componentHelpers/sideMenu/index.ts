@@ -2,9 +2,9 @@ import { NavigationItem, RouteNames } from '@isdd/metais-common/navigation/route
 
 export const decideIfPartOfUrlEqualsNavItemPath = (locationPathname: string, navItemPath: string) => {
     const slash = '/'
+    const pureNaveItemPath = navItemPath.split('?')[0]
     const splitLocationPath = locationPathname.split(slash)
-    const splitNavItemPath = navItemPath.split(slash)
-
+    const splitNavItemPath = pureNaveItemPath.split(slash)
     const arr = []
     for (let i = 0; i < splitLocationPath.length; i++) {
         if (splitNavItemPath[i] === splitLocationPath[i]) {
@@ -12,7 +12,7 @@ export const decideIfPartOfUrlEqualsNavItemPath = (locationPathname: string, nav
         }
     }
 
-    if (arr.join(slash) === navItemPath) {
+    if (arr.join(slash) === pureNaveItemPath) {
         return true
     }
 
