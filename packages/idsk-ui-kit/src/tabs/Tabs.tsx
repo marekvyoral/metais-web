@@ -166,6 +166,7 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
                     <li className={styles.subListButton}>
                         <ButtonPopup
                             popupPosition="right"
+                            buttonClassName={styles.subListButton}
                             buttonLabel={t('tab.moreTabs')}
                             popupContent={(closePopup) => {
                                 return (

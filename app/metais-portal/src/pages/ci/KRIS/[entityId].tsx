@@ -10,6 +10,7 @@ import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-co
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useGetRights } from '@isdd/metais-common/api/generated/kris-swagger'
 
 import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -24,9 +25,12 @@ const KrisEntityDetailPage: React.FC = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const [selectedTab, setSelectedTab] = useState<string>()
+    const { data: evaluationData, isLoading: isLoadingEvaluation, isError: IsErrorEvaluation } = useGetRights(entityId ?? '')
 
     document.title = `${t('titles.ciDetail', { ci: ENTITY_KRIS })} | MetaIS`
     const userAbility = useUserAbility()
+    const showEvaluation =
+        evaluationData && evaluationData.hasVersions && !evaluationData.municipality && (evaluationData.creator || evaluationData.evaluator)
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_KRIS)
     const {
@@ -40,7 +44,12 @@ const KrisEntityDetailPage: React.FC = () => {
         },
     })
 
-    const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: ENTITY_KRIS, entityId: entityId ?? '', t })
+    const tabList: Tab[] = getDefaultCiEntityTabList({
+        userAbility,
+        entityName: ENTITY_KRIS ?? '',
+        entityId: entityId ?? '',
+        t,
+    })
 
     tabList.splice(2, 0, {
         id: 'goals',
@@ -48,6 +57,14 @@ const KrisEntityDetailPage: React.FC = () => {
         title: t('ciType.goals'),
         content: <Outlet />,
     })
+
+    showEvaluation &&
+        tabList.splice(5, 0, {
+            id: 'evaluation',
+            path: `/ci/${ENTITY_KRIS}/${entityId}/evaluation`,
+            title: t('ciType.evaluation'),
+            content: <Outlet />,
+        })
 
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
 
@@ -67,7 +84,11 @@ const KrisEntityDetailPage: React.FC = () => {
 
             <MainContentWrapper>
                 <CiPermissionsWrapper entityId={entityId ?? ''} entityName={ENTITY_KRIS ?? ''}>
-                    <QueryFeedback loading={isCiItemDataLoading || isCiTypeDataLoading}>
+                    <QueryFeedback
+                        loading={isCiItemDataLoading || isCiTypeDataLoading || isLoadingEvaluation}
+                        error={isCiItemDataError || isCiTypeDataError || IsErrorEvaluation}
+                        withChildren
+                    >
                         <FlexColumnReverseWrapper>
                             <CiEntityIdHeader
                                 editButton={
