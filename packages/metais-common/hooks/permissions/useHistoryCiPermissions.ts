@@ -10,6 +10,7 @@ import { useGetRightsForPO, useIsOwnerByGid } from '@isdd/metais-common/api/gene
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { getUniqueRules } from '@isdd/metais-common/permissions/helpers'
 
 export const useHistoryCiPermissions = (entityName: string, entityId: string) => {
     const abilityContext = useAbilityContext()
@@ -56,7 +57,7 @@ export const useHistoryCiPermissions = (entityName: string, entityId: string) =>
     )
 
     useEffect(() => {
-        const { can, rules } = new AbilityBuilder(createMongoAbility)
+        const { can, rules: newRules } = new AbilityBuilder(createMongoAbility)
         const myRoles = user?.roles ?? []
         // CAN EDIT ENTITY
         const canHistoryCi = rightsData?.find((val) => myRoles?.indexOf(val?.roleName ?? '') > -1)
@@ -75,7 +76,12 @@ export const useHistoryCiPermissions = (entityName: string, entityId: string) =>
 
         if (canHistoryCi) can(Actions.HISTORY, `ci.${ciData?.uuid}`)
 
-        abilityContext.update(rules)
+        //way how to update rules without scrapping existing ones
+        const existingRules = abilityContext.rules
+        const updatedRules = getUniqueRules(newRules, existingRules)
+
+        const mergedRules = [...existingRules, ...updatedRules]
+        abilityContext.update(mergedRules)
     }, [rightsData, abilityContext, ciTypeData, isOwnerByGid, ciData, user?.roles])
     return {}
 }

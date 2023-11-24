@@ -11,6 +11,7 @@ import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagg
 import { CI_ITEM_QUERY_KEY, INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useCanCreateGraph } from '@isdd/metais-common/hooks/useCanCreateGraph'
+import { getUniqueRules } from '@isdd/metais-common/permissions/helpers'
 
 export const useEditCiPermissions = (entityName: string, entityId: string) => {
     const abilityContext = useAbilityContext()
@@ -61,7 +62,7 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
     const { data: canCreateGraph } = useCanCreateGraph()
 
     useEffect(() => {
-        const { can, rules } = new AbilityBuilder(createMongoAbility)
+        const { can, rules: newRules } = new AbilityBuilder(createMongoAbility)
         const myRoles = user?.roles ?? []
         const isInvalidated = ciData?.metaAttributes?.state === INVALIDATED
 
@@ -89,7 +90,11 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
         //CAN CREATE RELATION
         if (canCreateGraph && !isInvalidated) can(Actions.CREATE, `ci.create.newRelation`)
 
-        abilityContext.update(rules)
+        const existingRules = abilityContext.rules
+        const updatedRules = getUniqueRules(newRules, existingRules)
+
+        const mergedRules = [...existingRules, ...updatedRules]
+        abilityContext.update(mergedRules)
     }, [rightsData, abilityContext, ciTypeData, ciData, canCreateGraph, user?.roles, isOwnerByGid?.isOwner])
     return {}
 }
