@@ -21,7 +21,7 @@ export const NavBarHeader: React.FC<INavBarHeader> = ({ setShowDropDown, showDro
                     <div className="govuk-grid-column-full">
                         <div className="idsk-header-web__brand-gestor">
                             <InfoDropDown
-                                title={t('navbar.official')}
+                                title={`${t('navbar.official')} `}
                                 label={t('navbar.publicAdministration')}
                                 setShowDropDown={setShowDropDown}
                                 showDropDown={showDropDown}
