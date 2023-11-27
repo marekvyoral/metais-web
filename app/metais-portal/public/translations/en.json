@@ -402,6 +402,17 @@
         "owner": "Manager",
         "error": "Technical error occurred while fetching data and some items might not have assigned value. In case the error occurred repeatedly, contact the administrator by e-mail."
     },
+    "tasksKris": {
+        "createTask": "Add new task",
+        "save": "Save",
+        "cancel": "Cancel",
+        "name": "Name",
+        "description": "Description",
+        "deadline": "Deadline",
+        "requiredField": "Required field",
+        "user": "Assigned",
+        "successMsg": "Task was successfully created"
+    },
     "evaluation": {
         "accordion": {
             "goals": "Goals",
@@ -446,6 +457,7 @@
     "ciType": {
         "informations": "Information",
         "documents": "Documents",
+        "tasks": "Tasks",
         "activities": "Activities NKIVS",
         "evaluation": "Evaluation KRIT_TO_BE",
         "relationships": "Relationships",

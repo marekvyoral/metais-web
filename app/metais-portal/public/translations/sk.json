@@ -403,6 +403,17 @@
         "owner": "Správca",
         "error": "Pri načítavaní dát sa vyskytla technická chyba a niektoré položky nemusia mať priradené hodnoty. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom."
     },
+    "tasksKris": {
+        "createTask": "Pridať novú úlohu",
+        "save": "Uložiť",
+        "cancel": "Zrušiť",
+        "name": "Názov",
+        "description": "Popis",
+        "deadline": "Deadline",
+        "user": "Priradené",
+        "successMsg": "Úloha bola úspešne vytvorená",
+        "requiredField": "Povinné pole"
+    },
     "evaluation": {
         "accordion": {
             "goals": "Ciele a podciele",
@@ -446,6 +457,7 @@
     },
     "ciType": {
         "informations": "Informácie",
+        "tasks": "Úlohy",
         "documents": "Dokumenty",
         "activities": "Aktivity NKIVS",
         "evaluation": "Hodnotenie KRIT_TO_BE",

@@ -81,6 +81,7 @@ import VoteCreatePage from '@/pages/standardization/voteslist/create'
 import TasksPage from '@/pages/ulohy'
 import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
+import Tasks from '@/pages/ci/KRIS/[entityId]/tasks'
 
 export interface RouteConfig {
     path?: string
@@ -495,6 +496,13 @@ export const routesConfig: RouteConfig[] = [
                         slug: RouterRoutes.GOALS_OUTLET,
                         component: Goals,
                     },
+                    ...generalCiDetailOutlets,
+                    {
+                        path: RouterRoutes.TASKS_OUTLET,
+                        slug: RouterRoutes.TASKS_OUTLET,
+                        component: Tasks,
+                    },
+                    ...generalCiDetailOutlets,
                     {
                         path: RouterRoutes.EVALUATION_OUTLET,
                         slug: RouterRoutes.EVALUATION_OUTLET,
