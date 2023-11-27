@@ -113,5 +113,14 @@ export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ isOnly
         dataLength: codelistHeadersData?.codelistsCount,
     }
 
-    return <View data={data} filter={filter} handleFilterChange={handleFilterChange} isError={isError} isLoading={isLoading} />
+    return (
+        <View
+            data={data}
+            filter={filter}
+            handleFilterChange={handleFilterChange}
+            isError={isError}
+            isLoading={isLoading}
+            isOnlyPublishedPage={isOnlyPublishedPage}
+        />
+    )
 }
