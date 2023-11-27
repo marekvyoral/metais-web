@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute, AttributeProfile, CiType, useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
@@ -28,7 +29,19 @@ interface AttributesContainer {
 }
 
 export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName)
+    const { i18n } = useTranslation()
+    const {
+        data: ciTypeData,
+        isLoading: isCiTypeDataLoading,
+        isError: isCiTypeDataError,
+        isFetching: isCiTypeFetching,
+        refetch: ciTypeRefetch,
+    } = useGetCiType(entityName)
+
+    useEffect(() => {
+        ciTypeRefetch()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [i18n.language])
 
     const { isLoading, isError, constraintsData, unitsData } = useDetailData({
         entityStructure: ciTypeData,
@@ -47,7 +60,7 @@ export const AttributesContainer: React.FC<AttributesContainer> = ({ entityName,
     return (
         <View
             data={{ attributeProfiles, ciTypeData, constraintsData, unitsData, attributes, renamedAttributes }}
-            isLoading={isLoading}
+            isLoading={isLoading || isCiTypeFetching}
             isError={isError}
         />
     )
