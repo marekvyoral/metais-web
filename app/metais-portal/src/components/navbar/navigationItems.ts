@@ -52,7 +52,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
                     title: t('navMenu.lists.notInOVM'),
                     path: `${NavigationSubRoutes.NOT_OVM}?${ATTRIBUTE_NAME.EA_Profil_PO_kategoria_osoby}=c_kategoria_osoba.1`,
                 },
-                { title: t('navMenu.lists.publicAuthorityHierarchy'), path: NavigationSubRoutes.PUBLIC_AUTHORITY_HIERARCHY },
+                { title: t('navMenu.lists.publicAuthorityHierarchy'), path: NavigationSubRoutes.PUBLIC_AUTHORITY_HIERARCHY, isLoginRequired: true },
             ],
         },
         ...commonRoutes,
