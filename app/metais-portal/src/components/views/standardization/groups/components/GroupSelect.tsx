@@ -20,7 +20,7 @@ export const GroupSelect: React.FC<IGroupSelect> = ({ selectedGroup, setSelected
         async (searchQuery: string, additional: { page: number } | undefined) => {
             const page = !additional?.page ? 1 : (additional?.page || 0) + 1
 
-            const groupOptions = await groupOptionsHook({ sortBy: 'name', ascending: false })
+            const groupOptions = await groupOptionsHook({ sortBy: 'name', ascending: false, name: searchQuery })
 
             return {
                 options: (groupOptions as Group[]) || [],

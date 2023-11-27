@@ -28,7 +28,7 @@ export interface PublicAuthoritiesMassUpdateFilterData extends IFilterParams {
 const MassUpdate = () => {
     const entityName = 'PO'
     const defaultFilterValues: PublicAuthoritiesMassUpdateFilterData = {
-        pageNumber: 0,
+        pageNumber: 1,
         pageSize: BASE_PAGE_SIZE,
         state: PublicAuthorityStateEnum.NEW,
         cmdbId: [],

@@ -27,8 +27,8 @@ export const PublicAuthoritiesMassUpdateContainer = <T extends FieldValues & IFi
     const { filter, handleFilterChange } = useFilterParams<T>(defaultFilterValues)
 
     const defaultRequestApi = {
-        from: 0,
-        to: BASE_PAGE_NUMBER,
+        page: 1,
+        perPage: BASE_PAGE_NUMBER,
         state: 'NEW',
     }
 
@@ -41,8 +41,8 @@ export const PublicAuthoritiesMassUpdateContainer = <T extends FieldValues & IFi
     } = useReadChanges({
         ...defaultRequestApi,
         state: filter.state || defaultFilterValues.state,
-        from: filter.pageNumber === 0 ? filter.pageNumber : filter.pageNumber - 1 || defaultFilterValues.pageNumber,
-        to: filter.pageSize || defaultFilterValues.pageSize,
+        page: filter.pageNumber || defaultFilterValues.pageNumber,
+        perPage: filter.pageSize || defaultFilterValues.pageSize,
         ...(filter.cmdbId?.length > 0 ? { cmdbId: filter.cmdbId } : {}),
     })
 
