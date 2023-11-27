@@ -120,6 +120,7 @@ export const EndOrApplicationServiceEntityIdHeader: React.FC<Props> = ({
                                         tooltipContent={(open) => (
                                             <div>
                                                 <ButtonLink
+                                                    disabled={!isInvalidated}
                                                     onClick={() => handleReInvalidate(entityListData, () => setShowReInvalidate(true), open)}
                                                     label={t('ciType.revalidateItem')}
                                                 />
