@@ -108,6 +108,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     const [isSetDatesDialogOpened, setIsSetDatesDialogOpened] = useState<boolean>(false)
     const [defaultSelectOrg, setDefaultSelectOrg] = useState<IOption>()
     const [expanded, setExpanded] = useState<ExpandedState>({})
+    const [isCodeAvailable, setIsCodeAvailable] = useState<boolean>(false)
     const { register, handleSubmit, formState, getValues, setValue, setError, clearErrors } = useForm<IRequestForm>({
         resolver: yupResolver(schema),
         defaultValues: editData,
@@ -123,8 +124,10 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
         const result = await onHandleCheckIfCodeIsAvailable(code)
 
         if (result.isAvailable) {
+            setIsCodeAvailable(true)
             clearErrors('codeListCode')
         } else {
+            setIsCodeAvailable(false)
             result.errorTranslateKeys?.forEach((error) => {
                 setError('codeListCode', { message: t([error, 'feedback.mutationErrorMessage']) })
             })
@@ -342,6 +345,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 error={formState.errors[RequestFormEnum.CODELISTNAME]?.message}
                             />
                             <Input
+                                correct={isCodeAvailable}
                                 required
                                 disabled={!canEdit}
                                 label={getDescription('Gui_Profil_ZC_kod_ciselnika', language, attributeProfile)}
