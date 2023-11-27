@@ -14,6 +14,7 @@ import {
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { useInvalidateCiHistoryListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 export interface IInvalidateBulkModalProps {
     open: boolean
@@ -39,6 +40,7 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
     const deleteFileHook = useDeleteContentHook()
     const successMessage = multiple ? t('mutationFeedback.successfulUpdatedList') : t('mutationFeedback.successfulUpdated')
     const { getRequestStatus, isError } = useGetStatus()
+    const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
 
     useEffect(() => {
         if (isError) {
@@ -47,11 +49,19 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isError])
 
+    const mappedItems = items.map((item) => {
+        const attributes = Object.entries(item.attributes || {}).map(([key, value]) => ({ name: key, value }))
+        return { ...item, attributes }
+    })
+
     const invalidateRelation = useInvalidateRelationship({
         mutation: {
             onSuccess() {
                 reset()
                 onSubmit({ isSuccess: true, isError: false, successMessage })
+                mappedItems.forEach((item) => {
+                    invalidateHistoryListCache(item?.uuid ?? '')
+                })
             },
             onError() {
                 onSubmit({ isSuccess: false, isError: true, successMessage })
@@ -63,15 +73,15 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
         mutation: {
             async onSuccess(data) {
                 if (data.requestId) {
-                    await getRequestStatus(data.requestId, () => onSubmit({ isSuccess: true, isError: false, successMessage }))
+                    await getRequestStatus(data.requestId, () => {
+                        onSubmit({ isSuccess: true, isError: false, successMessage })
+                        mappedItems.forEach((item) => {
+                            invalidateHistoryListCache(item?.uuid ?? '')
+                        })
+                    })
                 }
             },
         },
-    })
-
-    const mappedItems = items.map((item) => {
-        const attributes = Object.entries(item.attributes || {}).map(([key, value]) => ({ name: key, value }))
-        return { ...item, attributes }
     })
 
     const handleInvalidate = async (formValues: FieldValues) => {

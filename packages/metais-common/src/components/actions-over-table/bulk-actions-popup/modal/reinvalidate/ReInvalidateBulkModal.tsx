@@ -7,6 +7,7 @@ import { ReInvalidateView } from './ReInvalidateBulkView'
 import { ConfigurationItemUi, useRecycleInvalidatedCisBiznis, useRecycleInvalidatedRels } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { useInvalidateCiHistoryListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 export interface IReInvalidateBulkModalProps {
     open: boolean
@@ -20,6 +21,7 @@ export interface IReInvalidateBulkModalProps {
 export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ items, open, multiple, onSubmit, onClose, isRelation }) => {
     const { t } = useTranslation()
     const { getRequestStatus, isError } = useGetStatus()
+    const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
 
     const successMessage = multiple ? t('mutationFeedback.successfulUpdatedList') : t('mutationFeedback.successfulUpdated')
 
@@ -27,6 +29,7 @@ export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ i
         mutation: {
             onSuccess() {
                 onSubmit({ isSuccess: true, isError: false, successMessage })
+                items.forEach((item) => invalidateHistoryListCache(item.uuid ?? ''))
             },
             onError() {
                 onSubmit({ isSuccess: false, isError: true })
@@ -45,7 +48,10 @@ export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ i
         mutation: {
             async onSuccess(data) {
                 if (data.requestId) {
-                    await getRequestStatus(data.requestId, () => onSubmit({ isSuccess: true, isError: false, successMessage }))
+                    await getRequestStatus(data.requestId, () => {
+                        onSubmit({ isSuccess: true, isError: false, successMessage })
+                        items.forEach((item) => invalidateHistoryListCache(item.uuid ?? ''))
+                    })
                 }
             },
         },
