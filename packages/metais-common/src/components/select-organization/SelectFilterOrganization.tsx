@@ -61,7 +61,7 @@ export const SelectFilterOrganization = <T extends FieldValues & IFilterParams>(
     const { t } = useTranslation()
 
     const readCiListHook = useReadCiList1Hook()
-    const [defaultValue, setDefaultValue] = useState<SelectFilterOrganizationOptionType | undefined>(undefined)
+    const [defaultValue, setDefaultValue] = useState<SelectFilterOrganizationOptionType[] | undefined>(undefined)
     const [seed, setSeed] = useState(1)
 
     const isError = false
@@ -98,7 +98,7 @@ export const SelectFilterOrganization = <T extends FieldValues & IFilterParams>(
                     uuid: isMulti ? [...filter[name]] : [filter?.[name]],
                 },
             }).then((response) => {
-                setDefaultValue(mapToOption(response.configurationItemSet)[0])
+                setDefaultValue(mapToOption(response.configurationItemSet))
             })
         }
     }, [defaultValue, filter, name, isMulti, readCiListHook])

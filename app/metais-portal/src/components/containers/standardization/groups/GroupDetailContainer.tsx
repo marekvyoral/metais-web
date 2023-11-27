@@ -108,8 +108,8 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
         error,
         refetch,
     } = useFindRelatedIdentitiesAndCount(id ?? '', {
-        page: filter.pageNumber,
-        perPage: filter.pageSize,
+        page: String(filter.pageNumber),
+        perPage: String(filter.pageSize),
         ...(filter.sort != undefined
             ? { orderBy: filter.sort[0].orderBy, desc: filter.sort[0].sortDirection === SortType.DESC }
             : { orderBy: defaultSort[0].orderBy, desc: defaultSort[0].sortDirection === SortType.DESC }),
