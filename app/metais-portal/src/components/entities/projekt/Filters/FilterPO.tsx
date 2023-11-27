@@ -55,12 +55,6 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
                             label={t('radioButton.no')}
                             {...register(ATTRIBUTE_NAME.EA_Profil_PO_je_kapitola)}
                         />
-                        <RadioButton
-                            id={'itIsChapter.nothing'}
-                            value={''}
-                            label={t('radioButton.nothing')}
-                            {...register(ATTRIBUTE_NAME.EA_Profil_PO_je_kapitola)}
-                        />
                     </RadioGroupWithLabel>
 
                     <SelectPersonCategory filter={filter} setValue={setValue} />
