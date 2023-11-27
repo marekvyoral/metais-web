@@ -13,7 +13,6 @@ import { NewCiRelationContainer } from '@/components/containers/NewCiRelationCon
 import { PublicAuthorityAndRoleContainer } from '@/components/containers/PublicAuthorityAndRoleContainer'
 import { NewCiWithRelationView } from '@/components/views/new-ci-with-relation/NewCiWithRelationView'
 import { RelationTypePermissionWrapper } from '@/components/permissions/CreateRelationPermissionWrapper'
-import { findRelationType } from '@/componentHelpers/new-relation'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
@@ -79,13 +78,7 @@ const CreateCiItemAndRelation: React.FC = () => {
                                                             }) => (
                                                                 <RelationTypePermissionWrapper
                                                                     selectedRoleName={groupData?.roleName ?? ''}
-                                                                    selectedCiRelationType={findRelationType(
-                                                                        selectedRelationTypeState.selectedRelationTypeTechnicalName,
-                                                                        [
-                                                                            ...(relationData?.relatedListAsSources ?? []),
-                                                                            ...(relationData?.relatedListAsTargets ?? []),
-                                                                        ],
-                                                                    )}
+                                                                    selectedCiRelationType={relationData?.relationTypeData}
                                                                 >
                                                                     <NewCiWithRelationView
                                                                         entityName={entityName ?? ''}
