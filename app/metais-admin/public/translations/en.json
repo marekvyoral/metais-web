@@ -971,5 +971,9 @@
         "description": "We noticed an internal problem with the application",
         "reload": "Reload page",
         "copyError": "Copy error message"
+    },
+    "autoLogout": {
+        "warningMessage": "In {{countDown}} you will be logged out due to inactitvity.",
+        "loading": "Proccessing logout"
     }
 }
