@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { OptionProps } from 'react-select'
-import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit'
+import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
+import React, { useCallback, useEffect, useState } from 'react'
 import { UseFormSetValue } from 'react-hook-form'
+import { OptionProps } from 'react-select'
 
-import { Identity, useFindAll311Hook, useFindAll3Hook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Identity, useFind1Hook, useFindAll311Hook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
 
 export type SelectFilterIdentityOptionType = {
@@ -39,7 +39,7 @@ interface SelectUserIdentitiesProps {
 }
 
 export const SelectUserIdentities = ({ filter, setValue, name, label }: SelectUserIdentitiesProps) => {
-    const getIdentities = useFindAll3Hook()
+    const getIdentities = useFind1Hook()
     const getIdentityByLogin = useFindAll311Hook()
     const [defaultValue, setDefaultValue] = useState<SelectFilterIdentityOptionType | undefined>(undefined)
 
@@ -49,7 +49,7 @@ export const SelectUserIdentities = ({ filter, setValue, name, label }: SelectUs
         async (searchQuery: string, additional: { page: number } | undefined) => {
             const page = !additional?.page ? 1 : (additional?.page || 0) + 1
 
-            const response = await getIdentities(page, 50)
+            const response = await getIdentities(page, 50, { expression: searchQuery, orderBy: 'firstName', direction: 'ASC' })
 
             const options = mapToOption(response) || []
 
