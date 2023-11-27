@@ -1,7 +1,11 @@
 import { AbilityTuple, MongoAbility, MongoQuery } from '@casl/ability'
 import { Tab } from '@isdd/idsk-ui-kit/index'
+import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ciInformationTab } from '@isdd/metais-common/constants'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { formatDateForDefaultValue } from '@isdd/metais-common/index'
+import { isFalsyStringValue } from '@isdd/metais-common/utils/utils'
 import { TFunction } from 'i18next'
 import { Location, Outlet, useLocation, useParams } from 'react-router-dom'
 
@@ -61,4 +65,26 @@ export const useGetEntityParamsFromUrl = (): { entityName: string | undefined; e
     const entityName = urlEntityName ? urlEntityName : getEntityName(location)
 
     return { entityId, entityName }
+}
+
+export const formatForFormDefaultValues = (
+    defaultItemAttributeValues: ConfigurationItemUiAttributes,
+    attributes: (Attribute | undefined)[],
+): ConfigurationItemUiAttributes => {
+    const formattedDefaultAttributeValues: ConfigurationItemUiAttributes = {}
+
+    for (const key in defaultItemAttributeValues) {
+        const matchedAttributeType = attributes.find((att) => att?.technicalName == key)?.attributeTypeEnum
+        if (matchedAttributeType === AttributeAttributeTypeEnum.DATE) {
+            formattedDefaultAttributeValues[key] = formatDateForDefaultValue(defaultItemAttributeValues[key])
+        } else if (matchedAttributeType === AttributeAttributeTypeEnum.BOOLEAN) {
+            const isFalsy = isFalsyStringValue(defaultItemAttributeValues[key])
+
+            formattedDefaultAttributeValues[key] = isFalsy ? false : true
+        } else {
+            formattedDefaultAttributeValues[key] = defaultItemAttributeValues[key]
+        }
+    }
+
+    return formattedDefaultAttributeValues
 }

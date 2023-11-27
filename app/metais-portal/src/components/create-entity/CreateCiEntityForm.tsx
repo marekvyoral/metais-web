@@ -11,7 +11,7 @@ import { AttributeProfile, CiCode, CiType, RelationshipType } from '@isdd/metais
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { SubmitWithFeedback, formatDateForFormDefaultValues } from '@isdd/metais-common/index'
+import { SubmitWithFeedback } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
@@ -25,6 +25,7 @@ import { canCreateProject, getFilteredAttributeProfilesBasedOnRole } from './cre
 
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
 import { RelationAttributeForm } from '@/components/relations-attribute-form/RelationAttributeForm'
+import { formatForFormDefaultValues } from '@/componentHelpers/ci'
 export interface HasResetState {
     hasReset: boolean
     setHasReset: Dispatch<SetStateAction<boolean>>
@@ -83,6 +84,8 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
         return accumulator
     }, {})
     const attributes = [...(ciTypeData?.attributes ?? []), ...attProfiles.map((profile) => profile.attributes).flat()]
+        .filter((att) => !att?.invisible)
+        .filter((att) => att?.valid)
 
     const sectionErrorDefaultConfig: { [x: string]: boolean } = {
         [genProfilTechName]: false,
@@ -100,7 +103,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     const combinedProfiles = [ciTypeData as AttributeProfile, ...attProfiles]
 
     const methods = useForm({
-        defaultValues: formatDateForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
+        defaultValues: formatForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
         resolver: yupResolver(
             generateFormSchema(
                 isUpdate ? combinedProfiles : getFilteredAttributeProfilesBasedOnRole(combinedProfiles, selectedRole?.roleName ?? ''),
