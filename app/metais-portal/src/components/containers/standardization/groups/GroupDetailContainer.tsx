@@ -93,7 +93,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     const { t } = useTranslation()
 
     const { filter, handleFilterChange } = useFilterParams<FilterParams>(identitiesFilter)
-    const { data: group } = useFindByUuid3(groupId ?? '')
+    const { data: group, isLoading: isGroupLoading } = useFindByUuid3(groupId ?? '')
 
     const [rowSelection, setRowSelection] = useState<Record<string, TableData>>({})
 
@@ -108,8 +108,8 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
         error,
         refetch,
     } = useFindRelatedIdentitiesAndCount(id ?? '', {
-        page: filter.pageNumber,
-        perPage: filter.pageSize,
+        page: String(filter.pageNumber),
+        perPage: String(filter.pageSize),
         ...(filter.sort != undefined
             ? { orderBy: filter.sort[0].orderBy, desc: filter.sort[0].sortDirection === SortType.DESC }
             : { orderBy: defaultSort[0].orderBy, desc: defaultSort[0].sortDirection === SortType.DESC }),
@@ -123,9 +123,8 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     const [successfulUpdatedData, setSuccessfulUpdatedData] = useState(false)
 
     const [tableData, setTableData] = useState<TableData[]>()
-
     const getRoleFromIdentityGids = (identity: IdentityInGroupData) => {
-        return identity?.gids ? identity.gids[0].roleName : ''
+        return identity?.gids ? identity.gids[identity.gids.length - 1].roleName : ''
     }
     useEffect(() => {
         if (identities !== identitiesData) {
@@ -138,7 +137,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
             identities?.map((item) => ({
                 uuid: item.identity?.uuid ?? '',
                 firstName_lastName: item.identity?.lastName + ' ' + item.identity?.firstName,
-                organization: item.gids?.map((org) => org.orgName)?.toString() ?? '',
+                organization: item.gids?.[item.gids.length - 1].orgName?.toString() ?? '',
                 roleName: getRoleFromIdentityGids(item) ?? '',
                 email: item.identity?.email ?? '',
                 orgId: item.gids?.map((org) => org.orgId)?.toString() ?? '',
@@ -173,7 +172,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     return (
         <View
             isIdentitiesError={isIdentitiesError}
-            isLoading={isLoading}
+            isLoading={[isLoading, isGroupLoading].some((item) => item)}
             error={error}
             filter={filter}
             handleFilterChange={handleFilterChange}

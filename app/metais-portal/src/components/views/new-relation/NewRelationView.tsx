@@ -107,20 +107,26 @@ export const NewRelationView: React.FC<Props> = ({
             : ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]
 
     useEffect(() => {
+        const relationTypeOptions = createSelectRelationTypeOptions({
+            relatedListAsSources,
+            relatedListAsTargets,
+            t,
+            currentRole: roleState.selectedRole?.roleName ?? '',
+        })
+        const isRelTypeInOptions = relationTypeOptions.find(
+            (option) => option?.value === selectedRelationTypeState?.selectedRelationTypeTechnicalName,
+        )
+
         if (!selectedRelationTypeTechnicalName) {
-            setSelectedRelationTypeTechnicalName(
-                createSelectRelationTypeOptions({
-                    relatedListAsSources,
-                    relatedListAsTargets,
-                    t,
-                    currentRole: roleState.selectedRole?.roleName ?? '',
-                })[1]?.value,
-            )
+            setSelectedRelationTypeTechnicalName(relationTypeOptions?.[1]?.value)
+        } else if (!isRelTypeInOptions) {
+            setSelectedRelationTypeTechnicalName(relationTypeOptions?.[1]?.value)
         }
     }, [
         relatedListAsSources,
         relatedListAsTargets,
         roleState.selectedRole?.roleName,
+        selectedRelationTypeState.selectedRelationTypeTechnicalName,
         selectedRelationTypeTechnicalName,
         setSelectedRelationTypeTechnicalName,
         t,

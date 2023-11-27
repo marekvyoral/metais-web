@@ -4,12 +4,12 @@ import { useEffect } from 'react'
 import { useAbilityContext } from './useAbilityContext'
 import { Actions } from './useUserAbility'
 
-import { RelatedCiTypePreview } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { RelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
-export const useCanCreateRelationTypeUnderOrgAndRole = (selectedRoleName: string, selectedCiRelationType: RelatedCiTypePreview | undefined) => {
+export const useCanCreateRelationTypeUnderOrgAndRole = (selectedRoleName: string, selectedCiRelationType: RelationshipType | undefined) => {
     const abilityContext = useAbilityContext()
 
-    const relationTypeRoles = selectedCiRelationType?.relationshipRoleList
+    const relationTypeRoles = selectedCiRelationType?.roleList
     const hasRoleToCreateRelationType = !!relationTypeRoles?.find((roleName) => roleName === selectedRoleName)
 
     useEffect(() => {

@@ -363,6 +363,7 @@
     "mutationFeedback": {
         "successfulUpdated": "Položka bola úspešne zmenená",
         "successfulCreated": "Položka bola úspešne vytvorená",
+        "successfulCloned": "Položka bola úspešne klonovaná",
         "successfulUpdatedList": "Položky boli úspešne zmenené"
     },
     "button": {
@@ -402,13 +403,68 @@
         "owner": "Správca",
         "error": "Pri načítavaní dát sa vyskytla technická chyba a niektoré položky nemusia mať priradené hodnoty. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom."
     },
+    "tasksKris": {
+        "createTask": "Pridať novú úlohu",
+        "save": "Uložiť",
+        "cancel": "Zrušiť",
+        "name": "Názov",
+        "description": "Popis",
+        "deadline": "Deadline",
+        "user": "Priradené",
+        "successMsg": "Úloha bola úspešne vytvorená",
+        "requiredField": "Povinné pole"
+    },
+    "evaluation": {
+        "accordion": {
+            "goals": "Ciele a podciele",
+            "suggestion": "Hromadná pripomienka",
+            "isvs": "ISVS",
+            "services": "Koncové služby",
+            "krit": "KRIT Základné informácie"
+        },
+        "evaluatedBy": "Vyhodnotil",
+        "version": "Verzia",
+        "created": "Začiatok hodnotenia",
+        "evaluated": "Koniec hodnotenia",
+        "evaluatAll": "Vyhodnotiť všetko",
+        "evaluatSection": "Vyhodnotenie",
+        "suggestionNote": "Poznámka",
+        "changeBtn": "Zmeniť",
+        "saveBtn": "Uložiť",
+        "cancelBtn": "Zrušiť",
+        "lastVerUPPVII": "Posledná verzia Hodnotenia ÚPPVII",
+        "evalUPPVII": "Hodnotenie ÚPPVII",
+        "editor": "Zadávateľ KRIT_TO_BE",
+        "table": {
+            "isvsCode": "Kód ISVS",
+            "name": "Názov ISVS",
+            "state": "Stav evidencie",
+            "type": "Typ ISVS",
+            "modulIsvs": "Je modulom materského ISVS"
+        },
+        "detailTable": {
+            "lastEvaluation": "Posledná verzia Hodnotenia ÚPPVII",
+            "createdBy": "Zadávateľ KRIT_TO_BE",
+            "isApproved": "Schvalené",
+            "evaluation": "Hodnotenie ÚPPVII"
+        },
+        "ksTable": {
+            "ksCode": "Kód KS",
+            "ksName": "Názov KS",
+            "ksPhases": "Názov fázy životného cyklu KS"
+        },
+        "saveSuccess": "Zmena bola úspešne uložená"
+    },
     "ciType": {
         "informations": "Informácie",
+        "tasks": "Úlohy",
         "documents": "Dokumenty",
         "activities": "Aktivity NKIVS",
+        "evaluation": "Hodnotenie KRIT_TO_BE",
         "relationships": "Vzťahy",
         "history": "História zmien",
         "editEntity": "Úprava položky {{entityName}}",
+        "cloneEntity": "Klonovanie položky {{entityName}}",
         "chosenObject": "Vybraný objekt (typ)",
         "editButton": "Upraviť",
         "moreButton": "Viac akcií",
@@ -889,9 +945,12 @@
         "errors": {
             "groupNameRequired": "Názov skupiny je povinný",
             "groupShortNameRequired": "Skratka skupiny je povinná",
+            "descriptionRequired": "Popis je povinný",
             "chairmanRequired": "Predseda skupiny je povinný",
             "organizationRequired": "Organizácia je povinná"
-        }
+        },
+        "creatingGroup": "Vytváram novú skupinu",
+        "editingGroup": "Upravujem skupinu"
     },
     "tooltip": {
         "rights": {
@@ -901,7 +960,8 @@
             "validSelectedList": "Niektoré z vami vybraných položiek sú platné, nie je možné nad nimi vykonať vybranú operáciu.",
             "invalidItem": "Položka je zneplatnená, nie je možné nad ňou vykonať vybranú operáciu.",
             "validItem": "Položka je platná, nie je možné nad ňou vykonať vybranú operáciu.",
-            "notFoundPO": "Chyba pri získávaní informácií o právach - pre dané položke nebola nájdená povinná osoba."
+            "notFoundPO": "Chyba pri získávaní informácií o právach - pre dané položke nebola nájdená povinná osoba.",
+            "notToClone": "Z tejto položky nie je možné vytvoriť inštanciu nakoľko táto položka je inštanciou a nie je možné vytvárať inštancie z inštancií"
         }
     },
     "bulkActions": {
@@ -977,6 +1037,7 @@
     "breadcrumbs": {
         "home": "Domov",
         "ciEdit": "Editácia {{itemName}}",
+        "ciClone": "Klonovanie {{itemName}}",
         "noName": "Bez mena",
         "ciCreate": "Vytvorenie novej entity",
         "newRelation": "Pridanie nového vzťahu k {{itemName}}",
@@ -992,6 +1053,7 @@
         "standardization": "Štandardizácia",
         "draftsList": "Zoznam návrhov",
         "ciEditEntity": "Editácia položky",
+        "ciCloneEntity": "Klonovanie položky",
         "404": "Chyba"
     },
     "codeList": {
@@ -1298,6 +1360,7 @@
         "ciDetail": "Detail položky {{ci}}",
         "ciCreateEntity": "Vytvorenie položky {{ci}}",
         "ciEdit": "Úprava položky {{ci}}",
+        "ciClone": "Klonovanie položky {{ci}}",
         "PO_IS": "Spracovatelia koncepcií rozvoja IT",
         "PO_ISDetail": "Detail IS",
         "PO_ISCreate": "Vytvorenie IS",

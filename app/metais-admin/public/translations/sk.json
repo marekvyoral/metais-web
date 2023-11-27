@@ -975,5 +975,9 @@
         "description": "Zaznamenali sme interný problém s aplikáciou",
         "reload": "Obnoviť stránku",
         "copyError": "Skopírovať error"
+    },
+    "autoLogout": {
+        "warningMessage": "O {{countDown}} sekúnd budete kvôli inaktivite odhlásený.",
+        "loading": "Spracúvame odhlásenie"
     }
 }

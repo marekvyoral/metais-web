@@ -10,7 +10,6 @@ import { CiContainer } from '@/components/containers/CiContainer'
 import { NewCiRelationContainer } from '@/components/containers/NewCiRelationContainer'
 import { PublicAuthorityAndRoleContainer } from '@/components/containers/PublicAuthorityAndRoleContainer'
 import { NewRelationView } from '@/components/views/new-relation/NewRelationView'
-import { findRelationType } from '@/componentHelpers/new-relation'
 import { RelationTypePermissionWrapper } from '@/components/permissions/CreateRelationPermissionWrapper'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
@@ -61,10 +60,7 @@ const NewCiRelationPage: React.FC = () => {
                                         }) => (
                                             <RelationTypePermissionWrapper
                                                 selectedRoleName={groupData?.roleName ?? ''}
-                                                selectedCiRelationType={findRelationType(
-                                                    selectedRelationTypeState.selectedRelationTypeTechnicalName,
-                                                    [...(relationData?.relatedListAsSources ?? []), ...(relationData?.relatedListAsTargets ?? [])],
-                                                )}
+                                                selectedCiRelationType={relationData?.relationTypeData}
                                             >
                                                 <NewRelationView
                                                     roleState={roleState}

@@ -11,9 +11,14 @@ import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swa
 import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
 import { isObjectEmpty } from '@isdd/metais-common/src/utils/utils'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { ENTITY_PROJECT, ROLES } from '@isdd/metais-common/constants'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import {
+    useInvalidateCiHistoryListCache,
+    useInvalidateCiItemCache,
+    useInvalidateCiListFilteredCache,
+} from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
@@ -61,6 +66,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     const [uploadError, setUploadError] = useState(false)
     const [requestId, setRequestId] = useState<string>('')
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
+    const isProject = ciTypeData?.technicalName == ENTITY_PROJECT
 
     const storeConfigurationItem = useStoreConfigurationItem({
         mutation: {
@@ -79,11 +85,14 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
 
     const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
     const invalidateCiByUuidCache = useInvalidateCiItemCache()
+    const invalidateCiHistoryList = useInvalidateCiHistoryListCache()
 
     const onRedirectSuccess = () => {
-        const toPath = `/ci/${entityName}/${configurationItemId}`
+        invalidateCiHistoryList.invalidate(configurationItemId)
         invalidateCilistFilteredCache.invalidate({ ciType: entityName })
         invalidateCiByUuidCache.invalidate(configurationItemId)
+
+        const toPath = `/ci/${entityName}/${configurationItemId}`
         setIsActionSuccess({ value: true, path: toPath, type: isUpdate ? 'edit' : 'create' })
         navigate(toPath, { state: { from: location } })
     }
@@ -181,7 +190,8 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                         onChangeAuthority={publicAuthorityState.setSelectedPublicAuthority}
                         onChangeRole={roleState.setSelectedRole}
                         selectedOrg={publicAuthorityState.selectedPublicAuthority}
-                        ciRoles={ciTypeData?.roleList ?? []}
+                        ciRoles={isProject ? [ROLES.EA_GARPO] : ciTypeData?.roleList ?? []}
+                        disableRoleSelect={isProject}
                     />
                 )}
 

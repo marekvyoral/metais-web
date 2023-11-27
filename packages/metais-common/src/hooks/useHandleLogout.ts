@@ -12,10 +12,20 @@ export const useHandleLogout = () => {
             (import.meta.env.VITE_IAM_OIDC_PATH ? `/${import.meta.env.VITE_IAM_OIDC_PATH}/logout` : '/logout')
 
         setIsLoading(true)
-        fetch(logoutURL, { method: 'POST', credentials: 'include' }).finally(() => {
-            logOut()
-            setIsLoading(false)
-        })
+        fetch(logoutURL, { method: 'POST', credentials: 'include' })
+            .then((response) => {
+                if (!response.redirected) {
+                    response.text().then((html) => {
+                        document.open()
+                        document.write(html)
+                        document.close()
+                    })
+                }
+            })
+            .finally(() => {
+                logOut()
+                setIsLoading(false)
+            })
     }
 
     return { logoutUser, isLoading }

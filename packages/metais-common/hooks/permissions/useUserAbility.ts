@@ -24,7 +24,7 @@ export const ADMIN = 'R_ADMIN'
 export const RR_MANAGER = 'RR_MANAGER'
 export const RR_ADMIN_MFSR = 'RR_ADMIN_MFSR'
 
-export const CANNOT_READ_ENTITY = ['ulohy', 'notifications', 'data-objects/requestlist']
+export const CANNOT_READ_ENTITY = ['ulohy', 'notifications', 'data-objects/requestlist', 'public-authorities-hierarchy']
 export const CAN_CREATE_WITHOUT_LOGIN = [STANDARDIZATION_DRAFTS_LIST]
 
 const defineAbilityForUser = (roles: string[] = [], entityName: string, create?: boolean) => {

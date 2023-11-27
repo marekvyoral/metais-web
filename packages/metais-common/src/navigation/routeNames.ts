@@ -31,6 +31,7 @@ export enum RouterRoutes {
     CI_DETAIL = '/ci/:entityName/:entityId',
     CI_CREATE = '/ci/:entityName/create',
     CI_EDIT = '/ci/:entityName/:entityId/edit',
+    CI_CLONE = '/ci/:entityName/:entityId/clone',
     CI_CREATE_ITEM_RELATION = 'ci/:entityName/:entityId/new-ci/:tabName',
     CI_CREATE_RELATION = 'ci/:entityName/:entityId/new-relation/:tabName',
     DEV_TEST_SCREEN = '/DevTestScreen',
@@ -39,6 +40,8 @@ export enum RouterRoutes {
     RELATIONSHIPS_OUTLET = 'relationships',
     ACTIVITIES_OUTLET = 'activities',
     GOALS_OUTLET = 'goals',
+    TASKS_OUTLET = 'tasks',
+    EVALUATION_OUTLET = 'evaluation',
     HISTORY_OUTLET = 'history',
     HISTORY_CHANGES_OUTLET = 'historyChanges',
     HISTORY_COMPARE_SINGLE_ITEM = '/ci/:entityName/:entityId/history/:firstId',
@@ -107,8 +110,6 @@ export enum RouterRoutes {
     CI_KS_CREATE = 'ci/KS/create',
     CI_AS_DETAIL = 'ci/AS/:entityId',
     CI_AS_CREATE = 'ci/AS/create',
-    CI_MIGRATION_DETAIL = 'ci/Migracia/:entityId',
-    CI_MIGRATION_CREATE = 'ci/Migracia/create',
 }
 
 export enum AdminRouteNames {

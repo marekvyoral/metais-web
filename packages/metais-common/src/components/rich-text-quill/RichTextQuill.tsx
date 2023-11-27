@@ -69,7 +69,8 @@ export interface ICustomToolBarProps {
 }
 
 // https://github.com/quilljs/quill/issues/1328
-const QUILL_INTENDED_EMPTY_VALUE = '<p><br></p>'
+//regex to check if value contains only empty lines
+const regex = /^(<p><br><\/p>)+$/
 
 const formats = ['header', 'bold', 'italic', 'underline', 'list', 'bullet', 'link']
 
@@ -126,7 +127,9 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
     )
 
     const handleContentChange = (newValue: string, delta: DeltaStatic, source: Sources, editor: ReactQuill.UnprivilegedEditor) => {
-        newValue = newValue.replaceAll(QUILL_INTENDED_EMPTY_VALUE, '')
+        if (regex.test(newValue)) {
+            newValue = ''
+        }
         onChange && onChange(newValue, delta, source, editor)
         setValue && setValue(name, newValue)
     }

@@ -3,11 +3,13 @@ import { BreadCrumbs, Button, HomeIcon, IconWithText, PaginatorWrapper, Table, T
 import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
-import { ActionsOverTable, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { Row } from '@tanstack/react-table'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import GroupMembersFilter from './components/GroupMembersFilter'
 import { sendBatchEmail } from './groupMembersTableUtils'
@@ -41,6 +43,14 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
     isLoading,
 }) => {
     const { t } = useTranslation()
+
+    const { isActionSuccess } = useActionSuccess()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        if (isActionSuccess.value) scrollToMutationFeedback()
+    }, [isActionSuccess, scrollToMutationFeedback])
+
     const isRowSelected = (row: Row<TableData>) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false)
     const breadCrumbsLinks = [
         { href: RouteNames.HOME, label: t('notifications.home'), icon: HomeIcon },
@@ -73,6 +83,17 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
             />
             <BreadCrumbs withWidthContainer links={breadCrumbsLinks} />
             <MainContentWrapper>
+                <div ref={wrapperRef}>
+                    {isActionSuccess.value && (
+                        <MutationFeedback
+                            successMessage={
+                                isActionSuccess.type === 'edit' ? t('mutationFeedback.successfulUpdated') : t('mutationFeedback.successfulCreated')
+                            }
+                            success={isActionSuccess.value}
+                            error={false}
+                        />
+                    )}
+                </div>
                 <GroupDetailBaseInfo infoData={group} />
                 <TextHeading size="L">{t('groups.listOfMembers')}</TextHeading>
                 <GroupMembersFilter defaultFilterValues={identitiesFilter} isKsisvs={group?.shortName === KSIVS_SHORT_NAME} filter={filter} />

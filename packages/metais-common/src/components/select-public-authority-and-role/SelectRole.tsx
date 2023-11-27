@@ -12,9 +12,10 @@ interface Props {
     selectedOrg: HierarchyRightsUi | null
     selectedRole: GidRoleData
     ciRoles: string[]
+    disabled?: boolean
 }
 
-export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selectedRole, ciRoles }) => {
+export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selectedRole, ciRoles, disabled }) => {
     const { t } = useTranslation()
     const {
         state: { user },
@@ -67,7 +68,7 @@ export const SelectRole: React.FC<Props> = ({ onChangeRole, selectedOrg, selecte
                 label={t('createEntity.role')}
                 id="role"
                 name="role"
-                disabled={isRightsForPOLoading || isRightsForPOError}
+                disabled={isRightsForPOLoading || isRightsForPOError || disabled}
                 options={roleSelectOptions}
                 defaultValue={defaultValue}
                 isClearable={false}

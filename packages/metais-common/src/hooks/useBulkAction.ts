@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next'
 
 import { useBulkActionHelpers } from './useBulkActionHelpers'
 
-import { APPROVAL_PROCESS, ATTRIBUTE_NAME, PROJECT_STATE_ENUM } from '@isdd/metais-common/index'
-import { ApiError, ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ApiError, ConfigurationItemUi, useReadCiNeighboursHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Confirm200, ReturnProject200, useConfirm, useReturnProject } from '@isdd/metais-common/api/generated/kris-swagger'
+import { APPROVAL_PROCESS, ATTRIBUTE_NAME, PROJECT_STATE_ENUM } from '@isdd/metais-common/index'
+import { ENTITY_AS, ENTITY_KS } from '@isdd/metais-common/constants'
 
 export interface IBulkActionResult {
     isSuccess: boolean
@@ -24,6 +25,7 @@ export const useBulkAction = (isRelation?: boolean) => {
 
     const { mutateAsync: confirmProjectMutate } = useConfirm()
     const { mutateAsync: mutateReturnProject } = useReturnProject()
+    const getCiNeighbours = useReadCiNeighboursHook()
 
     const handleInvalidate = async (items: ConfigurationItemUi[], onSuccess: () => void, onError: () => void, isDocTypeValid?: boolean) => {
         setBulkLoading(true)
@@ -234,6 +236,39 @@ export const useBulkAction = (isRelation?: boolean) => {
         )
     }
 
+    const handleClone = async (entityData: ConfigurationItemUi | undefined, onSuccess: () => void, onError: () => void) => {
+        setBulkLoading(true)
+
+        if (entityData && ciInvalidFilter(entityData)) {
+            setErrorMessage(t('tooltip.rights.invalidItem'))
+            setBulkLoading(false)
+            return onError()
+        }
+
+        try {
+            const result = await getCiNeighbours(entityData?.uuid ?? '', {
+                neighboursFilter: {
+                    metaAttributes: { state: ['DRAFT'] },
+                    relType: ['AS_ma_verziu_AS', 'KS_prenajima_KS', 'KS_realizuje_KS'],
+                    ciType: [ENTITY_AS, ENTITY_KS],
+                },
+                page: 1,
+                perpage: 10,
+            })
+
+            if (result.toNodes?.pagination?.totaltems === 0) {
+                setErrorMessage(undefined)
+                return onSuccess()
+            } else {
+                setErrorMessage(t('tooltip.rights.notToClone'))
+                return onError()
+            }
+        } catch {
+            setErrorMessage(t('feedback.queryErrorTitle'))
+            return onError()
+        }
+    }
+
     return {
         errorMessage,
         isBulkLoading,
@@ -244,5 +279,6 @@ export const useBulkAction = (isRelation?: boolean) => {
         handleUpdateFile,
         handleConfirmProject,
         handleProjectReturn,
+        handleClone,
     }
 }

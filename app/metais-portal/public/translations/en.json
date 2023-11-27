@@ -368,6 +368,7 @@
     "mutationFeedback": {
         "successfulUpdated": "The item was successfully changed",
         "successfulCreated": "The item was successfully created",
+        "successfulCloned": "The item was successfully cloned",
         "successfulUpdatedList": "Items have been changed successfully"
     },
     "relationCard": {
@@ -401,13 +402,68 @@
         "owner": "Manager",
         "error": "Technical error occurred while fetching data and some items might not have assigned value. In case the error occurred repeatedly, contact the administrator by e-mail."
     },
+    "tasksKris": {
+        "createTask": "Add new task",
+        "save": "Save",
+        "cancel": "Cancel",
+        "name": "Name",
+        "description": "Description",
+        "deadline": "Deadline",
+        "requiredField": "Required field",
+        "user": "Assigned",
+        "successMsg": "Task was successfully created"
+    },
+    "evaluation": {
+        "accordion": {
+            "goals": "Goals",
+            "suggestion": "Global suggestion",
+            "isvs": "ISVS",
+            "services": "eGov services",
+            "krit": "KRIT Basic information"
+        },
+        "evaluatedBy": "User",
+        "version": "Version",
+        "created": "Start of evaluation",
+        "evaluated": "End of evaluation",
+        "evaluatAll": "Evaluate all",
+        "evaluatSection": "Evaluation",
+        "suggestionNote": "Note",
+        "changeBtn": "Change",
+        "saveBtn": "Save",
+        "cancelBtn": "Cancel",
+        "lastVerUPPVII": "Last version of ÚPPVII evaluation",
+        "evalUPPVII": "ÚPPVII evaluation",
+        "editor": "Owner KRIT_TO_BE",
+        "table": {
+            "isvsCode": "Code of ISVS",
+            "name": "Name of ISVS",
+            "state": "State of ISVS",
+            "type": "Type of ISVS",
+            "modulIsvs": "Modul of ISVS"
+        },
+        "detailTable": {
+            "lastEvaluation": "Last version of ÚPPVII evaluation",
+            "createdBy": "Owner KRIT_TO_BE",
+            "isApproved": "Approved",
+            "evaluation": "ÚPPVII evaluation"
+        },
+        "ksTable": {
+            "ksCode": "Code of eGov",
+            "ksName": "Name of eGov",
+            "ksPhases": "Name of life cycle of eGov"
+        },
+        "saveSuccess": "Data has been saved"
+    },
     "ciType": {
         "informations": "Information",
         "documents": "Documents",
+        "tasks": "Tasks",
         "activities": "Activities NKIVS",
+        "evaluation": "Evaluation KRIT_TO_BE",
         "relationships": "Relationships",
         "history": "History of changes",
-        "editEntity": "Editt item of {{entityName}}",
+        "editEntity": "Edit item of {{entityName}}",
+        "cloneEntity": "Clone item of {{entityName}}",
         "chosenObject": "Chosen object (type)",
         "editButton": "Modify",
         "moreButton": "More actions",
@@ -881,9 +937,12 @@
         "errors": {
             "groupNameRequired": "Group name is required",
             "groupShortNameRequired": "Abbreviation of group is required",
+            "descriptionRequired": "Description is required",
             "chairmanRequired": "Chairman is required",
             "organizationRequired": "Organization is required"
-        }
+        },
+        "creatingGroup": "Creating group",
+        "editingGroup": "Editing group"
     },
     "tooltip": {
         "rights": {
@@ -893,7 +952,8 @@
             "validSelectedList": "Some of selected items are valid, it is not possible to carry out selected operation.",
             "invalidItem": "Item is invalid, it is not possible to carry out selected operation.",
             "validItem": "Item is valid, it is not possible to carry out selected operation.",
-            "notFoundPO": "Error in rights - not find public authority."
+            "notFoundPO": "Error in rights - not find public authority.",
+            "notToClone": "For this item, you can not create an instance because this item is an instance and can not create instances of instances"
         }
     },
     "bulkActions": {
@@ -969,6 +1029,7 @@
     "breadcrumbs": {
         "home": "Home",
         "ciEdit": "Edit of {{itemName}}",
+        "ciClone": "Clone of {{itemName}}",
         "noName": "No name",
         "ciCreate": "Create configuration item",
         "newRelation": "Add new relation of {{itemName}}",
@@ -985,6 +1046,7 @@
         "ciCreateEntity": "Create new item of type {{entityName}}",
         "compareHistory": "Compare history",
         "ciEditEntity": "Edit of component",
+        "ciCloneEntity": "Clone of component",
         "404": "Error"
     },
     "codeList": {
@@ -1372,6 +1434,7 @@
         "ciDetail": "Detail of {{ci}} item",
         "ciCreateEntity": "Creation of {{ci}} item",
         "ciEdit": "Edit of {{ci}} item",
+        "ciClone": "Clone of {{ci}} item",
         "PO_IS": "Processors of IT development concepts",
         "PO_ISDetail": "Detail of IS",
         "PO_ISCreate": "Creation of IS",

@@ -13,7 +13,7 @@ export const useGetStatus = () => {
         let done = false
         for (let index = 0; index < API_CALL_RETRY_COUNT; index++) {
             const status = await requestStatus(requestId)
-            if (status.processed && status.status === 'PROCESSED') {
+            if (status.processed && status.status === 'READY') {
                 done = true
                 break
             }

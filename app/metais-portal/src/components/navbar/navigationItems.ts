@@ -1,6 +1,20 @@
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { DataObjectsIcon, EgovComponentsIcon, InstructionsIcon, MonitoringIcon, StandartsIcon } from '@isdd/metais-common/assets/images'
 import { NavigationItem, NavigationSubItem, NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { TFunction } from 'i18next'
+
+const SUBORDINATES_PATH_QUERY =
+    `EA_Profil_PO_kategoria_osoby=c_kategoria_osoba.2&` +
+    `EA_Profil_PO_typ_osoby=c_typ_osoby.b&` +
+    `EA_Profil_PO_typ_osoby=c_typ_osoby.c1&` +
+    `EA_Profil_PO_typ_osoby=c_typ_osoby.c2&` +
+    `EA_Profil_PO_typ_osoby=c_typ_osoby.d1&` +
+    `EA_Profil_PO_typ_osoby=c_typ_osoby.d2&` +
+    `EA_Profil_PO_typ_osoby=c_typ_osoby.d3&` +
+    `EA_Profil_PO_typ_osoby=c_typ_osoby.d4&` +
+    `EA_Profil_PO_typ_osoby=c_typ_osoby.e&` +
+    `EA_Profil_PO_typ_osoby=c_typ_osoby.f&` +
+    `EA_Profil_PO_typ_osoby=c_typ_osoby.g`
 
 const removeSubItemsForLoggedInUser = (subItems?: NavigationSubItem[]): NavigationSubItem[] | undefined => {
     return subItems?.filter((item) => !item.isLoginRequired).map((item) => ({ ...item, subItems: removeSubItemsForLoggedInUser(item.subItems) }))
@@ -46,9 +60,15 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
                     title: t('navMenu.lists.processorsOfITDevelopmentConcepts'),
                     path: NavigationSubRoutes.PROCESSORS_OF_IT_DEVELOPMENT_CONCEPTS,
                 },
-                { title: t('navMenu.lists.subordinates'), path: NavigationSubRoutes.SUBORDINATES },
-                { title: t('navMenu.lists.notInOVM'), path: NavigationSubRoutes.NOT_OVM },
-                { title: t('navMenu.lists.publicAuthorityHierarchy'), path: NavigationSubRoutes.PUBLIC_AUTHORITY_HIERARCHY },
+                {
+                    title: t('navMenu.lists.subordinates'),
+                    path: `${NavigationSubRoutes.SUBORDINATES}?${SUBORDINATES_PATH_QUERY}`,
+                },
+                {
+                    title: t('navMenu.lists.notInOVM'),
+                    path: `${NavigationSubRoutes.NOT_OVM}?${ATTRIBUTE_NAME.EA_Profil_PO_kategoria_osoby}=c_kategoria_osoba.1`,
+                },
+                { title: t('navMenu.lists.publicAuthorityHierarchy'), path: NavigationSubRoutes.PUBLIC_AUTHORITY_HIERARCHY, isLoginRequired: true },
             ],
         },
         ...commonRoutes,

@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom'
 interface IActionSuccess {
     value: boolean
     path: string
-    type?: 'edit' | 'create'
+    type?: 'edit' | 'create' | 'clone'
 }
 
 const DEFAULT_STATE: IActionSuccess = { value: false, path: '', type: undefined }

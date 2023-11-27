@@ -1,9 +1,9 @@
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
 import { Identity, useFind1Hook, useGetPages2 } from '@isdd/metais-common/api/generated/iam-swagger'
 import React, { useCallback } from 'react'
+import { UseFormClearErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { MultiValue, OptionProps, components } from 'react-select'
-import { UseFormClearErrors, UseFormSetValue } from 'react-hook-form'
+import { MultiValue, OptionProps, PropsValue, components } from 'react-select'
 
 import styles from './identity-select.module.scss'
 
@@ -17,9 +17,24 @@ interface IIdentitySelect {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     clearErrors?: UseFormClearErrors<any>
     placeholder?: string
+    required?: boolean
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    register?: UseFormRegister<any>
+    defaultValue?: PropsValue<Identity>
 }
 
-export const IdentitySelect: React.FC<IIdentitySelect> = ({ label, clearErrors, setValue, name, error, onChange, placeholder }) => {
+export const IdentitySelect: React.FC<IIdentitySelect> = ({
+    label,
+    clearErrors,
+    setValue,
+    name,
+    required,
+    error,
+    onChange,
+    placeholder,
+    register,
+    defaultValue,
+}) => {
     const perPage = 20
     const { t } = useTranslation()
     const { data: numberOfIdentities } = useGetPages2()
@@ -59,8 +74,13 @@ export const IdentitySelect: React.FC<IIdentitySelect> = ({ label, clearErrors, 
         <SelectLazyLoading<Identity>
             placeholder={placeholder}
             id={name}
+            label={
+                label
+                    ? `${label} ${required ? t('input.requiredField') : ''}`
+                    : `${t('tasks.selectLogin')} ${required ? t('input.requiredField') : ''}`
+            }
+            {...(register ? { ...register(`${name}`) } : undefined)}
             name={name}
-            label={label ? `${label}:` : `${t('tasks.selectLogin')}:`}
             getOptionValue={(item) => item.uuid || ''}
             getOptionLabel={(item) => item.displayName || ''}
             option={(props) => selectLazyLoadingLoginOption(props)}
@@ -69,6 +89,7 @@ export const IdentitySelect: React.FC<IIdentitySelect> = ({ label, clearErrors, 
             error={error}
             clearErrors={clearErrors}
             onChange={onChange}
+            defaultValue={defaultValue}
         />
     )
 }

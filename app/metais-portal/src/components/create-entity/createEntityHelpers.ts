@@ -1,9 +1,15 @@
-import { Attribute, AttributeConstraintIntervalAllOf, AttributeConstraintRegexAllOf } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import {
+    Attribute,
+    AttributeConstraintIntervalAllOf,
+    AttributeConstraintRegexAllOf,
+    AttributeProfile,
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 import { FieldErrors, FieldValues } from 'react-hook-form'
 import { AnyObject, NumberSchema } from 'yup'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { isDate } from '@isdd/metais-common/utils/utils'
+import { ENTITY_PROJECT, ROLES } from '@isdd/metais-common/constants'
 
 import { ByteInterval, ShortInterval } from './createCiEntityFormSchema'
 
@@ -105,4 +111,23 @@ export const findAttributeConstraint = (enumCodes: string[], constraintsData: (E
 export const getAttributeUnits = (unitCode: string, unitsData: EnumType | undefined) => {
     const attributeUnit = unitsData?.enumItems?.find((item) => item.code == unitCode)
     return attributeUnit
+}
+
+export const getFilteredAttributeProfilesBasedOnRole = (profiles: AttributeProfile[], currentRoleName: string) => {
+    return profiles.filter((profile) => profile?.roleList?.includes(currentRoleName))
+}
+
+export const isEAGarpoRole = (roleName: string): boolean => {
+    return roleName === ROLES.EA_GARPO
+}
+
+export const canCreateProject = (entityName: string, currentRoleName: string): boolean => {
+    const isProject = entityName === ENTITY_PROJECT
+    const isEAGarpo = isEAGarpoRole(currentRoleName)
+
+    if (!isProject) {
+        return true
+    }
+
+    return isProject && isEAGarpo
 }

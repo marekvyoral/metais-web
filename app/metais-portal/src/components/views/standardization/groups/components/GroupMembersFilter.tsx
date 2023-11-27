@@ -115,18 +115,19 @@ const GroupMembersFilter: React.FC<FilterProps> = ({ defaultFilterValues, isKsis
                 defaultFilterValues={defaultFilterValues}
                 form={({ setValue }) => (
                     <>
-                        <SelectLazyLoading<Identity>
-                            disabled={!isLoggedIn}
-                            key={seed1}
-                            defaultValue={selectedIdentity}
-                            placeholder={t('groups.select')}
-                            setValue={setValue}
-                            label={t('groups.member')}
-                            name={'memberUuid'}
-                            getOptionValue={(item) => item.uuid ?? ''}
-                            getOptionLabel={(item) => item.firstName + ' ' + item.lastName}
-                            loadOptions={(searchTerm, _, additional) => loadMembersOptions(searchTerm, additional)}
-                        />
+                        {isLoggedIn && (
+                            <SelectLazyLoading<Identity>
+                                key={seed1}
+                                defaultValue={selectedIdentity}
+                                placeholder={t('groups.select')}
+                                setValue={setValue}
+                                label={t('groups.member')}
+                                name={'memberUuid'}
+                                getOptionValue={(item) => item.uuid ?? ''}
+                                getOptionLabel={(item) => item.firstName + ' ' + item.lastName}
+                                loadOptions={(searchTerm, _, additional) => loadMembersOptions(searchTerm, additional)}
+                            />
+                        )}
 
                         <SelectLazyLoading<ConfigurationItemUi>
                             key={seed2}
