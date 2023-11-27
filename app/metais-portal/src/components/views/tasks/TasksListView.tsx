@@ -31,7 +31,7 @@ enum TaskFilterState {
     DONE = 'DONE',
 }
 
-interface TasksFilter extends IFilterParams {
+export interface TasksFilter extends IFilterParams {
     state: string
     appId?: string
     createdFrom?: string
@@ -51,6 +51,8 @@ interface ITasksListView {
     setPagination: React.Dispatch<SetStateAction<Pagination>>
     sort: ColumnSort[]
     setSort: React.Dispatch<SetStateAction<ColumnSort[]>>
+    isWrapped?: boolean
+    hideTypeFilter?: boolean
 }
 export const TasksListView: React.FC<ITasksListView> = ({
     defaultFilterValues,
@@ -65,6 +67,8 @@ export const TasksListView: React.FC<ITasksListView> = ({
     setPagination,
     sort,
     setSort,
+    isWrapped,
+    hideTypeFilter,
 }) => {
     const { t } = useTranslation()
 
@@ -78,19 +82,20 @@ export const TasksListView: React.FC<ITasksListView> = ({
                 return tasksData?.tasksCountCreated ?? 0 + (tasksData?.tasksCountInProgress ?? 0)
         }
     }
-
     return (
         <>
-            <BreadCrumbs
-                withWidthContainer
-                links={[
-                    { label: t('tasks.home'), href: '/', icon: HomeIcon },
-                    { label: t('tasks.tasks'), href: RouteNames.TASKS },
-                ]}
-            />
-            <MainContentWrapper>
+            {!isWrapped && (
+                <BreadCrumbs
+                    withWidthContainer
+                    links={[
+                        { label: t('tasks.home'), href: '/', icon: HomeIcon },
+                        { label: t('tasks.tasks'), href: RouteNames.TASKS },
+                    ]}
+                />
+            )}
+            <MainContentWrapper noSideMenu={isWrapped}>
                 <FlexColumnReverseWrapper>
-                    <TextHeading size="L">{t('tasks.tasks')}</TextHeading>
+                    {!isWrapped && <TextHeading size="L">{t('tasks.tasks')}</TextHeading>}
                     {isError && <QueryFeedback loading={false} error={isError} />}
                 </FlexColumnReverseWrapper>
                 <Filter<TasksFilter>
@@ -98,18 +103,20 @@ export const TasksListView: React.FC<ITasksListView> = ({
                     form={({ register, setValue }) => {
                         return (
                             <div>
-                                <SimpleSelect
-                                    options={[
-                                        { label: t('tasks.all'), value: 'ALL' },
-                                        ...(appIds?.enumItems?.map((enumItem) => {
-                                            return { value: `${enumItem.value}`, label: t(`tasks.${enumItem.code}`) }
-                                        }) ?? [{ value: '', label: '' }]),
-                                    ]}
-                                    label={t('tasks.selectType')}
-                                    id="taskTypeSelect"
-                                    name="taskTypeSelect"
-                                    setValue={setValue}
-                                />
+                                {!hideTypeFilter && (
+                                    <SimpleSelect
+                                        options={[
+                                            { label: t('tasks.all'), value: 'ALL' },
+                                            ...(appIds?.enumItems?.map((enumItem) => {
+                                                return { value: `${enumItem.value}`, label: t(`tasks.${enumItem.code}`) }
+                                            }) ?? [{ value: '', label: '' }]),
+                                        ]}
+                                        label={t('tasks.selectType')}
+                                        id="taskTypeSelect"
+                                        name="taskTypeSelect"
+                                        setValue={setValue}
+                                    />
+                                )}
                                 <GridRow>
                                     <GridCol setWidth="one-half">
                                         <Input
@@ -133,7 +140,6 @@ export const TasksListView: React.FC<ITasksListView> = ({
                                         id="allRadioBtn"
                                         name="allRadioBtn"
                                         onChange={(val) => setValue('state', val.target.value)}
-                                        defaultChecked
                                     />
                                     <RadioButton
                                         {...register('state')}

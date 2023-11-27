@@ -40,6 +40,7 @@ export enum RouterRoutes {
     RELATIONSHIPS_OUTLET = 'relationships',
     ACTIVITIES_OUTLET = 'activities',
     GOALS_OUTLET = 'goals',
+    TASKS_OUTLET = 'tasks',
     EVALUATION_OUTLET = 'evaluation',
     HISTORY_OUTLET = 'history',
     HISTORY_CHANGES_OUTLET = 'historyChanges',

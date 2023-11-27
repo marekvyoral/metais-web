@@ -11,6 +11,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useGetRights } from '@isdd/metais-common/api/generated/kris-swagger'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -24,8 +25,16 @@ const KrisEntityDetailPage: React.FC = () => {
     const { entityId } = useGetEntityParamsFromUrl()
     const navigate = useNavigate()
     const location = useLocation()
+    const {
+        state: { user },
+    } = useAuth()
     const [selectedTab, setSelectedTab] = useState<string>()
-    const { data: evaluationData, isLoading: isLoadingEvaluation, isError: IsErrorEvaluation } = useGetRights(entityId ?? '')
+    const {
+        data: evaluationData,
+        isLoading: isLoadingEvaluation,
+        isError: IsErrorEvaluation,
+        fetchStatus,
+    } = useGetRights(entityId ?? '', { query: { enabled: !!user } })
 
     document.title = `${t('titles.ciDetail', { ci: ENTITY_KRIS })} | MetaIS`
     const userAbility = useUserAbility()
@@ -58,6 +67,14 @@ const KrisEntityDetailPage: React.FC = () => {
         content: <Outlet />,
     })
 
+    !!user &&
+        tabList.splice(5, 0, {
+            id: 'tasks',
+            path: `/ci/${ENTITY_KRIS}/${entityId}/tasks`,
+            title: t('ciType.tasks'),
+            content: <Outlet />,
+        })
+
     showEvaluation &&
         tabList.splice(5, 0, {
             id: 'evaluation',
@@ -85,7 +102,7 @@ const KrisEntityDetailPage: React.FC = () => {
             <MainContentWrapper>
                 <CiPermissionsWrapper entityId={entityId ?? ''} entityName={ENTITY_KRIS ?? ''}>
                     <QueryFeedback
-                        loading={isCiItemDataLoading || isCiTypeDataLoading || isLoadingEvaluation}
+                        loading={isCiItemDataLoading || isCiTypeDataLoading || (isLoadingEvaluation && fetchStatus != 'idle')}
                         error={isCiItemDataError || isCiTypeDataError || IsErrorEvaluation}
                         withChildren
                     >
