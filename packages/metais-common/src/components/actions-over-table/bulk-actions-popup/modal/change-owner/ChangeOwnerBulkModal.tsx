@@ -14,6 +14,7 @@ import {
 import { GidRoleData, useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { useInvalidateCiHistoryListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 export interface IChangeOwnerBulkModalProps {
     open: boolean
@@ -30,6 +31,7 @@ export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ ite
 
     const successMessage = multiple ? t('mutationFeedback.successfulUpdatedList') : t('mutationFeedback.successfulUpdated')
     const { getRequestStatus, isError } = useGetStatus()
+    const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
 
     useEffect(() => {
         if (isError) {
@@ -42,7 +44,10 @@ export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ ite
         mutation: {
             async onSuccess(data) {
                 if (data.requestId) {
-                    await getRequestStatus(data.requestId, () => onSubmit({ isSuccess: true, isError: false, successMessage }))
+                    await getRequestStatus(data.requestId, () => {
+                        onSubmit({ isSuccess: true, isError: false, successMessage })
+                        items.forEach((item) => invalidateHistoryListCache(item.uuid ?? ''))
+                    })
                 }
             },
         },

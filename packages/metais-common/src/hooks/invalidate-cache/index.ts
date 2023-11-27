@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import {
     CiListFilterContainerUi,
     getGetRoleParticipantBulkQueryKey,
+    getReadCiHistoryVersionsQueryKey,
     getReadCiList1QueryKey,
     getReadCiNeighboursWithAllRelsQueryKey,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
@@ -20,6 +21,7 @@ import {
     getGetCodelistRequestItemsQueryKey,
     getGetCodelistRequestDetailQueryKey,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 
 const isCiListFilterContainerUi = (obj: unknown): obj is CiListFilterContainerUi => {
     return !!obj && typeof obj === 'object'
@@ -66,6 +68,18 @@ export const useInvalidateCiItemCache = () => {
     const invalidate = (ciItemUuid: string) => {
         const ciItemQueryKey = [CI_ITEM_QUERY_KEY, ciItemUuid]
         queryClient.invalidateQueries(ciItemQueryKey)
+    }
+
+    return { invalidate }
+}
+
+export const useInvalidateCiHistoryListCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (ciItemUuid: string) => {
+        const ciItemQueryKey = getReadCiHistoryVersionsQueryKey(ciItemUuid, { page: BASE_PAGE_NUMBER, perPage: BASE_PAGE_SIZE })?.[0]
+
+        queryClient.invalidateQueries([ciItemQueryKey])
     }
 
     return { invalidate }

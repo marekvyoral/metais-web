@@ -35,10 +35,19 @@ export const ConfigurationItemHistoryListContainer: React.FC<IDocumentsListConta
     const {
         isLoading,
         isError,
+        isFetching,
         data: historyList,
     } = useReadCiHistoryVersions(configurationItemId ?? '', mapFilterToHistoryVersionsApi(uiFilterState))
 
     const pagination = mapConfigurationItemHistoryListToPagination(uiFilterState, historyList)
 
-    return <View data={historyList} pagination={pagination} handleFilterChange={handleFilterChange} isLoading={isLoading} isError={isError} />
+    return (
+        <View
+            data={historyList}
+            pagination={pagination}
+            handleFilterChange={handleFilterChange}
+            isLoading={isLoading || isFetching}
+            isError={isError}
+        />
+    )
 }

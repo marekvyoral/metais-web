@@ -14,7 +14,11 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ENTITY_PROJECT, ROLES } from '@isdd/metais-common/constants'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { useInvalidateCiItemCache, useInvalidateCiListFilteredCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import {
+    useInvalidateCiHistoryListCache,
+    useInvalidateCiItemCache,
+    useInvalidateCiListFilteredCache,
+} from '@isdd/metais-common/hooks/invalidate-cache'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
@@ -81,11 +85,14 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
 
     const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
     const invalidateCiByUuidCache = useInvalidateCiItemCache()
+    const invalidateCiHistoryList = useInvalidateCiHistoryListCache()
 
     const onRedirectSuccess = () => {
-        const toPath = `/ci/${entityName}/${configurationItemId}`
+        invalidateCiHistoryList.invalidate(configurationItemId)
         invalidateCilistFilteredCache.invalidate({ ciType: entityName })
         invalidateCiByUuidCache.invalidate(configurationItemId)
+
+        const toPath = `/ci/${entityName}/${configurationItemId}`
         setIsActionSuccess({ value: true, path: toPath, type: isUpdate ? 'edit' : 'create' })
         navigate(toPath, { state: { from: location } })
     }
