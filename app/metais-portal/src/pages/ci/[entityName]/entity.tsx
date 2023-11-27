@@ -3,7 +3,6 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
-import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { ListWrapper } from '@/components/list-wrapper/ListWrapper'
@@ -20,7 +19,7 @@ export interface CIFilterData extends IFilterParams {
 }
 const CiListPage: React.FC<Props> = ({ importantEntityName, noSideMenu }) => {
     const { entityName: ciType } = useGetEntityParamsFromUrl()
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     document.title = `${t('titles.ciList', { ci: ciType })} | MetaIS`
     const defaultFilterValues: CIFilterData = { Gen_Profil_nazov: '', Gen_Profil_kod_metais: '' }
 
@@ -51,7 +50,7 @@ const CiListPage: React.FC<Props> = ({ importantEntityName, noSideMenu }) => {
                                         links={[
                                             { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
                                             {
-                                                label: `${i18n.language == Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}`,
+                                                label: `${ciTypeData?.name}`,
                                                 href: `/ci/${ciType}`,
                                             },
                                         ]}
