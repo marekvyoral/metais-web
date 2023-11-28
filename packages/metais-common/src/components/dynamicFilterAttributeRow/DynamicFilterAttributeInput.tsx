@@ -101,7 +101,7 @@ export const DynamicFilterAttributeInput: React.FC<Props> = ({ attributeType, in
                         id={`attribute-value-${index}-date`}
                         label={t('customAttributeFilter.value.label')}
                         name="atributeValueDate"
-                        onChange={(e) => onChange({ ...value, value: formatDateForDefaultValue(e.target.value, 'yyyy-MM-dd HH:mm:ss') })}
+                        onChange={(e) => onChange({ ...value, value: e.target.value })}
                         value={formatDateForDefaultValue(value.value?.toString() ?? '')}
                         type="date"
                     />
