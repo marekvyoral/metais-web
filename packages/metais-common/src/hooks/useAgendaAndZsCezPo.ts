@@ -29,6 +29,7 @@ export const useAgendaAndZsCezPo = (neighboursUuid?: string) => {
         isLoading: isAgendaLoading,
         isError: isAgendaError,
         fetchStatus: agendaFetchStatus,
+        isInitialLoading: isInitialAgendaLoading,
     } = useQuery({
         queryFn: () =>
             agendaCezPo.mutateAsync({
@@ -43,6 +44,7 @@ export const useAgendaAndZsCezPo = (neighboursUuid?: string) => {
         isLoading: isZsLoading,
         isError: isZsError,
         fetchStatus: zsFetchStatus,
+        isInitialLoading: isInitialZsLoading,
     } = useQuery({
         queryFn: () =>
             zsCezPo.mutateAsync({
@@ -54,5 +56,7 @@ export const useAgendaAndZsCezPo = (neighboursUuid?: string) => {
 
     const isLoading = (isZsLoading && zsFetchStatus != 'idle') || (isAgendaLoading && agendaFetchStatus != 'idle')
     const isError = isZsError || isAgendaError
-    return { zsData, agendaData, isLoading, isError }
+    const isInitialLoading = isInitialAgendaLoading || isInitialZsLoading
+
+    return { zsData, agendaData, isLoading, isError, isInitialLoading }
 }

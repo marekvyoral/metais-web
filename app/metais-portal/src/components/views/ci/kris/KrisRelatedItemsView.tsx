@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
-import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_AGENDA, ENTITY_ISVS, ENTITY_KS, ENTITY_PROJECT, ENTITY_ZS } from '@isdd/metais-common/constants'
+import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_AGENDA, ENTITY_ZS } from '@isdd/metais-common/constants'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Link } from 'react-router-dom'
 
@@ -33,7 +33,7 @@ export const KrisRelatedItemsView: React.FC<Props> = ({
     isListLoading,
 }) => {
     const { t } = useTranslation()
-    const { zsData, agendaData, ciListData, ISVSListData, KSListData, projectListData } = data
+    const { zsData, agendaData, ciListData } = data
     const startOfList = pagination.pageNumber * pagination.pageSize - pagination.pageSize
     const endOfList = pagination.pageNumber * pagination.pageSize
 
@@ -89,19 +89,11 @@ export const KrisRelatedItemsView: React.FC<Props> = ({
     ]
 
     return (
-        <QueryFeedback loading={isLoading} withChildren error={false}>
+        <QueryFeedback loading={isLoading} error={false}>
             <Tabs
                 tabList={keysToDisplay?.map((key) => {
                     const isZs = key.technicalName === ENTITY_ZS
                     const isAgenda = key.technicalName === ENTITY_AGENDA
-
-                    const count = [
-                        { name: ENTITY_AGENDA, count: agendaData?.length },
-                        { name: ENTITY_ISVS, count: ISVSListData?.pagination?.totaltems },
-                        { name: ENTITY_KS, count: KSListData?.pagination?.totaltems },
-                        { name: ENTITY_PROJECT, count: projectListData?.pagination?.totaltems },
-                        { name: ENTITY_ZS, count: zsData?.length },
-                    ].find((item) => item.name === key.technicalName)?.count
 
                     const dataForTable = isAgenda
                         ? agendaData?.slice(startOfList, endOfList)
@@ -113,7 +105,7 @@ export const KrisRelatedItemsView: React.FC<Props> = ({
 
                     return {
                         id: key.technicalName,
-                        title: key?.title + `(${count ?? 0})`,
+                        title: key?.title + `(${key.count ?? 0})`,
                         content: (
                             <QueryFeedback
                                 loading={isListLoading}

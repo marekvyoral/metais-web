@@ -125,9 +125,13 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                             setIsDerived(selected.meta?.isDerived ? true : false)
                             setPageConfig((pageConfig) => {
                                 if (!selected.meta?.isDerived) {
-                                    return { ...pageConfig, ciTypes: !selected.meta?.isDerived ? [selected.id] : undefined, page: 1 }
+                                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                    const { relTypes, ...rest } = pageConfig
+                                    return { ...rest, ciTypes: [selected.id], page: 1 }
                                 } else {
-                                    return { ...pageConfig, relTypes: selected.meta?.isDerived ? [selected.id] : undefined, page: 1 }
+                                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                    const { ciTypes, ...rest } = pageConfig
+                                    return { ...rest, relTypes: [selected.id], page: 1 }
                                 }
                             })
                         }}
