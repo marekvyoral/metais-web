@@ -20,6 +20,36 @@ const removeSubItemsForLoggedInUser = (subItems?: NavigationSubItem[]): Navigati
     return subItems?.filter((item) => !item.isLoginRequired).map((item) => ({ ...item, subItems: removeSubItemsForLoggedInUser(item.subItems) }))
 }
 
+const getDataObjectSubItems = (t: TFunction, isSideMenu?: boolean) => {
+    const dataObjectSubItemsTopMenu = [
+        {
+            title: t('navMenu.lists.registers'),
+            path: NavigationSubRoutes.REFERENCE_REGISTRE,
+        },
+        {
+            title: t('navMenu.lists.codelists'),
+            path: NavigationSubRoutes.CODELIST,
+        },
+    ]
+
+    const dataObjectSubItemsSideMenu = [
+        {
+            title: t('navMenu.lists.registers'),
+            path: NavigationSubRoutes.HOW_TO_REFERENCE_REGISTERS,
+            subItems: [{ title: t('navMenu.lists.registersList'), path: NavigationSubRoutes.REFERENCE_REGISTRE }],
+        },
+        {
+            title: t('navMenu.lists.codelists'),
+            path: RouteNames.HOW_TO_CODELIST,
+            subItems: [
+                { title: t('navMenu.lists.codelistsList'), path: NavigationSubRoutes.CODELIST },
+                { title: t('navMenu.lists.codelistsRequestsList'), path: NavigationSubRoutes.REQUESTLIST, isLoginRequired: true },
+            ],
+        },
+    ]
+    return isSideMenu ? dataObjectSubItemsSideMenu : dataObjectSubItemsTopMenu
+}
+
 const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
     const commonRoutes: NavigationItem[] = [
         { title: t('navMenu.lists.endServices'), path: NavigationSubRoutes.KONCOVE_SLUZBY },
@@ -91,6 +121,8 @@ export const getPortalNavigationItems = (
 ): NavigationItem[] => {
     const egovSubItems = getEgovSubItems(t, isSideMenu)
 
+    const dataObjectSubItems = getDataObjectSubItems(t, isSideMenu)
+
     const navigationItems: NavigationItem[] = [
         {
             title: t('navMenu.egovComponents'),
@@ -112,34 +144,11 @@ export const getPortalNavigationItems = (
                 { title: t('navMenu.lists.standards'), path: NavigationSubRoutes.STANDARDY_ISVS },
             ],
         },
-
         {
             path: RouteNames.HOW_TO_DATA_OBJECTS,
             title: t('navMenu.dataObjects'),
             icon: DataObjectsIcon,
-            subItems: [
-                {
-                    title: t('navMenu.lists.registers'),
-                    path: NavigationSubRoutes.HOW_TO_REFERENCE_REGISTERS,
-                    subItems: [{ title: t('navMenu.lists.registersList'), path: NavigationSubRoutes.REFERENCE_REGISTRE }],
-                },
-                {
-                    title: t('navMenu.lists.codelists'),
-                    path: RouteNames.HOW_TO_CODELIST,
-                    subItems: [
-                        { title: t('navMenu.lists.codelistsList'), path: NavigationSubRoutes.CODELIST },
-                        { title: t('navMenu.lists.codelistsRequestsList'), path: NavigationSubRoutes.REQUESTLIST, isLoginRequired: true },
-                    ],
-                },
-                /* {
-                    title: t('navMenu.referenceIdentifiers'),
-                    path: RouteNames.HOW_TO_REFERENCE_IDENTIFIERS,
-                    subItems: [
-                        { title: t('navMenu.lists.referenceIdentifiersList'), path: NavigationSubRoutes.IDENTIFIERS_LIST },
-                        { title: t('navMenu.lists.referenceIdentifiersRequestsList'), path: NavigationSubRoutes.IDENTIFIERS_REQUESTS },
-                    ],
-                },*/
-            ],
+            subItems: dataObjectSubItems,
         },
 
         {
