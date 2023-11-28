@@ -11,6 +11,7 @@ import {
     useProcessRequestAction,
 } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { RefRegisterChangeStateModal } from '@/components/views/refregisters/RefRegisterChangeStateModal'
 import { RefRegisterButtonPopupContent } from '@/components/views/refregisters/RefRegisterButtonPopupContent'
@@ -27,7 +28,10 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
-
+    const {
+        state: { user },
+    } = useAuth()
+    const isLoggedIn = !!user?.uuid
     const [openChangeStateDialog, setOpenChangeStateDialog] = useState<boolean>(false)
     const [openGeneratePropDialog, setOpenGeneratePropDialog] = useState<boolean>(false)
     const [targetState, setTargetState] = useState<ApiReferenceRegisterState>()
@@ -80,32 +84,34 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
                     <div className={styles.headerDiv}>
                         <TextHeading size="XL">{entityItemName}</TextHeading>
 
-                        <ButtonGroupRow>
-                            <Can I={Actions.EDIT} a={`refRegisters`}>
-                                <Button
-                                    label={t('ciType.editButton')}
-                                    onClick={() => navigate(`/refRegisters/${entityId}/edit`, { state: location.state })}
-                                />
-                            </Can>
-                            <Can I={Actions.CHANGE_STATES} a={`refRegisters`}>
-                                <ButtonPopup
-                                    buttonLabel={t('ciType.moreButton')}
-                                    popupPosition="right"
-                                    popupContent={() => {
-                                        return (
-                                            <div className={styles.buttonLinksDiv}>
-                                                <RefRegisterButtonPopupContent
-                                                    entityId={entityId}
-                                                    setOpenGeneratePropDialog={setOpenGeneratePropDialog}
-                                                    handleDeleteRefRegister={handleDeleteRefRegister}
-                                                    onClick={onClick}
-                                                />
-                                            </div>
-                                        )
-                                    }}
-                                />
-                            </Can>
-                        </ButtonGroupRow>
+                        {isLoggedIn && (
+                            <ButtonGroupRow>
+                                <Can I={Actions.EDIT} a={`refRegisters`}>
+                                    <Button
+                                        label={t('ciType.editButton')}
+                                        onClick={() => navigate(`/refRegisters/${entityId}/edit`, { state: location.state })}
+                                    />
+                                </Can>
+                                <Can I={Actions.CHANGE_STATES} a={`refRegisters`}>
+                                    <ButtonPopup
+                                        buttonLabel={t('ciType.moreButton')}
+                                        popupPosition="right"
+                                        popupContent={() => {
+                                            return (
+                                                <div className={styles.buttonLinksDiv}>
+                                                    <RefRegisterButtonPopupContent
+                                                        entityId={entityId}
+                                                        setOpenGeneratePropDialog={setOpenGeneratePropDialog}
+                                                        handleDeleteRefRegister={handleDeleteRefRegister}
+                                                        onClick={onClick}
+                                                    />
+                                                </div>
+                                            )
+                                        }}
+                                    />
+                                </Can>
+                            </ButtonGroupRow>
+                        )}
                     </div>
                 </QueryFeedback>
             </div>
