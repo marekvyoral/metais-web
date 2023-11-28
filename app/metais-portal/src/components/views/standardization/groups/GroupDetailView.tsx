@@ -80,6 +80,7 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                 }}
                 setAddedLabel={setSuccessfulUpdatedData}
                 group={group}
+                existingMembers={tableData?.map((row) => row.uuid) ?? []}
             />
             <BreadCrumbs withWidthContainer links={breadCrumbsLinks} />
             <MainContentWrapper>

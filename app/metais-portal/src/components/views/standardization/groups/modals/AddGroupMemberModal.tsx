@@ -13,11 +13,13 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { SubmitWithFeedback } from '@isdd/metais-common/index'
 import { useReadConfigurationItemByMetaIsCode } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { KSIVS_SHORT_NAME, PUBLIC_ORG_CMDB_CODE } from '@isdd/metais-common/constants'
+import { useInvalidateGroupMembersCache } from '@isdd/metais-common/hooks/invalidate-cache'
+
+import { AddMemberSelect } from '../components/AddMemberSelect'
 
 import { AddMemberEnum, addMemberSchema } from './addMemberSchema'
 
 import styles from '@/components/views/standardization/groups/styles.module.scss'
-import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect'
 import { DEFAULT_KSISVS_ROLES, DEFAULT_ROLES } from '@/components/views/standardization/groups/defaultRoles'
 
 interface AddGroupMemberModalProps {
@@ -25,9 +27,10 @@ interface AddGroupMemberModalProps {
     onClose: () => void
     setAddedLabel: React.Dispatch<React.SetStateAction<boolean>>
     group: Group | undefined
+    existingMembers: string[]
 }
 
-const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClose, setAddedLabel, group }) => {
+const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClose, setAddedLabel, group, existingMembers }) => {
     const { t } = useTranslation()
     const {
         register,
@@ -47,12 +50,15 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
     const [selectedMemberOrganizations, setSelectedMemberOrganizations] = useState<{ name: string; uuid: string }[]>([])
     const { data: relatedOrganizations } = useFindRelatedOrganizations(watchMember[0] ?? '')
 
+    const invalidateGroupMembersCache = useInvalidateGroupMembersCache(group?.uuid ?? '')
+
     const onSubmit = async (form: FieldValues) => {
         setAddingGroupMember(true)
         const role = (await findRole({ name: form.role })) as Role
         await addRelation(form.member ?? '', group?.uuid ?? '', role.uuid ?? '', form.organization)
         setAddingGroupMember(false)
         setAddedLabel(true)
+        invalidateGroupMembersCache.invalidate()
         onClose()
     }
 
@@ -76,12 +82,13 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
             >
                 <TextHeading size="L">{t('groups.addMember')}</TextHeading>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <IdentitySelect
+                    <AddMemberSelect
                         label={t('groups.member')}
                         name={AddMemberEnum.MEMBER}
                         setValue={setValue}
                         clearErrors={clearErrors}
                         error={errors[AddMemberEnum.MEMBER]?.message}
+                        existingMembers={existingMembers}
                     />
                     <SimpleSelect
                         label={t('groups.organization')}
