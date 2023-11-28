@@ -242,7 +242,8 @@
         "entity": {
             "editHeader": "Edit entity",
             "createHeader": "Create new entity type",
-            "detailHeading": "Detail of entity"
+            "detailHeading": "Detail of entity",
+            "technicalNameAlreadyExists": "Technical name of CI type already exists"
         },
         "profile": {
             "editHeader": "Edit profile",

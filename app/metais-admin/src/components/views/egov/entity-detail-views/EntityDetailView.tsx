@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tab } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { getTabsFromApi, MutationFeedback, QueryFeedback } from '@isdd/metais-common'
@@ -6,6 +6,7 @@ import { Button, ButtonGroupRow } from '@isdd/idsk-ui-kit'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { EntityDetailViewAttributes } from './attributes/EntityDetailViewAttributes'
 
@@ -35,6 +36,7 @@ export const EntityDetailView = ({
     const navigate = useNavigate()
     const location = useLocation()
     const { isActionSuccess } = useActionSuccess()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
     const tabsFromApi = getTabsFromApi(
         keysToDisplay,
@@ -69,6 +71,10 @@ export const EntityDetailView = ({
         ...tabsFromApi,
     ]
 
+    useEffect(() => {
+        scrollToMutationFeedback()
+    }, [isActionSuccess, scrollToMutationFeedback])
+
     return (
         <QueryFeedback loading={isLoading} error={false}>
             <div className={styles.basicInformationSpace}>
@@ -89,7 +95,17 @@ export const EntityDetailView = ({
                         </ButtonGroupRow>
                     </div>
                     {isError && <QueryFeedback error loading={false} />}
-                    <MutationFeedback success={isActionSuccess.value} error={false} />
+                    <div ref={wrapperRef}>
+                        <MutationFeedback
+                            success={isActionSuccess.value}
+                            error={false}
+                            successMessage={
+                                isActionSuccess.additionalInfo?.type === 'edit'
+                                    ? t('mutationFeedback.successfulUpdated')
+                                    : t('mutationFeedback.successfulCreated')
+                            }
+                        />
+                    </div>
                 </FlexColumnReverseWrapper>
                 <BasicInformation data={{ ciTypeData, constraintsData, unitsData }} roles={roles} />
             </div>

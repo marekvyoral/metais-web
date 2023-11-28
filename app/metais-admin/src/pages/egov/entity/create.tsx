@@ -29,6 +29,7 @@ const CreateEntity = () => {
                             isError={props.isError}
                             isLoading={props.isLoading}
                             type="entity"
+                            refetch={props.refetch}
                         />
                     )}
                 />

@@ -89,6 +89,7 @@ export enum ReponseErrorCodeEnum {
     DEFAULT = 'default',
     GNR403 = 'gnr403',
     GNR412 = 'gnr412',
+    NTM01 = 'ntm01',
 }
 export const REPORTS = 'reports'
 export const FIRST_PAGE_NUMBER = 1

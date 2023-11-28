@@ -46,6 +46,7 @@ const EditEntity = () => {
                                     isLoading={createProps.isLoading || props.isLoading}
                                     isEdit
                                     type="entity"
+                                    refetch={props.refetch}
                                 />
                             )}
                         />
