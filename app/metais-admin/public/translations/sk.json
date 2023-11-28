@@ -152,6 +152,7 @@
         "type": "Typ",
         "valid": "Stav",
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
+        "paginationSummaryEmpty": "Zobrazených 0 z celkových 0 záznamov",
         "noRowsFound": "Nenašli sa žiadne záznamy",
         "ico": "ICO",
         "adress": "Adresa"

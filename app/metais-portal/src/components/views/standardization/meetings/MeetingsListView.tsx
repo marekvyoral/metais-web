@@ -71,6 +71,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoad
     const [state, setState] = useState<string | null | undefined>(defaultFilterValues.state)
 
     const { filter, handleFilterChange } = useFilterParams<MeetingsFilterData>(defaultFilterValues)
+
     useEffect(() => {
         setMeetingsRequestParams((prev) => {
             const newParams = { ...prev, pageNumber: Number(filter.pageNumber), perPage: Number(filter.pageSize) }
@@ -235,25 +236,27 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoad
                     )
                 }}
             />
-            {userIsRoles && (
-                <ActionsOverTable
-                    pagination={{
-                        pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
-                        pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
-                        dataLength: meetings?.length ?? 0,
-                    }}
-                    createButton={
+
+            <ActionsOverTable
+                pagination={{
+                    pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+                    pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
+                    dataLength: meetings?.length ?? 0,
+                }}
+                createButton={
+                    userIsRoles && (
                         <CreateEntityButton
                             label={t('meetings.addNewMeeting')}
                             onClick={() => navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI_CREATE}`)}
                         />
-                    }
-                    handleFilterChange={handleFilterChange}
-                    hiddenButtons={{ SELECT_COLUMNS: true }}
-                    pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
-                    entityName=""
-                />
-            )}
+                    )
+                }
+                handleFilterChange={handleFilterChange}
+                hiddenButtons={{ SELECT_COLUMNS: true }}
+                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                entityName=""
+            />
+
             <QueryFeedback loading={isLoading} error={isError} withChildren>
                 <Table
                     columns={columns}
