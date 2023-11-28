@@ -6,6 +6,8 @@ import { MetainformationColumns } from '@isdd/metais-common/componentHelpers/ci/
 export const BASE_PAGE_NUMBER = 1
 export const BASE_PAGE_SIZE = 10
 
+export const REGEX_EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
 export const filterKeysToSkip = new Set(['fullTextSearch', 'attributeFilters', 'sort', 'pageSize', 'pageNumber'])
 
 export type OPERATOR_SEPARATOR_TYPE = '--'

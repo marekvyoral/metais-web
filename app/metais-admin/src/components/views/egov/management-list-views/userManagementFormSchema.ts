@@ -1,5 +1,6 @@
 import { object, string } from 'yup'
 import { TFunction } from 'i18next'
+import { REGEX_EMAIL } from '@isdd/metais-common/constants'
 
 import { InputNames } from './UserDetailForm'
 
@@ -12,7 +13,8 @@ export const getUserManagementFormSchema = (t: TFunction<'translation', undefine
             .required(t('managementList.required', { value: t('managementList.login') })),
         [InputNames.EMAIL]: string()
             .email(t('managementList.emailFormat'))
-            .required(t('managementList.required', { value: t('managementList.email') })),
+            .required(t('managementList.required', { value: t('managementList.email') }))
+            .matches(REGEX_EMAIL, t('managementList.emailFormat')),
         [InputNames.MOBILE]: string().required(t('managementList.required', { value: t('managementList.mobile') })),
         [InputNames.PHONE]: string().required(t('managementList.required', { value: t('managementList.phone') })),
         [InputNames.POSITION]: string(),
