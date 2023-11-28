@@ -159,6 +159,7 @@
         "codePrefix": "Prefix metais code",
         "uriPrefix": "URI prefix",
         "valid": "State",
+        "mandatory": "Mandatory",
         "description": "Description",
         "engDescription": "English description",
         "color": "Color",
@@ -234,7 +235,8 @@
             "regex": "Regex",
             "interval": "Interval",
             "ciType": "Entity",
-            "mustBeNumber": "Must be a number"
+            "mustBeNumber": "Must be a number",
+            "minCharacters": "This field requires at least {{min}} characters"
         },
         "entity": {
             "editHeader": "Edit entity",
@@ -404,6 +406,8 @@
         "runMutationError": "Script execution failed, check the validity of the code",
         "successfulUpdated": "The item was successfully changed",
         "successfulCreated": "The item was successfully created",
+        "attrSuccessfulUpdated": "Attribute was successfully changed",
+        "attrSuccessfulCreated": "Attribute was successfully created",
         "changeOwner": "Change owner",
         "metaColumnName": {
             "state": "Evidence status",

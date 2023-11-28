@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
+import { getGetAttributeProfileQueryKey } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import {
     CiListFilterContainerUi,
     getGetRoleParticipantBulkQueryKey,
@@ -136,6 +137,15 @@ export const useInvalidateCodeListRequestCache = () => {
         }
     }
 
+    return { invalidate }
+}
+
+export const useInvalidateAttributeProfileCache = (entityName: string) => {
+    const queryClient = useQueryClient()
+    const profileQueryKey = getGetAttributeProfileQueryKey(entityName)
+    const invalidate = () => {
+        queryClient.invalidateQueries(profileQueryKey)
+    }
     return { invalidate }
 }
 

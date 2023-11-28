@@ -32,7 +32,6 @@ export const useCreateAttributeSelectOptions = ({ measureUnit, allEnumsData }: i
     const { t } = useTranslation()
 
     const attributeTypes: IOption<string>[] = [
-        { label: t('egov.detail.selectOption'), value: '', disabled: true },
         { label: t('egov.create.integer'), value: AttributeAttributeTypeEnum.INTEGER },
         { label: t('egov.create.long'), value: AttributeAttributeTypeEnum.LONG },
         { label: t('egov.create.double'), value: AttributeAttributeTypeEnum.DOUBLE },

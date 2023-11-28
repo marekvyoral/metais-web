@@ -52,8 +52,7 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
                     route = AdminRouteNames.EGOV_RELATION
                 }
                 setSuccessedMutation(true)
-                setIsActionSuccess({ value: true, path: `${route}/${formData?.technicalName}` })
-                navigate(`${route}/${formData?.technicalName}`)
+                setIsActionSuccess({ value: true, path: `${route}/${formData?.technicalName}`, additionalInfo: { type: isEdit ? 'edit' : 'create' } })
             })
             .catch((mutationError) => {
                 setError({ errorTitle: mutationError?.message, errorMessage: mutationError?.message })

@@ -1,4 +1,5 @@
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { FindAll11200, useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
 import {
     AttributeProfile,
     CiType,
@@ -12,12 +13,19 @@ import {
     useStoreVisible,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
-import React from 'react'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import React, { useState } from 'react'
+
+export interface IOpenAddAttribudeModalState {
+    openAddAttributeModal: boolean
+    setOpenAddAttributeModal: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 export interface IAttributesContainerView<T> {
     data: {
-        ciTypeData: AttributeProfile | undefined
+        profileData: AttributeProfile | undefined
         constraintsData: (EnumType | undefined)[]
         unitsData?: EnumType | undefined
     }
@@ -28,6 +36,9 @@ export interface IAttributesContainerView<T> {
     saveAttribute: (formData: T) => Promise<void>
     isLoading: boolean
     isError: boolean
+    openAddAttribudeModalState: IOpenAddAttribudeModalState
+    refetch: () => void
+    roles?: FindAll11200
 }
 
 interface AttributesContainer<T> {
@@ -36,26 +47,38 @@ interface AttributesContainer<T> {
 }
 
 export const ProfileDetailContainer: React.FC<AttributesContainer<CiType>> = ({ entityName, View }) => {
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError, refetch } = useGetAttributeProfile(entityName)
+    const { setIsActionSuccess } = useActionSuccess()
+
+    const {
+        data: profileData,
+        isLoading: isProfileLoading,
+        isFetching: isProfileFetching,
+        isError: isProfileError,
+        refetch,
+    } = useGetAttributeProfile(entityName)
 
     const { isLoading, isError, constraintsData } = useDetailData({
-        entityStructure: ciTypeData,
-        isEntityStructureLoading: isCiTypeDataLoading,
-        isEntityStructureError: isCiTypeDataError,
+        entityStructure: profileData,
+        isEntityStructureLoading: isProfileLoading,
+        isEntityStructureError: isProfileError,
     })
+
+    const { data: roles, isLoading: isRolesLoading, isError: isRolesError } = useFindAll11()
 
     const { mutateAsync: setProfileAsInvalid } = useStoreUnValid()
     const { mutateAsync: setProfileAsValid } = useStoreValid1()
 
     const { mutateAsync: setProfileAttributeAsValid } = useStoreValid2()
     const { mutateAsync: setProfileAttributeAsInvalid } = useStoreUnvalid1()
-    const { mutateAsync: saveExistingAttribute } = useStoreExistAttribute()
+    const { mutateAsync: saveExistingAttribute, isLoading: savingAttr } = useStoreExistAttribute()
 
     const { mutateAsync: setProfileAttributeAsVisible } = useStoreVisible()
     const { mutateAsync: setProfileAttributeAsInvisible } = useStoreInvisible()
 
+    const [openAddAttributeModal, setOpenAddAttributeModal] = useState(false)
+
     const setValidityOfProfile = async (technicalName?: string) => {
-        await setValidity(technicalName, ciTypeData?.valid, setProfileAsValid, setProfileAsInvalid, refetch)
+        await setValidity(technicalName, profileData?.valid, setProfileAsValid, setProfileAsInvalid, refetch)
     }
 
     const saveAttribute = async (formData: CiType) => {
@@ -63,23 +86,27 @@ export const ProfileDetailContainer: React.FC<AttributesContainer<CiType>> = ({ 
             data: {
                 ...formData,
             },
-        }).then(() => {
-            refetch()
         })
+        setIsActionSuccess({
+            value: true,
+            path: `${AdminRouteNames.EGOV_PROFILE}/${entityName}`,
+            additionalInfo: { type: 'edit', entity: 'attribute' },
+        })
+        refetch()
     }
 
     const setValidityOfAttributeProfile = async (attributeTechnicalName?: string, oldAttributeValidity?: boolean) => {
         if (oldAttributeValidity) {
             setProfileAttributeAsInvalid({
                 technicalName: attributeTechnicalName ?? '',
-                attrProfileTechnicalName: ciTypeData?.technicalName ?? '',
+                attrProfileTechnicalName: profileData?.technicalName ?? '',
             }).then(() => {
                 refetch()
             })
         } else {
             setProfileAttributeAsValid({
                 technicalName: attributeTechnicalName ?? '',
-                attrProfileTechnicalName: ciTypeData?.technicalName ?? '',
+                attrProfileTechnicalName: profileData?.technicalName ?? '',
             }).then(() => {
                 refetch()
             })
@@ -90,14 +117,14 @@ export const ProfileDetailContainer: React.FC<AttributesContainer<CiType>> = ({ 
         if (!oldAttributeInvisibility) {
             setProfileAttributeAsInvisible({
                 technicalName: attributeTechnicalName ?? '',
-                attrProfileTechnicalName: ciTypeData?.technicalName ?? '',
+                attrProfileTechnicalName: profileData?.technicalName ?? '',
             }).then(() => {
                 refetch()
             })
         } else {
             setProfileAttributeAsVisible({
                 technicalName: attributeTechnicalName ?? '',
-                attrProfileTechnicalName: ciTypeData?.technicalName ?? '',
+                attrProfileTechnicalName: profileData?.technicalName ?? '',
             }).then(() => {
                 refetch()
             })
@@ -106,13 +133,16 @@ export const ProfileDetailContainer: React.FC<AttributesContainer<CiType>> = ({ 
 
     return (
         <View
-            data={{ ciTypeData, constraintsData, unitsData: undefined }}
+            data={{ profileData, constraintsData, unitsData: undefined }}
             setValidityOfProfile={setValidityOfProfile}
             setValidityOfAttributeProfile={setValidityOfAttributeProfile}
             setVisibilityOfAttributeProfile={setVisibilityOfAttributeProfile}
             saveAttribute={saveAttribute}
-            isLoading={isLoading}
-            isError={isError}
+            isLoading={[isLoading, isRolesLoading, isProfileFetching, savingAttr].some((item) => item)}
+            isError={[isError, isRolesError].some((item) => item)}
+            openAddAttribudeModalState={{ openAddAttributeModal, setOpenAddAttributeModal }}
+            refetch={refetch}
+            roles={roles}
         />
     )
 }

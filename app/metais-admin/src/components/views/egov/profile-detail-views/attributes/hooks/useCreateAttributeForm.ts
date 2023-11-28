@@ -23,7 +23,7 @@ interface iUseCreateAttributeForm {
             description: string
             engDescription: string | undefined
             attributeProfiles: AttributeProfile[] | undefined
-            type: string | undefined
+            type: string
             units: string | undefined
             defaultValue: string | boolean | number | undefined
             constraints: AttributeConstraint[] | AttributeConstraintRegexAllOf[] | AttributeConstraintIntervalAllOf[] | AttributeConstraintEnumAllOf[]
@@ -44,7 +44,7 @@ export const useCreateAttributeForm = (): iUseCreateAttributeForm => {
         resolver: yupResolver(generateSchemaForCreateAttribute(t)),
     })
 
-    const selectedType = formMethods.watch('type') ?? ''
+    const selectedType = formMethods.watch('type')
 
     const showUnit = isSelectedTypeNumber(selectedType)
     const showConstraint = selectedType === AttributeAttributeTypeEnum.INTEGER || selectedType === AttributeAttributeTypeEnum.STRING

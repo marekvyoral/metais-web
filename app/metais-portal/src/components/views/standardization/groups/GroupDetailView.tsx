@@ -87,7 +87,9 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                     {isActionSuccess.value && (
                         <MutationFeedback
                             successMessage={
-                                isActionSuccess.type === 'edit' ? t('mutationFeedback.successfulUpdated') : t('mutationFeedback.successfulCreated')
+                                isActionSuccess.additionalInfo?.type === 'edit'
+                                    ? t('mutationFeedback.successfulUpdated')
+                                    : t('mutationFeedback.successfulCreated')
                             }
                             success={isActionSuccess.value}
                             error={false}

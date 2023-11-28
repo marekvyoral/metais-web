@@ -195,6 +195,7 @@
         "codePrefix": "Prefix metais kódu",
         "uriPrefix": "URI prefix",
         "valid": "Stav",
+        "mandatory": "Povinný",
         "description": "Popis",
         "engDescription": "Anglický popis",
         "color": "Farebné označenie",
@@ -272,7 +273,8 @@
             "regex": "Regulárny výraz",
             "interval": "Intervalové rozloženie",
             "ciType": "Entita",
-            "mustBeNumber": "Hodnota musí byť číslo"
+            "mustBeNumber": "Hodnota musí byť číslo",
+            "minCharacters": "Toto pole musí obsahovať minimálne {{min}} znaky"
         },
         "entity": {
             "editHeader": "Editácia entity",
@@ -448,7 +450,9 @@
         "successfulUpdated": "Položka bola úspešne zmenená",
         "runMutationSuccess": "Skript bol úspešne vykonaný",
         "runMutationError": "Vykonávanie skriptu zlyhalo, skontrolujte platnosť kódu",
-        "successfulCreated": "Položka bola úspešne pridaná"
+        "successfulCreated": "Položka bola úspešne pridaná",
+        "attrSuccessfulUpdated": "Atribút bol úspešne  zmenený",
+        "attrSuccessfulCreated": "Atribút bol úspešne pridaný"
     },
     "managementList": {
         "namePassword": "Meno / Heslo",
