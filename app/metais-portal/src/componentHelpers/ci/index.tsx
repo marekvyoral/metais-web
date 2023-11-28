@@ -1,12 +1,13 @@
 import { AbilityTuple, MongoAbility, MongoQuery } from '@casl/ability'
 import { Tab } from '@isdd/idsk-ui-kit/index'
 import { ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Attribute, AttributeAttributeTypeEnum, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ciInformationTab } from '@isdd/metais-common/constants'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { isFalsyStringValue } from '@isdd/metais-common/utils/utils'
 import { TFunction } from 'i18next'
+import { FieldValues } from 'react-hook-form'
 import { Location, Outlet, useLocation, useParams } from 'react-router-dom'
 
 type GetDefaultCiEntityTabListProps = {
@@ -87,4 +88,24 @@ export const formatForFormDefaultValues = (
     }
 
     return formattedDefaultAttributeValues
+}
+
+export const filterFormValuesBasedOnCurrentRole = (attProfiles: AttributeProfile[], currentRoleName: string, formValues: FieldValues) => {
+    const attributesWithRoles: Record<string, string[]> = attProfiles.reduce<Record<string, string[]>>((acc, obj) => {
+        const reducedAttributesWithRoles = obj?.attributes?.reduce<Record<string, string[]>>(
+            (profileAcc, att) => ({ ...profileAcc, [att.technicalName ?? '']: obj.roleList ?? [] }),
+            {},
+        )
+        return { ...acc, ...reducedAttributesWithRoles }
+    }, {})
+
+    const newFormValues: FieldValues = {}
+    for (const key in formValues) {
+        if (attributesWithRoles?.[key]?.includes(currentRoleName)) {
+            newFormValues[key] = formValues[key]
+        } else {
+            newFormValues[key] = ''
+        }
+    }
+    return newFormValues
 }
