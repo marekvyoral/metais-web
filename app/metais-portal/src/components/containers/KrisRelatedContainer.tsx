@@ -5,7 +5,16 @@ import {
     useReadCiList1,
     useReadNeighboursConfigurationItems,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { ENTITY_ISVS, ENTITY_KS, ENTITY_PROJECT, krisRelatedCiTabsNames, PO, PO_predklada_KRIS } from '@isdd/metais-common/constants'
+import {
+    ENTITY_AGENDA,
+    ENTITY_ISVS,
+    ENTITY_KS,
+    ENTITY_PROJECT,
+    ENTITY_ZS,
+    krisRelatedCiTabsNames,
+    PO,
+    PO_predklada_KRIS,
+} from '@isdd/metais-common/constants'
 import { UserPreferencesFormNamesEnum, useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import React, { useMemo, useState } from 'react'
 import { useAgendaAndZsCezPo } from '@isdd/metais-common/src/hooks/useAgendaAndZsCezPo'
@@ -37,6 +46,7 @@ export type KrisData = {
 export type KrisKeysToDisplayType = {
     technicalName: string
     title: string
+    count: number
 }
 
 type AgendaAndZsCustomType = ConfigurationItemUi & {
@@ -113,22 +123,38 @@ export const KrisRelatedContainer: React.FC<Props> = ({ currentKrisUuid }) => {
         fetchStatus: ciListFetchStatus,
     } = useReadCiList1(ciListFilter, { query: { enabled: !!neighboursUuid && isCi } })
 
-    const { agendaData, zsData, isLoading: isAgendaAndZsLoading, isError: isAgendaAndZsError } = useAgendaAndZsCezPo(neighboursUuid)
+    const {
+        agendaData,
+        zsData,
+        isLoading: isAgendaAndZsLoading,
+        isError: isAgendaAndZsError,
+        isInitialLoading: isInitialAgendaAndZsLoading,
+    } = useAgendaAndZsCezPo(neighboursUuid)
 
     const remmapedAgenda = remmapNameAndValueArrayToObj(agendaData as AgendaAndZsCustomType[])
     const remmapedZsData = remmapNameAndValueArrayToObj(zsData as AgendaAndZsCustomType[])
 
     const { data: listOfCiTypes, isLoading: isListOfCiTypeLoading, isError: isListOfCiTypesError } = useListCiTypes({ filter: {} })
 
+    const countList = [
+        { name: ENTITY_AGENDA, count: agendaData?.length },
+        { name: ENTITY_ISVS, count: ISVSListData?.pagination?.totaltems },
+        { name: ENTITY_KS, count: KSListData?.pagination?.totaltems },
+        { name: ENTITY_PROJECT, count: projectListData?.pagination?.totaltems },
+        { name: ENTITY_ZS, count: zsData?.length },
+    ]
+
     const keysToDisplay: KrisKeysToDisplayType[] = krisRelatedCiTabsNames
         .map((key) => {
+            const count = countList.find((item) => item.name === key)?.count
             const entity = listOfCiTypes?.results?.find((ci) => ci.technicalName === key)
-            return { technicalName: entity?.technicalName ?? '', title: entity?.name ?? '' }
+
+            return { technicalName: entity?.technicalName ?? '', title: entity?.name ?? '', count }
         })
         .filter((item) => item.technicalName || item.title)
 
-    const isLoading = isCiNeighboursLoading || isListOfCiTypeLoading
-    const isListLoading = (isCiListLoading && ciListFetchStatus != 'idle') || isCiListFetching || isAgendaAndZsLoading || isCiTabDataLoading
+    const isLoading = isCiNeighboursLoading || isListOfCiTypeLoading || isCiTabDataLoading || isInitialAgendaAndZsLoading
+    const isListLoading = (isCiListLoading && ciListFetchStatus != 'idle') || isCiListFetching || isAgendaAndZsLoading
     const isError = isCiListError || isCiNeighboursError || isAgendaAndZsError || isListOfCiTypesError || isCiTabDataError
 
     const handleFilterChange = (pageNumber: number, pageSize: number, krisTabType?: string) => {
