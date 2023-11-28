@@ -7,8 +7,11 @@ import {
     useStoreNewAttrProfile,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
-import React from 'react'
+import React, { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
+import { useInvalidateAttributeProfileCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { HiddenInputs } from '@/types/inputs'
 
@@ -25,21 +28,27 @@ export interface ICreateEntityView {
 
 interface ICreateEntity {
     View: React.FC<ICreateEntityView>
+    entityName?: string
 }
 
-export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
+export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View, entityName }: ICreateEntity) => {
     const pageNumber = 1
     const pageSize = 200
-
+    const navigate = useNavigate()
     const queryClient = useQueryClient()
     const profileListQueryKey = getListAttrProfile1QueryKey({})
+    const invalidateAttributeProfileCache = useInvalidateAttributeProfileCache(entityName ?? '')
 
     const { data, isLoading, isError } = useFindAll1(pageNumber, pageSize, { direction: SortType.ASC, orderBy: 'name' })
+
+    const [profileNameFromCreate, setProfileNameFromCreate] = useState('')
 
     const { mutateAsync: mutateEdit } = useStoreExistAttrProfile({
         mutation: {
             onSuccess() {
                 queryClient.invalidateQueries([profileListQueryKey[0]])
+                invalidateAttributeProfileCache.invalidate()
+                navigate(`${AdminRouteNames.EGOV_PROFILE}/${entityName}`)
             },
         },
     })
@@ -48,6 +57,7 @@ export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreat
         mutation: {
             onSuccess() {
                 queryClient.invalidateQueries([profileListQueryKey[0]])
+                navigate(`${AdminRouteNames.EGOV_PROFILE}/${profileNameFromCreate}`)
             },
         },
     })
@@ -61,6 +71,7 @@ export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View }: ICreat
     }
 
     const createProfile = async (formData: AttributeProfile) => {
+        setProfileNameFromCreate(formData.technicalName ?? '')
         await mutateCreate({
             data: {
                 ...formData,

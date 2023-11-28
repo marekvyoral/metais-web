@@ -100,7 +100,7 @@ const ProjectEntityDetailPage: React.FC = () => {
                                 error={false}
                                 success={isActionSuccess.value}
                                 successMessage={
-                                    isActionSuccess.type === 'create'
+                                    isActionSuccess.additionalInfo?.type === 'create'
                                         ? t('mutationFeedback.successfulCreated')
                                         : t('mutationFeedback.successfulUpdated')
                                 }

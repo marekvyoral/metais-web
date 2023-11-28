@@ -4,10 +4,12 @@ import { useLocation } from 'react-router-dom'
 interface IActionSuccess {
     value: boolean
     path: string
-    type?: 'edit' | 'create' | 'clone'
+    additionalInfo?: {
+        [key: string]: string
+    }
 }
 
-const DEFAULT_STATE: IActionSuccess = { value: false, path: '', type: undefined }
+const DEFAULT_STATE: IActionSuccess = { value: false, path: '' }
 
 const ActionSuccess = createContext<{ isActionSuccess: IActionSuccess; setIsActionSuccess: Dispatch<SetStateAction<IActionSuccess>> }>({
     isActionSuccess: DEFAULT_STATE,

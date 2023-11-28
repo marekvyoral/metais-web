@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { Controller, FieldValues } from 'react-hook-form'
-import { Button, Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
+import { Input, SimpleSelect, TextArea } from '@isdd/idsk-ui-kit'
 import { useTranslation } from 'react-i18next'
 import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/RichTextQuill'
 import { HTML_TYPE } from '@isdd/metais-common/constants'
@@ -8,13 +8,14 @@ import { CiTypeListSelect } from '@isdd/metais-common/src/components/ci-type-lis
 import { AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLazySelect'
 import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
+import { SubmitWithFeedback } from '@isdd/metais-common/index'
 
 import { IAddAttributeView } from './AddAttributeContainer'
 import { StringConstraints, useCreateAttributeSelectOptions } from './hooks/useCreateAttributeSelectOptions'
 import { useCreateAttributeForm } from './hooks/useCreateAttributeForm'
 import { getTypeForDefaultValue } from './hooks/helpers'
 
-const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, storeNewAttribute }: IAddAttributeView) => {
+const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, storeNewAttribute, isLoading }: IAddAttributeView) => {
     const { t } = useTranslation()
     const { attributeTypes, measureUnits, stringConstraints, integerConstraints, allEnumsSelectOptions } = useCreateAttributeSelectOptions({
         measureUnit,
@@ -69,7 +70,7 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                 options={attributeTypes}
                 setValue={setValue}
                 name="type"
-                defaultValue={attributeTypes?.[0]?.value}
+                defaultValue={null}
                 error={formState.errors.type?.message}
             />
             {showUnit && (
@@ -126,15 +127,6 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                     <Input label={t('egov.maxValue')} type="number" id="order" {...register('constraints.0.maxValue')} />
                 </>
             )}
-            {selectedType !== '' && selectedType !== 'BOOLEAN' && selectedType !== HTML_TYPE && selectedConstraint !== 'enum' && (
-                <Input
-                    label={t('egov.defaultValue')}
-                    id="defaultValue"
-                    type={getTypeForDefaultValue(selectedType)}
-                    {...register('defaultValue')}
-                    error={formState?.errors?.defaultValue?.message}
-                />
-            )}
             {selectedType === HTML_TYPE && (
                 <Controller
                     name="defaultValue"
@@ -164,6 +156,7 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
 
             {selectedType !== '' &&
                 selectedType !== AttributeAttributeTypeEnum.BOOLEAN &&
+                selectedType !== HTML_TYPE &&
                 selectedConstraint !== StringConstraints.ENUM &&
                 selectedConstraint !== StringConstraints.CI_TYPE && (
                     <Input
@@ -174,7 +167,7 @@ const AddAttributeView = ({ data: { measureUnit, allEnumsData, entityName }, sto
                         error={formState?.errors?.defaultValue?.message}
                     />
                 )}
-            <Button type="submit" label={t('form.submit')} />
+            <SubmitWithFeedback submitButtonLabel={t('form.submit')} loading={isLoading} />
         </form>
     )
 }

@@ -89,7 +89,7 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
 
     const onRedirectSuccess = () => {
         const toPath = `/ci/${entityName}/${configurationItemId}`
-        setIsActionSuccess({ value: true, path: toPath, type: 'clone' })
+        setIsActionSuccess({ value: true, path: toPath, additionalInfo: { type: 'clone' } })
         navigate(toPath, { state: { from: location } })
     }
 

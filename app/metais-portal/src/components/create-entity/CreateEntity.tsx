@@ -93,7 +93,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         invalidateCiByUuidCache.invalidate(configurationItemId)
 
         const toPath = `/ci/${entityName}/${configurationItemId}`
-        setIsActionSuccess({ value: true, path: toPath, type: isUpdate ? 'edit' : 'create' })
+        setIsActionSuccess({ value: true, path: toPath, additionalInfo: { type: isUpdate ? 'edit' : 'create' } })
         navigate(toPath, { state: { from: location } })
     }
 

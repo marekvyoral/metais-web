@@ -63,7 +63,11 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
     const { mutate: updateGroup, isLoading: isUpdating } = useUpdateOrCreate2({
         mutation: {
             onSuccess() {
-                setIsActionSuccess({ value: true, path: `${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${infoData?.uuid}`, type: 'edit' })
+                setIsActionSuccess({
+                    value: true,
+                    path: `${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${infoData?.uuid}`,
+                    additionalInfo: { type: 'edit' },
+                })
                 goBack()
                 invalidateCache.invalidate()
                 invalidateGroupDetailCache.invalidate()

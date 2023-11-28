@@ -50,7 +50,11 @@ export const GroupCreateContainer: React.FC = () => {
                 )
                 setCreatingRelation(false)
                 invalidateCache.invalidate()
-                setIsActionSuccess({ value: true, path: `${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${res?.uuid}`, type: 'create' })
+                setIsActionSuccess({
+                    value: true,
+                    path: `${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${res?.uuid}`,
+                    additionalInfo: { type: 'create' },
+                })
                 navigate(`${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${res?.uuid}`)
             },
         },

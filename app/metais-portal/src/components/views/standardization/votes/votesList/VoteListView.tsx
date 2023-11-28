@@ -45,7 +45,7 @@ export const VotesListView: React.FC<IVotesListView> = ({
     const navigate = useNavigate()
     const location = useLocation()
     const {
-        isActionSuccess: { value: isSuccess, type: successType },
+        isActionSuccess: { value: isSuccess, additionalInfo: additionalInfo },
     } = useActionSuccess()
 
     const newVoteHandler = () => {
@@ -74,7 +74,7 @@ export const VotesListView: React.FC<IVotesListView> = ({
                     <MutationFeedback
                         success
                         error={false}
-                        successMessage={successType == 'create' ? t('votes.voteDetail.created') : t('mutationFeedback.successfulUpdated')}
+                        successMessage={additionalInfo?.type == 'create' ? t('votes.voteDetail.created') : t('mutationFeedback.successfulUpdated')}
                     />
                 </div>
             )}

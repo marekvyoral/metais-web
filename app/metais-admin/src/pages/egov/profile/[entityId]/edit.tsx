@@ -23,11 +23,11 @@ const EditProfile = () => {
                             { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
                             { label: t('navMenu.egov.entity'), href: AdminRouteNames.EGOV_PROFILE },
                             {
-                                label: t('egov.profile.detailHeading') + ` - ${props.data.ciTypeData?.name}`,
+                                label: t('egov.profile.detailHeading') + ` - ${props.data.profileData?.name}`,
                                 href: `${AdminRouteNames.EGOV_PROFILE}/${entityId}`,
                             },
                             {
-                                label: t('egov.profile.editHeader') + ` - ${props.data.ciTypeData?.name}`,
+                                label: t('egov.profile.editHeader') + ` - ${props.data.profileData?.name}`,
                                 href: `${AdminRouteNames.EGOV_PROFILE}/${entityId}/edit`,
                             },
                         ]}
@@ -38,7 +38,7 @@ const EditProfile = () => {
                                 <CreateEntityView
                                     data={{
                                         roles: createProps?.data?.roles,
-                                        existingEntityData: props?.data?.ciTypeData,
+                                        existingEntityData: props?.data?.profileData,
                                     }}
                                     mutate={createProps.mutateEdit}
                                     hiddenInputs={createProps?.hiddenInputs}
@@ -48,6 +48,7 @@ const EditProfile = () => {
                                     type="profile"
                                 />
                             )}
+                            entityName={entityId ?? ''}
                         />
                     </MainContentWrapper>
                 </>

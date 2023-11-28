@@ -89,7 +89,7 @@ const AsEntityDetailPage: React.FC = () => {
                             <MutationFeedback
                                 error={false}
                                 success={isActionSuccess.value}
-                                successMessage={getSuccessMessage(isActionSuccess.type)}
+                                successMessage={getSuccessMessage(isActionSuccess.additionalInfo?.type)}
                             />
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />

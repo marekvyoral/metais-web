@@ -23,7 +23,7 @@ const Profile = () => {
                             { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
                             { label: t('navMenu.egov.entity'), href: AdminRouteNames.EGOV_PROFILE },
                             {
-                                label: t('egov.profile.detailHeading') + ` - ${props.data.ciTypeData?.name}`,
+                                label: t('egov.profile.detailHeading') + ` - ${props.data.profileData?.name}`,
                                 href: `${AdminRouteNames.EGOV_PROFILE}/${entityId}`,
                             },
                         ]}
@@ -38,6 +38,9 @@ const Profile = () => {
                             setVisibilityOfAttributeProfile={props?.setVisibilityOfAttributeProfile}
                             isError={props.isError}
                             isLoading={props.isLoading}
+                            openAddAttribudeModalState={props.openAddAttribudeModalState}
+                            refetch={props.refetch}
+                            roles={props.roles}
                         />
                     </MainContentWrapper>
                 </>
