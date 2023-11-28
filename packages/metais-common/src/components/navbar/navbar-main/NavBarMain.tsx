@@ -1,11 +1,12 @@
 import React, { SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
-import classnames from 'classnames'
+import classNames from 'classnames'
 
 import { NavIconGroup } from './NavIconGroup'
 import { NavSearchBar } from './NavSearchBar'
 import { NavLogin } from './NavLogin'
+import { NewItemButtonPopup } from './NewItemButtonPopup'
 
 import { LogoMirri } from '@isdd/metais-common/assets/images'
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
@@ -27,6 +28,7 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
         state: { user },
     } = useAuth()
     const location = useLocation()
+
     return (
         <div className="idsk-header-web__main">
             <div className="govuk-width-container">
@@ -54,14 +56,14 @@ export const NavBarMain: React.FC<INavBarMain> = ({ setIsMenuExpanded, isMenuExp
                         </div>
                     </div>
 
-                    <div className="govuk-grid-column-full">
+                    <div className={classNames('govuk-grid-column-full', { [styles.center]: isAdmin })}>
                         <div className="idsk-header-web__main-action">
                             {isAdmin ? <div className={styles.fullWidth} /> : <NavSearchBar />}
                             <NavIconGroup isMobile={false} iconGroupItems={iconGroupItems} />
 
                             <div className="idsk-header-web__main--buttons">
                                 {user ? (
-                                    <button className={classnames('idsk-button idsk-button--secondary', styles.noWrap)}>{t('navbar.newItem')}</button>
+                                    !isAdmin && <NewItemButtonPopup />
                                 ) : (
                                     <Link
                                         className="govuk-link"

@@ -456,6 +456,13 @@
         "saveSuccess": "Zmena bola úspešne uložená"
     },
     "ciType": {
+        "ISVS": "ISVS",
+        "Projekt": "Projekt",
+        "KRIS": "Koncepcie rozvoja IT",
+        "InfraSluzba": "Infraštruktúrne služby",
+        "AS": "Aplikačná služba",
+        "KS": "Koncová služba",
+
         "informations": "Informácie",
         "tasks": "Úlohy",
         "documents": "Dokumenty",

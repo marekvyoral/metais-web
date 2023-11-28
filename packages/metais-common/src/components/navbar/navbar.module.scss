@@ -92,3 +92,16 @@
 .marginLeftAuto {
     margin-left: auto !important;
 }
+
+.popupList {
+    display: flex;
+    flex-direction: column;
+    gap: govuk-spacing(4);
+    Button {
+        text-align: left;
+    }
+}
+.center {
+    display: flex;
+    justify-content: flex-end;
+}

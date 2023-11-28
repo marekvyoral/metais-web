@@ -455,6 +455,13 @@
         "saveSuccess": "Data has been saved"
     },
     "ciType": {
+        "ISVS": "ISVS",
+        "Projekt": "Project",
+        "KRIS": "KRIT",
+        "InfraSluzba": "Infrastructure service",
+        "AS": "Application service",
+        "KS": "eGov service",
+
         "informations": "Information",
         "documents": "Documents",
         "tasks": "Tasks",
