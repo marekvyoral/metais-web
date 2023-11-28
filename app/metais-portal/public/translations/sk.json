@@ -730,6 +730,7 @@
     },
     "table": {
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
+        "paginationSummaryEmpty": "Zobrazených 0 z celkových 0 záznamov",
         "noRowsFound": "Nenašli sa žiadne záznamy",
         "pagination": "Tabuľková navigácia",
         "sortBy": "Zoraď podľa",

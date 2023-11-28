@@ -727,6 +727,7 @@
     },
     "table": {
         "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
+        "paginationSummaryEmpty": "Viewed 0 from total 0 records",
         "noRowsFound": "No rows found",
         "pagination": "Page navigation",
         "sortBy": "Sort by",

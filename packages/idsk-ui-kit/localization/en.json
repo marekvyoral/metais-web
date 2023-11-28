@@ -37,6 +37,7 @@
         "resetOrder": "Reset order",
         "pagination": "Page navigation",
         "paginationSummary": "Zobrazených {{start}} - {{end}} z celkových {{total}} záznamov",
+        "paginationSummaryEmpty": "Viewed 0 from total 0 records",
         "noRowsFound": "No rows found",
         "noDataLoaded": "No data loaded"
     }

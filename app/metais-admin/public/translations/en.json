@@ -118,6 +118,7 @@
         "valid": "State",
         "noRowsFound": "No rows found",
         "paginationSummary": "Viewed {{start}} - {{end}} from total {{total}} records",
+        "paginationSummaryEmpty": "Viewed 0 from total 0 records",
         "ico": "ICO",
         "adress": "Adress"
     },

@@ -175,14 +175,14 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
     })
 
     const handleFilterChange = (changedFilter: IFilter) => {
+        updateUrlParamsOnChange(changedFilter, setUrlParams)
         setUiFilterState({
             ...uiFilterState,
             ...changedFilter,
         })
-        updateUrlParamsOnChange(changedFilter, setUrlParams)
+
         updateFilterInLocalStorageOnChange(changedFilter, location.pathname)
     }
-
     const filter: T & IFilterParams & IFilter = useMemo(() => {
         const memoFilter = {
             ...uiFilterState,

@@ -27,13 +27,17 @@ export const PaginatorWrapper: React.FC<IPaginatorWrapper> = ({ pageNumber, page
                 dataLength={dataLength}
                 onPageChanged={(page) => handlePageChange({ pageNumber: page })}
             />
-            <p className={classnames('govuk-body-s', styles.text)}>
-                {t('table.paginationSummary', {
-                    start,
-                    end,
-                    total: dataLength,
-                })}
-            </p>
+            {dataLength === 0 ? (
+                <p className={classnames('govuk-body-s', styles.text)}>{t('table.paginationSummaryEmpty')}</p>
+            ) : (
+                <p className={classnames('govuk-body-s', styles.text)}>
+                    {t('table.paginationSummary', {
+                        start,
+                        end,
+                        total: dataLength,
+                    })}
+                </p>
+            )}
         </div>
     )
 }
