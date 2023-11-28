@@ -25,7 +25,7 @@ import { canCreateProject, getFilteredAttributeProfilesBasedOnRole } from './cre
 
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
 import { RelationAttributeForm } from '@/components/relations-attribute-form/RelationAttributeForm'
-import { formatForFormDefaultValues } from '@/componentHelpers/ci'
+import { filterFormValuesBasedOnCurrentRole, formatForFormDefaultValues } from '@/componentHelpers/ci'
 export interface HasResetState {
     hasReset: boolean
     setHasReset: Dispatch<SetStateAction<boolean>>
@@ -112,7 +112,17 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
         ),
     })
 
-    const { handleSubmit, setValue, reset, formState } = methods
+    const { handleSubmit, setValue, reset, formState, getValues } = methods
+
+    useEffect(() => {
+        const currentValues = getValues()
+        const currentRole = selectedRole
+
+        const filteredFormValuesWithoutPermission = filterFormValuesBasedOnCurrentRole(combinedProfiles, currentRole?.roleName ?? '', currentValues)
+
+        reset(filteredFormValuesWithoutPermission)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedRole])
 
     const referenceIdValue = generatedEntityId?.ciurl?.split('/').pop()
     const metaIsCodeValue = generatedEntityId?.cicode
