@@ -75,9 +75,20 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
     ]
 
     const egovComponentsSubItemsTopMenu: NavigationItem[] = [
+        {
+            title: t('navMenu.GoalsPrincipalsActivitiesKRIT'),
+            path: NavigationSubRoutes.CIEL,
+        },
+
+        {
+            title: t('navMenu.programProjectsActivities'),
+            path: NavigationSubRoutes.AKTIVITA,
+        },
+        {
+            title: t('navMenu.publicAuthorities'),
+            path: NavigationSubRoutes.PROCESSORS_OF_IT_DEVELOPMENT_CONCEPTS,
+        },
         ...commonRoutes,
-        { title: t('navMenu.lists.projects'), path: NavigationSubRoutes.PROJEKT },
-        { title: t('navMenu.lists.otherComponents'), path: RouteNames.HOW_TO_EGOV_COMPONENTS },
     ]
 
     return isSideMenu ? egovComponentsSubItemsSideMenu : egovComponentsSubItemsTopMenu
