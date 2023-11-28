@@ -46,6 +46,7 @@ const EditProfile = () => {
                                     isLoading={createProps.isLoading || props.isLoading}
                                     isEdit
                                     type="profile"
+                                    refetch={props.refetch}
                                 />
                             )}
                             entityName={entityId ?? ''}

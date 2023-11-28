@@ -19,6 +19,7 @@ export interface ICreateEntityView {
     isError: boolean
     isEdit?: boolean
     type?: 'entity' | 'profile' | 'relation' | 'roles'
+    refetch?: () => void
 }
 
 interface ICreateEntity {

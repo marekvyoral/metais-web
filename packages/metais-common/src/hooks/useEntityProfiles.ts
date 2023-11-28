@@ -1,4 +1,12 @@
-import { AttributeProfile, useGetAttributeOverrides, useGetCiType, useGetSummarizingCard } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useQueryClient } from '@tanstack/react-query'
+
+import {
+    AttributeProfile,
+    getGetCiTypeQueryKey,
+    useGetAttributeOverrides,
+    useGetCiType,
+    useGetSummarizingCard,
+} from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 export const createTabNamesAndValuesMap = (profileAttributes: AttributeProfile[] | undefined) => {
     const keysToDisplay = new Map<string, AttributeProfile | undefined>()
@@ -9,7 +17,8 @@ export const createTabNamesAndValuesMap = (profileAttributes: AttributeProfile[]
 }
 
 export const useEntityProfiles = (technicalName: string) => {
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError, refetch: ciTypeDataRefetch } = useGetCiType(technicalName)
+    const queryClient = useQueryClient()
+    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError, isFetching } = useGetCiType(technicalName)
 
     const {
         data: summarizingCardData,
@@ -26,15 +35,15 @@ export const useEntityProfiles = (technicalName: string) => {
     } = useGetAttributeOverrides(technicalName)
 
     const refetch = () => {
-        ciTypeDataRefetch()
+        const ciTypeDataQueryKey = getGetCiTypeQueryKey(technicalName)
+        queryClient.invalidateQueries(ciTypeDataQueryKey)
         summarizingCardRefetch()
         attributesOverridesRefetch()
     }
 
     const keysToDisplay = createTabNamesAndValuesMap(ciTypeData?.attributeProfiles)
-
     return {
-        isLoading: isCiTypeDataLoading || isSummarizingCardLoading || attributesOverridesLoading,
+        isLoading: isCiTypeDataLoading || isSummarizingCardLoading || attributesOverridesLoading || isFetching,
         isError: isCiTypeDataError || isSummarizingCardError || attributesOverridesError,
         ciTypeData,
         summarizingCardData,

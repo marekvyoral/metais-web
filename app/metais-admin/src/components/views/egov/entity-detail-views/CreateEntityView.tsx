@@ -2,10 +2,11 @@ import { Button, ErrorBlock, Input, MultiSelect, SimpleSelect, TextArea, TextHea
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common'
 import { FieldValues, FormProvider } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
 
 import { AddAttributeProfilesModal } from './attributes/AddAttributeProfilesModal'
 import styles from './createEntityView.module.scss'
@@ -17,11 +18,11 @@ import { ICreateEntityView } from '@/components/containers/Egov/Entity/CreateEnt
 import { AddConnectionModal } from '@/components/views/egov/relation-detail-views/connections/AddConnectionModal'
 import ConnectionView from '@/components/views/egov/relation-detail-views/connections/ConnectionView'
 
-export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoading, isEdit, type }: ICreateEntityView) => {
+export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoading, isEdit, type, refetch }: ICreateEntityView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
-
+    const location = useLocation()
     const {
         mutationSuccessResponse: { successedMutation, setSuccessedMutation },
         mutationErrorResponse: { error, setError },
@@ -52,10 +53,15 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
                     route = AdminRouteNames.EGOV_RELATION
                 }
                 setSuccessedMutation(true)
+                refetch && refetch()
                 setIsActionSuccess({ value: true, path: `${route}/${formData?.technicalName}`, additionalInfo: { type: isEdit ? 'edit' : 'create' } })
+                navigate(`${route}/${formData?.technicalName}`, { state: { from: location } })
             })
             .catch((mutationError) => {
-                setError({ errorTitle: mutationError?.message, errorMessage: mutationError?.message })
+                const errorResponse = JSON.parse(mutationError.message)
+                const message =
+                    errorResponse?.type === ReponseErrorCodeEnum.NTM01 ? t('egov.entity.technicalNameAlreadyExists') : errorResponse.message
+                setError({ errorTitle: mutationError?.message, errorMessage: message })
             })
     }
 

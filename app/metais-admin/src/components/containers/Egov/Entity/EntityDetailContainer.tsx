@@ -32,6 +32,7 @@ export interface IAttributesContainerView {
     isLoading: boolean
     roles?: FindAll11200
     isError: boolean
+    refetch?: () => void
 }
 
 interface AttributesContainer {
@@ -120,6 +121,7 @@ export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityNam
             isLoading={isLoading || isRolesLoading}
             isError={isError || isRolesError}
             roles={roles}
+            refetch={refetch}
         />
     )
 }

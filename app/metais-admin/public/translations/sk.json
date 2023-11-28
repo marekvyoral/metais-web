@@ -279,7 +279,8 @@
         "entity": {
             "editHeader": "Editácia entity",
             "createHeader": "Vytvorenie nového typu entity",
-            "detailHeading": "Detail entity"
+            "detailHeading": "Detail entity",
+            "technicalNameAlreadyExists": "Zvolené technické meno už exituje"
         },
         "profile": {
             "editHeader": "Editácia profilu atribútov",
