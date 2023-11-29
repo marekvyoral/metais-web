@@ -46,7 +46,7 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
 
     const handleCancelImport = () => {
         cancelImport()
-        close()
+        onClose()
     }
 
     const handleValidate = () => {
