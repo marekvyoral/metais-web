@@ -111,7 +111,9 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     const [isCodeAvailable, setIsCodeAvailable] = useState<boolean>(false)
     const { register, handleSubmit, formState, getValues, setValue, setError, clearErrors } = useForm<IRequestForm>({
         resolver: yupResolver(schema),
-        defaultValues: editData,
+        defaultValues: editData || {
+            base: true,
+        },
     })
 
     const onHandleSubmit = (formData: IRequestForm) => {
