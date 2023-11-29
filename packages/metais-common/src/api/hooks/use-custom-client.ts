@@ -16,6 +16,7 @@ export type CustomClient<T> = (data: {
     headers?: Record<string, string>
     data?: BodyType<unknown>
     signal?: AbortSignal
+    responseType?: 'blob' | 'text'
 }) => Promise<T>
 
 export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T) => void): CustomClient<T> => {
@@ -27,7 +28,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
     const location = useLocation()
     const { i18n } = useTranslation()
 
-    return async ({ url, method, params: searchParams, data, headers }) => {
+    return async ({ url, method, params: searchParams, data, headers, responseType = 'text' }) => {
         const allParams = {
             ...searchParams,
             lang: i18n.language,
@@ -49,17 +50,26 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
             ...(data ? { body: JSON.stringify(data) } : {}),
         })
 
-        const responseBodyText = await response.text()
         let responseBody
-        if (responseBodyText?.length > 0) {
-            try {
-                responseBody = JSON.parse(responseBodyText)
-            } catch (e) {
-                // eslint-disable-next-line no-console
-                console.error('Response not json')
-                responseBody = responseBodyText
+
+        switch (responseType) {
+            case 'blob':
+                responseBody = await response.blob()
+                break
+            default: {
+                const responseBodyText = await response.text()
+                if (responseBodyText?.length > 0) {
+                    try {
+                        responseBody = JSON.parse(responseBodyText)
+                    } catch (e) {
+                        // eslint-disable-next-line no-console
+                        console.error('Response not json')
+                        responseBody = responseBodyText
+                    }
+                }
             }
         }
+
         const contentType = response.headers.get('Content-Type')
 
         if (response.status === 401) {
@@ -67,7 +77,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
             navigate('/?token_expired=true', { state: { from: location } })
         }
         if (!response.ok) {
-            throw new Error(responseBodyText)
+            throw new Error(responseBody)
         }
 
         if (contentType?.includes('application/json')) {
