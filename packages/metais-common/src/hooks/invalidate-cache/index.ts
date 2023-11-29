@@ -7,6 +7,7 @@ import {
     getReadCiHistoryVersionsQueryKey,
     getReadCiList1QueryKey,
     getReadCiNeighboursWithAllRelsQueryKey,
+    getReadNeighboursConfigurationItemsCountQueryKey,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 import { Find2111Params, getFind2111QueryKey, getFindByUuid3QueryKey } from '@isdd/metais-common/api/generated/iam-swagger'
@@ -154,6 +155,25 @@ export const useInvalidateGroupsListCache = (params: Find2111Params) => {
     const queryClient = useQueryClient()
     const invalidate = () => {
         queryClient.invalidateQueries(find2111QueryKey)
+    }
+    return { invalidate }
+}
+
+export const useInvalidateRelationsForCiCache = () => {
+    const queryClient = useQueryClient()
+    const invalidate = (uuid: string) => {
+        const ciNeighboursWithAllRelsQueryKey = getReadCiNeighboursWithAllRelsQueryKey(uuid)
+        queryClient.invalidateQueries(ciNeighboursWithAllRelsQueryKey)
+    }
+    return { invalidate }
+}
+
+export const useInvalidateRelationsCountCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidate = (uuid: string) => {
+        const ciNeighboursCountQueryKey = getReadNeighboursConfigurationItemsCountQueryKey(uuid)
+        queryClient.invalidateQueries(ciNeighboursCountQueryKey)
     }
     return { invalidate }
 }

@@ -81,6 +81,8 @@ import VoteCreatePage from '@/pages/standardization/voteslist/create'
 import TasksPage from '@/pages/ulohy'
 import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
+import CreateITVSExceptionsPage from '@/pages/ci/OsobitnyPostup/create'
+import ITVSExceptionsEditPage from '@/pages/ci/OsobitnyPostup/[entityId]/edit'
 import Tasks from '@/pages/ci/KRIS/[entityId]/tasks'
 import CreateProjectPage from '@/pages/ci/Projekt/create'
 import EditProjectPage from '@/pages/ci/Projekt/[entityId]/edit'
@@ -566,6 +568,16 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.CI_AS_CREATE,
                 slug: RouterRoutes.CI_AS_CREATE,
                 component: CreateEntityPage,
+            },
+            {
+                path: RouterRoutes.ITVS_EXCEPTIONS_CREATE,
+                slug: RouterRoutes.ITVS_EXCEPTIONS_CREATE,
+                component: CreateITVSExceptionsPage,
+            },
+            {
+                path: RouterRoutes.ITVS_EXCEPTIONS_EDIT,
+                slug: RouterRoutes.ITVS_EXCEPTIONS_EDIT,
+                component: ITVSExceptionsEditPage,
             },
             ...generalCiRoutes,
             {

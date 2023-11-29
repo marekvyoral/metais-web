@@ -111,6 +111,8 @@ export enum RouterRoutes {
     CI_KS_CREATE = 'ci/KS/create',
     CI_AS_DETAIL = 'ci/AS/:entityId',
     CI_AS_CREATE = 'ci/AS/create',
+    ITVS_EXCEPTIONS_CREATE = 'ci/OsobitnyPostup/create',
+    ITVS_EXCEPTIONS_EDIT = 'ci/OsobitnyPostup/:entityId/edit',
 }
 
 export enum AdminRouteNames {
@@ -242,7 +244,7 @@ export enum FooterRouteNames {
     CONTENT_ADMIN = '/technical/manager',
     RSS = '/rss',
     IDSK_DIZAJN = 'https://idsk.gov.sk',
-    EXCEPTIONS_LEGISLATION = '/ci/vynimky_ITVS',
+    EXCEPTIONS_LEGISLATION = '/ci/OsobitnyPostup',
 }
 
 export enum RegistrationRoutes {

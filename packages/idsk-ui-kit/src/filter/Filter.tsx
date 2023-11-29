@@ -28,6 +28,7 @@ type FilterProps<T extends FieldValues & IFilterParams> = {
     schema?: ObjectSchema<T & IFilterParams>
     onlySearch?: boolean
     onlyForm?: boolean
+    customReset?: () => void
 }
 
 export const Filter = <T extends FieldValues & IFilterParams>({
@@ -38,6 +39,7 @@ export const Filter = <T extends FieldValues & IFilterParams>({
     schema,
     onlySearch,
     onlyForm,
+    customReset,
 }: FilterProps<T>) => {
     const {
         watch,
@@ -121,7 +123,12 @@ export const Filter = <T extends FieldValues & IFilterParams>({
                             >
                                 {form({ register, control, filter, setValue, watch, clearErrors })}
                                 <div className={styles.actionRow}>
-                                    <ButtonLink label={t('filter.reset')} onClick={reset} className={styles.clearButton} type="reset" />
+                                    <ButtonLink
+                                        label={t('filter.reset')}
+                                        onClick={customReset ? customReset : reset}
+                                        className={styles.clearButton}
+                                        type="reset"
+                                    />
                                     <Button label={t('filter.submit')} type="submit" />
                                 </div>
                             </div>
