@@ -46,6 +46,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
     ) => {
         const { t } = useTranslation()
         const hintId = `${id}-hint`
+        const dateProps = type == 'date' ? { max: '9999-12-31' } : {}
         return (
             <div className={classNames('govuk-form-group', className, { 'govuk-form-group--error': !!error })}>
                 <div className={styles.labelDiv}>
@@ -73,6 +74,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                         type={type}
                         ref={ref}
                         {...rest}
+                        {...dateProps}
                         aria-describedby={hint ? hintId : undefined}
                         disabled={disabled}
                     />
