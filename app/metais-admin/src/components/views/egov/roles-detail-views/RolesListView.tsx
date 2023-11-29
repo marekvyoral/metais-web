@@ -1,23 +1,23 @@
-import { BreadCrumbs, ButtonLink, ButtonPopup, HomeIcon, Paginator, Table, TextHeading } from '@isdd/idsk-ui-kit'
+import { BreadCrumbs, ButtonLink, ButtonPopup, HomeIcon, ISelectColumnType, PaginatorWrapper, Table, TextHeading } from '@isdd/idsk-ui-kit'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { Role } from '@isdd/metais-common/api/generated/iam-swagger'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
-import { ActionsOverTable, BASE_PAGE_SIZE, CreateEntityButton, QueryFeedback } from '@isdd/metais-common/index'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { DEFAULT_PAGESIZE_OPTIONS, getRolesListSelectedColumns } from '@isdd/metais-common/constants'
+import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { ActionsOverTable, BASE_PAGE_NUMBER, CreateEntityButton, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
-import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useLocation } from 'react-router-dom'
 
 import styles from './roles.module.scss'
 
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { RoleListViewParams, defaultFilterValues } from '@/components/containers/Egov/Roles/RolesListContainer'
 import { RolesFilter } from '@/components/views/egov/roles-detail-views/components/Rolesfilter'
 import { DeleteRoleModal } from '@/components/views/egov/roles-detail-views/components/modal/DeleteModal'
-import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const RoleListView: React.FC<RoleListViewParams> = ({
     isLoading,
@@ -37,7 +37,10 @@ const RoleListView: React.FC<RoleListViewParams> = ({
     const navigate = useNavigate()
     const location = useLocation()
     const { t } = useTranslation()
-
+    const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>(getRolesListSelectedColumns(t))
+    const resetSelectedColumns = () => {
+        setSelectedColumns(getRolesListSelectedColumns(t))
+    }
     const columns: ColumnDef<Role>[] = [
         {
             technicalName: 'name',
@@ -79,9 +82,14 @@ const RoleListView: React.FC<RoleListViewParams> = ({
 
     const { handleFilterChange } = useFilterParams(defaultFilterValues)
     const myHandleFilterChange = (myFilter: IFilter) => {
-        handleFilterChange(myFilter)
-        setPagination({ ...pagination, pageSize: myFilter.pageSize ?? BASE_PAGE_SIZE })
+        setPagination({
+            dataLength: pagination.dataLength,
+            pageNumber: myFilter.pageNumber ?? pagination.pageNumber,
+            pageSize: myFilter.pageSize ?? pagination.pageSize,
+        })
+        handleFilterChange({ pageNumber: myFilter.pageNumber, pageSize: myFilter.pageSize })
     }
+
     const SelectableColumnsSpec: ColumnDef<Role>[] = [
         ...columns,
         {
@@ -160,29 +168,29 @@ const RoleListView: React.FC<RoleListViewParams> = ({
                         entityName=""
                         pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                         handleFilterChange={myHandleFilterChange}
+                        simpleTableColumnsSelect={{ selectedColumns, saveSelectedColumns: setSelectedColumns, resetSelectedColumns }}
                         createButton={
                             <CreateEntityButton
                                 label={t('adminRolesPage.addNewRole')}
                                 onClick={() => navigate(AdminRouteNames.ROLE_NEW, { state: { from: location } })}
                             />
                         }
-                        hiddenButtons={{ SELECT_COLUMNS: true }}
                     />
                     <Table<Role>
                         onSortingChange={(newSort) => {
                             setSorting(newSort)
                         }}
                         sort={sorting}
-                        columns={SelectableColumnsSpec}
+                        columns={SelectableColumnsSpec.filter((c) => selectedColumns.find((s) => s.selected && s.technicalName === c.id)) ?? []}
                         isLoading={isLoading}
                         error={isError}
                         data={tableData}
                     />
-                    <Paginator
+                    <PaginatorWrapper
                         dataLength={rolesPages ?? 0}
                         pageNumber={pagination.pageNumber}
                         pageSize={pagination.pageSize}
-                        onPageChanged={(pageNumber) => setPagination({ ...pagination, pageNumber: pageNumber })}
+                        handlePageChange={(filterPage) => setPagination({ ...pagination, pageNumber: filterPage.pageNumber ?? BASE_PAGE_NUMBER })}
                     />
                 </QueryFeedback>
             </MainContentWrapper>

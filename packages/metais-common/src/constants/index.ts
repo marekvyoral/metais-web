@@ -70,6 +70,13 @@ export const getProjectsFinanceManagementSelectedColumns = (t: TFunction<'transl
     { technicalName: 'max', name: t('projects.financeManagement.tableTitleMax'), selected: true },
 ]
 
+export const getRolesListSelectedColumns = (t: TFunction<'translation', undefined, 'translation'>) => [
+    { technicalName: 'name', name: t('adminRolesPage.name'), selected: true },
+    { technicalName: 'description', name: t('adminRolesPage.description'), selected: true },
+    { technicalName: 'assignedGroup', name: t('adminRolesPage.group'), selected: true },
+    { technicalName: 'type', name: t('adminRolesPage.systemRole'), selected: true },
+]
+
 export const projectsFinanceManagementInvestmentType = [
     { label: 'Project', value: 'c_projekt' },
     { label: 'Zmenová požiadavka', value: 'c_zmenova_poziadavka' },
