@@ -10,6 +10,7 @@ import { AnyObject, NumberSchema } from 'yup'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { isDate } from '@isdd/metais-common/utils/utils'
 import { ENTITY_PROJECT, ROLES } from '@isdd/metais-common/constants'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 import { ByteInterval, ShortInterval } from './createCiEntityFormSchema'
 
@@ -85,13 +86,17 @@ export const numericProperties = (
         })
 }
 
-export const formatFormAttributeValue = (formAttributes: FieldValues, key: string) => {
+export const formatFormAttributeValue = (formAttributes: FieldValues, key: string, ciurl?: string) => {
     if (Array.isArray(formAttributes[key]) && formAttributes[key][0] && formAttributes[key][0].value != null) {
         return formAttributes[key].map((item: { value: string; label: string; disabled: boolean }) => item.value)
     }
     if (isDate(formAttributes[key])) {
         return new Date(formAttributes[key]).toISOString()
     }
+    if (key === ATTRIBUTE_NAME.Gen_Profil_ref_id) {
+        return `${ciurl}${formAttributes[key]}`
+    }
+
     return formAttributes[key] === '' ? null : formAttributes[key]
 }
 

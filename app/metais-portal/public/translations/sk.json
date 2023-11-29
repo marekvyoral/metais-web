@@ -2021,5 +2021,11 @@
         "description": "Zaznamenali sme interný problém s aplikáciou",
         "reload": "Obnoviť stránku",
         "copyError": "Skopírovať error"
+    },
+    "ITVSExceptions": {
+        "vynimky_ITVS": "Osobitný postup",
+        "relatedISVS": "Súvisiace ISVS",
+        "relatedPO": "Súvisiace Orgány riadenia",
+        "note": "Poznámka"
     }
 }

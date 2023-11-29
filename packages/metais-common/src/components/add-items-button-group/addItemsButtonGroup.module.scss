@@ -1,0 +1,11 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+.wrapper {
+    padding: 0 !important;
+    Button {
+        margin: 0 !important;
+    }
+}
+.wrapperUnderTable {
+    justify-content: center;
+    margin-top: govuk-spacing(8);
+}

@@ -1,0 +1,17 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+.existingRelWrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    a {
+        color: rgb(0, 101, 179) !important;
+    }
+    small {
+        color: govuk-colour('black');
+        font-family: $govuk-font-family;
+    }
+}
+
+.margin30 {
+    margin-bottom: govuk-spacing(5);
+}

@@ -17,6 +17,7 @@ import {
     string,
 } from 'yup'
 import { phoneOrEmptyStringRegex, HTML_TYPE } from '@isdd/metais-common/constants'
+import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 
 import { numericProperties } from './createEntityHelpers'
 
@@ -48,10 +49,16 @@ type SchemaType = {
         | ArraySchema<(number | null | undefined)[] | undefined, AnyObject, '', ''>
 }
 
-export const generateFormSchema = (data: AttributeProfile[], t: TFunction<'translation', undefined, 'translation'>) => {
+export const generateFormSchema = (
+    data: AttributeProfile[],
+    t: TFunction<'translation', undefined, 'translation'>,
+    selectedRole?: GidRoleData | null,
+) => {
     const schema: SchemaType = {}
 
-    const attributes = data.flatMap((profile) => profile?.attributes ?? [])
+    const attributes = selectedRole
+        ? data.filter((profile) => profile?.roleList?.includes(selectedRole?.roleName ?? '')).flatMap((profile) => profile?.attributes)
+        : data.flatMap((profile) => profile?.attributes ?? [])
 
     attributes?.forEach((attribute) => {
         const isInvisible = attribute?.invisible
