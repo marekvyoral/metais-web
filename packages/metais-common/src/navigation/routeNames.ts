@@ -94,6 +94,7 @@ export enum RouterRoutes {
     REF_REGISTERS_HISTORY_COMPARE_TWO_ITEMS = '/refregisters/:entityId/history/:firstId/:secondId',
     CI_PROJECT_DETAIL = 'ci/Projekt/:entityId',
     CI_PROJECT_CREATE = 'ci/Projekt/create',
+    CI_PROJECT_EDIT = 'ci/Projekt/:entityId/edit',
     CI_PO_PO = 'ci/PO_PO',
     CI_PO_IS = 'ci/PO_IS',
     CI_PO_IS_PO = 'ci/PO_IS_PO',
