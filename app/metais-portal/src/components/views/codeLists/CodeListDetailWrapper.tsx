@@ -336,6 +336,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                         code={code}
                         isOpen={isNewLanguageVersionModalOpen}
                         onClose={() => setIsNewLanguageVersionModalOpen(false)}
+                        onSuccess={() => invalidateCodeListDetailCache()}
                     />
                 </QueryFeedback>
             </MainContentWrapper>
