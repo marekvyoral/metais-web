@@ -62,6 +62,7 @@ export enum ATTRIBUTE_NAME {
 
 export enum ATTRIBUTE_PROFILE_NAME {
     Profil_KRIS = 'Profil_KRIS',
+    Financny_Profil_Projekt = 'Financny_Profil_Projekt',
 }
 
 export enum API_STANDARD_REQUEST_ATTRIBUTES {

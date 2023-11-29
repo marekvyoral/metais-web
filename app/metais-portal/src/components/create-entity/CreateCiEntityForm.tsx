@@ -64,11 +64,12 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
 
     const ability = useAbilityContext()
     const canCreateRelationType = ability?.can(Actions.CREATE, `ci.create.newRelationType`)
+
     const hasRightsToCreateProject = canCreateProject(ciTypeData?.technicalName ?? '', selectedRole?.roleName ?? '')
 
-    const isSubmitDisabled =
-        (!selectedRole?.roleUuid && !updateCiItemId) || (withRelation ? !canCreateRelationType : false) || !hasRightsToCreateProject
     const isUpdate = !!updateCiItemId
+    const isSubmitDisabled =
+        (!selectedRole?.roleUuid && !updateCiItemId) || (withRelation ? !canCreateRelationType : false) || (!hasRightsToCreateProject && !isUpdate)
 
     const [hasReset, setHasReset] = useState(false)
     const genProfilTechName = Gen_Profil

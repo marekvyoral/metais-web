@@ -82,6 +82,8 @@ import TasksPage from '@/pages/ulohy'
 import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
 import Tasks from '@/pages/ci/KRIS/[entityId]/tasks'
+import CreateProjectPage from '@/pages/ci/Projekt/create'
+import EditProjectPage from '@/pages/ci/Projekt/[entityId]/edit'
 
 export interface RouteConfig {
     path?: string
@@ -536,7 +538,12 @@ export const routesConfig: RouteConfig[] = [
             {
                 path: RouterRoutes.CI_PROJECT_CREATE,
                 slug: RouterRoutes.CI_PROJECT_CREATE,
-                component: CreateEntityPage,
+                component: CreateProjectPage,
+            },
+            {
+                path: RouterRoutes.CI_PROJECT_EDIT,
+                slug: RouterRoutes.CI_PROJECT_EDIT,
+                component: EditProjectPage,
             },
             {
                 path: RouterRoutes.CI_KS_DETAIL,
