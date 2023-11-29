@@ -7,25 +7,24 @@ import {
     useUpdateCodelistLanguageVersion,
     useCreateCodelistLanguageVersion,
     ApiCodelistLanguageVersion,
-    getGetOriginalCodelistHeaderQueryKey,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { QueryFeedback, MutationFeedback } from '@isdd/metais-common/index'
-import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect } from 'react'
 
 import styles from './newLanguageVersionModal.module.scss'
 
 import { NewLanguageFormData, useNewLanguageSchema, AddNewLanguageList } from '@/components/views/codeLists/useCodeListSchemas'
+import { getErrorTranslateKeys } from '@/componentHelpers'
 
 export interface NewLanguageVersionModalProps {
     code: string
     isOpen: boolean
     onClose: () => void
+    onSuccess: () => void
 }
 
-export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = ({ code, isOpen, onClose }) => {
+export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = ({ code, isOpen, onClose, onSuccess }) => {
     const { t } = useTranslation()
-    const queryClient = useQueryClient()
     const { schema } = useNewLanguageSchema()
 
     const { register, formState, handleSubmit, setValue, reset, watch, control } = useForm<NewLanguageFormData>({
@@ -46,13 +45,12 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
     const { isFetching: isLoadingOriginal, isError, data: codeListOriginalData } = useGetOriginalCodelistHeader(code)
 
     const queryOnSuccess = () => {
-        queryClient.invalidateQueries([getGetOriginalCodelistHeaderQueryKey(code)])
-        handleOnClose()
+        onSuccess()
     }
     const {
         mutate: updateLanguageMutation,
+        error: errorUpdateLanguageMutation,
         isLoading: isLoadingUpdateLanguageMutation,
-        isError: isErrorUpdateLanguageMutation,
         isSuccess: isSuccessUpdateLanguageMutation,
     } = useUpdateCodelistLanguageVersion({
         mutation: {
@@ -61,8 +59,8 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
     })
     const {
         mutate: createLanguageMutation,
+        error: errorCreateLanguageMutation,
         isLoading: isLoadingCreateLanguageMutation,
-        isError: isErrorCreateLanguageMutation,
         isSuccess: isSuccessCreateLanguageMutation,
     } = useCreateCodelistLanguageVersion({
         mutation: {
@@ -111,8 +109,8 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
     }
 
     const isLoading = [isLoadingOriginal, isLoadingCreateLanguageMutation, isLoadingUpdateLanguageMutation].some((item) => item)
-    const isMutationError = [isErrorCreateLanguageMutation, isErrorUpdateLanguageMutation].some((item) => item)
     const isMutationSuccess = [isSuccessCreateLanguageMutation, isSuccessUpdateLanguageMutation].some((item) => item)
+    const errorMessages = getErrorTranslateKeys([errorCreateLanguageMutation, errorUpdateLanguageMutation].map((item) => item as { message: string }))
 
     if (!names) return <></>
 
@@ -125,10 +123,13 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
                             {t('codeListDetail.modal.title.addLanguageVersion')}
                         </TextHeading>
                         {isError && <QueryFeedback error={isError} loading={false} />}
+                        {errorMessages.map((errorMessage, index) => (
+                            <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
+                        ))}
                         <MutationFeedback
                             success={isMutationSuccess}
                             successMessage={t('codeListDetail.feedback.translationCreated')}
-                            error={isMutationError ? t('feedback.mutationErrorMessage') : undefined}
+                            error={undefined}
                         />
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <SimpleSelect
@@ -159,7 +160,7 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
                                     })}
                                     <div className={styles.buttonGroup}>
                                         <Button type="submit" disabled={!formState.isValid} label={t('codeListDetail.form.label.submit')} />
-                                        <Button label={t('confirmationModal.cancelButtonLabel')} variant="secondary" onClick={onClose} />
+                                        <Button label={t('confirmationModal.cancelButtonLabel')} variant="secondary" onClick={handleOnClose} />
                                     </div>
                                 </>
                             )}
