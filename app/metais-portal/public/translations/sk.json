@@ -135,7 +135,7 @@
             "standards": "Štandardy ISVS",
             "procedures": "Osobitné postupy",
             "commission": "Komisia na štandardizáciu ITVS",
-            "groups": "Pracovné skupiny komisie v pôsobnosti komisie pre štandardizáciu ITVS",
+            "groups": "Pracovné skupiny v pôsobnosti komisie pre štandardizáciu ITVS",
             "concept": "Tvorba návrhu",
             "concepts": "Zoznam návrhov predložených prostredníctvom MetaIS",
             "votes": "Zoznam hlasovaní",
@@ -911,7 +911,7 @@
     "groups": {
         "member": "Člen",
         "organization": "Organizácia",
-        "groupList": "Pracovné skupiny komisie",
+        "groupList": "Pracovné skupiny",
         "groupMembersHistory": "História členstva v pracovnej skupine",
         "addNewGroup": "Pridať pracovnú skupinu",
         "groupName": "Názov skupiny",
