@@ -49,7 +49,7 @@ export const PublicAuthoritiesTable = ({
             header: t('table.name'),
             accessorFn: (row) => row?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov],
             enableSorting: true,
-            id: 'name',
+            id: ATTRIBUTE_NAME.Gen_Profil_nazov,
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
@@ -63,7 +63,7 @@ export const PublicAuthoritiesTable = ({
             header: t('table.ico'),
             accessorFn: (row) => row?.attributes?.[ATTRIBUTE_NAME.EA_Profil_PO_ico],
             enableSorting: true,
-            id: 'technicalName',
+            id: ATTRIBUTE_NAME.EA_Profil_PO_ico,
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
@@ -83,7 +83,7 @@ export const PublicAuthoritiesTable = ({
             header: t('actionsInTable.actions'),
             enableSorting: true,
             id: 'organizationsActions',
-            cell: (ctx) => <MoreActionsOverRow setInvalid={setInvalid} ctx={ctx} />,
+            cell: (ctx) => (ctx.row.original.metaAttributes?.state === 'DRAFT' ? <MoreActionsOverRow setInvalid={setInvalid} ctx={ctx} /> : <></>),
         },
     ]
     return (
