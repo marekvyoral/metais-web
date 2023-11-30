@@ -94,7 +94,7 @@ export const formatFormAttributeValue = (formAttributes: FieldValues, key: strin
         return new Date(formAttributes[key]).toISOString()
     }
     if (key === ATTRIBUTE_NAME.Gen_Profil_ref_id) {
-        return `${ciurl}${formAttributes[key]}`
+        return `${ciurl ?? ''}${formAttributes[key]}`
     }
 
     return formAttributes[key] === '' ? null : formAttributes[key]
