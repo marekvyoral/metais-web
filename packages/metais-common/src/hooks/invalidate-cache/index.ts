@@ -10,7 +10,12 @@ import {
     getReadNeighboursConfigurationItemsCountQueryKey,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
-import { Find2111Params, getFind2111QueryKey, getFindByUuid3QueryKey } from '@isdd/metais-common/api/generated/iam-swagger'
+import {
+    Find2111Params,
+    getFind2111QueryKey,
+    getFindByUuid3QueryKey,
+    getFindRelatedIdentitiesAndCountQueryKey,
+} from '@isdd/metais-common/api/generated/iam-swagger'
 import {
     getGetCodelistHeaderQueryKey,
     getGetOriginalCodelistHeaderQueryKey,
@@ -155,6 +160,15 @@ export const useInvalidateGroupsListCache = (params: Find2111Params) => {
     const queryClient = useQueryClient()
     const invalidate = () => {
         queryClient.invalidateQueries(find2111QueryKey)
+    }
+    return { invalidate }
+}
+
+export const useInvalidateGroupMembersCache = (uuid: string) => {
+    const groupMemebrsQueryKey = getFindRelatedIdentitiesAndCountQueryKey(uuid)
+    const queryClient = useQueryClient()
+    const invalidate = () => {
+        queryClient.invalidateQueries(groupMemebrsQueryKey)
     }
     return { invalidate }
 }
