@@ -344,7 +344,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                         tooltipContent={() => (
                             <div>
                                 <BulkPopup
-                                    items={() => [
+                                    items={(closePopup) => [
                                         <ButtonLink
                                             key={'downloadItems'}
                                             label={t('actionOverTable.options.download')}
@@ -366,6 +366,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                                                         fileName: item.name ?? String(item?.attributes?.Gen_Profil_nazov),
                                                     })),
                                                 )
+                                                closePopup()
                                             }}
                                         />,
                                         <ButtonLink
@@ -374,6 +375,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                                             disabled={!isUserLogged}
                                             onClick={() => {
                                                 setInvalidateItems(selectedItems)
+                                                closePopup()
                                             }}
                                         />,
                                         <ButtonLink
@@ -382,6 +384,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                                             disabled={!isUserAdmin}
                                             onClick={() => {
                                                 setDeleteItems(selectedItems)
+                                                closePopup()
                                             }}
                                         />,
                                     ]}

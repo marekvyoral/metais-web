@@ -46,7 +46,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
         state: { user },
     } = useAuth()
     const { currentPreferences } = useUserPreferences()
-    const { errorMessage, handleInvalidate, handleReInvalidate, handleChangeOwner } = useBulkAction(true)
+    const { errorMessage, handleInvalidate, handleReInvalidate, handleChangeOwner } = useBulkAction()
 
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
     const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
@@ -146,12 +146,13 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                                 <BulkPopup
                                     disabled={isDisabledBulkButton}
                                     checkedRowItems={checkedRowItems}
-                                    items={() => [
+                                    items={(closePopup) => [
                                         <ButtonLink
                                             key={'invalidate'}
                                             onClick={() => {
                                                 open()
                                                 handleInvalidate(configurationItemList, () => setShowInvalidate(true), open)
+                                                closePopup()
                                             }}
                                             icon={CrossInACircleIcon}
                                             label={t('actionOverTable.invalidateItems')}
@@ -160,6 +161,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                                             key={'reInvalidate'}
                                             onClick={() => {
                                                 handleReInvalidate(configurationItemList, () => setShowReInvalidate(true), open)
+                                                closePopup()
                                             }}
                                             icon={CheckInACircleIcon}
                                             label={t('actionOverTable.validateItems')}
@@ -168,6 +170,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                                             key={'changeOwner'}
                                             onClick={() => {
                                                 handleChangeOwner(configurationItemList, () => setShowChangeOwner(true), open)
+                                                closePopup()
                                             }}
                                             icon={ChangeIcon}
                                             label={t('actionOverTable.changeOwner')}

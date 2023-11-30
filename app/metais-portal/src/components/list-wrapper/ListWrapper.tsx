@@ -236,12 +236,13 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                     <BulkPopup
                                         disabled={isDisabledBulkButton}
                                         checkedRowItems={checkedRowItems}
-                                        items={() => [
+                                        items={(closePopup) => [
                                             <ButtonLink
                                                 key={'invalidate'}
                                                 className={styles.buttonLinkWithIcon}
                                                 onClick={() => {
                                                     handleInvalidate(checkedItemList, () => setShowInvalidate(true), open)
+                                                    closePopup()
                                                 }}
                                                 icon={CrossInACircleIcon}
                                                 label={t('actionOverTable.invalidateItems')}
@@ -251,6 +252,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                                 className={styles.buttonLinkWithIcon}
                                                 onClick={() => {
                                                     handleReInvalidate(checkedItemList, () => setShowReInvalidate(true), open)
+                                                    closePopup()
                                                 }}
                                                 icon={CheckInACircleIcon}
                                                 label={t('actionOverTable.validateItems')}
@@ -260,6 +262,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                                 className={styles.buttonLinkWithIcon}
                                                 onClick={() => {
                                                     handleChangeOwner(checkedItemList, () => setShowChangeOwner(true), open)
+                                                    closePopup()
                                                 }}
                                                 icon={ChangeIcon}
                                                 label={t('actionOverTable.changeOwner')}
