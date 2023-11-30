@@ -340,7 +340,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                         tooltipContent={(open) => (
                             <div>
                                 <BulkPopup
-                                    items={() => [
+                                    items={(closePopup) => [
                                         <ButtonLink
                                             key={'buttonValidateItems'}
                                             label={t('actionOverTable.validateItems')}
@@ -351,6 +351,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                                     () => setShowReInvalidate(true),
                                                     open,
                                                 )
+                                                closePopup()
                                             }}
                                         />,
                                         <ButtonLink
@@ -364,6 +365,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                                     open,
                                                     isDocumentsUpdatable(Object.values(selectedItems).flatMap((i) => i)),
                                                 )
+                                                closePopup()
                                             }}
                                         />,
                                         <ButtonLink
@@ -377,6 +379,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                                                     open,
                                                     isDocumentsUpdatable(Object.values(selectedItems).flatMap((i) => i)),
                                                 )
+                                                closePopup()
                                             }}
                                         />,
                                     ]}

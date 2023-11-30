@@ -505,11 +505,14 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                     !!editData && (
                                         <BulkPopup
                                             checkedRowItems={Object.keys(rowSelection).length}
-                                            items={() => [
+                                            items={(closePopup) => [
                                                 <ButtonLink
                                                     key={'setDates'}
                                                     label={t('codeListDetail.button.setDatesBulk')}
-                                                    onClick={() => setIsSetDatesDialogOpened(true)}
+                                                    onClick={() => {
+                                                        setIsSetDatesDialogOpened(true)
+                                                        closePopup()
+                                                    }}
                                                 />,
                                             ]}
                                         />

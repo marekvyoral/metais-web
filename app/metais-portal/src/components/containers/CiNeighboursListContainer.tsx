@@ -148,7 +148,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
                     return ctx?.row?.original?.configurationItem?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
                 }
                 case isState: {
-                    return t(`metaAttributes.state.${ctx.row.original.relationship?.metaAttributes?.state}`)
+                    return t(`metaAttributes.state.${ctx.row.original.configurationItem?.metaAttributes?.state}`)
                 }
                 case isOwner: {
                     return getOwnerInformation(ctx?.row?.original?.configurationItem?.metaAttributes?.owner as string, gestorsData)
