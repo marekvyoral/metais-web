@@ -1,9 +1,9 @@
 import { IStep } from '@isdd/idsk-ui-kit/index'
 import {
+    ConfigurationItemUi,
     HistoryVersionsListUiConfigurationItemUi,
     useReadCiHistoryVersions,
     useReadCiHistoryVersionsActionsList,
-    useReadConfigurationItem,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import {
@@ -28,6 +28,7 @@ export interface IView {
 
 interface IProjectStateContainer {
     configurationItemId: string
+    ciData: ConfigurationItemUi
     View: React.FC<IView>
 }
 
@@ -54,8 +55,7 @@ const mapHistory = (data?: HistoryVersionsListUiConfigurationItemUi, defaultProj
         })
 }
 
-export const ProjectStateContainer: React.FC<IProjectStateContainer> = ({ configurationItemId, View }) => {
-    const { data: ciData, isLoading: isCiDataLoading } = useReadConfigurationItem(configurationItemId)
+export const ProjectStateContainer: React.FC<IProjectStateContainer> = ({ configurationItemId, ciData, View }) => {
     const { data: defaultProjectStates, isLoading: isDefaultStatesLoading } = useGetValidEnum(STAV_PROJEKTU)
     const projectsStates = defaultProjectStates?.enumItems?.sort((a, b) => (a.orderList ?? 0) - (b.orderList ?? 0))
 
@@ -109,11 +109,5 @@ export const ProjectStateContainer: React.FC<IProjectStateContainer> = ({ config
         removedSteps[removedSteps.length - 1] && steps.push({ ...removedSteps[removedSteps.length - 1], isRed: true })
         currentStep = steps.length
     }
-    return (
-        <View
-            steps={steps ?? []}
-            currentStep={currentStep ?? 0}
-            isLoading={isCiDataLoading || isDefaultStatesLoading || isActionsLoading || isHistoryLoading}
-        />
-    )
+    return <View steps={steps ?? []} currentStep={currentStep ?? 0} isLoading={isDefaultStatesLoading || isActionsLoading || isHistoryLoading} />
 }
