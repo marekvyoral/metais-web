@@ -51,13 +51,13 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
         })
 
         let responseBody
-
+        let responseBodyText = ''
         switch (responseType) {
             case 'blob':
                 responseBody = await response.blob()
                 break
             default: {
-                const responseBodyText = await response.text()
+                responseBodyText = await response.text()
                 if (responseBodyText?.length > 0) {
                     try {
                         responseBody = JSON.parse(responseBodyText)
@@ -77,7 +77,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
             navigate('/?token_expired=true', { state: { from: location } })
         }
         if (!response.ok) {
-            throw new Error(responseBody)
+            throw new Error(responseBodyText)
         }
 
         if (contentType?.includes('application/json')) {

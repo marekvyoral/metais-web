@@ -109,7 +109,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     const [defaultSelectOrg, setDefaultSelectOrg] = useState<IOption>()
     const [expanded, setExpanded] = useState<ExpandedState>({})
     const [isCodeAvailable, setIsCodeAvailable] = useState<boolean>(false)
-    const { register, handleSubmit, formState, getValues, setValue, setError, clearErrors } = useForm<IRequestForm>({
+    const { register, handleSubmit, formState, getValues, setValue, setError, trigger } = useForm<IRequestForm>({
         resolver: yupResolver(schema),
         defaultValues: editData || {
             base: true,
@@ -122,16 +122,20 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     }
 
     const onClickCheck = async () => {
+        const isValid = await trigger(RequestFormEnum.CODELISTCODE)
+        if (!isValid) {
+            setIsCodeAvailable(false)
+            return
+        }
+
         const code = getValues(RequestFormEnum.CODELISTCODE)
         const result = await onHandleCheckIfCodeIsAvailable(code)
-
         if (result.isAvailable) {
             setIsCodeAvailable(true)
-            clearErrors('codeListCode')
         } else {
             setIsCodeAvailable(false)
             result.errorTranslateKeys?.forEach((error) => {
-                setError('codeListCode', { message: t([error, 'feedback.mutationErrorMessage']) })
+                setError(RequestFormEnum.CODELISTCODE, { message: t([error, 'feedback.mutationErrorMessage']) })
             })
         }
     }
@@ -145,7 +149,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     }
 
     useEffect(() => {
-        if (firstNotUsedCode) setValue('codeListCode', firstNotUsedCode)
+        if (firstNotUsedCode) setValue(RequestFormEnum.CODELISTCODE, firstNotUsedCode)
     }, [firstNotUsedCode, setValue])
 
     const addItem = (data: IItemForm) => {
