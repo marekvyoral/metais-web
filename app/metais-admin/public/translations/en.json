@@ -410,6 +410,8 @@
         "successfulCreated": "The item was successfully created",
         "attrSuccessfulUpdated": "Attribute was successfully changed",
         "attrSuccessfulCreated": "Attribute was successfully created",
+        "invalidatePOSuccess": "Public authority successfully invalidate",
+        "invalidatePOError": "Public authority invalidation failed",
         "changeOwner": "Change owner",
         "metaColumnName": {
             "state": "Evidence status",
