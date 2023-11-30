@@ -63,6 +63,9 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
 
+    const lastIndex = data.generatedEntityId?.ciurl?.lastIndexOf('/')
+    const urlString = data.generatedEntityId?.ciurl?.slice(0, lastIndex) + '/'
+
     const [uploadError, setUploadError] = useState(false)
     const [requestId, setRequestId] = useState<string>('')
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
@@ -124,7 +127,7 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         const formattedAttributesToSend = formAttributesKeys
             .map((key) => ({
                 name: key,
-                value: formatFormAttributeValue(formAttributes, key),
+                value: formatFormAttributeValue(formAttributes, key, urlString),
             }))
             .filter((att) => !isObjectEmpty(att.value))
 
