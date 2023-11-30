@@ -1,7 +1,6 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce'
-import { useContext } from 'react'
 
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
@@ -23,9 +22,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
     const {
         state: { token },
     } = useAuth()
-    const { logOut } = useContext<IAuthContext>(AuthContext)
-    const navigate = useNavigate()
-    const location = useLocation()
+    const { logOut, login } = useContext<IAuthContext>(AuthContext)
     const { i18n } = useTranslation()
 
     return async ({ url, method, params: searchParams, data, headers, responseType = 'text' }) => {
@@ -74,7 +71,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
 
         if (response.status === 401) {
             logOut()
-            navigate('/?token_expired=true', { state: { from: location } })
+            login()
         }
         if (!response.ok) {
             throw new Error(responseBodyText)
