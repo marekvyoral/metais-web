@@ -12,9 +12,9 @@ export enum AddMemberEnum {
 
 export const addMemberSchema = (t: TFunction<'translation', undefined, 'translation'>) => {
     return object().shape({
-        [AddMemberEnum.MEMBER]: string().required('member req error'),
-        [AddMemberEnum.ORGANIZATION]: string(),
-        [AddMemberEnum.ROLE]: string().required(t('codelists.descriptionError')),
+        [AddMemberEnum.MEMBER]: string().required(t('validation.required')),
+        [AddMemberEnum.ORGANIZATION]: string().required(t('validation.required')),
+        [AddMemberEnum.ROLE]: string().required(t('validation.required')),
         [AddMemberEnum.ADD_TO_SESSIONS]: boolean(),
         [AddMemberEnum.ADD_TO_POLLS]: boolean(),
         [AddMemberEnum.CAN_SEE_EMAILS]: boolean(),
