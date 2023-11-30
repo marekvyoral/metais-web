@@ -12,7 +12,7 @@ export const useUserInfo = () => {
         state: { user, token },
         dispatch,
     } = useAuth()
-    const { logOut } = useContext<IAuthContext>(AuthContext)
+    const { logOut, login } = useContext<IAuthContext>(AuthContext)
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -26,9 +26,9 @@ export const useUserInfo = () => {
     useEffect(() => {
         if (data?.statusCode === 401) {
             logOut()
-            navigate('/?token_expired=true', { state: { from: location } })
+            login()
         }
-    }, [data?.statusCode, logOut, location, navigate])
+    }, [data?.statusCode, logOut, location, navigate, login])
 
     useEffect(() => {
         if (userInfoData && data?.statusCode === 200) {
