@@ -76,6 +76,7 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
                 po: formData[RequestFormFields.PO].uuid,
             },
         })
+        onClose()
     }
 
     return (
