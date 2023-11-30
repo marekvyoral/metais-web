@@ -116,12 +116,18 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     const { handleSubmit, setValue, reset, formState, getValues } = methods
 
     useEffect(() => {
-        const currentValues = getValues()
-        const currentRole = selectedRole
+        if (!isUpdate) {
+            const currentValues = getValues()
+            const currentRole = selectedRole
 
-        const filteredFormValuesWithoutPermission = filterFormValuesBasedOnCurrentRole(combinedProfiles, currentRole?.roleName ?? '', currentValues)
+            const filteredFormValuesWithoutPermission = filterFormValuesBasedOnCurrentRole(
+                combinedProfiles,
+                currentRole?.roleName ?? '',
+                currentValues,
+            )
 
-        reset(filteredFormValuesWithoutPermission)
+            reset(filteredFormValuesWithoutPermission)
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRole])
 
