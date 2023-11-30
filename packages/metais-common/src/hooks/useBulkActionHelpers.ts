@@ -1,8 +1,8 @@
 import uniq from 'lodash/uniq'
 
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { CiType, RelationshipType, useGetCiTypeHook, useGetRelationshipTypeHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useGetRightsForPOBulkHook, useIsInPoByGid1Hook, useIsOwnerByGidHook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { CiType, RelationshipType, useGetCiTypeHook, useGetRelationshipTypeHook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export const useBulkActionHelpers = () => {

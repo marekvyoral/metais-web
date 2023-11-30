@@ -94,7 +94,10 @@ export const ProjectEntityIdHeader: React.FC<Props> = ({
     const entityListData = entityData ? [entityData] : []
 
     const canProjectReturn =
-        !(!entityData || entityData?.metaAttributes?.state === 'INVALIDATED') && userHasRoleByName(RoleEnum.PROJEKT_SCHVALOVATEL) && isInBackState()
+        projectStatus &&
+        !(!entityData || entityData?.metaAttributes?.state === 'INVALIDATED') &&
+        userHasRoleByName(RoleEnum.PROJEKT_SCHVALOVATEL) &&
+        isInBackState()
 
     const canProjectConfirm = !(!entityData || entityData?.metaAttributes?.state === 'INVALIDATED' || !isOwnerOfCi)
 

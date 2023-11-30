@@ -7,10 +7,11 @@ import { CI_ITEM_QUERY_KEY, ENTITY_PROJECT, INVALIDATED, ciInformationTab } from
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
-import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback, TYPE_OF_APPROVAL_PROCESS_DEFAULT } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useSetStatesHook } from '@isdd/metais-common/api/generated/kris-swagger'
 
 import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -37,6 +38,8 @@ const ProjectEntityDetailPage: React.FC = () => {
     document.title = `${t('titles.ciDetail', { ci: ENTITY_PROJECT })} | MetaIS`
     const userAbility = useUserAbility()
 
+    const setStates = useSetStatesHook()
+
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_PROJECT)
     const {
         data: ciItemData,
@@ -45,6 +48,11 @@ const ProjectEntityDetailPage: React.FC = () => {
         refetch,
     } = useReadConfigurationItem(entityId ?? '', {
         query: {
+            onSuccess(data) {
+                const typeOfApprovalProcess =
+                    data?.attributes?.[ATTRIBUTE_NAME.EA_Profil_Projekt_schvalovaci_proces] ?? TYPE_OF_APPROVAL_PROCESS_DEFAULT
+                setStates({ typeOfApprovalProcess })
+            },
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
@@ -106,7 +114,13 @@ const ProjectEntityDetailPage: React.FC = () => {
                                 }
                             />
                         </FlexColumnReverseWrapper>
-                        {user && <ProjectStateContainer configurationItemId={entityId ?? ''} View={(props) => <ProjectStateView {...props} />} />}
+                        {user && ciItemData && (
+                            <ProjectStateContainer
+                                ciData={ciItemData}
+                                configurationItemId={entityId ?? ''}
+                                View={(props) => <ProjectStateView {...props} />}
+                            />
+                        )}
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
                         {selectedTab === ciInformationTab && <RelationsListContainer entityId={entityId ?? ''} technicalName={ENTITY_PROJECT} />}
                     </QueryFeedback>
