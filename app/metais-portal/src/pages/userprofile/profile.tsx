@@ -22,12 +22,12 @@ const UserProfilePage = () => {
     const [isRightsSettingsModalOpen, setIsRightsSettingsModalOpen] = useState(false)
     const [isDeletePersonalInfoModalOpen, setIsDeletePersonalInfoModalOpen] = useState(false)
 
-    const { mutate: rightsRequestMutate, isLoading, isError, isSuccess } = useProcessEvent()
+    const { mutateAsync: rightsRequestMutate, isLoading, isError, isSuccess } = useProcessEvent()
 
     const processRequestMutation = (data: ClaimEvent) => {
         rightsRequestMutate({
             data: data,
-        })
+        }).then(() => setIsRightsSettingsModalOpen(false))
     }
 
     const tabList: Tab[] = [
