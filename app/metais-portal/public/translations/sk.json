@@ -2027,5 +2027,37 @@
         "relatedISVS": "Súvisiace ISVS",
         "relatedPO": "Súvisiace Orgány riadenia",
         "note": "Poznámka"
+	},
+    "LicenseAgreement": {
+        "Title": "Podmienky používania Centrálneho metainformačného systému verejnej správy",
+        "Agree": "Súhlasím s podmienkami používania Centrálneho metainformačného systému verejnej správy.",
+        "Error": "Pred používaním Centrálneho metainformačného systému verejnej správy musíte súhlasiť s podmienkami",
+        "Detail": {
+            "Title": "Podmienky používania Centrálneho metainformačného systému verejnej správy",
+            "TitleText": "Ďakujeme Vám za používanie produktov a služieb Centrálneho metainformačného systému verejnej správy („Služby MetaIS”), ktorý sa skladá z webového portálu na adrese metais.finance.gov.sk, nástroja na modelovanie architektúry a pluginu na synchronizáciu údajov medzi samotným nástrojom a portálom. Webový portál predstavuje používateľské rozhranie k systému a spôsob zadávania a prezentácie údajov. Je hlavným kanálom používateľa. Nástroj BizzDesign Enterprise Studio (ďalej aj ako „BES“) je komponentom MetaIS, ktorý slúži na zadávanie údajov o architektúre v grafickej forme. Tieto údaje sú synchronizované s webovým portálom, kde môžu byť následne používateľom doplnené. Synchronizáciu zabezpečuje tzv. plugin na synchronizáciu (ďalej aj ako „plugin“). Plugin umožňuje jednoduché hromadné zmeny prostredníctvom nástroja BES a je teda na poverenom zamestnancovi povinnej osoby (ďalej aj ako “používateľ”), aby plugin používal výhradne v súlade s manuálom a inštrukciami, keďže nesprávnym používaním je možné sposobiť nekonzistenciu a chyby, ktoré je následne časovo náročné odstrániť. Poverený zamestnanec povinnej osoby je zodpovedný za konzistenciu, úplnosť a presnosť informácií predkladaných do centrálneho metainformačného systému verejnej správy (MetaIS) za povinnú osobu a jej podriadené organizácie. Použitím služieb MetaIS vyjadrujete svoj súhlas s týmito zmluvnými podmienkami.",
+            "Usage": "Používanie služieb",
+            "UsageText": "Služby MetaIS nesmiete zneužívať. Môžeme Vám pozastaviť alebo zastaviť poskytovanie našich Služieb, ak porušíte naše zmluvné podmienky alebo pravidlá, alebo keď budeme prešetrovať podozrenie z nevhodného používania.Veríme, že transparentná komunikácia, aká je bežná pri otvorených softvérových projektoch, je dobrou cestou vpred a že otvorenosť vytvára príležitosti: publikované dáta a publikovaný obsah sa môžu využiť novým a nečakaným spôsobom. Preto aj materiály, z ktorých niektoré sú určené pre konkrétne orgány štátnej správy, dávame k dispozícii online, všetkým. Na údaje získané používaním služieb MetaIS sa vzťahuje licencia / vyhlásenie o zrieknutí sa práv Creative Commons Zero, ak nie je uvedené inak, nakoľko sa jedná o otvorené údaje.",
+            "Range": "Rozsah a obmedzenia",
+            "RangeText": "Naše Služby poskytujeme s využitím primeraných obchodných schopností a starostlivosti a veríme, že Vám prinesú úžitok. Sú však veci, ktoré Vám v súvislosti so Službami MetaIS nemôžeme sľúbiť. Ministerstvo financií SR ani jeho dodávatelia neposkytujú žiadne prísľuby týkajúce sa Služieb MetaIS s výnimkou tých, ktoré sú výslovne uvedené v týchto podmienkach alebo doplňujúcich podmienkach. Služby poskytujeme bez záruk „tak ako sú“. Ministerstvo financií SR ani jeho dodávatelia nie sú v žiadnom prípade zodpovední za žiadnu stratu alebo škodu, ktorá nie je v primeranej miere predvídateľná. Tieto podmienky používania Vám poskytujú len niektoré práva na používanie softvéru. Ministerstvo financií SR si vyhradzuje všetky ostatné práva. Softvér smiete používať výhradne spôsobom povoleným v týchto podmienkach. Musíte pri tom dodržiavať akékoľvek technické obmedzenia softvéru, ktoré ho umožňujú používať iba určitými spôsobmi. ",
+            "MustNot": {
+                "Title": "Nesmiete:",
+                "Change": "Ministerstvo financií SR si vyhradzuje právo na zmenu podmienok používania MetaIS.",
+                "First": "obchádzať žiadne technické obmedzenia softvéru,",
+                "Second": "spätne analyzovať, dekompilovať ani rozkladať softvér na súčasti s výnimkou takejto činnosti v rozsahu, v akom ju i napriek uvedeným obmedzeniam výslovne povoľuje príslušný právny poriadok SR,",
+                "Third": "poskytovať softvér ostatným na kopírovanie,prenajímať, poskytovať na lízing ani požičiavať softvér, prevádzať softvér alebo túto zmluvu na tretiu stranu ani používať softvér na účely služieb komerčného hosťovania softvéru."
+            },
+            "Account": "Váš účet",
+            "AccountText": "Na použitie niektorých Služieb MetaIS budete potrebovať účet. Účet Vám môže byť pridelený Vaším správcom (ktorý má rolu HKO – hlavná kontaktná osoba povinnej osoby). Aby sa zaručila bezpečnosť Vášho účtu, heslo nikomu neprezrádzajte. Za aktivitu prebiehajúcu vo Vašom účte alebo údaje vložené a zmenené prostredníctvom neho nesiete plnú zodpovednosť. V aplikáciách tretích strán nepoužívajte rovnaké heslo ako pre účet. Ak zistíte akékoľvek neoprávnené použitie Vášho hesla alebo účtu, je potrebné túto skutočnosť nahlásiť správcovi MetaIS na adrese metais@mfsr.sk.",
+            "Protection": "Ochrana osobných údajov",
+            "ProtectionText": "Organizácia alebo jednotlivec poskytujúci informácie do MetaIS je zodpovedný za súlad predkladaných informácii so zákonom, predovšetkým s ohľadom na zákon o ochrane osobných údajov č. 428/2002 Z. z. a čl. 13 a 14 GDPR/ § 19 a 20 zákona č. 18/2018 Z. z. o ochrane osobných údajov. Použitím Služieb MetaIS vyjadrujete váš súhlas s poskytnutím  nižšie uvedených údajov  údajov do MetaIS a s ich spracovaním: ",
+            "ProcessInformation": {
+                "Name": "meno,",
+                "Surname": "priezvisko,",
+                "Email": "pracovný email, ",
+                "Phone": "pracovné telefónne číslo,",
+                "PO": "povinná osoba (zamestnávateľ)"
+            }
+        }, 
+        "Confirm": "Potvrtiť"
     }
 }

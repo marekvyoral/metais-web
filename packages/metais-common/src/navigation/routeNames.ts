@@ -28,6 +28,7 @@ export enum RouteNames {
 
 export enum RouterRoutes {
     HOME = '/',
+    IDENTITY_TERMS = '/IdentityTerms',
     CI_DETAIL = '/ci/:entityName/:entityId',
     CI_CREATE = '/ci/:entityName/create',
     CI_EDIT = '/ci/:entityName/:entityId/edit',
