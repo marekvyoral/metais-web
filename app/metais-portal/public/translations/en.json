@@ -2010,5 +2010,37 @@
         "relatedISVS": "Related ISVSs",
         "relatedPO": "Related POs",
         "note": "Note"
+	},
+    "LicenseAgreement": {
+        "Title": "Terms of use of the Central Metainformation System of Public Administration",
+        "Agree": "I agree to the terms of use of the Central Public Administration Metainformation System.",
+        "Error": "Before using the Central Public Administration Metainformation System, you must agree to the terms",
+        "Detail": {
+            "Title": "Terms of use of the Central Metainformation System of Public Administration",
+            "TitleText": "Thank you for using the products and services of the Central Public Administration Metainformation System („MetaIS Services”), which consists of a web portal at metais.finance.gov.sk, an architecture modeling tool and a plugin for synchronizing data between the tool itself and the portal. The web portal represents the user interface to the system and the method of entering and presenting data. It is the main channel of the user. BizzDesign Enterprise Studio (hereinafter referred to as „BES”) is a MetaIS component used to enter architectural data in graphical form. This data is synchronized with the web portal, where it can then be supplemented by the user. Synchronization is provided by the so-called synchronization plugin (hereinafter referred to as „plugin”). The plugin enables simple mass changes through the BES tool, and it is therefore up to the authorized employee of the obliged entity (hereinafter referred to as the „user”) to use the plugin exclusively in accordance with the manual and instructions, since incorrect use can cause inconsistencies and errors, which are subsequently difficult to remove. The authorized employee of the liable entity is responsible for the consistency, completeness and accuracy of the information submitted to the central public administration meta-information system (MetaIS) for the liable entity and its subordinate organizations. By using MetaIS services, you agree to these terms and conditions.",
+            "Usage": "Use of Services",
+            "UsageText": "You must not abuse MetaIS services. We may suspend or stop providing you with our Services if you violate our terms of service or rules, or when we investigate suspected inappropriate use. We believe that transparent communication, as is common in open software projects, is a good way forward and that openness creates opportunities to: published data and published content can be used in new and unexpected ways. That's why we also make materials, some of which are intended for specific state administration bodies, available online to everyone. Data obtained through the use of MetaIS services is subject to the Creative Commons Zero license / disclaimer, unless otherwise stated, as it is open data.",
+            "Range": "Scope and limitations",
+            "RangeText": "We provide our Services using reasonable business skill and care and believe that they will benefit you. However, there are things that we cannot promise you in connection with the MetaIS Services. Neither the Ministry of Finance of the Slovak Republic nor its suppliers make any promises regarding the MetaIS Services, except for those expressly stated in these terms and conditions or supplementary terms. We provide the Services „as is” without warranty. The Ministry of Finance of the Slovak Republic and its suppliers are in no way responsible for any loss or damage that is not reasonably foreseeable. These terms of use only grant you certain rights to use the software. The Ministry of Finance of the Slovak Republic reserves all other rights. You may use the Software only as permitted by these Terms. In doing so, you must comply with any technical restrictions on the software that only allow you to use it in certain ways. ",
+            "MustNot": {
+                "Title": "You may not:",
+                "Change": "The Ministry of Finance of the Slovak Republic reserves the right to change the conditions of use of MetaIS.",
+                "First": "circumvent any technical limitations of the software,",
+                "Second": "reverse-analyze, decompile or disassemble the software into components, with the exception of such activity to the extent that it is expressly permitted by the relevant legal order of the Slovak Republic, despite the aforementioned restrictions,",
+                "Third": "provide the Software to others to copy, rent, lease, or loan the Software, transfer the Software or this Agreement to a third party, or use the Software for commercial software hosting services."
+            },
+            "Account": "Your Account",
+            "AccountText": "You will need an account to use some of the MetaIS Services. The account can be assigned to you by your administrator (who has the role of HKO - main contact person of the liable person). To ensure the security of your account, do not disclose your password to anyone. You bear full responsibility for the activity taking place in your account or the data entered and changed through it. Do not use the same password for the account in third-party applications. If you discover any unauthorized use of your password or account, you must report this fact to the MetaIS administrator at metais@mfsr.sk.",
+            "Protection": "Privacy",
+            "ProtectionText": "The organization or individual providing information to MetaIS is responsible for the compliance of the submitted information with the law, especially with regard to the Personal Data Protection Act No. 428/2002 Coll. and Art. 13 and 14 GDPR/ § 19 and 20 of Act no. 18/2018 Coll. on the protection of personal data. By using the MetaIS Services, you express your consent to the provision of the following data to MetaIS and to its processing: ",
+            "ProcessInformation": {
+                "Name": "name,",
+                "Surname": "surname,",
+                "Email": "work email,",
+                "Phone": "work phone number,",
+                "PO": "obliged person (employer)"
+            }
+        }, 
+        "Confirm": "Potvrtiť"
     }
 }

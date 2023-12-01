@@ -86,6 +86,7 @@ import ITVSExceptionsEditPage from '@/pages/ci/OsobitnyPostup/[entityId]/edit'
 import Tasks from '@/pages/ci/KRIS/[entityId]/tasks'
 import CreateProjectPage from '@/pages/ci/Projekt/create'
 import EditProjectPage from '@/pages/ci/Projekt/[entityId]/edit'
+import { IdentityTermsPage } from '@/pages/IdentityTermsPage'
 
 export interface RouteConfig {
     path?: string
@@ -178,6 +179,11 @@ export const routesConfig: RouteConfig[] = [
             {
                 index: true,
                 component: Home,
+            },
+            {
+                path: RouterRoutes.IDENTITY_TERMS,
+                slug: RouterRoutes.IDENTITY_TERMS,
+                component: IdentityTermsPage,
             },
             {
                 path: RouterRoutes.DEV_TEST_SCREEN,
