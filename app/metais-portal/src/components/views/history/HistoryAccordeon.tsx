@@ -47,6 +47,8 @@ export const HistoryAccordion: React.FC<RelationshipsAccordion> = ({ entityId, b
                             View={(props) => {
                                 return (
                                     <ConfigurationItemHistoryListTable
+                                        filterModifiedBy={props.filterModifiedBy}
+                                        filterActions={props.filterActions}
                                         data={props?.data?.historyVersions}
                                         handleFilterChange={props.handleFilterChange}
                                         isLoading={props.isLoading}

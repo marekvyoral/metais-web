@@ -37,6 +37,10 @@ export const mapFilterToHistoryVersionsApi = (filter: IFilter): ReadAllCiHistory
     return {
         page: pageNumber ?? BASE_PAGE_NUMBER,
         perPage: pageSize ?? BASE_PAGE_SIZE,
+        ...(filter.action && { action: filter.action }),
+        ...(filter.lastModifiedBy && { lastModifiedBy: filter.lastModifiedBy }),
+        ...(filter.fromDate && { fromDate: filter.fromDate }),
+        ...(filter.toDate && { toDate: filter.toDate }),
     }
 }
 
