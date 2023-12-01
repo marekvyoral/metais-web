@@ -11,6 +11,7 @@ import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { isDate } from '@isdd/metais-common/utils/utils'
 import { ENTITY_PROJECT, ROLES } from '@isdd/metais-common/constants'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
+import { DateTime } from 'luxon'
 
 import { ByteInterval, ShortInterval } from './createCiEntityFormSchema'
 
@@ -91,7 +92,7 @@ export const formatFormAttributeValue = (formAttributes: FieldValues, key: strin
         return formAttributes[key].map((item: { value: string; label: string; disabled: boolean }) => item.value)
     }
     if (isDate(formAttributes[key])) {
-        return new Date(formAttributes[key]).toISOString()
+        return DateTime.fromJSDate(formAttributes[key]).toISO()
     }
     if (key === ATTRIBUTE_NAME.Gen_Profil_ref_id) {
         return `${ciurl ?? ''}${formAttributes[key]}`
