@@ -53,7 +53,7 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
         return votesParamValues
     }, [filter.effectiveFrom, filter.effectiveTo, filter.pageNumber, filter.pageSize, filter.sort, filter.voteState, filter.votesTypeToShow])
 
-    const { data: votesList, isLoading, isFetching, isError } = useGetVotes(getVotesParamValues)
+    const { data: votesList, isLoading, isFetching, isError, refetch: getVotesRefetch } = useGetVotes(getVotesParamValues)
 
     return (
         <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent' }}>
@@ -64,6 +64,7 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
                 defaultFilterValues={defaultFilterValues}
                 isLoadingNextPage={isFetching}
                 handleFilterChange={handleFilterChange}
+                getVotesRefetch={getVotesRefetch}
             />
         </QueryFeedback>
     )

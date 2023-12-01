@@ -1782,13 +1782,13 @@
         "breadcrumbs": {
             "home": "Domov",
             "standardization": "Štandardizácia",
-            "VotesLists": "Zoznam Hlasovaní",
-            "VoteDetail": "Detail Hlasovania",
+            "VotesLists": "Zoznam hlasovaní",
+            "VoteDetail": "Detail hlasovania",
             "VoteEdit": "Úprava hlasovania",
             "NewVote": "Nové hlasovanie"
         },
         "votesList": {
-            "title": "Zoznam Hlasovaní",
+            "title": "Zoznam hlasovaní",
             "tooltipText": "Pre neprihláseného sa nezobrazia stĺpce Právo hlasovať a Hlasoval za subjekt.",
             "table": {
                 "effectiveFrom": "Dátum spustenia",
@@ -1796,7 +1796,7 @@
                 "voteState": "Stav",
                 "canCast": "Právo hlasovať",
                 "hasCast": "Hlasované za subjekt",
-                "name": "Premet hlasovania (znenie otázky)"
+                "name": "Predmet hlasovania (znenie otázky)"
             },
             "filter": {
                 "title": "Filter",

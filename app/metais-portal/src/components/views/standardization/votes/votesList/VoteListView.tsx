@@ -1,7 +1,7 @@
 import { Button, Filter, Input, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
-import { ApiVotePreviewList } from '@isdd/metais-common/api/generated/standards-swagger'
+import { ApiError, ApiVotePreviewList } from '@isdd/metais-common/api/generated/standards-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { useEffect } from 'react'
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 
 import styles from './voteList.module.scss'
 
@@ -31,6 +32,9 @@ export interface IVotesListView {
     filter: IFilter
     isLoadingNextPage: boolean
     handleFilterChange: (filter: IFilter) => void
+    getVotesRefetch: <TPageData>(
+        options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
+    ) => Promise<QueryObserverResult<ApiVotePreviewList, ApiError>>
 }
 
 export const VotesListView: React.FC<IVotesListView> = ({
@@ -40,6 +44,7 @@ export const VotesListView: React.FC<IVotesListView> = ({
     defaultFilterValues,
     isLoadingNextPage,
     handleFilterChange,
+    getVotesRefetch,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -63,8 +68,10 @@ export const VotesListView: React.FC<IVotesListView> = ({
     useEffect(() => {
         if (isSuccess) {
             scrollToMutationFeedback()
+            getVotesRefetch()
         }
-    }, [isSuccess, scrollToMutationFeedback])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSuccess])
 
     return (
         <>
