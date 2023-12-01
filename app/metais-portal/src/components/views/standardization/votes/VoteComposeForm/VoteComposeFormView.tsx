@@ -5,7 +5,7 @@ import React, { useCallback, useMemo, useRef } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { User } from '@isdd/metais-common/contexts/auth/authContext'
-import { SubmitWithFeedback } from '@isdd/metais-common/index'
+import { SubmitWithFeedback, formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import { TFunction } from 'i18next'
@@ -53,8 +53,8 @@ export interface IVoteEditForm {
     invitedUsers?: string[]
     answerDefinitions?: ApiVoteChoice[]
     secretVote?: boolean
-    effectiveFrom?: string
-    effectiveTo?: string
+    effectiveFrom?: Date
+    effectiveTo?: Date
     vetoRight?: boolean
 }
 
@@ -82,8 +82,12 @@ const schema = (t: TFunction<'translation', undefined, 'translation'>): Yup.Obje
             invitedGroups: Yup.array(),
             invitedUsers: Yup.array().min(1, t('validation.required')),
             secretVote: Yup.boolean().required(t('validation.required')),
-            effectiveFrom: Yup.string().required(t('validation.required')),
-            effectiveTo: Yup.string().required(t('validation.required')),
+            effectiveFrom: Yup.date().required(t('validation.required')).min(new Date(), 'Date To must be later than this date'),
+            effectiveTo: Yup.date()
+                .required(t('validation.required'))
+                .when('effectiveFrom', (dateFrom, yupSchema) => {
+                    return dateFrom ? yupSchema.min(dateFrom, 'Date To must be later than Date From') : yupSchema
+                }),
             vetoRight: Yup.boolean().required(t('validation.required')),
         })
         .defined()
@@ -106,6 +110,8 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
     onCancel,
 }) => {
     const isNewVote = !existingVoteDataToEdit
+    const today = new Date()
+
     const { t } = useTranslation()
 
     const standardRequestOptions: IOption<string>[] = useMemo(() => {
@@ -122,8 +128,8 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
             answerDefinitions: apiVoteData?.voteChoices ?? defaultAnswerDefinitionsValues(t),
             secretVote: apiVoteData?.secret,
             vetoRight: apiVoteData?.veto,
-            effectiveFrom: apiVoteData?.effectiveFrom?.split('T')[0],
-            effectiveTo: apiVoteData?.effectiveTo?.split('T')[0],
+            effectiveFrom: apiVoteData?.effectiveFrom ? new Date(apiVoteData?.effectiveFrom) : undefined,
+            effectiveTo: apiVoteData?.effectiveTo ? new Date(apiVoteData?.effectiveTo) : undefined,
         }
 
         return returnFormData ?? {}
@@ -294,6 +300,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                         label={t('votes.voteEdit.date.fromDate')}
                         className={styles.stretchGrow}
                         error={formState.errors['effectiveFrom']?.message}
+                        min={formatDateForDefaultValue(today.toString())}
                     />
                     <div className={styles.space} />
                     <Input
@@ -302,6 +309,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                         label={t('votes.voteEdit.date.toDate')}
                         className={styles.stretchGrow}
                         error={formState.errors['effectiveTo']?.message}
+                        min={formatDateForDefaultValue(watch('effectiveFrom')?.toString() ?? '')}
                     />
                 </div>
                 <Spacer vertical />

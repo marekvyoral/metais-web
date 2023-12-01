@@ -29,6 +29,7 @@ const VotesListPage: React.FC = () => {
                             handleFilterChange={props.handleFilterChange}
                             isUserLogged={props.isUserLogged}
                             isLoadingNextPage={props.isLoadingNextPage}
+                            getVotesRefetch={props.getVotesRefetch}
                         />
                     )}
                 />
