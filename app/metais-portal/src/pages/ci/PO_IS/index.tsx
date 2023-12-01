@@ -19,6 +19,7 @@ const POIsListPage = () => {
         EA_Profil_PO_kategoria_osoby: [],
         EA_Profil_PO_typ_osoby: [],
         EA_Profil_PO_je_kapitola: undefined,
+        evidence_status: ['DRAFT'],
     }
 
     return (

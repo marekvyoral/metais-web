@@ -30,6 +30,7 @@ const POPOListPage = () => {
             'c_typ_osoby.g',
         ],
         EA_Profil_PO_je_kapitola: undefined,
+        evidence_status: ['DRAFT'],
     }
 
     return (

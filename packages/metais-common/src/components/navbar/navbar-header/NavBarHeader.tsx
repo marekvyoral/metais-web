@@ -28,7 +28,7 @@ export const NavBarHeader: React.FC<INavBarHeader> = ({ setShowDropDown, showDro
                                 isMobile={false}
                             />
                             <InfoDropDown
-                                title={t('navbar.sk')}
+                                title={`${t('navbar.sk')} `}
                                 label={t('navbar.e-gov')}
                                 setShowDropDown={setShowDropDown}
                                 showDropDown={showDropDown}

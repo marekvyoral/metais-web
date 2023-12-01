@@ -15,6 +15,7 @@ export interface POFilterData extends IFilterParams {
     EA_Profil_PO_kategoria_osoby?: string[]
     EA_Profil_PO_typ_osoby?: string[]
     EA_Profil_PO_je_kapitola?: boolean
+    evidence_status?: string[]
 }
 
 interface Props {
@@ -31,8 +32,8 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
     const { t } = useTranslation()
 
     const evidenceStatus = [
-        { value: 'created', label: t('metaAttributes.state.DRAFT') },
-        { value: 'invalidated', label: t('metaAttributes.state.INVALIDATED'), disabled: true },
+        { value: 'DRAFT', label: t('metaAttributes.state.DRAFT') },
+        { value: 'INVALIDATED', label: t('metaAttributes.state.INVALIDATED') },
     ]
 
     return (
@@ -56,9 +57,16 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
                             {...register(ATTRIBUTE_NAME.EA_Profil_PO_je_kapitola)}
                         />
                     </RadioGroupWithLabel>
-
                     <SelectPersonCategory filter={filter} setValue={setValue} />
-                    <MultiSelect label="Evidence status" placeholder={t('filter.chooseState')} options={evidenceStatus} name="evidence-status" />
+                    <MultiSelect
+                        label={t('filter.PO.evidenceStatus')}
+                        placeholder={t('filter.chooseState')}
+                        options={evidenceStatus}
+                        id="evidence_status"
+                        name="evidence_status"
+                        setValue={setValue}
+                        defaultValue={filter?.evidence_status}
+                    />
                     <SelectPersonType filter={filter} setValue={setValue} />
                     <DynamicFilterAttributes
                         defaults={defaultFilterValues}
