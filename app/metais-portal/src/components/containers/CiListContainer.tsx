@@ -6,6 +6,8 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { IListView } from '@isdd/metais-common/types/list'
 import React from 'react'
 import { FieldValues } from 'react-hook-form'
+
+import { POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
 interface ICiListContainer<T> {
     entityName: string
     ListComponent: React.FC<IListView>
@@ -28,12 +30,14 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
         },
     }
 
-    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList(defaultFilterValues, defaultRequestApi)
+    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList<POFilterData, POFilterData>(
+        defaultFilterValues,
+        defaultRequestApi,
+    )
 
     const liableEntity = currentPreferences.myPO ? [currentPreferences.myPO] : undefined
-    const metaAttributes = currentPreferences.showInvalidatedItems
-        ? { state: ['DRAFT', 'INVALIDATED'], liableEntity, ...filterParams.metaAttributeFilters }
-        : { state: ['DRAFT'], liableEntity, ...filterParams.metaAttributeFilters }
+    const state = filterParams.evidence_status?.length != 0 ? filterParams.evidence_status : ['DRAFT']
+    const metaAttributes = { state: state, liableEntity, ...filterParams.metaAttributeFilters }
 
     const {
         data: tableData,
@@ -45,7 +49,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
         filter: {
             ...filterToNeighborsApi.filter,
             fullTextSearch: filterParams.fullTextSearch || '',
-            attributes: mapFilterParamsToApi(filterParams, defaultFilterOperators),
+            attributes: mapFilterParamsToApi({ ...filterParams, evidence_status: undefined }, defaultFilterOperators),
             metaAttributes,
         },
     })
