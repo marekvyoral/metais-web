@@ -456,7 +456,7 @@
         "attrSuccessfulUpdated": "Atribút bol úspešne  zmenený",
         "attrSuccessfulCreated": "Atribút bol úspešne pridaný",
         "invalidatePOSuccess": "Orgán riadenia bol úspešne zneplatnený",
-        "invalidatePOError": "Invalidácia Orgánu riadenia neúspešná"
+        "invalidatePOError": "Zneplatnenie Orgánu riadenia neúspešná"
     },
     "managementList": {
         "namePassword": "Meno / Heslo",
@@ -628,14 +628,14 @@
             "exactLength": "Hodnota musí mať {{length}} znakov",
             "uniqueEkoCode": "Kód musí byť unikátny"
         },
-        "invalidateCodes": "Invalidovať položky",
+        "invalidateCodes": "Zneplatniť položky",
         "deleteCodes": "Zmazanie položiek",
         "invalidateModalTitle": "Zneplatnenie EKO kódov",
         "deleteModalTitle": "Zmazanie EKO kódov",
         "invalidateModalContent": "Naozaj si želáte zneplatniť uvedený EKO kód?",
         "deleteModalContent": "Naozaj si želáte odstrániť uvedený EKO kód?",
         "deleteModalOkButtonLabel": "Zmazať vybrané EKO kódy",
-        "invalidateModalOkButtonLabel": "Invalidovať vybrané EKO kódy"
+        "invalidateModalOkButtonLabel": "Zneplatniť vybrané EKO kódy"
     },
     "feedback": {
         "failedFetch": "Vyskytol sa problém s načítaním údajov. Prosím skúste znova.",
