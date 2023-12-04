@@ -1,5 +1,5 @@
 import { QueryFeedback } from '@isdd/metais-common/index'
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { FindAllWithIdentities1Params, useFindAllWithIdentities1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
@@ -14,6 +14,7 @@ import {
     useGetVoteDetail,
     useUpdateVote,
 } from '@isdd/metais-common/api/generated/standards-swagger'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { IVoteEditView } from '@/components/views/standardization/votes/VoteComposeForm/VoteComposeFormView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -28,7 +29,7 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
     const location = useLocation()
-
+    const { wrapperRef: queryFeedbackRef, scrollToMutationFeedback } = useScroll()
     const { state: user } = useAuth()
     const isUserLogged = !!user
 
@@ -40,6 +41,13 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
     const groupsWithIdentitiesRequestParams: FindAllWithIdentities1Params = {
         expression: '',
     }
+    const allStandardRequestsDataError = useMemo(() => {
+        if (allStandardRequestsData?.standardRequestsCount && voteData?.standardRequestId) {
+            return allStandardRequestsData?.standardRequestsCount < voteData?.standardRequestId ?? 0
+        }
+        return false
+    }, [allStandardRequestsData?.standardRequestsCount, voteData?.standardRequestId])
+
     const {
         data: groupWithIdentitiesData,
         isLoading: groupWithIIdentitiesLoading,
@@ -62,7 +70,8 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
     }
 
     const isLoading = (voteDataLoading && !isNewVote) || allStandardRequestsLoading || createVoteLoading || updateVoteLoading
-    const isError = voteDataError || allStandardRequestsError || groupWithIdentitiesError || createVoteError || updateVoteError
+    const isError =
+        voteDataError || allStandardRequestsError || groupWithIdentitiesError || createVoteError || updateVoteError || allStandardRequestsDataError
     const getLoaderLabel = (): string | undefined => {
         return createVoteLoading || updateVoteLoading ? t('votes.type.callingVote') : undefined
     }
@@ -103,17 +112,24 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
         return links
     }
 
+    useEffect(() => {
+        if (isError) {
+            scrollToMutationFeedback()
+        }
+    }, [isError, scrollToMutationFeedback])
+
     return (
         <>
             {isUserLogged && (
                 <>
                     <BreadCrumbs links={getBreadCrumbLinks(!!isNewVote)} withWidthContainer />
                     <MainContentWrapper>
+                        <div ref={queryFeedbackRef} />
                         <QueryFeedback
                             loading={isLoading}
                             error={isError}
                             indicatorProps={{ layer: 'parent', transparentMask: false, label: getLoaderLabel() }}
-                            withChildren={createVoteLoading || updateVoteLoading}
+                            withChildren
                         >
                             <View
                                 user={user.user}

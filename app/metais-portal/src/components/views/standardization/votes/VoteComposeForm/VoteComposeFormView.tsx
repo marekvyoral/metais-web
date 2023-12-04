@@ -1,7 +1,7 @@
 import { Button, CheckBox, IOption, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { GroupWithIdentities } from '@isdd/metais-common/api/generated/iam-swagger'
 import classNames from 'classnames'
-import React, { useCallback, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { User } from '@isdd/metais-common/contexts/auth/authContext'
@@ -10,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import { TFunction } from 'i18next'
 import { ApiAttachment, ApiLink, ApiStandardRequestPreviewList, ApiVote, ApiVoteChoice } from '@isdd/metais-common/api/generated/standards-swagger'
+import { DateTime } from 'luxon'
 
 import {
     getPageTitle,
@@ -58,8 +59,10 @@ export interface IVoteEditForm {
     vetoRight?: boolean
 }
 
-const schema = (t: TFunction<'translation', undefined, 'translation'>): Yup.ObjectSchema<IVoteEditForm> =>
-    Yup.object()
+const schema = (t: TFunction<'translation', undefined, 'translation'>): Yup.ObjectSchema<IVoteEditForm> => {
+    const today = new Date(new Date().setHours(0, 0, 0, 0))
+
+    return Yup.object()
         .shape({
             voteSubject: Yup.string().required(t('validation.required')),
             voteDescription: Yup.string().required(t('validation.required')),
@@ -82,15 +85,22 @@ const schema = (t: TFunction<'translation', undefined, 'translation'>): Yup.Obje
             invitedGroups: Yup.array(),
             invitedUsers: Yup.array().min(1, t('validation.required')),
             secretVote: Yup.boolean().required(t('validation.required')),
-            effectiveFrom: Yup.date().required(t('validation.required')).min(new Date(), 'Date To must be later than this date'),
-            effectiveTo: Yup.date()
+            effectiveFrom: Yup.date()
+                .typeError(t('validation.required'))
                 .required(t('validation.required'))
-                .when('effectiveFrom', (dateFrom, yupSchema) => {
-                    return dateFrom ? yupSchema.min(dateFrom, 'Date To must be later than Date From') : yupSchema
+                .min(today, `${t('validation.dateMustBeEqualOrGreaterThen')} ${formatDateForDefaultValue(today.toString(), 'dd.MM.yyyy')}`),
+            effectiveTo: Yup.date()
+                .typeError(t('validation.required'))
+                .required(t('validation.required'))
+                .when('effectiveFrom', (effectiveFrom, yupSchema) => {
+                    return DateTime.fromJSDate(new Date(`${effectiveFrom}`)).isValid
+                        ? yupSchema.min(effectiveFrom, `${t('validation.dateMustBeGreaterThen')} ${t('votes.voteEdit.date.fromDate')}`)
+                        : yupSchema
                 }),
             vetoRight: Yup.boolean().required(t('validation.required')),
         })
         .defined()
+}
 
 const defaultAnswerDefinitionsValues = (t: TFunction<'translation', undefined, 'translation'>): ApiVoteChoice[] => [
     { value: t('votes.voteEdit.answers.yes') },
@@ -110,8 +120,6 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
     onCancel,
 }) => {
     const isNewVote = !existingVoteDataToEdit
-    const today = new Date()
-
     const { t } = useTranslation()
 
     const standardRequestOptions: IOption<string>[] = useMemo(() => {
@@ -122,16 +130,15 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
         const returnFormData: IVoteEditForm = {
             voteSubject: apiVoteData?.name,
             voteDescription: apiVoteData?.description,
-            standardRequest: apiVoteData?.standardRequestId ? standardRequestOptions[apiVoteData?.standardRequestId].value : '',
+            standardRequest: '',
             documentLinks: apiVoteData?.links,
             invitedUsers: [],
             answerDefinitions: apiVoteData?.voteChoices ?? defaultAnswerDefinitionsValues(t),
             secretVote: apiVoteData?.secret,
             vetoRight: apiVoteData?.veto,
-            effectiveFrom: apiVoteData?.effectiveFrom ? new Date(apiVoteData?.effectiveFrom) : undefined,
-            effectiveTo: apiVoteData?.effectiveTo ? new Date(apiVoteData?.effectiveTo) : undefined,
+            effectiveFrom: apiVoteData?.effectiveFrom ? (formatDateForDefaultValue(apiVoteData?.effectiveFrom) as unknown as Date) : undefined,
+            effectiveTo: apiVoteData?.effectiveTo ? (formatDateForDefaultValue(apiVoteData?.effectiveTo) as unknown as Date) : undefined,
         }
-
         return returnFormData ?? {}
     }
 
@@ -139,6 +146,16 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
         resolver: yupResolver(schema(t)),
         defaultValues: mapApiVoteToFormData(existingVoteDataToEdit),
     })
+
+    useEffect(() => {
+        if (
+            standardRequestOptions.length > 0 &&
+            existingVoteDataToEdit?.standardRequestId &&
+            standardRequestOptions.length >= existingVoteDataToEdit?.standardRequestId
+        ) {
+            setValue('standardRequest', standardRequestOptions[existingVoteDataToEdit?.standardRequestId].value)
+        }
+    }, [existingVoteDataToEdit?.standardRequestId, setValue, standardRequestOptions])
 
     const fileUploadRef = useRef<IFileUploadRef>(null)
     const formDataRef = useRef<FieldValues>([])
@@ -300,7 +317,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                         label={t('votes.voteEdit.date.fromDate')}
                         className={styles.stretchGrow}
                         error={formState.errors['effectiveFrom']?.message}
-                        min={formatDateForDefaultValue(today.toString())}
+                        required
                     />
                     <div className={styles.space} />
                     <Input
@@ -309,7 +326,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                         label={t('votes.voteEdit.date.toDate')}
                         className={styles.stretchGrow}
                         error={formState.errors['effectiveTo']?.message}
-                        min={formatDateForDefaultValue(watch('effectiveFrom')?.toString() ?? '')}
+                        required
                     />
                 </div>
                 <Spacer vertical />

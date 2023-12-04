@@ -705,7 +705,9 @@
         "maxValue": "Hodnota nesmie byť väčšia ako",
         "character": "Zadaný môže byť len jeden znak",
         "canNotBeDecimal": "Toto číslo musí byť celé číslo",
-        "mustBeChecked": "Toto musí byť zaškrtnuté, ak chcete pokračovať"
+        "mustBeChecked": "Toto musí byť zaškrtnuté, ak chcete pokračovať",
+        "dateMustBeGreaterThen": "Dátum musí byť neskorší ako",
+        "dateMustBeEqualOrGreaterThen": "Dátum musí byť rovnaký alebo neskorší ako"
     },
     "createEntity": {
         "required": "povinné",
@@ -1869,13 +1871,13 @@
             },
             "invited": {
                 "title": "Pozvaní",
-                "invitedGroups": "Pozvané skupiny :",
-                "invitedUsers": "Pozvaní používatelia (povinné):"
+                "invitedGroups": "Pozvané skupiny",
+                "invitedUsers": "Pozvaní používatelia (povinné)"
             },
             "secretVote": "Tajné hlasovanie",
             "date": {
-                "fromDate": "Dátum spustenia (povinné):",
-                "toDate": "Dátum ukončenia (povinné):"
+                "fromDate": "Dátum spustenia",
+                "toDate": "Dátum ukončenia"
             },
             "answers": {
                 "title": "Definícia odpovedí",

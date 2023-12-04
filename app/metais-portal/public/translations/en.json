@@ -702,7 +702,10 @@
         "maxValue": "Value can not be greater than",
         "character": "Only one character can be inserted",
         "canNotBeDecimal": "This number can not be decimal",
-        "mustBeChecked": "This must be checked if you want to proceed"
+        "mustBeChecked": "This must be checked if you want to proceed",
+        "dateMustBeGreaterThen": "Date must be greater then",
+        "dateMustBeEqualOrGreaterThen": "Date must be equal or greater then"
+        
     },
     "createEntity": {
         "required": "required",
@@ -1852,8 +1855,8 @@
             },
             "invited": {
                 "title": "Invited",
-                "invitedGroups": "Invited groups (reqired):",
-                "invitedUsers": "Invited users (reqiured):"
+                "invitedGroups": "Invited groups",
+                "invitedUsers": "Invited users (reqiured)"
             },
             "secretVote": "Secret vote",
             "date": {
