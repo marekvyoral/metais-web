@@ -1,12 +1,14 @@
 import { BaseModal, Button, ButtonGroupRow, ButtonLink, Tab, Table, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Document } from '@isdd/metais-common/api/generated/kris-swagger'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { ActionsOverTable } from '@isdd/metais-common/index'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { ActionsOverTable, MutationFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import styles from './styles.module.scss'
 
@@ -149,6 +151,14 @@ export const DocumentsGroupView: React.FC<IView> = ({
         setDocumentToDelete(undefined)
         refetchDocuments()
     }
+    const { isActionSuccess } = useActionSuccess()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    useEffect(() => {
+        scrollToMutationFeedback()
+        if (isActionSuccess.value) {
+            refetchDocuments()
+        }
+    }, [isActionSuccess, refetchDocuments, scrollToMutationFeedback])
 
     return (
         <>
@@ -175,6 +185,17 @@ export const DocumentsGroupView: React.FC<IView> = ({
                     onClick={() => navigate(`./create`, { state: { from: location } })}
                 />
             </ActionsOverTable>
+            <div ref={wrapperRef}>
+                <MutationFeedback
+                    success={isActionSuccess.value}
+                    error={undefined}
+                    successMessage={
+                        isActionSuccess?.additionalInfo?.type == 'create'
+                            ? t('mutationFeedback.successfulCreated')
+                            : t('mutationFeedback.successfulUpdated')
+                    }
+                />
+            </div>
             <Table
                 columns={columns.filter(
                     (c) =>
