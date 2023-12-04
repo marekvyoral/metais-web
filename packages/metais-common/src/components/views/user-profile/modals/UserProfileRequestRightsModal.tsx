@@ -1,5 +1,5 @@
 import { BaseModal, Button, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 import { mixed, object, string } from 'yup'
@@ -12,6 +12,7 @@ import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swag
 import { SubmitWithFeedback } from '@isdd/metais-common/components/submit-with-feedback/SubmitWithFeedback'
 import { ClaimEvent } from '@isdd/metais-common/api/generated/claim-manager-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 
 export enum RequestFormFields {
     PO = 'po',
@@ -30,7 +31,7 @@ export type UserRequestRightsForm = {
 type Props = {
     isOpen: boolean
     onClose: () => void
-    mutateCallback: (data: ClaimEvent) => void
+    mutateCallback: (data: ClaimEvent) => Promise<boolean>
     isLoading: boolean
 }
 
@@ -39,7 +40,7 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
     const {
         state: { user },
     } = useAuth()
-
+    const [sendError, setSendError] = useState<string>()
     const requiredString = ` (${t('userProfile.requests.required')})`
 
     const schema = object().shape({
@@ -67,8 +68,8 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user?.uuid])
 
-    const onSubmit = (formData: UserRequestRightsForm) => {
-        mutateCallback({
+    const onSubmit = async (formData: UserRequestRightsForm) => {
+        const resp = await mutateCallback({
             type: 'CREATE_EVENT',
             claimUi: {
                 createdBy: user?.uuid,
@@ -76,6 +77,9 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
                 po: formData[RequestFormFields.PO].uuid,
             },
         })
+        if (!resp) {
+            setSendError(t('feedback.mutationErrorMessage'))
+        }
     }
 
     return (
@@ -112,7 +116,7 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
                         error={errors[RequestFormFields.DESCRIPTION]?.message}
                         {...register(RequestFormFields.DESCRIPTION)}
                     />
-
+                    <MutationFeedback success={false} error={sendError} />
                     <SubmitWithFeedback
                         className={styles.noMarginButtons}
                         loading={isSubmitting || isValidating || isLoading}

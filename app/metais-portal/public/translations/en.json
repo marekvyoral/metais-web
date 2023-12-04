@@ -1510,6 +1510,7 @@
         "deletePersonalInfo": {
             "description": "To delete account you must enter your up to date password.",
             "password": "Your password",
+            "invalidPassword": "Invalid password",
             "submit": "Delete my account and personal information",
             "heading": "Do you really wish to delete your personal information?",
             "passwordPlaceholder": "Enter your password"
@@ -2010,7 +2011,7 @@
         "relatedISVS": "Related ISVSs",
         "relatedPO": "Related POs",
         "note": "Note"
-	},
+    },
     "LicenseAgreement": {
         "Title": "Terms of use of the Central Metainformation System of Public Administration",
         "Agree": "I agree to the terms of use of the Central Public Administration Metainformation System.",
@@ -2040,7 +2041,7 @@
                 "Phone": "work phone number,",
                 "PO": "obliged person (employer)"
             }
-        }, 
+        },
         "Confirm": "Potvrtiť"
     }
 }

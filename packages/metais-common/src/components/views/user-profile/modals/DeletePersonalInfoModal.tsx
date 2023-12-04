@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next'
 
 import styles from './modals.module.scss'
 
-import { SubmitWithFeedback } from '@isdd/metais-common/components/submit-with-feedback/SubmitWithFeedback'
 import { ClaimEvent } from '@isdd/metais-common/api/generated/claim-manager-swagger'
+import { SubmitWithFeedback } from '@isdd/metais-common/components/submit-with-feedback/SubmitWithFeedback'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 type DeletePersonalInfoForm = {
@@ -16,7 +16,7 @@ type DeletePersonalInfoForm = {
 type Props = {
     isOpen: boolean
     onClose: () => void
-    mutateCallback: (data: ClaimEvent) => void
+    mutateCallback: (data: ClaimEvent) => Promise<boolean>
     isLoading: boolean
 }
 
@@ -29,12 +29,11 @@ export const DeletePersonalInfoModal: React.FC<Props> = ({ isOpen, onClose, muta
         handleSubmit,
         register,
         formState: { isValidating, isSubmitting, errors },
+        setError,
     } = useForm<DeletePersonalInfoForm>()
-
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const onSubmit = (formData: DeletePersonalInfoForm) => {
-        //PASSWORD waiting for BE
-        mutateCallback({
+    const onSubmit = async (formData: DeletePersonalInfoForm) => {
+        const resp = await mutateCallback({
             type: 'CREATE_EVENT',
             claimUi: {
                 createdBy: user?.uuid,
@@ -45,8 +44,12 @@ export const DeletePersonalInfoModal: React.FC<Props> = ({ isOpen, onClose, muta
                 identityLastName: user?.lastName,
                 identityLogin: user?.login,
                 name: 'GDPR',
+                password: formData.password,
             },
         })
+        if (!resp) {
+            setError('password', { message: t('userProfile.deletePersonalInfo.invalidPassword') })
+        }
     }
 
     return (
@@ -62,18 +65,17 @@ export const DeletePersonalInfoModal: React.FC<Props> = ({ isOpen, onClose, muta
                         placeholder={t('userProfile.deletePersonalInfo.passwordPlaceholder')}
                         type="password"
                     />
+
+                    <SubmitWithFeedback
+                        className={styles.noMarginButtons}
+                        variant="warning"
+                        submitButtonLabel={t('userProfile.deletePersonalInfo.submit')}
+                        additionalButtons={[
+                            <Button key="cancelButton" variant="secondary" type="reset" label={t('userProfile.requests.cancel')} onClick={onClose} />,
+                        ]}
+                        loading={isValidating || isSubmitting || isLoading}
+                    />
                 </form>
-                <SubmitWithFeedback
-                    className={styles.noMarginButtons}
-                    variant="warning"
-                    submitButtonLabel={t('userProfile.deletePersonalInfo.submit')}
-                    additionalButtons={[
-                        <Button key="cancelButton" variant="secondary" type="reset" label={t('userProfile.requests.cancel')} onClick={onClose} />,
-                    ]}
-                    //PASSWORD waiting for BE
-                    disabled
-                    loading={isValidating || isSubmitting || isLoading}
-                />
             </div>
         </BaseModal>
     )
