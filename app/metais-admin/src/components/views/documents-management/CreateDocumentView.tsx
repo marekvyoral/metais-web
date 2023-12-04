@@ -1,8 +1,14 @@
-import { Button, CheckBox, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Button, CheckBox, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { TFunction } from 'i18next'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import * as yup from 'yup'
+import { useEffect, useState } from 'react'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { IView } from '@/components/containers/documents-management/CreateDocumentContainer'
 
@@ -16,17 +22,27 @@ const DOCUMENT_FIELDS = {
     REQUIRED: 'required',
 }
 
+const docSchema = (t: TFunction<'translation', undefined, 'translation'>) =>
+    yup
+        .object({
+            [DOCUMENT_FIELDS.ID]: yup.string().trim().required(t('validation.required')),
+            [DOCUMENT_FIELDS.NAME]: yup.string().trim().required(t('validation.required')),
+        })
+        .defined()
+
 export const CreateDocumentView: React.FC<IView> = ({ infoData, saveDocument, isLoading }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
+    const { setIsActionSuccess } = useActionSuccess()
+    const [isError, setIsError] = useState(false)
 
     const {
         register,
         handleSubmit,
         formState: { errors, isValid },
         clearErrors,
-        setValue,
-    } = useForm()
+    } = useForm({ resolver: yupResolver(docSchema(t)) })
     const onSubmit = (fieldValues: FieldValues) => {
         if (isValid) {
             saveDocument({
@@ -39,29 +55,35 @@ export const CreateDocumentView: React.FC<IView> = ({ infoData, saveDocument, is
                 confluence: fieldValues[DOCUMENT_FIELDS.CONFLUENCE],
                 required: fieldValues[DOCUMENT_FIELDS.REQUIRED],
             })
-            navigate(-1)
+                .then(() => {
+                    setIsActionSuccess({ value: true, path: '/projects/documents/' + infoData.id, additionalInfo: { type: 'create' } })
+                    navigate('/projects/documents/' + infoData.id, { state: { from: location } })
+                })
+                .catch(() => {
+                    setIsError(true)
+                })
         }
     }
+
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    useEffect(() => {
+        if (isError) {
+            scrollToMutationFeedback()
+        }
+    }, [isError, scrollToMutationFeedback])
+
     return (
-        <QueryFeedback loading={isLoading}>
+        <QueryFeedback loading={isLoading} error={isError}>
+            <div ref={wrapperRef} />
             <TextHeading size="L">{t('documentsManagement.addDocument')}</TextHeading>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Input
                     placeholder={t('documentsManagement.input')}
                     required
-                    error={errors[DOCUMENT_FIELDS.ID]?.message as string}
+                    error={errors['docId']?.message as string}
                     label={t('documentsManagement.docId')}
                     {...register(DOCUMENT_FIELDS.ID)}
                 />
-                <SimpleSelect
-                    label={t('documentsManagement.docTemplate') + ' ' + t('input.requiredField')}
-                    name="docPreset"
-                    setValue={setValue}
-                    error={errors['docPreset']?.message as string}
-                    options={[]}
-                />
-                <CheckBox label={t('documentsManagement.useTemplate')} id="usePreset" {...register('usePreset')} />
-                <div style={{ height: '20px' }} />
                 <Input
                     placeholder={t('documentsManagement.input')}
                     required
