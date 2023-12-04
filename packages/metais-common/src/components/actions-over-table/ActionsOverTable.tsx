@@ -148,34 +148,32 @@ export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({
 
             <div className={styles.buttonGroupSelect}>
                 {!hiddenButtons?.SELECT_COLUMNS && (
-                    <Can I={Actions.SELECT_COLUMNS} a={entityName} ability={ability}>
-                        <ButtonPopup
-                            buttonLabel={t('actionOverTable.selectColumn')}
-                            buttonClassName="marginBottom0"
-                            popupContent={(closePopup) => {
-                                return simpleTableColumnsSelect ? (
-                                    <TableSelectColumns
-                                        onClose={closePopup}
-                                        onReset={simpleTableColumnsSelect.resetSelectedColumns}
-                                        onSave={simpleTableColumnsSelect.saveSelectedColumns}
-                                        columns={simpleTableColumnsSelect.selectedColumns}
-                                        sections={simpleTableColumnsSelect.sections}
-                                        header={t('notifications.column')}
-                                    />
-                                ) : (
-                                    <CiTableSelectColumns
-                                        onClose={closePopup}
-                                        resetDefaultOrder={resetUserSelectedColumns}
-                                        showSelectedColumns={storeUserSelectedColumns}
-                                        attributeProfilesColumnSections={attributeProfilesColumnSections}
-                                        columnListData={columnListData}
-                                        attributesColumnSection={attributesColumnSection}
-                                        metaAttributesColumnSection={metaAttributesColumnSection}
-                                    />
-                                )
-                            }}
-                        />
-                    </Can>
+                    <ButtonPopup
+                        buttonLabel={t('actionOverTable.selectColumn')}
+                        buttonClassName="marginBottom0"
+                        popupContent={(closePopup) => {
+                            return simpleTableColumnsSelect ? (
+                                <TableSelectColumns
+                                    onClose={closePopup}
+                                    onReset={simpleTableColumnsSelect.resetSelectedColumns}
+                                    onSave={simpleTableColumnsSelect.saveSelectedColumns}
+                                    columns={simpleTableColumnsSelect.selectedColumns}
+                                    sections={simpleTableColumnsSelect.sections}
+                                    header={t('notifications.column')}
+                                />
+                            ) : (
+                                <CiTableSelectColumns
+                                    onClose={closePopup}
+                                    resetDefaultOrder={resetUserSelectedColumns}
+                                    showSelectedColumns={storeUserSelectedColumns}
+                                    attributeProfilesColumnSections={attributeProfilesColumnSections}
+                                    columnListData={columnListData}
+                                    attributesColumnSection={attributesColumnSection}
+                                    metaAttributesColumnSection={metaAttributesColumnSection}
+                                />
+                            )
+                        }}
+                    />
                 )}
                 {!hiddenButtons?.PAGING && pagingOptions && (
                     <PageSizeSelect

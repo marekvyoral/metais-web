@@ -204,7 +204,7 @@ export const CiTable: React.FC<ICiTable> = ({
                 onColumnOrderChange={(updaterOrValue: Updater<ColumnOrderState>) =>
                     storeUserSelectedColumns && storeUserSelectedColumns(getOrderCiColumns(data?.columnListData, updaterOrValue as ColumnOrderState))
                 }
-                canDrag={!!user}
+                canDrag
                 sort={sort}
                 isRowSelected={isRowSelected}
                 isLoading={isLoading}
