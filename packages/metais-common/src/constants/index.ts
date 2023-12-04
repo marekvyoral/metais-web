@@ -229,3 +229,4 @@ export const krisRelatedCiTabsNames = [ENTITY_KS, ENTITY_ISVS, ENTITY_PROJECT, E
 export enum ROLES {
     EA_GARPO = 'EA_GARPO',
 }
+export const NO_USER_COLUMNS_LS_KEY = 'METAIS_columns_noUser/'

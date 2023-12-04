@@ -16,6 +16,7 @@ import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFil
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/src/api'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { NO_USER_COLUMNS_LS_KEY } from '@isdd/metais-common/constants'
 
 export const transformColumnsMap = new Map<string, string>([
     ['Gen_Profil_nazov', 'isvsName'],
@@ -54,14 +55,48 @@ export const columnsToIgnore = [
     'Gui_Profil_RR_rr_evidencia_as_poznamka',
 ]
 
+const getColumnsFromLocalStorageKey = (entityName: string) => {
+    return `${NO_USER_COLUMNS_LS_KEY}${entityName}`
+}
+
+const useGetColumnsFromLocalStorage = (entityName: string) => {
+    const lsColumnsKey = getColumnsFromLocalStorageKey(entityName)
+    const [columnsFromLocalStorage, setColumnsFromLocalStorage] = useState<FavoriteCiType | null>(null)
+    const lsColumnData = localStorage.getItem(lsColumnsKey)
+
+    useEffect(() => {
+        if (lsColumnData != null) {
+            const parsedColumnData = JSON.parse(lsColumnData)
+            setColumnsFromLocalStorage(parsedColumnData)
+        }
+    }, [lsColumnData])
+
+    const save = (dataToSave: FavoriteCiType) => {
+        localStorage.setItem(`${NO_USER_COLUMNS_LS_KEY}${entityName}`, JSON.stringify(dataToSave))
+        setColumnsFromLocalStorage(dataToSave)
+    }
+    const reset = () => {
+        localStorage.removeItem(`${NO_USER_COLUMNS_LS_KEY}${entityName}`)
+        setColumnsFromLocalStorage(null)
+    }
+    return { columnsFromLocalStorage, setColumnsFromLocalStorage, save, reset }
+}
+
 export const useGetColumnData = (entityName: string, renameColumns?: boolean) => {
     const {
         state: { user },
     } = useAuth()
-    const isUserLogged = !!user
+    const isUserLogged = !!user?.uuid
 
     const getUserColumns = useGetUserColumns(entityName, { query: { enabled: isUserLogged } })
     const getDefaultColumns = useGetDefaultColumns(entityName, { query: { enabled: !isUserLogged } })
+    const { columnsFromLocalStorage, save: saveColumnsToLocalStorage, reset: resetLocalStorageColumns } = useGetColumnsFromLocalStorage(entityName)
+
+    const hasColumnsInLocalStorage =
+        columnsFromLocalStorage &&
+        ((columnsFromLocalStorage.attributes && columnsFromLocalStorage?.attributes?.length > 0) ||
+            (columnsFromLocalStorage.metaAttributes && columnsFromLocalStorage?.metaAttributes?.length > 0))
+
     const {
         data: columnListData,
         refetch: refetchColumnData,
@@ -71,20 +106,27 @@ export const useGetColumnData = (entityName: string, renameColumns?: boolean) =>
 
     //Always show name and first in oreder
     const mergedColumnListData = useMemo(() => {
-        const isGenProfile = columnListData?.attributes?.find((i) => i.name === ATTRIBUTE_NAME.Gen_Profil_nazov)
-        const normalizedColumnListData: typeof columnListData = {
-            ...columnListData,
-            metaAttributes: columnListData?.metaAttributes?.map((metaAttr) => {
-                return metaAttr.name === 'group' ? { ...metaAttr, name: 'owner' } : metaAttr
-            }),
+        const getMergedColumnListData = (clmnData: FavoriteCiType | undefined) => {
+            const isGenProfile = clmnData?.attributes?.find((i) => i.name === ATTRIBUTE_NAME.Gen_Profil_nazov)
+            const normalizedColumnListData: typeof columnListData = {
+                ...clmnData,
+                metaAttributes: clmnData?.metaAttributes?.map((metaAttr) => {
+                    return metaAttr.name === 'group' ? { ...metaAttr, name: 'owner' } : metaAttr
+                }),
+            }
+            return isGenProfile
+                ? normalizedColumnListData
+                : {
+                      ...normalizedColumnListData,
+                      attributes: [...(normalizedColumnListData?.attributes || []), { name: ATTRIBUTE_NAME.Gen_Profil_nazov, order: 1 }],
+                  }
         }
-        return isGenProfile
-            ? normalizedColumnListData
-            : {
-                  ...normalizedColumnListData,
-                  attributes: [...(normalizedColumnListData?.attributes || []), { name: ATTRIBUTE_NAME.Gen_Profil_nazov, order: 1 }],
-              }
-    }, [columnListData])
+
+        if (hasColumnsInLocalStorage && !isUserLogged) {
+            return getMergedColumnListData(columnsFromLocalStorage)
+        }
+        return getMergedColumnListData(columnListData)
+    }, [columnListData, columnsFromLocalStorage, hasColumnsInLocalStorage, isUserLogged])
 
     const getKey = (value: string) => {
         return [...transformColumnsMap].find(([, val]) => val == value)?.[0]
@@ -106,14 +148,21 @@ export const useGetColumnData = (entityName: string, renameColumns?: boolean) =>
     const storeUserSelectedColumns = useInsertUserColumns()
     const { isLoading: isStoreLoading, isError: isStoreError } = storeUserSelectedColumns
     const saveColumnSelection = async (columnSelection: FavoriteCiType) => {
+        const dataToSave = {
+            attributes: transformColumnsMap
+                ? columnSelection?.attributes?.map((attr) => ({ ...attr, name: getKey(attr?.name ?? '') ?? attr?.name }))
+                : columnSelection.attributes,
+            ciType: entityName ?? '',
+            metaAttributes: columnSelection.metaAttributes,
+        }
+
+        if (!isUserLogged) {
+            saveColumnsToLocalStorage(dataToSave)
+            return
+        }
+
         await storeUserSelectedColumns.mutateAsync({
-            data: {
-                attributes: transformColumnsMap
-                    ? columnSelection?.attributes?.map((attr) => ({ ...attr, name: getKey(attr?.name ?? '') ?? attr?.name }))
-                    : columnSelection.attributes,
-                ciType: entityName ?? '',
-                metaAttributes: columnSelection.metaAttributes,
-            },
+            data: dataToSave,
         })
         await refetchColumnData()
     }
@@ -121,6 +170,11 @@ export const useGetColumnData = (entityName: string, renameColumns?: boolean) =>
     const resetUserSelectedColumns = useResetUserColumns()
     const { isLoading: isResetLoading, isError: isResetError } = resetUserSelectedColumns
     const resetColumns = async () => {
+        if (!isUserLogged) {
+            resetLocalStorageColumns()
+            return
+        }
+
         await resetUserSelectedColumns.mutateAsync({ citype: entityName || '' })
         await refetchColumnData()
     }
