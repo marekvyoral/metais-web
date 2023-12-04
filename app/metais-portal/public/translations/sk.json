@@ -1527,6 +1527,7 @@
         "deletePersonalInfo": {
             "description": "Pre vymazanie účtu je nutné zadat vaše aktuálne heslo.",
             "password": "Vaše heslo",
+            "invalidPassword": "Nesprávne heslo",
             "submit": "Vymazať účet a moje údaje",
             "heading": "Naozaj si želáte vymazanie osobných údajov?",
             "passwordPlaceholder": "Zadajte vaše heslo"
@@ -2027,7 +2028,7 @@
         "relatedISVS": "Súvisiace ISVS",
         "relatedPO": "Súvisiace Orgány riadenia",
         "note": "Poznámka"
-	},
+    },
     "LicenseAgreement": {
         "Title": "Podmienky používania Centrálneho metainformačného systému verejnej správy",
         "Agree": "Súhlasím s podmienkami používania Centrálneho metainformačného systému verejnej správy.",
@@ -2057,7 +2058,7 @@
                 "Phone": "pracovné telefónne číslo,",
                 "PO": "povinná osoba (zamestnávateľ)"
             }
-        }, 
+        },
         "Confirm": "Potvrtiť"
     }
 }

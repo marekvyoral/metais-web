@@ -49,7 +49,6 @@ export const RequestListContainer: React.FC<IRequestListContainerProps> = ({ Vie
                 perpage: filter.pageSize ? +filter.pageSize : BASE_PAGE_SIZE,
                 sortAttribute: filter.sortAttribute,
                 ascending: filter.ascending,
-                listType: filter.listType,
                 filter: {
                     searchFilter: filter.fullTextSearch,
                     anonymous: filter.listType === RequestListType.REGISTRATION,

@@ -7,11 +7,12 @@ import { UserRightsPage } from '@isdd/metais-common/components/views/user-profil
 import { UserNotificationsSettings } from '@isdd/metais-common/components/views/user-profile/UserNotificationsSettings'
 import { UserPasswordChangePage } from '@isdd/metais-common/components/views/user-profile/UserPasswordChangePage'
 import { UserProfileRequestRightsModal } from '@isdd/metais-common/src/components/views/user-profile/modals/UserProfileRequestRightsModal'
-import { ClaimEvent, useProcessEvent } from '@isdd/metais-common/api/generated/claim-manager-swagger'
+import { ClaimEvent, useProcessEvent, useReadList1 } from '@isdd/metais-common/api/generated/claim-manager-swagger'
 import { DeletePersonalInfoModal } from '@isdd/metais-common/src/components/views/user-profile/modals/DeletePersonalInfoModal'
-import { MutationFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { ciInformationTab } from '@isdd/metais-common/constants'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { UserInformationPage } from '../../../../../packages/metais-common/src/components/views/user-profile/user-informations/UserInformationPage'
 
@@ -21,13 +22,33 @@ const UserProfilePage = () => {
     const { t } = useTranslation()
     const [isRightsSettingsModalOpen, setIsRightsSettingsModalOpen] = useState(false)
     const [isDeletePersonalInfoModalOpen, setIsDeletePersonalInfoModalOpen] = useState(false)
+    const {
+        state: { user },
+    } = useAuth()
+    const { mutateAsync: rightsRequestMutate, isLoading, isError } = useProcessEvent()
+    const {
+        data: claimsList,
+        isLoading: isReadLoading,
+        isError: isReadError,
+        refetch,
+    } = useReadList1({ createdBy: user?.uuid ?? '', name: 'GDPR', state: 'WAITING' })
 
-    const { mutateAsync: rightsRequestMutate, isLoading, isError, isSuccess } = useProcessEvent()
+    const [updateSuccess, setUpdateSuccess] = useState(false)
 
-    const processRequestMutation = (data: ClaimEvent) => {
-        rightsRequestMutate({
+    const processRequestMutation = async (data: ClaimEvent): Promise<boolean> => {
+        return await rightsRequestMutate({
             data: data,
-        }).then(() => setIsRightsSettingsModalOpen(false))
+        }).then((resp) => {
+            if (resp.resultCode == 0) {
+                setIsRightsSettingsModalOpen(false)
+                setIsDeletePersonalInfoModalOpen(false)
+                setUpdateSuccess(true)
+                refetch()
+                return true
+            } else {
+                return false
+            }
+        })
     }
 
     const tabList: Tab[] = [
@@ -68,20 +89,23 @@ const UserProfilePage = () => {
                 ]}
             />
             <MainContentWrapper>
-                <FlexColumnReverseWrapper>
-                    <TextHeading size="XL">{t('userProfile.heading')}</TextHeading>
-                    <MutationFeedback success={isSuccess} error={isError} />
-                </FlexColumnReverseWrapper>
-                <ButtonGroupRow>
-                    <Button label={t('userProfile.requests.rightsSettings')} onClick={() => setIsRightsSettingsModalOpen(true)} />
-                    <Button
-                        variant="secondary"
-                        label={t('userProfile.requests.deletePersonalInfo')}
-                        onClick={() => setIsDeletePersonalInfoModalOpen(true)}
-                    />
-                </ButtonGroupRow>
+                <QueryFeedback error={isReadError} loading={isReadLoading}>
+                    <FlexColumnReverseWrapper>
+                        <TextHeading size="XL">{t('userProfile.heading')}</TextHeading>
+                        <MutationFeedback success={updateSuccess} error={isError} successMessage={t('mutationFeedback.successfulCreated')} />
+                    </FlexColumnReverseWrapper>
+                    <ButtonGroupRow>
+                        <Button label={t('userProfile.requests.rightsSettings')} onClick={() => setIsRightsSettingsModalOpen(true)} />
+                        <Button
+                            disabled={(claimsList?.length ?? 0) > 0}
+                            variant="secondary"
+                            label={t('userProfile.requests.deletePersonalInfo')}
+                            onClick={() => setIsDeletePersonalInfoModalOpen(true)}
+                        />
+                    </ButtonGroupRow>
 
-                <Tabs tabList={tabList} />
+                    <Tabs tabList={tabList} />
+                </QueryFeedback>
             </MainContentWrapper>
             <UserProfileRequestRightsModal
                 isLoading={isLoading}
