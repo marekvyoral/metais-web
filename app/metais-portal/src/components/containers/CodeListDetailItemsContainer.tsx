@@ -93,7 +93,7 @@ export const CodeListDetailItemsContainer: React.FC<CodeListDetailItemsContainer
         ...(filter.state && { state: filter.state }),
         ...(filter.effective && { effective: filter.effective === CodeListFilterEffective.TRUE }),
         sortBy: filter.sort?.[0]?.orderBy ?? 'itemCode',
-        ascending: filter.sort?.[0]?.sortDirection === SortType.DESC ?? false,
+        ascending: filter.sort?.[0]?.sortDirection === SortType.ASC,
     })
 
     const mutationItemAction = useProcessItemAction()

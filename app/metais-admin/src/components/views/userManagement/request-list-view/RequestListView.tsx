@@ -2,18 +2,18 @@ import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { SimpleSelect } from '@isdd/idsk-ui-kit/select/simple-select/SimpleSelect'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
-import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
+import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { TextHeading } from '@isdd/idsk-ui-kit/typography/TextHeading'
 import { TextLink } from '@isdd/idsk-ui-kit/typography/TextLink'
 import { ClaimSetUi, ClaimUi } from '@isdd/metais-common/api/generated/claim-manager-swagger'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, EClaimState } from '@isdd/metais-common/constants'
+import { QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { QueryFeedback } from '@isdd/metais-common/index'
-import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 
 import { IRequestListFilterView, RequestListType } from '@/components/containers/ManagementList/RequestListContainer'
 
@@ -107,7 +107,7 @@ export const RequestListView: React.FC<IRequestListView> = ({
             accessorFn: (row) => row?.claimState,
             enableSorting: false,
             id: 'claimState',
-            cell: (ctx) => <span>{ctx?.row?.original?.claimState}</span>,
+            cell: (ctx) => <span>{t(`requestList.stateEnum.${ctx.getValue()}`)}</span>,
         },
         {
             header: t('requestList.poName'),
@@ -139,10 +139,6 @@ export const RequestListView: React.FC<IRequestListView> = ({
                             <SimpleSelect
                                 label={t(`userManagement.filter.state`)}
                                 options={[
-                                    {
-                                        value: '',
-                                        label: t('requestList.filter.all'),
-                                    },
                                     {
                                         value: EClaimState.WAITING,
                                         label: t('requestList.filter.created'),
@@ -200,15 +196,13 @@ export const RequestListView: React.FC<IRequestListView> = ({
                     rowHref={(row) => `./detail/${listType.toLowerCase()}/${row?.original?.uuid}`}
                     data={data?.claimSet || []}
                     columns={columns.map((item) => ({ ...item, size: 150 }))}
-                    sort={[
-                        { orderBy: defaultFilterParams.sortAttribute, sortDirection: defaultFilterParams.ascending ? SortType.ASC : SortType.DESC },
-                    ]}
+                    sort={defaultFilterParams.sort}
                     pagination={{
                         pageIndex: defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER,
                         pageSize: defaultFilterParams.pageSize ?? BASE_PAGE_SIZE,
                     }}
                     onSortingChange={(columnSort) => {
-                        handleFilterChange({ sortAttribute: columnSort[0].orderBy, ascending: columnSort[0].sortDirection === SortType.ASC })
+                        handleFilterChange({ sort: columnSort })
                     }}
                 />
                 <PaginatorWrapper

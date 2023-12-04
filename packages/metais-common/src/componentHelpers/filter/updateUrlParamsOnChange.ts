@@ -12,8 +12,8 @@ export const updateUrlParamsOnChange = (changedFilter: IFilter, setUrlParams: Se
                     if (currentParam.length > 0)
                         currentParam?.forEach((item: ColumnSort) => Object.entries(item)?.forEach(([field, value]) => newParams.set(field, value)))
                     else {
-                        newParams.set('orderBy', '')
-                        newParams.set('sortDirection', '')
+                        newParams.delete('orderBy')
+                        newParams.delete('sortDirection')
                     }
                 } else {
                     newParams.set(key, currentParam.toString())

@@ -823,11 +823,16 @@
         "createdAt": "Vytvorené",
         "claimState": "Stav žiadosti",
         "poName": "Povinná osoba",
+        "stateEnum": {
+            "WAITING": "Vytvorená",
+            "ACCEPTED": "Akceptovaná",
+            "REFUSED": "Odmietnutá"
+        },
         "filter": {
             "all": "Všetky",
             "created": "Vytvorené",
-            "accepted": "Akceptovaná",
-            "rejected": "Odmietnutá",
+            "accepted": "Akceptované",
+            "rejected": "Odmietnuté",
             "listType": {
                 "requests": "Žiadosti",
                 "registrations": "Registrácie",
