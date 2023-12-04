@@ -1,16 +1,17 @@
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
+import { Button, Filter, GridCol, GridRow, Input, MultiSelect } from '@isdd/idsk-ui-kit/index'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { QueryFeedback } from '@isdd/metais-common/index'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { QueryFeedback } from '@isdd/metais-common/index'
-import { HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { Button } from '@isdd/idsk-ui-kit/index'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { HistoryFilter, defaultHistoryFilter } from '@/components/containers/ConfigurationItemHistoryListContainer'
 
 export interface TableCols extends HistoryVersionUiConfigurationItemUi {
     selected?: boolean
@@ -23,6 +24,8 @@ interface ConfigurationItemHistoryListTable {
     pagination: Pagination
     handleFilterChange: (filter: IFilter) => void
     basePath?: string
+    filterActions?: string[]
+    filterModifiedBy?: string[]
 }
 
 export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistoryListTable> = ({
@@ -33,6 +36,8 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
     pagination,
     handleFilterChange,
     basePath,
+    filterActions,
+    filterModifiedBy,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -112,6 +117,56 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
                 onClick={handleCompareHistory}
                 label={t('historyTab.compareButtonLabel')}
                 disabled={selectedColumns.length > 2 || selectedColumns.length === 0}
+            />
+            <Filter<HistoryFilter>
+                defaultFilterValues={defaultHistoryFilter}
+                heading={t('codeList.filter.title')}
+                handleOnSubmit={({ action, lastModifiedBy, fromDate, toDate }) => {
+                    handleFilterChange({
+                        action,
+                        lastModifiedBy,
+                        fromDate,
+                        toDate,
+                    })
+                }}
+                form={({ filter: formFilter, setValue, register }) => (
+                    <div>
+                        <MultiSelect
+                            label={t('codeListDetail.history.filter.action')}
+                            options={filterActions?.map((item) => ({ label: t(`history.ACTIONS.${item as string}`), value: item })) ?? []}
+                            name="action"
+                            setValue={setValue}
+                            defaultValue={formFilter.action || defaultHistoryFilter.action}
+                        />
+                        <MultiSelect
+                            label={t('codeListDetail.history.filter.lastModifiedBy')}
+                            options={filterModifiedBy?.map((item) => ({ label: item, value: item })) ?? []}
+                            name="lastModifiedBy"
+                            setValue={setValue}
+                            defaultValue={formFilter.lastModifiedBy || defaultHistoryFilter.lastModifiedBy}
+                        />
+                        <GridRow>
+                            <GridCol setWidth="one-half">
+                                <Input
+                                    {...register('fromDate')}
+                                    type="date"
+                                    name="fromDate"
+                                    label={t('codeListDetail.history.filter.lastChangeFrom')}
+                                    id="fromDate"
+                                />
+                            </GridCol>
+                            <GridCol setWidth="one-half">
+                                <Input
+                                    {...register('toDate')}
+                                    type="date"
+                                    name="toDate"
+                                    label={t('codeListDetail.history.filter.lastChangeTo')}
+                                    id="toDate"
+                                />
+                            </GridCol>
+                        </GridRow>
+                    </div>
+                )}
             />
             <Table columns={columns} data={data} />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />

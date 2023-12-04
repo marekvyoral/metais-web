@@ -1,8 +1,14 @@
-import React, { useState } from 'react'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
-import { HistoryVersionsListUiConfigurationItemUi, useReadCiHistoryVersions } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import {
+    HistoryVersionsListUiConfigurationItemUi,
+    useReadCiHistoryModifiedByList,
+    useReadCiHistoryVersions,
+    useReadCiHistoryVersionsActionsList,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { mapFilterToHistoryVersionsApi } from '@isdd/metais-common/componentHelpers'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import React from 'react'
 
 import { mapConfigurationItemHistoryListToPagination } from '@/componentHelpers/pagination'
 
@@ -12,6 +18,24 @@ export interface IView {
     handleFilterChange: (filter: IFilter) => void
     isLoading: boolean
     isError: boolean
+    filterActions?: string[]
+    filterModifiedBy?: string[]
+}
+
+export interface HistoryFilter extends IFilter {
+    action?: string[]
+    lastModifiedBy?: string[]
+    fromDate?: string
+    toDate?: string
+}
+
+export const defaultHistoryFilter = {
+    pageNumber: BASE_PAGE_NUMBER,
+    pageSize: BASE_PAGE_SIZE,
+    action: [],
+    lastModifiedBy: [],
+    fromDate: '',
+    toDate: '',
 }
 
 interface IDocumentsListContainer {
@@ -20,33 +44,28 @@ interface IDocumentsListContainer {
 }
 
 export const ConfigurationItemHistoryListContainer: React.FC<IDocumentsListContainer> = ({ configurationItemId, View }) => {
-    const [uiFilterState, setUiFilterState] = useState<IFilter>({
-        pageNumber: BASE_PAGE_NUMBER,
-        pageSize: BASE_PAGE_SIZE,
-    })
-
-    const handleFilterChange = (filter: IFilter) => {
-        setUiFilterState({
-            ...uiFilterState,
-            ...filter,
-        })
-    }
+    const { filter, handleFilterChange } = useFilterParams<HistoryFilter>(defaultHistoryFilter)
 
     const {
         isLoading,
         isError,
         isFetching,
         data: historyList,
-    } = useReadCiHistoryVersions(configurationItemId ?? '', mapFilterToHistoryVersionsApi(uiFilterState))
+    } = useReadCiHistoryVersions(configurationItemId ?? '', mapFilterToHistoryVersionsApi(filter))
 
-    const pagination = mapConfigurationItemHistoryListToPagination(uiFilterState, historyList)
+    const { data: filterActions, isLoading: isActionsLoading } = useReadCiHistoryVersionsActionsList(configurationItemId)
+    const { data: filterModifiedBy, isLoading: isModifiedByLoading } = useReadCiHistoryModifiedByList(configurationItemId)
+
+    const pagination = mapConfigurationItemHistoryListToPagination(filter, historyList)
 
     return (
         <View
+            filterActions={filterActions}
+            filterModifiedBy={filterModifiedBy}
             data={historyList}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
-            isLoading={isLoading || isFetching}
+            isLoading={isLoading || isFetching || isActionsLoading || isModifiedByLoading}
             isError={isError}
         />
     )
