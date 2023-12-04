@@ -2,7 +2,7 @@ import { Button, PaginatorWrapper, SimpleSelect, Table } from '@isdd/idsk-ui-kit
 import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Identity } from '@isdd/metais-common/api/generated/iam-swagger'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { QueryFeedback } from '@isdd/metais-common/index'
@@ -66,9 +66,16 @@ export const GroupsListView: React.FC<IGroupsListView> = ({
 
     const handlePerPageChange = (newValue: string | undefined) => {
         const newPageSize = Number(newValue)
-        setPageSize(newPageSize)
-        setStart((pageNumber ?? 0) * newPageSize - newPageSize)
-        setEnd((pageNumber ?? 0) * newPageSize)
+        if (newPageSize > (groups?.slice(start, groups.length).length ?? 0)) {
+            setPageNumber(BASE_PAGE_NUMBER)
+            setPageSize(newPageSize)
+            setStart(BASE_PAGE_NUMBER * newPageSize - newPageSize)
+            setEnd(groups?.length ?? 0)
+        } else {
+            setPageSize(newPageSize)
+            setStart((pageNumber ?? 0) * newPageSize - newPageSize)
+            setEnd((pageNumber ?? 0) * newPageSize)
+        }
     }
 
     return (
