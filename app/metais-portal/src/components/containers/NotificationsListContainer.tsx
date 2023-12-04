@@ -1,5 +1,5 @@
 import { ISelectColumnType } from '@isdd/idsk-ui-kit/index'
-import { ColumnSort, IFilter, SortType } from '@isdd/idsk-ui-kit/types'
+import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
 import {
     Notification,
     NotificationsList,
@@ -14,21 +14,24 @@ import {
     useRemoveNotifications,
     useSetAllNotificationsAsRead,
 } from '@isdd/metais-common/api/generated/notifications-swagger'
-import { ALL_EVENT_TYPES, NOTIFICATION_TITLE, notificationDefaultSelectedColumns } from '@isdd/metais-common/constants'
+import {
+    ALL_EVENT_TYPES,
+    BASE_PAGE_NUMBER,
+    BASE_PAGE_SIZE,
+    NOTIFICATION_TITLE,
+    notificationDefaultSelectedColumns,
+} from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useMemo, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { Link, useLocation } from 'react-router-dom'
 
-import { firstLetterToLowerCase } from '@/components/views/notifications/notificationUtils'
 export interface FilterData extends IFilterParams, IFilter {
     eventType: string
     onlyUnread: boolean
-    sortBy: string
-    ascending?: boolean
 }
 
 export interface NotificationsListViewParams {
@@ -42,8 +45,6 @@ export interface NotificationsListViewParams {
     selectedColumns: ISelectColumnType[]
     setSelectedColumns: React.Dispatch<React.SetStateAction<ISelectColumnType[]>>
     resetSelectedColumns: () => void
-    sort: ColumnSort[]
-    setSort: React.Dispatch<React.SetStateAction<ColumnSort[]>>
     mutateAllRead: UseMutateFunction<SetAllNotificationsAsRead200, unknown, void, unknown>
     mutateAllDelete: UseMutateFunction<
         RemoveNotifications200,
@@ -73,9 +74,9 @@ interface INotificationsListContainer {
 const defaultFilterValues: FilterData = {
     eventType: ALL_EVENT_TYPES,
     onlyUnread: false,
-    sortBy: 'createdAt',
-    pageNumber: 1,
-    pageSize: 10,
+    sort: [{ sortDirection: SortType.DESC, orderBy: 'createdAt' }],
+    pageNumber: BASE_PAGE_NUMBER,
+    pageSize: BASE_PAGE_SIZE,
 }
 
 const NotificationDateIdKeys = {
@@ -86,26 +87,25 @@ const NotificationDateIdKeys = {
 export const NotificationsListContainer: React.FC<INotificationsListContainer> = ({ View }) => {
     const { t, i18n } = useTranslation()
     const location = useLocation()
-    const [sort, setSort] = useState<ColumnSort[]>([{ sortDirection: SortType.DESC, orderBy: 'CreatedAt' }])
 
     const [data, setData] = useState<NotificationsList | undefined>()
     const { filter, handleFilterChange } = useFilterParams<FilterData>(defaultFilterValues)
     const fetchNotifications = useGetNotificationListElasticHook()
     const fetchProps = {
-        perPage: filter.pageSize ?? 10,
-        pageNumber: filter.pageNumber ?? 1,
-        onlyUnread: filter.onlyUnread ?? false,
+        perPage: filter.pageSize ?? BASE_PAGE_SIZE,
+        pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+        onlyUnread: filter.onlyUnread ?? defaultFilterValues.onlyUnread,
         fulltextSearch: filter.fullTextSearch ?? '',
         ...(filter.eventType && filter.eventType != ALL_EVENT_TYPES && { eventType: filter.eventType }),
-        sortBy: sort.length > 0 ? firstLetterToLowerCase(sort[0].orderBy) : 'createdAt',
-        ascending: sort.length > 0 ? sort[0].sortDirection == 'ASC' : false,
+        sortBy: filter.sort?.at(0)?.orderBy,
+        ascending: filter.sort?.at(0)?.sortDirection === SortType.ASC,
     }
     const {
         isLoading: isListLoading,
         isError: isListError,
         data: notificationListData,
     } = useGetNotificationListElastic(fetchProps, {
-        query: { queryKey: [filter.eventType, filter.onlyUnread, filter.fullTextSearch, sort, filter.pageNumber, filter.pageSize] },
+        query: { queryKey: [filter.eventType, filter.onlyUnread, filter.fullTextSearch, filter.sort, filter.pageNumber, filter.pageSize] },
     })
 
     useEffect(() => {
@@ -221,8 +221,6 @@ export const NotificationsListContainer: React.FC<INotificationsListContainer> =
             selectedColumns={selectedColumns}
             setSelectedColumns={setSelectedColumns}
             resetSelectedColumns={() => setSelectedColumns(translateColumns(notificationDefaultSelectedColumns))}
-            sort={sort}
-            setSort={setSort}
             mutateAllDelete={mutateAllDelete}
             mutateAllRead={mutateAllRead}
             mutateDelete={mutateDelete}

@@ -22,8 +22,6 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
     selectedColumns,
     setSelectedColumns,
     resetSelectedColumns,
-    sort,
-    setSort,
     mutateAllDelete,
     mutateAllRead,
     mutateDelete,
@@ -116,10 +114,10 @@ const NotificationsListView: React.FC<NotificationsListViewParams> = ({
                     </ActionsOverTable>
                     <Table<Notification>
                         onSortingChange={(newSort) => {
-                            setSort(newSort)
+                            handleFilterChange({ sort: newSort })
                             clearSelectedRows()
                         }}
-                        sort={sort}
+                        sort={filterParams.sort}
                         columns={SelectableColumnsSpec(data?.notifications ?? [], columns, rowSelection, setRowSelection)}
                         isLoading={isLoading}
                         error={isError}

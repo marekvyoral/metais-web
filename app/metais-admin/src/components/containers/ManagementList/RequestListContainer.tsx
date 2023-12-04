@@ -6,6 +6,7 @@ import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFil
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect } from 'react'
 import { useReadList } from '@isdd/metais-common/api/generated/claim-manager-swagger'
+import { SortType } from '@isdd/idsk-ui-kit/src/types'
 
 import { IRequestListView } from '@/components/views/userManagement/request-list-view/RequestListView'
 
@@ -21,8 +22,6 @@ export interface UserManagementData {
 }
 export interface IRequestListFilterView extends IFilterParams, IFilter {
     status: string
-    sortAttribute: string
-    ascending: boolean
     listType: RequestListType
 }
 
@@ -32,23 +31,25 @@ interface IRequestListContainerProps {
 
 const defaultFilterParams = {
     status: EClaimState.ALL,
-    sortAttribute: 'createdAt',
-    ascending: false,
+    sort: [
+        {
+            orderBy: 'createdAt',
+            sortDirection: SortType.DESC,
+        },
+    ],
     listType: RequestListType.REQUESTS,
 }
 
 export const RequestListContainer: React.FC<IRequestListContainerProps> = ({ View }) => {
     const { filter, handleFilterChange } = useFilterParams<IRequestListFilterView>(defaultFilterParams)
-
     const { isLoading, isError, data, mutateAsync } = useReadList()
-
     useEffect(() => {
         mutateAsync({
             data: {
                 page: filter.pageNumber ? +filter.pageNumber - 1 : BASE_PAGE_NUMBER - 1,
                 perpage: filter.pageSize ? +filter.pageSize : BASE_PAGE_SIZE,
-                sortAttribute: filter.sortAttribute,
-                ascending: filter.ascending,
+                sortAttribute: filter.sort?.at(0)?.orderBy,
+                ascending: filter.sort?.at(0)?.sortDirection === SortType.ASC,
                 filter: {
                     searchFilter: filter.fullTextSearch,
                     anonymous: filter.listType === RequestListType.REGISTRATION,

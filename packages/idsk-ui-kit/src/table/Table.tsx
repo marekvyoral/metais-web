@@ -85,7 +85,6 @@ export const Table = <T,>({
 }: ITableProps<T>): JSX.Element => {
     const wrapper1Ref = useRef<HTMLTableSectionElement>(null)
     const wrapper2Ref = useRef<HTMLTableSectionElement>(null)
-
     const [columnOrderState, setColumnOrderState] = useState<ColumnOrderState>(columnOrder || columns.map((d) => d.id || ''))
 
     useEffect(() => {
@@ -95,7 +94,6 @@ export const Table = <T,>({
     }, [columnOrder, columns, canDrag])
 
     const transformedSort = transformColumnSortToSortingState(sort)
-
     const table = useReactTable({
         data: data ?? [],
         columns,

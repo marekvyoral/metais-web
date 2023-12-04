@@ -291,7 +291,7 @@
         "actions": "Actions",
         "filter": {
             "listTypeLabel": "List type",
-            "state": "Blocked",
+            "state": "State",
             "stateLabel": {
                 "all": "All",
                 "blocked": "Blocked",
@@ -434,7 +434,6 @@
         "show": "Show",
         "innerNav": "Inner navigation",
         "mainNav": "Main navigation",
-
         "dashboard": "Dashboard",
         "assignment": "Assignments",
         "notifications": "Notifications",
@@ -821,11 +820,16 @@
         "createdAt": "Created at",
         "claimState": "State of claim",
         "poName": "Obliged person",
+        "stateEnum": {
+            "WAITING": "Created",
+            "ACCEPTED": "Accepted",
+            "REFUSED": "Rejected"
+        },
         "filter": {
-            "all": "Všetky",
-            "created": "Vytvorené",
-            "accepted": "Akceptovaná",
-            "rejected": "Odmietnutá",
+            "all": "All",
+            "created": "Created",
+            "accepted": "Accepted",
+            "rejected": "Rejected",
             "listType": {
                 "requests": "Requests",
                 "registrations": "Registrations",

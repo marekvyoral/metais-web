@@ -67,7 +67,7 @@ export const CodeListDetailHistoryContainer: React.FC<CodeListDetailHistoryConta
         pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
         perPage: filter.pageSize ?? BASE_PAGE_SIZE,
         sortBy: filter.sort?.[0]?.orderBy ?? 'changedAt',
-        ascending: filter.sort?.[0]?.sortDirection === SortType.DESC ?? false,
+        ascending: filter.sort?.[0]?.sortDirection === SortType.ASC,
         ...(filter.action && { action: filter.action }),
         ...(filter.lastModifiedBy && { lastModifiedBy: filter.lastModifiedBy }),
         ...(filter.fromDate && { fromDate: filter.fromDate }),

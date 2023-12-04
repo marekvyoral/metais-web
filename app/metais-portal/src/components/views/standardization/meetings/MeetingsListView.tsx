@@ -93,7 +93,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoad
                 ...(filter?.startDate && { fromDate: filter?.startDate }),
                 ...(filter?.endDate && { toDate: filter?.endDate }),
                 ...(filter?.sortBy && { sortBy: filter.sort?.[0]?.orderBy ?? 'beginDate' }),
-                ...(filter?.ascending && { ascending: filter.sort?.[0]?.sortDirection === SortType.DESC ?? false }),
+                ...(filter?.ascending && { ascending: filter.sort?.[0]?.sortDirection === SortType.ASC }),
             }
         })
     }, [

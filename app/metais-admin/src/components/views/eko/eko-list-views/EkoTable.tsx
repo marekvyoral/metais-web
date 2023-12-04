@@ -2,7 +2,7 @@ import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { LoadingIndicator } from '@isdd/idsk-ui-kit/index'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
-import { IFilter, SortType } from '@isdd/idsk-ui-kit/types'
+import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { EkoCodeEkoCodeState, EkoCodeList } from '@isdd/metais-common/api/generated/tco-swagger'
 import { CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
@@ -10,17 +10,17 @@ import { BulkPopup, CreateEntityButton } from '@isdd/metais-common/components/ac
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
 import { BASE_PAGE_NUMBER, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { EkoTableModals } from './EkoTablesModals'
 
+import { IFilterData } from '@/components/containers/Eko/EkoListContainer'
 import { IListData, IRowSelectionState, TEkoCodeDecorated } from '@/components/views/eko/ekoCodes'
 import { IResultApiCall, getTableColumns, reduceTableDataToObject } from '@/components/views/eko/ekoHelpers'
-import { IFilterData } from '@/components/containers/Eko/EkoListContainer'
 
 export interface IEkoTableProps extends IListData {
     defaultFilterParams: IFilterData
@@ -161,12 +161,7 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
             <Table
                 key={'ekoTable'}
                 data={getSlicedData(data, defaultFilterParams?.pageSize ?? 0, defaultFilterParams?.pageNumber ?? 0) ?? []}
-                sort={[
-                    {
-                        orderBy: defaultFilterParams.sortAttribute,
-                        sortDirection: defaultFilterParams.ascending === 'true' ? SortType.ASC : SortType.DESC,
-                    },
-                ]}
+                sort={defaultFilterParams.sort}
                 columns={columnsWithPermissions}
                 pagination={{
                     pageIndex: (defaultFilterParams.pageNumber ?? BASE_PAGE_NUMBER) - 1,
@@ -176,8 +171,7 @@ export const EkoTable: React.FC<IEkoTableProps> = ({
                 onSortingChange={(columnSort) => {
                     handleFilterChange({
                         pageNumber: BASE_PAGE_NUMBER,
-                        sortAttribute: columnSort.length && columnSort[0].orderBy,
-                        ascending: columnSort.length && columnSort[0].sortDirection === SortType.ASC ? 'true' : 'false',
+                        sort: columnSort,
                         pageSize: BASE_PAGE_SIZE,
                     })
                 }}
