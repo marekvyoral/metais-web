@@ -1,8 +1,8 @@
 import { useChangeIdentityTerms } from '@isdd/metais-common/api/generated/iam-swagger'
-import { IDENTITY_TERMS_ACCEPTED } from '@isdd/metais-common/constants'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { CustomAuthActions, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { MainContentWrapper } from '../MainContentWrapper'
 
@@ -13,6 +13,8 @@ interface IIdentityTermsContainer {
 }
 
 export const IdentityTermsContainer: React.FC<IIdentityTermsContainer> = ({ View }) => {
+    const { dispatch } = useAuth()
+
     const { isLoading, isError, mutateAsync: changeIdentityTermsAsyncMutation } = useChangeIdentityTerms()
 
     const navigate = useNavigate()
@@ -21,7 +23,7 @@ export const IdentityTermsContainer: React.FC<IIdentityTermsContainer> = ({ View
         changeIdentityTermsAsyncMutation({
             data: { licenceTermsAccepted: true },
         }).then(() => {
-            sessionStorage.removeItem(IDENTITY_TERMS_ACCEPTED)
+            dispatch({ type: CustomAuthActions.SET_IDENTITY_TERMS, identityTerms: true })
             navigate(RouterRoutes.HOME)
         })
 

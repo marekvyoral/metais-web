@@ -34,16 +34,19 @@ export interface User {
 export interface ICustomAuthContext {
     user: User | null
     token: string | null
+    identityTermsAccepted?: boolean
 }
 
 const initialState: ICustomAuthContext = {
     user: null,
     token: null,
+    identityTermsAccepted: undefined,
 }
 
 export enum CustomAuthActions {
     SET_USER_INFO,
     SET_USER_TOKEN,
+    SET_IDENTITY_TERMS,
     LOGOUT_USER,
 }
 
@@ -61,7 +64,12 @@ interface LogoutUser {
     type: CustomAuthActions.LOGOUT_USER
 }
 
-type Action = SetUserInfo | SetUserToken | LogoutUser
+interface SetIdentityTerms {
+    type: CustomAuthActions.SET_IDENTITY_TERMS
+    identityTerms: boolean
+}
+
+type Action = SetUserInfo | SetUserToken | LogoutUser | SetIdentityTerms
 
 const reducer = (state: ICustomAuthContext, action: Action) => {
     switch (action.type) {
@@ -69,6 +77,8 @@ const reducer = (state: ICustomAuthContext, action: Action) => {
             return { ...state, user: action.value }
         case CustomAuthActions.SET_USER_TOKEN:
             return { ...state, token: action.token }
+        case CustomAuthActions.SET_IDENTITY_TERMS:
+            return { ...state, identityTermsAccepted: action.identityTerms }
         case CustomAuthActions.LOGOUT_USER:
             return initialState
         default:
