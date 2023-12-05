@@ -238,6 +238,7 @@ export const ProfileDetailView = <T,>({
                             setValidityOfAttributeProfile={setValidityOfAttributeProfile}
                             setVisibilityOfAttributeProfile={setVisibilityOfAttributeProfile}
                             editRow={editRow}
+                            profile={profileData}
                         />
                     )
             },
