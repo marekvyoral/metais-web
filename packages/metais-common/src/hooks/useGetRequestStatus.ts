@@ -6,8 +6,11 @@ import { API_CALL_RETRY_COUNT } from '@isdd/metais-common/constants'
 export const useGetStatus = () => {
     const requestStatus = useGetRequestStatusHook()
     const [isLoading, setIsLoading] = useState(false)
-    const [isError, setIsError] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
+
+    const [isError, setIsError] = useState(false)
+    const [isProcessedError, setIsProcessedError] = useState(false)
+    const [isTooManyFetchesError, setIsTooManyFetchesError] = useState(false)
 
     const callStatusInCycles = async (requestId: string) => {
         let done = false
@@ -15,6 +18,10 @@ export const useGetStatus = () => {
             const status = await requestStatus(requestId)
             if (status.processed && status.status === 'READY') {
                 done = true
+                break
+            } else if (status.processed && (status.status === 'FAILED' || status.status === 'ERROR')) {
+                setIsProcessedError(true)
+                setIsLoading(false)
                 break
             }
 
@@ -30,6 +37,9 @@ export const useGetStatus = () => {
         setIsSuccess(false)
         setIsError(false)
         setIsLoading(true)
+        setIsTooManyFetchesError(false)
+        setIsProcessedError(false)
+
         try {
             const status = await callStatusInCycles(requestId)
             if (status) {
@@ -38,7 +48,7 @@ export const useGetStatus = () => {
                 onSuccess()
                 return
             } else {
-                setIsError(true)
+                setIsTooManyFetchesError(true)
                 setIsLoading(false)
             }
         } catch (error) {
@@ -48,5 +58,5 @@ export const useGetStatus = () => {
         }
     }
 
-    return { getRequestStatus, callStatusInCycles, isError, isLoading, isSuccess }
+    return { getRequestStatus, callStatusInCycles, isError, isLoading, isSuccess, isProcessedError, isTooManyFetchesError }
 }

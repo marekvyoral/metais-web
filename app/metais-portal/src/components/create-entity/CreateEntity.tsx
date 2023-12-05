@@ -2,7 +2,6 @@ import { ConfigurationItemUiAttributes, useStoreConfigurationItem } from '@isdd/
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { useRedirectAfterSuccess } from '@isdd/metais-common/src/hooks/useRedirectAfterSucces'
 import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -19,6 +18,7 @@ import {
     useInvalidateCiItemCache,
     useInvalidateCiListFilteredCache,
 } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
@@ -67,30 +67,13 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
     const urlString = data.generatedEntityId?.ciurl?.slice(0, lastIndex) + '/'
 
     const [uploadError, setUploadError] = useState(false)
-    const [requestId, setRequestId] = useState<string>('')
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
     const isProject = ciTypeData?.technicalName == ENTITY_PROJECT
-
-    const storeConfigurationItem = useStoreConfigurationItem({
-        mutation: {
-            onError() {
-                setUploadError(true)
-            },
-            onSuccess(successData) {
-                if (successData.requestId != null) {
-                    setRequestId(successData.requestId)
-                } else {
-                    setUploadError(true)
-                }
-            },
-        },
-    })
 
     const invalidateCilistFilteredCache = useInvalidateCiListFilteredCache()
     const invalidateCiByUuidCache = useInvalidateCiItemCache()
     const invalidateCiHistoryList = useInvalidateCiHistoryListCache()
-
-    const onRedirectSuccess = () => {
+    const onStatusSuccess = () => {
         invalidateCiHistoryList.invalidate(configurationItemId)
         invalidateCilistFilteredCache.invalidate({ ciType: entityName })
         invalidateCiByUuidCache.invalidate(configurationItemId)
@@ -99,29 +82,26 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
         setIsActionSuccess({ value: true, path: toPath, additionalInfo: { type: isUpdate ? 'edit' : 'create' } })
         navigate(toPath, { state: { from: location } })
     }
-
-    const {
-        performRedirection,
-        reset: resetRedirect,
-        isLoading: isRedirectLoading,
-        isError: isRedirectError,
-        isFetched: isRedirectFetched,
-        isProcessedError,
-        isTooManyFetchesError,
-    } = useRedirectAfterSuccess({ requestId, onSuccess: onRedirectSuccess })
-
-    useEffect(() => {
-        if (requestId != null) {
-            performRedirection()
-        }
-    }, [performRedirection, requestId])
+    const { isError: isRedirectError, isLoading: isRedirectLoading, isProcessedError, getRequestStatus, isTooManyFetchesError } = useGetStatus()
+    const storeConfigurationItem = useStoreConfigurationItem({
+        mutation: {
+            onError() {
+                setUploadError(true)
+            },
+            onSuccess(successData) {
+                if (successData.requestId != null) {
+                    getRequestStatus(successData.requestId, onStatusSuccess)
+                } else {
+                    setUploadError(true)
+                }
+            },
+        },
+    })
 
     const deleteCacheMutation = useDeleteCacheForCi(entityName)
 
     const onSubmit = async (formAttributes: FieldValues) => {
-        setRequestId('')
         setUploadError(false)
-        resetRedirect()
         const formAttributesKeys = Object.keys(formAttributes)
 
         const formattedAttributesToSend = formAttributesKeys
@@ -173,8 +153,8 @@ export const CreateEntity: React.FC<ICreateEntity> = ({
                 </div>
             )}
             <QueryFeedback
-                loading={isRedirectFetched && isRedirectLoading}
-                error={isRedirectFetched && (isRedirectError || isProcessedError || isTooManyFetchesError)}
+                loading={isRedirectLoading}
+                error={isRedirectError || isProcessedError || isTooManyFetchesError}
                 indicatorProps={{
                     label: isUpdate ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
                 }}
