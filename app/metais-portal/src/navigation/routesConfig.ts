@@ -87,6 +87,15 @@ import Tasks from '@/pages/ci/KRIS/[entityId]/tasks'
 import CreateProjectPage from '@/pages/ci/Projekt/create'
 import EditProjectPage from '@/pages/ci/Projekt/[entityId]/edit'
 import { IdentityTermsPage } from '@/pages/IdentityTermsPage'
+import PO_POEntityDetailPage from '@/pages/ci/PO_PO/[entityId]'
+import PO_ISEntityDetailPage from '@/pages/ci/PO_IS/[entityId]'
+import PO_IS_POEntityDetailPage from '@/pages/ci/PO_IS_PO/[entityId]'
+import PO_POInformationOutlet from '@/pages/ci/PO_PO/[entityId]/information'
+import PO_PODocumentsOutlet from '@/pages/ci/PO_PO/[entityId]/documents'
+import PO_PORelationshipOutlet from '@/pages/ci/PO_PO/[entityId]/relationships'
+import PO_POHistoryOutlet from '@/pages/ci/PO_PO/[entityId]/history'
+import PO_ISInformationOutlet from '@/pages/ci/PO_IS/[entityId]/information'
+import PO_IS_POInformationOutlet from '@/pages/ci/PO_IS_PO/[entityId]/information'
 
 export interface RouteConfig {
     path?: string
@@ -95,6 +104,40 @@ export interface RouteConfig {
     index?: boolean
     subRoutes?: RouteConfig[]
 }
+
+const PO_POInfoOutlet: RouteConfig = {
+    slug: RouterRoutes.CI_PO_PO_DETAIL,
+    component: PO_POInformationOutlet,
+    index: true,
+}
+const PO_ISInfoOutlet: RouteConfig = {
+    slug: RouterRoutes.CI_PO_IS_DETAIL,
+    component: PO_ISInformationOutlet,
+    index: true,
+}
+const PO_IS_POInfoOutlet: RouteConfig = {
+    slug: RouterRoutes.CI_PO_IS_PO_DETAIL,
+    component: PO_IS_POInformationOutlet,
+    index: true,
+}
+
+const POOutlets: RouteConfig[] = [
+    {
+        path: RouterRoutes.DOCUMENTS_OUTLET,
+        slug: RouterRoutes.DOCUMENTS_OUTLET,
+        component: PO_PODocumentsOutlet,
+    },
+    {
+        path: RouterRoutes.RELATIONSHIPS_OUTLET,
+        slug: RouterRoutes.RELATIONSHIPS_OUTLET,
+        component: PO_PORelationshipOutlet,
+    },
+    {
+        path: RouterRoutes.HISTORY_OUTLET,
+        slug: RouterRoutes.HISTORY_OUTLET,
+        component: PO_POHistoryOutlet,
+    },
+]
 
 const generalCiDetailInformationOutlet: RouteConfig = {
     slug: RouterRoutes.CI_DETAIL,
@@ -456,6 +499,24 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.CI_PO_PO,
                 slug: RouterRoutes.CI_PO_PO,
                 component: POPOListPage,
+            },
+            {
+                path: RouterRoutes.CI_PO_PO_DETAIL,
+                slug: RouterRoutes.CI_PO_PO_DETAIL,
+                component: PO_POEntityDetailPage,
+                subRoutes: [PO_POInfoOutlet, ...POOutlets],
+            },
+            {
+                path: RouterRoutes.CI_PO_IS_DETAIL,
+                slug: RouterRoutes.CI_PO_IS_DETAIL,
+                component: PO_ISEntityDetailPage,
+                subRoutes: [PO_ISInfoOutlet, ...POOutlets],
+            },
+            {
+                path: RouterRoutes.CI_PO_IS_PO_DETAIL,
+                slug: RouterRoutes.CI_PO_IS_PO_DETAIL,
+                component: PO_IS_POEntityDetailPage,
+                subRoutes: [PO_IS_POInfoOutlet, ...POOutlets],
             },
             {
                 path: RouterRoutes.CI_PRINCIPLE_DETAIL,

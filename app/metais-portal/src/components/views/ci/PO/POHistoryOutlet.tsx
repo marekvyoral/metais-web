@@ -1,14 +1,16 @@
 import React from 'react'
 import { TextWarning } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
+import { PO } from '@isdd/metais-common/constants'
 
 import { HistoryAccordion } from '@/components/views/history/HistoryAccordeon'
 import { CiHistoryPermissionsWrapper } from '@/components/permissions/CiHistoryPermissionsWrapper'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
-const History: React.FC = () => {
+const POHistoryOutlet: React.FC = () => {
     const { t } = useTranslation()
-    const { entityId, entityName } = useGetEntityParamsFromUrl()
+    const { entityId } = useGetEntityParamsFromUrl()
+    const entityName = PO
     return entityId ? (
         <CiHistoryPermissionsWrapper entityId={entityId ?? ''} entityName={entityName ?? ''}>
             <HistoryAccordion entityId={entityId} />
@@ -18,4 +20,4 @@ const History: React.FC = () => {
     )
 }
 
-export default History
+export default POHistoryOutlet

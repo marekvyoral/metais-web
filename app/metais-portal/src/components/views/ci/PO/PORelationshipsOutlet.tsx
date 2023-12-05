@@ -1,11 +1,13 @@
 import React from 'react'
+import { PO } from '@isdd/metais-common/constants'
 
 import { RelationshipsAccordion } from '@/components/views/relationships/RelationshipsAccordion'
 import { CiContainer } from '@/components/containers/CiContainer'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
-const RelationshipsAccordionPage: React.FC = () => {
-    const { entityId, entityName } = useGetEntityParamsFromUrl()
+const PORelationshipOutlet: React.FC = () => {
+    const { entityId } = useGetEntityParamsFromUrl()
+    const entityName = PO
     return (
         <CiContainer
             configurationItemId={entityId}
@@ -24,4 +26,4 @@ const RelationshipsAccordionPage: React.FC = () => {
     )
 }
 
-export default RelationshipsAccordionPage
+export default PORelationshipOutlet

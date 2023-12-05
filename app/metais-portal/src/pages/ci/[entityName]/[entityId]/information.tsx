@@ -1,4 +1,3 @@
-import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/entityNameHelpers'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
@@ -6,9 +5,7 @@ import { CiContainer } from '@/components/containers/CiContainer'
 import { CiInformationAccordion } from '@/components/entities/accordion/CiInformationAccordion'
 
 const Information = () => {
-    const { entityId } = useGetEntityParamsFromUrl()
-    let { entityName } = useGetEntityParamsFromUrl()
-    entityName = shouldEntityNameBePO(entityName ?? '')
+    const { entityId, entityName } = useGetEntityParamsFromUrl()
     return (
         <>
             <CiContainer
