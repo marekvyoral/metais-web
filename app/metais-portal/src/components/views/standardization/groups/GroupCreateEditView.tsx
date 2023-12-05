@@ -16,7 +16,7 @@ import { IdentitySelect } from '@/components/identity-lazy-select/IdentitySelect
 import { IGroupEditViewParams } from '@/components/containers/standardization/groups/GroupEditContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
-export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, goBack, infoData, isEdit, id, resultApiCall, isLoading }) => {
+export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, goBack, infoData, isEdit, resultApiCall, isLoading }) => {
     const { t } = useTranslation()
 
     const {
@@ -25,6 +25,7 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
         setValue,
         watch,
         clearErrors,
+        reset,
         formState: { errors },
     } = useForm({
         resolver: yupResolver(isEdit ? editGroupSchema(t) : createGroupSchema(t)),
@@ -36,6 +37,15 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
             user: '',
         },
     })
+    useEffect(() => {
+        reset({
+            name: infoData?.name ?? '',
+            short_name: infoData?.shortName ?? '',
+            description: infoData?.description || '',
+            organization: '',
+            user: '',
+        })
+    }, [infoData?.description, infoData?.name, infoData?.shortName, reset])
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
@@ -99,9 +109,9 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
                             { href: RouteNames.HOME, label: t('notifications.home'), icon: HomeIcon },
                             { href: RouteNames.HOW_TO_STANDARDIZATION, label: t('navMenu.standardization') },
                             { href: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE, label: t('navMenu.lists.groups') },
-                            { href: NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL, label: infoData?.name ?? '' },
+                            { href: `${NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL}/${infoData?.uuid}`, label: infoData?.name ?? '' },
                             {
-                                href: `${NavigationSubRoutes.PRACOVNA_SKUPINA_EDIT}/${id}/edit`,
+                                href: `${NavigationSubRoutes.PRACOVNA_SKUPINA_EDIT}/${infoData?.uuid}/edit`,
                                 label: t('groups.editGroup'),
                             },
                         ]}
@@ -139,7 +149,6 @@ export const GroupCreateEditView: React.FC<IGroupEditViewParams> = ({ onSubmit, 
                             label={`${t('groups.description')} (${t('groups.mandatory')}):`}
                             id={GroupFormEnum.DESCRIPTION}
                             name={GroupFormEnum.DESCRIPTION}
-                            info={'info'}
                             value={watch(GroupFormEnum.DESCRIPTION)}
                             defaultValue={infoData?.description}
                             error={errors[GroupFormEnum.DESCRIPTION]?.message}

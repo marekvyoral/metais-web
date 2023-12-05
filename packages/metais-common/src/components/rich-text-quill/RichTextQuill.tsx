@@ -119,6 +119,7 @@ export const RichTextQuill: React.FC<ITextAreaQuillProps> = ({
 
     const modules = useMemo(
         () => ({
+            clipboard: { matchVisual: false },
             toolbar: {
                 container: `#${id}`,
             },
