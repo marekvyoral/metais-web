@@ -23,10 +23,10 @@ import { FieldValues } from 'react-hook-form'
 import { v4 as uuidV4 } from 'uuid'
 import { JOIN_OPERATOR } from '@isdd/metais-common/constants'
 import { useListRelatedCiTypes, useGetRelationshipType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { useRedirectAfterSuccess } from '@isdd/metais-common/hooks/useRedirectAfterSucces'
 import { useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 import { formatFormAttributeValue } from '@/components/create-entity/createEntityHelpers'
 import { CreateEntityData } from '@/components/create-entity/CreateEntity'
@@ -84,7 +84,6 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
     const invalidateRelationsCountCache = useInvalidateRelationsCountCache()
 
     const [isCreationLoading, setIsCreationLoading] = useState(false)
-    const [requestId, setRequestId] = useState<string>('')
 
     //load all relationship types for CI - /related
     const { data: relatedListData, isLoading: isRelatedListLoading, isError: isRelatedListError } = useListRelatedCiTypes(entityName)
@@ -126,27 +125,13 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
         navigate(toPath)
     }
 
-    const {
-        performRedirection,
-        reset: resetRedirect,
-        isLoading: isRedirectLoading,
-        isError: isRedirectError,
-        isFetched: isRedirectFetched,
-        isProcessedError,
-        isTooManyFetchesError,
-    } = useRedirectAfterSuccess({ requestId: requestId, onSuccess: onCreateSuccess })
-
-    useEffect(() => {
-        if (requestId != null) {
-            performRedirection()
-        }
-    }, [performRedirection, requestId])
+    const { getRequestStatus, isLoading: isRedirectLoading, isError: isRedirectError, isTooManyFetchesError, isProcessedError } = useGetStatus()
 
     const storeGraph = useStoreGraph({
         mutation: {
             async onSuccess(successData) {
                 if (successData.requestId) {
-                    setRequestId(successData.requestId)
+                    getRequestStatus(successData.requestId, onCreateSuccess)
 
                     setIsCreationLoading(false)
                 } else {
@@ -213,7 +198,6 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
 
     const onSubmit = async (formAttributes: FieldValues) => {
         setFormData(formAttributes)
-        resetRedirect()
         setUploadError(false)
         setIsCreationLoading(true)
         const formAttributesKeys = Object.keys(formAttributes)
@@ -276,10 +260,10 @@ export const ITVSExceptionsCreateContainer: React.FC<Props> = ({
                     <MutationFeedback success={false} error={storeConfigurationItem.isError ? t('createEntity.mutationError') : ''} />
                 </div>
             )}
-            {isRedirectFetched && (isRedirectError || isProcessedError || isTooManyFetchesError) && <div ref={wrapperRef} />}
+            {(isRedirectError || isProcessedError || isTooManyFetchesError) && <div ref={wrapperRef} />}
             <QueryFeedback
-                loading={(isRedirectFetched && isRedirectLoading) || isCreationLoading}
-                error={isRedirectFetched && (isRedirectError || isProcessedError || isTooManyFetchesError)}
+                loading={isRedirectLoading || isCreationLoading}
+                error={isRedirectError || isProcessedError || isTooManyFetchesError}
                 indicatorProps={{
                     label: updateCiItemId ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
                 }}

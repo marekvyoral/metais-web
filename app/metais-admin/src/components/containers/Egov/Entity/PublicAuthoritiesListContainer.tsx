@@ -6,10 +6,10 @@ import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { IListView } from '@isdd/metais-common/types/list'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
-import { useRedirectAfterSuccess } from '@isdd/metais-common/hooks/useRedirectAfterSucces'
 import { useIsIdentityAssignedToPOHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 export interface IActions {
     setInvalid?: (entityId: string | undefined, configurationItem: ConfigurationItemUiAttributes | undefined) => Promise<void>
 }
@@ -65,29 +65,15 @@ export const PublicAuthoritiesListContainer = <T extends FieldValues & IFilterPa
     const { mutateAsync: setInvalid, isLoading: isInvalidating, isError: isInvalidateError } = useInvalidateConfigurationItem()
     const isAssignToPOHook = useIsIdentityAssignedToPOHook()
 
-    const [requestId, setRequestId] = useState<string | null>(null)
     const [isCheckError, setIsCheckError] = useState(false)
 
     const { setIsActionSuccess } = useActionSuccess()
+    const { getRequestStatus, isProcessedError, isError: isRedirectError, isLoading: isRedirectLoading, isTooManyFetchesError } = useGetStatus()
 
     const onCreateSuccess = () => {
-        setRequestId(null)
         refetch()
         setIsActionSuccess({ value: true, path: `${AdminRouteNames.PUBLIC_AUTHORITIES_LIST}` })
     }
-
-    const {
-        performRedirection,
-        reset: resetRedirect,
-        isLoading: isRedirectLoading,
-        isError: isRedirectError,
-        isFetched: isRedirectFetched,
-        isProcessedError,
-        isTooManyFetchesError,
-    } = useRedirectAfterSuccess({
-        requestId: requestId ?? '',
-        onSuccess: onCreateSuccess,
-    })
 
     useEffect(() => {
         setIsInvalidateError([isCheckError, isProcessedError, isInvalidateError].some((item) => item))
@@ -95,7 +81,6 @@ export const PublicAuthoritiesListContainer = <T extends FieldValues & IFilterPa
 
     const invalidateConfigurationItem = async (uuid: string | undefined, configurationItem: ConfigurationItemUiAttributes | undefined) => {
         if (!configurationItem) return
-        resetRedirect()
         await isAssignToPOHook(uuid ?? '')
             .then((res) => {
                 if (!res) {
@@ -106,7 +91,7 @@ export const PublicAuthoritiesListContainer = <T extends FieldValues & IFilterPa
                             type: 'PO',
                             uuid: uuid,
                         },
-                    }).then((invalidRes) => setRequestId(invalidRes.requestId ?? ''))
+                    }).then((invalidRes) => getRequestStatus(invalidRes.requestId ?? '', onCreateSuccess))
                 }
             })
             .catch(() => {
@@ -114,13 +99,7 @@ export const PublicAuthoritiesListContainer = <T extends FieldValues & IFilterPa
             })
     }
 
-    useEffect(() => {
-        if (requestId != null) {
-            performRedirection()
-        }
-    }, [performRedirection, requestId])
-
-    const isLoading = [isReadCiListLoading, isColumnsLoading, isRedirectFetched && isRedirectLoading].some((item) => item)
+    const isLoading = [isReadCiListLoading, isColumnsLoading, isRedirectLoading].some((item) => item)
     const isError = [isReadCiListError, isColumnsError, isProcessedError, isRedirectError, isTooManyFetchesError].some((item) => item)
 
     return (

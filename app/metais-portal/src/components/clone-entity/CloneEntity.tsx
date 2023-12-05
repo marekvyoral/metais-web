@@ -7,7 +7,6 @@ import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectP
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useDeleteCacheForCi'
-import { useRedirectAfterSuccess } from '@isdd/metais-common/src/hooks/useRedirectAfterSucces'
 import { isObjectEmpty } from '@isdd/metais-common/src/utils/utils'
 import React, { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
@@ -15,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useNavigate } from 'react-router-dom'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 import { createSimpleSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { ICiTypeRelationData, ISelectedRelationTypeState } from '@/components/containers/CiCloneContainer'
@@ -63,7 +63,6 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
     const { selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName } = selectedRelationTypeState
 
     const [uploadError, setUploadError] = useState(false)
-    const [requestId, setRequestId] = useState<string>('')
     const [configurationItemId, setConfigurationItemId] = useState<string>('')
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
@@ -72,6 +71,14 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
 
     const addOrGetGroupHook = useAddOrGetGroupHook()
 
+    const onStatusSuccess = () => {
+        const toPath = `/ci/${entityName}/${configurationItemId}`
+        setIsActionSuccess({ value: true, path: toPath, additionalInfo: { type: 'clone' } })
+        navigate(toPath, { state: { from: location } })
+    }
+
+    const { getRequestStatus, isTooManyFetchesError, isProcessedError, isError: isRedirectError, isLoading: isRedirectLoading } = useGetStatus()
+
     const storeConfigurationItem = useStoreGraph({
         mutation: {
             onError() {
@@ -79,7 +86,7 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
             },
             onSuccess(successData) {
                 if (successData.requestId != null) {
-                    setRequestId(successData.requestId)
+                    getRequestStatus(successData.requestId, onStatusSuccess)
                 } else {
                     setUploadError(true)
                 }
@@ -87,38 +94,14 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
         },
     })
 
-    const onRedirectSuccess = () => {
-        const toPath = `/ci/${entityName}/${configurationItemId}`
-        setIsActionSuccess({ value: true, path: toPath, additionalInfo: { type: 'clone' } })
-        navigate(toPath, { state: { from: location } })
-    }
-
-    const {
-        performRedirection,
-        reset: resetRedirect,
-        isLoading: isRedirectLoading,
-        isError: isRedirectError,
-        isFetched: isRedirectFetched,
-        isProcessedError,
-        isTooManyFetchesError,
-    } = useRedirectAfterSuccess({ requestId, onSuccess: onRedirectSuccess })
-
     useEffect(() => {
         if (!(isRedirectError || isProcessedError || isRedirectLoading)) {
             scrollToMutationFeedback()
         }
     }, [isProcessedError, isRedirectError, isRedirectLoading, scrollToMutationFeedback])
 
-    useEffect(() => {
-        if (requestId != null) {
-            performRedirection()
-        }
-    }, [performRedirection, requestId])
-
     const onSubmit = async (formAttributes: FieldValues) => {
-        setRequestId('')
         setUploadError(false)
-        resetRedirect()
         const formAttributesKeys = Object.keys(formAttributes)
 
         const formattedAttributesToSend = formAttributesKeys
@@ -177,8 +160,8 @@ export const CloneEntity: React.FC<ICloneEntity> = ({
                 )}
             </div>
             <QueryFeedback
-                loading={isRedirectFetched && isRedirectLoading}
-                error={isRedirectFetched && (isRedirectError || isProcessedError || isTooManyFetchesError)}
+                loading={isRedirectLoading}
+                error={isRedirectError || isProcessedError || isTooManyFetchesError}
                 indicatorProps={{
                     label: cloneCiItemId ? t('createEntity.redirectLoadingEdit') : t('createEntity.redirectLoading'),
                 }}
