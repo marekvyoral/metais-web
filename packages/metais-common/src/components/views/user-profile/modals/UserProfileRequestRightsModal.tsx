@@ -1,18 +1,17 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { BaseModal, Button, Input, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
-import { mixed, object, string } from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { useTranslation } from 'react-i18next'
+import { object, string } from 'yup'
 
 import styles from './modals.module.scss'
 import { SelectImplicitHierarchy } from './SelectImplicitHierarchy'
 
-import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { SubmitWithFeedback } from '@isdd/metais-common/components/submit-with-feedback/SubmitWithFeedback'
 import { ClaimEvent } from '@isdd/metais-common/api/generated/claim-manager-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { MutationFeedback } from '@isdd/metais-common/components/mutation-feedback/MutationFeedback'
+import { SubmitWithFeedback } from '@isdd/metais-common/components/submit-with-feedback/SubmitWithFeedback'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export enum RequestFormFields {
     PO = 'po',
@@ -22,7 +21,7 @@ export enum RequestFormFields {
 }
 
 export type UserRequestRightsForm = {
-    [RequestFormFields.PO]: ConfigurationItemUi
+    [RequestFormFields.PO]: string
     [RequestFormFields.PHONE]: string
     [RequestFormFields.EMAIL]: string
     [RequestFormFields.DESCRIPTION]: string
@@ -44,7 +43,7 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
     const requiredString = ` (${t('userProfile.requests.required')})`
 
     const schema = object().shape({
-        [RequestFormFields.PO]: mixed().required(t('userProfile.requests.poRequired')),
+        [RequestFormFields.PO]: string().required(t('userProfile.requests.poRequired')),
         [RequestFormFields.PHONE]: string().required(t('userProfile.requests.phoneRequired')),
         [RequestFormFields.EMAIL]: string().required(t('userProfile.requests.emailRequired')),
         [RequestFormFields.DESCRIPTION]: string().required(t('userProfile.requests.descriptionRequired')),
@@ -74,7 +73,6 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
             claimUi: {
                 createdBy: user?.uuid,
                 ...formData,
-                po: formData[RequestFormFields.PO].uuid,
             },
         })
         if (!resp) {
