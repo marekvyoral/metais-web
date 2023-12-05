@@ -6,6 +6,7 @@ import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/t
 import { ColumnAttribute, DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { SelectPersonCategory } from '@isdd/metais-common/components/select-person-category/SelectPersonCategory'
 import { SelectPersonType } from '@isdd/metais-common/components/select-person-type/SelectPersonType'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { useTranslation } from 'react-i18next'
 
@@ -30,10 +31,11 @@ interface Props {
 
 export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attributeProfiles, constraintsData, codePrefix }: Props) => {
     const { t } = useTranslation()
-
+    const { currentPreferences } = useUserPreferences()
+    const showInvalidatedItems = currentPreferences.showInvalidatedItems
     const evidenceStatus = [
         { value: 'DRAFT', label: t('metaAttributes.state.DRAFT') },
-        { value: 'INVALIDATED', label: t('metaAttributes.state.INVALIDATED') },
+        { value: 'INVALIDATED', label: t('metaAttributes.state.INVALIDATED'), disabled: !showInvalidatedItems },
     ]
 
     return (
@@ -65,7 +67,7 @@ export const FilterPO = ({ entityName: PO, defaultFilterValues, attributes, attr
                         id="evidence_status"
                         name="evidence_status"
                         setValue={setValue}
-                        defaultValue={filter?.evidence_status}
+                        defaultValue={showInvalidatedItems ? filter?.evidence_status : defaultFilterValues.evidence_status}
                     />
                     <SelectPersonType filter={filter} setValue={setValue} />
                     <DynamicFilterAttributes
