@@ -2,7 +2,6 @@ import React from 'react'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
-import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/entityNameHelpers'
 
 import { CiCreateEntityContainer } from '@/components/containers/CiCreateEntityContainer'
 import { PublicAuthorityAndRoleContainer } from '@/components/containers/PublicAuthorityAndRoleContainer'
@@ -12,9 +11,7 @@ import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 const CreateEntityPage: React.FC = () => {
     const { t } = useTranslation()
-
-    let { entityName } = useGetEntityParamsFromUrl()
-    entityName = shouldEntityNameBePO(entityName ?? '')
+    const { entityName } = useGetEntityParamsFromUrl()
     document.title = `${t('titles.ciCreateEntity', { ci: entityName })} | MetaIS`
 
     return (

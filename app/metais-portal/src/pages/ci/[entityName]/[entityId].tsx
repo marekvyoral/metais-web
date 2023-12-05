@@ -8,7 +8,6 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { shouldEntityNameBePO } from '@isdd/metais-common/src/componentHelpers/ci/entityNameHelpers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -21,14 +20,12 @@ import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
 const EntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
-    const { entityId, entityName: urlEntityName } = useGetEntityParamsFromUrl()
+    const { entityId, entityName } = useGetEntityParamsFromUrl()
     const navigate = useNavigate()
     const location = useLocation()
     const [selectedTab, setSelectedTab] = useState<string>()
 
-    const entityName = shouldEntityNameBePO(urlEntityName ?? '')
-
-    document.title = `${t('titles.ciDetail', { ci: urlEntityName })} | MetaIS`
+    document.title = `${t('titles.ciDetail', { ci: entityName })} | MetaIS`
     const userAbility = useUserAbility()
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
@@ -43,7 +40,7 @@ const EntityDetailPage: React.FC = () => {
         },
     })
 
-    const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: urlEntityName ?? '', entityId: entityId ?? '', t })
+    const tabList: Tab[] = getDefaultCiEntityTabList({ userAbility, entityName: entityName ?? '', entityId: entityId ?? '', t })
 
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
 
@@ -61,10 +58,10 @@ const EntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: urlEntityName, href: `/ci/${urlEntityName}` },
+                    { label: entityName, href: `/ci/${entityName}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
-                        href: `/ci/${urlEntityName}/${entityId}`,
+                        href: `/ci/${entityName}/${entityId}`,
                     },
                 ]}
             />
@@ -81,7 +78,7 @@ const EntityDetailPage: React.FC = () => {
                                     />
                                 }
                                 entityData={ciItemData}
-                                entityName={urlEntityName ?? ''}
+                                entityName={entityName ?? ''}
                                 entityId={entityId ?? ''}
                                 entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
                                 ciRoles={ciTypeData?.roleList ?? []}
