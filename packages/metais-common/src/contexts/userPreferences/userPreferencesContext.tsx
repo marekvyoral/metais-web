@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useAuth } from '../auth/authContext'
@@ -47,7 +47,10 @@ const UserPreferencesProvider: React.FC<React.PropsWithChildren> = ({ children }
         state: { user },
     } = useAuth()
     const storedPreferences = localStorage.getItem(META_PREFERENCES_KEY + user?.login)
-    const currentPreferences: IUserPreferences = storedPreferences ? JSON.parse(storedPreferences) : {}
+    const [currentPreferences, setCurrentPreferences] = useState<IUserPreferences>(DEFAULT_PREFERENCES)
+    useEffect(() => {
+        if (storedPreferences) setCurrentPreferences(JSON.parse(storedPreferences))
+    }, [storedPreferences])
 
     useEffect(() => {
         if (currentPreferences.defaultLanguage) {
@@ -58,6 +61,7 @@ const UserPreferencesProvider: React.FC<React.PropsWithChildren> = ({ children }
     const updateUserPreferences = (preferencesData: IUserPreferences) => {
         try {
             localStorage.setItem(META_PREFERENCES_KEY + user?.login, JSON.stringify(preferencesData))
+            setCurrentPreferences(preferencesData)
             return UpdatePreferencesReturnEnum.SUCCESS
         } catch {
             return UpdatePreferencesReturnEnum.ERROR
