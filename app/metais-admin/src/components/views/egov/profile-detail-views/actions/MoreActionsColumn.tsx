@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, ButtonPopup } from '@isdd/idsk-ui-kit'
 import { CellContext } from '@tanstack/react-table'
-import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Attribute, AttributeProfile, AttributeProfileType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { TFunction } from 'i18next'
 
 interface iMoreActionsColumn {
@@ -10,9 +10,17 @@ interface iMoreActionsColumn {
     editRow: (rowIndex: number) => void
     setValidityOfAttributeProfile?: (attributeTechnicalName?: string, oldAttributeValidity?: boolean) => void
     setVisibilityOfAttributeProfile?: (attributeTechnicalName?: string, oldAttributeVisibility?: boolean) => void
+    profile?: AttributeProfile
 }
 
-export const MoreActionsColumn = ({ ctx, t, setValidityOfAttributeProfile, setVisibilityOfAttributeProfile, editRow }: iMoreActionsColumn) => {
+export const MoreActionsColumn = ({
+    ctx,
+    t,
+    setValidityOfAttributeProfile,
+    setVisibilityOfAttributeProfile,
+    editRow,
+    profile,
+}: iMoreActionsColumn) => {
     return (
         <>
             <ButtonPopup
@@ -21,15 +29,19 @@ export const MoreActionsColumn = ({ ctx, t, setValidityOfAttributeProfile, setVi
                 popupContent={(closePopup) => {
                     return (
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <Button
-                                onClick={() => {
-                                    setValidityOfAttributeProfile?.(ctx?.row?.original?.technicalName, ctx?.row?.original?.valid)
-                                    closePopup()
-                                }}
-                                label={
-                                    ctx?.row?.original?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')
-                                }
-                            />
+                            {profile?.type === AttributeProfileType.custom && (
+                                <Button
+                                    onClick={() => {
+                                        setValidityOfAttributeProfile?.(ctx?.row?.original?.technicalName, ctx?.row?.original?.valid)
+                                        closePopup()
+                                    }}
+                                    label={
+                                        ctx?.row?.original?.valid
+                                            ? t('egov.detail.validityChange.setInvalid')
+                                            : t('egov.detail.validityChange.setValid')
+                                    }
+                                />
+                            )}
                             <Button
                                 onClick={() => {
                                     setVisibilityOfAttributeProfile?.(ctx?.row?.original?.technicalName, ctx?.row?.original?.invisible)
