@@ -1,7 +1,7 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { QueryFeedback } from '@isdd/metais-common/index'
 
@@ -14,6 +14,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 const DetailUserManagement: React.FC = () => {
     const { userId } = useParams()
     const { t } = useTranslation()
+    const navigate = useNavigate()
 
     return (
         <>
@@ -33,6 +34,13 @@ const DetailUserManagement: React.FC = () => {
                             <UserDetail userData={data?.userData} userId={userId ?? ''} />
                             <UserRoles userOrganizations={data?.userOrganizations} />
                             <UserAuthetificationItems userData={data?.userData} />
+                            <Button
+                                variant="secondary"
+                                label={t('form.back')}
+                                onClick={() => {
+                                    navigate(-1)
+                                }}
+                            />
                         </QueryFeedback>
                     )}
                 />
