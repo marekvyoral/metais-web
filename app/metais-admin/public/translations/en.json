@@ -341,7 +341,7 @@
         "category": "Category",
         "link": "Items",
         "edit": "Edit",
-        "delete": "Delete",
+        "delete": "Invalidate",
         "save": "Save",
         "cancel": "Cancel",
         "remove": "Remove",
