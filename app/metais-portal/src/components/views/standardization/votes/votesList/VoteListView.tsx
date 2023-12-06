@@ -12,6 +12,8 @@ import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { useEffect } from 'react'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useVotesListPermissions'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 
 import styles from './voteList.module.scss'
 
@@ -52,6 +54,7 @@ export const VotesListView: React.FC<IVotesListView> = ({
     const {
         isActionSuccess: { value: isSuccess, additionalInfo: additionalInfo },
     } = useActionSuccess()
+    const ability = useAbilityContext()
 
     const newVoteHandler = () => {
         navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV_CREATE}`, { state: { from: location } })
@@ -123,7 +126,11 @@ export const VotesListView: React.FC<IVotesListView> = ({
                 )}
             />
             <div className={styles.inline}>
-                {isUserLogged ? <Button type="submit" label={t('votes.voteDetail.newVote')} onClick={() => newVoteHandler()} /> : <div />}
+                {ability.can(Actions.CREATE, 'VOTE') ? (
+                    <Button type="submit" label={t('votes.voteDetail.newVote')} onClick={() => newVoteHandler()} />
+                ) : (
+                    <div />
+                )}
                 <ActionsOverTable
                     pagination={{
                         pageNumber: filter.pageNumber || BASE_PAGE_NUMBER,

@@ -54,38 +54,53 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
         isError: groupWithIdentitiesError,
     } = useFindAllWithIdentities1(groupsWithIdentitiesRequestParams)
 
-    const { isSuccess: createSuccess, isLoading: createVoteLoading, isError: createVoteError, mutateAsync: createVoteAsyncMutation } = useCreateVote()
-    const createVote = async (newVoteData: ApiVote) => {
-        await createVoteAsyncMutation({
+    const {
+        isSuccess: isCreateVoteSuccess,
+        isLoading: isCreateVoteLoading,
+        isError: isCreateVoteError,
+        mutateAsync: createVoteAsyncMutation,
+    } = useCreateVote()
+    const createVote = (newVoteData: ApiVote) => {
+        createVoteAsyncMutation({
             data: newVoteData,
         })
     }
 
-    const { isSuccess: updateSuccess, isLoading: updateVoteLoading, isError: updateVoteError, mutateAsync: updateVoteAsyncMutation } = useUpdateVote()
-    const updateVote = async (updatedVoteData: ApiVote) => {
-        await updateVoteAsyncMutation({
+    const {
+        isSuccess: isUpdateSuccess,
+        isLoading: isUpdateVoteLoading,
+        isError: isUpdateVoteError,
+        mutateAsync: updateVoteAsyncMutation,
+    } = useUpdateVote()
+    const updateVote = (updatedVoteData: ApiVote) => {
+        updateVoteAsyncMutation({
             voteId,
             data: updatedVoteData,
         })
     }
 
-    const isLoading = (voteDataLoading && !isNewVote) || allStandardRequestsLoading || createVoteLoading || updateVoteLoading
+    const isLoading = (voteDataLoading && !isNewVote) || allStandardRequestsLoading || isCreateVoteLoading || isUpdateVoteLoading
     const isError =
-        voteDataError || allStandardRequestsError || groupWithIdentitiesError || createVoteError || updateVoteError || allStandardRequestsDataError
+        voteDataError ||
+        allStandardRequestsError ||
+        groupWithIdentitiesError ||
+        isCreateVoteError ||
+        isUpdateVoteError ||
+        allStandardRequestsDataError
     const getLoaderLabel = (): string | undefined => {
-        return createVoteLoading || updateVoteLoading ? t('votes.type.callingVote') : undefined
+        return isCreateVoteLoading || isUpdateVoteLoading ? t('votes.type.callingVote') : undefined
     }
 
     useEffect(() => {
-        if (createSuccess || updateSuccess) {
+        if (isCreateVoteSuccess || isUpdateSuccess) {
             setIsActionSuccess({
                 value: true,
                 path: NavigationSubRoutes.ZOZNAM_HLASOV,
-                additionalInfo: { type: createSuccess ? 'create' : 'edit' },
+                additionalInfo: { type: isCreateVoteSuccess ? 'create' : 'edit' },
             })
             navigate(`${NavigationSubRoutes.ZOZNAM_HLASOV}`, { state: { from: location } })
         }
-    }, [createSuccess, location, navigate, setIsActionSuccess, updateSuccess])
+    }, [isCreateVoteSuccess, location, navigate, setIsActionSuccess, isUpdateSuccess])
 
     const handleCancel = () => {
         setIsActionSuccess({ value: false, path: NavigationSubRoutes.ZOZNAM_HLASOV })
@@ -140,8 +155,8 @@ export const VoteCreateEditContainer: React.FC<IVoteEditContainer> = ({ View, is
                                 allStandardRequestData={allStandardRequestsData}
                                 groupWithIdentitiesData={groupWithIdentitiesData}
                                 isIdentifiersLoading={groupWithIIdentitiesLoading}
-                                isSubmitLoading={createVoteLoading || updateVoteLoading}
-                                isSubmitError={createVoteError || updateVoteError}
+                                isSubmitLoading={isCreateVoteLoading || isUpdateVoteLoading}
+                                isSubmitError={isCreateVoteError || isUpdateVoteError}
                             />
                         </QueryFeedback>
                     </MainContentWrapper>
