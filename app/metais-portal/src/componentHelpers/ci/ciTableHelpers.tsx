@@ -180,7 +180,10 @@ export const useGetColumnsFromApiCellContent = () => {
                     <Link
                         to={'./' + ctx?.row?.original?.uuid}
                         state={{ from: location }}
-                        className={classNames({ [styles.bold]: ctx?.row.original.uuid && !!rowSelectionState?.rowSelection[ctx?.row.original.uuid] })}
+                        className={classNames({
+                            [styles.bold]: ctx?.row.original.uuid && !!rowSelectionState?.rowSelection[ctx?.row.original.uuid],
+                        })}
+                        onClick={(e) => e.stopPropagation()}
                     >
                         {ctx?.getValue?.() as string}
                     </Link>
