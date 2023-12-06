@@ -239,7 +239,7 @@ export const NewRelationView: React.FC<Props> = ({
     return (
         <QueryFeedback loading={isLoading || storeGraph.isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
-                <TextHeading size="XL">{t('newRelation.heading', { relationEntityName: tabName })}</TextHeading>
+                <TextHeading size="XL">{t('newRelation.heading')}</TextHeading>
                 {isError && <QueryFeedback loading={false} error={isError} />}
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} ciType={ciItemData?.type ?? ''} />

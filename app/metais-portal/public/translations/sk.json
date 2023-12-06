@@ -1339,7 +1339,7 @@
     "newRelation": {
         "detailButton": "Detail položky",
         "deleteButton": "Odstrániť",
-        "heading": "Pridať nový vzťah {{relationEntityName}}",
+        "heading": "Pridať nový vzťah ...",
         "selectedObject": "Vybraný objekt (typ)",
         "selectRelType": "Typ vzťahu",
         "cancel": "Zrušiť",
