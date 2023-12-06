@@ -39,7 +39,7 @@ export const CreateDocumentsGroupView: React.FC<IView> = ({ projectStatus, saveD
         formState: { errors, isValid },
         clearErrors,
         setValue,
-    } = useForm({ resolver: yupResolver(docSchema(t)) })
+    } = useForm({ resolver: yupResolver(docSchema(t)), mode: 'onChange' })
 
     const onSubmit = (fieldValues: FieldValues) => {
         if (isValid) {
@@ -75,11 +75,11 @@ export const CreateDocumentsGroupView: React.FC<IView> = ({ projectStatus, saveD
                 <SimpleSelect
                     label={t('documentsManagement.status') + ' ' + t('input.requiredField')}
                     name={DOCUMENT_FIELDS.STATE}
-                    setValue={(value) => {
+                    setValue={setValue}
+                    onChange={(value) => {
                         if (value !== undefined) {
                             clearErrors(DOCUMENT_FIELDS.STATE)
                         }
-                        setValue(DOCUMENT_FIELDS.STATE, value)
                     }}
                     error={errors[DOCUMENT_FIELDS.STATE]?.message as string}
                     options={projectStatus.enumItems?.map((e) => ({ value: e.code ?? '', label: e.value ?? '', disabled: false })) ?? []}

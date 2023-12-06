@@ -25,6 +25,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
     setSelectedColumns,
     resetSelectedColumns,
     handleFilterChange,
+    refetchDocs,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -35,7 +36,8 @@ export const DocumentsManagementView: React.FC<IView> = ({
 
     useEffect(() => {
         scrollToMutationFeedback()
-    }, [isActionSuccess, scrollToMutationFeedback])
+        refetchDocs()
+    }, [isActionSuccess, refetchDocs, scrollToMutationFeedback])
 
     const columns: Array<ColumnDef<DocumentGroup>> = [
         {
