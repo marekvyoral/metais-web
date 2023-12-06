@@ -1,6 +1,6 @@
 import { ISelectColumnType } from '@isdd/idsk-ui-kit/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { ApiError, EnumItem, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { DocumentGroup, useGetDocumentGroups, useGetPhaseMap, useSaveDocumentGroupHook } from '@isdd/metais-common/api/generated/kris-swagger'
 import {
     BASE_PAGE_NUMBER,
@@ -11,6 +11,7 @@ import {
 } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { RefetchOptions, RefetchQueryFilters, QueryObserverResult } from '@tanstack/react-query'
 
 import { filterObjectByValue } from './utils'
 
@@ -36,6 +37,9 @@ export interface IView {
     setSelectedColumns: Dispatch<SetStateAction<ISelectColumnType[]>>
     resetSelectedColumns: () => void
     handleFilterChange: (changedFilter: IFilter) => void
+    refetchDocs: <TPageData>(
+        options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
+    ) => Promise<QueryObserverResult<DocumentGroup[], ApiError>>
 }
 
 export interface IDocumentsManagementContainerProps {
@@ -60,7 +64,7 @@ export const DocumentsManagementContainer: React.FC<IDocumentsManagementContaine
 
     const { filter, handleFilterChange } = useFilterParams<DocumentFilterData>(defaultFilter)
 
-    const { data: documentsData } = useGetDocumentGroups(filter.status)
+    const { data: documentsData, refetch: refetchDocs } = useGetDocumentGroups(filter.status)
     const [dataRows, setDataRows] = useState<DocumentGroup[]>()
 
     const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>([...documentsManagementDefaultSelectedColumns])
@@ -98,6 +102,7 @@ export const DocumentsManagementContainer: React.FC<IDocumentsManagementContaine
 
     return (
         <View
+            refetchDocs={refetchDocs}
             filterMap={filterMap}
             filter={filter}
             data={dataRows ?? []}
