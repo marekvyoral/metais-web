@@ -58,7 +58,7 @@ export const MoreActionsColumn = ({
                 }}
             />
 
-            <Button onClick={() => editRow(ctx?.row?.index)} label={t('actionsInTable.edit')} />
+            <Button onClick={() => editRow(ctx?.row?.original.id ?? 0)} label={t('actionsInTable.edit')} />
         </>
     )
 }

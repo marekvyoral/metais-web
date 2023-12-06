@@ -1,6 +1,6 @@
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
-export const isRowSelected = (rowIndex: number, selectedRows: Array<number>) => selectedRows.indexOf(rowIndex) !== -1
+export const isRowSelected = (rowIndex: number | undefined, selectedRows: Array<number>) => (rowIndex ? selectedRows.indexOf(rowIndex) !== -1 : false)
 
 export const filterSelectedRowsFromApi = (attributesOverridesData?: Attribute[], attributes?: Attribute[]) => {
     const allTechnicalNames = attributes?.map((attr) => attr?.technicalName)

@@ -52,29 +52,32 @@ export const ProfileDetailView = <T,>({
     })
 
     const editRow = useCallback(
-        (rowIndex: number) => {
+        (attrId: number) => {
             setIsActionSuccess({ value: false, path: `${AdminRouteNames.EGOV_PROFILE}/${entityName}` })
-            setSelectedRows([...selectedRows, rowIndex])
+            setSelectedRows([...selectedRows, attrId])
         },
         [setIsActionSuccess, entityName, selectedRows],
     )
 
     const cancelEditing = useCallback(
-        (rowIndex: number) => {
-            setSelectedRows([...(selectedRows?.filter((index) => index !== rowIndex) ?? [])])
+        (attrId: number | undefined) => {
+            setSelectedRows([...(selectedRows?.filter((index) => index !== attrId) ?? [])])
         },
         [selectedRows],
     )
 
     const handleSaveAttribute = useCallback(
-        async (rowIndex: number, row: Row<Attribute>) => {
-            const editedData = getValues(`attributes.${rowIndex}`)
-            const originalRow = row.original
+        async (attrId: number | undefined, row: Row<Attribute>) => {
+            if (attrId) {
+                const editedData = getValues(`attributes.${attrId}`)
 
-            const editedAttribute = { ...originalRow, ...editedData }
-            await saveAttribute?.(editedAttribute as T)
+                const originalRow = row.original
 
-            cancelEditing(rowIndex)
+                const editedAttribute = { ...originalRow, ...editedData }
+                await saveAttribute?.(editedAttribute as T)
+
+                cancelEditing(attrId)
+            }
         },
         [getValues, saveAttribute, cancelEditing],
     )
@@ -89,8 +92,8 @@ export const ProfileDetailView = <T,>({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index, selectedRows) ? (
-                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.index}.name`)} />
+                isRowSelected(ctx?.row?.original.id, selectedRows) ? (
+                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.original.id ?? 0}.name`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -104,8 +107,8 @@ export const ProfileDetailView = <T,>({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index, selectedRows) ? (
-                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.index}.engName`)} />
+                isRowSelected(ctx?.row?.original.id, selectedRows) ? (
+                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.original.id ?? 0}.engName`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -119,8 +122,8 @@ export const ProfileDetailView = <T,>({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index, selectedRows) ? (
-                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.index}.description`)} />
+                isRowSelected(ctx?.row?.original.id, selectedRows) ? (
+                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.original.id ?? 0}.description`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -134,8 +137,8 @@ export const ProfileDetailView = <T,>({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index, selectedRows) ? (
-                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.index}.engDescription`)} />
+                isRowSelected(ctx?.row?.original.id, selectedRows) ? (
+                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.original.id ?? 0}.engDescription`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -146,8 +149,8 @@ export const ProfileDetailView = <T,>({
             enableSorting: true,
             id: 'order',
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index, selectedRows) ? (
-                    <Input defaultValue={Number(ctx?.getValue?.())} type="number" {...register(`attributes.${ctx?.row?.index}.order`)} />
+                isRowSelected(ctx?.row?.original.id, selectedRows) ? (
+                    <Input defaultValue={Number(ctx?.getValue?.())} type="number" {...register(`attributes.${ctx?.row?.original.id ?? 0}.order`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -203,7 +206,9 @@ export const ProfileDetailView = <T,>({
             },
             cell: (ctx) => {
                 if (isRowSelected(ctx?.row?.index, selectedRows)) {
-                    return <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.index}.defaultValue`)} />
+                    return (
+                        <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.original.id ?? 0}.defaultValue`)} />
+                    )
                 } else if (ctx.row.original.type === HTML_TYPE) {
                     return <SafeHtmlComponent dirtyHtml={ctx?.getValue?.() as string} />
                 } else {
@@ -223,11 +228,11 @@ export const ProfileDetailView = <T,>({
                             label={ctx?.row?.original?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
                         />
                     )
-                } else if (isRowSelected(ctx?.row?.index, selectedRows)) {
+                } else if (isRowSelected(ctx?.row?.original?.id ?? 0, selectedRows)) {
                     return (
                         <div className={styles.actions}>
-                            <Button onClick={() => handleSaveAttribute(ctx?.row?.index, ctx.row)} label={t('actionsInTable.save')} />
-                            <Button onClick={() => cancelEditing(ctx?.row?.index)} label={t('actionsInTable.cancel')} />
+                            <Button onClick={() => handleSaveAttribute(ctx?.row?.original?.id, ctx.row)} label={t('actionsInTable.save')} />
+                            <Button onClick={() => cancelEditing(ctx?.row?.original?.id)} label={t('actionsInTable.cancel')} />
                         </div>
                     )
                 } else
