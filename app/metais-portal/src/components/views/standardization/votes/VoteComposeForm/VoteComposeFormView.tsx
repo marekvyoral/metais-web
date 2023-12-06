@@ -1,7 +1,7 @@
 import { Button, CheckBox, IOption, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { GroupWithIdentities } from '@isdd/metais-common/api/generated/iam-swagger'
 import classNames from 'classnames'
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { User } from '@isdd/metais-common/contexts/auth/authContext'
@@ -48,7 +48,7 @@ export interface IVoteEditView {
 export interface IVoteEditForm {
     voteSubject?: string
     voteDescription?: string
-    standardRequest?: string
+    standardRequest?: number
     documentLinks?: ApiLink[]
     invitedGroups?: string[]
     invitedUsers?: string[]
@@ -66,7 +66,7 @@ const schema = (t: TFunction<'translation', undefined, 'translation'>): Yup.Obje
         .shape({
             voteSubject: Yup.string().required(t('validation.required')),
             voteDescription: Yup.string().required(t('validation.required')),
-            standardRequest: Yup.string().required(t('validation.required')),
+            standardRequest: Yup.number().required(t('validation.required')),
             documentLinks: Yup.array().of(
                 Yup.object().shape({
                     id: Yup.number(),
@@ -122,15 +122,17 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
     const isNewVote = !existingVoteDataToEdit
     const { t } = useTranslation()
 
-    const standardRequestOptions: IOption<string>[] = useMemo(() => {
+    const standardRequestOptions: IOption<number | undefined>[] = useMemo(() => {
         return getStandardRequestOptions(allStandardRequestData)
     }, [allStandardRequestData])
+
+    const [selectedRequestId, setSelectedRequestId] = useState<number | undefined>(existingVoteDataToEdit?.standardRequestId)
 
     const mapApiVoteToFormData = (apiVoteData: ApiVote | undefined): IVoteEditForm => {
         const returnFormData: IVoteEditForm = {
             voteSubject: apiVoteData?.name,
             voteDescription: apiVoteData?.description,
-            standardRequest: '',
+            standardRequest: apiVoteData?.standardRequestId,
             documentLinks: apiVoteData?.links,
             invitedUsers: [],
             answerDefinitions: apiVoteData?.voteChoices ?? defaultAnswerDefinitionsValues(t),
@@ -147,15 +149,12 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
         defaultValues: mapApiVoteToFormData(existingVoteDataToEdit),
     })
 
+    const requestIdWatch = watch('standardRequest')
     useEffect(() => {
-        if (
-            standardRequestOptions.length > 0 &&
-            existingVoteDataToEdit?.standardRequestId &&
-            standardRequestOptions.length >= existingVoteDataToEdit?.standardRequestId
-        ) {
-            setValue('standardRequest', standardRequestOptions[existingVoteDataToEdit?.standardRequestId].value)
+        if (requestIdWatch) {
+            setSelectedRequestId(requestIdWatch)
         }
-    }, [existingVoteDataToEdit?.standardRequestId, setValue, standardRequestOptions])
+    }, [requestIdWatch])
 
     const fileUploadRef = useRef<IFileUploadRef>(null)
     const formDataRef = useRef<FieldValues>([])
@@ -168,7 +167,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
     }
 
     const handleModalSelect = (rowId: number) => {
-        setValue('standardRequest', rowId.toString())
+        setValue('standardRequest', rowId)
     }
 
     const callApi = (formData: FieldValues, attachments: ApiAttachment[]) => {
@@ -226,6 +225,8 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                 allStandardRequestData={allStandardRequestData}
                 ref={openStandardRequestListModal}
                 handleSelect={handleModalSelect}
+                selectedRequestId={selectedRequestId}
+                setSelectedRequestId={setSelectedRequestId}
             />
             <TextHeading size="XL">{getPageTitle(isNewVote, t)}</TextHeading>
             <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
@@ -242,7 +243,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                         label={t('votes.voteEdit.relatedDraft')}
                         options={standardRequestOptions}
                         setValue={setValue}
-                        value={watch('standardRequest')}
+                        value={selectedRequestId}
                         name="standardRequest"
                         id="standardRequest"
                         className={classNames(styles.stretch)}
