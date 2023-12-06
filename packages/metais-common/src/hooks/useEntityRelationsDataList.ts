@@ -26,6 +26,7 @@ export const useEntityRelationsDataList = (id: string, pageConfig: ReadCiNeighbo
         isFetching: isDerivedFetching,
     } = useReadCiDerivedRelTypes(id, pageConfig.relTypes ? pageConfig.relTypes[0] : '', {
         ...pageConfig,
+        states: pageConfig.state,
     })
 
     const relationsList: CiWithRelsResultUi | undefined = useMemo(() => {
