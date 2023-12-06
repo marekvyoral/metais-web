@@ -920,6 +920,7 @@
         "documents": "Documents",
         "addNewDocument": "Add new document",
         "groupEdit": "Edit documents group",
+        "groupCreate": "Create documents group",
         "input": "Input",
         "removingDocumentsGroup": "Remove documents group",
         "baseInfo": "Base info",
