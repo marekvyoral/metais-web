@@ -758,6 +758,7 @@
         "noUserId": "There was mistake in fetching data.",
         "mutationError": "Error while performing action.",
         "emailFormat": "Bad email format",
+        "phoneFormat": "Bad phone format",
         "noChangesDetected": "No changes were detected.",
         "noSpacesError": "Spaces can not be included in {{value}}"
     },

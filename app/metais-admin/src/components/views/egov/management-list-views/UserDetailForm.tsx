@@ -1,6 +1,6 @@
 import { Input, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Identity } from '@isdd/metais-common/api/generated/iam-swagger'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { QueryFeedback } from '@isdd/metais-common/index'
@@ -30,8 +30,16 @@ export enum InputNames {
 export const UserDetailForm: React.FC<Props> = ({ userData, handleBackNavigate, isCreate, isError, isFetching, loginValue, handleResetForm }) => {
     const { t } = useTranslation()
 
-    const { register, formState } = useFormContext()
+    const { register, formState, watch, clearErrors } = useFormContext()
     const { errors, isSubmitted } = formState
+
+    const loginWatch = watch(InputNames.LOGIN)
+
+    useEffect(() => {
+        if (loginWatch) {
+            clearErrors(InputNames.LOGIN)
+        }
+    }, [clearErrors, loginWatch])
 
     return (
         <>
