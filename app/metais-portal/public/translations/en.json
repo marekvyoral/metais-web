@@ -1237,7 +1237,10 @@
             "codeListTableTitle": "codelist items",
             "codeId": "Code",
             "codeName": "Item Nam",
-            "addItemBtn": "Add item"
+            "addBtn": "Request for codelist classification",
+            "addItemBtn": "Add new item",
+            "saveBtn": "Save",
+            "submitBtn": "Send request"
         },
         "requestValidations": {
             "codelistName": "Codelist name is required field",

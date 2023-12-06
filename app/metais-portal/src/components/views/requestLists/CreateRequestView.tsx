@@ -364,13 +364,14 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             <Input
                                 required
                                 disabled={!canEdit}
-                                label={getDescription('Gui_Profil_ZC_uri', language, attributeProfile)}
-                                info={getName('Gui_Profil_ZC_uri', language, attributeProfile)}
-                                id={RequestFormEnum.REFINDICATOR}
-                                {...register(RequestFormEnum.REFINDICATOR)}
-                                error={formState.errors[RequestFormEnum.REFINDICATOR]?.message}
+                                label={getDescription('Gui_Profil_ZC_rezort', language, attributeProfile)}
+                                info={getName('Gui_Profil_ZC_rezort', language, attributeProfile)}
+                                id={RequestFormEnum.RESORTCODE}
+                                {...register(RequestFormEnum.RESORTCODE)}
+                                error={formState.errors[RequestFormEnum.RESORTCODE]?.message}
                             />
                             <SelectLazyLoading
+                                required
                                 key={defaultSelectOrg?.poUUID}
                                 disabled={!canEdit}
                                 id={RequestFormEnum.MAINGESTOR}
@@ -386,13 +387,12 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 defaultValue={defaultSelectOrg}
                             />
                             <Input
-                                required
                                 disabled={!canEdit}
-                                label={getDescription('Gui_Profil_ZC_rezort', language, attributeProfile)}
-                                info={getName('Gui_Profil_ZC_rezort', language, attributeProfile)}
-                                id={RequestFormEnum.RESORTCODE}
-                                {...register(RequestFormEnum.RESORTCODE)}
-                                error={formState.errors[RequestFormEnum.RESORTCODE]?.message}
+                                label={getDescription('Gui_Profil_ZC_uri', language, attributeProfile)}
+                                info={getName('Gui_Profil_ZC_uri', language, attributeProfile)}
+                                id={RequestFormEnum.REFINDICATOR}
+                                {...register(RequestFormEnum.REFINDICATOR)}
+                                error={formState.errors[RequestFormEnum.REFINDICATOR]?.message}
                             />
                             {editData?.codeListState === RequestListState.ACCEPTED_SZZC ||
                                 (editData?.codeListState === RequestListState.KS_ISVS_ACCEPTED && (
@@ -561,12 +561,19 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                     variant="secondary"
                                     onClick={() => navigate(`${NavigationSubRoutes.REQUESTLIST}`)}
                                 />
+                                {(canEdit || canEditDate) && (
+                                    <Button
+                                        label={t('codeListList.requestCreate.saveBtn')}
+                                        variant="secondary"
+                                        type="submit"
+                                        onClick={() => setSend(false)}
+                                    />
+                                )}
                                 {(canEdit || canEditDate) &&
                                     editData?.codeListState !== RequestListState.KS_ISVS_ACCEPTED &&
                                     editData?.codeListState !== RequestListState.ACCEPTED_SZZC && (
-                                        <Button label={t('form.submit')} type="submit" variant="secondary" onClick={() => setSend(true)} />
+                                        <Button label={t('codeListList.requestCreate.submitBtn')} type="submit" onClick={() => setSend(true)} />
                                     )}
-                                {(canEdit || canEditDate) && <Button label={t('form.save')} type="submit" onClick={() => setSend(false)} />}
                             </ButtonGroupRow>
                         </form>
                         {isOpen && (
