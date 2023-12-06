@@ -142,8 +142,8 @@ export const CodeListDetailItemsTableExpandedRow: React.FC<CodeListDetailItemsTa
                 />
                 <InformationGridRow
                     key={'itemNote'}
-                    label={getDescription('Gui_Profil_ZC_poznamka_pre_polozku', workingLanguage)}
-                    tooltip={getName('Gui_Profil_ZC_poznamka_pre_polozku', workingLanguage)}
+                    label={getDescription('Gui_Profil_ZC_poznamka_pre_polozku', workingLanguage, attributeProfile)}
+                    tooltip={getName('Gui_Profil_ZC_poznamka_pre_polozku', workingLanguage, attributeProfile)}
                     value={codelistItem.codelistItemNotes
                         ?.filter((item) => item.language === workingLanguage)
                         .map((item) => (

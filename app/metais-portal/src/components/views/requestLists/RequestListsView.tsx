@@ -136,7 +136,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
                                 userAbility.can(Actions.CREATE, Subjects.DETAIL) && (
                                     <CreateEntityButton
                                         onClick={() => navigate(`${NavigationSubRoutes.REQUESTLIST}/create`, { state: { from: location } })}
-                                        label={t('codeListList.requestCreate.addItemBtn')}
+                                        label={t('codeListList.requestCreate.addBtn')}
                                     />
                                 )
                             }

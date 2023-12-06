@@ -1246,7 +1246,10 @@
             "codeListTableTitle": "Položky číselníka",
             "codeId": "Kód",
             "codeName": "Názov položky",
-            "addItemBtn": "Pridať položku"
+            "addBtn": "Žiadosť o zaradenie číselníka",
+            "addItemBtn": "Pridať novú položku",
+            "saveBtn": "Uložiť",
+            "submitBtn": "Odoslať žiadosť"
         },
         "requestValidations": {
             "codelistName": "Názov číselníka je povinné pole",
