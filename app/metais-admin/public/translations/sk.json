@@ -437,7 +437,9 @@
         "yes": "Áno",
         "no": "Nie",
         "show": "Zobraziť",
-        "entities": "záznamy"
+        "entities": "záznamy",
+        "submit": "Odoslať formulár",
+        "cancel": "Zrušiť"
     },
     "tableSelectColumns": {
         "searchPlaceholder": "Názov hľadaného stĺpca",
