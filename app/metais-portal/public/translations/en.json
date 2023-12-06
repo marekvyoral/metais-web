@@ -1322,7 +1322,7 @@
     "newRelation": {
         "detailButton": "Item's Detail",
         "deleteButton": "Delete",
-        "heading": "Add new relation {{relationEntityName}}",
+        "heading": "Add new relation ...",
         "selectedObject": "Selected object (type)",
         "selectRelType": "Type of relation",
         "cancel": "Cancel",
