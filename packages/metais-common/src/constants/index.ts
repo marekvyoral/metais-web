@@ -228,3 +228,5 @@ export enum ROLES {
     EA_GARPO = 'EA_GARPO',
 }
 export const NO_USER_COLUMNS_LS_KEY = 'METAIS_columns_noUser/'
+
+export const CAN_CREATE_AND_EDIT_VOTES_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP']

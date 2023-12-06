@@ -4,14 +4,15 @@ import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-
-import { CancelVoteButton } from '../components/CancelVoteButton'
-import { VoteStateOptionEnum, getVoteStateEnum } from '../voteProps'
+import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useVotesListPermissions'
 
 import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
 import { voteActorResultsColumns } from './voteActorResultsColumns'
 import { voteActorsColumns } from './voteActorsColumns'
 
+import { VoteStateOptionEnum, getVoteStateEnum } from '@/components/views/standardization/votes/voteProps'
+import { CancelVoteButton } from '@/components/views/standardization/votes/components/CancelVoteButton'
 import { Spacer } from '@/components/Spacer/Spacer'
 import { TableWithPagination } from '@/components/views/standardization/votes/components/TableWithPagination/TableWithPagination'
 import { VoteDetailItems } from '@/components/views/standardization/votes/components/VoteDetailItems'
@@ -130,9 +131,16 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
                 <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
                 {isUserLoggedIn && !hideVoteModifyingButtons && (
                     <div className={styles.inlineSpaceBetween}>
-                        <Button type="submit" label={t('votes.voteDetail.editVote')} onClick={() => editVoteHandler()} disabled={!canModifyVote} />
-                        <Spacer horizontal />
-                        <CancelVoteButton disabled={!canCancelVote || !canModifyVote} cancelVote={cancelVote} />
+                        <Can I={Actions.EDIT} a={'VOTE'}>
+                            <Button
+                                type="submit"
+                                label={t('votes.voteDetail.editVote')}
+                                onClick={() => editVoteHandler()}
+                                disabled={!canModifyVote}
+                            />
+                            <Spacer horizontal />
+                            <CancelVoteButton disabled={!canCancelVote || !canModifyVote} cancelVote={cancelVote} />
+                        </Can>
                     </div>
                 )}
             </div>

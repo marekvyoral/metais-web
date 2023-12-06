@@ -40,8 +40,8 @@ export interface IVoteEditView {
     isSubmitLoading?: boolean
     isSubmitError?: boolean
     isIdentifiersLoading: boolean
-    createVote: (newVoteData: ApiVote) => Promise<void>
-    updateVote: (updatedVoteData: ApiVote) => Promise<void>
+    createVote: (newVoteData: ApiVote) => void
+    updateVote: (updatedVoteData: ApiVote) => void
     onCancel: () => void
 }
 
