@@ -91,9 +91,9 @@ export const RoleEditView: React.FC<IRoleEditViewParams> = ({ currentRole, roleI
                                 defaultValue={currentRole?.type}
                             />
                             <ButtonGroupRow>
-                                <Button label="Submit" onClick={onSubmit} />
+                                <Button label={t('adminRolesPage.submit')} onClick={onSubmit} />
                                 <Button
-                                    label="Cancel"
+                                    label={t('adminRolesPage.cancel')}
                                     onClick={() => navigate(AdminRouteNames.ROLES + '?system=all&group=all', { state: { from: location } })}
                                     variant="secondary"
                                 />

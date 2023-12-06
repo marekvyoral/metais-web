@@ -592,7 +592,9 @@
         "yes": "Yes",
         "no": "No",
         "show": "Show",
-        "entities": "entities"
+        "entities": "entities",
+        "cancel": "Cancel",
+        "submit": "Submit form"
     },
     "publicAuthorities": {
         "detail": {

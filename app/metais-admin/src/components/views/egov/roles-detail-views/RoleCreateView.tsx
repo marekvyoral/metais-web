@@ -61,21 +61,10 @@ export const RoleCreateView: React.FC<ICreateRoleViewParams> = ({ roleGroups, cr
                                 label={t('adminRolesPage.group')}
                                 options={[{ value: '', label: t('adminRolesPage.none') }, ...getGroupRoles(roleGroups)]}
                             />
-                            <SimpleSelect
-                                label={t('adminRolesPage.systemRole')}
-                                setValue={methods.setValue}
-                                name="systemRole"
-                                disabled
-                                options={[
-                                    { value: RelatedRoleType.NON_SYSTEM, label: t('adminRolesPage.no') },
-                                    { value: RelatedRoleType.SYSTEM, label: t('adminRolesPage.yes') },
-                                ]}
-                                defaultValue={RelatedRoleType.NON_SYSTEM}
-                            />
                             <ButtonGroupRow>
-                                <Button label="Submit" onClick={onSubmit} />
+                                <Button label={t('adminRolesPage.submit')} onClick={onSubmit} />
                                 <Button
-                                    label="Cancel"
+                                    label={t('adminRolesPage.cancel')}
                                     onClick={() => navigate(AdminRouteNames.ROLES + '?system=all&group=all', { state: { from: location } })}
                                     variant="secondary"
                                 />
