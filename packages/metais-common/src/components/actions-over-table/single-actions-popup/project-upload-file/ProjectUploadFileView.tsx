@@ -26,7 +26,6 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({ r
                 <TextHeading size="L">{t('bulkActions.addFile.title')}</TextHeading>
             </div>
             <TextArea {...register('note')} label={t('bulkActions.updateFile.reason')} rows={3} />
-            hujhujhu
             <Input type="file" {...register('file')} />
             <div className={styles.buttonGroupEnd}>
                 <Button onClick={() => onClose()} label={t('button.cancel')} variant="secondary" />
