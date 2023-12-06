@@ -21,8 +21,8 @@ import { buildColumns } from '@/components/views/standardization/groups/groupMem
 
 export interface TableData {
     uuid: string
-    firstName_lastName: string
-    organization: string
+    lastName_firstName: string
+    orgName: string
     orgId: string
     roleName: string
     email: string
@@ -37,7 +37,7 @@ export interface FilterParams extends IFilterParams, IFilter {
 
 export const defaultSort = [
     {
-        orderBy: 'firstName_lastName',
+        orderBy: 'lastName_firstName',
         sortDirection: SortType.ASC,
     },
 ]
@@ -121,11 +121,13 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
     })
 
     const [successfulUpdatedData, setSuccessfulUpdatedData] = useState(false)
+    const [updatingMember, setUpdatingMember] = useState(false)
 
     const [tableData, setTableData] = useState<TableData[]>()
     const getRoleFromIdentityGids = (identity: IdentityInGroupData) => {
         return identity?.gids ? identity.gids[identity.gids.length - 1].roleName : ''
     }
+
     useEffect(() => {
         if (identities !== identitiesData) {
             setIdentities(identitiesData?.list)
@@ -136,8 +138,8 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
         setTableData(
             identities?.map((item) => ({
                 uuid: item.identity?.uuid ?? '',
-                firstName_lastName: item.identity?.lastName + ' ' + item.identity?.firstName,
-                organization: item.gids?.[item.gids.length - 1].orgName?.toString() ?? '',
+                lastName_firstName: item.identity?.lastName + ' ' + item.identity?.firstName,
+                orgName: item.gids?.[item.gids.length - 1].orgName?.toString() ?? '',
                 roleName: getRoleFromIdentityGids(item) ?? '',
                 email: item.identity?.email ?? '',
                 orgId: item.gids?.map((org) => org.orgId)?.toString() ?? '',
@@ -160,6 +162,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
         ability,
         setMembersUpdated,
         group?.shortName === KSIVS_SHORT_NAME,
+        setUpdatingMember,
     )
 
     const columnsWithPermissions = isUserLogged ? selectableColumnsSpec : selectableColumnsSpec.slice(1)
@@ -184,7 +187,7 @@ const GroupDetailContainer: React.FC<GroupDetailContainer> = ({ id, View }) => {
             setSuccessfulUpdatedData={setSuccessfulUpdatedData}
             user={user}
             rowSelection={rowSelection}
-            isIdentitiesLoading={isLoading || isFetching}
+            isIdentitiesLoading={[isLoading, isFetching, updatingMember].some((item) => item)}
             selectableColumnsSpec={columnsWithPermissions}
             tableData={tableData}
             identitiesData={identitiesData}
