@@ -6,7 +6,7 @@ import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { Row } from '@tanstack/react-table'
-import React, { useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
@@ -47,9 +47,12 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
     const { isActionSuccess } = useActionSuccess()
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
-    useEffect(() => {
-        if (isActionSuccess.value) scrollToMutationFeedback()
-    }, [isActionSuccess, scrollToMutationFeedback])
+    useMemo(() => {
+        if (isActionSuccess.value) {
+            scrollToMutationFeedback()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isActionSuccess.value])
 
     const isRowSelected = (row: Row<TableData>) => (row.original.uuid ? !!rowSelection[row.original.uuid] : false)
     const breadCrumbsLinks = [
@@ -87,7 +90,9 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                     {isActionSuccess.value && (
                         <MutationFeedback
                             successMessage={
-                                isActionSuccess.additionalInfo?.type === 'edit'
+                                isActionSuccess.additionalInfo?.type === 'memberUpdate'
+                                    ? t('mutationFeedback.successfulMemberUpdated')
+                                    : isActionSuccess.additionalInfo?.type === 'edit'
                                     ? t('mutationFeedback.successfulUpdated')
                                     : t('mutationFeedback.successfulCreated')
                             }

@@ -364,7 +364,8 @@
         "successfulUpdated": "Položka bola úspešne zmenená",
         "successfulCreated": "Položka bola úspešne vytvorená",
         "successfulCloned": "Položka bola úspešne klonovaná",
-        "successfulUpdatedList": "Položky boli úspešne zmenené"
+        "successfulUpdatedList": "Položky boli úspešne zmenené",
+        "successfulMemberUpdated": "Rola bola úspešne zmenená"
     },
     "button": {
         "saveAndContinue": "Uložiť a pokračovať",

@@ -54,6 +54,7 @@ export interface ITableProps<T> {
     rowHref?: (row: Row<T>) => string
     reorderRow?: (index: number, target: number) => void
     hideHeaders?: boolean
+    manualSorting?: boolean
 }
 
 export const Table = <T,>({
@@ -82,6 +83,7 @@ export const Table = <T,>({
     rowHref,
     reorderRow,
     hideHeaders,
+    manualSorting = true,
 }: ITableProps<T>): JSX.Element => {
     const wrapper1Ref = useRef<HTMLTableSectionElement>(null)
     const wrapper2Ref = useRef<HTMLTableSectionElement>(null)
@@ -112,6 +114,7 @@ export const Table = <T,>({
                 onSortingChange?.(columnSort)
             }
         },
+        manualSorting: manualSorting,
         getSortedRowModel: getSortedRowModel(),
         onColumnOrderChange: onColumnOrderChange || setColumnOrderState,
         getCoreRowModel: getCoreRowModel(),

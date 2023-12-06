@@ -77,6 +77,7 @@ export const buildColumns = (
     ability: MongoAbility,
     setMembersUpdated: React.Dispatch<React.SetStateAction<boolean>>,
     isKsisvs: boolean,
+    setUpdatingMember: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
     const selectableColumnsSpec: ColumnDef<TableData>[] = [
         {
@@ -110,20 +111,21 @@ export const buildColumns = (
             size: 20,
         },
         {
-            id: 'firstName_lastName',
+            id: 'lastName_firstName',
             header: t('groups.name'),
-            accessorKey: 'firstName_lastName',
+            accessorKey: 'lastName_firstName',
             enableSorting: true,
+            // sortingFn: 'myCustomSorting',
             size: 180,
         },
-        { id: 'organization', header: t('groups.organization'), accessorKey: 'organization', enableSorting: true, size: 480 },
+        { id: 'orgName', header: t('groups.organization'), accessorKey: 'orgName', enableSorting: true, size: 480 },
     ]
     if (ability.can(Actions.READ, 'groupMemberEmail')) {
-        selectableColumnsSpec.push({ header: t('groups.email'), id: 'email', accessorKey: 'email', enableSorting: true, size: 200 })
+        selectableColumnsSpec.push({ header: t('groups.email'), id: 'email', accessorKey: 'email', size: 200 })
     }
     selectableColumnsSpec.push({
         header: t('groups.role'),
-        id: 'role',
+        id: 'roleName',
         accessorKey: 'roleName',
         enableSorting: true,
         cell: ({ row }) => (
@@ -135,6 +137,7 @@ export const buildColumns = (
                 ability={ability}
                 setMembersUpdated={setMembersUpdated}
                 isKsisvs={isKsisvs}
+                setUpdatingMember={setUpdatingMember}
             />
         ),
     })
