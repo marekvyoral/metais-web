@@ -1,13 +1,15 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
 import { Button, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { DocumentGroup } from '@isdd/metais-common/api/generated/kris-swagger'
-import { ActionsOverTable } from '@isdd/metais-common/index'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { ActionsOverTable, MutationFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 
 import { DocumentFilterData, IView, defaultFilter } from '@/components/containers/documents-management/DocumentsManagementContaiter'
 
@@ -28,6 +30,12 @@ export const DocumentsManagementView: React.FC<IView> = ({
     const navigate = useNavigate()
     const location = useLocation()
     const [editingRowsPositions, setEditingRowsPositions] = useState(false)
+    const { isActionSuccess } = useActionSuccess()
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        scrollToMutationFeedback()
+    }, [isActionSuccess, scrollToMutationFeedback])
 
     const columns: Array<ColumnDef<DocumentGroup>> = [
         {
@@ -131,7 +139,6 @@ export const DocumentsManagementView: React.FC<IView> = ({
                     )
                 }}
             />
-
             <ActionsOverTable
                 pagination={{ pageNumber: BASE_PAGE_NUMBER, pageSize: BASE_PAGE_SIZE, dataLength: 0 }}
                 entityName={''}
@@ -176,6 +183,8 @@ export const DocumentsManagementView: React.FC<IView> = ({
                     onClick={() => navigate(`./create`, { state: { from: location } })}
                 />
             </ActionsOverTable>
+            <MutationFeedback error={false} success={isActionSuccess.value} successMessage={t('mutationFeedback.successfulCreated')} />
+            <div ref={wrapperRef} />
             <Table
                 columns={columns.filter((c) =>
                     selectedColumns

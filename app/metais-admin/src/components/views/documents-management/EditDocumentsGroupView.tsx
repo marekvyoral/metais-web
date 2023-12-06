@@ -1,8 +1,11 @@
 import { Button, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { QueryFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { DOCUMENT_FIELDS } from './CreateDocumentsGroupView'
 
@@ -11,6 +14,9 @@ import { IView } from '@/components/containers/documents-management/DocumentsGro
 export const EditDocumentsGroupView: React.FC<IView> = ({ infoData, projectStatus, saveDocumentGroup, isLoading }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const location = useLocation()
+    const { setIsActionSuccess } = useActionSuccess()
+    const [updateError, setUpdateError] = useState(false)
 
     const {
         register,
@@ -29,11 +35,27 @@ export const EditDocumentsGroupView: React.FC<IView> = ({ infoData, projectStatu
                 nameEng: fieldValues[DOCUMENT_FIELDS.NAME_ENG],
                 descriptionEng: fieldValues[DOCUMENT_FIELDS.DESCRIPTION_ENG],
             })
-            navigate(-1)
+                .then(() => {
+                    setIsActionSuccess({ value: true, path: '/projects/documents/' + infoData.id, additionalInfo: { type: 'editGroup' } })
+
+                    navigate('/projects/documents/' + infoData.id, { state: { from: location } })
+                })
+                .catch(() => {
+                    setUpdateError(true)
+                })
         }
     }
+
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    useEffect(() => {
+        if (updateError) {
+            scrollToMutationFeedback()
+        }
+    }, [updateError, scrollToMutationFeedback])
+
     return (
-        <QueryFeedback loading={isLoading}>
+        <QueryFeedback loading={isLoading} error={updateError}>
+            <div ref={wrapperRef} />
             <TextHeading size="L">{t('documentsManagement.groupEdit')}</TextHeading>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <SimpleSelect

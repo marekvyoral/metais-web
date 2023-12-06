@@ -3,12 +3,12 @@ import { Document } from '@isdd/metais-common/api/generated/kris-swagger'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ActionsOverTable, MutationFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import styles from './styles.module.scss'
 
@@ -155,7 +155,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
     useEffect(() => {
         scrollToMutationFeedback()
-        if (isActionSuccess.value) {
+        if (isActionSuccess.value && (isActionSuccess?.additionalInfo?.type == 'create' || isActionSuccess?.additionalInfo?.type == 'edit')) {
             refetchDocuments()
         }
     }, [isActionSuccess, refetchDocuments, scrollToMutationFeedback])
@@ -168,6 +168,12 @@ export const DocumentsGroupView: React.FC<IView> = ({
                 <Button label={t('documentsManagement.edit')} onClick={() => navigate('./edit')} />
                 <Button label={t('documentsManagement.delete')} variant="warning" onClick={() => setDeleteGroupModalOpen(true)} />
             </ButtonGroupRow>
+            <MutationFeedback
+                success={isActionSuccess.value && isActionSuccess?.additionalInfo?.type == 'editGroup'}
+                error={undefined}
+                successMessage={t('mutationFeedback.successfulUpdated')}
+            />
+
             <Tabs tabList={tabList} />
             <TextHeading size="L">{t('documentsManagement.documents')}</TextHeading>
             <ActionsOverTable
@@ -187,7 +193,10 @@ export const DocumentsGroupView: React.FC<IView> = ({
             </ActionsOverTable>
             <div ref={wrapperRef}>
                 <MutationFeedback
-                    success={isActionSuccess.value}
+                    success={
+                        isActionSuccess.value &&
+                        (isActionSuccess?.additionalInfo?.type == 'create' || isActionSuccess?.additionalInfo?.type == 'edit')
+                    }
                     error={undefined}
                     successMessage={
                         isActionSuccess?.additionalInfo?.type == 'create'
