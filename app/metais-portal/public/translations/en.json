@@ -705,7 +705,6 @@
         "mustBeChecked": "This must be checked if you want to proceed",
         "dateMustBeGreaterThen": "Date must be greater then",
         "dateMustBeEqualOrGreaterThen": "Date must be equal or greater then"
-        
     },
     "createEntity": {
         "required": "required",
@@ -1336,6 +1335,7 @@
         "errorTitle": "Error occured",
         "errorMessage": "We apologize, but an error occurred while creating new relation. Try submitting the form again. If the error occurs repeatedly, contact the administrator by e-mail at ",
         "email": "metais@mirri.gov.sk",
+        "wrongRoleRelTypeError": "Selected role do not have right to create this relation type",
         "selectRelTypeError": "You are missing needed rights to create this relation type"
     },
     "refRegisters": {

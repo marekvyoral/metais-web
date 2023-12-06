@@ -5,19 +5,13 @@ type CreateSelectRelationTypeOptionsProps = {
     relatedListAsSources: RelatedCiTypePreview[] | undefined
     relatedListAsTargets: RelatedCiTypePreview[] | undefined
     t: TFunction<'translation', undefined, 'translation'>
-    currentRole: string
 }
 
 type SimpleSelectRelationTypeOptionsProps = {
     relatedList: RelationshipType[] | undefined
 }
 
-export const createSelectRelationTypeOptions = ({
-    relatedListAsSources,
-    relatedListAsTargets,
-    t,
-    currentRole,
-}: CreateSelectRelationTypeOptionsProps) => {
+export const createSelectRelationTypeOptions = ({ relatedListAsSources, relatedListAsTargets, t }: CreateSelectRelationTypeOptionsProps) => {
     const isSourceArray = relatedListAsSources && relatedListAsSources?.length > 0
 
     const sourceArray = [
@@ -26,16 +20,12 @@ export const createSelectRelationTypeOptions = ({
             value: '',
             disabled: true,
         },
-        ...(relatedListAsSources
-            ?.filter((rel) => rel.relationshipRoleList?.includes(currentRole))
-            .map((item) => ({ label: item.relationshipTypeName ?? '', value: item.relationshipTypeTechnicalName ?? '' })) ?? []),
+        ...(relatedListAsSources?.map((item) => ({ label: item.relationshipTypeName ?? '', value: item.relationshipTypeTechnicalName ?? '' })) ?? []),
     ]
     const isTargetArray = relatedListAsTargets && relatedListAsTargets?.length > 0
     const targetArray = [
         { label: t('newRelation.selectSource'), value: '', disabled: true },
-        ...(relatedListAsTargets
-            ?.filter((rel) => rel.relationshipRoleList?.includes(currentRole))
-            .map((item) => ({ label: item.relationshipTypeName ?? '', value: item.relationshipTypeTechnicalName ?? '' })) ?? []),
+        ...(relatedListAsTargets?.map((item) => ({ label: item.relationshipTypeName ?? '', value: item.relationshipTypeTechnicalName ?? '' })) ?? []),
     ]
 
     const combinedOptions = [...(isTargetArray ? targetArray : []), ...(isSourceArray ? sourceArray : [])]

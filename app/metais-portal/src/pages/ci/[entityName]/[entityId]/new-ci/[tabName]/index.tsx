@@ -15,6 +15,7 @@ import { NewCiWithRelationView } from '@/components/views/new-ci-with-relation/N
 import { RelationTypePermissionWrapper } from '@/components/permissions/CreateRelationPermissionWrapper'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { findRelationType } from '@/componentHelpers/new-relation'
 
 const CreateCiItemAndRelation: React.FC = () => {
     const { tabName } = useParams()
@@ -78,7 +79,13 @@ const CreateCiItemAndRelation: React.FC = () => {
                                                             }) => (
                                                                 <RelationTypePermissionWrapper
                                                                     selectedRoleName={groupData?.roleName ?? ''}
-                                                                    selectedCiRelationType={relationData?.relationTypeData}
+                                                                    selectedCiRelationType={findRelationType(
+                                                                        selectedRelationTypeState.selectedRelationTypeTechnicalName,
+                                                                        [
+                                                                            ...(relationData?.relatedListAsSources ?? []),
+                                                                            ...(relationData?.relatedListAsTargets ?? []),
+                                                                        ],
+                                                                    )}
                                                                 >
                                                                     <NewCiWithRelationView
                                                                         entityName={entityName ?? ''}
