@@ -106,13 +106,13 @@ export const NewRelationView: React.FC<Props> = ({
             ? ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
             : ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]
 
+    const relationTypeOptions = createSelectRelationTypeOptions({
+        relatedListAsSources,
+        relatedListAsTargets,
+        t,
+    })
+
     useEffect(() => {
-        const relationTypeOptions = createSelectRelationTypeOptions({
-            relatedListAsSources,
-            relatedListAsTargets,
-            t,
-            currentRole: roleState.selectedRole?.roleName ?? '',
-        })
         const isRelTypeInOptions = relationTypeOptions.find(
             (option) => option?.value === selectedRelationTypeState?.selectedRelationTypeTechnicalName,
         )
@@ -125,8 +125,9 @@ export const NewRelationView: React.FC<Props> = ({
     }, [
         relatedListAsSources,
         relatedListAsTargets,
-        roleState.selectedRole?.roleName,
-        selectedRelationTypeState.selectedRelationTypeTechnicalName,
+        relationTypeOptions,
+        roleState?.selectedRole?.roleName,
+        selectedRelationTypeState?.selectedRelationTypeTechnicalName,
         selectedRelationTypeTechnicalName,
         setSelectedRelationTypeTechnicalName,
         t,
@@ -254,15 +255,10 @@ export const NewRelationView: React.FC<Props> = ({
                 isClearable={false}
                 label={t('newRelation.selectRelType')}
                 name="relation-type"
-                options={createSelectRelationTypeOptions({
-                    relatedListAsSources,
-                    relatedListAsTargets,
-                    t,
-                    currentRole: roleState.selectedRole?.roleName ?? '',
-                })}
+                options={relationTypeOptions}
                 value={selectedRelationTypeTechnicalName}
                 onChange={(val) => setSelectedRelationTypeTechnicalName(val ?? '')}
-                error={!canCreateRelationType ? t('newRelation.selectRelTypeError') : ''}
+                error={!canCreateRelationType ? t('newRelation.wrongRoleRelTypeError') : ''}
             />
 
             <SelectCiItem

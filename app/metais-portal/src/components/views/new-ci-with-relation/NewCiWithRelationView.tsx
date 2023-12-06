@@ -94,16 +94,20 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
             ? data.ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
             : data.ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]
 
+    const relationTypeOptions = createSelectRelationTypeOptions({
+        relatedListAsSources,
+        relatedListAsTargets,
+        t,
+    })
+
     useEffect(() => {
         if (!selectedRelationTypeTechnicalName) {
-            setSelectedRelationTypeTechnicalName(
-                createSelectRelationTypeOptions({ relatedListAsSources, relatedListAsTargets, t, currentRole: selectedRole?.roleName ?? '' })[1]
-                    ?.value,
-            )
+            setSelectedRelationTypeTechnicalName(relationTypeOptions[1]?.value)
         }
     }, [
         relatedListAsSources,
         relatedListAsTargets,
+        relationTypeOptions,
         selectedRelationTypeTechnicalName,
         selectedRole?.roleName,
         setSelectedRelationTypeTechnicalName,
@@ -196,15 +200,10 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
                 isClearable={false}
                 label={t('newRelation.selectRelType')}
                 name="relation-type"
-                options={createSelectRelationTypeOptions({
-                    relatedListAsSources,
-                    relatedListAsTargets,
-                    t,
-                    currentRole: selectedRole?.roleName ?? '',
-                })}
+                options={relationTypeOptions}
                 value={selectedRelationTypeTechnicalName}
                 onChange={(val) => setSelectedRelationTypeTechnicalName(val ?? '')}
-                error={!canCreateRelationType ? t('newRelation.selectRelTypeError') : ''}
+                error={!canCreateRelationType ? t('newRelation.wrongRoleRelTypeError') : ''}
             />
 
             <CreateCiEntityForm
