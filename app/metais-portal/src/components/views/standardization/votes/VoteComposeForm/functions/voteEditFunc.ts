@@ -10,10 +10,10 @@ import { ExistingFileData } from '../components/ExistingFilesHandler/ExistingFil
 
 import { FileUploadData } from '@/components/FileUpload/FileUpload'
 
-export const getStandardRequestOptions = (allStandardRequestDataArray: ApiStandardRequestPreviewList | undefined): IOption<string>[] => {
+export const getStandardRequestOptions = (allStandardRequestDataArray: ApiStandardRequestPreviewList | undefined): IOption<number | undefined>[] => {
     return (
         allStandardRequestDataArray?.standardRequests?.map((sr) => {
-            return { value: sr.id?.toString() ?? '', label: sr.srName ?? '' }
+            return { value: sr.id, label: sr.srName ?? '' }
         }) ?? []
     )
 }

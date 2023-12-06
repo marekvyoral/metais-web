@@ -28,7 +28,7 @@ export const standardRequestsListColumns = (
                                 onChange={() => {
                                     handleRowCheckBoxChanged(row)
                                 }}
-                                checked={row.index == selectedRowId}
+                                checked={row.original.id == selectedRowId}
                             />
                         </div>
                     </>

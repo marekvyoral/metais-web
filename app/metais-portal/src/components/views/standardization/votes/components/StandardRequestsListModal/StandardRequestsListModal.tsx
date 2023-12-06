@@ -1,5 +1,5 @@
 import { BaseModal, Button, GridRow } from '@isdd/idsk-ui-kit/index'
-import { forwardRef, useCallback, useImperativeHandle, useState } from 'react'
+import { forwardRef, useImperativeHandle, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Row } from '@tanstack/react-table'
 import { ApiStandardRequestPreview, ApiStandardRequestPreviewList } from '@isdd/metais-common/api/generated/standards-swagger'
@@ -13,6 +13,8 @@ import { TableWithPagination } from '@/components/views/standardization/votes/co
 type StandardRequestsListModalType = {
     allStandardRequestData: ApiStandardRequestPreviewList | undefined
     handleSelect: (index: number) => void
+    selectedRequestId?: number
+    setSelectedRequestId: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
 export type StandardRequestsListModalRefType = {
@@ -20,10 +22,10 @@ export type StandardRequestsListModalRefType = {
 }
 
 export const StandardRequestsListModal = forwardRef<StandardRequestsListModalRefType, StandardRequestsListModalType>(
-    ({ allStandardRequestData, handleSelect }, ref) => {
+    ({ allStandardRequestData, handleSelect, selectedRequestId, setSelectedRequestId }, ref) => {
         const { t } = useTranslation()
         const [isStandardRequestsListModalOpen, setIsStandardRequestsListModalOpen] = useState<boolean>(false)
-        const [selectedRowId, setSelectedRowId] = useState<number | undefined>(undefined)
+
         const tableData = allStandardRequestData?.standardRequests
 
         const handleOpenStandardRequestListModal = () => {
@@ -43,16 +45,16 @@ export const StandardRequestsListModal = forwardRef<StandardRequestsListModalRef
         }
 
         const handleSelectButtonClick = () => {
-            if (!selectedRowId) {
+            if (!selectedRequestId) {
                 return
             }
-            handleSelect(selectedRowId)
+            handleSelect(selectedRequestId)
             handleCancel()
         }
 
-        const handleRowSelected = useCallback((row: Row<ApiStandardRequestPreview>) => {
-            setSelectedRowId(row.index)
-        }, [])
+        const handleRowSelected = (row: Row<ApiStandardRequestPreview>) => {
+            setSelectedRequestId(row.original.id)
+        }
 
         return (
             <BaseModal isOpen={isStandardRequestsListModalOpen} close={handleCancel}>
@@ -60,7 +62,7 @@ export const StandardRequestsListModal = forwardRef<StandardRequestsListModalRef
                     <Spacer vertical />
                     {tableData && (
                         <TableWithPagination
-                            tableColumns={standardRequestsListColumns(t, handleRowSelected, selectedRowId)}
+                            tableColumns={standardRequestsListColumns(t, handleRowSelected, selectedRequestId)}
                             tableData={tableData}
                             hiddenButtons={{ SELECT_COLUMNS: true }}
                         />
