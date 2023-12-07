@@ -1,29 +1,23 @@
 import { Filter, GridCol, GridRow, Input, PaginatorWrapper, SimpleSelect, Table } from '@isdd/idsk-ui-kit/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types/filter'
 import { Group } from '@isdd/metais-common/api/generated/iam-swagger'
-import { ApiMeetingRequestPreview, GetMeetingRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
+import { ApiMeetingRequestPreview } from '@isdd/metais-common/api/generated/standards-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { ActionsOverTable, CreateEntityButton, MutationFeedback, QueryFeedback, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
+import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions, Subject } from '@isdd/metais-common/hooks/permissions/useMeetingsListPermissions'
+import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
+import { ActionsOverTable, CreateEntityButton, MutationFeedback, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { CellContext, ColumnDef } from '@tanstack/react-table'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 export enum SortType {
     ASC = 'ASC',
     DESC = 'DESC',
 }
-interface IMeetingsListView {
-    meetings: ApiMeetingRequestPreview[] | undefined
-    isLoading: boolean
-    isError: boolean
-    groups: Group[] | undefined
-    setMeetingsRequestParams: Dispatch<SetStateAction<GetMeetingRequestsParams>>
-    meetingsCount: number
-}
+
 export enum MeetingStateEnum {
     PAST = 'PAST',
     CANCELED = 'CANCELED',
@@ -41,74 +35,41 @@ export interface MeetingsFilterData extends IFilterParams, IFilter {
     sortBy?: string
     ascending?: boolean
 }
+interface IMeetingsListView {
+    meetings: ApiMeetingRequestPreview[] | undefined
+    groups: Group[] | undefined
+    meetingsCount: number
+    defaultFilterValues: MeetingsFilterData
+    filter: MeetingsFilterData
+    handleFilterChange: (changedFilter: IFilter) => void
+}
+
 export enum MeetingFilter {
     MY_MEETINGS = 'my',
     ALL_MEETINGS = 'all',
 }
-export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoading, isError, groups, setMeetingsRequestParams, meetingsCount }) => {
+export const MeetingsListView: React.FC<IMeetingsListView> = ({
+    meetings,
+    groups,
+    meetingsCount,
+    defaultFilterValues,
+    filter,
+    handleFilterChange,
+}) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
     const { isActionSuccess } = useActionSuccess()
 
-    const {
-        state: { user },
-    } = useAuth()
-    const userIsRoles = user?.roles.includes('STD_KSPODP' || 'STD_KSPRE' || 'STD_KSTAJ' || 'STD_PSPRE' || 'STD_PSPODP')
-    const defaultFilterValues: MeetingsFilterData = {
-        meetingOption: MeetingFilter.MY_MEETINGS,
-        group: '',
-        state: '',
-        startDate: '',
-        endDate: '',
-        pageNumber: BASE_PAGE_NUMBER,
-        pageSize: BASE_PAGE_SIZE,
-        sortBy: 'beginDate',
-        ascending: false,
-    }
     const [meetingOption, setMeetingOption] = useState(defaultFilterValues.meetingOption)
     const [group, setGroup] = useState<string | null | undefined>(defaultFilterValues.group)
     const [state, setState] = useState<string | null | undefined>(defaultFilterValues.state)
 
-    const { filter, handleFilterChange } = useFilterParams<MeetingsFilterData>(defaultFilterValues)
-
     useEffect(() => {
-        setMeetingsRequestParams((prev) => {
-            const newParams = { ...prev, pageNumber: Number(filter.pageNumber), perPage: Number(filter.pageSize) }
-            if (filter.meetingOption !== MeetingFilter.MY_MEETINGS) delete newParams.onlyMy
-            if (!filter.state) delete newParams.state
-            if (!filter.group) delete newParams.workGroupId
-            if (!filter.startDate) delete newParams.fromDate
-            if (!filter.endDate) delete newParams.toDate
-            if (!filter.sortBy) delete newParams.sortBy
-            if (!filter.ascending) delete newParams.ascending
-            setMeetingOption(filter.meetingOption)
-            setGroup(filter.group || null)
-            setState(filter.state || null)
-            return {
-                ...newParams,
-                ...(filter?.meetingOption == MeetingFilter.MY_MEETINGS && { onlyMy: true }),
-                ...(filter?.group && { workGroupId: filter?.group }),
-                ...(filter?.state && { state: filter?.state }),
-                ...(filter?.startDate && { fromDate: filter?.startDate }),
-                ...(filter?.endDate && { toDate: filter?.endDate }),
-                ...(filter?.sortBy && { sortBy: filter.sort?.[0]?.orderBy ?? 'beginDate' }),
-                ...(filter?.ascending && { ascending: filter.sort?.[0]?.sortDirection === SortType.ASC }),
-            }
-        })
-    }, [
-        filter?.endDate,
-        filter?.group,
-        filter?.meetingOption,
-        filter?.startDate,
-        filter?.state,
-        filter?.pageNumber,
-        filter?.pageSize,
-        filter?.sortBy,
-        filter?.ascending,
-        filter.sort,
-        setMeetingsRequestParams,
-    ])
+        setMeetingOption(filter.meetingOption)
+        setGroup(filter.group || null)
+        setState(filter.state || null)
+    }, [filter.group, filter.meetingOption, filter.state])
 
     const columns: Array<ColumnDef<ApiMeetingRequestPreview>> = [
         {
@@ -131,7 +92,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoad
                 const meetingGroup = groups?.find((o) => row.groups?.includes(o.uuid || ''))
                 return meetingGroup?.shortName || ''
             },
-            enableSorting: true,
+            enableSorting: false,
             id: 'groupShortName',
             meta: {
                 getCellContext: (ctx: CellContext<ApiMeetingRequestPreview, unknown>) => ctx?.getValue?.(),
@@ -144,7 +105,7 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoad
                 const meetingGroup = groups?.find((o) => row.groups?.includes(o.uuid || ''))
                 return meetingGroup?.name || ''
             },
-            enableSorting: true,
+            enableSorting: false,
             id: 'groupName',
             meta: {
                 getCellContext: (ctx: CellContext<ApiMeetingRequestPreview, unknown>) => ctx?.getValue?.(),
@@ -244,12 +205,12 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoad
                     dataLength: meetings?.length ?? 0,
                 }}
                 createButton={
-                    userIsRoles && (
+                    <Can I={Actions.CREATE} a={Subject.MEETING}>
                         <CreateEntityButton
                             label={t('meetings.addNewMeeting')}
                             onClick={() => navigate(`${NavigationSubRoutes.ZOZNAM_ZASADNUTI_CREATE}`)}
                         />
-                    )
+                    </Can>
                 }
                 handleFilterChange={handleFilterChange}
                 hiddenButtons={{ SELECT_COLUMNS: true }}
@@ -257,23 +218,20 @@ export const MeetingsListView: React.FC<IMeetingsListView> = ({ meetings, isLoad
                 entityName=""
             />
 
-            <QueryFeedback loading={isLoading} error={isError} withChildren>
-                <Table
-                    columns={columns}
-                    data={meetings}
-                    sort={filter.sort}
-                    onSortingChange={(columnSort) => {
-                        handleFilterChange({ sort: columnSort })
-                    }}
-                />
-
-                <PaginatorWrapper
-                    pageSize={filter.pageSize ?? BASE_PAGE_SIZE}
-                    pageNumber={filter.pageNumber ?? BASE_PAGE_NUMBER}
-                    dataLength={meetingsCount}
-                    handlePageChange={handleFilterChange}
-                />
-            </QueryFeedback>
+            <Table
+                columns={columns}
+                data={meetings}
+                sort={filter.sort}
+                onSortingChange={(columnSort) => {
+                    handleFilterChange({ sort: columnSort })
+                }}
+            />
+            <PaginatorWrapper
+                pageSize={filter.pageSize ?? BASE_PAGE_SIZE}
+                pageNumber={filter.pageNumber ?? BASE_PAGE_NUMBER}
+                dataLength={meetingsCount}
+                handlePageChange={handleFilterChange}
+            />
         </>
     )
 }

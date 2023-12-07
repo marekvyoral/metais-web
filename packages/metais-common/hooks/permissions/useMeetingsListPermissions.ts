@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useAbilityContext } from './useAbilityContext'
 
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { CAN_CREATE_AND_EDIT_VOTES_USER_ROLES } from '@isdd/metais-common/constants'
+import { CAN_CREATE_MEETING_USER_ROLES } from '@isdd/metais-common/constants'
 
 export enum Actions {
     CREATE = 'create',
@@ -12,7 +12,7 @@ export enum Actions {
 }
 
 export enum Subject {
-    VOTE = 'VOTE',
+    MEETING = 'MEETING',
 }
 
 const hasRoles = (userRoles: string[], testedRoles: string[]) => {
@@ -21,7 +21,7 @@ const hasRoles = (userRoles: string[], testedRoles: string[]) => {
     })
 }
 
-export const useVotesListPermissions = () => {
+export const useMeetingsListPermissions = () => {
     const abilityContext = useAbilityContext()
 
     const {
@@ -31,11 +31,10 @@ export const useVotesListPermissions = () => {
     useEffect(() => {
         const { can, rules } = new AbilityBuilder(createMongoAbility)
         const isLoggedIn = !!user
-        const canCreateVote = hasRoles(user?.roles ?? [], CAN_CREATE_AND_EDIT_VOTES_USER_ROLES)
+        const canCreateVote = hasRoles(user?.roles ?? [], CAN_CREATE_MEETING_USER_ROLES)
 
         if (canCreateVote && isLoggedIn) {
-            can(Actions.CREATE, Subject.VOTE)
-            can(Actions.EDIT, Subject.VOTE)
+            can(Actions.CREATE, Subject.MEETING)
         }
 
         abilityContext.update(rules)

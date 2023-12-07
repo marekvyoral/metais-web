@@ -5,7 +5,7 @@ import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { Actions } from '@isdd/metais-common/hooks/permissions/useVotesListPermissions'
+import { Actions, Subject } from '@isdd/metais-common/hooks/permissions/useVotesListPermissions'
 
 import { PendingChangeData, voteActorPendingChangesColumns } from './voteActorPendingChangesColumns'
 import { voteActorResultsColumns } from './voteActorResultsColumns'
@@ -131,7 +131,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
                 <TextHeading size="XL">{voteData?.name ?? ''}</TextHeading>
                 {isUserLoggedIn && !hideVoteModifyingButtons && (
                     <div className={styles.inlineSpaceBetween}>
-                        <Can I={Actions.EDIT} a={'VOTE'}>
+                        <Can I={Actions.EDIT} a={Subject.VOTE}>
                             <Button
                                 type="submit"
                                 label={t('votes.voteDetail.editVote')}
