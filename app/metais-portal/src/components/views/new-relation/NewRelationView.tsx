@@ -193,7 +193,9 @@ export const NewRelationView: React.FC<Props> = ({
                           <ButtonLink
                               label={t('newRelation.detailButton')}
                               className={classNames(styles.buttonLink, styles.blue)}
-                              onClick={() => navigate(`/ci/${tabName}/${item.uuid}`, { state: { from: location } })}
+                              onClick={() => {
+                                  window.open(`/ci/${tabName}/${item.uuid}`, '_blank')
+                              }}
                           />
                           <ButtonLink
                               label={t('newRelation.deleteButton')}
@@ -271,8 +273,8 @@ export const NewRelationView: React.FC<Props> = ({
                 existingRelations={existingRelations}
             />
 
+            {selectedItems && Array.isArray(selectedItems) && selectedItems.length > 0 && <AccordionContainer sections={sections} />}
             <form onSubmit={handleFormSubmit(handleSubmit)}>
-                {selectedItems && Array.isArray(selectedItems) && selectedItems.length > 0 && <AccordionContainer sections={sections} />}
                 {hasMutationError && (
                     <ErrorBlock
                         errorTitle={t('newRelation.errorTitle')}
