@@ -146,8 +146,8 @@ export const DocumentsGroupView: React.FC<IView> = ({
         navigate(-1)
     }
 
-    const deleteDocumentModal = (id: number) => {
-        deleteDocument(id)
+    const deleteDocumentModal = async (id: number) => {
+        await deleteDocument(id)
         setDocumentToDelete(undefined)
         refetchDocuments()
     }
@@ -234,7 +234,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
                 <TextBody>{i18n.language == 'sk' ? documentToDelete?.description : documentToDelete?.descriptionEng}</TextBody>
                 <div className={styles.buttonGroupEnd}>
                     <Button onClick={() => setDocumentToDelete(undefined)} label={t('codelists.cancel')} variant="secondary" />
-                    <Button onClick={() => deleteDocumentModal(infoData.id ?? 0)} label={t('codelists.delete')} type="submit" />
+                    <Button onClick={() => deleteDocumentModal(documentToDelete?.id ?? 0)} label={t('codelists.delete')} type="submit" />
                 </div>
             </BaseModal>
         </>
