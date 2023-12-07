@@ -22,6 +22,7 @@ interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<
     inputClassName?: string
     isUpload?: boolean
     hasInputIcon?: boolean
+    maxLength?: number
 }
 export const Input = forwardRef<HTMLInputElement, IInputProps>(
     (
@@ -40,6 +41,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
             isUpload = false,
             hasInputIcon = false,
             inputClassName,
+            maxLength = 255,
             ...rest
         },
         ref,
@@ -77,6 +79,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                         {...dateProps}
                         aria-describedby={hint ? hintId : undefined}
                         disabled={disabled}
+                        maxLength={maxLength}
                     />
                     {correct && <img src={GreenCheckMarkIcon} className={hasInputIcon ? styles.isCorrectWithIcon : styles.isCorrect} />}
                 </div>

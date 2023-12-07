@@ -1,9 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, CheckBox, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { SubmitWithFeedback } from '@isdd/metais-common/index'
-import React from 'react'
+import { MutationFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
+import React, { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
 
 import { CodelistEnum, codeListCreateSchema } from './codeListCreateSchema'
 import styles from './codelistsCreateForm.module.scss'
@@ -11,9 +12,10 @@ interface Props {
     onSubmit: (formData: FieldValues) => void
     isLoading: boolean
     closeModal: () => void
+    errorType?: string
 }
 
-export const CodelistsCreateForm: React.FC<Props> = ({ onSubmit, isLoading, closeModal }) => {
+export const CodelistsCreateForm: React.FC<Props> = ({ onSubmit, isLoading, closeModal, errorType }) => {
     const { t } = useTranslation()
     const {
         register,
@@ -21,13 +23,23 @@ export const CodelistsCreateForm: React.FC<Props> = ({ onSubmit, isLoading, clos
         setValue,
         clearErrors,
         formState: { errors },
+        setError,
     } = useForm({ resolver: yupResolver(codeListCreateSchema(t)) })
+    const [mutationError, setMutationError] = useState<string>()
+    useEffect(() => {
+        if (errorType == ReponseErrorCodeEnum.GNR500) {
+            setError(CodelistEnum.CODE, { message: t('feedback.codeAlreadyExists') })
+        } else if (errorType) {
+            setMutationError(t('feedback.queryErrorMessage'))
+        }
+    }, [errorType, setError, t])
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className={styles.center}>
                 <TextHeading size="L">{t('codelists.createNewCodelist')}</TextHeading>
             </div>
+            <MutationFeedback success={false} error={mutationError} />
             <Input error={errors[CodelistEnum.CODE]?.message} label={t('codelists.code')} {...register(CodelistEnum.CODE)} />
             <Input error={errors[CodelistEnum.NAME]?.message} label={t('codelists.name')} {...register(CodelistEnum.NAME)} />
             <TextArea

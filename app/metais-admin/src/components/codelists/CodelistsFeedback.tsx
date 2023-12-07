@@ -13,7 +13,7 @@ export const CodelistsFeedback: React.FC<ICodelistSucces> = ({ mutations, isFetc
     const { t } = useTranslation()
     const { updateEnum, createEnum, validateEnum, deleteEnum } = mutations
 
-    const isError = updateEnum.isError || createEnum.isError || validateEnum.isError || deleteEnum.isError
+    const isError = updateEnum.isError || validateEnum.isError || deleteEnum.isError
     const isSuccess = updateEnum.isSuccess || createEnum.isSuccess || validateEnum.isSuccess || deleteEnum.isSuccess
 
     return (

@@ -15,8 +15,8 @@ export const codeListCreateSchema = (t: TFunction<'translation', undefined, 'tra
         [CodelistEnum.CODE]: string()
             .matches(regexPattern, t('codelists.wrongRegex', { letters: 'A-Z', signs: '_' }))
             .required(t('codelists.codeError')),
-        [CodelistEnum.NAME]: string().required(t('codelists.nameError')),
-        [CodelistEnum.DESCRIPTION]: string().required(t('codelists.descriptionError')),
+        [CodelistEnum.NAME]: string().required(t('codelists.nameError')).max(255, t('codelists.nameMaxError')),
+        [CodelistEnum.DESCRIPTION]: string().required(t('codelists.descriptionError')).max(255, t('codelists.nameMaxError')),
         [CodelistEnum.VALIDITY]: boolean(),
         [CodelistEnum.CATEGORY]: string(),
     })

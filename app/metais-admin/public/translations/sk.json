@@ -401,6 +401,8 @@
         "moreActions": "Viac",
         "codeError": "Kód je povinný",
         "nameError": "Názov je povinný",
+        "nameMaxError": "Maximálna dĺžka názvu je 255 znakov",
+        "descriptionMaxError": "Maximálna dĺžka popisu je 255 znakov",
         "descriptionError": "Popis je povinný",
         "valueError": "Hodnota je povinná",
         "engValueError": "Anglická hodnota je povinná",
@@ -647,7 +649,8 @@
         "mutationErrorTitle": "Akcia zlyhala",
         "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na ",
         "executingScript": "Script sa vykonáva",
-        "saving": "Ukladá sa..."
+        "saving": "Ukladá sa...",
+        "codeAlreadyExists": "Interný číselník s takýmto kódom už existuje"
     },
     "publicAuthorities": {
         "detail": {

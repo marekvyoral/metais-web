@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react'
 import { BaseModal, Button, ButtonLink, ButtonPopup, CheckBox, Input, PaginatorWrapper, SimpleSelect, Table, TextArea } from '@isdd/idsk-ui-kit/index'
 import { EnumTypePreview, EnumTypePreviewList } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { ApiError } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { ListIcon } from '@isdd/metais-common/assets/images'
 import { BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { ActionsOverTable, CreateEntityButton, isRowSelected } from '@isdd/metais-common/index'
-import { useLocation, Link, useNavigate } from 'react-router-dom'
 import { ColumnDef } from '@tanstack/react-table'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ListIcon } from '@isdd/metais-common/assets/images'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import styles from './codelistsTable.module.scss'
 import { validateRowData } from './codelistTableActions'
@@ -118,8 +119,8 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         [cancelEditing, getValues, t, updateEnum],
     )
 
-    const handleCreateNewCodelist = (formData: FieldValues) => {
-        createEnum.mutateAsync({ data: formData })
+    const handleCreateNewCodelist = async (formData: FieldValues) => {
+        await createEnum.mutateAsync({ data: formData })
     }
 
     useEffect(() => {
@@ -305,13 +306,19 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         },
     ]
 
+    const closeCreateModal = () => {
+        createEnum.reset()
+        setIsCreateModalOpen(false)
+    }
+
     return (
         <>
-            <BaseModal isOpen={isCreateModalOpen} close={() => setIsCreateModalOpen(false)}>
+            <BaseModal isOpen={isCreateModalOpen} close={closeCreateModal}>
                 <CodelistsCreateForm
+                    errorType={createEnum.error ? JSON.parse((createEnum.error as ApiError).message ?? '').type : undefined}
                     onSubmit={handleCreateNewCodelist}
                     isLoading={createEnum.isLoading}
-                    closeModal={() => setIsCreateModalOpen(false)}
+                    closeModal={closeCreateModal}
                 />
             </BaseModal>
             <ActionsOverTable
