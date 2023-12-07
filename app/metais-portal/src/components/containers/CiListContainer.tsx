@@ -36,7 +36,11 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
     )
 
     const liableEntity = currentPreferences.myPO ? [currentPreferences.myPO] : undefined
-    const state = filterParams.evidence_status?.length ? filterParams.evidence_status : ['DRAFT']
+    const state = filterParams.evidence_status?.length
+        ? filterParams.evidence_status
+        : currentPreferences.showInvalidatedItems
+        ? ['DRAFT', 'INVALIDATED']
+        : ['DRAFT']
     const metaAttributes = { state: state, liableEntity, ...filterParams.metaAttributeFilters }
 
     const {
