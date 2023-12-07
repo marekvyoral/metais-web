@@ -26,10 +26,11 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
+import { Can, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions, Subject } from '@isdd/metais-common/hooks/permissions/useMeetingsDetailPermissions'
 
 import { MeetingActorsTable } from './MeetingActorsTable'
 import { MeetingExternalActorsTable } from './MeetingExternalActorsTable'
-import { MeetingStateEnum } from './MeetingsListView'
 import { MeetingCancelModal } from './MeetingCancelModal'
 
 import styles from '@/components/views/standardization/meetings/meetingStyles.module.scss'
@@ -55,19 +56,9 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
     const [participateValue, setParticipateValue] = useState<string>('')
     const [summarizeLinkChange, setSummarizeLinkChange] = useState(!infoData?.summarizedLink)
     const summarizeLink = useSummarizeMeetingRequest()
-    const canceledState = infoData?.state === MeetingStateEnum.CANCELED
-    const summarizeState = infoData?.state === MeetingStateEnum.SUMMARIZED
-    const pastState = infoData?.state === MeetingStateEnum.PAST
-    const createdByUser = infoData?.createdBy === user?.login
-    const userIsRole = user?.roles.includes('STD_KOORDINATOR_AGENDY')
-    const userIsGuest = infoData?.meetingActors?.some((guest) => guest.userName === user?.displayName)
+    const ability = useAbilityContext()
     const userIsParticipate = infoData?.meetingActors?.find((guest) => guest.userName === user?.displayName)?.participation
     const [editParticipate, setEditParticipate] = useState(!userIsParticipate)
-    const dateNow = new Date()
-    const endDateMeeting = new Date(infoData?.endDate as string)
-    const startDateMeeting = new Date(infoData?.beginDate as string)
-    const meetingIsFinished = endDateMeeting.getTime() - dateNow.getTime() < 0
-    const meetingIsStarting = startDateMeeting.getTime() - dateNow.getTime() > 0
     const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
     const [modalOpen, setModalOpen] = useState(false)
     const [participateLoading, setParticipateLoading] = useState(false)
@@ -118,7 +109,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
 
     const SummarizeLink: React.FC = () => (
         <>
-            {(createdByUser || userIsRole) && summarizeLinkChange && (
+            {ability.can(Actions.SET_SUMMARIZE_LINK, Subject.MEETING) && summarizeLinkChange && (
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <GridRow>
                         <GridCol setWidth="two-thirds">
@@ -130,7 +121,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                     </GridRow>
                 </form>
             )}
-            {summarizeState && (createdByUser || userIsRole) && !summarizeLinkChange && (
+            {ability.can(Actions.CHANGE_SUMMARIZE_LINK, Subject.MEETING) && !summarizeLinkChange && (
                 <GridRow>
                     <GridCol setWidth="two-thirds">
                         <TextLinkExternal
@@ -208,9 +199,9 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
             summary: null,
             content: (
                 <>
-                    {pastState || summarizeState ? (
+                    {ability.can(Actions.SEE_SUMMARIZE_LINK, Subject.MEETING) ? (
                         <SummarizeLink />
-                    ) : canceledState ? (
+                    ) : ability.can(Actions.SEE_CANCELED_STATE, Subject.MEETING) ? (
                         <>
                             <TextBody>{t('meetings.canseledMeeting')}</TextBody>
                             {infoData?.actionDesription ? (
@@ -255,7 +246,7 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                     <TextHeading size="XL">{infoData?.name}</TextHeading>
                 </GridCol>
 
-                {(createdByUser || userIsRole) && meetingIsStarting && !canceledState && (
+                <Can I={Actions.EDIT} a={Subject.MEETING}>
                     <GridCol setWidth="one-quarter">
                         <ButtonPopup
                             buttonLabel={t('meetings.actions')}
@@ -285,14 +276,14 @@ const MeetingDetailBaseInfo: React.FC<MeetingDetailBaseInfoProps> = ({ infoData,
                             )}
                         />
                     </GridCol>
-                )}
+                </Can>
             </GridRow>
             <InformationGridRow label={t('meetings.date')} value={formatDateTimeForDefaultValue(infoData?.beginDate || '', 'dd.MM.yyyy')} hideIcon />
             <InformationGridRow label={t('meetings.start')} value={formatDateTimeForDefaultValue(infoData?.beginDate || '', 'HH:mm')} hideIcon />
             <InformationGridRow label={t('meetings.end')} value={formatDateTimeForDefaultValue(infoData?.endDate || '', 'HH:mm')} hideIcon />
             <InformationGridRow label={t('meetings.place')} value={infoData?.place} hideIcon />
 
-            {userIsGuest && !canceledState && !meetingIsFinished ? (
+            {ability.can(Actions.SEE_PARTICIPATION_TO, Subject.MEETING) ? (
                 <>
                     <QueryFeedback loading={participateLoading} withChildren>
                         {editParticipate ? (

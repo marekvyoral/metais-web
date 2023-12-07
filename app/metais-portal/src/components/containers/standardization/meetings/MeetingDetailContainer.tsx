@@ -6,6 +6,8 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/index'
 import { Group, useFind2111 } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import React, { useMemo } from 'react'
 
+import { MeetingsDetailPermissionsWrapper } from '@/components/permissions/MeetingsDetailPermissionsWrapper'
+
 export interface FilterParams extends IFilterParams, IFilter {
     memberUuid: string | undefined
     poUuid: string | undefined
@@ -63,16 +65,18 @@ const MeetingDetailContainer: React.FC<MeetingDetailContainer> = ({ View, meetin
     }, [groups, meetingDetailData])
 
     return (
-        <View
-            isLoading={isLoading}
-            filter={filter}
-            handleFilterChange={handleFilterChange}
-            user={user}
-            meetingDetailData={meetingDetailData}
-            meetingId={meetingId}
-            group={group}
-            refetch={() => refetch()}
-        />
+        <MeetingsDetailPermissionsWrapper meetingDetailData={meetingDetailData}>
+            <View
+                isLoading={isLoading}
+                filter={filter}
+                handleFilterChange={handleFilterChange}
+                user={user}
+                meetingDetailData={meetingDetailData}
+                meetingId={meetingId}
+                group={group}
+                refetch={() => refetch()}
+            />
+        </MeetingsDetailPermissionsWrapper>
     )
 }
 
