@@ -25,7 +25,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
     const { logOut, login } = useContext<IAuthContext>(AuthContext)
     const { i18n } = useTranslation()
 
-    return async ({ url, method, params: searchParams, data, headers, responseType = 'text' }) => {
+    return async ({ url, method, params: searchParams, data, headers, responseType }) => {
         const allParams = {
             ...searchParams,
             lang: i18n.language,
@@ -47,27 +47,35 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
             ...(data ? { body: JSON.stringify(data) } : {}),
         })
 
+        const fileContentTypes = [
+            'blob',
+            'application/xml',
+            'text/csv',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/pdf',
+        ]
+
         let responseBody
         let responseBodyText = ''
-        switch (responseType) {
-            case 'blob':
-                responseBody = await response.blob()
-                break
-            default: {
-                responseBodyText = await response.text()
-                if (responseBodyText?.length > 0) {
-                    try {
-                        responseBody = JSON.parse(responseBodyText)
-                    } catch (e) {
-                        // eslint-disable-next-line no-console
-                        console.error('Response not json')
-                        responseBody = responseBodyText
-                    }
+        const contentType = responseType ?? response.headers.get('Content-Type') ?? ''
+
+        if (fileContentTypes?.includes(contentType)) {
+            responseBody = await response.blob()
+        } else if (contentType.includes('application/json')) {
+            responseBodyText = await response.text()
+            if (responseBodyText?.length > 0) {
+                try {
+                    responseBody = JSON.parse(responseBodyText)
+                } catch (e) {
+                    // eslint-disable-next-line no-console
+                    console.error('Response not json')
+                    responseBody = responseBodyText
                 }
             }
+        } else {
+            responseBodyText = await response.text()
+            responseBody = responseBodyText
         }
-
-        const contentType = response.headers.get('Content-Type')
 
         if (response.status === 401) {
             logOut()
@@ -77,16 +85,7 @@ export const useCustomClient = <T>(baseURL: string, callback?: (responseBody: T)
             throw new Error(responseBodyText)
         }
 
-        if (contentType?.includes('application/json')) {
-            try {
-                const parsedResponseBody = JSON.parse(responseBody)
-                if (callback) callback(parsedResponseBody)
-                return parsedResponseBody
-            } catch {
-                if (callback) callback(responseBody)
-                return responseBody
-            }
-        }
+        if (callback) callback(responseBody)
 
         return responseBody
     }
