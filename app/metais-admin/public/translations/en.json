@@ -352,6 +352,8 @@
         "heading": "Internal codelists",
         "codeError": "Code is required",
         "nameError": "Name is required",
+        "nameMaxError": "Name maximum length is 255 symbols",
+        "descriptionMaxError": "Description maximum length is 255 symbols",
         "valueError": "Value is required",
         "engValueError": "English Value is required",
         "descriptionError": "Description is required",
@@ -566,7 +568,8 @@
         "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at",
         "executingScript": "Executing script",
         "saving": "Saving...",
-        "failedFetch": "There was a problem with fetching data. Please try again."
+        "failedFetch": "There was a problem with fetching data. Please try again.",
+        "codeAlreadyExists": "An internal codelist with such a code already exists"
     },
     "adminRolesPage": {
         "addNewRole": "Add new role",

@@ -1,8 +1,7 @@
 import { BreadCrumbs, Filter, HomeIcon, Input, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { useTranslation } from 'react-i18next'
-import { FlexColumnReverseWrapper } from '@isdd/metais-common/src/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { QueryFeedback } from '@isdd/metais-common/index'
+import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useTranslation } from 'react-i18next'
 
 import { CodelistsFeedback } from '@/components/codelists/CodelistsFeedback'
 import { CodelistsTable } from '@/components/codelists/codelistsTable/CodelistsTable'
@@ -31,10 +30,8 @@ const Codelists = () => {
                     return (
                         <MainContentWrapper>
                             <QueryFeedback loading={isLoading} error={false} withChildren>
-                                <FlexColumnReverseWrapper>
-                                    <TextHeading size="L">{t('codelists.heading')}</TextHeading>
-                                    <CodelistsFeedback mutations={mutations} isFetchError={isError} />
-                                </FlexColumnReverseWrapper>
+                                <CodelistsFeedback mutations={mutations} isFetchError={isError} />
+                                <TextHeading size="L">{t('codelists.heading')}</TextHeading>
                                 <Filter
                                     defaultFilterValues={defaultFilterValues}
                                     form={({ register }) => (
