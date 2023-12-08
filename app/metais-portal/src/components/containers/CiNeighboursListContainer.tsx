@@ -1,6 +1,6 @@
 import { CheckBox, ISelectColumnType, ISelectSectionType, TextBody } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
-import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { ColumnSort, IFilter, Pagination, SortType } from '@isdd/idsk-ui-kit/types'
 import { ATTRIBUTE_NAME, BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { INeighboursFilter, mapFilterToRelationApi } from '@isdd/metais-common/api/filter/filterApi'
 import {
@@ -18,7 +18,7 @@ import {
     useListRelatedCiTypes,
     useListRelationshipTypes,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { useGetRelationColumnData } from '@isdd/metais-common/api/hooks/containers/relationContainerHelpers'
+import { GENERIC_NAMES, useGetRelationColumnData } from '@isdd/metais-common/api/hooks/containers/relationContainerHelpers'
 import { RelationSelectedRowType } from '@isdd/metais-common/api/userConfigKvRepo'
 import { setEnglishLangForAttr } from '@isdd/metais-common/componentHelpers/englishAttributeLang'
 import { useEntityRelationshipTabFilters } from '@isdd/metais-common/hooks/useEntityRelationshipTabFilters'
@@ -48,6 +48,7 @@ export interface ICiNeighboursListContainerView {
     isLoading: boolean
     isError: boolean
     isSource: boolean
+    handleSortChange: (sort: ColumnSort[]) => void
 }
 
 interface ICiNeighboursListContainer {
@@ -73,7 +74,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
     const [uiFilterState, setUiFilterState] = useState<INeighboursFilter>({
         pageNumber: BASE_PAGE_NUMBER,
         pageSize: BASE_PAGE_SIZE,
-        sort: [],
+        sort: [{ orderBy: GENERIC_NAMES.CI_TYPE, sortDirection: SortType.DESC }],
     })
 
     const [rowSelection, setRowSelection] = useState<RelationSelectedRowType>({})
@@ -82,6 +83,13 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         setUiFilterState({
             ...uiFilterState,
             ...filter,
+        })
+    }
+
+    const handleSortChange = (sort: ColumnSort[]) => {
+        setUiFilterState({
+            ...uiFilterState,
+            sort: sort,
         })
     }
 
@@ -101,6 +109,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
 
     const {
         isLoading: isRelationLoading,
+        isFetching: isRelationFetching,
         isError: isRelationError,
         data: tableData,
         refetch,
@@ -123,11 +132,11 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
 
     const getColumnsFromApiCellContent = useCallback(
         (ctx: CellContext<NeighbourPairUi, unknown>, technicalName: string) => {
-            const isEntityType = technicalName === 'entityType'
-            const isState = technicalName === 'relationState'
-            const isRelationType = technicalName === 'relationType'
-            const isOwner = technicalName === 'ciOwner'
-            const isName = technicalName === 'ciName'
+            const isEntityType = technicalName === GENERIC_NAMES.CI_TYPE
+            const isState = technicalName === GENERIC_NAMES.RELATION_STATE
+            const isRelationType = technicalName === GENERIC_NAMES.RELATION_TYPE
+            const isOwner = technicalName === GENERIC_NAMES.CI_OWNER
+            const isName = technicalName === GENERIC_NAMES.CI_NAME
 
             const enumItem = columnEnumList.find((item) => item.technicalName === technicalName)
 
@@ -148,7 +157,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
                     return ctx?.row?.original?.configurationItem?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
                 }
                 case isState: {
-                    return t(`metaAttributes.state.${ctx.row.original.configurationItem?.metaAttributes?.state}`)
+                    return t(`metaAttributes.state.${ctx.row.original.relationship?.metaAttributes?.state}`)
                 }
                 case isOwner: {
                     return getOwnerInformation(ctx?.row?.original?.configurationItem?.metaAttributes?.owner as string, gestorsData)
@@ -205,13 +214,14 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
     )
 
     const columns = useMemo<Array<ColumnDef<NeighbourPairUi>>>(() => {
+        const sortableCols: string[] = [GENERIC_NAMES.CI_NAME, GENERIC_NAMES.CI_TYPE, GENERIC_NAMES.RELATION_STATE, GENERIC_NAMES.RELATION_TYPE]
         const list: ColumnDef<NeighbourPairUi>[] = selectedColumns
             .filter((e) => e.selected)
             .map((e) => ({
                 id: e.technicalName,
                 header: e.name,
                 accessorKey: e.technicalName,
-                enableSorting: true,
+                enableSorting: sortableCols.includes(e.technicalName),
                 cell: (ctx: CellContext<NeighbourPairUi, unknown>) => (
                     <TextBody lang={setEnglishLangForAttr(e.technicalName ?? '')} size="S" className={'marginBottom0'}>
                         {getColumnsFromApiCellContent(ctx, e.technicalName)}
@@ -276,6 +286,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
         isLoadingRelated,
         isRelationListLoading,
         isGestorsLoadingCombined,
+        isRelationFetching,
         isEntityRelationsLoading && isRelationLoading,
     ].some((item) => item)
     const isError = [
@@ -304,6 +315,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
                 handleFilterChange={handleFilterChange}
                 isLoading={false}
                 isError
+                handleSortChange={handleSortChange}
             />
         )
     return (
@@ -324,6 +336,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
             handleFilterChange={handleFilterChange}
             isLoading={isLoading}
             isError={isError}
+            handleSortChange={handleSortChange}
         />
     )
 }

@@ -15,6 +15,7 @@ import {
     ChangeOwnerBulkModal,
     InvalidateBulkModal,
     MutationFeedback,
+    QueryFeedback,
     ReInvalidateBulkModal,
 } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
@@ -40,6 +41,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
     filter,
     apiFilterData,
     handleFilterChange,
+    handleSortChange,
 }) => {
     const { t } = useTranslation()
     const {
@@ -132,81 +134,83 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                     </div>
                 )}
             />
-            <ActionsOverTable
-                pagination={pagination}
-                entityName=""
-                simpleTableColumnsSelect={{ sections: sectionsConfig, selectedColumns, resetSelectedColumns, saveSelectedColumns }}
-                handleFilterChange={handleFilterChange}
-                bulkPopup={
-                    <Tooltip
-                        descriptionElement={errorMessage}
-                        position={'center center'}
-                        tooltipContent={(open) => (
-                            <div>
-                                <BulkPopup
-                                    disabled={isDisabledBulkButton}
-                                    checkedRowItems={checkedRowItems}
-                                    items={(closePopup) => [
-                                        <ButtonLink
-                                            key={'invalidate'}
-                                            onClick={() => {
-                                                open()
-                                                handleInvalidate(configurationItemList, () => setShowInvalidate(true), open)
-                                                closePopup()
-                                            }}
-                                            icon={CrossInACircleIcon}
-                                            label={t('actionOverTable.invalidateItems')}
-                                        />,
-                                        <ButtonLink
-                                            key={'reInvalidate'}
-                                            onClick={() => {
-                                                handleReInvalidate(configurationItemList, () => setShowReInvalidate(true), open)
-                                                closePopup()
-                                            }}
-                                            icon={CheckInACircleIcon}
-                                            label={t('actionOverTable.validateItems')}
-                                        />,
-                                        <ButtonLink
-                                            key={'changeOwner'}
-                                            onClick={() => {
-                                                handleChangeOwner(configurationItemList, () => setShowChangeOwner(true), open)
-                                                closePopup()
-                                            }}
-                                            icon={ChangeIcon}
-                                            label={t('actionOverTable.changeOwner')}
-                                        />,
-                                    ]}
-                                />
-                            </div>
-                        )}
-                    />
-                }
-            />
-            <ReInvalidateBulkModal
-                items={configurationItemList}
-                open={showReInvalidate}
-                multiple
-                onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowReInvalidate)}
-                onClose={() => setShowReInvalidate(false)}
-            />
-            <InvalidateBulkModal
-                items={configurationItemList}
-                open={showInvalidate}
-                multiple
-                onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowInvalidate)}
-                onClose={() => setShowInvalidate(false)}
-            />
+            <QueryFeedback loading={isLoading} error={isError} withChildren>
+                <ActionsOverTable
+                    pagination={pagination}
+                    entityName=""
+                    simpleTableColumnsSelect={{ sections: sectionsConfig, selectedColumns, resetSelectedColumns, saveSelectedColumns }}
+                    handleFilterChange={handleFilterChange}
+                    bulkPopup={
+                        <Tooltip
+                            descriptionElement={errorMessage}
+                            position={'center center'}
+                            tooltipContent={(open) => (
+                                <div>
+                                    <BulkPopup
+                                        disabled={isDisabledBulkButton}
+                                        checkedRowItems={checkedRowItems}
+                                        items={(closePopup) => [
+                                            <ButtonLink
+                                                key={'invalidate'}
+                                                onClick={() => {
+                                                    open()
+                                                    handleInvalidate(configurationItemList, () => setShowInvalidate(true), open)
+                                                    closePopup()
+                                                }}
+                                                icon={CrossInACircleIcon}
+                                                label={t('actionOverTable.invalidateItems')}
+                                            />,
+                                            <ButtonLink
+                                                key={'reInvalidate'}
+                                                onClick={() => {
+                                                    handleReInvalidate(configurationItemList, () => setShowReInvalidate(true), open)
+                                                    closePopup()
+                                                }}
+                                                icon={CheckInACircleIcon}
+                                                label={t('actionOverTable.validateItems')}
+                                            />,
+                                            <ButtonLink
+                                                key={'changeOwner'}
+                                                onClick={() => {
+                                                    handleChangeOwner(configurationItemList, () => setShowChangeOwner(true), open)
+                                                    closePopup()
+                                                }}
+                                                icon={ChangeIcon}
+                                                label={t('actionOverTable.changeOwner')}
+                                            />,
+                                        ]}
+                                    />
+                                </div>
+                            )}
+                        />
+                    }
+                />
+                <ReInvalidateBulkModal
+                    items={configurationItemList}
+                    open={showReInvalidate}
+                    multiple
+                    onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowReInvalidate)}
+                    onClose={() => setShowReInvalidate(false)}
+                />
+                <InvalidateBulkModal
+                    items={configurationItemList}
+                    open={showInvalidate}
+                    multiple
+                    onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowInvalidate)}
+                    onClose={() => setShowInvalidate(false)}
+                />
 
-            <ChangeOwnerBulkModal
-                items={configurationItemList}
-                open={showChangeOwner}
-                multiple
-                onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowChangeOwner)}
-                onClose={() => setShowChangeOwner(false)}
-                ciRoles={ciTypeData?.roleList ?? []}
-            />
+                <ChangeOwnerBulkModal
+                    items={configurationItemList}
+                    open={showChangeOwner}
+                    multiple
+                    onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowChangeOwner)}
+                    onClose={() => setShowChangeOwner(false)}
+                    ciRoles={ciTypeData?.roleList ?? []}
+                />
 
-            <Table columns={columns} data={data} isLoading={isLoading} error={isError} />
+                <Table columns={columns} data={data} isLoading={isLoading} error={isError} sort={filter?.sort} onSortingChange={handleSortChange} />
+            </QueryFeedback>
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>
     )
