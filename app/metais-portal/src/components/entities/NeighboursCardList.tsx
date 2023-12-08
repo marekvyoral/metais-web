@@ -5,7 +5,7 @@ import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { QueryFeedback, formatRelationAttributes } from '@isdd/metais-common'
 import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
@@ -13,6 +13,7 @@ import { Actions, useCreateCiAbility } from '@isdd/metais-common/hooks/permissio
 import { PageSizeSelect } from '@isdd/idsk-ui-kit/page-size-select/PageSizeSelect'
 import classNames from 'classnames'
 import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { CAN_NOT_MANAGE_CI } from '@isdd/metais-common/constants'
 
 import { CardColumnList } from './cards/CardColumnList'
 import { RelationCard } from './cards/RelationCard'
@@ -57,6 +58,11 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
     const ciAbility = useCreateCiAbility(ciTypeData)
     const canCreateCi = ciAbility.can(Actions.CREATE, 'ci')
 
+    const [selectedTab, setSelectedTab] = useState({ id: data?.keysToDisplay?.[0]?.technicalName })
+    const disabledCreateCI = useMemo(() => {
+        return CAN_NOT_MANAGE_CI.includes(selectedTab.id)
+    }, [selectedTab.id])
+
     return (
         <>
             {<TextHeading size="XL">{t('neighboursCardList.heading')}</TextHeading>}
@@ -89,7 +95,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                                                     onClick={() => navigate(`new-ci/${key.technicalName}`, { state: { from: location } })}
                                                     label={t('neighboursCardList.buttonAddNewRelationCard')}
                                                     variant="secondary"
-                                                    disabled={!canCreateRelation || !canCreateCi}
+                                                    disabled={!canCreateRelation || !canCreateCi || disabledCreateCI}
                                                 />{' '}
                                             </ButtonGroupRow>
                                         )}
@@ -122,6 +128,7 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
                             ),
                         }))}
                         onSelect={(selected) => {
+                            setSelectedTab(selected)
                             setIsDerived(selected.meta?.isDerived ? true : false)
                             setPageConfig((pageConfig) => {
                                 if (!selected.meta?.isDerived) {
