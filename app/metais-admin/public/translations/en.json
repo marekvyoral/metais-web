@@ -569,7 +569,12 @@
         "executingScript": "Executing script",
         "saving": "Saving...",
         "failedFetch": "There was a problem with fetching data. Please try again.",
-        "codeAlreadyExists": "An internal codelist with such a code already exists"
+        "approveSuccess": "Approved",
+        "approveSaved": "Saved",
+        "returnToWorkSuccess": "KRIT has been successfully returned for rework!",
+        "sendToApprover": "COVER has been successfully submitted for approval!",
+        "codeAlreadyExists": "An internal codelist with such a code already exists",
+        "sendToRevalidate": "The item has been sent for processing, please wait for payment notification."
     },
     "adminRolesPage": {
         "addNewRole": "Add new role",

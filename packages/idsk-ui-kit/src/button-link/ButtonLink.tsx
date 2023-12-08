@@ -13,9 +13,22 @@ interface ButtonLinkProps {
     disabled?: boolean
     withoutFocus?: boolean
     hidden?: boolean
+    onMouseOver?: React.MouseEventHandler<HTMLButtonElement>
+    onMouseOut?: React.MouseEventHandler<HTMLButtonElement>
 }
 
-export const ButtonLink: React.FC<ButtonLinkProps> = ({ onClick, label, className, icon, type, disabled, withoutFocus, hidden = false }) => {
+export const ButtonLink: React.FC<ButtonLinkProps> = ({
+    onClick,
+    label,
+    className,
+    icon,
+    type,
+    disabled,
+    withoutFocus,
+    onMouseOver,
+    onMouseOut,
+    hidden = false,
+}) => {
     const { t } = useTranslation()
     const ref = useRef<HTMLButtonElement>(null)
 
@@ -27,6 +40,8 @@ export const ButtonLink: React.FC<ButtonLinkProps> = ({ onClick, label, classNam
         <>
             {!hidden && (
                 <button
+                    onMouseOver={onMouseOver}
+                    onMouseOut={onMouseOut}
                     className={classNames(styles.buttonLink, className, !!disabled && styles.disabled)}
                     onClick={(e) => (onClick ? onClick(e) : null)}
                     type={type}

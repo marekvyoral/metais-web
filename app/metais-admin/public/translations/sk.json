@@ -650,7 +650,12 @@
         "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na ",
         "executingScript": "Script sa vykonáva",
         "saving": "Ukladá sa...",
-        "codeAlreadyExists": "Interný číselník s takýmto kódom už existuje"
+        "approveSuccess": "Schválené",
+        "approveSaved": "Uložené",
+        "returnToWorkSuccess": "KRIT bol úspešne vrátený na prepracovanie!",
+        "sendToApprover": "KRIT bol úspešne poslaný na schválenie!",
+        "codeAlreadyExists": "Interný číselník s takýmto kódom už existuje",
+        "sendToRevalidate": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o splatnení."
     },
     "publicAuthorities": {
         "detail": {

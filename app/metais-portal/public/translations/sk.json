@@ -415,6 +415,40 @@
         "successMsg": "Úloha bola úspešne vytvorená",
         "requiredField": "Povinné pole"
     },
+    "modalKris": {
+        "approveModal": {
+            "description": "Popis k schváleniu",
+            "evalStructures": "Hodnotenie správnosti štruktúr",
+            "evalData": "Hodnotenie úplnosti údajov",
+            "verifiedDate": "Overil dátum",
+            "verifiedOrg": "Overil funkcia",
+            "verifiedName": "Overil meno",
+            "approveDate": "Schválil dátum  ",
+            "approveOrg": "Schválil funkcia",
+            "approveName": "Schválil meno",
+            "evalDate": "Vyhotovil dátum",
+            "evalOrg": "Vyhotovil funkcia",
+            "evalName": "Vyhotovil meno",
+            "tooltip": {
+                "description": "Zadajte zápis k schváleniu - zobrazí sa v protokole",
+                "evalStructures": "Hodnotenie správnosti štruktúr a dodržania NKIVS"
+            }
+        },
+        "returnToWorkout": {
+            "note": "Popis k dopracovaniu"
+        },
+        "revalidate": {
+            "okButton": "Splatnenie"
+        },
+        "generatePdf": {
+            "project": "Vyberte projekt",
+            "isvs": "Vyberte ISVS",
+            "allProjects": "Všetky projekty",
+            "allISVS": "Všetky ISVS",
+            "docGenStart": "Generovanie dokumentu zahájené. Táto operácia môže v závislosti od komplexnosti KRIT trvať až niekoľko minút.",
+            "tooBigToGenerate": "Generovanie KRITu nie je momentálne možné z dôvodu rozsiahlosti štruktúry tohoto KRIT"
+        }
+    },
     "evaluation": {
         "accordion": {
             "goals": "Ciele a podciele",
@@ -477,13 +511,22 @@
         "editButton": "Upraviť",
         "moreButton": "Viac akcií",
         "invalidateItem": "Zneplatniť",
+        "return_to_workout": "Vrátiť na dopracovanie",
+        "sendToApprove": "Poslať na schválenie",
+        "signDocument": "Podpísať dokument KRIT - súčasný stav",
+        "signDocumentFuture": "Podpísať dokument KRIT - budúci stav",
+        "pdfGenerateFuture": "Generovať KRIT - budúci stav",
+        "reInvalidateCi": "Splatnenie",
         "revalidateItem": "Splatniť",
+        "saveApprovingItem": "Uložiť rozpracovaný protokol",
         "changeOfOwner": "Zmena vlastníka",
         "besManagement": "BES management",
         "createEntity": "Vytvorenie položky {{entityName}}",
         "sendForApproval": "Poslať na schválenie",
         "approve": "Schváliť",
         "return": "Vrátiť na dopracovanie",
+        "revalidateTitle": "Splatňovanie položky",
+        "revalidateWarning": "Vybraná položka bude splatnená. Vzťahy, ktoré obsahuje, nebudú zmenené.",
         "reject": "Zamietnuť",
         "changeBDA": "Správa položiek architektonického modelu",
         "cloneAS": "Vytvoriť novú verziu položky",
@@ -877,7 +920,13 @@
         "mutationErrorTitle": "Akcia zlyhala",
         "mutationErrorMessage": "Ospravedlňujeme sa, ale pri vykonávaní akcie nastala technická chyba. Pokúste sa akciu zopakovať. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom na ",
         "saving": "Vykonávam akciu",
-        "mutationCreateSuccessMessage": "Položka bola úspešne vytvorená"
+        "mutationCreateSuccessMessage": "Položka bola úspešne vytvorená",
+        "approveSuccess": "Schválené",
+        "approveSaved": "Uložené",
+        "returnToWorkSuccess": "KRIT bol úspešne vrátený na prepracovanie!",
+        "sendToApprover": "KRIT bol úspešne poslaný na schválenie!",
+        "codeAlreadyExists": "An internal codelist with such a code already exists",
+        "sendToRevalidate": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o splatnení."
     },
     "accordion": {
         "openAll": "Otvoriť všetko",
@@ -965,6 +1014,7 @@
         "editingGroup": "Upravujem skupinu"
     },
     "tooltip": {
+        "NO_FUTURE_PDF_GOALS": "Prosím potvrďte záväzok dodržiavania cieľov a princípov Národnej koncepcie informatizácie verejnej správy na záložke Ciele",
         "rights": {
             "missingPermission": "Na vykonanie operácie vám chýbajú potrebné oprávnenia",
             "noSelectedList": "Neboli vybrané žiadne položky, nie je možné vykonať vybranú operáciu.",

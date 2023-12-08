@@ -414,6 +414,40 @@
         "user": "Assigned",
         "successMsg": "Task was successfully created"
     },
+    "modalKris": {
+        "approveModal": {
+            "description": "Description for approval",
+            "evalStructures": "Evaluation of correctness of structures",
+            "evalData": "Data Completeness Evaluation",
+            "verifiedDate": "Verified Date",
+            "verifiedOrg": "Verified function",
+            "verifiedName": "Verified Name",
+            "approveDate": "Approved Date ",
+            "approveOrg": "Approved function",
+            "approveName": "Approved Name",
+            "evalDate": "Educated Date",
+            "evalOrg": "Produced function",
+            "evalName": "Evaluated Name",
+            "tooltip": {
+                "description": "Enter an entry for approval - it will appear in the log",
+                "evalStructures": "Evaluation of correctness of structures and compliance with NKIVS"
+            }
+        },
+        "returnToWorkout": {
+            "note": "Request for approval"
+        },
+        "revalidate": {
+            "okButton": "Revalidate"
+        },
+        "generatePdf": {
+            "project": "Select projet",
+            "isvs": "Select ISVS",
+            "allProjects": "all projets",
+            "allISVS": "all ISVS",
+            "docGenStart": "Document generation has started. This operation can take few minutes depending on KRIT complexity.",
+            "tooBigToGenerate": "Unable to generate KRIT PDF because of size of the current KRIT."
+        }
+    },
     "evaluation": {
         "accordion": {
             "goals": "Goals",
@@ -476,14 +510,22 @@
         "editButton": "Modify",
         "moreButton": "More actions",
         "invalidateItem": "Invalidate",
+        "return_to_workout": "Return for finalization",
+        "signDocumentFuture": "Sign document - future state",
+        "pdfGenerateFuture": "Generate KRIT - future state",
+        "reInvalidateCi": "Validation",
+        "sendToApprove": "Send for approval",
         "revalidateItem": "Revalidate",
         "changeOfOwner": "Change owner",
         "besManagement": "BES management",
         "createEntity": "Create item of {{entityName}}",
         "sendForApproval": "Send for approval",
         "approve": "Approve",
+        "saveApprovingItem": "Save working version of protocol",
         "return": "Return",
         "reject": "Reject",
+        "revalidateTitle": "Reinvalidate items",
+        "revalidateWarning": "Selected item will be validated. Relations that it contains shall remain unmodified.",
         "changeBDA": "BES management",
         "cloneAS": "Create new version of item",
         "cloneKS": "Create new instance of item",
@@ -869,7 +911,13 @@
         "mutationErrorTitle": "Action failed",
         "mutationErrorMessage": "We apologize, but a technical error occurred while executing your action. Try the action again. In case the error occurred repeatedly, contact the administrator by e-mail at",
         "saving": "Saving",
-        "mutationCreateSuccessMessage": "The item was successfully created"
+        "mutationCreateSuccessMessage": "The item was successfully created",
+        "approveSuccess": "Approved",
+        "approveSaved": "Saved",
+        "returnToWorkSuccess": "KRIT has been successfully returned for rework!",
+        "sendToApprover": "COVER has been successfully submitted for approval!",
+        "codeAlreadyExists": "An internal codelist with such a code already exists",
+        "sendToRevalidate": "The item has been sent for processing, please wait for payment notification."
     },
     "accordion": {
         "openAll": "Open all",
@@ -957,6 +1005,7 @@
         "editingGroup": "Editing group"
     },
     "tooltip": {
+        "NO_FUTURE_PDF_GOALS": "Please confirm your commitment to comply with the Goals and Principles of the National Informatisation Concept of Public Administration on the Goals tab.",
         "rights": {
             "missingPermission": "You are not authorized to carry out this operation",
             "noSelectedList": "No items were selected, it is not possible to carry out selected operation.",
