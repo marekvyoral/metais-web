@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React, { PropsWithChildren, forwardRef } from 'react'
 
+import styles from './styles.module.scss'
 interface ITextHeadingProps extends PropsWithChildren {
     size: 'S' | 'M' | 'L' | 'XL'
     className?: string
@@ -9,22 +10,22 @@ export const TextHeading = forwardRef<HTMLHeadingElement, ITextHeadingProps>(({ 
     return (
         <>
             {size === 'XL' && (
-                <h1 ref={ref} className={classNames('govuk-heading-xl', className)}>
+                <h1 ref={ref} className={classNames('govuk-heading-xl', styles.lineBreakAnywhere, className)}>
                     {children}
                 </h1>
             )}
             {size === 'L' && (
-                <h2 ref={ref} className={classNames('govuk-heading-l', className)}>
+                <h2 ref={ref} className={classNames('govuk-heading-l', styles.lineBreakAnywhere, className)}>
                     {children}
                 </h2>
             )}
             {size === 'M' && (
-                <h3 ref={ref} className={classNames('govuk-heading-m', className)}>
+                <h3 ref={ref} className={classNames('govuk-heading-m', styles.lineBreakAnywhere, className)}>
                     {children}
                 </h3>
             )}
             {size === 'S' && (
-                <h4 ref={ref} className={classNames('govuk-heading-s', className)}>
+                <h4 ref={ref} className={classNames('govuk-heading-s', styles.lineBreakAnywhere, className)}>
                     {children}
                 </h4>
             )}

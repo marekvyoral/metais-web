@@ -1,6 +1,8 @@
 import classNames from 'classnames'
 import React, { PropsWithChildren, forwardRef } from 'react'
 
+import styles from './styles.module.scss'
+
 interface ITextBodyProps extends PropsWithChildren {
     size?: 'S' | 'L'
     className?: string
@@ -11,17 +13,17 @@ export const TextBody = forwardRef<HTMLParagraphElement, ITextBodyProps>(({ chil
     return (
         <>
             {!size && (
-                <p lang={lang} ref={ref} className={classNames('govuk-body', className)}>
+                <p lang={lang} ref={ref} className={classNames('govuk-body', styles.lineBreakAnywhere, className)}>
                     {children}
                 </p>
             )}
             {size === 'S' && (
-                <p lang={lang} ref={ref} className={classNames('govuk-body-s', className)}>
+                <p lang={lang} ref={ref} className={classNames('govuk-body-s', styles.lineBreakAnywhere, className)}>
                     {children}
                 </p>
             )}
             {size === 'L' && (
-                <p lang={lang} ref={ref} className={classNames('govuk-body-l', className)}>
+                <p lang={lang} ref={ref} className={classNames('govuk-body-l', styles.lineBreakAnywhere, className)}>
                     {children}
                 </p>
             )}
