@@ -11,12 +11,12 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 const PROFILE_LIST = [ATTRIBUTE_NAME.Gen_Profil_Rel, ATTRIBUTE_NAME.EA_Profil_Rel, ATTRIBUTE_NAME.Profil_Rel_FazaZivotnehoCyklu]
 
-enum GENERIC_NAMES {
-    CI_TYPE = 'entityType',
-    CI_NAME = 'ciName',
-    CI_OWNER = 'ciOwner',
-    RELATION_TYPE = 'relationType',
-    RELATION_STATE = 'relationState',
+export enum GENERIC_NAMES {
+    CI_TYPE = 'CI+type',
+    CI_NAME = 'CI+name',
+    CI_OWNER = 'CI+owner',
+    RELATION_TYPE = 'REL+type',
+    RELATION_STATE = 'REL+state',
 }
 
 const defaultColumns = [
@@ -50,16 +50,16 @@ export const useGetRelationColumnData = (entityName: string, isSource: boolean) 
             name: t('relationshipsTab.select.sectionInfo'),
             columns: [
                 {
-                    technicalName: 'entityType',
+                    technicalName: GENERIC_NAMES.CI_TYPE,
                     name: isSource ? t('relationshipsTab.table.target') : t('relationshipsTab.table.source'),
                     selected: true,
                 },
                 {
-                    technicalName: 'ciName',
+                    technicalName: GENERIC_NAMES.CI_NAME,
                     name: isSource ? t('relationshipsTab.table.targetItemName') : t('relationshipsTab.table.sourceItemName'),
                     selected: true,
                 },
-                { technicalName: 'relationType', name: t('relationshipsTab.table.relationshipType'), selected: true },
+                { technicalName: GENERIC_NAMES.RELATION_TYPE, name: t('relationshipsTab.table.relationshipType'), selected: true },
             ],
         }),
         [t, isSource],
@@ -68,8 +68,8 @@ export const useGetRelationColumnData = (entityName: string, isSource: boolean) 
         () => ({
             name: t('relationshipsTab.select.sectionMeta'),
             columns: [
-                { technicalName: 'ciOwner', name: t('relationshipsTab.table.owner'), selected: false },
-                { technicalName: 'relationState', name: t('relationshipsTab.table.relationState'), selected: true },
+                { technicalName: GENERIC_NAMES.CI_OWNER, name: t('relationshipsTab.table.owner'), selected: false },
+                { technicalName: GENERIC_NAMES.RELATION_STATE, name: t('relationshipsTab.table.relationState'), selected: true },
             ],
         }),
         [t],

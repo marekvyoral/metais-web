@@ -24,6 +24,11 @@ export const mapFilterToNeighborsApi = <T>(filter: IFilter, defaultApiFilter?: {
     }
 }
 
+const getSortByAndSource = (colTechName: string): { sortBy: string; sortSource: string } => {
+    const [sortSource, sortBy] = colTechName.split('+')
+    return { sortBy: sortBy, sortSource: sortSource }
+}
+
 export const mapFilterToNeighborsApiWithTextSearch = <T>(
     filter: IFilter,
     defaultApiFilter?: { [filterName: string]: T } | T,
@@ -61,8 +66,8 @@ export const mapFilterToRelationApi = (filter: INeighboursFilter, defaultApiFilt
         neighboursFilter,
         page: pageNumber,
         perpage: pageSize,
-        sortBy: sort?.[0]?.orderBy ?? '',
         sortType: sort?.[0]?.sortDirection,
+        ...getSortByAndSource(sort?.[0]?.orderBy ?? ''),
     }
 }
 
