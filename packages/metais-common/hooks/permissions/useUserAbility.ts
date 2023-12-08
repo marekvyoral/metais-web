@@ -18,6 +18,9 @@ export enum Actions {
     CHANGE_STATES = 'change_states',
     HAS_ROLE = 'has_role',
     DELETE = 'DELETE',
+    APPROVE_KRIS = 'APPROVE_KRIS',
+    KRIS_SUBSCRIBE = 'KRIS_PODPIS',
+    KRIS_SEND_APPROVING = 'KRIS_SEND_APPROVING',
 }
 
 export const ADMIN = 'R_ADMIN'

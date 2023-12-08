@@ -74,6 +74,15 @@ export const useEditCiPermissions = (entityName: string, entityId: string) => {
         const canEditGenAttrProfile = ciTypeData?.roleList?.find((role) => myRoles?.indexOf(role) > -1)
         if (canEditGenAttrProfile && !isInvalidated) can(Actions.EDIT, `ci.${ciData?.uuid}.attributeProfile.${Gen_Profil}`)
 
+        const canApprove = user?.roles.some((role: string) => role === 'KRIS_SCHVAL') ?? false
+        if (canApprove) can(Actions.APPROVE_KRIS, `ci.${ciData?.uuid}`)
+
+        const canSubscribe = user?.roles.some((role: string) => role === 'KRIS_PODPIS') ?? false
+        if (canSubscribe) can(Actions.KRIS_SUBSCRIBE, `ci.${ciData?.uuid}`)
+
+        const canSendToApprovement = user?.roles.some((role: string) => role === 'KRIS_TVORBA') ?? false
+        if (canSendToApprovement) can(Actions.KRIS_SEND_APPROVING, `ci.${ciData?.uuid}`)
+
         // CHECK ALL ATTRIBUTES PROFILES
         allProfileAttributes?.map((profileAttr) => {
             const attrRoles = profileAttr?.roleList

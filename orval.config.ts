@@ -420,6 +420,9 @@ export default defineConfig({
     },
     kris: {
         input: {
+            override: {
+                transformer: './packages/metais-common/scripts/attributesTypesTransformer.js',
+            },
             target: process.env.VITE_REST_CLIENT_KRIS_SWAGGER_URL ?? '',
         },
         output: {
@@ -428,6 +431,24 @@ export default defineConfig({
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useKRISSwaggerClient.ts',
                     name: 'useKRISSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    pdfCreator: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_PDF_CREATOR_SWAGGER_URL ?? '',
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/pdf-creator.ts`,
+            override: {
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/usePdfCreatorSwaggerClient.ts',
+                    name: 'usePdfCreatorSwaggerClient',
                 },
             },
             ...defaultOutputOptions,

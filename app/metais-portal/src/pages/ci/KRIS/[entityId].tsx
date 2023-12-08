@@ -1,7 +1,6 @@
 import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { CI_ITEM_QUERY_KEY, ENTITY_KRIS, INVALIDATED, ciInformationTab } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
@@ -16,8 +15,8 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
-import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
 import { KrisRelatedContainer } from '@/components/containers/KrisRelatedContainer'
+import { KrisEntityIdHeader } from '@/components/views/ci/kris/KrisEntityIdHeader'
 
 const KrisEntityDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -41,7 +40,6 @@ const KrisEntityDetailPage: React.FC = () => {
     const showEvaluation =
         evaluationData && evaluationData.hasVersions && !evaluationData.municipality && (evaluationData.creator || evaluationData.evaluator)
 
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_KRIS)
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,
@@ -102,12 +100,12 @@ const KrisEntityDetailPage: React.FC = () => {
             <MainContentWrapper>
                 <CiPermissionsWrapper entityId={entityId ?? ''} entityName={ENTITY_KRIS ?? ''}>
                     <QueryFeedback
-                        loading={isCiItemDataLoading || isCiTypeDataLoading || (isLoadingEvaluation && fetchStatus != 'idle')}
-                        error={isCiItemDataError || isCiTypeDataError || IsErrorEvaluation}
+                        loading={isCiItemDataLoading || (isLoadingEvaluation && fetchStatus != 'idle')}
+                        error={isCiItemDataError || IsErrorEvaluation}
                         withChildren
                     >
                         <FlexColumnReverseWrapper>
-                            <CiEntityIdHeader
+                            <KrisEntityIdHeader
                                 editButton={
                                     <Button
                                         label={t('ciType.editButton')}
@@ -118,11 +116,11 @@ const KrisEntityDetailPage: React.FC = () => {
                                 entityName={ENTITY_KRIS}
                                 entityId={entityId ?? ''}
                                 entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
-                                ciRoles={ciTypeData?.roleList ?? []}
                                 isInvalidated={isInvalidated}
                                 refetchCi={refetch}
+                                isEvaluation={evaluationData?.inEvaluation ?? false}
                             />
-                            <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
+                            <QueryFeedback loading={false} error={isCiItemDataError} />
                             <MutationFeedback
                                 error={false}
                                 success={isActionSuccess.value}
