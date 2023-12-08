@@ -708,7 +708,8 @@
         "canNotBeDecimal": "Toto číslo musí byť celé číslo",
         "mustBeChecked": "Toto musí byť zaškrtnuté, ak chcete pokračovať",
         "dateMustBeGreaterThen": "Dátum musí byť neskorší ako",
-        "dateMustBeEqualOrGreaterThen": "Dátum musí byť rovnaký alebo neskorší ako"
+        "dateMustBeEqualOrGreaterThen": "Dátum musí byť rovnaký alebo neskorší ako",
+        "dateMustBeLessOrEqualThen": "Dátum musí byť skorší alebo rovnaký ako"
     },
     "createEntity": {
         "required": "povinné",

@@ -18,6 +18,8 @@ import {
 } from 'yup'
 import { phoneOrEmptyStringRegex, HTML_TYPE } from '@isdd/metais-common/constants'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
+import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
+import * as yup from 'yup'
 
 import { numericProperties } from './createEntityHelpers'
 
@@ -49,13 +51,15 @@ type SchemaType = {
         | ArraySchema<(number | null | undefined)[] | undefined, AnyObject, '', ''>
 }
 
+const KRIS_DATES = ['Profil_KRIS_datum_vypracovania', 'Profil_KRIS_datum_schvalenia']
+
 export const generateFormSchema = (
     data: AttributeProfile[],
     t: TFunction<'translation', undefined, 'translation'>,
     selectedRole?: GidRoleData | null,
 ) => {
     const schema: SchemaType = {}
-
+    const today = new Date(new Date().setHours(0, 0, 0, 0))
     const attributes = selectedRole
         ? data.filter((profile) => profile?.roleList?.includes(selectedRole?.roleName ?? '')).flatMap((profile) => profile?.attributes)
         : data.flatMap((profile) => profile?.attributes ?? [])
@@ -202,6 +206,15 @@ export const generateFormSchema = (
                         return current.required(t('validation.required'))
                     }
                     return current
+                })
+                .when('KRIS_Date', {
+                    is: () => KRIS_DATES.includes(attribute.technicalName ?? ''),
+                    then: () =>
+                        yup
+                            .date()
+                            .nullable()
+                            .transform((curr, orig) => (orig === '' ? null : curr))
+                            .max(today, `${t('validation.dateMustBeLessOrEqualThen')} ${formatDateForDefaultValue(today.toString(), 'dd.MM.yyyy')}`),
                 })
         } else if (isBoolean) {
             schema[attribute.technicalName] = boolean().when('isRequired', (_, current) => {

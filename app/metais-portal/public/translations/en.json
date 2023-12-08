@@ -705,7 +705,8 @@
         "canNotBeDecimal": "This number can not be decimal",
         "mustBeChecked": "This must be checked if you want to proceed",
         "dateMustBeGreaterThen": "Date must be greater then",
-        "dateMustBeEqualOrGreaterThen": "Date must be equal or greater then"
+        "dateMustBeEqualOrGreaterThen": "Date must be equal or greater then",
+        "dateMustBeLessOrEqualThen": "Date must be less or equal then"
     },
     "createEntity": {
         "required": "required",
