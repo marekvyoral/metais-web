@@ -42,13 +42,16 @@ const EditEntity = () => {
                                     }}
                                     mutate={createProps?.mutate}
                                     hiddenInputs={createProps?.hiddenInputs}
+                                    disabledInputs={createProps?.disabledInputs}
                                     isError={props.isError || createProps.isError}
                                     isLoading={createProps.isLoading || props.isLoading}
                                     isEdit
                                     type="entity"
                                     refetch={props.refetch}
+                                    entityId={entityId}
                                 />
                             )}
+                            entityId={entityId}
                         />
                     </MainContentWrapper>
                 </>

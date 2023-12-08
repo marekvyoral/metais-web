@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { AttributeProfileType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { EntityDetailViewAttributes } from './attributes/EntityDetailViewAttributes'
 
@@ -87,10 +88,12 @@ export const EntityDetailView = ({
                                 onClick={() => {
                                     navigate('/egov/entity/' + ciTypeData?.technicalName + '/edit', { state: { from: location } })
                                 }}
+                                disabled={ciTypeData?.type === AttributeProfileType.system}
                             />
                             <Button
                                 label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
                                 onClick={() => setValidityOfEntity(ciTypeData?.technicalName)}
+                                disabled={ciTypeData?.type !== AttributeProfileType.custom}
                             />
                         </ButtonGroupRow>
                     </div>
