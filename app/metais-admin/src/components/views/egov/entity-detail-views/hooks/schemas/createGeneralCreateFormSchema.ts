@@ -38,7 +38,7 @@ export const generateFormValidationSchema = (t: TFunction<'translation', undefin
                 then: () => yup.string().required(t('egov.create.requiredField')),
             }),
             attributeProfiles: yup.mixed<AttributeProfile[]>(),
-            roleList: yup.array().of(yup.string()).required(t('egov.create.requiredField')),
+            roleList: yup.array().of(yup.string()).min(1, t('egov.create.requiredField')).required(t('egov.create.requiredField')),
             type: yup.string().required(t('egov.create.requiredField')),
             sources: yup.mixed<CiTypePreview[]>().when('sources', {
                 is: () => !hiddenInputs?.SOURCES,
