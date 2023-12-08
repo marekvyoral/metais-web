@@ -10,7 +10,7 @@ import { EntityDetailViewAttributes } from '../attributes/EntityDetailViewAttrib
 
 import { generateFormValidationSchema } from './schemas/createGeneralCreateFormSchema'
 
-import { HiddenInputs } from '@/types/inputs'
+import { DisabledInputs, HiddenInputs } from '@/types/inputs'
 
 interface iCreateForm {
     data?: {
@@ -18,6 +18,7 @@ interface iCreateForm {
         existingEntityData?: CiType
     }
     hiddenInputs?: Partial<HiddenInputs>
+    disabledInputsTypes?: Partial<DisabledInputs>
 }
 
 interface iCreateFormOutput {
@@ -51,9 +52,9 @@ interface iCreateFormOutput {
     selectedRoles?: { value: string; label: string }[]
 }
 
-export const useCreateForm = ({ data, hiddenInputs }: iCreateForm): iCreateFormOutput => {
+export const useCreateForm = ({ data, hiddenInputs, disabledInputsTypes }: iCreateForm): iCreateFormOutput => {
     const { t } = useTranslation()
-    const schema = generateFormValidationSchema(t, hiddenInputs)
+    const schema = generateFormValidationSchema(t, hiddenInputs, disabledInputsTypes)
     const formMethods = useForm({
         resolver: yupResolver(schema),
         defaultValues: {

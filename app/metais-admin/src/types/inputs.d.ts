@@ -16,3 +16,7 @@ export enum InputNames {
 export type HiddenInputs = {
     [name in InputNames]: boolean
 }
+
+export type DisabledInputs = {
+    [name in InputNames]: boolean
+}

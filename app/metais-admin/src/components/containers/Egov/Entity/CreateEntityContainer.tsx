@@ -6,7 +6,7 @@ import { ADMIN_EGOV_ENTITY_LIST_QKEY } from '@isdd/metais-common/constants'
 import { useQueryClient } from '@tanstack/react-query'
 import React from 'react'
 
-import { HiddenInputs } from '@/types/inputs'
+import { DisabledInputs, HiddenInputs } from '@/types/inputs'
 
 export interface ICreateEntityView {
     data: {
@@ -20,13 +20,16 @@ export interface ICreateEntityView {
     isEdit?: boolean
     type?: 'entity' | 'profile' | 'relation' | 'roles'
     refetch?: () => void
+    entityId?: string
+    disabledInputs?: Partial<DisabledInputs>
 }
 
 interface ICreateEntity {
     View: React.FC<ICreateEntityView>
+    entityId?: string
 }
 
-const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
+const CreateEntityContainer: React.FC<ICreateEntity> = ({ View, entityId }: ICreateEntity) => {
     const pageNumber = 1
     const pageSize = 200
 
@@ -55,8 +58,10 @@ const CreateEntityContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity)
             }}
             mutate={storeEntity}
             hiddenInputs={{ SOURCES: true, TARGETS: true, ENG_DESCRIPTION: true }}
+            disabledInputs={entityId ? { TECHNICAL_NAME: true, CODE_PREFIX: true } : {}}
             isLoading={isLoading}
             isError={isError}
+            entityId={entityId}
         />
     )
 }

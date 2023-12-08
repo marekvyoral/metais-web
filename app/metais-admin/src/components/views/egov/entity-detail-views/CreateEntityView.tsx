@@ -7,6 +7,7 @@ import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-co
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
+import { AttributeProfileType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { AddAttributeProfilesModal } from './attributes/AddAttributeProfilesModal'
 import styles from './createEntityView.module.scss'
@@ -18,7 +19,7 @@ import { ICreateEntityView } from '@/components/containers/Egov/Entity/CreateEnt
 import { AddConnectionModal } from '@/components/views/egov/relation-detail-views/connections/AddConnectionModal'
 import ConnectionView from '@/components/views/egov/relation-detail-views/connections/ConnectionView'
 
-export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoading, isEdit, type, refetch }: ICreateEntityView) => {
+export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoading, isEdit, type, refetch, disabledInputs }: ICreateEntityView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
@@ -30,7 +31,11 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
         profileAttributesDialog,
     } = useCreateDialogs()
 
-    const { formMethods, tabsFromForm, sourcesFromForm, targetsFromForm } = useCreateForm({ data, hiddenInputs })
+    const customTypeData = data?.existingEntityData?.type === AttributeProfileType.custom
+    const disabledInputsTypes =
+        customTypeData || !isEdit ? { ...disabledInputs } : { ...disabledInputs, URI_PREFIX: true, DESCRIPTION: true, ROLE_LIST: true }
+
+    const { formMethods, tabsFromForm, sourcesFromForm, targetsFromForm } = useCreateForm({ data, hiddenInputs, disabledInputsTypes })
 
     const roleList =
         data?.roles?.map?.((role) => {
@@ -87,13 +92,24 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
                                     label={t('egov.technicalName')}
                                     {...register('technicalName')}
                                     error={formState?.errors?.technicalName?.message}
+                                    disabled={disabledInputsTypes?.TECHNICAL_NAME}
                                 />
                             )}
                             {!hiddenInputs?.CODE_PREFIX && (
-                                <Input label={t('egov.codePrefix')} {...register('codePrefix')} error={formState?.errors?.codePrefix?.message} />
+                                <Input
+                                    label={t('egov.codePrefix')}
+                                    {...register('codePrefix')}
+                                    error={formState?.errors?.codePrefix?.message}
+                                    disabled={disabledInputsTypes?.CODE_PREFIX}
+                                />
                             )}
                             {!hiddenInputs?.URI_PREFIX && (
-                                <Input label={t('egov.uriPrefix')} {...register('uriPrefix')} error={formState?.errors?.uriPrefix?.message} />
+                                <Input
+                                    label={t('egov.uriPrefix')}
+                                    {...register('uriPrefix')}
+                                    error={formState?.errors?.uriPrefix?.message}
+                                    disabled={disabledInputsTypes?.URI_PREFIX}
+                                />
                             )}
                             {!hiddenInputs?.DESCRIPTION && (
                                 <TextArea
@@ -101,6 +117,7 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
                                     rows={3}
                                     {...register('description')}
                                     error={formState?.errors?.description?.message}
+                                    disabled={disabledInputsTypes?.DESCRIPTION}
                                 />
                             )}
                             {!hiddenInputs?.ENG_DESCRIPTION && (
@@ -134,9 +151,11 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
                                         setValue={formMethods.setValue}
                                         value={watch().roleList?.map((role) => role ?? '')}
                                         error={formState?.errors?.roleList?.message}
+                                        disabled={disabledInputsTypes?.ROLE_LIST}
                                     />
                                 </div>
                             )}
+
                             {!hiddenInputs?.SOURCES && !hiddenInputs?.TARGETS && (
                                 <div>
                                     <h3 className="govuk-heading-m">{t('egov.detail.connections')}</h3>
