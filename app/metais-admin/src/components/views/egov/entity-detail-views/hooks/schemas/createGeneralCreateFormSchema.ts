@@ -11,7 +11,11 @@ export const generateFormValidationSchema = (
 ) => {
     return yup.object().shape(
         {
-            name: yup.string().required(t('egov.create.requiredField')),
+            name: yup.string().when('name', {
+                is: () => !hiddenInputs?.NAME && !disabledInputsTypes?.NAME,
+                then: () => yup.string().required(t('egov.create.requiredField')),
+                otherwise: () => yup.string(),
+            }),
             engName: yup.string().when('engName', {
                 is: () => !hiddenInputs?.ENG_NAME && !disabledInputsTypes?.ENG_NAME,
                 then: () => yup.string().required(t('egov.create.requiredField')),
@@ -36,10 +40,10 @@ export const generateFormValidationSchema = (
                 then: () => yup.string().required(t('egov.create.requiredField')),
                 otherwise: () => yup.string(),
             }),
-            description: yup.string().required(t('egov.create.requiredField')),
+            description: yup.string(),
             engDescription: yup.string().when('engDescription', {
                 is: () => !hiddenInputs?.ENG_DESCRIPTION && !disabledInputsTypes?.ENG_DESCRIPTION,
-                then: () => yup.string().required(t('egov.create.requiredField')),
+                then: () => yup.string(),
             }),
             attributeProfiles: yup.mixed<AttributeProfile[]>(),
             roleList: yup.array().of(yup.string()).min(1, t('egov.create.requiredField')).required(t('egov.create.requiredField')),
@@ -56,6 +60,7 @@ export const generateFormValidationSchema = (
             targetCardinality: yup.mixed<Cardinality>(),
         },
         [
+            ['name', 'name'],
             ['uriPrefix', 'uriPrefix'],
             ['codePrefix', 'codePrefix'],
             ['sources', 'sources'],

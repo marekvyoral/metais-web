@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import { useInvalidateAttributeProfileCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
-import { HiddenInputs } from '@/types/inputs'
+import { DisabledInputs, HiddenInputs } from '@/types/inputs'
 
 export interface ICreateEntityView {
     data: {
@@ -22,6 +22,7 @@ export interface ICreateEntityView {
     mutateCreate: (formData: AttributeProfile) => Promise<void>
     mutateEdit: (formData: AttributeProfile) => Promise<void>
     hiddenInputs?: Partial<HiddenInputs>
+    disabledInputs?: Partial<DisabledInputs>
     isLoading: boolean
     isError: boolean
 }
@@ -87,6 +88,7 @@ export const CreateProfileContainer: React.FC<ICreateEntity> = ({ View, entityNa
             mutateCreate={createProfile}
             mutateEdit={editProfile}
             hiddenInputs={{ ENG_NAME: true, CODE_PREFIX: true, URI_PREFIX: true, ATTRIBUTE_PROFILES: true, SOURCES: true, TARGETS: true }}
+            disabledInputs={entityName ? { TECHNICAL_NAME: true } : {}}
             isLoading={isLoading}
             isError={isError}
         />

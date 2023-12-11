@@ -5,7 +5,7 @@ import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { CreateProfileContainer } from '@/components/containers/Egov/Profile/CreateProfileContainer'
 import { ProfileDetailContainer } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
-import { CreateEntityView } from '@/components/views/egov/entity-detail-views/CreateEntityView'
+import { CreateEntityView, EntityType } from '@/components/views/egov/entity-detail-views/CreateEntityView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const EditProfile = () => {
@@ -42,14 +42,15 @@ const EditProfile = () => {
                                     }}
                                     mutate={createProps.mutateEdit}
                                     hiddenInputs={createProps?.hiddenInputs}
+                                    disabledInputs={createProps?.disabledInputs}
                                     isError={props.isError || createProps.isError}
                                     isLoading={createProps.isLoading || props.isLoading}
                                     isEdit
-                                    type="profile"
+                                    type={EntityType.PROFILE}
                                     refetch={props.refetch}
                                 />
                             )}
-                            entityName={entityId ?? ''}
+                            entityName={entityId}
                         />
                     </MainContentWrapper>
                 </>

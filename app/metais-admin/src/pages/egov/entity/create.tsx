@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import CreateEntityContainer from '@/components/containers/Egov/Entity/CreateEntityContainer'
-import { CreateEntityView } from '@/components/views/egov/entity-detail-views/CreateEntityView'
+import { CreateEntityView, EntityType } from '@/components/views/egov/entity-detail-views/CreateEntityView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const CreateEntity = () => {
@@ -28,7 +28,7 @@ const CreateEntity = () => {
                             hiddenInputs={props?.hiddenInputs}
                             isError={props.isError}
                             isLoading={props.isLoading}
-                            type="entity"
+                            type={EntityType.ENTITY}
                             refetch={props.refetch}
                         />
                     )}

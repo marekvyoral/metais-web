@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { AttributeProfileType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import ConnectionView from './connections/ConnectionView'
 import { AddConnectionModal } from './connections/AddConnectionModal'
@@ -82,10 +83,12 @@ export const RelationDetailView = ({
                                 onClick={() => {
                                     navigate('/egov/relation/' + ciTypeData?.technicalName + '/edit', { state: { from: location } })
                                 }}
+                                disabled={ciTypeData?.type === AttributeProfileType.system || ciTypeData?.valid === false}
                             />
                             <Button
                                 label={ciTypeData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
                                 onClick={() => unValidRelationShipTypeMutation?.(ciTypeData?.technicalName)}
+                                disabled={ciTypeData?.type !== AttributeProfileType.custom}
                             />
                         </ButtonGroupRow>
                     </div>
@@ -95,7 +98,12 @@ export const RelationDetailView = ({
                 <BasicInformation data={{ ciTypeData, constraintsData, unitsData }} />
             </div>
             <div className={createEntityStyles.addConnection}>
-                <Button label={t('egov.create.addConnection')} onClick={() => setConnectionsOpen(true)} className={styles.addConnection} />
+                <Button
+                    label={t('egov.create.addConnection')}
+                    onClick={() => setConnectionsOpen(true)}
+                    className={styles.addConnection}
+                    disabled={ciTypeData?.type === AttributeProfileType.system || ciTypeData?.valid === false}
+                />
             </div>
             <AddConnectionModal open={connectionsOpen} onClose={() => setConnectionsOpen(false)} addConnection={addNewConnectionToExistingRelation} />
             <div>

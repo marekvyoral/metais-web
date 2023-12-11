@@ -8,6 +8,7 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
 import { AttributeProfileType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useMemo } from 'react'
 
 import { AddAttributeProfilesModal } from './attributes/AddAttributeProfilesModal'
 import styles from './createEntityView.module.scss'
@@ -18,6 +19,13 @@ import { ProfileTabs } from '@/components/ProfileTabs'
 import { ICreateEntityView } from '@/components/containers/Egov/Entity/CreateEntityContainer'
 import { AddConnectionModal } from '@/components/views/egov/relation-detail-views/connections/AddConnectionModal'
 import ConnectionView from '@/components/views/egov/relation-detail-views/connections/ConnectionView'
+
+export enum EntityType {
+    ENTITY = 'entity',
+    PROFILE = 'profile',
+    RELATION = 'relation',
+    ROLES = 'roles',
+}
 
 export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoading, isEdit, type, refetch, disabledInputs }: ICreateEntityView) => {
     const { t } = useTranslation()
@@ -32,8 +40,19 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
     } = useCreateDialogs()
 
     const customTypeData = data?.existingEntityData?.type === AttributeProfileType.custom
-    const disabledInputsTypes =
-        customTypeData || !isEdit ? { ...disabledInputs } : { ...disabledInputs, URI_PREFIX: true, DESCRIPTION: true, ROLE_LIST: true }
+    const disabledInputsTypes = useMemo(() => {
+        if (type === EntityType.ENTITY) {
+            return customTypeData || !isEdit ? { ...disabledInputs } : { ...disabledInputs, URI_PREFIX: true, DESCRIPTION: true, ROLE_LIST: true }
+        }
+        if (type === EntityType.PROFILE) {
+            return { ...disabledInputs }
+        }
+        if (type === EntityType.RELATION) {
+            return customTypeData || !isEdit
+                ? { ...disabledInputs }
+                : { ...disabledInputs, DESCRIPTION: true, ENG_DESCRIPTION: true, ENG_NAME: true, NAME: true }
+        } else return { ...disabledInputs }
+    }, [customTypeData, disabledInputs, isEdit, type])
 
     const { formMethods, tabsFromForm, sourcesFromForm, targetsFromForm } = useCreateForm({ data, hiddenInputs, disabledInputsTypes })
 
@@ -50,11 +69,11 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
         await mutate(formData)
             .then(() => {
                 let route = ''
-                if (type === 'entity') {
+                if (type === EntityType.ENTITY) {
                     route = AdminRouteNames.EGOV_ENTITY
-                } else if (type === 'profile') {
+                } else if (type === EntityType.PROFILE) {
                     route = AdminRouteNames.EGOV_PROFILE
-                } else if (type === 'relation') {
+                } else if (type === EntityType.RELATION) {
                     route = AdminRouteNames.EGOV_RELATION
                 }
                 setSuccessedMutation(true)
@@ -83,9 +102,21 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
                     </FlexColumnReverseWrapper>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <>
-                            {!hiddenInputs?.NAME && <Input label={t('egov.name')} {...register('name')} error={formState?.errors.name?.message} />}
+                            {!hiddenInputs?.NAME && (
+                                <Input
+                                    label={t('egov.name')}
+                                    {...register('name')}
+                                    error={formState?.errors.name?.message}
+                                    disabled={disabledInputsTypes?.NAME}
+                                />
+                            )}
                             {!hiddenInputs?.ENG_NAME && (
-                                <Input label={t('egov.engName')} {...register('engName')} error={formState?.errors?.engName?.message} />
+                                <Input
+                                    label={t('egov.engName')}
+                                    {...register('engName')}
+                                    error={formState?.errors?.engName?.message}
+                                    disabled={disabledInputsTypes?.ENG_NAME}
+                                />
                             )}
                             {!hiddenInputs?.TECHNICAL_NAME && (
                                 <Input
@@ -126,6 +157,7 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
                                     rows={3}
                                     {...register('engDescription')}
                                     error={formState?.errors?.engDescription?.message}
+                                    disabled={disabledInputsTypes?.ENG_DESCRIPTION}
                                 />
                             )}
                             {!hiddenInputs?.TYPE && (

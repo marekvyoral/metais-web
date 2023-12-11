@@ -7,6 +7,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import React from 'react'
 
 import { DisabledInputs, HiddenInputs } from '@/types/inputs'
+import { EntityType } from '@/components/views/egov/entity-detail-views/CreateEntityView'
 
 export interface ICreateEntityView {
     data: {
@@ -18,7 +19,7 @@ export interface ICreateEntityView {
     isLoading: boolean
     isError: boolean
     isEdit?: boolean
-    type?: 'entity' | 'profile' | 'relation' | 'roles'
+    type?: EntityType
     refetch?: () => void
     entityId?: string
     disabledInputs?: Partial<DisabledInputs>

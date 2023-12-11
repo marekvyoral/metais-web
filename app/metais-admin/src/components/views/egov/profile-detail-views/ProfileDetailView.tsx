@@ -1,6 +1,6 @@
 import { BreadCrumbs, Button, CheckBox, HomeIcon, Input, Table } from '@isdd/idsk-ui-kit'
 import { MutationFeedback, QueryFeedback, isRowSelected } from '@isdd/metais-common'
-import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Attribute, AttributeProfileType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { useCallback, useEffect, useState } from 'react'
@@ -269,10 +269,12 @@ export const ProfileDetailView = <T,>({
                                     onClick={() => {
                                         navigate('/egov/profile/' + profileData?.technicalName + '/edit', { state: { from: location } })
                                     }}
+                                    disabled={profileData?.type === AttributeProfileType.system}
                                 />
                                 <Button
                                     label={profileData?.valid ? t('egov.detail.validityChange.setInvalid') : t('egov.detail.validityChange.setValid')}
                                     onClick={() => setValidityOfProfile(profileData?.technicalName)}
+                                    disabled={profileData?.type !== AttributeProfileType.custom}
                                 />
                             </div>
                         </div>

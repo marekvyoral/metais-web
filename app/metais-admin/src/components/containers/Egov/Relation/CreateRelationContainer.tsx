@@ -6,7 +6,7 @@ import { SortType } from '@isdd/idsk-ui-kit/types'
 import { useQueryClient } from '@tanstack/react-query'
 import { ADMIN_EGOV_RELATION_LIST_QKEY } from '@isdd/metais-common/constants'
 
-import { HiddenInputs } from '@/types/inputs'
+import { DisabledInputs, HiddenInputs } from '@/types/inputs'
 
 export interface ICreateEntityView {
     data: {
@@ -14,15 +14,17 @@ export interface ICreateEntityView {
     }
     mutate: (formData: RelationshipType) => Promise<void>
     hiddenInputs?: Partial<HiddenInputs>
+    disabledInputs?: Partial<DisabledInputs>
     isLoading: boolean
     isError: boolean
 }
 
 interface ICreateEntity {
     View: React.FC<ICreateEntityView>
+    entityName?: string
 }
 
-export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View }: ICreateEntity) => {
+export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View, entityName }: ICreateEntity) => {
     const pageNumber = 1
     const pageSize = 200
 
@@ -51,6 +53,7 @@ export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View }: ICrea
             }}
             mutate={storeRelation}
             hiddenInputs={{ CODE_PREFIX: true, URI_PREFIX: true }}
+            disabledInputs={entityName ? { TECHNICAL_NAME: true, ROLE_LIST: true } : {}}
             isLoading={isLoading}
             isError={isError}
         />

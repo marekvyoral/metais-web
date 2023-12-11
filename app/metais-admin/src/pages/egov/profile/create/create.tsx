@@ -4,7 +4,7 @@ import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CreateProfileContainer } from '@/components/containers/Egov/Profile/CreateProfileContainer'
-import { CreateEntityView } from '@/components/views/egov/entity-detail-views/CreateEntityView'
+import { CreateEntityView, EntityType } from '@/components/views/egov/entity-detail-views/CreateEntityView'
 
 const CreateProfile = () => {
     const { t } = useTranslation()
@@ -27,7 +27,7 @@ const CreateProfile = () => {
                             data={props?.data}
                             mutate={props?.mutateCreate}
                             hiddenInputs={props?.hiddenInputs}
-                            type="profile"
+                            type={EntityType.PROFILE}
                         />
                     )}
                 />
