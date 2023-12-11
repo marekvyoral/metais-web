@@ -86,17 +86,19 @@ const EntityDetailPage: React.FC = () => {
                                 refetchCi={refetch}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
-                            <div ref={wrapperRef}>
-                                <MutationFeedback
-                                    error={false}
-                                    success={isActionSuccess.value}
-                                    successMessage={
-                                        isActionSuccess.additionalInfo?.type === 'create'
-                                            ? t('mutationFeedback.successfulCreated')
-                                            : t('mutationFeedback.successfulUpdated')
-                                    }
-                                />
-                            </div>
+                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
+                                <div ref={wrapperRef}>
+                                    <MutationFeedback
+                                        error={false}
+                                        success={isActionSuccess.value}
+                                        successMessage={
+                                            isActionSuccess.additionalInfo?.type === 'create'
+                                                ? t('mutationFeedback.successfulCreated')
+                                                : t('mutationFeedback.successfulUpdated')
+                                        }
+                                    />
+                                </div>
+                            )}
                         </FlexColumnReverseWrapper>
 
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />

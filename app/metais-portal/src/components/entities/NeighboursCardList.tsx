@@ -3,9 +3,9 @@ import { ButtonGroupRow, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWrapper'
 import { Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { QueryFeedback, formatRelationAttributes } from '@isdd/metais-common'
+import { MutationFeedback, QueryFeedback, formatRelationAttributes } from '@isdd/metais-common'
 import { CiWithRelsResultUi, ReadCiNeighboursWithAllRelsParams } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
@@ -13,6 +13,8 @@ import { Actions, useCreateCiAbility } from '@isdd/metais-common/hooks/permissio
 import { PageSizeSelect } from '@isdd/idsk-ui-kit/page-size-select/PageSizeSelect'
 import classNames from 'classnames'
 import { CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { CAN_NOT_MANAGE_CI } from '@isdd/metais-common/constants'
 
 import { CardColumnList } from './cards/CardColumnList'
@@ -53,10 +55,19 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
     const location = useLocation()
     const { owners, relationTypes } = data
 
+    const { isActionSuccess } = useActionSuccess()
+
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
     const ability = useAbilityContext()
     const canCreateRelation = ability?.can(Actions.CREATE, `ci.create.newRelation`)
     const ciAbility = useCreateCiAbility(ciTypeData)
     const canCreateCi = ciAbility.can(Actions.CREATE, 'ci')
+    const tabsKey = data.keysToDisplay.map((key) => key.count).reduce((count1, count2) => count1 + count2, 0)
+
+    useEffect(() => {
+        scrollToMutationFeedback(true)
+    }, [isActionSuccess.value, scrollToMutationFeedback])
 
     const [selectedTab, setSelectedTab] = useState({ id: data?.keysToDisplay?.[0]?.technicalName })
     const disabledCreateCI = useMemo(() => {
@@ -66,10 +77,20 @@ export const NeighboursCardList: React.FC<NeighboursCardListProps> = ({
     return (
         <>
             {<TextHeading size="XL">{t('neighboursCardList.heading')}</TextHeading>}
+            {isActionSuccess && isActionSuccess.additionalInfo?.type === 'relationCreated' && (
+                <div ref={wrapperRef}>
+                    <MutationFeedback
+                        success={isActionSuccess.value}
+                        successMessage={t('mutationFeedback.successfulRelationCreated')}
+                        error={false}
+                    />
+                </div>
+            )}
             <QueryFeedback loading={areTypesLoading} withChildren>
                 {!areTypesLoading && (
                     <Tabs
-                        tabList={data?.keysToDisplay.map((key) => ({
+                        key={tabsKey}
+                        tabList={data.keysToDisplay.map((key) => ({
                             id: key?.technicalName,
                             title: key?.tabName,
                             meta: { isDerived: key.isDerived },

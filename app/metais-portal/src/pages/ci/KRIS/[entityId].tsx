@@ -121,15 +121,17 @@ const KrisEntityDetailPage: React.FC = () => {
                                 isEvaluation={evaluationData?.inEvaluation ?? false}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError} />
-                            <MutationFeedback
-                                error={false}
-                                success={isActionSuccess.value}
-                                successMessage={
-                                    isActionSuccess.additionalInfo?.type === 'create'
-                                        ? t('mutationFeedback.successfulCreated')
-                                        : t('mutationFeedback.successfulUpdated')
-                                }
-                            />
+                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
+                                <MutationFeedback
+                                    error={false}
+                                    success={isActionSuccess.value}
+                                    successMessage={
+                                        isActionSuccess.additionalInfo?.type === 'create'
+                                            ? t('mutationFeedback.successfulCreated')
+                                            : t('mutationFeedback.successfulUpdated')
+                                    }
+                                />
+                            )}
                         </FlexColumnReverseWrapper>
 
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
