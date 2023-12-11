@@ -370,7 +370,8 @@
         "successfulCreated": "The item was successfully created",
         "successfulCloned": "The item was successfully cloned",
         "successfulUpdatedList": "Items have been changed successfully",
-        "successfulMemberUpdated": "Role was successfully changed"
+        "successfulMemberUpdated": "Role was successfully changed",
+        "successfulRelationCreated": "Relation was successfully created"
     },
     "relationCard": {
         "name": "Title",

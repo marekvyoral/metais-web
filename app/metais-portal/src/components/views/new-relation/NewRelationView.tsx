@@ -26,7 +26,12 @@ import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
-import { useInvalidateCiHistoryListCache, useInvalidateCiNeighboursWithAllRelsCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import {
+    useInvalidateCiHistoryListCache,
+    useInvalidateCiNeighboursWithAllRelsCache,
+    useInvalidateRelationsCountCache,
+} from '@isdd/metais-common/hooks/invalidate-cache'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import styles from './newRelationView.module.scss'
 
@@ -74,6 +79,8 @@ export const NewRelationView: React.FC<Props> = ({
     const [hasReset, setHasReset] = useState(false)
     const [hasMutationError, setHasMutationError] = useState(false)
     const location = useLocation()
+
+    const { setIsActionSuccess } = useActionSuccess()
 
     const [selectedItems, setSelectedItems] = useState<ConfigurationItemUi | MultiValue<ConfigurationItemUi> | ColumnsOutputDefinition | null>(null)
     const [isOpen, setIsOpen] = useState(false)
@@ -142,15 +149,19 @@ export const NewRelationView: React.FC<Props> = ({
         isProcessedError,
         isTooManyFetchesError,
     } = useGetStatus()
+
+    const invalidateRelationsCountCache = useInvalidateRelationsCountCache()
     const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCache(entityId)
     const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
 
     const onStoreGraphSuccess = () => {
+        setIsActionSuccess({ value: true, path: `/ci/${entityName}/${entityId}`, additionalInfo: { type: 'relationCreated' } })
         navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
         setIsOpen(false)
         setSelectedItems(null)
         invalidateHistoryListCache(entityId)
         invalidateRelationListCacheByUuid.invalidate()
+        invalidateRelationsCountCache.invalidate(entityId)
     }
 
     const storeGraph = useStoreGraph({

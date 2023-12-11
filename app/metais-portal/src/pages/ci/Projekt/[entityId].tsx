@@ -104,15 +104,17 @@ const ProjectEntityDetailPage: React.FC = () => {
                                 refetchCi={refetch}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
-                            <MutationFeedback
-                                error={false}
-                                success={isActionSuccess.value}
-                                successMessage={
-                                    isActionSuccess.additionalInfo?.type === 'create'
-                                        ? t('mutationFeedback.successfulCreated')
-                                        : t('mutationFeedback.successfulUpdated')
-                                }
-                            />
+                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
+                                <MutationFeedback
+                                    error={false}
+                                    success={isActionSuccess.value}
+                                    successMessage={
+                                        isActionSuccess.additionalInfo?.type === 'create'
+                                            ? t('mutationFeedback.successfulCreated')
+                                            : t('mutationFeedback.successfulUpdated')
+                                    }
+                                />
+                            )}
                         </FlexColumnReverseWrapper>
                         {user && ciItemData && (
                             <ProjectStateContainer

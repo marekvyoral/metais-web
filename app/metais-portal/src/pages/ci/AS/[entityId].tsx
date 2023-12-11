@@ -86,11 +86,13 @@ const AsEntityDetailPage: React.FC = () => {
                                 tooltipLabel={t('ciType.cloneAS')}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError || isCiTypeDataError} />
-                            <MutationFeedback
-                                error={false}
-                                success={isActionSuccess.value}
-                                successMessage={getSuccessMessage(isActionSuccess.additionalInfo?.type)}
-                            />
+                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
+                                <MutationFeedback
+                                    error={false}
+                                    success={isActionSuccess.value}
+                                    successMessage={getSuccessMessage(isActionSuccess.additionalInfo?.type)}
+                                />
+                            )}
                         </FlexColumnReverseWrapper>
                         <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
                         {selectedTab === ciInformationTab && <RelationsListContainer entityId={entityId ?? ''} technicalName={ENTITY_AS} />}
