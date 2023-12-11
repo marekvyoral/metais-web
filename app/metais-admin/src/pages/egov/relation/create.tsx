@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { CreateRelationContainer } from '@/components/containers/Egov/Relation/CreateRelationContainer'
-import { CreateEntityView } from '@/components/views/egov/entity-detail-views/CreateEntityView'
+import { CreateEntityView, EntityType } from '@/components/views/egov/entity-detail-views/CreateEntityView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const CreateRelation = () => {
@@ -28,7 +28,7 @@ const CreateRelation = () => {
                             data={props?.data}
                             mutate={props?.mutate}
                             hiddenInputs={props?.hiddenInputs}
-                            type="relation"
+                            type={EntityType.RELATION}
                         />
                     )}
                 />

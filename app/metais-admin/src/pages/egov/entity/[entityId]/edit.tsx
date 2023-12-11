@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { EntityDetailContainer } from '@/components/containers/Egov/Entity/EntityDetailContainer'
-import { CreateEntityView } from '@/components/views/egov/entity-detail-views/CreateEntityView'
+import { CreateEntityView, EntityType } from '@/components/views/egov/entity-detail-views/CreateEntityView'
 import CreateEntityContainer from '@/components/containers/Egov/Entity/CreateEntityContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 
@@ -46,7 +46,7 @@ const EditEntity = () => {
                                     isError={props.isError || createProps.isError}
                                     isLoading={createProps.isLoading || props.isLoading}
                                     isEdit
-                                    type="entity"
+                                    type={EntityType.ENTITY}
                                     refetch={props.refetch}
                                     entityId={entityId}
                                 />

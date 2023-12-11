@@ -4,7 +4,7 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
-import { CreateEntityView } from '@/components/views/egov/entity-detail-views/CreateEntityView'
+import { CreateEntityView, EntityType } from '@/components/views/egov/entity-detail-views/CreateEntityView'
 import { RelationDetailContainer } from '@/components/containers/Egov/Relation/RelationsDetailContainer'
 import { CreateRelationContainer } from '@/components/containers/Egov/Relation/CreateRelationContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -42,12 +42,14 @@ const EditRelation = () => {
                                     }}
                                     mutate={createProps?.mutate}
                                     hiddenInputs={createProps?.hiddenInputs}
+                                    disabledInputs={createProps?.disabledInputs}
                                     isError={props.isError || createProps.isError}
                                     isLoading={createProps.isLoading || props.isLoading}
-                                    type="relation"
+                                    type={EntityType.RELATION}
                                     isEdit
                                 />
                             )}
+                            entityName={entityId}
                         />
                     </MainContentWrapper>
                 </>
