@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { QueryFeedback } from '@isdd/metais-common/index'
 
 import { UserManagementFormButtons } from './UserManagementFormButtons'
+import { FIRST_NAME_MAXIMUM_CHARS, LAST_NAME_MAXIMUM_CHARS } from './userManagementFormSchema'
 
 interface Props {
     userData: Identity | undefined
@@ -53,14 +54,15 @@ export const UserDetailForm: React.FC<Props> = ({ userData, handleBackNavigate, 
                     {...register(InputNames.FIRST_NAME)}
                     defaultValue={userData?.firstName}
                     type="text"
+                    maxLength={FIRST_NAME_MAXIMUM_CHARS}
                 />
                 <Input
                     error={errors[InputNames.LAST_NAME]?.message?.toString()}
                     label={t('managementList.lastName')}
                     correct={!errors[InputNames.LAST_NAME] && isSubmitted}
                     {...register(InputNames.LAST_NAME)}
-                    // defaultValue={userData?.lastName}
                     type="text"
+                    maxLength={LAST_NAME_MAXIMUM_CHARS}
                 />
                 <Input
                     error={errors[InputNames.LOGIN]?.message?.toString()}

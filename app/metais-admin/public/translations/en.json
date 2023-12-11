@@ -768,7 +768,8 @@
         "emailFormat": "Bad email format",
         "phoneFormat": "Bad phone format",
         "noChangesDetected": "No changes were detected.",
-        "noSpacesError": "Spaces can not be included in {{value}}"
+        "noSpacesError": "Spaces can not be included in {{value}}",
+        "MustBeMaximum": "can have a maximum of {{charsNumber}} characters"
     },
     "accordion": {
         "openAll": "Open all",
