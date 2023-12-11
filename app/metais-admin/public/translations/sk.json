@@ -511,7 +511,8 @@
         "emailFormat": "Formát emailu je zlý",
         "phoneFormat": "Formát tel. čísla je zlý",
         "noChangesDetected": "Neboli zaznamenané žiadne zmeny.",
-        "noSpacesError": "Položka {{value}} nesmie obsahovať medzery"
+        "noSpacesError": "Položka {{value}} nesmie obsahovať medzery",
+        "MustBeMaximum": "môže mať maximálne {{charsNumber}} znakov"
     },
     "accordion": {
         "openAll": "Otvoriť všetko",
