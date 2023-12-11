@@ -80,8 +80,7 @@ export const formatForFormDefaultValues = (
             formattedDefaultAttributeValues[key] = formatDateForDefaultValue(defaultItemAttributeValues[key])
         } else if (matchedAttributeType === AttributeAttributeTypeEnum.BOOLEAN) {
             const isFalsy = isFalsyStringValue(defaultItemAttributeValues[key])
-
-            formattedDefaultAttributeValues[key] = isFalsy ? false : true
+            formattedDefaultAttributeValues[key] = isFalsy ? false : !!defaultItemAttributeValues[key]
         } else {
             formattedDefaultAttributeValues[key] = defaultItemAttributeValues[key]
         }
