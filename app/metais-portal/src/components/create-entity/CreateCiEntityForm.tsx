@@ -126,7 +126,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
                 currentValues,
             )
 
-            reset(filteredFormValuesWithoutPermission)
+            reset(formatForFormDefaultValues(filteredFormValuesWithoutPermission, attributes))
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRole])
