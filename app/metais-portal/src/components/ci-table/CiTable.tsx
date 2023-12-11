@@ -40,6 +40,9 @@ interface ICiTable {
     isError: boolean
     rowSelectionState?: IRowSelectionState
     uuidsToMatchedCiItemsMap?: Record<string, Record<string, ConfigurationItemUi>>
+    linkToNewTab?: boolean
+    baseHref?: string
+    itemUuidsWithoutCheckboxes?: string[]
 }
 
 export const CiTable: React.FC<ICiTable> = ({
@@ -52,6 +55,9 @@ export const CiTable: React.FC<ICiTable> = ({
     isError,
     rowSelectionState,
     uuidsToMatchedCiItemsMap,
+    linkToNewTab,
+    baseHref,
+    itemUuidsWithoutCheckboxes,
 }) => {
     const { t } = useTranslation()
     const { getColumnsFromApiCellContent } = useGetColumnsFromApiCellContent()
@@ -92,17 +98,19 @@ export const CiTable: React.FC<ICiTable> = ({
         (rows: ColumnsOutputDefinition[]) => {
             if (rowSelectionState) {
                 const { rowSelection, setRowSelection } = rowSelectionState
-                const checked = rows.every(({ uuid }) => (uuid ? !!rowSelection[uuid] : false))
+                const filteredRows = rows.filter((row) => !itemUuidsWithoutCheckboxes?.includes(row.uuid ?? ''))
+
+                const checked = filteredRows.every(({ uuid }) => (uuid ? !!rowSelection[uuid] : false))
                 const newRowSelection = { ...rowSelection }
                 if (checked) {
                     rows.forEach(({ uuid }) => uuid && delete newRowSelection[uuid])
                     setRowSelection(newRowSelection)
                 } else {
-                    setRowSelection((prevRowSelection) => ({ ...prevRowSelection, ...reduceTableDataToObject(rows) }))
+                    setRowSelection((prevRowSelection) => ({ ...prevRowSelection, ...reduceTableDataToObject(filteredRows) }))
                 }
             }
         },
-        [rowSelectionState],
+        [itemUuidsWithoutCheckboxes, rowSelectionState],
     )
 
     const isRowSelected = useCallback(
@@ -128,7 +136,16 @@ export const CiTable: React.FC<ICiTable> = ({
                 size: index === 0 ? 300 : 200,
                 cell: (ctx: CellContext<ColumnsOutputDefinition, unknown>) => (
                     <TextBody lang={setEnglishLangForAttr(technicalName ?? '')} size="S" className={'marginBottom0'}>
-                        {getColumnsFromApiCellContent({ index, ctx, technicalName, schemaAttributes, data, rowSelectionState })}
+                        {getColumnsFromApiCellContent({
+                            index,
+                            ctx,
+                            technicalName,
+                            schemaAttributes,
+                            data,
+                            rowSelectionState,
+                            linkToNewTab,
+                            baseHref,
+                        })}
                     </TextBody>
                 ),
                 meta: {
@@ -167,24 +184,32 @@ export const CiTable: React.FC<ICiTable> = ({
                           )
                       },
                       id: CHECKBOX_CELL,
-                      cell: ({ row }: { row: Row<ColumnsOutputDefinition> }) => (
-                          <div className="govuk-checkboxes govuk-checkboxes--small">
-                              <CheckBox
-                                  label=""
-                                  title={`checkbox_${row.id}`}
-                                  name="checkbox"
-                                  id={`checkbox_${row.id}`}
-                                  value="true"
-                                  onChange={(event) => {
-                                      event.stopPropagation()
-                                      handleCheckboxChange(row)
-                                  }}
-                                  onClick={(event) => event.stopPropagation()}
-                                  checked={row.original.uuid ? !!rowSelectionState?.rowSelection[row.original.uuid] : false}
-                                  containerClassName={styles.marginBottom15}
-                              />
-                          </div>
-                      ),
+                      cell: ({ row }: { row: Row<ColumnsOutputDefinition> }) => {
+                          const shouldNotHaveCheckbox = itemUuidsWithoutCheckboxes?.includes(row.original.uuid ?? '')
+
+                          if (shouldNotHaveCheckbox) {
+                              return <></>
+                          }
+
+                          return (
+                              <div className="govuk-checkboxes govuk-checkboxes--small">
+                                  <CheckBox
+                                      label=""
+                                      title={`checkbox_${row.id}`}
+                                      name="checkbox"
+                                      id={`checkbox_${row.id}`}
+                                      value="true"
+                                      onChange={(event) => {
+                                          event.stopPropagation()
+                                          handleCheckboxChange(row)
+                                      }}
+                                      onClick={(event) => event.stopPropagation()}
+                                      checked={row.original.uuid ? !!rowSelectionState?.rowSelection[row.original.uuid] : false}
+                                      containerClassName={styles.marginBottom15}
+                                  />
+                              </div>
+                          )
+                      },
                   },
               ]
             : []),
@@ -196,7 +221,7 @@ export const CiTable: React.FC<ICiTable> = ({
             <Table
                 columns={columns}
                 data={tableData}
-                rowHref={(row) => `./${row?.original?.uuid}`}
+                rowHref={(row) => (baseHref ? `${baseHref}/${row?.original?.uuid}` : `./${row?.original?.uuid}`)}
                 onSortingChange={(newSort) => {
                     handleFilterChange({ sort: newSort })
                     clearSelectedRows()
@@ -209,6 +234,7 @@ export const CiTable: React.FC<ICiTable> = ({
                 isRowSelected={isRowSelected}
                 isLoading={isLoading}
                 error={isError}
+                linkToNewTab={linkToNewTab}
             />
             <PaginatorWrapper {...pagination} handlePageChange={handleFilterChange} />
         </>

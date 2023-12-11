@@ -25,6 +25,8 @@ import { v4 as uuidV4 } from 'uuid'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { useInvalidateCiHistoryListCache, useInvalidateCiNeighboursWithAllRelsCache } from '@isdd/metais-common/hooks/invalidate-cache'
 
 import styles from './newRelationView.module.scss'
 
@@ -133,12 +135,28 @@ export const NewRelationView: React.FC<Props> = ({
         t,
     ])
 
+    const {
+        getRequestStatus,
+        isLoading: isRequestStatusLoading,
+        isError: isRequestStatusError,
+        isProcessedError,
+        isTooManyFetchesError,
+    } = useGetStatus()
+    const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCache(entityId)
+    const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
+
+    const onStoreGraphSuccess = () => {
+        navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
+        setIsOpen(false)
+        setSelectedItems(null)
+        invalidateHistoryListCache(entityId)
+        invalidateRelationListCacheByUuid.invalidate()
+    }
+
     const storeGraph = useStoreGraph({
         mutation: {
-            onSuccess() {
-                navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
-                setIsOpen(false)
-                setSelectedItems(null)
+            onSuccess(data) {
+                getRequestStatus(data.requestId ?? '', onStoreGraphSuccess)
             },
             onError() {
                 setHasMutationError(true)
@@ -239,10 +257,12 @@ export const NewRelationView: React.FC<Props> = ({
             : []
 
     return (
-        <QueryFeedback loading={isLoading || storeGraph.isLoading} error={false} withChildren>
+        <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('newRelation.heading')}</TextHeading>
-                {isError && <QueryFeedback loading={false} error={isError} />}
+                {(isError || storeGraph.isError || isRequestStatusError || isProcessedError || isTooManyFetchesError) && (
+                    <QueryFeedback loading={false} error />
+                )}
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} ciType={ciItemData?.type ?? ''} />
             <SelectPublicAuthorityAndRole

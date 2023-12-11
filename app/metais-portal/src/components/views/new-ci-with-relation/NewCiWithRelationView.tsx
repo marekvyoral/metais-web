@@ -16,7 +16,8 @@ import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbil
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/src/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { useInvalidateCiNeighboursWithAllRelsCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useInvalidateCiHistoryListCache, useInvalidateCiNeighboursWithAllRelsCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
@@ -114,15 +115,28 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
         t,
     ])
 
+    const {
+        getRequestStatus,
+        isLoading: isRequestStatusLoading,
+        isError: isRequestStatusError,
+        isProcessedError,
+        isTooManyFetchesError,
+    } = useGetStatus()
     const invalidateRelationListCacheByUuid = useInvalidateCiNeighboursWithAllRelsCache(entityId)
+    const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
+
+    const onStoreGraphSuccess = () => {
+        navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
+        setIsListPageOpen(false)
+        setSelectedItems(null)
+        invalidateRelationListCacheByUuid.invalidate()
+        invalidateHistoryListCache(entityId)
+    }
 
     const storeGraph = useStoreGraph({
         mutation: {
-            onSuccess() {
-                navigate(`/ci/${entityName}/${entityId}`, { state: { from: location } })
-                setIsListPageOpen(false)
-                setSelectedItems(null)
-                invalidateRelationListCacheByUuid.invalidate()
+            onSuccess(successData) {
+                getRequestStatus(successData.requestId ?? '', onStoreGraphSuccess)
             },
             onError() {
                 setUploadError(true)
@@ -178,13 +192,11 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
     }
 
     return (
-        <QueryFeedback loading={isLoading} error={false} withChildren>
+        <QueryFeedback loading={isLoading || storeGraph.isLoading || isRequestStatusLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
                 <TextHeading size="XL">{t('newRelation.newCiWithRelationHeading', { entityName: tabName })}</TextHeading>
-                {isError && <QueryFeedback loading={false} error={isError} />}
-                {(storeGraph.isError || storeGraph.isSuccess) && (
-                    <MutationFeedback success={storeGraph.isSuccess} error={storeGraph.isError ? t('newRelation.mutationError') : ''} />
-                )}
+                {(isError || isProcessedError || isTooManyFetchesError || isRequestStatusError) && <QueryFeedback loading={false} error />}
+                {storeGraph.isError && <MutationFeedback success={false} error={t('newRelation.mutationError')} />}
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
 

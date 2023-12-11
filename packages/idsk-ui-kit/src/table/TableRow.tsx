@@ -15,10 +15,20 @@ interface ITableRowProps<T> {
     isRowDanger?: (row: Row<T>) => boolean
     onRowClick?: (row: Row<T>) => void
     rowHref?: (row: Row<T>) => string
+    linkToNewTab?: boolean
     isInvalidated: boolean
 }
 
-export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRowClick, rowHref, isInvalidated }: ITableRowProps<T>): JSX.Element => {
+export const TableRow = <T,>({
+    row,
+    isRowSelected,
+    isRowBold,
+    isRowDanger,
+    onRowClick,
+    rowHref,
+    isInvalidated,
+    linkToNewTab,
+}: ITableRowProps<T>): JSX.Element => {
     const navigate = useNavigate()
     const location = useLocation()
     const hasCheckbox = row.getVisibleCells().find((cell) => cell.column.id === CHECKBOX_CELL)
@@ -38,7 +48,11 @@ export const TableRow = <T,>({ row, isRowSelected, isRowBold, isRowDanger, onRow
             )}
             onClick={() => {
                 if (rowHref) {
-                    navigate(rowHref(row), { state: { from: location } })
+                    if (linkToNewTab) {
+                        window.open(rowHref(row), '_blank')
+                    } else {
+                        navigate(rowHref(row), { state: { from: location } })
+                    }
                 }
                 onRowClick?.(row)
             }}

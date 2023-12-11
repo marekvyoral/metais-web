@@ -52,6 +52,7 @@ export interface ITableProps<T> {
     getExpandedRow?: (row: Row<T>) => JSX.Element | null
     onRowClick?: (row: Row<T>) => void
     rowHref?: (row: Row<T>) => string
+    linkToNewTab?: boolean
     reorderRow?: (index: number, target: number) => void
     hideHeaders?: boolean
     manualSorting?: boolean
@@ -81,6 +82,7 @@ export const Table = <T,>({
     getExpandedRow,
     onRowClick,
     rowHref,
+    linkToNewTab,
     reorderRow,
     hideHeaders,
     manualSorting = true,
@@ -207,6 +209,7 @@ export const Table = <T,>({
                                     rowHref={rowHref}
                                     reorderRow={reorderRow}
                                     isInvalidated={isInvalidated}
+                                    linkToNewTab={linkToNewTab}
                                 />
                             ) : (
                                 <TableRow<T>
@@ -218,6 +221,7 @@ export const Table = <T,>({
                                     isRowDanger={isRowDanger}
                                     onRowClick={onRowClick}
                                     rowHref={rowHref}
+                                    linkToNewTab={linkToNewTab}
                                 />
                             )}
                             {row.getIsExpanded() && getExpandedRow && <TableRowExpanded row={row} getExpandedRow={getExpandedRow} />}
