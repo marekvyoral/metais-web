@@ -20,16 +20,18 @@ export interface IReInvalidateBulkModalProps {
 
 export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ items, open, multiple, onSubmit, onClose, isRelation }) => {
     const { t } = useTranslation()
-    const { getRequestStatus, isError } = useGetStatus()
+    const { getRequestStatus, isError, isProcessedError, isTooManyFetchesError } = useGetStatus()
     const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
 
     const successMessage = multiple ? t('mutationFeedback.successfulUpdatedList') : t('mutationFeedback.successfulUpdated')
 
     const recycleRelation = useRecycleInvalidatedRels({
         mutation: {
-            onSuccess() {
-                onSubmit({ isSuccess: true, isError: false, successMessage })
-                items.forEach((item) => invalidateHistoryListCache(item.uuid ?? ''))
+            async onSuccess(data) {
+                await getRequestStatus(data.requestId ?? '', () => {
+                    onSubmit({ isSuccess: true, isError: false, successMessage })
+                    items.forEach((item) => invalidateHistoryListCache(item.uuid ?? ''))
+                })
             },
             onError() {
                 onSubmit({ isSuccess: false, isError: true })
@@ -38,11 +40,11 @@ export const ReInvalidateBulkModal: React.FC<IReInvalidateBulkModalProps> = ({ i
     })
 
     useEffect(() => {
-        if (isError) {
+        if (isError || isProcessedError || isTooManyFetchesError) {
             onSubmit({ isSuccess: false, isError: true })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isError])
+    }, [isError, isProcessedError, isTooManyFetchesError])
 
     const { isLoading, mutateAsync: reInvalidate } = useRecycleInvalidatedCisBiznis({
         mutation: {

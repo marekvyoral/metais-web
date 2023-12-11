@@ -24,6 +24,7 @@ export interface IInvalidateBulkModalProps {
     items: ConfigurationItemUi[]
     deleteFile?: boolean
     isRelation?: boolean
+    isRelationList?: boolean
 }
 
 export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
@@ -34,20 +35,21 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
     onSubmit,
     deleteFile = false,
     isRelation,
+    isRelationList,
 }) => {
     const { t } = useTranslation()
     const { register, handleSubmit, reset } = useForm()
     const deleteFileHook = useDeleteContentHook()
     const successMessage = multiple ? t('mutationFeedback.successfulUpdatedList') : t('mutationFeedback.successfulUpdated')
-    const { getRequestStatus, isError } = useGetStatus()
+    const { getRequestStatus, isError, isProcessedError, isTooManyFetchesError } = useGetStatus()
     const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
 
     useEffect(() => {
-        if (isError) {
+        if (isError || isProcessedError || isTooManyFetchesError) {
             onSubmit({ isSuccess: false, isError: true })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isError])
+    }, [isError, isProcessedError, isTooManyFetchesError])
 
     const mappedItems = items.map((item) => {
         const attributes = Object.entries(item.attributes || {}).map(([key, value]) => ({ name: key, value }))
@@ -56,11 +58,13 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
 
     const invalidateRelation = useInvalidateRelationship({
         mutation: {
-            onSuccess() {
-                reset()
-                onSubmit({ isSuccess: true, isError: false, successMessage })
-                mappedItems.forEach((item) => {
-                    invalidateHistoryListCache(item?.uuid ?? '')
+            async onSuccess(data) {
+                await getRequestStatus(data.requestId ?? '', () => {
+                    reset()
+                    onSubmit({ isSuccess: true, isError: false, successMessage })
+                    mappedItems.forEach((item) => {
+                        invalidateHistoryListCache(item?.uuid ?? '')
+                    })
                 })
             },
             onError() {
@@ -94,7 +98,11 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
             const relationData: RelationshipInvalidateUi = { ...mappedItems[0], invalidateReason: { comment: formValues.reason } }
             await invalidateRelation.mutateAsync({ data: relationData, params: { newState: ['INVALIDATED'] } })
         } else {
-            invalidateItems({ data: { configurationItemSet: mappedItems, invalidateReason: { comment: formValues.reason } } })
+            if (isRelationList) {
+                invalidateItems({ data: { relationshipSet: mappedItems, invalidateReason: { comment: formValues.reason } } })
+            } else {
+                invalidateItems({ data: { configurationItemSet: mappedItems, invalidateReason: { comment: formValues.reason } } })
+            }
         }
     }
 
