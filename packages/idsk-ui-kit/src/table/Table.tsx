@@ -14,6 +14,8 @@ import {
 } from '@tanstack/react-table'
 import classNames from 'classnames'
 import React, { useEffect, useRef, useState } from 'react'
+import { INVALIDATED } from '@isdd/metais-common/src/constants'
+import { NeighbourPairUi } from '@isdd/metais-common/src/api/generated/cmdb-swagger'
 
 import { DraggableColumnHeader } from './DraggableColumnHeader'
 import { TableInfoMessage } from './TableInfoMessage'
@@ -189,13 +191,15 @@ export const Table = <T,>({
             >
                 {table.getRowModel().rows.map((row, index) => {
                     const isInvalidated =
-                        (hasMetaAttributesWithStateProperty(row) && row.original.metaAttributes?.state === 'INVALIDATED') ||
+                        (hasMetaAttributesWithStateProperty(row) && row.original.metaAttributes?.state === INVALIDATED) ||
                         invalidStates.includes(
                             row
                                 .getAllCells()
                                 .find((cell) => cell.column.id == 'state')
                                 ?.getValue() as string,
-                        )
+                        ) ||
+                        (row.original as NeighbourPairUi)?.relationship?.metaAttributes?.state === INVALIDATED
+
                     return (
                         <React.Fragment key={index}>
                             {canDragRow ? (

@@ -30,15 +30,15 @@ export const ChangeOwnerBulkModal: React.FC<IChangeOwnerBulkModalProps> = ({ ite
     const { t } = useTranslation()
 
     const successMessage = multiple ? t('mutationFeedback.successfulUpdatedList') : t('mutationFeedback.successfulUpdated')
-    const { getRequestStatus, isError } = useGetStatus()
+    const { getRequestStatus, isError, isProcessedError, isTooManyFetchesError } = useGetStatus()
     const { invalidate: invalidateHistoryListCache } = useInvalidateCiHistoryListCache()
 
     useEffect(() => {
-        if (isError) {
+        if (isError || isProcessedError || isTooManyFetchesError) {
             onSubmit({ isSuccess: false, isError: true })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isError])
+    }, [isError, isProcessedError, isTooManyFetchesError])
 
     const { isLoading, mutateAsync: changeOwner } = useChangeOwnerSet({
         mutation: {

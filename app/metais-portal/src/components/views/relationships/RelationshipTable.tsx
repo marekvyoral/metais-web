@@ -36,6 +36,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
     saveSelectedColumns,
     resetSelectedColumns,
     rowSelections,
+    resetRowSelection,
     sectionsConfig,
     pagination,
     filter,
@@ -48,14 +49,14 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
         state: { user },
     } = useAuth()
     const { currentPreferences } = useUserPreferences()
-    const { errorMessage, handleInvalidate, handleReInvalidate, handleChangeOwner } = useBulkAction()
+    const { errorMessage, handleInvalidate, handleReInvalidate, handleChangeOwner } = useBulkAction(true)
 
     const [showInvalidate, setShowInvalidate] = useState<boolean>(false)
     const [showReInvalidate, setShowReInvalidate] = useState<boolean>(false)
     const [showChangeOwner, setShowChangeOwner] = useState<boolean>(false)
     const [bulkActionResult, setBulkActionResult] = useState<IBulkActionResult>()
 
-    const configurationItemList = Object.values(rowSelections)?.map((item: NeighbourPairUi) => item.configurationItem ?? {}) ?? []
+    const relationshipItemList = Object.values(rowSelections)?.map((item: NeighbourPairUi) => item.relationship ?? {}) ?? []
 
     const canSelectInvalidated = !!user?.uuid && currentPreferences.showInvalidatedItems
 
@@ -80,6 +81,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
         closeFunction(false)
         refetch()
         setBulkActionResult(actionResult)
+        resetRowSelection()
     }
 
     return (
@@ -154,7 +156,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                                                 key={'invalidate'}
                                                 onClick={() => {
                                                     open()
-                                                    handleInvalidate(configurationItemList, () => setShowInvalidate(true), open)
+                                                    handleInvalidate(relationshipItemList, () => setShowInvalidate(true), open)
                                                     closePopup()
                                                 }}
                                                 icon={CrossInACircleIcon}
@@ -163,7 +165,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                                             <ButtonLink
                                                 key={'reInvalidate'}
                                                 onClick={() => {
-                                                    handleReInvalidate(configurationItemList, () => setShowReInvalidate(true), open)
+                                                    handleReInvalidate(relationshipItemList, () => setShowReInvalidate(true), open)
                                                     closePopup()
                                                 }}
                                                 icon={CheckInACircleIcon}
@@ -172,7 +174,7 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                                             <ButtonLink
                                                 key={'changeOwner'}
                                                 onClick={() => {
-                                                    handleChangeOwner(configurationItemList, () => setShowChangeOwner(true), open)
+                                                    handleChangeOwner(relationshipItemList, () => setShowChangeOwner(true), open)
                                                     closePopup()
                                                 }}
                                                 icon={ChangeIcon}
@@ -186,27 +188,30 @@ export const RelationshipsTable: React.FC<ICiNeighboursListContainerView> = ({
                     }
                 />
                 <ReInvalidateBulkModal
-                    items={configurationItemList}
+                    items={relationshipItemList}
                     open={showReInvalidate}
                     multiple
                     onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowReInvalidate)}
                     onClose={() => setShowReInvalidate(false)}
+                    isRelation
                 />
                 <InvalidateBulkModal
-                    items={configurationItemList}
+                    items={relationshipItemList}
                     open={showInvalidate}
                     multiple
                     onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowInvalidate)}
                     onClose={() => setShowInvalidate(false)}
+                    isRelationList
                 />
 
                 <ChangeOwnerBulkModal
-                    items={configurationItemList}
+                    items={relationshipItemList}
                     open={showChangeOwner}
                     multiple
                     onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, setShowChangeOwner)}
                     onClose={() => setShowChangeOwner(false)}
                     ciRoles={ciTypeData?.roleList ?? []}
+                    isRelation
                 />
 
                 <Table columns={columns} data={data} isLoading={isLoading} error={isError} sort={filter?.sort} onSortingChange={handleSortChange} />

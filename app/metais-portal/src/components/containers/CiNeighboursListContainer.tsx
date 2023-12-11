@@ -39,6 +39,7 @@ export interface ICiNeighboursListContainerView {
     columns: ColumnDef<NeighbourPairUi>[]
     selectedColumns: ISelectColumnType[]
     rowSelections: RelationSelectedRowType
+    resetRowSelection: () => void
     sectionsConfig: ISelectSectionType[]
     refetch: () => void
     saveSelectedColumns: (columnSelection: ISelectColumnType[]) => void
@@ -310,6 +311,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
                 selectedColumns={selectedColumns}
                 sectionsConfig={configSections}
                 rowSelections={rowSelection}
+                resetRowSelection={() => setRowSelection({})}
                 saveSelectedColumns={storeColumns}
                 resetSelectedColumns={restoreColumns}
                 handleFilterChange={handleFilterChange}
@@ -330,6 +332,7 @@ export const CiNeighboursListContainer: React.FC<ICiNeighboursListContainer> = (
             refetch={refetch}
             ciTypeData={ciTypeData}
             rowSelections={rowSelection}
+            resetRowSelection={() => setRowSelection({})}
             saveSelectedColumns={storeColumns}
             resetSelectedColumns={restoreColumns}
             apiFilterData={selectedRequestApi.neighboursFilter}
