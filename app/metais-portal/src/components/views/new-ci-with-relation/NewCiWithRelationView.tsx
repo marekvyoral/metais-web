@@ -180,8 +180,8 @@ export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, d
                         {
                             type: selectedRelationTypeTechnicalName,
                             attributes: formattedRelationAttributes,
-                            startUuid: entityId,
-                            endUuid: newEntityUuid,
+                            startUuid: newEntityUuid,
+                            endUuid: entityId,
                             owner: ownerId,
                             uuid: uuidV4(),
                         },
