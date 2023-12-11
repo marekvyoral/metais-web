@@ -151,6 +151,8 @@ type GetColumnsFromApiCellContentProps = {
     data: IListData
     rowSelectionState: IRowSelectionState | undefined
     isKRIS?: boolean
+    linkToNewTab?: boolean
+    baseHref?: string
 }
 
 export const useGetColumnsFromApiCellContent = () => {
@@ -164,6 +166,8 @@ export const useGetColumnsFromApiCellContent = () => {
         schemaAttributes,
         data,
         rowSelectionState,
+        linkToNewTab,
+        baseHref,
     }: GetColumnsFromApiCellContentProps) => {
         const isFirstItem = index === 0
         const isInSchema = !!schemaAttributes[technicalName]?.name
@@ -178,12 +182,13 @@ export const useGetColumnsFromApiCellContent = () => {
             case isFirstItem: {
                 return (
                     <Link
-                        to={'./' + ctx?.row?.original?.uuid}
+                        to={baseHref ? `${baseHref}/${ctx?.row?.original?.uuid}` : './' + ctx?.row?.original?.uuid}
                         state={{ from: location }}
                         className={classNames({
                             [styles.bold]: ctx?.row.original.uuid && !!rowSelectionState?.rowSelection[ctx?.row.original.uuid],
                         })}
                         onClick={(e) => e.stopPropagation()}
+                        target={linkToNewTab ? '_blank' : undefined}
                     >
                         {ctx?.getValue?.() as string}
                     </Link>

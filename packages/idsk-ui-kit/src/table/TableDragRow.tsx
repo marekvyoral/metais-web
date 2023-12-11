@@ -17,6 +17,7 @@ interface ITableDragRowProps<T> {
     isRowDanger?: (row: Row<T>) => boolean
     onRowClick?: (row: Row<T>) => void
     rowHref?: (row: Row<T>) => string
+    linkToNewTab?: boolean
     reorderRow?: (index: number, target: number) => void
     isInvalidated: boolean
 }
@@ -30,6 +31,7 @@ export const TableDragRow = <T,>({
     rowHref,
     reorderRow,
     isInvalidated,
+    linkToNewTab,
 }: ITableDragRowProps<T>): JSX.Element => {
     const navigate = useNavigate()
     const location = useLocation()
@@ -66,7 +68,11 @@ export const TableDragRow = <T,>({
             )}
             onClick={() => {
                 if (rowHref) {
-                    navigate(rowHref(row), { state: { from: location } })
+                    if (linkToNewTab) {
+                        window.open(rowHref(row), '_blank')
+                    } else {
+                        navigate(rowHref(row), { state: { from: location } })
+                    }
                 }
                 onRowClick?.(row)
             }}

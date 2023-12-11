@@ -12,7 +12,7 @@ import { useAttributesContainer } from '@isdd/metais-common/hooks/useAttributesC
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 import { useCiListContainer } from '@isdd/metais-common/hooks/useCiListContainer'
-import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ConfigurationItemUi, IncidentRelationshipSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 
 import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
@@ -24,9 +24,10 @@ type Props = {
     selectedItems: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | null
     onSelectedSubmit: (val: ColumnsOutputDefinition[]) => void
     closeOnClick: () => void
+    existingRelations: IncidentRelationshipSetUi | undefined
 }
 
-export const CiListPageForModal: React.FC<Props> = ({ ciType, selectedItems, onSelectedSubmit, closeOnClick }) => {
+export const CiListPageForModal: React.FC<Props> = ({ ciType, selectedItems, onSelectedSubmit, closeOnClick, existingRelations }) => {
     const { t, i18n } = useTranslation()
     const defaultFilterValues: CIFilterData = { Gen_Profil_nazov: '', Gen_Profil_kod_metais: '' }
     const [filterValues, setFilterValues] = useState<CIFilterData>(defaultFilterValues)
@@ -40,6 +41,7 @@ export const CiListPageForModal: React.FC<Props> = ({ ciType, selectedItems, onS
         isError: isAttError,
         isLoading: isAttLoading,
     } = useAttributesContainer(ciType)
+
     const {
         isError: isCiListError,
         isLoading: isCiListLoading,
@@ -89,6 +91,11 @@ export const CiListPageForModal: React.FC<Props> = ({ ciType, selectedItems, onS
             return { ...prevFilter, ...filter }
         })
     }
+
+    const itemUuidsWithoutCheckboxes = [
+        ...(existingRelations?.endRelationshipSet?.map((rel) => rel.startUuid ?? '') ?? []),
+        ...(existingRelations?.startRelationshipSet?.map((rel) => rel.endUuid ?? '') ?? []),
+    ]
 
     return (
         <QueryFeedback loading={isLoading} withChildren>
@@ -157,6 +164,9 @@ export const CiListPageForModal: React.FC<Props> = ({ ciType, selectedItems, onS
                 isLoading={isLoading || isCiTypeConstraintsLoading}
                 isError={isError || isCiTypeConstraintsError}
                 uuidsToMatchedCiItemsMap={uuidsToMatchedCiItemsMap}
+                itemUuidsWithoutCheckboxes={itemUuidsWithoutCheckboxes}
+                linkToNewTab
+                baseHref={`/ci/${ciType}`}
             />
             <AddItemsButtonGroup handleItemsChange={handleRelationItemsChange} isUnderTable onCancel={() => closeOnClick()} />
         </QueryFeedback>

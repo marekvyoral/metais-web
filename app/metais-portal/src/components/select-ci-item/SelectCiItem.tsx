@@ -57,11 +57,11 @@ export const SelectCiItem: React.FC<Props> = ({
             sortType: SortType.ASC,
         })
 
-        const filteredCiListData = response.configurationItemSet?.filter(
-            (item) =>
-                !existingRelations?.endRelationshipSet?.map((rel) => rel.startUuid).includes(item.uuid) ||
-                !existingRelations?.startRelationshipSet?.map((rel) => rel.endUuid).includes(item.uuid),
-        )
+        const filteredCiListData = response.configurationItemSet?.filter((item) => {
+            const startUuids = existingRelations?.endRelationshipSet?.map((rel) => rel.startUuid) || []
+            const endUuids = existingRelations?.startRelationshipSet?.map((rel) => rel.endUuid) || []
+            return !startUuids.includes(item.uuid) && !endUuids.includes(item.uuid)
+        })
 
         const options = filteredCiListData
 
@@ -73,6 +73,7 @@ export const SelectCiItem: React.FC<Props> = ({
             },
         }
     }
+
     return (
         <>
             <div className={styles.rowDiv}>
@@ -89,6 +90,7 @@ export const SelectCiItem: React.FC<Props> = ({
                         value={selectedItems}
                     />
                 </div>
+
                 <TextBody className={classNames(styles.marginTop, styles.italic)}>alebo</TextBody>
                 <Button className={styles.marginTop} variant="secondary" label={t('newRelation.pickItems')} onClick={onOpenModal} />
             </div>
@@ -97,6 +99,7 @@ export const SelectCiItem: React.FC<Props> = ({
                 <CiListPageForModal
                     ciType={ciType}
                     selectedItems={selectedItems}
+                    existingRelations={existingRelations}
                     onSelectedSubmit={(val) => onChangeSelectedCiItem(val)}
                     closeOnClick={onCloseModal}
                 />
