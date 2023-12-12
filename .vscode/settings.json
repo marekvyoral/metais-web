@@ -4,11 +4,5 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
-    "cSpell.words": [
-        "gids",
-        "idsk",
-        "isdd",
-        "metais",
-        "renderable"
-    ]
+    "cSpell.words": ["gids", "idsk", "isdd", "metais", "renderable"]
 }

@@ -181,7 +181,11 @@ const RoleListView: React.FC<RoleListViewParams> = ({
                             setSorting(newSort)
                         }}
                         sort={sorting}
-                        columns={SelectableColumnsSpec.filter((c) => selectedColumns.find((s) => s.selected && s.technicalName === c.id)) ?? []}
+                        columns={
+                            SelectableColumnsSpec.filter((c) =>
+                                selectedColumns.find((s) => (s.selected && s.technicalName === c.id) || c.id == 'edit'),
+                            ) ?? []
+                        }
                         isLoading={isLoading}
                         error={isError}
                         data={tableData}
