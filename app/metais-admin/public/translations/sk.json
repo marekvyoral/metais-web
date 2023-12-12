@@ -512,6 +512,7 @@
         "phoneFormat": "Formát tel. čísla je zlý",
         "noChangesDetected": "Neboli zaznamenané žiadne zmeny.",
         "noSpacesError": "Položka {{value}} nesmie obsahovať medzery",
+        "loginFormat": "Login akceptuje iba malé písmená, čísla a bodky.",
         "MustBeMaximum": "môže mať maximálne {{charsNumber}} znakov"
     },
     "accordion": {

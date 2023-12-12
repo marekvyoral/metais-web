@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import { RegistrationRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useStripAccentsHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { phoneOrEmptyStringRegex } from '@isdd/metais-common/constants'
+import { LOWER_CASE_NUMBER_DOT_REGEX, SPACES_REGEX, phoneOrEmptyStringRegex } from '@isdd/metais-common/constants'
 
 import styles from './registration.module.scss'
 
@@ -38,7 +38,10 @@ const getRegistrationSchema = (t: TFunction) => {
         [InputNames.EMAIL]: string().email(t('registration.format.email')).required(t('registration.required.email')),
         [InputNames.PHONE]: string().matches(phoneOrEmptyStringRegex, t('registration.format.phone')).required(t('registration.required.phone')),
         [InputNames.PO]: mixed().required(t('registration.required.default')),
-        [InputNames.LOGIN]: string().required(t('registration.required.default')),
+        [InputNames.LOGIN]: string()
+            .test('no-spaces', t('registration.format.noSpaces'), (value) => !/\s/.test(value ?? ''))
+            .matches(LOWER_CASE_NUMBER_DOT_REGEX, t('managementList.loginFormat'))
+            .required(t('registration.required.default')),
     })
 
     return registrationFormSchema
@@ -58,16 +61,12 @@ export const RegistrationForm: React.FC<Props> = () => {
         setValue,
         clearErrors,
         formState: { errors, isSubmitted, isSubmitting, isValidating },
+        trigger,
     } = useForm({ resolver: yupResolver(getRegistrationSchema(t)) })
 
     const formValues = watch()
     const hasLastName = !!formValues[InputNames.LAST_NAME]
-    const loginString = `${formValues[InputNames.FIRST_NAME]}${hasLastName ? '.' + formValues[InputNames.LAST_NAME] : ''}`
-
-    useEffect(() => {
-        setValue(InputNames.LOGIN, loginString)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [loginString])
+    const loginString = `${formValues[InputNames.FIRST_NAME] ?? ''}${hasLastName ? '.' + formValues[InputNames.LAST_NAME] : ''}`
 
     const stripAccents = useStripAccentsHook()
     const {
@@ -92,14 +91,29 @@ export const RegistrationForm: React.FC<Props> = () => {
         state: ['DRAFT', 'APPROVED_BY_OWNER'],
     }
 
+    useEffect(() => {
+        const setLoginWithStrippedAccent = async () => {
+            if (loginString) {
+                const strippedAccentLogin = await stripAccents(loginString.replace(SPACES_REGEX, '').toLocaleLowerCase())
+                setValue(InputNames.LOGIN, strippedAccentLogin)
+            } else {
+                setValue(InputNames.LOGIN, '')
+            }
+
+            if (isSubmitted) {
+                trigger(InputNames.LOGIN)
+            }
+        }
+        setLoginWithStrippedAccent()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSubmitted, loginString])
+
     const onSubmit = async (formData: FieldValues) => {
-        const strippedLogin = await stripAccents(formData[InputNames.LOGIN])
         mutate({
             data: {
                 type: 'REGISTER_USER_EVENT',
                 claimUi: {
                     ...formData,
-                    identityLogin: strippedLogin,
                 },
             },
         })

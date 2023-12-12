@@ -274,3 +274,5 @@ export const CAN_NOT_MANAGE_CI = [
 ]
 export const CAN_CREATE_MEETING_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KSTAJ', 'STD_PSPRE', 'STD_PSPODP']
 export const CAN_EDIT_MEETING_USER_ROLES = ['STD_KOORDINATOR_AGENDY']
+export const LOWER_CASE_NUMBER_DOT_REGEX = /^[a-z0-9.]*$/
+export const SPACES_REGEX = /\s+/g

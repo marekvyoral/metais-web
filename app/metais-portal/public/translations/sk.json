@@ -2006,7 +2006,9 @@
         "format": {
             "name": "Toto pole nesme obsahovať špeciálne znaky ako '@,&' atď.",
             "email": "Emial zadávajte vo formáte napríklad meno.priezvisko@domena.sk",
-            "phone": "Skontrolujte si prosím formát telefónneho čísla."
+            "phone": "Skontrolujte si prosím formát telefónneho čísla.",
+            "login": "Prihlasovacie meno akceptuje iba malé písmená, čísla a bodky.",
+            "noSpaces": "Táto položka nesmie obsahovať medzery"
         },
         "submit": "Registrovať",
         "title": "Registrácia",
