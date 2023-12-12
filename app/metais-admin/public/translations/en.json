@@ -574,7 +574,8 @@
         "returnToWorkSuccess": "KRIT has been successfully returned for rework!",
         "sendToApprover": "COVER has been successfully submitted for approval!",
         "codeAlreadyExists": "An internal codelist with such a code already exists",
-        "sendToRevalidate": "The item has been sent for processing, please wait for payment notification."
+        "sendToRevalidate": "The item has been sent for processing, please wait for payment notification.",
+        "roleHasRelations": "Role has relations to other objects"
     },
     "adminRolesPage": {
         "addNewRole": "Add new role",
@@ -589,8 +590,8 @@
         "rolesList": "Roles list",
         "newRole": "New role",
         "none": "None",
-        "areYouSure": "Are you sure?",
-        "deleteRoleText": "Do you want to delete the role?",
+        "areYouSure": "Action confirmation",
+        "deleteRoleText": "Do you want to invalidate the role?",
         "fullName": "Name",
         "login": "Login",
         "email": "Email",

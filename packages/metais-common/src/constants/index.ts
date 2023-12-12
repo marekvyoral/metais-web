@@ -98,6 +98,7 @@ export enum ReponseErrorCodeEnum {
     GNR412 = 'gnr412',
     NTM01 = 'ntm01',
     GNR500 = 'gnr500',
+    OPERATION_NOT_ALLOWED = 'OperationNotAllowed',
 }
 export const REPORTS = 'reports'
 export const FIRST_PAGE_NUMBER = 1

@@ -1,7 +1,9 @@
 import { BaseModal, Button, ButtonGroupRow, TextBody, TextHeading } from '@isdd/idsk-ui-kit'
 import { Pagination } from '@isdd/idsk-ui-kit/types'
 import { FindByNameWithParamsParams, Role, useDelete, useFindByNameWithParamsHook } from '@isdd/metais-common/api/generated/iam-swagger'
-import React from 'react'
+import { ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
+import { MutationFeedback } from '@isdd/metais-common/index'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface IDeleteRoleModapProps {
@@ -14,6 +16,7 @@ interface IDeleteRoleModapProps {
 export const DeleteRoleModal: React.FC<IDeleteRoleModapProps> = ({ setTableRoles, setRoleToDelete, roleToDelete, fetchParams, pagination }) => {
     const fetchRoles = useFindByNameWithParamsHook()
     const { t } = useTranslation()
+    const [error, setError] = useState<string>()
     const { mutate: deleteRole } = useDelete({
         mutation: {
             async onSuccess() {
@@ -21,9 +24,12 @@ export const DeleteRoleModal: React.FC<IDeleteRoleModapProps> = ({ setTableRoles
                 setRoleToDelete(undefined)
                 setTableRoles(roles)
             },
-            onError(error) {
-                // eslint-disable-next-line no-alert
-                alert(error)
+            onError(requestError) {
+                if (JSON.parse(requestError.message as string).type == ReponseErrorCodeEnum.OPERATION_NOT_ALLOWED) {
+                    setError(t('feedback.roleHasRelations'))
+                } else {
+                    setError(JSON.parse(requestError.message as string).message)
+                }
             },
         },
     })
@@ -32,13 +38,14 @@ export const DeleteRoleModal: React.FC<IDeleteRoleModapProps> = ({ setTableRoles
         <BaseModal isOpen={!!roleToDelete} close={() => setRoleToDelete(undefined)}>
             <>
                 <TextHeading size="L">{t('adminRolesPage.areYouSure')}</TextHeading>
+                <MutationFeedback success={false} error={error} />
                 <TextBody size="L">{t('adminRolesPage.deleteRoleText')}</TextBody>
                 <TextBody size="L">
                     {roleToDelete?.name}: {roleToDelete?.description}
                 </TextBody>
                 <ButtonGroupRow>
                     <Button
-                        label={t('actionsInTable.save')}
+                        label={t('radioButton.yes')}
                         onClick={() => {
                             deleteRole({ uuid: roleToDelete?.uuid ?? '' })
                         }}
