@@ -12,6 +12,9 @@ import { HTML_TYPE } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { array, number, object, string } from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { TFunction } from 'i18next'
 
 import { MoreActionsColumn } from './actions/MoreActionsColumn'
 import { AddAttributeModal } from './attributes/AddAttributeModal'
@@ -19,6 +22,21 @@ import { AddAttributeModal } from './attributes/AddAttributeModal'
 import styles from '@/components/views/egov/detailViews.module.scss'
 import { IAttributesContainerView } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
 import { BasicInformation } from '@/components/views/egov/BasicInformation'
+
+const getProfileAttributeSchema = (t: TFunction) => {
+    return object().shape({
+        attributes: array().of(
+            object().shape({
+                name: string().required(t('egov.profile.nameError')),
+                description: string().required(t('egov.profile.descriptionError')),
+                engName: string().required(t('egov.profile.engNameError')),
+                engDescription: string().required(t('egov.profile.engDescriptionError')),
+                order: number(),
+                defaultValue: string(),
+            }),
+        ),
+    })
+}
 
 export const ProfileDetailView = <T,>({
     data: { profileData, constraintsData, unitsData },
@@ -44,8 +62,17 @@ export const ProfileDetailView = <T,>({
     }, [isActionSuccess, scrollToMutationFeedback])
     const location = useLocation()
     const { openAddAttributeModal, setOpenAddAttributeModal } = openAddAttribudeModalState
+
     const [selectedRows, setSelectedRows] = useState<Array<number>>([])
-    const { register, getValues } = useForm({
+
+    const {
+        register,
+        getValues,
+        trigger,
+        formState: { errors },
+        setValue,
+    } = useForm({
+        resolver: yupResolver(getProfileAttributeSchema(t)),
         defaultValues: {
             attributes: profileData?.attributes ?? [],
         },
@@ -70,16 +97,31 @@ export const ProfileDetailView = <T,>({
         async (attrId: number | undefined, row: Row<Attribute>) => {
             if (attrId) {
                 const editedData = getValues(`attributes.${attrId}`)
-
                 const originalRow = row.original
-
                 const editedAttribute = { ...originalRow, ...editedData }
-                await saveAttribute?.(editedAttribute as T)
 
-                cancelEditing(attrId)
+                if (!editedAttribute.order) {
+                    const findAttWithHighestOrderExceptCurrent = () => {
+                        return Math.max(
+                            ...(profileData?.attributes
+                                ?.filter((att) => att.technicalName != originalRow.technicalName)
+                                .map((att) => att.order ?? 0) ?? []),
+                        )
+                    }
+                    const highestCurrentOrder = findAttWithHighestOrderExceptCurrent()
+                    editedAttribute.order = highestCurrentOrder + 1
+                    setValue(`attributes.${attrId}.order`, editedAttribute.order)
+                }
+
+                const isValid = await trigger(`attributes.${attrId}`)
+
+                if (isValid) {
+                    await saveAttribute?.(editedAttribute as T)
+                    cancelEditing(attrId)
+                }
             }
         },
-        [getValues, saveAttribute, cancelEditing],
+        [getValues, trigger, profileData?.attributes, setValue, saveAttribute, cancelEditing],
     )
 
     const columns: Array<ColumnDef<Attribute>> = [
@@ -93,7 +135,11 @@ export const ProfileDetailView = <T,>({
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.original.id, selectedRows) ? (
-                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.original.id ?? 0}.name`)} />
+                    <Input
+                        defaultValue={ctx?.getValue?.()?.toString()}
+                        {...register(`attributes.${ctx?.row?.original.id ?? 0}.name`)}
+                        error={errors.attributes?.[`${ctx?.row?.original.id ?? 0}`]?.name?.message}
+                    />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -108,7 +154,11 @@ export const ProfileDetailView = <T,>({
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.original.id, selectedRows) ? (
-                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.original.id ?? 0}.engName`)} />
+                    <Input
+                        defaultValue={ctx?.getValue?.()?.toString()}
+                        {...register(`attributes.${ctx?.row?.original.id ?? 0}.engName`)}
+                        error={errors.attributes?.[`${ctx?.row?.original.id ?? 0}`]?.engName?.message}
+                    />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -123,7 +173,11 @@ export const ProfileDetailView = <T,>({
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.original.id, selectedRows) ? (
-                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.original.id ?? 0}.description`)} />
+                    <Input
+                        defaultValue={ctx?.getValue?.()?.toString()}
+                        {...register(`attributes.${ctx?.row?.original.id ?? 0}.description`)}
+                        error={errors.attributes?.[`${ctx?.row?.original.id ?? 0}`]?.description?.message}
+                    />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -138,7 +192,11 @@ export const ProfileDetailView = <T,>({
             },
             cell: (ctx) =>
                 isRowSelected(ctx?.row?.original.id, selectedRows) ? (
-                    <Input defaultValue={ctx?.getValue?.()?.toString()} {...register(`attributes.${ctx?.row?.original.id ?? 0}.engDescription`)} />
+                    <Input
+                        defaultValue={ctx?.getValue?.()?.toString()}
+                        {...register(`attributes.${ctx?.row?.original.id ?? 0}.engDescription`)}
+                        error={errors.attributes?.[`${ctx?.row?.original.id ?? 0}`]?.engDescription?.message}
+                    />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
@@ -300,7 +358,7 @@ export const ProfileDetailView = <T,>({
                 </div>
                 <div>
                     <h3 className="govuk-heading-m">{t('egov.detail.profileAttributes')}</h3>
-                    <Table columns={columns} data={profileData?.attributes ?? []} />
+                    <Table columns={columns.map((column) => ({ ...column, size: 100 }))} data={profileData?.attributes ?? []} />
                     <div className={styles.underTableButton}>
                         <Button
                             label={t('egov.create.back')}

@@ -286,7 +286,11 @@
         "profile": {
             "editHeader": "Editácia profilu atribútov",
             "createHeader": "Vytvorenie nového profilu atribútov",
-            "detailHeading": "Detail profilu"
+            "detailHeading": "Detail profilu",
+            "nameError": "Meno je povinné",
+            "descriptionError": "Popis je povinný",
+            "engNameError": "Anglické meno je povinné",
+            "engDescriptionError": "Anglický popis je povinný"
         },
         "relation": {
             "editHeader": "Editácia vzťahu",
