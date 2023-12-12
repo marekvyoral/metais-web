@@ -248,7 +248,11 @@
         "profile": {
             "editHeader": "Edit profile",
             "createHeader": "Create new attribute profile",
-            "detailHeading": "Detail of profile"
+            "detailHeading": "Detail of profile",
+            "nameError":"Name is required",
+            "descriptionError": "Description is required",
+            "engNameError": "English name is required",
+            "engDescriptionError": "English description is required"
         },
         "relation": {
             "editHeader": "Edit relation",
