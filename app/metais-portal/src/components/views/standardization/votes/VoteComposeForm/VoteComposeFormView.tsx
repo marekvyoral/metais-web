@@ -240,7 +240,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                 />
                 <div className={styles.inline}>
                     <SimpleSelect
-                        label={t('votes.voteEdit.relatedDraft')}
+                        label={`${t('votes.voteEdit.relatedDraft')} (${t('createEntity.required')})`}
                         options={standardRequestOptions}
                         setValue={setValue}
                         value={selectedRequestId}
@@ -248,6 +248,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                         id="standardRequest"
                         className={classNames(styles.stretch)}
                         error={formState.errors['standardRequest']?.message}
+                        isClearable={false}
                     />
 
                     <Button
@@ -261,7 +262,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
 
                 <TextArea
                     rows={2}
-                    label={t('votes.voteEdit.description')}
+                    label={`${t('votes.voteEdit.description')} (${t('createEntity.required')})`}
                     id="voteDescription"
                     placeholder={t('votes.voteEdit.generalPlaceholder')}
                     {...register('voteDescription')}

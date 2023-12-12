@@ -1911,8 +1911,8 @@
         "voteEdit": {
             "newVoteTitle": "Pridať nové hlasovanie",
             "editVoteTitle": "Upraviť hlasovanie",
-            "subject": "Predmet hlasovania (znenie otázky) (povinné): ",
-            "relatedDraft": "Hlasovanie sa týka návrhu:",
+            "subject": "Predmet hlasovania (znenie otázky) (povinné)",
+            "relatedDraft": "Hlasovanie sa týka návrhu",
             "selectFromList": "Vybrať zo zoznamu",
             "description": "Popis",
             "generalPlaceholder": "Zadajte",

@@ -1893,8 +1893,8 @@
         "voteEdit": {
             "newVoteTitle": "Add new vote",
             "editVoteTitle": "Edit vote",
-            "subject": "Vote subject (required): ",
-            "relatedDraft": "Related Draft:",
+            "subject": "Vote subject (required) ",
+            "relatedDraft": "Related Draft",
             "selectFromList": "Select from list",
             "description": "Description",
             "generalPlaceholder": "Enter",
