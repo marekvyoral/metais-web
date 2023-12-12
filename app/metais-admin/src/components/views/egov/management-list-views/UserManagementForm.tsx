@@ -14,6 +14,7 @@ import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { SPACES_REGEX } from '@isdd/metais-common/constants'
 
 import { InputNames, UserDetailForm } from './UserDetailForm'
 import { UserManagementFormButtons } from './UserManagementFormButtons'
@@ -61,7 +62,7 @@ export const UserManagementForm: React.FC<Props> = ({ detailData, managementData
     const loginString = `${values[InputNames.FIRST_NAME]?.trim()}${values[InputNames.LAST_NAME] ? '.' + values[InputNames.LAST_NAME]?.trim() : ''}`
 
     useEffect(() => {
-        methods.setValue(InputNames.LOGIN, loginValue ? loginValue : '')
+        methods.setValue(InputNames.LOGIN, loginValue ? loginValue.replace(SPACES_REGEX, '') : '')
     }, [loginValue, methods])
 
     const { isError: availableLoginError, isFetching } = useGetAvailableLogin(loginString, setLoginValue, 500, isCreate)

@@ -1,6 +1,6 @@
 import { object, string } from 'yup'
 import { TFunction } from 'i18next'
-import { REGEX_EMAIL, phoneOrEmptyStringRegex } from '@isdd/metais-common/constants'
+import { LOWER_CASE_NUMBER_DOT_REGEX, REGEX_EMAIL, phoneOrEmptyStringRegex } from '@isdd/metais-common/constants'
 
 import { InputNames } from './UserDetailForm'
 
@@ -24,6 +24,7 @@ export const getUserManagementFormSchema = (t: TFunction<'translation', undefine
             ),
         [InputNames.LOGIN]: string()
             .test('no-spaces', t('managementList.noSpacesError', { value: t('managementList.login') }), (value) => !/\s/.test(value ?? ''))
+            .matches(LOWER_CASE_NUMBER_DOT_REGEX, t('managementList.loginFormat'))
             .required(t('managementList.required', { value: t('managementList.login') }))
             .max(LOGIN_MAXIMUM_CHARS, `${t('managementList.login')} ${t('managementList.MustBeMaximum', { charsNumber: LOGIN_MAXIMUM_CHARS })}`),
         [InputNames.EMAIL]: string()

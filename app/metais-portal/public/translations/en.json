@@ -1988,7 +1988,9 @@
         "format": {
             "name": "This field can not contain special signs as '@,&' etc.",
             "email": "Email should be for example in format  name.surname@domain.com",
-            "phone": "Phone number format is incorrect."
+            "phone": "Phone number format is incorrect.",
+            "login": "Login accepts only lowercase letters, numbers and dots.",
+            "noSpaces": "Spaces can not be included in this field"
         },
         "submit": "Register",
         "title": "Registration",
