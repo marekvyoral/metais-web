@@ -1,6 +1,6 @@
 import React, { SetStateAction, useCallback } from 'react'
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
-import { Group, useFind2111Hook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Find2111Params, Group, useFind2111Hook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { OptionProps, components } from 'react-select'
 import { useTranslation } from 'react-i18next'
 
@@ -19,8 +19,13 @@ export const GroupSelect: React.FC<IGroupSelect> = ({ selectedGroup, setSelected
     const loadGroupOptions = useCallback(
         async (searchQuery: string, additional: { page: number } | undefined) => {
             const page = !additional?.page ? 1 : (additional?.page || 0) + 1
+            const request: Find2111Params = {
+                sortBy: 'name',
+                ascending: false,
+            }
+            if (searchQuery && searchQuery.length > 0) request.name = searchQuery
 
-            const groupOptions = await groupOptionsHook({ sortBy: 'name', ascending: false, name: searchQuery })
+            const groupOptions = await groupOptionsHook(request)
 
             return {
                 options: (groupOptions as Group[]) || [],
