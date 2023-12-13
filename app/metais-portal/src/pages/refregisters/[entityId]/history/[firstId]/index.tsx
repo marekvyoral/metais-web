@@ -58,6 +58,8 @@ const RefRegistersCompareSinglePage: React.FC = () => {
                                             <HistoryCompareView
                                                 ciTypeData={props.ciTypeData}
                                                 dataFirst={props.dataFirst}
+                                                dataRelationFirst={props.dataRelationFirst}
+                                                dataRelationSecond={props.dataRelationSecond}
                                                 dataSec={props.dataSec}
                                                 attributesData={attributesData}
                                                 isSimple

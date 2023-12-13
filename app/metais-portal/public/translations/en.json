@@ -401,6 +401,7 @@
     "ciInformationAccordion": {
         "info": "Information",
         "basicInformation": "Basic information",
+        "relations": "Relations",
         "owner": "Manager",
         "error": "Technical error occurred while fetching data and some items might not have assigned value. In case the error occurred repeatedly, contact the administrator by e-mail."
     },

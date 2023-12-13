@@ -9,6 +9,9 @@ import { CheckBox } from '@isdd/idsk-ui-kit/index'
 import { CiType, AttributeConstraintEnumAllOf, Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { HistoryCompareItemView } from './HistoryCompareItemView'
+import { RelationCompareItemView } from './RelationCompareItemView'
+
+import { IRelationItem } from '@/components/containers/HistorySingleItemCompareContainer'
 
 export interface AttributesData {
     ciTypeData: CiType | undefined
@@ -19,6 +22,8 @@ export interface IHistoryCompareViewProps {
     ciTypeData: CiType | undefined
     dataFirst: HistoryVersionUiConfigurationItemUi | undefined
     dataSec: HistoryVersionUiConfigurationItemUi | undefined
+    dataRelationFirst?: IRelationItem[]
+    dataRelationSecond?: IRelationItem[]
     attributesData?: AttributesData
     isSimple?: boolean
 }
@@ -31,7 +36,15 @@ enum AttributeType {
     ENUM = 'enum',
 }
 
-export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({ ciTypeData, dataFirst, dataSec, attributesData, isSimple }) => {
+export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({
+    ciTypeData,
+    dataFirst,
+    dataSec,
+    attributesData,
+    isSimple,
+    dataRelationFirst,
+    dataRelationSecond,
+}) => {
     const { t, i18n } = useTranslation()
     const [showOnlyChanges, setShowOnlyChanges] = useState<boolean>(false)
     const languageEn = 'en'
@@ -164,7 +177,6 @@ export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({ ciTypeD
                     isOpen: setOpenProfile(),
                     hide: showOnlyChanges && !isSimple && !haveDiff(profile.attributes || []),
                     stepLabel: { label: (index + 2).toString(), variant: 'circle' } as IStepLabel,
-                    last: attProfiles.length === index + 1 ? true : false,
                     content: (
                         <DefinitionList>
                             {profile.attributes &&
@@ -185,6 +197,22 @@ export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({ ciTypeD
                     ),
                 }
             }),
+            {
+                title: t('ciInformationAccordion.relations'),
+                change: !isSimple && haveDiff(ciTypeData?.attributes || []),
+                isOpen: setOpenProfile(),
+                hide: showOnlyChanges && !isSimple && !haveDiff(ciTypeData?.attributes || []),
+                stepLabel: { label: (attProfiles.length + 2).toString(), variant: 'circle' },
+                last: true,
+                content: (
+                    <RelationCompareItemView
+                        label={t('ciInformationAccordion.relations')}
+                        tooltip={''}
+                        dataRelationFirst={dataRelationFirst}
+                        dataRelationSecond={dataRelationSecond}
+                    />
+                ),
+            },
         ] ?? []
 
     return (

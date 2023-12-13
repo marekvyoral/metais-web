@@ -4,7 +4,7 @@ import { PaginatorWrapper } from '@isdd/idsk-ui-kit/paginatorWrapper/PaginatorWr
 import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 import { HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { QueryFeedback, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
+import { QueryFeedback } from '@isdd/metais-common/index'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -100,7 +100,7 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
             accessorFn: (row) => row?.actionTime,
             header: t('historyTab.table.actionTime'),
             id: '2',
-            cell: (row) => formatDateTimeForDefaultValue(row.getValue() as string),
+            cell: (row) => t('dateTime', { date: row.getValue() }),
         },
         {
             accessorFn: (row) => row?.actionBy,
