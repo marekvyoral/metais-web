@@ -58,6 +58,8 @@ const ComparePage: React.FC = () => {
                                                 dataFirst={props.dataFirst}
                                                 dataSec={props.dataSec}
                                                 attributesData={attributesData}
+                                                dataRelationFirst={props.dataRelationFirst}
+                                                dataRelationSecond={props.dataRelationSecond}
                                             />
                                         )
                                     }}

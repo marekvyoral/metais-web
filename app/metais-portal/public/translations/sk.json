@@ -402,6 +402,7 @@
     "ciInformationAccordion": {
         "info": "Informácie",
         "basicInformation": "Základné informácie",
+        "relations": "Vzťahy",
         "owner": "Správca",
         "error": "Pri načítavaní dát sa vyskytla technická chyba a niektoré položky nemusia mať priradené hodnoty. V prípade, že sa chyba vyskytuje opakovane, kontaktujte administrátora e-mailom."
     },
@@ -688,7 +689,7 @@
             "note": "Poznámka",
             "attachements": "Prílohy"
         },
-        "compareButtonLabel": "Porovnať vybrane záznamy",
+        "compareButtonLabel": "Porovnať vybrané záznamy",
         "compare": {
             "modified": "{{date}}"
         },

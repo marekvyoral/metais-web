@@ -1,8 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { QueryFeedback } from '@isdd/metais-common/index'
+import { GET_ENUM, QueryFeedback } from '@isdd/metais-common/index'
 import { ConfigurationItemUi, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
+import { useGetEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
 import { RelationAttribute } from '@/components/entities/cards/RelationAttribute'
 
@@ -15,10 +16,11 @@ interface ConfigurationItemHistoryDetail {
 
 export const ConfigurationItemHistoryDetailView: React.FC<ConfigurationItemHistoryDetail> = ({ data, roleParticipant, isLoading, isError }) => {
     const { t } = useTranslation()
+    const { data: sources, isLoading: isLoadingSources, isError: isErrorSources } = useGetEnum(GET_ENUM.ZDROJ)
 
     const metaAtributes = data?.metaAttributes
     return (
-        <QueryFeedback loading={isLoading} error={isError} withChildren>
+        <QueryFeedback loading={isLoading || isLoadingSources} error={isError || isErrorSources} withChildren>
             <DefinitionList>
                 <RelationAttribute
                     name={t('historyTab.configurationItemView.state')}
@@ -35,7 +37,10 @@ export const ConfigurationItemHistoryDetailView: React.FC<ConfigurationItemHisto
                     name={t('historyTab.configurationItemView.lastModifiedAt')}
                     value={t('dateTime', { date: metaAtributes?.lastModifiedAt })}
                 />
-                <RelationAttribute name={t('historyTab.configurationItemView.source')} value={data?.attributes?.Gen_Profil_zdroj} />
+                <RelationAttribute
+                    name={t('historyTab.configurationItemView.source')}
+                    value={sources?.enumItems?.find((en) => en.code === data?.attributes?.Gen_Profil_zdroj)?.value}
+                />
             </DefinitionList>
         </QueryFeedback>
     )
