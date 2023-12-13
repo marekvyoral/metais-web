@@ -20,7 +20,7 @@ stages:
     - build-docker
     - deploy-okd-feature
     - deploy-okd-develop
-    - deploy
+    - cleanup
     - push-azure-registry
 
 workflow:
@@ -142,6 +142,18 @@ deploy-okd-feature:
          - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/i  || $CI_COMMIT_REF_NAME =~ /^met-[^\/]+\/.+$/i || $CI_COMMIT_REF_NAME =~ /^bug\/.+$/i
            when: on_success
 
+cleanup-feature-helm:
+  stage: cleanup
+  image: gitlab.isdd.sk:4567/isdd-docker/base-images/kubectl-delivery:1-0-0
+  script:
+    - echo "Cleaning up Helm release for feature branch..."
+    - oc login --token=eyJhbGciOiJSUzI1NiIsImtpZCI6IlRBZjI2NXItcVZhM3ZiTjZlakpDYjhHUW1ib0VwU21DaEt5eGdORFM5T1UifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJtZXRhaXMzIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImdpdGxhYi1kZXBsb3llci10b2tlbi1obDdtdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJnaXRsYWItZGVwbG95ZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJjODUwOGVkMS1lN2E4LTQ5MzEtOGJhOS05OWYxNmMzM2VlZGYiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6bWV0YWlzMzpnaXRsYWItZGVwbG95ZXIifQ.Q6rYZSlnNYLk4Q3PfiBnlei0xc3Pmh9u-QJgznlDff_LQyc_gj1wREIiu9PxIrzdj89SqgxiZeo5qrzLsXTg_mSm6TNEC3nIk2Lt4TmSTdUE1Ih2waJKnXGjJs5JE2XY5PF7FgU9WXfbvtZyFcJmfBBipI3_dABeObj_afpR55YU2UsVoJ_Swu6PpsrXZELkqPQamn6qpljBWGA8_LRH2pxSS4Nb3KRfuQiZJI0dN3rhZwQ01ovoALOAgPfECzcaaaaw0i3gwhHaTkSpgW2PiPdQb7cfip_R4xd3QQUEN2zThfjNS7ihcqk4uXA56Heg6tplBP5GqwQFGsa3-32rug --server=https://api.dev.isdd.sk:6443
+    - helm uninstall "feature-${CI_COMMIT_REF_NAME}" -n metais3
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/ && $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+
+
 deploy-okd-develop:
     stage: deploy-okd-develop
     image: gitlab.isdd.sk:4567/isdd-docker/okd/alpine:1-3-0
@@ -153,6 +165,8 @@ deploy-okd-develop:
     rules:
         - if: $CI_COMMIT_TAG =~ /^isdd-dev.+$/
           when: on_success
+
+
 
 push-azure-registry: 
   stage: push-azure-registry  
