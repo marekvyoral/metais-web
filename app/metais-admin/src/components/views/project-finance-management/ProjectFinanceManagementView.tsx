@@ -38,7 +38,6 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
             program,
         },
     })
-
     const resetSelectedColumns = () => {
         setSelectedColumns([...getProjectsFinanceManagementSelectedColumns(t)])
     }
@@ -245,7 +244,17 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
                         handleFilterChange={handleFilterChange}
                     >
                         {!editing ? (
-                            <Button label={t('actionsInTable.edit')} onClick={() => setEditing(true)} variant="secondary" bottomMargin={false} />
+                            <Button
+                                label={t('actionsInTable.edit')}
+                                onClick={() => {
+                                    setEditing(true)
+                                    if (program) {
+                                        reset({ program: program })
+                                    }
+                                }}
+                                variant="secondary"
+                                bottomMargin={false}
+                            />
                         ) : (
                             <>
                                 <Button
