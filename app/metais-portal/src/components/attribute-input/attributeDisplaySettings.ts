@@ -2,6 +2,7 @@ import styles from '../create-entity/createEntity.module.scss'
 
 export enum AttributesConfigTechNames {
     METAIS_CODE = 'Gen_Profil_kod_metais',
+    DECISION_TYPE = 'Profil_Osobitny_Postup_typ_rozhodnutia',
     REFERENCE_ID = 'Gen_Profil_ref_id',
     EFF_DATE_FROM = 'Profil_Osobitny_Postup_datum_ucinnosti_od',
     EFF_DATE_TO = 'Profil_Osobitny_Postup_datum_ucinnosti_do',
