@@ -13,7 +13,6 @@ export const MembershipHistoryContainer: React.FC = () => {
             id: 'identity',
             header: t('groups.userName'),
             accessorKey: 'identity',
-            enableSorting: true,
             meta: {
                 getCellContext: (ctx) => `${(ctx.getValue() as Person).firstName} ${(ctx.getValue() as Person).lastName}`,
             },
@@ -29,7 +28,6 @@ export const MembershipHistoryContainer: React.FC = () => {
             id: 'orgName',
             header: t('groups.organization'),
             accessorKey: 'orgName',
-            enableSorting: true,
             size: 310,
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
@@ -39,7 +37,6 @@ export const MembershipHistoryContainer: React.FC = () => {
             id: 'roleDesc',
             header: t('groups.role'),
             accessorKey: 'roleDesc',
-            enableSorting: true,
             size: 140,
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.(),
