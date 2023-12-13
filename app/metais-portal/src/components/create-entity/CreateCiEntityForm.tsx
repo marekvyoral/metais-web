@@ -136,7 +136,11 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     useEffect(() => {
         setValue(AttributesConfigTechNames.REFERENCE_ID, referenceIdValue)
         setValue(AttributesConfigTechNames.METAIS_CODE, metaIsCodeValue)
-    }, [metaIsCodeValue, referenceIdValue, setValue])
+        setValue(
+            AttributesConfigTechNames.DECISION_TYPE,
+            attributes.find((attr) => attr?.technicalName == AttributesConfigTechNames.DECISION_TYPE)?.defaultValue,
+        )
+    }, [attributes, metaIsCodeValue, referenceIdValue, setValue])
 
     const sections: ISection[] =
         [
