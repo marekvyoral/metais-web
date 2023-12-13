@@ -83,7 +83,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
             ],
         },
         {
-            title: t('navMenu.publicAuthorities'),
+            title: t('navMenu.publicAuthoritiesNav'),
             path: RouteNames.HOW_TO_PO,
             subItems: [
                 {
@@ -115,7 +115,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
             path: NavigationSubRoutes.AKTIVITA,
         },
         {
-            title: t('navMenu.publicAuthorities'),
+            title: t('navMenu.publicAuthoritiesNav'),
             path: NavigationSubRoutes.PROCESSORS_OF_IT_DEVELOPMENT_CONCEPTS,
         },
         ...commonRoutes,
@@ -164,7 +164,7 @@ export const getPortalNavigationItems = (
 
         {
             path: RouteNames.HOW_TO_MONITORING,
-            title: t('navMenu.monitoring'),
+            title: t('navMenu.monitoringNav'),
             icon: MonitoringIcon,
             subItems: [
                 { title: t('navMenu.reports'), path: RouteNames.REPORTS },

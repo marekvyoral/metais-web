@@ -22,7 +22,7 @@
             "title": "Služby a informácie",
             "rations": "Dávky",
             "lifeEvents": "Narodenia, úmrtia, sobáše a starostlivosť",
-            "business": "Podnikanie a samostatne zárobkovej činnosti",
+            "business": "Podnikanie a samostatne zárobková činnosť",
             "care": "Starostlivosť o deti a rodičovstvo",
             "population": "Obyvateľstvo a život v Spojenom kráľovstve",
             "criminality": "Kriminalita, spravodlivosť a zákon",
@@ -52,10 +52,9 @@
             "cookies": "Súbory cookies",
             "contact": "Kontakt",
             "terms": "Obchodné podmienky",
-            "servicesCzech": "Zoznam služieb v cestine"
+            "servicesCzech": "Zoznam služieb v češtine"
         },
         "created": "Vytvorené",
-        "createdBy": "Úradom pre digitálne služby vlády",
         "license": "Open Government Licence v3.0",
         "licenseIf": ", pokiaľ nie je uvedené inak",
         "rights": "© Autorské práva"
