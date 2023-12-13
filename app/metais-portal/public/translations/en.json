@@ -603,7 +603,8 @@
         "browse": "No file is selected (Max. file size 20MB)",
         "import": "Import",
         "cancel": "Cancel",
-        "validate": "Validate"
+        "validate": "Validate",
+        "done" : "Files are imported successfully!"
     },
     "exportItemsOrRelations": {
         "header": "Export items or relations",

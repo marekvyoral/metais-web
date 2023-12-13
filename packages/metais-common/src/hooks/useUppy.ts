@@ -6,19 +6,11 @@ import '@uppy/status-bar/dist/style.min.css'
 import { useTranslation } from 'react-i18next'
 import sk_SK from '@uppy/locales/lib/sk_SK'
 import en_US from '@uppy/locales/lib/en_US'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table'
-import { ProgressInfoList } from '@isdd/metais-common/components/file-import/FileImportList'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-
-const uppy = new Uppy({
-    autoProceed: false,
-})
-
-uppy.use(XHRUpload, {
-    endpoint: '',
-})
+import { useCountdown } from '@isdd/metais-common/hooks/useCountdown'
 
 interface iUseUppy {
     allowedFileTypes?: string[] // if undefined all file types are allowed
@@ -31,6 +23,18 @@ interface iUseUppy {
     setFileUuidAsync?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => Promise<{ uuid: string }>
 }
 
+export type UploadingFileState = {
+    fileId: string
+    fileName?: string
+    uploadError?: string
+    validationError?: string
+    isUploaded: boolean
+}
+
+export type UploadingFilesStatus = UploadingFileState[]
+
+const TIME_TO_HIDE_GENERAL_ERRORS_IN_SECONDS = 5
+
 export const useUppy = ({
     maxFileSize = 20_971_520,
     allowedFileTypes,
@@ -41,13 +45,94 @@ export const useUppy = ({
     setFileUuidAsync,
     fileImportStep,
 }: iUseUppy) => {
+    const { i18n, t } = useTranslation()
+    const uppy = useMemo(() => {
+        const uppyInstance = new Uppy({
+            autoProceed: false,
+            locale: i18n.language === 'sk' ? sk_SK : en_US,
+        })
+        uppyInstance.use(XHRUpload, {
+            endpoint: '',
+        })
+        return uppyInstance
+    }, [i18n.language])
     const {
         state: { token },
     } = useAuth()
-    const { i18n, t } = useTranslation()
+
     const [currentFiles, setCurrentFiles] = useState<UppyFile[]>([])
-    const [errorMessages, setErrorMessages] = useState<string[]>([])
-    const [uploadFileProgressInfo, setUploadFileProgressInfo] = useState<ProgressInfoList[]>([])
+    const [generalErrorMessages, setGeneralErrorMessages] = useState<string[]>([])
+    const [uploadFilesStatus, setUploadFilesStatus] = useState<UploadingFilesStatus>([])
+
+    const removeGeneralErrorMessages = () => {
+        setGeneralErrorMessages([])
+        return
+    }
+
+    useCountdown({
+        shouldCount: generalErrorMessages.length > 0,
+        onCountDownEnd: removeGeneralErrorMessages,
+        timeCountInSeconds: TIME_TO_HIDE_GENERAL_ERRORS_IN_SECONDS,
+    })
+
+    const containsFileId = useCallback(
+        (fileId: string) => {
+            return !!currentFiles.find((cf) => cf.id == fileId)
+        },
+        [currentFiles],
+    )
+
+    const updateUploadFilesStatus = useCallback(
+        (file: UppyFile | undefined, isUploadedSuccessfully = false, errorString?: string) => {
+            if (!file?.id || !containsFileId(file.id)) {
+                errorString && setGeneralErrorMessages((prev) => [...prev, errorString])
+                return
+            }
+            if (isUploadedSuccessfully) {
+                setUploadFilesStatus((current) => [
+                    ...current.filter((c) => c.fileId !== file?.id),
+                    { fileId: file?.id ?? '', fileName: file?.name, uploadError: undefined, isUploaded: isUploadedSuccessfully },
+                ])
+                return
+            }
+            setUploadFilesStatus((current) => [
+                ...current,
+                { fileId: file?.id ?? '', fileName: file?.name, uploadError: errorString, isUploaded: isUploadedSuccessfully },
+            ])
+        },
+        [containsFileId],
+    )
+
+    const filterUploadFilesStatusRecords = (fileIds: string[]) => {
+        setUploadFilesStatus((prev) => prev.filter((x) => fileIds.includes(x.fileId)))
+    }
+
+    const clearUploadFilesStatus = () => {
+        setUploadFilesStatus([])
+    }
+
+    const addGeneralErrorMessage = (errorMessage: string) => {
+        setGeneralErrorMessages((prev) => [...prev, errorMessage])
+        return
+    }
+
+    const resetProgressState = () => {
+        uppy.resetProgress()
+    }
+
+    const changeFileImportStep = () => {
+        switch (fileImportStep) {
+            case FileImportStepEnum.VALIDATE:
+                setFileImportStep(FileImportStepEnum.IMPORT)
+                break
+            case FileImportStepEnum.IMPORT:
+                setFileImportStep(FileImportStepEnum.DONE)
+                break
+
+            default:
+                FileImportStepEnum.IMPORT
+        }
+    }
 
     useEffect(() => {
         const language = i18n.language === 'sk' ? sk_SK : en_US
@@ -67,18 +152,18 @@ export const useUppy = ({
                 },
             },
         })
-    }, [allowedFileTypes, i18n.language, maxFileSize, multiple])
+    }, [allowedFileTypes, i18n.language, maxFileSize, multiple, uppy])
 
     useEffect(() => {
         uppy.getPlugin('XHRUpload')?.setOptions({
             endpoint: endpointUrl,
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token}`, 'Accept-Language': i18n.language },
         })
-    }, [token, endpointUrl])
+    }, [token, endpointUrl, i18n.language, uppy])
 
     useEffect(() => {
-        const fileErrorCallback = (_file: UppyFile | undefined, error: Error) => {
-            setErrorMessages((prev) => [...prev, error.message])
+        const fileErrorCallback = (file: UppyFile | undefined, error: Error) => {
+            updateUploadFilesStatus(file, false, error.message)
         }
         const fileAdded = async (file: UppyFile<Record<string, unknown>, Record<string, unknown>>) => {
             if (setCustomFileMeta) uppy.setFileMeta(file?.id, setCustomFileMeta?.(file))
@@ -104,7 +189,7 @@ export const useUppy = ({
                 setFileImportStep(FileImportStepEnum.VALIDATE)
             }
             const remainingFileIds = files.map((x) => x.id)
-            setUploadFileProgressInfo((prev) => prev.filter((x) => remainingFileIds.includes(x.id)))
+            filterUploadFilesStatusRecords(remainingFileIds)
         }
 
         uppy.on('file-added', fileAdded)
@@ -115,9 +200,10 @@ export const useUppy = ({
             uppy.off('file-removed', fileRemoved)
             uppy.off('restriction-failed', fileErrorCallback)
         }
-    }, [endpointUrl, setCustomFileMeta, setFileImportStep, setFileUuidAsync])
+    }, [endpointUrl, setCustomFileMeta, setFileImportStep, setFileUuidAsync, updateUploadFilesStatus, uppy])
 
     const handleUpload = async () => {
+        resetProgressState()
         uppy.getFiles().forEach((file) => {
             uppy.setFileState(file.id, {
                 progress: { uploadComplete: false, uploadStarted: false },
@@ -126,33 +212,25 @@ export const useUppy = ({
         try {
             await uppy.upload().then((result) => {
                 if (result.successful.length > 0) {
-                    setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
+                    changeFileImportStep()
                 }
-
-                const successfulFilesInfo = result.successful.map((item) => ({
-                    id: item.id,
-                    error: false,
-                }))
-                const failedFilesInfo = result.failed.map((item) => ({
-                    id: item.id,
-                    error: true,
-                }))
-
-                setUploadFileProgressInfo([...successfulFilesInfo, ...failedFilesInfo])
+                result.successful.forEach((item) => updateUploadFilesStatus(item, true))
+                result.failed.forEach((item) => updateUploadFilesStatus(item, false, item.error))
             })
         } catch (error) {
-            setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
+            addGeneralErrorMessage(t('fileImport.uploadFailed'))
         }
     }
+
     const handleRemoveFile = (fileId: string) => {
         uppy.removeFile(fileId)
     }
 
     const cancelImport = () => {
-        setErrorMessages([])
+        removeGeneralErrorMessages()
         setCurrentFiles([])
-        setUploadFileProgressInfo([])
-        uppy.resetProgress()
+        clearUploadFilesStatus()
+        resetProgressState()
         uppy.setState({ files: {} })
     }
 
@@ -162,9 +240,11 @@ export const useUppy = ({
         handleRemoveFile,
         cancelImport,
         uppy,
-        errorMessages,
-        setErrorMessages,
-        uploadFileProgressInfo,
-        setUploadFileProgressInfo,
+        generalErrorMessages,
+        addGeneralErrorMessage,
+        removeGeneralErrorMessages,
+        uploadFilesStatus,
+        updateUploadFilesStatus,
+        resetProgressState,
     }
 }

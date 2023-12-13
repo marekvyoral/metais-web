@@ -9,9 +9,10 @@ import styles from './FileImport.module.scss'
 
 interface IFileImportDragDrop {
     uppy: Uppy
+    hideNoSelectedFileToImport?: boolean
 }
 
-export const FileImportDragDrop: React.FC<IFileImportDragDrop> = ({ uppy }) => {
+export const FileImportDragDrop: React.FC<IFileImportDragDrop> = ({ uppy, hideNoSelectedFileToImport }) => {
     const { t } = useTranslation()
 
     return (
@@ -30,7 +31,7 @@ export const FileImportDragDrop: React.FC<IFileImportDragDrop> = ({ uppy }) => {
                         <FileInput uppy={uppy} />
                     </div>
 
-                    <TextBody size="S">{t('fileImport.browse')}</TextBody>
+                    {!hideNoSelectedFileToImport && <TextBody size="S">{t('fileImport.browse')}</TextBody>}
                 </div>
             </div>
             <DragDropComponent className={styles.dragdrop} uppy={uppy} width="100%" height="240px" note="" />

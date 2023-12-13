@@ -1,12 +1,10 @@
 import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
-import { useUppy } from '@isdd/metais-common/hooks/useUppy'
+import { UploadingFilesStatus, useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { FileImportStepEnum } from '@isdd/metais-common/index'
 import { useGetUuidHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { StatusBar } from '@uppy/react'
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
-import { TextBody } from '@isdd/idsk-ui-kit/index'
-import { FileImportList, ProgressInfoList } from '@isdd/metais-common/components/file-import/FileImportList'
-import { CloseIcon, ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
+import { FileImportList } from '@isdd/metais-common/components/file-import/FileImportList'
 import { UppyFile } from '@uppy/core'
 
 import styles from './FileUpload.module.scss'
@@ -56,25 +54,32 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
         const fileUploadURL = endpointUrl ?? `${baseURL}${'/file/'}`
         const fileUuidsMapping = useRef<{ [fileId: string]: string }>({})
         const generateUuid = useGetUuidHook()
-        const { uppy, setErrorMessages, currentFiles, uploadFileProgressInfo, handleRemoveFile, handleUpload, errorMessages, cancelImport } = useUppy(
-            {
-                maxFileSize: maxFileSizeInBytes,
-                allowedFileTypes,
-                multiple,
-                endpointUrl: fileUploadURL,
-                setFileImportStep: () => {
-                    return
-                },
-                setFileUuidAsync: isUsingUuidInFilePath
-                    ? async (file): Promise<{ uuid: string }> => {
-                          const uuid = await generateUuid()
-                          fileUuidsMapping.current[`${file?.id}`] = uuid
-                          return { uuid }
-                      }
-                    : undefined,
-                fileImportStep: FileImportStepEnum.IMPORT,
+        const {
+            uppy,
+            removeGeneralErrorMessages,
+            currentFiles,
+            uploadFilesStatus,
+            handleRemoveFile,
+            handleUpload,
+            generalErrorMessages,
+            cancelImport,
+        } = useUppy({
+            maxFileSize: maxFileSizeInBytes,
+            allowedFileTypes,
+            multiple,
+            endpointUrl: fileUploadURL,
+            setFileImportStep: () => {
+                return
             },
-        )
+            setFileUuidAsync: isUsingUuidInFilePath
+                ? async (file): Promise<{ uuid: string }> => {
+                      const uuid = await generateUuid()
+                      fileUuidsMapping.current[`${file?.id}`] = uuid
+                      return { uuid }
+                  }
+                : undefined,
+            fileImportStep: FileImportStepEnum.IMPORT,
+        })
 
         const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -87,12 +92,12 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
         )
 
         useEffect(() => {
-            onErrorOccurred?.(errorMessages)
-        }, [errorMessages, onErrorOccurred])
+            onErrorOccurred?.(generalErrorMessages)
+        }, [generalErrorMessages, onErrorOccurred])
 
-        const getUploadedFilesData = (currentFilesToUpload: UppyFile[], fileProgressInfo: ProgressInfoList[]) => {
-            const uploadedFilesData: FileUploadData[] = fileProgressInfo.map((ufl) => {
-                const currentFile = currentFilesToUpload.find((cf) => cf.id == ufl.id)
+        const getUploadedFilesData = (currentFilesToUpload: UppyFile[], uploadingFilesStatus: UploadingFilesStatus) => {
+            const uploadedFilesData: FileUploadData[] = uploadingFilesStatus.map((ufs) => {
+                const currentFile = currentFilesToUpload.find((cf) => cf.id == ufs.fileId)
                 return {
                     fileId: fileUuidsMapping.current[`${currentFile?.id}`],
                     fileName: currentFile?.name ?? '',
@@ -100,7 +105,7 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
                     fileSizeString: currentFile?.size.toString() ?? '',
                     fileType: currentFile?.type,
                     uploadComplete: currentFile?.progress?.uploadComplete,
-                    hasError: ufl.error,
+                    hasError: !!ufs.uploadError,
                 }
             })
             return uploadedFilesData
@@ -115,12 +120,12 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
 
         useEffect(() => {
             if (isLoading) {
-                const uploadedFilesData = getUploadedFilesData(currentFiles, uploadFileProgressInfo)
+                const uploadedFilesData = getUploadedFilesData(currentFiles, uploadFilesStatus)
                 uploadSuccess(uploadedFilesData)
                 setIsLoading(false)
             }
             // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [currentFiles, uploadFileProgressInfo])
+        }, [currentFiles, uploadFilesStatus])
 
         useImperativeHandle(
             ref,
@@ -148,8 +153,8 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
                         })
                     },
                     getUploadedFiles() {
-                        return uploadFileProgressInfo.map<FileUploadData>((ufl) => {
-                            const currentFile = currentFiles.find((cf) => cf.id == ufl.id)
+                        return uploadFilesStatus.map<FileUploadData>((ufs) => {
+                            const currentFile = currentFiles.find((cf) => cf.id == ufs.fileId)
                             return {
                                 fileId: currentFile?.id,
                                 fileName: currentFile?.name ?? '',
@@ -157,34 +162,18 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
                                 fileSizeString: currentFile?.size.toString() ?? '',
                                 fileType: currentFile?.type,
                                 uploadComplete: currentFile?.progress?.uploadComplete,
-                                hasError: ufl.error,
+                                hasError: !!ufs.uploadError,
                             }
                         })
                     },
                 }
             },
-            [cancelImport, currentFiles, handleUpload, onUploadingStart, uploadFileProgressInfo],
+            [cancelImport, currentFiles, handleUpload, onUploadingStart, uploadFilesStatus],
         )
 
         return (
             <>
-                <FileImportDragDrop uppy={uppy} />
-                {errorMessages.length > 0 && (
-                    <div className={styles.errorWrapper}>
-                        <img src={CloseIcon} onClick={() => setErrorMessages([])} />
-                        <ul>
-                            {errorMessages.map((error, index) => (
-                                <li key={index} className={styles.errorMessages}>
-                                    <img src={ErrorTriangleIcon} />
-                                    <TextBody size="S" className={styles.textError}>
-                                        {error}
-                                    </TextBody>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
-
+                <FileImportDragDrop uppy={uppy} hideNoSelectedFileToImport={currentFiles.length > 0} />
                 <div>
                     <StatusBar
                         className={styles.statusBar}
@@ -195,7 +184,13 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
                         hideRetryButton
                         hideUploadButton
                     />
-                    <FileImportList handleRemoveFile={handleRemoveFile} fileList={currentFiles} progressInfoList={uploadFileProgressInfo} />
+                    <FileImportList
+                        handleRemoveFile={handleRemoveFile}
+                        removeGeneralErrorMessages={removeGeneralErrorMessages}
+                        fileList={currentFiles}
+                        uploadFilesStatus={uploadFilesStatus}
+                        generalErrorMessages={generalErrorMessages}
+                    />
                 </div>
             </>
         )

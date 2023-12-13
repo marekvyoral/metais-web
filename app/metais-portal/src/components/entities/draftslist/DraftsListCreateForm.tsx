@@ -118,7 +118,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
 
     // eslint-disable-next-line no-warning-comments
-    const { uppy, currentFiles, handleRemoveFile, uploadFileProgressInfo, handleUpload } = useUppy({
+    const { uppy, currentFiles, handleRemoveFile, uploadFilesStatus, handleUpload, removeGeneralErrorMessages, generalErrorMessages } = useUppy({
         multiple: true,
         fileImportStep,
         endpointUrl: `${DMS_DOWNLOAD_BASE}`,
@@ -238,7 +238,7 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
                     addNewLink={addNewLink}
                     onDelete={removeLink}
                     errors={errors}
-                    uppyHelpers={{ uppy, uploadFileProgressInfo, handleRemoveFile, currentFiles }}
+                    uppyHelpers={{ uppy, uploadFilesStatus, handleRemoveFile, removeGeneralErrorMessages, generalErrorMessages, currentFiles }}
                 />
                 <div className={styles.buttonGroup}>
                     <Button

@@ -150,6 +150,38 @@ $govuk-global-styles: true;
     }
 }
 
+.generalErrorWrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.fileErrorWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        flex-direction: row;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        p {
+            margin: 0;
+            color: govuk-colour('red');
+            font-weight: bold;
+        }
+}
+
+.fileInfoWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+
 .errorWrapper {
     display: flex;
     justify-content: center;
@@ -189,6 +221,12 @@ $govuk-global-styles: true;
             }
         }
     }
+}
+
+.greenBoldText {
+    color: govuk-colour('green') !important;
+    font-weight: bold !important;
+    margin: 0 !important;
 }
 
 .statusBar {

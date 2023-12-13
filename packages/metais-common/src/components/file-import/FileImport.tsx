@@ -46,14 +46,15 @@ export const FileImport: React.FC<IFileImport> = ({
     const [selectedOrg, setSelectedOrg] = useState<HierarchyRightsUi | null>(null)
     const {
         uppy,
-        setUploadFileProgressInfo,
-        setErrorMessages,
+        addGeneralErrorMessage,
+        removeGeneralErrorMessages,
         currentFiles,
-        uploadFileProgressInfo,
         handleRemoveFile,
         handleUpload,
-        errorMessages,
+        generalErrorMessages,
         cancelImport,
+        uploadFilesStatus,
+        updateUploadFilesStatus,
     } = useUppy({
         maxFileSize,
         allowedFileTypes,
@@ -71,37 +72,21 @@ export const FileImport: React.FC<IFileImport> = ({
                     setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
                 }
 
-                const successfulFilesInfo = result.successful.map((item) => ({
-                    id: item.id,
-                    error: false,
-                }))
-                const failedFilesInfo = result.failed.map((item) => ({
-                    id: item.id,
-                    error: true,
-                }))
-
-                const updatedFileIds = [...successfulFilesInfo.map((x) => x.id), ...failedFilesInfo.map((x) => x.id)]
-                setUploadFileProgressInfo((prev) => {
-                    const notUpdated = prev.filter((x) => !updatedFileIds.includes(x.id))
-                    return [...notUpdated, ...successfulFilesInfo, ...failedFilesInfo]
-                })
-                if (result.failed.length > 0) {
-                    const msg = result.failed[0].response?.body.message as string
-                    setErrorMessages((prev) => [...prev, msg])
-                }
+                result.successful.forEach((item) => updateUploadFilesStatus(item, true))
+                result.failed.forEach((item) => updateUploadFilesStatus(item, false, item.error))
             })
         } catch (error) {
-            setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
+            addGeneralErrorMessage(t('fileImport.uploadFailed'))
         }
     }, [
+        addGeneralErrorMessage,
+        updateUploadFilesStatus,
         ciType,
         fileImportStep,
         radioButtonMetaData,
         selectedOrg?.poUUID,
         selectedRole?.roleUuid,
-        setErrorMessages,
         setFileImportStep,
-        setUploadFileProgressInfo,
         t,
         uppy,
     ])
@@ -112,18 +97,22 @@ export const FileImport: React.FC<IFileImport> = ({
         close()
     }
 
+    const handleImport = () => {
+        return fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : handleUpload
+    }
+
     return (
         <BaseModal isOpen={isOpen} close={handleCancelImport}>
             <FileImportView
                 uppy={uppy}
                 currentFiles={currentFiles}
-                handleUpload={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : handleUpload}
-                uploadFileProgressInfo={uploadFileProgressInfo}
+                handleImport={handleImport()}
+                uploadFilesStatus={uploadFilesStatus}
                 handleCancelImport={handleCancelImport}
                 handleRemoveFile={handleRemoveFile}
+                handleRemoveErrorMessage={removeGeneralErrorMessages}
                 setRadioButtonMetaData={setRadioButtonMetaData}
-                setErrorMessages={setErrorMessages}
-                errorMessages={errorMessages}
+                generalErrorMessages={generalErrorMessages}
                 fileImportStep={fileImportStep}
                 radioButtonMetaData={radioButtonMetaData}
                 ciType={ciType}
