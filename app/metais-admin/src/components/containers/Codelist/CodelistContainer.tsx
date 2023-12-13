@@ -78,7 +78,9 @@ export const CodelistContainer: React.FC<ICodelistContainer> = ({ View, defaults
     const {
         data: codelistData,
         isLoading,
+        isFetching,
         isError,
+        refetch,
     } = useListValidEnums({
         query: {
             queryKey: ['codelists'],
@@ -126,15 +128,8 @@ export const CodelistContainer: React.FC<ICodelistContainer> = ({ View, defaults
 
     const updateEnum = useUpdateEnumType({
         mutation: {
-            onSuccess(variables, context) {
-                queryClient.setQueryData(['codelists'], (oldData: EnumTypePreviewList | undefined) => {
-                    if (oldData == null || oldData.results == null) return oldData
-
-                    const itemToUpdateIndex = oldData.results.findIndex((item) => item.code === context.data.code)
-                    return {
-                        results: [...oldData.results.slice(0, itemToUpdateIndex), context.data, ...oldData.results.slice(itemToUpdateIndex + 1)],
-                    }
-                })
+            onSuccess() {
+                refetch()
             },
         },
     })
@@ -196,7 +191,7 @@ export const CodelistContainer: React.FC<ICodelistContainer> = ({ View, defaults
         <View
             filteredData={{ results: filteredSiftData }}
             mutations={{ updateEnum, deleteEnum, createEnum, validateEnum }}
-            isLoading={isLoading}
+            isLoading={isLoading || isFetching}
             isError={isError}
         />
     )

@@ -71,6 +71,7 @@ export const ProfileDetailView = <T,>({
         trigger,
         formState: { errors },
         setValue,
+        reset,
     } = useForm({
         resolver: yupResolver(getProfileAttributeSchema(t)),
         defaultValues: {
@@ -290,7 +291,13 @@ export const ProfileDetailView = <T,>({
                     return (
                         <div className={styles.actions}>
                             <Button onClick={() => handleSaveAttribute(ctx?.row?.original?.id, ctx.row)} label={t('actionsInTable.save')} />
-                            <Button onClick={() => cancelEditing(ctx?.row?.original?.id)} label={t('actionsInTable.cancel')} />
+                            <Button
+                                onClick={() => {
+                                    reset({ attributes: profileData?.attributes ?? [] })
+                                    cancelEditing(ctx?.row?.original?.id)
+                                }}
+                                label={t('actionsInTable.cancel')}
+                            />
                         </div>
                     )
                 } else
