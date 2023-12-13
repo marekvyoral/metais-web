@@ -6,6 +6,7 @@ import {
     useCancelVote,
     useCastVote,
     useGetStandardRequestDetail,
+    useGetVoteActorResult,
     useGetVoteDetail,
     useGetVoteResult,
     useVetoVote,
@@ -41,6 +42,16 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
     } = useGetStandardRequestDetail(voteData?.standardRequestId ?? 0, { query: { enabled: !!voteData?.standardRequestId } })
     const standardRequestLoading = !!voteData?.standardRequestId && srLoading
     const { data: voteResultData, isLoading: voteResultDataLoading, isError: voteResultDataError } = useGetVoteResult(Number(voteId))
+
+    const canDoCast = useMemo((): boolean => {
+        return voteData?.voteActors?.find((va) => va.userId == userLogin) !== undefined
+    }, [userLogin, voteData?.voteActors])
+
+    const {
+        data: voteActorResultData,
+        isLoading: voteActorResultLoading,
+        isError: voteActorResultError,
+    } = useGetVoteActorResult(Number(voteId), userId, { query: { enabled: canDoCast } })
     const { isLoading: castVoteLoading, mutateAsync: castVoteAsyncMutation } = useCastVote()
     const { isLoading: vetoVoteLoading, mutateAsync: vetoVoteAsyncMutation } = useVetoVote()
 
@@ -80,16 +91,12 @@ export const VoteDetailContainer: React.FC<IVoteDetailContainer> = ({ View }) =>
         })
     }
 
-    const canDoCast = useMemo((): boolean => {
-        return voteData?.voteActors?.find((va) => va.userId == userLogin) !== undefined
-    }, [userLogin, voteData?.voteActors])
-
     const castedVoteId = useMemo((): number | undefined => {
-        return voteResultData?.actorResults?.find((ar) => ar.userId == userLogin && ar.votedChoiceId !== null)?.votedChoiceId
-    }, [userLogin, voteResultData?.actorResults])
+        return voteActorResultData?.votedChoiceId
+    }, [voteActorResultData?.votedChoiceId])
 
-    const isLoading = voteDataLoading || voteResultDataLoading || standardRequestLoading || cancelVoteLoading
-    const isError = voteDataError || voteResultDataError || srError
+    const isLoading = voteDataLoading || voteResultDataLoading || standardRequestLoading || cancelVoteLoading || (canDoCast && voteActorResultLoading)
+    const isError = voteDataError || voteResultDataError || srError || voteActorResultError
 
     return (
         <>

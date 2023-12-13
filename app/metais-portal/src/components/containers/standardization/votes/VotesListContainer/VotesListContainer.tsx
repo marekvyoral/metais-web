@@ -38,9 +38,9 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
         ...defaultFilterValues,
     })
 
-    const getVotesParamValues = useMemo((): GetVotesParams => {
+    const votesParamValues = useMemo((): GetVotesParams => {
         const voteParamsData = getVoteParamsData(filter.voteState, filter.effectiveFrom, filter.effectiveTo)
-        const votesParamValues: GetVotesParams = {
+        const votesParams: GetVotesParams = {
             ascending: filter.sort?.[0]?.sortDirection === SortType.ASC,
             onlyMy: filter.votesTypeToShow === VotesListShowEnum.ONLY_MY,
             sortBy: filter.sort?.[0]?.orderBy ?? VotesListColumnsEnum.EFFECTIVE_FROM,
@@ -50,10 +50,10 @@ export const VotesListContainer: React.FC<IVotesListContainer> = ({ View }) => {
             pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
             perPage: filter.pageSize ?? BASE_PAGE_SIZE,
         }
-        return votesParamValues
+        return votesParams
     }, [filter.effectiveFrom, filter.effectiveTo, filter.pageNumber, filter.pageSize, filter.sort, filter.voteState, filter.votesTypeToShow])
 
-    const { data: votesList, isLoading, isFetching, isError, refetch: getVotesRefetch } = useGetVotes(getVotesParamValues)
+    const { data: votesList, isLoading, isFetching, isError, refetch: getVotesRefetch } = useGetVotes(votesParamValues)
 
     return (
         <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent' }}>

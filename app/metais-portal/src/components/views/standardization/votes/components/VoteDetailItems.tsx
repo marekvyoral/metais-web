@@ -6,7 +6,7 @@ import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row
 import { WebLinks } from '@/components/views/standardization/votes/components/WebLinks'
 import { AttachmentLinks } from '@/components/views/standardization/votes/components/AttachmentLinks'
 import styles from '@/components/views/standardization/votes/vote.module.scss'
-import { VoteStateEnum, getVoteStateExplanation } from '@/components/views/standardization/votes/voteProps'
+import { getVoteStateExplanation } from '@/components/views/standardization/votes/voteProps'
 
 export interface IDetailItemData {
     itemTitleContent: string
@@ -22,13 +22,8 @@ export const VoteDetailItems: React.FC<IDetailItemsData> = ({ voteData, srData }
     const { t } = useTranslation()
 
     const voteState = useMemo((): string => {
-        return getVoteStateExplanation(
-            voteData?.veto ? VoteStateEnum.VETOED : voteData?.voteState,
-            voteData?.effectiveFrom ?? '',
-            voteData?.effectiveTo ?? '',
-            t,
-        )
-    }, [t, voteData?.effectiveFrom, voteData?.effectiveTo, voteData?.veto, voteData?.voteState])
+        return getVoteStateExplanation(voteData?.voteState, voteData?.effectiveFrom ?? '', voteData?.effectiveTo ?? '', t)
+    }, [t, voteData?.effectiveFrom, voteData?.effectiveTo, voteData?.voteState])
 
     const hasStandardRequest = !!voteData?.standardRequestId && !!srData?.name
     const isVoteDate = !!voteData?.effectiveFrom && !!voteData?.effectiveTo

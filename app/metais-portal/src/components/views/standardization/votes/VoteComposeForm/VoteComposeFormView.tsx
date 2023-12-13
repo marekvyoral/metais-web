@@ -277,7 +277,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
 
                 <FileUpload
                     ref={fileUploadRef}
-                    allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
+                    allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif', '.csv']}
                     multiple
                     isUsingUuidInFilePath
                     onUploadSuccess={handleUploadSuccess}

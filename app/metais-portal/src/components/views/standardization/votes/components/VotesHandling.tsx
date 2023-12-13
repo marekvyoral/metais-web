@@ -14,6 +14,7 @@ interface ICastVote {
     canCast: boolean
     canVeto: boolean
     castedVoteId: number | undefined
+    vetoed: boolean
 }
 
 interface IChoise {
@@ -26,7 +27,16 @@ interface IChoise {
 
 const VETO_VOTE_ID = -1
 
-export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, handleVetoVote, canCast, canVeto, castedVoteId, voteProcessing }) => {
+export const VotesHandler: React.FC<ICastVote> = ({
+    voteData,
+    handleCastVote,
+    handleVetoVote,
+    canCast,
+    canVeto,
+    castedVoteId,
+    voteProcessing,
+    vetoed,
+}) => {
     const { t } = useTranslation()
     const [votesProcessingError, setVotesProcessingError] = useState<boolean>(false)
     const [voted, setVoted] = useState<boolean>(false)
@@ -76,14 +86,14 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
         if (choiceId == undefined) {
             return
         }
-        const isVeto = choiceId === VETO_VOTE_ID
+        const isVeto = choiceId == VETO_VOTE_ID
 
         try {
             if (isVeto) {
                 await handleVetoVote(choiceDescription)
-                return
+            } else {
+                await handleCastVote(choiceId, choiceDescription)
             }
-            await handleCastVote(choiceId, choiceDescription)
             setVoted(true)
         } catch {
             setVotesProcessingError(true)
@@ -108,7 +118,9 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
             <form onSubmit={handleSubmit(onSubmit)} className={classNames('govuk-!-font-size-19')}>
                 <RadioGroupWithLabel
                     hint={
-                        canCast
+                        vetoed
+                            ? t('votes.voteDetail.vetoed')
+                            : canCast
                             ? alreadyVoted
                                 ? t('votes.voteDetail.voteChoiceLabel.alreadyVoted')
                                 : t('votes.voteDetail.voteChoiceLabel.canCast')
@@ -123,7 +135,7 @@ export const VotesHandler: React.FC<ICastVote> = ({ voteData, handleCastVote, ha
                                 value={choice.id}
                                 label={choice.value ?? ''}
                                 {...register('voteChoice')}
-                                disabled={choice.disabled || voted}
+                                disabled={choice.disabled || voted || vetoed}
                                 defaultChecked={choice.id == castedVoteId}
                             />
                         )
