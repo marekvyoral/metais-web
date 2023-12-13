@@ -4,14 +4,16 @@ import { ApiError } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ListIcon } from '@isdd/metais-common/assets/images'
 import { BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { ActionsOverTable, CreateEntityButton, isRowSelected } from '@isdd/metais-common/index'
-import { ColumnDef } from '@tanstack/react-table'
+import { CellContext, ColumnDef } from '@tanstack/react-table'
 import React, { useCallback, useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { object, string, lazy, ObjectSchema } from 'yup'
+import { TFunction } from 'i18next'
 
 import styles from './codelistsTable.module.scss'
-import { validateRowData } from './codelistTableActions'
 
 import { CodelistsCreateForm } from '@/components/codelists/codelistsCreateForm/CodelistsCreateForm'
 import { CodeListsMutations } from '@/components/containers/Codelist/CodelistContainer'
@@ -43,23 +45,70 @@ export interface CodelistsTableColumnsDefinition extends EnumTypePreview {
     new: boolean
 }
 
+interface EnumSchemaObject {
+    code: string
+    name: string
+    description: string
+    category?: string | null
+}
+
+const getCodelistSchema = (t: TFunction) => {
+    return object({
+        defaultData: lazy((obj) => {
+            const shape: {
+                [key: string]: ObjectSchema<EnumSchemaObject>
+            } = {}
+
+            Object.keys(obj).forEach((key) => {
+                shape[key] = object({
+                    code: string().required(t('validation.required')),
+                    name: string().required(t('validation.required')),
+                    description: string().required(t('validation.required')),
+                    category: string().transform((value) => (value === null ? '' : value)),
+                })
+            })
+
+            return object().shape(shape)
+        }),
+    })
+}
+
 export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutations, isLoading, isError }) => {
     const { t } = useTranslation()
     const { createEnum, validateEnum, updateEnum, deleteEnum } = mutations
     const location = useLocation()
     const navigate = useNavigate()
-    const { register, getValues, setValue, clearErrors } = useForm({
-        defaultValues: {
-            filteredData,
-        },
+
+    const createDefaultData = (): {
+        [x: string]: EnumTypePreview
+    } => {
+        const result = filteredData?.results?.reduce((acc, enumItem) => {
+            return { ...acc, [enumItem.id ?? 0]: enumItem }
+        }, {})
+        return result as { [x: string]: EnumTypePreview }
+    }
+    const defaultData = createDefaultData()
+
+    const {
+        register,
+        getValues,
+        setValue,
+        clearErrors,
+        trigger,
+        reset,
+        watch,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(getCodelistSchema(t)),
+        defaultValues: { defaultData },
     })
 
     const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
     const [currentPage, setCurrentPage] = useState(1)
-    const indexModificator = currentPage * pageSize - pageSize
 
     const [selectedRows, setSelectedRows] = useState<Array<number>>([])
-    const [errorsState, setErrorsState] = useState<IErrorsState[]>([])
+    const [updatingEnum, setUpdatingEnum] = useState(false)
+
     const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false)
     const startOfList = currentPage * pageSize - pageSize
     const endOfList = currentPage * pageSize
@@ -77,46 +126,35 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
     }
 
     const editRow = useCallback(
-        (rowIndex: number) => {
-            setSelectedRows([...selectedRows, rowIndex])
+        (enumId: number) => {
+            setSelectedRows([...selectedRows, enumId])
         },
         [selectedRows],
     )
 
     const cancelEditing = useCallback(
-        (rowIndex: number) => {
-            setSelectedRows([...(selectedRows?.filter((index) => index !== rowIndex) ?? [])])
+        (enumId: number) => {
+            setSelectedRows([...(selectedRows?.filter((id) => id !== enumId) ?? [])])
         },
         [selectedRows],
     )
 
     const handleSaveCodelist = useCallback(
-        async (rowIndex: number) => {
-            setErrorsState([])
-            const editedData = getValues(`filteredData.results.${rowIndex}`)
-            const errors = await validateRowData(
-                {
-                    code: editedData.code,
-                    name: editedData.name,
-                    description: editedData.description,
-                },
-                rowIndex,
-                t,
-            )
+        async (enumId: number) => {
+            setUpdatingEnum(true)
+            const editedData: EnumSchemaObject = getValues(`defaultData.${enumId}`)
 
-            if (errors) {
-                setErrorsState((prev) => {
-                    if (!prev.find((item) => item.id === errors.id)) {
-                        return [...prev, errors]
-                    }
-                    return prev
+            const isValid = await trigger(`defaultData.${enumId}`)
+
+            if (isValid) {
+                await updateEnum.mutateAsync({
+                    data: { ...defaultData[enumId], ...editedData, category: editedData.category ? editedData.category : undefined },
                 })
-            } else {
-                updateEnum.mutateAsync({ data: editedData })
-                cancelEditing(rowIndex)
+                cancelEditing(enumId)
+                setUpdatingEnum(false)
             }
         },
-        [cancelEditing, getValues, t, updateEnum],
+        [cancelEditing, defaultData, getValues, trigger, updateEnum],
     )
 
     const handleCreateNewCodelist = async (formData: FieldValues) => {
@@ -136,14 +174,16 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             enableSorting: true,
             id: 'code',
             meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
+                getCellContext: (ctx: CellContext<EnumTypePreview, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                isRowSelected(ctx?.row?.original?.id, selectedRows) ? (
                     <Input
                         disabled
-                        error={errorsState.find((item) => item.code === ctx?.getValue?.())?.code}
-                        {...register(`filteredData.results.${ctx.row.index + indexModificator}.code`)}
+                        error={errors.defaultData?.[ctx?.row?.original?.id ?? 0]?.code?.message}
+                        {...register(`defaultData.${ctx.row.original.id ?? 0}.code`)}
+                        name={`defaultData.${ctx.row.original.id}.code`}
+                        defaultValue={ctx.getValue()?.toString()}
                     />
                 ) : (
                     <Link to={`${ctx?.getValue?.()}`} state={{ from: location }}>
@@ -157,13 +197,15 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             enableSorting: true,
             id: 'name',
             meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
+                getCellContext: (ctx: CellContext<EnumTypePreview, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                isRowSelected(ctx?.row?.original?.id, selectedRows) ? (
                     <Input
-                        error={errorsState.find((item) => item.id === ctx?.row?.index + indexModificator)?.name}
-                        {...register(`filteredData.results.${ctx.row.index + indexModificator}.name`)}
+                        error={errors.defaultData?.[ctx?.row?.original?.id ?? 0]?.name?.message}
+                        {...register(`defaultData.${ctx.row.original.id ?? 0}.name`)}
+                        name={`defaultData.${ctx.row.original.id}.name`}
+                        defaultValue={ctx.getValue()?.toString()}
                     />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
@@ -175,14 +217,16 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             enableSorting: true,
             id: 'description',
             meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
+                getCellContext: (ctx: CellContext<EnumTypePreview, unknown>) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                isRowSelected(ctx?.row?.original?.id, selectedRows) ? (
                     <TextArea
-                        error={errorsState.find((item) => item.id === ctx?.row?.index + indexModificator)?.description}
+                        error={errors.defaultData?.[ctx?.row?.original?.id ?? 0]?.description?.message}
                         rows={3}
-                        {...register(`filteredData.results.${ctx.row.index + indexModificator}.description`)}
+                        {...register(`defaultData.${ctx.row.original.id ?? 0}.description`)}
+                        name={`defaultData.${ctx.row.original.id}.description`}
+                        defaultValue={ctx.getValue()?.toString()}
                     />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
@@ -201,8 +245,9 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                             label=""
                             disabled
                             checked={rowObject.valid}
-                            id={`${ctx.row.index + indexModificator}-valid`}
-                            {...register(`filteredData.results.${ctx.row.index + indexModificator}.valid`)}
+                            id={`${ctx.row.original.id}-valid`}
+                            {...register(`defaultData.${ctx.row.original.id ?? 0}.valid`)}
+                            name={`defaultData.${ctx.row.original.id}.valid`}
                         />
                     </div>
                 )
@@ -216,15 +261,16 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             cell: (ctx) => (
                 <SimpleSelect
                     label=""
-                    options={[
-                        { label: '-', value: '' },
-                        { label: 'LICENSE', value: 'LICENSE' },
-                    ]}
-                    disabled={!isRowSelected(ctx?.row?.index + indexModificator, selectedRows)}
-                    name={`filteredData.results.${ctx.row.index + indexModificator}.category`}
+                    options={[{ label: 'LICENSE', value: 'LICENSE' }]}
+                    disabled={!isRowSelected(ctx?.row?.original.id, selectedRows)}
+                    name={`defaultData.${ctx.row.original.id}.category`}
                     defaultValue={ctx?.getValue?.() as string}
-                    setValue={setValue}
+                    value={watch(`defaultData.${ctx.row.original.id}.category`)}
+                    onChange={(newValue) => {
+                        setValue(`defaultData.${ctx.row.original.id}.category`, newValue ?? null)
+                    }}
                     clearErrors={clearErrors}
+                    isClearable
                 />
             ),
         },
@@ -246,7 +292,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                 const rowObject = ctx?.getValue?.() as EnumTypePreview
                 if (!rowObject.valid) {
                     return <Button label={t('codelists.validate')} onClick={() => handleValidate(rowObject.code ?? '')} />
-                } else if (isRowSelected(ctx?.row?.index + indexModificator, selectedRows)) {
+                } else if (isRowSelected(ctx?.row?.original?.id, selectedRows)) {
                     return (
                         <ButtonPopup
                             key={ctx?.row?.index}
@@ -257,7 +303,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                                     <ButtonLink
                                         type="button"
                                         onClick={() => {
-                                            handleSaveCodelist(ctx?.row?.index + indexModificator)
+                                            handleSaveCodelist(ctx?.row?.original?.id ?? 0)
                                             closePopup()
                                         }}
                                         label={t('codelists.save')}
@@ -265,7 +311,8 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                                     <ButtonLink
                                         type="button"
                                         onClick={() => {
-                                            cancelEditing(ctx?.row?.index + indexModificator)
+                                            cancelEditing(ctx?.row?.original.id ?? 0)
+                                            reset({ defaultData: defaultData })
                                             closePopup()
                                         }}
                                         label={t('codelists.cancel')}
@@ -285,7 +332,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                                     <ButtonLink
                                         type="button"
                                         onClick={() => {
-                                            editRow(ctx?.row?.index + indexModificator)
+                                            editRow(ctx?.row?.original.id ?? 0)
                                             closePopup()
                                         }}
                                         label={t('codelists.edit')}
@@ -332,7 +379,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             <Table
                 data={filteredData?.results?.slice(startOfList, endOfList)}
                 columns={columns.map((item) => ({ ...item, size: 150 }))}
-                isLoading={isLoading}
+                isLoading={isLoading || updatingEnum}
                 error={isError}
             />
             <PaginatorWrapper
