@@ -94,7 +94,15 @@ export const ConfigurationItemHistoryListTable: React.FC<ConfigurationItemHistor
             accessorFn: (row) => row?.actions,
             header: t('historyTab.table.actions'),
             id: '1',
-            cell: (row) => (row.getValue() as string[])?.map((i) => t(`history.ACTIONS.${i as string}`)),
+            cell: (row) => {
+                return (
+                    <ul>
+                        {(row.getValue() as string[])?.map((i, index) => (
+                            <li key={index}>{t(`history.ACTIONS.${i as string}`)}</li>
+                        ))}
+                    </ul>
+                )
+            },
         },
         {
             accessorFn: (row) => row?.actionTime,
