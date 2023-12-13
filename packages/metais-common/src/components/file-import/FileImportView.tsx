@@ -1,32 +1,32 @@
 import React, { SetStateAction } from 'react'
 import { Uppy, UppyFile } from '@uppy/core'
-import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
 import { StatusBar } from '@uppy/react'
 import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { useTranslation } from 'react-i18next'
+import { TextBody } from '@isdd/idsk-ui-kit'
 
 import { FileImportEditOptions, FileImportHeader } from './FileImportHeader'
 import { FileImportDragDrop } from './FileImportDragDrop'
 import styles from './FileImport.module.scss'
-import { FileImportList, ProgressInfoList } from './FileImportList'
+import { FileImportList } from './FileImportList'
 
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table/ActionsOverTable'
-import { CloseIcon, ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
 import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { QueryFeedback } from '@isdd/metais-common/index'
+import { UploadingFilesStatus } from '@isdd/metais-common/hooks/useUppy'
 
 interface IFileImportView {
     uppy: Uppy
     setRadioButtonMetaData: React.Dispatch<SetStateAction<FileImportEditOptions>>
-    errorMessages: string[]
-    setErrorMessages: React.Dispatch<SetStateAction<string[]>>
+    generalErrorMessages: string[]
     handleRemoveFile: (fileId: string) => void
+    handleRemoveErrorMessage: () => void
     handleCancelImport: () => void
-    handleUpload: () => Promise<void>
-    uploadFileProgressInfo: ProgressInfoList[]
+    handleImport: () => Promise<void>
+    uploadFilesStatus: UploadingFilesStatus
     currentFiles: UppyFile[]
     fileImportStep: FileImportStepEnum
     radioButtonMetaData: string
@@ -40,12 +40,12 @@ interface IFileImportView {
 export const FileImportView: React.FC<IFileImportView> = ({
     uppy,
     setRadioButtonMetaData,
-    errorMessages,
-    setErrorMessages,
+    generalErrorMessages,
     handleRemoveFile,
+    handleRemoveErrorMessage,
     handleCancelImport,
-    handleUpload,
-    uploadFileProgressInfo,
+    handleImport,
+    uploadFilesStatus,
     currentFiles,
     fileImportStep,
     radioButtonMetaData,
@@ -74,25 +74,16 @@ export const FileImportView: React.FC<IFileImportView> = ({
                     />
                 </QueryFeedback>
             )}
-            <FileImportDragDrop uppy={uppy} />
-
-            {errorMessages.length > 0 && (
-                <div className={styles.errorWrapper}>
-                    <img src={CloseIcon} onClick={() => setErrorMessages([])} />
-                    <ul>
-                        {errorMessages.map((error, index) => (
-                            <li key={index} className={styles.errorMessages}>
-                                <img src={ErrorTriangleIcon} />
-                                <TextBody size="S" className={styles.textError}>
-                                    {error}
-                                </TextBody>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+            <FileImportDragDrop uppy={uppy} hideNoSelectedFileToImport={currentFiles.length > 0} />
 
             <div>
+                {fileImportStep === FileImportStepEnum.DONE && (
+                    <div className={styles.centeredButtons}>
+                        <TextBody size="L" className={styles.greenBoldText}>
+                            {t('fileImport.done')}
+                        </TextBody>
+                    </div>
+                )}
                 <StatusBar
                     className={styles.statusBar}
                     uppy={uppy}
@@ -102,15 +93,23 @@ export const FileImportView: React.FC<IFileImportView> = ({
                     hideRetryButton
                     hideUploadButton
                 />
-                <FileImportList uppy={uppy} handleRemoveFile={handleRemoveFile} fileList={currentFiles} progressInfoList={uploadFileProgressInfo} />
+                <FileImportList
+                    handleRemoveFile={handleRemoveFile}
+                    removeGeneralErrorMessages={handleRemoveErrorMessage}
+                    fileList={currentFiles}
+                    uploadFilesStatus={uploadFilesStatus}
+                    generalErrorMessages={generalErrorMessages}
+                />
             </div>
             <div className={styles.centeredButtons}>
                 <Button onClick={handleCancelImport} label={t('fileImport.cancel')} variant="secondary" />
-                <Button
-                    onClick={handleUpload}
-                    label={fileImportStep === FileImportStepEnum.VALIDATE ? t('fileImport.validate') : t('fileImport.import')}
-                    disabled={isSubmitDisabled}
-                />
+                {fileImportStep !== FileImportStepEnum.DONE && (
+                    <Button
+                        onClick={handleImport}
+                        label={fileImportStep === FileImportStepEnum.VALIDATE ? t('fileImport.validate') : t('fileImport.import')}
+                        disabled={isSubmitDisabled}
+                    />
+                )}
             </div>
         </>
     )

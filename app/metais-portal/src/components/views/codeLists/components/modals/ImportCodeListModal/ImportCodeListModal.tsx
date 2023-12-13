@@ -27,14 +27,15 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
 
     const {
         uppy,
-        setUploadFileProgressInfo,
-        setErrorMessages,
         currentFiles,
-        uploadFileProgressInfo,
+        uploadFilesStatus,
         handleRemoveFile,
         handleUpload,
-        errorMessages,
+        generalErrorMessages,
+        removeGeneralErrorMessages,
         cancelImport,
+        updateUploadFilesStatus,
+        addGeneralErrorMessage,
     } = useUppy({
         maxFileSize: 20_971_520,
         allowedFileTypes: ['.xml', '.csv', '.xlsx'],
@@ -58,29 +59,14 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
                     setFileImportStep(fileImportStep === FileImportStepEnum.IMPORT ? FileImportStepEnum.VALIDATE : FileImportStepEnum.IMPORT)
                 }
 
-                const successfulFilesInfo = result.successful.map((item) => ({
-                    id: item.id,
-                    error: false,
-                }))
-                const failedFilesInfo = result.failed.map((item) => ({
-                    id: item.id,
-                    error: true,
-                }))
-
+                result.successful.forEach((item) => updateUploadFilesStatus(item, true))
                 result.failed.forEach((item) => {
-                    if (item.response?.body.message) {
-                        setErrorMessages((prev) => [...prev, `${item.name}: ${t(`errors.codeList.${item.response?.body.message}`)}`])
-                    }
-                })
-
-                const updatedFileIds = [...successfulFilesInfo.map((x) => x.id), ...failedFilesInfo.map((x) => x.id)]
-                setUploadFileProgressInfo((prev) => {
-                    const notUpdated = prev.filter((x) => !updatedFileIds.includes(x.id))
-                    return [...notUpdated, ...successfulFilesInfo, ...failedFilesInfo]
+                    const errorMessage = item.response?.body.message ? `${item.name}: ${t(`errors.codeList.${item.response?.body.message}`)}` : ' '
+                    updateUploadFilesStatus(item, false, errorMessage)
                 })
             })
         } catch (error) {
-            setErrorMessages((prev) => [...prev, t('fileImport.uploadFailed')])
+            addGeneralErrorMessage(t('fileImport.uploadFailed'))
         }
     }
 
@@ -95,11 +81,11 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
 
             <FileImportDragDrop uppy={uppy} />
 
-            {errorMessages.length > 0 && (
+            {generalErrorMessages.length > 0 && (
                 <div className={styles.errorWrapper}>
-                    <img src={CloseIcon} onClick={() => setErrorMessages([])} />
+                    <img src={CloseIcon} onClick={() => removeGeneralErrorMessages()} />
                     <ul>
-                        {errorMessages.map((error, index) => (
+                        {generalErrorMessages.map((error, index) => (
                             <li key={index} className={styles.errorMessages}>
                                 <img src={ErrorTriangleIcon} />
                                 <TextBody size="S" className={styles.textError}>
@@ -121,7 +107,13 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
                     hideRetryButton
                     hideUploadButton
                 />
-                <FileImportList uppy={uppy} handleRemoveFile={handleRemoveFile} fileList={currentFiles} progressInfoList={uploadFileProgressInfo} />
+                <FileImportList
+                    handleRemoveFile={handleRemoveFile}
+                    fileList={currentFiles}
+                    uploadFilesStatus={uploadFilesStatus}
+                    generalErrorMessages={generalErrorMessages}
+                    removeGeneralErrorMessages={removeGeneralErrorMessages}
+                />
             </div>
 
             <div className={styles.centeredButtons}>

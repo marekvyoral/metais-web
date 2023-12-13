@@ -6,8 +6,9 @@ import { FieldErrors, UseFormRegister } from 'react-hook-form'
 import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
 import stylesImport from '@isdd/metais-common/components/file-import/FileImport.module.scss'
 import { StatusBar } from '@uppy/react'
-import { FileImportList, ProgressInfoList } from '@isdd/metais-common/components/file-import/FileImportList'
+import { FileImportList } from '@isdd/metais-common/components/file-import/FileImportList'
 import { UppyFile, Uppy } from '@uppy/core'
+import { UploadingFilesStatus } from '@isdd/metais-common/hooks/useUppy'
 
 import { DraftsListAttachmentCard } from '@/components/entities/draftslist/DraftsListAttachmentCard'
 
@@ -34,14 +35,16 @@ interface IDraftsListAttachmentsZone {
     uppyHelpers: {
         uppy: Uppy
         handleRemoveFile: (fileId: string) => void
+        removeGeneralErrorMessages: () => void
+        generalErrorMessages: string[]
         currentFiles: UppyFile[]
-        uploadFileProgressInfo: ProgressInfoList[]
+        uploadFilesStatus: UploadingFilesStatus
     }
 }
 
 export const DraftsListAttachmentsZone = ({ register, addNewLink, onDelete, links, errors, uppyHelpers }: IDraftsListAttachmentsZone) => {
     const { t } = useTranslation()
-    const { uppy, handleRemoveFile, currentFiles, uploadFileProgressInfo } = uppyHelpers
+    const { uppy, handleRemoveFile, removeGeneralErrorMessages, generalErrorMessages, currentFiles, uploadFilesStatus } = uppyHelpers
     return (
         <div>
             <TextHeading size="L">{t('DraftsList.createForm.links.heading')}</TextHeading>
@@ -67,10 +70,11 @@ export const DraftsListAttachmentsZone = ({ register, addNewLink, onDelete, link
                         hideUploadButton
                     />
                     <FileImportList
-                        uppy={uppy}
                         handleRemoveFile={handleRemoveFile}
+                        removeGeneralErrorMessages={removeGeneralErrorMessages}
+                        generalErrorMessages={generalErrorMessages}
                         fileList={currentFiles}
-                        progressInfoList={uploadFileProgressInfo}
+                        uploadFilesStatus={uploadFilesStatus}
                     />
                 </div>
             </div>

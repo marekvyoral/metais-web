@@ -58,6 +58,7 @@ interface IActionsOverTableProps extends PropsWithChildren {
 export enum FileImportStepEnum {
     VALIDATE = 'validate',
     IMPORT = 'import',
+    DONE = 'done',
 }
 
 export const ActionsOverTable: React.FC<IActionsOverTableProps> = ({

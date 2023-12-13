@@ -41,7 +41,7 @@ export const RefRegisterChangeStateModal = ({
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
 
     const generate = useGenerateReferenceRegisterByUuidHook()
-    const { uppy, currentFiles, handleRemoveFile, uploadFileProgressInfo, handleUpload } = useUppy({
+    const { uppy, currentFiles, handleRemoveFile, uploadFilesStatus, handleUpload, generalErrorMessages, removeGeneralErrorMessages } = useUppy({
         multiple: true,
         fileImportStep,
         endpointUrl: `${DMS_DOWNLOAD_BASE}`,
@@ -92,10 +92,11 @@ export const RefRegisterChangeStateModal = ({
                             hideUploadButton
                         />
                         <FileImportList
-                            uppy={uppy}
                             handleRemoveFile={handleRemoveFile}
                             fileList={currentFiles}
-                            progressInfoList={uploadFileProgressInfo}
+                            uploadFilesStatus={uploadFilesStatus}
+                            generalErrorMessages={generalErrorMessages}
+                            removeGeneralErrorMessages={removeGeneralErrorMessages}
                         />
                     </div>
                     <Button
