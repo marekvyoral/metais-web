@@ -4,8 +4,10 @@ import { FooterSection } from './FooterSection'
 import { FooterMetaList } from './FooterMeta'
 
 import { FooterRouteNames, NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { PORTAL_URL } from '@isdd/metais-common/constants'
 
-export const getPortalFooterSection = (t: TFunction): FooterSection[] => {
+export const getPortalFooterSection = (t: TFunction, isAdmin?: boolean): FooterSection[] => {
+    const urlPrefix = isAdmin ? PORTAL_URL : ''
     const portalSections: FooterSection[] = [
         {
             header: t('footer.metaisServices'),
@@ -13,72 +15,72 @@ export const getPortalFooterSection = (t: TFunction): FooterSection[] => {
             itemList: [
                 {
                     label: t('navMenu.egovComponents'),
-                    href: RouteNames.HOW_TO_EGOV_COMPONENTS,
+                    href: urlPrefix + RouteNames.HOW_TO_EGOV_COMPONENTS,
                 },
                 {
                     label: t('navMenu.lists.standards'),
-                    href: NavigationSubRoutes.STANDARDY_ISVS,
+                    href: urlPrefix + NavigationSubRoutes.STANDARDY_ISVS,
                 },
                 {
                     label: t('navMenu.dataObjects'),
-                    href: RouteNames.HOW_TO_DATA_OBJECTS,
+                    href: urlPrefix + RouteNames.HOW_TO_DATA_OBJECTS,
                 },
                 {
                     label: t('navMenu.lists.overviews'),
-                    href: NavigationSubRoutes.OVERVIEWS,
+                    href: urlPrefix + NavigationSubRoutes.OVERVIEWS, ///
                 },
                 {
                     label: t('navMenu.lists.relationsInspection'),
-                    href: NavigationSubRoutes.RELATIONS_INSPECTION,
+                    href: urlPrefix + NavigationSubRoutes.RELATIONS_INSPECTION, ///
                 },
                 {
                     label: t('navMenu.lists.architectonicRepository'),
-                    href: NavigationSubRoutes.ARCHITECTONIC_REPOSITORY,
+                    href: urlPrefix + NavigationSubRoutes.ARCHITECTONIC_REPOSITORY, ///
                 },
                 {
                     label: t('navMenu.lists.educationalCourses'),
-                    href: NavigationSubRoutes.EDUCATIONAL_COURSES,
+                    href: urlPrefix + NavigationSubRoutes.EDUCATIONAL_COURSES, ///
                 },
                 {
                     label: t('navMenu.lists.assembliesAndReports'),
-                    href: RouteNames.REPORTS,
+                    href: urlPrefix + RouteNames.REPORTS,
                 },
                 {
                     label: t('navMenu.lists.totalCostOfOwnership'),
-                    href: NavigationSubRoutes.TOTAL_COST_OF_OWNERSHIP,
+                    href: urlPrefix + NavigationSubRoutes.TOTAL_COST_OF_OWNERSHIP, ///
                 },
                 {
                     label: t('navMenu.lists.serviceLevelAgreementsWithOperator'),
-                    href: NavigationSubRoutes.SERVICE_LEVEL_AGREEMENTS_WITH_OPERATOR,
+                    href: urlPrefix + NavigationSubRoutes.SERVICE_LEVEL_AGREEMENTS_WITH_OPERATOR, ///
                 },
                 {
                     label: t('navMenu.lists.integrationAgreementsOnServiceLevel'),
-                    href: NavigationSubRoutes.INTEGRATION_AGREEMENTS_ON_SERVICE_LEVEL,
+                    href: urlPrefix + NavigationSubRoutes.INTEGRATION_AGREEMENTS_ON_SERVICE_LEVEL, ///
                 },
                 {
                     label: t('navMenu.lists.codelists'),
-                    href: RouteNames.HOW_TO_CODELIST,
+                    href: urlPrefix + NavigationSubRoutes.CODELIST,
                 },
                 {
                     label: t('footer.exceptionsLegislation'),
-                    href: FooterRouteNames.EXCEPTIONS_LEGISLATION,
+                    href: urlPrefix + FooterRouteNames.EXCEPTIONS_LEGISLATION,
                 },
             ],
         },
         {
-            header: t('footer.usefulLinks'),
+            header: t('footer.usefulLinks'), ///
             itemList: [
                 {
                     label: t('footer.mediaWiki'),
-                    href: RouteNames.MEDIA_WIKI,
+                    href: urlPrefix + RouteNames.MEDIA_WIKI,
                 },
                 {
                     label: t('navMenu.guides'),
-                    href: RouteNames.PREHLADY_A_POSTUPY,
+                    href: urlPrefix + RouteNames.PREHLADY_A_POSTUPY,
                 },
                 {
                     label: t('footer.contact'),
-                    href: RouteNames.CONTACT,
+                    href: urlPrefix + RouteNames.CONTACT,
                 },
             ],
         },
@@ -87,31 +89,33 @@ export const getPortalFooterSection = (t: TFunction): FooterSection[] => {
     return portalSections
 }
 
-export const getPortalFooterMetaList = (t: TFunction): FooterMetaList[] => {
+export const getPortalFooterMetaList = (t: TFunction, isAdmin?: boolean): FooterMetaList[] => {
+    ///
+    const urlPrefix = isAdmin ? PORTAL_URL : ''
     const metaList: FooterMetaList[] = [
         {
             label: t('footer.accessibilityDeclaration'),
-            href: FooterRouteNames.ACCESSIBILITY_DECLARATION,
+            href: urlPrefix + FooterRouteNames.ACCESSIBILITY_DECLARATION,
         },
         {
             label: t('footer.webResidencyMap'),
-            href: FooterRouteNames.WEB_RESIDENCY_MAP,
+            href: urlPrefix + FooterRouteNames.WEB_RESIDENCY_MAP,
         },
         {
             label: t('footer.GDPRAndCookies'),
-            href: FooterRouteNames.GDPR_AND_COOKIES,
+            href: urlPrefix + FooterRouteNames.GDPR_AND_COOKIES,
         },
         {
             label: t('footer.technicalOperator'),
-            href: FooterRouteNames.TECHNICAL_OPERATOR,
+            href: urlPrefix + FooterRouteNames.TECHNICAL_OPERATOR,
         },
         {
             label: t('footer.contentAdmin'),
-            href: FooterRouteNames.CONTENT_ADMIN,
+            href: urlPrefix + FooterRouteNames.CONTENT_ADMIN,
         },
         {
             label: t('footer.RSS'),
-            href: FooterRouteNames.RSS,
+            href: urlPrefix + FooterRouteNames.RSS,
         },
     ]
     return metaList

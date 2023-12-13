@@ -36,7 +36,7 @@ const getEgovSubItems = (t: TFunction, isSideMenu?: boolean) => {
             ],
         },
         {
-            title: t('navMenu.publicAuthorities'),
+            title: t('navMenu.publicAuthoritiesNav'),
             path: PORTAL_URL + RouteNames.HOW_TO_PO,
             subItems: [
                 {
@@ -118,7 +118,7 @@ export const getLoginNavigationItems = (t: TFunction, ksisvsGroupId: string | un
         },
         {
             path: PORTAL_URL + RouteNames.HOW_TO_MONITORING,
-            title: t('navMenu.monitoring'),
+            title: t('navMenu.monitoringNav'),
             icon: MonitoringIcon,
             subItems: [
                 { title: t('navMenu.reports'), path: PORTAL_URL + RouteNames.REPORTS },
