@@ -20,6 +20,7 @@ stages:
     - build-docker
     - deploy-okd-feature
     - deploy-okd-develop
+    - deploy
     - cleanup
     - push-azure-registry
 
