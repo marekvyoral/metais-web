@@ -163,6 +163,7 @@ export const VoteDetailView: React.FC<IVoteDetailView> = ({
                 canVeto={(isUserLoggedIn && canCastVote && voteData?.veto) ?? false}
                 voteProcessing={votesProcessing}
                 castedVoteId={castedVoteId}
+                vetoed={voteState == VoteStateOptionEnum.VETOED}
             />
             <Spacer vertical />
 

@@ -38,6 +38,6 @@ export const getVoteParamsData = (voteStateOption: string, effectiveFrom: string
         case VoteStateOptionEnum.VETOED:
             return { state: VoteStateEnum.VETOED, dateFrom: effectiveFrom, dateTo: effectiveTo }
         default:
-            return { state: '', dateFrom: '', dateTo: '' }
+            return { state: '', dateFrom: effectiveFrom, dateTo: effectiveTo }
     }
 }
