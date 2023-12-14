@@ -181,6 +181,10 @@ export const NewRelationView: React.FC<Props> = ({
             .map((key) => key.split(JOIN_OPERATOR))
             .map((item) => ({ name: item[0], id: item[1] }))
 
+        const isRelatedEntityAsTarget =
+            relationData?.relatedListAsTargets &&
+            relationData?.relatedListAsTargets.find((data) => data.relationshipTypeTechnicalName === selectedRelationTypeTechnicalName)
+
         const data = {
             storeSet: {
                 relationshipSet:
@@ -193,9 +197,9 @@ export const NewRelationView: React.FC<Props> = ({
                                       .map((key) => ({ name: key.name, value: formData[key.name + JOIN_OPERATOR + key.id] })),
                               ],
                               //uuid of picked entities
-                              startUuid: item.uuid,
+                              startUuid: isRelatedEntityAsTarget ? entityId : item.uuid,
                               //id of current entity
-                              endUuid: entityId,
+                              endUuid: isRelatedEntityAsTarget ? item.uuid : entityId,
                               //from getGroup Api
                               owner: ownerGid,
                               uuid: uuidV4(),
