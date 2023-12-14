@@ -30,7 +30,16 @@ const RefRegistersCreate = () => {
             />
             <MainContentWrapper>
                 <CreateRefRegisterContainer
-                    View={({ userGroupData, isLoading: userGroupDataIsLoading, isError: userGroupDataIsError, POData, saveRefRegister }) => (
+                    View={({
+                        userGroupData,
+                        isLoading: userGroupDataIsLoading,
+                        isError: userGroupDataIsError,
+                        POData,
+                        saveRefRegister,
+                        updateContact,
+                        updateAccessData,
+                        updateRefRegister,
+                    }) => (
                         <AttributesContainer
                             entityName={entityName}
                             View={({ data: { renamedAttributes } }) => (
@@ -48,6 +57,9 @@ const RefRegistersCreate = () => {
                                                     userGroupData={userGroupData}
                                                     POData={POData}
                                                     saveRefRegister={saveRefRegister}
+                                                    updateContact={updateContact}
+                                                    updateAccessData={updateAccessData}
+                                                    updateRefRegister={updateRefRegister}
                                                     renamedAttributes={[...(renamedAttributes ?? []), ...(guiAttributes ?? [])]}
                                                 />
                                             </QueryFeedback>
