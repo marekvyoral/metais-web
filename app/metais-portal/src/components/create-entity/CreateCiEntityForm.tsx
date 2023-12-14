@@ -102,9 +102,9 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     }, {})
 
     const combinedProfiles = [ciTypeData as AttributeProfile, ...attProfiles]
-
+    const fromDefaultValues = formatForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes)
     const methods = useForm({
-        defaultValues: formatForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
+        defaultValues: fromDefaultValues,
         resolver: yupResolver(
             generateFormSchema(
                 isUpdate ? combinedProfiles : getFilteredAttributeProfilesBasedOnRole(combinedProfiles, selectedRole?.roleName ?? ''),
@@ -136,11 +136,13 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     useEffect(() => {
         setValue(AttributesConfigTechNames.REFERENCE_ID, referenceIdValue)
         setValue(AttributesConfigTechNames.METAIS_CODE, metaIsCodeValue)
-        setValue(
-            AttributesConfigTechNames.DECISION_TYPE,
-            attributes.find((attr) => attr?.technicalName == AttributesConfigTechNames.DECISION_TYPE)?.defaultValue,
-        )
-    }, [attributes, metaIsCodeValue, referenceIdValue, setValue])
+        Object.entries(fromDefaultValues).forEach((item) => {
+            const element = formState.defaultValues?.[item[0]]
+            if (element == '' || element == undefined) {
+                setValue(item[0], item[1])
+            }
+        })
+    }, [formState.defaultValues, fromDefaultValues, metaIsCodeValue, referenceIdValue, setValue])
 
     const sections: ISection[] =
         [
