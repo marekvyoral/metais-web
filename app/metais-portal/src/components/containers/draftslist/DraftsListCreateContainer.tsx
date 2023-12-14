@@ -6,7 +6,7 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import React, { useMemo } from 'react'
 import { FieldValues } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface IViewProps {
     onSubmit: (values: FieldValues) => Promise<void>
@@ -22,11 +22,16 @@ interface DraftsListFormContainerProps {
 export const DraftsListCreateContainer: React.FC<DraftsListFormContainerProps> = ({ View }) => {
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
+    const location = useLocation()
     const { mutateAsync, isError, isLoading } = useCreateStandardRequest({
         mutation: {
             onSuccess() {
-                setIsActionSuccess({ value: true, path: NavigationSubRoutes.ZOZNAM_NAVRHOV })
-                navigate(NavigationSubRoutes.ZOZNAM_NAVRHOV)
+                setIsActionSuccess({
+                    value: true,
+                    path: NavigationSubRoutes.ZOZNAM_NAVRHOV,
+                    additionalInfo: { type: 'create' },
+                })
+                navigate(`${NavigationSubRoutes.ZOZNAM_NAVRHOV}`, { state: { from: location } })
             },
         },
     })

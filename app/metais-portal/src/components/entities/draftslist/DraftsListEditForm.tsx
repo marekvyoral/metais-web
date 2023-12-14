@@ -1,14 +1,15 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { ApiLink, ApiStandardRequest, useUpdateStandardRequest } from '@isdd/metais-common/api/generated/standards-swagger'
-import { Button, LoadingIndicator } from '@isdd/idsk-ui-kit/index'
+import { Button } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { DMS_DOWNLOAD_BASE, FileImportStepEnum, MutationFeedback } from '@isdd/metais-common/index'
+import { DMS_DOWNLOAD_BASE, FileImportStepEnum, QueryFeedback } from '@isdd/metais-common/index'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { v4 as uuidV4 } from 'uuid'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import { DraftsListAttachmentsZone } from '@/components/entities/draftslist/DraftsListAttachmentsZone'
 import styles from '@/components/entities/draftslist/draftsListCreateForm.module.scss'
@@ -21,14 +22,15 @@ interface IDraftsListEditForm {
 export const DraftsListEditForm = ({ defaultData }: IDraftsListEditForm) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-
+    const location = useLocation()
+    const { setIsActionSuccess } = useActionSuccess()
     const { register, setValue, watch, handleSubmit, formState } = useForm({
         defaultValues: {
             ...defaultData,
         },
         resolver: yupResolver(generateSchemaForEditDraft(t)),
     })
-    const { mutateAsync: updateDraft, isSuccess, isError, isLoading } = useUpdateStandardRequest()
+    const { mutateAsync: updateDraft, isSuccess: isUpdateStandardRequestSuccess, isError, isLoading } = useUpdateStandardRequest()
     const links = watch('links') ?? []
 
     const addNewLink = () => {
@@ -90,29 +92,39 @@ export const DraftsListEditForm = ({ defaultData }: IDraftsListEditForm) => {
         [handleUpload, onSubmit, currentFiles],
     )
 
+    useEffect(() => {
+        if (isUpdateStandardRequestSuccess) {
+            setIsActionSuccess({
+                value: true,
+                path: NavigationSubRoutes.ZOZNAM_NAVRHOV,
+                additionalInfo: { type: 'edit' },
+            })
+            navigate(`${NavigationSubRoutes.ZOZNAM_NAVRHOV}`, { state: { from: location } })
+        }
+    }, [navigate, setIsActionSuccess, isUpdateStandardRequestSuccess, location])
+
     return (
         <>
-            {isLoading && <LoadingIndicator fullscreen />}
-            <MutationFeedback error={isError} success={isSuccess} />
-
-            <form onSubmit={handleSubmit(handleSubmitForm)}>
-                <DraftsListAttachmentsZone
-                    links={links as ApiLink[]}
-                    register={register}
-                    addNewLink={addNewLink}
-                    onDelete={removeLink}
-                    errors={errors}
-                    uppyHelpers={{ uppy, uploadFilesStatus, handleRemoveFile, currentFiles, generalErrorMessages, removeGeneralErrorMessages }}
-                />
-                <div className={styles.buttonGroup}>
-                    <Button
-                        label={t('DraftsList.createForm.cancel')}
-                        variant="secondary"
-                        onClick={() => navigate(`${NavigationSubRoutes.ZOZNAM_NAVRHOV}/${defaultData?.id}`)}
+            <QueryFeedback loading={isLoading} error={isError} indicatorProps={{ layer: 'parent', transparentMask: false }} withChildren>
+                <form onSubmit={handleSubmit(handleSubmitForm)}>
+                    <DraftsListAttachmentsZone
+                        links={links as ApiLink[]}
+                        register={register}
+                        addNewLink={addNewLink}
+                        onDelete={removeLink}
+                        errors={errors}
+                        uppyHelpers={{ uppy, uploadFilesStatus, handleRemoveFile, currentFiles, generalErrorMessages, removeGeneralErrorMessages }}
                     />
-                    <Button label={t('button.saveChanges')} type="submit" />
-                </div>
-            </form>
+                    <div className={styles.buttonGroup}>
+                        <Button
+                            label={t('DraftsList.createForm.cancel')}
+                            variant="secondary"
+                            onClick={() => navigate(`${NavigationSubRoutes.ZOZNAM_NAVRHOV}/${defaultData?.id}`)}
+                        />
+                        <Button label={t('button.saveChanges')} type="submit" />
+                    </div>
+                </form>
+            </QueryFeedback>
         </>
     )
 }

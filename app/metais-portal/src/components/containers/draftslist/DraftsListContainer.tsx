@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { GetFOPStandardRequestsParams, useGetFOPStandardRequests } from '@isdd/metais-common/src/api/generated/standards-swagger'
 import { useFilterForCiList, usePagination } from '@isdd/metais-common/src/api/hooks/containers/containerHelpers'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common'
@@ -13,15 +13,25 @@ import { IDraftsListTable } from '@/types/views'
 interface IDraftsListDataTableContainerProps<T> {
     View: React.FC<IDraftsListTable>
     defaultFilterValues: T
+    isSuccessMutationFeedback: boolean
 }
 
-export const DraftsListContainer = <T extends FieldValues & IFilterParams>({ View, defaultFilterValues }: IDraftsListDataTableContainerProps<T>) => {
+export const DraftsListContainer = <T extends FieldValues & IFilterParams>({
+    View,
+    defaultFilterValues,
+    isSuccessMutationFeedback,
+}: IDraftsListDataTableContainerProps<T>) => {
     const { filterParams, handleFilterChange } = useFilterForCiList<T, GetFOPStandardRequestsParams>({
         ...defaultFilterValues,
         sort: [{ orderBy: ATTRIBUTE_NAME.Sr_Name, sortDirection: SortType.DESC }],
     })
 
-    const { data, isLoading: isDraftsLoading, isError: isDraftsError } = useGetFOPStandardRequests(mapFilterToStandardDrafts(filterParams))
+    const {
+        data,
+        isLoading: isDraftsLoading,
+        isError: isDraftsError,
+        refetch: refetchDrafts,
+    } = useGetFOPStandardRequests(mapFilterToStandardDrafts(filterParams))
 
     const workingGroupIdsPerPage = useMemo(() => {
         const ids = new Set<string>()
@@ -35,6 +45,17 @@ export const DraftsListContainer = <T extends FieldValues & IFilterParams>({ Vie
         isLoading: workGroupIsLoading,
         isError: workGroupIsError,
     } = useWorkingGroups({ workingGroupIds: workingGroupIdsPerPage })
+
+    const refetchList = () => {
+        refetchDrafts()
+    }
+
+    useEffect(() => {
+        if (isSuccessMutationFeedback) {
+            refetchList()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSuccessMutationFeedback])
 
     const pagination = usePagination({ pagination: { totaltems: data?.standardRequestsCount ?? 0 } }, filterParams)
     const isLoading = isDraftsLoading || workGroupIsLoading

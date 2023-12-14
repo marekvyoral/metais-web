@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ActionsOverTable } from '@isdd/metais-common/src/components/actions-over-table/ActionsOverTable'
 import { DEFAULT_PAGESIZE_OPTIONS, STANDARDIZATION_DRAFTS_LIST } from '@isdd/metais-common/src/constants'
 import { GetFOPStandardRequestsParams } from '@isdd/metais-common/api/generated/standards-swagger'
@@ -9,6 +9,7 @@ import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/
 import { useTranslation } from 'react-i18next'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 
 import { DraftsListContainer } from '@/components/containers/draftslist/DraftsListContainer'
 import { DraftsListTable } from '@/components/entities/draftslist/DraftsListTable'
@@ -17,7 +18,9 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const DraftsListListPage: React.FC = () => {
     const navigate = useNavigate()
-    const { isActionSuccess } = useActionSuccess()
+    const {
+        isActionSuccess: { value: isSuccess, additionalInfo: additionalInfo },
+    } = useActionSuccess()
 
     const location = useLocation()
     const { t } = useTranslation()
@@ -33,9 +36,19 @@ const DraftsListListPage: React.FC = () => {
         workGroupId: '',
     }
 
+    const { wrapperRef, scrollToMutationFeedback } = useScroll()
+
+    useEffect(() => {
+        if (isSuccess) {
+            scrollToMutationFeedback()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSuccess])
+
     return (
         <DraftsListContainer<GetFOPStandardRequestsParams>
             defaultFilterValues={defaultFilterValues}
+            isSuccessMutationFeedback={isSuccess}
             View={({ data, handleFilterChange, pagination, sort, isLoading, isError }) => (
                 <>
                     <BreadCrumbs
@@ -50,7 +63,17 @@ const DraftsListListPage: React.FC = () => {
                         <QueryFeedback loading={isLoading} error={isError}>
                             <FlexColumnReverseWrapper>
                                 <TextHeading size="XL">{t('draftsList.heading')}</TextHeading>
-                                <MutationFeedback success={isActionSuccess.value} error={false} />
+                                <div ref={wrapperRef}>
+                                    <MutationFeedback
+                                        success={isSuccess}
+                                        error={false}
+                                        successMessage={
+                                            additionalInfo?.type == 'create'
+                                                ? t('mutationFeedback.successfulCreated')
+                                                : t('mutationFeedback.successfulUpdated')
+                                        }
+                                    />
+                                </div>
                             </FlexColumnReverseWrapper>
                             <DraftsListFilter defaultFilterValues={defaultFilterValues} />
                             <ActionsOverTable
