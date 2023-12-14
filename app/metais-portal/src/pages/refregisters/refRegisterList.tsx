@@ -1,4 +1,4 @@
-import { ActionsOverTable, CreateEntityButton, Reference_Registers, distinctAttributesMetaAttributes } from '@isdd/metais-common'
+import { ActionsOverTable, CreateEntityButton, QueryFeedback, Reference_Registers, distinctAttributesMetaAttributes } from '@isdd/metais-common'
 import { getRefRegsDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { DEFAULT_PAGESIZE_OPTIONS, REFERENCE_REGISTER } from '@isdd/metais-common/constants'
 import { useTranslation } from 'react-i18next'
@@ -45,7 +45,7 @@ const ReferenceRegisters = () => {
                                 isLoading,
                                 isError,
                             }) => (
-                                <>
+                                <QueryFeedback loading={isLoading} error={isError} withChildren>
                                     <TextHeading size="XL">{t('refRegisters.title')}</TextHeading>
                                     <RefRegistersFilter defaultFilterValues={defaultFilterValues} />
                                     <ActionsOverTable
@@ -86,7 +86,7 @@ const ReferenceRegisters = () => {
                                         isLoading={isLoading}
                                         isError={isError}
                                     />
-                                </>
+                                </QueryFeedback>
                             )}
                         />
                     )}
