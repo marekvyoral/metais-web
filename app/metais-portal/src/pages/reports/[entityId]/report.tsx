@@ -17,7 +17,7 @@ import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const ReportsDetailPage: React.FC = () => {
     const { t } = useTranslation()
-    document.title = `${t('reportDetail')} | MetaIS`
+    document.title = `${t('titles.reportDetail')} | MetaIS`
     const defaultFilterValues: IFilterParams & { [key: string]: string } = {}
 
     return (
