@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, TextArea } from '@isdd/idsk-ui-kit/index'
+import { Button, ButtonGroupRow, TextArea } from '@isdd/idsk-ui-kit/index'
 import { ConfigurationItemSetUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -11,9 +11,10 @@ import {
     ApiReferenceRegisterState,
 } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { EDIT_CONTACT } from '@isdd/metais-common/navigation/searchKeys'
 import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { IRefRegisterCreateFormData, createRefRegisterSchema } from '@/components/views/refregisters/schema'
 import { RefRegisterCreateRegistrarContactSection } from '@/components/views/refregisters/createView/RefRegisterCreateRegistrarContactSection'
@@ -53,6 +54,7 @@ export const RefRegisterCreateView: React.FC<IRefRegisterCreateView> = ({
     renamedAttributes,
 }) => {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const [urlParams] = useSearchParams()
     const { entityId } = useParams()
     const isContact = urlParams.get(EDIT_CONTACT) === 'true' ? true : false
@@ -77,8 +79,9 @@ export const RefRegisterCreateView: React.FC<IRefRegisterCreateView> = ({
                 await updateRefRegister?.(entityId, mapFormDataToApiReferenceRegister(formData, entityId))
             else if (!defaultData?.state) await saveRefRegister?.(mapFormDataToApiReferenceRegister(formData))
             else await updateAccessData?.(entityId ?? '', { description: formData.refRegisters.additionalData })
+            navigate(`${NavigationSubRoutes.REFERENCE_REGISTRE}`)
         },
-        [defaultData?.state, entityId, isContact, saveRefRegister, updateAccessData, updateContact, updateRefRegister],
+        [defaultData?.state, entityId, isContact, navigate, saveRefRegister, updateAccessData, updateContact, updateRefRegister],
     )
     const creatorNotSet = userGroupId || !showCreatorForm(defaultUserGroup, defaultData) ? false : true
     return (
@@ -136,9 +139,14 @@ export const RefRegisterCreateView: React.FC<IRefRegisterCreateView> = ({
                         value={t(`refRegisters.table.state.${defaultData?.state ?? ApiReferenceRegisterState.IN_CONSTRUCTION}`)}
                         tooltip={getInfoRR(RefRegisterViewItems.STATE, renamedAttributes)}
                     />
-                    <div>
+                    <ButtonGroupRow>
                         <Button type="submit" label={t('refRegisters.create.save')} />
-                    </div>
+                        <Button
+                            variant="secondary"
+                            label={t('refRegisters.detail.items.cancel')}
+                            onClick={() => navigate(`${NavigationSubRoutes.REFERENCE_REGISTRE}`)}
+                        />
+                    </ButtonGroupRow>
                 </>
             </form>
         </>
