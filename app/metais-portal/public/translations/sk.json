@@ -100,11 +100,11 @@
         "closeMenu": "Skry menu"
     },
     "navMenu": {
-        "publicAuthorities": "Orgány riadenia",
+        "publicAuthoritiesNav": "Orgány riadenia",
         "egovComponents": "e-Government komponenty",
         "standardization": "Štandardizácia",
         "dataObjects": "Dátové objekty",
-        "monitoring": "Zostavy a monitoring",
+        "monitoringNav": "Zostavy a monitoring",
         "guides": "Postupy a návody",
         "hide": "Skrt",
         "show": "Ukáž",
