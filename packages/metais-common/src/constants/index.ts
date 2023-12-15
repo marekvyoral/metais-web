@@ -216,6 +216,7 @@ export const ENTITY_AGENDA = 'Agenda'
 
 export const INACTIVE_LOGOUT_TIME = import.meta.env.VITE_INACTIVE_LOGOUT_TIME
 export const INACTIVE_WARNING_TIME = import.meta.env.VITE_INACTIVE_WARNING_TIME
+export const IAM_OIDC_BASE_URL = import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL
 
 export const ciInformationTab = 'information'
 export const KRIScolumnsTechNames = [

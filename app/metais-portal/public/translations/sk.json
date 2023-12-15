@@ -1119,6 +1119,10 @@
         "ciEditEntity": "Editácia položky",
         "ciCloneEntity": "Klonovanie položky",
         "404": "Chyba",
+        "prelogin": "Prihlásenie",
+        "login": "Meno a heslo",
+        "loginProblems": "Problémy s prihlásením",
+        "forgottenPassword": "Obnova hesla",
         "wiki": {
             "EGOV_HOWTO": "e-Government Komponenty",
             "IKT_ADMINISTRATION_HOWTO": "",
@@ -2141,5 +2145,23 @@
             }
         },
         "Confirm": "Potvrtiť"
+    },
+    "loginProblems": {
+        "heading": "Máte problémy s prihlásením sa do systému?",
+        "description": "Kontaktujte prosím administrátora e-mailom na"
+    },
+    "forgottenPassword": {
+        "heading": "Zabudli ste svoje heslo?",
+        "description": "Zadajte Vašu emailovú adresu, na ktorú Vám bude doručený odkaz na vytvorenie nového hesla.",
+        "button": "Obnoviť heslo",
+        "email": "Emailová adresa",
+        "success": {
+            "title": "Obnova hesla prebehla úspešne",
+            "description": "Na Vami zadanú emailovú adresu sme zaslali informácie s postupom ako obnoviť heslo.",
+            "button":"Späť na úvodnú stránku"
+        },
+        "sendingRequest": "Odosiela sa požiadavka na obnovu hesla",
+        "emailFormatError": "Neplatný formát e-mailu: Zadajte platnú e-mailovú adresu vo formáte 'meno@example.com'",
+        "emailRequiredError": "E-mailová adresa je povinná pre žiadosť o obnovenie hesla."
     }
 }

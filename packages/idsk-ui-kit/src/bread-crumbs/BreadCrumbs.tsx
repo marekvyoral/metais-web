@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useBackButtonNavigate } from '@isdd/metais-common/src/hooks/useBackButtonNavigate'
 import classNames from 'classnames'
+import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce'
 
 import styles from './breadCrumbs.module.scss'
 
@@ -9,6 +10,7 @@ export type BreadCrumbsItemProps = {
     icon?: string
     href: string
     label: string
+    toLogin?: boolean
 }
 
 type BreadCrumbsProps = {
@@ -16,15 +18,21 @@ type BreadCrumbsProps = {
     withWidthContainer?: boolean
 }
 
-const BreadCrumbsItem: React.FC<BreadCrumbsItemProps> = ({ icon, href, label }) => {
+const BreadCrumbsItem: React.FC<BreadCrumbsItemProps> = ({ icon, href, label, toLogin }) => {
     const { backButtonNavigate } = useBackButtonNavigate(href)
+    const { login } = useContext<IAuthContext>(AuthContext)
+
     //to work properly Link component must send state with location
     // location = useLocation()
     // <Link to={href} state={{from: location}} /> or with navigate
     // navigate("href", { state: { from: location } });
     const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault()
-        backButtonNavigate()
+        if (toLogin) {
+            login()
+        } else {
+            backButtonNavigate()
+        }
     }
 
     return (
@@ -43,7 +51,7 @@ export const BreadCrumbs: React.FC<BreadCrumbsProps> = ({ links, withWidthContai
             <div className="govuk-breadcrumbs">
                 <ul className="govuk-breadcrumbs__list">
                     {links.map((value) => (
-                        <BreadCrumbsItem href={value.href} label={value.label} icon={value.icon} key={value.label} />
+                        <BreadCrumbsItem href={value.href} label={value.label} icon={value.icon} key={value.label} toLogin={value.toLogin} />
                     ))}
                 </ul>
             </div>
