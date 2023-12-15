@@ -1,6 +1,7 @@
 import { ObjectSchema, object, string } from 'yup'
 import { TFunction } from 'i18next'
 import { ApiReferenceRegisterState } from '@isdd/metais-common/api/generated/reference-registers-swagger'
+import { REGEX_EMAIL, phoneOrEmptyStringRegex } from '@isdd/metais-common/constants'
 
 export interface IRefRegisterCreateFormData {
     refRegisters: {
@@ -35,8 +36,6 @@ export const createRefRegisterSchema = (
     showCreatorForm: boolean,
     showSourceRegisterForm: boolean,
 ): ObjectSchema<IRefRegisterCreateFormData> => {
-    const phoneOrEmptyStringRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{1,6}$|^$/
-
     return object().shape({
         refRegisters: object().shape({
             creator: string().when([], {
@@ -58,14 +57,14 @@ export const createRefRegisterSchema = (
                 lastName: string().required(t('validation.required')),
                 firstName: string().required(t('validation.required')),
                 phoneNumber: string().matches(phoneOrEmptyStringRegex, t('validation.invalidPhone')).required(t('validation.required')),
-                email: string().email(t('validation.invalidEmail')).required(t('validation.required')),
+                email: string().matches(REGEX_EMAIL, t('validation.invalidEmail')).required(t('validation.required')),
             }),
             registrar: object().shape({
                 PO: string().required(t('validation.required')),
                 lastName: string().required(t('validation.required')),
                 firstName: string().required(t('validation.required')),
                 phoneNumber: string().matches(phoneOrEmptyStringRegex, t('validation.invalidPhone')).required(t('validation.required')),
-                email: string().email(t('validation.invalidEmail')).required(t('validation.required')),
+                email: string().matches(REGEX_EMAIL, t('validation.invalidEmail')).required(t('validation.required')),
             }),
             additionalData: string().required(t('validation.required')),
         }),
