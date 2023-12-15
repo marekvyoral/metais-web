@@ -256,3 +256,8 @@ export enum RegistrationRoutes {
     REGISTRATION_SUCCESS = '/registration/success',
     REGISTRATION_FAILED = '/registration/failed',
 }
+
+export const LoginRouteNames = {
+    LOGIN_PROBLEMS: '/login-problems',
+    FORGOTTEN_PASSWORD: '/forgotten-password',
+}

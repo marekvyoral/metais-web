@@ -1112,6 +1112,10 @@
         "ciEditEntity": "Edit of component",
         "ciCloneEntity": "Clone of component",
         "404": "Error",
+        "prelogin": "Login",
+        "login": "Name and password",
+        "loginProblems": "Problems with login",
+        "forgottenPassword": "Reset password",
         "wiki": {
             "EGOV_HOWTO": "e-Government Components",
             "IKT_ADMINISTRATION_HOWTO": "",
@@ -2124,5 +2128,23 @@
             }
         },
         "Confirm": "Potvrtiť"
+    },
+    "loginProblems": {
+        "heading": "Do you have problems logging into the system?",
+        "description": "Please contact administrator by email on"
+    },
+    "forgottenPassword": {
+        "heading": "Did you forget your password?",
+        "description": "Enter your email address to which you will receive a link to create a new password",
+        "button": "Reset password",
+        "email": "Email address",
+        "success": {
+            "title": "Password reset was successful",
+            "description": "Information on how to reset your password has been sent to the email address you provided.",
+            "button":"Back to homepage"
+        },
+        "sendingRequest": "Send request to reset password",
+        "emailFormatError": "Invalid Email Format: Please enter a valid email address in the format 'name@example.com'.",
+        "emailRequiredError": "Email address is required for password reset request."
     }
 }

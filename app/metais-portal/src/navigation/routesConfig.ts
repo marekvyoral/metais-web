@@ -1,4 +1,4 @@
-import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { LoginRouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { RootRouteContainer } from './route-containers/RootRouteContainer'
 
@@ -96,6 +96,8 @@ import PO_PORelationshipOutlet from '@/pages/ci/PO_PO/[entityId]/relationships'
 import PO_POHistoryOutlet from '@/pages/ci/PO_PO/[entityId]/history'
 import PO_ISInformationOutlet from '@/pages/ci/PO_IS/[entityId]/information'
 import PO_IS_POInformationOutlet from '@/pages/ci/PO_IS_PO/[entityId]/information'
+import { LoginProblemsPage } from '@/pages/LoginProblemsPage'
+import { ForgottenPasswordPage } from '@/pages/ForgottenPasswordPage'
 import HowToGenericPage from '@/pages/howto/[howToEnumType]'
 
 export interface RouteConfig {
@@ -651,6 +653,16 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.ITVS_EXCEPTIONS_EDIT,
                 slug: RouterRoutes.ITVS_EXCEPTIONS_EDIT,
                 component: ITVSExceptionsEditPage,
+            },
+            {
+                path: LoginRouteNames.LOGIN_PROBLEMS,
+                slug: LoginRouteNames.LOGIN_PROBLEMS,
+                component: LoginProblemsPage,
+            },
+            {
+                path: LoginRouteNames.FORGOTTEN_PASSWORD,
+                slug: LoginRouteNames.FORGOTTEN_PASSWORD,
+                component: ForgottenPasswordPage,
             },
             ...generalCiRoutes,
             {

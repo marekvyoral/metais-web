@@ -3,8 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { metaisEmail, PORTAL_URL } from '@isdd/metais-common/constants'
 import { CenterWrapper } from '@isdd/metais-common/components/center-wrapper/CenterWrapper'
-
-import { LoginRouteNames } from '@/navigation/Router'
+import { LoginRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 export const LoginProblemsPage = () => {
     const { t } = useTranslation()
@@ -15,8 +14,7 @@ export const LoginProblemsPage = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: PORTAL_URL, icon: HomeIcon },
-                    { label: t('breadcrumbs.prelogin'), href: LoginRouteNames.PRE_LOGIN },
-                    { label: t('breadcrumbs.login'), href: LoginRouteNames.LOGIN },
+                    { label: t('breadcrumbs.prelogin'), href: '#', toLogin: true },
                     { label: t('breadcrumbs.loginProblems'), href: LoginRouteNames.LOGIN_PROBLEMS },
                 ]}
             />
