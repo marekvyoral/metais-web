@@ -1111,7 +1111,27 @@
         "compareHistory": "Compare history",
         "ciEditEntity": "Edit of component",
         "ciCloneEntity": "Clone of component",
-        "404": "Error"
+        "404": "Error",
+        "wiki": {
+            "EGOV_HOWTO": "e-Government Components",
+            "IKT_ADMINISTRATION_HOWTO": "",
+            "IKT_MIGRATION_HOWTO": "",
+            "IKT_HOWTO": "",
+            "PO_HOWTO": "Public authorities",
+            "CODELISTS_HOWTO": "Codelists",
+            "INSPECTION_HOWTO": "",
+            "ISVS_INTEGRATIONS_HOWTO": "",
+            "NKIVS_HOWTO": "",
+            "SPK_HOWTO": "Goals, principles and KRIT",
+            "LICENSE_HOWTO": "",
+            "MONITORING_HOWTO": "Reports and monitoring",
+            "OTHER_HOWTO": "",
+            "REF_REG_HOWTO": "Reference registers",
+            "STD_HOWTO": "Standardization",
+            "SDO_HOWTO": "Data objects",
+            "TOTAL_OWNERSHIP_COSTS_HOWT": "Total cost of ownership",
+            "URI_HOWTO": ""
+        }
     },
     "codeList": {
         "descriptionError": "Description is required",
@@ -1638,7 +1658,6 @@
             }
         },
         "header": {
-            "confluenceDocs": "Insert into ?????",
             "ACCEPTED": "Mark draft as processed",
             "REJECTED": "Reject draft",
             "ASSIGNED": "Add into working group",

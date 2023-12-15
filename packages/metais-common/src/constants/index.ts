@@ -276,3 +276,4 @@ export const CAN_CREATE_MEETING_USER_ROLES = ['STD_KSPODP', 'STD_KSPRE', 'STD_KS
 export const CAN_EDIT_MEETING_USER_ROLES = ['STD_KOORDINATOR_AGENDY']
 export const LOWER_CASE_NUMBER_DOT_REGEX = /^[a-z0-9.]*$/
 export const SPACES_REGEX = /\s+/g
+export const baseWikiUrl = import.meta.env.VITE_REST_CLIENT_WIKI_BASE_URL
