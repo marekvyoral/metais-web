@@ -3,13 +3,7 @@ import { transformColumnsMap } from '@isdd/metais-common/api/hooks/containers/co
 import { Gui_Profil_RR } from '@isdd/metais-common/index'
 import { Attribute, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
-import { IRefRegisterView } from '@/types/views'
-
-interface IRefRegisterContainer {
-    entityId?: string
-    View: React.FC<IRefRegisterView>
-}
-export const RefRegisterContainer = ({ entityId, View }: IRefRegisterContainer) => {
+export const useRefRegisterHook = (entityId?: string) => {
     const isEnabled = !!entityId
 
     const {
@@ -23,7 +17,7 @@ export const RefRegisterContainer = ({ entityId, View }: IRefRegisterContainer) 
         },
     })
 
-    const { data: guiData, isLoading: guiProfilIsLoading, isError: guiProfilIsError } = useGetAttributeProfile(Gui_Profil_RR)
+    const { data: guiData, isLoading: isGuiProfileLoading, isError: isGuiProfileError } = useGetAttributeProfile(Gui_Profil_RR)
 
     const guiAttributes: Attribute[] = [
         ...(guiData?.attributes?.map((attr) => ({
@@ -32,17 +26,13 @@ export const RefRegisterContainer = ({ entityId, View }: IRefRegisterContainer) 
         })) ?? []),
     ]
 
-    const isLoading = refRegisterLoading && isEnabled
-    const isError = refRegisterError && isEnabled
+    const isLoading = [refRegisterLoading && isEnabled, isGuiProfileLoading].some((item) => item)
+    const isError = [refRegisterError && isEnabled, isGuiProfileError].some((item) => item)
 
-    return (
-        <View
-            data={{
-                referenceRegisterData,
-                guiAttributes,
-            }}
-            isLoading={isLoading || guiProfilIsLoading}
-            isError={isError || guiProfilIsError}
-        />
-    )
+    return {
+        referenceRegisterData,
+        guiAttributes,
+        isError,
+        isLoading,
+    }
 }

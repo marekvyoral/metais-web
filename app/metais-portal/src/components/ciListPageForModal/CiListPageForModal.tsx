@@ -8,7 +8,7 @@ import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicF
 import { AddItemsButtonGroup } from '@isdd/metais-common/components/add-items-button-group/AddItemsButtonGroup'
 import { ActionsOverTable } from '@isdd/metais-common/components/actions-over-table'
 import { Languages } from '@isdd/metais-common/localization/languages'
-import { useAttributesContainer } from '@isdd/metais-common/hooks/useAttributesContainer'
+import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 import { useCiListContainer } from '@isdd/metais-common/hooks/useCiListContainer'
@@ -40,7 +40,7 @@ export const CiListPageForModal: React.FC<Props> = ({ ciType, selectedItems, onS
         unitsData,
         isError: isAttError,
         isLoading: isAttLoading,
-    } = useAttributesContainer(ciType)
+    } = useAttributesHook(ciType)
 
     const {
         isError: isCiListError,

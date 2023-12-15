@@ -13,7 +13,7 @@ import { EntityDetailViewAttributes } from './attributes/EntityDetailViewAttribu
 
 import styles from '@/components/views/egov/detailViews.module.scss'
 import { BasicInformation } from '@/components/views/egov/BasicInformation'
-import { IAttributesContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'
+import { IEntityDetailContainerView } from '@/components/containers/Egov/Entity/EntityDetailContainer'
 import { ProfileTabs } from '@/components/ProfileTabs'
 
 export const EntityDetailView = ({
@@ -32,7 +32,7 @@ export const EntityDetailView = ({
     isError,
     isLoading,
     roles,
-}: IAttributesContainerView) => {
+}: IEntityDetailContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()

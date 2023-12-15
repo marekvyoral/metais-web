@@ -8,6 +8,9 @@ export enum GET_ENUM {
     TYP_OSOBY = 'TYP_OSOBY',
     ZDROJ = 'ZDROJ',
     TYP_REPLIKACIE = 'TYP_REPLIKACIE',
+    MERNA_JEDNOTKA = 'MERNA_JEDNOTKA',
+    STAV_ISVS = 'STAV_ISVS',
+    TYP_ISVS = 'TYP_ISVS',
 }
 
 export enum ATTRIBUTE_NAME {

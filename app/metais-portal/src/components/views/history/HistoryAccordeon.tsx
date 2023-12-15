@@ -1,12 +1,10 @@
+import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { AccordionContainer } from '@isdd/idsk-ui-kit/accordion/Accordion'
-
-import { ConfigurationItemHistoryDetailContainer } from '../../containers/ConfigurationItemHistoryDetailContainer'
 
 import { ConfigurationItemHistoryListTable } from './ConfigurationItemHistoryListTable'
 
-import { CiContainer } from '@/components/containers/CiContainer'
+import { ConfigurationItemHistoryDetailContainer } from '@/components/containers/ConfigurationItemHistoryDetailContainer'
 import { ConfigurationItemHistoryListContainer } from '@/components/containers/ConfigurationItemHistoryListContainer'
 
 interface RelationshipsAccordion {
@@ -22,21 +20,7 @@ export const HistoryAccordion: React.FC<RelationshipsAccordion> = ({ entityId, b
             sections={[
                 {
                     title: t('historyTab.configurationItem'),
-                    content: (
-                        <CiContainer
-                            configurationItemId={entityId}
-                            View={(ciData) => {
-                                return (
-                                    <ConfigurationItemHistoryDetailContainer
-                                        configurationItemId={entityId}
-                                        data={ciData?.data?.ciItemData}
-                                        isLoading={ciData.isLoading}
-                                        isError={ciData.isError}
-                                    />
-                                )
-                            }}
-                        />
-                    ),
+                    content: <ConfigurationItemHistoryDetailContainer configurationItemId={entityId} />,
                 },
 
                 {

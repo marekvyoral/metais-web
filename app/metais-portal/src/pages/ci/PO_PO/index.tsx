@@ -1,12 +1,10 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
-import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { useTranslation } from 'react-i18next'
 
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
 import { POView } from '@/components/views/ci/PO/POView'
-import { MainContentWrapper } from '@/components/MainContentWrapper'
 
 const POPOListPage = () => {
     const { t } = useTranslation()
@@ -43,41 +41,11 @@ const POPOListPage = () => {
                 ]}
             />
             <MainContentWrapper>
-                <AttributesContainer
+                <CiListContainer<POFilterData>
                     entityName={PO}
-                    View={({ data: attributesData, isError: isAttError, isLoading: isAttLoading }) => {
-                        return (
-                            <CiListContainer<POFilterData>
-                                entityName={PO}
-                                defaultFilterValues={defaultFilterValues}
-                                ListComponent={({
-                                    data: ciListData,
-                                    handleFilterChange,
-                                    storeUserSelectedColumns,
-                                    resetUserSelectedColumns,
-                                    pagination,
-                                    sort,
-                                    isError,
-                                    isLoading,
-                                }) => (
-                                    <POView
-                                        attributesData={attributesData}
-                                        ciListData={ciListData}
-                                        handleFilterChange={handleFilterChange}
-                                        storeUserSelectedColumns={storeUserSelectedColumns}
-                                        resetUserSelectedColumns={resetUserSelectedColumns}
-                                        pagination={pagination}
-                                        sort={sort}
-                                        isError={[isError, isAttError].some((item) => item)}
-                                        isLoading={[isLoading, isAttLoading].some((item) => item)}
-                                        entityName={PO}
-                                        defaultFilterValues={defaultFilterValues}
-                                        POType={PO_PO}
-                                    />
-                                )}
-                            />
-                        )
-                    }}
+                    POType={PO_PO}
+                    defaultFilterValues={defaultFilterValues}
+                    ListComponent={(props) => <POView {...props} />}
                 />
             </MainContentWrapper>
         </>

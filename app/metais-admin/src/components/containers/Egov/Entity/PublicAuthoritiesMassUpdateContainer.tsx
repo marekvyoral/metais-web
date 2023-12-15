@@ -6,6 +6,7 @@ import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFil
 import { IListComponent } from '@isdd/metais-common/types/list'
 import React, { useMemo } from 'react'
 import { FieldValues } from 'react-hook-form'
+import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 
 export interface IActions {
     setInvalid?: (entityId: string | undefined, configurationItem: ConfigurationItemUiAttributes | undefined) => Promise<void>
@@ -25,6 +26,15 @@ export const PublicAuthoritiesMassUpdateContainer = <T extends FieldValues & IFi
 }: IPublicAuthoritiesMassUpdateContainer<T>) => {
     const { columnListData, isLoading: isColumnsLoading, isError: isColumnsError } = useGetColumnData(entityName)
     const { filter, handleFilterChange } = useFilterParams<T>(defaultFilterValues)
+
+    const {
+        attributeProfiles,
+        attributes,
+        constraintsData,
+        unitsData,
+        isError: isAttributesError,
+        isLoading: isAttributesLoading,
+    } = useAttributesHook(entityName)
 
     const defaultRequestApi = {
         page: 1,
@@ -62,11 +72,11 @@ export const PublicAuthoritiesMassUpdateContainer = <T extends FieldValues & IFi
 
     const pagination = usePagination(tableData, filter)
 
-    const isLoading = [isReadLoading, isReadCiListLoading, isColumnsLoading].some((item) => item)
-    const isError = [isReadChangesError, isReadCiListError, isColumnsError].some((item) => item)
+    const isLoading = [isReadLoading, isReadCiListLoading, isAttributesLoading, isColumnsLoading].some((item) => item)
+    const isError = [isReadChangesError, isReadCiListError, isAttributesError, isColumnsError].some((item) => item)
     return (
         <ListComponent
-            data={{ columnListData, tableData, ciData }}
+            data={{ columnListData, tableData, ciData, attributeProfiles, attributes, constraintsData, unitsData }}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
             sort={filter?.sort ?? []}

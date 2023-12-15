@@ -1,22 +1,62 @@
-import { useGetRoleParticipantBulk, useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { IColumn } from '@isdd/idsk-ui-kit/index'
+import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import {
+    CiListFilterContainerUi,
+    ConfigurationItemSetUi,
+    RoleParticipantUI,
+    useGetRoleParticipantBulk,
+    useReadCiList1,
+} from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Attribute, AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { useFilterForCiList, useGetColumnData, usePagination } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 import { mapFilterParamsToApi } from '@isdd/metais-common/componentHelpers/filter'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { IListView } from '@isdd/metais-common/types/list'
+import { QueryObserverResult } from '@tanstack/react-query'
 import React from 'react'
 import { FieldValues } from 'react-hook-form'
 
-import { POFilterData } from '@/components/entities/projekt/Filters/FilterPO'
+export interface ICiListContainerView<T> {
+    entityStructure?: CiType
+    columnListData: IColumn | undefined
+    unitsData?: EnumType
+    constraintsData?: (EnumType | undefined)[]
+    ciData?: ConfigurationItemSetUi
+    ciTypeData: CiType | undefined
+    tableData: ConfigurationItemSetUi | undefined
+    attributeProfiles?: AttributeProfile[]
+    attributes?: Attribute[]
+    gestorsData?: RoleParticipantUI[]
+    entityName: string
+    ciType: string
+    defaultFilterValues: T
+    handleFilterChange: (filter: IFilter) => void
+    storeUserSelectedColumns: (columnSelection: FavoriteCiType) => void
+    resetUserSelectedColumns: () => Promise<void>
+    refetch: () => Promise<QueryObserverResult>
+    pagination: Pagination
+    sort: ColumnSort[]
+    isError: boolean
+    isLoading: boolean
+    POType: string
+}
+
 interface ICiListContainer<T> {
     entityName: string
-    ListComponent: React.FC<IListView>
+    ciType?: string
+    POType?: string
+    ListComponent: React.FC<ICiListContainerView<T>>
     defaultFilterValues: T
     defaultFilterOperators?: T
 }
 
 export const CiListContainer = <T extends FieldValues & IFilterParams>({
     entityName,
+    ciType,
+    POType,
     ListComponent,
     defaultFilterValues,
     defaultFilterOperators,
@@ -30,10 +70,20 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
         },
     }
 
-    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList<POFilterData, POFilterData>(
+    const { filterToNeighborsApi, filterParams, handleFilterChange } = useFilterForCiList<T, CiListFilterContainerUi>(
         defaultFilterValues,
         defaultRequestApi,
     )
+
+    const {
+        attributeProfiles,
+        constraintsData,
+        unitsData,
+        ciTypeData,
+        attributes,
+        isError: isAttributesError,
+        isLoading: isAttributesLoading,
+    } = useAttributesHook(entityName)
 
     const liableEntity = currentPreferences.myPO ? [currentPreferences.myPO] : undefined
     const state = filterParams.evidence_status?.length
@@ -46,6 +96,7 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
     const {
         data: tableData,
         isLoading: isReadCiListLoading,
+        isFetching: isReadCiListFetching,
         isError: isReadCiListError,
         refetch,
     } = useReadCiList1({
@@ -69,12 +120,14 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
     const pagination = usePagination(tableData, filterParams)
 
     const isGestorsLoadingCombined = isGestorsLoading && fetchStatus != 'idle'
-    const isLoading = [isReadCiListLoading, isColumnsLoading, isGestorsLoadingCombined].some((item) => item)
-    const isError = [isReadCiListError, isColumnsError, isGestorsError].some((item) => item)
+    const isLoading = [isReadCiListLoading, isReadCiListFetching, isColumnsLoading, isGestorsLoadingCombined, isAttributesLoading].some(
+        (item) => item,
+    )
+    const isError = [isReadCiListError, isColumnsError, isGestorsError, isAttributesError].some((item) => item)
 
     return (
         <ListComponent
-            data={{ columnListData, tableData, gestorsData }}
+            defaultFilterValues={defaultFilterValues}
             pagination={pagination}
             handleFilterChange={handleFilterChange}
             resetUserSelectedColumns={resetColumns}
@@ -83,6 +136,17 @@ export const CiListContainer = <T extends FieldValues & IFilterParams>({
             sort={filterParams?.sort ?? []}
             isLoading={isLoading}
             isError={isError}
+            columnListData={columnListData}
+            gestorsData={gestorsData}
+            tableData={tableData}
+            attributeProfiles={attributeProfiles}
+            attributes={attributes}
+            constraintsData={constraintsData}
+            unitsData={unitsData}
+            ciTypeData={ciTypeData}
+            ciType={ciType ?? entityName}
+            entityName={entityName}
+            POType={POType ?? ''}
         />
     )
 }

@@ -1,7 +1,10 @@
-import { IFilter, Pagination, ColumnSort, SortType } from '@isdd/idsk-ui-kit/types'
+import { ColumnSort, IFilter, Pagination, SortType } from '@isdd/idsk-ui-kit/types'
 import { ATTRIBUTE_NAME, Gui_Profil_RR, Reference_Registers } from '@isdd/metais-common'
 import { mapFilterToRefRegisters } from '@isdd/metais-common/api/filter/filterApi'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ApiReferenceRegister, useGetFOPReferenceRegisters1 } from '@isdd/metais-common/api/generated/reference-registers-swagger'
+import { Attribute, AttributeProfile, CiType, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import {
     columnsToIgnore,
     transformColumnsMap,
@@ -9,21 +12,23 @@ import {
     useGetColumnData,
     usePagination,
 } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
-import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import { FieldValues } from 'react-hook-form'
-import { Attribute, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 
 import { RefRegisterFilter } from '@/types/filters'
 
-export interface IAtrributesContainerView {
+export interface RefRegisterListContainerView {
     data: {
         referenceRegisters?: ApiReferenceRegister[]
         columnListData?: FavoriteCiType
         guiAttributes: Attribute[]
+        attributeProfiles?: AttributeProfile[]
+        ciTypeData: CiType | undefined
+        constraintsData: (EnumType | undefined)[]
+        unitsData?: EnumType
         renamedAttributes?: Attribute[]
     }
+    defaultFilterValues: RefRegisterFilter
     handleFilterChange: (filter: IFilter) => void
     pagination: Pagination
     saveColumnSelection?: (columnSelection: FavoriteCiType) => Promise<void>
@@ -33,24 +38,40 @@ export interface IAtrributesContainerView {
     isError: boolean
 }
 
-interface IRefRegisterListContainer<T> {
-    View: React.FC<IAtrributesContainerView>
-    defaultFilterValues: T
+interface IRefRegisterListContainer {
+    View: React.FC<RefRegisterListContainerView>
+    entityName: string
 }
 
-export const RefRegisterListContainer = <T extends FieldValues & IFilterParams>({ View, defaultFilterValues }: IRefRegisterListContainer<T>) => {
+const defaultFilterValues: RefRegisterFilter = { isvsUuid: '', managerUuid: '', registratorUuid: '', state: undefined, muk: undefined }
+
+export const RefRegisterListContainer = ({ View, entityName }: IRefRegisterListContainer) => {
     const {
         state: { user },
     } = useAuth()
-    const { filterParams, handleFilterChange } = useFilterForCiList<T, RefRegisterFilter>({
+    const { filterParams, handleFilterChange } = useFilterForCiList({
         ...defaultFilterValues,
         sort: [{ orderBy: ATTRIBUTE_NAME.ISVS_Name, sortDirection: SortType.ASC }],
     })
 
+    const {
+        attributeProfiles,
+        ciTypeData,
+        constraintsData,
+        renamedAttributes,
+        isError: isAttributesError,
+        isLoading: isAttributesLoading,
+        unitsData,
+    } = useAttributesHook(entityName)
+
     const { columnListData, saveColumnSelection, resetColumns } = useGetColumnData(Reference_Registers, true)
     const { data: guiData } = useGetAttributeProfile(Gui_Profil_RR)
 
-    const { data, isLoading, isError } = useGetFOPReferenceRegisters1(mapFilterToRefRegisters(filterParams, user))
+    const {
+        data,
+        isLoading: isRefRegisterLoading,
+        isError: isRefRegisterError,
+    } = useGetFOPReferenceRegisters1(mapFilterToRefRegisters(filterParams, user))
 
     const pagination = usePagination({ pagination: { totaltems: data?.referenceRegistersCount ?? 0 } }, filterParams)
 
@@ -62,9 +83,22 @@ export const RefRegisterListContainer = <T extends FieldValues & IFilterParams>(
                 technicalName: transformColumnsMap?.get(attr?.technicalName ?? '') ?? attr?.technicalName,
             })) ?? []
 
+    const isLoading = [isAttributesLoading, isRefRegisterLoading].some((item) => item)
+    const isError = [isAttributesError, isRefRegisterError].some((item) => item)
+
     return (
         <View
-            data={{ referenceRegisters: data?.referenceRegistersList, columnListData, guiAttributes }}
+            data={{
+                referenceRegisters: data?.referenceRegistersList,
+                columnListData,
+                guiAttributes,
+                unitsData,
+                ciTypeData,
+                constraintsData,
+                attributeProfiles,
+                renamedAttributes,
+            }}
+            defaultFilterValues={defaultFilterValues}
             handleFilterChange={handleFilterChange}
             saveColumnSelection={saveColumnSelection}
             resetColumns={resetColumns}

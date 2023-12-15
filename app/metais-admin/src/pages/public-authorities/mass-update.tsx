@@ -5,7 +5,6 @@ import { BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { AttributesContainer } from '@isdd/metais-common/src/components/containers/AttributesContainer'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -78,49 +77,49 @@ const MassUpdate = () => {
                     { label: t('navMenu.publicAuthorities.massUpdate') ?? '', href: AdminRouteNames.PUBLIC_AUTHORITIES_MASS_UPDATE },
                 ]}
             />
-            <AttributesContainer
+            <PublicAuthoritiesMassUpdateContainer<PublicAuthoritiesMassUpdateFilterData>
                 entityName={entityName}
-                View={({ data: { attributeProfiles, constraintsData, unitsData, attributes } }) => {
-                    return (
-                        <PublicAuthoritiesMassUpdateContainer<PublicAuthoritiesMassUpdateFilterData>
-                            entityName={entityName}
-                            defaultFilterValues={defaultFilterValues}
-                            ListComponent={({ data: { tableData, ciData }, handleFilterChange, pagination, sort, isError, isLoading }) => (
-                                <MainContentWrapper>
-                                    <QueryFeedback withChildren loading={isLoading || isActionLoading} error={false}>
-                                        <MutationFeedback
-                                            success={isActionSuccess}
-                                            successMessage={successMessage}
-                                            error={isActionError ? errorMessage : undefined}
-                                        />
+                defaultFilterValues={defaultFilterValues}
+                ListComponent={({
+                    data: { tableData, ciData, attributeProfiles, attributes, unitsData, constraintsData },
+                    handleFilterChange,
+                    pagination,
+                    sort,
+                    isError,
+                    isLoading,
+                }) => (
+                    <MainContentWrapper>
+                        <QueryFeedback withChildren loading={isLoading || isActionLoading} error={false}>
+                            <MutationFeedback
+                                success={isActionSuccess}
+                                successMessage={successMessage}
+                                error={isActionError ? errorMessage : undefined}
+                            />
 
-                                        <FlexColumnReverseWrapper>
-                                            <TextHeading size="XL">{t('publicAuthorities.massUpdate.title')}</TextHeading>
-                                            {isError && <QueryFeedback error={isError} loading={false} />}
-                                        </FlexColumnReverseWrapper>
-                                        <PublicAuthoritiesMassUpdateFilter entityName={entityName} defaultFilterValues={defaultFilterValues} />
-                                        <PublicAuthoritiesMassUpdateTable
-                                            data={tableData}
-                                            ciData={ciData}
-                                            defaultFilterValues={defaultFilterValues}
-                                            attributeProfiles={attributeProfiles}
-                                            attributes={attributes}
-                                            unitsData={unitsData}
-                                            constraintsData={constraintsData}
-                                            handleFilterChange={handleFilterChange}
-                                            onApprove={handleApproveChanges}
-                                            onReject={handleRejectChanges}
-                                            pagination={pagination}
-                                            sort={sort}
-                                            isLoading={isLoading}
-                                            error={isError}
-                                        />
-                                    </QueryFeedback>
-                                </MainContentWrapper>
-                            )}
-                        />
-                    )
-                }}
+                            <FlexColumnReverseWrapper>
+                                <TextHeading size="XL">{t('publicAuthorities.massUpdate.title')}</TextHeading>
+                                {isError && <QueryFeedback error={isError} loading={false} />}
+                            </FlexColumnReverseWrapper>
+                            <PublicAuthoritiesMassUpdateFilter entityName={entityName} defaultFilterValues={defaultFilterValues} />
+                            <PublicAuthoritiesMassUpdateTable
+                                data={tableData}
+                                ciData={ciData}
+                                defaultFilterValues={defaultFilterValues}
+                                attributeProfiles={attributeProfiles}
+                                attributes={attributes}
+                                unitsData={unitsData}
+                                constraintsData={constraintsData}
+                                handleFilterChange={handleFilterChange}
+                                onApprove={handleApproveChanges}
+                                onReject={handleRejectChanges}
+                                pagination={pagination}
+                                sort={sort}
+                                isLoading={isLoading}
+                                error={isError}
+                            />
+                        </QueryFeedback>
+                    </MainContentWrapper>
+                )}
             />
         </>
     )

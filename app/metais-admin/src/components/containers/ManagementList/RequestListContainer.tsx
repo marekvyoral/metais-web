@@ -1,12 +1,12 @@
+import { SortType } from '@isdd/idsk-ui-kit/src/types'
 import { IFilter } from '@isdd/idsk-ui-kit/types/filter'
+import { useReadList } from '@isdd/metais-common/api/generated/claim-manager-swagger'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { FindAll11200 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, EClaimState } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect } from 'react'
-import { useReadList } from '@isdd/metais-common/api/generated/claim-manager-swagger'
-import { SortType } from '@isdd/idsk-ui-kit/src/types'
 
 import { IRequestListView } from '@/components/views/userManagement/request-list-view/RequestListView'
 
@@ -42,6 +42,7 @@ const defaultFilterParams = {
 
 export const RequestListContainer: React.FC<IRequestListContainerProps> = ({ View }) => {
     const { filter, handleFilterChange } = useFilterParams<IRequestListFilterView>(defaultFilterParams)
+
     const { isLoading, isError, data, mutateAsync } = useReadList()
     useEffect(() => {
         mutateAsync({

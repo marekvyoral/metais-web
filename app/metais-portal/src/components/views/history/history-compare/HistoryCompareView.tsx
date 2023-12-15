@@ -1,32 +1,16 @@
+import { CheckBox } from '@isdd/idsk-ui-kit/index'
 import { Stepper } from '@isdd/idsk-ui-kit/src/stepper/Stepper'
 import { ISection, IStepLabel } from '@isdd/idsk-ui-kit/stepper/StepperSection'
 import { ConfigurationItemUiAttributes, HistoryVersionUiConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { Attribute, AttributeConstraintEnumAllOf } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
-import { CheckBox } from '@isdd/idsk-ui-kit/index'
-import { CiType, AttributeConstraintEnumAllOf, Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { HistoryCompareItemView } from './HistoryCompareItemView'
 import { RelationCompareItemView } from './RelationCompareItemView'
 
-import { IRelationItem } from '@/components/containers/HistorySingleItemCompareContainer'
-
-export interface AttributesData {
-    ciTypeData: CiType | undefined
-    constraintsData: (EnumType | undefined)[]
-    unitsData?: EnumType | undefined
-}
-export interface IHistoryCompareViewProps {
-    ciTypeData: CiType | undefined
-    dataFirst: HistoryVersionUiConfigurationItemUi | undefined
-    dataSec: HistoryVersionUiConfigurationItemUi | undefined
-    dataRelationFirst?: IRelationItem[]
-    dataRelationSecond?: IRelationItem[]
-    attributesData?: AttributesData
-    isSimple?: boolean
-}
+import { IHistoryItemsCompareContainerView } from '@/components/containers/HistoryItemsCompareContainer'
 
 enum AttributeType {
     STRING = 'STRING',
@@ -36,14 +20,14 @@ enum AttributeType {
     ENUM = 'enum',
 }
 
-export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({
+export const HistoryCompareView: React.FC<IHistoryItemsCompareContainerView> = ({
     ciTypeData,
     dataFirst,
     dataSec,
-    attributesData,
-    isSimple,
+    constraintsData,
     dataRelationFirst,
     dataRelationSecond,
+    isSimple,
 }) => {
     const { t, i18n } = useTranslation()
     const [showOnlyChanges, setShowOnlyChanges] = useState<boolean>(false)
@@ -55,7 +39,7 @@ export const HistoryCompareView: React.FC<IHistoryCompareViewProps> = ({
             return value ?? ''
         }
 
-        const numValue = attributesData?.constraintsData.find((i) => i?.code === enumAttribute.enumCode)?.enumItems?.find((i) => i?.code === value)
+        const numValue = constraintsData.find((i) => i?.code === enumAttribute.enumCode)?.enumItems?.find((i) => i?.code === value)
         if (i18n.language === languageEn) {
             return numValue?.engValue ?? ''
         }

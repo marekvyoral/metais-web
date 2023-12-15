@@ -16,7 +16,7 @@ import {
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FindAll11200, useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
 
-export interface IAttributesContainerView {
+export interface IEntityDetailContainerView {
     data: {
         ciTypeData: CiType | undefined
         constraintsData: (EnumType | undefined)[]
@@ -35,12 +35,12 @@ export interface IAttributesContainerView {
     refetch?: () => void
 }
 
-interface AttributesContainer {
+interface IEntityDetailContainer {
     entityName: string
-    View: React.FC<IAttributesContainerView>
+    View: React.FC<IEntityDetailContainerView>
 }
 
-export const EntityDetailContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {
+export const EntityDetailContainer: React.FC<IEntityDetailContainer> = ({ entityName, View }) => {
     const {
         ciTypeData,
         isLoading: isCiTypeDataLoading,

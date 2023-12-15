@@ -4,6 +4,7 @@ import { useDeleteCacheForCi } from '@isdd/metais-common/src/hooks/be-cache/useD
 import { Attribute, useStoreNewAttribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { GET_ENUM } from '@isdd/metais-common/api'
 
 export interface IAddAttributeView {
     data: {
@@ -23,7 +24,7 @@ export interface IAddAttributeContainer {
 }
 
 const AddAttributeContainer = ({ View, onClose, refetch, entityName }: IAddAttributeContainer) => {
-    const { data } = useGetEnum('MERNA_JEDNOTKA')
+    const { data } = useGetEnum(GET_ENUM.MERNA_JEDNOTKA)
     const underscore = '_'
     const { data: allEnumsData } = useListEnums()
     const { setIsActionSuccess } = useActionSuccess()

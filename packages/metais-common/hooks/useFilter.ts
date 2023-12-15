@@ -92,7 +92,7 @@ interface ReturnUseFilter<TFieldValues extends FieldValues> {
     clearErrors: UseFormClearErrors<TFieldValues>
 }
 
-const parseSortQuery = (urlParams: URLSearchParams): undefined | ColumnSort[] => {
+const parseSortQuery = (urlParams: URLSearchParams, sortFromState: ColumnSort[] | undefined): undefined | ColumnSort[] => {
     const orderBy = urlParams.get('orderBy')
     const sortDirection = urlParams.get('sortDirection')
 
@@ -104,7 +104,7 @@ const parseSortQuery = (urlParams: URLSearchParams): undefined | ColumnSort[] =>
             },
         ]
 
-    return undefined
+    return sortFromState || []
 }
 
 type ParsedCustomAttributes = {
@@ -176,6 +176,7 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
 
     const handleFilterChange = (changedFilter: IFilter) => {
         updateUrlParamsOnChange(changedFilter, setUrlParams)
+
         setUiFilterState({
             ...uiFilterState,
             ...changedFilter,
@@ -183,6 +184,7 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
 
         updateFilterInLocalStorageOnChange(changedFilter, location.pathname)
     }
+
     const filter: T & IFilterParams & IFilter = useMemo(() => {
         const memoFilter = {
             ...uiFilterState,
@@ -214,7 +216,7 @@ export function useFilterParams<T extends FieldValues & IFilterParams>(defaults:
                 }
             })
 
-        memoFilter.sort = parseSortQuery(urlParams) ?? defaults.sort
+        memoFilter.sort = parseSortQuery(urlParams, uiFilterState.sort)
         const { attributeFilters, metaAttributeFilters } = parseCustomAttributes(urlParams)
         memoFilter.attributeFilters = attributeFilters
         memoFilter.metaAttributeFilters = metaAttributeFilters

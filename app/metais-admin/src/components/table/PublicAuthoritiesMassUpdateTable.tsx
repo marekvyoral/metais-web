@@ -40,7 +40,7 @@ type PublicAuthoritiesMassUpdateTableProps = {
     attributeProfiles?: AttributeProfile[]
     attributes?: Attribute[]
     unitsData: EnumType | undefined
-    constraintsData: (EnumType | undefined)[]
+    constraintsData?: (EnumType | undefined)[]
     sort: ColumnSort[]
     isLoading: boolean
     error?: boolean

@@ -5,7 +5,7 @@ import { QueryFeedback } from '@isdd/metais-common/index'
 import { useTranslation } from 'react-i18next'
 
 import { CreateEntity, CreateEntityData } from '@/components/create-entity/CreateEntity'
-import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
+import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 
 interface Props {
     entityName: string

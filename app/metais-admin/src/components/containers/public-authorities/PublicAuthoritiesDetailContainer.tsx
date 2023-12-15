@@ -19,21 +19,21 @@ export interface IPublicAuthoritiesDetail {
     statutarAttributes?: ParsedAttribute[]
     setInvalid?: (entityId: string | undefined, configurationItem: ConfigurationItemUi | undefined) => Promise<void>
 }
-export interface IAttributesContainerView {
+export interface IPublicAuthoritiesDetailContainerView {
     data: IPublicAuthoritiesDetail
     isError: boolean
     isLoading: boolean
 }
 
-interface AttributesContainer {
+interface IPublicAuthoritiesDetailContainer {
     entityId: string
-    View: React.FC<IAttributesContainerView>
+    View: React.FC<IPublicAuthoritiesDetailContainerView>
 }
 
 const allAttributes = Object.values(ATTRIBUTE_NAME)
 const allStatutarAttributes = Object.values(STATUTAR_NAME)
 
-export const PublicAuthoritiesDetailContainer: React.FC<AttributesContainer> = ({ entityId, View }) => {
+export const PublicAuthoritiesDetailContainer: React.FC<IPublicAuthoritiesDetailContainer> = ({ entityId, View }) => {
     const { data: personTypesCategories } = useGetEnum(GET_ENUM.TYP_OSOBY)
     const { data: personCategories } = useGetEnum(GET_ENUM.KATEGORIA_OSOBA)
     const { data: sources } = useGetEnum(GET_ENUM.ZDROJ)

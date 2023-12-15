@@ -2,12 +2,11 @@ import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { IFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { ListWrapper } from '@/components/list-wrapper/ListWrapper'
-import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 interface Props {
     importantEntityName?: string
@@ -25,65 +24,29 @@ const CiListPage: React.FC<Props> = ({ importantEntityName, noSideMenu }) => {
 
     const entityName = importantEntityName ? importantEntityName : ciType ?? ''
     return (
-        <AttributesContainer
+        <CiListContainer<CIFilterData>
             entityName={entityName}
-            View={({ data: { attributeProfiles, constraintsData, unitsData, ciTypeData, attributes }, isError: attError, isLoading: attLoading }) => {
-                return (
-                    <CiListContainer<CIFilterData>
-                        entityName={entityName}
-                        defaultFilterValues={defaultFilterValues}
-                        ListComponent={({
-                            data: { columnListData, tableData, gestorsData },
-                            handleFilterChange,
-                            storeUserSelectedColumns,
-                            resetUserSelectedColumns,
-                            refetch,
-                            pagination,
-                            sort,
-                            isError: ciListError,
-                            isLoading: ciListLoading,
-                        }) => (
-                            <>
-                                {!importantEntityName && (
-                                    <BreadCrumbs
-                                        withWidthContainer
-                                        links={[
-                                            { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                                            {
-                                                label: `${ciTypeData?.name}`,
-                                                href: `/ci/${ciType}`,
-                                            },
-                                        ]}
-                                    />
-                                )}
-                                <MainContentWrapper noSideMenu={noSideMenu}>
-                                    <ListWrapper
-                                        isNewRelationModal={!!importantEntityName}
-                                        defaultFilterValues={defaultFilterValues}
-                                        sort={sort}
-                                        columnListData={columnListData}
-                                        gestorsData={gestorsData}
-                                        tableData={tableData}
-                                        handleFilterChange={handleFilterChange}
-                                        storeUserSelectedColumns={storeUserSelectedColumns}
-                                        resetUserSelectedColumns={resetUserSelectedColumns}
-                                        pagination={pagination}
-                                        attributeProfiles={attributeProfiles}
-                                        attributes={attributes}
-                                        constraintsData={constraintsData}
-                                        unitsData={unitsData}
-                                        ciTypeData={ciTypeData}
-                                        ciType={ciType}
-                                        refetch={refetch}
-                                        isLoading={[ciListLoading, attLoading].some((item) => item)}
-                                        isError={[ciListError, attError].some((item) => item)}
-                                    />
-                                </MainContentWrapper>
-                            </>
-                        )}
-                    />
-                )
-            }}
+            ciType={ciType ?? ''}
+            defaultFilterValues={defaultFilterValues}
+            ListComponent={(props) => (
+                <>
+                    {!importantEntityName && (
+                        <BreadCrumbs
+                            withWidthContainer
+                            links={[
+                                { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                                {
+                                    label: `${props.ciTypeData?.name}`,
+                                    href: `/ci/${ciType}`,
+                                },
+                            ]}
+                        />
+                    )}
+                    <MainContentWrapper noSideMenu={noSideMenu}>
+                        <ListWrapper isNewRelationModal={!!importantEntityName} {...props} />
+                    </MainContentWrapper>
+                </>
+            )}
         />
     )
 }

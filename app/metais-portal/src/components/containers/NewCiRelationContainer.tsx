@@ -1,100 +1,76 @@
-import { IncidentRelationshipSetUi, useReadRelationships } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
-import React, { Dispatch, SetStateAction, useState } from 'react'
-import {
-    RelatedCiTypePreview,
-    RelationshipType,
-    useListRelatedCiTypes,
-    useGetRelationshipType,
-    useGetCiType,
-    CiType,
-} from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common'
+import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { RoleOrgGroup } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useCiHook } from '@isdd/metais-common/hooks/useCi.hook'
+import { Languages } from '@isdd/metais-common/localization/languages'
+import { useTranslation } from 'react-i18next'
 
-import { filterRelatedList } from '@/componentHelpers/new-relation'
-
-export interface INewCiRelationData {
-    relatedListAsSources: RelatedCiTypePreview[]
-    relatedListAsTargets: RelatedCiTypePreview[]
-    readRelationShipsData: IncidentRelationshipSetUi | undefined
-    relationTypeData: RelationshipType | undefined
-    constraintsData: (EnumType | undefined)[]
-    unitsData: EnumType | undefined
-    ciTypeData: CiType | undefined
-}
-
-export interface ISelectedRelationTypeState {
-    selectedRelationTypeTechnicalName: string
-    setSelectedRelationTypeTechnicalName: Dispatch<SetStateAction<string>>
-}
+import { INewCiRelationData, ISelectedRelationTypeState, useNewCiRelationHook } from '@/hooks/useNewCiRelation.hook'
+import { PublicAuthorityState, RoleState, usePublicAuthorityAndRoleHook } from '@/hooks/usePublicAuthorityAndRole.hook'
 
 export interface INewCiRelationContainerView {
+    ciName: string
+    entityName: string
+    entityId: string
+    tabName: string
+    selectedRelationTypeState: ISelectedRelationTypeState
+    publicAuthorityState: PublicAuthorityState
+    roleState: RoleState
+    relationData: INewCiRelationData | undefined
+    groupData: RoleOrgGroup | undefined
+    ciItemData: ConfigurationItemUi | undefined
+    ownerGid: string
     isLoading: boolean
     isError: boolean
-    selectedRelationTypeState: ISelectedRelationTypeState
-    data?: INewCiRelationData
 }
 
 interface INewCiRelationContainer {
-    configurationItemId: string
+    View: React.FC<INewCiRelationContainerView>
     entityName: string
     tabName: string
-    View: React.FC<INewCiRelationContainerView>
+    configurationItemId?: string
 }
 
-export const NewCiRelationContainer: React.FC<INewCiRelationContainer> = ({ configurationItemId, entityName, tabName, View }) => {
-    const [selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName] = useState<string>('')
+export const NewCiRelationContainer = ({ View, entityName, tabName, configurationItemId }: INewCiRelationContainer) => {
+    const { i18n } = useTranslation()
 
-    const { data: ciTypeData, isLoading: isCiTypeLoading, isError: isCiTypeError } = useGetCiType(entityName ?? '')
-
-    const { data: relatedListData, isLoading: isRelatedListLoading, isError: isRelatedListError } = useListRelatedCiTypes(entityName)
-
-    //build select options from this data
-    const relatedListAsSources = filterRelatedList(relatedListData?.cisAsSources, tabName)
-    const relatedListAsTargets = filterRelatedList(relatedListData?.cisAsTargets, tabName)
-
-    //selectedTechName
+    const { ciItemData, isLoading: isCiLoading, isError: isCiError } = useCiHook(configurationItemId)
     const {
-        data: readRelationShipsData,
-        isLoading: isReadRelationshipsLoading,
-        isError: isReadRelationshipsError,
-    } = useReadRelationships(configurationItemId ?? '')
-
-    //selectedTechName
-    const combinedRelatedLists = [...relatedListAsSources, ...relatedListAsTargets]
-    const firstRelatedItemTechName = combinedRelatedLists[0]?.relationshipTypeTechnicalName
-    const {
-        data: relationTypeData,
-        isLoading: isRelationTypeDataLoading,
-        isError: isRelationTypeDataError,
-    } = useGetRelationshipType(selectedRelationTypeTechnicalName ? selectedRelationTypeTechnicalName : firstRelatedItemTechName ?? '', {
-        query: { enabled: !!firstRelatedItemTechName },
-    })
+        data: relationData,
+        selectedRelationTypeState,
+        isLoading: isRelationLoading,
+        isError: isRelationError,
+    } = useNewCiRelationHook({ configurationItemId, entityName, tabName })
 
     const {
-        isLoading: isDetailDataLoading,
-        isError: isDetailDataError,
-        constraintsData,
-        unitsData,
-    } = useDetailData({
-        entityStructure: relationTypeData,
-        isEntityStructureLoading: isRelationTypeDataLoading,
-        isEntityStructureError: isRelationTypeDataError,
-    })
+        groupData,
+        isError: publicAuthAndRoleError,
+        isLoading: publicAuthAndRoleLoading,
+        publicAuthorityState,
+        roleState,
+    } = usePublicAuthorityAndRoleHook()
 
-    const isLoading = [isReadRelationshipsLoading, isRelatedListLoading, isRelationTypeDataLoading, isDetailDataLoading, isCiTypeLoading].some(
-        (item) => item,
-    )
-    const isError = [isReadRelationshipsError, isRelatedListError, isRelationTypeDataError, isDetailDataError, isCiTypeError].some((item) => item)
+    const ciName =
+        i18n.language == Languages.SLOVAK
+            ? ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
+            : ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]
 
-    if (!configurationItemId)
-        return (
-            <View selectedRelationTypeState={{ selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName }} isLoading={false} isError />
-        )
+    const isLoading = [isCiLoading, publicAuthAndRoleLoading, isRelationLoading].some((item) => item)
+    const isError = [isCiError, publicAuthAndRoleError, isRelationError].some((item) => item)
+
     return (
         <View
-            data={{ relatedListAsSources, relatedListAsTargets, readRelationShipsData, relationTypeData, constraintsData, unitsData, ciTypeData }}
-            selectedRelationTypeState={{ selectedRelationTypeTechnicalName, setSelectedRelationTypeTechnicalName }}
+            ciName={ciName}
+            tabName={tabName}
+            entityName={entityName}
+            entityId={configurationItemId ?? ''}
+            groupData={groupData}
+            ciItemData={ciItemData}
+            ownerGid={groupData?.gid ?? ''}
+            publicAuthorityState={publicAuthorityState}
+            relationData={relationData}
+            roleState={roleState}
+            selectedRelationTypeState={selectedRelationTypeState}
             isLoading={isLoading}
             isError={isError}
         />

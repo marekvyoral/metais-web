@@ -32,7 +32,7 @@ import { formatFormAttributeValue } from '@/components/create-entity/createEntit
 import { CreateEntityData } from '@/components/create-entity/CreateEntity'
 import { ITVSExceptionsCreateView } from '@/components/views/ci/ITVSExceptions/ITVSExceptionsCreateView'
 import { filterRelatedList } from '@/componentHelpers/new-relation'
-import { RoleState, PublicAuthorityState } from '@/components/containers/PublicAuthorityAndRoleContainer'
+import { RoleState, PublicAuthorityState } from '@/hooks/usePublicAuthorityAndRole.hook'
 
 export interface RelationshipWithCiType extends RelationshipUi {
     ciType: string

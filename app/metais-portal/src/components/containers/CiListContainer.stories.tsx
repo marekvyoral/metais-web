@@ -29,10 +29,35 @@ export const Main: Story = {
                     <CiListContainer<FilterData>
                         defaultFilterValues={{}}
                         entityName="Projekt"
-                        ListComponent={({ data, handleFilterChange, pagination, sort, isError, isLoading }) => (
+                        ListComponent={({
+                            tableData,
+                            columnListData,
+                            attributeProfiles,
+                            attributes,
+                            ciData,
+                            constraintsData,
+                            entityStructure,
+                            gestorsData,
+                            unitsData,
+                            handleFilterChange,
+                            pagination,
+                            sort,
+                            isError,
+                            isLoading,
+                        }) => (
                             <>
                                 <CiTable
-                                    data={data}
+                                    data={{
+                                        tableData,
+                                        columnListData,
+                                        attributeProfiles,
+                                        attributes,
+                                        ciData,
+                                        constraintsData,
+                                        entityStructure,
+                                        gestorsData,
+                                        unitsData,
+                                    }}
                                     handleFilterChange={handleFilterChange}
                                     pagination={pagination}
                                     sort={sort}

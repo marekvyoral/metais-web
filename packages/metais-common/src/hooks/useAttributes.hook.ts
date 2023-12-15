@@ -1,10 +1,17 @@
+import { useTranslation } from 'react-i18next'
+
 import { useDetailData } from './useDetailData'
 
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { transformColumnsMap } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 
-export const useAttributesContainer = (entityName: string) => {
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName)
+export const useAttributesHook = (entityName?: string) => {
+    const { i18n } = useTranslation()
+    const {
+        data: ciTypeData,
+        isLoading: isCiTypeDataLoading,
+        isError: isCiTypeDataError,
+    } = useGetCiType(entityName ?? '', { query: { queryKey: [i18n.language, entityName], enabled: !!entityName } })
 
     const { isLoading, isError, constraintsData, unitsData } = useDetailData({
         entityStructure: ciTypeData,

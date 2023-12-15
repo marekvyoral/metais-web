@@ -1,42 +1,29 @@
-import { useParams } from 'react-router-dom'
-import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 import { REFERENCE_REGISTER } from '@isdd/metais-common/constants'
+import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
+import { useParams } from 'react-router-dom'
 
-import { RefRegisterContainer } from '@/components/containers/refregisters/RefRegisterContainer'
 import { RefRegisterView } from '@/components/views/refregisters/RefRegisterView'
+import { useRefRegisterHook } from '@/hooks/useRefRegister.hook'
 
 const RefRegistersInformation = () => {
     const { entityId } = useParams()
     const entityName = REFERENCE_REGISTER
 
+    const { renamedAttributes, isLoading: isAttributesLoading, isError: isAttributesError } = useAttributesHook(entityName)
+    const { referenceRegisterData, guiAttributes, isLoading: isRefLoading, isError: isRefError } = useRefRegisterHook(entityId)
+
+    const isLoading = [isAttributesLoading, isRefLoading].some((item) => item)
+    const isError = [isAttributesError, isRefError].some((item) => item)
+
     return (
         <>
-            <AttributesContainer
-                entityName={entityName}
-                View={(attributesProps) => (
-                    <RefRegisterContainer
-                        entityId={entityId ?? ''}
-                        View={(props) => (
-                            <RefRegisterView
-                                isLoading={props.isLoading}
-                                isError={props?.isError}
-                                data={{
-                                    referenceRegisterData: props?.data?.referenceRegisterData,
-                                    attributesProps: {
-                                        ...attributesProps,
-                                        data: {
-                                            ...attributesProps?.data,
-                                            renamedAttributes: [
-                                                ...(attributesProps?.data?.renamedAttributes ?? []),
-                                                ...(props?.data?.guiAttributes ?? []),
-                                            ],
-                                        },
-                                    },
-                                }}
-                            />
-                        )}
-                    />
-                )}
+            <RefRegisterView
+                isLoading={isLoading}
+                isError={isError}
+                data={{
+                    referenceRegisterData: referenceRegisterData,
+                    renamedAttributes: [...(renamedAttributes ?? []), ...(guiAttributes ?? [])],
+                }}
             />
         </>
     )

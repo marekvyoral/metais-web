@@ -79,7 +79,7 @@ interface ITabs {
 }
 
 export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const { pathname } = useLocation()
     const location = useLocation()
     const navigate = useNavigate()
@@ -131,6 +131,11 @@ export const Tabs: React.FC<ITabs> = ({ tabList, onSelect: onSelected }) => {
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tabList])
+
+    useEffect(() => {
+        setNewTabList(tabList)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [i18n.language])
 
     const handleSubListSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, value: Tab) => {
         event.preventDefault()

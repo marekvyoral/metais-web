@@ -1,9 +1,8 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
+import { ENTITY_KRIS } from '@isdd/metais-common/constants'
+import { IFilterParams, OPERATOR_OPTIONS } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
-import { IFilterParams, OPERATOR_OPTIONS } from '@isdd/metais-common/hooks/useFilter'
-import { ENTITY_KRIS } from '@isdd/metais-common/constants'
 
 import { CiListContainer } from '@/components/containers/CiListContainer'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -41,53 +40,12 @@ const KRISListPage: React.FC<Props> = ({ importantEntityName, noSideMenu }) => {
                 />
             )}
             <MainContentWrapper noSideMenu={noSideMenu}>
-                <AttributesContainer
+                <CiListContainer<KRISFilterType>
                     entityName={entityName}
-                    View={({
-                        data: { attributeProfiles, constraintsData, unitsData, ciTypeData, attributes },
-                        isError: attError,
-                        isLoading: attLoading,
-                    }) => {
-                        return (
-                            <CiListContainer<KRISFilterType>
-                                entityName={entityName}
-                                defaultFilterValues={defaultFilterValues}
-                                defaultFilterOperators={defaultFilterOperators}
-                                ListComponent={({
-                                    data: { columnListData, tableData, gestorsData },
-                                    handleFilterChange,
-                                    storeUserSelectedColumns,
-                                    resetUserSelectedColumns,
-                                    refetch,
-                                    pagination,
-                                    sort,
-                                    isError: ciListError,
-                                    isLoading: ciListLoading,
-                                }) => (
-                                    <KrisListView
-                                        defaultFilterValues={defaultFilterValues}
-                                        sort={sort}
-                                        columnListData={columnListData}
-                                        gestorsData={gestorsData}
-                                        tableData={tableData}
-                                        handleFilterChange={handleFilterChange}
-                                        storeUserSelectedColumns={storeUserSelectedColumns}
-                                        resetUserSelectedColumns={resetUserSelectedColumns}
-                                        pagination={pagination}
-                                        attributeProfiles={attributeProfiles}
-                                        attributes={attributes}
-                                        constraintsData={constraintsData}
-                                        unitsData={unitsData}
-                                        ciTypeData={ciTypeData}
-                                        ciType={ciType}
-                                        refetch={refetch}
-                                        isLoading={[ciListLoading, attLoading].some((item) => item)}
-                                        isError={[ciListError, attError].some((item) => item)}
-                                    />
-                                )}
-                            />
-                        )
-                    }}
+                    ciType={ciType}
+                    defaultFilterValues={defaultFilterValues}
+                    defaultFilterOperators={defaultFilterOperators}
+                    ListComponent={(props) => <KrisListView {...props} />}
                 />
             </MainContentWrapper>
         </>

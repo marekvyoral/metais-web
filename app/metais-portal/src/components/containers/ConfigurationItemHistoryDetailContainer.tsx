@@ -1,25 +1,28 @@
+import { useGetRoleParticipant } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useCiHook } from '@isdd/metais-common/hooks/useCi.hook'
 import React from 'react'
-import { ConfigurationItemUi, useGetRoleParticipant } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
-import { ConfigurationItemHistoryDetailView } from '../views/history/ConfigurationItemHistoryDetailView'
+import { ConfigurationItemHistoryDetailView } from '@/components/views/history/ConfigurationItemHistoryDetailView'
 
 interface ConfigurationItemHistoryDetail {
-    data?: ConfigurationItemUi
     configurationItemId: string
-    isLoading: boolean
-    isError: boolean
 }
 
-export const ConfigurationItemHistoryDetailContainer: React.FC<ConfigurationItemHistoryDetail> = ({ data, isLoading, isError }) => {
+export const ConfigurationItemHistoryDetailContainer: React.FC<ConfigurationItemHistoryDetail> = ({ configurationItemId }) => {
+    const { ciItemData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(configurationItemId)
+
     const {
         data: roleParticipant,
         isLoading: roleParticipantLoading,
         isError: roleParticipantIsError,
-    } = useGetRoleParticipant(data?.metaAttributes?.owner ?? '')
+    } = useGetRoleParticipant(ciItemData?.metaAttributes?.owner ?? '', { query: { enabled: !!ciItemData } })
+
+    const isLoading = [roleParticipantLoading, isCiItemLoading].some((item) => item)
+    const isError = [roleParticipantIsError, isCiItemError].some((item) => item)
 
     return (
         <ConfigurationItemHistoryDetailView
-            data={data}
+            data={ciItemData}
             roleParticipant={roleParticipant}
             isLoading={roleParticipantLoading || isLoading}
             isError={roleParticipantIsError || isError}

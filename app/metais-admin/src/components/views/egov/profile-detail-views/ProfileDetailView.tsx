@@ -20,7 +20,7 @@ import { MoreActionsColumn } from './actions/MoreActionsColumn'
 import { AddAttributeModal } from './attributes/AddAttributeModal'
 
 import styles from '@/components/views/egov/detailViews.module.scss'
-import { IAttributesContainerView } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
+import { IProfileDetailContainerView } from '@/components/containers/Egov/Profile/ProfileDetailContainer'
 import { BasicInformation } from '@/components/views/egov/BasicInformation'
 
 const getProfileAttributeSchema = (t: TFunction) => {
@@ -50,7 +50,7 @@ export const ProfileDetailView = <T,>({
     isLoading,
     isError,
     roles,
-}: IAttributesContainerView<T>) => {
+}: IProfileDetailContainerView<T>) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { isActionSuccess, setIsActionSuccess } = useActionSuccess()
