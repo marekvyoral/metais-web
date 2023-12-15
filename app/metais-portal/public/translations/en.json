@@ -604,7 +604,7 @@
         "import": "Import",
         "cancel": "Cancel",
         "validate": "Validate",
-        "done" : "Files are imported successfully!"
+        "done": "Files are imported successfully!"
     },
     "exportItemsOrRelations": {
         "header": "Export items or relations",
@@ -1217,7 +1217,8 @@
         },
         "feedback": {
             "editCodeListItems": "Codelist items have been changed",
-            "translationCreated": "The language version of codelist has been created. You can now add translation of items in this language. The language version of the codelist should be published only when completely translated.",
+            "translationCreated": "The language version of codelist has been created. You can now add translation of items in this language.",
+            "translationWarning": "The language version of the codelist should be published only when completely translated.",
             "returnToMainGestor": "Codelist was returned for revision.",
             "sendToSzzc": "Request has been sent to administrator of BC list.",
             "publishCodeListItems": "Codelist items were published."
