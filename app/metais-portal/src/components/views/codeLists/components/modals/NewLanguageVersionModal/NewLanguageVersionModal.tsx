@@ -48,20 +48,18 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
         onSuccess()
     }
     const {
-        mutate: updateLanguageMutation,
+        mutateAsync: updateLanguageMutation,
         error: errorUpdateLanguageMutation,
         isLoading: isLoadingUpdateLanguageMutation,
-        isSuccess: isSuccessUpdateLanguageMutation,
     } = useUpdateCodelistLanguageVersion({
         mutation: {
             onSuccess: queryOnSuccess,
         },
     })
     const {
-        mutate: createLanguageMutation,
+        mutateAsync: createLanguageMutation,
         error: errorCreateLanguageMutation,
         isLoading: isLoadingCreateLanguageMutation,
-        isSuccess: isSuccessCreateLanguageMutation,
     } = useCreateCodelistLanguageVersion({
         mutation: {
             onSuccess: queryOnSuccess,
@@ -102,14 +100,13 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
         }
 
         if (translationAlreadyExists) {
-            updateLanguageMutation({ code, data: requestData })
+            await updateLanguageMutation({ code, data: requestData })
         } else {
-            createLanguageMutation({ code, data: requestData })
+            await createLanguageMutation({ code, data: requestData })
         }
     }
 
     const isLoading = [isLoadingOriginal, isLoadingCreateLanguageMutation, isLoadingUpdateLanguageMutation].some((item) => item)
-    const isMutationSuccess = [isSuccessCreateLanguageMutation, isSuccessUpdateLanguageMutation].some((item) => item)
     const errorMessages = getErrorTranslateKeys([errorCreateLanguageMutation, errorUpdateLanguageMutation].map((item) => item as { message: string }))
 
     if (!names) return <></>
@@ -126,11 +123,7 @@ export const NewLanguageVersionModal: React.FC<NewLanguageVersionModalProps> = (
                         {errorMessages.map((errorMessage, index) => (
                             <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
                         ))}
-                        <MutationFeedback
-                            success={isMutationSuccess}
-                            successMessage={t('codeListDetail.feedback.translationCreated')}
-                            error={undefined}
-                        />
+
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <SimpleSelect
                                 label={t('codeListDetail.form.label.language')}

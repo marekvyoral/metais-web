@@ -76,6 +76,7 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
     const [isPublishCodeListOpen, setIsPublishCodeListOpen] = useState(false)
     const [isReturnToMainGestorOpen, setIsReturnToMainGestorOpen] = useState(false)
     const [isSendToSzzcOpen, setIsSendToSzzcOpen] = useState(false)
+    const [isMutationSuccess, setIsMutationSuccess] = useState(false)
 
     const code = data.codeList?.code ?? ''
 
@@ -147,6 +148,8 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
             />
             <MainContentWrapper>
                 {isError && !code && <QueryFeedback error={isError} loading={false} />}
+                <MutationFeedback success={isMutationSuccess} successMessage={t('codeListDetail.feedback.translationCreated')} error={undefined} />
+                {isMutationSuccess && <TextWarning>{t('codeListDetail.feedback.translationWarning')}</TextWarning>}
                 <QueryFeedback loading={isLoading} error={false} withChildren>
                     {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                     <div className={styles.headerDiv}>
@@ -336,7 +339,11 @@ export const CodeListDetailWrapper: React.FC<CodeListDetailWrapperProps> = ({
                         code={code}
                         isOpen={isNewLanguageVersionModalOpen}
                         onClose={() => setIsNewLanguageVersionModalOpen(false)}
-                        onSuccess={() => invalidateCodeListDetailCache()}
+                        onSuccess={() => {
+                            setIsMutationSuccess(true)
+                            setIsNewLanguageVersionModalOpen(false)
+                            invalidateCodeListDetailCache()
+                        }}
                     />
                 </QueryFeedback>
             </MainContentWrapper>
