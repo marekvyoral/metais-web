@@ -96,6 +96,7 @@ import PO_PORelationshipOutlet from '@/pages/ci/PO_PO/[entityId]/relationships'
 import PO_POHistoryOutlet from '@/pages/ci/PO_PO/[entityId]/history'
 import PO_ISInformationOutlet from '@/pages/ci/PO_IS/[entityId]/information'
 import PO_IS_POInformationOutlet from '@/pages/ci/PO_IS_PO/[entityId]/information'
+import HowToGenericPage from '@/pages/howto/[howToEnumType]'
 
 export interface RouteConfig {
     path?: string
@@ -392,6 +393,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.HOW_TO_GENERAL_PAGE,
                 slug: RouterRoutes.HOW_TO_GENERAL_PAGE,
                 component: GeneralHowTo,
+            },
+            {
+                path: RouterRoutes.HOW_TO_GENERIC_PAGE,
+                slug: RouterRoutes.HOW_TO_GENERIC_PAGE,
+                component: HowToGenericPage,
             },
             {
                 path: RouterRoutes.HELP,

@@ -1118,7 +1118,27 @@
         "draftsList": "Zoznam návrhov",
         "ciEditEntity": "Editácia položky",
         "ciCloneEntity": "Klonovanie položky",
-        "404": "Chyba"
+        "404": "Chyba",
+        "wiki": {
+            "EGOV_HOWTO": "e-Government Komponenty",
+            "IKT_ADMINISTRATION_HOWTO": "",
+            "IKT_MIGRATION_HOWTO": "",
+            "IKT_HOWTO": "",
+            "PO_HOWTO": "Orgány riadenia",
+            "CODELISTS_HOWTO": "Číselníky",
+            "INSPECTION_HOWTO": "",
+            "ISVS_INTEGRATIONS_HOWTO": "",
+            "NKIVS_HOWTO": "",
+            "SPK_HOWTO": "Ciele, princípy a KRIT",
+            "LICENSE_HOWTO": "",
+            "MONITORING_HOWTO": "Zostavy a monitoring",
+            "OTHER_HOWTO": "",
+            "REF_REG_HOWTO": "Referenčné registere",
+            "STD_HOWTO": "Štandardizácia",
+            "SDO_HOWTO": "Dátové objekty",
+            "TOTAL_OWNERSHIP_COSTS_HOWT": "Celkové náklady na vlastníctvo",
+            "URI_HOWTO": ""
+        }
     },
     "codeList": {
         "descriptionError": "Popis je povinný",
@@ -1659,7 +1679,6 @@
             }
         },
         "header": {
-            "confluenceDocs": "Vložiť do ?????",
             "ACCEPTED": "Označiť návrh ako zapracovaný",
             "REJECTED": "Zamietnuť návrh",
             "ASSIGNED": "Priradiť do PS",
