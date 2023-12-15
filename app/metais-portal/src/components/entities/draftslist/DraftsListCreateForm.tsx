@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { Input } from '@isdd/idsk-ui-kit/src/input/Input'
 import { useTranslation } from 'react-i18next'
@@ -20,6 +20,7 @@ import styles from '@/components/entities/draftslist/draftsListCreateForm.module
 import { DraftListCreateFormDialog } from '@/components/entities/draftslist/DraftListCreateFormDialog'
 import { generateSchemaForCreateDraft } from '@/components/entities/draftslist/schema/createDraftSchema'
 import { DraftsListAttachmentsZone } from '@/components/entities/draftslist/DraftsListAttachmentsZone'
+import { FileUploadData, IFileUploadRef } from '@/components/FileUpload/FileUpload'
 
 interface CreateForm {
     data: {
@@ -116,6 +117,8 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
     }
 
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
+    const fileUploadRef = useRef<IFileUploadRef>(null)
+    const formDataRef = useRef<FieldValues>([])
 
     // eslint-disable-next-line no-warning-comments
     const { uppy, currentFiles, handleRemoveFile, uploadFilesStatus, handleUpload, removeGeneralErrorMessages, generalErrorMessages } = useUppy({
@@ -129,24 +132,53 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
         },
     })
 
-    const handleSubmitForm = useCallback(
-        async (values: FieldValues) => {
-            if (currentFiles?.length > 0) await handleUpload()
-            const uploadedFiles =
-                currentFiles?.map((file) => ({
-                    attachmentId: file?.meta['x-content-uuid'],
-                    attachmentName: file?.name,
-                    attachmentSize: file?.size,
-                    attachmentType: file?.extension,
-                    attachmentDescription: '-',
-                })) ?? []
-            onSubmit({
-                ...values,
-                attachments: uploadedFiles,
-            })
-        },
-        [handleUpload, onSubmit, currentFiles],
-    )
+    const handleUploadSuccess = (uploadedFiles: FileUploadData[]) => {
+        const attachments =
+            uploadedFiles?.map((file) => ({
+                attachmentId: file?.fileId,
+                attachmentName: file?.fileName,
+                attachmentSize: file?.fileSize,
+                attachmentType: file?.fileType,
+                attachmentDescription: '-',
+            })) ?? []
+
+        onSubmit({
+            ...formDataRef.current,
+            attachments: attachments,
+        })
+    }
+
+    const handleSubmitForm = async (values: FieldValues) => {
+        if (fileUploadRef.current?.hasFilesToUpload()) {
+            formDataRef.current = values
+            fileUploadRef.current?.startUploading()
+            return
+        }
+
+        onSubmit({
+            ...values,
+            attachments: [],
+        })
+    }
+
+    // const handleSubmitForm = useCallback(
+    //     async (values: FieldValues) => {
+    //         if (currentFiles?.length > 0) await handleUpload()
+    //         const uploadedFiles =
+    //             currentFiles?.map((file) => ({
+    //                 attachmentId: file?.meta['x-content-uuid'],
+    //                 attachmentName: file?.name,
+    //                 attachmentSize: file?.size,
+    //                 attachmentType: file?.extension,
+    //                 attachmentDescription: '-',
+    //             })) ?? []
+    //         onSubmit({
+    //             ...values,
+    //             attachments: uploadedFiles,
+    //         })
+    //     },
+    //     [handleUpload, onSubmit, currentFiles],
+    // )
 
     const errors = formState?.errors
 
@@ -239,6 +271,8 @@ export const DraftsListCreateForm = ({ onSubmit, data, isError, isLoading }: Cre
                     onDelete={removeLink}
                     errors={errors}
                     uppyHelpers={{ uppy, uploadFilesStatus, handleRemoveFile, removeGeneralErrorMessages, generalErrorMessages, currentFiles }}
+                    fileUploadRef={undefined}
+                    onFileUploadSuccess={}
                 />
                 <div className={styles.buttonGroup}>
                     <Button

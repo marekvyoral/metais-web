@@ -20,7 +20,7 @@ export type FileUploadData = {
 }
 
 interface IFileUpload {
-    allowedFileTypes: string[]
+    allowedFileTypes?: string[]
     multiple: boolean
     endpointUrl?: string
     isUsingUuidInFilePath?: boolean
@@ -34,6 +34,7 @@ export interface IFileUploadRef {
     startUploading: () => void
     cancelImport: () => void
     getFilesToUpload: () => FileUploadData[]
+    hasFilesToUpload: () => boolean
 }
 
 export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
@@ -151,6 +152,9 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
                                 uploadComplete: currentFile?.progress?.uploadComplete,
                             }
                         })
+                    },
+                    hasFilesToUpload() {
+                        return currentFiles.length > 0
                     },
                     getUploadedFiles() {
                         return uploadFilesStatus.map<FileUploadData>((ufs) => {

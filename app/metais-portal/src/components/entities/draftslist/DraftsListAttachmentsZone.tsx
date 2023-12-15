@@ -1,6 +1,6 @@
 import { Button, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ApiAttachment, ApiLink } from '@isdd/metais-common/api/generated/standards-swagger'
-import React from 'react'
+import React, { RefObject, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FieldErrors, UseFormRegister } from 'react-hook-form'
 import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
@@ -11,6 +11,7 @@ import { UppyFile, Uppy } from '@uppy/core'
 import { UploadingFilesStatus } from '@isdd/metais-common/hooks/useUppy'
 
 import { DraftsListAttachmentCard } from '@/components/entities/draftslist/DraftsListAttachmentCard'
+import { FileUpload, FileUploadData, IFileUploadRef } from '@/components/FileUpload/FileUpload'
 
 interface IDraftsListAttachmentsZone {
     links: ApiLink[]
@@ -40,44 +41,31 @@ interface IDraftsListAttachmentsZone {
         currentFiles: UppyFile[]
         uploadFilesStatus: UploadingFilesStatus
     }
+    fileUploadRef?: RefObject<IFileUploadRef>
+    onFileUploadSuccess: (value: FileUploadData[]) => void
 }
 
-export const DraftsListAttachmentsZone = ({ register, addNewLink, onDelete, links, errors, uppyHelpers }: IDraftsListAttachmentsZone) => {
+export const DraftsListAttachmentsZone = ({
+    register,
+    addNewLink,
+    onDelete,
+    links,
+    errors,
+    fileUploadRef,
+    onFileUploadSuccess,
+}: IDraftsListAttachmentsZone) => {
     const { t } = useTranslation()
-    const { uppy, handleRemoveFile, removeGeneralErrorMessages, generalErrorMessages, currentFiles, uploadFilesStatus } = uppyHelpers
+
     return (
         <div>
             <TextHeading size="L">{t('DraftsList.createForm.links.heading')}</TextHeading>
-
             <TextHeading size="M">{t('DraftsList.createForm.links.subHeading')}</TextHeading>
             {links?.map((_, index) => (
                 <DraftsListAttachmentCard key={index} register={register} index={index} onDelete={onDelete} errors={errors} />
             ))}
-
             <Button label={t('DraftsList.createForm.links.addNewAttachment')} onClick={() => addNewLink()} />
 
-            <div>
-                <TextHeading size="M">{t('DraftsList.createForm.links.andOrAddFile')}</TextHeading>
-                <FileImportDragDrop uppy={uppy} />
-                <div>
-                    <StatusBar
-                        className={stylesImport.statusBar}
-                        uppy={uppy}
-                        hideAfterFinish={false}
-                        hideCancelButton
-                        hidePauseResumeButton
-                        hideRetryButton
-                        hideUploadButton
-                    />
-                    <FileImportList
-                        handleRemoveFile={handleRemoveFile}
-                        removeGeneralErrorMessages={removeGeneralErrorMessages}
-                        generalErrorMessages={generalErrorMessages}
-                        fileList={currentFiles}
-                        uploadFilesStatus={uploadFilesStatus}
-                    />
-                </div>
-            </div>
+            <FileUpload multiple isUsingUuidInFilePath ref={fileUploadRef} onUploadSuccess={onFileUploadSuccess} />
         </div>
     )
 }
