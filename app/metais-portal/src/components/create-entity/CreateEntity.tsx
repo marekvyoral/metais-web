@@ -23,16 +23,16 @@ import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { CreateCiEntityForm } from './CreateCiEntityForm'
 import { formatFormAttributeValue } from './createEntityHelpers'
 
-import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
+import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 
-export interface AttrributesData {
+export interface AttributesData {
     ciTypeData: CiType | undefined
     constraintsData: (EnumType | undefined)[]
-    unitsData?: EnumType | undefined
+    unitsData?: EnumType
 }
 
 export interface CreateEntityData {
-    attributesData: AttrributesData
+    attributesData: AttributesData
     generatedEntityId: CiCode | undefined
     ownerId?: string
 }
@@ -43,7 +43,7 @@ interface ICreateEntity {
     roleState?: RoleState
     publicAuthorityState?: PublicAuthorityState
     updateCiItemId?: string
-    defaultItemAttributeValues?: ConfigurationItemUiAttributes | undefined
+    defaultItemAttributeValues?: ConfigurationItemUiAttributes
 }
 
 export const CreateEntity: React.FC<ICreateEntity> = ({

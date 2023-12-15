@@ -1,9 +1,9 @@
 import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Group } from '@isdd/metais-common/api/generated/iam-swagger'
-import { ApiStandardRequestPreview } from '@isdd/metais-common/api/generated/standards-swagger'
 import { ApiReferenceRegister, ApiReferenceRegisterItemList } from '@isdd/metais-common/api/generated/reference-registers-swagger'
-import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { IAttributesContainerView } from '@isdd/metais-common/components/containers/AttributesContainer'
+import { ApiStandardRequestPreview } from '@isdd/metais-common/api/generated/standards-swagger'
+import { Attribute, AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 export interface IDraftsListTable {
     data: {
@@ -17,10 +17,19 @@ export interface IDraftsListTable {
     isError: boolean
 }
 
+export interface AttributesData {
+    ciTypeData: CiType | undefined
+    constraintsData: (EnumType | undefined)[]
+    unitsData?: EnumType
+    attributeProfiles: AttributeProfile[] | undefined
+    attributes: Attribute[] | undefined
+    renamedAttributes: Attribute[] | undefined
+}
+
 export interface IRefRegisterView {
     data: {
         referenceRegisterData: ApiReferenceRegister | undefined
-        attributesProps?: IAttributesContainerView
+        renamedAttributes: Attribute[] | undefined
         guiAttributes?: Attribute[]
     }
     isLoading: boolean

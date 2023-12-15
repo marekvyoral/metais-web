@@ -18,18 +18,18 @@ import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 import { createSimpleSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { ICiTypeRelationData, ISelectedRelationTypeState } from '@/components/containers/CiCloneContainer'
-import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
+import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 import { CreateCiEntityForm } from '@/components/create-entity/CreateCiEntityForm'
 import { formatFormAttributeValue } from '@/components/create-entity/createEntityHelpers'
 
-export interface AttrributesData {
+export interface AttributesData {
     ciTypeData: CiType | undefined
     constraintsData: (EnumType | undefined)[]
-    unitsData?: EnumType | undefined
+    unitsData?: EnumType
 }
 
 export interface CloneEntityData {
-    attributesData: AttrributesData
+    attributesData: AttributesData
     generatedEntityId: CiCode | undefined
     relationData: ICiTypeRelationData
     ciItemData: ConfigurationItemUi | undefined
@@ -42,7 +42,7 @@ interface ICloneEntity {
     publicAuthorityState?: PublicAuthorityState
     cloneCiItemId?: string
     selectedRelationTypeState: ISelectedRelationTypeState
-    defaultItemAttributeValues?: ConfigurationItemUiAttributes | undefined
+    defaultItemAttributeValues?: ConfigurationItemUiAttributes
 }
 
 export const CloneEntity: React.FC<ICloneEntity> = ({

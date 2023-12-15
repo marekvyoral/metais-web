@@ -38,10 +38,10 @@ import styles from './newRelationView.module.scss'
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
 import { AttributeInput } from '@/components/attribute-input/AttributeInput'
 import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
-import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
-import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
 import { findAttributeConstraint, getAttributeInputErrorMessage, getAttributeUnits } from '@/components/create-entity/createEntityHelpers'
 import { SelectCiItem } from '@/components/select-ci-item/SelectCiItem'
+import { INewCiRelationData, ISelectedRelationTypeState } from '@/hooks/useNewCiRelation.hook'
+import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 
 interface Props {
     ciItemData: ConfigurationItemUi | undefined

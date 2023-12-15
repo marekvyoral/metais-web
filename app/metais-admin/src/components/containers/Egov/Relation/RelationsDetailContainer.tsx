@@ -17,7 +17,7 @@ import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpe
 import { createTabNamesAndValuesMap } from '@isdd/metais-common/hooks/useEntityProfiles'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 
-export interface IAttributesContainerView {
+export interface IRelationDetailContainerView {
     data: {
         ciTypeData: RelationshipType | undefined
         attributeOverridesData: Attribute[] | undefined
@@ -33,12 +33,12 @@ export interface IAttributesContainerView {
     isError: boolean
 }
 
-interface AttributesContainer {
+interface IRelationDetailContainer {
     entityName: string
-    View: React.FC<IAttributesContainerView>
+    View: React.FC<IRelationDetailContainerView>
 }
 
-export const RelationDetailContainer: React.FC<AttributesContainer> = ({ entityName, View }) => {
+export const RelationDetailContainer: React.FC<IRelationDetailContainer> = ({ entityName, View }) => {
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError, refetch } = useGetRelationshipType(entityName)
     const {
         data: attributeOverridesData,

@@ -34,9 +34,6 @@ export interface FilterAttribute {
     name?: string
 }
 
-export interface ColumnAttribute {
-    name: string
-}
 type FilterData = {
     attributeFilters: IAttributeFilters
     metaAttributeFilters: FilterMetaAttributesUi
@@ -48,7 +45,7 @@ interface Props {
     setValue: UseFormSetValue<IFilterParams>
     attributes: Attribute[] | undefined
     attributeProfiles: AttributeProfile[] | undefined
-    constraintsData: (EnumType | undefined)[]
+    constraintsData: (EnumType | undefined)[] | undefined
     ignoreInputNames?: string[]
 }
 
@@ -139,7 +136,7 @@ export const DynamicFilterAttributes: FC<Props> = ({
         const copyAttribute = [...dynamicAttributes]
         copyAttribute[index] = attr
 
-        const attributeConstraints = findAttributeConstraints(attr.name ?? '', combinedAttributes, constraintsData)
+        const attributeConstraints = findAttributeConstraints(attr.name ?? '', combinedAttributes, constraintsData ?? [])
         const attributeType = findAttributeType(attr.name ?? '', combinedAttributes)
 
         const currentAvailableOperators = dynamicAttributes.filter((item) => item.name === attr.name).map((item) => item.operator)
@@ -198,7 +195,7 @@ export const DynamicFilterAttributes: FC<Props> = ({
                     attribute={attribute}
                     attributeType={findAttributeType(attribute.name ?? '', combinedAttributes)}
                     currentAttribute={attribute}
-                    attributeConstraints={findAttributeConstraints(attribute.name ?? '', combinedAttributes, constraintsData)}
+                    attributeConstraints={findAttributeConstraints(attribute.name ?? '', combinedAttributes, constraintsData ?? [])}
                 />
             ))}
             {addRowError && (

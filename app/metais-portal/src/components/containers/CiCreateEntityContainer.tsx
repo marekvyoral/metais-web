@@ -1,6 +1,10 @@
 import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { CiCode, useGenerateCodeAndURL } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useGenerateCodeAndURL } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import React, { SetStateAction } from 'react'
+
+import { PublicAuthorityState, RoleState, usePublicAuthorityAndRoleHook } from '@/hooks/usePublicAuthorityAndRole.hook'
+import { CreateEntityData } from '@/components/create-entity/CreateEntity'
 
 export interface ISelectedOrg {
     selectedOrg: HierarchyRightsUi | null
@@ -8,7 +12,11 @@ export interface ISelectedOrg {
 }
 
 export interface ICiCreateEntityContainerView {
-    data: CiCode | undefined
+    entityName: string
+    ownerId: string
+    roleState: RoleState
+    publicAuthorityState: PublicAuthorityState
+    data: CreateEntityData
     isLoading: boolean
     isError: boolean
 }
@@ -20,10 +28,32 @@ interface ICiCreateEntityContainer {
 export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ View, entityName }) => {
     const {
         data: generatedEntityId,
-        isLoading,
-        isError,
+        isLoading: generatedIdLoading,
+        isError: generatedIdError,
         fetchStatus,
     } = useGenerateCodeAndURL(entityName, { query: { refetchOnMount: false, enabled: !!entityName, cacheTime: 0 } })
 
-    return <View data={generatedEntityId} isLoading={isLoading && fetchStatus != 'idle'} isError={isError} />
+    const { ciTypeData, constraintsData, unitsData, isError: isAttributesError, isLoading: isAttributesLoading } = useAttributesHook(entityName)
+    const {
+        groupData,
+        isError: publicAuthAndRoleError,
+        isLoading: publicAuthAndRoleLoading,
+        publicAuthorityState,
+        roleState,
+    } = usePublicAuthorityAndRoleHook()
+
+    const isLoading = [isAttributesLoading, fetchStatus != 'idle', generatedIdLoading, publicAuthAndRoleLoading].some((item) => item)
+    const isError = [isAttributesError, generatedIdError, publicAuthAndRoleError].some((item) => item)
+
+    return (
+        <View
+            entityName={entityName}
+            data={{ attributesData: { ciTypeData, constraintsData, unitsData }, generatedEntityId, ownerId: groupData?.gid ?? '' }}
+            ownerId={groupData?.gid ?? ''}
+            roleState={roleState}
+            publicAuthorityState={publicAuthorityState}
+            isLoading={isLoading}
+            isError={isError}
+        />
+    )
 }

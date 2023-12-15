@@ -12,14 +12,21 @@ import { MutationFeedback } from '@isdd/metais-common/index'
 import { useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useTranslation } from 'react-i18next'
 import { Group } from '@isdd/metais-common/contexts/auth/authContext'
+import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
+import { Attribute } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { IRefRegisterCreateView } from '@/components/views/refregisters/createView/RefRegisterCreateView'
+import { useRefRegisterHook } from '@/hooks/useRefRegister.hook'
 
 interface IView extends IRefRegisterCreateView {
+    guiAttributes: Attribute[]
+    referenceRegisterData: ApiReferenceRegister | undefined
     isLoading: boolean
     isError: boolean
 }
 interface ICreateRefRegisterContainer {
+    entityName: string
+    entityId?: string
     View: React.FC<IView>
 }
 
@@ -45,7 +52,7 @@ const POFilter = {
     },
 }
 
-export const CreateRefRegisterContainer = ({ View }: ICreateRefRegisterContainer) => {
+export const CreateRefRegisterContainer = ({ entityName, entityId, View }: ICreateRefRegisterContainer) => {
     const { t } = useTranslation()
 
     const { user } = useUserInfo()
@@ -57,6 +64,9 @@ export const CreateRefRegisterContainer = ({ View }: ICreateRefRegisterContainer
             uuid: user?.groupData.map((group: Group) => group.orgId),
         },
     }
+
+    const { referenceRegisterData, guiAttributes, isLoading: isRefLoading, isError: isRefError } = useRefRegisterHook(entityId)
+    const { renamedAttributes, isLoading: isAttributesLoading, isError: isAttributesError } = useAttributesHook(entityName)
 
     const { data: userGroupData, isLoading, isError } = useReadCiList1({ ...userGroupsFilter })
 
@@ -90,8 +100,22 @@ export const CreateRefRegisterContainer = ({ View }: ICreateRefRegisterContainer
     const updateAccessData = async (referenceRegisterUuid: string, data: ApiDescription) => {
         await updateAccessDataAsync({ referenceRegisterUuid, data })
     }
-    const isSuccess = saveMutationIsSuccess || updateMutationIsSuccess || updateContactMutationIsSuccess || updateAccessDataMutationIsSuccess
-    const isMutationError = saveMutationIsError || updateMutationIsError || updateContactMutationIsError || updateAccessDataMutationIsError
+    const isSuccess = [
+        saveMutationIsSuccess,
+        updateMutationIsSuccess,
+        updateContactMutationIsSuccess,
+        updateAccessDataMutationIsSuccess,
+        isAttributesLoading,
+        isRefLoading,
+    ].some((item) => item)
+    const isMutationError = [
+        saveMutationIsError,
+        updateMutationIsError,
+        updateContactMutationIsError,
+        updateAccessDataMutationIsError,
+        isAttributesError,
+        isRefError,
+    ].some((item) => item)
     return (
         <>
             <MutationFeedback
@@ -104,6 +128,9 @@ export const CreateRefRegisterContainer = ({ View }: ICreateRefRegisterContainer
                 isLoading={isLoading}
                 isError={isError}
                 POData={POData}
+                referenceRegisterData={referenceRegisterData}
+                renamedAttributes={renamedAttributes}
+                guiAttributes={guiAttributes}
                 saveRefRegister={saveRefRegister}
                 updateRefRegister={updateRefRegister}
                 updateContact={updateContact}

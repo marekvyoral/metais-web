@@ -14,7 +14,7 @@ import createEntityStyles from '@/components/views/egov/entity-detail-views/crea
 import { EntityDetailViewAttributes } from '@/components/views/egov/entity-detail-views/attributes/EntityDetailViewAttributes'
 import { BasicInformation } from '@/components/views/egov/BasicInformation'
 import styles from '@/components/views/egov/detailViews.module.scss'
-import { IAttributesContainerView } from '@/components/containers/Egov/Relation/RelationsDetailContainer'
+import { IRelationDetailContainerView } from '@/components/containers/Egov/Relation/RelationsDetailContainer'
 
 export const RelationDetailView = ({
     data: { ciTypeData, constraintsData, unitsData, keysToDisplay, attributeOverridesData },
@@ -24,7 +24,7 @@ export const RelationDetailView = ({
     resetExistingAttribute,
     isLoading,
     isError,
-}: IAttributesContainerView) => {
+}: IRelationDetailContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()

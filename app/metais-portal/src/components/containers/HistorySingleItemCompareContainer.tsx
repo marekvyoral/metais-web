@@ -5,9 +5,12 @@ import {
     useReadCiHistoryVersion,
     useReadCiHistoryVersionsIncidentRels,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { CiType, CiTypePreviewList, useGetCiType, useListCiTypes1Hook } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { CiType, useGetCiType, useListCiTypes1Hook } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
+import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
 
 export interface IRelationItem {
@@ -16,16 +19,18 @@ export interface IRelationItem {
     uuid?: string
 }
 
-export interface IView {
+export interface IHistorySingleItemCompareContainerView {
     ciTypeData: CiType | undefined
-    dataFirst: HistoryVersionUiConfigurationItemUi | undefined
-    dataSec: HistoryVersionUiConfigurationItemUi | undefined
+    dataFirst?: HistoryVersionUiConfigurationItemUi
+    dataSec?: HistoryVersionUiConfigurationItemUi
+    constraintsData: (EnumType | undefined)[]
+    isSimple?: boolean
     dataRelationFirst?: IRelationItem[]
     dataRelationSecond?: IRelationItem[]
 }
 
 interface IHistorySingleItemCompareContainerProps {
-    View: React.FC<IView>
+    View: React.FC<IHistorySingleItemCompareContainerView>
     firstId: string
     entityId: string
     entityName: string
@@ -36,10 +41,18 @@ export const HistorySingleItemCompareContainer: React.FC<IHistorySingleItemCompa
         state: { user },
     } = useAuth()
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(entityName ?? '')
-    const [ciTypes, setCiTypes] = useState<CiTypePreviewList>()
-    const [isLoadingCiTypes, setLoadingCiTypes] = useState<boolean>(false)
     const { data: dataFirst, isError: isErrorFirst, isLoading: isLoadingFirst } = useReadCiHistoryVersion(entityId ?? '', { versionId: firstId })
     const listCiTypes = useListCiTypes1Hook()
+
+    const {
+        data: ciTypes,
+        isLoading: isLoadingCiTypes,
+        isError: isErrorCiTypes,
+    } = useQuery({
+        queryFn: () => listCiTypes({ roles: user?.roles ?? [] }),
+        queryKey: ['listCiTypes', user?.roles],
+    })
+
     const [defaultPaging, setDefaultPaging] = useState({ pageNumber: 1, pageSize: 10 })
     const {
         data: dataRelFirst,
@@ -54,6 +67,8 @@ export const HistorySingleItemCompareContainer: React.FC<IHistorySingleItemCompa
         includeCis: true,
     })
 
+    const { constraintsData, isLoading: isAttributesLoading, isError: isAttributesError } = useAttributesHook(entityName ?? '')
+
     const mapRelationsData = (data?: CiHistoryVersionsIncidentRelationshipsUi): IRelationItem[] => {
         const res = data?.incidentCis?.map((history) => ({
             type: ciTypes?.results?.find((type) => type.technicalName === history?.item?.type)?.name,
@@ -65,16 +80,6 @@ export const HistorySingleItemCompareContainer: React.FC<IHistorySingleItemCompa
     }
 
     useEffect(() => {
-        setLoadingCiTypes(true)
-        listCiTypes({ roles: user?.roles ?? [] })
-            .then((res) => setCiTypes(res))
-            .finally(() => {
-                setLoadingCiTypes(false)
-            })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    useEffect(() => {
         refetch()
         setDefaultPaging({
             pageNumber: defaultPaging.pageNumber,
@@ -83,12 +88,13 @@ export const HistorySingleItemCompareContainer: React.FC<IHistorySingleItemCompa
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataRelFirst])
 
-    const isLoading = isLoadingFirst || isCiTypeDataLoading || isLoadingRelFirst || isFetching || isLoadingCiTypes
-    const isError = isErrorFirst || isCiTypeDataError || isErrorRelFirst
+    const isLoading = [isLoadingFirst, isCiTypeDataLoading, isAttributesLoading, isLoadingRelFirst, isFetching, isLoadingCiTypes].some((item) => item)
+    const isError = [isErrorFirst, isCiTypeDataError, isAttributesError, isErrorRelFirst, isErrorCiTypes].some((item) => item)
 
     return (
         <QueryFeedback loading={isLoading} error={isError}>
             <View
+                constraintsData={constraintsData}
                 ciTypeData={ciTypeData}
                 dataFirst={dataFirst}
                 dataSec={undefined}

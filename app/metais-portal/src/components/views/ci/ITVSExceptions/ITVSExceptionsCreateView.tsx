@@ -17,12 +17,12 @@ import styles from './styles.module.scss'
 import { CreateEntityData } from '@/components/create-entity/CreateEntity'
 import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
 import { CreateEntitySection } from '@/components/create-entity/CreateEntitySection'
-import { INewCiRelationData } from '@/components/containers/NewCiRelationContainer'
 import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
-import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
+import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 import { RelationForITVSExceptionSelect } from '@/components/containers/ITVS-exceptions/RelationForITVSExceptionSelect'
 import { RelationshipWithCiType } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
 import { formatForFormDefaultValues } from '@/componentHelpers/ci'
+import { INewCiRelationData } from '@/hooks/useNewCiRelation.hook'
 
 export interface IRelationshipSetState {
     relationshipSet: RelationshipWithCiType[]

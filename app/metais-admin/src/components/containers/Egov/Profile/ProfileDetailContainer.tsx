@@ -23,7 +23,7 @@ export interface IOpenAddAttribudeModalState {
     setOpenAddAttributeModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export interface IAttributesContainerView<T> {
+export interface IProfileDetailContainerView<T> {
     data: {
         profileData: AttributeProfile | undefined
         constraintsData: (EnumType | undefined)[]
@@ -41,12 +41,12 @@ export interface IAttributesContainerView<T> {
     roles?: FindAll11200
 }
 
-interface AttributesContainer<T> {
+interface IProfileDetailContainer<T> {
     entityName: string
-    View: React.FC<IAttributesContainerView<T>>
+    View: React.FC<IProfileDetailContainerView<T>>
 }
 
-export const ProfileDetailContainer: React.FC<AttributesContainer<CiType>> = ({ entityName, View }) => {
+export const ProfileDetailContainer: React.FC<IProfileDetailContainer<CiType>> = ({ entityName, View }) => {
     const { setIsActionSuccess } = useActionSuccess()
 
     const {

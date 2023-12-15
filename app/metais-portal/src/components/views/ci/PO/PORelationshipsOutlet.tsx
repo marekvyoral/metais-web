@@ -1,27 +1,22 @@
-import React from 'react'
 import { PO } from '@isdd/metais-common/constants'
+import { useCiHook } from '@isdd/metais-common/hooks/useCi.hook'
+import React from 'react'
 
-import { RelationshipsAccordion } from '@/components/views/relationships/RelationshipsAccordion'
-import { CiContainer } from '@/components/containers/CiContainer'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { RelationshipsAccordion } from '@/components/views/relationships/RelationshipsAccordion'
 
 const PORelationshipOutlet: React.FC = () => {
     const { entityId } = useGetEntityParamsFromUrl()
     const entityName = PO
+
+    const { ciItemData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(entityId)
     return (
-        <CiContainer
+        <RelationshipsAccordion
+            entityName={entityName ?? ''}
+            data={ciItemData}
             configurationItemId={entityId}
-            View={(props) => {
-                return (
-                    <RelationshipsAccordion
-                        entityName={entityName ?? ''}
-                        data={props?.data?.ciItemData}
-                        configurationItemId={entityId}
-                        isError={props.isError}
-                        isLoading={props.isLoading}
-                    />
-                )
-            }}
+            isError={isCiItemError}
+            isLoading={isCiItemLoading}
         />
     )
 }

@@ -1,11 +1,8 @@
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { IColumn, Input, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Input, LoadingIndicator, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
-import { ColumnSort, IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
-import { ConfigurationItemSetUi, RoleParticipantUI, getReadCiList1QueryKey } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { Attribute, AttributeProfile, CiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { getReadCiList1QueryKey } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ChangeIcon, CheckInACircleIcon, CrossInACircleIcon } from '@isdd/metais-common/assets/images'
 import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import {
@@ -33,31 +30,14 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import { ICiListContainerView } from '@/components/containers/CiListContainer'
+import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
 import { AddItemsButtonGroup } from '@/components/add-items-button-group/AddItemsButtonGroup'
 import { CiTable } from '@/components/ci-table/CiTable'
-import { ColumnsOutputDefinition, IStoreColumnSelection } from '@/componentHelpers/ci/ciTableHelpers'
 import { CIFilterData } from '@/pages/ci/[entityName]/entity'
 
-interface IListWrapper {
+interface IListWrapper extends ICiListContainerView<CIFilterData> {
     isNewRelationModal?: boolean
-    defaultFilterValues: CIFilterData
-    ciType: string | undefined
-    columnListData: IColumn | undefined
-    handleFilterChange: (filter: IFilter) => void
-    storeUserSelectedColumns: (columnSelection: IStoreColumnSelection) => void
-    resetUserSelectedColumns: () => Promise<void>
-    refetch: () => void
-    ciTypeData: CiType | undefined
-    attributeProfiles: AttributeProfile[] | undefined
-    attributes: Attribute[] | undefined
-    tableData: ConfigurationItemSetUi | undefined
-    constraintsData: (EnumType | undefined)[]
-    unitsData: EnumType | undefined
-    pagination: Pagination
-    sort: ColumnSort[]
-    isLoading: boolean
-    isError: boolean
-    gestorsData: RoleParticipantUI[] | undefined
 }
 
 export const ListWrapper: React.FC<IListWrapper> = ({

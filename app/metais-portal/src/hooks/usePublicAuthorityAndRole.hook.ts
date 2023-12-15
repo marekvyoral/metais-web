@@ -12,18 +12,15 @@ export interface RoleState {
     setSelectedRole: React.Dispatch<React.SetStateAction<GidRoleData | null>>
 }
 
-export interface IPublicAuthorityAndRoleView {
-    data?: RoleOrgGroup | undefined
+export interface IPublicAuthorityAndRoleReturnType {
+    groupData?: RoleOrgGroup
     publicAuthorityState: PublicAuthorityState
     roleState: RoleState
     isLoading: boolean
     isError: boolean
 }
-interface ICiContainer {
-    View: React.FC<IPublicAuthorityAndRoleView>
-}
 
-export const PublicAuthorityAndRoleContainer: React.FC<ICiContainer> = ({ View }) => {
+export const usePublicAuthorityAndRoleHook = (): IPublicAuthorityAndRoleReturnType => {
     const [selectedPublicAuthority, setSelectedPublicAuthority] = useState<HierarchyRightsUi | null>(null)
     const [selectedRole, setSelectedRole] = useState<GidRoleData | null>(null)
 
@@ -39,13 +36,11 @@ export const PublicAuthorityAndRoleContainer: React.FC<ICiContainer> = ({ View }
     const publicAuthorityState = { selectedPublicAuthority, setSelectedPublicAuthority }
     const selectedRoleState = { selectedRole, setSelectedRole }
 
-    return (
-        <View
-            data={groupData}
-            publicAuthorityState={publicAuthorityState}
-            roleState={selectedRoleState}
-            isLoading={isFetched && isLoading}
-            isError={isFetched && isError}
-        />
-    )
+    return {
+        groupData,
+        publicAuthorityState: publicAuthorityState,
+        roleState: selectedRoleState,
+        isLoading: isFetched && isLoading,
+        isError: isFetched && isError,
+    }
 }

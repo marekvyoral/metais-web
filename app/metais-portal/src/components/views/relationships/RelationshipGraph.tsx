@@ -3,20 +3,20 @@ import { Button } from '@isdd/idsk-ui-kit/button/Button'
 import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { BaseModal } from '@isdd/idsk-ui-kit/modal/BaseModal'
 import { ConfigurationItemUi, ConfigurationItemUiAttributes, useReadCiNeighboursWithAllRels } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useListRelatedCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { QueryFeedback } from '@isdd/metais-common/components/query-feedback/QueryFeedback'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
+import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
+import { useCiHook } from '@isdd/metais-common/hooks/useCi.hook'
 import classnames from 'classnames'
 import * as d3 from 'd3'
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
-import { useListRelatedCiTypes } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 
 import styles from './relationshipGraph.module.scss'
 import { isRelatedCiTypeCmdbView } from './typeHelper'
 
-import { CiContainer } from '@/components/containers/CiContainer'
 import { CiInformationAccordion } from '@/components/entities/accordion/CiInformationAccordion'
 import { drawGraph, exportGraph, filterCiName, getShortName, prepareData } from '@/components/views/relationships/graphHelpers'
 
@@ -64,6 +64,9 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
     const { currentPreferences } = useUserPreferences()
     const [filterTypes, setFilterTypes] = useState<TypeFilter>({})
     const graphWrapperRef = useRef<HTMLDivElement>(null)
+
+    const { ciItemData, gestorData, isLoading: isCiItemLoading, isError: isCiItemError } = useCiHook(nodeDetail?.uuid)
+    const { constraintsData, ciTypeData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook(nodeDetail?.type)
 
     const { isLoading: isLoadingRelated, isError: isErrorRelated, data: relatedTypes } = useListRelatedCiTypes(target?.type ?? '')
     const types = useMemo(() => (relatedTypes?.cisAsSources || []).concat(relatedTypes?.cisAsTargets || []), [relatedTypes])
@@ -239,30 +242,10 @@ const RelationshipGraph: FC<RelationshipsGraphProps> = ({ data: selectedItem }) 
             <BaseModal isOpen={nodeDetail !== null} close={() => setNodeDetail(null)}>
                 <div className={styles.modalContent}>
                     {nodeDetail && (
-                        <CiContainer
-                            configurationItemId={nodeDetail.uuid ?? ''}
-                            View={({ data: ciData, isError: isCiDataError, isLoading: isCiDataLoading }) => {
-                                const ciItemData = ciData?.ciItemData
-                                const gestorData = ciData?.gestorData
-                                return (
-                                    <AttributesContainer
-                                        entityName={nodeDetail.type ?? ''}
-                                        View={({
-                                            data: { ciTypeData, constraintsData, unitsData },
-                                            isError: isAttError,
-                                            isLoading: isAttLoading,
-                                        }) => {
-                                            return (
-                                                <CiInformationAccordion
-                                                    data={{ ciItemData, gestorData, constraintsData, ciTypeData, unitsData }}
-                                                    isError={isAttError || isCiDataError}
-                                                    isLoading={isAttLoading || isCiDataLoading}
-                                                />
-                                            )
-                                        }}
-                                    />
-                                )
-                            }}
+                        <CiInformationAccordion
+                            data={{ ciItemData, gestorData, constraintsData, ciTypeData, unitsData }}
+                            isError={isAttError || isCiItemError}
+                            isLoading={isAttLoading || isCiItemLoading}
                         />
                     )}
                 </div>

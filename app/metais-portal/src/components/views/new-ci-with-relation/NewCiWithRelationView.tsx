@@ -1,61 +1,35 @@
 import { SimpleSelect, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { RoleOrgGroup } from '@isdd/metais-common/api/generated/iam-swagger'
+import { useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
 import { SubHeading } from '@isdd/metais-common/components/sub-heading/SubHeading'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
+import { useInvalidateCiHistoryListCache, useInvalidateCiNeighboursWithAllRelsCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
+import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { ConfigurationItemUi, useStoreGraph } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { FlexColumnReverseWrapper } from '@isdd/metais-common/src/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { useEffect, useState } from 'react'
 import { FieldValues } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
-import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
-import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
-import { FlexColumnReverseWrapper } from '@isdd/metais-common/src/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { CiType, CiCode } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { useInvalidateCiHistoryListCache, useInvalidateCiNeighboursWithAllRelsCache } from '@isdd/metais-common/hooks/invalidate-cache'
-import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
 
 import { createSelectRelationTypeOptions } from '@/componentHelpers/new-relation'
-import { INewCiRelationData, ISelectedRelationTypeState } from '@/components/containers/NewCiRelationContainer'
-import { PublicAuthorityState, RoleState } from '@/components/containers/PublicAuthorityAndRoleContainer'
+import { ICiCreateItemAndRelationContainerView } from '@/components/containers/CiCreateItemAndRelationContainer'
 import { CreateCiEntityForm } from '@/components/create-entity/CreateCiEntityForm'
 import { formatFormAttributeValue } from '@/components/create-entity/createEntityHelpers'
 
-interface AttrributesData {
-    ciTypeData: CiType | undefined
-    constraintsData: (EnumType | undefined)[]
-    unitsData?: EnumType
-}
-
-interface NewCiWithRelationData {
-    attributesData: AttrributesData
-    generatedEntityId: CiCode | undefined
-    relationData: INewCiRelationData | undefined
-    groupData: RoleOrgGroup | undefined
-    ciItemData: ConfigurationItemUi | undefined
-}
-
-export interface NewCiWithRelationStates {
-    selectedRelationTypeState: ISelectedRelationTypeState
-    publicAuthorityState: PublicAuthorityState
-    roleState: RoleState
-}
-
-interface Props {
-    entityName: string
-    entityId: string
-    tabName: string
-    data: NewCiWithRelationData
-    states: NewCiWithRelationStates
-    isLoading: boolean
-    isError: boolean
-}
-
-export const NewCiWithRelationView: React.FC<Props> = ({ entityName, entityId, data, states, isError, isLoading, tabName }) => {
+export const NewCiWithRelationView: React.FC<ICiCreateItemAndRelationContainerView> = ({
+    entityName,
+    entityId,
+    data,
+    states,
+    isError,
+    isLoading,
+    tabName,
+}) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()

@@ -6,14 +6,14 @@ import {
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { CI_ITEM_QUERY_KEY } from '@isdd/metais-common/constants'
 
-type CiContainerReturnType = {
+type CiHookReturnType = {
     ciItemData: ConfigurationItemUi | undefined
     gestorData: RoleParticipantUI[] | undefined
     isLoading: boolean
     isError: boolean
 }
 
-export const useCiContainer = (configurationItemId: string): CiContainerReturnType => {
+export const useCiHook = (configurationItemId?: string): CiHookReturnType => {
     const {
         data: ciItemData,
         isLoading: isCiItemLoading,
@@ -21,6 +21,7 @@ export const useCiContainer = (configurationItemId: string): CiContainerReturnTy
     } = useReadConfigurationItem(configurationItemId ?? '', {
         query: {
             queryKey: [CI_ITEM_QUERY_KEY, configurationItemId],
+            enabled: !!configurationItemId,
         },
     })
 

@@ -13,7 +13,7 @@ interface PublicAuthoritiesUpdateItemProps {
     oldData: CmdbConfigurationItemSetUi | undefined
     newData: ConfigurationItemUi | undefined
     unitsData: EnumType | undefined
-    constraintsData: (EnumType | undefined)[]
+    constraintsData?: (EnumType | undefined)[]
     attributes?: Attribute[]
     attributeProfiles?: AttributeProfile[]
 }

@@ -1,14 +1,12 @@
 import { BreadCrumbs, HomeIcon, TextHeading } from '@isdd/idsk-ui-kit/index'
-import { useTranslation } from 'react-i18next'
-import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import { QueryFeedback } from '@isdd/metais-common/index'
-import { AttributesContainer } from '@isdd/metais-common/components/containers/AttributesContainer'
 import { REFERENCE_REGISTER } from '@isdd/metais-common/constants'
+import { QueryFeedback } from '@isdd/metais-common/index'
+import { RouteNames } from '@isdd/metais-common/navigation/routeNames'
+import { useTranslation } from 'react-i18next'
 
-import { CreateRefRegisterContainer } from '@/components/containers/refregisters/CreateRefRegisterContainer'
-import { RefRegisterContainer } from '@/components/containers/refregisters/RefRegisterContainer'
-import { RefRegisterCreateView } from '@/components/views/refregisters/createView/RefRegisterCreateView'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { CreateRefRegisterContainer } from '@/components/containers/refregisters/CreateRefRegisterContainer'
+import { RefRegisterCreateView } from '@/components/views/refregisters/createView/RefRegisterCreateView'
 
 const RefRegistersCreate = () => {
     const entityName = REFERENCE_REGISTER
@@ -30,8 +28,11 @@ const RefRegistersCreate = () => {
             />
             <MainContentWrapper>
                 <CreateRefRegisterContainer
+                    entityName={entityName}
                     View={({
                         userGroupData,
+                        renamedAttributes,
+                        guiAttributes,
                         isLoading: userGroupDataIsLoading,
                         isError: userGroupDataIsError,
                         POData,
@@ -40,34 +41,24 @@ const RefRegistersCreate = () => {
                         updateAccessData,
                         updateRefRegister,
                     }) => (
-                        <AttributesContainer
-                            entityName={entityName}
-                            View={({ data: { renamedAttributes } }) => (
-                                <RefRegisterContainer
-                                    entityId={''}
-                                    View={({ data: { guiAttributes } }) => (
-                                        <>
-                                            <TextHeading size="XL">{t('refRegisters.create.title')}</TextHeading>
-                                            <QueryFeedback
-                                                loading={userGroupDataIsLoading}
-                                                error={userGroupDataIsError}
-                                                errorProps={{ errorMessage: t('feedback.failedFetch') }}
-                                            >
-                                                <RefRegisterCreateView
-                                                    userGroupData={userGroupData}
-                                                    POData={POData}
-                                                    saveRefRegister={saveRefRegister}
-                                                    updateContact={updateContact}
-                                                    updateAccessData={updateAccessData}
-                                                    updateRefRegister={updateRefRegister}
-                                                    renamedAttributes={[...(renamedAttributes ?? []), ...(guiAttributes ?? [])]}
-                                                />
-                                            </QueryFeedback>
-                                        </>
-                                    )}
+                        <>
+                            <TextHeading size="XL">{t('refRegisters.create.title')}</TextHeading>
+                            <QueryFeedback
+                                loading={userGroupDataIsLoading}
+                                error={userGroupDataIsError}
+                                errorProps={{ errorMessage: t('feedback.failedFetch') }}
+                            >
+                                <RefRegisterCreateView
+                                    userGroupData={userGroupData}
+                                    POData={POData}
+                                    saveRefRegister={saveRefRegister}
+                                    updateContact={updateContact}
+                                    updateAccessData={updateAccessData}
+                                    updateRefRegister={updateRefRegister}
+                                    renamedAttributes={[...(renamedAttributes ?? []), ...(guiAttributes ?? [])]}
                                 />
-                            )}
-                        />
+                            </QueryFeedback>
+                        </>
                     )}
                 />
             </MainContentWrapper>

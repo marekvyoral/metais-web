@@ -17,7 +17,7 @@ export const initializeI18nInstance = (basePath = '') => {
             backend: {
                 loadPath: basePath + '/translations/{{lng}}.json',
             },
-            fallbackLng: Languages.SLOVAK,
+            fallbackLng: localStorage.getItem(LANGUAGE_STORE_KEY) || Languages.SLOVAK,
             debug: true,
             keySeparator: '.',
             ns: ['translations'],

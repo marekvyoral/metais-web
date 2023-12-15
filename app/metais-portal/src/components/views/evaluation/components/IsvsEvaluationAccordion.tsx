@@ -1,6 +1,6 @@
 import { ExpandableRowCellWrapper, PaginatorWrapper, Table } from '@isdd/idsk-ui-kit/index'
 import { KrisToBeIsvs, KrisToBeRights, useGetIsvs } from '@isdd/metais-common/api/generated/kris-swagger'
-import { ActionsOverTable, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, BASE_PAGE_SIZE, GET_ENUM, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ColumnDef, ExpandedState } from '@tanstack/react-table'
@@ -22,8 +22,8 @@ export const IsvsEvaluationAccordion: React.FC<IIsvsEvaluationAccordionProps> = 
     const [pageSize, setPageSize] = useState<number>(BASE_PAGE_SIZE)
     const [currentPage, setCurrentPage] = useState(0)
     const [expandedState, setExpandedState] = useState<ExpandedState>({})
-    const { data: dataEnumsState, isError: isErrorEnum, isLoading: isLoadingEnum } = useGetEnum('STAV_ISVS')
-    const { data: dataEnumsType, isError: isErrorEnumTyp, isLoading: isLoadingEnuTyp } = useGetEnum('TYP_ISVS')
+    const { data: dataEnumsState, isError: isErrorEnum, isLoading: isLoadingEnum } = useGetEnum(GET_ENUM.STAV_ISVS)
+    const { data: dataEnumsType, isError: isErrorEnumTyp, isLoading: isLoadingEnuTyp } = useGetEnum(GET_ENUM.TYP_ISVS)
     const {
         data: krisToBeIsvsData,
         isLoading: isLoadingKrisToBeIsvsData,

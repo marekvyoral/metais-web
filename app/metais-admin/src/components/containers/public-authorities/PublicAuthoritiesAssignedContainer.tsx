@@ -16,7 +16,7 @@ export interface IPublicAuthoritiesDetail {
     tableData?: ConfItemWithBlockedAndMessage[] | undefined
 }
 
-export interface IAttributesContainerView {
+export interface IPublicAuthoritiesAssignedContainerView {
     data: IPublicAuthoritiesDetail
     pagination: Pagination
     sort: ColumnSort[]
@@ -26,14 +26,14 @@ export interface IAttributesContainerView {
     onSubmit: (selectedConfItem: ConfigurationItemUi[]) => Promise<void>
 }
 
-interface AttributesContainer<T> {
+interface IPublicAuthoritiesAssignedContainer<T> {
     entityId: string
     entityName: string
     defaultFilterValues: T
     defaultFilterOperators?: T
     icoOfDetailOrg: string
     onlyFreePO: boolean
-    View: React.FC<IAttributesContainerView>
+    View: React.FC<IPublicAuthoritiesAssignedContainerView>
 }
 
 export const PublicAuthoritiesAssignedContainer = <T extends FieldValues & IFilterParams>({
@@ -44,7 +44,7 @@ export const PublicAuthoritiesAssignedContainer = <T extends FieldValues & IFilt
     onlyFreePO,
     defaultFilterValues,
     defaultFilterOperators,
-}: AttributesContainer<T>) => {
+}: IPublicAuthoritiesAssignedContainer<T>) => {
     const { tableDataWithBlockAttribute, pagination, handleSave, handleFilterChange, sort, isLoading, isError, allOrganizations } =
         useAssignPublicAuthorities({
             entityId,

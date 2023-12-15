@@ -1,29 +1,29 @@
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
-import { useTranslation } from 'react-i18next'
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 import { Languages } from '@isdd/metais-common/localization/languages'
-import { useCiContainer } from '@isdd/metais-common/src/hooks/useCiContainer'
-import { useAttributesContainer } from '@isdd/metais-common/src/hooks/useAttributesContainer'
-import { usePublicAuthorityAndRoleContainer } from '@isdd/metais-common/src/hooks/usePublicAuthorityAndRoleContainer'
+import { useAttributesHook } from '@isdd/metais-common/src/hooks/useAttributes.hook'
+import { useCiHook } from '@isdd/metais-common/src/hooks/useCi.hook'
+import { useTranslation } from 'react-i18next'
 
-import { ITVSExceptionsCreateContainer } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
-import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
+import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { ITVSExceptionsCreateContainer } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
+import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
+import { usePublicAuthorityAndRoleHook } from '@/hooks/usePublicAuthorityAndRole.hook'
 
 const ITVSExceptionsEditPage: React.FC = () => {
     const { t, i18n } = useTranslation()
     const { entityId, entityName } = useGetEntityParamsFromUrl()
 
-    const { ciItemData, isError: isCiError, isLoading: isCiLoading } = useCiContainer(entityId ?? '')
-    const { ciTypeData, constraintsData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesContainer(entityName ?? '')
+    const { ciItemData, isError: isCiError, isLoading: isCiLoading } = useCiHook(entityId ?? '')
+    const { ciTypeData, constraintsData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook(entityName ?? '')
     const {
         groupData,
         publicAuthorityState,
-        selectedRoleState,
+        roleState,
         isError: publicAuthAndRoleError,
         isLoading: publicAuthAndRoleLoading,
-    } = usePublicAuthorityAndRoleContainer()
+    } = usePublicAuthorityAndRoleHook()
 
     const currentName =
         i18n.language == Languages.SLOVAK
@@ -52,7 +52,7 @@ const ITVSExceptionsEditPage: React.FC = () => {
                         ownerId={groupData?.gid ?? ''}
                         isLoading={[isAttLoading, publicAuthAndRoleLoading, isCiLoading].some((item) => item)}
                         isError={[isAttError, publicAuthAndRoleError, isCiError].some((item) => item)}
-                        roleState={selectedRoleState}
+                        roleState={roleState}
                         publicAuthorityState={publicAuthorityState}
                         updateCiItemId={ciItemData?.uuid}
                         ciItemData={ciItemData}

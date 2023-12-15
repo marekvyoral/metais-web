@@ -3,7 +3,7 @@ import { Input, MultiSelect, RadioButton, RadioGroupWithLabel } from '@isdd/idsk
 import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { ColumnAttribute, DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { SelectPersonCategory } from '@isdd/metais-common/components/select-person-category/SelectPersonCategory'
 import { SelectPersonType } from '@isdd/metais-common/components/select-person-type/SelectPersonType'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
@@ -21,11 +21,10 @@ export interface POFilterData extends IFilterParams {
 
 interface Props {
     entityName: string
-    availableAttributes?: ColumnAttribute[] | undefined
     defaultFilterValues: POFilterData
     attributes: Attribute[] | undefined
     attributeProfiles: AttributeProfile[] | undefined
-    constraintsData: (EnumType | undefined)[]
+    constraintsData: (EnumType | undefined)[] | undefined
     codePrefix?: string
 }
 

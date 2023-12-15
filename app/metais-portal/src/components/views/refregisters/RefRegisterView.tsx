@@ -8,13 +8,13 @@ import { IRefRegisterView, RefRegisterViewItems } from '@/types/views'
 import styles from '@/components/entities/accordion/basicInformationSection.module.scss'
 import { RefRegisterStateMachine } from '@/pages/refregisters/[entityId]'
 
-export const RefRegisterView = ({ data: { referenceRegisterData, attributesProps }, isLoading, isError }: IRefRegisterView) => {
+export const RefRegisterView = ({ data: { referenceRegisterData, renamedAttributes }, isLoading, isError }: IRefRegisterView) => {
     const { t } = useTranslation()
     const refRegisterStateContext = useContext(RefRegisterStateMachine)
     const stateMachine = useStateMachine({ stateContext: refRegisterStateContext })
 
     const getLabelOfRow = (refRegisterAttribute: string) => {
-        const label = attributesProps?.data?.renamedAttributes?.find((val) => val?.technicalName === refRegisterAttribute)?.name
+        const label = renamedAttributes?.find((val) => val?.technicalName === refRegisterAttribute)?.name
         if (!label) {
             return t(`refRegisters.detail.${refRegisterAttribute}`)
         }
@@ -22,7 +22,7 @@ export const RefRegisterView = ({ data: { referenceRegisterData, attributesProps
     }
 
     const getTooltipOfRow = (refRegisterAttribute: string) => {
-        return attributesProps?.data?.renamedAttributes?.find((val) => val?.technicalName === refRegisterAttribute)?.description ?? ''
+        return renamedAttributes?.find((val) => val?.technicalName === refRegisterAttribute)?.description ?? ''
     }
 
     const currentRefRegisterState = useMemo(() => stateMachine.getCurrentState(), [stateMachine])
