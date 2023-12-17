@@ -12,8 +12,6 @@ variables:
     value: ${CI_COMMIT_REF_SLUG}
     description: 'Define image version for push to mirri cloud.'
 
-
-
 stages:
     - run-checks
     - build-node
@@ -21,13 +19,13 @@ stages:
     - deploy-okd-feature
     - deploy-okd-develop
     - deploy
-    - cleanup
+    - uninstall-okd-feature
     - push-azure-registry
 
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
-    #- if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
 checks:
     image: nexus.isdd.sk:8490/node:latest
@@ -57,8 +55,6 @@ checks:
             - 'app/metais-portal/dist/'
             - 'app/metais-admin/dist/'
     
-
-
 .build_docker_template:
     image: nexus.isdd.sk:8490/docker:20.10-git
     stage: build-docker
@@ -79,13 +75,12 @@ checks:
         - docker build -f docker/Dockerfile-admin --build-arg BUILD_DIR=app/metais-admin/dist/ -t ${CI_REGISTRY_IMAGE}/admin:${IMAGE_TAG} .
         - docker push ${CI_REGISTRY_IMAGE}/admin:${IMAGE_TAG}
     
-
 build-node-isdd-dev:
     extends: .build-node
     variables: 
         BUILD_ENV: development
     rules:
-        - if: $CI_COMMIT_TAG =~ /^isdd-dev.+$/ || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_REF_NAME =~ /^feature\/.+$/i  || $CI_COMMIT_REF_NAME =~ /^met-[^\/]+\/.+$/i || $CI_COMMIT_REF_NAME =~ /^bug\/.+$/i
+        - if: ($CI_COMMIT_TAG =~ /^isdd-dev.+$/ || $CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_REF_NAME =~ /^feature\/.+$/i  || $CI_COMMIT_REF_NAME =~ /^met-[^\/]+\/.+$/i || $CI_COMMIT_REF_NAME =~ /^bug\/.+$/i) && $CI_PIPELINE_SOURCE == "push"
         
 build-node-mirri-test:
     extends: .build-node
@@ -106,7 +101,7 @@ build-docker-feature:
     variables: 
         IMAGE_TAG: ${CI_COMMIT_REF_SLUG}
     rules:
-        - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/i  || $CI_COMMIT_REF_NAME =~ /^met-[^\/]+\/.+$/i || $CI_COMMIT_REF_NAME =~ /^bug\/.+$/i
+        - if: ($CI_COMMIT_REF_NAME =~ /^feature\/.+$/i  || $CI_COMMIT_REF_NAME =~ /^met-[^\/]+\/.+$/i || $CI_COMMIT_REF_NAME =~ /^bug\/.+$/i) && $CI_PIPELINE_SOURCE == "push"
 
 build-docker-latest:
     extends: .build_docker_template
@@ -140,16 +135,18 @@ deploy-okd-feature:
          - echo "######http://$RELEASE_NAME-admin-metais3.apps.dev.isdd.sk######"
          - echo "###################################################3#################"
      rules:
-         - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/i  || $CI_COMMIT_REF_NAME =~ /^met-[^\/]+\/.+$/i || $CI_COMMIT_REF_NAME =~ /^bug\/.+$/i
+         - if: ($CI_COMMIT_REF_NAME =~ /^feature\/.+$/i  || $CI_COMMIT_REF_NAME =~ /^met-[^\/]+\/.+$/i || $CI_COMMIT_REF_NAME =~ /^bug\/.+$/i) && $CI_PIPELINE_SOURCE == "push"
            when: on_success
 
-cleanup-feature-helm:
-  stage: cleanup
+uninstall-okd-feature:
+  stage: uninstall-okd-feature
   image: gitlab.isdd.sk:4567/isdd-docker/base-images/kubectl-delivery:1-0-0
   script:
     - echo "Cleaning up Helm release for feature branch..."
-    - oc login --token=eyJhbGciOiJSUzI1NiIsImtpZCI6IlRBZjI2NXItcVZhM3ZiTjZlakpDYjhHUW1ib0VwU21DaEt5eGdORFM5T1UifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJtZXRhaXMzIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImdpdGxhYi1kZXBsb3llci10b2tlbi1obDdtdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJnaXRsYWItZGVwbG95ZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJjODUwOGVkMS1lN2E4LTQ5MzEtOGJhOS05OWYxNmMzM2VlZGYiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6bWV0YWlzMzpnaXRsYWItZGVwbG95ZXIifQ.Q6rYZSlnNYLk4Q3PfiBnlei0xc3Pmh9u-QJgznlDff_LQyc_gj1wREIiu9PxIrzdj89SqgxiZeo5qrzLsXTg_mSm6TNEC3nIk2Lt4TmSTdUE1Ih2waJKnXGjJs5JE2XY5PF7FgU9WXfbvtZyFcJmfBBipI3_dABeObj_afpR55YU2UsVoJ_Swu6PpsrXZELkqPQamn6qpljBWGA8_LRH2pxSS4Nb3KRfuQiZJI0dN3rhZwQ01ovoALOAgPfECzcaaaaw0i3gwhHaTkSpgW2PiPdQb7cfip_R4xd3QQUEN2zThfjNS7ihcqk4uXA56Heg6tplBP5GqwQFGsa3-32rug --server=https://api.dev.isdd.sk:6443
-    - helm uninstall "feature-${CI_COMMIT_REF_NAME}" -n metais3
+    - oc login --token=$OKD_TOKEN --server=https://api.dev.isdd.sk:6443
+    - echo "Cleaning up Helm release for feature branch..."
+    - RELEASE_NAME=$(echo $CI_COMMIT_REF_NAME | sed 's/\//-/g' | tr '[:upper:]' '[:lower:]')
+    - helm uninstall "$RELEASE_NAME" -n metais3
   rules:
     - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/ && $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
@@ -166,8 +163,6 @@ deploy-okd-develop:
     rules:
         - if: $CI_COMMIT_TAG =~ /^isdd-dev.+$/
           when: on_success
-
-
 
 push-azure-registry: 
   stage: push-azure-registry  
