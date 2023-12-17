@@ -1428,6 +1428,7 @@
             "heading": "List of request to add a reference register"
         },
         "title": "Referential registers",
+        "createBtn": "Create referential register registrar contact",
         "create": {
             "title": "Add new referential register",
             "name": "Name",
@@ -1437,7 +1438,7 @@
             "phoneNumber": "Phone number",
             "managerContact": "Referential register administrator contact",
             "registratorContact": "Referential register registrar contact",
-            "save": "Save"
+            "save": "Send request"
         },
         "edit": {
             "title": "Edit referential register"

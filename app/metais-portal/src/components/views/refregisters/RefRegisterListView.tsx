@@ -34,7 +34,12 @@ export const RefRegisterListView = ({
                 handleFilterChange={handleFilterChange}
                 pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName={Reference_Registers}
-                createButton={<CreateEntityButton onClick={() => navigate(`/refregisters/create`, { state: { from: location } })} />}
+                createButton={
+                    <CreateEntityButton
+                        label={t('refRegisters.createBtn')}
+                        onClick={() => navigate(`/refregisters/create`, { state: { from: location } })}
+                    />
+                }
                 attributeProfiles={attributeProfiles}
                 attributes={[...distinctAttributesMetaAttributes(renamedAttributes ?? [], getRefRegsDefaultMetaAttributes(t)), ...guiAttributes]}
                 columnListData={columnListData}
