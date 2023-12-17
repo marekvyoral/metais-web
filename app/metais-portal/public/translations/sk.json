@@ -604,7 +604,7 @@
         "import": "Importovať",
         "cancel": "Zrušiť",
         "validate": "Zvalidovať",
-        "done" : "Súbory sú naimportované!"
+        "done": "Súbory sú naimportované!"
     },
     "exportItemsOrRelations": {
         "header": "Export položiek alebo vzťahov",
@@ -1453,6 +1453,7 @@
             "heading": "Zoznam žiadostí o pridanie referenčného registra"
         },
         "title": "Referenčné registre",
+        "createBtn": "Vytvoriť žiadosť o pridanie referenčného registra",
         "create": {
             "title": "Pridať nový referenčný register",
             "name": "Názov",
@@ -1462,7 +1463,7 @@
             "phoneNumber": "Tel. číslo",
             "managerContact": "Kontakt na správcu referenčného registra",
             "registratorContact": "Kontakt na registrátora referenčného registra",
-            "save": "Uložiť"
+            "save": "Odoslať žiadosť"
         },
         "edit": {
             "title": "Upraviť referenčný register"
