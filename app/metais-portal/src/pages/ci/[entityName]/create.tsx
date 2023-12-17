@@ -22,7 +22,7 @@ const CreateEntityPage: React.FC = () => {
                             withWidthContainer
                             links={[
                                 { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                                { label: entityName ?? '', href: `/ci/${entityName}` },
+                                { label: props.ciTypeName, href: `/ci/${entityName}` },
                                 {
                                     label: t('breadcrumbs.ciCreateEntity', { entityName: props.data.attributesData.ciTypeData?.name }),
                                     href: `/ci/create`,

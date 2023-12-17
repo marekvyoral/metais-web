@@ -11,6 +11,8 @@ import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useGetRights } from '@isdd/metais-common/api/generated/kris-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -19,7 +21,7 @@ import { KrisRelatedContainer } from '@/components/containers/KrisRelatedContain
 import { KrisEntityIdHeader } from '@/components/views/ci/kris/KrisEntityIdHeader'
 
 const KrisEntityDetailPage: React.FC = () => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId } = useGetEntityParamsFromUrl()
     const navigate = useNavigate()
@@ -39,7 +41,8 @@ const KrisEntityDetailPage: React.FC = () => {
     const userAbility = useUserAbility()
     const showEvaluation =
         evaluationData && evaluationData.hasVersions && !evaluationData.municipality && (evaluationData.creator || evaluationData.evaluator)
-
+    const { data: ciTypeData } = useGetCiType(ENTITY_KRIS)
+    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,
@@ -89,7 +92,7 @@ const KrisEntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: ENTITY_KRIS, href: `/ci/${ENTITY_KRIS}` },
+                    { label: ciTypeName, href: `/ci/${ENTITY_KRIS}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
                         href: `/ci/${ENTITY_KRIS}/${entityId}`,

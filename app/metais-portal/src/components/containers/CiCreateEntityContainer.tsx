@@ -2,6 +2,8 @@ import { HierarchyRightsUi } from '@isdd/metais-common/api/generated/cmdb-swagge
 import { useGenerateCodeAndURL } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { useAttributesHook } from '@isdd/metais-common/hooks/useAttributes.hook'
 import React, { SetStateAction } from 'react'
+import { Languages } from '@isdd/metais-common/localization/languages'
+import { useTranslation } from 'react-i18next'
 
 import { PublicAuthorityState, RoleState, usePublicAuthorityAndRoleHook } from '@/hooks/usePublicAuthorityAndRole.hook'
 import { CreateEntityData } from '@/components/create-entity/CreateEntity'
@@ -19,6 +21,7 @@ export interface ICiCreateEntityContainerView {
     data: CreateEntityData
     isLoading: boolean
     isError: boolean
+    ciTypeName: string
 }
 interface ICiCreateEntityContainer {
     View: React.FC<ICiCreateEntityContainerView>
@@ -26,6 +29,7 @@ interface ICiCreateEntityContainer {
 }
 
 export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ View, entityName }) => {
+    const { i18n } = useTranslation()
     const {
         data: generatedEntityId,
         isLoading: generatedIdLoading,
@@ -34,6 +38,7 @@ export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ Vi
     } = useGenerateCodeAndURL(entityName, { query: { refetchOnMount: false, enabled: !!entityName, cacheTime: 0 } })
 
     const { ciTypeData, constraintsData, unitsData, isError: isAttributesError, isLoading: isAttributesLoading } = useAttributesHook(entityName)
+    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
     const {
         groupData,
         isError: publicAuthAndRoleError,
@@ -54,6 +59,7 @@ export const CiCreateEntityContainer: React.FC<ICiCreateEntityContainer> = ({ Vi
             publicAuthorityState={publicAuthorityState}
             isLoading={isLoading}
             isError={isError}
+            ciTypeName={ciTypeName ?? ''}
         />
     )
 }

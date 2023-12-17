@@ -12,6 +12,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useSetStatesHook } from '@isdd/metais-common/api/generated/kris-swagger'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -22,7 +23,7 @@ import { ProjectEntityIdHeader } from '@/components/views/ci/project/ProjectEnti
 import { ProjectStateView } from '@/components/views/ci/project/ProjectStateView'
 
 const ProjectEntityDetailPage: React.FC = () => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const { isActionSuccess } = useActionSuccess()
     const { entityId } = useGetEntityParamsFromUrl()
     const navigate = useNavigate()
@@ -41,6 +42,7 @@ const ProjectEntityDetailPage: React.FC = () => {
     const setStates = useSetStatesHook()
 
     const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError } = useGetCiType(ENTITY_PROJECT)
+    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,
@@ -76,7 +78,7 @@ const ProjectEntityDetailPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: ENTITY_PROJECT, href: `/ci/${ENTITY_PROJECT}` },
+                    { label: ciTypeName, href: `/ci/${ENTITY_PROJECT}` },
                     {
                         label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
                         href: `/ci/${ENTITY_PROJECT}/${entityId}`,

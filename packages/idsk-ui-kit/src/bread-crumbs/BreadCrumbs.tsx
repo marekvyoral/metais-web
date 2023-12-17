@@ -50,8 +50,14 @@ export const BreadCrumbs: React.FC<BreadCrumbsProps> = ({ links, withWidthContai
         <div className={classNames(styles.marginBottom, { 'govuk-width-container': withWidthContainer })}>
             <div className="govuk-breadcrumbs">
                 <ul className="govuk-breadcrumbs__list">
-                    {links.map((value) => (
-                        <BreadCrumbsItem href={value.href} label={value.label} icon={value.icon} key={value.label} toLogin={value.toLogin} />
+                    {links.map((value, index) => (
+                        <BreadCrumbsItem
+                            href={value.href}
+                            label={value.label}
+                            icon={value.icon}
+                            key={`${value.label}_${index}`}
+                            toLogin={value.toLogin}
+                        />
                     ))}
                 </ul>
             </div>
