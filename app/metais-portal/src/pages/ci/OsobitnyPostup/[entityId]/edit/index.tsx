@@ -17,6 +17,7 @@ const ITVSExceptionsEditPage: React.FC = () => {
 
     const { ciItemData, isError: isCiError, isLoading: isCiLoading } = useCiHook(entityId ?? '')
     const { ciTypeData, constraintsData, unitsData, isLoading: isAttLoading, isError: isAttError } = useAttributesHook(entityName ?? '')
+    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
     const {
         groupData,
         publicAuthorityState,
@@ -39,7 +40,7 @@ const ITVSExceptionsEditPage: React.FC = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: t('ITVSExceptions.vynimky_ITVS'), href: `/ci/${entityName}` },
+                    { label: ciTypeName, href: `/ci/${entityName}` },
                     { label: currentName ? currentName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
                     { label: t('breadcrumbs.ciEdit', { itemName: currentName }), href: `/ci/${entityName}/${entityId}/edit` },
                 ]}

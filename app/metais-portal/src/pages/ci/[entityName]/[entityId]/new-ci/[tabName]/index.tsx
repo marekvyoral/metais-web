@@ -3,6 +3,8 @@ import { shouldEntityNameBePO } from '@isdd/metais-common/componentHelpers/ci/en
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { findRelationType } from '@/componentHelpers/new-relation'
@@ -16,8 +18,9 @@ const CreateCiItemAndRelation: React.FC = () => {
     const { entityId } = useGetEntityParamsFromUrl()
     let { entityName } = useGetEntityParamsFromUrl()
     entityName = shouldEntityNameBePO(entityName ?? '')
-    const { t } = useTranslation()
-
+    const { t, i18n } = useTranslation()
+    const { data: ciTypeData } = useGetCiType(entityName)
+    const ciTypeName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
     return (
         <>
             <CiCreateItemAndRelationContainer
@@ -30,7 +33,7 @@ const CreateCiItemAndRelation: React.FC = () => {
                             withWidthContainer
                             links={[
                                 { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                                { label: entityName ?? '', href: `/ci/${entityName}` },
+                                { label: ciTypeName ?? '', href: `/ci/${entityName}` },
                                 { label: props.ciName ? props.ciName : t('breadcrumbs.noName'), href: `/ci/${entityName}/${entityId}` },
                                 {
                                     label: t('breadcrumbs.newCiAndRelation', { itemName: props.ciName }),
