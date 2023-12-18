@@ -29,7 +29,7 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
                 <GridRow className={styles.heading}>
                     <GridCol setWidth="one-third">
                         <p className={styles.withoutMargin}>
-                            <TextLinkExternal title={label} href={labelHref} textLink={label} />
+                            <TextLinkExternal title={label} href={labelHref} textLink={label} newTab />
                         </p>
                     </GridCol>
                     <GridCol setWidth="two-thirds">
@@ -57,7 +57,7 @@ export const RelationCard: React.FC<IRelationCardProps> = ({ codeMetaIS, status,
                         <RelationAttribute
                             key={relation.title + index}
                             name={index === 0 ? t('relationCard.relations') : ''}
-                            value={<TextLinkExternal title={relation.title} href={relation.href} textLink={relation.title} />}
+                            value={<TextLinkExternal title={relation.title} href={relation.href} textLink={relation.title} newTab />}
                         />
                     ))}
                 </DefinitionList>
