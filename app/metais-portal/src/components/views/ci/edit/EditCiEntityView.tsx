@@ -45,10 +45,12 @@ export const EditCiEntityView: React.FC<Props> = ({
             ? ciItemAttributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
             : ciItemAttributes?.[ATTRIBUTE_NAME.Gen_Profil_anglicky_nazov]
 
+    const ciTypeName = i18n.language == Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
+
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
-                <TextHeading size="XL">{t('ciType.editEntity', { entityName: entityName })}</TextHeading>
+                <TextHeading size="XL">{t('ciType.editEntity', { entityName: ciTypeName })}</TextHeading>
                 {isError && <QueryFeedback loading={false} error={isError} />}
             </FlexColumnReverseWrapper>
             <SubHeading entityName={entityName} entityId={entityId} currentName={currentName} />
