@@ -31,6 +31,7 @@ export const CreateDocumentsGroupView: React.FC<IView> = ({ projectStatus, saveD
     const navigate = useNavigate()
     const location = useLocation()
     const { setIsActionSuccess } = useActionSuccess()
+    const [isCreateLoading, setIsCreateLoading] = useState(false)
 
     const [updateError, setUpdateError] = useState(false)
     const {
@@ -42,6 +43,7 @@ export const CreateDocumentsGroupView: React.FC<IView> = ({ projectStatus, saveD
     } = useForm({ resolver: yupResolver(docSchema(t)), mode: 'onChange' })
 
     const onSubmit = (fieldValues: FieldValues) => {
+        setIsCreateLoading(true)
         if (isValid) {
             saveDocumentGroup({
                 state: fieldValues[DOCUMENT_FIELDS.STATE],
@@ -52,11 +54,13 @@ export const CreateDocumentsGroupView: React.FC<IView> = ({ projectStatus, saveD
             })
                 .then(() => {
                     setIsActionSuccess({ value: true, path: '/projects/documents' })
-
                     navigate('/projects/documents', { state: { from: location } })
                 })
                 .catch(() => {
                     setUpdateError(true)
+                })
+                .finally(() => {
+                    setIsCreateLoading(false)
                 })
         }
     }
@@ -68,7 +72,7 @@ export const CreateDocumentsGroupView: React.FC<IView> = ({ projectStatus, saveD
     }, [updateError, scrollToMutationFeedback])
 
     return (
-        <QueryFeedback loading={isLoading} error={updateError}>
+        <QueryFeedback loading={isLoading || isCreateLoading} error={updateError}>
             <div ref={wrapperRef} />
             <TextHeading size="L">{t('documentsManagement.groupCreate')}</TextHeading>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -101,14 +105,14 @@ export const CreateDocumentsGroupView: React.FC<IView> = ({ projectStatus, saveD
                 <Input
                     placeholder={t('documentsManagement.input')}
                     error={errors[DOCUMENT_FIELDS.NAME_ENG]?.message as string}
-                    label={t('documentsManagement.nameEng')}
+                    label={t('egov.engName')}
                     {...register(DOCUMENT_FIELDS.NAME_ENG)}
                 />
                 <TextArea
                     placeholder={t('documentsManagement.input')}
                     error={errors[DOCUMENT_FIELDS.DESCRIPTION_ENG]?.message as string}
                     rows={3}
-                    label={t('documentsManagement.descriptionEng')}
+                    label={t('egov.engDescription')}
                     {...register(DOCUMENT_FIELDS.DESCRIPTION_ENG)}
                 />
                 <SubmitWithFeedback

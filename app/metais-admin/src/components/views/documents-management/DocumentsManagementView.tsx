@@ -1,8 +1,8 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { Button, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, ISelectColumnType, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { DocumentGroup } from '@isdd/metais-common/api/generated/kris-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, documentsManagementDefaultSelectedColumns } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ActionsOverTable, MutationFeedback } from '@isdd/metais-common/index'
@@ -21,13 +21,12 @@ export const DocumentsManagementView: React.FC<IView> = ({
     setData,
     saveOrder,
     resetOrder,
-    selectedColumns,
-    setSelectedColumns,
-    resetSelectedColumns,
     handleFilterChange,
     refetchDocs,
 }) => {
     const { t } = useTranslation()
+    const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>(documentsManagementDefaultSelectedColumns(t))
+    const resetSelectedColumns = () => setSelectedColumns(documentsManagementDefaultSelectedColumns(t))
     const navigate = useNavigate()
     const location = useLocation()
     const [editingRowsPositions, setEditingRowsPositions] = useState(false)
@@ -35,8 +34,10 @@ export const DocumentsManagementView: React.FC<IView> = ({
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
     useEffect(() => {
-        scrollToMutationFeedback()
-        refetchDocs()
+        if (isActionSuccess.value) {
+            scrollToMutationFeedback()
+            refetchDocs()
+        }
     }, [isActionSuccess, refetchDocs, scrollToMutationFeedback])
 
     const columns: Array<ColumnDef<DocumentGroup>> = [
@@ -66,7 +67,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
         },
         {
-            header: t('documentsManagement.nameEng'),
+            header: t('egov.engName'),
             accessorFn: (row) => row?.nameEng,
             enableSorting: true,
             id: 'nameEng',
@@ -81,7 +82,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
         },
         {
-            header: t('documentsManagement.descriptionEng'),
+            header: t('egov.engDescription'),
             accessorFn: (row) => row?.descriptionEng,
             enableSorting: true,
             id: 'descriptionEng',
