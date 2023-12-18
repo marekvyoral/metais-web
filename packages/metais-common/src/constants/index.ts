@@ -42,13 +42,13 @@ export const notificationDefaultSelectedColumns = [
     { technicalName: 'createdAt', name: 'CreatedAt', selected: true },
 ]
 
-export const documentsManagementDefaultSelectedColumns = [
+export const documentsManagementDefaultSelectedColumns = (t: TFunction<'translation', undefined, 'translation'>) => [
     { technicalName: 'id', name: 'Id', selected: false },
-    { technicalName: 'name', name: 'Name', selected: true },
-    { technicalName: 'nameEng', name: 'NameEng', selected: true },
-    { technicalName: 'description', name: 'Description', selected: false },
-    { technicalName: 'descriptionEng', name: 'DescriptionEng', selected: false },
-    { technicalName: 'state', name: 'State', selected: true },
+    { technicalName: 'state', name: t('documentsManagement.status'), selected: true },
+    { technicalName: 'name', name: t('documentsManagement.name'), selected: true },
+    { technicalName: 'nameEng', name: t('egov.engName'), selected: true },
+    { technicalName: 'description', name: t('documentsManagement.description'), selected: false },
+    { technicalName: 'descriptionEng', name: t('egov.engDescription'), selected: false },
 ]
 
 export const documentsManagementGroupDocumentsDefaultSelectedColumns = [
