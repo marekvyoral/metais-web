@@ -65,7 +65,7 @@ export const GroupEditContainer: React.FC<IGroupEditContainer> = ({ id }) => {
                 setIsActionSuccess({
                     value: true,
                     path: `${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${infoData?.uuid}`,
-                    additionalInfo: { type: 'edit' },
+                    additionalInfo: { entity: 'group', type: 'edit' },
                 })
                 goBack()
                 invalidateCache.invalidate()

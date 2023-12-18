@@ -14,6 +14,8 @@ import { MutationFeedback, QueryFeedback, SubmitWithFeedback } from '@isdd/metai
 import { useReadConfigurationItemByMetaIsCode } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { KSIVS_SHORT_NAME, PUBLIC_ORG_CMDB_CODE } from '@isdd/metais-common/constants'
 import { useInvalidateGroupMembersCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { AddMemberEnum, addMemberSchema } from './addMemberSchema'
 
@@ -51,6 +53,8 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
 
     const invalidateGroupMembersCache = useInvalidateGroupMembersCache(group?.uuid ?? '')
 
+    const { setIsActionSuccess } = useActionSuccess()
+
     const onCloseModal = () => {
         onClose()
         setAddingGroupMemberError(undefined)
@@ -66,6 +70,11 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
                 setAddedLabel(true)
                 invalidateGroupMembersCache.invalidate()
                 onClose()
+                setIsActionSuccess({
+                    value: true,
+                    path: `${NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL}/${group?.uuid}`,
+                    additionalInfo: { entity: 'member', type: 'add' },
+                })
             })
             .catch((resp) => {
                 setAddingGroupMember(false)

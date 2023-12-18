@@ -364,7 +364,6 @@
         "successfulCreated": "Položka bola úspešne vytvorená",
         "successfulCloned": "Položka bola úspešne klonovaná",
         "successfulUpdatedList": "Položky boli úspešne zmenené",
-        "successfulMemberUpdated": "Rola bola úspešne zmenená",
         "successfulRelationCreated": "Vzťah bol úspešne vytvorený."
     },
     "button": {
@@ -1000,7 +999,9 @@
         "action": "Akcia",
         "email": "Email",
         "listOfMembers": "Zoznam členov",
-        "memberSuccessfullyAdded": "Člen úspešne pridaný.",
+        "successfulMemberUpdated": "Rola bola úspešne zmenená",
+        "successfulMemberAdded": "Člen úspešne pridaný",
+        "successfulMemberDeleted": "Člen bol úspešne odstránený zo skupiny",
         "mandatory": "povinné",
         "editGroup": "Zmena skupiny",
         "addingMember": "Pridávam nového člena",

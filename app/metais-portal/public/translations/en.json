@@ -370,7 +370,6 @@
         "successfulCreated": "The item was successfully created",
         "successfulCloned": "The item was successfully cloned",
         "successfulUpdatedList": "Items have been changed successfully",
-        "successfulMemberUpdated": "Role was successfully changed",
         "successfulRelationCreated": "Relation was successfully created"
     },
     "relationCard": {
@@ -992,7 +991,9 @@
         "action": "Action",
         "email": "Email",
         "listOfMembers": "List of members",
-        "memberSuccessfullyAdded": "Member Successfully Added.",
+        "successfulMemberUpdated": "Role was successfully changed",
+        "successfulMemberAdded": "Member was successfully added",
+        "successfulMemberDeleted": "Member was successfully removed from group",
         "mandatory": "mandatory",
         "editGroup": "Edit group",
         "addingMember": "Adding member",

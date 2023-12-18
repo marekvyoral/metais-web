@@ -2,6 +2,9 @@ import { BaseModal, Button, ButtonGroupRow, LoadingIndicator, TextBody, TextHead
 import { useDeleteGroupRelationHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useInvalidateGroupMembersCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import styles from '@/components/views/standardization/groups/styles.module.scss'
 interface DeleteGroupMemberModalProps {
@@ -16,11 +19,19 @@ const DeleteGroupMemberModal: React.FC<DeleteGroupMemberModalProps> = ({ isOpen,
 
     const [deletingMember, setDeletingMember] = useState(false)
     const deleteRelationHook = useDeleteGroupRelationHook()
+    const invalidateGroupMembersCache = useInvalidateGroupMembersCache(groupUuid ?? '')
+    const { setIsActionSuccess } = useActionSuccess()
 
     const handleOnDeleteClick = async () => {
         setDeletingMember(true)
         await deleteRelationHook(uuid ?? '', groupUuid ?? '')
         setDeletingMember(false)
+        invalidateGroupMembersCache.invalidate()
+        setIsActionSuccess({
+            value: true,
+            path: `${NavigationSubRoutes.PRACOVNA_SKUPINA_DETAIL}/${groupUuid}`,
+            additionalInfo: { entity: 'member', type: 'delete' },
+        })
         onClose()
     }
 

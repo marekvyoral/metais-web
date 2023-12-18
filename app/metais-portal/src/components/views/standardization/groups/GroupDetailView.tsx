@@ -1,5 +1,4 @@
-import { GreenCheckOutlineIcon } from '@isdd/idsk-ui-kit/assets/images'
-import { BreadCrumbs, Button, HomeIcon, IconWithText, PaginatorWrapper, Table, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BreadCrumbs, Button, HomeIcon, PaginatorWrapper, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { KSIVS_SHORT_NAME } from '@isdd/metais-common/constants'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
@@ -26,7 +25,6 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
     group,
     isAddModalOpen,
     setAddModalOpen,
-    successfulUpdatedData,
     setSuccessfulUpdatedData,
     rowSelection,
     isIdentitiesLoading,
@@ -64,6 +62,22 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
     if (group?.shortName !== KSIVS_SHORT_NAME) {
         breadCrumbsLinks.splice(2, 0, { label: t('navMenu.lists.groups'), href: NavigationSubRoutes.PRACOVNE_SKUPINY_KOMISIE })
     }
+
+    const getSuccessMsg = (): string => {
+        switch (isActionSuccess.additionalInfo?.type) {
+            case 'update':
+                return t('groups.successfulMemberUpdated')
+            case 'add':
+                return t('groups.successfulMemberAdded')
+            case 'delete':
+                return t('groups.successfulMemberDeleted')
+            case 'edit':
+                return t('mutationFeedback.successfulUpdated')
+            default:
+                return t('mutationFeedback.successfulCreated')
+        }
+    }
+
     return (
         <>
             <DeleteGroupMemberModal
@@ -87,18 +101,8 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
             <BreadCrumbs withWidthContainer links={breadCrumbsLinks} />
             <MainContentWrapper>
                 <div ref={wrapperRef}>
-                    {isActionSuccess.value && (
-                        <MutationFeedback
-                            successMessage={
-                                isActionSuccess.additionalInfo?.type === 'memberUpdate'
-                                    ? t('mutationFeedback.successfulMemberUpdated')
-                                    : isActionSuccess.additionalInfo?.type === 'edit'
-                                    ? t('mutationFeedback.successfulUpdated')
-                                    : t('mutationFeedback.successfulCreated')
-                            }
-                            success={isActionSuccess.value}
-                            error={false}
-                        />
+                    {isActionSuccess.value && isActionSuccess.additionalInfo?.entity === 'group' && (
+                        <MutationFeedback successMessage={getSuccessMsg()} success={isActionSuccess.value} error={false} />
                     )}
                 </div>
                 <GroupDetailBaseInfo infoData={group} />
@@ -125,11 +129,11 @@ const GroupDetailView: React.FC<GroupDetailViewProps> = ({
                         />
                     </Can>
                 </ActionsOverTable>
-                {successfulUpdatedData && (
-                    <IconWithText icon={GreenCheckOutlineIcon}>
-                        <TextBody className={styles.greenBoldText}>{t('groups.memberSuccessfullyAdded')}</TextBody>
-                    </IconWithText>
-                )}
+                <div ref={wrapperRef}>
+                    {isActionSuccess.value && isActionSuccess.additionalInfo?.entity === 'member' && (
+                        <MutationFeedback successMessage={getSuccessMsg()} success={isActionSuccess.value} error={false} />
+                    )}
+                </div>
                 <QueryFeedback
                     loading={isLoading || isIdentitiesLoading}
                     error={isIdentitiesError}
