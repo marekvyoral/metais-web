@@ -53,7 +53,7 @@ export const GroupCreateContainer: React.FC = () => {
                 setIsActionSuccess({
                     value: true,
                     path: `${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${res?.uuid}`,
-                    additionalInfo: { type: 'create' },
+                    additionalInfo: { entity: 'group', type: 'create' },
                 })
                 navigate(`${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${res?.uuid}`)
             },
