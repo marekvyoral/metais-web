@@ -80,6 +80,7 @@ export const LanguageSelector: React.FC = () => {
                 <ul className="idsk-header-web__brand-language-list">
                     <LanguageItem handleClick={handleClick} value={Languages.ENGLISH} />
                     <LanguageItem handleClick={handleClick} value={Languages.SLOVAK} />
+                    {import.meta.env.VITE_LOCALES_SHOW_KEYS == 'true' && <LanguageItem handleClick={handleClick} value={Languages.CI_MODE} />}
                 </ul>
             )}
         </div>

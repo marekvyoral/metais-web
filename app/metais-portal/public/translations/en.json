@@ -293,7 +293,8 @@
     },
     "language": {
         "sk": "Slovenčina",
-        "en": "English"
+        "en": "English",
+        "cimode": "Translations"
     },
     "stepper": {
         "openAll": "Open all",

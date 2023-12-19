@@ -155,7 +155,8 @@
     },
     "language": {
         "sk": "Slovenčina",
-        "en": "English"
+        "en": "English",
+        "cimode": "Translations"
     },
     "input": {
         "requiredField": "(required)"
