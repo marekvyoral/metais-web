@@ -171,7 +171,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         {
             header: t('codelists.code'),
             accessorFn: (row) => row?.code,
-            enableSorting: true,
+            enableSorting: false,
             id: 'code',
             meta: {
                 getCellContext: (ctx: CellContext<EnumTypePreview, unknown>) => ctx?.getValue?.(),
@@ -194,7 +194,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         {
             header: t('codelists.name'),
             accessorFn: (row) => row?.name,
-            enableSorting: true,
+            enableSorting: false,
             id: 'name',
             meta: {
                 getCellContext: (ctx: CellContext<EnumTypePreview, unknown>) => ctx?.getValue?.(),
@@ -214,7 +214,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         {
             header: t('codelists.description'),
             accessorFn: (row) => row?.description,
-            enableSorting: true,
+            enableSorting: false,
             id: 'description',
             meta: {
                 getCellContext: (ctx: CellContext<EnumTypePreview, unknown>) => ctx?.getValue?.(),
@@ -235,7 +235,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         {
             header: t('codelists.valid'),
             accessorFn: (row) => row,
-            enableSorting: true,
+            enableSorting: false,
             id: 'valid',
             cell: (ctx) => {
                 const rowObject = ctx?.getValue?.() as EnumTypePreview
@@ -256,7 +256,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         {
             header: t('codelists.category'),
             accessorFn: (row) => row?.category,
-            enableSorting: true,
+            enableSorting: false,
             id: 'category',
             cell: (ctx) => (
                 <SimpleSelect
@@ -285,7 +285,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         },
         {
             header: t('actionsInTable.actions'),
-            enableSorting: true,
+            enableSorting: false,
             accessorFn: (row) => row,
             id: 'actions',
             cell: (ctx) => {

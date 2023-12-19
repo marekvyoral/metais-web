@@ -11,6 +11,8 @@ export enum CodelistDetailEnum {
     ORDER = 'orderList',
 }
 
+const MAX_DESCRIPTION_CHAR_NUMBER = 255
+
 export const codeListDetailCreateSchema = (t: TFunction<'translation', undefined, 'translation'>, itemCodes: Array<string | undefined>) => {
     const regexPattern = /^[A-Z_]+$/
     return object().shape({
@@ -21,8 +23,12 @@ export const codeListDetailCreateSchema = (t: TFunction<'translation', undefined
             .required(t('codelists.codeError')),
         [CodelistDetailEnum.VALUE]: string().required(t('codelists.valueError')),
         [CodelistDetailEnum.ENG_VALUE]: string().required(t('codelists.engValueError')),
-        [CodelistDetailEnum.DESCRIPTION]: string().required(t('codelists.descriptionError')),
-        [CodelistDetailEnum.ENG_DESCRIPTION]: string().required(t('codelists.engDescriptionError')),
+        [CodelistDetailEnum.DESCRIPTION]: string()
+            .required(t('codelists.descriptionError'))
+            .max(MAX_DESCRIPTION_CHAR_NUMBER, t('codelists.descriptionMaxError', { charNumber: MAX_DESCRIPTION_CHAR_NUMBER })),
+        [CodelistDetailEnum.ENG_DESCRIPTION]: string()
+            .required(t('codelists.engDescriptionError'))
+            .max(MAX_DESCRIPTION_CHAR_NUMBER, t('codelists.descriptionMaxError', { charNumber: MAX_DESCRIPTION_CHAR_NUMBER })),
         [CodelistDetailEnum.VALIDITY]: boolean(),
     })
 }
