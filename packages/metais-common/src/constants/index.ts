@@ -99,6 +99,7 @@ export enum ReponseErrorCodeEnum {
     NTM01 = 'ntm01',
     GNR500 = 'gnr500',
     OPERATION_NOT_ALLOWED = 'OperationNotAllowed',
+    WRONG_OLD_PASSWORD = 'WRONG_OLD_PASSWORD',
 }
 export const REPORTS = 'reports'
 export const FIRST_PAGE_NUMBER = 1

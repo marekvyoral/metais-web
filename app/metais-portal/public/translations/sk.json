@@ -753,7 +753,11 @@
         "mustBeChecked": "Toto musí byť zaškrtnuté, ak chcete pokračovať",
         "dateMustBeGreaterThen": "Dátum musí byť neskorší ako",
         "dateMustBeEqualOrGreaterThen": "Dátum musí byť rovnaký alebo neskorší ako",
-        "dateMustBeLessOrEqualThen": "Dátum musí byť skorší alebo rovnaký ako"
+        "dateMustBeLessOrEqualThen": "Dátum musí byť skorší alebo rovnaký ako",
+        "minCharacters": "{{itemName}} musí obsahovať aspoň {{min}} znakov",
+        "maxCharacters": "{{itemName}} môže obsahovať maximálne {{max}} znakov",
+        "password": "Heslo musí obsahovať aspoň jeden veľký znak, aspoň jeden malý znak a aspoň jeden iný znak.",
+        "repeatPassword": "Opakované heslo musí byť rovnaké"
     },
     "createEntity": {
         "required": "povinné",
@@ -927,7 +931,9 @@
         "returnToWorkSuccess": "KRIT bol úspešne vrátený na prepracovanie!",
         "sendToApprover": "KRIT bol úspešne poslaný na schválenie!",
         "codeAlreadyExists": "An internal codelist with such a code already exists",
-        "sendToRevalidate": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o splatnení."
+        "sendToRevalidate": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o splatnení.",
+        "passwordChanged": "Heslo bolo úspešne zmenené",
+        "WRONG_OLD_PASSWORD": "Chybné staré heslo"
     },
     "accordion": {
         "openAll": "Otvoriť všetko",
@@ -1582,6 +1588,9 @@
         "rights": "Oprávnenia",
         "notificationsSettings": "Správa notifikácií",
         "passwordChange": "Zmena hesla",
+        "oldPassword": "Staré heslo",
+        "newPassword": "Nové heslo",
+        "repeatPassword": "Opakované heslo",
         "save": "Uložiť",
         "cancel": "Zrušiť",
         "showInvalidated": "Zobraziť zneplatnené položky",

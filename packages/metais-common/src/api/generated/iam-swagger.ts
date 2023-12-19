@@ -293,7 +293,15 @@ export interface RelationshipUi {
     uuid?: string
     owner?: string
     startUuid?: string
+    startType?: string
+    startTypeName?: string
+    startName?: string
+    startKodMetaIS?: string
     endUuid?: string
+    endType?: string
+    endTypeName?: string
+    endName?: string
+    endKodMetaIS?: string
     attributes?: AttributeUi[]
     metaAttributes?: MetaAttributesUi
 }
@@ -526,6 +534,11 @@ export interface IdentityProfile {
 
 export interface IdentityTerms {
     licenceTermsAccepted?: boolean
+}
+
+export interface ChangePasswordRequest {
+    oldPassword?: string
+    newPassword?: string
 }
 
 export interface StringList {
@@ -3352,6 +3365,47 @@ export const useFindOrganizationsForList = <TError = ApiError, TContext = unknow
     return useMutation(mutationOptions)
 }
 
+export const useChangePassword1Hook = () => {
+    const changePassword1 = useIAmSwaggerClient<OperationResult>()
+
+    return (changePasswordRequest: ChangePasswordRequest) => {
+        return changePassword1({
+            url: `/identities/change_pass`,
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            data: changePasswordRequest,
+        })
+    }
+}
+
+export const useChangePassword1MutationOptions = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useChangePassword1Hook>>>, TError, { data: ChangePasswordRequest }, TContext>
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useChangePassword1Hook>>>, TError, { data: ChangePasswordRequest }, TContext> => {
+    const { mutation: mutationOptions } = options ?? {}
+
+    const changePassword1 = useChangePassword1Hook()
+
+    const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useChangePassword1Hook>>>, { data: ChangePasswordRequest }> = (props) => {
+        const { data } = props ?? {}
+
+        return changePassword1(data)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type ChangePassword1MutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useChangePassword1Hook>>>>
+export type ChangePassword1MutationBody = ChangePasswordRequest
+export type ChangePassword1MutationError = ApiError
+
+export const useChangePassword1 = <TError = ApiError, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useChangePassword1Hook>>>, TError, { data: ChangePasswordRequest }, TContext>
+}) => {
+    const mutationOptions = useChangePassword1MutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+
 export const useChangeIdentityTermsHook = () => {
     const changeIdentityTerms = useIAmSwaggerClient<OperationResult>()
 
@@ -3496,15 +3550,15 @@ export const useChangeIdentityNotifications = <TError = ApiError, TContext = unk
 export const useFind2111Hook = () => {
     const find2111 = useIAmSwaggerClient<Find2111200>()
 
-    return (params: Find2111Params, signal?: AbortSignal) => {
+    return (params?: Find2111Params, signal?: AbortSignal) => {
         return find2111({ url: `/groups`, method: 'get', params, signal })
     }
 }
 
-export const getFind2111QueryKey = (params: Find2111Params) => [`/groups`, ...(params ? [params] : [])] as const
+export const getFind2111QueryKey = (params?: Find2111Params) => [`/groups`, ...(params ? [params] : [])] as const
 
 export const useFind2111QueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useFind2111Hook>>>, TError = ApiError>(
-    params: Find2111Params,
+    params?: Find2111Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFind2111Hook>>>, TError, TData> },
 ): UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFind2111Hook>>>, TError, TData> & { queryKey: QueryKey } => {
     const { query: queryOptions } = options ?? {}
@@ -3522,7 +3576,7 @@ export type Find2111QueryResult = NonNullable<Awaited<ReturnType<ReturnType<type
 export type Find2111QueryError = ApiError
 
 export const useFind2111 = <TData = Awaited<ReturnType<ReturnType<typeof useFind2111Hook>>>, TError = ApiError>(
-    params: Find2111Params,
+    params?: Find2111Params,
     options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useFind2111Hook>>>, TError, TData> },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
     const queryOptions = useFind2111QueryOptions(params, options)

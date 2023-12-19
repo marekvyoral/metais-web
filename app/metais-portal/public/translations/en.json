@@ -751,7 +751,11 @@
         "mustBeChecked": "This must be checked if you want to proceed",
         "dateMustBeGreaterThen": "Date must be greater then",
         "dateMustBeEqualOrGreaterThen": "Date must be equal or greater then",
-        "dateMustBeLessOrEqualThen": "Date must be less or equal then"
+        "dateMustBeLessOrEqualThen": "Date must be less or equal then",
+        "minCharacters": "{{itemName}} must be at least {{min}} characters",
+        "maxCharacters": "{{itemName}} must be at most {{max}} characters",
+        "password": "Password must meet the criteria: at least one uppercase, one lowercase, and one other character.",
+        "repeatPassword": "Repeated password must be same "
     },
     "createEntity": {
         "required": "required",
@@ -920,7 +924,9 @@
         "returnToWorkSuccess": "KRIT has been successfully returned for rework!",
         "sendToApprover": "COVER has been successfully submitted for approval!",
         "codeAlreadyExists": "An internal codelist with such a code already exists",
-        "sendToRevalidate": "The item has been sent for processing, please wait for payment notification."
+        "sendToRevalidate": "The item has been sent for processing, please wait for payment notification.",
+        "passwordChanged": "Password changed successfuly",
+        "WRONG_OLD_PASSWORD": "Wrong old password"
     },
     "accordion": {
         "openAll": "Open all",
@@ -1566,6 +1572,9 @@
         "rights": "Rights",
         "notificationsSettings": "Notifications preferences",
         "passwordChange": "Password change",
+        "oldPassword": "Old passwrod",
+        "newPassword": "New password",
+        "repeatPassword": "Repeat password",
         "save": "Save",
         "cancel": "Cancel",
         "showInvalidated": "Show invalidated items",
