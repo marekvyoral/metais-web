@@ -60,7 +60,7 @@ export interface CodeListDetailTableColumnsDefinition extends EnumItem {
 export interface IResultCreateEnum {
     isSuccess: boolean
     isError: boolean
-    message: string
+    message?: string
 }
 
 export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredData, mutations, isLoading, isError, enumCode, refetch }) => {
@@ -142,10 +142,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                     setResultCreateEnum({
                         isError: true,
                         isSuccess: false,
-                        message:
-                            errorResponse?.type === ReponseErrorCodeEnum.GNR412
-                                ? t(`errors.${ReponseErrorCodeEnum.GNR412}`)
-                                : t(`errors.${ReponseErrorCodeEnum.DEFAULT}`),
+                        message: errorResponse?.type === ReponseErrorCodeEnum.GNR412 ? t(`errors.${ReponseErrorCodeEnum.GNR412}`) : undefined,
                     })
                 })
         }
@@ -225,14 +222,14 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             },
 
             accessorFn: (row) => row?.orderList,
-            enableSorting: true,
+            enableSorting: false,
             id: 'order',
             cell: (ctx) => <span>{ctx?.row?.original.orderList}</span>,
         },
         {
             header: t('codelists.code'),
             accessorFn: (row) => row?.code,
-            enableSorting: true,
+            enableSorting: false,
             id: 'code',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
@@ -249,7 +246,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
         {
             header: t('codelists.value'),
             accessorFn: (row) => row?.value,
-            enableSorting: true,
+            enableSorting: false,
             id: 'value',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
@@ -265,7 +262,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
         {
             header: t('codelists.engValue'),
             accessorFn: (row) => row?.engValue,
-            enableSorting: true,
+            enableSorting: false,
             id: 'engValue',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
@@ -281,7 +278,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
         {
             header: t('codelists.description'),
             accessorFn: (row) => row?.description,
-            enableSorting: true,
+            enableSorting: false,
             id: 'description',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
@@ -298,7 +295,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
         {
             header: t('codelists.engDescription'),
             accessorFn: (row) => row?.engDescription,
-            enableSorting: true,
+            enableSorting: false,
             id: 'engDescription',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
@@ -315,7 +312,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
         {
             header: t('codelists.valid'),
             accessorFn: (row) => row,
-            enableSorting: true,
+            enableSorting: false,
             id: 'valid',
             cell: (ctx) => {
                 const rowObject = ctx?.getValue?.() as EnumItem
@@ -334,7 +331,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
         },
         {
             header: t('actionsInTable.actions'),
-            enableSorting: true,
+            enableSorting: false,
             accessorFn: (row) => row,
             id: 'actions',
             cell: (ctx) => {

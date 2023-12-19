@@ -423,7 +423,7 @@
         "codeError": "Kód je povinný",
         "nameError": "Názov je povinný",
         "nameMaxError": "Maximálna dĺžka názvu je 255 znakov",
-        "descriptionMaxError": "Maximálna dĺžka popisu je 255 znakov",
+        "descriptionMaxError": "Maximálna dĺžka popisu je {{charNumber}} znakov",
         "descriptionError": "Popis je povinný",
         "valueError": "Hodnota je povinná",
         "engValueError": "Anglická hodnota je povinná",

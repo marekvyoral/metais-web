@@ -374,7 +374,7 @@
         "codeError": "Code is required",
         "nameError": "Name is required",
         "nameMaxError": "Name maximum length is 255 symbols",
-        "descriptionMaxError": "Description maximum length is 255 symbols",
+        "descriptionMaxError": "Description maximum length is {{charNumber}} symbols",
         "valueError": "Value is required",
         "engValueError": "English Value is required",
         "descriptionError": "Description is required",
