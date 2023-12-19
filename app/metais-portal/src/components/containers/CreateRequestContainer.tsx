@@ -120,6 +120,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     const onSave = async (formData: IRequestForm) => {
         const uuid = getUUID(user?.groupData ?? [])
         const saveData = mapFormToSave(formData, i18n.language)
+        setAddOrGetGroupError(undefined)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
                 mutateAsync({ data: saveData }).then(() => {
@@ -139,6 +140,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
 
     const onSend = async (formData: IRequestForm) => {
         const uuid = getUUID(user?.groupData ?? [])
+        setAddOrGetGroupError(undefined)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
                 mutateSendASync({ data: mapFormToSave(formData, i18n.language) }).then(() => {
