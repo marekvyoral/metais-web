@@ -69,7 +69,7 @@ export const RefRegisterView = ({ data: { referenceRegisterData, renamedAttribut
                 <InformationGridRow
                     key={RefRegisterViewItems.CONTACT}
                     label={getLabelOfRow(RefRegisterViewItems.CONTACT)}
-                    value={referenceRegisterData?.contact}
+                    value={`${referenceRegisterData?.contactFirstName} ${referenceRegisterData?.contactLastName}, ${referenceRegisterData?.contactPhone}, ${referenceRegisterData?.contactEmail}`}
                     tooltip={getTooltipOfRow(RefRegisterViewItems.CONTACT)}
                 />
                 <InformationGridRow
@@ -81,7 +81,7 @@ export const RefRegisterView = ({ data: { referenceRegisterData, renamedAttribut
                 <InformationGridRow
                     key={RefRegisterViewItems.CONTACT_REGISTRATOR}
                     label={getLabelOfRow(RefRegisterViewItems.CONTACT_REGISTRATOR)}
-                    value={referenceRegisterData?.contactRegistrator}
+                    value={`${referenceRegisterData?.contactRegistratorFirstName} ${referenceRegisterData?.contactRegistratorLastName}, ${referenceRegisterData?.contactRegistratorPhone}, ${referenceRegisterData?.contactRegistratorEmail}`}
                     tooltip={getTooltipOfRow(RefRegisterViewItems.CONTACT_REGISTRATOR)}
                 />
                 <InformationGridRow

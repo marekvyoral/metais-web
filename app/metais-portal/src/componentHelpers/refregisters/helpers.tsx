@@ -50,23 +50,28 @@ export const getInfoRR = (refRegisterAttribute: string, renamedAttributes?: Attr
 
 export const mapFormDataToApiReferenceRegister = (formData: IRefRegisterCreateFormData, entityId?: string): ApiReferenceRegister => {
     return {
-        contact: formData.refRegisters.manager.email, //toZoliDo this should be 2 separate fields
-        contactRegistrator: formData.refRegisters.registrar.email, //toZoliDo this should be 2 separate fields
-        managerName: formData.refRegisters.manager.firstName, // toZoliDo this should be 2 separate fields?
-        registratorName: formData.refRegisters.manager.firstName, // toZoliDo this should be 2 separate fields?
-        isvsUuid: formData.refRegisters.sourceRegister,
+        uuid: entityId ?? undefined,
         creatorUuid: formData.refRegisters.creator,
-        managerUuid: formData.refRegisters.manager.PO,
-        registratorUuid: formData.refRegisters.registrar.PO,
+        isvsUuid: formData.refRegisters.sourceRegister,
         isvsName: formData.refRegisters.name,
+        isvsCode: formData.refRegisters.codeMetaIS,
+        isvsRefId: formData.refRegisters.refId,
         effectiveFrom: formData.refRegisters.effectiveFrom ? new Date(formData.refRegisters.effectiveFrom).toISOString() : ' ',
         effectiveTo: formData.refRegisters.effectiveTo ? new Date(formData.refRegisters.effectiveTo).toISOString() : '',
+        additionalData: formData.refRegisters.additionalData,
         state: ApiReferenceRegisterState.IN_CONSTRUCTION,
         muk: ApiReferenceRegisterMuk.NONE,
-        additionalData: formData.refRegisters.additionalData,
-
-        uuid: entityId ?? undefined,
-    }
+        managerUuid: formData.refRegisters.manager.PO,
+        contactFirstName: formData.refRegisters.manager.firstName,
+        contactLastName: formData.refRegisters.manager.lastName,
+        contactEmail: formData.refRegisters.manager.email,
+        contactPhone: formData.refRegisters.manager.phoneNumber,
+        registratorUuid: formData.refRegisters.registrar.PO,
+        contactRegistratorFirstName: formData.refRegisters.registrar.firstName,
+        contactRegistratorLastName: formData.refRegisters.registrar.lastName,
+        contactRegistratorEmail: formData.refRegisters.registrar.email,
+        contactRegistratorPhone: formData.refRegisters.registrar.phoneNumber,
+    } as ApiReferenceRegister
 }
 
 export const mapDefaultDataToFormDataRR = (defaultData?: ApiReferenceRegister): IRefRegisterCreateFormData => {
@@ -75,24 +80,24 @@ export const mapDefaultDataToFormDataRR = (defaultData?: ApiReferenceRegister): 
             codeMetaIS: defaultData?.isvsCode,
             creator: defaultData?.creatorUuid,
             sourceRegister: defaultData?.isvsUuid,
-            name: defaultData?.isvsName, //tozoliDO probably this changes too with BE changes
+            name: defaultData?.isvsName,
             refId: defaultData?.isvsRefId,
             effectiveFrom: getDefaultDateRR(defaultData?.effectiveFrom),
             effectiveTo: getDefaultDateRR(defaultData?.effectiveTo),
             state: defaultData?.state,
             manager: {
                 PO: defaultData?.managerUuid,
-                email: defaultData?.contact, //tozoliDO probably this changes too with BE changes
-                firstName: defaultData?.contact,
-                lastName: defaultData?.contact,
-                phoneNumber: defaultData?.contact,
+                email: defaultData?.contactEmail,
+                firstName: defaultData?.contactFirstName,
+                lastName: defaultData?.contactLastName,
+                phoneNumber: defaultData?.contactPhone,
             },
             registrar: {
                 PO: defaultData?.registratorUuid,
-                email: defaultData?.contactRegistrator, //tozoliDO probably this changes too with BE changes
-                firstName: defaultData?.contactRegistrator,
-                lastName: defaultData?.contactRegistrator,
-                phoneNumber: defaultData?.contactRegistrator,
+                email: defaultData?.contactRegistratorEmail,
+                firstName: defaultData?.contactRegistratorFirstName,
+                lastName: defaultData?.contactRegistratorLastName,
+                phoneNumber: defaultData?.contactRegistratorPhone,
             },
             additionalData: defaultData?.additionalData,
         },
