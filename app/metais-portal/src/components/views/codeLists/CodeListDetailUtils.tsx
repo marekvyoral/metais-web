@@ -7,6 +7,8 @@ interface CodeListItemWithLanguageAndDate {
     value?: string | boolean
     effectiveFrom?: string
     effectiveTo?: string
+    effectiveFromValue?: string
+    effectiveToValue?: string
 }
 
 const MIN_DATE = new Date(-8640000000000000)

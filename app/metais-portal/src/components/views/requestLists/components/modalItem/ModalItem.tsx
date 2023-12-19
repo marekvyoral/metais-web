@@ -20,7 +20,7 @@ export interface IItemForm {
     note?: string
     contain?: string
     alsoContain?: string
-    law?: string
+    law?: boolean
     exclude?: string
     order?: number
     validDate?: string
@@ -35,7 +35,6 @@ export interface ModalItemProps {
     isOpen: boolean
     canEdit: boolean
     isCreate: boolean
-    canEditDate: boolean
     item?: IItemForm
     attributeProfile?: AttributeProfile
     close: () => void
@@ -56,7 +55,7 @@ export enum RequestItemFormEnum {
     EXCLUDE = 'exclude',
     ORDER = 'order',
     LAW = 'law',
-    VALIDATE = 'validDate',
+    VALIDDATE = 'validDate',
     STARTDATE = 'effectiveFrom',
     ENDDATE = 'endDate',
 }
@@ -168,6 +167,15 @@ export const ModalItem: React.FC<ModalItemProps> = ({ isOpen, canEdit, close, on
                     {...register(RequestItemFormEnum.EXCLUDE)}
                     error={formState.errors?.[RequestItemFormEnum.EXCLUDE]?.message}
                 />
+                <Input
+                    disabled={!canEdit}
+                    type="number"
+                    label={getDescription('Gui_Profil_ZC_logicke_poradie_polozky', language, attributeProfile)}
+                    info={getName('Gui_Profil_ZC_logicke_poradie_polozky', language, attributeProfile)}
+                    id={RequestItemFormEnum.ORDER}
+                    {...register(RequestItemFormEnum.ORDER)}
+                    error={formState.errors?.[RequestItemFormEnum.ORDER]?.message}
+                />
                 <CheckBox
                     disabled={!canEdit}
                     label={getDescription('Gui_Profil_ZC_legislativna_uznatelnost', language, attributeProfile)}
@@ -178,7 +186,7 @@ export const ModalItem: React.FC<ModalItemProps> = ({ isOpen, canEdit, close, on
                 />
                 <ButtonGroupRow>
                     <Button label={t('form.cancel')} type="reset" variant="secondary" onClick={close} />
-                    <Button label={t('form.submit')} type="submit" />
+                    <Button label={t('codeListList.requestCreate.saveBtn')} type="submit" />
                 </ButtonGroupRow>
             </form>
         </BaseModal>

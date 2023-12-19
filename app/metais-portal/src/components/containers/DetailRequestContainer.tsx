@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
     ApiCodelistItemList,
     ApiCodelistPreview,
@@ -9,13 +8,15 @@ import {
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, RequestListState } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { RoleParticipantUI, useGetRoleParticipantBulk } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import { useInvalidateCodeListRequestCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { IFilter } from '@isdd/idsk-ui-kit/types'
+import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { API_DATE_FORMAT } from '@/componentHelpers/requests'
@@ -44,7 +45,9 @@ export interface DetailRequestViewProps {
     isError: boolean
     actionsErrorMessages: string[]
     requestId?: string
+    filter: IFilter
     onAccept: (action: ApiRequestAction, note?: string) => void
+    handleFilterChange: (filter: IFilter) => void
 }
 
 interface DetailRequestContainerProps {
@@ -59,17 +62,22 @@ export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ 
     const { setIsActionSuccess } = useActionSuccess()
     const { invalidate } = useInvalidateCodeListRequestCache()
 
+    const { filter, handleFilterChange } = useFilterParams<IFilter>({
+        pageNumber: BASE_PAGE_NUMBER,
+        pageSize: BASE_PAGE_SIZE,
+    })
+
     const { data: detailData, isLoading: isLoadingDetail, isError: isErrorDetail } = useGetCodelistRequestDetail(Number.parseInt(requestId || ''))
     const { data: attributeProfile, isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
     const { mutate: requestActionMutation, isLoading: isLoadingRequestAction, error: errorRequestAction } = useProcessRequestAction()
     const {
         data: itemList,
-        isLoading: isLoadingItemList,
+        isFetching: isLoadingItemList,
         isError: isErrorItemList,
     } = useGetCodelistRequestItems(Number(requestId), {
         language: i18n.language,
-        pageNumber: BASE_PAGE_NUMBER,
-        perPage: BASE_PAGE_SIZE,
+        pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+        perPage: filter.pageSize ?? BASE_PAGE_SIZE,
     })
     const requestGestorGids = [
         ...(detailData?.mainCodelistManagers?.map((gestor) => gestor.value || '') || []),
@@ -126,7 +134,9 @@ export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ 
                 isLoadingMutation={isLoadingRequestAction}
                 actionsErrorMessages={actionsErrorMessages}
                 isError={isError}
+                filter={filter}
                 onAccept={handleAcceptRequest}
+                handleFilterChange={handleFilterChange}
             />
         </RequestListPermissionsWrapper>
     )

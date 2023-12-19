@@ -1,17 +1,17 @@
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, Roles } from '@isdd/metais-common/api/constants'
+import { Roles } from '@isdd/metais-common/api/constants'
 import { HierarchyPOFilterUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     useCreateCodelistRequest,
-    useExistsCodelistHook,
+    useExistsCodelist,
     useGetCodelistRequestDetail,
     useGetCodelistRequestItems,
-    useProcessItemRequestAction1Hook,
+    useProcessItemRequestAction1,
     useSaveAndSendCodelist,
-    useSaveDatesHook,
+    useSaveDates,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RequestListState } from '@isdd/metais-common/constants'
@@ -40,14 +40,9 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     const { requestId } = useParams()
     const navigate = useNavigate()
 
-    const checkHook = useExistsCodelistHook()
-    const setItemsDatesHook = useProcessItemRequestAction1Hook()
-    const saveDatesHook = useSaveDatesHook()
     const { setIsActionSuccess } = useActionSuccess()
     const { invalidate } = useInvalidateCodeListRequestCache()
 
-    const [isLoadingCheck, setLoadingCheck] = useState<boolean>()
-    const [errorCheck, setErrorCheck] = useState<{ message: string }>()
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
 
     const defaultFilter: HierarchyPOFilterUi = {
@@ -74,15 +69,24 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     const { mutateAsync, isLoading: isLoadingSave, isError: isErrorSave, error: errorSave } = useCreateCodelistRequest()
     const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, isError: isErrorSend, error: errorSend } = useSaveAndSendCodelist()
     const { isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile, data: attributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
+    const { mutateAsync: mutateSaveDates, isLoading: isLoadingSaveDates, isError: isErrorSaveDates, error: errorSaveDates } = useSaveDates()
+    const {
+        mutateAsync: mutateItemAction,
+        isLoading: isLoadingItemAction,
+        isError: isErrorItemAction,
+        error: errorItemAction,
+    } = useProcessItemRequestAction1()
+    const { mutateAsync: mutateExists, isLoading: isLoadingExists } = useExistsCodelist()
 
     const {
         data: itemList,
+        refetch: refetchItemList,
         isLoading: isLoadingItemList,
         isError: isErrorItemList,
-    } = useGetCodelistRequestItems(Number.parseInt(requestId || '0'), {
+    } = useGetCodelistRequestItems(Number(requestId || '0'), {
         language: i18n.language,
-        pageNumber: defaultFilter.page ?? BASE_PAGE_NUMBER,
-        perPage: defaultFilter.perpage ?? BASE_PAGE_SIZE,
+        pageNumber: 1,
+        perPage: 99999,
     })
 
     const defaultData = mapToForm(i18n.language, itemList, data)
@@ -91,7 +95,11 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
         const page = !additional?.page ? 1 : (additional?.page || 0) + 1
         const options = await implicitHierarchy.mutateAsync({ data: { ...defaultFilter, page, fullTextSearch: searchQuery } })
         return {
-            options: options.rights || [],
+            options:
+                options.rights?.map((item) => ({
+                    name: item.poName || '',
+                    value: `${getUUID(user?.groupData ?? [])}-${item.poUUID || ''}`,
+                })) || [],
             hasMore: options.rights?.length ? true : false,
             additional: {
                 page: page,
@@ -101,8 +109,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
 
     const handleCheckIfCodeIsAvailable = useCallback(
         async (code: string) => {
-            setLoadingCheck(true)
-            return checkHook({ code: code, id: Number(requestId), codelistState: RequestListState.NEW_REQUEST })
+            return mutateExists({ data: { code, id: Number(requestId), codelistState: RequestListState.NEW_REQUEST } })
                 .then(() => {
                     return {
                         isAvailable: true,
@@ -116,100 +123,91 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
                         errorTranslateKeys,
                     }
                 })
-                .finally(() => {
-                    setLoadingCheck(false)
-                })
         },
-        [checkHook, requestId],
+        [mutateExists, requestId],
     )
 
     const onSave = async (formData: IRequestForm) => {
-        const uuid = getUUID(user?.groupData ?? [])
-        const mappedData = mapFormToSave(formData, i18n.language, uuid, data?.id)
+        const mappedData = mapFormToSave(formData, i18n.language, data?.id)
+        const redirectPath = `${NavigationSubRoutes.REQUESTLIST}/${mappedData.id}`
         if (
             mappedData.code &&
             (data?.codelistState === RequestListState.ACCEPTED_SZZC || data?.codelistState === RequestListState.KS_ISVS_ACCEPTED)
         ) {
-            saveDatesHook(mappedData.code, [], {
-                effectiveFrom: mappedData.effectiveFrom && formatDateForDefaultValue(mappedData.effectiveFrom, 'dd.MM.yyyy'),
-                validFrom: mappedData.validFrom && formatDateForDefaultValue(mappedData.validFrom, 'dd.MM.yyyy'),
+            mutateSaveDates({
+                code: mappedData.code,
+                data: [],
+                params: {
+                    ...(mappedData.effectiveFrom && {
+                        effectiveFrom: mappedData.effectiveFrom && formatDateForDefaultValue(mappedData.effectiveFrom, 'dd.MM.yyyy'),
+                    }),
+                    ...(mappedData.validFrom && { validFrom: mappedData.validFrom && formatDateForDefaultValue(mappedData.validFrom, 'dd.MM.yyyy') }),
+                },
+            }).then(() => {
+                invalidate(Number(requestId))
+                setIsActionSuccess({ value: true, path: redirectPath, additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' } })
+                navigate(redirectPath)
             })
-                .then(() => {
-                    invalidate(Number(requestId))
-                    setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
-                    navigate(`${NavigationSubRoutes.REQUESTLIST}`)
-                })
-                .catch((error) => {
-                    setErrorCheck(error)
-                })
         } else {
-            mutateAsync({ data: mappedData })
-                .then(() => {
-                    invalidate(Number(requestId))
-                    setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
-                    navigate(`${NavigationSubRoutes.REQUESTLIST}`)
-                })
-                .catch((error) => {
-                    setErrorCheck(error)
-                })
+            mutateAsync({ data: mappedData }).then(() => {
+                invalidate(Number(requestId))
+                setIsActionSuccess({ value: true, path: redirectPath, additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' } })
+                navigate(redirectPath)
+            })
         }
     }
 
     const onSend = async (formData: IRequestForm) => {
-        const uuid = getUUID(user?.groupData ?? [])
-        mutateSendASync({ data: mapFormToSave(formData, i18n.language, uuid, data?.id) })
-            .then(() => {
-                invalidate(Number(requestId))
-                setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
-                navigate(`${NavigationSubRoutes.REQUESTLIST}`)
+        mutateSendASync({ data: mapFormToSave(formData, i18n.language, data?.id) }).then(() => {
+            invalidate(Number(requestId))
+            setIsActionSuccess({
+                value: true,
+                path: NavigationSubRoutes.REQUESTLIST,
+                additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' },
             })
-            .catch((error) => {
-                setErrorCheck(error)
-            })
+            navigate(`${NavigationSubRoutes.REQUESTLIST}`)
+        })
     }
 
     const onSaveDates = (dates: IItemDates, items: Record<string, IItemForm>) => {
-        setItemsDatesHook(
-            defaultData.codeListCode,
-            false,
-            {
-                effectiveFrom: formatDateForDefaultValue(dates.effectiveFrom, 'dd.MM.yyyy'),
-                validFrom: formatDateForDefaultValue(dates.validDate, 'dd.MM.yyyy'),
+        mutateItemAction({
+            code: defaultData.codeListCode,
+            allCodelistItems: false,
+            data: {
+                effectiveFrom: formatDateForDefaultValue(dates.effectiveFrom.toISOString(), 'dd.MM.yyyy'),
+                validFrom: formatDateForDefaultValue(dates.validDate.toISOString(), 'dd.MM.yyyy'),
                 itemCodes: Object.values(items).map((i) => i.codeItem),
             },
-            { fromIndex: 0, toIndex: Object.keys(items).length },
-        )
-            .then(() => {
-                invalidate(Number(requestId))
-                setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
-                navigate(`${NavigationSubRoutes.REQUESTLIST}`)
+            params: { fromIndex: 0, toIndex: Object.keys(items).length },
+        }).then(() => {
+            setIsActionSuccess({
+                value: true,
+                path: `${NavigationSubRoutes.REQUESTLIST}/${requestId}/edit`,
+                additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' },
             })
-            .catch((error) => {
-                setErrorCheck(error)
-            })
+            refetchItemList()
+        })
     }
 
-    const isLoading = [isLoadingCheck, isLoadingDetail, isLoadingItemList, isLoadingAttributeProfile].some((item) => item)
-    const isLoadingMutation = [isLoadingSave, isLoadingSend].some((item) => item)
-    const isError = [errorCheck, isErrorSave, isErrorDetail, isErrorSend, isErrorItemList, isErrorAttributeProfile].some((item) => item)
-    const errorMessages = getErrorTranslateKeys([errorDetail, errorCheck, errorSend, errorSave].map((item) => item as { message: string }))
-
-    const canEditDate =
+    const isLoading = [isLoadingDetail, isLoadingItemList, isLoadingAttributeProfile].some((item) => item)
+    const isLoadingMutation = [isLoadingSave, isLoadingSend, isLoadingSaveDates, isLoadingItemAction, isLoadingExists].some((item) => item)
+    const isError = [isErrorSave, isErrorDetail, isErrorSend, isErrorItemList, isErrorAttributeProfile, isErrorSaveDates, isErrorItemAction].some(
+        (item) => item,
+    )
+    const errorMessages = getErrorTranslateKeys(
+        [errorDetail, errorSend, errorSave, errorSaveDates, errorItemAction].map((item) => item as { message: string }),
+    )
+    const canEdit =
         data &&
-        (data.lockedBy === null || data.lockedBy !== user?.login) &&
-        (data.codelistState === RequestListState.DRAFT ||
-            data.codelistState === RequestListState.REJECTED ||
-            data.codelistState === RequestListState.KS_ISVS_ACCEPTED ||
-            data.codelistState === RequestListState.ACCEPTED_SZZC)
-
-    const canEdit = data && (data.lockedBy === null || data.lockedBy === user?.login) && data.codelistState === RequestListState.DRAFT
+        (data.lockedBy === null || data.lockedBy === user?.login) &&
+        data.codelistState !== RequestListState.KS_ISVS_ACCEPTED &&
+        data.codelistState !== RequestListState.ACCEPTED_SZZC
 
     return (
         <RequestListPermissionsWrapper id={requestId ?? ''}>
             <View
                 requestId={requestId}
                 canEdit={canEdit}
-                canEditDate={canEditDate}
                 isError={isError}
                 isLoading={isLoading}
                 isLoadingMutation={isLoadingMutation}

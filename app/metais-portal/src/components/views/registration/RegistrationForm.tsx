@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import { RegistrationRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useStripAccentsHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { LOWER_CASE_NUMBER_DOT_REGEX, SPACES_REGEX, phoneOrEmptyStringRegex } from '@isdd/metais-common/constants'
+import { LOWER_CASE_NUMBER_DOT_REGEX, SPACES_REGEX, REGEX_TEL } from '@isdd/metais-common/constants'
 
 import styles from './registration.module.scss'
 
@@ -36,7 +36,7 @@ const getRegistrationSchema = (t: TFunction) => {
         [InputNames.FIRST_NAME]: string().required(t('registration.required.firstName')),
         [InputNames.LAST_NAME]: string().required(t('registration.required.lastName')),
         [InputNames.EMAIL]: string().email(t('registration.format.email')).required(t('registration.required.email')),
-        [InputNames.PHONE]: string().matches(phoneOrEmptyStringRegex, t('registration.format.phone')).required(t('registration.required.phone')),
+        [InputNames.PHONE]: string().matches(REGEX_TEL, t('registration.format.phone')).required(t('registration.required.phone')),
         [InputNames.PO]: mixed().required(t('registration.required.default')),
         [InputNames.LOGIN]: string()
             .test('no-spaces', t('registration.format.noSpaces'), (value) => !/\s/.test(value ?? ''))

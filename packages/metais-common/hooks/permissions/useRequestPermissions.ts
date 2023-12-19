@@ -17,6 +17,8 @@ export enum Actions {
     ACCEPT_SZZC = 'acceptSzzc',
     CANCEL_REQUEST = 'cancelRequest',
     SEND = 'send',
+    ADD_ITEMS = 'addItems',
+    SEE_ACTIONS = 'seeActions',
 }
 
 export enum Subjects {
@@ -27,6 +29,7 @@ export enum Subjects {
 export enum Roles {
     SZCHLGES = 'SZC_HLGES',
     SZCVEDGES = 'SZC_VEDGES',
+    SZCSZZC = 'SZC_SZZC',
 }
 export const useRequestPermissions = (id?: string) => {
     const abilityContext = useAbilityContext()
@@ -48,6 +51,17 @@ export const useRequestPermissions = (id?: string) => {
 
         if (detailData) {
             if (
+                (user?.roles?.some((role) => role === Roles.SZCSZZC) &&
+                    detailData.codelistState !== RequestListState.ISVS_PROCESSING &&
+                    detailData.codelistState !== RequestListState.ACCEPTED &&
+                    detailData.codelistState !== RequestListState.REJECTED &&
+                    detailData.codelistState !== RequestListState.DRAFT) ||
+                (detailData.lockedBy === user?.login &&
+                    (detailData.codelistState === RequestListState.DRAFT || detailData.codelistState === RequestListState.REJECTED))
+            ) {
+                can(Actions.SEE_ACTIONS, Subjects.DETAIL)
+            }
+            if (
                 (detailData.lockedBy === null || detailData.lockedBy === user?.login) &&
                 (detailData.codelistState === RequestListState.DRAFT ||
                     detailData.codelistState === RequestListState.REJECTED ||
@@ -56,18 +70,15 @@ export const useRequestPermissions = (id?: string) => {
             ) {
                 can(Actions.EDIT, Subjects.DETAIL)
             }
-            if (detailData?.base && detailData.codelistState === RequestListState.NEW_REQUEST) {
+            if (detailData.base && detailData.codelistState === RequestListState.NEW_REQUEST) {
                 can(Actions.MOVE_TO_KSISVS, Subjects.DETAIL)
             }
-            if (
-                !detailData?.base &&
-                (detailData?.codelistState === RequestListState.NEW_REQUEST || detailData?.codelistState === RequestListState.KS_ISVS_REJECTED)
-            ) {
+            if (detailData.codelistState === RequestListState.NEW_REQUEST || detailData.codelistState === RequestListState.KS_ISVS_REJECTED) {
                 can(Actions.REJECT, Subjects.DETAIL)
             }
             if (
-                (!detailData?.base && detailData?.codelistState === RequestListState.ACCEPTED_SZZC) ||
-                detailData?.codelistState === RequestListState.KS_ISVS_ACCEPTED
+                (!detailData.base && detailData.codelistState === RequestListState.ACCEPTED_SZZC) ||
+                detailData.codelistState === RequestListState.KS_ISVS_ACCEPTED
             ) {
                 can(Actions.ACCEPT, Subjects.DETAIL)
             }
@@ -75,23 +86,28 @@ export const useRequestPermissions = (id?: string) => {
                 can(Actions.ACCEPT_SZZC, Subjects.DETAIL)
             }
             if (
-                (detailData?.lockedBy === null || detailData?.lockedBy === user?.login) &&
-                (detailData?.codelistState === RequestListState.DRAFT ||
-                    detailData?.codelistState === RequestListState.REJECTED ||
-                    detailData?.codelistState === RequestListState.KS_ISVS_ACCEPTED ||
-                    detailData?.codelistState === RequestListState.ACCEPTED_SZZC)
+                (detailData.lockedBy === null || detailData.lockedBy === user?.login) &&
+                (detailData.codelistState === RequestListState.DRAFT ||
+                    detailData.codelistState === RequestListState.REJECTED ||
+                    detailData.codelistState === RequestListState.KS_ISVS_ACCEPTED ||
+                    detailData.codelistState === RequestListState.ACCEPTED_SZZC)
             ) {
                 can(Actions.CANCEL_REQUEST, Subjects.DETAIL)
             }
             if (
-                detailData?.lockedBy === user?.login &&
-                (detailData?.codelistState === RequestListState.DRAFT || detailData?.codelistState === RequestListState.REJECTED)
+                detailData.lockedBy === user?.login &&
+                (detailData.codelistState === RequestListState.DRAFT || detailData.codelistState === RequestListState.REJECTED)
             ) {
                 can(Actions.SEND, Subjects.DETAIL)
             }
+            if (detailData.codelistState !== RequestListState.KS_ISVS_ACCEPTED && detailData.codelistState !== RequestListState.ACCEPTED_SZZC) {
+                can(Actions.ADD_ITEMS, Subjects.DETAIL)
+            }
+        } else {
+            if (id === undefined) can(Actions.ADD_ITEMS, Subjects.DETAIL)
         }
 
         abilityContext.update(rules)
-    }, [abilityContext, detailData, user?.login, user?.roles])
+    }, [abilityContext, detailData, id, user?.login, user?.roles])
     return {}
 }

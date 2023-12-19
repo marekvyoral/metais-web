@@ -12,18 +12,25 @@ import styles from './importCodeListModal.module.scss'
 
 export interface ImportCodeListModalProps {
     code: string
+    isRequest?: boolean
     isOpen: boolean
     onClose: () => void
 }
 
-export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, isOpen, onClose }) => {
+const getEndpointPath = (isValidation: boolean, isRequest: boolean) => {
+    if (isValidation) {
+        return isRequest ? '/codelists/codelistheaders/upload/previewrequest' : '/codelists/codelistheaders/upload/preview'
+    } else {
+        return isRequest ? '/codelists/codelistheaders/uploadrequest' : '/codelists/codelistheaders/upload'
+    }
+}
+
+export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, isRequest = false, isOpen, onClose }) => {
     const { t } = useTranslation()
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
 
     const baseURL = import.meta.env.VITE_REST_CLIENT_CODELIST_REPO_TARGET_URL
-    const endpointUrl = `${baseURL}${
-        fileImportStep === FileImportStepEnum.VALIDATE ? '/codelists/codelistheaders/upload/preview' : '/codelists/codelistheaders/upload'
-    }`
+    const endpointUrl = `${baseURL}${getEndpointPath(fileImportStep === FileImportStepEnum.VALIDATE, isRequest)}`
 
     const {
         uppy,
@@ -69,8 +76,6 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
             addGeneralErrorMessage(t('fileImport.uploadFailed'))
         }
     }
-
-    if (!code) return <></>
 
     return (
         <BaseModal isOpen={isOpen} close={onClose}>

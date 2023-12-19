@@ -3,7 +3,7 @@ import { Table } from '@isdd/idsk-ui-kit/table/Table'
 import { TextLink } from '@isdd/idsk-ui-kit/typography/TextLink'
 import { RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ApiCodelistItemName, ApiCodelistManager, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { ColumnDef } from '@tanstack/react-table'
@@ -188,6 +188,7 @@ export const CodeListListView: React.FC<CodeListListViewProps> = ({
                         }}
                         entityName=""
                         handleFilterChange={handleFilterChange}
+                        pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                         hiddenButtons={{ SELECT_COLUMNS: true }}
                     />
                     <Table

@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { ObjectSchema, array, boolean, object, string } from 'yup'
+import { ObjectSchema, array, boolean, object, string, date, number } from 'yup'
+import { REGEX_EMAIL, REGEX_TEL } from '@isdd/metais-common/constants'
 
 import { INoteRow } from '@/components/views/requestLists/CreateRequestView'
 
@@ -17,6 +18,8 @@ interface IOutput {
         lastName: string
         phone: string
         email: string
+        validDate?: Date | null
+        startDate?: Date | null
     }>
 }
 
@@ -27,25 +30,18 @@ interface IItem {
     }>
 }
 
-interface IItemEdit {
-    schema: ObjectSchema<{
-        codeItem: string
-        codeName: string
-        effectiveFrom: string
-        validDate: string
-    }>
-}
-
 export interface IItemDate {
     schema: ObjectSchema<{
-        effectiveFrom: string
-        validDate: string
+        effectiveFrom: Date
+        validDate: Date
     }>
 }
 
-export const useCreateRequestSchema = (): IOutput => {
+export const useCreateRequestSchema = (canEdit: boolean): IOutput => {
     const { t } = useTranslation()
-    const schema = object().shape({
+    let schema
+
+    schema = object().shape({
         base: boolean(),
         codeListName: string().required(t('codeListList.requestValidations.codelistName')),
         codeListCode: string()
@@ -59,10 +55,28 @@ export const useCreateRequestSchema = (): IOutput => {
         notes: array(),
         name: string().required(t('codeListList.requestValidations.name')),
         lastName: string().required(t('codeListList.requestValidations.lastName')),
-        phone: string().required(t('codeListList.requestValidations.phone')),
-        email: string().required(t('codeListList.requestValidations.email')).email(t('codeListList.requestValidations.emailFormat')),
+        phone: string().required(t('codeListList.requestValidations.phone')).matches(REGEX_TEL, t('codeListList.requestValidations.phoneFormat')),
+        email: string().required(t('codeListList.requestValidations.email')).matches(REGEX_EMAIL, t('codeListList.requestValidations.emailFormat')),
         codeListState: string(),
+        validDate: date(),
+        startDate: date(),
     })
+
+    if (!canEdit) {
+        schema = schema.concat(
+            object().shape({
+                validDate: date()
+                    .nullable()
+                    .transform((curr, orig) => (orig === '' ? null : curr))
+                    .required(t('codeListList.requestValidations.effectiveFrom'))
+                    .typeError(t('codeListList.requestValidations.dateFormat')),
+                startDate: date()
+                    .nullable()
+                    .transform((curr, orig) => (orig === '' ? null : curr))
+                    .typeError(t('codeListList.requestValidations.dateFormat')),
+            }),
+        )
+    }
 
     return {
         schema,
@@ -74,20 +88,10 @@ export const useItemSchema = (): IItem => {
     const schema = object().shape({
         codeItem: string().required(t('codeListList.requestValidations.itemCode')),
         codeName: string().required(t('codeListList.requestValidations.itemName')),
-    })
-
-    return {
-        schema,
-    }
-}
-
-export const useItemEditSchema = (): IItemEdit => {
-    const { t } = useTranslation()
-    const schema = object().shape({
-        codeItem: string().required(t('codeListList.requestValidations.itemCode')),
-        codeName: string().required(t('codeListList.requestValidations.itemName')),
-        validDate: string().required(t('codeListList.requestValidations.effectiveFrom')),
-        effectiveFrom: string().required(t('codeListList.requestValidations.effectiveFrom')),
+        order: number()
+            .typeError(t('codeListList.requestValidations.orderFormat'))
+            .nullable()
+            .transform((_, val) => (val !== '' ? Number(val) : null)),
     })
 
     return {
@@ -98,8 +102,16 @@ export const useItemEditSchema = (): IItemEdit => {
 export const useItemDateSchema = (): IItemDate => {
     const { t } = useTranslation()
     const schema = object().shape({
-        effectiveFrom: string().required(t('codeListList.requestValidations.effectiveFrom')),
-        validDate: string().required(t('codeListList.requestValidations.dateFrom')),
+        effectiveFrom: date()
+            .nullable()
+            .transform((curr, orig) => (orig === '' ? null : curr))
+            .required(t('codeListList.requestValidations.effectiveFrom'))
+            .typeError(t('codeListList.requestValidations.dateFormat')),
+        validDate: date()
+            .nullable()
+            .transform((curr, orig) => (orig === '' ? null : curr))
+            .required(t('codeListList.requestValidations.dateFrom'))
+            .typeError(t('codeListList.requestValidations.dateFormat')),
     })
 
     return {
