@@ -276,3 +276,9 @@ $govuk-global-styles: true;
         }
     }
 }
+
+.clickable{
+    &:hover{
+        cursor: pointer;
+    }
+}

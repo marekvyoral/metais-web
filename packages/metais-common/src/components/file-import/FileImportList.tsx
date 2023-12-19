@@ -72,6 +72,7 @@ export const FileImportList: React.FC<IFileImportList> = ({
                                     handleRemoveFile(file.id)
                                     removeGeneralErrorMessages()
                                 }}
+                                className={styles.clickable}
                                 hidden={isUploaded(file)}
                             />
                         </div>

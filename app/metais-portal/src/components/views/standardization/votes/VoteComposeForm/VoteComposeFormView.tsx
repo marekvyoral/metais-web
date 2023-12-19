@@ -11,6 +11,7 @@ import * as Yup from 'yup'
 import { TFunction } from 'i18next'
 import { ApiAttachment, ApiLink, ApiStandardRequestPreviewList, ApiVote, ApiVoteChoice } from '@isdd/metais-common/api/generated/standards-swagger'
 import { DateTime } from 'luxon'
+import { IFileUploadRef, FileUploadData, FileUpload } from '@isdd/metais-common/components/FileUpload/FileUpload'
 
 import {
     getPageTitle,
@@ -26,7 +27,6 @@ import {
     StandardRequestsListModal,
     StandardRequestsListModalRefType,
 } from '@/components/views/standardization/votes/components/StandardRequestsListModal/StandardRequestsListModal'
-import { FileUpload, FileUploadData, IFileUploadRef } from '@/components/FileUpload/FileUpload'
 import { LinksImport } from '@/components/LinksImport/LinksImport'
 import styles from '@/components/views/standardization/votes/vote.module.scss'
 import { Spacer } from '@/components/Spacer/Spacer'

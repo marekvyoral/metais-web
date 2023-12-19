@@ -1,13 +1,14 @@
+import { StatusBar } from '@uppy/react'
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { UppyFile } from '@uppy/core'
+
+import styles from './FileUpload.module.scss'
+
 import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
 import { UploadingFilesStatus, useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { FileImportStepEnum } from '@isdd/metais-common/index'
 import { useGetUuidHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { StatusBar } from '@uppy/react'
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { FileImportList } from '@isdd/metais-common/components/file-import/FileImportList'
-import { UppyFile } from '@uppy/core'
-
-import styles from './FileUpload.module.scss'
 
 export type FileUploadData = {
     fileId?: string
@@ -28,6 +29,7 @@ interface IFileUpload {
     onUploadSuccess?: (value: FileUploadData[]) => void
     onUploadingStart?: () => void
     onErrorOccurred?: (errorMessages: string[]) => void
+    setCurrentFiles?: React.Dispatch<React.SetStateAction<UppyFile[] | undefined>>
 }
 
 export interface IFileUploadRef {
@@ -47,6 +49,7 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
             onUploadingStart,
             onUploadSuccess,
             onErrorOccurred,
+            setCurrentFiles,
         },
         ref,
     ) => {
@@ -117,6 +120,10 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
             },
             [onUploadSuccess],
         )
+
+        useEffect(() => {
+            setCurrentFiles && setCurrentFiles(currentFiles)
+        }, [currentFiles, setCurrentFiles])
 
         useEffect(() => {
             if (isLoading) {

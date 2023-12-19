@@ -22,7 +22,7 @@ import {
     ReInvalidateBulkModal,
     UpdateFileModal,
 } from '@isdd/metais-common/index'
-import { ColumnDef } from '@tanstack/react-table'
+import { CellContext, ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styles from '@isdd/metais-common/src/components/actions-over-table/single-actions-popup/file-history/styles.module.scss'
@@ -90,11 +90,12 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
     const queryClient = useQueryClient()
     const queryKey = getReadCiNeighboursQueryKey(ciData?.uuid ?? '', {})
 
+    const [successfullyAdded, setSuccessfullyAdded] = useState<string[]>([])
+
     const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: () => void) => {
         closeFunction()
-        refetch()
         queryClient.invalidateQueries([queryKey[0]])
-
+        refetch()
         setBulkActionResult(actionResult)
     }
 
@@ -136,7 +137,8 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             id: 'documentsTab.table.name',
             size: 300,
             meta: {
-                getCellContext: (ctx) => (ctx?.getValue?.() as ConfigurationItemUi).attributes?.Gen_Profil_nazo,
+                getCellContext: (ctx: CellContext<ConfigurationItemUi, unknown>) =>
+                    (ctx?.getValue?.() as ConfigurationItemUi).attributes?.Gen_Profil_nazo,
             },
             cell: (row) => {
                 const ci = row.getValue() as ConfigurationItemUi
@@ -149,7 +151,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             id: 'documentsTab.table.note',
             size: 200,
             meta: {
-                getCellContext: (ctx) => ctx?.getValue?.(),
+                getCellContext: (ctx: CellContext<ConfigurationItemUi, unknown>) => ctx?.getValue?.(),
             },
             cell: (row) => row.getValue() as string,
         },
@@ -159,7 +161,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
             id: 'documentsTab.table.evidenceStatus',
             size: 100,
             meta: {
-                getCellContext: (ctx) => t(`metaAttributes.state.${ctx.getValue()}`),
+                getCellContext: (ctx: CellContext<ConfigurationItemUi, unknown>) => t(`metaAttributes.state.${ctx.getValue()}`),
             },
             cell: (row) => t(`metaAttributes.state.${row.getValue()}`) as string,
         },
@@ -311,15 +313,27 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
 
     return (
         <QueryFeedback loading={isLoading || isBulkLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
-            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
+            {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && bulkActionResult?.additionalInfo?.action !== 'addedDocuments' && (
                 <div ref={wrapperRef}>
                     <MutationFeedback
                         success={bulkActionResult?.isSuccess}
-                        successMessage={bulkActionResult?.successMessage}
+                        successMessage={bulkActionResult?.successMessage + successfullyAdded.join(',')}
                         error={bulkActionResult?.isError ? t('feedback.mutationErrorMessage') : ''}
                     />
                 </div>
             )}
+            {bulkActionResult?.isSuccess && bulkActionResult?.additionalInfo?.action === 'addedDocuments' && (
+                <div ref={wrapperRef}>
+                    <MutationFeedback
+                        success={bulkActionResult?.isSuccess}
+                        successMessage={t(`addFile${successfullyAdded.length > 1 ? 's' : ''}Success`, {
+                            docs: successfullyAdded.join(', '),
+                        })}
+                        error={''}
+                    />
+                </div>
+            )}
+
             <ActionsOverTable
                 pagination={pagination}
                 handleFilterChange={handleFilterChange}
@@ -444,6 +458,7 @@ export const DocumentsTable: React.FC<DocumentsTable> = ({
                     open
                     onClose={() => setOpenAddModal(undefined)}
                     onSubmit={(actionResponse) => handleCloseBulkModal(actionResponse, () => setOpenAddModal(undefined))}
+                    setSuccessfullyAdded={setSuccessfullyAdded}
                 />
             )}
             {singleItemHistory && <FileHistoryModal item={singleItemHistory} onClose={() => setSingleItemHistory(undefined)} />}

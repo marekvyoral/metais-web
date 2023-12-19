@@ -13,6 +13,7 @@ export interface IBulkActionResult {
     isError: boolean
     successMessage?: string
     errorMessage?: string
+    additionalInfo?: { [key: string]: string }
 }
 
 export const useBulkAction = (isRelation?: boolean) => {

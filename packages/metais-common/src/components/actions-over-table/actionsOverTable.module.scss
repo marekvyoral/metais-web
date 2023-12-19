@@ -127,6 +127,7 @@
     flex-direction: row;
     justify-content: flex-end;
     gap: govuk-spacing(2);
+    margin-top: govuk-spacing(4);
 
     @include mq($until: tablet) {
         flex-direction: column;

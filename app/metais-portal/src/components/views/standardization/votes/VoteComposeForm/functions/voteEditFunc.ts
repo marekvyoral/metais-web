@@ -4,11 +4,10 @@ import { formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 import { TFunction } from 'i18next'
 import { FieldValues } from 'react-hook-form'
 import { ApiAttachment, ApiStandardRequestPreviewList, ApiVote } from '@isdd/metais-common/api/generated/standards-swagger'
+import { FileUploadData } from '@isdd/metais-common/components/FileUpload/FileUpload'
 
 import { VoteStateEnum } from '../../voteProps'
 import { ExistingFileData } from '../components/ExistingFilesHandler/ExistingFilesHandler'
-
-import { FileUploadData } from '@/components/FileUpload/FileUpload'
 
 export const getStandardRequestOptions = (allStandardRequestDataArray: ApiStandardRequestPreviewList | undefined): IOption<number | undefined>[] => {
     return (
