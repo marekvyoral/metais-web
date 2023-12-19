@@ -16,7 +16,7 @@ import {
     object,
     string,
 } from 'yup'
-import { phoneOrEmptyStringRegex, HTML_TYPE } from '@isdd/metais-common/constants'
+import { REGEX_TEL, HTML_TYPE } from '@isdd/metais-common/constants'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import * as yup from 'yup'
@@ -156,7 +156,7 @@ export const generateFormSchema = (
                 }
                 case isPhone: {
                     schema[attribute.technicalName] = string()
-                        .matches(phoneOrEmptyStringRegex, t('validation.invalidPhone'))
+                        .matches(REGEX_TEL, t('validation.invalidPhone'))
                         .when('isRequired', (_, current) => {
                             if (isRequired) {
                                 return current.required(t('validation.required'))

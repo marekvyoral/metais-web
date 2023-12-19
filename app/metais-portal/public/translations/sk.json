@@ -1237,7 +1237,9 @@
             "translationWarning": "Jazyková verzia číselníka by mala byť publikovaná len kompletne preložená.",
             "returnToMainGestor": "Číselník bol vrátený na prepracovanie.",
             "sendToSzzc": "Požiadavka bola odoslaná správcovi zoznamu ZČ.",
-            "publishCodeListItems": "Položky číselníka boli zverejnené."
+            "publishCodeListItems": "Položky číselníka boli zverejnené.",
+            "requestRejected": "Táto žiadosť bola zamietnutá dňa {{day}}. Dôvod zamietnutia: {{cause}}",
+            "requestSentToKSISVS": "Táto žiadosť bola dňa {{day}} odoslaná na schválenie Komisiou pre štandardizáciu ISVS."
         },
         "modal": {
             "title": {
@@ -1271,7 +1273,7 @@
         "selectedSuffix": " (zvolený)",
         "button": {
             "edit": "Upraviť",
-            "more": "Viac možnosťí",
+            "more": "Viac akcií",
             "language": "Jazyk",
             "exportCodelist": "Export číselníka",
             "importCodelist": "Import číselníka",
@@ -1348,6 +1350,9 @@
             "email": "Email je povinné pole",
             "emailFormat": "Email je v nesprávnom tvare",
             "phone": "Telefónne číslo je povinné pole",
+            "phoneFormat": "Telefónne číslo je v nesprávnom tvare",
+            "orderFormat": "Hodnota nie je číslo",
+            "dateFormat": "Dátum je v nesprávnom formáte",
             "dateFrom": "Dátum platnosti je povinné pole",
             "effectiveFrom": "Začiatok účinnosti je povinné pole",
             "itemCode": "Kód položky je povinné pole",
@@ -1379,8 +1384,8 @@
                 "true": "Áno",
                 "false": "Nie"
             },
-            "state": "Stav číselníka",
-            "name": "Názov číselníka",
+            "state": "Stav",
+            "name": "Názov",
             "code": "Kód"
         },
         "state": {
@@ -1471,6 +1476,8 @@
         "PO_IS_PODetail": "Detail IS PO",
         "PO_IS_POCreate": "Vytvorenie IS PO",
         "meetings": "Zoznam zasadnutí",
+        "codeListRequestsList": "Zoznam žiadostí",
+        "codeListRequestsDetail": "Detail žiadosti",
         "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia",
         "codeListList": "Zoznam číselníkov",
         "codeListDetail": "Detail číselníka",

@@ -29,7 +29,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
     const userAbility = useAbilityContext()
 
     const {
-        isActionSuccess: { value: isSuccess },
+        isActionSuccess: { value: isSuccess, additionalInfo },
     } = useActionSuccess()
 
     const columns: Array<ColumnDef<ApiCodelistPreview>> = [
@@ -88,7 +88,13 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
             />
             {userAbility.can(Actions.SHOW, Subjects.LIST) && (
                 <MainContentWrapper>
-                    {isSuccess && <MutationFeedback success error={false} />}
+                    {isSuccess && (
+                        <MutationFeedback
+                            success
+                            error={false}
+                            successMessage={t([additionalInfo?.messageKey ?? '', 'mutationFeedback.successfulUpdated'])}
+                        />
+                    )}
                     <QueryFeedback loading={isLoading} error={false} withChildren>
                         <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>
 

@@ -10,6 +10,7 @@ import {
     HomeIcon,
     Input,
     LoadingIndicator,
+    PaginatorWrapper,
     SelectLazyLoading,
     Table,
     TextArea,
@@ -18,15 +19,16 @@ import {
 import { ActionsOverTable, BulkPopup, CreateEntityButton, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { useGetRoleParticipantHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, RequestListState } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
 import { CellContext, ColumnDef, ExpandedState, Row } from '@tanstack/react-table'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
-import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Can, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Pagination, IFilter } from '@isdd/idsk-ui-kit/types/'
 
 import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
 import { RequestDetailItemsTableExpandedRow } from '@/components/views/requestLists/components/RequestDetailItemsTableExpandedRow'
@@ -47,8 +49,8 @@ export interface ICodeItem {
 }
 
 export interface IOption {
-    poName?: string
-    poUUID?: string
+    name?: string
+    value?: string
 }
 
 export interface INoteRow {
@@ -70,7 +72,7 @@ export enum RequestFormEnum {
     EMAIL = 'email',
     CODELISTS = 'codeLists',
     VALIDDATE = 'validDate',
-    EFFECTIVEFROM = 'effectiveFrom',
+    STARTDATE = 'startDate',
 }
 
 export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
@@ -85,7 +87,6 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     onSend,
     onSave,
     canEdit,
-    canEditDate,
     attributeProfile,
     onSaveDates,
     requestId,
@@ -95,10 +96,15 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
         i18n: { language },
     } = useTranslation()
     const navigate = useNavigate()
-    const { schema } = useCreateRequestSchema()
+    const { schema } = useCreateRequestSchema(canEdit ?? false)
     const getRoleParticipantHook = useGetRoleParticipantHook()
     const userAbility = useAbilityContext()
 
+    const [pagination, setPagination] = useState<Pagination>({
+        pageNumber: BASE_PAGE_NUMBER,
+        pageSize: BASE_PAGE_SIZE,
+        dataLength: 0,
+    })
     const [rowSelection, setRowSelection] = useState<Record<string, IItemForm>>({})
     const [notes, setNotes] = useState<INoteRow[]>([{ id: 0, text: '' }])
     const [codeList, setCodeList] = useState<IItemForm[]>([])
@@ -167,19 +173,37 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
         close()
     }
 
+    const handleFilterChange = (filter: IFilter) => {
+        setPagination({
+            ...pagination,
+            pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
+            pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+        })
+    }
+
+    const paginatedCodeList = useMemo(() => {
+        const startOfList = pagination.pageNumber * pagination.pageSize - pagination.pageSize
+        const endOfList = pagination.pageNumber * pagination.pageSize
+        return codeList?.slice(startOfList, endOfList) || []
+    }, [codeList, pagination.pageNumber, pagination.pageSize])
+
     useEffect(() => {
         if (editData) {
             setCodeList(editData.codeLists ?? [])
             setNotes(editData.notes ?? [])
+            setPagination({
+                ...pagination,
+                dataLength: editData.codeLists?.length ?? 0,
+            })
 
             getRoleParticipantHook(editData?.gid ?? '')
                 .then((res) => {
                     const val = {
-                        poUUID: res?.gid,
-                        poName: res?.configurationItemUi?.attributes?.['Gen_Profil_nazov'],
+                        name: res?.configurationItemUi?.attributes?.['Gen_Profil_nazov'],
+                        value: res?.gid,
                     }
 
-                    setValue(RequestFormEnum.MAINGESTOR, Array.isArray(val) ? val[0].poUUID : val.poUUID)
+                    setValue(RequestFormEnum.MAINGESTOR, Array.isArray(val) ? val[0].value : val.value)
                     setDefaultSelectOrg(val)
                 })
                 .catch(() => {
@@ -233,7 +257,6 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                 const checked =
                     table.getRowModel().rows.length > 0 && tableRows.every((row) => (row.original.id ? !!rowSelection[row.original.id] : false))
                 return (
-                    canEditDate &&
                     editData && (
                         <div className="govuk-checkboxes govuk-checkboxes--small">
                             <CheckBox
@@ -241,7 +264,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 name="checkbox"
                                 id="checkbox-all"
                                 onChange={() => handleAllCheckboxChange(codeList || [])}
-                                disabled={tableRows.length === 0 || (!canEditDate && !!editData)}
+                                disabled={tableRows.length === 0}
                                 checked={checked}
                             />
                         </div>
@@ -250,7 +273,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
             },
             cell: ({ row }) => (
                 <ExpandableRowCellWrapper row={row}>
-                    {canEditDate && editData && (
+                    {editData && (
                         <div className="govuk-checkboxes govuk-checkboxes--small">
                             <CheckBox
                                 label=""
@@ -259,7 +282,6 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 value="true"
                                 onChange={() => handleCheckboxChange(row)}
                                 checked={row.original.id ? !!rowSelection[row.original.id] : false}
-                                disabled={!canEditDate && !!editData}
                             />
                         </div>
                     )}
@@ -372,13 +394,13 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             />
                             <SelectLazyLoading
                                 required
-                                key={defaultSelectOrg?.poUUID}
+                                key={defaultSelectOrg?.value}
                                 disabled={!canEdit}
                                 id={RequestFormEnum.MAINGESTOR}
                                 name={RequestFormEnum.MAINGESTOR}
                                 loadOptions={(searchTerm, _, additional) => loadOptions(searchTerm, additional)}
-                                getOptionLabel={(item) => item.poName ?? ''}
-                                getOptionValue={(item) => item.poUUID ?? ''}
+                                getOptionLabel={(item) => item.name ?? ''}
+                                getOptionValue={(item) => item.value ?? ''}
                                 label={getDescription('Gui_Profil_ZC_hlavny_gestor', language, attributeProfile)}
                                 info={getName('Gui_Profil_ZC_hlavny_gestor', language, attributeProfile)}
                                 isMulti={false}
@@ -394,25 +416,28 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 {...register(RequestFormEnum.REFINDICATOR)}
                                 error={formState.errors[RequestFormEnum.REFINDICATOR]?.message}
                             />
-                            {editData?.codeListState === RequestListState.ACCEPTED_SZZC ||
-                                (editData?.codeListState === RequestListState.KS_ISVS_ACCEPTED && (
-                                    <>
-                                        <Input
-                                            label={getDescription('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
-                                            info={getName('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
-                                            id={RequestFormEnum.EFFECTIVEFROM}
-                                            name={RequestFormEnum.EFFECTIVEFROM}
-                                            type="datetime-local"
-                                        />
-                                        <Input
-                                            label={getDescription('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
-                                            info={getName('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
-                                            id={RequestFormEnum.VALIDDATE}
-                                            {...register(RequestFormEnum.VALIDDATE)}
-                                            type="datetime-local"
-                                        />
-                                    </>
-                                ))}
+                            {(editData?.codeListState === RequestListState.ACCEPTED_SZZC ||
+                                editData?.codeListState === RequestListState.KS_ISVS_ACCEPTED) && (
+                                <>
+                                    <Input
+                                        required
+                                        label={getDescription('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
+                                        info={getName('Gui_Profil_ZC_zaciatok_ucinnosti_polozky', language, attributeProfile)}
+                                        id={RequestFormEnum.VALIDDATE}
+                                        {...register(RequestFormEnum.VALIDDATE)}
+                                        type="date"
+                                        error={formState.errors[RequestFormEnum.VALIDDATE]?.message}
+                                    />
+                                    <Input
+                                        label={getDescription('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
+                                        info={getName('Gui_Profil_ZC_koniec_ucinnosti_polozky', language, attributeProfile)}
+                                        id={RequestFormEnum.STARTDATE}
+                                        {...register(RequestFormEnum.STARTDATE)}
+                                        type="date"
+                                        error={formState.errors[RequestFormEnum.STARTDATE]?.message}
+                                    />
+                                </>
+                            )}
                             {notes?.map((note, index) => {
                                 const name = (RequestFormEnum.NOTES + index).toString()
                                 return (
@@ -491,21 +516,21 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                             <TextHeading size="L">{t('codeListList.requestCreate.codeListTableTitle')}</TextHeading>
                             <ActionsOverTable
                                 pagination={{ pageNumber: BASE_PAGE_NUMBER, pageSize: BASE_PAGE_SIZE, dataLength: 0 }}
-                                entityName={'codelists'}
+                                entityName={''}
                                 createButton={
-                                    !editData &&
                                     canEdit && (
-                                        <CreateEntityButton
-                                            onClick={() => {
-                                                setCodeListItem(undefined)
-                                                setOpen(true)
-                                            }}
-                                            label={t('codeListList.requestCreate.addItemBtn')}
-                                        />
+                                        <Can I={Actions.ADD_ITEMS} a={Subjects.DETAIL}>
+                                            <CreateEntityButton
+                                                onClick={() => {
+                                                    setCodeListItem(undefined)
+                                                    setOpen(true)
+                                                }}
+                                                label={t('codeListList.requestCreate.addItemBtn')}
+                                            />
+                                        </Can>
                                     )
                                 }
                                 bulkPopup={
-                                    canEditDate &&
                                     !!editData && (
                                         <BulkPopup
                                             checkedRowItems={Object.keys(rowSelection).length}
@@ -522,10 +547,12 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                         />
                                     )
                                 }
+                                handleFilterChange={handleFilterChange}
+                                pagingOptions={[...DEFAULT_PAGESIZE_OPTIONS, { label: '1', value: '1' }]}
                                 hiddenButtons={{ SELECT_COLUMNS: true }}
                             />
                             <Table
-                                data={codeList ?? []}
+                                data={paginatedCodeList ?? []}
                                 expandedRowsState={expanded}
                                 onExpandedChange={setExpanded}
                                 columns={colDef}
@@ -542,14 +569,9 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                     )
                                 }}
                             />
-                            <DateModalItem
-                                isOpen={isSetDatesDialogOpened}
-                                rowSelection={rowSelection}
-                                close={closeDate}
-                                onSubmit={(i) => {
-                                    onSaveDates?.(i, rowSelection)
-                                    closeDate()
-                                }}
+                            <PaginatorWrapper
+                                {...pagination}
+                                handlePageChange={(filter) => setPagination({ ...pagination, pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER })}
                             />
                             {errorMessages.map((errorMessage, index) => (
                                 <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
@@ -559,17 +581,20 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                     label={t('form.cancel')}
                                     type="reset"
                                     variant="secondary"
-                                    onClick={() => navigate(`${NavigationSubRoutes.REQUESTLIST}`)}
+                                    onClick={() => {
+                                        const path = requestId
+                                            ? `${NavigationSubRoutes.REQUESTLIST}/${requestId}`
+                                            : `${NavigationSubRoutes.REQUESTLIST}`
+                                        navigate(path)
+                                    }}
                                 />
-                                {(canEdit || canEditDate) && (
-                                    <Button
-                                        label={t('codeListList.requestCreate.saveBtn')}
-                                        variant="secondary"
-                                        type="submit"
-                                        onClick={() => setSend(false)}
-                                    />
-                                )}
-                                {(canEdit || canEditDate) &&
+                                <Button
+                                    label={t('codeListList.requestCreate.saveBtn')}
+                                    variant="secondary"
+                                    type="submit"
+                                    onClick={() => setSend(false)}
+                                />
+                                {canEdit &&
                                     editData?.codeListState !== RequestListState.KS_ISVS_ACCEPTED &&
                                     editData?.codeListState !== RequestListState.ACCEPTED_SZZC && (
                                         <Button label={t('codeListList.requestCreate.submitBtn')} type="submit" onClick={() => setSend(true)} />
@@ -585,9 +610,18 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 item={codeListItem}
                                 attributeProfile={attributeProfile}
                                 canEdit={!!canEdit}
-                                canEditDate={!!canEditDate}
                             />
                         )}
+                        <DateModalItem
+                            isOpen={isSetDatesDialogOpened}
+                            rowSelection={rowSelection}
+                            close={closeDate}
+                            onSubmit={(i) => {
+                                onSaveDates?.(i, rowSelection)
+                                setRowSelection({})
+                                closeDate()
+                            }}
+                        />
                     </QueryFeedback>
                 </MainContentWrapper>
             )}

@@ -12,7 +12,7 @@ import { useChangeIdentityProfile } from '@isdd/metais-common/api/generated/iam-
 import { MutationFeedback, SubmitWithFeedback } from '@isdd/metais-common/index'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { DefinitionList } from '@isdd/metais-common/components/definition-list/DefinitionList'
-import { NULL, USER_INFO_QUERY_KEY } from '@isdd/metais-common/constants'
+import { NULL, REGEX_TEL, USER_INFO_QUERY_KEY } from '@isdd/metais-common/constants'
 import { User, useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 enum UserInformationFormKeysEnum {
@@ -41,13 +41,10 @@ export const EditableUserInformation: React.FC<Props> = ({ setIsEditable, setIsC
     } = useAuth()
     const queryClient = useQueryClient()
 
-    const phoneOrEmptyStringRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{1,6}$|^$/
     const userInformationsSchema: ObjectSchema<UserInformationForm> = object().shape({
         [UserInformationFormKeysEnum.NAME]: string().required(t('validation.required')),
         [UserInformationFormKeysEnum.EMAIL]: string().email(t('validation.invalidEmail')).required(t('validation.required')),
-        [UserInformationFormKeysEnum.PHONE]: string()
-            .matches(phoneOrEmptyStringRegex, t('validation.invalidPhone'))
-            .required(t('validation.required')),
+        [UserInformationFormKeysEnum.PHONE]: string().matches(REGEX_TEL, t('validation.invalidPhone')).required(t('validation.required')),
         [UserInformationFormKeysEnum.POSITION]: string(),
     })
 

@@ -23,12 +23,12 @@ export interface IRequestForm {
     phone: string
     email: string
     codeLists?: IItemForm[]
-    startDate?: Date
-    validDate?: Date
+    startDate?: Date | null
+    validDate?: Date | null
     codeListState?: RequestListState
 }
 
-export const mapFormToSave = (formData: IRequestForm, language: string, uuid: string, id?: number): ApiCodelistPreview => {
+export const mapFormToSave = (formData: IRequestForm, language: string, id?: number): ApiCodelistPreview => {
     const res: ApiCodelistPreview = {
         ...(id && { id }),
         code: formData.codeListCode,
@@ -100,7 +100,7 @@ export const mapFormToSave = (formData: IRequestForm, language: string, uuid: st
                             : [],
                         codelistItemLegislativeValidities: [
                             {
-                                validityValue: true,
+                                validityValue: item.law,
                             },
                         ],
                         codelistItemLogicalOrders: item.order
@@ -149,22 +149,22 @@ export const mapFormToSave = (formData: IRequestForm, language: string, uuid: st
                         locked: false,
                         published: false,
                         temporal: false,
-                        effectiveFrom: item.effectiveFrom ? formatDateForDefaultValue(item.effectiveFrom) : undefined,
-                        validFrom: item.validDate && formatDateForDefaultValue(item.validDate),
+                        effectiveFrom: item.effectiveFrom ? formatDateForDefaultValue(item.effectiveFrom, API_DATE_FORMAT) : undefined,
+                        validFrom: item.validDate && formatDateForDefaultValue(item.validDate, API_DATE_FORMAT),
                     } as ApiCodelistItem),
             ),
         },
         mainCodelistManagers: [
             {
-                value: `${uuid}-${formData?.mainGestor}`,
+                value: formData?.mainGestor,
                 language: language,
                 effectiveTo: undefined,
                 effectiveFrom: formatDateTimeForDefaultValue(new Date().toISOString(), API_DATE_FORMAT),
             },
         ],
         uri: formData.refIndicator,
-        effectiveFrom: formData.startDate ? formatDateForDefaultValue(formData.startDate.toString()) : undefined,
-        validFrom: formData.validDate ? formatDateForDefaultValue(formData.validDate.toString()) : undefined,
+        effectiveFrom: formData.startDate ? formatDateForDefaultValue(formData.startDate.toISOString(), API_DATE_FORMAT) : undefined,
+        validFrom: formData.validDate ? formatDateForDefaultValue(formData.validDate.toISOString(), API_DATE_FORMAT) : undefined,
     }
 
     return res
@@ -182,15 +182,20 @@ export const mapCodeListToForm = (codeList: ApiCodelistItem[], language: string)
                     addData: code.codelistItemAdditionalContents?.find((item) => item.language === language)?.value ?? '',
                     unit: code.codelistItemUnitsOfMeasure?.find((item) => item.id === code.id)?.value ?? '',
                     note: code.codelistItemNotes?.find((item) => item.language === language)?.value ?? '',
-                    order: Number.parseInt(code.codelistItemLogicalOrders?.find((item) => item.language === language)?.value ?? ''),
+                    order: code.codelistItemLogicalOrders?.find((item) => item.language === language)?.value
+                        ? Number(code.codelistItemLogicalOrders?.find((item) => item.language === language)?.value)
+                        : '',
                     validDate: code.validFrom ? new Date(code.validFrom) : undefined,
                     refident: code.itemUri ?? '',
                     exclude: code.codelistItemExcludes?.find((item) => item.language === language)?.value ?? '',
                     contain: code.codelistItemIncludes?.find((item) => item.language === language)?.value ?? '',
                     alsoContain: code.codelistItemIncludesAlso?.find((item) => item.language === language)?.value ?? '',
-                    effectiveFrom: code.validFrom ? formatDateForDefaultValue(code.validFrom) : undefined,
+                    effectiveFrom: code.codelistItemValidities?.[0]?.effectiveFrom
+                        ? formatDateForDefaultValue(code.codelistItemValidities[0].effectiveFrom)
+                        : undefined,
                     lockedBy: code.lockedBy ?? '',
                     lockedFrom: code.lockedFrom ? code.lockedFrom : undefined,
+                    law: code.codelistItemLegislativeValidities?.[0].value,
                 } as IItemForm),
         ) ?? []
     )
@@ -207,6 +212,7 @@ export const mapToCodeListDetail = (language: string, item?: IItemForm): ApiCode
         codelistItemUnitsOfMeasure: [{ value: item.unit }],
         codelistItemNotes: [{ value: item.note, language: language }],
         codelistItemLogicalOrders: [{ value: item.order, language: language }],
+        codelistItemLegislativeValidities: [{ validityValue: item.law }],
         itemUri: item.refident,
         codelistItemExcludes: [{ value: item.exclude, language: language }],
         codelistItemIncludes: [{ value: item.contain, language: language }],
@@ -230,8 +236,8 @@ export const mapToForm = (language: string, itemList?: ApiCodelistItemList, data
         gid: data?.mainCodelistManagers?.[0]?.value ?? '',
         codeLists: mapCodeListToForm(itemList?.codelistsItems ?? [], language),
         notes: data?.codelistNotes?.map((item) => ({ text: item.value, id: item.id } as INoteRow)) ?? [],
-        validDate: data?.validFrom ? new Date(data.validFrom) : undefined,
-        startDate: data?.fromDate ? new Date(data.fromDate) : undefined,
+        validDate: data?.validFrom ? formatDateForDefaultValue(data.validFrom) : undefined,
+        startDate: data?.fromDate ? formatDateForDefaultValue(data.fromDate) : undefined,
         codeListState: data?.codelistState ?? '',
     } as IRequestForm
 }

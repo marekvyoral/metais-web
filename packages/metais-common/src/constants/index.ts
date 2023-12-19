@@ -7,6 +7,7 @@ export const BASE_PAGE_NUMBER = 1
 export const BASE_PAGE_SIZE = 10
 
 export const REGEX_EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+export const REGEX_TEL = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$|^$/
 
 export const filterKeysToSkip = new Set(['fullTextSearch', 'attributeFilters', 'sort', 'pageSize', 'pageNumber'])
 
@@ -165,7 +166,6 @@ export const REPORTS_LIST_QUERY_KEY = '/reports/list'
 export const ADMIN_EGOV_ENTITY_LIST_QKEY = `/citypes/list`
 export const ADMIN_EGOV_RELATION_LIST_QKEY = `/relationshiptypes/list`
 export const ADMIN_EKO_LIST_QKEY = `/ekocodes`
-export const phoneOrEmptyStringRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$|^$/
 export const HTML_TYPE = 'HTML'
 export const MUK = 'muk'
 

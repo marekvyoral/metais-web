@@ -7,19 +7,24 @@ import {
     ButtonPopup,
     ExpandableRowCellWrapper,
     HomeIcon,
+    InfoIconWithText,
     LoadingIndicator,
+    PaginatorWrapper,
     Table,
+    TextBody,
     TextHeading,
 } from '@isdd/idsk-ui-kit/index'
-import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ExpandedState, Row } from '@tanstack/react-table'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
-import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
+import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { ApiCodelistItem } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
 
 import { BasicInfoTabView } from '@/components/views/codeLists/components/tabs/BasicInfoTabView'
 import { GestorTabView } from '@/components/views/codeLists/components/tabs/GestorTabView'
@@ -39,12 +44,16 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
     isLoadingMutation,
     actionsErrorMessages,
     requestId,
+    filter,
     onAccept,
+    handleFilterChange,
 }) => {
     const { t, i18n } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
-    const userAbility = useAbilityContext()
+    const {
+        isActionSuccess: { value: isSuccess, additionalInfo },
+    } = useActionSuccess()
 
     const [confirmationModal, setConfirmationModal] = useState<{
         action?: ApiRequestAction
@@ -73,111 +82,121 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                     { label: data?.detail.code ?? '', href: `${NavigationSubRoutes.REQUESTLIST}/${data?.detail.code}` },
                 ]}
             />
-            {userAbility.can(Actions.SHOW, Subjects.DETAIL) && (
+            <Can I={Actions.SHOW} a={Subjects.DETAIL}>
                 <MainContentWrapper>
+                    {isSuccess && (
+                        <MutationFeedback
+                            success
+                            error={false}
+                            successMessage={t([additionalInfo?.messageKey ?? '', 'mutationFeedback.successfulUpdated'])}
+                        />
+                    )}
                     <QueryFeedback loading={isLoading} error={isError} withChildren>
                         {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                         <div className={styles.headerDiv}>
                             <TextHeading size="XL">{t('codeListList.requestTitle')}</TextHeading>
-                            <ButtonGroupRow>
-                                {userAbility.can(Actions.EDIT, Subjects.DETAIL) && (
-                                    <Button
-                                        label={t('codeListList.buttons.EDIT')}
-                                        onClick={() => navigate(`${NavigationSubRoutes.REQUESTLIST}/${requestId}/edit`, { state: location.state })}
+                            <Can I={Actions.SEE_ACTIONS} a={Subjects.DETAIL}>
+                                <ButtonGroupRow>
+                                    <Can I={Actions.EDIT} a={Subjects.DETAIL}>
+                                        <Button
+                                            label={t('codeListList.buttons.EDIT')}
+                                            onClick={() =>
+                                                navigate(`${NavigationSubRoutes.REQUESTLIST}/${requestId}/edit`, { state: location.state })
+                                            }
+                                        />
+                                    </Can>
+                                    <ButtonPopup
+                                        buttonLabel={t('codeListDetail.button.more')}
+                                        popupPosition="right"
+                                        popupContent={() => {
+                                            return (
+                                                <div className={styles.buttonLinksDiv}>
+                                                    <Can I={Actions.ACCEPT} a={Subjects.DETAIL}>
+                                                        <ButtonLink
+                                                            onClick={() => {
+                                                                setConfirmationModal({
+                                                                    action: ApiRequestAction.ACCEPT,
+                                                                    isOpen: true,
+                                                                    title: t('codeListList.requestModal.acceptTitle'),
+                                                                    description: t('codeListList.requestModal.acceptDesc'),
+                                                                })
+                                                            }}
+                                                            label={t('codeListList.buttons.ACCEPT')}
+                                                        />
+                                                    </Can>
+                                                    <Can I={Actions.ACCEPT_SZZC} a={Subjects.DETAIL}>
+                                                        <ButtonLink
+                                                            onClick={() => {
+                                                                setConfirmationModal({
+                                                                    action: ApiRequestAction.ACCEPTSZZC,
+                                                                    isOpen: true,
+                                                                    title: t('codeListList.requestModal.acceptSzzcTitle'),
+                                                                    description: t('codeListList.requestModal.acceptSzzcDesc'),
+                                                                })
+                                                            }}
+                                                            label={t('codeListList.buttons.ACCEPT_SZZC')}
+                                                        />
+                                                    </Can>
+                                                    <Can I={Actions.CANCEL_REQUEST} a={Subjects.DETAIL}>
+                                                        <ButtonLink
+                                                            onClick={() => {
+                                                                setConfirmationModal({
+                                                                    action: ApiRequestAction.CANCEL,
+                                                                    isOpen: true,
+                                                                    title: t('codeListList.requestModal.cancelReqTitle'),
+                                                                    description: t('codeListList.requestModal.cancelReqDesc'),
+                                                                })
+                                                            }}
+                                                            label={t('codeListList.buttons.CANCEL_REQUEST')}
+                                                        />
+                                                    </Can>
+                                                    <Can I={Actions.REJECT} a={Subjects.DETAIL}>
+                                                        <ButtonLink
+                                                            onClick={() => {
+                                                                setConfirmationModal({
+                                                                    action: ApiRequestAction.REJECT,
+                                                                    isOpen: true,
+                                                                    title: t('codeListList.requestModal.rejectRequestTitle'),
+                                                                    description: t('codeListList.requestModal.rejectRequestDesc'),
+                                                                })
+                                                            }}
+                                                            label={t('codeListList.buttons.REJECT')}
+                                                        />
+                                                    </Can>
+                                                    <Can I={Actions.MOVE_TO_KSISVS} a={Subjects.DETAIL}>
+                                                        <ButtonLink
+                                                            onClick={() => {
+                                                                setConfirmationModal({
+                                                                    action: ApiRequestAction.ACCEPTKSISVS,
+                                                                    isOpen: true,
+                                                                    title: t('codeListList.requestModal.acceptTitle'),
+                                                                    description: t('codeListList.requestModal.acceptDesc'),
+                                                                })
+                                                            }}
+                                                            label={t('codeListList.buttons.MOVE_TO_KSISVS')}
+                                                        />
+                                                    </Can>
+                                                    <Can I={Actions.SEND} a={Subjects.DETAIL}>
+                                                        <ButtonLink
+                                                            onClick={() => {
+                                                                setConfirmationModal({
+                                                                    action: ApiRequestAction.SEND,
+                                                                    isOpen: true,
+                                                                    title: t('codeListList.requestModal.sendTitle'),
+                                                                    description: t('codeListList.requestModal.sendDesc'),
+                                                                })
+                                                            }}
+                                                            label={t('codeListList.buttons.SEND')}
+                                                        />
+                                                    </Can>
+                                                    <ButtonLink onClick={() => setIsExportModalOpen(true)} label={t('codeListList.buttons.EXPORT')} />
+                                                    <ButtonLink onClick={() => setIsImportModalOpen(true)} label={t('codeListList.buttons.IMPORT')} />
+                                                </div>
+                                            )
+                                        }}
                                     />
-                                )}
-
-                                <ButtonPopup
-                                    buttonLabel={t('ciType.moreButton')}
-                                    popupPosition="right"
-                                    popupContent={() => {
-                                        return (
-                                            <div className={styles.buttonLinksDiv}>
-                                                {userAbility.can(Actions.ACCEPT, Subjects.DETAIL) && (
-                                                    <ButtonLink
-                                                        onClick={() => {
-                                                            setConfirmationModal({
-                                                                action: ApiRequestAction.ACCEPT,
-                                                                isOpen: true,
-                                                                title: t('codeListList.requestModal.acceptTitle'),
-                                                                description: t('codeListList.requestModal.acceptDesc'),
-                                                            })
-                                                        }}
-                                                        label={t('codeListList.buttons.ACCEPT')}
-                                                    />
-                                                )}
-                                                {userAbility.can(Actions.ACCEPT_SZZC, Subjects.DETAIL) && (
-                                                    <ButtonLink
-                                                        onClick={() => {
-                                                            setConfirmationModal({
-                                                                action: ApiRequestAction.ACCEPTSZZC,
-                                                                isOpen: true,
-                                                                title: t('codeListList.requestModal.acceptSzzcTitle'),
-                                                                description: t('codeListList.requestModal.acceptSzzcDesc'),
-                                                            })
-                                                        }}
-                                                        label={t('codeListList.buttons.ACCEPT_SZZC')}
-                                                    />
-                                                )}
-                                                {userAbility.can(Actions.CANCEL_REQUEST, Subjects.DETAIL) && (
-                                                    <ButtonLink
-                                                        onClick={() => {
-                                                            setConfirmationModal({
-                                                                action: ApiRequestAction.CANCEL,
-                                                                isOpen: true,
-                                                                title: t('codeListList.requestModal.cancelReqTitle'),
-                                                                description: t('codeListList.requestModal.cancelReqDesc'),
-                                                            })
-                                                        }}
-                                                        label={t('codeListList.buttons.CANCEL_REQUEST')}
-                                                    />
-                                                )}
-                                                {userAbility.can(Actions.REJECT, Subjects.DETAIL) && (
-                                                    <ButtonLink
-                                                        onClick={() => {
-                                                            setConfirmationModal({
-                                                                action: ApiRequestAction.REJECT,
-                                                                isOpen: true,
-                                                                title: t('codeListList.requestModal.rejectRequestTitle'),
-                                                                description: t('codeListList.requestModal.rejectRequestDesc'),
-                                                            })
-                                                        }}
-                                                        label={t('codeListList.buttons.REJECT')}
-                                                    />
-                                                )}
-                                                {userAbility.can(Actions.MOVE_TO_KSISVS, Subjects.DETAIL) && (
-                                                    <ButtonLink
-                                                        onClick={() => {
-                                                            setConfirmationModal({
-                                                                action: ApiRequestAction.ACCEPTKSISVS,
-                                                                isOpen: true,
-                                                                title: t('codeListList.requestModal.acceptTitle'),
-                                                                description: t('codeListList.requestModal.acceptDesc'),
-                                                            })
-                                                        }}
-                                                        label={t('codeListList.buttons.MOVE_TO_KSISVS')}
-                                                    />
-                                                )}
-                                                {userAbility.can(Actions.SEND, Subjects.DETAIL) && (
-                                                    <ButtonLink
-                                                        onClick={() => {
-                                                            setConfirmationModal({
-                                                                action: ApiRequestAction.SEND,
-                                                                isOpen: true,
-                                                                title: t('codeListList.requestModal.sendTitle'),
-                                                                description: t('codeListList.requestModal.sendDesc'),
-                                                            })
-                                                        }}
-                                                        label={t('codeListList.buttons.SEND')}
-                                                    />
-                                                )}
-                                                <ButtonLink onClick={() => setIsExportModalOpen(true)} label={t('codeListList.buttons.EXPORT')} />
-                                                <ButtonLink onClick={() => setIsImportModalOpen(true)} label={t('codeListList.buttons.IMPORT')} />
-                                            </div>
-                                        )
-                                    }}
-                                />
-                            </ButtonGroupRow>
+                                </ButtonGroupRow>
+                            </Can>
                         </div>
                         {actionsErrorMessages.map((errorMessage, index) => (
                             <MutationFeedback success={false} key={index} error={t([errorMessage, 'feedback.mutationErrorMessage'])} />
@@ -193,7 +212,36 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                         <TextHeading size="L">{t('codeListList.requestTitleContact')}</TextHeading>
                         <GestorTabView codeList={data.detail} attributeProfile={data.attributeProfile} />
 
+                        <TextBody>
+                            {data.detail.codelistState === RequestListState.REJECTED && (
+                                <InfoIconWithText>
+                                    {t('codeListDetail.feedback.requestRejected', {
+                                        day: t('date', { date: data.detail.commentDate }),
+                                        cause: data.detail.comment,
+                                    })}
+                                </InfoIconWithText>
+                            )}
+                            {data.detail.codelistState === RequestListState.ISVS_PROCESSING && (
+                                <InfoIconWithText>
+                                    {t('codeListDetail.feedback.requestSentToKSISVS', {
+                                        day: t('date', { date: data.detail.commentDate }),
+                                    })}
+                                </InfoIconWithText>
+                            )}
+                        </TextBody>
+
                         <TextHeading size="L">{t('codeListList.requestCreate.codeListTableTitle')}</TextHeading>
+                        <ActionsOverTable
+                            pagination={{
+                                pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
+                                pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
+                                dataLength: data?.items.codelistsItemCount ?? 0,
+                            }}
+                            hiddenButtons={{ SELECT_COLUMNS: true }}
+                            entityName=""
+                            pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
+                            handleFilterChange={handleFilterChange}
+                        />
                         <Table
                             data={data.items.codelistsItems}
                             expandedRowsState={expanded}
@@ -226,13 +274,24 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                 )
                             }}
                         />
+                        <PaginatorWrapper
+                            pageNumber={filter.pageNumber ?? BASE_PAGE_NUMBER}
+                            pageSize={filter.pageSize ?? BASE_PAGE_SIZE}
+                            dataLength={data?.items.codelistsItemCount ?? 0}
+                            handlePageChange={handleFilterChange}
+                        />
                         <ExportCodeListModal
                             code={data?.detail.code ?? ''}
                             isRequest
                             isOpen={isExportModalOpen}
                             onClose={() => setIsExportModalOpen(false)}
                         />
-                        <ImportCodeListModal code={data?.detail.code ?? ''} isOpen={isImportModalOpen} onClose={() => setIsImportModalOpen(false)} />
+                        <ImportCodeListModal
+                            code={data?.detail.code ?? ''}
+                            isRequest
+                            isOpen={isImportModalOpen}
+                            onClose={() => setIsImportModalOpen(false)}
+                        />
                         <ConfirmModal
                             action={confirmationModal.action}
                             isOpen={confirmationModal.isOpen}
@@ -246,7 +305,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                         />
                     </QueryFeedback>
                 </MainContentWrapper>
-            )}
+            </Can>
         </>
     )
 }

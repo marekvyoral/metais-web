@@ -1229,7 +1229,9 @@
             "translationWarning": "The language version of the codelist should be published only when completely translated.",
             "returnToMainGestor": "Codelist was returned for revision.",
             "sendToSzzc": "Request has been sent to administrator of BC list.",
-            "publishCodeListItems": "Codelist items were published."
+            "publishCodeListItems": "Codelist items were published.",
+            "requestRejected": "This request was rejected on {{day}}. Reason for rejection: {{cause}}",
+            "requestSentToKSISVS": "This request was sent for approval to the Committee for Standardization ISPA on {{day}}."
         },
         "modal": {
             "title": {
@@ -1263,7 +1265,7 @@
         "selectedSuffix": " (selected)",
         "button": {
             "edit": "Edit",
-            "more": "More",
+            "more": "More actions",
             "language": "Language",
             "exportCodelist": "Codelist export",
             "importCodelist": "Codelist import",
@@ -1320,7 +1322,7 @@
             "btnCheck": "Check",
             "addNote": "+ Add note",
             "contactTitle": "Kontakt na vecného gestora číselníka",
-            "codeListTableTitle": "codelist items",
+            "codeListTableTitle": "Codelist items",
             "codeId": "Code",
             "codeName": "Item Nam",
             "addBtn": "Request for codelist classification",
@@ -1340,6 +1342,9 @@
             "email": "Email is required field",
             "emailFormat": "Invalid email format",
             "phone": "Phone is required field",
+            "phoneFormat": "Invalid phone format",
+            "orderFormat": "Value is not a number",
+            "dateFormat": "Invalid date format",
             "dateFrom": "From is required field",
             "effectiveFrom": "Entry into force is required field",
             "itemCode": "Codelist ID is required field",
@@ -1352,7 +1357,15 @@
             "startDate": "Začiatok účinnosti",
             "endDate": "Koniec účinnosti",
             "acceptTitle": "Accepting request",
-            "acceptDesc": "By accepting request is base counter draft sent for approval to the Committee for Standardization of ISPA. Upon its approval it is moved to counter list and relevant authority will be asked to complete counter items within the statutory deadline."
+            "acceptDesc": "By accepting request is base counter draft sent for approval to the Committee for Standardization of ISPA. Upon its approval it is moved to counter list and relevant authority will be asked to complete counter items within the statutory deadline.",
+            "acceptSzzcTitle": "Accept by headers list administrator",
+            "acceptSzzcDesc": "Naozaj chcete akceptovať žiadosť?",
+            "cancelReqTitle": "Cancel request",
+            "cancelReqDesc": "Are you sure you want to cancel a request?",
+            "rejectRequestTitle": "Rejection of request",
+            "rejectRequestDesc": "Reason for rejection",
+            "sendTitle": "Send request",
+            "sendDesc": "Are you sure you want to send a request?"
         },
         "filter": {
             "title": "Filter",
@@ -1364,8 +1377,8 @@
                 "true": "True",
                 "false": "False"
             },
-            "state": "Codelist status",
-            "name": "Codelist name",
+            "state": "Status",
+            "name": "Name",
             "code": "Code"
         },
         "state": {
@@ -1547,6 +1560,8 @@
         "PO_IS_PODetail": "Detail of IS PO",
         "PO_IS_POCreate": "Creation of IS PO",
         "meetings": "Meetings",
+        "codeListRequestsList": "Request list",
+        "codeListRequestsDetail": "Request detail",
         "codeList": "Codelist list",
         "codeListDetail": "Detail codelist",
         "meetingsCreate": "Creation of meeting",

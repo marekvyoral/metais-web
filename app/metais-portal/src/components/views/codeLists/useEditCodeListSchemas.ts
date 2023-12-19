@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { ObjectSchema, array, boolean, number, object, string } from 'yup'
 import { ApiCodelistManager, ApiCodelistName } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import { REGEX_EMAIL, REGEX_TEL } from '@isdd/metais-common/constants'
 
 import { IFieldTextRow } from '@/components/views/codeLists/CodeListEditView'
 
@@ -86,8 +87,8 @@ export const useEditCodeListSchema = (): IOutput => {
 
         name: string().required(t('codeListList.requestValidations.name')),
         lastName: string().required(t('codeListList.requestValidations.lastName')),
-        phone: string().required(t('codeListList.requestValidations.phone')),
-        email: string().required(t('codeListList.requestValidations.email')).email(t('codeListList.requestValidations.emailFormat')),
+        phone: string().required(t('codeListList.requestValidations.phone')).matches(REGEX_TEL, t('codeListList.requestValidations.phoneFormat')),
+        email: string().required(t('codeListList.requestValidations.email')).matches(REGEX_EMAIL, t('codeListList.requestValidations.emailFormat')),
     })
 
     return {

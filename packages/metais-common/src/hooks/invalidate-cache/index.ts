@@ -136,10 +136,10 @@ export const useInvalidateCodeListRequestCache = () => {
     const queryClient = useQueryClient()
 
     const invalidate = (id?: number) => {
-        queryClient.invalidateQueries([getGetCodelistRequestsQueryKey({ language: '', pageNumber: 0, perPage: 0 })][0])
+        queryClient.invalidateQueries([getGetCodelistRequestsQueryKey({ language: '', pageNumber: 0, perPage: 0 })[0]])
         if (id) {
             queryClient.invalidateQueries([getGetCodelistRequestDetailQueryKey(id)[0]])
-            queryClient.invalidateQueries([getGetCodelistRequestItemsQueryKey(id, { language: '', pageNumber: 0, perPage: 0 })][0])
+            queryClient.invalidateQueries([getGetCodelistRequestItemsQueryKey(id, { language: '', pageNumber: 0, perPage: 0 })[0]])
         }
     }
 

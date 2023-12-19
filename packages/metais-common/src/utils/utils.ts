@@ -19,3 +19,11 @@ export const isDate = (value: unknown): value is Date => {
 export const isFalsyStringValue = (value: unknown): boolean => {
     return value === '0' || value === 'false' || value === 'FALSE'
 }
+
+export const getRoleUuidFromGid = (gid: string) => {
+    return gid.substring(0, 36)
+}
+
+export const getOrgIdFromGid = (gid: string) => {
+    return gid.substring(37)
+}

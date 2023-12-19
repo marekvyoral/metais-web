@@ -1,8 +1,8 @@
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
-import { HierarchyPOFilterUi, HierarchyRightsUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { HierarchyPOFilterUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     useCreateCodelistRequest,
-    useExistsCodelistHook,
+    useExistsCodelist,
     useGetFirstNotUsedCode,
     useSaveAndSendCodelist,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
@@ -16,6 +16,7 @@ import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/act
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { useInvalidateCodeListRequestCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
@@ -31,7 +32,6 @@ export interface CreateRequestViewProps {
     isError: boolean
     errorMessages: string[]
     attributeProfile: AttributeProfile
-    canEditDate?: boolean
     canEdit?: boolean
     firstNotUsedCode?: string
     editData?: IRequestForm
@@ -44,7 +44,7 @@ export interface CreateRequestViewProps {
         searchQuery: string,
         additional: { page: number } | undefined,
     ) => Promise<{
-        options: HierarchyRightsUi[]
+        options: { name: string; value: string }[]
         hasMore: boolean
         additional: {
             page: number
@@ -61,7 +61,6 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
         state: { user },
     } = useAuth()
     const { i18n } = useTranslation()
-    const checkHook = useExistsCodelistHook()
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
 
@@ -69,13 +68,13 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     const { invalidate } = useInvalidateCodeListRequestCache()
 
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
-    const [isLoadingCheck, setLoadingCheck] = useState<boolean>()
-    const [errorCheck, setErrorCheck] = useState<{ message: string }>()
+    const [errorAddOrGetGroup, setAddOrGetGroupError] = useState<{ message: string }>()
     const implicitHierarchy = useReadCiList()
     const { mutateAsync, isLoading: isLoadingSave, isError: isErrorSave, error: errorSave } = useCreateCodelistRequest()
     const { mutateAsync: mutateSendASync, isLoading: isLoadingSend, isError: isErrorSend, error: errorSend } = useSaveAndSendCodelist()
     const { data: firstNotUsedCode, isLoading: isLoadingGetFirstNotUsedCode } = useGetFirstNotUsedCode({ query: { cacheTime: 0 } })
     const { data: attributeProfile, isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
+    const { mutateAsync: mutateExists, isLoading: isLoadingExists } = useExistsCodelist()
 
     const defaultFilter: HierarchyPOFilterUi = {
         perpage: 20,
@@ -89,7 +88,11 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
         const options = await implicitHierarchy.mutateAsync({ data: { ...defaultFilter, page, fullTextSearch: searchQuery } })
 
         return {
-            options: options.rights || [],
+            options:
+                options.rights?.map((item) => ({
+                    name: item.poName || '',
+                    value: `${getUUID(user?.groupData ?? [])}-${item.poUUID || ''}`,
+                })) || [],
             hasMore: options.rights?.length ? true : false,
             additional: {
                 page: page,
@@ -98,8 +101,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     }
 
     const handleCheckIfCodeIsAvailable = async (code: string) => {
-        setLoadingCheck(true)
-        return checkHook({ code: code, codelistState: RequestListState.NEW_REQUEST })
+        return mutateExists({ data: { code: code, codelistState: RequestListState.NEW_REQUEST } })
             .then(() => {
                 return {
                     isAvailable: true,
@@ -113,54 +115,51 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
                     errorTranslateKeys,
                 }
             })
-            .finally(() => {
-                setLoadingCheck(false)
-            })
     }
 
     const onSave = async (formData: IRequestForm) => {
         const uuid = getUUID(user?.groupData ?? [])
-        const saveData = mapFormToSave(formData, i18n.language, uuid)
-        addOrGetGroupHook(uuid, formData?.mainGestor)
+        const saveData = mapFormToSave(formData, i18n.language)
+        addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
-                mutateAsync({ data: saveData })
-                    .then(() => {
-                        invalidate()
-                        setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
-                        navigate(`${NavigationSubRoutes.REQUESTLIST}`)
+                mutateAsync({ data: saveData }).then(() => {
+                    invalidate()
+                    setIsActionSuccess({
+                        value: true,
+                        path: NavigationSubRoutes.REQUESTLIST,
+                        additionalInfo: { messageKey: 'mutationFeedback.successfulCreated' },
                     })
-                    .catch((error) => {
-                        setErrorCheck(error)
-                    })
+                    navigate(`${NavigationSubRoutes.REQUESTLIST}`)
+                })
             })
             .catch((error) => {
-                setErrorCheck(error)
+                setAddOrGetGroupError(error)
             })
     }
 
     const onSend = async (formData: IRequestForm) => {
         const uuid = getUUID(user?.groupData ?? [])
-        addOrGetGroupHook(uuid, formData?.mainGestor)
+        addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
-                mutateSendASync({ data: mapFormToSave(formData, i18n.language, uuid) })
-                    .then(() => {
-                        invalidate()
-                        setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
-                        navigate(`${NavigationSubRoutes.REQUESTLIST}`)
+                mutateSendASync({ data: mapFormToSave(formData, i18n.language) }).then(() => {
+                    invalidate()
+                    setIsActionSuccess({
+                        value: true,
+                        path: NavigationSubRoutes.REQUESTLIST,
+                        additionalInfo: { messageKey: 'mutationFeedback.successfulCreated' },
                     })
-                    .catch((error) => {
-                        setErrorCheck(error)
-                    })
+                    navigate(`${NavigationSubRoutes.REQUESTLIST}`)
+                })
             })
             .catch((error) => {
-                setErrorCheck(error)
+                setAddOrGetGroupError(error)
             })
     }
 
-    const isLoading = [isLoadingCheck, isLoadingGetFirstNotUsedCode, isLoadingAttributeProfile].some((item) => item)
-    const isLoadingMutation = [isLoadingSave, isLoadingSend].some((item) => item)
-    const isError = [errorCheck, isErrorSave, isErrorSend, isErrorAttributeProfile].some((item) => item)
-    const errorMessages = getErrorTranslateKeys([errorCheck, errorSend, errorSave].map((item) => item as { message: string }))
+    const isLoading = [isLoadingGetFirstNotUsedCode, isLoadingAttributeProfile].some((item) => item)
+    const isLoadingMutation = [isLoadingSave, isLoadingSend, isLoadingExists].some((item) => item)
+    const isError = [errorAddOrGetGroup, isErrorSave, isErrorSend, isErrorAttributeProfile].some((item) => item)
+    const errorMessages = getErrorTranslateKeys([errorAddOrGetGroup, errorSend, errorSave].map((item) => item as { message: string }))
 
     return (
         <RequestListPermissionsWrapper>
@@ -176,7 +175,6 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
                 onSend={onSend}
                 attributeProfile={attributeProfile ?? {}}
                 canEdit
-                canEditDate
             />
         </RequestListPermissionsWrapper>
     )
