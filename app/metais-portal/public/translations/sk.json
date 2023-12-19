@@ -292,7 +292,7 @@
     "language": {
         "sk": "Slovenčina",
         "en": "English",
-        "ge": "German"
+        "cimode": "Preklady"
     },
     "stepper": {
         "openAll": "Zobraziť všetko",

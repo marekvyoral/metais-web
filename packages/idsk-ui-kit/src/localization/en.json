@@ -4,8 +4,9 @@
         "close": "Close language menu"
     },
     "language": {
-        "sk": "Slovenčina",
-        "en": "English"
+        "sk": "Slovak",
+        "en": "English",
+        "cimode": "Translations"
     },
     "radioButton": {
         "yes": "Yes",

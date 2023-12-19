@@ -6,7 +6,7 @@
     "language": {
         "sk": "Slovenčina",
         "en": "English",
-        "ge": "German"
+        "cimode": "Preklady"
     },
     "radioButton": {
         "yes": "Áno",
