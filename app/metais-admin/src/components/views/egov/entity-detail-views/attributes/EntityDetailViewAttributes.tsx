@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Gen_Profil, IEntityDetailViewAttributes, filterSelectedRowsFromApi, isRowSelected } from '@isdd/metais-common'
+import { IEntityDetailViewAttributes, filterSelectedRowsFromApi, isRowSelected } from '@isdd/metais-common'
 import { ColumnDef } from '@tanstack/react-table'
 import { Button, Input, Table } from '@isdd/idsk-ui-kit'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
@@ -20,7 +20,8 @@ export const EntityDetailViewAttributes = ({
     roles,
 }: IEntityDetailViewAttributes) => {
     const { t } = useTranslation()
-    const selectedFromApi = filterSelectedRowsFromApi(attributesOverridesData, data?.attributes)
+    const indexModificator = 1
+    const selectedFromApi = filterSelectedRowsFromApi(attributesOverridesData, data?.attributes, indexModificator)
     const [selectedRows, setSelectedRows] = useState<Array<number>>([])
     const { register, getValues } = useForm({
         defaultValues: {
@@ -29,8 +30,8 @@ export const EntityDetailViewAttributes = ({
     })
 
     const cancelEditing = useCallback(
-        (rowIndex: number) => {
-            setSelectedRows([...(selectedRows?.filter((index) => index !== rowIndex) ?? [])])
+        (id: number) => {
+            setSelectedRows([...(selectedRows?.filter((index) => index !== id) ?? [])])
         },
         [selectedRows],
     )
@@ -39,9 +40,8 @@ export const EntityDetailViewAttributes = ({
         (rowIndex: number) => {
             const editedData = getValues(`attributes.${rowIndex}`)
             saveExistingAttribute?.(editedData?.technicalName, editedData)
-            cancelEditing(rowIndex)
         },
-        [saveExistingAttribute, getValues, cancelEditing],
+        [saveExistingAttribute, getValues],
     )
 
     const handleResetAttribute = useCallback(
@@ -62,7 +62,7 @@ export const EntityDetailViewAttributes = ({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index, selectedRows) ? (
+                isRowSelected(ctx?.row?.original?.id, selectedRows) ? (
                     <Input id="name" {...register(`attributes.${ctx?.row?.index}.name`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
@@ -77,7 +77,7 @@ export const EntityDetailViewAttributes = ({
                 getCellContext: (ctx) => ctx?.getValue?.(),
             },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index, selectedRows) ? (
+                isRowSelected(ctx?.row?.original?.id, selectedRows) ? (
                     <Input id="name" {...register(`attributes.${ctx?.row?.index}.description`)} />
                 ) : (
                     <span>{ctx?.getValue?.() as string}</span>
@@ -113,21 +113,46 @@ export const EntityDetailViewAttributes = ({
             enableSorting: true,
             id: 'actions',
             cell: (ctx) => {
-                if (isRowSelected(ctx?.row?.index, selectedFromApi) && !isRowSelected(ctx?.row?.index, selectedRows)) {
+                if (isRowSelected(ctx?.row?.index + indexModificator, selectedFromApi) && !isRowSelected(ctx?.row?.original?.id, selectedRows)) {
                     return (
                         <div className={styles.actions}>
-                            <Button onClick={() => setSelectedRows([...selectedRows, ctx?.row?.index])} label={t('actionsInTable.edit')} />
+                            <Button
+                                onClick={() => {
+                                    ctx?.row?.original?.id && setSelectedRows([...selectedRows, ctx.row.original.id])
+                                }}
+                                label={t('actionsInTable.edit')}
+                            />
                             <Button onClick={() => handleResetAttribute(ctx?.row?.index)} label={t('actionsInTable.reset')} />
                         </div>
                     )
-                } else if (isRowSelected(ctx?.row?.index, selectedRows)) {
+                } else if (isRowSelected(ctx?.row?.original?.id, selectedRows)) {
                     return (
                         <div className={styles.actions}>
-                            <Button onClick={() => handleSaveAttribute(ctx?.row?.index)} label={t('actionsInTable.save')} />
-                            <Button onClick={() => cancelEditing(ctx?.row?.index)} label={t('actionsInTable.cancel')} />
+                            <Button
+                                onClick={() => {
+                                    handleSaveAttribute(ctx?.row?.index)
+                                    ctx?.row?.original?.id && cancelEditing(ctx?.row?.original?.id)
+                                }}
+                                label={t('actionsInTable.save')}
+                            />
+                            <Button
+                                onClick={() => {
+                                    ctx?.row?.original?.id && cancelEditing(ctx?.row?.original?.id)
+                                }}
+                                label={t('actionsInTable.cancel')}
+                            />
                         </div>
                     )
-                } else return <Button onClick={() => setSelectedRows([...selectedRows, ctx?.row?.index])} label={t('actionsInTable.edit')} />
+                } else
+                    return (
+                        <Button
+                            onClick={() => {
+                                ctx?.row?.original?.id && setSelectedRows([...selectedRows, ctx.row.original.id])
+                            }}
+                            label={t('actionsInTable.edit')}
+                            disabled={!ctx.row.original.valid}
+                        />
+                    )
             },
         },
     ]
@@ -147,12 +172,12 @@ export const EntityDetailViewAttributes = ({
                         key={'name'}
                         label={t('egov.name')}
                         value={
-                            <Link target="_blank" to="/egov/profile/Gen_Profil">
-                                {t('egov.detail.genericProfile')}
+                            <Link target="_blank" to={`/egov/profile/${data?.technicalName}`}>
+                                {data?.name}
                             </Link>
                         }
                     />
-                    <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={Gen_Profil} />
+                    <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={data?.technicalName} />
                     <InformationGridRow key={'type'} label={t('egov.type')} value={data?.type ? t(`tooltips.type.${data.type}`) : ''} />
                     <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`validity.${data?.valid}`)} />
                     <InformationGridRow key={'description'} label={t('egov.description')} value={data?.description} />

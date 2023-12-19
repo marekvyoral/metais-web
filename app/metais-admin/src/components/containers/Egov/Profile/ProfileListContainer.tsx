@@ -1,7 +1,7 @@
 import {
     AttributeProfile,
     AttributeProfilePreview,
-    useListAttrProfile1,
+    useListAttrProfile,
     useListGenericAttrProfile,
 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { EntityFilterData, filterEntityData } from '@isdd/metais-common/componentHelpers/filter/feFilters'
@@ -23,8 +23,8 @@ interface IProfileListContainer {
 }
 
 export const ProfileListContainer: React.FC<IProfileListContainer> = ({ View, defaultFilterValues }) => {
-    const { data, isLoading, isError, isFetching, refetch } = useListAttrProfile1({
-        // role: '',
+    const { data, isLoading, isError, isFetching, refetch } = useListAttrProfile({
+        filter: {},
     })
     const { data: genericData } = useListGenericAttrProfile({ filter: {} })
     const list: AttributeProfile[] = [...(data?.attributeProfileList ?? []), ...(genericData?.attributeProfileList ?? [])]

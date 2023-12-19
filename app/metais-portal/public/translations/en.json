@@ -101,11 +101,12 @@
         "closeMenu": "Close menu"
     },
     "navMenu": {
+        "monitoringNav": "Reports and monitoring",
         "publicAuthoritiesNav": "Public authorities",
+        "publicAuthorities": "Public authorities",
         "egovComponents": "e-Government Components",
         "standardization": "Standardization",
         "dataObjects": "Data objects",
-        "monitoringNav": "Reports and monitoring",
         "guides": "Guides and procedures",
         "hide": "Hide",
         "show": "Show",
@@ -2144,7 +2145,7 @@
         "success": {
             "title": "Password reset was successful",
             "description": "Information on how to reset your password has been sent to the email address you provided.",
-            "button":"Back to homepage"
+            "button": "Back to homepage"
         },
         "sendingRequest": "Send request to reset password",
         "emailFormatError": "Invalid Email Format: Please enter a valid email address in the format 'name@example.com'.",

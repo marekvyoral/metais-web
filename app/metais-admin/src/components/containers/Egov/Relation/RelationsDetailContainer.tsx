@@ -16,6 +16,7 @@ import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpers/mutation'
 import { createTabNamesAndValuesMap } from '@isdd/metais-common/hooks/useEntityProfiles'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
+import { FindAll11200, useFindAll11 } from '@isdd/metais-common/api/generated/iam-swagger'
 
 export interface IRelationDetailContainerView {
     data: {
@@ -31,6 +32,7 @@ export interface IRelationDetailContainerView {
     resetExistingAttribute?: (attributeTechnicalName?: string) => void
     isLoading: boolean
     isError: boolean
+    roles?: FindAll11200 | undefined
 }
 
 interface IRelationDetailContainer {
@@ -39,27 +41,39 @@ interface IRelationDetailContainer {
 }
 
 export const RelationDetailContainer: React.FC<IRelationDetailContainer> = ({ entityName, View }) => {
-    const { data: ciTypeData, isLoading: isCiTypeDataLoading, isError: isCiTypeDataError, refetch } = useGetRelationshipType(entityName)
+    const {
+        data: ciTypeData,
+        isLoading: isCiTypeDataLoading,
+        isError: isCiTypeDataError,
+        refetch,
+        isFetching: isCiTypeDataFetching,
+    } = useGetRelationshipType(entityName)
     const {
         data: attributeOverridesData,
         isLoading: isAttributesOverridesLoading,
         isError: isAttributesOverridesError,
         refetch: refetchAttributes,
+        isFetching: isAttributesOverridesFetching,
     } = useGetAttributeOverrides(entityName)
 
     const keysToDisplay = createTabNamesAndValuesMap(ciTypeData?.attributeProfiles)
+    const { data: roles } = useFindAll11()
 
-    const { isLoading, isError, constraintsData } = useDetailData({
+    const {
+        isLoading: useDetailDataLoading,
+        isError,
+        constraintsData,
+    } = useDetailData({
         entityStructure: ciTypeData,
         isEntityStructureLoading: isCiTypeDataLoading,
         isEntityStructureError: isCiTypeDataError,
     })
 
-    const { mutateAsync: setRelationAsValid } = useUnvalidRelationshipType()
-    const { mutateAsync: setRelationAsInvalid } = useValidRelationshipType()
-    const { mutateAsync: addConnection } = useStoreExistsCiTypeRelationshipTypeMap()
-    const { mutateAsync: saveAttribute } = useStoreAttributeTextation()
-    const { mutateAsync: resetAttribute } = useDeleteAttributeTextation()
+    const { mutateAsync: setRelationAsValid, isLoading: setRelationAsValidLoading } = useValidRelationshipType()
+    const { mutateAsync: setRelationAsInvalid, isLoading: setRelationAsInvalidLoading } = useUnvalidRelationshipType()
+    const { mutateAsync: addConnection, isLoading: addConnectionLoading } = useStoreExistsCiTypeRelationshipTypeMap()
+    const { mutateAsync: saveAttribute, isLoading: saveAttributeLoading } = useStoreAttributeTextation()
+    const { mutateAsync: resetAttribute, isLoading: resetAttributeLoading } = useDeleteAttributeTextation()
 
     const unValidRelationShipTypeMutation = async (technicalName?: string) => {
         setValidity(technicalName, ciTypeData?.valid, setRelationAsValid, setRelationAsInvalid, refetch)
@@ -114,6 +128,17 @@ export const RelationDetailContainer: React.FC<IRelationDetailContainer> = ({ en
                 refetchAttributes()
             })
     }
+    const isLoading =
+        useDetailDataLoading ||
+        isAttributesOverridesLoading ||
+        isCiTypeDataLoading ||
+        setRelationAsValidLoading ||
+        setRelationAsInvalidLoading ||
+        addConnectionLoading ||
+        saveAttributeLoading ||
+        resetAttributeLoading
+
+    const isFetching = isCiTypeDataFetching || isAttributesOverridesFetching
 
     return (
         <View
@@ -122,8 +147,9 @@ export const RelationDetailContainer: React.FC<IRelationDetailContainer> = ({ en
             addNewConnectionToExistingRelation={addNewConnectionToExistingRelation}
             saveExistingAttribute={saveExistingAttribute}
             resetExistingAttribute={resetExistingAttribute}
-            isLoading={isLoading || isAttributesOverridesLoading}
+            isLoading={isLoading || isFetching}
             isError={isError || isAttributesOverridesError}
+            roles={roles}
         />
     )
 }

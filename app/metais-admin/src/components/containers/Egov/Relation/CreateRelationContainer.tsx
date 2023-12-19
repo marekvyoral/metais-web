@@ -1,7 +1,7 @@
 import React from 'react'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
 import { Role } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { RelationshipType, useStoreAdminEntity } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { RelationshipType, getGetRelationshipTypeQueryKey, useStoreAdminEntity } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 import { useQueryClient } from '@tanstack/react-query'
 import { ADMIN_EGOV_RELATION_LIST_QKEY } from '@isdd/metais-common/constants'
@@ -34,6 +34,7 @@ export const CreateRelationContainer: React.FC<ICreateEntity> = ({ View, entityN
         mutation: {
             onSuccess() {
                 queryClient.invalidateQueries([ADMIN_EGOV_RELATION_LIST_QKEY])
+                entityName && queryClient.invalidateQueries(getGetRelationshipTypeQueryKey(entityName))
             },
         },
     })
