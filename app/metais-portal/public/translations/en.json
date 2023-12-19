@@ -101,11 +101,11 @@
         "closeMenu": "Close menu"
     },
     "navMenu": {
-        "publicAuthorities": "Public authorities",
+        "publicAuthoritiesNav": "Public authorities",
         "egovComponents": "e-Government Components",
         "standardization": "Standardization",
         "dataObjects": "Data objects",
-        "monitoring": "Reports and monitoring",
+        "monitoringNav": "Reports and monitoring",
         "guides": "Guides and procedures",
         "hide": "Hide",
         "show": "Show",

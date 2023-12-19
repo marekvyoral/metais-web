@@ -76,7 +76,9 @@ export const CreateRefRegisterContainer = ({ entityName, entityId, View }: ICrea
     const { mutateAsync: updateRefRegAsync, isError: updateMutationIsError, isSuccess: updateMutationIsSuccess } = useUpdateReferenceRegister()
 
     const saveRefRegister = async (formData: ApiReferenceRegister) => {
-        await saveRefRegAsync({ data: formData })
+        await saveRefRegAsync({
+            data: formData,
+        })
     }
 
     const updateRefRegister = async (referenceRegisterUuid: string, formData: ApiReferenceRegister) => {
