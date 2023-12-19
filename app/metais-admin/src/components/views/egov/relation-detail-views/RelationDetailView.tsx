@@ -24,6 +24,7 @@ export const RelationDetailView = ({
     resetExistingAttribute,
     isLoading,
     isError,
+    roles,
 }: IRelationDetailContainerView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -45,6 +46,7 @@ export const RelationDetailView = ({
                     attributesOverridesData={attributeOverridesData}
                     saveExistingAttribute={saveExistingAttribute}
                     resetExistingAttribute={resetExistingAttribute}
+                    roles={roles}
                 />
             ),
         }
@@ -61,10 +63,11 @@ export const RelationDetailView = ({
             title: t('egov.detail.genericProfile'),
             content: (
                 <EntityDetailViewAttributes
-                    data={ciTypeData}
+                    data={{ ...ciTypeData, name: t('egov.detail.genericProfile'), technicalName: 'Gen_Profil_Rel' }}
                     attributesOverridesData={attributeOverridesData}
                     saveExistingAttribute={saveExistingAttribute}
                     resetExistingAttribute={resetExistingAttribute}
+                    roles={roles}
                 />
             ),
         },
@@ -72,7 +75,7 @@ export const RelationDetailView = ({
     ]
 
     return (
-        <QueryFeedback loading={isLoading} error={false} withChildren>
+        <QueryFeedback loading={isLoading} error={isError} withChildren>
             <div className={styles.basicInformationSpace}>
                 <FlexColumnReverseWrapper>
                     <div className={styles.flexBetween}>
@@ -95,7 +98,7 @@ export const RelationDetailView = ({
                     {isError && <QueryFeedback error loading={false} />}
                     <MutationFeedback success={isActionSuccess.value} error={false} />
                 </FlexColumnReverseWrapper>
-                <BasicInformation data={{ ciTypeData, constraintsData, unitsData }} />
+                <BasicInformation data={{ ciTypeData, constraintsData, unitsData }} roles={roles} />
             </div>
             <div className={createEntityStyles.addConnection}>
                 <Button

@@ -1,7 +1,7 @@
 import { SortType } from '@isdd/idsk-ui-kit/types'
 import { Role } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useFindAll1 } from '@isdd/metais-common/api/generated/iam-swagger'
-import { CiType, useStoreAdminEntity1 } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Attribute, CiType, useStoreAdminEntity1 } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ADMIN_EGOV_ENTITY_LIST_QKEY } from '@isdd/metais-common/constants'
 import { useQueryClient } from '@tanstack/react-query'
 import React from 'react'
@@ -23,6 +23,9 @@ export interface ICreateEntityView {
     refetch?: () => void
     entityId?: string
     disabledInputs?: Partial<DisabledInputs>
+    saveExistingAttribute?: (attributeTechnicalName?: string, attribute?: Attribute) => void
+    resetExistingAttribute?: (attributeTechnicalName?: string) => void
+    attributesOverridesData?: Attribute[] | undefined
 }
 
 interface ICreateEntity {

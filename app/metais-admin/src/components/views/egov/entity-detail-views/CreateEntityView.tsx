@@ -1,4 +1,4 @@
-import { Button, ErrorBlock, Input, MultiSelect, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
+import { Button, ErrorBlock, Input, MultiSelect, SimpleSelect, Tab, TextArea, TextHeading } from '@isdd/idsk-ui-kit'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common'
 import { FieldValues, FormProvider } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -14,6 +14,7 @@ import { AddAttributeProfilesModal } from './attributes/AddAttributeProfilesModa
 import styles from './createEntityView.module.scss'
 import { useCreateDialogs } from './hooks/useCreateDialogs'
 import { useCreateForm } from './hooks/useCreateForm'
+import { EntityDetailViewAttributes } from './attributes/EntityDetailViewAttributes'
 
 import { ProfileTabs } from '@/components/ProfileTabs'
 import { ICreateEntityView } from '@/components/containers/Egov/Entity/CreateEntityContainer'
@@ -27,7 +28,20 @@ export enum EntityType {
     ROLES = 'roles',
 }
 
-export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoading, isEdit, type, refetch, disabledInputs }: ICreateEntityView) => {
+export const CreateEntityView = ({
+    data,
+    mutate,
+    hiddenInputs,
+    isError,
+    isLoading,
+    isEdit,
+    type,
+    refetch,
+    disabledInputs,
+    resetExistingAttribute,
+    saveExistingAttribute,
+    attributesOverridesData,
+}: ICreateEntityView) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
@@ -88,7 +102,22 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
                 setError({ errorTitle: mutationError?.message, errorMessage: message })
             })
     }
-
+    const tabGeneric: Tab[] = [
+        {
+            id: 'genericProfile',
+            title: t('egov.detail.genericProfile'),
+            content: (
+                <EntityDetailViewAttributes
+                    roles={data?.roles}
+                    data={{ ...data?.existingEntityData, name: t('egov.detail.genericProfile'), technicalName: 'Gen_Profil_Rel' }}
+                    attributesOverridesData={attributesOverridesData}
+                    saveExistingAttribute={saveExistingAttribute}
+                    resetExistingAttribute={resetExistingAttribute}
+                />
+            ),
+        },
+        ...tabsFromForm,
+    ]
     return (
         <>
             <FormProvider {...formMethods}>
@@ -220,9 +249,10 @@ export const CreateEntityView = ({ data, mutate, hiddenInputs, isError, isLoadin
                                 <AddAttributeProfilesModal
                                     open={profileAttributesDialog.open}
                                     onClose={() => profileAttributesDialog.setOpen(false)}
+                                    attrProfiles={data?.existingEntityData?.attributeProfiles ?? []}
                                 />
                                 <Button label={t('egov.create.addProfile')} onClick={() => profileAttributesDialog.setOpen(true)} />
-                                <ProfileTabs tabList={tabsFromForm} withoutHeading />
+                                {isEdit ? <ProfileTabs tabList={tabGeneric} withoutHeading /> : <ProfileTabs tabList={tabsFromForm} withoutHeading />}
                             </div>
                         )}
                     </form>

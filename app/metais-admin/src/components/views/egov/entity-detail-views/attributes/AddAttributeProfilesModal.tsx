@@ -1,7 +1,9 @@
 import { BaseModal, MultiSelect } from '@isdd/idsk-ui-kit'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { QueryFeedback } from '@isdd/metais-common/index'
+import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 
 import { ProfileListContainer } from '@/components/containers/Egov/Profile/ProfileListContainer'
 import { CreateEntityForm } from '@/types/form'
@@ -9,9 +11,10 @@ import { CreateEntityForm } from '@/types/form'
 interface AttributesModal {
     open: boolean
     onClose: () => void
+    attrProfiles: AttributeProfile[]
 }
 
-export const AddAttributeProfilesModal = ({ open, onClose }: AttributesModal) => {
+export const AddAttributeProfilesModal = ({ open, onClose, attrProfiles }: AttributesModal) => {
     const { t } = useTranslation()
     const { setValue, getValues } = useFormContext<CreateEntityForm, unknown, undefined>()
     const handleOnAttributeProfilesChange = useCallback(
@@ -29,6 +32,9 @@ export const AddAttributeProfilesModal = ({ open, onClose }: AttributesModal) =>
         },
         [onClose, setValue],
     )
+    useEffect(() => {
+        setValue('attributeProfiles', attrProfiles)
+    }, [attrProfiles, setValue])
 
     return (
         <BaseModal isOpen={open} close={onClose}>
@@ -44,14 +50,16 @@ export const AddAttributeProfilesModal = ({ open, onClose }: AttributesModal) =>
                         }) ?? []
                     return (
                         <div>
-                            <MultiSelect
-                                id="attributeProfiles"
-                                name="attributeProfiles"
-                                label={t('egov.detail.profiles')}
-                                options={[{ label: t('egov.detail.selectOption'), value: '', disabled: true }, ...listOptions]}
-                                defaultValue={getValues('attributeProfiles')?.map((profile) => JSON.stringify(profile))}
-                                onChange={handleOnAttributeProfilesChange}
-                            />
+                            <QueryFeedback loading={props.isLoading} withChildren>
+                                <MultiSelect
+                                    id="attributeProfiles"
+                                    name="attributeProfiles"
+                                    label={t('egov.detail.profiles')}
+                                    options={[{ label: t('egov.detail.selectOption'), value: '', disabled: true }, ...listOptions]}
+                                    value={getValues('attributeProfiles')?.map((profile) => JSON.stringify(profile))}
+                                    onChange={handleOnAttributeProfilesChange}
+                                />
+                            </QueryFeedback>
                         </div>
                     )
                 }}

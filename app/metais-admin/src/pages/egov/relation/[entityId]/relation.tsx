@@ -36,6 +36,7 @@ const Profile = () => {
                             resetExistingAttribute={props?.resetExistingAttribute}
                             isLoading={props.isLoading}
                             isError={props.isError}
+                            roles={props.roles}
                         />
                     </MainContentWrapper>
                 </>

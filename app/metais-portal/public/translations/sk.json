@@ -2161,7 +2161,7 @@
         "success": {
             "title": "Obnova hesla prebehla úspešne",
             "description": "Na Vami zadanú emailovú adresu sme zaslali informácie s postupom ako obnoviť heslo.",
-            "button":"Späť na úvodnú stránku"
+            "button": "Späť na úvodnú stránku"
         },
         "sendingRequest": "Odosiela sa požiadavka na obnovu hesla",
         "emailFormatError": "Neplatný formát e-mailu: Zadajte platnú e-mailovú adresu vo formáte 'meno@example.com'",

@@ -47,6 +47,9 @@ const EditRelation = () => {
                                     isLoading={createProps.isLoading || props.isLoading}
                                     type={EntityType.RELATION}
                                     isEdit
+                                    saveExistingAttribute={props.saveExistingAttribute}
+                                    resetExistingAttribute={props.resetExistingAttribute}
+                                    attributesOverridesData={props.data.attributeOverridesData}
                                 />
                             )}
                             entityName={entityId}
