@@ -644,7 +644,8 @@
             "size": "Size",
             "fileName": "File name",
             "version": "Version"
-        }
+        },
+        "selectDocument": "Select document"
     },
     "relationshipsTab": {
         "relationshipsVisualization": "Relationships visualization",
@@ -1029,11 +1030,16 @@
             "notToClone": "For this item, you can not create an instance because this item is an instance and can not create instances of instances"
         }
     },
+    "addFileSuccess": "Document {{docs}} has been added successfully",
+    "addFilesSuccess": "Documents {{docs}} have been added successfully",
+    "addFileFail": "Adding document {{docs}} has failed",
+    "addFilesFail": "Adding documents {{docs}} have failed",
+    "duplicateFile": "Document {{docs}} with same name already exists. In case, you want to create new version of existing document, please use Update funcionality of document.",
+    "duplicateFiles": "Documents {{docs}} with same name already exist. In case, you want to create new version of existing document, please use Update funcionality of document.",
     "bulkActions": {
         "addFile": {
             "title": "Add document",
             "upload": "Upload file",
-            "success": "Document has been added successfully",
             "tooLargeError": "Document too large"
         },
         "updateFile": {

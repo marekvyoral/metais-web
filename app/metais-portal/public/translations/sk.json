@@ -642,7 +642,8 @@
             "size": "Veľkosť",
             "fileName": "Názov súboru",
             "version": "Verzia"
-        }
+        },
+        "selectDocument": "Vyberte dokument"
     },
     "relationshipsTab": {
         "relationshipsVisualization": "Vizualizácia vzťahov",
@@ -1035,11 +1036,16 @@
             "notToClone": "Z tejto položky nie je možné vytvoriť inštanciu nakoľko táto položka je inštanciou a nie je možné vytvárať inštancie z inštancií"
         }
     },
+    "addFileSuccess": "Dokument {{docs}} bol úspešne pridaný",
+    "addFilesSuccess": "Dokumenty {{docs}} boli úspešne pridané",
+    "addFileFail": "Dokument {{docs}} sa nepodarilo pridať",
+    "addFilesFail": "Dokumenty {{docs}} sa nepodarilo pridať",
+    "duplicateFile": "Dokument {{docs}} s rovnakým názvom už existuje. Ak chcete vytvoriť novú verziu existujúceho dokumentu tak na to využijte funkcionalitu Aktualizovať v detaile správneho dokumentu.",
+    "duplicateFiles": "Dokumenty {{docs}} s rovnakým názvom už existujú. Ak chcete vytvoriť novú verziu existujúceho dokumentu tak na to využijte funkcionalitu Aktualizovať v detaile správneho dokumentu.",
     "bulkActions": {
         "addFile": {
-            "title": "Pridat dokument",
+            "title": "Pridať dokument",
             "upload": "Nahrať súbor",
-            "success": "Dokument bol úspešne pridaný",
             "tooLargeError": "Dokument je príliš veľký"
         },
         "updateFile": {

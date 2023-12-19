@@ -8,6 +8,7 @@ import { RichTextQuill } from '@isdd/metais-common/components/rich-text-quill/Ri
 import { yupResolver } from '@hookform/resolvers/yup'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { ApiAttachment } from '@isdd/metais-common/api/generated/standards-swagger'
+import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
 
 import styles from './createEditView.module.scss'
 import { MeetingFormEnum, createMeetingSchema, editMeetingSchema } from './meetingSchema'
@@ -29,7 +30,6 @@ import {
 import { MainContentWrapper } from '@/components/MainContentWrapper'
 import { IMeetingEditViewParams } from '@/components/containers/standardization/meetings/MeetingEditContainer'
 import { LinksImport } from '@/components/LinksImport/LinksImport'
-import { FileUpload, FileUploadData, IFileUploadRef } from '@/components/FileUpload/FileUpload'
 
 export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubmit, goBack, infoData, isEdit, isLoading, isError }) => {
     const { t } = useTranslation()

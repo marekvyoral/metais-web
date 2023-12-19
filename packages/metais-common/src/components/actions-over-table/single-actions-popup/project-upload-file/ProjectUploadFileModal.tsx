@@ -1,18 +1,19 @@
 import { BaseModal } from '@isdd/idsk-ui-kit'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
 
 import { ProjectUploadFileView } from './ProjectUploadFileView'
 
-import { ConfigurationItemUi, useGetDocumentHook, useStoreGraphHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
+import { ConfigurationItemUi, useGetDocumentHook, useReadCiNeighboursHook, useStoreGraphHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useIsOwnerByGidHook } from '@isdd/metais-common/src/api/generated/iam-swagger'
 import { useGenerateCodeAndURLHook } from '@isdd/metais-common/src/api/generated/types-repo-swagger'
 import { API_CALL_RETRY_COUNT } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 export interface IDocType extends ConfigurationItemUi {
     confluence?: boolean
@@ -30,6 +31,21 @@ export interface IProjectUploadFileModalProps {
     docNumber: string
     project?: ConfigurationItemUi
     isCi?: boolean
+    setSuccessfullyAdded?: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+const filter = {
+    neighboursFilter: {
+        filterType: 'CI',
+        usageType: ['system', 'application'],
+        metaAttributes: {
+            state: ['DRAFT'],
+        },
+        relType: [],
+        ciType: ['Dokument'],
+    },
+    page: 1,
+    perpage: 200,
 }
 
 export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
@@ -41,20 +57,22 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
     docNumber,
     project,
     isCi,
+    setSuccessfullyAdded,
 }) => {
-    const { t } = useTranslation()
     const { register, handleSubmit, reset, formState } = useForm()
-    const baseURL = import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL
+    const fileUploadRef = useRef<IFileUploadRef>(null)
     const {
-        state: { user, token },
+        state: { user },
     } = useAuth()
     const genetateCodeAndUrl = useGenerateCodeAndURLHook()
     const storeActivity = useStoreGraphHook()
     const [isLoading, setIsLoading] = useState(false)
     const checkIsOwnerByGid = useIsOwnerByGidHook()
+    const getCiNeigboursHook = useReadCiNeighboursHook()
     const getDocument = useGetDocumentHook()
 
-    const { callStatusInCycles: getStatus } = useGetStatus()
+    const [note, setNote] = useState('')
+    const [duplicateNames, setDuplicateNames] = useState<string[] | undefined>()
 
     const getDocumentExists = async (docId: string) => {
         let done = false
@@ -73,93 +91,92 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
         return done
     }
 
-    const handleUploadFile = async (formData1: FieldValues) => {
+    const { getRequestStatus, isError, isProcessedError, isTooManyFetchesError } = useGetStatus()
+
+    const onFileUploadSuccess = async (filesData: FileUploadData[]) => {
+        const graphRequests = filesData.map(async (file) => {
+            const code = await genetateCodeAndUrl('Dokument')
+
+            return storeActivity({
+                storeSet: {
+                    configurationItemSet: [
+                        {
+                            uuid: file.fileId,
+                            owner: project?.metaAttributes?.owner,
+                            type: 'Dokument',
+                            attributes: [
+                                { name: 'Gen_Profil_zdroj', value: 'c_zdroj.1' },
+                                { name: 'Gen_Profil_kod_metais', value: code.cicode },
+                                { name: 'Gen_Profil_ref_id', value: code.ciurl },
+                                { name: 'Gen_Profil_nazov', value: file.fileName },
+                                { name: 'Gen_Profil_poznamka', value: note },
+                                {
+                                    name: 'Profil_Dokument_Projekt_typ_dokumentu',
+                                    ...(!!item?.pdType && { value: item?.pdType }),
+                                    ...(!!addButtonSectionName &&
+                                        !item?.pdType &&
+                                        addButtonSectionName != 'all' && { value: addButtonSectionName + docNumber }),
+                                },
+                            ],
+                        },
+                    ],
+                    relationshipSet: [
+                        {
+                            type: isCi ? 'CI_HAS_DOCUMENT' : 'PROJECT_HAS_DOCUMENT',
+                            attributes: [],
+                            startUuid: project?.uuid,
+                            endUuid: file.fileId,
+                            owner: project?.metaAttributes?.owner,
+                            uuid: uuidV4(),
+                        },
+                    ],
+                },
+            })
+        })
+        const graphResponses = await Promise.all(graphRequests)
+        const statusRequests = graphResponses.map((response, index) => {
+            return getRequestStatus(response.requestId ?? '', async () => {
+                await getDocumentExists(filesData[index].fileId ?? '').then((isExist) => {
+                    if (isExist && setSuccessfullyAdded) {
+                        setSuccessfullyAdded((prevValue: string[]) => [...prevValue, filesData[index].fileName ?? ''])
+                    }
+                })
+            })
+        })
+        await Promise.all(statusRequests)
+
+        setIsLoading(false)
+        reset()
+        onSubmit({ isSuccess: true, isError: false, additionalInfo: { action: 'addedDocuments' } })
+        if ([isError, isProcessedError, isTooManyFetchesError].some((error) => error)) onSubmit({ isSuccess: true, isError: false })
+    }
+
+    const handleUploadFile = async (formData: FieldValues) => {
         setIsLoading(true)
-        const id = uuidV4()
-        const formData = new FormData()
-        formData.append('file', formData1.file[0])
-        try {
-            let docExists = false
+        setSuccessfullyAdded && setSuccessfullyAdded([])
+        setNote(formData.note)
+
+        const neighbours = await getCiNeigboursHook(project?.uuid ?? '', filter)
+        const docNames = fileUploadRef.current?.getFilesToUpload().map((doc) => doc.fileName)
+        const duplicateDocs = neighbours.fromNodes?.neighbourPairs?.filter((node) => {
+            return docNames?.includes(node.configurationItem?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov])
+        })
+
+        if (duplicateDocs && duplicateDocs?.length < 1) {
             const isOwner = await checkIsOwnerByGid({
                 login: user?.login,
                 gids: [project?.metaAttributes?.owner ?? ''],
             })
             if (isOwner.isOwner?.[0].owner) {
-                const response = await fetch(baseURL + '/file/' + id, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                })
-
-                if (response.ok) {
-                    const code = await genetateCodeAndUrl('Dokument')
-                    const graphResponse = await storeActivity({
-                        storeSet: {
-                            configurationItemSet: [
-                                {
-                                    uuid: id,
-                                    owner: project?.metaAttributes?.owner,
-                                    type: 'Dokument',
-                                    attributes: [
-                                        { name: 'Gen_Profil_zdroj', value: 'c_zdroj.1' },
-                                        { name: 'Gen_Profil_kod_metais', value: code.cicode },
-                                        { name: 'Gen_Profil_ref_id', value: code.ciurl },
-                                        { name: 'Gen_Profil_nazov', value: item?.name ?? formData1.file[0].name },
-                                        { name: 'Gen_Profil_poznamka', ...(formData1?.note && { value: formData1?.note }) },
-                                        {
-                                            name: 'Profil_Dokument_Projekt_typ_dokumentu',
-                                            ...(!!item?.pdType && { value: item?.pdType }),
-                                            ...(!!addButtonSectionName &&
-                                                !item?.pdType &&
-                                                addButtonSectionName != 'all' && { value: addButtonSectionName + docNumber }),
-                                        },
-                                    ],
-                                },
-                            ],
-                            relationshipSet: [
-                                {
-                                    type: isCi ? 'CI_HAS_DOCUMENT' : 'PROJECT_HAS_DOCUMENT',
-                                    attributes: [],
-                                    startUuid: project?.uuid,
-                                    endUuid: id,
-                                    owner: project?.metaAttributes?.owner,
-                                    uuid: uuidV4(),
-                                },
-                            ],
-                        },
-                    })
-
-                    const status = graphResponse.requestId && (await getStatus(graphResponse.requestId))
-                    if (status) {
-                        docExists = await getDocumentExists(id)
-                    }
-                }
-                // if (response.status === 413) {
-                //     setIsLoading(false)
-                //     reset()
-                //     onSubmit({
-                //         isSuccess: false,
-                //         isError: true,
-                //         successMessage: t('bulkActions.addFile.success'),
-                //         errorMessage: t('bulkActions.addFile.tooLargeError'),
-                //     })
-                // }
-
-                if (docExists) {
-                    setIsLoading(false)
-                    reset()
-                    onSubmit({ isSuccess: true, isError: false, successMessage: t('bulkActions.addFile.success') })
-                } else {
-                    setIsLoading(false)
-                    reset()
-                    onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.addFile.success') })
-                }
+                fileUploadRef.current?.startUploading()
             }
-        } catch (e) {
+        } else {
+            setDuplicateNames(
+                duplicateDocs?.map((doc) => {
+                    return doc.configurationItem?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
+                }),
+            )
             setIsLoading(false)
-            onSubmit({ isSuccess: false, isError: true, successMessage: t('bulkActions.addFile.success') })
         }
     }
 
@@ -171,6 +188,9 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
                 onSubmit={handleSubmit(handleUploadFile)}
                 formState={formState}
                 isLoading={isLoading}
+                fileUploadRef={fileUploadRef}
+                onFileUploadSuccess={onFileUploadSuccess}
+                duplicateDocNames={duplicateNames}
             />
         </BaseModal>
     )

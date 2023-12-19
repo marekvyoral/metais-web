@@ -8,6 +8,6 @@
         "src/components/ci-table",
         "../../packages/metais-common/src/components/containers/AttributesContainer.tsx",
         "../../packages/metais-common/src/components/select-organization"
-    ],
+, "../../packages/metais-common/src/components/FileUpload"    ],
     "exclude": ["**/api/generated/*.ts", "node_modules", "dist"]
 }
