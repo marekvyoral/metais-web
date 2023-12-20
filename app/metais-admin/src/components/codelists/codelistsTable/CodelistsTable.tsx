@@ -167,6 +167,13 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
         }
     }, [createEnum.isSuccess])
 
+    useEffect(() => {
+        reset({
+            defaultData,
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filteredData?.results])
+
     const columns: Array<ColumnDef<EnumTypePreview>> = [
         {
             header: t('codelists.code'),
