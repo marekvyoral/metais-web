@@ -25,6 +25,14 @@ export const transformColumnsMap = new Map<string, string>([
     ['Gui_Profil_RR_rr_register_nazov', 'isvsName'],
     ['Gui_Profil_RR_rr_source_register', 'isvsSource'],
     ['Gui_Profil_RR_rr_register_registrator', 'registratorName'],
+    ['ReferenceRegister_Profile_contactRegistratorEmail', 'contactRegistratorEmail'],
+    ['ReferenceRegister_Profile_contactEmail', 'contactEmail'],
+    ['ReferenceRegister_Profile_contactRegistratorFirstName', 'contactRegistratorFirstName'],
+    ['ReferenceRegister_Profile_contactFirstName', 'contactFirstName'],
+    ['ReferenceRegister_Profile_contactRegistratorLastName', 'contactRegistratorLastName'],
+    ['ReferenceRegister_Profile_contactLastName', 'contactLastName'],
+    ['ReferenceRegister_Profile_contactPhone', 'contactPhone'],
+    ['ReferenceRegister_Profile_contactRegistratorPhone', 'contactRegistratorPhone'],
     // ['Gui_Profil_RR_rr_evidencia_po', 'managerName'],
     ['Gui_Profil_RR_rr_creator', 'creator'],
     ['Gui_Profil_RR_rr_ref_id', 'isvsRefId'],
@@ -44,6 +52,17 @@ export const transformColumnsMap = new Map<string, string>([
     ['ReferenceRegisterItem_Profile_refID', 'refID'],
     ['ReferenceRegisterItem_Profile_note', 'note'],
     ['ReferenceRegisterItem_Profile_dataElementRefID', 'dataElementRefID'],
+])
+
+export const transformNameColumnsMap = new Map<string, string>([
+    ['ReferenceRegister_Profile_contactEmail', 'Email správcu'],
+    ['ReferenceRegister_Profile_contactRegistratorEmail', 'Email registrátora'],
+    ['ReferenceRegister_Profile_contactFirstName', 'Meno správcu'],
+    ['ReferenceRegister_Profile_contactRegistratorFirstName', 'Meno registrátora'],
+    ['ReferenceRegister_Profile_contactLastName', 'Priezvisko správcu'],
+    ['ReferenceRegister_Profile_contactRegistratorLastName', 'Priezvisko registrátora'],
+    ['ReferenceRegister_Profile_contactPhone', 'Telefón správcu'],
+    ['ReferenceRegister_Profile_contactRegistratorPhone', 'Telefón registrátora'],
 ])
 
 export const columnsToIgnore = [
