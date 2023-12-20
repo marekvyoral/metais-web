@@ -17,7 +17,6 @@ export const MeetingsListContainer: React.FC = () => {
         endDate: '',
         pageNumber: BASE_PAGE_NUMBER,
         pageSize: BASE_PAGE_SIZE,
-        ascending: false,
         sort: [
             {
                 orderBy: 'beginDate',
