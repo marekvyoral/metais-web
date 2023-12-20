@@ -15,11 +15,14 @@ export const useGetStatus = () => {
     const callStatusInCycles = async (requestId: string) => {
         let done = false
         for (let index = 0; index < API_CALL_RETRY_COUNT; index++) {
-            const status = await requestStatus(requestId)
-            if (status.processed && status.status === 'READY') {
+            const result = await requestStatus(requestId)
+            if ((result.processed && result.status === 'READY') || (result.status === 'PARTIALLY_READY' && result.indexReady === 'READY')) {
                 done = true
                 break
-            } else if (status.processed && (status.status === 'FAILED' || status.status === 'ERROR')) {
+            } else if (
+                (result.processed && (result.status === 'FAILED' || result.status === 'ERROR')) ||
+                (result.status === 'PARTIALLY_READY' && result.indexReady === 'FAILED')
+            ) {
                 setIsProcessedError(true)
                 setIsLoading(false)
                 break
