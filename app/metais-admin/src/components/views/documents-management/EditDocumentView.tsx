@@ -39,7 +39,7 @@ export const EditDocumentView: React.FC<IView> = ({ infoData, saveDocument, isLo
         handleSubmit,
         formState: { errors, isValid },
         clearErrors,
-    } = useForm({ resolver: yupResolver(docSchema(t)) })
+    } = useForm({ resolver: yupResolver(docSchema(t)), defaultValues: { docId: documentData?.type } })
     const onSubmit = (fieldValues: FieldValues) => {
         if (isValid) {
             saveDocument({
@@ -72,11 +72,12 @@ export const EditDocumentView: React.FC<IView> = ({ infoData, saveDocument, isLo
     return (
         <QueryFeedback loading={isLoading} error={isError}>
             <div ref={wrapperRef} />
-
-            <TextHeading size="L">{t('documentsManagement.addDocument')}</TextHeading>
+            <TextHeading size="L">{t('documentsManagement.editDocument')}</TextHeading>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Input
+                    disabled
                     defaultValue={documentData?.type}
+                    value={documentData?.type}
                     placeholder={t('documentsManagement.input')}
                     required
                     error={errors[DOCUMENT_FIELDS.ID]?.message as string}
@@ -118,14 +119,14 @@ export const EditDocumentView: React.FC<IView> = ({ infoData, saveDocument, isLo
                     label={t('documentsManagement.required')}
                     id={DOCUMENT_FIELDS.REQUIRED}
                     {...register(DOCUMENT_FIELDS.REQUIRED)}
-                    checked={documentData?.required}
+                    defaultChecked={documentData?.required}
                 />
                 <div style={{ height: '20px' }} />
                 <CheckBox
-                    label={t('documentsManagement.confluence')}
+                    label={t('documentsManagement.xWiki')}
                     id={DOCUMENT_FIELDS.CONFLUENCE}
                     {...register(DOCUMENT_FIELDS.CONFLUENCE)}
-                    checked={documentData?.confluence}
+                    defaultChecked={documentData?.confluence}
                 />
 
                 <SubmitWithFeedback

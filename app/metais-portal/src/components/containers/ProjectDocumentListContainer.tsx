@@ -13,6 +13,7 @@ export interface IDocType extends ConfigurationItemUi {
     confluence?: boolean
     pdType?: string
     name?: string
+    id?: number
 }
 
 export interface ISection {
@@ -90,11 +91,13 @@ export const ProjectDocumentsListContainer: React.FC<IProjectDocumentsListContai
         name: section.name,
         id: section.id,
         docs: [
-            ...section.docs.map((doc) => ({ ...doc, ...(documents.find((d) => d.attributes?.Gen_Profil_nazov == doc.name) ?? {}) })),
+            ...section.docs.map((doc) => ({
+                ...(documents.find((d) => d.attributes?.Profil_Dokument_Projekt_typ_dokumentu == doc.pdType) ?? {}),
+                ...doc,
+            })),
             ...mapDocsBySectionName(section, documents),
         ],
     }))
-
     return (
         <View
             projectData={projectData}
