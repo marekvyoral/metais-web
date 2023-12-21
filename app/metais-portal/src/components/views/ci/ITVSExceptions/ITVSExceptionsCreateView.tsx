@@ -1,28 +1,28 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Button, ButtonGroupRow, ErrorBlock } from '@isdd/idsk-ui-kit/index'
+import { ATTRIBUTE_NAME, Gen_Profil } from '@isdd/metais-common/api'
+import { CiWithRelsUi, ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
+import { metaisEmail } from '@isdd/metais-common/constants'
+import { QueryFeedback } from '@isdd/metais-common/index'
+import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
-import { ATTRIBUTE_NAME, Gen_Profil } from '@isdd/metais-common/api'
-import { QueryFeedback } from '@isdd/metais-common/index'
-import { Button, ButtonGroupRow, ErrorBlock } from '@isdd/idsk-ui-kit/index'
-import { SelectPublicAuthorityAndRole } from '@isdd/metais-common/common/SelectPublicAuthorityAndRole'
-import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { CiWithRelsUi, ConfigurationItemUiAttributes } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import classNames from 'classnames'
-import { metaisEmail } from '@isdd/metais-common/constants'
+import { Link } from 'react-router-dom'
 
 import styles from './styles.module.scss'
 
-import { CreateEntityData } from '@/components/create-entity/CreateEntity'
-import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
-import { CreateEntitySection } from '@/components/create-entity/CreateEntitySection'
-import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
-import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
-import { RelationForITVSExceptionSelect } from '@/components/containers/ITVS-exceptions/RelationForITVSExceptionSelect'
-import { RelationshipWithCiType } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
 import { formatForFormDefaultValues } from '@/componentHelpers/ci'
+import { AttributesConfigTechNames } from '@/components/attribute-input/attributeDisplaySettings'
+import { RelationshipWithCiType } from '@/components/containers/ITVS-exceptions/ITVSExceptionsCreateContainer'
+import { RelationForITVSExceptionSelect } from '@/components/containers/ITVS-exceptions/RelationForITVSExceptionSelect'
+import { CreateEntityData } from '@/components/create-entity/CreateEntity'
+import { CreateEntitySection } from '@/components/create-entity/CreateEntitySection'
+import { generateFormSchema } from '@/components/create-entity/createCiEntityFormSchema'
 import { INewCiRelationData } from '@/hooks/useNewCiRelation.hook'
+import { PublicAuthorityState, RoleState } from '@/hooks/usePublicAuthorityAndRole.hook'
 
 export interface IRelationshipSetState {
     relationshipSet: RelationshipWithCiType[]
@@ -60,8 +60,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
     allCIsInRelations,
     uploadError,
 }) => {
-    const { t } = useTranslation()
-    //const navigate = useNavigate()
+    const { t, i18n } = useTranslation()
 
     const { attributesData, generatedEntityId } = data
     const { constraintsData, ciTypeData, unitsData } = attributesData
@@ -111,7 +110,7 @@ export const ITVSExceptionsCreateView: React.FC<Props> = ({
 
     const methods = useForm({
         defaultValues: formatForFormDefaultValues(updateCiItemId ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes),
-        resolver: yupResolver(generateFormSchema([ciTypeData as AttributeProfile, ...attProfiles], t, roleState?.selectedRole)),
+        resolver: yupResolver(generateFormSchema([ciTypeData as AttributeProfile, ...attProfiles], t, i18n.language, roleState?.selectedRole)),
     })
 
     const { handleSubmit, setValue, reset } = methods

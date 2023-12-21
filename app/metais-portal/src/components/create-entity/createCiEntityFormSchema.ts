@@ -20,6 +20,7 @@ import { REGEX_TEL, HTML_TYPE } from '@isdd/metais-common/constants'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import * as yup from 'yup'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { numericProperties } from './createEntityHelpers'
 
@@ -56,6 +57,7 @@ const KRIS_DATES = ['Profil_KRIS_datum_vypracovania', 'Profil_KRIS_datum_schvale
 export const generateFormSchema = (
     data: AttributeProfile[],
     t: TFunction<'translation', undefined, 'translation'>,
+    lang: string,
     selectedRole?: GidRoleData | null,
 ) => {
     const schema: SchemaType = {}
@@ -102,11 +104,9 @@ export const generateFormSchema = (
                     if (attribute.constraints) {
                         const regexConstraints = attribute.constraints[0] as AttributeConstraintRegexAllOf
                         const regexPattern = new RegExp(regexConstraints.regex ?? '')
-
+                        const attributeMessage = lang === Languages.ENGLISH ? attribute.engDescription : attribute.description
                         schema[attribute.technicalName] = array().of(
-                            string()
-                                .matches(regexPattern, t('validation.wrongRegex', { regexFormat: regexConstraints.regex }))
-                                .required(t('validation.required')),
+                            string().matches(regexPattern, attributeMessage).required(t('validation.required')),
                         )
                     }
                     break
@@ -131,9 +131,9 @@ export const generateFormSchema = (
                     if (attribute.constraints) {
                         const regexConstraints = attribute.constraints[0] as AttributeConstraintRegexAllOf
                         const regexPattern = new RegExp(regexConstraints.regex ?? '')
-
+                        const attributeMessage = lang === Languages.ENGLISH ? attribute.engDescription : attribute.description
                         schema[attribute.technicalName] = string()
-                            .matches(regexPattern, t('validation.wrongRegex', { regexFormat: regexConstraints.regex }))
+                            .matches(regexPattern, attributeMessage)
                             .when('isRequired', (_, current) => {
                                 if (isRequired) {
                                     return current.required(t('validation.required'))

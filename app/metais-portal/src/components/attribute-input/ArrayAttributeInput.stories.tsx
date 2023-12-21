@@ -51,9 +51,11 @@ const arrayAttribute = {
 export const ArrayInput: Story = {
     render: ({ ...args }) => {
         const FormWrapper = () => {
-            const { t } = useTranslation()
+            const { t, i18n } = useTranslation()
             const { handleSubmit, register, formState } = useForm({
-                resolver: yupResolver(generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], t)),
+                resolver: yupResolver(
+                    generateFormSchema([{ attributes: [args.attribute], roleList: ['EA_GARPO'] }] as AttributeProfile[], t, i18n.language),
+                ),
             })
             const { errors, isSubmitted } = formState
             const [data, setData] = useState('')
