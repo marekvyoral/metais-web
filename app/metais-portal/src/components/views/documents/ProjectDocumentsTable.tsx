@@ -7,10 +7,11 @@ import { BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { useGetMetaHook } from '@isdd/metais-common/api/generated/dms-swagger'
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
-import { BASE_PAGE_NUMBER, DEFAULT_PAGESIZE_OPTIONS, INVALIDATED } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, DEFAULT_PAGESIZE_OPTIONS, INVALIDATED, ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
+import { useGetProjectDocumentHook, useUploadProjectDocumentHook } from '@isdd/metais-common/api/generated/wiki-swagger'
 import {
     ActionsOverTable,
     BulkPopup,
@@ -26,6 +27,7 @@ import { CellContext, ColumnDef } from '@tanstack/react-table'
 import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ApiError } from '@isdd/metais-common/api/generated/iam-swagger'
 
 import { allChecked, checkAll, downloadFile, downloadFiles, filterAsync, isInvalid, isMeta } from './utils'
 
@@ -52,6 +54,8 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
     const isUserAdmin = user?.roles.includes('R_ADMIN')
     const isUserLogged = user !== null
     const isInvalidated = projectData?.metaAttributes?.state === INVALIDATED
+    const xWikiDoc = useGetProjectDocumentHook()
+    const uploadxWikiDoc = useUploadProjectDocumentHook()
 
     const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
     const [rowSelection, setRowSelection] = useState({})
@@ -63,6 +67,8 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
     const [openAddModal, setOpenAddModal] = useState<IDocType>()
     const [selectedItems, setSelectedItems] = useState<IDocType[]>([])
     const [singleItemHistory, setSingleItemHistory] = useState<IDocType>()
+    const [isLocalLoading, setIsLocalLoading] = useState(false)
+
     const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: () => void) => {
         closeFunction()
         refetch()
@@ -142,33 +148,53 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
         />,
     ]
 
+    const createAndOpenXWikiDoc = (row: CellContext<IDocType, unknown>) => {
+        setIsLocalLoading(true)
+        if (projectData?.uuid && row.cell.row.original.id) {
+            xWikiDoc(projectData?.uuid, row.cell.row.original.id, { createIfNotExists: true })
+                .then((doc) => doc.xwikiUrl && window.open(doc.xwikiUrl, '_blank'))
+                .catch(() => setBulkActionResult({ isSuccess: false, isError: true }))
+                .finally(() => setIsLocalLoading(false))
+        }
+    }
+
+    const uploadXWikiDoc = (row: CellContext<IDocType, unknown>) => {
+        setIsLocalLoading(true)
+
+        if (projectData?.uuid && row.cell.row.original.id)
+            uploadxWikiDoc(
+                projectData?.uuid,
+                row.cell.row.original.id,
+                ...(row.cell.row.original.uuid ? [{ documentUuid: row.cell.row.original.uuid }] : []),
+            )
+                .then((resp) => {
+                    if (resp) {
+                        refetch()
+                        setBulkActionResult({ isSuccess: true, isError: false, successMessage: t('bulkActions.addFile.success') })
+                    }
+                })
+                .catch((err) => {
+                    if (JSON.parse((err as ApiError).message ?? '').type == ReponseErrorCodeEnum.GNR404) {
+                        setBulkActionResult({
+                            isSuccess: false,
+                            isError: true,
+                            errorMessage: t('feedback.documentForProjectDoesntExists', {
+                                docName: row.cell.row.original.name,
+                                projectCode: projectData.attributes?.Gen_Profil_nazov,
+                            }),
+                        })
+                    }
+                })
+                .finally(() => setIsLocalLoading(false))
+    }
+
     const getConfluenceActions = (row: CellContext<IDocType, unknown>) => [
-        <ButtonLink
-            key={'buttonOpen'}
-            label={t('actionOverTable.options.openDocument')}
-            onClick={async () => {
-                const item = docs ? docs[row.row.index] : {}
-                const response = await getMeta(item.uuid ?? '')
-                if (response) {
-                    downloadFile(`${DMS_DOWNLOAD_FILE}${item?.uuid}`, item.name ?? item?.attributes?.Gen_Profil_nazov)
-                }
-            }}
-        />,
-        <ButtonLink
-            key={'buttonUpload'}
-            label={t('actionOverTable.options.uploadDocument')}
-            onClick={async () => {
-                const item = docs ? docs[row.row.index] : {}
-                const response = await getMeta(item.uuid ?? '')
-                if (response) {
-                    downloadFile(`${DMS_DOWNLOAD_FILE}${item?.uuid}`, item.name ?? item?.attributes?.Gen_Profil_nazov)
-                }
-            }}
-        />,
+        <ButtonLink key={'buttonOpen'} label={t('actionOverTable.options.openDocument')} onClick={() => createAndOpenXWikiDoc(row)} />,
+        <ButtonLink key={'buttonUpload'} label={t('actionOverTable.options.uploadDocument')} onClick={async () => uploadXWikiDoc(row)} />,
     ]
 
     const resolveAction = (row: CellContext<IDocType, unknown>): JSX.Element[] => {
-        if (row.cell.row.original.uuid == undefined && !!row.cell.row.original.confluence) {
+        if (row.cell.row.original.uuid == undefined && !row.cell.row.original.confluence) {
             return getAddAction(row)
         } else if (row.cell.row.original.confluence) {
             return getConfluenceActions(row)
@@ -207,10 +233,10 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
                 ),
         },
         {
-            accessorFn: (row) => (row?.attributes?.Gen_Profil_nazov == undefined ? row.name : row?.attributes?.Gen_Profil_nazov),
+            accessorFn: (row) => (row?.name != undefined ? row.name : row?.attributes?.Gen_Profil_nazov),
             header: t('documentsTab.table.name'),
             id: 'documentsTab.table.name',
-            size: 400,
+            size: 300,
             meta: {
                 getCellContext: (ctx) => ctx?.getValue?.() as string,
             },
@@ -276,7 +302,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
             accessorKey: 'bulkActions',
             header: '',
             id: 'bulkActions',
-            size: 80,
+            size: 100,
             cell: (row) => <BulkPopup label={t('actionOverTable.options.title')} items={() => resolveAction(row)} />,
         },
     ]
@@ -302,7 +328,7 @@ export const ProjectDocumentsTable: React.FC<IView> = ({
         }
     }, [bulkActionResult, scrollToMutationFeedback])
     return (
-        <QueryFeedback loading={isLoading || isBulkLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
+        <QueryFeedback loading={isLoading || isBulkLoading || isLocalLoading} error={isError} indicatorProps={{ layer: 'parent' }} withChildren>
             {(bulkActionResult?.isError || bulkActionResult?.isSuccess) && (
                 <div ref={wrapperRef}>
                     <MutationFeedback

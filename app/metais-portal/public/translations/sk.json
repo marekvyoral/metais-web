@@ -934,7 +934,8 @@
         "codeAlreadyExists": "An internal codelist with such a code already exists",
         "sendToRevalidate": "Položka bola poslaná na spracovanie, prosím počkajte na notifikáciu o splatnení.",
         "passwordChanged": "Heslo bolo úspešne zmenené",
-        "WRONG_OLD_PASSWORD": "Chybné staré heslo"
+        "WRONG_OLD_PASSWORD": "Chybné staré heslo",
+        "documentForProjectDoesntExists": "Dokument '{{docName}}' pre Projekt '{{projectCode}}' neexistuje"
     },
     "accordion": {
         "openAll": "Otvoriť všetko",
@@ -1046,7 +1047,8 @@
         "addFile": {
             "title": "Pridať dokument",
             "upload": "Nahrať súbor",
-            "tooLargeError": "Dokument je príliš veľký"
+            "tooLargeError": "Dokument je príliš veľký",
+            "success": "Dokument bol úspešne pridaný"
         },
         "updateFile": {
             "title": "Aktualizácia dokumentu",

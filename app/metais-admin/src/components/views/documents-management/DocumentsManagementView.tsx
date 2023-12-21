@@ -1,5 +1,5 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { Button, ISelectColumnType, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, ISelectColumnType, LoadingIndicator, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { DocumentGroup } from '@isdd/metais-common/api/generated/kris-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, documentsManagementDefaultSelectedColumns } from '@isdd/metais-common/constants'
@@ -10,6 +10,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import classNames from 'classnames'
+
+import styles from './styles.module.scss'
 
 import { DocumentFilterData, IView, defaultFilter } from '@/components/containers/documents-management/DocumentsManagementContaiter'
 
@@ -23,6 +26,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
     resetOrder,
     handleFilterChange,
     refetchDocs,
+    isFetching,
 }) => {
     const { t } = useTranslation()
     const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>(documentsManagementDefaultSelectedColumns(t))
@@ -107,6 +111,7 @@ export const DocumentsManagementView: React.FC<IView> = ({
                 form={({ setValue, watch }) => {
                     const filterPhase = watch('phase')
                     const filterState = watch('status')
+
                     return (
                         <div>
                             <SimpleSelect
@@ -120,6 +125,9 @@ export const DocumentsManagementView: React.FC<IView> = ({
                                     disabled: !f.phase.valid ?? false,
                                 }))}
                                 placeholder={t('documentsManagement.projectPhase')}
+                                onChange={(value) => {
+                                    handleFilterChange({ ...filter, status: '', phase: value })
+                                }}
                             />
                             <SimpleSelect
                                 disabled={filterPhase == undefined}
@@ -188,21 +196,25 @@ export const DocumentsManagementView: React.FC<IView> = ({
             </ActionsOverTable>
             <MutationFeedback error={false} success={isActionSuccess.value} successMessage={t('mutationFeedback.successfulCreated')} />
             <div ref={wrapperRef} />
-            <Table
-                columns={columns.filter((c) =>
-                    selectedColumns
-                        .filter((s) => s.selected == true)
-                        .map((s) => s.technicalName)
-                        .includes(c.id ?? ''),
-                )}
-                data={data}
-                reorderRow={reorderRow}
-                canDragRow={editingRowsPositions}
-                sort={filter.sort}
-                onSortingChange={(columnSort) => {
-                    handleFilterChange({ sort: columnSort })
-                }}
-            />
+            <div className={classNames({ [styles.positionRelative]: isFetching })}>
+                {isFetching && <LoadingIndicator />}
+                <Table
+                    isLoading={isFetching}
+                    columns={columns.filter((c) =>
+                        selectedColumns
+                            .filter((s) => s.selected == true)
+                            .map((s) => s.technicalName)
+                            .includes(c.id ?? ''),
+                    )}
+                    data={data}
+                    reorderRow={reorderRow}
+                    canDragRow={editingRowsPositions}
+                    sort={filter.sort}
+                    onSortingChange={(columnSort) => {
+                        handleFilterChange({ sort: columnSort })
+                    }}
+                />
+            </div>
         </>
     )
 }

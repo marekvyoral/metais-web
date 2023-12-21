@@ -928,7 +928,8 @@
         "codeAlreadyExists": "An internal codelist with such a code already exists",
         "sendToRevalidate": "The item has been sent for processing, please wait for payment notification.",
         "passwordChanged": "Password changed successfuly",
-        "WRONG_OLD_PASSWORD": "Wrong old password"
+        "WRONG_OLD_PASSWORD": "Wrong old password",
+        "documentForProjectDoesntExists": "Document '{{docName}}' for Project '{{projectCode}}' does not exist"
     },
     "accordion": {
         "openAll": "Open all",
@@ -1040,7 +1041,8 @@
         "addFile": {
             "title": "Add document",
             "upload": "Upload file",
-            "tooLargeError": "Document too large"
+            "tooLargeError": "Document too large",
+            "success": "Document has been added successfully"
         },
         "updateFile": {
             "title": "Update document",
