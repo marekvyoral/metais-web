@@ -10,26 +10,28 @@ export interface IVotesParamsData {
 }
 
 export const getVoteParamsData = (voteStateOption: string, effectiveFrom: string, effectiveTo: string): IVotesParamsData => {
-    const dateNow = DateTime.now().toString()
-    const formattedDateNow = formatDateForDefaultValue(dateNow)
+    const dateForPlaned = formatDateForDefaultValue(DateTime.now().plus({ days: 1 }).toString())
+    const dateForEnded = formatDateForDefaultValue(DateTime.now().minus({ days: 1 }).toString())
+    const dateForUpcomingFrom = formatDateForDefaultValue(DateTime.now().minus({ days: 2 }).toString())
+    const dateForUpcomingTo = formatDateForDefaultValue(DateTime.now().plus({ days: 2 }).toString())
     switch (voteStateOption) {
         case VoteStateOptionEnum.PLANNED:
             return {
                 state: effectiveFrom ? undefined : VoteStateEnum.CREATED,
-                dateFrom: effectiveFrom ? effectiveFrom : formattedDateNow,
+                dateFrom: effectiveFrom ? effectiveFrom : dateForPlaned,
                 dateTo: effectiveTo,
             }
         case VoteStateOptionEnum.ENDED:
             return {
                 state: effectiveTo ? undefined : VoteStateEnum.CREATED,
                 dateFrom: effectiveFrom,
-                dateTo: effectiveTo ? effectiveTo : formattedDateNow,
+                dateTo: effectiveTo ? effectiveTo : dateForEnded,
             }
         case VoteStateOptionEnum.UPCOMING:
             return {
                 state: VoteStateEnum.CREATED,
-                dateFrom: effectiveFrom ? effectiveFrom : formattedDateNow,
-                dateTo: effectiveTo ? effectiveTo : formattedDateNow,
+                dateFrom: effectiveFrom ? effectiveFrom : dateForUpcomingFrom,
+                dateTo: effectiveTo ? effectiveTo : dateForUpcomingTo,
             }
         case VoteStateOptionEnum.CANCELED:
             return { state: VoteStateEnum.CANCELED, dateFrom: effectiveFrom, dateTo: effectiveTo }
