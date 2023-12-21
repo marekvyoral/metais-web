@@ -39,7 +39,7 @@ export const RelationDetailEditForm: React.FC<Props> = ({
     isEditLoading,
     editRelation,
 }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const flatAttributesFromSchema = relationTypeData?.attributes?.concat(
         relationTypeData?.attributeProfiles?.flatMap((profile) => profile.attributes ?? []) ?? [],
     )
@@ -65,7 +65,9 @@ export const RelationDetailEditForm: React.FC<Props> = ({
             return acc
         }, {}),
 
-        resolver: yupResolver(generateFormSchema([relationTypeData as AttributeProfile, ...(relationTypeData?.attributeProfiles ?? [])], t)),
+        resolver: yupResolver(
+            generateFormSchema([relationTypeData as AttributeProfile, ...(relationTypeData?.attributeProfiles ?? [])], t, i18n.language),
+        ),
     })
 
     const [hasReset, setHasReset] = useState(false)

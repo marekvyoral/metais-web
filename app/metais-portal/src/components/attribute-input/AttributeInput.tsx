@@ -2,7 +2,7 @@ import { CheckBox } from '@isdd/idsk-ui-kit/checkbox/CheckBox'
 import { Input, MultiSelect, SimpleSelect } from '@isdd/idsk-ui-kit/index'
 import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
 import { EnumItem, EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
-import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { Attribute, AttributeAttributeTypeEnum, AttributeConstraintRegexAllOf } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import classnames from 'classnames'
 import React from 'react'
 import {
@@ -132,6 +132,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
         attribute?.constraints && attribute.constraints.length > 0 && attribute?.constraints[0].type === ConstraintTypes.CI_TYPE
     const ciType = isConstraintCiType(attribute?.constraints?.[0]) ? attribute?.constraints?.[0].ciType ?? '' : ''
 
+    const isRegex = attribute?.constraints && attribute.constraints.length > 0 && attribute?.constraints[0].type === ConstraintTypes.REGEX
     const hasNumericValue = isInteger || isDouble || isFloat || isByte || isLong || isShort
     const hasStringValue = isString || isCharacter
 
@@ -300,6 +301,25 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                     }
                 }
                 return
+            }
+
+            case isRegex: {
+                const regexConstraints = attribute?.constraints?.[0] as AttributeConstraintRegexAllOf
+                return (
+                    <Input
+                        correct={isCorrect}
+                        info={t('validation.wrongRegex', { regexFormat: regexConstraints.regex })}
+                        className={classnames(attClassNameConfig.attributes[attribute.technicalName]?.className || '')}
+                        id={attribute.technicalName}
+                        disabled={attribute.technicalName === AttributesConfigTechNames.METAIS_CODE || attribute.readOnly || disabled}
+                        label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
+                        error={error?.message?.toString()}
+                        {...register(attribute.technicalName + nameSufix)}
+                        type="text"
+                        defaultValue={getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate)}
+                        hint={hint}
+                    />
+                )
             }
 
             case hasNumericValue: {

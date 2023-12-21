@@ -109,6 +109,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
             generateFormSchema(
                 isUpdate ? combinedProfiles : getFilteredAttributeProfilesBasedOnRole(combinedProfiles, selectedRole?.roleName ?? ''),
                 t,
+                i18n.language,
             ),
         ),
     })
