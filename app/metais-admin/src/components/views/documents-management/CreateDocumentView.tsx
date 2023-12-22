@@ -113,7 +113,7 @@ export const CreateDocumentView: React.FC<IView> = ({ infoData, saveDocument, is
                 />
                 <CheckBox label={t('documentsManagement.required')} id={DOCUMENT_FIELDS.REQUIRED} {...register(DOCUMENT_FIELDS.REQUIRED)} />
                 <div style={{ height: '20px' }} />
-                <CheckBox label={t('documentsManagement.confluence')} id={DOCUMENT_FIELDS.CONFLUENCE} {...register(DOCUMENT_FIELDS.CONFLUENCE)} />
+                <CheckBox label={t('documentsManagement.xWiki')} id={DOCUMENT_FIELDS.CONFLUENCE} {...register(DOCUMENT_FIELDS.CONFLUENCE)} />
 
                 <SubmitWithFeedback
                     submitButtonLabel={t('codelists.save')}

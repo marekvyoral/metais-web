@@ -457,6 +457,27 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
+    xwiki: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_WIKI_SWAGGER_URL ?? '',
+            filters: {
+                tags: ['project-controller'],
+            },
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/wiki-swagger.ts`,
+            override: {
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useWikiSwaggerClient.ts',
+                    name: 'useWikiSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
     monitoring: {
         input: {
             target: process.env.VITE_REST_CLIENT_MONITORING_SWAGGER_URL ?? '',

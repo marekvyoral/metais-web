@@ -7,6 +7,26 @@ export const isObjectEmpty = (obj: unknown) => {
     return false
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const cleanObjectValues = (obj: any) => {
+    for (const key in obj) {
+        if (obj[key] && typeof obj[key] === 'object') {
+            // Recursively call the function for nested objects
+            cleanObjectValues(obj[key])
+
+            // If the nested object becomes empty after removal, delete the key
+            if (Object.keys(obj[key]).length === 0) {
+                delete obj[key]
+            }
+        } else if (obj[key] === undefined || obj[key] === '') {
+            // Delete the key if the value is undefined or an empty string
+            delete obj[key]
+        }
+    }
+
+    return obj
+}
+
 export const formatNumberWithSpaces = (value: string) => {
     const formatted = value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
     return formatted

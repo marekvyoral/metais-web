@@ -13,28 +13,7 @@ const CodeListDetailPage = () => {
 
     return (
         <CodeListPermissionsWrapper id={id ?? ''}>
-            <CodeListDetailContainer
-                id={id}
-                View={(props) => (
-                    <CodeListDetailWrapper
-                        data={props.data}
-                        isLoading={props.isLoading}
-                        isLoadingMutation={props.isLoadingMutation}
-                        isError={props.isError}
-                        actionsErrorMessages={props.actionsErrorMessages}
-                        isSuccessMutation={props.isSuccessMutation}
-                        successMessage={props.successMessage}
-                        workingLanguage={props.workingLanguage}
-                        setWorkingLanguage={props.setWorkingLanguage}
-                        invalidateCodeListDetailCache={props.invalidateCodeListDetailCache}
-                        handleAllItemsReadyToPublish={props.handleAllItemsReadyToPublish}
-                        handlePublishCodeList={props.handlePublishCodeList}
-                        handleReturnToMainGestor={props.handleReturnToMainGestor}
-                        handleSendToIsvs={props.handleSendToIsvs}
-                        handleSendToSzzc={props.handleSendToSzzc}
-                    />
-                )}
-            />
+            <CodeListDetailContainer id={id} View={(props) => <CodeListDetailWrapper {...props} />} />
         </CodeListPermissionsWrapper>
     )
 }

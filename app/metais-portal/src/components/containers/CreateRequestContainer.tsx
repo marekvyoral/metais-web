@@ -1,5 +1,6 @@
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { HierarchyPOFilterUi, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { Roles } from '@isdd/metais-common/api/constants'
 import {
     useCreateCodelistRequest,
     useExistsCodelist,
@@ -22,7 +23,7 @@ import { RequestListPermissionsWrapper } from '@/components/permissions/RequestL
 import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
 import { IItemDates } from '@/components/views/requestLists/components/modalItem/DateModalItem'
 import { IOption } from '@/components/views/requestLists/CreateRequestView'
-import { IRequestForm, getUUID, mapFormToSave } from '@/componentHelpers/requests'
+import { IRequestForm, getRoleUUID, mapFormToSave } from '@/componentHelpers/requests'
 import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 export interface CreateRequestViewProps {
@@ -80,7 +81,12 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
         perpage: 20,
         sortBy: SortBy.HIERARCHY_FROM_ROOT,
         sortType: SortType.ASC,
-        rights: userDataGroups.map((group) => ({ poUUID: group.orgId, roles: group.roles.map((role) => role.roleUuid) })),
+        rights: userDataGroups
+            .filter((group) => group.roles.some((role) => role.roleName === Roles.SZC_HLGES))
+            .map((group) => ({
+                poUUID: group.orgId,
+                roles: group.roles.filter((role) => role.roleName === Roles.SZC_HLGES).map((role) => role.roleUuid),
+            })),
     }
 
     const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
@@ -91,7 +97,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
             options:
                 options.rights?.map((item) => ({
                     name: item.poName || '',
-                    value: `${getUUID(user?.groupData ?? [])}-${item.poUUID || ''}`,
+                    value: `${getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)}-${item.poUUID || ''}`,
                 })) || [],
             hasMore: options.rights?.length ? true : false,
             additional: {
@@ -118,7 +124,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     }
 
     const onSave = async (formData: IRequestForm) => {
-        const uuid = getUUID(user?.groupData ?? [])
+        const uuid = getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)
         const saveData = mapFormToSave(formData, i18n.language)
         setAddOrGetGroupError(undefined)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
@@ -139,7 +145,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     }
 
     const onSend = async (formData: IRequestForm) => {
-        const uuid = getUUID(user?.groupData ?? [])
+        const uuid = getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)
         setAddOrGetGroupError(undefined)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {

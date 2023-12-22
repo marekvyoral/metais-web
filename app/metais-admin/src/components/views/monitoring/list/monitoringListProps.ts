@@ -5,6 +5,7 @@ export enum MonitoringListColumnsEnum {
     METHOD = 'httpMethod',
     REQUEST_HEADER = 'httpRequestHeader',
     RESPONSE_STATUS = 'httpResponseStatus',
+    REQUEST_BODY = 'httpRequestBody',
     RESPONSE_BODY_REGEX = 'httpResponseBodyRegex',
     PERIODICITY = 'periodicity',
     ENABLED = 'enabled',

@@ -1,7 +1,7 @@
-import { BaseModal, Button, ButtonGroupRow, ButtonLink, Tab, Table, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Button, ButtonGroupRow, ButtonLink, ISelectColumnType, Tab, Table, Tabs, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { Document } from '@isdd/metais-common/api/generated/kris-swagger'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, documentsManagementGroupDocumentsDefaultSelectedColumns } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ActionsOverTable, MutationFeedback } from '@isdd/metais-common/index'
@@ -22,9 +22,6 @@ export const DocumentsGroupView: React.FC<IView> = ({
     refetchDocuments,
     filter,
     handleFilterChange,
-    selectedColumns,
-    setSelectedColumns,
-    resetSelectedColumns,
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
@@ -32,6 +29,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
 
     const [deleteGroupModalOpen, setDeleteGroupModalOpen] = useState(false)
     const [documentToDelete, setDocumentToDelete] = useState<Document>()
+    const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>(documentsManagementGroupDocumentsDefaultSelectedColumns(t))
 
     const columns: Array<ColumnDef<Document>> = [
         {
@@ -84,7 +82,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
             id: 'documentGroup',
         },
         {
-            header: t('documentsManagement.confluence'),
+            header: t('documentsManagement.xWiki'),
             accessorFn: (row) => row?.confluence,
             enableSorting: true,
             id: 'confluence',
@@ -150,6 +148,10 @@ export const DocumentsGroupView: React.FC<IView> = ({
         await deleteDocument(id)
         setDocumentToDelete(undefined)
         refetchDocuments()
+    }
+
+    const resetSelectedColumns = () => {
+        setSelectedColumns(documentsManagementGroupDocumentsDefaultSelectedColumns(t))
     }
     const { isActionSuccess } = useActionSuccess()
     const { wrapperRef, scrollToMutationFeedback } = useScroll()

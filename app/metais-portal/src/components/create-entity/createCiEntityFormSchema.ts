@@ -16,10 +16,11 @@ import {
     object,
     string,
 } from 'yup'
-import { REGEX_TEL, HTML_TYPE } from '@isdd/metais-common/constants'
+import { REGEX_TEL, HTML_TYPE, REGEX_EMAIL } from '@isdd/metais-common/constants'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import * as yup from 'yup'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { numericProperties } from './createEntityHelpers'
 
@@ -56,6 +57,7 @@ const KRIS_DATES = ['Profil_KRIS_datum_vypracovania', 'Profil_KRIS_datum_schvale
 export const generateFormSchema = (
     data: AttributeProfile[],
     t: TFunction<'translation', undefined, 'translation'>,
+    lang: string,
     selectedRole?: GidRoleData | null,
 ) => {
     const schema: SchemaType = {}
@@ -71,7 +73,9 @@ export const generateFormSchema = (
         const isInterval = attribute?.constraints && attribute.constraints.length > 0 && attribute?.constraints[0].type === 'interval'
 
         const isEmail = attribute?.name?.toLowerCase() === 'email'
-        const isPhone = attribute?.name?.toLowerCase() === 'phone'
+        const isPhone = attribute?.name == t('validation.phone')
+
+        const isName = attribute?.name == t('validation.name') || attribute?.name == t('validation.surname')
 
         const isRequired = attribute?.mandatory?.type === 'critical' && !attribute.readOnly
 
@@ -102,11 +106,9 @@ export const generateFormSchema = (
                     if (attribute.constraints) {
                         const regexConstraints = attribute.constraints[0] as AttributeConstraintRegexAllOf
                         const regexPattern = new RegExp(regexConstraints.regex ?? '')
-
+                        const attributeMessage = lang === Languages.ENGLISH ? attribute.engDescription : attribute.description
                         schema[attribute.technicalName] = array().of(
-                            string()
-                                .matches(regexPattern, t('validation.wrongRegex', { regexFormat: regexConstraints.regex }))
-                                .required(t('validation.required')),
+                            string().matches(regexPattern, attributeMessage).required(t('validation.required')),
                         )
                     }
                     break
@@ -131,9 +133,9 @@ export const generateFormSchema = (
                     if (attribute.constraints) {
                         const regexConstraints = attribute.constraints[0] as AttributeConstraintRegexAllOf
                         const regexPattern = new RegExp(regexConstraints.regex ?? '')
-
+                        const attributeMessage = lang === Languages.ENGLISH ? attribute.engDescription : attribute.description
                         schema[attribute.technicalName] = string()
-                            .matches(regexPattern, t('validation.wrongRegex', { regexFormat: regexConstraints.regex }))
+                            .matches(regexPattern, attributeMessage)
                             .when('isRequired', (_, current) => {
                                 if (isRequired) {
                                     return current.required(t('validation.required'))
@@ -145,7 +147,7 @@ export const generateFormSchema = (
                 }
                 case isEmail: {
                     schema[attribute.technicalName] = string()
-                        .email(t('validation.invalidEmail'))
+                        .matches(REGEX_EMAIL, t('validation.invalidEmail'))
                         .when('isRequired', (_, current) => {
                             if (isRequired) {
                                 return current.required(t('validation.required'))
@@ -157,6 +159,18 @@ export const generateFormSchema = (
                 case isPhone: {
                     schema[attribute.technicalName] = string()
                         .matches(REGEX_TEL, t('validation.invalidPhone'))
+                        .when('isRequired', (_, current) => {
+                            if (isRequired) {
+                                return current.required(t('validation.required'))
+                            }
+                            return current
+                        })
+                    break
+                }
+
+                case isName: {
+                    schema[attribute.technicalName] = string()
+                        .matches(/^([^0-9]*)$/, t('validation.noNumbers'))
                         .when('isRequired', (_, current) => {
                             if (isRequired) {
                                 return current.required(t('validation.required'))

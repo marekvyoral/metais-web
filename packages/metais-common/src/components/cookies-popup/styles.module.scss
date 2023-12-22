@@ -1,0 +1,27 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.popupBoxStyle {
+    background-color: govuk-colour('mid-grey');
+    display: flex;
+    padding: govuk-spacing(2);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: govuk-spacing(4);
+}
+
+.stickyStyles {
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+}
+
+.marginBottom0 {
+    margin-bottom: 0 !important;
+}
+
+.closeButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}

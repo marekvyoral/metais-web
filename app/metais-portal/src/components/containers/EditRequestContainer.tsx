@@ -11,7 +11,7 @@ import {
     useSaveDates,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RequestListState } from '@isdd/metais-common/constants'
@@ -20,12 +20,14 @@ import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useInvalidateCodeListRequestCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
+import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
 import { CreateRequestViewProps } from '@/components/containers/CreateRequestContainer'
 import { IItemDates } from '@/components/views/requestLists/components/modalItem/DateModalItem'
 import { IItemForm } from '@/components/views/requestLists/components/modalItem/ModalItem'
-import { IRequestForm, getUUID, mapFormToSave, mapToForm } from '@/componentHelpers/requests'
+import { IRequestForm, getRoleUUID, mapFormToSave, mapToForm } from '@/componentHelpers/requests'
 import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 interface EditRequestContainerProps {
@@ -42,20 +44,20 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
 
     const { setIsActionSuccess } = useActionSuccess()
     const { invalidate } = useInvalidateCodeListRequestCache()
+    const addOrGetGroupHook = useAddOrGetGroupHook()
 
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
+    const [errorAddOrGetGroup, setAddOrGetGroupError] = useState<{ message: string }>()
 
     const defaultFilter: HierarchyPOFilterUi = {
         perpage: 20,
         sortBy: SortBy.HIERARCHY_FROM_ROOT,
         sortType: SortType.ASC,
         rights: userDataGroups
-            .filter((group) => group.roles.some((role) => role.roleName === Roles.SZC_HLGES || role.roleName === Roles.SZC_VEDGES))
+            .filter((group) => group.roles.some((role) => role.roleName === Roles.SZC_HLGES))
             .map((group) => ({
                 poUUID: group.orgId,
-                roles: group.roles
-                    .filter((role) => role.roleName === Roles.SZC_HLGES || role.roleName === Roles.SZC_VEDGES)
-                    .map((role) => role.roleUuid),
+                roles: group.roles.filter((role) => role.roleName === Roles.SZC_HLGES).map((role) => role.roleUuid),
             })),
     }
 
@@ -98,7 +100,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
             options:
                 options.rights?.map((item) => ({
                     name: item.poName || '',
-                    value: `${getUUID(user?.groupData ?? [])}-${item.poUUID || ''}`,
+                    value: `${getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)}-${item.poUUID || ''}`,
                 })) || [],
             hasMore: options.rights?.length ? true : false,
             additional: {
@@ -149,24 +151,38 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
                 navigate(redirectPath)
             })
         } else {
-            mutateAsync({ data: mappedData }).then(() => {
-                invalidate(Number(requestId))
-                setIsActionSuccess({ value: true, path: redirectPath, additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' } })
-                navigate(redirectPath)
-            })
+            const uuid = getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)
+            addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
+                .then(() => {
+                    mutateAsync({ data: mappedData }).then(() => {
+                        invalidate(Number(requestId))
+                        setIsActionSuccess({ value: true, path: redirectPath, additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' } })
+                        navigate(redirectPath)
+                    })
+                })
+                .catch((error) => {
+                    setAddOrGetGroupError(error)
+                })
         }
     }
 
     const onSend = async (formData: IRequestForm) => {
-        mutateSendASync({ data: mapFormToSave(formData, i18n.language, data?.id) }).then(() => {
-            invalidate(Number(requestId))
-            setIsActionSuccess({
-                value: true,
-                path: NavigationSubRoutes.REQUESTLIST,
-                additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' },
+        const uuid = getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)
+        addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
+            .then(() => {
+                mutateSendASync({ data: mapFormToSave(formData, i18n.language, data?.id) }).then(() => {
+                    invalidate(Number(requestId))
+                    setIsActionSuccess({
+                        value: true,
+                        path: NavigationSubRoutes.REQUESTLIST,
+                        additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' },
+                    })
+                    navigate(`${NavigationSubRoutes.REQUESTLIST}`)
+                })
             })
-            navigate(`${NavigationSubRoutes.REQUESTLIST}`)
-        })
+            .catch((error) => {
+                setAddOrGetGroupError(error)
+            })
     }
 
     const onSaveDates = (dates: IItemDates, items: Record<string, IItemForm>) => {
@@ -191,11 +207,18 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
 
     const isLoading = [isLoadingDetail, isLoadingItemList, isLoadingAttributeProfile].some((item) => item)
     const isLoadingMutation = [isLoadingSave, isLoadingSend, isLoadingSaveDates, isLoadingItemAction, isLoadingExists].some((item) => item)
-    const isError = [isErrorSave, isErrorDetail, isErrorSend, isErrorItemList, isErrorAttributeProfile, isErrorSaveDates, isErrorItemAction].some(
-        (item) => item,
-    )
+    const isError = [
+        errorAddOrGetGroup,
+        isErrorSave,
+        isErrorDetail,
+        isErrorSend,
+        isErrorItemList,
+        isErrorAttributeProfile,
+        isErrorSaveDates,
+        isErrorItemAction,
+    ].some((item) => item)
     const errorMessages = getErrorTranslateKeys(
-        [errorDetail, errorSend, errorSave, errorSaveDates, errorItemAction].map((item) => item as { message: string }),
+        [errorAddOrGetGroup, errorDetail, errorSend, errorSave, errorSaveDates, errorItemAction].map((item) => item as { message: string }),
     )
     const canEdit =
         data &&

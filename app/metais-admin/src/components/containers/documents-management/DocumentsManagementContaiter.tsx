@@ -5,6 +5,7 @@ import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, FAZA_PROJEKTU, STAV_PROJEKTU } from '
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { QueryFeedback } from '@isdd/metais-common/index'
 
 import { filterObjectByValue } from './utils'
 
@@ -19,6 +20,7 @@ export interface DocumentFilterData extends IFilterParams, IFilter {
 }
 
 export interface IView {
+    isFetching?: boolean
     filterMap: FilterMap[]
     filter: DocumentFilterData
     data: DocumentGroup[]
@@ -47,14 +49,14 @@ export const defaultFilter: DocumentFilterData = {
 export const DocumentsManagementContainer: React.FC<IDocumentsManagementContainerProps> = ({ View }) => {
     const saveGroup = useSaveDocumentGroupHook()
 
-    const { data: phaseMap } = useGetPhaseMap()
-    const { data: projectStatus } = useGetValidEnum(STAV_PROJEKTU)
-    const { data: projectPhase } = useGetValidEnum(FAZA_PROJEKTU)
+    const { data: phaseMap, isLoading: isLoadingPhaseMap } = useGetPhaseMap()
+    const { data: projectStatus, isLoading: isLoadingEnum } = useGetValidEnum(STAV_PROJEKTU)
+    const { data: projectPhase, isLoading: isLoadingPhase } = useGetValidEnum(FAZA_PROJEKTU)
     const [filterMap, setFilterMap] = useState<FilterMap[]>([])
 
     const { filter, handleFilterChange } = useFilterParams<DocumentFilterData>(defaultFilter)
 
-    const { data: documentsData, refetch: refetchDocs } = useGetDocumentGroups(filter.status, { query: { enabled: filter.status != '' } })
+    const { data: documentsData, refetch: refetchDocs, isFetching } = useGetDocumentGroups(filter.status, { query: { enabled: filter.status != '' } })
     const [dataRows, setDataRows] = useState<DocumentGroup[]>()
 
     useEffect(() => {
@@ -89,16 +91,19 @@ export const DocumentsManagementContainer: React.FC<IDocumentsManagementContaine
     }
 
     return (
-        <View
-            refetchDocs={refetchDocs}
-            filterMap={filterMap}
-            filter={filter}
-            data={dataRows ?? []}
-            statuses={projectStatus?.enumItems ?? []}
-            setData={setDataRows}
-            saveOrder={saveOrder}
-            resetOrder={resetOrder}
-            handleFilterChange={handleFilterChange}
-        />
+        <QueryFeedback loading={isLoadingPhaseMap || isLoadingEnum || isLoadingPhase}>
+            <View
+                isFetching={isFetching}
+                refetchDocs={refetchDocs}
+                filterMap={filterMap}
+                filter={filter}
+                data={dataRows ?? []}
+                statuses={projectStatus?.enumItems ?? []}
+                setData={setDataRows}
+                saveOrder={saveOrder}
+                resetOrder={resetOrder}
+                handleFilterChange={handleFilterChange}
+            />
+        </QueryFeedback>
     )
 }

@@ -136,15 +136,8 @@ export const CodelistContainer: React.FC<ICodelistContainer> = ({ View, defaults
 
     const createEnum = useInsertEnumType({
         mutation: {
-            onSuccess(variables, context) {
-                queryClient.setQueryData(['codelists'], (oldData: EnumTypePreviewList | undefined) => {
-                    if (oldData == null || oldData.results == null) return oldData
-
-                    const itemToUpdateIndex = oldData.results.findIndex((item) => item.code === context.data.code)
-                    return {
-                        results: [context.data, ...oldData.results.slice(0, itemToUpdateIndex), ...oldData.results.slice(itemToUpdateIndex + 1)],
-                    }
-                })
+            onSuccess() {
+                refetch()
             },
         },
     })

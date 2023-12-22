@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { ObjectSchema, array, boolean, number, object, string } from 'yup'
+import { ObjectSchema, TestContext, array, boolean, number, object, string } from 'yup'
 import { ApiCodelistManager, ApiCodelistName } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { REGEX_EMAIL, REGEX_TEL } from '@isdd/metais-common/constants'
 
@@ -26,6 +26,12 @@ interface IOutput {
     }>
 }
 
+const effectiveToGreaterThanEffectiveFrom = (value: string | undefined, context: TestContext) => {
+    const effectiveFrom = context.from?.[0].value.effectiveFrom
+    if (!value || !effectiveFrom) return true
+    return new Date(effectiveFrom) < new Date(value)
+}
+
 export const useEditCodeListSchema = (): IOutput => {
     const { t } = useTranslation()
     const schema = object().shape({
@@ -49,7 +55,6 @@ export const useEditCodeListSchema = (): IOutput => {
         }),
         codeListNotes: array().of(
             object().shape({
-                id: number().required(),
                 text: string(),
             }),
         ),
@@ -63,7 +68,7 @@ export const useEditCodeListSchema = (): IOutput => {
             object().shape({
                 value: string().required(t('codeListList.requestValidations.mainGestor')),
                 effectiveFrom: string().required(t('codeListList.requestValidations.dateFrom')),
-                effectiveTo: string(),
+                effectiveTo: string().test('largerThan', t('codeListList.requestValidations.dateGreaterThan'), effectiveToGreaterThanEffectiveFrom),
             }),
         ),
         newMainGestor: object().shape({
@@ -72,19 +77,18 @@ export const useEditCodeListSchema = (): IOutput => {
                 is: (value: string | undefined) => value && value.length > 0,
                 then: () => string().required(t('codeListList.requestValidations.dateFrom')),
             }),
-            effectiveTo: string(),
+            effectiveTo: string().test('largerThan', t('codeListList.requestValidations.dateGreaterThan'), effectiveToGreaterThanEffectiveFrom),
         }),
         nextGestor: array().of(
             object().shape({
                 value: string(),
                 effectiveFrom: string(),
-                effectiveTo: string(),
+                effectiveTo: string().test('largerThan', t('codeListList.requestValidations.dateGreaterThan'), effectiveToGreaterThanEffectiveFrom),
             }),
         ),
         refIndicator: string(),
         effectiveFrom: string().required(t('codeListList.requestValidations.effectiveFrom')),
-        effectiveTo: string(),
-
+        effectiveTo: string().test('largerThan', t('codeListList.requestValidations.dateGreaterThan'), effectiveToGreaterThanEffectiveFrom),
         name: string().required(t('codeListList.requestValidations.name')),
         lastName: string().required(t('codeListList.requestValidations.lastName')),
         phone: string().required(t('codeListList.requestValidations.phone')).matches(REGEX_TEL, t('codeListList.requestValidations.phoneFormat')),

@@ -52,16 +52,16 @@ export const documentsManagementDefaultSelectedColumns = (t: TFunction<'translat
     { technicalName: 'descriptionEng', name: t('egov.engDescription'), selected: false },
 ]
 
-export const documentsManagementGroupDocumentsDefaultSelectedColumns = [
+export const documentsManagementGroupDocumentsDefaultSelectedColumns = (t: TFunction<'translation', undefined, 'translation'>) => [
     { technicalName: 'id', name: 'Id', selected: false },
-    { technicalName: 'name', name: 'Name', selected: true },
-    { technicalName: 'nameEng', name: 'NameEng', selected: false },
-    { technicalName: 'description', name: 'Description', selected: true },
-    { technicalName: 'descriptionEng', name: 'DescriptionEng', selected: false },
-    { technicalName: 'confluence', name: 'Confluence', selected: true },
-    { technicalName: 'required', name: 'Required', selected: true },
-    { technicalName: 'documentGroup', name: 'Document group', selected: false },
-    { technicalName: 'type', name: 'Type', selected: false },
+    { technicalName: 'name', name: t('documentsManagement.name'), selected: true },
+    { technicalName: 'nameEng', name: t('documentsManagement.nameEng'), selected: false },
+    { technicalName: 'description', name: t('documentsManagement.description'), selected: true },
+    { technicalName: 'descriptionEng', name: t('documentsManagement.descriptionEng'), selected: false },
+    { technicalName: 'confluence', name: t('documentsManagement.xWiki'), selected: true },
+    { technicalName: 'required', name: t('documentsManagement.required'), selected: true },
+    { technicalName: 'documentGroup', name: t('documentsManagement.documentGroup'), selected: false },
+    { technicalName: 'type', name: t('documentsManagement.type'), selected: false },
 ]
 
 export const getProjectsFinanceManagementSelectedColumns = (t: TFunction<'translation', undefined, 'translation'>) => [
@@ -96,6 +96,7 @@ export enum EClaimState {
 export enum ReponseErrorCodeEnum {
     DEFAULT = 'default',
     GNR403 = 'gnr403',
+    GNR404 = 'gnr404',
     GNR412 = 'gnr412',
     NTM01 = 'ntm01',
     GNR500 = 'gnr500',

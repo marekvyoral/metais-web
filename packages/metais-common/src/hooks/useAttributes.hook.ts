@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useDetailData } from './useDetailData'
 
 import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { transformColumnsMap } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
+import { transformColumnsMap, transformNameColumnsMap } from '@isdd/metais-common/api/hooks/containers/containerHelpers'
 
 export const useAttributesHook = (entityName?: string) => {
     const { i18n } = useTranslation()
@@ -22,10 +22,13 @@ export const useAttributesHook = (entityName?: string) => {
     const attributeProfiles = ciTypeData?.attributeProfiles
     const attributes = ciTypeData?.attributes
     const renamedAttributes =
-        ciTypeData?.attributes?.map((attr) => ({
-            ...attr,
-            technicalName: transformColumnsMap.get(attr?.technicalName ?? '') ?? attr?.technicalName,
-        })) ?? []
+        ciTypeData?.attributes?.map((attr) => {
+            return {
+                ...attr,
+                name: transformNameColumnsMap.get(attr?.technicalName ?? '') ?? attr?.name,
+                technicalName: transformColumnsMap.get(attr?.technicalName ?? '') ?? attr?.technicalName,
+            }
+        }) ?? []
 
     return {
         attributeProfiles,

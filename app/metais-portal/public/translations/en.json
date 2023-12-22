@@ -756,8 +756,12 @@
         "dateMustBeLessOrEqualThen": "Date must be less or equal then",
         "minCharacters": "{{itemName}} must be at least {{min}} characters",
         "maxCharacters": "{{itemName}} must be at most {{max}} characters",
+        "noNumbers": "Can't contain numbers",
         "password": "Password must meet the criteria: at least one uppercase, one lowercase, and one other character.",
-        "repeatPassword": "Repeated password must be same "
+        "repeatPassword": "Repeated password must be same ",
+        "phone": "Phone",
+        "name": "Name",
+        "surname": "Surname"
     },
     "createEntity": {
         "required": "required",
@@ -928,7 +932,8 @@
         "codeAlreadyExists": "An internal codelist with such a code already exists",
         "sendToRevalidate": "The item has been sent for processing, please wait for payment notification.",
         "passwordChanged": "Password changed successfuly",
-        "WRONG_OLD_PASSWORD": "Wrong old password"
+        "WRONG_OLD_PASSWORD": "Wrong old password",
+        "documentForProjectDoesntExists": "Document '{{docName}}' for Project '{{projectCode}}' does not exist"
     },
     "accordion": {
         "openAll": "Open all",
@@ -1040,7 +1045,8 @@
         "addFile": {
             "title": "Add document",
             "upload": "Upload file",
-            "tooLargeError": "Document too large"
+            "tooLargeError": "Document too large",
+            "success": "Document has been added successfully"
         },
         "updateFile": {
             "title": "Update document",
@@ -1161,7 +1167,8 @@
             "codeListsList": "List of codelists",
             "publicCodeListsList": "List of published codelists",
             "requestList": "List of requests to add a codelist",
-            "detail": "Codelist detail"
+            "detail": "Codelist detail",
+            "detailEdit": "Edit codelist"
         },
         "filter": {
             "title": "Filter"
@@ -1273,6 +1280,7 @@
         "button": {
             "edit": "Edit",
             "more": "More actions",
+            "save": "Save",
             "language": "Language",
             "exportCodelist": "Codelist export",
             "importCodelist": "Codelist import",
@@ -1353,6 +1361,7 @@
             "orderFormat": "Value is not a number",
             "dateFormat": "Invalid date format",
             "dateFrom": "From is required field",
+            "dateGreaterThan": "Date to must be greater than date from",
             "effectiveFrom": "Entry into force is required field",
             "itemCode": "Codelist ID is required field",
             "itemName": "Codelist name is required field"
@@ -2181,5 +2190,21 @@
         "sendingRequest": "Send request to reset password",
         "emailFormatError": "Invalid Email Format: Please enter a valid email address in the format 'name@example.com'.",
         "emailRequiredError": "Email address is required for password reset request."
+    },
+    "cookies": {
+        "heading": "Cookies usage information",
+        "cookies": "Cookies",
+        "cookiesDesc": "To make this site work properly, we sometimes place small data files called cookies on your device. Most big websites do this too.",
+        "whatAreCookies": "What are cookies?",
+        "whatAreCookiesDesc": "A cookie is a small text file that a website saves onyour computer or mobile device when you visit the site. It enables the website to remember your actions and preferences (such as login, language, font size and other display preferences) over a period of time, so you don't have to keep re-entering them whenever you come back to the site or browse from one page to another.",
+        "howDoWeUseCookies": "How do we use cookies?",
+        "howDoWeUseCookiesDesc": "Enabling these cookies is not strictly necessary for the website to work but it will provide you with a better browsing experience. You can delete or block these cookies, but if you do that some features of this site may not work as intended.",
+        "howToControlCookies": "How to control cookies",
+        "howToControlCookiesDesc": "You can delete all cookies that are already on your computer and you can set most browsers to prevent them from being placed. If you do this, however, you may have to manually adjust some preferences every time you visit a site and some services and functionalities may not work.",
+        "howRefuseTheUseOfCookies": "How refuse the use of cookies",
+        "howRefuseTheUseOfCookiesDesc": "Using cookies it can be set by your internet browser. Most browsers automatically accept cookies already in the initial setup.",
+        "thisPageUsesCookies": "This site uses cookies.",
+        "accept": "Accept",
+        "moreInfo": "More info"
     }
 }

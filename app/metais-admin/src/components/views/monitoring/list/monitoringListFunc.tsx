@@ -71,7 +71,7 @@ export const monitoringListColumns = (t: TFunction): Array<ColumnDef<ApiActiveMo
             header: t('monitoring.list.table.httpRequestBody'),
             accessorFn: (row) => row?.httpRequestBody,
             enableSorting: false,
-            id: MonitoringListColumnsEnum.RESPONSE_BODY_REGEX,
+            id: MonitoringListColumnsEnum.REQUEST_BODY,
             size: 120,
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
         },

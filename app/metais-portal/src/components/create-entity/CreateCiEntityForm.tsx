@@ -105,10 +105,12 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
     const fromDefaultValues = formatForFormDefaultValues(isUpdate ? defaultItemAttributeValues ?? {} : defaultValuesFromSchema ?? {}, attributes)
     const methods = useForm({
         defaultValues: fromDefaultValues,
+        mode: 'onChange',
         resolver: yupResolver(
             generateFormSchema(
                 isUpdate ? combinedProfiles : getFilteredAttributeProfilesBasedOnRole(combinedProfiles, selectedRole?.roleName ?? ''),
                 t,
+                i18n.language,
             ),
         ),
     })

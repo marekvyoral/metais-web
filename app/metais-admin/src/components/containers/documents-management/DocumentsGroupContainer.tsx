@@ -1,4 +1,3 @@
-import { ISelectColumnType } from '@isdd/idsk-ui-kit/index'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import {
@@ -11,15 +10,10 @@ import {
     useGetDocuments,
     useSaveDocumentGroupHook,
 } from '@isdd/metais-common/api/generated/kris-swagger'
-import {
-    BASE_PAGE_NUMBER,
-    BASE_PAGE_SIZE,
-    STAV_PROJEKTU,
-    documentsManagementGroupDocumentsDefaultSelectedColumns,
-} from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, STAV_PROJEKTU } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 export interface DocumentFilter extends IFilterParams, IFilter {}
@@ -46,9 +40,6 @@ export interface IView {
     isLoading: boolean
     filter: DocumentFilter
     handleFilterChange: (changedFilter: IFilter) => void
-    selectedColumns: ISelectColumnType[]
-    setSelectedColumns: Dispatch<SetStateAction<ISelectColumnType[]>>
-    resetSelectedColumns: () => void
 }
 
 export interface IDocumentsGroupContainerProps {
@@ -72,7 +63,6 @@ export const DocumentsGroupContainer: React.FC<IDocumentsGroupContainerProps> = 
 
     const { filter, handleFilterChange } = useFilterParams<DocumentFilter>(defaultFilter)
 
-    const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>([...documentsManagementGroupDocumentsDefaultSelectedColumns])
     const [dataRows, setDataRows] = useState<Document[]>()
     useEffect(() => {
         if (documentsData != undefined) {
@@ -80,9 +70,6 @@ export const DocumentsGroupContainer: React.FC<IDocumentsGroupContainerProps> = 
         }
     }, [documentsData])
 
-    useEffect(() => {
-        setDataRows(documentsData?.slice(0, filter.pageSize))
-    }, [documentsData, filter.pageSize])
     return (
         <View
             isLoading={isDocumentsLoading || isInfoLoading || isStatusesLoading}
@@ -95,9 +82,6 @@ export const DocumentsGroupContainer: React.FC<IDocumentsGroupContainerProps> = 
             refetchDocuments={refetchDocuments}
             filter={filter}
             handleFilterChange={handleFilterChange}
-            selectedColumns={selectedColumns}
-            setSelectedColumns={setSelectedColumns}
-            resetSelectedColumns={() => setSelectedColumns([...documentsManagementGroupDocumentsDefaultSelectedColumns])}
             refetchInfoData={refetchInfoData}
         />
     )

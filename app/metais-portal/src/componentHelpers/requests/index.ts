@@ -1,7 +1,6 @@
 import { ApiCodelistItem, ApiCodelistItemList, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 import { RequestListState } from '@isdd/metais-common/constants'
-import { Roles } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
 import { Group } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { INoteRow } from '@/components/views/requestLists/CreateRequestView'
@@ -242,9 +241,9 @@ export const mapToForm = (language: string, itemList?: ApiCodelistItemList, data
     } as IRequestForm
 }
 
-export const getUUID = (dataRoles: Group[]): string => {
+export const getRoleUUID = (dataRoles: Group[], roleName: string): string => {
     const roleUuid = dataRoles.reduce((uuid, org) => {
-        const roleRes = org.roles.find((role) => role.roleName === Roles.SZCHLGES || role.roleName === Roles.SZCVEDGES)
+        const roleRes = org.roles.find((role) => role.roleName === roleName)
         return roleRes?.roleUuid ?? uuid
     }, '')
 
