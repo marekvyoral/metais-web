@@ -1056,12 +1056,39 @@
         "column": "Column"
     },
     "monitoring": {
+        "breadcrumbs": {
+            "home":"Home Page",
+            "monitoring":"Monitoring management",
+            "params" :"Monitoring parameters",
+            "list": "Monitoring records"
+        },
         "heading": "Monitoring mangement",
         "params": {
             "heading": "Monitoring parameters"
         },
         "list": {
-            "heading": "Monitoring records"
+            "heading": "Monitoring records",
+            "filter": {
+                "title": "Filter",
+                "ciLabel": "ISVS/KS/AS"
+            },
+            "table": {
+                "isvsName": "ISVS/KS/AS",
+                "entityType": "Entity Type",
+                "httpUrl": "Url",
+                "httpMethod": "Method",
+                "httpRequestHeader": "Request header",
+                "httpRequestBody": "Request Body",
+                "httpResponseStatus": "Response Status",
+                "httpResponseBodyRegex": "Response Body Regex",
+                "periodicity": "Periodicity",
+                "enabled": "Enabled"
+            },
+            "newMonitoringButton": "Add new record"
+        },
+        "type": {
+            "yes": "Yes",
+            "no": "No"
         }
     },
     "projects": {

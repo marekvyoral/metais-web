@@ -1,7 +1,6 @@
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ATTRIBUTE_NAME, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useMemo } from 'react'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { FindActiveMonitoringCfgParams, useFindActiveMonitoringCfg } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { CiListFilterContainerUi, useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SortType } from '@isdd/idsk-ui-kit/types'
@@ -13,11 +12,6 @@ interface IMonitoringListContainer {
 }
 
 export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ View }) => {
-    const {
-        state: { user },
-    } = useAuth()
-    const isUserLogged = user !== null
-
     const defaultFilterValues: IMonitoringListFilterData = {
         isvsUuid: '',
     }
@@ -42,8 +36,6 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
 
     const ciListParamValues = useMemo((): CiListFilterContainerUi => {
         const monitoringParams: CiListFilterContainerUi = {
-            // page: filter.pageNumber ?? BASE_PAGE_NUMBER,
-            // perpage: filter.pageSize ?? BASE_PAGE_SIZE,
             sortBy: ATTRIBUTE_NAME.Gen_Profil_nazov,
             sortType: SortType.ASC,
             filter: {
@@ -67,22 +59,30 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
     const {
         data: ciListData,
         isLoading: isLoadingCiList,
-        // isFetching: isFetchingCiList,
+        isFetching: isFetchingCiList,
         isError: isErrorCiList,
         // refetch: getReadCiListRefetch,
     } = useReadCiList1(ciListParamValues)
 
+    const refetchListData = async () => {
+        //getReadCiListRefetch()
+        await getMonitoringListRefetch()
+    }
+
     return (
-        <QueryFeedback loading={isLoading || isLoadingCiList} error={isError || isErrorCiList} indicatorProps={{ layer: 'parent' }}>
+        <QueryFeedback
+            loading={isLoading || isLoadingCiList || isFetchingCiList}
+            error={isError || isErrorCiList}
+            indicatorProps={{ layer: 'parent' }}
+        >
             <View
-                isUserLogged={isUserLogged}
                 monitoringCfgApiData={monitoringCfgData}
                 ciListData={ciListData}
                 filter={filter}
                 defaultFilterValues={defaultFilterValues}
                 isLoadingNextPage={isFetching}
                 handleFilterChange={handleFilterChange}
-                getMonitoringListRefetch={getMonitoringListRefetch}
+                refetchListData={refetchListData}
             />
         </QueryFeedback>
     )

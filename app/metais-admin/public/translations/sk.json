@@ -1073,7 +1073,24 @@
             "filter": {
                 "title": "Filter",
                 "ciLabel": "ISVS/KS/AS"
-            }
+            },
+            "table": {
+                "isvsName": "ISVS/KS/AS",
+                "entityType": "Typ entity",
+                "httpUrl": "Url",
+                "httpMethod": "Method",
+                "httpRequestHeader": "Request header",
+                "httpRequestBody": "Request Body",
+                "httpResponseStatus": "Response Status",
+                "httpResponseBodyRegex": "Response Body Regex",
+                "periodicity": "Periodicity",
+                "enabled": "Enabled"
+            },
+            "newMonitoringButton": "Pridať záznam"
+        },
+        "type": {
+            "yes": "Áno",
+            "no": "Nie"
         }
     },
     "projects": {

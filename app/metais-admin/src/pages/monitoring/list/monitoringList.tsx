@@ -28,9 +28,8 @@ const MonitoringListPage = () => {
                             defaultFilterValues={props.defaultFilterValues}
                             filter={props.filter}
                             handleFilterChange={props.handleFilterChange}
-                            isUserLogged={props.isUserLogged}
                             isLoadingNextPage={props.isLoadingNextPage}
-                            getMonitoringListRefetch={props.getMonitoringListRefetch}
+                            refetchListData={props.refetchListData}
                         />
                     )}
                 />
