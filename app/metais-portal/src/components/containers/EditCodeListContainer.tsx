@@ -1,5 +1,5 @@
 import { SortBy, SortType } from '@isdd/idsk-ui-kit/types'
-import { HierarchyPOFilterUi, HierarchyRightsUi, useGetRoleParticipantBulk, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useGetRoleParticipantBulk, useReadCiList } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import {
     ApiCodelistPreview,
     useDeleteTemporalCodelistHeader,
@@ -7,6 +7,7 @@ import {
     useGetTemporalCodelistHeaderWithLock,
     useGetUnlockTemporalCodelistHeader,
     useUpdateAndUnlockTemporalCodelistHeader,
+    useUpdateCodelistContactData,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
@@ -18,11 +19,13 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { Roles } from '@isdd/metais-common/api'
+import { getOrgIdFromGid, getRoleUuidFromGid } from '@isdd/metais-common/utils/utils'
 
 import { CodeListPermissionsWrapper } from '@/components/permissions/CodeListPermissionsWrapper'
-import { IEditCodeListForm, mapEditFormDataToCodeList } from '@/componentHelpers'
+import { IEditCodeListForm, mapEditFormDataToCodeList, mapFormToContactData } from '@/componentHelpers'
 import { IOption } from '@/components/views/codeLists/CodeListEditView'
 import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
+import { getRoleUUID } from '@/componentHelpers/requests'
 
 export interface CodeListDetailData {
     codeList?: ApiCodelistPreview
@@ -42,9 +45,10 @@ export interface EditCodeListContainerViewProps {
     handleDiscardChanges: () => void
     loadOptions: (
         searchQuery: string,
+        isMainGestor: boolean,
         additional: { page: number } | undefined,
     ) => Promise<{
-        options: HierarchyRightsUi[]
+        options: { name: string; value: string }[]
         hasMore: boolean
         additional: {
             page: number
@@ -65,6 +69,7 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
     const { invalidate } = useInvalidateCodeListCache()
 
     const [errorCheck, setErrorCheck] = useState<{ message: string }>()
+    const [isLoadingCheck, setIsLoadingCheck] = useState<boolean>()
 
     const userDataGroups = useMemo(() => user.state.user?.groupData ?? [], [user])
     const { mutateAsync: mutateAsyncImplicitHierarchy } = useReadCiList()
@@ -87,6 +92,12 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
         isError: isErrorSave,
         error: errorSave,
     } = useUpdateAndUnlockTemporalCodelistHeader()
+    const {
+        mutateAsync: mutateAsyncContactData,
+        isLoading: isLoadingContactData,
+        isError: isErrorContactData,
+        error: errorContactData,
+    } = useUpdateCodelistContactData()
     const canGetGroup = useAddOrGetGroupHook()
     const { isLoading: isLoadingAttributeProfile, isError: isErrorAttributeProfile, data: attributeProfile } = useGetAttributeProfile('Gui_Profil_ZC')
 
@@ -97,20 +108,6 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
         error: errorTemporalLocked,
         data: codeListTemporalLockedData,
     } = useGetTemporalCodelistHeaderWithLock(codeListData?.code ?? '', { query: { enabled: !!codeListData } })
-
-    const defaultFilter: HierarchyPOFilterUi = {
-        perpage: 20,
-        sortBy: SortBy.HIERARCHY_FROM_ROOT,
-        sortType: SortType.ASC,
-        rights: userDataGroups
-            .filter((group) => group.roles.some((role) => role.roleName === Roles.SZC_HLGES || role.roleName === Roles.SZC_VEDGES))
-            .map((group) => ({
-                poUUID: group.orgId,
-                roles: group.roles
-                    .filter((role) => role.roleName === Roles.SZC_HLGES || role.roleName === Roles.SZC_VEDGES)
-                    .map((role) => role.roleUuid),
-            })),
-    }
 
     const requestGestorGids = [
         ...(codeListData?.mainCodelistManagers?.map((gestor) => gestor.value || '') || []),
@@ -132,17 +129,36 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
         codeList: codeListTemporalLockedData,
         attributeProfile: attributeProfile,
         defaultManagers: roleParticipantsData?.map((item) => ({
-            poName: item.configurationItemUi?.attributes?.Gen_Profil_nazov,
-            poUUID: item.configurationItemUi?.uuid,
+            name: item.configurationItemUi?.attributes?.Gen_Profil_nazov,
+            value: item.configurationItemUi?.uuid,
         })),
     }
 
-    const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
+    const loadOptions = async (searchQuery: string, isMainGestor: boolean, additional: { page: number } | undefined) => {
+        const roleName = isMainGestor ? Roles.SZC_HLGES : Roles.SZC_VEDGES
         const page = !additional?.page ? 1 : (additional?.page || 0) + 1
-        const options = await mutateAsyncImplicitHierarchy({ data: { ...defaultFilter, page, fullTextSearch: searchQuery } })
+        const options = await mutateAsyncImplicitHierarchy({
+            data: {
+                perpage: 20,
+                sortBy: SortBy.HIERARCHY_FROM_ROOT,
+                sortType: SortType.ASC,
+                rights: userDataGroups
+                    .filter((group) => group.roles.some((role) => role.roleName === roleName))
+                    .map((group) => ({
+                        poUUID: group.orgId,
+                        roles: group.roles.filter((role) => role.roleName === roleName).map((role) => role.roleUuid),
+                    })),
+                page,
+                fullTextSearch: searchQuery,
+            },
+        })
 
         return {
-            options: options.rights || [],
+            options:
+                options.rights?.map((item) => ({
+                    name: item.poName || '',
+                    value: `${getRoleUUID(userDataGroups, roleName)}-${item.poUUID || ''}`,
+                })) || [],
             hasMore: options.rights?.length ? true : false,
             additional: {
                 page: page,
@@ -168,7 +184,10 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
     }
 
     const saveData = (requestData: ApiCodelistPreview) => {
-        mutateAsyncSave({ code: codeListData?.code ?? '', data: requestData }).then(() => {
+        const codeListPromise = mutateAsyncSave({ code: codeListData?.code ?? '', data: requestData })
+        const contactPromise = mutateAsyncContactData({ code: codeListData?.code ?? '', data: mapFormToContactData(requestData) })
+
+        Promise.all([codeListPromise, contactPromise]).then(() => {
             invalidate(codeListData?.code ?? '', Number(codeListData?.id))
             const path = `${NavigationSubRoutes.CODELIST}/${data.codeList?.id}`
             setIsActionSuccess({ value: true, path })
@@ -181,38 +200,28 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
         const nextGestors = formData.nextGestor || []
         const mainGestors = [...(formData.mainGestor ?? [])]
 
-        const mainGestorPromises = mainGestors?.map(async (item) =>
-            canGetGroup(item?.value?.substring(0, 36) ?? '', item?.value?.substring(37) ?? ''),
+        const gestorPromises = [...mainGestors, ...nextGestors]?.map(async (item) =>
+            canGetGroup(getRoleUuidFromGid(item?.value ?? ''), getOrgIdFromGid(item?.value ?? '')),
         )
-        const nextGestorPromises = nextGestors?.map(async (item) =>
-            canGetGroup(item?.value?.substring(37) ?? '', item?.value?.substring(0, 36) ?? ''),
-        )
-        if (nextGestorPromises.length > 0) {
+
+        if (gestorPromises.length > 0) {
             setErrorCheck(undefined)
-            Promise.all(nextGestorPromises)
+            setIsLoadingCheck(true)
+            Promise.all(gestorPromises)
                 .then(() => {
-                    if (mainGestorPromises.length > 0)
-                        Promise.all(mainGestorPromises)
-                            .then(() => {
-                                saveData(normalizedData)
-                            })
-                            .catch((error) => {
-                                setErrorCheck(error)
-                            })
-                    else {
-                        saveData(normalizedData)
-                    }
+                    saveData(normalizedData)
                 })
                 .catch((error) => {
                     setErrorCheck(error)
                 })
-        } else {
-            saveData(normalizedData)
+                .finally(() => {
+                    setIsLoadingCheck(false)
+                })
         }
     }
 
     const isLoading = [isLoadingData, isLoadingTemporalLocked, isLoadingAttributeProfile, isLoadingRoleParticipants].some((item) => item)
-    const isLoadingMutation = [isLoadingUnlock, isLoadingSave, isLoadingDiscard].some((item) => item)
+    const isLoadingMutation = [isLoadingUnlock, isLoadingSave, isLoadingDiscard, isLoadingContactData, isLoadingCheck].some((item) => item)
     const isError = [
         isErrorSave,
         errorCheck,
@@ -222,9 +231,10 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
         isErrorData,
         isErrorAttributeProfile,
         isErrorRoleParticipants,
+        isErrorContactData,
     ].some((item) => item)
     const errorMessages = getErrorTranslateKeys(
-        [errorTemporalLocked, errorCheck, errorUnlock, errorDiscard, errorSave].map((item) => item as { message: string }),
+        [errorTemporalLocked, errorCheck, errorUnlock, errorDiscard, errorSave, errorContactData].map((item) => item as { message: string }),
     )
 
     return (

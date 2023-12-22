@@ -1170,7 +1170,8 @@
             "requestList": "Zoznam žiadostí číselníkov",
             "requestCreate": "Vytvoriť žiadosť číselníka",
             "requestEdit": "Editovať žiadosť číselníka",
-            "detail": "Detail číselníka"
+            "detail": "Detail číselníka",
+            "detailEdit": "Upraviť číselník"
         },
         "filter": {
             "title": "Filter"
@@ -1280,8 +1281,9 @@
         "unlimited": "Neobmedzene",
         "selectedSuffix": " (zvolený)",
         "button": {
-            "edit": "Upraviť",
+            "edit": "Zmeniť",
             "more": "Viac akcií",
+            "save": "Uložiť",
             "language": "Jazyk",
             "exportCodelist": "Export číselníka",
             "importCodelist": "Import číselníka",
@@ -1362,6 +1364,7 @@
             "orderFormat": "Hodnota nie je číslo",
             "dateFormat": "Dátum je v nesprávnom formáte",
             "dateFrom": "Dátum platnosti je povinné pole",
+            "dateGreaterThan": "Dátum do musí byť väčší ako dátum od",
             "effectiveFrom": "Začiatok účinnosti je povinné pole",
             "itemCode": "Kód položky je povinné pole",
             "itemName": "Názov položky je povinné pole"

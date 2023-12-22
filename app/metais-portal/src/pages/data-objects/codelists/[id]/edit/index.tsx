@@ -1,23 +1,16 @@
+import { useParams } from 'react-router-dom'
+
 import { EditCodeListContainerContainer } from '@/components/containers/EditCodeListContainer'
 import { CodeListEditView } from '@/components/views/codeLists/CodeListEditView'
+import { CodeListPermissionsWrapper } from '@/components/permissions/CodeListPermissionsWrapper'
 
 const EditCodeListPage = () => {
+    const { id } = useParams()
+
     return (
-        <EditCodeListContainerContainer
-            View={(props) => (
-                <CodeListEditView
-                    data={props.data}
-                    isError={props.isError}
-                    errorMessages={props.errorMessages}
-                    isLoading={props.isLoading}
-                    isLoadingMutation={props.isLoadingMutation}
-                    loadOptions={props.loadOptions}
-                    handleSave={props.handleSave}
-                    handleDiscardChanges={props.handleDiscardChanges}
-                    handleRemoveLock={props.handleRemoveLock}
-                />
-            )}
-        />
+        <CodeListPermissionsWrapper id={id ?? ''}>
+            <EditCodeListContainerContainer View={(props) => <CodeListEditView {...props} />} />
+        </CodeListPermissionsWrapper>
     )
 }
 
