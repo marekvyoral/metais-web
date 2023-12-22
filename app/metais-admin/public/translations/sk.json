@@ -1058,12 +1058,22 @@
         "column": "Stĺpec"
     },
     "monitoring": {
+        "breadcrumbs": {
+            "home":"Hlavná stránka",
+            "monitoring":"Správa monitoringu",
+            "params" :"Monitorovacie parametre",
+            "list": "Záznamy z monitoringu"
+        },
         "heading": "Správa monitoringu",
         "params": {
             "heading": "Monitorovacie parametre"
         },
         "list": {
-            "heading": "Záznamy z monitoringu"
+            "heading": "Záznamy z monitoringu",
+            "filter": {
+                "title": "Filter",
+                "ciLabel": "ISVS/KS/AS"
+            }
         }
     },
     "projects": {

@@ -1,11 +1,11 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
+import { Outlet } from 'react-router-dom'
 
-import { TodoPage } from '@/components/views/todo-page/TodoPage'
+import MonitoringListPage from './monitoringList'
 
-const MonitoringList = () => {
-    const { t } = useTranslation()
-    return <TodoPage heading={t('monitoring.list.heading')} />
+export const INDEX_ROUTE = MonitoringListPage
+
+const index: React.FC = () => {
+    return <Outlet />
 }
 
-export default MonitoringList
+export default index
