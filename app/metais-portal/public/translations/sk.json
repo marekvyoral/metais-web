@@ -757,8 +757,12 @@
         "dateMustBeLessOrEqualThen": "Dátum musí byť skorší alebo rovnaký ako",
         "minCharacters": "{{itemName}} musí obsahovať aspoň {{min}} znakov",
         "maxCharacters": "{{itemName}} môže obsahovať maximálne {{max}} znakov",
+        "noNumbers": "Nemôže obsahovať čísla",
         "password": "Heslo musí obsahovať aspoň jeden veľký znak, aspoň jeden malý znak a aspoň jeden iný znak.",
-        "repeatPassword": "Opakované heslo musí byť rovnaké"
+        "repeatPassword": "Opakované heslo musí byť rovnaké",
+        "phone": "Telefón",
+        "name": "Meno",
+        "surname": "Priezvisko"
     },
     "createEntity": {
         "required": "povinné",

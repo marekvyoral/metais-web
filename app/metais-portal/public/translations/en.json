@@ -756,8 +756,12 @@
         "dateMustBeLessOrEqualThen": "Date must be less or equal then",
         "minCharacters": "{{itemName}} must be at least {{min}} characters",
         "maxCharacters": "{{itemName}} must be at most {{max}} characters",
+        "noNumbers": "Can't contain numbers",
         "password": "Password must meet the criteria: at least one uppercase, one lowercase, and one other character.",
-        "repeatPassword": "Repeated password must be same "
+        "repeatPassword": "Repeated password must be same ",
+        "phone": "Phone",
+        "name": "Name",
+        "surname": "Surname"
     },
     "createEntity": {
         "required": "required",
