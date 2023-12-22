@@ -1,4 +1,4 @@
-import { CheckBox, Input, SimpleSelect } from '@isdd/idsk-ui-kit/index'
+import { CheckBox, Input, SimpleSelect, TransparentButtonWrapper } from '@isdd/idsk-ui-kit/index'
 import { ParameterType } from '@isdd/metais-common/api/generated/report-swagger'
 import { CloseIcon } from '@isdd/metais-common/assets/images'
 import classNames from 'classnames'
@@ -49,7 +49,9 @@ export const ReportsParameterCard: React.FC<IReportsParameterCardProps> = ({
     return (
         <div className={classNames([styles.itemBox], { [styles.errorItemBox]: status === 'INVALIDATED' })}>
             <div className={styles.closeButton}>
-                <img src={CloseIcon} alt="navigation-close" onClick={onClick} />
+                <TransparentButtonWrapper onClick={onClick}>
+                    <img src={CloseIcon} alt="navigation-close" />
+                </TransparentButtonWrapper>
             </div>
             <Input
                 label={t('report.cards.identificator')}

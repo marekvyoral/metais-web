@@ -4,7 +4,15 @@ import { useWindowWidthBreakpoints } from '@isdd/metais-common/src/hooks/window-
 
 import styles from './styles.module.scss'
 
-import { ArrowDownIcon, CurrentStepIcon, FinishedStepIcon, FutureStepIcon, LoadingIndicator, TextBody } from '@isdd/idsk-ui-kit/'
+import {
+    ArrowDownIcon,
+    CurrentStepIcon,
+    FinishedStepIcon,
+    FutureStepIcon,
+    LoadingIndicator,
+    TextBody,
+    TransparentButtonWrapper,
+} from '@isdd/idsk-ui-kit/'
 
 export enum PROGRESS_STATE {
     FINISHED = 'finished',
@@ -107,12 +115,9 @@ export const MobileStep: React.FC<IStep> = ({ keyNumber, name, date, description
                         {description}
                     </TextBody>
                     {((state == PROGRESS_STATE.CURRENT && !isExpanded) || (lastItem && isExpanded)) && (
-                        <img
-                            height={10}
-                            className={classNames(styles.imageMargin, { [styles.rotate180]: isExpanded })}
-                            src={ArrowDownIcon}
-                            onClick={() => onExpand && onExpand(!isExpanded)}
-                        />
+                        <TransparentButtonWrapper onClick={() => onExpand && onExpand(!isExpanded)}>
+                            <img height={10} className={classNames(styles.imageMargin, { [styles.rotate180]: isExpanded })} src={ArrowDownIcon} />
+                        </TransparentButtonWrapper>
                     )}
                 </div>
             </div>

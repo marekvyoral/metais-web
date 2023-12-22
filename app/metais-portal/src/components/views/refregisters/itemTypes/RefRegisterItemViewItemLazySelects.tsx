@@ -7,7 +7,7 @@ import { OptionProps } from 'react-select'
 import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 import { ApiReferenceRegisterItem, ApiReferenceRegisterItemSourceReference } from '@isdd/metais-common/api/generated/reference-registers-swagger'
 import { CloseIcon } from '@isdd/metais-common/assets/images'
-import { Button } from '@isdd/idsk-ui-kit/index'
+import { Button, TransparentButtonWrapper } from '@isdd/idsk-ui-kit/index'
 import { useTranslation } from 'react-i18next'
 
 import styles from './refRegisterItemViewItems.module.scss'
@@ -114,14 +114,13 @@ export const RefRegisterItemViewItemLazySelects = ({
                 {formValue?.map((val) => (
                     <>
                         <div>
-                            <img
-                                src={CloseIcon}
-                                alt="navigation-close"
-                                className={styles.closeButton}
+                            <TransparentButtonWrapper
                                 onClick={() => {
                                     removeElementFromFormValues(val)
                                 }}
-                            />
+                            >
+                                <img src={CloseIcon} alt="navigation-close" className={styles.closeButton} />
+                            </TransparentButtonWrapper>
                             <span>{[val?.sourceIsvsMetaisCode, val?.sourceIsvsName, `(${val?.sourceRegistratorName})`]?.join(' ')}</span>
                         </div>
                     </>

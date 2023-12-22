@@ -1,5 +1,14 @@
 import React, { useState } from 'react'
-import { BreadCrumbs, CircleLoadingArrowIcon, HomeIcon, PaginatorRightArrowIcon, PaginatorWrapper, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import {
+    BreadCrumbs,
+    CircleLoadingArrowIcon,
+    HomeIcon,
+    PaginatorRightArrowIcon,
+    PaginatorWrapper,
+    Table,
+    TextHeading,
+    TransparentButtonWrapper,
+} from '@isdd/idsk-ui-kit/index'
 import { ColumnDef, ExpandedState, Row } from '@tanstack/react-table'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
@@ -50,11 +59,12 @@ export const PublicAuthoritiesHierarchyView: React.FC<IPublicAuthoritiesHierarch
                                 (expandableRowIdLoading === row.original.uuid ? (
                                     <img className={styles.spinner} src={CircleLoadingArrowIcon} />
                                 ) : (
-                                    <img
-                                        onClick={() => handleExpandClick(row)}
-                                        src={PaginatorRightArrowIcon}
-                                        className={classNames([styles.expandIcon, row.getIsExpanded() ? styles.rotate90 : styles.rotate0])}
-                                    />
+                                    <TransparentButtonWrapper onClick={() => handleExpandClick(row)}>
+                                        <img
+                                            src={PaginatorRightArrowIcon}
+                                            className={classNames([styles.expandIcon, row.getIsExpanded() ? styles.rotate90 : styles.rotate0])}
+                                        />
+                                    </TransparentButtonWrapper>
                                 ))}
                         </div>
 

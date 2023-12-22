@@ -1,5 +1,5 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react'
-import { TextBody } from '@isdd/idsk-ui-kit/index'
+import { TextBody, TransparentButtonWrapper } from '@isdd/idsk-ui-kit/index'
 import { ImportDeleteIcon } from '@isdd/metais-common/assets/images'
 import { useDeleteContent } from '@isdd/metais-common/api/generated/dms-swagger'
 import { formatBytes } from '@isdd/metais-common/components/file-import/fileImportUtils'
@@ -95,8 +95,9 @@ export const ExistingFilesHandler = forwardRef<IExistingFilesHandlerRef, IExisti
                         <div>
                             <TextBody size="S">{`${file.fileName} (${formatBytes(file.fileSize ?? 0)})`}</TextBody>
                         </div>
-
-                        <img src={ImportDeleteIcon} onClick={() => handleRemoveFileFromList(file.fileId)} />
+                        <TransparentButtonWrapper onClick={() => handleRemoveFileFromList(file.fileId)}>
+                            <img src={ImportDeleteIcon} />
+                        </TransparentButtonWrapper>
                     </li>
                 ))}
             </ul>

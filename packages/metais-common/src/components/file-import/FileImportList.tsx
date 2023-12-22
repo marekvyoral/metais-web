@@ -1,6 +1,7 @@
 import React from 'react'
 import { UppyFile } from '@uppy/core'
 import { TextBody } from '@isdd/idsk-ui-kit/typography/TextBody'
+import { TransparentButtonWrapper } from '@isdd/idsk-ui-kit'
 
 import { formatBytes } from './fileImportUtils'
 import styles from './FileImport.module.scss'
@@ -51,7 +52,11 @@ export const FileImportList: React.FC<IFileImportList> = ({
                         ))}
                     </ul>
                 </div>
-                {generalErrorMessages.length > 0 && <img src={CloseIcon} onClick={() => removeGeneralErrorMessages()} />}
+                {generalErrorMessages.length > 0 && (
+                    <TransparentButtonWrapper onClick={() => removeGeneralErrorMessages()}>
+                        <img src={CloseIcon} />
+                    </TransparentButtonWrapper>
+                )}
             </div>
 
             <ul className={styles.list}>
@@ -66,15 +71,14 @@ export const FileImportList: React.FC<IFileImportList> = ({
                         <div>
                             {hasError(file) && <img src={ErrorTriangleIcon} />}
                             {isUploaded(file) && <img src={RoundCheckGreenIcon} />}
-                            <img
-                                src={ImportDeleteIcon}
+                            <TransparentButtonWrapper
                                 onClick={() => {
                                     handleRemoveFile(file.id)
                                     removeGeneralErrorMessages()
                                 }}
-                                className={styles.clickable}
-                                hidden={isUploaded(file)}
-                            />
+                            >
+                                <img src={ImportDeleteIcon} className={styles.clickable} hidden={isUploaded(file)} />
+                            </TransparentButtonWrapper>
                         </div>
                     </li>
                 ))}

@@ -1,4 +1,4 @@
-import { BaseModal, Button, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Button, TextBody, TextHeading, TransparentButtonWrapper } from '@isdd/idsk-ui-kit/index'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
@@ -88,7 +88,9 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
 
             {generalErrorMessages.length > 0 && (
                 <div className={styles.errorWrapper}>
-                    <img src={CloseIcon} onClick={() => removeGeneralErrorMessages()} />
+                    <TransparentButtonWrapper onClick={() => removeGeneralErrorMessages()}>
+                        <img src={CloseIcon} />
+                    </TransparentButtonWrapper>
                     <ul>
                         {generalErrorMessages.map((error, index) => (
                             <li key={index} className={styles.errorMessages}>

@@ -74,6 +74,7 @@ const GroupMemberTableRoleSelector: React.FC<GroupMemberTableRoleSelectorProps> 
                 name="selectRole"
                 value={selectedRole}
                 onChange={handleGroupMemberChange}
+                isClearable={false}
                 label=""
                 options={(isKsisvs ? DEFAULT_KSISVS_ROLES : DEFAULT_ROLES).map((item) => ({
                     value: item.code,
