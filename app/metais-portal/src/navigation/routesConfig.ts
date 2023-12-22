@@ -1,4 +1,4 @@
-import { LoginRouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { FooterRouteNames, LoginRouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 import { RootRouteContainer } from './route-containers/RootRouteContainer'
 
@@ -99,6 +99,7 @@ import PO_IS_POInformationOutlet from '@/pages/ci/PO_IS_PO/[entityId]/informatio
 import { LoginProblemsPage } from '@/pages/LoginProblemsPage'
 import { ForgottenPasswordPage } from '@/pages/ForgottenPasswordPage'
 import HowToGenericPage from '@/pages/howto/[howToEnumType]'
+import CookiesInfoPage from '@/pages/cookies/info'
 
 export interface RouteConfig {
     path?: string
@@ -450,6 +451,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.REF_REGISTERS_LIST,
                 slug: RouterRoutes.REF_REGISTERS_LIST,
                 component: ReferenceRegisters,
+            },
+            {
+                path: FooterRouteNames.GDPR_AND_COOKIES,
+                slug: FooterRouteNames.GDPR_AND_COOKIES,
+                component: CookiesInfoPage,
             },
             {
                 path: RouterRoutes.REF_REGISTERS_DETAIL,

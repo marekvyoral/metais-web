@@ -1,11 +1,10 @@
-import * as React from 'react'
-import { forwardRef } from 'react'
+import React, { DetailedHTMLProps, forwardRef } from 'react'
 import { FieldError } from 'react-hook-form'
 import classNames from 'classnames'
 
 import { RadioButtonGroup } from '@isdd/idsk-ui-kit/radio-button-group/RadioButtonGroup'
 
-interface IRadioWithLabelProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+interface IRadioWithLabelProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     id?: string
     label?: string
     hint?: string
