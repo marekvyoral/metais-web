@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import { IAccordionSection } from './Accordion'
 import styles from './accordion.module.scss'
 
+import { TransparentButtonWrapper } from '@isdd/idsk-ui-kit'
 import { AlertTriangleIcon, ArrowDownIcon } from '@isdd/idsk-ui-kit/assets/images'
 
 type Props = {
@@ -73,11 +74,9 @@ export const AccordionSection = ({
                     </div>
                     {section.error && <img src={AlertTriangleIcon} />}
                     {isSmall && (
-                        <img
-                            className={classNames(styles.arrowDownIcon, { [styles.rotate180]: isExpanded })}
-                            src={ArrowDownIcon}
-                            onClick={onToggle}
-                        />
+                        <TransparentButtonWrapper onClick={onToggle}>
+                            <img className={classNames(styles.arrowDownIcon, { [styles.rotate180]: isExpanded })} src={ArrowDownIcon} />
+                        </TransparentButtonWrapper>
                     )}
                 </div>
             </div>

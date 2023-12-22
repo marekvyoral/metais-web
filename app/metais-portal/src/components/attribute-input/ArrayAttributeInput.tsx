@@ -1,4 +1,4 @@
-import { Button, Input } from '@isdd/idsk-ui-kit/index'
+import { Button, Input, TransparentButtonWrapper } from '@isdd/idsk-ui-kit/index'
 import { TextArea } from '@isdd/idsk-ui-kit/text-area/TextArea'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 import { Attribute, AttributeAttributeTypeEnum } from '@isdd/metais-common/api/generated/types-repo-swagger'
@@ -118,7 +118,9 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                 <React.Fragment key={index}>
                     {isTextarea && (
                         <div className={styles.inputWithCloseIconDivTextarea}>
-                            <img src={CloseIcon} onClick={() => handleDeleteInput(index)} />
+                            <TransparentButtonWrapper onClick={() => handleDeleteInput(index)}>
+                                <img src={CloseIcon} />
+                            </TransparentButtonWrapper>
                             <TextArea
                                 name={`${id}${index}`}
                                 rows={3}
@@ -134,7 +136,9 @@ export const ArrayAttributeInput: React.FC<IArrayAttributeInput> = ({
                     )}
                     {!isTextarea && (
                         <div className={styles.inputWithCloseIconDivInput}>
-                            <img src={CloseIcon} onClick={() => handleDeleteInput(index)} />
+                            <TransparentButtonWrapper onClick={() => handleDeleteInput(index)}>
+                                <img src={CloseIcon} />
+                            </TransparentButtonWrapper>
                             <Input
                                 name={`${id}${index}`}
                                 correct={isCorrect}

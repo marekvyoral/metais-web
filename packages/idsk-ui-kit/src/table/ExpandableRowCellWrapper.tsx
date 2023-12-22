@@ -23,7 +23,12 @@ export const ExpandableRowCellWrapper = <T,>({ row, children }: ExpandableRowCel
                 <div>
                     <img
                         src={PaginatorRightArrowIcon}
-                        style={{ cursor: 'pointer', transform: row.getIsExpanded() ? 'rotate(90deg)' : 'rotate(0deg)' }}
+                        style={{
+                            cursor: 'pointer',
+                            transform: row.getIsExpanded() ? 'rotate(90deg)' : 'rotate(0deg)',
+                            width: '1.1rem',
+                            height: '1.1rem',
+                        }}
                     />
                 </div>
             )}

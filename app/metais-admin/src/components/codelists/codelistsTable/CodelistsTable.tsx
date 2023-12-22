@@ -1,4 +1,16 @@
-import { BaseModal, Button, ButtonLink, ButtonPopup, CheckBox, Input, PaginatorWrapper, SimpleSelect, Table, TextArea } from '@isdd/idsk-ui-kit/index'
+import {
+    BaseModal,
+    Button,
+    ButtonLink,
+    ButtonPopup,
+    CheckBox,
+    Input,
+    PaginatorWrapper,
+    SimpleSelect,
+    Table,
+    TextArea,
+    TransparentButtonWrapper,
+} from '@isdd/idsk-ui-kit/index'
 import { EnumTypePreview, EnumTypePreviewList } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ApiError } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { ListIcon } from '@isdd/metais-common/assets/images'
@@ -287,7 +299,11 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
             id: 'items',
             cell: (ctx) => {
                 const rowObject = ctx.getValue() as CodelistsTableColumnsDefinition
-                return <img src={ListIcon} className={styles.iconList} onClick={() => navigate('./' + rowObject.code)} />
+                return (
+                    <TransparentButtonWrapper onClick={() => navigate('./' + rowObject.code)}>
+                        <img src={ListIcon} className={styles.iconList} />
+                    </TransparentButtonWrapper>
+                )
             },
         },
         {

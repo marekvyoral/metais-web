@@ -1,5 +1,5 @@
 import { MongoAbility } from '@casl/ability'
-import { CheckBox, DeleteForeverRed } from '@isdd/idsk-ui-kit/index'
+import { CheckBox, DeleteForeverRed, TransparentButtonWrapper } from '@isdd/idsk-ui-kit/index'
 import { CHECKBOX_CELL, DELETE_CELL } from '@isdd/idsk-ui-kit/table/constants'
 import { IdentitiesInGroupAndCount, IdentityInGroupData, OperationResult } from '@isdd/metais-common/api/generated/iam-swagger'
 import { GROUP_ROLES, KSISVS_ROLES } from '@isdd/metais-common/constants'
@@ -150,10 +150,14 @@ export const buildColumns = (
             cell: ({ row }) =>
                 row.original.roleName !== KSISVS_ROLES.STD_KSPRE &&
                 (row.original.roleName !== GROUP_ROLES.STD_PSPRE ? (
-                    <img src={DeleteForeverRed} height={24} onClick={() => setIdentityToDelete(row.original.uuid)} />
+                    <TransparentButtonWrapper onClick={() => setIdentityToDelete(row.original.uuid)}>
+                        <img src={DeleteForeverRed} height={24} />
+                    </TransparentButtonWrapper>
                 ) : (
                     <Can I={Actions.EDIT} a={'groupMaster'}>
-                        <img src={DeleteForeverRed} height={24} onClick={() => setIdentityToDelete(row.original.uuid)} />
+                        <TransparentButtonWrapper onClick={() => setIdentityToDelete(row.original.uuid)}>
+                            <img src={DeleteForeverRed} height={24} />
+                        </TransparentButtonWrapper>
                     </Can>
                 )),
         })
