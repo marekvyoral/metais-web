@@ -171,6 +171,8 @@ export const TOP_LEVEL_PO_ICO = '000000003001'
 
 export const MEASURE_UNIT = 'MERNA_JEDNOTKA'
 
+export const COOKIES_CONSENT = 'cookies_consent'
+
 export enum CATEGORY_ENUM {
     NOT_VISIBLE = 'NO',
     READ_ONLY_BDA = 'ROCB',

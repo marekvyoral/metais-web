@@ -1,5 +1,5 @@
 import ProtectedRoute from '@isdd/metais-common/fileBasedRouting/ProtectedRoute'
-import * as React from 'react'
+import React from 'react'
 import { Route, Routes } from 'react-router'
 
 import { RouteConfig, routesConfig } from './routesConfig'

@@ -1,6 +1,5 @@
 import classNames from 'classnames'
-import * as React from 'react'
-import { forwardRef } from 'react'
+import React, { forwardRef, DetailedHTMLProps } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from '../styles/InfoAndCheckInput.module.scss'
@@ -8,7 +7,7 @@ import styles from '../styles/InfoAndCheckInput.module.scss'
 import { GreenCheckMarkIcon } from '@isdd/idsk-ui-kit/assets/images'
 import { Tooltip } from '@isdd/idsk-ui-kit/tooltip/Tooltip'
 
-interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
+interface IInputProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
     id?: string
     label?: string
     name: string
