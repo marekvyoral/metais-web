@@ -91,6 +91,10 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     onSaveDates,
     requestId,
 }) => {
+    // WorkingLanguage is forced to system default 'sk' for requests.
+    // Content is created and displayed in only one language.
+    const workingLanguage = 'sk'
+
     const {
         t,
         i18n: { language },
@@ -559,9 +563,9 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 getExpandedRow={(row: Row<IItemForm>) => {
                                     return (
                                         <RequestDetailItemsTableExpandedRow
-                                            workingLanguage={language}
+                                            workingLanguage={workingLanguage}
                                             codelistItem={mapToCodeListDetail(
-                                                language,
+                                                workingLanguage,
                                                 codeList?.find((item) => item.codeItem === row.original.codeItem),
                                             )}
                                             attributeProfile={attributeProfile}

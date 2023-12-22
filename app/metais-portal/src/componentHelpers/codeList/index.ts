@@ -1,4 +1,10 @@
-import { ApiCodelistItem, ApiCodelistManager, ApiCodelistName, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import {
+    ApiCodelistContactData,
+    ApiCodelistItem,
+    ApiCodelistManager,
+    ApiCodelistName,
+    ApiCodelistPreview,
+} from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/metais-common/index'
 
 import { IFieldTextRow } from '@/components/views/codeLists/CodeListEditView'
@@ -242,7 +248,54 @@ export const mapCodeListToEditForm = (code: ApiCodelistPreview | undefined, lang
         lastName: code.contactSurname ?? '',
         phone: code.contactPhone ?? '',
         email: code.contactMail ?? '',
+        effectiveFrom: formatDateForDefaultValue(code.effectiveFrom ?? ''),
+        effectiveTo: formatDateForDefaultValue(code.effectiveTo ?? ''),
     }
+}
+
+const mapFormMainGestorsToApi = (formData: IEditCodeListForm, code: ApiCodelistPreview | undefined): ApiCodelistManager[] => {
+    const newGestors: ApiCodelistManager[] = []
+    formData.mainGestor?.forEach((gestor, index) => {
+        if (code?.mainCodelistManagers?.[index] && code?.mainCodelistManagers[index].value !== gestor?.value) {
+            // is updated, remove ID and set new value
+            newGestors[index] = {
+                value: gestor.value,
+            }
+        } else {
+            // is old
+            newGestors[index] = code?.mainCodelistManagers?.[index] ?? {}
+        }
+        newGestors[index].effectiveFrom = gestor.effectiveFrom ? formatDateTimeForDefaultValue(gestor.effectiveFrom, API_DATE_FORMAT) : ''
+        newGestors[index].effectiveTo = gestor.effectiveTo ? formatDateTimeForDefaultValue(gestor.effectiveTo, API_DATE_FORMAT) : ''
+    })
+    if (formData.newMainGestor?.value) {
+        newGestors.push({
+            value: formData.newMainGestor.value,
+            effectiveFrom: formData.newMainGestor.effectiveFrom
+                ? formatDateTimeForDefaultValue(formData.newMainGestor.effectiveFrom, API_DATE_FORMAT)
+                : '',
+            effectiveTo: formData.newMainGestor.effectiveTo ? formatDateTimeForDefaultValue(formData.newMainGestor.effectiveTo, API_DATE_FORMAT) : '',
+        })
+    }
+    return newGestors
+}
+
+const mapFormNextGestorsToApi = (formData: IEditCodeListForm, code: ApiCodelistPreview | undefined): ApiCodelistManager[] => {
+    const newGestors: ApiCodelistManager[] = []
+    formData.nextGestor?.forEach((gestor, index) => {
+        if (code?.codelistManagers?.[index]?.value !== gestor?.value) {
+            // is updated, remove ID and set new value
+            newGestors[index] = {
+                value: gestor.value,
+            }
+        } else {
+            newGestors[index] = code?.codelistManagers?.[index] ?? {}
+        }
+        newGestors[index].effectiveFrom = gestor.effectiveFrom ? formatDateTimeForDefaultValue(gestor.effectiveFrom, API_DATE_FORMAT) : ''
+        newGestors[index].effectiveTo = gestor.effectiveTo ? formatDateTimeForDefaultValue(gestor.effectiveTo, API_DATE_FORMAT) : ''
+    })
+
+    return newGestors
 }
 
 export const mapEditFormDataToCodeList = (
@@ -278,7 +331,9 @@ export const mapEditFormDataToCodeList = (
                   ]
                 : []),
         ],
-        codelistNotes: formData.codeListNotes?.map((note) => ({ id: note.id, value: note.text, language })),
+        mainCodelistManagers: mapFormMainGestorsToApi(formData, code),
+        codelistManagers: mapFormNextGestorsToApi(formData, code),
+        codelistNotes: formData.codeListNotes?.filter((note) => note?.text !== '').map((note) => ({ id: note.id, value: note.text, language })),
         codelistSource: formData.codeListSource?.map((source) => source.text ?? ''),
         uri: formData.refIndicator,
         effectiveFrom: formData.effectiveFrom ? formatDateTimeForDefaultValue(formData.effectiveFrom, API_DATE_FORMAT) : '',
@@ -287,5 +342,15 @@ export const mapEditFormDataToCodeList = (
         contactSurname: formData.lastName,
         contactPhone: formData.phone,
         contactMail: formData.email,
+    }
+}
+
+export const mapFormToContactData = (requestData: ApiCodelistPreview): ApiCodelistContactData => {
+    return {
+        code: requestData.code,
+        contactFirstName: requestData.contactFirstName,
+        contactSurname: requestData.contactSurname,
+        contactMail: requestData.contactMail,
+        contactPhone: requestData.contactPhone,
     }
 }

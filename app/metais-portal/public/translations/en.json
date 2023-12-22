@@ -1163,7 +1163,8 @@
             "codeListsList": "List of codelists",
             "publicCodeListsList": "List of published codelists",
             "requestList": "List of requests to add a codelist",
-            "detail": "Codelist detail"
+            "detail": "Codelist detail",
+            "detailEdit": "Edit codelist"
         },
         "filter": {
             "title": "Filter"
@@ -1275,6 +1276,7 @@
         "button": {
             "edit": "Edit",
             "more": "More actions",
+            "save": "Save",
             "language": "Language",
             "exportCodelist": "Codelist export",
             "importCodelist": "Codelist import",
@@ -1355,6 +1357,7 @@
             "orderFormat": "Value is not a number",
             "dateFormat": "Invalid date format",
             "dateFrom": "From is required field",
+            "dateGreaterThan": "Date to must be greater than date from",
             "effectiveFrom": "Entry into force is required field",
             "itemCode": "Codelist ID is required field",
             "itemName": "Codelist name is required field"

@@ -13,21 +13,7 @@ const CodeListPage = () => {
 
     document.title = `${t('titles.codeListList')} | MetaIS`
 
-    return (
-        <CodeListListContainer
-            isOnlyPublishedPage={!isLoggedIn}
-            View={(props) => (
-                <CodeListListView
-                    isError={props.isError}
-                    isLoading={props.isLoading}
-                    data={props.data}
-                    filter={props.filter}
-                    handleFilterChange={props.handleFilterChange}
-                    isOnlyPublishedPage={props.isOnlyPublishedPage}
-                />
-            )}
-        />
-    )
+    return <CodeListListContainer isOnlyPublishedPage={!isLoggedIn} View={(props) => <CodeListListView {...props} />} />
 }
 
 export default CodeListPage

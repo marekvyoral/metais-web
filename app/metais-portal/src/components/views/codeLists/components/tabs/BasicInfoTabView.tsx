@@ -151,7 +151,11 @@ export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({ codeList, at
                     key={'notes'}
                     label={getDescription('Gui_Profil_ZC_poznamka_pre_ciselnik', language, attributeProfile)}
                     tooltip={getName('Gui_Profil_ZC_poznamka_pre_ciselnik', language, attributeProfile)}
-                    value={selectBasedOnLanguageAndDate(codeList?.codelistNotes, workingLanguage)}
+                    value={codeList.codelistNotes
+                        ?.filter((item) => item.language === workingLanguage)
+                        .map((item) => (
+                            <p key={item.id}>{item.value}</p>
+                        ))}
                 />
             </InformationGridRowWrapper>
         </TextBody>

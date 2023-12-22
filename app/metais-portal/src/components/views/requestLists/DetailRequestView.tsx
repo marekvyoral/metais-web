@@ -48,7 +48,11 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
     onAccept,
     handleFilterChange,
 }) => {
-    const { t, i18n } = useTranslation()
+    // WorkingLanguage is forced to system default 'sk' for requests.
+    // Content is created and displayed in only one language.
+    const workingLanguage = 'sk'
+
+    const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
     const {
@@ -205,7 +209,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                             codeList={data.detail}
                             attributeProfile={data.attributeProfile}
                             gestorList={data.gestors}
-                            workingLanguage={i18n.language}
+                            workingLanguage={workingLanguage}
                             showState
                         />
 
@@ -259,7 +263,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                 },
                                 {
                                     header: t('codeListList.requestCreate.codeName'),
-                                    accessorFn: (row) => selectBasedOnLanguageAndDate(row?.codelistItemNames, i18n.language),
+                                    accessorFn: (row) => selectBasedOnLanguageAndDate(row?.codelistItemNames, workingLanguage),
                                     id: 'name',
                                     cell: (ctx) => <span>{ctx.getValue() as string}</span>,
                                 },
@@ -267,7 +271,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                             getExpandedRow={(row: Row<ApiCodelistItem>) => {
                                 return (
                                     <RequestDetailItemsTableExpandedRow
-                                        workingLanguage={i18n.language}
+                                        workingLanguage={workingLanguage}
                                         codelistItem={data.items.codelistsItems?.find((item) => item.itemCode === row.original.itemCode)}
                                         attributeProfile={data.attributeProfile}
                                     />
