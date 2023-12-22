@@ -164,6 +164,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                             <GridRow className={styles.dateGap}>
                                 <GridCol setWidth="one-half">
                                     <Input
+                                        required
                                         label={t('codeListList.edit.dateFrom')}
                                         id={`${RequestFormEnum.CODE_LIST_NAME}.effectiveFrom`}
                                         {...register(`${RequestFormEnum.CODE_LIST_NAME}.effectiveFrom`)}
@@ -204,6 +205,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                     <GridRow className={styles.dateGap}>
                                         <GridCol setWidth="one-half">
                                             <Input
+                                                required
                                                 label={t('codeListList.edit.dateFrom')}
                                                 id={`${RequestFormEnum.NEW_CODE_LIST_NAME}.effectiveFrom`}
                                                 {...register(`${RequestFormEnum.NEW_CODE_LIST_NAME}.effectiveFrom`)}
@@ -246,6 +248,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                 mappedData?.mainGestor?.map((gestor, index) => (
                                     <>
                                         <SelectLazyLoading<IOption>
+                                            required={index === 0}
                                             key={gestor.id}
                                             defaultValue={defaultManagers?.find((i) => i.value === getOrgIdFromGid(gestor.value ?? ''))}
                                             id={RequestFormEnum.MAIN_GESTOR}
@@ -262,6 +265,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                         <GridRow className={styles.dateGap}>
                                             <GridCol setWidth="one-half">
                                                 <Input
+                                                    required
                                                     label={t('codeListList.edit.dateFrom')}
                                                     id={`${RequestFormEnum.MAIN_GESTOR}.${index}.effectiveFrom`}
                                                     {...register(`${RequestFormEnum.MAIN_GESTOR}.${index}.effectiveFrom`)}
@@ -309,6 +313,7 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                     <GridRow className={styles.dateGap}>
                                         <GridCol setWidth="one-half">
                                             <Input
+                                                required
                                                 label={t('codeListList.edit.dateFrom')}
                                                 id={`${RequestFormEnum.NEW_MAIN_GESTOR}.effectiveFrom`}
                                                 {...register(`${RequestFormEnum.NEW_MAIN_GESTOR}.effectiveFrom`)}

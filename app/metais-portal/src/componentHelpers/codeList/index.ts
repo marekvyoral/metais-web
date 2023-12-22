@@ -310,6 +310,7 @@ export const mapEditFormDataToCodeList = (
         codelistNames: [
             {
                 ...formData.codeListName,
+                language,
                 effectiveFrom: formData.codeListName?.effectiveFrom
                     ? formatDateTimeForDefaultValue(formData.codeListName.effectiveFrom, API_DATE_FORMAT)
                     : '',
@@ -321,6 +322,7 @@ export const mapEditFormDataToCodeList = (
                 ? [
                       {
                           ...formData.newCodeListName,
+                          language,
                           effectiveFrom: formData.newCodeListName?.effectiveFrom
                               ? formatDateTimeForDefaultValue(formData.newCodeListName.effectiveFrom, API_DATE_FORMAT)
                               : '',
