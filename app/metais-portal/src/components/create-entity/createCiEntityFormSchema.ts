@@ -16,7 +16,7 @@ import {
     object,
     string,
 } from 'yup'
-import { REGEX_TEL, HTML_TYPE } from '@isdd/metais-common/constants'
+import { REGEX_TEL, HTML_TYPE, REGEX_EMAIL } from '@isdd/metais-common/constants'
 import { GidRoleData } from '@isdd/metais-common/api/generated/iam-swagger'
 import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
 import * as yup from 'yup'
@@ -73,7 +73,9 @@ export const generateFormSchema = (
         const isInterval = attribute?.constraints && attribute.constraints.length > 0 && attribute?.constraints[0].type === 'interval'
 
         const isEmail = attribute?.name?.toLowerCase() === 'email'
-        const isPhone = attribute?.name?.toLowerCase() === 'phone'
+        const isPhone = attribute?.name == t('validation.phone')
+
+        const isName = attribute?.name == t('validation.name') || attribute?.name == t('validation.surname')
 
         const isRequired = attribute?.mandatory?.type === 'critical' && !attribute.readOnly
 
@@ -145,7 +147,7 @@ export const generateFormSchema = (
                 }
                 case isEmail: {
                     schema[attribute.technicalName] = string()
-                        .email(t('validation.invalidEmail'))
+                        .matches(REGEX_EMAIL, t('validation.invalidEmail'))
                         .when('isRequired', (_, current) => {
                             if (isRequired) {
                                 return current.required(t('validation.required'))
@@ -157,6 +159,18 @@ export const generateFormSchema = (
                 case isPhone: {
                     schema[attribute.technicalName] = string()
                         .matches(REGEX_TEL, t('validation.invalidPhone'))
+                        .when('isRequired', (_, current) => {
+                            if (isRequired) {
+                                return current.required(t('validation.required'))
+                            }
+                            return current
+                        })
+                    break
+                }
+
+                case isName: {
+                    schema[attribute.technicalName] = string()
+                        .matches(/^([^0-9]*)$/, t('validation.noNumbers'))
                         .when('isRequired', (_, current) => {
                             if (isRequired) {
                                 return current.required(t('validation.required'))
