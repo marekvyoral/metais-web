@@ -83,12 +83,12 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
                 form={({ filter: listFilter, setValue }) => (
                     <div>
                         <SimpleSelect
-                            id="ci"
+                            id="isvsUuid"
                             label={`${t('monitoring.list.filter.ciLabel')}:`}
                             options={ciListOptions}
                             setValue={setValue}
-                            defaultValue={listFilter?.ci}
-                            name="ci"
+                            defaultValue={listFilter?.isvsUuid}
+                            name="isvsUuid"
                         />
                     </div>
                 )}

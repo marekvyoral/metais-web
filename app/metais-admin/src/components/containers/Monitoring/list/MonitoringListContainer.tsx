@@ -17,22 +17,17 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
     }
 
     const { filter, handleFilterChange } = useFilterParams<IMonitoringListFilterData>({
-        // sort: [
-        //     {
-        //         orderBy: VotesListColumnsEnum.EFFECTIVE_FROM,
-        //         sortDirection: SortType.DESC,
-        //     },
-        // ],
         ...defaultFilterValues,
     })
 
     const monitoringCfgParamValues = useMemo((): FindActiveMonitoringCfgParams => {
         const monitoringParams: FindActiveMonitoringCfgParams = {
+            ...(!!filter.isvsUuid && { isvsUuid: filter.isvsUuid }),
             page: filter.pageNumber ?? BASE_PAGE_NUMBER,
             pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
         }
         return monitoringParams
-    }, [filter.pageNumber, filter.pageSize])
+    }, [filter.isvsUuid, filter.pageNumber, filter.pageSize])
 
     const ciListParamValues = useMemo((): CiListFilterContainerUi => {
         const monitoringParams: CiListFilterContainerUi = {
@@ -56,16 +51,9 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
         refetch: getMonitoringListRefetch,
     } = useFindActiveMonitoringCfg(monitoringCfgParamValues)
 
-    const {
-        data: ciListData,
-        isLoading: isLoadingCiList,
-        isFetching: isFetchingCiList,
-        isError: isErrorCiList,
-        // refetch: getReadCiListRefetch,
-    } = useReadCiList1(ciListParamValues)
+    const { data: ciListData, isLoading: isLoadingCiList, isFetching: isFetchingCiList, isError: isErrorCiList } = useReadCiList1(ciListParamValues)
 
     const refetchListData = async () => {
-        //getReadCiListRefetch()
         await getMonitoringListRefetch()
     }
 
