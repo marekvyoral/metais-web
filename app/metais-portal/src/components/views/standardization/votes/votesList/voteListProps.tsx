@@ -90,3 +90,5 @@ export const voteStateOptions = (t: TFunction): IOption<string>[] => {
         { value: VoteStateOptionEnum.VETOED, label: t('votes.type.state.vetoed') },
     ]
 }
+
+export const voteStateWithoutDate = [VoteStateOptionEnum.PLANNED, VoteStateOptionEnum.UPCOMING, VoteStateOptionEnum.ENDED]
