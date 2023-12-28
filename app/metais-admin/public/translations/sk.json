@@ -1085,8 +1085,8 @@
                 "httpRequestBody": "Request Body",
                 "httpResponseStatus": "Response Status",
                 "httpResponseBodyRegex": "Response Body Regex",
-                "periodicity": "Periodicity",
-                "enabled": "Enabled"
+                "periodicity": "Periodicita",
+                "enabled": "povolené"
             },
             "newMonitoringButton": "Pridať záznam"
         },

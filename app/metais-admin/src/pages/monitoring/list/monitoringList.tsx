@@ -24,12 +24,12 @@ const MonitoringListPage = () => {
                     View={(props) => (
                         <MonitoringListView
                             monitoringCfgApiData={props.monitoringCfgApiData}
-                            ciListData={props.ciListData}
                             defaultFilterValues={props.defaultFilterValues}
                             filter={props.filter}
                             handleFilterChange={props.handleFilterChange}
                             isLoadingNextPage={props.isLoadingNextPage}
                             refetchListData={props.refetchListData}
+                            loadOptions={props.loadOptions}
                         />
                     )}
                 />

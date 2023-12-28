@@ -1,8 +1,8 @@
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ATTRIBUTE_NAME, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { FindActiveMonitoringCfgParams, useFindActiveMonitoringCfg } from '@isdd/metais-common/api/generated/monitoring-swagger'
-import { CiListFilterContainerUi, useReadCiList1 } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { CiListFilterContainerUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 
 import { IMonitoringListFilterData, IMonitoringListView } from '@/components/views/monitoring/list'
@@ -13,7 +13,7 @@ interface IMonitoringListContainer {
 
 export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ View }) => {
     const defaultFilterValues: IMonitoringListFilterData = {
-        isvsUuid: '',
+        ci: undefined,
     }
 
     const { filter, handleFilterChange } = useFilterParams<IMonitoringListFilterData>({
@@ -22,12 +22,12 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
 
     const monitoringCfgParamValues = useMemo((): FindActiveMonitoringCfgParams => {
         const monitoringParams: FindActiveMonitoringCfgParams = {
-            ...(!!filter.isvsUuid && { isvsUuid: filter.isvsUuid }),
+            ...(!!filter.ci?.uuid && { isvsUuid: filter.ci.uuid }),
             page: filter.pageNumber ?? BASE_PAGE_NUMBER,
             pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
         }
         return monitoringParams
-    }, [filter.isvsUuid, filter.pageNumber, filter.pageSize])
+    }, [filter.ci?.uuid, filter.pageNumber, filter.pageSize])
 
     const ciListParamValues = useMemo((): CiListFilterContainerUi => {
         const monitoringParams: CiListFilterContainerUi = {
@@ -51,26 +51,46 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
         refetch: getMonitoringListRefetch,
     } = useFindActiveMonitoringCfg(monitoringCfgParamValues)
 
-    const { data: ciListData, isLoading: isLoadingCiList, isFetching: isFetchingCiList, isError: isErrorCiList } = useReadCiList1(ciListParamValues)
-
+    const readCiList = useReadCiList1Hook()
+    const [isErrorCiList, setIsErrorCiList] = useState<boolean>(false)
     const refetchListData = async () => {
         await getMonitoringListRefetch()
     }
 
+    const loadOptions = async (additional: { page: number } | undefined) => {
+        try {
+            setIsErrorCiList(false)
+            const page = !additional?.page ? 1 : (additional?.page || 0) + 1
+            const options = await readCiList({ ...ciListParamValues, page: page, perpage: 50 } as CiListFilterContainerUi)
+            return {
+                options: options.configurationItemSet || [],
+                hasMore: options.configurationItemSet?.length ? true : false,
+                additional: {
+                    page: page,
+                },
+            }
+        } catch {
+            setIsErrorCiList(true)
+            return {
+                options: [],
+                hasMore: false,
+                additional: {
+                    page: 1,
+                },
+            }
+        }
+    }
+
     return (
-        <QueryFeedback
-            loading={isLoading || isLoadingCiList || isFetchingCiList}
-            error={isError || isErrorCiList}
-            indicatorProps={{ layer: 'parent' }}
-        >
+        <QueryFeedback loading={isLoading} error={isError || isErrorCiList} indicatorProps={{ layer: 'parent' }}>
             <View
                 monitoringCfgApiData={monitoringCfgData}
-                ciListData={ciListData}
                 filter={filter}
                 defaultFilterValues={defaultFilterValues}
                 isLoadingNextPage={isFetching}
                 handleFilterChange={handleFilterChange}
                 refetchListData={refetchListData}
+                loadOptions={loadOptions}
             />
         </QueryFeedback>
     )

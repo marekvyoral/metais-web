@@ -8,17 +8,11 @@ import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { MonitoringListColumnsEnum } from './monitoringListProps'
 
-export const getCiListOptions = (ciListData: ConfigurationItemSetUi | undefined): IOption<string>[] => {
-    return (
-        ciListData?.configurationItemSet?.map((ciListRecord) => {
-            return {
-                value: ciListRecord?.uuid ?? '',
-                label:
-                    (ciListRecord?.attributes && `(${ciListRecord?.type ?? ''}) ${ciListRecord?.attributes[ATTRIBUTE_NAME.Gen_Profil_nazov]}`) ?? '',
-            }
-        }) ?? []
-    )
-}
+export const getCiListOptions = (ciListData: ConfigurationItemSetUi | undefined): IOption<string>[] =>
+    ciListData?.configurationItemSet?.map((ciListRecord) => ({
+        value: ciListRecord?.uuid ?? '',
+        label: (ciListRecord?.attributes && `(${ciListRecord?.type ?? ''}) ${ciListRecord?.attributes[ATTRIBUTE_NAME.Gen_Profil_nazov]}`) ?? '',
+    })) ?? []
 
 export const monitoringListColumns = (t: TFunction): Array<ColumnDef<ApiActiveMonitoringCfg>> => {
     const columnsAll: Array<ColumnDef<ApiActiveMonitoringCfg>> = [
@@ -33,8 +27,8 @@ export const monitoringListColumns = (t: TFunction): Array<ColumnDef<ApiActiveMo
                 const name = ctx.getValue() as string
                 return <TextLink to={`${AdminRouteNames.MONITORING_DETAIL}/${isvsUuid}`}>{name}</TextLink>
             },
+            meta: { getCellContext: (ctx) => ctx?.getValue?.() },
         },
-
         {
             header: t('monitoring.list.table.entityType'),
             accessorFn: (row) => row?.entityType,
