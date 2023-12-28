@@ -12,25 +12,23 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { useEffect } from 'react'
 import { ApiActiveMonitoringCfgList } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { MultiValue } from 'react-select'
 
 import styles from '../monitoring.module.scss'
 
 import { monitoringListColumns } from '@/components/views/monitoring/list/monitoringListFunc'
 
 export interface IMonitoringListFilterData extends IFilterParams, IFilter {
-    ci?: ConfigurationItemUi
+    isvsUuid: string
 }
 
 export interface IMonitoringListView {
     monitoringCfgApiData: ApiActiveMonitoringCfgList | undefined
-    // ciListData: ConfigurationItemSetUi | undefined
     defaultFilterValues: IMonitoringListFilterData
     filter: IFilter
     isLoadingNextPage: boolean
     handleFilterChange: (filter: IFilter) => void
     refetchListData: () => Promise<void>
-    loadOptions: (additional: { page: number } | undefined) => Promise<ILoadOptionsResponse<ConfigurationItemUi>>
+    loadOptions: (searchQuery: string, additional: { page: number } | undefined) => Promise<ILoadOptionsResponse<ConfigurationItemUi>>
 }
 
 export const MonitoringListView: React.FC<IMonitoringListView> = ({
@@ -52,7 +50,7 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
     const newMonitoringHandler = () => {
         navigate(`${AdminRouteNames.MONITORING_CREATE}`, { state: { from: location } })
     }
-
+    // const [ciValue, setCiValue] = useState<ConfigurationItemUi | undefined>(undefined)
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
     useEffect(() => {
@@ -80,21 +78,16 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
             <Filter<IMonitoringListFilterData>
                 heading={t('monitoring.list.filter.title')}
                 defaultFilterValues={defaultFilterValues}
-                form={({ setValue, watch }) => (
-                    <SelectLazyLoading
-                        value={watch('ci') as ConfigurationItemUi}
-                        setValue={setValue}
+                form={({ setValue }) => (
+                    <SelectLazyLoading<ConfigurationItemUi>
                         getOptionLabel={(item) =>
                             (item?.attributes && `(${item?.type ?? ''}) ${item?.attributes[ATTRIBUTE_NAME.Gen_Profil_nazov]}`) ?? ''
                         }
                         getOptionValue={(item) => item.uuid ?? ''}
-                        loadOptions={(_, __, additional) => loadOptions(additional)}
+                        loadOptions={(searchQuery, __, additional) => loadOptions(searchQuery, additional)}
                         label={`${t('monitoring.list.filter.ciLabel')}:`}
-                        name="ci"
-                        id="ci"
-                        onChange={(val: ConfigurationItemUi | MultiValue<ConfigurationItemUi> | null) => {
-                            setValue('ci', val as ConfigurationItemUi)
-                        }}
+                        name="isvsUuid"
+                        setValue={setValue}
                     />
                 )}
             />

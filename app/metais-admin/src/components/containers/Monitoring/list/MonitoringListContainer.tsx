@@ -13,35 +13,18 @@ interface IMonitoringListContainer {
 
 export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ View }) => {
     const defaultFilterValues: IMonitoringListFilterData = {
-        ci: undefined,
+        isvsUuid: '',
     }
-
-    const { filter, handleFilterChange } = useFilterParams<IMonitoringListFilterData>({
-        ...defaultFilterValues,
-    })
+    const { filter, handleFilterChange } = useFilterParams<IMonitoringListFilterData>(defaultFilterValues)
 
     const monitoringCfgParamValues = useMemo((): FindActiveMonitoringCfgParams => {
         const monitoringParams: FindActiveMonitoringCfgParams = {
-            ...(!!filter.ci?.uuid && { isvsUuid: filter.ci.uuid }),
+            ...(!!filter.isvsUuid && { isvsUuid: filter.isvsUuid }),
             page: filter.pageNumber ?? BASE_PAGE_NUMBER,
             pageSize: filter.pageSize ?? BASE_PAGE_SIZE,
         }
         return monitoringParams
-    }, [filter.ci?.uuid, filter.pageNumber, filter.pageSize])
-
-    const ciListParamValues = useMemo((): CiListFilterContainerUi => {
-        const monitoringParams: CiListFilterContainerUi = {
-            sortBy: ATTRIBUTE_NAME.Gen_Profil_nazov,
-            sortType: SortType.ASC,
-            filter: {
-                metaAttributes: {
-                    state: ['DRAFT'],
-                },
-                type: ['ISVS', 'KS', 'AS'],
-            },
-        }
-        return monitoringParams
-    }, [])
+    }, [filter.isvsUuid, filter.pageNumber, filter.pageSize])
 
     const {
         data: monitoringCfgData,
@@ -57,11 +40,23 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
         await getMonitoringListRefetch()
     }
 
-    const loadOptions = async (additional: { page: number } | undefined) => {
+    const loadOptions = async (searchQuery: string, additional: { page: number } | undefined) => {
         try {
             setIsErrorCiList(false)
             const page = !additional?.page ? 1 : (additional?.page || 0) + 1
-            const options = await readCiList({ ...ciListParamValues, page: page, perpage: 50 } as CiListFilterContainerUi)
+            const options = await readCiList({
+                sortBy: ATTRIBUTE_NAME.Gen_Profil_nazov,
+                sortType: SortType.ASC,
+                filter: {
+                    metaAttributes: {
+                        state: ['DRAFT'],
+                    },
+                    type: ['ISVS', 'KS', 'AS'],
+                    fullTextSearch: searchQuery,
+                },
+                page: page,
+                perpage: 50,
+            } as CiListFilterContainerUi)
             return {
                 options: options.configurationItemSet || [],
                 hasMore: options.configurationItemSet?.length ? true : false,
