@@ -212,10 +212,8 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                             workingLanguage={workingLanguage}
                             showState
                         />
-
                         <TextHeading size="L">{t('codeListList.requestTitleContact')}</TextHeading>
                         <GestorTabView codeList={data.detail} attributeProfile={data.attributeProfile} />
-
                         <TextBody>
                             {data.detail.codelistState === RequestListState.REJECTED && (
                                 <InfoIconWithText>
@@ -233,7 +231,6 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                                 </InfoIconWithText>
                             )}
                         </TextBody>
-
                         <TextHeading size="L">{t('codeListList.requestCreate.codeListTableTitle')}</TextHeading>
                         <ActionsOverTable
                             pagination={{
