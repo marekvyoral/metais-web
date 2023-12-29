@@ -27,22 +27,32 @@ export const RefRegisterView = ({ data: { referenceRegisterData, renamedAttribut
 
     const currentRefRegisterState = useMemo(() => stateMachine.getCurrentState(), [stateMachine])
 
+    const removeEndingComma = (testedString: string): string => {
+        const lengthOfEndingStringAfterLastComma = testedString?.split(',')?.pop()?.length ?? 0
+        if (lengthOfEndingStringAfterLastComma === 0) {
+            return testedString.slice(0, testedString.length - 1)
+        }
+        return testedString
+    }
+
     const getContactItems = (): string => {
         const contactFirstName = referenceRegisterData?.contactFirstName ? `${referenceRegisterData?.contactFirstName},` : ''
-        const contactLastName = referenceRegisterData?.contactLastName ? `${referenceRegisterData?.contactLastName ?? ''},` : ''
-        const contactPhone = referenceRegisterData?.contactPhone ? `${referenceRegisterData?.contactPhone ?? ''},` : ''
-        const contactEmail = referenceRegisterData?.contactEmail ? `${referenceRegisterData?.contactEmail ?? ''}` : ''
+        const contactLastName = referenceRegisterData?.contactLastName ? `${referenceRegisterData?.contactLastName},` : ''
+        const contactPhone = referenceRegisterData?.contactPhone ? `${referenceRegisterData?.contactPhone},` : ''
+        const contactEmail = referenceRegisterData?.contactEmail ? `${referenceRegisterData?.contactEmail}` : ''
+        const result = contactFirstName + contactLastName + contactPhone + contactEmail
 
-        return contactFirstName + contactLastName + contactPhone + contactEmail
+        return removeEndingComma(result)
     }
 
     const getContactRegistratorItems = (): string => {
         const contactFirstName = referenceRegisterData?.contactRegistratorFirstName ? `${referenceRegisterData?.contactRegistratorFirstName},` : ''
-        const contactLastName = referenceRegisterData?.contactRegistratorLastName ? `${referenceRegisterData?.contactRegistratorLastName ?? ''},` : ''
-        const contactPhone = referenceRegisterData?.contactRegistratorPhone ? `${referenceRegisterData?.contactRegistratorPhone ?? ''},` : ''
-        const contactEmail = referenceRegisterData?.contactRegistratorEmail ? `${referenceRegisterData?.contactRegistratorEmail ?? ''}` : ''
+        const contactLastName = referenceRegisterData?.contactRegistratorLastName ? `${referenceRegisterData?.contactRegistratorLastName},` : ''
+        const contactPhone = referenceRegisterData?.contactRegistratorPhone ? `${referenceRegisterData?.contactRegistratorPhone},` : ''
+        const contactEmail = referenceRegisterData?.contactRegistratorEmail ? `${referenceRegisterData?.contactRegistratorEmail}` : ''
+        const result = contactFirstName + contactLastName + contactPhone + contactEmail
 
-        return contactFirstName + contactLastName + contactPhone + contactEmail
+        return removeEndingComma(result)
     }
 
     return (
