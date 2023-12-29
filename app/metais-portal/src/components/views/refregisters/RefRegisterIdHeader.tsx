@@ -96,14 +96,17 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
                                     <ButtonPopup
                                         buttonLabel={t('ciType.moreButton')}
                                         popupPosition="right"
-                                        popupContent={() => {
+                                        popupContent={(closePopup) => {
                                             return (
                                                 <div className={styles.buttonLinksDiv}>
                                                     <RefRegisterButtonPopupContent
                                                         entityId={entityId}
                                                         setOpenGeneratePropDialog={setOpenGeneratePropDialog}
                                                         handleDeleteRefRegister={handleDeleteRefRegister}
-                                                        onClick={onClick}
+                                                        onClick={(option) => {
+                                                            onClick(option)
+                                                            closePopup()
+                                                        }}
                                                     />
                                                 </div>
                                             )

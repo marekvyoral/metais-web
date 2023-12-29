@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { QueryFeedback } from '@isdd/metais-common/index'
 import { ApiAttachment } from '@isdd/metais-common/api/generated/standards-swagger'
 import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
+import { v4 as uuidV4 } from 'uuid'
 
 import styles from './createEditView.module.scss'
 import { MeetingFormEnum, createMeetingSchema, editMeetingSchema } from './meetingSchema'
@@ -166,6 +167,19 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
         setValue(MeetingFormEnum.PLACE, infoData?.place || '')
         setSelectedProposals(infoData?.standardRequestIds?.map((o) => o.toString()) ?? [])
     }, [infoData, setValue])
+
+    const fileMetaAttributes = {
+        'x-content-uuid': uuidV4(),
+        refAttributes: new Blob(
+            [
+                JSON.stringify({
+                    refType: 'STANDARD',
+                }),
+            ],
+            { type: 'application/json' },
+        ),
+    }
+
     return (
         <>
             {!isEdit && (
@@ -302,6 +316,7 @@ export const MeetingCreateEditView: React.FC<IMeetingEditViewParams> = ({ onSubm
                             allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif']}
                             multiple
                             isUsingUuidInFilePath
+                            fileMetaAttributes={fileMetaAttributes}
                             onUploadSuccess={handleUploadSuccess}
                         />
                         <ExistingFilesHandler
