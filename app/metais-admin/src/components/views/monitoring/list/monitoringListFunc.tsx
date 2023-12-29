@@ -44,6 +44,7 @@ export const monitoringListColumns = (t: TFunction): Array<ColumnDef<ApiActiveMo
             id: MonitoringListColumnsEnum.URL,
             size: 120,
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            meta: { getCellContext: (ctx) => ctx?.getValue?.() },
         },
         {
             header: t('monitoring.list.table.httpMethod'),
@@ -60,6 +61,7 @@ export const monitoringListColumns = (t: TFunction): Array<ColumnDef<ApiActiveMo
             id: MonitoringListColumnsEnum.REQUEST_HEADER,
             size: 120,
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            meta: { getCellContext: (ctx) => ctx?.getValue?.() },
         },
         {
             header: t('monitoring.list.table.httpRequestBody'),
@@ -68,6 +70,7 @@ export const monitoringListColumns = (t: TFunction): Array<ColumnDef<ApiActiveMo
             id: MonitoringListColumnsEnum.REQUEST_BODY,
             size: 120,
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            meta: { getCellContext: (ctx) => ctx?.getValue?.() },
         },
         {
             header: t('monitoring.list.table.httpResponseStatus'),
@@ -84,6 +87,7 @@ export const monitoringListColumns = (t: TFunction): Array<ColumnDef<ApiActiveMo
             id: MonitoringListColumnsEnum.RESPONSE_BODY_REGEX,
             size: 120,
             cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            meta: { getCellContext: (ctx) => ctx?.getValue?.() },
         },
         {
             header: t('monitoring.list.table.periodicity'),
