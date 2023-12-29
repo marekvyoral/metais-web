@@ -27,6 +27,35 @@ export const RefRegisterView = ({ data: { referenceRegisterData, renamedAttribut
 
     const currentRefRegisterState = useMemo(() => stateMachine.getCurrentState(), [stateMachine])
 
+    const removeEndingComma = (testedString: string): string => {
+        const lastCommaIndex = testedString.lastIndexOf(', ')
+        if (lastCommaIndex !== -1 && lastCommaIndex === testedString.length - 2) {
+            return testedString.slice(0, lastCommaIndex)
+        }
+
+        return testedString
+    }
+
+    const getContactItems = (): string => {
+        const contactFirstName = referenceRegisterData?.contactFirstName ? `${referenceRegisterData?.contactFirstName} ` : ''
+        const contactLastName = referenceRegisterData?.contactLastName ? `${referenceRegisterData?.contactLastName}, ` : ''
+        const contactPhone = referenceRegisterData?.contactPhone ? `${referenceRegisterData?.contactPhone}, ` : ''
+        const contactEmail = referenceRegisterData?.contactEmail ? `${referenceRegisterData?.contactEmail}` : ''
+        const result = contactFirstName + contactLastName + contactPhone + contactEmail
+
+        return removeEndingComma(result)
+    }
+
+    const getContactRegistratorItems = (): string => {
+        const contactFirstName = referenceRegisterData?.contactRegistratorFirstName ? `${referenceRegisterData?.contactRegistratorFirstName} ` : ''
+        const contactLastName = referenceRegisterData?.contactRegistratorLastName ? `${referenceRegisterData?.contactRegistratorLastName}, ` : ''
+        const contactPhone = referenceRegisterData?.contactRegistratorPhone ? `${referenceRegisterData?.contactRegistratorPhone}, ` : ''
+        const contactEmail = referenceRegisterData?.contactRegistratorEmail ? `${referenceRegisterData?.contactRegistratorEmail}` : ''
+        const result = contactFirstName + contactLastName + contactPhone + contactEmail
+
+        return removeEndingComma(result)
+    }
+
     return (
         <QueryFeedback loading={isLoading} error={isError} errorProps={{ errorMessage: t('feedback.failedFetch') }}>
             <div className={styles.attributeGridRowBox}>
@@ -69,7 +98,7 @@ export const RefRegisterView = ({ data: { referenceRegisterData, renamedAttribut
                 <InformationGridRow
                     key={RefRegisterViewItems.CONTACT}
                     label={getLabelOfRow(RefRegisterViewItems.CONTACT)}
-                    value={`${referenceRegisterData?.contactFirstName} ${referenceRegisterData?.contactLastName}, ${referenceRegisterData?.contactPhone}, ${referenceRegisterData?.contactEmail}`}
+                    value={getContactItems()}
                     tooltip={getTooltipOfRow(RefRegisterViewItems.CONTACT)}
                 />
                 <InformationGridRow
@@ -81,7 +110,7 @@ export const RefRegisterView = ({ data: { referenceRegisterData, renamedAttribut
                 <InformationGridRow
                     key={RefRegisterViewItems.CONTACT_REGISTRATOR}
                     label={getLabelOfRow(RefRegisterViewItems.CONTACT_REGISTRATOR)}
-                    value={`${referenceRegisterData?.contactRegistratorFirstName} ${referenceRegisterData?.contactRegistratorLastName}, ${referenceRegisterData?.contactRegistratorPhone}, ${referenceRegisterData?.contactRegistratorEmail}`}
+                    value={getContactRegistratorItems()}
                     tooltip={getTooltipOfRow(RefRegisterViewItems.CONTACT_REGISTRATOR)}
                 />
                 <InformationGridRow

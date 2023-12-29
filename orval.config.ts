@@ -478,4 +478,25 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
+    monitoring: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_MONITORING_SWAGGER_URL ?? '',
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/monitoring-swagger.ts`,
+            override: {
+                query: {
+                    useQuery: true,
+                },
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useMonitoringSwaggerClient.ts',
+                    name: 'useMonitoringSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
 })
