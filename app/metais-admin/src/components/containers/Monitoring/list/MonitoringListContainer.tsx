@@ -52,6 +52,7 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
                         state: ['DRAFT'],
                     },
                     type: ['ISVS', 'KS', 'AS'],
+                    ...(!!searchQuery && { searchFields: ['Gen_Profil_nazov', 'Gen_Profil_kod_metais'] }),
                     fullTextSearch: searchQuery,
                 },
                 page: page,
