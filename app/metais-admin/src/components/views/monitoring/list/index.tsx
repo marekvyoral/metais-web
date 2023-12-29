@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ApiActiveMonitoringCfgList } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
@@ -29,6 +29,7 @@ export interface IMonitoringListView {
     handleFilterChange: (filter: IFilter) => void
     refetchListData: () => Promise<void>
     loadOptions: (searchQuery: string, additional: { page: number } | undefined) => Promise<ILoadOptionsResponse<ConfigurationItemUi>>
+    ciDefaultValue?: ConfigurationItemUi
 }
 
 export const MonitoringListView: React.FC<IMonitoringListView> = ({
@@ -39,6 +40,7 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
     handleFilterChange,
     refetchListData,
     loadOptions,
+    ciDefaultValue,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
@@ -50,8 +52,8 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
     const newMonitoringHandler = () => {
         navigate(`${AdminRouteNames.MONITORING_CREATE}`, { state: { from: location } })
     }
-    // const [ciValue, setCiValue] = useState<ConfigurationItemUi | undefined>(undefined)
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
+    const [seed, setSeed] = useState(1)
 
     useEffect(() => {
         if (isSuccess) {
@@ -60,6 +62,13 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess])
+
+    useEffect(() => {
+        // SelectLazyLoading component does not rerender on defaultValue change.
+        // Once default value is set, it cant be changed.
+        // Change of key forces the component to render changed default value.
+        setSeed(Math.random())
+    }, [ciDefaultValue])
 
     return (
         <>
@@ -80,6 +89,7 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
                 defaultFilterValues={defaultFilterValues}
                 form={({ setValue }) => (
                     <SelectLazyLoading<ConfigurationItemUi>
+                        key={seed}
                         getOptionLabel={(item) =>
                             (item?.attributes && `(${item?.type ?? ''}) ${item?.attributes[ATTRIBUTE_NAME.Gen_Profil_nazov]}`) ?? ''
                         }
@@ -88,6 +98,7 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
                         label={`${t('monitoring.list.filter.ciLabel')}:`}
                         name="isvsUuid"
                         setValue={setValue}
+                        defaultValue={ciDefaultValue}
                     />
                 )}
             />

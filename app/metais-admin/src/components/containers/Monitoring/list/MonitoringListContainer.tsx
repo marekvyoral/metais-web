@@ -1,9 +1,9 @@
+import { SortType } from '@isdd/idsk-ui-kit/types'
+import { ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { FindActiveMonitoringCfgParams, useFindActiveMonitoringCfg } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { ATTRIBUTE_NAME, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
-import React, { useMemo, useState } from 'react'
-import { FindActiveMonitoringCfgParams, useFindActiveMonitoringCfg } from '@isdd/metais-common/api/generated/monitoring-swagger'
-import { CiListFilterContainerUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { SortType } from '@isdd/idsk-ui-kit/types'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { IMonitoringListFilterData, IMonitoringListView } from '@/components/views/monitoring/list'
 
@@ -16,7 +16,7 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
         isvsUuid: '',
     }
     const { filter, handleFilterChange } = useFilterParams<IMonitoringListFilterData>(defaultFilterValues)
-
+    const [defaultValue, setDefaultValue] = useState<ConfigurationItemUi | undefined>(undefined)
     const monitoringCfgParamValues = useMemo((): FindActiveMonitoringCfgParams => {
         const monitoringParams: FindActiveMonitoringCfgParams = {
             ...(!!filter.isvsUuid && { isvsUuid: filter.isvsUuid }),
@@ -56,10 +56,10 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
                 },
                 page: page,
                 perpage: 50,
-            } as CiListFilterContainerUi)
+            })
             return {
                 options: options.configurationItemSet || [],
-                hasMore: options.configurationItemSet?.length ? true : false,
+                hasMore: options.configurationItemSet?.length == 50 ? true : false,
                 additional: {
                     page: page,
                 },
@@ -76,6 +76,33 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
         }
     }
 
+    useEffect(() => {
+        const getData = async (uuid: string) => {
+            const option = await readCiList({
+                sortBy: ATTRIBUTE_NAME.Gen_Profil_nazov,
+                sortType: SortType.ASC,
+                filter: {
+                    metaAttributes: {
+                        state: ['DRAFT'],
+                    },
+                    type: ['ISVS', 'KS', 'AS'],
+                    uuid: [uuid],
+                },
+                page: 1,
+                perpage: 1,
+            }).then((data) => {
+                setDefaultValue(data.configurationItemSet?.[0])
+            })
+            return option
+        }
+        if (!defaultValue && filter.isvsUuid) {
+            getData(filter.isvsUuid)
+        }
+        if (!filter.isvsUuid) {
+            setDefaultValue(undefined)
+        }
+    }, [defaultValue, filter.isvsUuid, readCiList])
+
     return (
         <QueryFeedback loading={isLoading} error={isError || isErrorCiList} indicatorProps={{ layer: 'parent' }}>
             <View
@@ -86,6 +113,7 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
                 handleFilterChange={handleFilterChange}
                 refetchListData={refetchListData}
                 loadOptions={loadOptions}
+                ciDefaultValue={defaultValue}
             />
         </QueryFeedback>
     )

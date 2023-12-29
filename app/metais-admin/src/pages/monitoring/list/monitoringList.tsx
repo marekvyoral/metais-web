@@ -30,6 +30,7 @@ const MonitoringListPage = () => {
                             isLoadingNextPage={props.isLoadingNextPage}
                             refetchListData={props.refetchListData}
                             loadOptions={props.loadOptions}
+                            ciDefaultValue={props.ciDefaultValue}
                         />
                     )}
                 />
