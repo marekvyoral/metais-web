@@ -28,17 +28,18 @@ export const RefRegisterView = ({ data: { referenceRegisterData, renamedAttribut
     const currentRefRegisterState = useMemo(() => stateMachine.getCurrentState(), [stateMachine])
 
     const removeEndingComma = (testedString: string): string => {
-        const lengthOfEndingStringAfterLastComma = testedString?.split(',')?.pop()?.length ?? 0
-        if (lengthOfEndingStringAfterLastComma === 0) {
-            return testedString.slice(0, testedString.length - 1)
+        const lastCommaIndex = testedString.lastIndexOf(', ')
+        if (lastCommaIndex !== -1 && lastCommaIndex === testedString.length - 2) {
+            return testedString.slice(0, lastCommaIndex)
         }
+
         return testedString
     }
 
     const getContactItems = (): string => {
-        const contactFirstName = referenceRegisterData?.contactFirstName ? `${referenceRegisterData?.contactFirstName},` : ''
-        const contactLastName = referenceRegisterData?.contactLastName ? `${referenceRegisterData?.contactLastName},` : ''
-        const contactPhone = referenceRegisterData?.contactPhone ? `${referenceRegisterData?.contactPhone},` : ''
+        const contactFirstName = referenceRegisterData?.contactFirstName ? `${referenceRegisterData?.contactFirstName} ` : ''
+        const contactLastName = referenceRegisterData?.contactLastName ? `${referenceRegisterData?.contactLastName}, ` : ''
+        const contactPhone = referenceRegisterData?.contactPhone ? `${referenceRegisterData?.contactPhone}, ` : ''
         const contactEmail = referenceRegisterData?.contactEmail ? `${referenceRegisterData?.contactEmail}` : ''
         const result = contactFirstName + contactLastName + contactPhone + contactEmail
 
@@ -46,9 +47,9 @@ export const RefRegisterView = ({ data: { referenceRegisterData, renamedAttribut
     }
 
     const getContactRegistratorItems = (): string => {
-        const contactFirstName = referenceRegisterData?.contactRegistratorFirstName ? `${referenceRegisterData?.contactRegistratorFirstName},` : ''
-        const contactLastName = referenceRegisterData?.contactRegistratorLastName ? `${referenceRegisterData?.contactRegistratorLastName},` : ''
-        const contactPhone = referenceRegisterData?.contactRegistratorPhone ? `${referenceRegisterData?.contactRegistratorPhone},` : ''
+        const contactFirstName = referenceRegisterData?.contactRegistratorFirstName ? `${referenceRegisterData?.contactRegistratorFirstName} ` : ''
+        const contactLastName = referenceRegisterData?.contactRegistratorLastName ? `${referenceRegisterData?.contactRegistratorLastName}, ` : ''
+        const contactPhone = referenceRegisterData?.contactRegistratorPhone ? `${referenceRegisterData?.contactRegistratorPhone}, ` : ''
         const contactEmail = referenceRegisterData?.contactRegistratorEmail ? `${referenceRegisterData?.contactRegistratorEmail}` : ''
         const result = contactFirstName + contactLastName + contactPhone + contactEmail
 
