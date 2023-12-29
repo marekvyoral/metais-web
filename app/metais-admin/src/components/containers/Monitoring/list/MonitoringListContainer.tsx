@@ -78,8 +78,8 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
     }
 
     useEffect(() => {
-        const getData = async (uuid: string) => {
-            const option = await readCiList({
+        const getData = (uuid: string) => {
+            readCiList({
                 sortBy: ATTRIBUTE_NAME.Gen_Profil_nazov,
                 sortType: SortType.ASC,
                 filter: {
@@ -94,11 +94,12 @@ export const MonitoringListContainer: React.FC<IMonitoringListContainer> = ({ Vi
             }).then((data) => {
                 setDefaultValue(data.configurationItemSet?.[0])
             })
-            return option
         }
+
         if (!defaultValue && filter.isvsUuid) {
             getData(filter.isvsUuid)
         }
+
         if (!filter.isvsUuid) {
             setDefaultValue(undefined)
         }
