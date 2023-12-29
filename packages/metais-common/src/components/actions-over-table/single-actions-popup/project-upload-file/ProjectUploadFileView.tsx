@@ -17,6 +17,7 @@ interface IProjectUploadFileViewProps {
     onClose: () => void
     onSubmit: () => void
     formState: FormState<FieldValues>
+    fileMetaAttributes: Record<string, unknown>
     isLoading: boolean
     fileUploadRef: React.RefObject<IFileUploadRef>
     onFileUploadSuccess: (data: FileUploadData[]) => void
@@ -30,6 +31,7 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
     formState,
     isLoading,
     fileUploadRef,
+    fileMetaAttributes,
     onFileUploadSuccess,
     duplicateDocNames,
 }) => {
@@ -49,6 +51,7 @@ export const ProjectUploadFileView: React.FC<IProjectUploadFileViewProps> = ({
                     ref={fileUploadRef}
                     allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif', '.csv']}
                     multiple
+                    fileMetaAttributes={fileMetaAttributes}
                     isUsingUuidInFilePath
                     onUploadSuccess={onFileUploadSuccess}
                     setCurrentFiles={setCurrentFiles}

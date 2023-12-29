@@ -180,6 +180,22 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
         }
     }
 
+    const fileMetaAttributes = {
+        'x-content-uuid': uuidV4(),
+        refAttributes: new Blob(
+            [
+                JSON.stringify({
+                    refCiTechnicalName: project?.type,
+                    refCiId: project?.uuid,
+                    refCiMetaisCode: project?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais],
+                    refCiOwner: project?.metaAttributes?.owner,
+                    refType: 'CI',
+                }),
+            ],
+            { type: 'application/json' },
+        ),
+    }
+
     return (
         <BaseModal isOpen={open} close={onClose}>
             <ProjectUploadFileView
@@ -187,6 +203,7 @@ export const ProjectUploadFileModal: React.FC<IProjectUploadFileModalProps> = ({
                 onClose={onClose}
                 onSubmit={handleSubmit(handleUploadFile)}
                 formState={formState}
+                fileMetaAttributes={fileMetaAttributes}
                 isLoading={isLoading}
                 fileUploadRef={fileUploadRef}
                 onFileUploadSuccess={onFileUploadSuccess}

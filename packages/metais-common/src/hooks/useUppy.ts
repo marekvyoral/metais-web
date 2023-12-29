@@ -1,12 +1,12 @@
-import { UppyFile, Uppy } from '@uppy/core'
-import XHRUpload from '@uppy/xhr-upload'
+import { Uppy, UppyFile } from '@uppy/core'
 import '@uppy/core/dist/style.min.css'
 import '@uppy/drag-drop/dist/style.min.css'
-import '@uppy/status-bar/dist/style.min.css'
-import { useTranslation } from 'react-i18next'
-import sk_SK from '@uppy/locales/lib/sk_SK'
 import en_US from '@uppy/locales/lib/en_US'
+import sk_SK from '@uppy/locales/lib/sk_SK'
+import '@uppy/status-bar/dist/style.min.css'
+import XHRUpload from '@uppy/xhr-upload'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
@@ -19,7 +19,7 @@ interface iUseUppy {
     endpointUrl?: string
     fileImportStep: FileImportStepEnum
     setFileImportStep: (value: FileImportStepEnum) => void
-    setCustomFileMeta?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => { [metaKey: string]: string | number }
+    setCustomFileMeta?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => { [metaKey: string]: unknown }
     setFileUuidAsync?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => Promise<{ uuid: string }>
 }
 
@@ -166,11 +166,11 @@ export const useUppy = ({
             updateUploadFilesStatus(file, false, error.message)
         }
         const fileAdded = async (file: UppyFile<Record<string, unknown>, Record<string, unknown>>) => {
-            if (setCustomFileMeta) uppy.setFileMeta(file?.id, setCustomFileMeta?.(file))
-
+            if (setCustomFileMeta) {
+                uppy.setFileMeta(file?.id, setCustomFileMeta?.(file))
+            }
             if (setFileUuidAsync) {
                 const fileUuid = await setFileUuidAsync?.(file)
-                uppy.setFileMeta(file.id, { uuid: fileUuid.uuid })
                 uppy.setFileState(file.id, {
                     xhrUpload: {
                         endpoint: `${endpointUrl}${encodeURIComponent(fileUuid.uuid)}`,

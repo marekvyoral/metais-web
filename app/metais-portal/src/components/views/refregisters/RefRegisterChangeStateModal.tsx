@@ -48,7 +48,17 @@ export const RefRegisterChangeStateModal = ({
         setFileImportStep,
         setCustomFileMeta: () => {
             const id = uuidV4()
-            return { 'x-content-uuid': id }
+            return {
+                'x-content-uuid': id,
+                refAttributes: new Blob(
+                    [
+                        JSON.stringify({
+                            refType: 'STANDARD',
+                        }),
+                    ],
+                    { type: 'application/json' },
+                ),
+            }
         },
     })
 

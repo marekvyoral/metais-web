@@ -2,6 +2,7 @@ import { BaseModal, LoadingIndicator } from '@isdd/idsk-ui-kit'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FieldValues, useForm } from 'react-hook-form'
+import { v4 as uuidV4 } from 'uuid'
 
 import { UpdateFileView } from './UpdateFileView'
 
@@ -28,7 +29,20 @@ export const UpdateFileModal: React.FC<IUpdateFileModalProps> = ({ item, open, o
     const handleUpdateFile = async (formData1: FieldValues) => {
         setIsLoading(true)
         const formData = new FormData()
+        formData.append('x-content-uuid', uuidV4())
+        formData.append(
+            'refAttributes',
+            new Blob(
+                [
+                    JSON.stringify({
+                        refType: 'STANDARD',
+                    }),
+                ],
+                { type: 'application/json' },
+            ),
+        )
         formData.append('file', formData1.file[0])
+
         try {
             const response = await fetch(baseURL + '/file/' + item.uuid, {
                 method: 'POST',

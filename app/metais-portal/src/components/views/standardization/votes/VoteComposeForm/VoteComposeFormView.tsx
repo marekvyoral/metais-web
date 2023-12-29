@@ -1,18 +1,21 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, CheckBox, IOption, Input, SimpleSelect, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { GroupWithIdentities } from '@isdd/metais-common/api/generated/iam-swagger'
+import { ApiAttachment, ApiLink, ApiStandardRequestPreviewList, ApiVote, ApiVoteChoice } from '@isdd/metais-common/api/generated/standards-swagger'
+import { FileUpload, FileUploadData, IFileUploadRef } from '@isdd/metais-common/components/FileUpload/FileUpload'
+import { User } from '@isdd/metais-common/contexts/auth/authContext'
+import { SubmitWithFeedback, formatDateForDefaultValue } from '@isdd/metais-common/index'
 import classNames from 'classnames'
+import { TFunction } from 'i18next'
+import { DateTime } from 'luxon'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { User } from '@isdd/metais-common/contexts/auth/authContext'
-import { SubmitWithFeedback, formatDateForDefaultValue } from '@isdd/metais-common/index'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { v4 as uuidV4 } from 'uuid'
 import * as Yup from 'yup'
-import { TFunction } from 'i18next'
-import { ApiAttachment, ApiLink, ApiStandardRequestPreviewList, ApiVote, ApiVoteChoice } from '@isdd/metais-common/api/generated/standards-swagger'
-import { DateTime } from 'luxon'
-import { IFileUploadRef, FileUploadData, FileUpload } from '@isdd/metais-common/components/FileUpload/FileUpload'
 
+import { ExistingFileData, ExistingFilesHandler, IExistingFilesHandlerRef } from './components/ExistingFilesHandler/ExistingFilesHandler'
+import { SelectVoteActors } from './components/SelectVoteActors'
 import {
     getPageTitle,
     getStandardRequestOptions,
@@ -20,17 +23,15 @@ import {
     mapProcessedExistingFilesToApiAttachment,
     mapUploadedFilesToApiAttachment,
 } from './functions/voteEditFunc'
-import { SelectVoteActors } from './components/SelectVoteActors'
-import { ExistingFileData, ExistingFilesHandler, IExistingFilesHandlerRef } from './components/ExistingFilesHandler/ExistingFilesHandler'
 
+import { LinksImport } from '@/components/LinksImport/LinksImport'
+import { Spacer } from '@/components/Spacer/Spacer'
+import { AnswerDefinitions } from '@/components/views/standardization/votes/components/AnswerDefinitions/AnswerDefinitions'
 import {
     StandardRequestsListModal,
     StandardRequestsListModalRefType,
 } from '@/components/views/standardization/votes/components/StandardRequestsListModal/StandardRequestsListModal'
-import { LinksImport } from '@/components/LinksImport/LinksImport'
 import styles from '@/components/views/standardization/votes/vote.module.scss'
-import { Spacer } from '@/components/Spacer/Spacer'
-import { AnswerDefinitions } from '@/components/views/standardization/votes/components/AnswerDefinitions/AnswerDefinitions'
 
 export interface IVoteEditView {
     user: User | null
@@ -219,6 +220,18 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
         callApi(formData, [])
     }
 
+    const fileMetaAttributes = {
+        'x-content-uuid': uuidV4(),
+        refAttributes: new Blob(
+            [
+                JSON.stringify({
+                    refType: 'STANDARD',
+                }),
+            ],
+            { type: 'application/json' },
+        ),
+    }
+
     return (
         <>
             <StandardRequestsListModal
@@ -280,6 +293,7 @@ export const VoteComposeFormView: React.FC<IVoteEditView> = ({
                     allowedFileTypes={['.txt', '.rtf', '.pdf', '.doc', '.docx', '.xcl', '.xclx', '.jpg', '.png', '.gif', '.csv']}
                     multiple
                     isUsingUuidInFilePath
+                    fileMetaAttributes={fileMetaAttributes}
                     onUploadSuccess={handleUploadSuccess}
                 />
 

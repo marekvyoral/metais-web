@@ -26,6 +26,7 @@ interface IFileUpload {
     endpointUrl?: string
     isUsingUuidInFilePath?: boolean
     maxFileSizeInBytes?: number
+    fileMetaAttributes: Record<string, unknown>
     onUploadSuccess?: (value: FileUploadData[]) => void
     onUploadingStart?: () => void
     onErrorOccurred?: (errorMessages: string[]) => void
@@ -46,6 +47,7 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
             endpointUrl,
             isUsingUuidInFilePath,
             maxFileSizeInBytes = 20_971_520,
+            fileMetaAttributes,
             onUploadingStart,
             onUploadSuccess,
             onErrorOccurred,
@@ -73,6 +75,11 @@ export const FileUpload = forwardRef<IFileUploadRef, IFileUpload>(
             endpointUrl: fileUploadURL,
             setFileImportStep: () => {
                 return
+            },
+            setCustomFileMeta: () => {
+                return {
+                    ...fileMetaAttributes,
+                }
             },
             setFileUuidAsync: isUsingUuidInFilePath
                 ? async (file): Promise<{ uuid: string }> => {

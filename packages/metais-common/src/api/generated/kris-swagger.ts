@@ -258,15 +258,15 @@ export interface SortObject {
 export interface PageableObject {
     offset?: number
     sort?: SortObject
+    paged?: boolean
     unpaged?: boolean
     pageNumber?: number
     pageSize?: number
-    paged?: boolean
 }
 
 export interface PageKrisToBeIsvs {
-    totalElements?: number
     totalPages?: number
+    totalElements?: number
     size?: number
     content?: KrisToBeIsvs[]
     number?: number
@@ -288,8 +288,8 @@ export interface KrisToBeKs {
 }
 
 export interface PageKrisToBeKs {
-    totalElements?: number
     totalPages?: number
+    totalElements?: number
     size?: number
     content?: KrisToBeKs[]
     number?: number
@@ -305,8 +305,8 @@ export interface KrisToBeRights {
     inEvaluation?: boolean
     inProgress?: boolean
     hasVersions?: boolean
-    creator?: boolean
     evaluator?: boolean
+    creator?: boolean
     municipality?: boolean
 }
 
@@ -342,7 +342,15 @@ export interface RelationshipUi {
     uuid?: string
     owner?: string
     startUuid?: string
+    startType?: string
+    startTypeName?: string
+    startName?: string
+    startKodMetaIS?: string
     endUuid?: string
+    endType?: string
+    endTypeName?: string
+    endName?: string
+    endKodMetaIS?: string
     attributes?: AttributeUi[]
     metaAttributes?: MetaAttributesUi
 }
