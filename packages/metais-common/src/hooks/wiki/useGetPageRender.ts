@@ -56,11 +56,15 @@ export const useGetPageRender = (howToType: string) => {
     }
 
     const sanitisedData = sanitizeHtml(htmlString ?? '', {
-        allowedTags: defaults.allowedTags.concat(['img', 'a']),
+        allowedTags: defaults.allowedTags.concat(['img', 'a', 'button', 'div', 'span', 'h2', 'p', 'h3']),
         allowedAttributes: {
             ...defaults.allowedAttributes,
             img: ['src', 'alt', 'title'],
             a: [...defaults.allowedAttributes.a, 'internal-link'],
+            button: ['data-open-title', 'data-close-title', 'type', 'aria-expanded', 'data-section-title'],
+            div: ['data-module', 'data-attribute', 'data-section-title', 'aria-labelledby'],
+            span: ['data-section-title'],
+            '*': ['class', 'id'],
         },
     })
 
