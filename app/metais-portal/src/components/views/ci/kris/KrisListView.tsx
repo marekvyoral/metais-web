@@ -120,6 +120,7 @@ export const KrisListView: React.FC<ICiListContainerView<KRISFilterType>> = ({
                 ciTypeData={ciTypeData}
                 createButton={
                     <CreateEntityButton
+                        label={t('ciType.createButton.KRIS')}
                         ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
                         onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })}
                     />

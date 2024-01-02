@@ -497,7 +497,9 @@
         "InfraSluzba": "Infraštruktúrne služby",
         "AS": "Aplikačná služba",
         "KS": "Koncová služba",
-
+        "createButton": {
+            "KRIS": "Pridať novú koncepciu KRIT"
+        },
         "informations": "Informácie",
         "tasks": "Úlohy",
         "documents": "Dokumenty",

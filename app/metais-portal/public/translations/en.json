@@ -499,7 +499,9 @@
         "InfraSluzba": "Infrastructure service",
         "AS": "Application service",
         "KS": "eGov service",
-
+        "createButton": {
+            "KRIS": "Add new KRIT concept"
+        },
         "informations": "Information",
         "documents": "Documents",
         "tasks": "Tasks",
