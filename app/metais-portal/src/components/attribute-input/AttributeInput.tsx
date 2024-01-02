@@ -25,6 +25,7 @@ import { CiLazySelect } from '@isdd/metais-common/components/ci-lazy-select/CiLa
 import { isConstraintCiType } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
 import { formatNumberWithSpaces, isFalsyStringValue } from '@isdd/metais-common/utils/utils'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { DateInput } from '@isdd/idsk-ui-kit/date-input/DateInput'
 
 import { ArrayAttributeInput } from './ArrayAttributeInput'
 import { AttributesConfigTechNames, attClassNameConfig } from './attributeDisplaySettings'
@@ -182,21 +183,22 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                 )
             }
             case isDate: {
-                const formattedDate = formatDateForDefaultValue(getDefaultValue(attribute.defaultValue ?? '', defaultValueFromCiItem, isUpdate))
+                const handleDateChange = (date: Date | null, name: string) => {
+                    setValue(name, date ? formatDateForDefaultValue(date.toISOString()) : null)
+                }
 
                 return (
-                    <Input
+                    <DateInput
+                        handleDateChange={handleDateChange}
+                        name={attribute.technicalName + nameSufix}
+                        control={control}
                         correct={isCorrect}
-                        type="date"
                         info={attribute.description}
-                        disabled={attribute.readOnly || disabled}
                         id={attribute.technicalName}
+                        disabled={attribute.readOnly || disabled}
                         label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
                         error={error?.message?.toString()}
-                        {...register(attribute.technicalName + nameSufix)}
-                        defaultValue={formattedDate}
                         hint={hint}
-                        hasInputIcon
                     />
                 )
             }
