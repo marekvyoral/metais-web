@@ -4,7 +4,8 @@ $govuk-global-styles: true;
 
 @import 'utils.scss';
 
-html, body {
+html,
+body {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -16,4 +17,41 @@ html, body {
 
 .tooltipWidth500 {
     max-width: 500px;
+}
+
+.wiki {
+    h1:not([class*='govuk-accordion']) {
+        @extend .govuk-heading-xl;
+    }
+    h2:not([class*='govuk-accordion']) {
+        @extend .govuk-heading-l;
+    }
+    h3 {
+        @extend .govuk-heading-m;
+    }
+    h4 {
+        @extend .govuk-heading-s;
+    }
+    ul {
+        @extend .govuk-list;
+        @extend .govuk-list--bullet;
+    }
+    table {
+        @extend .idsk-table;
+        tr {
+            @extend .idsk-table__row;
+            th {
+                @extend .idsk-table__header;
+            }
+            td {
+                @extend .idsk-table__cell;
+            }
+        }
+        thead {
+            @extend .idsk-table__head;
+        }
+        tbody {
+            @extend .idsk-table__body;
+        }
+    }
 }

@@ -52,7 +52,7 @@ const HowToGenericPage = () => {
             />
             <MainContentWrapper>
                 <QueryFeedback loading={isLoading} error={isError} withChildren>
-                    <div ref={idskContentRef}>
+                    <div ref={idskContentRef} className="wiki">
                         {data && (
                             <span
                                 dangerouslySetInnerHTML={{ __html: data }}
