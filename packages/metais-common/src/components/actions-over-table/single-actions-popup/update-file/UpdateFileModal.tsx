@@ -9,6 +9,7 @@ import { UpdateFileView } from './UpdateFileView'
 import { ConfigurationItemUi } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { IBulkActionResult } from '@isdd/metais-common/hooks/useBulkAction'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { cleanFileName } from '@isdd/metais-common/utils/utils'
 
 export interface IUpdateFileModalProps {
     addButtonSectionName?: string
@@ -16,6 +17,15 @@ export interface IUpdateFileModalProps {
     onClose: () => void
     onSubmit: (result: IBulkActionResult) => void
     item: ConfigurationItemUi
+}
+
+const changeFileName = (file: File) => {
+    const name = cleanFileName(file.name)
+    Object.defineProperty(file, 'name', {
+        writable: true,
+        value: name,
+    })
+    return file
 }
 
 export const UpdateFileModal: React.FC<IUpdateFileModalProps> = ({ item, open, onClose, onSubmit }) => {
@@ -41,7 +51,7 @@ export const UpdateFileModal: React.FC<IUpdateFileModalProps> = ({ item, open, o
                 { type: 'application/json' },
             ),
         )
-        formData.append('file', formData1.file[0])
+        formData.append('file', changeFileName(formData1.file[0]), cleanFileName(formData1.file[0].name))
 
         try {
             const response = await fetch(baseURL + '/file/' + item.uuid, {
