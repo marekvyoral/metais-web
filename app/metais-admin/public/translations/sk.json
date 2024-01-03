@@ -1113,7 +1113,9 @@
                 "title": "Výsledok volania Endpointu",
                 "responseStatus": "Response Status",
                 "responseBody": "Response Body",
-                "close": "Zavrieť"
+                "close": "Zavrieť",
+                "StatusOk": "Zodpovedá očakávanej hodnote",
+                "StatusNotOk": "Nezodpovedá očakávanej hodnote" 
             },
             "edit": "Upraviť",
             "delete": "Vymazať",

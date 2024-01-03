@@ -1,4 +1,4 @@
-import { BaseModal, Button, PaginatorWrapper, Table, TextArea, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, PaginatorWrapper, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
@@ -19,6 +19,7 @@ import styles from '../monitoring.module.scss'
 
 import { monitoringDetailLogColumns } from './monitoringDetailFunc'
 import { callEndpointResponseMock } from './mockData'
+import { CallEndpointResultModal } from './CallEndpointResultModal'
 
 import { Spacer } from '@/pages/monitoring/components/Spacer/Spacer'
 
@@ -36,6 +37,7 @@ export interface IMonitoringDetailView {
     isCallingEndpoint: boolean
     handleFilterChange: (filter: IFilter) => void
     callEndpoint: () => Promise<ApiActiveMonitoringResult | undefined>
+    deleteMonitoringRecord: () => Promise<void>
 }
 
 export const MonitoringDetailView: React.FC<IMonitoringDetailView> = ({
@@ -47,44 +49,44 @@ export const MonitoringDetailView: React.FC<IMonitoringDetailView> = ({
     filter,
     handleFilterChange,
     callEndpoint,
+    deleteMonitoringRecord,
 }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
 
-    const [callEndpointResult, setCallEndpointResult] = useState<ApiActiveMonitoringResult | undefined>(callEndpointResponseMock)
+    const [callEndpointResult, setCallEndpointResult] = useState<ApiActiveMonitoringResult | undefined>(undefined)
 
     const editMonitoringHandler = () => {
         navigate(`${AdminRouteNames.MONITORING_EDIT}/${monitoringCfgData?.id ?? ''}`, { state: { from: location } })
     }
 
-    const cancelMonitoringHandler = () => {
-        return
+    const closeCallEndpointResultModal = () => {
+        setCallEndpointResult(undefined)
     }
 
     const handleCallEndpoint = async () => {
-        const result = await callEndpoint()
-        setCallEndpointResult(result)
+        /* REAL functionality -> BE throws 503*/
+        // const result = await callEndpoint()
+        // setCallEndpointResult(result)
+
+        /* MOCK functionality - missing loading sign*/
+        await new Promise((f) => {
+            setTimeout(f, 2000)
+        })
+        setCallEndpointResult(callEndpointResponseMock)
     }
 
     return (
         <>
-            <BaseModal isOpen={!!callEndpointResult} close={() => setCallEndpointResult(undefined)}>
-                <TextHeading size="M">{t('monitoring.detail.callEndpointModal.title')}</TextHeading>
-                <InformationGridRow label={t('monitoring.detail.callEndpointModal.responseStatus')} value={monitoringCfgData?.httpUrl} hideIcon />
-                <InformationGridRow
-                    label={t('monitoring.detail.callEndpointModal.responseBody')}
-                    value={<TextArea rows={10} name="responseStatus" defaultValue={callEndpointResult?.body} />}
-                    hideIcon
-                />
-            </BaseModal>
+            <CallEndpointResultModal callEndpointResult={callEndpointResult} close={closeCallEndpointResultModal} />
 
             <div className={styles.inlineSpaceBetween}>
                 <TextHeading size="XL">{monitoringCfgData?.isvsName ?? `${t('monitoring.detail.heading')}`}</TextHeading>
                 <div className={styles.inlineSpaceBetween}>
                     <Button type="submit" label={t('monitoring.detail.edit')} onClick={editMonitoringHandler} />
                     <Spacer horizontal />
-                    <Button type="submit" label={t('monitoring.detail.delete')} onClick={cancelMonitoringHandler} />
+                    <Button type="submit" label={t('monitoring.detail.delete')} onClick={deleteMonitoringRecord} />
                 </div>
             </div>
             <InformationGridRow label={monitoringCfgData?.entityType ?? ''} value={monitoringCfgData?.isvsName} hideIcon />

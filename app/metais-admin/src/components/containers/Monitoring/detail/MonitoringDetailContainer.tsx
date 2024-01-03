@@ -2,15 +2,18 @@ import {
     ApiActiveMonitoringResult,
     FindActiveMonitoringLogParams,
     useCallIsvsEndpointHook,
+    useDelete,
     useFindActiveMonitoringLog,
     useGet,
 } from '@isdd/metais-common/api/generated/monitoring-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback } from '@isdd/metais-common/index'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import { BreadCrumbs, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import { useTranslation } from 'react-i18next'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useNavigate } from 'react-router-dom'
 
 import { IMonitoringDetailView, IMonitoringLogFilterData } from '@/components/views/monitoring/detail'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -25,6 +28,8 @@ export const MonitoringDetailContainer: React.FC<MonitoringDetailContainer> = ({
         activeMonitoringCfgId: id,
     }
     const { t } = useTranslation()
+    const { setIsActionSuccess } = useActionSuccess()
+    const navigate = useNavigate()
     const { data: monitoringCfgData, isLoading: monitoringCfgLoading, isError: monitoringCfgError, refetch: monitoringCfgRefetch } = useGet(id)
     const { filter, handleFilterChange } = useFilterParams<IMonitoringLogFilterData>(defaultFilterValues)
 
@@ -42,12 +47,13 @@ export const MonitoringDetailContainer: React.FC<MonitoringDetailContainer> = ({
         isLoading: monitoringLogLoading,
         isFetching: monitoringLogFetching,
         isError: monitoringLogError,
-        // refetch: getMonitoringLogRefetch,
+        refetch: getMonitoringLogRefetch,
     } = useFindActiveMonitoringLog(monitoringCfgParamValues)
 
-    // const refetchData = async () => {
-    //     await monitoringCfgRefetch()
-    // }
+    const refetchData = async () => {
+        await monitoringCfgRefetch()
+        await getMonitoringLogRefetch()
+    }
 
     const callIsvsEndpoint = useCallIsvsEndpointHook()
     const [isCallingEndpoint, setIsCallingEndpoint] = useState<boolean>(false)
@@ -59,6 +65,7 @@ export const MonitoringDetailContainer: React.FC<MonitoringDetailContainer> = ({
             isErrorInEndpointCall && setIsErrorInEndpointCall(false)
             const result: ApiActiveMonitoringResult = await callIsvsEndpoint(id)
             setIsCallingEndpoint(false)
+            refetchData()
             return result
         } catch {
             setIsErrorInEndpointCall(true)
@@ -66,6 +73,28 @@ export const MonitoringDetailContainer: React.FC<MonitoringDetailContainer> = ({
         setIsCallingEndpoint(false)
         return undefined
     }
+
+    const {
+        isLoading: deleteMonitoringRecordLoading,
+        isError: deleteMonitoringRecordError,
+        status: deleteMonitoringRecordStatus,
+        mutateAsync: deleteMonitoringRecordAsyncMutation,
+    } = useDelete()
+
+    const deleteMonitoringRecord = async () => {
+        await deleteMonitoringRecordAsyncMutation({ id })
+    }
+
+    useEffect(() => {
+        if (deleteMonitoringRecordStatus == 'success') {
+            setIsActionSuccess({
+                value: true,
+                path: AdminRouteNames.MONITORING_LIST,
+                additionalInfo: { type: 'delete' },
+            })
+            navigate(`${AdminRouteNames.MONITORING_LIST}`, { state: { from: location } })
+        }
+    }, [navigate, setIsActionSuccess, deleteMonitoringRecordStatus])
 
     return (
         <>
@@ -82,17 +111,23 @@ export const MonitoringDetailContainer: React.FC<MonitoringDetailContainer> = ({
                 ]}
             />
             <MainContentWrapper>
-                <QueryFeedback loading={monitoringCfgLoading} error={monitoringCfgError || monitoringLogError} indicatorProps={{ layer: 'parent' }}>
+                <QueryFeedback
+                    loading={monitoringCfgLoading || deleteMonitoringRecordLoading}
+                    error={monitoringCfgError || monitoringLogError || deleteMonitoringRecordError}
+                    indicatorProps={{ layer: 'parent', transparentMask: false }}
+                    withChildren
+                >
                     <View
                         monitoringCfgData={monitoringCfgData}
                         monitoringLogData={monitoringLogData}
                         filter={filter}
                         defaultFilterValues={defaultFilterValues}
                         isLoadingLog={monitoringLogLoading || monitoringLogFetching}
+                        isCallingEndpoint={isCallingEndpoint}
                         isErrorInEndpointCall={isErrorInEndpointCall}
                         handleFilterChange={handleFilterChange}
                         callEndpoint={callEndpoint}
-                        isCallingEndpoint={isCallingEndpoint}
+                        deleteMonitoringRecord={deleteMonitoringRecord}
                     />
                 </QueryFeedback>
             </MainContentWrapper>

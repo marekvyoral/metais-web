@@ -1111,7 +1111,9 @@
                 "title": "Endpoint call result",
                 "responseStatus": "Response Status",
                 "responseBody": "Response Body",
-                "close": "Close"
+                "close": "Close",
+                "StatusOk": "Zodpovedá očakávanej hodnote",
+                "StatusNotOk": "Nezodpovedá očakávanej hodnote" 
             },
             "edit": "Edit",
             "delete": "Delete",

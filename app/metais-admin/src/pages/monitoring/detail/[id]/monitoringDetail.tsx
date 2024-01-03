@@ -22,6 +22,7 @@ const MonitoringDetail: React.FC = () => {
                         defaultFilterValues={props.defaultFilterValues}
                         handleFilterChange={props.handleFilterChange}
                         callEndpoint={props.callEndpoint}
+                        deleteMonitoringRecord={props.deleteMonitoringRecord}
                     />
                 )}
                 id={detailId}
