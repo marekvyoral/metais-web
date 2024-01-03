@@ -23,9 +23,9 @@ export const monitoringListColumns = (t: TFunction): Array<ColumnDef<ApiActiveMo
             id: MonitoringListColumnsEnum.NAME,
             size: 400,
             cell: (ctx) => {
-                const { isvsUuid } = ctx.row.original
+                const { id } = ctx.row.original
                 const name = ctx.getValue() as string
-                return <TextLink to={`${AdminRouteNames.MONITORING_DETAIL}/${isvsUuid}`}>{name}</TextLink>
+                return <TextLink to={`${AdminRouteNames.MONITORING_DETAIL}/${id}`}>{name}</TextLink>
             },
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
         },

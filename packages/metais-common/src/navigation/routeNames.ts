@@ -146,6 +146,7 @@ export enum AdminRouteNames {
     MONITORING_PARAMS = '/monitoring/params',
     MONITORING_LIST = '/monitoring/list',
     MONITORING_CREATE = '/monitoring/create',
+    MONITORING_EDIT = '/monitoring/create',
     MONITORING_DETAIL = '/monitoring/detail',
     REPORTS_MANAGEMENT = '/reports-management',
     PROJECTS_MANAGEMENT = '/projects',
