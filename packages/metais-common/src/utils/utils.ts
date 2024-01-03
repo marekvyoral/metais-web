@@ -7,6 +7,9 @@ export const isObjectEmpty = (obj: unknown) => {
     return false
 }
 
+export const cleanFileName = (fileName: string) =>
+    fileName.replace(/[\u2000-\u2009\u200A-\u200D\u2060-\u2063\u180E\uFEFF\u202F\u205F\u3000]+/gu, '').replace(/[/\\?%*:|"<>]/g, '')
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const cleanObjectValues = (obj: any) => {
     for (const key in obj) {

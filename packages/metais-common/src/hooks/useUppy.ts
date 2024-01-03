@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { FileImportStepEnum } from '@isdd/metais-common/components/actions-over-table'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useCountdown } from '@isdd/metais-common/hooks/useCountdown'
+import { cleanFileName } from '@isdd/metais-common/utils/utils'
 
 interface iUseUppy {
     allowedFileTypes?: string[] // if undefined all file types are allowed
@@ -48,6 +49,14 @@ export const useUppy = ({
     const { i18n, t } = useTranslation()
     const uppy = useMemo(() => {
         const uppyInstance = new Uppy({
+            onBeforeFileAdded: (file) => {
+                const name = cleanFileName(file.name)
+                Object.defineProperty(file.data, 'name', {
+                    writable: true,
+                    value: name,
+                })
+                return { ...file, name, meta: { ...file.meta, name } }
+            },
             autoProceed: false,
             locale: i18n.language === 'sk' ? sk_SK : en_US,
         })
@@ -200,7 +209,7 @@ export const useUppy = ({
             uppy.off('file-removed', fileRemoved)
             uppy.off('restriction-failed', fileErrorCallback)
         }
-    }, [endpointUrl, setCustomFileMeta, setFileImportStep, setFileUuidAsync, updateUploadFilesStatus, uppy])
+    }, [endpointUrl, setCustomFileMeta, setFileImportStep, setFileUuidAsync, t, updateUploadFilesStatus, uppy])
 
     const handleUpload = async () => {
         resetProgressState()
