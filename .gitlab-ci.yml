@@ -142,11 +142,15 @@ uninstall-okd-feature:
   stage: uninstall-okd-feature
   image: gitlab.isdd.sk:4567/isdd-docker/base-images/kubectl-delivery:1-0-0
   script:
-    - echo "Cleaning up Helm release for feature branch..."
+    - echo "Checking for Helm release for feature branch..."
     - oc login --token=$OKD_TOKEN --server=https://api.dev.isdd.sk:6443
-    - echo "Cleaning up Helm release for feature branch..."
     - RELEASE_NAME=$(echo $CI_COMMIT_REF_NAME | sed 's/\//-/g' | tr '[:upper:]' '[:lower:]')
-    - helm uninstall "$RELEASE_NAME" -n metais3
+    - if helm ls -n metais3 | grep -q "$RELEASE_NAME"; then
+        echo "Helm release $RELEASE_NAME found, uninstalling..."
+        helm uninstall "$RELEASE_NAME" -n metais3
+      else
+        echo "Helm release $RELEASE_NAME not found, skipping uninstallation."
+      fi
   rules:
     - if: $CI_COMMIT_REF_NAME =~ /^feature\/.+$/ && $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
