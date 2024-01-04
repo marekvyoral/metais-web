@@ -1,20 +1,16 @@
 @import '@isdd/idsk-ui-kit/src/utils.scss';
 
-.inline {
+.inlineSpaceBetween {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
 }
 
-.stretch {
-    flex-grow: 5;
+.alignRight {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    flex-direction: row;
 }
 
-.space {
-    flex-grow: 1;
-}
-
-.tooltipIcon {
-    margin-left: govuk-spacing(3);
-}

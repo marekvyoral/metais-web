@@ -13,6 +13,7 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { v4 as uuidV4 } from 'uuid'
 import * as Yup from 'yup'
+import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 
 import { ExistingFileData, ExistingFilesHandler, IExistingFilesHandlerRef } from './components/ExistingFilesHandler/ExistingFilesHandler'
 import { SelectVoteActors } from './components/SelectVoteActors'
@@ -25,7 +26,6 @@ import {
 } from './functions/voteEditFunc'
 
 import { LinksImport } from '@/components/LinksImport/LinksImport'
-import { Spacer } from '@/components/Spacer/Spacer'
 import { AnswerDefinitions } from '@/components/views/standardization/votes/components/AnswerDefinitions/AnswerDefinitions'
 import {
     StandardRequestsListModal,

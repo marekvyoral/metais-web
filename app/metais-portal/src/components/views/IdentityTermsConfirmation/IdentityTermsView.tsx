@@ -2,10 +2,9 @@ import { Button, CheckBox, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index
 import { QueryFeedback } from '@isdd/metais-common/index'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 
 import styles from './identityTerms.module.scss'
-
-import { Spacer } from '@/components/Spacer/Spacer'
 
 export interface IIdentityTermsView {
     confirmIdentityTerms: () => Promise<void>

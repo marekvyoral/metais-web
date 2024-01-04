@@ -204,6 +204,7 @@
         "buttonAddNewRelationCard": "Pridať novú položku a vzťah",
         "selectView": "Zobraziť"
     },
+    "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
     "egov": {
         "name": "Meno",
         "technicalName": "Technické meno",
@@ -1064,7 +1065,8 @@
             "home":"Hlavná stránka",
             "monitoring":"Správa monitoringu",
             "params" :"Monitorovacie parametre",
-            "list": "Záznamy z monitoringu"
+            "list": "Záznamy z monitoringu",
+            "detail": "Detail"
         },
         "heading": "Správa monitoringu",
         "params": {
@@ -1089,6 +1091,36 @@
                 "enabled": "povolené"
             },
             "newMonitoringButton": "Pridať záznam"
+        },
+        "detail":{
+            "heading": "Detail monitoringu",
+            "table":{
+                "intervalStart": "Začiatok Intervalu",
+                "intervalEnd": "Koniec Intervalu",
+                "status": "Stav"
+            },
+            "info": {
+                "httpUrl": "Url",
+                "httpMethod": "Method",
+                "httpRequestHeader": "Request header",
+                "httpRequestBody": "Request Body",
+                "httpResponseStatus": "Response Status",
+                "httpResponseBodyRegex": "Response Body Regex",
+                "periodicity": "Periodicita",
+                "enabled": "Povolené"
+            },
+            "callEndpointModal": {
+                "title": "Výsledok volania Endpointu",
+                "responseStatus": "Response Status",
+                "responseBody": "Response Body",
+                "close": "Zavrieť",
+                "StatusOk": "Zodpovedá očakávanej hodnote",
+                "StatusNotOk": "Nezodpovedá očakávanej hodnote" 
+            },
+            "edit": "Upraviť",
+            "delete": "Vymazať",
+            "callEndpoint": "Zavolať Endpoint",
+            "callingEndpointMessage": "Volám Endpoint"
         },
         "type": {
             "yes": "Áno",
