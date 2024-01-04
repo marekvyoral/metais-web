@@ -2,12 +2,12 @@ import { BaseModal, Button, GridRow } from '@isdd/idsk-ui-kit/index'
 import { forwardRef, useImperativeHandle, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Row } from '@tanstack/react-table'
+import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { ApiStandardRequestPreview, ApiStandardRequestPreviewList } from '@isdd/metais-common/api/generated/standards-swagger'
 
 import styles from './StandardRequestsListModal.module.scss'
 import { standardRequestsListColumns } from './StandardRequestsListColumns'
 
-import { Spacer } from '@/components/Spacer/Spacer'
 import { TableWithPagination } from '@/components/views/standardization/votes/components/TableWithPagination/TableWithPagination'
 
 type StandardRequestsListModalType = {

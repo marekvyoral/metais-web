@@ -169,6 +169,7 @@
         "buttonAddNewRelationCard": "Add a new item and relation",
         "selectView": "View"
     },
+    "dateTime": "{{date, DATETIME_SHORT_WITH_SECONDS}}",
     "egov": {
         "name": "Name",
         "technicalName": "Technical Name",
@@ -1062,7 +1063,8 @@
             "home":"Home Page",
             "monitoring":"Monitoring management",
             "params" :"Monitoring parameters",
-            "list": "Monitoring records"
+            "list": "Monitoring records",
+            "detail": "Detail"
         },
         "heading": "Monitoring mangement",
         "params": {
@@ -1087,6 +1089,36 @@
                 "enabled": "Enabled"
             },
             "newMonitoringButton": "Add new record"
+        },
+        "detail":{
+            "heading": "Monitoring detail",
+            "table":{
+                "intervalStart": "Start of Interval",
+                "intervalEnd": "End of Interval",
+                "status": "Status"
+            },
+            "info": {
+                "httpUrl": "Url",
+                "httpMethod": "Method",
+                "httpRequestHeader": "Request header",
+                "httpRequestBody": "Request Body",
+                "httpResponseStatus": "Response Status",
+                "httpResponseBodyRegex": "Response Body Regex",
+                "periodicity": "Periodicity",
+                "enabled": "Enabled"
+            },
+            "callEndpointModal": {
+                "title": "Endpoint call result",
+                "responseStatus": "Response Status",
+                "responseBody": "Response Body",
+                "close": "Close",
+                "StatusOk": "Corresponds to the expected value",
+                "StatusNotOk": "Does not correspond to the expected value" 
+            },
+            "edit": "Edit",
+            "delete": "Delete",
+            "callEndpoint": "Call Endpoint",
+            "callingEndpointMessage": "Calling Endpoint"
         },
         "type": {
             "yes": "Yes",
