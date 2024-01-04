@@ -47,6 +47,7 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
     useEffect(() => {
         if (isError || isProcessedError || isTooManyFetchesError) {
             onSubmit({ isSuccess: false, isError: true })
+            reset()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isError, isProcessedError, isTooManyFetchesError])
@@ -60,8 +61,8 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
         mutation: {
             async onSuccess(data) {
                 await getRequestStatus(data.requestId ?? '', () => {
-                    reset()
                     onSubmit({ isSuccess: true, isError: false, successMessage })
+                    reset()
                     mappedItems.forEach((item) => {
                         invalidateHistoryListCache(item?.uuid ?? '')
                     })
@@ -69,6 +70,7 @@ export const InvalidateBulkModal: React.FC<IInvalidateBulkModalProps> = ({
             },
             onError() {
                 onSubmit({ isSuccess: false, isError: true, successMessage })
+                reset()
             },
         },
     })
