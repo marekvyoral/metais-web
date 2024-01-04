@@ -47,6 +47,15 @@ export default defineConfig({
             target: `./packages/metais-common/src/api/generated/cmdb-swagger.ts`,
             override: {
                 operations: {
+                    readNeighboursConfigurationItems: {
+                        query: {
+                            useQuery: true,
+                        },
+                        mutator: {
+                            path: './packages/metais-common/src/api/hooks/useCmdbSwaggerClientWithTransform.ts',
+                            name: 'useClientForReadCiListNeighboursUsingGET',
+                        },
+                    },
                     readCiNeighbours: {
                         query: {
                             useQuery: true,

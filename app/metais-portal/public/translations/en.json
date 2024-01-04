@@ -504,6 +504,7 @@
         },
         "informations": "Information",
         "documents": "Documents",
+        "protocols": "Protocols",
         "tasks": "Tasks",
         "activities": "Activities NKIVS",
         "evaluation": "Evaluation KRIT_TO_BE",
@@ -640,6 +641,10 @@
             "createdBy": "Created by",
             "lastModifiedAt": "Last change",
             "lastModifiedBy": "Last change by"
+        },
+        "protocols": {
+            "protocol": "Protocol",
+            "description": "Description"
         },
         "card": {
             "type": "Document type",
