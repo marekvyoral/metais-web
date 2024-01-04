@@ -5,6 +5,7 @@ import {
     ApiError,
     ConfigurationItemUi,
     ConfigurationItemUiAttributes,
+    getReadNeighboursConfigurationItemsQueryKey,
     useGetRequestStatusHook,
     useGetRoleParticipant,
     useGetUuidHook,
@@ -18,7 +19,7 @@ import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ATTRIBUTE_NAME, InvalidateBulkModal, MutationFeedback } from '@isdd/metais-common/index'
-import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query'
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters, useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -77,6 +78,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
     const {
         state: { user, token },
     } = useAuth()
+    const queryClient = useQueryClient()
 
     const { handleInvalidate, errorMessage, isBulkLoading } = useBulkAction(isRelation)
     const updateProtokol = useUpdateKirtColumnsHook()
@@ -255,6 +257,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
             setIsError(true)
             close(false)
         } finally {
+            queryClient.invalidateQueries(getReadNeighboursConfigurationItemsQueryKey(entityId, { nodeType: 'KRIS_Protokol' }))
             setIsLoadingApi(false)
         }
     }
@@ -305,6 +308,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
             setIsError(true)
             close(false)
         } finally {
+            queryClient.invalidateQueries(getReadNeighboursConfigurationItemsQueryKey(entityId, { nodeType: 'KRIS_Protokol' }))
             setIsLoadingApi(false)
         }
     }

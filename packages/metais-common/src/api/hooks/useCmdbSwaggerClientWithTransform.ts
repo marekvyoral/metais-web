@@ -8,6 +8,7 @@ import {
     RoleParticipantUI,
     ConfigurationItemSetUi,
     HistoryVersionsListUiConfigurationItemUi,
+    ConfigurationItemNeighbourSetUi,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 const baseURL = import.meta.env.VITE_REST_CLIENT_CMDB_TARGET_URL
@@ -64,5 +65,12 @@ export const useClientForRefRegistersHistory = <T extends HistoryVersionsListUiC
     useCustomClient<T>(baseURL, (body) => {
         body.historyVersions?.forEach((nP) => {
             transformAttributesKeyValue(nP.item)
+        })
+    })
+
+export const useClientForReadCiListNeighboursUsingGET = <T extends ConfigurationItemNeighbourSetUi>() =>
+    useCustomClient<T>(baseURL, (body) => {
+        body?.toCiSet?.forEach((nP) => {
+            transformAttributesKeyValue(nP)
         })
     })

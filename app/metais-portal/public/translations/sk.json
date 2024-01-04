@@ -503,6 +503,7 @@
         "informations": "Informácie",
         "tasks": "Úlohy",
         "documents": "Dokumenty",
+        "protocols": "Protokoly",
         "activities": "Aktivity NKIVS",
         "evaluation": "Hodnotenie KRIT_TO_BE",
         "relationships": "Vzťahy",
@@ -638,6 +639,10 @@
             "createdBy": "Vytvoril",
             "lastModifiedAt": "Posledná zmena",
             "lastModifiedBy": "Poslednú zmenu vykonal"
+        },
+        "protocols": {
+            "protocol": "Protokol",
+            "description": "Popis"
         },
         "card": {
             "type": "Typ dokumentu",

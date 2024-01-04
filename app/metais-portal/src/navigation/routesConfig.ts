@@ -13,6 +13,7 @@ import KRISListPage from '@/pages/ci/KRIS'
 import KrisEntityDetailPage from '@/pages/ci/KRIS/[entityId]'
 import Evaluation from '@/pages/ci/KRIS/[entityId]/evaluation'
 import Goals from '@/pages/ci/KRIS/[entityId]/goals'
+import KRISDocumentsListPage from '@/pages/ci/KRIS/[entityId]/documents'
 import KsEntityDetailPage from '@/pages/ci/KS/[entityId]'
 import POIsListPage from '@/pages/ci/PO_IS'
 import POIsPOListPage from '@/pages/ci/PO_IS_PO'
@@ -575,6 +576,11 @@ export const routesConfig: RouteConfig[] = [
                 slug: RouterRoutes.CI_KRIS_DETAIL,
                 component: KrisEntityDetailPage,
                 subRoutes: [
+                    {
+                        path: RouterRoutes.DOCUMENTS_OUTLET,
+                        slug: RouterRoutes.DOCUMENTS_OUTLET,
+                        component: KRISDocumentsListPage,
+                    },
                     ...generalCiDetailOutlets,
                     {
                         path: RouterRoutes.GOALS_OUTLET,

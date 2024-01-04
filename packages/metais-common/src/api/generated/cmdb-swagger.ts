@@ -14,6 +14,7 @@ import { useClientForReadCiListUsingPOST } from '../hooks/useCmdbSwaggerClientWi
 import { useClientForGetRoleParticipantUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForReadCiNeighboursWithAllRelsUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForReadConfigurationItemUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
+import { useClientForReadCiListNeighboursUsingGET } from '../hooks/useCmdbSwaggerClientWithTransform'
 import { useClientForRefRegistersHistory } from '../hooks/useCmdbSwaggerClientWithTransform'
 export type ReadAllCiHistoryVersionsParams = {
     page: number
@@ -288,6 +289,11 @@ export interface PaginationData {
     totalUnreadedItems?: number
 }
 
+export interface NotificationsList {
+    notifications?: Notification[]
+    pagination?: PaginationData
+}
+
 export interface CountTypes {
     type?: string
     count?: number
@@ -494,11 +500,6 @@ export interface ReindexTask {
     stages?: ReindexStage[]
 }
 
-export interface ReindexTaskSimpleDTO {
-    uuid?: string
-    stages?: ReindexStageSimpleDTO[]
-}
-
 export type ReindexStageSimpleDTOState = (typeof ReindexStageSimpleDTOState)[keyof typeof ReindexStageSimpleDTOState]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -524,6 +525,11 @@ export interface ReindexStageSimpleDTO {
     state?: ReindexStageSimpleDTOState
     startAt?: string
     finishedAt?: string
+}
+
+export interface ReindexTaskSimpleDTO {
+    uuid?: string
+    stages?: ReindexStageSimpleDTO[]
 }
 
 export interface RelationshipsProblemMessageUi {
@@ -573,13 +579,30 @@ export interface UserFeedbackErrorReportUi {
     data?: string
 }
 
-export interface ConfigurationItemInvalidateUi {
-    type?: string
-    uuid?: string
-    owner?: string
-    attributes?: AttributeUi[]
-    metaAttributes?: MetaAttributesUi
-    invalidateReason?: InvalidateReason
+export type FillRefAttributesTaskFailedUuids = { [key: string]: string }
+
+export type FillRefAttributesTaskStatus = (typeof FillRefAttributesTaskStatus)[keyof typeof FillRefAttributesTaskStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const FillRefAttributesTaskStatus = {
+    CREATED: 'CREATED',
+    IN_PROGRESS_PREPARE_DATA: 'IN_PROGRESS_PREPARE_DATA',
+    IN_PROGRESS_UPDATE_METADATA_IN_DMS: 'IN_PROGRESS_UPDATE_METADATA_IN_DMS',
+    FINISHED: 'FINISHED',
+    CANCELLED: 'CANCELLED',
+} as const
+
+export interface FillRefAttributesTask {
+    id?: string
+    totalCount?: number
+    startedAt?: string
+    endedAt?: string
+    status?: FillRefAttributesTaskStatus
+    successUuids?: string[]
+    failedUuids?: FillRefAttributesTaskFailedUuids
+    taskBriefInfo?: string
+    successCount?: number
+    failedCount?: number
 }
 
 export interface RelationshipInvalidateUi {
@@ -613,11 +636,6 @@ export interface Notification {
     deleted?: boolean
     sendToUserIdSet?: string[]
     notifType?: string
-}
-
-export interface NotificationsList {
-    notifications?: Notification[]
-    pagination?: PaginationData
 }
 
 export interface ConfigurationItemNeighbourSetUi {
@@ -766,6 +784,18 @@ export interface RelationshipListUi {
     relationshipList?: RelationshipUi[]
 }
 
+export interface RelListFilterContainerUi {
+    page?: number
+    perpage?: number
+    sortBy?: string
+    sortType?: string
+    sortSource?: string
+    sortByEndCi?: boolean
+    getIncidentRelations?: boolean
+    usageTypeFilter?: UsageTypeFilterUi
+    relFilter?: RelFilterUi
+}
+
 export interface FilterValueUi {
     equality?: string
     value?: string
@@ -828,18 +858,6 @@ export interface RelFilterUi {
     startCiUuid?: string[]
     endCiUuid?: string[]
     startOrEndCiUuid?: string[]
-}
-
-export interface RelListFilterContainerUi {
-    page?: number
-    perpage?: number
-    sortBy?: string
-    sortType?: string
-    sortSource?: string
-    sortByEndCi?: boolean
-    getIncidentRelations?: boolean
-    usageTypeFilter?: UsageTypeFilterUi
-    relFilter?: RelFilterUi
 }
 
 export interface RelFilterSmallUi {
@@ -947,11 +965,6 @@ export interface RecycleRelsUi {
     relIdList?: string[]
 }
 
-export interface HierarchyRightsResultUi {
-    pagination?: PaginationUi
-    rights?: HierarchyRightsUi[]
-}
-
 export interface HierarchyPOFilterUi {
     page?: number
     perpage?: number
@@ -1006,6 +1019,11 @@ export interface PaginationUi {
     perPage?: number
     totalPages?: number
     totaltems?: number
+}
+
+export interface HierarchyRightsResultUi {
+    pagination?: PaginationUi
+    rights?: HierarchyRightsUi[]
 }
 
 export interface MeetingRequestListUi {
@@ -1287,6 +1305,15 @@ export type AttributeUiValue = { [key: string]: any }
 export interface AttributeUi {
     name?: string
     value?: AttributeUiValue
+}
+
+export interface ConfigurationItemInvalidateUi {
+    type?: string
+    uuid?: string
+    owner?: string
+    attributes?: AttributeUi[]
+    metaAttributes?: MetaAttributesUi
+    invalidateReason?: InvalidateReason
 }
 
 export type NotificationUpdateHolderUiTypeOfAction =
@@ -5457,10 +5484,10 @@ export const useReadNeighboursConfigurationItemsCount = <
 }
 
 export const useReadNeighboursConfigurationItemsHook = () => {
-    const readNeighboursConfigurationItems = useCmdbSwaggerClient<ConfigurationItemNeighbourSetUi>()
+    const readNeighboursConfigurationItems = useClientForReadCiListNeighboursUsingGET<ConfigurationItemNeighbourSetUi>()
 
-    return (uuid: string, params?: ReadNeighboursConfigurationItemsParams, signal?: AbortSignal) => {
-        return readNeighboursConfigurationItems({ url: `/read/ci/${uuid}/neighbours`, method: 'get', params, signal })
+    return (uuid: string, params?: ReadNeighboursConfigurationItemsParams) => {
+        return readNeighboursConfigurationItems({ url: `/read/ci/${uuid}/neighbours`, method: 'get', params })
     }
 }
 
@@ -5481,8 +5508,8 @@ export const useReadNeighboursConfigurationItemsQueryOptions = <
 
     const readNeighboursConfigurationItems = useReadNeighboursConfigurationItemsHook()
 
-    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsHook>>>> = ({ signal }) =>
-        readNeighboursConfigurationItems(uuid, params, signal)
+    const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useReadNeighboursConfigurationItemsHook>>>> = () =>
+        readNeighboursConfigurationItems(uuid, params)
 
     return { queryKey, queryFn, enabled: !!uuid, ...queryOptions }
 }
