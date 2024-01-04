@@ -145,7 +145,8 @@ uninstall-okd-feature:
     - echo "Checking for Helm release for feature branch..."
     - oc login --token=$OKD_TOKEN --server=https://api.dev.isdd.sk:6443
     - RELEASE_NAME=$(echo $CI_COMMIT_REF_NAME | sed 's/\//-/g' | tr '[:upper:]' '[:lower:]')
-    - if helm ls -n metais3 | grep -q "$RELEASE_NAME"; then
+    - |
+      if helm ls -n metais3 | grep -q "$RELEASE_NAME"; then
         echo "Helm release $RELEASE_NAME found, uninstalling..."
         helm uninstall "$RELEASE_NAME" -n metais3
       else
