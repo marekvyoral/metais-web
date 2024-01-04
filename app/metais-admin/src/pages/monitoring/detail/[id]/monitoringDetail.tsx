@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 
 import { MonitoringDetailContainer } from '@/components/containers/Monitoring/detail/MonitoringDetailContainer'
@@ -6,8 +6,6 @@ import { MonitoringDetailView } from '@/components/views/monitoring/detail'
 
 const MonitoringDetail: React.FC = () => {
     const { id } = useParams()
-    const detailId = useMemo(() => Number(id), [id])
-
     return (
         <>
             <MonitoringDetailContainer
@@ -25,7 +23,7 @@ const MonitoringDetail: React.FC = () => {
                         deleteMonitoringRecord={props.deleteMonitoringRecord}
                     />
                 )}
-                id={detailId}
+                id={Number(id)}
             />
         </>
     )

@@ -14,15 +14,12 @@ import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
 import { InformationGridRow } from '@isdd/metais-common/components/info-grid-row/InformationGridRow'
 import { useState } from 'react'
+import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 
 import styles from '../monitoring.module.scss'
 
 import { monitoringDetailLogColumns } from './monitoringDetailFunc'
-import { callEndpointResponseMock } from './mockData'
 import { CallEndpointResultModal } from './CallEndpointResultModal'
-
-import { Spacer } from '@/pages/monitoring/components/Spacer/Spacer'
-
 export interface IMonitoringLogFilterData extends IFilterParams, IFilter {
     activeMonitoringCfgId: number
 }
@@ -66,15 +63,8 @@ export const MonitoringDetailView: React.FC<IMonitoringDetailView> = ({
     }
 
     const handleCallEndpoint = async () => {
-        /* REAL functionality -> BE throws 503*/
-        // const result = await callEndpoint()
-        // setCallEndpointResult(result)
-
-        /* MOCK functionality - missing loading sign*/
-        await new Promise((f) => {
-            setTimeout(f, 2000)
-        })
-        setCallEndpointResult(callEndpointResponseMock)
+        const result = await callEndpoint()
+        setCallEndpointResult(result)
     }
 
     return (

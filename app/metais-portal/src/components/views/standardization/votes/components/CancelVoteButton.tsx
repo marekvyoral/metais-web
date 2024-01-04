@@ -1,10 +1,9 @@
 import { BaseModal, Button, TextArea } from '@isdd/idsk-ui-kit/index'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 
 import styles from '../vote.module.scss'
-
-import { Spacer } from '@/components/Spacer/Spacer'
 
 interface ICancelVoteButton {
     disabled?: boolean
