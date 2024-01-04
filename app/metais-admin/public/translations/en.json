@@ -1093,9 +1093,9 @@
         "detail":{
             "heading": "Monitoring detail",
             "table":{
-                "intervalStart": "Začiatok Intervalu",
-                "intervalEnd": "Koniec Intervalu",
-                "status": "Stav"
+                "intervalStart": "Start of Interval",
+                "intervalEnd": "End of Interval",
+                "status": "Status"
             },
             "info": {
                 "httpUrl": "Url",
@@ -1112,8 +1112,8 @@
                 "responseStatus": "Response Status",
                 "responseBody": "Response Body",
                 "close": "Close",
-                "StatusOk": "Zodpovedá očakávanej hodnote",
-                "StatusNotOk": "Nezodpovedá očakávanej hodnote" 
+                "StatusOk": "Corresponds to the expected value",
+                "StatusNotOk": "Does not correspond to the expected value" 
             },
             "edit": "Edit",
             "delete": "Delete",
