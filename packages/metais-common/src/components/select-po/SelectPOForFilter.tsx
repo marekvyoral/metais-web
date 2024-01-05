@@ -1,9 +1,11 @@
 import { SelectLazyLoading } from '@isdd/idsk-ui-kit/index'
 import { SortType } from '@isdd/idsk-ui-kit/types'
 import React, { useCallback, useEffect, useState } from 'react'
-import { MultiValue } from 'react-select'
+import { MultiValue, OptionProps } from 'react-select'
+import { Option } from '@isdd/idsk-ui-kit/common/SelectCommon'
 
 import { ConfigurationItemUi, useReadCiList1, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { ATTRIBUTE_NAME } from '@isdd/metais-common/api'
 
 interface ISelectPO {
     ciType: string
@@ -62,6 +64,19 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({ ciType, valuesAsUuids, 
         [ciOptionsHook, ciType],
     )
 
+    const formatOption = (props: OptionProps<ConfigurationItemUi>) => {
+        const { attributes } = props.data
+
+        return (
+            <Option {...props}>
+                <div>{attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]}</div>
+                <span>
+                    <small>{attributes?.[ATTRIBUTE_NAME.Gen_Profil_kod_metais]}</small>
+                </span>
+            </Option>
+        )
+    }
+
     return (
         <SelectLazyLoading<ConfigurationItemUi>
             isMulti={isMulti}
@@ -73,6 +88,7 @@ export const SelectPOForFilter: React.FC<ISelectPO> = ({ ciType, valuesAsUuids, 
             loadOptions={(searchTerm, _, additional) => loadCiOptions(searchTerm, additional)}
             value={value}
             onChange={(val) => setValue(val)}
+            option={(props) => formatOption(props)}
         />
     )
 }

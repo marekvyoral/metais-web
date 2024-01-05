@@ -50,3 +50,10 @@ export const getRoleUuidFromGid = (gid: string) => {
 export const getOrgIdFromGid = (gid: string) => {
     return gid.substring(37)
 }
+
+export const removeNullPropertiesFromRecord = (obj: Record<string, unknown>) =>
+    Object.fromEntries(
+        Object.entries(obj).filter(([, value]) => {
+            return !(value == null || value === '' || (Array.isArray(value) && value.length === 0) || isObjectEmpty(value))
+        }),
+    )

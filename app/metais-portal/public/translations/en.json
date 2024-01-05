@@ -2213,5 +2213,26 @@
         "thisPageUsesCookies": "This site uses cookies.",
         "accept": "Accept",
         "moreInfo": "More info"
+    },
+    "integrationLinks": {
+        "heading": "List of AICs",
+        "createButton": "Add new AIC",
+        "filter": {
+            "name": "Name of AIC",
+            "state": "Evidence status",
+            "dizState": "AIC status",
+            "providingProjects": "Providing project",
+            "consumingProjects": "Consuming project",
+            "providingIsvs": "Providing ISPA",
+            "consumingIsvs": "Consuming ISPA",
+            "providingPo": "Providing MP",
+            "consumingPo": "Consuming MP"
+        },
+        "columns": {
+            "integName": "Agreement of integration commitment",
+            "providingProjName": "Providing project",
+            "consumingProjName": "Consuming project",
+            "dizStatus": "DIZ document state"
+        }
     }
 }
