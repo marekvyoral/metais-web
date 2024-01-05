@@ -2220,5 +2220,26 @@
         "thisPageUsesCookies": "Tento web používa súbory cookies. Prehliadaním webu vyjadrujete súhlas s ich používaním.",
         "accept": "Súhlasiť",
         "moreInfo": "Viac informácií"
+    },
+    "integrationLinks": {
+        "heading": "Zoznam integračných väzieb",
+        "createButton": "Pridať novú integračnú väzbu",
+        "filter": {
+            "name": "Názov integračnej väzby",
+            "state": "Stav evidencie",
+            "dizState": "Stav DIZ",
+            "providingProjects": "Poskytujúci projekt",
+            "consumingProjects": "Konzumujúci projekt",
+            "providingIsvs": "Poskytujúci ISVS",
+            "consumingIsvs": "Konzumujúci ISVS",
+            "providingPo": "Poksytujúca PO",
+            "consumingPo": "Konzumujúca PO"
+        },
+        "columns": {
+            "integName": "Integračná väzba",
+            "providingProjName": "Poskytujúci projekt",
+            "consumingProjName": "Poskytujúci projekt",
+            "dizStatus": "Stav dokumentu DIZ"
+        }
     }
 }

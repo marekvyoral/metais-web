@@ -117,6 +117,8 @@ export enum RouterRoutes {
     CI_AS_CREATE = 'ci/AS/create',
     ITVS_EXCEPTIONS_CREATE = 'ci/OsobitnyPostup/create',
     ITVS_EXCEPTIONS_EDIT = 'ci/OsobitnyPostup/:entityId/edit',
+    PROV_INTEGRATION_LIST = '/prov-integration/list',
+    PROV_INTEGRATION_CREATE = '/prov-integration/create',
 }
 
 export enum AdminRouteNames {

@@ -101,6 +101,7 @@ import { LoginProblemsPage } from '@/pages/LoginProblemsPage'
 import { ForgottenPasswordPage } from '@/pages/ForgottenPasswordPage'
 import HowToGenericPage from '@/pages/howto/[howToEnumType]'
 import CookiesInfoPage from '@/pages/cookies/info'
+import { ProvIntegrationList } from '@/pages/prov-integration/list'
 
 export interface RouteConfig {
     path?: string
@@ -675,6 +676,11 @@ export const routesConfig: RouteConfig[] = [
                 path: LoginRouteNames.FORGOTTEN_PASSWORD,
                 slug: LoginRouteNames.FORGOTTEN_PASSWORD,
                 component: ForgottenPasswordPage,
+            },
+            {
+                path: RouterRoutes.PROV_INTEGRATION_LIST,
+                slug: RouterRoutes.PROV_INTEGRATION_LIST,
+                component: ProvIntegrationList,
             },
             ...generalCiRoutes,
             {
