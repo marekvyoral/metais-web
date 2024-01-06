@@ -1,4 +1,6 @@
 import { IFilter } from '@isdd/idsk-ui-kit/types'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
+import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
 import {
     ConfigurationItemUi,
     useGetUuidHook,
@@ -8,17 +10,15 @@ import {
     useReadConfigurationItem,
     useStoreGraph,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api/constants'
-import { mapFilterToNeighborsApi } from '@isdd/metais-common/api/filter/filterApi'
 import { useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
 import { latiniseString } from '@isdd/metais-common/componentHelpers/filter/feFilters'
 import { INVALIDATED } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useUserPreferences } from '@isdd/metais-common/contexts/userPreferences/userPreferencesContext'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useCanCreateGraph } from '@isdd/metais-common/src/hooks/useCanCreateGraph'
 import { useGetStatus } from '@isdd/metais-common/hooks/useGetRequestStatus'
+import { useCanCreateGraph } from '@isdd/metais-common/src/hooks/useCanCreateGraph'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 export interface TableCols extends ConfigurationItemUi {
     checked?: boolean

@@ -1,24 +1,49 @@
 import { BreadCrumbs, Button, HomeIcon } from '@isdd/idsk-ui-kit/index'
 import { Tab, Tabs } from '@isdd/idsk-ui-kit/tabs/Tabs'
 import { useReadConfigurationItem } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { useGetRights } from '@isdd/metais-common/api/generated/kris-swagger'
+import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { CI_ITEM_QUERY_KEY, ENTITY_KRIS, INVALIDATED, ciInformationTab } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { ATTRIBUTE_NAME, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
-import React, { useState } from 'react'
+import { Languages } from '@isdd/metais-common/localization/languages'
+import React, { PropsWithChildren, createContext, useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { useGetRights } from '@isdd/metais-common/api/generated/kris-swagger'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import { useGetCiType } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { Languages } from '@isdd/metais-common/localization/languages'
 
 import { getDefaultCiEntityTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { KrisRelatedContainer } from '@/components/containers/KrisRelatedContainer'
+import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
 import { KrisEntityIdHeader } from '@/components/views/ci/kris/KrisEntityIdHeader'
+
+export interface OutletContextProps {
+    updateButton: boolean
+    setUpdateButton: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const OutletContext = createContext<OutletContextProps | undefined>(undefined)
+
+const OutletProvider: React.FC<PropsWithChildren> = ({ children }) => {
+    // Your context state and functions go here
+    const [updateButton, setUpdateButton] = useState(false)
+    const contextValue: OutletContextProps = {
+        updateButton,
+        setUpdateButton,
+    }
+    return <OutletContext.Provider value={contextValue}>{children}</OutletContext.Provider>
+}
+
+export const useOutletContext = (): OutletContextProps => {
+    const context = useContext(OutletContext)
+    if (!context) {
+        throw new Error('useOutletContext must be used within an OutletProvider')
+    }
+    return context
+}
 
 const KrisEntityDetailPage: React.FC = () => {
     const { t, i18n } = useTranslation()
@@ -48,6 +73,7 @@ const KrisEntityDetailPage: React.FC = () => {
         isLoading: isCiItemDataLoading,
         isError: isCiItemDataError,
         refetch,
+        isRefetching,
     } = useReadConfigurationItem(entityId ?? '', {
         query: {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
@@ -88,61 +114,63 @@ const KrisEntityDetailPage: React.FC = () => {
 
     return (
         <>
-            <BreadCrumbs
-                withWidthContainer
-                links={[
-                    { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
-                    { label: ciTypeName, href: `/ci/${ENTITY_KRIS}` },
-                    {
-                        label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
-                        href: `/ci/${ENTITY_KRIS}/${entityId}`,
-                    },
-                ]}
-            />
+            <OutletProvider>
+                <BreadCrumbs
+                    withWidthContainer
+                    links={[
+                        { label: t('breadcrumbs.home'), href: '/', icon: HomeIcon },
+                        { label: ciTypeName, href: `/ci/${ENTITY_KRIS}` },
+                        {
+                            label: ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? t('breadcrumbs.noName'),
+                            href: `/ci/${ENTITY_KRIS}/${entityId}`,
+                        },
+                    ]}
+                />
 
-            <MainContentWrapper>
-                <CiPermissionsWrapper entityId={entityId ?? ''} entityName={ENTITY_KRIS ?? ''}>
-                    <QueryFeedback
-                        loading={isCiItemDataLoading || (isLoadingEvaluation && fetchStatus != 'idle')}
-                        error={isCiItemDataError || IsErrorEvaluation}
-                        withChildren
-                    >
-                        <FlexColumnReverseWrapper>
-                            <KrisEntityIdHeader
-                                editButton={
-                                    <Button
-                                        label={t('ciType.editButton')}
-                                        onClick={() => navigate(`/ci/${ENTITY_KRIS}/${entityId}/edit`, { state: location.state })}
-                                    />
-                                }
-                                entityData={ciItemData}
-                                entityName={ENTITY_KRIS}
-                                entityId={entityId ?? ''}
-                                entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
-                                isInvalidated={isInvalidated}
-                                refetchCi={refetch}
-                                isEvaluation={evaluationData?.inEvaluation ?? false}
-                            />
-                            <QueryFeedback loading={false} error={isCiItemDataError} />
-                            {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
-                                <MutationFeedback
-                                    error={false}
-                                    success={isActionSuccess.value}
-                                    successMessage={
-                                        isActionSuccess.additionalInfo?.type === 'create'
-                                            ? t('mutationFeedback.successfulCreated')
-                                            : t('mutationFeedback.successfulUpdated')
+                <MainContentWrapper>
+                    <CiPermissionsWrapper entityId={entityId ?? ''} entityName={ENTITY_KRIS ?? ''}>
+                        <QueryFeedback
+                            loading={isCiItemDataLoading || (isLoadingEvaluation && fetchStatus != 'idle') || isRefetching}
+                            error={isCiItemDataError || IsErrorEvaluation}
+                            withChildren
+                        >
+                            <FlexColumnReverseWrapper>
+                                <KrisEntityIdHeader
+                                    editButton={
+                                        <Button
+                                            label={t('ciType.editButton')}
+                                            onClick={() => navigate(`/ci/${ENTITY_KRIS}/${entityId}/edit`, { state: location.state })}
+                                        />
                                     }
+                                    entityData={ciItemData}
+                                    entityName={ENTITY_KRIS}
+                                    entityId={entityId ?? ''}
+                                    entityItemName={ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov] ?? 'Detail'}
+                                    isInvalidated={isInvalidated}
+                                    refetchCi={refetch}
+                                    isEvaluation={evaluationData?.inEvaluation ?? false}
                                 />
-                            )}
-                        </FlexColumnReverseWrapper>
+                                <QueryFeedback loading={false} error={isCiItemDataError} />
+                                {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
+                                    <MutationFeedback
+                                        error={false}
+                                        success={isActionSuccess.value}
+                                        successMessage={
+                                            isActionSuccess.additionalInfo?.type === 'create'
+                                                ? t('mutationFeedback.successfulCreated')
+                                                : t('mutationFeedback.successfulUpdated')
+                                        }
+                                    />
+                                )}
+                            </FlexColumnReverseWrapper>
 
-                        <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
+                            <Tabs tabList={tabList} onSelect={(selected) => setSelectedTab(selected.id)} />
 
-                        {selectedTab === ciInformationTab && <KrisRelatedContainer currentKrisUuid={entityId ?? ''} />}
-                    </QueryFeedback>
-                </CiPermissionsWrapper>
-            </MainContentWrapper>
+                            {selectedTab === ciInformationTab && <KrisRelatedContainer currentKrisUuid={entityId ?? ''} />}
+                        </QueryFeedback>
+                    </CiPermissionsWrapper>
+                </MainContentWrapper>
+            </OutletProvider>
         </>
     )
 }

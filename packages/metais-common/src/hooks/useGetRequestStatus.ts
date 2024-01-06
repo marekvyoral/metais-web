@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useGetRequestStatusHook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { API_CALL_RETRY_COUNT } from '@isdd/metais-common/constants'
 
-export const useGetStatus = () => {
+export const useGetStatus = (awaitForStatus?: string) => {
     const requestStatus = useGetRequestStatusHook()
     const [isLoading, setIsLoading] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
@@ -16,7 +16,11 @@ export const useGetStatus = () => {
         let done = false
         for (let index = 0; index < API_CALL_RETRY_COUNT; index++) {
             const result = await requestStatus(requestId)
-            if ((result.processed && result.status === 'READY') || (result.status === 'PARTIALLY_READY' && result.indexReady === 'READY')) {
+            if (
+                (result.processed && result.status === 'READY') ||
+                (result.status === 'PARTIALLY_READY' && result.indexReady === 'READY') ||
+                (awaitForStatus && result.status == awaitForStatus)
+            ) {
                 done = true
                 break
             } else if (
