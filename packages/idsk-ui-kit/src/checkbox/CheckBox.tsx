@@ -14,10 +14,14 @@ interface ICheckBoxProps extends DetailedHTMLProps<React.InputHTMLAttributes<HTM
     error?: string
     info?: string
     title?: string
+    htmlForDisabled?: boolean
 }
 
 export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
-    ({ id, label, error, name, disabled, value, info, title, labelClassName, containerClassName, className, ...rest }, ref) => {
+    (
+        { id, label, error, name, disabled, value, info, title, labelClassName, containerClassName, className, htmlForDisabled = false, ...rest },
+        ref,
+    ) => {
         return (
             <div className={classNames({ 'govuk-form-group--error': !!error })}>
                 {error && (
@@ -40,7 +44,7 @@ export const CheckBox = forwardRef<HTMLInputElement, ICheckBoxProps>(
                         />
 
                         {label ? (
-                            <label className={classNames('govuk-label govuk-checkboxes__label', labelClassName)} htmlFor={id}>
+                            <label className={classNames('govuk-label govuk-checkboxes__label', labelClassName)} htmlFor={htmlForDisabled ? '' : id}>
                                 {label}
                             </label>
                         ) : (

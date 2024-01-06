@@ -1,9 +1,9 @@
-import React from 'react'
 import { ENTITY_CIEL, KRIS_stanovuje_Ciel } from '@isdd/metais-common/constants'
+import React from 'react'
 
+import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { ActivitiesAndGoalsListContainer } from '@/components/containers/ActivitiesAndGoalsListContainer'
 import { ActivitiesAndGoalsView } from '@/components/views/ci/activities/ActivitiesAndGoalsView'
-import { useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 
 const Goals: React.FC = () => {
     const { entityId } = useGetEntityParamsFromUrl()

@@ -13,7 +13,18 @@ import {
     useReadCiList1Hook,
     useReadNeighboursConfigurationItems,
 } from '@isdd/metais-common/api/generated/cmdb-swagger'
+import { Role, useAddOrGetGroupHook, useFindAll11Hook, useIsInPoByGidHook, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
+import {
+    GraphRequestUi,
+    useGetKris,
+    useRecycleConfigurationItemBiznisMdulesHook,
+    useStoreRequestHook,
+} from '@isdd/metais-common/api/generated/kris-swagger'
+import { useGetKrisFuturePdfHook } from '@isdd/metais-common/api/generated/pdf-creator'
+import { IApproveFormData, useUpdateKirtColumnsHook } from '@isdd/metais-common/api/userConfigKvKrit'
+import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
 import styles from '@isdd/metais-common/components/entity-header/ciEntityHeader.module.scss'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
@@ -22,19 +33,8 @@ import { ATTRIBUTE_NAME, InvalidateBulkModal, MutationFeedback } from '@isdd/met
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters, useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { FieldValues } from 'react-hook-form'
-import { IApproveFormData, useUpdateKirtColumnsHook } from '@isdd/metais-common/api/userConfigKvKrit'
-import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-import {
-    GraphRequestUi,
-    useGetKris,
-    useRecycleConfigurationItemBiznisMdulesHook,
-    useStoreRequestHook,
-} from '@isdd/metais-common/api/generated/kris-swagger'
-import { useGetKrisFuturePdfHook } from '@isdd/metais-common/api/generated/pdf-creator'
-import { Role, useAddOrGetGroupHook, useFindAll11Hook, useIsInPoByGidHook, useIsOwnerByGid } from '@isdd/metais-common/api/generated/iam-swagger'
-import { downloadBlobAsFile } from '@isdd/metais-common/componentHelpers/download/downloadHelper'
+import { useTranslation } from 'react-i18next'
 
 import { ReValidateModal } from './Modals/ReValidateModal'
 
@@ -46,9 +46,10 @@ import {
     getBaseGraphSendToApproving,
     getOriginalOwner,
 } from '@/components/views/ci/kris/KrisEntityHelper'
-import { IReturnToWorkoutFormData, ReturnToWorkoutModal } from '@/components/views/ci/kris/Modals/ReturnToWorkoutModal'
-import { GeneratePdfModal, IGeneratePdfFormData } from '@/components/views/ci/kris/Modals/GeneratePdfModal'
 import { ApproveModal } from '@/components/views/ci/kris/Modals/ApproveModal'
+import { GeneratePdfModal, IGeneratePdfFormData } from '@/components/views/ci/kris/Modals/GeneratePdfModal'
+import { IReturnToWorkoutFormData, ReturnToWorkoutModal } from '@/components/views/ci/kris/Modals/ReturnToWorkoutModal'
+import { useOutletContext } from '@/pages/ci/KRIS/[entityId]'
 
 interface Props {
     entityName: string
@@ -78,6 +79,7 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
     const {
         state: { user, token },
     } = useAuth()
+    const { updateButton } = useOutletContext()
     const queryClient = useQueryClient()
 
     const { handleInvalidate, errorMessage, isBulkLoading } = useBulkAction(isRelation)
@@ -176,18 +178,26 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
         return canSign
     }
 
-    const disableGeneratePdf = useCallback(async () => {
-        if (!dataPoRole) return true
+    const disableGeneratePdf = useCallback(
+        async (newCi: ConfigurationItemUi | undefined) => {
+            if (!dataPoRole) return true
 
-        const res = await isInPoByGid({
-            identityUuid: user?.uuid,
-            cmdbId: dataPoRole?.configurationItemUi?.uuid,
-        })
-
-        const att = entityData?.attributes?.[ATTRIBUTE_NAME.Profil_KRIS_Zavazok_ciele_principy_stav] === true
-        return res === false || att === false
+            const res = await isInPoByGid({
+                identityUuid: user?.uuid,
+                cmdbId: dataPoRole?.configurationItemUi?.uuid,
+            })
+            let att = false
+            if (newCi) {
+                att = newCi.attributes?.[ATTRIBUTE_NAME.Profil_KRIS_Zavazok_ciele_principy_stav] === true
+            } else {
+                att = entityData?.attributes?.[ATTRIBUTE_NAME.Profil_KRIS_Zavazok_ciele_principy_stav] === true
+            }
+            return res === false || att === false
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dataPoRole])
+        [dataPoRole, updateButton],
+    )
 
     const canShowGeneratePdf = () => {
         return !isInvalidated
@@ -424,12 +434,13 @@ export const KrisEntityIdHeader: React.FC<Props> = ({
 
     useEffect(() => {
         const fetchDisabledStatus = async () => {
-            const status = await disableGeneratePdf()
+            const newCi = (await refetchCi()).data
+
+            const status = await disableGeneratePdf(newCi)
             setIsPdfDisabled(status)
         }
-
         fetchDisabledStatus()
-    }, [disableGeneratePdf])
+    }, [disableGeneratePdf, queryClient, refetchCi, updateButton])
 
     const isLoading = [isBulkLoading, isLoadingApi, isLoadingNeighbours, isLoadingDataPoRole, isLoadingKris].some((item) => item)
 
