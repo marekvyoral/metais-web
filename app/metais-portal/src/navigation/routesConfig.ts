@@ -61,7 +61,6 @@ import Failed from '@/pages/registration/failed'
 import Registration from '@/pages/registration/registration'
 import Success from '@/pages/registration/success'
 import RelationDetailPage from '@/pages/relation/[entityName]/[entityId]/[relationshipId]'
-import ReportsDetailPage from '@/pages/reports/[entityId]/report'
 import ReportsListPage from '@/pages/reports/reports'
 import DraftsListEditPage from '@/pages/standardization/draftslist/[entityId]/edit'
 import DraftDetail from '@/pages/standardization/draftslist/[entityId]/form'
@@ -99,7 +98,9 @@ import PO_ISInformationOutlet from '@/pages/ci/PO_IS/[entityId]/information'
 import PO_IS_POInformationOutlet from '@/pages/ci/PO_IS_PO/[entityId]/information'
 import { LoginProblemsPage } from '@/pages/LoginProblemsPage'
 import { ForgottenPasswordPage } from '@/pages/ForgottenPasswordPage'
+import HowToMonitoringPage from '@/pages/howto/monitoringHowTo'
 import HowToGenericPage from '@/pages/howto/[howToEnumType]'
+import ServicesListPage from '@/pages/monitoring/services/services'
 import CookiesInfoPage from '@/pages/cookies/info'
 import { ProvIntegrationList } from '@/pages/prov-integration/list'
 
@@ -340,9 +341,14 @@ export const routesConfig: RouteConfig[] = [
                 component: ReportsListPage,
             },
             {
-                path: RouterRoutes.REPORTS_DETAIL,
-                slug: RouterRoutes.REPORTS_DETAIL,
-                component: ReportsDetailPage,
+                path: RouterRoutes.REPORTS_LIST,
+                slug: RouterRoutes.REPORTS_LIST,
+                component: ReportsListPage,
+            },
+            {
+                path: RouterRoutes.MONITORING_SERVICES,
+                slug: RouterRoutes.MONITORING_SERVICES,
+                component: ServicesListPage,
             },
             {
                 path: RouterRoutes.REPORTS_CREATE,
@@ -403,6 +409,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.HOW_TO_GENERIC_PAGE,
                 slug: RouterRoutes.HOW_TO_GENERIC_PAGE,
                 component: HowToGenericPage,
+            },
+            {
+                path: RouterRoutes.HOW_TO_MONITORING_PAGE,
+                slug: RouterRoutes.HOW_TO_MONITORING_PAGE,
+                component: HowToMonitoringPage,
             },
             {
                 path: RouterRoutes.HELP,

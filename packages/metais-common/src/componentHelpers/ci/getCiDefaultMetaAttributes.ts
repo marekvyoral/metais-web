@@ -5,6 +5,7 @@ export enum MetainformationColumns {
     LAST_MODIFIED_AT = 'lastModifiedAt',
     STATE = 'state',
     OWNER = 'owner',
+    HEARTBEAT_STATUS = 'Service_Heartbeat_Status',
 }
 
 export enum MetaInformationTypes {

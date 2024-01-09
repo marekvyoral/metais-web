@@ -15,3 +15,10 @@
 .textUnderline {
     text-decoration: underline;
 }
+
+.attributeGridRowBox {
+    display: flex;
+    gap: govuk-spacing(2);
+    flex-direction: row;
+    align-items: center;
+}
