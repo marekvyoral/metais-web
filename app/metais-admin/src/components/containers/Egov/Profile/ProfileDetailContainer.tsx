@@ -16,7 +16,7 @@ import { setValidity } from '@isdd/metais-common/componentHelpers/mutationsHelpe
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useDetailData } from '@isdd/metais-common/hooks/useDetailData'
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export interface IOpenAddAttribudeModalState {
     openAddAttributeModal: boolean
@@ -47,7 +47,7 @@ interface IProfileDetailContainer<T> {
 }
 
 export const ProfileDetailContainer: React.FC<IProfileDetailContainer<CiType>> = ({ entityName, View }) => {
-    const { setIsActionSuccess } = useActionSuccess()
+    const { isActionSuccess, setIsActionSuccess } = useActionSuccess()
 
     const {
         data: profileData,
@@ -56,6 +56,10 @@ export const ProfileDetailContainer: React.FC<IProfileDetailContainer<CiType>> =
         isError: isProfileError,
         refetch,
     } = useGetAttributeProfile(entityName)
+
+    useEffect(() => {
+        isActionSuccess.value && isActionSuccess.additionalInfo?.type === 'edit' && refetch()
+    }, [isActionSuccess, refetch])
 
     const { isLoading, isError, constraintsData } = useDetailData({
         entityStructure: profileData,
@@ -92,7 +96,6 @@ export const ProfileDetailContainer: React.FC<IProfileDetailContainer<CiType>> =
             path: `${AdminRouteNames.EGOV_PROFILE}/${entityName}`,
             additionalInfo: { type: 'edit', entity: 'attribute' },
         })
-        refetch()
     }
 
     const setValidityOfAttributeProfile = async (attributeTechnicalName?: string, oldAttributeValidity?: boolean) => {
