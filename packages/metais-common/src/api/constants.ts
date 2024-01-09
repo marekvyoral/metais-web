@@ -11,6 +11,9 @@ export enum GET_ENUM {
     MERNA_JEDNOTKA = 'MERNA_JEDNOTKA',
     STAV_ISVS = 'STAV_ISVS',
     TYP_ISVS = 'TYP_ISVS',
+    LIVE = 'LIVE',
+    DOWN = 'DOWN',
+    MAINTENANCE = 'MAINTENANCE',
 }
 
 export enum ATTRIBUTE_NAME {

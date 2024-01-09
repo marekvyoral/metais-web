@@ -713,7 +713,10 @@
             "IN_CONSTRUCTION": "in-progress/optional",
             "READY_TO_APPROVAL": "Request for registration in the list of reference registers",
             "REJECTED": "Registration in the list of reference registers rejected",
-            "": ""
+            "": "",
+            "LIVE": "Live",
+            "DOWN": "Down",
+            "MAINTENANCE": "Maintenance"
         }
     },
     "reports": {
@@ -1567,6 +1570,7 @@
         "groupCreate": "Creation of group",
         "groupEdit": "Edit of group",
         "reports": "Reports",
+        "monitoringServices": "Monitoring koncových a aplikačných služieb",
         "reportDetail": "Report detail",
         "ciList": "List of {{ci}} items",
         "ciDetail": "Detail of {{ci}} item",
@@ -2197,6 +2201,15 @@
         "sendingRequest": "Send request to reset password",
         "emailFormatError": "Invalid Email Format: Please enter a valid email address in the format 'name@example.com'.",
         "emailRequiredError": "Email address is required for password reset request."
+    },
+    "monitoringServices": {
+        "table": {
+            "serviceName": "Name of service",
+            "code": "Code MetaIS",
+            "serviceType": "Type of service",
+            "from": "Value from",
+            "to": "Value to"
+        }
     },
     "cookies": {
         "heading": "Cookies usage information",

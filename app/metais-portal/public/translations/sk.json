@@ -714,7 +714,10 @@
             "PUBLISHED": "Schválený a publikovaný",
             "IN_CONSTRUCTION": "rozpracovaný/nepovinný",
             "READY_TO_APPROVAL": "Návrh na zaradenie do zoznamu referenčných registrov",
-            "REJECTED": "Zamietnutý na zaradenie do zoznamu referenčných registrov"
+            "REJECTED": "Zamietnutý na zaradenie do zoznamu referenčných registrov",
+            "LIVE": "Live",
+            "DOWN": "Nedostupné",
+            "MAINTENANCE": "Údržba"
         }
     },
     "reports": {
@@ -1482,6 +1485,7 @@
         "groupCreate": "Vytvorenie pracovnej skupiny",
         "groupEdit": "Úprava pracovnej skupiny",
         "reports": "Reporty a zostavy",
+        "monitoringServices": "Monitoring koncových a aplikačných služieb",
         "reportDetail": "Detail reportu",
         "ciList": "Zoznam položiek {{ci}}",
         "ciDetail": "Detail položky {{ci}}",
@@ -2204,6 +2208,15 @@
         "sendingRequest": "Odosiela sa požiadavka na obnovu hesla",
         "emailFormatError": "Neplatný formát e-mailu: Zadajte platnú e-mailovú adresu vo formáte 'meno@example.com'",
         "emailRequiredError": "E-mailová adresa je povinná pre žiadosť o obnovenie hesla."
+    },
+    "monitoringServices": {
+        "table": {
+            "serviceName": "Názov koncovej služby",
+            "code": "Kód MetaIS",
+            "serviceType": "Typ služby",
+            "from": "Hodnoty od",
+            "to": "Hodnoty do"
+        }
     },
     "cookies": {
         "heading": "Informácie o používaní cookies",

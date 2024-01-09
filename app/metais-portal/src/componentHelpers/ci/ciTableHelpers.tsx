@@ -1,4 +1,4 @@
-import { ATTRIBUTE_NAME } from '@isdd/metais-common/api/constants'
+import { ATTRIBUTE_NAME, GET_ENUM } from '@isdd/metais-common/api/constants'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { ConfigurationItemUi, ConfigurationItemUiAttributes, RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { FavoriteCiType } from '@isdd/metais-common/api/generated/user-config-swagger'
@@ -13,6 +13,7 @@ import { HTML_TYPE, MUK } from '@isdd/metais-common/constants'
 import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 import { IListData } from '@isdd/metais-common/types/list'
 import { useTranslation } from 'react-i18next'
+import { StatusGreenIcon, StatusOrangeIcon, StatusRedIcon } from '@isdd/idsk-ui-kit/index'
 
 import { IRowSelectionState } from '@/components/ci-table/CiTable'
 import styles from '@/components/ci-table/ciTable.module.scss'
@@ -172,6 +173,7 @@ export const useGetColumnsFromApiCellContent = () => {
         const isFirstItem = index === 0
         const isInSchema = !!schemaAttributes[technicalName]?.name
 
+        const isStatus = technicalName === MetainformationColumns.HEARTBEAT_STATUS
         const isMUK = technicalName === MUK
         const isState = technicalName === MetainformationColumns.STATE
         const isOwner = technicalName === MetainformationColumns.OWNER
@@ -192,6 +194,23 @@ export const useGetColumnsFromApiCellContent = () => {
                     >
                         {ctx?.getValue?.() as string}
                     </Link>
+                )
+            }
+            case isStatus: {
+                return (
+                    <div className={styles.attributeGridRowBox}>
+                        <img
+                            src={
+                                ctx.getValue() === GET_ENUM.LIVE
+                                    ? StatusGreenIcon
+                                    : ctx.getValue() === GET_ENUM.MAINTENANCE
+                                    ? StatusOrangeIcon
+                                    : StatusRedIcon
+                            }
+                            height={16}
+                        />
+                        <>{t(`metaAttributes.state.${ctx.getValue()}`)}</>
+                    </div>
                 )
             }
             case isState: {
