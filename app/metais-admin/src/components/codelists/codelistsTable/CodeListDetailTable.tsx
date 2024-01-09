@@ -1,6 +1,6 @@
 import { BaseModal, Button, ButtonLink, ButtonPopup, CheckBox, InfoIcon, Input, PaginatorWrapper, Table, TextArea } from '@isdd/idsk-ui-kit/index'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, ReponseErrorCodeEnum } from '@isdd/metais-common/constants'
-import { ActionsOverTable, CreateEntityButton, isRowSelected, QueryFeedback } from '@isdd/metais-common/index'
+import { ActionsOverTable, CreateEntityButton, isRowZeroIndexSelected, QueryFeedback } from '@isdd/metais-common/index'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -233,7 +233,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             id: 'code',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                isRowZeroIndexSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
                     <Input
                         disabled
                         error={errorsState.find((item) => item.id === ctx?.row?.index + indexModificator)?.value}
@@ -250,7 +250,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             id: 'value',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                isRowZeroIndexSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
                     <Input
                         error={errorsState.find((item) => item.id === ctx?.row?.index + indexModificator)?.value}
                         {...register(`filteredData.enumItems.${ctx.row.index + indexModificator}.value`)}
@@ -259,6 +259,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                     <span>{ctx?.getValue?.() as string}</span>
                 ),
         },
+
         {
             header: t('codelists.engValue'),
             accessorFn: (row) => row?.engValue,
@@ -266,7 +267,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             id: 'engValue',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                isRowZeroIndexSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
                     <Input
                         error={errorsState.find((item) => item.id === ctx?.row?.index + indexModificator)?.engValue}
                         {...register(`filteredData.enumItems.${ctx.row.index + indexModificator}.engValue`)}
@@ -282,7 +283,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             id: 'description',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                isRowZeroIndexSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
                     <TextArea
                         error={errorsState.find((item) => item.id === ctx?.row?.index + indexModificator)?.description}
                         rows={3}
@@ -299,7 +300,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             id: 'engDescription',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                isRowZeroIndexSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
                     <TextArea
                         error={errorsState.find((item) => item.id === ctx?.row?.index + indexModificator)?.engDescription}
                         rows={3}
@@ -338,7 +339,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                 const rowObject = ctx?.getValue?.() as EnumItem
                 if (!rowObject.valid) {
                     return <Button label={t('codelists.validate')} onClick={() => handleValidate(rowObject.code ?? '')} />
-                } else if (isRowSelected(ctx?.row?.index + indexModificator, selectedRows)) {
+                } else if (isRowZeroIndexSelected(ctx?.row?.index + indexModificator, selectedRows)) {
                     return (
                         <ButtonPopup
                             key={ctx?.row?.index}
