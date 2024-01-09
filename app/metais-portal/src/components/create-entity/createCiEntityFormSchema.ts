@@ -147,13 +147,14 @@ export const generateFormSchema = (
                 }
                 case isEmail: {
                     schema[attribute.technicalName] = string()
-                        .matches(REGEX_EMAIL, t('validation.invalidEmail'))
+                        .matches(REGEX_EMAIL, { message: t('validation.invalidEmail') })
                         .when('isRequired', (_, current) => {
                             if (isRequired) {
                                 return current.required(t('validation.required'))
                             }
                             return current
                         })
+
                     break
                 }
                 case isPhone: {
