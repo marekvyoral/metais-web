@@ -39,23 +39,30 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
         clearErrors,
         watch,
         formState: { errors },
-    } = useForm({ resolver: yupResolver(addMemberSchema(t)) })
-    const { data: profs } = useReadConfigurationItemByMetaIsCode(PUBLIC_ORG_CMDB_CODE)
+        reset,
+    } = useForm({
+        resolver: yupResolver(addMemberSchema(t)),
+        defaultValues: { addToPolls: false, addToSessions: false, canSeeEmails: false },
+    })
+    const { data: profs, isLoading: isProfsLoading } = useReadConfigurationItemByMetaIsCode(PUBLIC_ORG_CMDB_CODE)
 
     const findRole = useFindAll11Hook()
     const addRelation = useAddGroupOrgRoleIdentityRelationHook()
     const [addingGroupMember, setAddingGroupMember] = useState<boolean>(false)
     const [addingGroupMemberError, setAddingGroupMemberError] = useState<string>()
-    const watchMember = watch(['member'])
+    const watchMember = watch('member')
+    const watchOrg = watch('organization')
+    const watchRole = watch('role')
 
     const [selectedMemberOrganizations, setSelectedMemberOrganizations] = useState<{ name: string; uuid: string }[]>([])
-    const { data: relatedOrganizations } = useFindRelatedOrganizations(watchMember[0] ?? '')
+    const { data: relatedOrganizations } = useFindRelatedOrganizations(watchMember ?? '')
 
     const invalidateGroupMembersCache = useInvalidateGroupMembersCache(group?.uuid ?? '')
 
     const { setIsActionSuccess } = useActionSuccess()
 
     const onCloseModal = () => {
+        reset()
         onClose()
         setAddingGroupMemberError(undefined)
         setAddingGroupMember(false)
@@ -69,6 +76,7 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
                 setAddingGroupMember(false)
                 setAddedLabel(true)
                 invalidateGroupMembersCache.invalidate()
+                reset()
                 onClose()
                 setIsActionSuccess({
                     value: true,
@@ -102,7 +110,7 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
             >
                 <TextHeading size="L">{t('groups.addMember')}</TextHeading>
                 {addingGroupMemberError && <MutationFeedback success={!addingGroupMemberError} error={addingGroupMemberError} />}
-                <QueryFeedback loading={addingGroupMember} withChildren>
+                <QueryFeedback loading={addingGroupMember || isProfsLoading} withChildren>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <AddMemberSelect
                             label={t('groups.member')}
@@ -153,7 +161,11 @@ const AddGroupMemberModal: React.FC<AddGroupMemberModalProps> = ({ isOpen, onClo
                                 {...register(AddMemberEnum.CAN_SEE_EMAILS)}
                             />
                         </div>
-                        <SubmitWithFeedback submitButtonLabel={t('groups.addingMember')} loading={addingGroupMember} />
+                        <SubmitWithFeedback
+                            submitButtonLabel={t('groups.addMember')}
+                            loading={addingGroupMember}
+                            disabled={!(watchMember && watchOrg && watchRole)}
+                        />
                     </form>
                 </QueryFeedback>
             </BaseModal>
