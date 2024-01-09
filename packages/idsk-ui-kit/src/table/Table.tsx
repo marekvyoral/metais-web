@@ -58,6 +58,7 @@ export interface ITableProps<T> {
     reorderRow?: (index: number, target: number) => void
     hideHeaders?: boolean
     manualSorting?: boolean
+    manualPagination?: boolean
 }
 
 export const Table = <T,>({
@@ -88,6 +89,7 @@ export const Table = <T,>({
     reorderRow,
     hideHeaders,
     manualSorting = true,
+    manualPagination = true,
 }: ITableProps<T>): JSX.Element => {
     const wrapper1Ref = useRef<HTMLTableSectionElement>(null)
     const wrapper2Ref = useRef<HTMLTableSectionElement>(null)
@@ -129,7 +131,7 @@ export const Table = <T,>({
         getSubRows: getSubRows,
         enableRowSelection: !!rowSelection,
         enableMultiSort: true,
-        manualPagination: true,
+        manualPagination: manualPagination,
         getRowCanExpand: getExpandedRow ? (row) => !!getExpandedRow(row) : undefined,
         defaultColumn: {
             size: undefined,

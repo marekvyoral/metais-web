@@ -62,7 +62,7 @@ export const GroupsListContainer: React.FC = () => {
     const [selectedOrg, setSelectedOrg] = useState<ConfigurationItemUi | undefined>(undefined)
     const [groups, setGroups] = useState<GroupWithMeetings[]>()
     const [sort, setSort] = useState<ColumnSort[]>([])
-    const [groupsRequest, setGroupsRequest] = useState<Find2111Params>({ sortBy: 'name', ascending: false })
+    const [groupsRequest, setGroupsRequest] = useState<Find2111Params>({ sortBy: 'name', ascending: true })
 
     const { data, isError, isLoading } = useFind2111(groupsRequest)
 
@@ -82,7 +82,7 @@ export const GroupsListContainer: React.FC = () => {
 
     const loadGroups = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        const request: Find2111Params = { sortBy: 'name', ascending: false }
+        const request: Find2111Params = { sortBy: 'name', ascending: true }
         if (selectedIdentity) request.identity = selectedIdentity.uuid
         if (selectedOrg) request.organization = selectedOrg.uuid
         setGroupsRequest(request)
