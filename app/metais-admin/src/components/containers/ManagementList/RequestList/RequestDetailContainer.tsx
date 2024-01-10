@@ -18,6 +18,7 @@ import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useInvalidateRequestsListCache } from '@isdd/metais-common/hooks/useGetRequestList'
+import { useTranslation } from 'react-i18next'
 
 import { RoleItem } from '@/components/views/userManagement/request-list-view/request-detail/RequestRolesForm'
 
@@ -42,6 +43,7 @@ interface IRequestDetailContainer {
 
 export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ userId, View }) => {
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const SKUPINA_ROL = 'SKUPINA_ROL'
 
     const { isLoading: isLoadingRequest, isError: isErrorRequest, data } = useRead(userId)
@@ -78,25 +80,29 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
                 data: {
                     ...dataApprove,
                 },
-            }).then(async () => {
-                const approve: ClaimEvent = {
-                    type: ClaimEventType.DECISION_EVENT,
-                    claimDecisionData: { action: ClaimDecisionDataAction.ACCEPT, uuid: userId } as ClaimDecisionData,
-                }
-                await processEventMutationAsync({
-                    data: {
-                        ...approve,
-                    },
-                })
-                    .then(() => {
-                        navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
-                    })
-                    .catch((error) => {
-                        setErrorMessage(error.message)
-                    })
             })
+                .then(async () => {
+                    const approve: ClaimEvent = {
+                        type: ClaimEventType.DECISION_EVENT,
+                        claimDecisionData: { action: ClaimDecisionDataAction.ACCEPT, uuid: userId } as ClaimDecisionData,
+                    }
+                    await processEventMutationAsync({
+                        data: {
+                            ...approve,
+                        },
+                    })
+                        .then(() => {
+                            navigate(`${AdminRouteNames.REQUEST_DETAIL}/${data?.uuid}`)
+                        })
+                        .catch(() => {
+                            setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
+                        })
+                })
+                .catch(() => {
+                    setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
+                })
         },
-        [mutateAsyncApprove, navigate, processEventMutationAsync, userId],
+        [data?.uuid, mutateAsyncApprove, navigate, processEventMutationAsync, t, userId],
     )
 
     const handleRefuseModal = useCallback(

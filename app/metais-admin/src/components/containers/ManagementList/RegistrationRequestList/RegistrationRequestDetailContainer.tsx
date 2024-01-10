@@ -21,6 +21,7 @@ import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enu
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { RoleItem } from '@/components/views/userManagement/request-list-view/request-detail/RequestRolesForm'
 
@@ -45,6 +46,8 @@ interface IRegistrationRequestDetailContainer {
 
 export const RegistrationRequestDetailContainer: React.FC<IRegistrationRequestDetailContainer> = ({ userId, View }) => {
     const navigate = useNavigate()
+    const { t } = useTranslation()
+
     const SKUPINA_ROL = 'SKUPINA_ROL'
 
     const findGidDataByLogin = useFindAll311Hook()
@@ -98,25 +101,25 @@ export const RegistrationRequestDetailContainer: React.FC<IRegistrationRequestDe
                                         },
                                     })
                                         .then(() => {
-                                            navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
+                                            navigate(`${AdminRouteNames.REGISTRATION_DETAIL}/${data?.uuid}`)
                                         })
-                                        .catch((error) => {
-                                            setErrorMessage(error.message)
+                                        .catch(() => {
+                                            setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
                                         })
                                 })
-                                .catch((error) => {
-                                    setErrorMessage(error.message)
+                                .catch(() => {
+                                    setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
                                 })
                         })
-                        .catch((error) => {
-                            setErrorMessage(error.message)
+                        .catch(() => {
+                            setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
                         })
                 })
-                .catch((error) => {
-                    setErrorMessage(error.message)
+                .catch(() => {
+                    setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
                 })
         },
-        [findGidDataByLogin, mutateAsyncApprove, mutateAsyncUpdateIdentity, navigate, processEventMutationAsync, userId],
+        [mutateAsyncApprove, findGidDataByLogin, userId, mutateAsyncUpdateIdentity, processEventMutationAsync, navigate, data?.uuid, t],
     )
 
     const handleRefuseModal = useCallback(
