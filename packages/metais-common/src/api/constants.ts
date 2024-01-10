@@ -208,3 +208,11 @@ export enum Roles {
     SZC_HLGES = 'SZC_HLGES',
     SZC_VEDGES = 'SZC_VEDGES',
 }
+
+export const SlaViewOptions = [
+    { value: 'true', label: 'Len aktívne záznamy' },
+    { value: 'false', label: 'Všetky záznamy' },
+]
+
+export const TYP_HODNOTY = 'TYP_HODNOTY'
+export const TYP_PARAMETROV_JEDNOTKA = 'TYP_PARAMETROV_JEDNOTKA'

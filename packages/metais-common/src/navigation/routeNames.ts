@@ -269,3 +269,7 @@ export const LoginRouteNames = {
     LOGIN_PROBLEMS: '/login-problems',
     FORGOTTEN_PASSWORD: '/forgotten-password',
 }
+
+export const SLARouteNames = {
+    SLAParamsList: '/sla-params-list/:entityName',
+}
