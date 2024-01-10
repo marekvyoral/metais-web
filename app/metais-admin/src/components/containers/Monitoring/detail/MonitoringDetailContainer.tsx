@@ -30,7 +30,14 @@ export const MonitoringDetailContainer: React.FC<MonitoringDetailContainer> = ({
     const { t } = useTranslation()
     const { setIsActionSuccess } = useActionSuccess()
     const navigate = useNavigate()
-    const { data: monitoringCfgData, isLoading: monitoringCfgLoading, isError: monitoringCfgError, refetch: monitoringCfgRefetch } = useGet(id)
+    const {
+        data: monitoringCfgData,
+        isLoading: monitoringCfgLoading,
+        isFetching: monitoringCfgFetching,
+        isError: monitoringCfgError,
+        refetch: monitoringCfgRefetch,
+    } = useGet(id)
+
     const { filter, handleFilterChange } = useFilterParams<IMonitoringLogFilterData>(defaultFilterValues)
 
     const monitoringCfgParamValues = useMemo((): FindActiveMonitoringLogParams => {
@@ -54,6 +61,11 @@ export const MonitoringDetailContainer: React.FC<MonitoringDetailContainer> = ({
         await monitoringCfgRefetch()
         await getMonitoringLogRefetch()
     }
+
+    useEffect(() => {
+        refetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const callIsvsEndpoint = useCallIsvsEndpointHook()
     const [isCallingEndpoint, setIsCallingEndpoint] = useState<boolean>(false)
@@ -92,7 +104,7 @@ export const MonitoringDetailContainer: React.FC<MonitoringDetailContainer> = ({
                 path: AdminRouteNames.MONITORING_LIST,
                 additionalInfo: { type: 'delete' },
             })
-            navigate(`${AdminRouteNames.MONITORING_LIST}`, { state: { from: location } })
+            navigate(`${AdminRouteNames.MONITORING_LIST}`)
         }
     }, [navigate, setIsActionSuccess, deleteMonitoringRecordStatus])
 
@@ -112,7 +124,7 @@ export const MonitoringDetailContainer: React.FC<MonitoringDetailContainer> = ({
             />
             <MainContentWrapper>
                 <QueryFeedback
-                    loading={monitoringCfgLoading || deleteMonitoringRecordLoading}
+                    loading={monitoringCfgLoading || deleteMonitoringRecordLoading || monitoringCfgFetching}
                     error={monitoringCfgError || monitoringLogError || deleteMonitoringRecordError}
                     indicatorProps={{ layer: 'parent', transparentMask: false }}
                     withChildren

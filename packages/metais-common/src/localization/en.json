@@ -49,5 +49,9 @@
     },
     "createEntity": {
         "required": "Required"
+    },
+    "dynamicElements": {
+        "removeItem": "remove",
+        "addRowErrorClose": "Close"
     }
 }

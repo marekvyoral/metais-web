@@ -102,7 +102,7 @@ export const MonitoringListView: React.FC<IMonitoringListView> = ({
                     />
                 )}
             />
-            <div className={styles.inline}>
+            <div className={styles.inlineSpaceBetween}>
                 <Button type="submit" label={t('monitoring.list.newMonitoringButton')} onClick={() => newMonitoringHandler()} />
                 <ActionsOverTable
                     pagination={{

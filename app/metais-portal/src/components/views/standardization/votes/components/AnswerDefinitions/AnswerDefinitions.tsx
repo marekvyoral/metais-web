@@ -3,10 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { Input } from '@isdd/idsk-ui-kit/index'
 import { ApiVoteChoice } from '@isdd/metais-common/api/generated/standards-swagger'
 import { useEffect } from 'react'
+import { DynamicElements } from '@isdd/metais-common/components/DynamicElements/DynamicElements'
 
 import styles from './AnswerDefinitions.module.scss'
-
-import { DynamicElements } from '@/components/DynamicElements/DynamicElements'
 
 type AnswerDefinitionLineType = {
     index?: number

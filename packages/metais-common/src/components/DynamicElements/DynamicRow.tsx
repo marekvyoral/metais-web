@@ -14,6 +14,7 @@ export interface RenderableComponentProps<T> {
 
 interface DynamicRowProps<T extends object> {
     index: number
+    lastElement: boolean
     defaultRowData?: T
     doNotRemove?: boolean
     renderableComponent: (index: number | undefined, props: RenderableComponentProps<T>) => ReactNode
@@ -32,6 +33,7 @@ export const DynamicRow: <T extends object>({
     register,
 }: DynamicRowProps<T>) => ReactElement<DynamicRowProps<T>> = ({
     index,
+    lastElement,
     defaultRowData,
     doNotRemove,
     renderableComponent,
@@ -44,7 +46,7 @@ export const DynamicRow: <T extends object>({
     return (
         <div className={classNames(style.inline, style.spaceVertical)}>
             <div className={style.stretch}>{renderableComponent(index, { data: defaultRowData, onChange: onChange, register: register })}</div>
-            {!doNotRemove && (
+            {!doNotRemove && lastElement && (
                 <ButtonLink
                     onClick={(e) => {
                         e.preventDefault()
@@ -54,7 +56,7 @@ export const DynamicRow: <T extends object>({
                     className={style.trashIcon}
                     label={
                         <>
-                            <span className="govuk-visually-hidden">{t('customAttributeFilter.remove')}</span>
+                            <span className="govuk-visually-hidden">{t('dynamicElements.removeItem')}</span>
                             <i aria-hidden="true" className="fas fa-trash" />
                         </>
                     }

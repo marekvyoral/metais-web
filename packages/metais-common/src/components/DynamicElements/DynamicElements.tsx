@@ -1,12 +1,13 @@
 import React, { useEffect, useState, MouseEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 import { UseFormSetValue } from 'react-hook-form'
 import { TextWarning } from '@isdd/idsk-ui-kit'
-import { MAX_DYNAMIC_ATTRIBUTES_LENGHT } from '@isdd/metais-common/constants/index'
+import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
 
 import style from './customElement.module.scss'
 import { DynamicRow, RenderableComponentProps } from './DynamicRow'
+
+import { MAX_DYNAMIC_ATTRIBUTES_LENGHT } from '@isdd/metais-common/constants/index'
 
 interface DynamicElementsProps<T extends object> {
     initialElementsData?: T[]
@@ -63,6 +64,7 @@ export const DynamicElements: <T extends object>({
                 <DynamicRow
                     key={'dynamic-row-' + index}
                     index={index}
+                    lastElement={dynamicElementsData.length == index + 1}
                     defaultRowData={elementData}
                     renderableComponent={renderableComponent}
                     remove={removeRow}
@@ -77,7 +79,7 @@ export const DynamicElements: <T extends object>({
             {addRowError && (
                 <div className={style.addRowErrorDiv}>
                     <TextWarning>{addRowError}</TextWarning>
-                    <ButtonLink label={t('customAttributeFilter.addRowErrorClose')} onClick={() => setAddRowError('')} />
+                    <ButtonLink label={t('dynamicElements.addRowErrorClose')} onClick={() => setAddRowError('')} />
                 </div>
             )}
             <div className={style.spaceVertical}>

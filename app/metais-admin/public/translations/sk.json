@@ -1074,7 +1074,9 @@
             "monitoring":"Správa monitoringu",
             "params" :"Monitorovacie parametre",
             "list": "Záznamy z monitoringu",
-            "detail": "Detail"
+            "detail": "Detail",
+            "create": "Nový záznam",
+            "edit": "Upraviť záznam"
         },
         "heading": "Správa monitoringu",
         "params": {
@@ -1129,6 +1131,43 @@
             "delete": "Vymazať",
             "callEndpoint": "Zavolať Endpoint",
             "callingEndpointMessage": "Volám Endpoint"
+        },
+        "compose": {
+            "title": {
+                "newRecord": "Nový záznam",
+                "editRecord": "Upraviť záznam"
+            },
+            "isvsName": "ISVS/KS/AS",
+            "entityType": "Typ entity",
+            "httpUrl": "Url",
+            "httpMethod": "Method",
+            "httpRequestHeader": "Request header",
+            "httpRequestBody": "Request Body",
+            "httpResponseStatus": "Response Status",
+            "httpResponseBodyRegex": "Response Body Regex",
+            "periodicity": "Periodicita",
+            "enabled": "povolené",
+            "create": "Vytvoriť",
+            "update": "Upraviť",
+            "cancel": "Zrušiť", 
+            "httpPart": "HTTP - časť",
+            "radioButton":{
+                "get": "GET",
+                "post": "POST"
+            },
+            "generalInputPlaceholder": "zadajte",
+            "addNextHttpHeaderItem": "pridať Request header",
+            "name": "Názov",
+            "value": "Hodnota",
+            "editHttpRequestHeader": "Upraviť Request headers",
+            "periodicityEnum": {
+                "daily": "Denne",
+                "weekly": "Týždenne",
+                "monthly": "Mesačne",
+                "quarterly": "Štvrťročne",
+                "semiannually": "Polročne",
+                "annually": "Ročne"
+            }
         },
         "type": {
             "yes": "Áno",

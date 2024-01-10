@@ -18,7 +18,7 @@ import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 
 import styles from '../monitoring.module.scss'
 
-import { monitoringDetailLogColumns } from './monitoringDetailFunc'
+import { getRequestHeaders, monitoringDetailLogColumns } from './monitoringDetailFunc'
 import { CallEndpointResultModal } from './CallEndpointResultModal'
 export interface IMonitoringLogFilterData extends IFilterParams, IFilter {
     activeMonitoringCfgId: number
@@ -82,7 +82,11 @@ export const MonitoringDetailView: React.FC<IMonitoringDetailView> = ({
             <InformationGridRow label={monitoringCfgData?.entityType ?? ''} value={monitoringCfgData?.isvsName} hideIcon />
             <InformationGridRow label={t('monitoring.detail.info.httpUrl')} value={monitoringCfgData?.httpUrl} hideIcon />
             <InformationGridRow label={t('monitoring.detail.info.httpMethod')} value={monitoringCfgData?.httpMethod} hideIcon />
-            <InformationGridRow label={t('monitoring.detail.info.httpRequestHeader')} value={monitoringCfgData?.httpRequestHeader} hideIcon />
+            <InformationGridRow
+                label={t('monitoring.detail.info.httpRequestHeader')}
+                value={getRequestHeaders(monitoringCfgData?.httpRequestHeader)}
+                hideIcon
+            />
             <InformationGridRow label={t('monitoring.detail.info.httpRequestBody')} value={monitoringCfgData?.httpRequestBody} hideIcon />
             <InformationGridRow label={t('monitoring.detail.info.httpResponseStatus')} value={monitoringCfgData?.httpResponseStatus} hideIcon />
             <InformationGridRow label={t('monitoring.detail.info.httpResponseBodyRegex')} value={monitoringCfgData?.httpResponseBodyRegex} hideIcon />
