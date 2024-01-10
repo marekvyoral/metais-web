@@ -97,7 +97,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             pageNumber: myFilter.pageNumber ?? defaultPagination.pageNumber,
         })
     }
-    const { register, getValues, setValue } = useForm({
+    const { register, getValues, setValue, reset } = useForm({
         defaultValues: {
             filteredData,
         },
@@ -120,8 +120,10 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
     const cancelEditing = useCallback(
         (rowIndex: number) => {
             setSelectedRows([...(selectedRows?.filter((index) => index !== rowIndex) ?? [])])
+            setErrorsState([])
+            reset({ filteredData: filteredData })
         },
-        [selectedRows],
+        [filteredData, reset, selectedRows],
     )
     const [resultCreateEnum, setResultCreateEnum] = useState<IResultCreateEnum>({
         isError: false,
@@ -155,9 +157,9 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
     }, [createEnumItem.isSuccess])
 
     const handleSaveCodelist = useCallback(
-        async (rowIndex: number, id: number | undefined) => {
+        async (id: number, index: number) => {
             setErrorsState([])
-            const editedData = { ...getValues(`filteredData.enumItems.${rowIndex}`), id }
+            const editedData = { ...getValues(`filteredData.enumItems.${index}`), id }
             const errors = await validateRowDetailData(
                 {
                     code: editedData.code,
@@ -166,7 +168,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                     value: editedData.value,
                     engValue: editedData.engValue,
                 },
-                rowIndex,
+                id,
                 t,
             )
 
@@ -179,15 +181,17 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                 })
             } else {
                 updateEnumItem.mutateAsync({ data: editedData })
-                cancelEditing(rowIndex)
+                cancelEditing(id)
             }
         },
         [cancelEditing, getValues, t, updateEnumItem],
     )
 
     useEffect(() => {
+        reset({ filteredData: filteredData })
         setDataRows(filteredData?.enumItems?.sort((a, b) => (a.orderList || 0) - (b.orderList || 0)) || [])
-    }, [filteredData])
+    }, [filteredData, reset])
+
     const [isTableDataLoading, setIsTableDataLoading] = useState(false)
 
     const reorderRow = async (draggedRowIndex: number, targetRowIndex: number) => {
@@ -233,10 +237,10 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             id: 'code',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                ctx?.row?.original.id && isRowSelected(ctx?.row?.original.id, selectedRows) ? (
                     <Input
                         disabled
-                        error={errorsState.find((item) => item.id === ctx?.row?.index + indexModificator)?.value}
+                        error={errorsState.find((item) => item.id === ctx?.row?.original.id)?.code}
                         {...register(`filteredData.enumItems.${ctx.row.index + indexModificator}.code`)}
                     />
                 ) : (
@@ -250,9 +254,9 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             id: 'value',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                ctx?.row?.original.id && isRowSelected(ctx?.row?.original.id, selectedRows) ? (
                     <Input
-                        error={errorsState.find((item) => item.id === ctx?.row?.index + indexModificator)?.value}
+                        error={errorsState.find((item) => item.id === ctx?.row?.original.id)?.value}
                         {...register(`filteredData.enumItems.${ctx.row.index + indexModificator}.value`)}
                     />
                 ) : (
@@ -266,9 +270,9 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             id: 'engValue',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                ctx?.row?.original.id && isRowSelected(ctx?.row?.original.id, selectedRows) ? (
                     <Input
-                        error={errorsState.find((item) => item.id === ctx?.row?.index + indexModificator)?.engValue}
+                        error={errorsState.find((item) => item.id === ctx?.row?.original.id)?.engValue}
                         {...register(`filteredData.enumItems.${ctx.row.index + indexModificator}.engValue`)}
                     />
                 ) : (
@@ -282,9 +286,9 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             id: 'description',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                ctx?.row?.original.id && isRowSelected(ctx?.row?.original.id, selectedRows) ? (
                     <TextArea
-                        error={errorsState.find((item) => item.id === ctx?.row?.index + indexModificator)?.description}
+                        error={errorsState.find((item) => item.id === ctx?.row?.original.id)?.description}
                         rows={3}
                         {...register(`filteredData.enumItems.${ctx.row.index + indexModificator}.description`)}
                     />
@@ -299,9 +303,9 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
             id: 'engDescription',
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
             cell: (ctx) =>
-                isRowSelected(ctx?.row?.index + indexModificator, selectedRows) ? (
+                ctx?.row?.original.id && isRowSelected(ctx?.row?.original.id, selectedRows) ? (
                     <TextArea
-                        error={errorsState.find((item) => item.id === ctx?.row?.index + indexModificator)?.engDescription}
+                        error={errorsState.find((item) => item.id === ctx?.row?.original.id)?.engDescription}
                         rows={3}
                         {...register(`filteredData.enumItems.${ctx.row.index + indexModificator}.engDescription`)}
                     />
@@ -338,7 +342,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                 const rowObject = ctx?.getValue?.() as EnumItem
                 if (!rowObject.valid) {
                     return <Button label={t('codelists.validate')} onClick={() => handleValidate(rowObject.code ?? '')} />
-                } else if (isRowSelected(ctx?.row?.index + indexModificator, selectedRows)) {
+                } else if (isRowSelected(ctx.row.original.id, selectedRows)) {
                     return (
                         <ButtonPopup
                             key={ctx?.row?.index}
@@ -349,15 +353,16 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                                     <ButtonLink
                                         type="button"
                                         onClick={() => {
-                                            handleSaveCodelist(ctx?.row?.index + indexModificator, ctx?.row?.original?.id)
+                                            ctx.row.original.id && handleSaveCodelist(ctx.row.original.id, ctx.row.index + indexModificator)
                                             closePopup()
                                         }}
                                         label={t('codelists.save')}
+                                        disabled={errorsState?.length !== 0}
                                     />
                                     <ButtonLink
                                         type="button"
                                         onClick={() => {
-                                            cancelEditing(ctx?.row?.index + indexModificator)
+                                            ctx.row.original.id && cancelEditing(ctx.row.original.id)
                                             closePopup()
                                         }}
                                         label={t('codelists.cancel')}
@@ -377,7 +382,7 @@ export const CodeListDetailTable: React.FC<ICodeListDetailTable> = ({ filteredDa
                                     <ButtonLink
                                         type="button"
                                         onClick={() => {
-                                            editRow(ctx?.row?.index + indexModificator)
+                                            ctx.row.original.id && editRow(ctx.row.original.id)
                                             closePopup()
                                         }}
                                         label={t('codelists.edit')}

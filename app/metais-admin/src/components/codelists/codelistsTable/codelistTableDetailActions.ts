@@ -9,8 +9,8 @@ export const validateRowDetailData = async (rowData: EnumItem, rowId: number, t:
         code: string().required(t('codelists.codeError')),
         description: string().required(t('codelists.descriptionError')),
         engDescription: string().required(t('codelists.engDescriptionError')),
-        value: string().required(t('codelists.value')),
-        engValue: string().required(t('codelists.engValue')),
+        value: string().required(t('codelists.valueError')),
+        engValue: string().required(t('codelists.engValueError')),
     })
     try {
         await rowDataSchema.validate(rowData, { abortEarly: false })
