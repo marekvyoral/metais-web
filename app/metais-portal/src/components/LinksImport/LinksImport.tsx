@@ -4,10 +4,9 @@ import classNames from 'classnames'
 import { FieldErrors, UseFormRegister, UseFormUnregister } from 'react-hook-form'
 import { ApiLink } from '@isdd/metais-common/api/generated/standards-swagger'
 import { useEffect } from 'react'
+import { DynamicElements } from '@isdd/metais-common/components/DynamicElements/DynamicElements'
 
 import styles from './LinkImport.module.scss'
-
-import { DynamicElements } from '@/components/DynamicElements/DynamicElements'
 
 export type LinkImportLineTypeDatas = {
     documentLinks?: ApiLink[]

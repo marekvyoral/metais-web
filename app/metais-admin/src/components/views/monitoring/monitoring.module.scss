@@ -14,3 +14,14 @@
     flex-direction: row;
 }
 
+.inline {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 0 !important;
+}
+
+.inlineItem {
+    flex-grow: 1;
+    margin-bottom: 0 !important;
+}

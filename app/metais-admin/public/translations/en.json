@@ -1065,7 +1065,9 @@
             "monitoring":"Monitoring management",
             "params" :"Monitoring parameters",
             "list": "Monitoring records",
-            "detail": "Detail"
+            "detail": "Detail",
+            "create": "New Record",
+            "edit": "Edit record"
         },
         "heading": "Monitoring mangement",
         "params": {
@@ -1120,6 +1122,43 @@
             "delete": "Delete",
             "callEndpoint": "Call Endpoint",
             "callingEndpointMessage": "Calling Endpoint"
+        },
+        "compose": {
+            "title": {
+                "newRecord": "New Record",
+                "editRecord": "Edit record"
+            },
+            "isvsName": "ISVS/KS/AS",
+            "entityType": "Entity Type",
+            "httpUrl": "Url",
+            "httpMethod": "Method",
+            "httpRequestHeader": "Request header",
+            "httpRequestBody": "Request Body",
+            "httpResponseStatus": "Response Status",
+            "httpResponseBodyRegex": "Response Body Regex",
+            "periodicity": "Periodicity",
+            "enabled": "Enabled",
+            "create": "Create",
+            "update": "Update",
+            "cancel": "Cancel",
+            "httpPart": "HTTP - part",
+            "radioButton":{
+                "get": "GET",
+                "post": "POST"
+            },
+            "generalInputPlaceholder": "enter",
+            "addNextHttpHeaderItem": "add Request Header",
+            "name": "Name",
+            "value": "Value",
+            "editHttpRequestHeader": "Edit Request headers",
+            "periodicityEnum": {
+                "daily": "Daily",
+                "weekly": "Weekly",
+                "monthly": "Monthly",
+                "quarterly": "Quarterly",
+                "semiannually": "Semiannually",
+                "annually": "Annually"
+            }
         },
         "type": {
             "yes": "Yes",

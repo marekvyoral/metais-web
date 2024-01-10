@@ -52,5 +52,9 @@
     },
     "createEntity": {
         "required": "Povinné"
+    },
+    "dynamicElements": {
+        "removeItem": "odstrániť",
+        "addRowErrorClose": "zavriet"
     }
 }

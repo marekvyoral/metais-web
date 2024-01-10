@@ -14,6 +14,19 @@ export const getCiListOptions = (ciListData: ConfigurationItemSetUi | undefined)
         label: (ciListRecord?.attributes && `(${ciListRecord?.type ?? ''}) ${ciListRecord?.attributes[ATTRIBUTE_NAME.Gen_Profil_nazov]}`) ?? '',
     })) ?? []
 
+const getRequestHeaders = (httpRequestHeader?: Array<[string, string]>) => {
+    const headerListNodes = httpRequestHeader?.map((headerData, index) => {
+        return (
+            <div key={index}>
+                {`${headerData?.[0] ?? ''}: `}
+                {`${headerData?.[1] ?? ''}`}
+            </div>
+        )
+    })
+
+    return headerListNodes
+}
+
 export const monitoringListColumns = (t: TFunction): Array<ColumnDef<ApiActiveMonitoringCfg>> => {
     const columnsAll: Array<ColumnDef<ApiActiveMonitoringCfg>> = [
         {
@@ -60,7 +73,7 @@ export const monitoringListColumns = (t: TFunction): Array<ColumnDef<ApiActiveMo
             enableSorting: false,
             id: MonitoringListColumnsEnum.REQUEST_HEADER,
             size: 120,
-            cell: (ctx) => <span>{ctx?.getValue?.() as string}</span>,
+            cell: (ctx) => <div>{getRequestHeaders(ctx?.getValue?.() as Array<[string, string]>)}</div>,
             meta: { getCellContext: (ctx) => ctx?.getValue?.() },
         },
         {

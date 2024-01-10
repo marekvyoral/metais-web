@@ -36,3 +36,16 @@ export const monitoringDetailLogColumns = (t: TFunction): Array<ColumnDef<ApiAct
 
     return columnsAll
 }
+
+export const getRequestHeaders = (httpRequestHeader?: string[][]) => {
+    const headerListNodes = httpRequestHeader?.map((headerData, index) => {
+        return (
+            <div key={index}>
+                {`${headerData?.[0] ?? ''}: `}
+                {`${headerData?.[1] ?? ''}`}
+            </div>
+        )
+    })
+
+    return headerListNodes
+}
