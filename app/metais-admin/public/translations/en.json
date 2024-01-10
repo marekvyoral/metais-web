@@ -437,13 +437,14 @@
         "attrSuccessfulCreated": "Attribute was successfully created",
         "invalidatePOSuccess": "Public authority successfully invalidate",
         "invalidatePOError": "Public authority invalidation failed",
-        "changeOwner": "Change owner",
         "metaColumnName": {
             "state": "Evidence status",
             "group": "Manager",
             "createdAt": "Created",
             "lastModifiedAt": " Last change"
-        }
+        },
+        "successfulRequestApproval": "Request successfully approved",
+        "unsuccessfulRequestApproval": "Request approval failed"
     },
     "actionsInTable": {
         "actions": "Actions",

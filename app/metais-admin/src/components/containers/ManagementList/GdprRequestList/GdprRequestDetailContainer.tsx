@@ -19,6 +19,7 @@ import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enu
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { RoleItem } from '@/components/views/userManagement/request-list-view/request-detail/RequestRolesForm'
 
@@ -44,6 +45,7 @@ interface IGdprRequestDetailContainer {
 
 export const GdprRequestDetailContainer: React.FC<IGdprRequestDetailContainer> = ({ userId, View }) => {
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const SKUPINA_ROL = 'SKUPINA_ROL'
     const anonymizovane = 'Anonymizované'
 
@@ -94,18 +96,18 @@ export const GdprRequestDetailContainer: React.FC<IGdprRequestDetailContainer> =
                             },
                         })
                             .then(() => {
-                                navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
+                                navigate(`${AdminRouteNames.GDPR_DETAIL}/${data?.uuid}`)
                             })
-                            .catch((error) => {
-                                setErrorMessage(error.message)
+                            .catch(() => {
+                                setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
                             })
                     })
-                    .catch((error) => {
-                        setErrorMessage(error.message)
+                    .catch(() => {
+                        setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
                     })
             })
         },
-        [mutateAsyncApprove, mutateAsyncUpdateIdentity, navigate, processEventMutationAsync, userId],
+        [mutateAsyncApprove, userId, mutateAsyncUpdateIdentity, processEventMutationAsync, navigate, data?.uuid, t],
     )
 
     const handleRefuseModal = useCallback(
