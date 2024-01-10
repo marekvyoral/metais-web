@@ -2227,6 +2227,20 @@
         "accept": "Accept",
         "moreInfo": "More info"
     },
+    "sla-params-list": {
+        "slaList": "SLA list",
+        "heading": "Terms and conditions of providing for {{entityName}}",
+        "selectParamType": "Select parameter type",
+        "selectValueType": "Select value type",
+        "selectView": "View",
+        "selectService": "Select service",
+        "selectISVS": "Select ISVS",
+        "serviceName": "Service name",
+        "parameterType": "Parameter type",
+        "value": "Value",
+        "valueType": "Value type"
+    },
+
     "integrationLinks": {
         "heading": "List of AICs",
         "createButton": "Add new AIC",

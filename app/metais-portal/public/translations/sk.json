@@ -2234,6 +2234,19 @@
         "accept": "Súhlasiť",
         "moreInfo": "Viac informácií"
     },
+    "sla-params-list": {
+        "slaList": "Zoznam SLA parametrov",
+        "heading": "Všeobecné podmienky poskytovania pre {{entityName}}",
+        "selectParamType": "Vyberte typ parametra",
+        "selectValueType": "Vyberte typ hodnoty",
+        "selectView": "Zobraziť",
+        "selectService": "Vyberte službu",
+        "selectISVS": "Vyberte ISVS",
+        "serviceName": "Služba",
+        "parameterType": "Typ parametra",
+        "value": "Hodnota",
+        "valueType": "Typ hodnoty"
+    },
     "integrationLinks": {
         "heading": "Zoznam integračných väzieb",
         "createButton": "Pridať novú integračnú väzbu",

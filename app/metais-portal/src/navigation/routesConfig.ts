@@ -1,4 +1,4 @@
-import { FooterRouteNames, LoginRouteNames, RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { FooterRouteNames, LoginRouteNames, RouterRoutes, SLARouteNames } from '@isdd/metais-common/navigation/routeNames'
 
 import { RootRouteContainer } from './route-containers/RootRouteContainer'
 
@@ -102,6 +102,7 @@ import HowToMonitoringPage from '@/pages/howto/monitoringHowTo'
 import HowToGenericPage from '@/pages/howto/[howToEnumType]'
 import ServicesListPage from '@/pages/monitoring/services/services'
 import CookiesInfoPage from '@/pages/cookies/info'
+import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
 import { ProvIntegrationList } from '@/pages/prov-integration/list'
 
 export interface RouteConfig {
@@ -694,6 +695,11 @@ export const routesConfig: RouteConfig[] = [
                 component: ProvIntegrationList,
             },
             ...generalCiRoutes,
+            {
+                path: SLARouteNames.SLAParamsList,
+                slug: SLARouteNames.SLAParamsList,
+                component: SLAParamsListPage,
+            },
             {
                 path: '*',
                 component: TodoPage,
