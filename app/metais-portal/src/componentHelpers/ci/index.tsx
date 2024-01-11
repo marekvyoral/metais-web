@@ -5,10 +5,13 @@ import { Attribute, AttributeAttributeTypeEnum, AttributeProfile } from '@isdd/m
 import { ciInformationTab } from '@isdd/metais-common/constants'
 import { Actions } from '@isdd/metais-common/hooks/permissions/useUserAbility'
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
-import { isFalsyStringValue } from '@isdd/metais-common/utils/utils'
+import { isFalsyStringValue, replaceDotForUnderscore } from '@isdd/metais-common/utils/utils'
 import { TFunction } from 'i18next'
 import { FieldValues } from 'react-hook-form'
 import { Location, Outlet, useLocation, useParams } from 'react-router-dom'
+import { ApiIntegrationHarmonogram, ApiIntegrationHarmonogramList } from '@isdd/metais-common/api/generated/provisioning-swagger'
+
+import { HarmonogramInputNames } from '@/components/views/prov-integration/integration-link/IntegrationHarmonogramView'
 
 type GetDefaultCiEntityTabListProps = {
     t: TFunction
@@ -107,4 +110,70 @@ export const filterFormValuesBasedOnCurrentRole = (attProfiles: AttributeProfile
         }
     }
     return newFormValues
+}
+
+export const getIntegrationLinkTabList = ({ entityName, entityId, t, userAbility }: GetDefaultCiEntityTabListProps): Tab[] => {
+    const tabList: Tab[] = [
+        {
+            id: ciInformationTab,
+            path: `/ci/${entityName}/${entityId}/`,
+            title: t('ciType.informations'),
+            content: <Outlet />,
+        },
+        ...(userAbility.can(Actions.HISTORY, 'ci')
+            ? [
+                  {
+                      id: 'history',
+                      path: `/ci/${entityName}/${entityId}/history`,
+                      title: t('ciType.history'),
+                      content: <Outlet />,
+                  },
+              ]
+            : []),
+        {
+            id: 'ksAsList',
+            path: `/ci/${entityName}/${entityId}/ksAsList`,
+            title: t('integrationLinks.tabs.ksAsList'),
+            content: <Outlet />,
+        },
+        {
+            id: 'subjectsList',
+            path: `/ci/${entityName}/${entityId}/subjectsList`,
+            title: t('integrationLinks.tabs.subjectsList'),
+            content: <Outlet />,
+        },
+
+        {
+            id: 'harmonogram',
+            path: `/ci/${entityName}/${entityId}/harmonogram`,
+            title: t('integrationLinks.tabs.harmonogram'),
+            content: <Outlet />,
+        },
+    ]
+
+    return tabList
+}
+
+export const formatHarmonogramFormKey = (uniqueCode: string, inputType: HarmonogramInputNames) => {
+    return `${uniqueCode}_${inputType}`
+}
+
+export const formatFormValuesForHarmonogramUpdate = (
+    formValues: Record<string, string | null>,
+    harmonogramData: ApiIntegrationHarmonogramList | undefined,
+): ApiIntegrationHarmonogram[] => {
+    const formattedData =
+        harmonogramData?.results?.map((item) => {
+            const replacedHarmonogramPhase = replaceDotForUnderscore(item?.harmonogramPhase ?? '')
+            const plannedDate = formValues[formatHarmonogramFormKey(replacedHarmonogramPhase, HarmonogramInputNames.PLANNED_DATE)] ?? ''
+            const realizedDate = formValues[formatHarmonogramFormKey(replacedHarmonogramPhase, HarmonogramInputNames.REALIZED_DATE)] ?? ''
+
+            return {
+                ...item,
+                plannedDate,
+                realizedDate,
+            }
+        }) ?? []
+
+    return formattedData
 }

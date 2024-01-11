@@ -222,6 +222,8 @@ export const INACTIVE_WARNING_TIME = import.meta.env.VITE_INACTIVE_WARNING_TIME
 export const IAM_OIDC_BASE_URL = import.meta.env.VITE_REST_CLIENT_IAM_OIDC_BASE_URL
 
 export const ciInformationTab = 'information'
+export const integrationHarmonogramTab = 'harmonogram'
+
 export const KRIScolumnsTechNames = [
     ATTRIBUTE_NAME.Gen_Profil_nazov,
     ATTRIBUTE_NAME.Gen_Profil_kod_metais,
@@ -282,3 +284,13 @@ export const LOWER_CASE_NUMBER_DOT_REGEX = /^[a-z0-9.]*$/
 export const SPACES_REGEX = /\s+/g
 export const baseWikiUrl = import.meta.env.VITE_REST_CLIENT_WIKI_BASE_URL
 export const STAV_DIZ_ENUM_CODE = 'STAV_DIZ'
+
+export const INTEGRACIA_KONZUMUJE_PROJEKT = 'Integracia_konzumuje_Projekt'
+export const INTEGRACIA_VYSTAVUJE_PROJEKT = 'Integracia_vystavuje_Projekt'
+export const INTEGRATION_HARMONOGRAM_EDIT_SEARCH_PARAM = 'edit'
+export const FAZA_INTEGRACNEHO_MILNIKA = 'FAZA_INTEGRACNEHO_MILNIKA'
+export const GUI_PROFILE_DIZ = 'Gui_Profil_DIZ'
+export const PROVIDING_ISVS_NAME = 'providingIsvsName'
+export const INTEGRACIA_Profil_Integracia_stav_diz = 'Integracia_Profil_Integracia_stav_diz'
+export const Gui_Profil_DIZ_konzumujuci_projekt = 'Gui_Profil_DIZ_konzumujuci_projekt'
+export const Gui_Profil_DIZ_poskytujuci_projekt = 'Gui_Profil_DIZ_poskytujuci_projekt'

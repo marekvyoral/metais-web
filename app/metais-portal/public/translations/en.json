@@ -2244,6 +2244,7 @@
     "integrationLinks": {
         "heading": "List of AICs",
         "createButton": "Add new AIC",
+        "otherInformation": "Other information",
         "filter": {
             "name": "Name of AIC",
             "state": "Evidence status",
@@ -2260,6 +2261,35 @@
             "providingProjName": "Providing project",
             "consumingProjName": "Consuming project",
             "dizStatus": "DIZ document state"
+        },
+        "tabs": {
+            "ksAsList": "ISPA integration coverage",
+            "subjectsList": "Integration subjects",
+            "harmonogram": "Harmonogram"
+        },
+        "createdAt": "Created at",
+        "gestor": "Owner",
+        "createdBy": "Created by",
+        "lastModifiedAt": "Last modified at",
+        "lastModifiedBy": "Last modified by",
+        "harmonogramPhase": "Harmonogram phase",
+        "plannedDate": "Planned date",
+        "realizedDate": "Realized date",
+        "submit": "Submit form",
+        "reset": "Reset form",
+        "cancelHarmonogramEdit": "Cancel harmonogram edit",
+        "editHarmonogram": "Edit harmonogram",
+        "tabsColumns": {
+            "consumingAsCode": "Consumer's calling AS identifier",
+            "consumingAsName": "Name of consumer AS",
+            "providingAsCode": "Provider's used AS identifier",
+            "providingAsName": "Name of providers AS",
+            "consuminGestorName": "Cons. MP",
+            "providingGestorName": "Cons. proj.",
+            "consumingIsvsName": "Cons. ISPA",
+            "providingIsvsName": "Prov. MP",
+            "consumingProjName": "Prov. proj.",
+            "providingProjName": "Prov. ISPA"
         }
     }
 }

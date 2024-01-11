@@ -2250,6 +2250,7 @@
     "integrationLinks": {
         "heading": "Zoznam integračných väzieb",
         "createButton": "Pridať novú integračnú väzbu",
+        "otherInformation": "Iné informácie",
         "filter": {
             "name": "Názov integračnej väzby",
             "state": "Stav evidencie",
@@ -2266,6 +2267,35 @@
             "providingProjName": "Poskytujúci projekt",
             "consumingProjName": "Poskytujúci projekt",
             "dizStatus": "Stav dokumentu DIZ"
+        },
+        "tabs": {
+            "ksAsList": "Rozsah integrácie ISVS",
+            "subjectsList": "Identifikácia subjektov integračného zámeru",
+            "harmonogram": "Harmonogram"
+        },
+        "createdAt": "Dátum vytvorenia",
+        "gestor": "Vlastník",
+        "createdBy": "Vytvoril",
+        "lastModifiedAt": "Posledná zmena",
+        "lastModifiedBy": "Poslednú zmenu vykonal",
+        "harmonogramPhase": "Fáza harmonogramu",
+        "plannedDate": "Plánovaný dátum ukončenia",
+        "realizedDate": "Reálny dátum ukončenia",
+        "submit": "Odoslať formulár",
+        "reset": "Zrušiť editovanie harmonogramu",
+        "cancelHarmonogramEdit": "Zrušiť editovanie harmonogramu",
+        "editHarmonogram": "Editovať harmonogram",
+        "tabsColumns": {
+            "consumingAsCode": "Identifikátor volajúcej AS konzumenta",
+            "consumingAsName": "Názov AS poskytovateľa",
+            "providingAsCode": "Identifikátor využívanej AS poskytovateľa",
+            "providingAsName": "Názov poskytovateľa",
+            "consuminGestorName": "Konz. správca",
+            "providingGestorName": "Posk. správca",
+            "consumingIsvsName": "Konz. ISVS",
+            "providingIsvsName": "Posk. ISVS",
+            "consumingProjName": "Konz. projekt",
+            "providingProjName": "Posk. projekt"
         }
     }
 }

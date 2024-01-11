@@ -34,7 +34,10 @@ export const initializeI18nInstance = (basePath = '') => {
     i18nInstance.services.formatter?.add('DATE_SHORT', (value, lng) => {
         try {
             if (!lng) return value
-            return DateTime.fromJSDate(new Date(value)).setLocale(lng).toLocaleString(DateTime.DATE_SHORT)
+            if (DateTime.fromJSDate(new Date(value)).isValid) {
+                return DateTime.fromJSDate(new Date(value)).setLocale(lng).toLocaleString(DateTime.DATE_SHORT)
+            }
+            return ''
         } catch {
             return value
         }
@@ -43,7 +46,10 @@ export const initializeI18nInstance = (basePath = '') => {
     i18nInstance.services.formatter?.add('DATETIME_SHORT_WITH_SECONDS', (value, lng) => {
         try {
             if (!lng) return value
-            return DateTime.fromJSDate(new Date(value)).setLocale(lng).toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)
+            if (DateTime.fromJSDate(new Date(value)).isValid) {
+                return DateTime.fromJSDate(new Date(value)).setLocale(lng).toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)
+            }
+            return ''
         } catch {
             return value
         }

@@ -7,7 +7,7 @@ import { STAV_DIZ_ENUM_CODE } from '@isdd/metais-common/constants'
 import { removeNullPropertiesFromRecord } from '@isdd/metais-common/utils/utils'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { CustomListIntegrationLinksParams } from '@/pages/prov-integration/list'
+import { CustomListIntegrationLinksParams } from '@/pages/ci/Integracia/list'
 
 export interface IProvIntegrationData {
     listIntegrationLinks: ApiIntegrationLinkList | undefined
