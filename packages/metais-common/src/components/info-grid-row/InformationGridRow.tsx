@@ -5,16 +5,26 @@ import { InfoIconWithText } from '@isdd/idsk-ui-kit/typography/InfoIconWithText'
 import { DefinitionListItem } from '@isdd/metais-common/components/definition-list/DefinitionListItem'
 
 interface IInformationGridRowProps extends PropsWithChildren {
-    label: string
+    label: React.ReactNode
     value: React.ReactNode
     tooltip?: string
     hideIcon?: boolean
     lang?: string | undefined
     href?: string
     valueWarning?: boolean
+    secColValue?: string | React.ReactNode | undefined
 }
 
-export const InformationGridRow: React.FC<IInformationGridRowProps> = ({ label, value, tooltip, hideIcon, lang, href, valueWarning }) => {
+export const InformationGridRow: React.FC<IInformationGridRowProps> = ({
+    label,
+    value,
+    tooltip,
+    hideIcon,
+    lang,
+    href,
+    valueWarning,
+    secColValue,
+}) => {
     return (
         <DefinitionListItem
             label={
@@ -28,6 +38,7 @@ export const InformationGridRow: React.FC<IInformationGridRowProps> = ({ label, 
             lang={lang}
             href={href}
             valueWarning={valueWarning}
+            secColValue={secColValue}
         />
     )
 }

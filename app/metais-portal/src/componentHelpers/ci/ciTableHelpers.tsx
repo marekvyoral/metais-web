@@ -13,6 +13,7 @@ import { HTML_TYPE, MUK } from '@isdd/metais-common/constants'
 import { SafeHtmlComponent } from '@isdd/idsk-ui-kit/save-html-component/SafeHtmlComponent'
 import { IListData } from '@isdd/metais-common/types/list'
 import { useTranslation } from 'react-i18next'
+import { ApiIntegrationCoverageOfIsvsViewItem, ApiIntegrationSubjectsViewItem } from '@isdd/metais-common/api/generated/provisioning-swagger'
 import { StatusGreenIcon, StatusOrangeIcon, StatusRedIcon } from '@isdd/idsk-ui-kit/index'
 
 import { IRowSelectionState } from '@/components/ci-table/CiTable'
@@ -240,4 +241,55 @@ export const useGetColumnsFromApiCellContent = () => {
     }
 
     return { getColumnsFromApiCellContent }
+}
+
+export type IntegrationColumnsConfig = {
+    id: string
+    technicalName: keyof ApiIntegrationSubjectsViewItem | keyof ApiIntegrationCoverageOfIsvsViewItem
+    entity: string
+    isCode?: boolean
+}
+
+export const getColumnsForIntegrationTables = (columnConfig: IntegrationColumnsConfig[], t: TFunction) => {
+    const getIntegrationTableCellValue = (
+        ctx: CellContext<ApiIntegrationSubjectsViewItem & ApiIntegrationCoverageOfIsvsViewItem, unknown>,
+        column: IntegrationColumnsConfig,
+    ): string => {
+        const currentSubject = ctx.row.original?.[column.technicalName]
+        const isNotString = typeof currentSubject != 'string'
+
+        return isNotString ? (column.isCode ? currentSubject?.code ?? '' : currentSubject?.name ?? '') : ''
+    }
+
+    const getColumnUuid = (
+        ctx: CellContext<ApiIntegrationSubjectsViewItem & ApiIntegrationCoverageOfIsvsViewItem, unknown>,
+        column: IntegrationColumnsConfig,
+    ): string => {
+        const currentSubject = ctx.row.original?.[column.technicalName]
+        const isNotString = typeof currentSubject != 'string'
+
+        return isNotString ? currentSubject?.uuid ?? '' : ''
+    }
+
+    return columnConfig.map((column) => ({
+        accessorKey: column.id,
+        header: () => {
+            return <span>{t(`integrationLinks.tabsColumns.${column.id}`)}</span>
+        },
+        id: column.id,
+        size: 200,
+        cell: (ctx: CellContext<ApiIntegrationSubjectsViewItem & ApiIntegrationCoverageOfIsvsViewItem, unknown>) => {
+            return (
+                <Link to={`/ci/${column.entity}/${getColumnUuid(ctx, column)}`} onClick={(e) => e.stopPropagation()}>
+                    {getIntegrationTableCellValue(ctx, column)}
+                </Link>
+            )
+        },
+        meta: {
+            getCellContext: (ctx: CellContext<ApiIntegrationSubjectsViewItem & ApiIntegrationCoverageOfIsvsViewItem, unknown>) => {
+                return getIntegrationTableCellValue(ctx, column)
+            },
+        },
+        enableSorting: true,
+    }))
 }

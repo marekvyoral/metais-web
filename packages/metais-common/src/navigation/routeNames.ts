@@ -120,8 +120,13 @@ export enum RouterRoutes {
     CI_AS_CREATE = 'ci/AS/create',
     ITVS_EXCEPTIONS_CREATE = 'ci/OsobitnyPostup/create',
     ITVS_EXCEPTIONS_EDIT = 'ci/OsobitnyPostup/:entityId/edit',
-    PROV_INTEGRATION_LIST = '/prov-integration/list',
-    PROV_INTEGRATION_CREATE = '/prov-integration/create',
+    INTEGRATION_LIST = 'ci/Integracia',
+    INTEGRATION_CREATE = 'ci/Integracia/create',
+    INTEGRATION_DETAIL = 'ci/Integracia/:entityId',
+    INTEGRATION_HISTORY = 'ci/Integracia/:entityId/history',
+    INTEGRATION_KS_AS_OUTLET = 'ksAsList',
+    INTEGRATION_SUBJECTS_LIST_OUTLET = 'subjectsList',
+    INTEGRATION_HARMONOGRAM_OUTLET = 'harmonogram',
 }
 
 export enum AdminRouteNames {

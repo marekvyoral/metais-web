@@ -6,7 +6,7 @@ import { DRAFT, ENTITY_ISVS, ENTITY_PROJECT, INVALIDATED, PO } from '@isdd/metai
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { CustomListIntegrationLinksParams } from '@/pages/prov-integration/list'
+import { CustomListIntegrationLinksParams } from '@/pages/ci/Integracia/list'
 
 type Props = {
     defaultFilterValues: CustomListIntegrationLinksParams

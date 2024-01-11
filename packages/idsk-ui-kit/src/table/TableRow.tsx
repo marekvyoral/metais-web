@@ -33,6 +33,9 @@ export const TableRow = <T,>({
     const location = useLocation()
     const hasCheckbox = row.getVisibleCells().find((cell) => cell.column.id === CHECKBOX_CELL)
     const verticalHeaderColId = hasCheckbox ? row.getVisibleCells()[1].column.id : row.getVisibleCells()[0].column.id
+
+    let headerUsed = false
+
     return (
         <tr
             className={classNames(
@@ -68,7 +71,14 @@ export const TableRow = <T,>({
                     cell.getValue() === undefined ||
                     cell.getValue() === null ||
                     !shortString
-                const useHeader = (index === 0 && cell.column.id !== CHECKBOX_CELL) || index === 1
+
+                let useHeader = false
+                if (!headerUsed) {
+                    useHeader = (index === 0 && cell.column.id !== CHECKBOX_CELL) || index === 1
+                    if (useHeader) {
+                        headerUsed = true
+                    }
+                }
 
                 const cellContent = hideTooltip ? (
                     cellValue

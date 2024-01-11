@@ -44,7 +44,7 @@ export const ProvIntegrationListView: React.FC<IProvIntegrationListView> = ({
                 createButton={
                     <CreateEntityButton
                         label={t('integrationLinks.createButton')}
-                        onClick={() => navigate(RouterRoutes.PROV_INTEGRATION_CREATE, { state: { from: location } })}
+                        onClick={() => navigate(RouterRoutes.INTEGRATION_CREATE, { state: { from: location } })}
                     />
                 }
                 hiddenButtons={{ SELECT_COLUMNS: true }}

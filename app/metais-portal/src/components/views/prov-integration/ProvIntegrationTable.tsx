@@ -6,6 +6,7 @@ import React from 'react'
 import { ColumnSort, IFilter } from '@isdd/idsk-ui-kit/types'
 import { useTranslation } from 'react-i18next'
 import { Languages } from '@isdd/metais-common/localization/languages'
+import { Link } from 'react-router-dom'
 
 import { IProvIntegrationData } from '@/components/containers/ProvIntegrationListContainer'
 
@@ -25,6 +26,7 @@ enum ColumnNames {
 export const ProvIntegrationTable: React.FC<Props> = ({ data, handleFilterChange, sort }) => {
     const { t, i18n } = useTranslation()
     const { listIntegrationLinks, dizStateData } = data
+
     const columns: Array<ColumnDef<ApiIntegrationLink>> = [
         {
             accessorKey: ColumnNames.integrationName,
@@ -35,7 +37,9 @@ export const ProvIntegrationTable: React.FC<Props> = ({ data, handleFilterChange
             size: 200,
             cell: (ctx: CellContext<ApiIntegrationLink, unknown>) => (
                 <TextBody size="S" className={'marginBottom0'}>
-                    {ctx.row.original.name}
+                    <Link to={`./${ctx.row?.original?.uuid}`} onClick={(e) => e.stopPropagation()}>
+                        {ctx.row.original.name}
+                    </Link>
                 </TextBody>
             ),
             meta: {
@@ -107,7 +111,7 @@ export const ProvIntegrationTable: React.FC<Props> = ({ data, handleFilterChange
             <Table
                 columns={columns}
                 data={listIntegrationLinks?.results}
-                rowHref={(row) => `/prov-integration/detail/${row?.original?.uuid}`}
+                rowHref={(row) => `./${row?.original?.uuid}`}
                 onSortingChange={(newSort) => {
                     handleFilterChange({ sort: newSort })
                 }}

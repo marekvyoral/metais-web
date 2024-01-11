@@ -102,8 +102,14 @@ import HowToMonitoringPage from '@/pages/howto/monitoringHowTo'
 import HowToGenericPage from '@/pages/howto/[howToEnumType]'
 import ServicesListPage from '@/pages/monitoring/services/services'
 import CookiesInfoPage from '@/pages/cookies/info'
+import { IntegrationLinkDetailPage } from '@/pages/ci/Integracia/[entityId]'
+import { IntegrationLinkInformation } from '@/pages/ci/Integracia/[entityId]/information'
+import { IntegrationLinkHistory } from '@/pages/ci/Integracia/[entityId]/history'
+import { ProvIntegrationList } from '@/pages/ci/Integracia/list'
+import { IntegrationKsAsList } from '@/pages/ci/Integracia/[entityId]/ksAsList'
+import { IntegrationSubjectsList } from '@/pages/ci/Integracia/[entityId]/subjectsList'
+import { IntegrationHarmonogram } from '@/pages/ci/Integracia/[entityId]/harmonogram'
 import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
-import { ProvIntegrationList } from '@/pages/prov-integration/list'
 
 export interface RouteConfig {
     path?: string
@@ -690,9 +696,41 @@ export const routesConfig: RouteConfig[] = [
                 component: ForgottenPasswordPage,
             },
             {
-                path: RouterRoutes.PROV_INTEGRATION_LIST,
-                slug: RouterRoutes.PROV_INTEGRATION_LIST,
+                path: RouterRoutes.INTEGRATION_LIST,
+                slug: RouterRoutes.INTEGRATION_LIST,
                 component: ProvIntegrationList,
+            },
+            {
+                path: RouterRoutes.INTEGRATION_DETAIL,
+                slug: RouterRoutes.INTEGRATION_DETAIL,
+                component: IntegrationLinkDetailPage,
+                subRoutes: [
+                    {
+                        slug: RouterRoutes.INTEGRATION_DETAIL,
+                        component: IntegrationLinkInformation,
+                        index: true,
+                    },
+                    {
+                        path: RouterRoutes.INTEGRATION_KS_AS_OUTLET,
+                        slug: RouterRoutes.INTEGRATION_KS_AS_OUTLET,
+                        component: IntegrationKsAsList,
+                    },
+                    {
+                        path: RouterRoutes.INTEGRATION_SUBJECTS_LIST_OUTLET,
+                        slug: RouterRoutes.INTEGRATION_SUBJECTS_LIST_OUTLET,
+                        component: IntegrationSubjectsList,
+                    },
+                    {
+                        path: RouterRoutes.INTEGRATION_HARMONOGRAM_OUTLET,
+                        slug: RouterRoutes.INTEGRATION_HARMONOGRAM_OUTLET,
+                        component: IntegrationHarmonogram,
+                    },
+                    {
+                        path: RouterRoutes.HISTORY_OUTLET,
+                        slug: RouterRoutes.HISTORY_OUTLET,
+                        component: IntegrationLinkHistory,
+                    },
+                ],
             },
             ...generalCiRoutes,
             {

@@ -57,3 +57,7 @@ export const removeNullPropertiesFromRecord = (obj: Record<string, unknown>) =>
             return !(value == null || value === '' || (Array.isArray(value) && value.length === 0) || isObjectEmpty(value))
         }),
     )
+
+export const replaceDotForUnderscore = (string: string) => {
+    return string.replaceAll('.', '_')
+}

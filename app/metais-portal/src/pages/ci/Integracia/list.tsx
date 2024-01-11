@@ -39,7 +39,7 @@ export const ProvIntegrationList = () => {
                 withWidthContainer
                 links={[
                     { label: t('breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
-                    { label: t('integrationLinks.heading'), href: RouterRoutes.PROV_INTEGRATION_LIST },
+                    { label: t('integrationLinks.heading'), href: RouterRoutes.INTEGRATION_LIST },
                 ]}
             />
             <ProvIntegrationListContainer defaultFilterValues={defaultFilterValues} View={(props) => <ProvIntegrationListView {...props} />} />
