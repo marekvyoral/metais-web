@@ -36,6 +36,7 @@ export const Tooltip: React.FC<ITooltip> = ({ descriptionElement, tooltipContent
                 closeOnEscape
                 keepTooltipInside
                 className="tooltip"
+                on={['click', 'hover', 'focus']}
                 {...props}
                 trigger={() =>
                     tooltipContent ? (

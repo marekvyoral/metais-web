@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import React, { forwardRef, DetailedHTMLProps } from 'react'
 import { v4 as uuidV4 } from 'uuid'
 import { useTranslation } from 'react-i18next'
+import { decodeHtmlEntities } from '@isdd/metais-common/src/utils/utils'
 
 import styles from './input.module.scss'
 
@@ -54,7 +55,12 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
                     <label className="govuk-label" htmlFor={id}>
                         {label} {required && t('input.requiredField')}
                     </label>
-                    {info && <Tooltip altText={`Tooltip ${label}`} descriptionElement={<div className="tooltipWidth500">{info}</div>} />}
+                    {info && (
+                        <Tooltip
+                            altText={`Tooltip ${label}`}
+                            descriptionElement={<div className="tooltipWidth500">{decodeHtmlEntities(info)}</div>}
+                        />
+                    )}
                 </div>
 
                 {hint && (
