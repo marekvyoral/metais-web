@@ -61,3 +61,10 @@ export const removeNullPropertiesFromRecord = (obj: Record<string, unknown>) =>
 export const replaceDotForUnderscore = (string: string) => {
     return string.replaceAll('.', '_')
 }
+
+export const decodeHtmlEntities = (encodedString: string): string => {
+    // This technique leverages the browser's built-in HTML decoding capabilities.
+    const textarea = document.createElement('textarea')
+    textarea.innerHTML = encodedString
+    return textarea.value
+}
