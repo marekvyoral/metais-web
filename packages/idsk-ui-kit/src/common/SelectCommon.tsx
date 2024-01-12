@@ -40,6 +40,11 @@ export const selectStyles = <T,>(): StylesConfig<T, boolean, GroupBase<T>> => ({
         ...base,
         color: isDisabled ? '#aaaaaa' : base.color,
     }),
+    groupHeading: (base) => ({
+        ...base,
+        fontWeight: 'bold',
+        padding: '5px 5px',
+    }),
     menuPortal: (base, { rect, offset }) => {
         //our input is smaller with padding; style adjustments required
         const width = `${rect.width + 13}px`

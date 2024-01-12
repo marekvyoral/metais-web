@@ -186,6 +186,7 @@ export enum NavigationSubRoutes {
     ISVS = '/ci/ISVS',
     INFRASCTRUCTURES = '/ci/InfraSluzba',
     AUTORITY = '/ci/PO',
+    OSOBITNY_POSTUP = '/ci/OsobitnyPostup',
     OBJEKTY_EVIDENCIE = '/todo',
     ATRIBUTY_OBJEKTY_EVIDENCIE = '/todo',
     STANDARDY_ISVS = '/publicspace',

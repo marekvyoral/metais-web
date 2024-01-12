@@ -195,6 +195,7 @@ export const AttributeInput: React.FC<IAttributeInput> = ({
                         correct={isCorrect}
                         info={attribute.description}
                         id={attribute.technicalName}
+                        clearErrors={clearErrors}
                         disabled={attribute.readOnly || disabled}
                         label={`${i18n.language === Languages.SLOVAK ? attribute.name : attribute.engName}` + requiredLabel}
                         error={error?.message?.toString()}
