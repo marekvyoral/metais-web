@@ -1,18 +1,19 @@
-import React, { FC } from 'react'
-import { SimpleSelect } from '@isdd/idsk-ui-kit'
-import { useTranslation } from 'react-i18next'
+import { GroupedOption, SelectWithGroupedOptions, SimpleSelect } from '@isdd/idsk-ui-kit'
 import { ButtonLink } from '@isdd/idsk-ui-kit/button-link/ButtonLink'
+import React, { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import style from './customFilterAttribute.module.scss'
 import { DynamicFilterAttributeInput } from './DynamicFilterAttributeInput'
 
-import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
-import { OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
+import { getCiDefaultMetaAttributes } from '@isdd/metais-common/componentHelpers/ci/getCiDefaultMetaAttributes'
 import { EnumType } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
-import { findAvailableOperators } from '@isdd/metais-common/componentHelpers/filter/findAvailableOperators'
-import { Languages } from '@isdd/metais-common/localization/languages'
 import { CustomAttributeType } from '@isdd/metais-common/componentHelpers/filter/findAttributeType'
+import { findAvailableOperators } from '@isdd/metais-common/componentHelpers/filter/findAvailableOperators'
+import { FilterAttribute } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
+import { OPERATOR_OPTIONS_URL } from '@isdd/metais-common/hooks/useFilter'
+import { Languages } from '@isdd/metais-common/localization/languages'
 
 interface Props {
     index: number
@@ -25,6 +26,8 @@ interface Props {
     attributeType: CustomAttributeType
     attributeConstraints: EnumType | undefined
     currentAttribute: FilterAttribute
+    ignoreInputNames?: string[]
+    ciName?: string
 }
 
 export const DynamicFilterAttributeRow: FC<Props> = ({
@@ -37,7 +40,9 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
     selectedAttributes,
     currentAttribute,
     attributes,
+    ignoreInputNames,
     attributeProfiles,
+    ciName,
 }) => {
     const { t, i18n } = useTranslation()
 
@@ -51,42 +56,60 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
         currentAvailableOperators,
     )
 
-    const attributeProfilesColumnSections =
-        attributeProfiles?.map(
-            (attributeProfile) =>
+    const attributeProfilesColumnSections: GroupedOption[] =
+        attributeProfiles?.map((attributeProfile) => ({
+            label: attributeProfile.name || '',
+            options:
                 attributeProfile.attributes
                     ?.filter((attr) => attr.invisible === false && attr.valid)
                     .map((attr) => ({
                         label: isLangSK ? attr.name ?? '' : attr.engName ?? '',
                         value: attr.technicalName ?? '',
                     })) || [],
-        ) ?? []
+        })) ?? []
 
-    const attributesColumnSection =
-        attributes
-            ?.filter((attr) => attr.invisible === false && attr.valid)
-            ?.map((attr) => ({
-                label: isLangSK ? attr.name ?? '' : attr.engName ?? '',
-                value: attr.technicalName ?? '',
-            })) ?? []
+    const metaAttributes4 = getCiDefaultMetaAttributes({ t })
+    const metaAttributesColumnSections: GroupedOption = {
+        label: metaAttributes4.name || '',
+        options:
+            metaAttributes4.attributes
+                .filter((item) => !ignoreInputNames?.includes(item.technicalName))
+                .map((attr) => ({
+                    label: isLangSK ? attr.name ?? '' : attr.engName ?? '',
+                    value: attr.technicalName ?? '',
+                })) || [],
+    }
+
+    const attributesColumnSection: GroupedOption = {
+        label: ciName || '',
+        options:
+            attributes
+                ?.filter((attr) => attr.invisible === false && attr.valid)
+                ?.map((attr) => ({
+                    label: isLangSK ? attr.name ?? '' : attr.engName ?? '',
+                    value: attr.technicalName ?? '',
+                })) ?? [],
+    }
+
     const availableOperators = findAvailableOperators(attributeType, attributeConstraints, Object.values(OPERATOR_OPTIONS_URL)).map((option) => ({
         value: option,
         label: t(`customAttributeFilter.operator.${option}`),
         disabled: !operatorsToDisable.includes(option),
     }))
-
+    const options = [attributesColumnSection, ...attributeProfilesColumnSections, metaAttributesColumnSections]
     return (
         <div className={style.customFilterWrapper}>
-            <SimpleSelect
-                isClearable={false}
-                className={style.rowItem}
+            <SelectWithGroupedOptions
                 id={`attribute-name-${index}`}
+                name={`attributeName`}
+                className={style.rowItem}
                 label={t('customAttributeFilter.attribute.label')}
+                defaultValue={options.map((opt) => opt.options?.find((item) => item.value === attribute.name))}
+                options={options}
                 placeholder={t('customAttributeFilter.attribute.placeholder')}
-                name={`atributeName`}
-                value={attribute.name}
-                options={attributesColumnSection.concat(attributeProfilesColumnSections.flat())}
-                onChange={(val) => onChange({ ...attribute, name: val }, attribute, true)}
+                onChange={(val) => {
+                    onChange({ ...attribute, name: val?.value }, attribute, true)
+                }}
             />
             <SimpleSelect
                 isClearable={false}
@@ -99,7 +122,6 @@ export const DynamicFilterAttributeRow: FC<Props> = ({
                 value={attribute.operator}
                 onChange={(val) => onChange({ ...attribute, operator: val }, attribute)}
             />
-
             <DynamicFilterAttributeInput
                 constraints={attributeConstraints}
                 attributeType={attributeType}

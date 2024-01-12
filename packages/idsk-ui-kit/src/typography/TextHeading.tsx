@@ -10,22 +10,22 @@ export const TextHeading = forwardRef<HTMLHeadingElement, ITextHeadingProps>(({ 
     return (
         <>
             {size === 'XL' && (
-                <h1 ref={ref} className={classNames('govuk-heading-xl', styles.lineBreakAnywhere, className)}>
+                <h1 ref={ref} className={classNames('govuk-heading-xl', styles.lineMaxWidth, className)}>
                     {children}
                 </h1>
             )}
             {size === 'L' && (
-                <h2 ref={ref} className={classNames('govuk-heading-l', styles.lineBreakAnywhere, className)}>
+                <h2 ref={ref} className={classNames('govuk-heading-l', styles.lineMaxWidth, className)}>
                     {children}
                 </h2>
             )}
             {size === 'M' && (
-                <h3 ref={ref} className={classNames('govuk-heading-m', styles.lineBreakAnywhere, className)}>
+                <h3 ref={ref} className={classNames('govuk-heading-m', styles.lineMaxWidth, className)}>
                     {children}
                 </h3>
             )}
             {size === 'S' && (
-                <h4 ref={ref} className={classNames('govuk-heading-s', styles.lineBreakAnywhere, className)}>
+                <h4 ref={ref} className={classNames('govuk-heading-s', styles.lineMaxWidth, className)}>
                     {children}
                 </h4>
             )}

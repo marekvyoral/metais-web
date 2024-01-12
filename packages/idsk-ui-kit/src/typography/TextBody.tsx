@@ -13,17 +13,17 @@ export const TextBody = forwardRef<HTMLParagraphElement, ITextBodyProps>(({ chil
     return (
         <>
             {!size && (
-                <p lang={lang} ref={ref} className={classNames('govuk-body', styles.lineBreakAnywhere, className)}>
+                <p lang={lang} ref={ref} className={classNames('govuk-body', styles.lineMaxWidth, className)}>
                     {children}
                 </p>
             )}
             {size === 'S' && (
-                <p lang={lang} ref={ref} className={classNames('govuk-body-s', styles.lineBreakAnywhere, className)}>
+                <p lang={lang} ref={ref} className={classNames('govuk-body-s', styles.lineMaxWidth, className)}>
                     {children}
                 </p>
             )}
             {size === 'L' && (
-                <p lang={lang} ref={ref} className={classNames('govuk-body-l', styles.lineBreakAnywhere, className)}>
+                <p lang={lang} ref={ref} className={classNames('govuk-body-l', styles.lineMaxWidth, className)}>
                     {children}
                 </p>
             )}

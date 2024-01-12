@@ -47,6 +47,7 @@ interface Props {
     attributeProfiles: AttributeProfile[] | undefined
     constraintsData: (EnumType | undefined)[] | undefined
     ignoreInputNames?: string[]
+    ciName?: string
 }
 
 export const DynamicFilterAttributes: FC<Props> = ({
@@ -57,6 +58,7 @@ export const DynamicFilterAttributes: FC<Props> = ({
     constraintsData,
     defaults,
     ignoreInputNames,
+    ciName,
 }) => {
     const attributeFiltersData = filterData?.attributeFilters
     const metaAttributeFiltersData = filterData?.metaAttributeFilters
@@ -174,22 +176,17 @@ export const DynamicFilterAttributes: FC<Props> = ({
             setAddRowError(t('customAttributeFilter.addRowErrorMessage', { value: MAX_DYNAMIC_ATTRIBUTES_LENGHT }))
         }
     }
-
-    const metaAttributes = getCiDefaultMetaAttributes({ t }).attributes.filter(
-        (item) => !ignoreInputNames?.includes(item.technicalName),
-    ) as Attribute[]
-
-    const attributesWithMetaAttributes = [...(attributes ?? []), ...metaAttributes]
-
     return (
         <div>
             {dynamicAttributes.map((attribute, index) => (
                 <DynamicFilterAttributeRow
                     key={`custom-attribute-${index}`}
                     index={index}
+                    ciName={ciName}
                     selectedAttributes={dynamicAttributes}
                     attributeProfiles={filteredAvailable}
-                    attributes={attributesWithMetaAttributes}
+                    attributes={attributes}
+                    ignoreInputNames={ignoreInputNames}
                     remove={() => removeAttrRow(index, attribute)}
                     onChange={(attr, prevData, isNewName) => handleAttrChange(index, attr, prevData, isNewName)}
                     attribute={attribute}

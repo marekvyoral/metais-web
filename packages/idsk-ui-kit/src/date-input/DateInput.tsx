@@ -1,5 +1,5 @@
 import React from 'react'
-import { Control, Controller } from 'react-hook-form'
+import { Control, Controller, UseFormClearErrors } from 'react-hook-form'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import { Languages } from '@isdd/metais-common/src/localization/languages'
 import { sk, enUS as en } from 'date-fns/locale'
@@ -32,6 +32,8 @@ type Props = {
     maxLength?: number
     id?: string
     required?: boolean
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    clearErrors?: UseFormClearErrors<any>
 }
 
 export const DateInput: React.FC<Props> = ({
@@ -49,6 +51,7 @@ export const DateInput: React.FC<Props> = ({
     hasInputIcon,
     id = `input_${uuidV4()}`,
     required,
+    clearErrors,
 }) => {
     const { t, i18n } = useTranslation()
     const hintId = `${id}-hint`
@@ -83,7 +86,10 @@ export const DateInput: React.FC<Props> = ({
                                 className={classNames('govuk-input', { 'govuk-input--error': !!error })}
                                 placeholderText="dd.mm.yyyy"
                                 selected={field.value ? new Date(field.value) : null}
-                                onChange={(date) => handleDateChange(date, field.name)}
+                                onChange={(date) => {
+                                    date && clearErrors?.(name)
+                                    handleDateChange(date, field.name)
+                                }}
                                 dateFormat="dd.MM.yyyy"
                                 locale={i18n.language === Languages.SLOVAK ? Languages.SLOVAK : Languages.ENGLISH}
                                 disabled={disabled}

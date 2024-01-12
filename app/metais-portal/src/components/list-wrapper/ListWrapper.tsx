@@ -122,10 +122,11 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         scrollToMutationFeedback()
     }, [bulkActionResult, scrollToMutationFeedback])
 
+    const ciName = i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName
     return (
         <QueryFeedback loading={isLoading} error={false} withChildren>
             <FlexColumnReverseWrapper>
-                <TextHeading size="XL">{i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}</TextHeading>
+                <TextHeading size="XL">{ciName}</TextHeading>
                 {(isError || isCiTypeConstraintsError) && (
                     <QueryFeedback loading={false} error errorProps={{ errorMessage: t('feedback.failedFetch') }} />
                 )}
@@ -163,6 +164,7 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                                     attributeFilters: filter.attributeFilters ?? {},
                                     metaAttributeFilters: filter.metaAttributeFilters ?? {},
                                 }}
+                                ciName={ciName}
                                 attributes={attributes}
                                 attributeProfiles={attributeProfiles}
                                 constraintsData={constraintsData}
