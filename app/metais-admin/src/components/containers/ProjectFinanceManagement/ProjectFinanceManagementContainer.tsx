@@ -54,23 +54,7 @@ export const ProjectFinanceManagementContainer: React.FC<IProjectFinanceManageme
     const { data: allPrograms, isLoading: isAllProgramsLoadings } = useGetAllPrograms()
     const { data: approvalProcesses, isLoading: isApprovalProcessesLoading } = useGetAllApprovalProcess()
     const [isUpdating, setIsUpdating] = useState(false)
-    const {
-        mutateAsync: updateProgramHook,
-        isError,
-        isSuccess,
-    } = useUpdateProgramPartsFinance({
-        mutation: {
-            onSuccess() {
-                setIsUpdating(false)
-            },
-            onError() {
-                setIsUpdating(false)
-            },
-        },
-    })
-
     const { filter, handleFilterChange } = useFilterParams<GetProgramWithPartsParams>(defaultFilter)
-
     const loadProgram = !!filter.programUuid && filter.programUuid != '' && !!filter.projectType && filter.projectType != ''
     const {
         data: program,
@@ -82,6 +66,22 @@ export const ProjectFinanceManagementContainer: React.FC<IProjectFinanceManageme
             query: { enabled: loadProgram, queryKey: [filter] },
         },
     )
+    const {
+        mutateAsync: updateProgramHook,
+        isError,
+        isSuccess,
+    } = useUpdateProgramPartsFinance({
+        mutation: {
+            onSuccess() {
+                setIsUpdating(false)
+                refetchProgram()
+            },
+            onError() {
+                setIsUpdating(false)
+            },
+        },
+    })
+
     return (
         <View
             isLoading={isAllProgramsLoadings || isApprovalProcessesLoading || (loadProgram && isProgramLoading) || isUpdating}

@@ -8,9 +8,10 @@ import {
 } from '@isdd/metais-common/constants'
 import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { removeNonDigitCharacters } from '@isdd/metais-common/utils/utils'
 
 import { IView, defaultFilter } from '@/components/containers/ProjectFinanceManagement/ProjectFinanceManagementContainer'
 
@@ -33,21 +34,30 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
     const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>([...getProjectsFinanceManagementSelectedColumns(t)])
     const [editing, setEditing] = useState(false)
     const [editingInputId, setEditingInputId] = useState(DEFAULT_FOCUS_KEY)
+
     const { register, reset, handleSubmit, setValue, formState, getValues, setError, clearErrors } = useForm({
         defaultValues: {
             program,
         },
     })
+
     const resetSelectedColumns = () => {
         setSelectedColumns([...getProjectsFinanceManagementSelectedColumns(t)])
     }
 
+    const sortedData = useMemo(() => program?.partFinances?.sort((a, b) => (a.position || 0) - (b.position || 0)) || [], [program?.partFinances])
+    useEffect(() => {
+        reset({
+            program,
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sortedData])
     const handleMinErrors = useCallback(() => {
         program?.partFinances?.forEach((_, index) => {
             const currentIndex: `program.partFinances.${number}.min` = `program.partFinances.${index}.min`
-            const current = getValues(currentIndex) ?? 0
-            const currentMax = getValues(`program.partFinances.${index}.max`) ?? 0
-            const previousMax = getValues(`program.partFinances.${index - 1}.max`) ?? 0
+            const current = removeNonDigitCharacters(getValues(currentIndex))
+            const currentMax = removeNonDigitCharacters(getValues(`program.partFinances.${index}.max`))
+            const previousMax = removeNonDigitCharacters(getValues(`program.partFinances.${index - 1}.max`))
 
             if (index == 0) {
                 if (current != 0) {
@@ -82,9 +92,9 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
         const lastIndex = (program?.partFinances?.length ?? 0) - 1
         program?.partFinances?.forEach((_, index) => {
             const currentIndex: `program.partFinances.${number}.max` = `program.partFinances.${index}.max`
-            const current = getValues(currentIndex) ?? 0
-            const currentMin = getValues(`program.partFinances.${index}.min`) ?? 0
-            const nextMin = getValues(`program.partFinances.${index + 1}.min`) ?? 0
+            const current = removeNonDigitCharacters(getValues(currentIndex))
+            const currentMin = removeNonDigitCharacters(getValues(`program.partFinances.${index}.min`))
+            const nextMin = removeNonDigitCharacters(getValues(`program.partFinances.${index + 1}.min`))
             if (index != lastIndex) {
                 if (Number(nextMin) != Number(current) + 1) {
                     setError(currentIndex, {
@@ -110,6 +120,10 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
         handleMaxErrors()
     }, [handleMaxErrors, handleMinErrors])
 
+    useEffect(() => {
+        setValue('program', program)
+    }, [program, setValue])
+
     const columns: Array<ColumnDef<ApiProgramPartFinance>> = [
         {
             header: t('projects.financeManagement.tableTitleMin'),
@@ -118,17 +132,17 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
             id: 'min',
             cell: (cell) => (
                 <Input
-                    type="number"
+                    type="text"
                     disabled={!editing}
-                    defaultValue={program?.partFinances?.[cell.row.index].min}
                     {...register(`program.partFinances.${cell.row.index}.min`)}
                     error={formState.errors?.program?.partFinances?.[cell.row.index]?.min?.message}
                     onChange={(newValue) => {
-                        setValue(`program.partFinances.${cell.row.index}.min`, Number(newValue.target.value))
+                        setValue(`program.partFinances.${cell.row.index}.min`, Number(newValue.target.value.replace(/[^\d]+/g, '')))
                         setEditingInputId(`program.partFinances.${cell.row.index}.min`)
                         handleErrors()
                     }}
                     autoFocus={editingInputId === `program.partFinances.${cell.row.index}.min`}
+                    value={getValues(`program.partFinances.${cell.row.index}.min`)?.toLocaleString('sk')}
                 />
             ),
         },
@@ -142,17 +156,17 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
                     t('projects.financeManagement.more')
                 ) : (
                     <Input
-                        type="number"
+                        type="text"
                         disabled={!editing}
                         {...register(`program.partFinances.${cell.row.index}.max`)}
-                        defaultValue={program?.partFinances?.[cell.row.index].max}
                         onChange={(newValue) => {
-                            setValue(`program.partFinances.${cell.row.index}.max`, Number(newValue.target.value))
+                            setValue(`program.partFinances.${cell.row.index}.max`, Number(newValue.target.value.replace(/[^\d]+/g, '')))
                             setEditingInputId(`program.partFinances.${cell.row.index}.max`)
                             handleErrors()
                         }}
                         error={formState.errors.program?.partFinances?.[cell.row.index]?.max?.message}
                         autoFocus={editingInputId === `program.partFinances.${cell.row.index}.max`}
+                        value={getValues(`program.partFinances.${cell.row.index}.max`)?.toLocaleString('sk')}
                     />
                 ),
         },
@@ -170,8 +184,11 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
             id: 'approvalProcess',
             cell: (cell) => (
                 <SimpleSelect
+                    id={`program.partFinances.${cell.row.index}.approvalProcess`}
                     disabled={!editing}
-                    defaultValue={approvalProcesses?.find((a) => a.id == program?.partFinances?.[cell.row.index].approvalProcess?.id)}
+                    defaultValue={approvalProcesses?.find(
+                        (a) => a.technicalName === program?.partFinances?.[cell.row.index].approvalProcess?.technicalName,
+                    )}
                     label=""
                     name={`program.partFinances.${cell.row.index}.approvalProcess`}
                     options={
@@ -180,6 +197,7 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
                             value: a,
                         })) ?? []
                     }
+                    isClearable={false}
                     setValue={setValue}
                 />
             ),
@@ -189,7 +207,13 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
     const onSubmit = async (formData: FieldValues) => {
         setEditing(false)
         setIsUpdating(true)
-        const response = await updateProgramHook({ id: Number(program?.id), data: formData.program ?? {} })
+        const partFinances =
+            formData.program.partFinances?.map((finance: FieldValues) => ({
+                ...finance,
+                min: removeNonDigitCharacters(finance.min),
+                max: removeNonDigitCharacters(finance.max),
+            })) ?? []
+        const response = await updateProgramHook({ id: Number(program?.id), data: { ...formData.program, partFinances } ?? {} })
 
         if (response.ok) {
             refetchProgram()
@@ -276,7 +300,7 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
                         )}
                     </ActionsOverTable>
                     <Table
-                        data={program?.partFinances}
+                        data={sortedData}
                         columns={columns.filter((c) => selectedColumns.find((s) => s.selected && s.technicalName === c.id)) ?? []}
                         sort={filter.sort}
                         onSortingChange={(newSort) => handleFilterChange({ sort: newSort })}
