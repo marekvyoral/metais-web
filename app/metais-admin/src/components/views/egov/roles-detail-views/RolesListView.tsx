@@ -1,6 +1,6 @@
 import { BreadCrumbs, ButtonLink, ButtonPopup, HomeIcon, ISelectColumnType, PaginatorWrapper, Table, TextHeading } from '@isdd/idsk-ui-kit'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
-import { Role } from '@isdd/metais-common/api/generated/iam-swagger'
+import { Role, RoleType } from '@isdd/metais-common/api/generated/iam-swagger'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { DEFAULT_PAGESIZE_OPTIONS, getRolesListSelectedColumns } from '@isdd/metais-common/constants'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
@@ -126,6 +126,7 @@ const RoleListView: React.FC<RoleListViewParams> = ({
                                     setRoleToDelete(cell.row.original)
                                     closePopup()
                                 }}
+                                disabled={cell.row.original.type === RoleType.SYSTEM}
                             />
                         </div>
                     )}

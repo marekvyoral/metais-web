@@ -78,6 +78,7 @@ const RoleListContainer: React.FC<IRolesList> = ({ View }) => {
         data: roles,
         isLoading,
         isError,
+        refetch,
     } = useFindByNameWithParams(pagination.pageNumber, pagination.pageSize, {
         ...pagination,
         ...filter,
@@ -98,7 +99,8 @@ const RoleListContainer: React.FC<IRolesList> = ({ View }) => {
 
     useEffect(() => {
         setTableRoles(roles)
-    }, [roles])
+        refetch()
+    }, [refetch, roles])
 
     useEffect(() => {
         if (pagination.dataLength == 0) {

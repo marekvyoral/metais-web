@@ -68,3 +68,7 @@ export const decodeHtmlEntities = (encodedString: string): string => {
     textarea.innerHTML = encodedString
     return textarea.value
 }
+
+export const removeNonDigitCharacters = (value?: number | string) => {
+    return value?.toString().replace(/[^\d]+/g, '') ?? 0
+}
