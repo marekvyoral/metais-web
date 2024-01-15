@@ -1007,7 +1007,14 @@
         "savePreferences": "Save preferences",
         "userPreferencesSuccess": "Personal preferences were successfully saved",
         "changedUserInformation": "Personal information were successfully changed",
-        "changedUserInformationError": "Error occurred while changing personal information. Please try again."
+        "changedUserInformationError": "Error occurred while changing personal information. Please try again.",
+        "defaultLang": "Default language",
+        "myPoSelect": "Select organization",
+        "isMyPoEnabled": "Show only items of my organization",
+        "rightsHeading": "My roles and representative entities",
+        "oldPassword": "Old passwrod",
+        "newPassword": "New password",
+        "repeatPassword": "Repeat password"
     },
     "validation": {
         "required": "This field is required",
