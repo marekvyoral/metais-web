@@ -378,6 +378,7 @@
         "successfulUpdated": "The item was successfully changed",
         "successfulCreated": "The item was successfully created",
         "successfulCloned": "The item was successfully cloned",
+        "successfulInvalidated": "The item was successfully invalidated",
         "successfulUpdatedList": "Items have been changed successfully",
         "successfulRelationCreated": "Relation was successfully created"
     },
@@ -2248,6 +2249,24 @@
         "valueType": "Value type"
     },
 
+    "sla-detail": {
+        "slaDetail": "SLA detail",
+        "anotherParams": "Another SLA parameters of service:",
+        "value": "Value",
+        "valueType": "Value type",
+        "measurementMethod": "Measurement method",
+        "showHistory": "Show history",
+        "edit": "Edit",
+        "more": "More",
+        "invalidate": "Invalidate",
+        "showActive": "Only active records",
+        "showAll": "All records",
+        "invalidateParameter": "Invalidate parameter",
+        "save": "Save",
+        "evaluationMethod": "Assessment method",
+        "note": "Note",
+        "penaltyDescription": "Penalties"
+    },
     "integrationLinks": {
         "heading": "List of AICs",
         "createButton": "Add new AIC",

@@ -370,6 +370,7 @@
         "successfulUpdated": "Položka bola úspešne zmenená",
         "successfulCreated": "Položka bola úspešne vytvorená",
         "successfulCloned": "Položka bola úspešne klonovaná",
+        "successfulInvalidated": "Položka bola úspešne zneplatnená",
         "successfulUpdatedList": "Položky boli úspešne zmenené",
         "successfulRelationCreated": "Vzťah bol úspešne vytvorený."
     },
@@ -2253,6 +2254,24 @@
         "parameterType": "Typ parametra",
         "value": "Hodnota",
         "valueType": "Typ hodnoty"
+    },
+    "sla-detail": {
+        "slaDetail": "SLA detail",
+        "anotherParams": "Ďaľšie SLA parametre danej služby:",
+        "value": "Hodnota",
+        "valueType": "Typ hodnoty",
+        "measurementMethod": "Spôsob merania",
+        "showHistory": "Zobraziť históriu",
+        "edit": "Zmeniť",
+        "more": "Viac",
+        "invalidate": "Zneplatniť",
+        "showActive": "Len aktívne záznamy",
+        "showAll": "Všetky záznamy",
+        "invalidateParameter": "Zneplatniť parameter",
+        "save": "Uložiť",
+        "evaluationMethod": "Spôsob hodnotenia",
+        "note": "Poznámka",
+        "penaltyDescription": "Sankcie"
     },
     "integrationLinks": {
         "heading": "Zoznam integračných väzieb",

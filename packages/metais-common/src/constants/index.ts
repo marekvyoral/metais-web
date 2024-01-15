@@ -285,6 +285,10 @@ export const SPACES_REGEX = /\s+/g
 export const baseWikiUrl = import.meta.env.VITE_REST_CLIENT_WIKI_BASE_URL
 export const STAV_DIZ_ENUM_CODE = 'STAV_DIZ'
 
+export const categoryParameterMap = new Map<string, string>([
+    ['AS', 'c_typ_parametra_kategoria.3'],
+    ['KS', 'c_typ_parametra_kategoria.4'],
+])
 export const INTEGRACIA_KONZUMUJE_PROJEKT = 'Integracia_konzumuje_Projekt'
 export const INTEGRACIA_VYSTAVUJE_PROJEKT = 'Integracia_vystavuje_Projekt'
 export const INTEGRATION_HARMONOGRAM_EDIT_SEARCH_PARAM = 'edit'

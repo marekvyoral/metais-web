@@ -13,6 +13,7 @@ import { TYP_HODNOTY, TYP_PARAMETROV_JEDNOTKA } from '@isdd/metais-common/api/co
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React, { useEffect, useState } from 'react'
 import { MultiValue } from 'react-select'
+import { categoryParameterMap } from '@isdd/metais-common/constants'
 
 export interface SlaParamsListFilterData extends IFilterParams, IFilter {
     perPageSize?: number
@@ -48,11 +49,6 @@ interface ISlaParamsListContainer {
     View: React.FC<IView>
     entityName: string
 }
-
-const categoryMap = new Map<string, string>([
-    ['AS', 'c_typ_parametra_kategoria.3'],
-    ['KS', 'c_typ_parametra_kategoria.4'],
-])
 
 export const SlaParamsListContainer: React.FC<ISlaParamsListContainer> = ({ View, entityName }) => {
     const defaultFilterValues: SlaParamsListFilterData = {
@@ -96,7 +92,7 @@ export const SlaParamsListContainer: React.FC<ISlaParamsListContainer> = ({ View
         isLoading: isLoadingParamTypes,
         isError: isErrorParamTypes,
         data: dataParamTypes,
-    } = useListParameterTypes1({ category: categoryMap.get(entityName), ignoreNonActual: false, page: 1, perPageSize: 10000 })
+    } = useListParameterTypes1({ category: categoryParameterMap.get(entityName), ignoreNonActual: false, page: 1, perPageSize: 10000 })
 
     //For AS selected ISVS
     const { data: neighborsISVSRaw, isFetching: isNeighborsISVSLoading } = useReadNeighboursConfigurationItems(
