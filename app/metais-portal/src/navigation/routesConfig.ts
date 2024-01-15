@@ -110,6 +110,7 @@ import { IntegrationKsAsList } from '@/pages/ci/Integracia/[entityId]/ksAsList'
 import { IntegrationSubjectsList } from '@/pages/ci/Integracia/[entityId]/subjectsList'
 import { IntegrationHarmonogram } from '@/pages/ci/Integracia/[entityId]/harmonogram'
 import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
+import SLADetailPage from '@/pages/sla-detail'
 
 export interface RouteConfig {
     path?: string
@@ -733,6 +734,11 @@ export const routesConfig: RouteConfig[] = [
                 ],
             },
             ...generalCiRoutes,
+            {
+                path: SLARouteNames.SLADetail,
+                slug: SLARouteNames.SLADetail,
+                component: SLADetailPage,
+            },
             {
                 path: SLARouteNames.SLAParamsList,
                 slug: SLARouteNames.SLAParamsList,

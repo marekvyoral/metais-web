@@ -2,7 +2,7 @@ import { Filter, LoadingIndicator, MultiSelect, PaginatorWrapper, SelectLazyLoad
 import { MetaAttributesState, SortBy, SortType } from '@isdd/idsk-ui-kit/types'
 import { ConfigurationItemUi, useReadCiList1Hook } from '@isdd/metais-common/api/generated/cmdb-swagger'
 import { ApiSlaParameterRead } from '@isdd/metais-common/api/generated/monitoring-swagger'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { DEFAULT_PAGESIZE_OPTIONS, categoryParameterMap } from '@isdd/metais-common/constants'
 import { ATTRIBUTE_NAME, ActionsOverTable, BASE_PAGE_NUMBER, BASE_PAGE_SIZE, QueryFeedback, SlaViewOptions } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
@@ -104,6 +104,7 @@ export const SlaParamsListView: React.FC<IView> = ({
             },
         }
     }
+
     const loadOptionsISVS = async (searchQuery: string, additional: { page: number } | undefined) => {
         const page = !additional?.page ? 1 : (additional?.page || 0) + 1
 
@@ -256,7 +257,9 @@ export const SlaParamsListView: React.FC<IView> = ({
             />
             <Table
                 onRowClick={(row) =>
-                    navigate(`/sla-detail/${entityName}/${row.original.valueType}/${row.original.serviceInfo?.uuid}/${row.original.uuid}`)
+                    navigate(
+                        `/sla-detail/${entityName}/${categoryParameterMap.get(entityName)}/${row.original.serviceInfo?.uuid}/${row.original.uuid}`,
+                    )
                 }
                 data={data?.results}
                 columns={columns}

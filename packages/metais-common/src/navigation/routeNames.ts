@@ -280,5 +280,6 @@ export const LoginRouteNames = {
 }
 
 export const SLARouteNames = {
+    SLADetail: '/sla-detail/:entityName/:paramType/:serviceId/:slaId',
     SLAParamsList: '/sla-params-list/:entityName',
 }
