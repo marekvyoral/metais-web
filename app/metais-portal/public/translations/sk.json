@@ -190,6 +190,13 @@
         "hide": "SKRYŤ",
         "unhide": "ODKRYŤ"
     },
+    "userManagement": {
+        "error": {
+            "query": "Chyba pri načítavaní údajov",
+            "mutation": "Chyba pri vykonávaní vašej akcie. Skúste to znova alebo kontaktujte podporu.",
+            "export": "Chyba pri príprave exportu"
+        }
+    },
     "filter": {
         "expand": "Rozbaliť filter",
         "collapse": "Zbaliť filter",

@@ -49,7 +49,7 @@ export const GdprRequestDetailContainer: React.FC<IGdprRequestDetailContainer> =
     const SKUPINA_ROL = 'SKUPINA_ROL'
     const anonymizovane = 'Anonymizované'
 
-    const { isLoading: isLoadingRequest, isError: isErrorRequest, data } = useRead(userId)
+    const { isLoading: isLoadingRequest, isError: isErrorRequest, data, refetch: refetchDetail } = useRead(userId)
     const { data: roleGroupsData, isLoading: isRoleGroupsLoading, isError: isRoleGroupsError } = useGetValidEnum(SKUPINA_ROL)
     const { data: allRolesData, isLoading: isAllRolesLoading, isError: isAllRolesError } = useFindAll11()
     const { mutateAsync: mutateAsyncUpdateIdentity, isSuccess: isSuccessUpdate, isLoading: isLoadingUpdate } = useUpdateIdentityState()
@@ -97,6 +97,7 @@ export const GdprRequestDetailContainer: React.FC<IGdprRequestDetailContainer> =
                         })
                             .then(() => {
                                 navigate(`${AdminRouteNames.GDPR_DETAIL}/${data?.uuid}`)
+                                refetchDetail()
                             })
                             .catch(() => {
                                 setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
@@ -107,7 +108,7 @@ export const GdprRequestDetailContainer: React.FC<IGdprRequestDetailContainer> =
                     })
             })
         },
-        [mutateAsyncApprove, userId, mutateAsyncUpdateIdentity, processEventMutationAsync, navigate, data?.uuid, t],
+        [mutateAsyncApprove, userId, mutateAsyncUpdateIdentity, processEventMutationAsync, navigate, data?.uuid, refetchDetail, t],
     )
 
     const handleRefuseModal = useCallback(
@@ -123,13 +124,14 @@ export const GdprRequestDetailContainer: React.FC<IGdprRequestDetailContainer> =
                 },
             })
                 .then(() => {
-                    navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
+                    navigate(`${AdminRouteNames.GDPR_DETAIL}/${data?.uuid}`)
+                    refetchDetail()
                 })
                 .catch((error) => {
                     setErrorMessage(error.message)
                 })
         },
-        [navigate, processEventMutationAsync, userId],
+        [data?.uuid, navigate, processEventMutationAsync, refetchDetail, userId],
     )
 
     const handleDelete = useCallback(

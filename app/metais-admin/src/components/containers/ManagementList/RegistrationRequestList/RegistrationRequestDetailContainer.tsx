@@ -53,7 +53,7 @@ export const RegistrationRequestDetailContainer: React.FC<IRegistrationRequestDe
     const findGidDataByLogin = useFindAll311Hook()
     const { mutateAsync: mutateAsyncUpdateIdentity, isSuccess: isSuccessUpdate, isLoading: isLoadingUpdate } = useUpdateIdentityState()
     const { mutateAsync: mutateAsyncApprove, isSuccess, isLoading: isLoadingCreate } = useUpdateOrCreateWithGid()
-    const { isLoading: isLoadingRequest, isError: isErrorRequest, data } = useRead(userId)
+    const { isLoading: isLoadingRequest, isError: isErrorRequest, data, refetch: refetchDetail } = useRead(userId)
     const { data: roleGroupsData, isLoading: isRoleGroupsLoading, isError: isRoleGroupsError } = useGetValidEnum(SKUPINA_ROL)
     const { mutateAsync: processEventMutationAsync, isSuccess: isSuccessPE, isLoading: isLoadingPE } = useProcessEvent()
     const { data: allRolesData, isLoading: isAllRolesLoading, isError: isAllRolesError } = useFindAll11()
@@ -102,6 +102,7 @@ export const RegistrationRequestDetailContainer: React.FC<IRegistrationRequestDe
                                     })
                                         .then(() => {
                                             navigate(`${AdminRouteNames.REGISTRATION_DETAIL}/${data?.uuid}`)
+                                            refetchDetail()
                                         })
                                         .catch(() => {
                                             setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
@@ -119,7 +120,17 @@ export const RegistrationRequestDetailContainer: React.FC<IRegistrationRequestDe
                     setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
                 })
         },
-        [mutateAsyncApprove, findGidDataByLogin, userId, mutateAsyncUpdateIdentity, processEventMutationAsync, navigate, data?.uuid, t],
+        [
+            mutateAsyncApprove,
+            findGidDataByLogin,
+            userId,
+            mutateAsyncUpdateIdentity,
+            processEventMutationAsync,
+            navigate,
+            data?.uuid,
+            refetchDetail,
+            t,
+        ],
     )
 
     const handleRefuseModal = useCallback(
@@ -135,13 +146,14 @@ export const RegistrationRequestDetailContainer: React.FC<IRegistrationRequestDe
                 },
             })
                 .then(() => {
-                    navigate(`${AdminRouteNames.REQUEST_LIST_ALL}`)
+                    navigate(`${AdminRouteNames.REGISTRATION_DETAIL}/${data?.uuid}`)
+                    refetchDetail()
                 })
                 .catch((error) => {
                     setErrorMessage(error.message)
                 })
         },
-        [navigate, processEventMutationAsync, userId],
+        [data?.uuid, navigate, processEventMutationAsync, refetchDetail, userId],
     )
 
     return (

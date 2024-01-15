@@ -1016,7 +1016,15 @@
         "savePreferences": "Uložiť nastavenia",
         "userPreferencesSuccess": "Osobné preferencie boli úspešne uložené",
         "changedUserInformation": "Osobné informácie boli úspešne zmenené",
-        "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova."
+        "changedUserInformationError": "Pri zmene osobných údajov sa vyskytla chyba. Prosím skúste znova.",
+        "defaultPerPage": "Prednastavený počet riadkov v tabuľke",
+        "defaultLang": "Prednastavený jazyk",
+        "myPoSelect": "Vyberte PO",
+        "isMyPoEnabled": "Zobrazovať položky mojej PO",
+        "rightsHeading": "Moje role a zastupujúce subjekty",
+        "oldPassword": "Staré heslo",
+        "newPassword": "Nové heslo",
+        "repeatPassword": "Opakované heslo"
     },
     "validation": {
         "required": "Toto pole je povinné",

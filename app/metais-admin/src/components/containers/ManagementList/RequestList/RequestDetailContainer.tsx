@@ -17,7 +17,6 @@ import { EnumType, useGetValidEnum } from '@isdd/metais-common/api/generated/enu
 import { AdminRouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useInvalidateRequestsListCache } from '@isdd/metais-common/hooks/useGetRequestList'
 import { useTranslation } from 'react-i18next'
 
 import { RoleItem } from '@/components/views/userManagement/request-list-view/request-detail/RequestRolesForm'
@@ -46,7 +45,7 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
     const { t } = useTranslation()
     const SKUPINA_ROL = 'SKUPINA_ROL'
 
-    const { isLoading: isLoadingRequest, isError: isErrorRequest, data } = useRead(userId)
+    const { isLoading: isLoadingRequest, isError: isErrorRequest, data, refetch: refetchDetail } = useRead(userId)
     const { data: allRolesData, isLoading: isAllRolesLoading, isError: isAllRolesError } = useFindAll11()
     const { data: roleGroupsData, isLoading: isRoleGroupsLoading, isError: isRoleGroupsError } = useGetValidEnum(SKUPINA_ROL)
 
@@ -56,8 +55,6 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
 
     const isLoading = [isLoadingRequest, isAllRolesLoading, isRoleGroupsLoading, isLoadingUpdatePo, isLoadingPE].some((item) => item)
     const isError = [isErrorRequest, isAllRolesError, isRoleGroupsError].some((item) => item)
-
-    const invalidateRequestList = useInvalidateRequestsListCache()
 
     const handleApprove = useCallback(
         async (selectedRoles: RoleItem[], request?: ClaimUi) => {
@@ -93,6 +90,7 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
                     })
                         .then(() => {
                             navigate(`${AdminRouteNames.REQUEST_DETAIL}/${data?.uuid}`)
+                            refetchDetail()
                         })
                         .catch(() => {
                             setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
@@ -102,7 +100,7 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
                     setErrorMessage(t('mutationFeedback.unsuccessfulRequestApproval'))
                 })
         },
-        [data?.uuid, mutateAsyncApprove, navigate, processEventMutationAsync, t, userId],
+        [data?.uuid, mutateAsyncApprove, navigate, processEventMutationAsync, refetchDetail, t, userId],
     )
 
     const handleRefuseModal = useCallback(
@@ -118,14 +116,14 @@ export const RequestDetailContainer: React.FC<IRequestDetailContainer> = ({ user
                 },
             })
                 .then(() => {
-                    invalidateRequestList.invalidate()
-                    navigate(-1)
+                    navigate(`${AdminRouteNames.REQUEST_DETAIL}/${data?.uuid}`)
+                    refetchDetail()
                 })
                 .catch((error) => {
                     setErrorMessage(error.message)
                 })
         },
-        [invalidateRequestList, navigate, processEventMutationAsync, userId],
+        [data?.uuid, navigate, processEventMutationAsync, refetchDetail, userId],
     )
 
     return allRolesData ? (

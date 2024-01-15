@@ -192,6 +192,13 @@
         "hide": "HIDE",
         "unhide": "SHOW"
     },
+    "userManagement": {
+        "error": {
+            "query": "Error while fetching data",
+            "mutation": "Error while performing action. Please try again or contact support.",
+            "export": "Error while preparing export",
+        }
+    },
     "filter": {
         "expand": "Expand filter",
         "collapse": "Collapse filter",
