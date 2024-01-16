@@ -61,7 +61,6 @@ export const CiTable: React.FC<ICiTable> = ({
 }) => {
     const { t } = useTranslation()
     const { getColumnsFromApiCellContent } = useGetColumnsFromApiCellContent()
-
     const {
         state: { user },
     } = useAuth()
@@ -76,6 +75,7 @@ export const CiTable: React.FC<ICiTable> = ({
         data.constraintsData,
         uuidsToMatchedCiItemsMap,
     )
+
     const columnsAttributes = sortAndMergeCiColumns(data?.columnListData)
 
     const handleCheckboxChange = useCallback(

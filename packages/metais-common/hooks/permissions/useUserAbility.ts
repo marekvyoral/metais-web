@@ -21,11 +21,13 @@ export enum Actions {
     APPROVE_KRIS = 'APPROVE_KRIS',
     KRIS_SUBSCRIBE = 'KRIS_PODPIS',
     KRIS_SEND_APPROVING = 'KRIS_SEND_APPROVING',
+    READ_TRAININGS = 'READ_TRAININGS',
 }
 
 export const ADMIN = 'R_ADMIN'
 export const RR_MANAGER = 'RR_MANAGER'
 export const RR_ADMIN_MFSR = 'RR_ADMIN_MFSR'
+export const SKOLITEL = 'SKOLITEL'
 
 export const CANNOT_READ_ENTITY = ['ulohy', 'notifications', 'data-objects/requestlist', 'public-authorities-hierarchy', 'userprofile']
 export const CAN_CREATE_WITHOUT_LOGIN = [STANDARDIZATION_DRAFTS_LIST]
@@ -48,6 +50,9 @@ const defineAbilityForUser = (roles: string[] = [], entityName: string, create?:
         can(Actions.IMPORT, entityName)
         can(Actions.SELECT_COLUMNS, entityName)
         can(Actions.BULK_ACTIONS, entityName)
+    }
+    if (roles.includes(SKOLITEL)) {
+        can(Actions.READ_TRAININGS, entityName)
     }
 
     if (entityName === STANDARDIZATION_DRAFTS_LIST) can(Actions.CREATE, 'ci')

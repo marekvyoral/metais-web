@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import styles from '@isdd/metais-common/components/navbar/navbar.module.scss'
-import { ENTITY_AS, ENTITY_INFRA_SLUZBA, ENTITY_ISVS, ENTITY_KRIS, ENTITY_KS, ENTITY_PROJECT } from '@isdd/metais-common/constants'
+import { ENTITY_AS, ENTITY_INFRA_SLUZBA, ENTITY_ISVS, ENTITY_KRIS, ENTITY_KS, ENTITY_PROJECT, ENTITY_TRAINING } from '@isdd/metais-common/constants'
 import { RouterRoutes } from '@isdd/metais-common/navigation/routeNames'
 
 type NewItemPopupList = {
@@ -41,6 +41,10 @@ export const NewItemButtonPopup = () => {
         {
             title: t(`ciType.${ENTITY_KRIS}`),
             href: `/ci/${ENTITY_KRIS}/create`,
+        },
+        {
+            title: t(`ciType.${ENTITY_TRAINING}`),
+            href: `/ci/${ENTITY_TRAINING}/create`,
         },
         {
             title: t('codeListList.requestTitle'),
