@@ -42,7 +42,6 @@ export const TrainingInviteView: React.FC<TrainingInviteContainerViewProps> = ({
 
     const { register, handleSubmit, formState, reset } = useForm<ITrainingInviteForm>({
         resolver: yupResolver(schema),
-        reValidateMode: 'onSubmit',
         defaultValues: { firstName: user?.name, lastName: user?.lastName, organization: '', phone: user?.phone, email: user?.email },
     })
 
