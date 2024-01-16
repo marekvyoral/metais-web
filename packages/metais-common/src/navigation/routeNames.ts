@@ -24,6 +24,7 @@ export enum RouteNames {
     GLOBAL_SEARCH = '/global/search',
     MEDIA_WIKI = '/media-wiki',
     CONTACT = '/contact',
+    TRAININGS = '/trainings',
 }
 
 export enum RouterRoutes {
@@ -105,6 +106,10 @@ export enum RouterRoutes {
     CI_PO_PO_DETAIL = 'ci/PO_PO/:entityId',
     CI_PO_IS_DETAIL = 'ci/PO_IS/:entityId',
     CI_PO_IS_PO_DETAIL = 'ci/PO_IS_PO/:entityId',
+    CI_TRAINING = 'ci/Training',
+    CI_TRAINING_DETAIL = 'ci/Training/:entityId',
+    CI_TRAINING_INVITE = 'ci/Training/:entityId/invite',
+    CI_TRAINING_CREATE = 'ci/Training/create',
     CI_PRINCIPLE_DETAIL = 'ci/Princip/:entityId',
     CI_PRINCIPLE_CREATE = 'ci/Princip/create',
     CI_GOAL_DETAIL = 'ci/Ciel/:entityId',
@@ -187,6 +192,7 @@ export enum NavigationSubRoutes {
     ISVS = '/ci/ISVS',
     INFRASCTRUCTURES = '/ci/InfraSluzba',
     AUTORITY = '/ci/PO',
+    TRAINING = '/ci/Training',
     OSOBITNY_POSTUP = '/ci/OsobitnyPostup',
     OBJEKTY_EVIDENCIE = '/todo',
     ATRIBUTY_OBJEKTY_EVIDENCIE = '/todo',

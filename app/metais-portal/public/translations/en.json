@@ -180,7 +180,8 @@
             "assembliesAndReports": "Assemblies and reports",
             "totalCostOfOwnership": "Total costs of ownership",
             "serviceLevelAgreementsWithOperator": "Service level agreements with the Operator (SLA)",
-            "integrationAgreementsOnServiceLevel": "Integration agreements on the level of service provided (ISLA)"
+            "integrationAgreementsOnServiceLevel": "Integration agreements on the level of service provided (ISLA)",
+            "training": "Trainings"
         }
     },
     "radioButton": {
@@ -196,7 +197,7 @@
         "error": {
             "query": "Error while fetching data",
             "mutation": "Error while performing action. Please try again or contact support.",
-            "export": "Error while preparing export",
+            "export": "Error while preparing export"
         }
     },
     "filter": {
@@ -239,6 +240,9 @@
         },
         "Projekt": {
             "name": "Name of project"
+        },
+        "Training": {
+            "name": "Name of training"
         },
         "InfraSluzba": {
             "name": "Name"
@@ -375,9 +379,12 @@
         }
     },
     "mutationFeedback": {
+        "success": "Success",
         "successfulUpdated": "The item was successfully changed",
         "successfulCreated": "The item was successfully created",
         "successfulCloned": "The item was successfully cloned",
+        "successfulRegistered": "User was successfully registered",
+        "successfulUnregistered": "User was successfully unregistered",
         "successfulInvalidated": "The item was successfully invalidated",
         "successfulUpdatedList": "Items have been changed successfully",
         "successfulRelationCreated": "Relation was successfully created"
@@ -403,6 +410,20 @@
         "heading": "Related item relationships",
         "buttonAddNewRelation": "Add a new relation",
         "buttonAddNewRelationCard": "Add a new item and relationship"
+    },
+    "trainings": {
+        "invitedTitle": "Signed up for training",
+        "registerForTraining": "Register for training",
+        "unregisterFromTraining": "Unregister from training",
+        "register": "Register",
+        "table": {
+            "firstName": "First name",
+            "lastName": "Last name",
+            "email": "Email",
+            "phone": "Phone number",
+            "organization": "Organization",
+            "registrationDate": "Registration date"
+        }
     },
     "listActions": {
         "selectView": "View"
@@ -507,6 +528,7 @@
         "InfraSluzba": "Infrastructure service",
         "AS": "Application service",
         "KS": "eGov service",
+        "Training": "Training",
         "createButton": {
             "KRIS": "Add new KRIT concept"
         },
@@ -1155,6 +1177,7 @@
         "login": "Name and password",
         "loginProblems": "Problems with login",
         "forgottenPassword": "Reset password",
+        "registerForTraining": "Register for training",
         "wiki": {
             "EGOV_HOWTO": "e-Government Components",
             "IKT_ADMINISTRATION_HOWTO": "",
@@ -1620,6 +1643,8 @@
         },
         "settings": "Personal preferences",
         "rights": "Rights",
+        "trainings": "Trainings",
+        "trainingsHeading": "My trainings",
         "notificationsSettings": "Notifications preferences",
         "passwordChange": "Password change",
         "oldPassword": "Old passwrod",
@@ -2248,7 +2273,6 @@
         "value": "Value",
         "valueType": "Value type"
     },
-
     "sla-detail": {
         "slaDetail": "SLA detail",
         "anotherParams": "Another SLA parameters of service:",

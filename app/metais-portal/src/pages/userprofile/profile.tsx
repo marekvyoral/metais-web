@@ -13,10 +13,10 @@ import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
 import { ciInformationTab } from '@isdd/metais-common/constants'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
-
-import { UserInformationPage } from '../../../../../packages/metais-common/src/components/views/user-profile/user-informations/UserInformationPage'
+import { UserInformationPage } from '@isdd/metais-common/components/views/user-profile/user-informations/UserInformationPage'
 
 import { MainContentWrapper } from '@/components/MainContentWrapper'
+import { UserTrainingsPage } from '@/components/views/trainings/UserTrainingsPage'
 
 const UserProfilePage = () => {
     const { t } = useTranslation()
@@ -61,6 +61,11 @@ const UserProfilePage = () => {
             id: 'settings',
             title: t('userProfile.settings'),
             content: <UserPreferencesPage />,
+        },
+        {
+            id: 'trainings',
+            title: t('userProfile.trainings'),
+            content: <UserTrainingsPage />,
         },
         {
             id: 'rights',

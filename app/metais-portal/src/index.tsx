@@ -16,6 +16,7 @@ import { AutoLogout } from '@isdd/metais-common/src/components/auto-logout/AutoL
 import { authConfig } from '@isdd/metais-common/contexts/auth/authConfig'
 import { CrashFallback } from '@isdd/metais-common/src/components/crash-fallback/CrashFallback'
 import { ErrorBoundary } from 'react-error-boundary'
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 
 import { App } from '@/App'
 import '@/index.scss'
@@ -29,6 +30,7 @@ const STALE_TIME = import.meta.env.VITE_CACHE_TIME
 
 const CLIENT_ID = import.meta.env.VITE_PORTAL_AUTH_CLIENT_ID
 const SCOPE = import.meta.env.VITE_PORTAL_AUTH_SCOPE
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
@@ -49,19 +51,21 @@ root.render(
                     <QueryClientProvider client={queryClient}>
                         <AuthProvider authConfig={authConfig({ clientId: CLIENT_ID, scope: SCOPE })}>
                             <AuthContextProvider>
-                                <ErrorBoundary fallbackRender={({ error }) => <CrashFallback error={error} />}>
-                                    <AutoLogout>
-                                        <FilterContextProvider>
-                                            <ActionSuccessProvider>
-                                                <UserPreferencesProvider>
-                                                    <DndProvider backend={HTML5Backend}>
-                                                        <App />
-                                                    </DndProvider>
-                                                </UserPreferencesProvider>
-                                            </ActionSuccessProvider>
-                                        </FilterContextProvider>
-                                    </AutoLogout>
-                                </ErrorBoundary>
+                                <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
+                                    <ErrorBoundary fallbackRender={({ error }) => <CrashFallback error={error} />}>
+                                        <AutoLogout>
+                                            <FilterContextProvider>
+                                                <ActionSuccessProvider>
+                                                    <UserPreferencesProvider>
+                                                        <DndProvider backend={HTML5Backend}>
+                                                            <App />
+                                                        </DndProvider>
+                                                    </UserPreferencesProvider>
+                                                </ActionSuccessProvider>
+                                            </FilterContextProvider>
+                                        </AutoLogout>
+                                    </ErrorBoundary>
+                                </GoogleReCaptchaProvider>
                             </AuthContextProvider>
                         </AuthProvider>
                     </QueryClientProvider>

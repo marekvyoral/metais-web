@@ -202,6 +202,7 @@ export const ENTITY_AS = 'AS'
 export const ENTITY_ISVS = 'ISVS'
 export const ENTITY_MIGRATION = 'Migracia'
 export const ENTITY_INFRA_SLUZBA = 'InfraSluzba'
+export const ENTITY_TRAINING = 'Training'
 export const STANDARDIZATION_DRAFTS_LIST = 'draftsList'
 export const REFERENCE_REGISTER = 'ReferenceRegister'
 

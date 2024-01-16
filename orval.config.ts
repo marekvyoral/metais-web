@@ -508,7 +508,6 @@ export default defineConfig({
             afterAllFilesWrite: 'prettier --write',
         },
     },
-
     provisioning: {
         input: {
             target: process.env.VITE_REST_CLIENT_PROVISIONING_SWAGGER_URL ?? '',
@@ -522,6 +521,27 @@ export default defineConfig({
                 mutator: {
                     path: './packages/metais-common/src/api/hooks/useProvisioningSwaggerClient.ts',
                     name: 'useProvisioningSwaggerClient',
+                },
+            },
+            ...defaultOutputOptions,
+        },
+        hooks: {
+            afterAllFilesWrite: 'prettier --write',
+        },
+    },
+    trainings: {
+        input: {
+            target: process.env.VITE_REST_CLIENT_TRAININGS_SWAGGER_URL ?? '',
+        },
+        output: {
+            target: `./packages/metais-common/src/api/generated/trainings-swagger.ts`,
+            override: {
+                query: {
+                    useQuery: true,
+                },
+                mutator: {
+                    path: './packages/metais-common/src/api/hooks/useTrainingsSwaggerClient.ts',
+                    name: 'useTrainingsSwaggerClient',
                 },
             },
             ...defaultOutputOptions,

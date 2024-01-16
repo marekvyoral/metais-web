@@ -178,7 +178,8 @@
             "assembliesAndReports": "Zostavy a reporty",
             "totalCostOfOwnership": "Celkové náklady na vlastníctvo",
             "serviceLevelAgreementsWithOperator": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
-            "integrationAgreementsOnServiceLevel": "Integračné dohody o úrovni poskytovania služieb (ISLA)"
+            "integrationAgreementsOnServiceLevel": "Integračné dohody o úrovni poskytovania služieb (ISLA)",
+            "training": "Školenie"
         }
     },
     "radioButton": {
@@ -230,6 +231,9 @@
         },
         "Projekt": {
             "name": "Názov projektu"
+        },
+        "Training": {
+            "name": "Názov školenia"
         },
         "PO": {
             "name": "Názov",
@@ -367,9 +371,12 @@
         }
     },
     "mutationFeedback": {
+        "success": "Akcia bola úspešná",
         "successfulUpdated": "Položka bola úspešne zmenená",
         "successfulCreated": "Položka bola úspešne vytvorená",
         "successfulCloned": "Položka bola úspešne klonovaná",
+        "successfulRegistered": "Používateľ bol úspešne prihlásený",
+        "successfulUnregistered": "Používateľ bol úspešne odhlásený",
         "successfulInvalidated": "Položka bola úspešne zneplatnená",
         "successfulUpdatedList": "Položky boli úspešne zmenené",
         "successfulRelationCreated": "Vzťah bol úspešne vytvorený."
@@ -401,6 +408,20 @@
         "heading": "Vzťahy na súvisiace položky",
         "buttonAddNewRelation": "Pridať nový vzťah",
         "buttonAddNewRelationCard": "Pridať novú položku a vzťah"
+    },
+    "trainings": {
+        "invitedTitle": "Prihlásení na školenie",
+        "registerForTraining": "Príhlásiť na školenie",
+        "unregisterFromTraining": "Odhlásiť sa zo školenia",
+        "register": "Prihlásiť sa",
+        "table": {
+            "firstName": "Meno",
+            "lastName": "Priezvisko",
+            "email": "Email",
+            "phone": "Telefónne číslo",
+            "organization": "Organizácia",
+            "registrationDate": "Dátum príhlásenia"
+        }
     },
     "listActions": {
         "selectView": "Zobraziť"
@@ -505,6 +526,7 @@
         "InfraSluzba": "Infraštruktúrne služby",
         "AS": "Aplikačná služba",
         "KS": "Koncová služba",
+        "Training": "Školenie",
         "createButton": {
             "KRIS": "Pridať novú koncepciu KRIT"
         },
@@ -1160,6 +1182,7 @@
         "login": "Meno a heslo",
         "loginProblems": "Problémy s prihlásením",
         "forgottenPassword": "Obnova hesla",
+        "registerForTraining": "Prihlásení na školenie",
         "wiki": {
             "EGOV_HOWTO": "e-Government Komponenty",
             "IKT_ADMINISTRATION_HOWTO": "",
@@ -1627,6 +1650,8 @@
         },
         "settings": "Osobné preferencie",
         "rights": "Oprávnenia",
+        "trainings": "Školenia",
+        "trainingsHeading": "Moje školenia",
         "notificationsSettings": "Správa notifikácií",
         "passwordChange": "Zmena hesla",
         "oldPassword": "Staré heslo",

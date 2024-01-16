@@ -4,24 +4,50 @@ import { RootRouteContainer } from './route-containers/RootRouteContainer'
 
 import { TodoPage } from '@/components/views/todo-page/TodoPage'
 import { DevTestScreen } from '@/pages/DevTestScreen'
+import { ForgottenPasswordPage } from '@/pages/ForgottenPasswordPage'
 import { Home } from '@/pages/Home'
+import { IdentityTermsPage } from '@/pages/IdentityTermsPage'
+import { LoginProblemsPage } from '@/pages/LoginProblemsPage'
 import AsEntityDetailPage from '@/pages/ci/AS/[entityId]'
 import CloneEntityPage from '@/pages/ci/AS/[entityId]/clone'
 import ActivityEntityDetailPage from '@/pages/ci/Aktivita/[entityId]'
 import GoalEntityDetailPage from '@/pages/ci/Ciel/[entityId]'
+import { IntegrationLinkDetailPage } from '@/pages/ci/Integracia/[entityId]'
+import { IntegrationHarmonogram } from '@/pages/ci/Integracia/[entityId]/harmonogram'
+import { IntegrationLinkHistory } from '@/pages/ci/Integracia/[entityId]/history'
+import { IntegrationLinkInformation } from '@/pages/ci/Integracia/[entityId]/information'
+import { IntegrationKsAsList } from '@/pages/ci/Integracia/[entityId]/ksAsList'
+import { IntegrationSubjectsList } from '@/pages/ci/Integracia/[entityId]/subjectsList'
+import { ProvIntegrationList } from '@/pages/ci/Integracia/list'
 import KRISListPage from '@/pages/ci/KRIS'
 import KrisEntityDetailPage from '@/pages/ci/KRIS/[entityId]'
+import KRISDocumentsListPage from '@/pages/ci/KRIS/[entityId]/documents'
 import Evaluation from '@/pages/ci/KRIS/[entityId]/evaluation'
 import Goals from '@/pages/ci/KRIS/[entityId]/goals'
-import KRISDocumentsListPage from '@/pages/ci/KRIS/[entityId]/documents'
+import Tasks from '@/pages/ci/KRIS/[entityId]/tasks'
 import KsEntityDetailPage from '@/pages/ci/KS/[entityId]'
+import ITVSExceptionsEditPage from '@/pages/ci/OsobitnyPostup/[entityId]/edit'
+import CreateITVSExceptionsPage from '@/pages/ci/OsobitnyPostup/create'
 import POIsListPage from '@/pages/ci/PO_IS'
+import PO_ISEntityDetailPage from '@/pages/ci/PO_IS/[entityId]'
+import PO_ISInformationOutlet from '@/pages/ci/PO_IS/[entityId]/information'
 import POIsPOListPage from '@/pages/ci/PO_IS_PO'
+import PO_IS_POEntityDetailPage from '@/pages/ci/PO_IS_PO/[entityId]'
+import PO_IS_POInformationOutlet from '@/pages/ci/PO_IS_PO/[entityId]/information'
 import POPOListPage from '@/pages/ci/PO_PO'
+import PO_POEntityDetailPage from '@/pages/ci/PO_PO/[entityId]'
+import PO_PODocumentsOutlet from '@/pages/ci/PO_PO/[entityId]/documents'
+import PO_POHistoryOutlet from '@/pages/ci/PO_PO/[entityId]/history'
+import PO_POInformationOutlet from '@/pages/ci/PO_PO/[entityId]/information'
+import PO_PORelationshipOutlet from '@/pages/ci/PO_PO/[entityId]/relationships'
 import PrincipleEntityDetailPage from '@/pages/ci/Princip/[entityId]'
 import ProjectEntityDetailPage from '@/pages/ci/Projekt/[entityId]'
 import ActivitiesListPage from '@/pages/ci/Projekt/[entityId]/activities'
 import ProjectDocumentsListPage from '@/pages/ci/Projekt/[entityId]/documents'
+import EditProjectPage from '@/pages/ci/Projekt/[entityId]/edit'
+import CreateProjectPage from '@/pages/ci/Projekt/create'
+import TrainingEntityDetailPage from '@/pages/ci/Trainings/[entityId]'
+import TrainingInvitePage from '@/pages/ci/Trainings/[entityId]/invite'
 import EntityDetailPage from '@/pages/ci/[entityName]/[entityId]'
 import DocumentsListPage from '@/pages/ci/[entityName]/[entityId]/documents'
 import EditEntityPage from '@/pages/ci/[entityName]/[entityId]/edit'
@@ -34,6 +60,7 @@ import NewCiRelationPage from '@/pages/ci/[entityName]/[entityId]/new-relation/[
 import RelationshipsAccordionPage from '@/pages/ci/[entityName]/[entityId]/relationships'
 import CreateEntityPage from '@/pages/ci/[entityName]/create'
 import CiListPage from '@/pages/ci/[entityName]/entity'
+import CookiesInfoPage from '@/pages/cookies/info'
 import CodeListDetailPage from '@/pages/data-objects/codelists/[id]/detail'
 import EditCodeListPage from '@/pages/data-objects/codelists/[id]/edit'
 import CodeListPage from '@/pages/data-objects/codelists/list'
@@ -44,6 +71,9 @@ import RequestListPage from '@/pages/data-objects/requestlist/requestList'
 import GlobalSearchPage from '@/pages/global/search/search'
 import TutorialPage from '@/pages/help'
 import GeneralHowTo from '@/pages/howto'
+import HowToGenericPage from '@/pages/howto/[howToEnumType]'
+import HowToMonitoringPage from '@/pages/howto/monitoringHowTo'
+import ServicesListPage from '@/pages/monitoring/services/services'
 import NotificationsPage from '@/pages/notifications'
 import NotificationsDetailPage from '@/pages/notifications/[id]'
 import PublicAuthoritiesHierarchyPage from '@/pages/public-authorities-hierarchy'
@@ -62,6 +92,9 @@ import Registration from '@/pages/registration/registration'
 import Success from '@/pages/registration/success'
 import RelationDetailPage from '@/pages/relation/[entityName]/[entityId]/[relationshipId]'
 import ReportsListPage from '@/pages/reports/reports'
+import { SlaContractList } from '@/pages/sla-contract/list'
+import SLADetailPage from '@/pages/sla-detail'
+import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
 import DraftsListEditPage from '@/pages/standardization/draftslist/[entityId]/edit'
 import DraftDetail from '@/pages/standardization/draftslist/[entityId]/form'
 import DraftsListCreatePage from '@/pages/standardization/draftslist/create'
@@ -81,37 +114,6 @@ import VoteCreatePage from '@/pages/standardization/voteslist/create'
 import TasksPage from '@/pages/ulohy'
 import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
-import CreateITVSExceptionsPage from '@/pages/ci/OsobitnyPostup/create'
-import ITVSExceptionsEditPage from '@/pages/ci/OsobitnyPostup/[entityId]/edit'
-import Tasks from '@/pages/ci/KRIS/[entityId]/tasks'
-import CreateProjectPage from '@/pages/ci/Projekt/create'
-import EditProjectPage from '@/pages/ci/Projekt/[entityId]/edit'
-import { IdentityTermsPage } from '@/pages/IdentityTermsPage'
-import PO_POEntityDetailPage from '@/pages/ci/PO_PO/[entityId]'
-import PO_ISEntityDetailPage from '@/pages/ci/PO_IS/[entityId]'
-import PO_IS_POEntityDetailPage from '@/pages/ci/PO_IS_PO/[entityId]'
-import PO_POInformationOutlet from '@/pages/ci/PO_PO/[entityId]/information'
-import PO_PODocumentsOutlet from '@/pages/ci/PO_PO/[entityId]/documents'
-import PO_PORelationshipOutlet from '@/pages/ci/PO_PO/[entityId]/relationships'
-import PO_POHistoryOutlet from '@/pages/ci/PO_PO/[entityId]/history'
-import PO_ISInformationOutlet from '@/pages/ci/PO_IS/[entityId]/information'
-import PO_IS_POInformationOutlet from '@/pages/ci/PO_IS_PO/[entityId]/information'
-import { LoginProblemsPage } from '@/pages/LoginProblemsPage'
-import { ForgottenPasswordPage } from '@/pages/ForgottenPasswordPage'
-import HowToMonitoringPage from '@/pages/howto/monitoringHowTo'
-import HowToGenericPage from '@/pages/howto/[howToEnumType]'
-import ServicesListPage from '@/pages/monitoring/services/services'
-import CookiesInfoPage from '@/pages/cookies/info'
-import { IntegrationLinkDetailPage } from '@/pages/ci/Integracia/[entityId]'
-import { IntegrationLinkInformation } from '@/pages/ci/Integracia/[entityId]/information'
-import { IntegrationLinkHistory } from '@/pages/ci/Integracia/[entityId]/history'
-import { ProvIntegrationList } from '@/pages/ci/Integracia/list'
-import { IntegrationKsAsList } from '@/pages/ci/Integracia/[entityId]/ksAsList'
-import { IntegrationSubjectsList } from '@/pages/ci/Integracia/[entityId]/subjectsList'
-import { IntegrationHarmonogram } from '@/pages/ci/Integracia/[entityId]/harmonogram'
-import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
-import { SlaContractList } from '@/pages/sla-contract/list'
-import SLADetailPage from '@/pages/sla-detail'
 
 export interface RouteConfig {
     path?: string
@@ -564,6 +566,22 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.CI_PRINCIPLE_CREATE,
                 slug: RouterRoutes.CI_PRINCIPLE_CREATE,
                 component: CreateEntityPage,
+            },
+            {
+                path: RouterRoutes.CI_TRAINING_DETAIL,
+                slug: RouterRoutes.CI_TRAINING_DETAIL,
+                component: TrainingEntityDetailPage,
+                subRoutes: [generalCiDetailInformationOutlet],
+            },
+            {
+                path: RouterRoutes.CI_TRAINING_CREATE,
+                slug: RouterRoutes.CI_TRAINING_CREATE,
+                component: CreateEntityPage,
+            },
+            {
+                path: RouterRoutes.CI_TRAINING_INVITE,
+                slug: RouterRoutes.CI_TRAINING_INVITE,
+                component: TrainingInvitePage,
             },
             {
                 path: RouterRoutes.CI_GOAL_DETAIL,

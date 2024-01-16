@@ -177,3 +177,26 @@ export const formatFormValuesForHarmonogramUpdate = (
 
     return formattedData
 }
+
+export const getSuccessMessageKeyByType = (type?: string) => {
+    switch (type) {
+        case 'create': {
+            return 'mutationFeedback.successfulCreated'
+        }
+        case 'edit': {
+            return 'mutationFeedback.successfulUpdated'
+        }
+        case 'register': {
+            return 'mutationFeedback.successfulRegistered'
+        }
+        case 'unregister': {
+            return 'mutationFeedback.successfulUnregistered'
+        }
+        case 'clone': {
+            return 'mutationFeedback.successfulCloned'
+        }
+        default: {
+            return 'mutationFeedback.success'
+        }
+    }
+}
