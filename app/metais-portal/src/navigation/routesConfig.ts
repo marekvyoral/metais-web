@@ -110,6 +110,7 @@ import { IntegrationKsAsList } from '@/pages/ci/Integracia/[entityId]/ksAsList'
 import { IntegrationSubjectsList } from '@/pages/ci/Integracia/[entityId]/subjectsList'
 import { IntegrationHarmonogram } from '@/pages/ci/Integracia/[entityId]/harmonogram'
 import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
+import { SlaContractList } from '@/pages/sla-contract/list'
 import SLADetailPage from '@/pages/sla-detail'
 
 export interface RouteConfig {
@@ -732,6 +733,11 @@ export const routesConfig: RouteConfig[] = [
                         component: IntegrationLinkHistory,
                     },
                 ],
+            },
+            {
+                path: RouterRoutes.SLA_CONTRACT_LIST,
+                slug: RouterRoutes.SLA_CONTRACT_LIST,
+                component: SlaContractList,
             },
             ...generalCiRoutes,
             {

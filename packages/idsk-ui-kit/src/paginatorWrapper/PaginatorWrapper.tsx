@@ -25,7 +25,7 @@ export const PaginatorWrapper: React.FC<IPaginatorWrapper> = ({ pageNumber, page
                 pageNumber={pageNumber}
                 pageSize={pageSize}
                 dataLength={dataLength}
-                onPageChanged={(page) => handlePageChange({ pageNumber: page })}
+                onPageChanged={(page) => handlePageChange({ pageNumber: page, pageSize })}
             />
             {dataLength === 0 ? (
                 <p className={classnames('govuk-body-s', styles.text)}>{t('table.paginationSummaryEmpty')}</p>

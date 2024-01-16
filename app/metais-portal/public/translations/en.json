@@ -2317,5 +2317,35 @@
             "consumingProjName": "Prov. proj.",
             "providingProjName": "Prov. ISPA"
         }
+    },
+    "slaContracts": {
+        "columns": {
+            "name": "Agreement name",
+            "validityStartDate": "Valid from",
+            "validityEndDate": "Valid to",
+            "phase": "Contract phase",
+            "consumerIsvs": "ISPA for consumer",
+            "providerIsvs": "ISPA for provider"
+        },
+        "filter": {
+            "name": "Agreement name",
+            "contractPhase": "Contract phase",
+            "statusFilter": "View",
+            "intervalStart": "Valid from",
+            "intervalEnd": "Valid to",
+            "providerProjectUuid": "Project for provider",
+            "consumerProjectUuid": "Project for consumer",
+            "providerServiceUuid": "ISPA for provider",
+            "consumerServiceUuid": "ISPA for consumer",
+            "providerMainPersonUuid": "PA of provider",
+            "consumerMainPersonUuid": "PA of consumer"
+        },
+        "heading": "Integration contracts about level of service providing (ISLA)",
+        "createButton": "Add new ISLA contract",
+        "view": {
+            "all": "All records",
+            "active": "Only active records",
+            "inactive": "Only inactive records"
+        }
     }
 }
