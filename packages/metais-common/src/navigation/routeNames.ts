@@ -127,6 +127,7 @@ export enum RouterRoutes {
     INTEGRATION_KS_AS_OUTLET = 'ksAsList',
     INTEGRATION_SUBJECTS_LIST_OUTLET = 'subjectsList',
     INTEGRATION_HARMONOGRAM_OUTLET = 'harmonogram',
+    SLA_CONTRACT_LIST = '/sla-contract/list',
 }
 
 export enum AdminRouteNames {
