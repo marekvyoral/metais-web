@@ -626,7 +626,7 @@
         "as": "Application service"
     },
     "fileImport": {
-        "uploadFailed": "Upload action failed. Are you online?",
+        "uploadFailed": "Upload action failed.",
         "retry": "Retry",
         "header": "Import items or relationships",
         "onlyExisting": "Edit only existing items",

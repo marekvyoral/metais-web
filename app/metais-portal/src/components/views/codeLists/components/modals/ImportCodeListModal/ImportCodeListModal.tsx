@@ -84,7 +84,7 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
                 <TextHeading size="L">{t('codeListDetail.modal.title.import')}</TextHeading>
             </div>
 
-            <FileImportDragDrop uppy={uppy} />
+            <FileImportDragDrop uppy={uppy} hideNoSelectedFileToImport={currentFiles.length > 0} />
 
             {generalErrorMessages.length > 0 && (
                 <div className={styles.errorWrapper}>

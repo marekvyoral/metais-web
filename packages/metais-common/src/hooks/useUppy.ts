@@ -22,6 +22,13 @@ interface iUseUppy {
     setFileImportStep: (value: FileImportStepEnum) => void
     setCustomFileMeta?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => { [metaKey: string]: unknown }
     setFileUuidAsync?: (file?: UppyFile<Record<string, unknown>, Record<string, unknown>>) => Promise<{ uuid: string }>
+    fileUploadError?: (responseError: { responseText: string; response: unknown }) => string
+}
+
+export type UploadFileResponse = {
+    body: Record<string, unknown>
+    status: number
+    uploadURL: string | undefined
 }
 
 export type UploadingFileState = {
@@ -30,6 +37,7 @@ export type UploadingFileState = {
     uploadError?: string
     validationError?: string
     isUploaded: boolean
+    response?: UploadFileResponse
 }
 
 export type UploadingFilesStatus = UploadingFileState[]
@@ -45,6 +53,7 @@ export const useUppy = ({
     setCustomFileMeta,
     setFileUuidAsync,
     fileImportStep,
+    fileUploadError,
 }: iUseUppy) => {
     const { i18n, t } = useTranslation()
     const uppy = useMemo(() => {
@@ -62,9 +71,22 @@ export const useUppy = ({
         })
         uppyInstance.use(XHRUpload, {
             endpoint: '',
+            locale: i18n.language === 'sk' ? sk_SK : en_US,
+            getResponseError(responseText, response) {
+                return new Error(
+                    fileUploadError
+                        ? fileUploadError({
+                              responseText,
+                              response,
+                          })
+                        : t('fileImport.uploadFailed'),
+                )
+            },
         })
         return uppyInstance
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [i18n.language])
+
     const {
         state: { token },
     } = useAuth()
@@ -92,22 +114,16 @@ export const useUppy = ({
     )
 
     const updateUploadFilesStatus = useCallback(
-        (file: UppyFile | undefined, isUploadedSuccessfully = false, errorString?: string) => {
+        (file: UppyFile | undefined, isUploadedSuccessfully = false, errorString?: string, response?: UploadFileResponse) => {
             if (!file?.id || !containsFileId(file.id)) {
                 errorString && setGeneralErrorMessages((prev) => [...prev, errorString])
                 return
             }
-            if (isUploadedSuccessfully) {
-                setUploadFilesStatus((current) => [
-                    ...current.filter((c) => c.fileId !== file?.id),
-                    { fileId: file?.id ?? '', fileName: file?.name, uploadError: undefined, isUploaded: isUploadedSuccessfully },
-                ])
-                return
-            }
             setUploadFilesStatus((current) => [
-                ...current,
-                { fileId: file?.id ?? '', fileName: file?.name, uploadError: errorString, isUploaded: isUploadedSuccessfully },
+                ...current.filter((c) => c.fileId !== file?.id),
+                { fileId: file?.id ?? '', fileName: file?.name, uploadError: errorString, isUploaded: isUploadedSuccessfully, response },
             ])
+            return
         },
         [containsFileId],
     )
@@ -204,6 +220,7 @@ export const useUppy = ({
         uppy.on('file-added', fileAdded)
         uppy.on('file-removed', fileRemoved)
         uppy.on('restriction-failed', fileErrorCallback)
+
         return () => {
             uppy.off('file-added', fileAdded)
             uppy.off('file-removed', fileRemoved)
@@ -223,8 +240,8 @@ export const useUppy = ({
                 if (result.successful.length > 0) {
                     changeFileImportStep()
                 }
-                result.successful.forEach((item) => updateUploadFilesStatus(item, true))
-                result.failed.forEach((item) => updateUploadFilesStatus(item, false, item.error))
+                result.successful.forEach((item) => updateUploadFilesStatus(item, true, undefined, item.response))
+                result.failed.forEach((item) => updateUploadFilesStatus(item, false, item.error, item.response))
             })
         } catch (error) {
             addGeneralErrorMessage(t('fileImport.uploadFailed'))
