@@ -23,12 +23,21 @@ interface CiInformationData {
     }
     isError: boolean
     isLoading: boolean
+    additionalBasicInformation?: {
+        top?: React.ReactNode
+        bottom?: React.ReactNode
+    }
+    withoutDescription?: boolean
+    withoutTime?: boolean
 }
 // Plánované ročné prevádzkové náklady projektu v EUR
 export const CiInformationAccordion: React.FC<CiInformationData> = ({
     data: { ciItemData, ciTypeData, constraintsData, unitsData },
     isLoading,
     isError,
+    additionalBasicInformation,
+    withoutDescription = false,
+    withoutTime = false,
 }) => {
     const { t, i18n } = useTranslation()
 
@@ -53,16 +62,16 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                             ?.filter((atr) => atr.valid === true && atr.invisible !== true)
                             .sort((atr1, atr2) => (atr1.order || 0) - (atr2.order || 0))
                             .map((attribute) => {
-                                const withDescription = true
-                                const formattedRowValue = pairEnumsToEnumValues(
+                                const formattedRowValue = pairEnumsToEnumValues({
                                     attribute,
                                     ciItemData,
                                     constraintsData,
                                     t,
                                     unitsData,
-                                    currentEntityCiTypeConstraintsData,
-                                    withDescription,
-                                )
+                                    matchedAttributeNamesToCiItem: currentEntityCiTypeConstraintsData,
+                                    withDescription: !withoutDescription,
+                                    withoutTime,
+                                })
                                 const isHTML = attribute.type === HTML_TYPE
                                 return (
                                     !attribute?.invisible && (
@@ -95,17 +104,18 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                         onLoadOpen: true,
                         content: (
                             <DefinitionList>
+                                {additionalBasicInformation?.top}
                                 {ciTypeData?.attributes?.map((attribute) => {
-                                    const withDescription = true
-                                    const rowValue = pairEnumsToEnumValues(
+                                    const rowValue = pairEnumsToEnumValues({
                                         attribute,
                                         ciItemData,
                                         constraintsData,
                                         t,
                                         unitsData,
-                                        currentEntityCiTypeConstraintsData,
-                                        withDescription,
-                                    )
+                                        matchedAttributeNamesToCiItem: currentEntityCiTypeConstraintsData,
+                                        withDescription: !withoutDescription,
+                                        withoutTime,
+                                    })
                                     const isHTML = attribute.type === HTML_TYPE || attribute.name == DESCRIPTION
 
                                     return (
@@ -118,6 +128,7 @@ export const CiInformationAccordion: React.FC<CiInformationData> = ({
                                         />
                                     )
                                 })}
+                                {additionalBasicInformation?.bottom}
                             </DefinitionList>
                         ),
                     },

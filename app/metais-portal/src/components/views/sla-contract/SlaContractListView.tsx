@@ -37,7 +37,7 @@ export const SlaContractListView: React.FC<ISlaContractListView> = ({ data, isEr
                 createButton={
                     <CreateEntityButton
                         label={t('slaContracts.createButton')}
-                        onClick={() => navigate(RouterRoutes.INTEGRATION_CREATE, { state: { from: location } })}
+                        onClick={() => navigate(RouterRoutes.SLA_CONTRACT_CREATE, { state: { from: location } })}
                     />
                 }
                 hiddenButtons={{ SELECT_COLUMNS: true }}

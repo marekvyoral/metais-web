@@ -2377,6 +2377,15 @@
             "all": "Všetky záznamy",
             "active": "Len aktívne záznamy",
             "inactive": "Len neplatné záznamy"
+        },
+        "detail": {
+            "supportContact": "Kontakt na podporu",
+            "owner": "Vlastník",
+            "docForSignAndApproval": "Dokument na schválenie a podpísanie",
+            "consumerIsvsMainPerson": "Povinná osoba za ISVS konzumenta",
+            "providerIsvsMainPerson": "Povinná osoba za ISVS poskytovateľa",
+            "providerIsvs": "ISVS za poskytovateľa",
+            "consumerIsvs": "ISVS za konzumenta"
         }
     }
 }

@@ -14,12 +14,15 @@ const findUnitValue = (attribute: Attribute | undefined, unitsData: EnumType | u
     return unit
 }
 
-const formatRowValueByRowType = (
-    attribute: Attribute | undefined,
-    rowValue: string,
-    t: TFunction<'translation', undefined, 'translation'>,
-    unitsData: EnumType | undefined,
-) => {
+type FormatRowValueByRowArgs = {
+    attribute: Attribute | undefined
+    rowValue: string
+    t: TFunction<'translation', undefined, 'translation'>
+    unitsData: EnumType | undefined
+    withoutTime?: boolean
+}
+
+const formatRowValueByRowType = ({ attribute, rowValue, t, unitsData, withoutTime }: FormatRowValueByRowArgs) => {
     if (attribute?.units && attribute?.type && rowValue) {
         const unitValue = findUnitValue(attribute, unitsData)
         return t(`units.${unitValue}`, { val: rowValue })
@@ -28,22 +31,34 @@ const formatRowValueByRowType = (
         case 'BOOLEAN':
             return rowValue ? t('radioButton.yes') : t('radioButton.no')
         case 'DATE':
-            if (rowValue) return t('dateTime', { date: rowValue })
+            if (rowValue) return withoutTime ? t('date', { date: rowValue }) : t('dateTime', { date: rowValue })
             return rowValue
         default:
             return rowValue
     }
 }
 
-export const pairEnumsToEnumValues = (
-    attribute: Attribute | undefined,
-    ciItemData: ConfigurationItemUi | ConfigurationItemUiOriginal | undefined,
-    constraintsData: (EnumType | undefined)[] | undefined,
-    t: TFunction<'translation', undefined, 'translation'>,
-    unitsData: EnumType | undefined,
-    matchedAttributeNamesToCiItem: Record<string, ConfigurationItemUi> | undefined,
-    withDescription?: boolean,
-) => {
+type PairEnumstoEnumValuesArgs = {
+    attribute: Attribute | undefined
+    ciItemData: ConfigurationItemUi | ConfigurationItemUiOriginal | undefined
+    constraintsData: (EnumType | undefined)[] | undefined
+    t: TFunction<'translation', undefined, 'translation'>
+    unitsData: EnumType | undefined
+    matchedAttributeNamesToCiItem: Record<string, ConfigurationItemUi> | undefined
+    withDescription?: boolean
+    withoutTime?: boolean
+}
+
+export const pairEnumsToEnumValues = ({
+    attribute,
+    ciItemData,
+    constraintsData,
+    t,
+    unitsData,
+    matchedAttributeNamesToCiItem,
+    withDescription,
+    withoutTime,
+}: PairEnumstoEnumValuesArgs) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let rowValue: any
     if (Array.isArray(ciItemData?.attributes)) {
@@ -51,7 +66,7 @@ export const pairEnumsToEnumValues = (
     } else {
         rowValue = ciItemData?.attributes?.[attribute?.technicalName ?? attribute?.name ?? '']
     }
-    const formattedRowValue = formatRowValueByRowType(attribute, rowValue, t, unitsData)
+    const formattedRowValue = formatRowValueByRowType({ attribute, rowValue, t, unitsData, withoutTime })
     if (!attribute?.constraints || !attribute?.constraints?.length) return formattedRowValue
     return (
         attribute?.constraints?.map((constraint) => {
