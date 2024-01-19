@@ -2380,5 +2380,34 @@
             "providerIsvs": "ISPA for provider",
             "consumerIsvs": "ISPA for consumer"
         }
+    },
+    "olaContracts": {
+        "columns": {
+            "name": "Agreement name",
+            "contractCode": "Agreement code",
+            "contractorIsvsName": "Vendor ISPA",
+            "consumerIsvs": "ISPA administrator",
+            "validityStartDate": "Valid from",
+            "validityEndDate": "Valid to",
+            "vendorLock": "Vendor Lock"
+        },
+        "filter": {
+            "name": "Agreement name",
+            "contractCode": "Agreement code",
+            "metaIsCode": "MetaIS code",
+            "intervalStart": "Valid from",
+            "intervalEnd": "Valid to",
+            "selectService": "Vendor ISPA",
+            "liableEntities": "ISPA administrator",
+            "description": "Agreement description",
+            "code": "Code",
+            "referenceIdentifier": "Reference identifier",
+            "crzLink": "Link to CRZ",
+            "vendorLock": "Vendor Lock"
+        },
+        "title": "SLA with vendor",
+        "heading": "List of SLA with contractors",
+        "headingAdd": "Add SLA with contractor",
+        "createButton": "Add new SLA with contractor"
     }
 }

@@ -138,6 +138,8 @@ export enum RouterRoutes {
     SLA_CONTRACT_SUPPORT_CONTACT = '/ci/Kontrakt/:entityId/support-contact',
     SLA_CONTRACT_CREATE = '/ci/Kontrakt/create',
     SLA_CONTRACT_EDIT = '/ci/Kontrakt/:entityId/edit',
+    OLA_CONTRACT_LIST = '/ola-contract-list',
+    OLA_CONTRACT_ADD = '/ola-contract-add',
 }
 
 export enum AdminRouteNames {

@@ -2387,5 +2387,34 @@
             "providerIsvs": "ISVS za poskytovateľa",
             "consumerIsvs": "ISVS za konzumenta"
         }
+    },
+    "olaContracts": {
+        "columns": {
+            "name": "Názov kontraktu",
+            "contractCode": "Kód kontraktu",
+            "contractorIsvsName": "ISVS",
+            "consumerIsvs": "Správca ISVS",
+            "validityStartDate": "Platnosť od",
+            "validityEndDate": "Platnosť do",
+            "vendorLock": "Vendor Lock"
+        },
+        "filter": {
+            "name": "Názov kontraktu",
+            "contractCode": "Kód kontraktu",
+            "metaIsCode": "Kód metaIS",
+            "intervalStart": "Platnosť od",
+            "intervalEnd": "Platnosť do",
+            "selectService": "ISVS",
+            "liableEntities": "Správca ISVS",
+            "description": "Popis kontraktu",
+            "code": "Kód",
+            "referenceIdentifier": "Referencovateľný identifikátor",
+            "crzLink": "Linka do CRZ",
+            "vendorLock": "Vendor Lock"
+        },
+        "title": "Dohody o úrovni poskytovania služieb s prevádzkovateľom (SLA)",
+        "heading": "Zoznam SLA s prevádzkovateľom",
+        "headingAdd": "Pridat SLA s dodávateľom",
+        "createButton": "Pridať novú SLA s dodávateľom"
     }
 }

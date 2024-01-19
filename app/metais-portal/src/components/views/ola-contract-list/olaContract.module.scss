@@ -1,0 +1,9 @@
+@import '@isdd/idsk-ui-kit/src/utils.scss';
+
+.flexBox {
+    display: flex;
+    gap: govuk-spacing(4);
+}
+.fullWidth {
+    width: 100%;
+}
