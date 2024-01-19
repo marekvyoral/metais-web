@@ -132,7 +132,12 @@ export enum RouterRoutes {
     INTEGRATION_KS_AS_OUTLET = 'ksAsList',
     INTEGRATION_SUBJECTS_LIST_OUTLET = 'subjectsList',
     INTEGRATION_HARMONOGRAM_OUTLET = 'harmonogram',
-    SLA_CONTRACT_LIST = '/sla-contract/list',
+    SLA_CONTRACT_LIST = '/ci/Kontrakt',
+    SLA_CONTRACT_DETAIL = '/ci/Kontrakt/:entityId',
+    SLA_CONTRACT_HISTORY = '/ci/Kontrakt/:entityId/history',
+    SLA_CONTRACT_SUPPORT_CONTACT = '/ci/Kontrakt/:entityId/support-contact',
+    SLA_CONTRACT_CREATE = '/ci/Kontrakt/create',
+    SLA_CONTRACT_EDIT = '/ci/Kontrakt/:entityId/edit',
 }
 
 export enum AdminRouteNames {

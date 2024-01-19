@@ -2370,6 +2370,15 @@
             "all": "All records",
             "active": "Only active records",
             "inactive": "Only inactive records"
+        },
+        "detail": {
+            "supportContact": "Contact on support",
+            "owner": "Owner",
+            "docForSignAndApproval": "Document for signing and approval",
+            "consumerIsvsMainPerson": "PA for ISPA consumer",
+            "providerIsvsMainPerson": "PA for ISPA provider",
+            "providerIsvs": "ISPA for provider",
+            "consumerIsvs": "ISPA for consumer"
         }
     }
 }

@@ -178,6 +178,42 @@ export const formatFormValuesForHarmonogramUpdate = (
     return formattedData
 }
 
+type GetSlaContractTabListProps = {
+    t: TFunction
+    entityId: string
+    entityName: string
+    userAbility: MongoAbility<AbilityTuple, MongoQuery>
+}
+
+export const getSlaContractTabList = ({ entityId, entityName, t, userAbility }: GetSlaContractTabListProps): Tab[] => {
+    const tabList: Tab[] = [
+        {
+            id: ciInformationTab,
+            path: `/ci/${entityName}/${entityId}/`,
+            title: t('ciType.informations'),
+            content: <Outlet />,
+        },
+        {
+            id: 'supportContact',
+            path: `/ci/${entityName}/${entityId}/support-contact`,
+            title: t('slaContracts.detail.supportContact'),
+            content: <Outlet />,
+        },
+        ...(userAbility.can(Actions.HISTORY, 'ci')
+            ? [
+                  {
+                      id: 'history',
+                      path: `/ci/${entityName}/${entityId}/history`,
+                      title: t('ciType.history'),
+                      content: <Outlet />,
+                  },
+              ]
+            : []),
+    ]
+
+    return tabList
+}
+
 export const getSuccessMessageKeyByType = (type?: string) => {
     switch (type) {
         case 'create': {

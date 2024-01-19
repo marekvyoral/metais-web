@@ -92,7 +92,6 @@ import Registration from '@/pages/registration/registration'
 import Success from '@/pages/registration/success'
 import RelationDetailPage from '@/pages/relation/[entityName]/[entityId]/[relationshipId]'
 import ReportsListPage from '@/pages/reports/reports'
-import { SlaContractList } from '@/pages/sla-contract/list'
 import SLADetailPage from '@/pages/sla-detail'
 import SLAParamsListPage from '@/pages/sla-params-list/[entityName]'
 import DraftsListEditPage from '@/pages/standardization/draftslist/[entityId]/edit'
@@ -114,6 +113,11 @@ import VoteCreatePage from '@/pages/standardization/voteslist/create'
 import TasksPage from '@/pages/ulohy'
 import TaskDetailPage from '@/pages/ulohy/[taskId]'
 import UserProfilePage from '@/pages/userprofile/profile'
+import { SlaContractHistory } from '@/pages/ci/Kontrakt/[entityId]/history'
+import { SlaContractSupportContact } from '@/pages/ci/Kontrakt/[entityId]/supportContact'
+import { SlaContractInformation } from '@/pages/ci/Kontrakt/[entityId]/information'
+import { SlaContractDetailPage } from '@/pages/ci/Kontrakt/[entityId]'
+import { SlaContractList } from '@/pages/ci/Kontrakt/list'
 
 export interface RouteConfig {
     path?: string
@@ -756,6 +760,28 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.SLA_CONTRACT_LIST,
                 slug: RouterRoutes.SLA_CONTRACT_LIST,
                 component: SlaContractList,
+            },
+            {
+                path: RouterRoutes.SLA_CONTRACT_DETAIL,
+                slug: RouterRoutes.SLA_CONTRACT_DETAIL,
+                component: SlaContractDetailPage,
+                subRoutes: [
+                    {
+                        slug: RouterRoutes.SLA_CONTRACT_DETAIL,
+                        component: SlaContractInformation,
+                        index: true,
+                    },
+                    {
+                        path: RouterRoutes.SLA_CONTRACT_SUPPORT_CONTACT,
+                        slug: RouterRoutes.SLA_CONTRACT_SUPPORT_CONTACT,
+                        component: SlaContractSupportContact,
+                    },
+                    {
+                        path: RouterRoutes.SLA_CONTRACT_HISTORY,
+                        slug: RouterRoutes.SLA_CONTRACT_HISTORY,
+                        component: SlaContractHistory,
+                    },
+                ],
             },
             ...generalCiRoutes,
             {

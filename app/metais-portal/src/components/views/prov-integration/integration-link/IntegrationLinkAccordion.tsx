@@ -99,15 +99,15 @@ export const IntegrationLinkAccordion: React.FC<Props> = ({
                             <DefinitionList>
                                 {ciTypeData?.attributes?.map((attribute) => {
                                     const withDescription = true
-                                    const rowValue = pairEnumsToEnumValues(
+                                    const rowValue = pairEnumsToEnumValues({
                                         attribute,
                                         ciItemData,
                                         constraintsData,
                                         t,
                                         unitsData,
-                                        currentEntityCiTypeConstraintsData,
+                                        matchedAttributeNamesToCiItem: currentEntityCiTypeConstraintsData,
                                         withDescription,
-                                    )
+                                    })
                                     const isHTML = attribute.type === HTML_TYPE || attribute.name == DESCRIPTION
                                     return (
                                         <InformationGridRow

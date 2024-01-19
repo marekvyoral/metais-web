@@ -64,6 +64,14 @@ export enum ATTRIBUTE_NAME {
     Profil_KRIS_stav_kris = 'Profil_KRIS_stav_kris',
     Profil_Ciel_kategoria = 'Profil_Ciel_kategoria',
     Profil_KRIS_Zavazok_ciele_principy_stav = 'Profil_KRIS_Zavazok_ciele_principy_stav',
+    Profil_Kontrakt_faza = 'Profil_Kontrakt_faza',
+    Profil_Kontrakt_identifikator = 'Profil_Kontrakt_identifikator',
+    Profil_Kontrakt_podpora_forma_kontaktu = 'Profil_Kontrakt_podpora_forma_kontaktu',
+    Profil_Kontrakt_podpora_forma_kontaktu_mimo_prevadzky = 'Profil_Kontrakt_podpora_forma_kontaktu_mimo_prevadzky',
+    Profil_Kontrakt_podpora_prevadzkova_doba = 'Profil_Kontrakt_podpora_prevadzkova_doba',
+    Profil_Kontrakt_podpora_instrukcie_kontaktovania = 'Profil_Kontrakt_podpora_instrukcie_kontaktovania',
+    Profil_Kontrakt_podpora_max_odozva_mimo_prevadzky = 'Profil_Kontrakt_podpora_max_odozva_mimo_prevadzky',
+    Profil_Kontrakt_podpora_max_odozva_pocas_prevadzky = 'Profil_Kontrakt_podpora_max_odozva_pocas_prevadzky',
     Profil_Skolenie_pocet_volnych_miest = 'Profil_Skolenie_pocet_volnych_miest',
 }
 
