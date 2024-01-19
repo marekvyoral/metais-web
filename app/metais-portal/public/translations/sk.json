@@ -624,7 +624,7 @@
         "as": "Aplikačná služba"
     },
     "fileImport": {
-        "uploadFailed": "Upload action failed. Are you online?",
+        "uploadFailed": "Import bol neúspešný.",
         "retry": "Skúsiť znova",
         "header": "Import položiek alebo vzťahov",
         "onlyExisting": "Upraviť len existujúce položky",
