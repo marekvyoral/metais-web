@@ -76,6 +76,7 @@ import HowToMonitoringPage from '@/pages/howto/monitoringHowTo'
 import ServicesListPage from '@/pages/monitoring/services/services'
 import NotificationsPage from '@/pages/notifications'
 import NotificationsDetailPage from '@/pages/notifications/[id]'
+import { OlaContractList } from '@/pages/ola-contract-list'
 import PublicAuthoritiesHierarchyPage from '@/pages/public-authorities-hierarchy'
 import ITVSStandards from '@/pages/publicspace'
 import RefRegistersDetail from '@/pages/refregisters/[entityId]'
@@ -118,6 +119,7 @@ import { SlaContractSupportContact } from '@/pages/ci/Kontrakt/[entityId]/suppor
 import { SlaContractInformation } from '@/pages/ci/Kontrakt/[entityId]/information'
 import { SlaContractDetailPage } from '@/pages/ci/Kontrakt/[entityId]'
 import { SlaContractList } from '@/pages/ci/Kontrakt/list'
+import { OlaContractAdd } from '@/pages/ola-contract-list/add'
 
 export interface RouteConfig {
     path?: string
@@ -760,6 +762,16 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.SLA_CONTRACT_LIST,
                 slug: RouterRoutes.SLA_CONTRACT_LIST,
                 component: SlaContractList,
+            },
+            {
+                path: RouterRoutes.OLA_CONTRACT_LIST,
+                slug: RouterRoutes.OLA_CONTRACT_LIST,
+                component: OlaContractList,
+            },
+            {
+                path: RouterRoutes.OLA_CONTRACT_ADD,
+                slug: RouterRoutes.OLA_CONTRACT_ADD,
+                component: OlaContractAdd,
             },
             {
                 path: RouterRoutes.SLA_CONTRACT_DETAIL,
