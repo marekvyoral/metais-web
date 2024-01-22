@@ -72,3 +72,93 @@ const location = useLocation()
 
 navigate(url, {state:{from: location}})
 </pre>
+
+
+# XWIKI examples
+<code>
+
+{{html}}
+<button class="govuk-button">Toto je komponent tlačidlo</button>
+{{/html}}
+
+(% aria-hidden="true" aria-label="LABEL123" class="titre-listitem" %)my span with class
+
+(% class="titre-listitem" %)Sandbox1
+
+(% class="titre-listitem" %)
+(((
+Sandbox2
+)))
+
+(% class="titre-listitem" style="color:blue" %)
+(((
+my div with class and style
+)))
+
+{{html}}<button title="HyperText Markup Language">HTML0</button>{{/html}}
+{{html}}<p>HTML1</p>{{/html}}
+{{html}}<span>HTML2</span>{{/html}}
+
+
+<div>xxxxxx</div>
+
+
+{{html}}
+<div>HTML3</div>
+{{/html}}
+
+{{html}}
+<div class="govuk-accordion" data-module="idsk-accordion" id="1"  data-attribute="value">
+<div class="govuk-accordion__controls">
+  <button class="govuk-accordion__open-all" data-open-title="Otvoriť všetky"
+  data-close-title="Zatvoriť všetky" data-section-title="section title" type="button" aria-expanded="false">
+     <span class="govuk-visually-hidden govuk-accordion__controls-span" data-section-title="sekcie"></span></button>
+</div>
+      <div class="govuk-accordion__section ">
+        <div class="govuk-accordion__section-header">
+          <h2 class="govuk-accordion__section-heading">
+            <span class="govuk-accordion__section-button" id="1-heading-1">
+              Sekcia 1
+            </span>
+          </h2>
+            <div class="govuk-accordion__section-summary govuk-body" id="1-summary-1">
+              Toto je zhrnutie obsahu 1.
+            </div>
+        </div>
+        <div id="1-content-1" class="govuk-accordion__section-content" aria-labelledby="1-heading-1">
+          <p class='govuk-body'>Obsah prvej sekcie.</p>
+        </div>
+      </div>
+      <div class="govuk-accordion__section ">
+        <div class="govuk-accordion__section-header">
+          <h2 class="govuk-accordion__section-heading">
+            <span class="govuk-accordion__section-button" id="1-heading-2">
+              Sekcia 2
+            </span>
+          </h2>
+            <div class="govuk-accordion__section-summary govuk-body" id="1-summary-2">
+              Toto je zhrnutie obsahu 2.
+            </div>
+        </div>
+        <div id="1-content-2" class="govuk-accordion__section-content" aria-labelledby="1-heading-2">
+          <p class='govuk-body'>Obsah druhej sekcie.</p>
+        </div>
+      </div>
+      <div class="govuk-accordion__section ">
+        <div class="govuk-accordion__section-header">
+          <h2 class="govuk-accordion__section-heading">
+            <span class="govuk-accordion__section-button" id="1-heading-3">
+              Sekcia 3
+            </span>
+          </h2>
+            <div class="govuk-accordion__section-summary govuk-body" id="1-summary-3">
+              Toto je zhrnutie obsahu 3.
+            </div>
+        </div>
+        <div id="1-content-3" class="govuk-accordion__section-content" aria-labelledby="1-heading-3">
+          <p class='govuk-body'>Obsah tretej sekcie.</p>
+        </div>
+      </div>
+</div>
+{{/html}}
+</code>
