@@ -22,6 +22,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
     refetchDocuments,
     filter,
     handleFilterChange,
+    refetchInfoData,
 }) => {
     const { t, i18n } = useTranslation()
     const navigate = useNavigate()
@@ -30,6 +31,10 @@ export const DocumentsGroupView: React.FC<IView> = ({
     const [deleteGroupModalOpen, setDeleteGroupModalOpen] = useState(false)
     const [documentToDelete, setDocumentToDelete] = useState<Document>()
     const [selectedColumns, setSelectedColumns] = useState<ISelectColumnType[]>(documentsManagementGroupDocumentsDefaultSelectedColumns(t))
+
+    useEffect(() => {
+        refetchInfoData()
+    }, [refetchInfoData])
 
     const columns: Array<ColumnDef<Document>> = [
         {
@@ -160,7 +165,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
         if (isActionSuccess.value && (isActionSuccess?.additionalInfo?.type == 'create' || isActionSuccess?.additionalInfo?.type == 'edit')) {
             refetchDocuments()
         }
-    }, [isActionSuccess, refetchDocuments, scrollToMutationFeedback])
+    }, [infoData, isActionSuccess, refetchDocuments, scrollToMutationFeedback])
 
     return (
         <>
@@ -226,7 +231,7 @@ export const DocumentsGroupView: React.FC<IView> = ({
                 <TextBody>{i18n.language == 'sk' ? infoData.name : infoData.nameEng}</TextBody>
                 <div className={styles.buttonGroupEnd}>
                     <Button onClick={() => setDeleteGroupModalOpen(false)} label={t('codelists.cancel')} variant="secondary" />
-                    <Button onClick={() => deleteGroupDocument(infoData.id ?? 0)} label={t('codelists.delete')} type="submit" />
+                    <Button onClick={() => deleteGroupDocument(infoData.id ?? 0)} label={t('codelists.remove')} type="submit" />
                 </div>
             </BaseModal>
 

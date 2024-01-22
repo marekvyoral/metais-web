@@ -77,8 +77,8 @@ export const DocumentsManagementContainer: React.FC<IDocumentsManagementContaine
     }, [phaseMap, projectPhase, projectStatus])
 
     useEffect(() => {
-        setDataRows(documentsData?.slice(0, filter.pageSize))
-    }, [documentsData, filter.pageSize])
+        setDataRows(documentsData)
+    }, [documentsData])
 
     const saveOrder = (groups: DocumentGroup[]) => {
         groups.forEach((group) => {

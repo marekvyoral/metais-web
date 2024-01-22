@@ -1,20 +1,27 @@
 import { Filter } from '@isdd/idsk-ui-kit/filter'
-import { Button, ISelectColumnType, LoadingIndicator, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
+import { Button, ISelectColumnType, LoadingIndicator, PaginatorWrapper, SimpleSelect, Table, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { EnumItem } from '@isdd/metais-common/api/generated/enums-repo-swagger'
 import { DocumentGroup } from '@isdd/metais-common/api/generated/kris-swagger'
-import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, documentsManagementDefaultSelectedColumns } from '@isdd/metais-common/constants'
+import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, documentsManagementDefaultSelectedColumns } from '@isdd/metais-common/constants'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { ActionsOverTable, MutationFeedback } from '@isdd/metais-common/index'
 import { ColumnDef } from '@tanstack/react-table'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
+import { IFilter, Pagination } from '@isdd/idsk-ui-kit/types'
 
 import styles from './styles.module.scss'
 
 import { DocumentFilterData, IView, defaultFilter } from '@/components/containers/documents-management/DocumentsManagementContaiter'
+
+const defaultPagination: Pagination = {
+    pageNumber: BASE_PAGE_NUMBER,
+    pageSize: BASE_PAGE_SIZE,
+    dataLength: 0,
+}
 
 export const DocumentsManagementView: React.FC<IView> = ({
     filterMap,
@@ -34,15 +41,35 @@ export const DocumentsManagementView: React.FC<IView> = ({
     const navigate = useNavigate()
     const location = useLocation()
     const [editingRowsPositions, setEditingRowsPositions] = useState(false)
-    const { isActionSuccess } = useActionSuccess()
+    const { isActionSuccess, setIsActionSuccess } = useActionSuccess()
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
 
     useEffect(() => {
-        if (isActionSuccess.value) {
+        if (isActionSuccess.value && filter.status) {
             scrollToMutationFeedback()
             refetchDocs()
+            setIsActionSuccess({ value: false, path: '' })
         }
-    }, [isActionSuccess, refetchDocs, scrollToMutationFeedback])
+    }, [filter.status, isActionSuccess, refetchDocs, scrollToMutationFeedback, setIsActionSuccess])
+
+    const filteredTableData = useMemo(() => {
+        const pageNumber = filter.pageNumber ?? 0
+        const pageSize = filter.pageSize ?? 0
+        const startOfList = pageNumber * pageSize - pageSize
+        const endOfList = pageNumber * pageSize
+        return data.slice(startOfList, endOfList) || []
+    }, [data, filter.pageNumber, filter.pageSize])
+
+    const myHandleFilterChange = (myFilter: IFilter) => {
+        const newFilter = {
+            ...myFilter,
+            pageNumber:
+                (myFilter.pageNumber ?? defaultPagination.pageNumber) * (myFilter.pageSize ?? defaultPagination.pageSize) + 1 > data?.length
+                    ? defaultPagination.pageNumber
+                    : myFilter.pageNumber,
+        }
+        handleFilterChange(newFilter)
+    }
 
     const columns: Array<ColumnDef<DocumentGroup>> = [
         {
@@ -151,8 +178,14 @@ export const DocumentsManagementView: React.FC<IView> = ({
                 }}
             />
             <ActionsOverTable
-                pagination={{ pageNumber: BASE_PAGE_NUMBER, pageSize: BASE_PAGE_SIZE, dataLength: 0 }}
+                pagination={{
+                    pageNumber: filter.pageNumber ?? defaultPagination.pageNumber,
+                    pageSize: filter.pageSize ?? defaultPagination.pageSize,
+                    dataLength: data?.length ?? 0,
+                }}
+                pagingOptions={DEFAULT_PAGESIZE_OPTIONS}
                 entityName={''}
+                handleFilterChange={myHandleFilterChange}
                 simpleTableColumnsSelect={{ selectedColumns, resetSelectedColumns, saveSelectedColumns: setSelectedColumns }}
             >
                 {!editingRowsPositions ? (
@@ -206,13 +239,19 @@ export const DocumentsManagementView: React.FC<IView> = ({
                             .map((s) => s.technicalName)
                             .includes(c.id ?? ''),
                     )}
-                    data={data}
+                    data={filteredTableData}
                     reorderRow={reorderRow}
                     canDragRow={editingRowsPositions}
                     sort={filter.sort}
                     onSortingChange={(columnSort) => {
                         handleFilterChange({ sort: columnSort })
                     }}
+                />
+                <PaginatorWrapper
+                    pageSize={filter.pageSize ?? defaultPagination.pageSize}
+                    pageNumber={filter.pageNumber ?? defaultPagination.pageNumber}
+                    dataLength={data?.length ?? 0}
+                    handlePageChange={(page) => handleFilterChange({ ...filter, pageNumber: page.pageNumber ?? defaultPagination.pageNumber })}
                 />
             </div>
         </>
