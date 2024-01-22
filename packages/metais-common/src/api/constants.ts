@@ -64,6 +64,10 @@ export enum ATTRIBUTE_NAME {
     Profil_KRIS_stav_kris = 'Profil_KRIS_stav_kris',
     Profil_Ciel_kategoria = 'Profil_Ciel_kategoria',
     Profil_KRIS_Zavazok_ciele_principy_stav = 'Profil_KRIS_Zavazok_ciele_principy_stav',
+    Profil_URIKatalog_uri = 'Profil_URIKatalog_uri',
+    Profil_URIDataset_uri_datasetu = 'Profil_URIDataset_uri_datasetu',
+    Profil_Individuum_zaklad_uri = 'Profil_Individuum_zaklad_uri',
+    Gen_Profil_RefID_stav_registracie = 'Gen_Profil_RefID_stav_registracie',
     Profil_Kontrakt_faza = 'Profil_Kontrakt_faza',
     Profil_Kontrakt_identifikator = 'Profil_Kontrakt_identifikator',
     Profil_Kontrakt_podpora_forma_kontaktu = 'Profil_Kontrakt_podpora_forma_kontaktu',
@@ -225,3 +229,10 @@ export const SlaViewOptions = [
 
 export const TYP_HODNOTY = 'TYP_HODNOTY'
 export const TYP_PARAMETROV_JEDNOTKA = 'TYP_PARAMETROV_JEDNOTKA'
+
+export enum RefIdentifierTypeEnum {
+    Individuum = 'Individuum',
+    URIKatalog = 'URIKatalog',
+    DatovyPrvok = 'DatovyPrvok',
+    URIDataset = 'URIDataset',
+}

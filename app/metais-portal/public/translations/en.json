@@ -143,6 +143,8 @@
             "meetings": "Meetings",
             "registers": "Reference registers",
             "codelists": "Codelists",
+            "refIdentifiers": "Reference identifiers",
+            "refIdentifierList": "List of request",
             "publicCodelists": "Public codelists",
             "centralModel": "Central data model",
             "licenses": "Licenses",
@@ -1160,6 +1162,7 @@
         "newRelation": "Add new relation of {{itemName}}",
         "newCiAndRelation": "Add new item and relation for {{itemName}}",
         "refRegisters": "Reference registers",
+        "refIdentifiers": "List of request",
         "standardization": "Standardization",
         "draftsList": "Drafts list",
         "refRegistersCreate": "Request to add",
@@ -1473,6 +1476,30 @@
             "EXPORT": "Export"
         }
     },
+    "refIdentifiers": {
+        "title": "List of reference identifiers (URI)",
+        "fitler": {
+            "type": "Type",
+            "state": "State",
+            "createdAtFrom": "Created from",
+            "createdAtTo": "Created to",
+            "view": "View",
+            "all": "All",
+            "onlyMy": "Only my"
+        },
+        "table": {
+            "name": "Name",
+            "uri": "URI",
+            "type": "Type",
+            "state": "State"
+        },
+        "type": {
+            "DatovyPrvok": "Data element",
+            "URIDataset": "Dataset",
+            "URIKatalog": "Catalogue",
+            "Individuum": "URI template"
+        }
+    },
     "selectCiItem": {
         "label": "Items",
         "loading": "Loading configuration items",
@@ -1622,6 +1649,7 @@
         "codeListRequestsDetail": "Request detail",
         "codeList": "Codelist list",
         "codeListDetail": "Detail codelist",
+        "refIdentifiers": "Reference identifiers",
         "meetingsCreate": "Creation of meeting",
         "meetingDetail": "Detail of meeting",
         "publicAuthoritiesHierarchy": "Hierarchy of public authorities"

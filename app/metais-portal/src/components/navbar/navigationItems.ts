@@ -30,6 +30,10 @@ const getDataObjectSubItems = (t: TFunction, isSideMenu?: boolean) => {
             title: t('navMenu.lists.codelists'),
             path: NavigationSubRoutes.CODELIST,
         },
+        {
+            title: t('navMenu.lists.refIdentifiers'),
+            path: NavigationSubRoutes.REF_IDENTIFIERS,
+        },
     ]
 
     const dataObjectSubItemsSideMenu = [
@@ -45,6 +49,11 @@ const getDataObjectSubItems = (t: TFunction, isSideMenu?: boolean) => {
                 { title: t('navMenu.lists.codelistsList'), path: NavigationSubRoutes.CODELIST },
                 { title: t('navMenu.lists.codelistsRequestsList'), path: NavigationSubRoutes.REQUESTLIST, isLoginRequired: true },
             ],
+        },
+        {
+            title: t('navMenu.lists.refIdentifiers'),
+            path: NavigationSubRoutes.REF_IDENTIFIERS_HOWTO,
+            subItems: [{ title: t('navMenu.lists.refIdentifierList'), path: NavigationSubRoutes.REF_IDENTIFIERS }],
         },
     ]
     return isSideMenu ? dataObjectSubItemsSideMenu : dataObjectSubItemsTopMenu
