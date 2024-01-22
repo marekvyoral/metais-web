@@ -141,6 +141,8 @@
             "meetings": "Zoznam zasadnutí",
             "registers": "Referenčné registre",
             "codelists": "Číselníky",
+            "refIdentifiers": "Referencovateľné identifikátory",
+            "refIdentifierList": "Zoznam žiadostí",
             "publicCodelists": "Publikované číselníky",
             "centralModel": "Centrálny dátový model",
             "licenses": "Licencie",
@@ -1168,6 +1170,7 @@
         "refRegisters": "Referenčné registre",
         "refRegistersCreate": "Žiadosť na pridanie",
         "refRegistersEdit": "Zmena údajov o referenčnom registri",
+        "refIdentifiers": "Zoznam žiadostí",
         "dataObjects": "Dátové objekty",
         "requestList": "Zoznam žiadostí založenia číselníka",
         "requestCreate": "Žiadosť o zaradenie číselníka",
@@ -1480,6 +1483,30 @@
             "EXPORT": "Export"
         }
     },
+    "refIdentifiers": {
+        "title": "Zoznam referencovateľných identifikátorov (URI)",
+        "filter": {
+            "type": "Typ",
+            "state": "Stav",
+            "createdAtFrom": "Vytvorené od",
+            "createdAtTo": "Vytvorené do",
+            "view": "Zobraziť",
+            "all": "Všetky",
+            "onlyMy": "Len moje"
+        },
+        "table": {
+            "name": "Názov",
+            "uri": "URI",
+            "type": "Typ",
+            "state": "Stav"
+        },
+        "type": {
+            "DatovyPrvok": "Dátový prvok",
+            "URIDataset": "Dataset",
+            "URIKatalog": "Katalóg",
+            "Individuum": "Šablóna URI"
+        }
+    },
     "selectCiItem": {
         "label": "Položky",
         "loading": "Načítavanie konfiguračných položiek",
@@ -1538,6 +1565,7 @@
         "publicAuthoritiesHierarchy": "Hierarchia orgánov riadenia",
         "codeListList": "Zoznam číselníkov",
         "codeListDetail": "Detail číselníka",
+        "refIdentifiers": "Referencovateľné identifikátory",
         "meetingsCreate": "Vytvorenie zasadnutia",
         "meetingDetail": "Detail zasadnutia"
     },
