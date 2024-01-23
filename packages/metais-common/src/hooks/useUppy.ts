@@ -1,4 +1,4 @@
-import { Uppy, UppyFile } from '@uppy/core'
+import { UploadResult, Uppy, UppyFile } from '@uppy/core'
 import '@uppy/core/dist/style.min.css'
 import '@uppy/drag-drop/dist/style.min.css'
 import en_US from '@uppy/locales/lib/en_US'
@@ -228,7 +228,7 @@ export const useUppy = ({
         }
     }, [endpointUrl, setCustomFileMeta, setFileImportStep, setFileUuidAsync, t, updateUploadFilesStatus, uppy])
 
-    const handleUpload = async () => {
+    const handleUpload = async (): Promise<UploadResult | undefined> => {
         resetProgressState()
         uppy.getFiles().forEach((file) => {
             uppy.setFileState(file.id, {
@@ -236,13 +236,14 @@ export const useUppy = ({
             })
         })
         try {
-            await uppy.upload().then((result) => {
-                if (result.successful.length > 0) {
-                    changeFileImportStep()
-                }
-                result.successful.forEach((item) => updateUploadFilesStatus(item, true, undefined, item.response))
-                result.failed.forEach((item) => updateUploadFilesStatus(item, false, item.error, item.response))
-            })
+            const result = await uppy.upload()
+            if (result.successful.length > 0) {
+                changeFileImportStep()
+            }
+            result.successful.forEach((item) => updateUploadFilesStatus(item, true, undefined, item.response))
+            result.failed.forEach((item) => updateUploadFilesStatus(item, false, item.error, item.response))
+
+            return result
         } catch (error) {
             addGeneralErrorMessage(t('fileImport.uploadFailed'))
         }

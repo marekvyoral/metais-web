@@ -12,6 +12,7 @@ import { AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-s
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
+import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 
 import { isEffective, selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
 import { CodeListDetailItemsTableExpandedRow } from './CodeListDetailItemsTableExpandedRow'
@@ -102,7 +103,7 @@ export const CodeListDetailItemsTable: React.FC<CodeListDetailItemsTableProps> =
     if (ability.can(Actions.BULK_ACTIONS, Subjects.ITEM)) {
         columns.push(
             {
-                id: 'checkbox',
+                id: CHECKBOX_CELL,
                 header: ({ table }) => {
                     const rowsWithoutDisabled = table
                         .getRowModel()

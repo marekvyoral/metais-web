@@ -102,7 +102,7 @@ export const CodeListListContainer: React.FC<CodeListContainerProps> = ({ isOnly
         isFetching: isLoadingRoleParticipants,
         isError: isErrorRoleParticipants,
         isFetching: isFetchingCiList,
-    } = useGetRoleParticipantBulk({ gids }, { query: { enabled: !!codelistHeadersData?.codelists?.length } })
+    } = useGetRoleParticipantBulk({ gids }, { query: { enabled: !!gids.length } })
 
     const isLoading = [isLoadingCodelistHeaders, isLoadingRoleParticipants && isFetchingCiList].some((item) => item)
     const isError = [isErrorCodelistHeaders, isErrorRoleParticipants].some((item) => item)

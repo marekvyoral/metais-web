@@ -1,17 +1,24 @@
-import { BaseModal, Button, TextBody, TextHeading, TransparentButtonWrapper } from '@isdd/idsk-ui-kit/index'
+import { BaseModal, Button, TextBody, TextHeading } from '@isdd/idsk-ui-kit/index'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useUppy } from '@isdd/metais-common/hooks/useUppy'
 import { FileImportStepEnum } from '@isdd/metais-common/index'
-import { ExportIcon, CloseIcon, ErrorTriangleIcon } from '@isdd/metais-common/assets/images'
+import { ExportIcon } from '@isdd/metais-common/assets/images'
 import { FileImportDragDrop } from '@isdd/metais-common/components/file-import/FileImportDragDrop'
 import { StatusBar } from '@uppy/react'
 import { FileImportList } from '@isdd/metais-common/components/file-import/FileImportList'
+import { useNavigate } from 'react-router-dom'
+import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
+import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 
 import styles from './importCodeListModal.module.scss'
 
+import { IsSuccessActions } from '@/components/views/codeLists/CodeListDetailWrapper'
+
 export interface ImportCodeListModalProps {
     code: string
+    id: number
     isRequest?: boolean
     isOpen: boolean
     onClose: () => void
@@ -25,9 +32,12 @@ const getEndpointPath = (isValidation: boolean, isRequest: boolean) => {
     }
 }
 
-export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, isRequest = false, isOpen, onClose }) => {
+export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, id, isRequest = false, isOpen, onClose }) => {
     const { t } = useTranslation()
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
+    const navigate = useNavigate()
+    const { invalidate } = useInvalidateCodeListCache()
+    const { setIsActionSuccess } = useActionSuccess()
 
     const baseURL = import.meta.env.VITE_REST_CLIENT_CODELIST_REPO_TARGET_URL
     const endpointUrl = `${baseURL}${getEndpointPath(fileImportStep === FileImportStepEnum.VALIDATE, isRequest)}`
@@ -68,13 +78,29 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
 
                 result.successful.forEach((item) => updateUploadFilesStatus(item, true))
                 result.failed.forEach((item) => {
-                    const errorMessage = item.response?.body.message ? `${item.name}: ${t(`errors.codeList.${item.response?.body.message}`)}` : ' '
+                    const errorMessage = `${item.name}: ${t([
+                        `errors.codeList.${item.response?.body.message}`,
+                        'errors.codeList.uploadValidationFallbackError',
+                    ])}`
+
                     updateUploadFilesStatus(item, false, errorMessage)
                 })
             })
         } catch (error) {
-            addGeneralErrorMessage(t('fileImport.uploadFailed'))
+            addGeneralErrorMessage(t('feedback.mutationErrorMessage'))
         }
+    }
+
+    const processUpload = () => {
+        handleUpload().then((response) => {
+            const body = response?.successful.find((item) => item.response?.body)?.response?.body
+            invalidate(code, id)
+            if (body?.newId) {
+                const path = `${isRequest ? NavigationSubRoutes.REQUESTLIST : NavigationSubRoutes.CODELIST}/${body?.newId}`
+                setIsActionSuccess({ value: true, path, additionalInfo: { action: IsSuccessActions.IMPORT } })
+                navigate(path)
+            }
+        })
     }
 
     return (
@@ -86,25 +112,14 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
 
             <FileImportDragDrop uppy={uppy} hideNoSelectedFileToImport={currentFiles.length > 0} />
 
-            {generalErrorMessages.length > 0 && (
-                <div className={styles.errorWrapper}>
-                    <TransparentButtonWrapper onClick={() => removeGeneralErrorMessages()}>
-                        <img src={CloseIcon} />
-                    </TransparentButtonWrapper>
-                    <ul>
-                        {generalErrorMessages.map((error, index) => (
-                            <li key={index} className={styles.errorMessages}>
-                                <img src={ErrorTriangleIcon} />
-                                <TextBody size="S" className={styles.textError}>
-                                    {error}
-                                </TextBody>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-
             <div>
+                {fileImportStep === FileImportStepEnum.DONE && (
+                    <div className={styles.centeredButtons}>
+                        <TextBody size="L" className={styles.greenBoldText}>
+                            {t('fileImport.done')}
+                        </TextBody>
+                    </div>
+                )}
                 <StatusBar
                     className={styles.statusBar}
                     uppy={uppy}
@@ -126,7 +141,7 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
             <div className={styles.centeredButtons}>
                 <Button onClick={handleCancelImport} label={t('fileImport.cancel')} variant="secondary" />
                 <Button
-                    onClick={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : handleUpload}
+                    onClick={fileImportStep === FileImportStepEnum.VALIDATE ? handleValidate : processUpload}
                     label={fileImportStep === FileImportStepEnum.VALIDATE ? t('fileImport.validate') : t('fileImport.import')}
                     disabled={currentFiles.length === 0}
                 />

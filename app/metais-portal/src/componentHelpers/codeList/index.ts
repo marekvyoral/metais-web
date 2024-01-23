@@ -10,14 +10,13 @@ import { formatDateForDefaultValue, formatDateTimeForDefaultValue } from '@isdd/
 import { IFieldTextRow } from '@/components/views/codeLists/CodeListEditView'
 import { IItemForm } from '@/components/views/codeLists/components/modals/ItemFormModal/ItemFormModal'
 
-export const _entityName = 'requestList'
 export const API_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"
 export const DEFAULT_EMPTY_NOTE: IFieldTextRow[] = [{ id: 0, text: '' }]
 
 export interface IEditCodeListForm {
     base?: boolean
     code: string
-    codeListName?: ApiCodelistName
+    codeListNames: ApiCodelistName[]
     newCodeListName?: ApiCodelistName
     codeListNotes?: IFieldTextRow[]
     codeListSource?: IFieldTextRow[]
@@ -40,11 +39,12 @@ export enum ApiCodeListActions {
     TEMPORAL_CODELIST_TO_PUBLISHED = 'temporalCodelistToPublished',
     TEMPORAL_CODELIST_TO_READY_TO_PUBLISH = 'temporalCodelistToReadyToPublish',
     TEMPORAL_CODELIST_TO_UPDATING = 'temporalCodelistToUpdating',
+    CODELIST_ITEMS_TO_PUBLISH = 'codelistItemsToPublish',
 }
 
 export enum ApiCodeListItemsActions {
-    CODELIST_ITEMS_TO_PUBLISH = 'codelistItemsToPublish',
     SET_DATES = 'setDates',
+    CODELIST_ITEM_TO_READY_TO_PUBLISH = 'codelistItemToReadyToPublish',
     CODELIST_ITEM_BACK_FROM_READY_TO_PUBLISH = 'codelistItemBackFromReadyToPublish',
 }
 
@@ -55,28 +55,30 @@ export enum CodeListItemState {
     UPDATING = 'UPDATING',
 }
 
-const pushOrInit = (currentValue: object[] | undefined, newValue: object) => {
-    if (Array.isArray(currentValue)) {
-        currentValue.push(newValue)
-    }
-    return [newValue]
+interface ApiDataObjectBase {
+    id?: number
+    language?: string
 }
 
-const removeLanguageData = (item: ApiCodelistItem, language: string): ApiCodelistItem => {
-    if (item.codelistItemNames) item.codelistItemNames = item.codelistItemNames?.filter((data) => data.language !== language)
-    if (item.codelistItemAbbreviatedNames)
-        item.codelistItemAbbreviatedNames = item.codelistItemAbbreviatedNames?.filter((data) => data.language !== language)
-    if (item.codelistItemAdditionalContents)
-        item.codelistItemAdditionalContents = item.codelistItemAdditionalContents?.filter((data) => data.language !== language)
-    if (item.codelistItemExcludes) item.codelistItemExcludes = item.codelistItemExcludes?.filter((data) => data.language !== language)
-    if (item.codelistItemIncludes) item.codelistItemIncludes = item.codelistItemIncludes?.filter((data) => data.language !== language)
-    if (item.codelistItemIncludesAlso) item.codelistItemIncludesAlso = item.codelistItemIncludesAlso?.filter((data) => data.language !== language)
-    if (item.codelistItemLogicalOrders) item.codelistItemLogicalOrders = item.codelistItemLogicalOrders?.filter((data) => data.language !== language)
-    if (item.codelistItemNotes) item.codelistItemNotes = item.codelistItemNotes?.filter((data) => data.language !== language)
-    if (item.codelistItemShortenedNames)
-        item.codelistItemShortenedNames = item.codelistItemShortenedNames?.filter((data) => data.language !== language)
+const pushOrUpdate = <T extends ApiDataObjectBase>(data: T[] | undefined, newValue: T, language: string) => {
+    if (!Array.isArray(data)) {
+        return [newValue]
+    }
 
-    return item
+    if (newValue.language) {
+        const oldCurrentLanguageData = data.find((item) => item.language === language)
+        if (oldCurrentLanguageData) {
+            return [
+                ...data.filter((item) => item.language !== language),
+                {
+                    ...newValue,
+                    id: oldCurrentLanguageData.id,
+                },
+            ]
+        }
+    }
+
+    return [...data, newValue]
 }
 
 export const mapCodeListItemToForm = (apiItem: ApiCodelistItem, language: string): IItemForm => {
@@ -105,93 +107,142 @@ export const mapCodeListItemToForm = (apiItem: ApiCodelistItem, language: string
     } as IItemForm
 }
 
-export const mapToCodeListDetail = (language: string, item: IItemForm, oldItem?: ApiCodelistItem): ApiCodelistItem => {
-    const effectiveFrom = item.effectiveFrom ? formatDateTimeForDefaultValue(item.effectiveFrom, API_DATE_FORMAT) : undefined
-    const effectiveTo = item.effectiveTo ? formatDateTimeForDefaultValue(item.effectiveTo, API_DATE_FORMAT) : undefined
+export const removeOtherLanguagesFromItem = (item: ApiCodelistItem, language: string): ApiCodelistItem => {
+    return {
+        ...item,
+        codelistItemNames: item.codelistItemNames?.filter((data) => data.language === language),
+        codelistItemAbbreviatedNames: item.codelistItemAbbreviatedNames?.filter((data) => data.language === language),
+        codelistItemAdditionalContents: item.codelistItemAdditionalContents?.filter((data) => data.language === language),
+        codelistItemExcludes: (item.codelistItemExcludes = item.codelistItemExcludes?.filter((data) => data.language === language)),
+        codelistItemIncludes: (item.codelistItemIncludes = item.codelistItemIncludes?.filter((data) => data.language === language)),
+        codelistItemIncludesAlso: (item.codelistItemIncludesAlso = item.codelistItemIncludesAlso?.filter((data) => data.language === language)),
+        codelistItemLogicalOrders: (item.codelistItemLogicalOrders = item.codelistItemLogicalOrders?.filter((data) => data.language === language)),
+        codelistItemNotes: (item.codelistItemNotes = item.codelistItemNotes?.filter((data) => data.language === language)),
+        codelistItemShortenedNames: item.codelistItemShortenedNames?.filter((data) => data.language === language),
+    }
+}
 
-    let newItem = {
+export const mapFormToCodeListItem = (language: string, formItem: IItemForm, oldItem?: ApiCodelistItem): ApiCodelistItem => {
+    const effectiveFrom = formItem.effectiveFrom ? formatDateTimeForDefaultValue(formItem.effectiveFrom, API_DATE_FORMAT) : undefined
+    const effectiveTo = formItem.effectiveTo ? formatDateTimeForDefaultValue(formItem.effectiveTo, API_DATE_FORMAT) : undefined
+
+    const newItem = {
+        ...oldItem,
         temporal: false,
-        codelistItemState: CodeListItemState.PUBLISHED,
+        codelistItemState: CodeListItemState.NEW,
         published: false,
     } as ApiCodelistItem
 
-    if (oldItem) {
-        newItem = {
-            ...oldItem,
-            temporal: oldItem.temporal,
-            codelistItemState: oldItem.codelistItemState,
-            published: oldItem.published,
-        } as ApiCodelistItem
+    newItem.id = formItem.id ? Number(formItem.id) : undefined
+    newItem.itemCode = formItem.code
+    newItem.itemUri = formItem.refIdent
+    newItem.validFrom = formItem.effectiveFrom ? formatDateTimeForDefaultValue(formItem.effectiveFrom, API_DATE_FORMAT) : ''
 
-        newItem = removeLanguageData(newItem, language)
+    if (formItem.name) {
+        newItem.codelistItemNames = pushOrUpdate(newItem.codelistItemNames, { value: formItem.name, language, effectiveFrom, effectiveTo }, language)
     }
-
-    newItem.id = item.id ? Number(item.id) : undefined
-    newItem.itemCode = item.code
-    newItem.itemUri = item.refIdent
-    newItem.validFrom = item.effectiveFrom ? formatDateTimeForDefaultValue(item.effectiveFrom, API_DATE_FORMAT) : ''
-
-    if (item.name) {
-        newItem.codelistItemNames = pushOrInit(newItem.codelistItemNames, { value: item.name, language, effectiveFrom, effectiveTo })
-    }
-    if (item.shortenedName) {
-        newItem.codelistItemShortenedNames = pushOrInit(newItem.codelistItemShortenedNames, {
-            value: item.shortenedName,
+    if (formItem.shortenedName) {
+        newItem.codelistItemShortenedNames = pushOrUpdate(
+            newItem.codelistItemShortenedNames,
+            {
+                value: formItem.shortenedName,
+                language,
+                effectiveFrom,
+                effectiveTo,
+            },
             language,
+        )
+    }
+    if (formItem.abbreviatedName) {
+        newItem.codelistItemAbbreviatedNames = pushOrUpdate(
+            newItem.codelistItemAbbreviatedNames,
+            {
+                value: formItem.abbreviatedName,
+                language,
+                effectiveFrom,
+                effectiveTo,
+            },
+            language,
+        )
+    }
+    if (formItem.additionalContent) {
+        newItem.codelistItemAdditionalContents = pushOrUpdate(
+            newItem.codelistItemAdditionalContents,
+            {
+                value: formItem.additionalContent,
+                language,
+                effectiveFrom,
+                effectiveTo,
+            },
+            language,
+        )
+    }
+    if (formItem.exclude) {
+        newItem.codelistItemExcludes = pushOrUpdate(
+            newItem.codelistItemExcludes,
+            {
+                value: formItem.exclude,
+                language,
+                effectiveFrom,
+                effectiveTo,
+            },
+            language,
+        )
+    }
+    if (formItem.include) {
+        newItem.codelistItemIncludes = pushOrUpdate(
+            newItem.codelistItemIncludes,
+            {
+                value: formItem.include,
+                language,
+                effectiveFrom,
+                effectiveTo,
+            },
+            language,
+        )
+    }
+    if (formItem.includeAlso) {
+        newItem.codelistItemIncludesAlso = pushOrUpdate(
+            newItem.codelistItemIncludesAlso,
+            {
+                value: formItem.includeAlso,
+                language,
+                effectiveFrom,
+                effectiveTo,
+            },
+            language,
+        )
+    }
+    if (formItem.order) {
+        newItem.codelistItemLogicalOrders = pushOrUpdate(newItem.codelistItemLogicalOrders, { value: String(formItem.order), language }, language)
+    }
+    if (formItem.note) {
+        newItem.codelistItemNotes = pushOrUpdate(newItem.codelistItemNotes, { value: formItem.note, language }, language)
+    }
+    if (formItem.unitOfMeasure) {
+        newItem.codelistItemUnitsOfMeasure = [
+            {
+                value: formItem.unitOfMeasure,
+                effectiveFrom,
+                effectiveTo,
+            },
+        ]
+    }
+    newItem.codelistItemLegislativeValidities = [
+        {
+            validityValue: Boolean(formItem.legislativeValidity),
             effectiveFrom,
             effectiveTo,
-        })
-    }
-    if (item.abbreviatedName) {
-        newItem.codelistItemAbbreviatedNames = pushOrInit(newItem.codelistItemAbbreviatedNames, {
-            value: item.abbreviatedName,
-            language,
+        },
+    ]
+    newItem.codelistItemValidities = [
+        {
             effectiveFrom,
+            effectiveFromValue: effectiveFrom,
             effectiveTo,
-        })
-    }
-    if (item.additionalContent) {
-        newItem.codelistItemAdditionalContents = pushOrInit(newItem.codelistItemAdditionalContents, {
-            value: item.additionalContent,
-            language,
-            effectiveFrom,
-            effectiveTo,
-        })
-    }
-    if (item.exclude) {
-        newItem.codelistItemExcludes = pushOrInit(newItem.codelistItemExcludes, { value: item.exclude, language, effectiveFrom, effectiveTo })
-    }
-    if (item.include) {
-        newItem.codelistItemIncludes = pushOrInit(newItem.codelistItemIncludes, { value: item.include, language, effectiveFrom, effectiveTo })
-    }
-    if (item.includeAlso) {
-        newItem.codelistItemIncludesAlso = pushOrInit(newItem.codelistItemIncludesAlso, {
-            value: item.includeAlso,
-            language,
-            effectiveFrom,
-            effectiveTo,
-        })
-    }
-    if (item.order) {
-        newItem.codelistItemLogicalOrders = pushOrInit(newItem.codelistItemLogicalOrders, { value: String(item.order), language })
-    }
-    if (item.note) {
-        newItem.codelistItemNotes = pushOrInit(newItem.codelistItemNotes, { value: item.note, language })
-    }
-    if (item.unitOfMeasure) {
-        newItem.codelistItemUnitsOfMeasure = pushOrInit(newItem.codelistItemUnitsOfMeasure, { value: item.unitOfMeasure, effectiveFrom, effectiveTo })
-    }
-    newItem.codelistItemLegislativeValidities = pushOrInit(newItem.codelistItemLegislativeValidities, {
-        validityValue: Boolean(item.legislativeValidity),
-        effectiveFrom,
-        effectiveTo,
-    })
-    newItem.codelistItemValidities = pushOrInit(newItem.codelistItemValidities, {
-        effectiveFrom,
-        effectiveFromValue: effectiveFrom,
-        effectiveTo,
-        effectiveToValue: effectiveTo,
-    })
+            effectiveToValue: effectiveTo,
+        },
+    ]
 
     return newItem
 }
@@ -210,21 +261,23 @@ export const mapCodeListToEditForm = (code: ApiCodelistPreview | undefined, lang
     return {
         base: code.base || false,
         code: code.code ?? '',
-        codeListName: code.codelistNames
-            ?.filter((item) => item.language === language)
-            .map((name) => ({
-                ...name,
-                effectiveFrom: name.effectiveFrom ? formatDateForDefaultValue(name.effectiveFrom) : '',
-                effectiveTo: name.effectiveTo ? formatDateForDefaultValue(name.effectiveTo) : '',
-            }))
-            ?.at(0),
+        codeListNames:
+            code.codelistNames
+                ?.filter((item) => item.language === language)
+                .map((name) => ({
+                    ...name,
+                    effectiveFrom: name.effectiveFrom ? formatDateForDefaultValue(name.effectiveFrom) : '',
+                    effectiveTo: name.effectiveTo ? formatDateForDefaultValue(name.effectiveTo) : '',
+                })) ?? [],
         codeListNotes:
             code?.codelistNotes?.length === 0
                 ? DEFAULT_EMPTY_NOTE
-                : code.codelistNotes?.map((note) => ({
-                      id: note.id ?? 0,
-                      text: note.value ?? '',
-                  })) ?? DEFAULT_EMPTY_NOTE,
+                : code.codelistNotes
+                      ?.filter((item) => item.language === language)
+                      ?.map((note) => ({
+                          id: note.id ?? 0,
+                          text: note.value ?? '',
+                      })) ?? DEFAULT_EMPTY_NOTE,
         codeListSource:
             code.codelistSource?.length === 0
                 ? DEFAULT_EMPTY_NOTE
@@ -298,6 +351,34 @@ const mapFormNextGestorsToApi = (formData: IEditCodeListForm, code: ApiCodelistP
     return newGestors
 }
 
+export const mapFormCodelistNamesToApi = (formData: IEditCodeListForm, code: ApiCodelistPreview | undefined, language: string): ApiCodelistName[] => {
+    const otherLanguageNames = code?.codelistNames?.filter((name) => name.language !== language) ?? []
+    const currentLanguageNames = formData.codeListNames?.length
+        ? formData.codeListNames.map((item) => ({
+              ...item,
+              language,
+              effectiveFrom: item.effectiveFrom ? formatDateTimeForDefaultValue(item.effectiveFrom, API_DATE_FORMAT) : '',
+              effectiveTo: item.effectiveTo ? formatDateTimeForDefaultValue(item.effectiveTo, API_DATE_FORMAT) : '',
+          }))
+        : []
+    const newNames = formData.newCodeListName?.value
+        ? [
+              {
+                  ...formData.newCodeListName,
+                  language,
+                  effectiveFrom: formData.newCodeListName?.effectiveFrom
+                      ? formatDateTimeForDefaultValue(formData.newCodeListName.effectiveFrom, API_DATE_FORMAT)
+                      : '',
+                  effectiveTo: formData.newCodeListName?.effectiveTo
+                      ? formatDateTimeForDefaultValue(formData.newCodeListName.effectiveTo, API_DATE_FORMAT)
+                      : '',
+              },
+          ]
+        : []
+
+    return [...otherLanguageNames, ...currentLanguageNames, ...newNames]
+}
+
 export const mapEditFormDataToCodeList = (
     formData: IEditCodeListForm,
     code: ApiCodelistPreview | undefined,
@@ -307,32 +388,7 @@ export const mapEditFormDataToCodeList = (
         ...code,
         base: formData.base,
         code: formData.code,
-        codelistNames: [
-            {
-                ...formData.codeListName,
-                language,
-                effectiveFrom: formData.codeListName?.effectiveFrom
-                    ? formatDateTimeForDefaultValue(formData.codeListName.effectiveFrom, API_DATE_FORMAT)
-                    : '',
-                effectiveTo: formData.codeListName?.effectiveTo
-                    ? formatDateTimeForDefaultValue(formData.codeListName.effectiveTo, API_DATE_FORMAT)
-                    : '',
-            },
-            ...(formData.newCodeListName?.value
-                ? [
-                      {
-                          ...formData.newCodeListName,
-                          language,
-                          effectiveFrom: formData.newCodeListName?.effectiveFrom
-                              ? formatDateTimeForDefaultValue(formData.newCodeListName.effectiveFrom, API_DATE_FORMAT)
-                              : '',
-                          effectiveTo: formData.newCodeListName?.effectiveTo
-                              ? formatDateTimeForDefaultValue(formData.newCodeListName.effectiveTo, API_DATE_FORMAT)
-                              : '',
-                      },
-                  ]
-                : []),
-        ],
+        codelistNames: mapFormCodelistNamesToApi(formData, code, language),
         mainCodelistManagers: mapFormMainGestorsToApi(formData, code),
         codelistManagers: mapFormNextGestorsToApi(formData, code),
         codelistNotes: formData.codeListNotes?.filter((note) => note?.text !== '').map((note) => ({ id: note.id, value: note.text, language })),

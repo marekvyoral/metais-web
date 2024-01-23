@@ -13,19 +13,21 @@ import {
     SelectLazyLoading,
     TextArea,
     TextHeading,
+    TextWarning,
 } from '@isdd/idsk-ui-kit/index'
+import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { NavigationSubRoutes, RouteNames } from '@isdd/metais-common/navigation/routeNames'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
 import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useCodeListPermissions'
 
 import { useEditCodeListSchema } from './useEditCodeListSchemas'
-import { getDescription, getName } from './CodeListDetailUtils'
+import { getDescription, getName, selectBasedOnLanguageAndDate } from './CodeListDetailUtils'
 
 import { IEditCodeListForm, DEFAULT_EMPTY_NOTE, mapCodeListToEditForm } from '@/componentHelpers/codeList'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
@@ -45,7 +47,7 @@ export interface IFieldTextRow {
 export enum RequestFormEnum {
     BASE = 'base',
     CODE = 'code',
-    CODE_LIST_NAME = 'codeListName',
+    CODE_LIST_NAMES = 'codeListNames',
     NEW_CODE_LIST_NAME = 'newCodeListName',
     CODE_LIST_NOTES = 'codeListNotes',
     CODE_LIST_SOURCE = 'codeListSource',
@@ -63,14 +65,13 @@ export enum RequestFormEnum {
 
 export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
     data,
+    workingLanguage,
     isError,
     errorMessages,
     isLoading,
     isLoadingMutation,
     loadOptions,
     handleSave,
-    handleDiscardChanges,
-    handleRemoveLock,
 }) => {
     const {
         t,
@@ -80,8 +81,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
     const { schema } = useEditCodeListSchema()
     const { codeList, defaultManagers, attributeProfile } = data
     const mappedData = useMemo(() => {
-        return mapCodeListToEditForm(codeList, language)
-    }, [codeList, language])
+        return mapCodeListToEditForm(codeList, workingLanguage)
+    }, [codeList, workingLanguage])
     const [isNewGestor, setNewGestor] = useState<boolean>(false)
     const [isNewCodeListName, setNewCodeListName] = useState<boolean>(false)
     const [nextGestorList, setNextGestorList] = useState<IOption[] | undefined>(undefined)
@@ -111,8 +112,8 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
     }
 
     const codeListName = useMemo(() => {
-        return data?.codeList?.codelistNames?.find((i) => i.language == language)?.value
-    }, [data?.codeList?.codelistNames, language])
+        return String(selectBasedOnLanguageAndDate(data.codeList?.codelistNames, workingLanguage, true))
+    }, [data?.codeList?.codelistNames, workingLanguage])
 
     const nextGestorDefault = useMemo(() => {
         return mappedData?.nextGestor?.map((gestor) => ({
@@ -143,6 +144,21 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                     <QueryFeedback loading={isLoading} error={isError} withChildren>
                         {isLoadingMutation && <LoadingIndicator label={t('feedback.saving')} />}
                         <TextHeading size="XL">{t('codeListList.edit.title')}</TextHeading>
+                        <TextWarning>
+                            {t(`codeListDetail.warning.workingLanguageNotice`, { language: t(`codeListDetail.languages.${workingLanguage}`) })}
+                        </TextWarning>
+                        <TextWarning>
+                            {t(`codeListDetail.warning.updatingVersion`, {
+                                user: data.codeList?.lockedBy,
+                                day: t('date', { date: data.codeList?.lockedFrom }),
+                            })}
+                            <br />
+                            <Link to={`${NavigationSubRoutes.CODELIST}/${data.codeListOriginal?.id}`} state={{ from: location }} target="_blank">
+                                {t('codeListDetail.button.showOriginalInNewWindow')}
+                            </Link>
+                        </TextWarning>
+                        <TextWarning>{t(`codeListDetail.warning.codelistLocked`)}</TextWarning>
+                        <Spacer vertical />
                         <form onSubmit={handleSubmit(onHandleSubmit)}>
                             <div className={styles.bottomGap}>
                                 <CheckBox
@@ -153,35 +169,39 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                                     name={RequestFormEnum.BASE}
                                 />
                             </div>
-                            <Input
-                                required
-                                label={getDescription('Gui_Profil_ZC_nazov_ciselnika', language, attributeProfile)}
-                                info={getName('Gui_Profil_ZC_nazov_ciselnika', language, attributeProfile)}
-                                id={`${RequestFormEnum.CODE_LIST_NAME}.value`}
-                                {...register(`${RequestFormEnum.CODE_LIST_NAME}.value`)}
-                                error={formState.errors[RequestFormEnum.CODE_LIST_NAME]?.value?.message}
-                            />
-                            <GridRow className={styles.dateGap}>
-                                <GridCol setWidth="one-half">
+                            {mappedData?.codeListNames?.map((_codeListName, index) => (
+                                <>
                                     <Input
                                         required
-                                        label={t('codeListList.edit.dateFrom')}
-                                        id={`${RequestFormEnum.CODE_LIST_NAME}.effectiveFrom`}
-                                        {...register(`${RequestFormEnum.CODE_LIST_NAME}.effectiveFrom`)}
-                                        type="date"
-                                        error={formState.errors[RequestFormEnum.CODE_LIST_NAME]?.effectiveFrom?.message}
+                                        label={getDescription('Gui_Profil_ZC_nazov_ciselnika', language, attributeProfile)}
+                                        info={getName('Gui_Profil_ZC_nazov_ciselnika', language, attributeProfile)}
+                                        id={`${RequestFormEnum.CODE_LIST_NAMES}.value`}
+                                        {...register(`${RequestFormEnum.CODE_LIST_NAMES}.[${index}].value`)}
+                                        error={formState.errors[RequestFormEnum.CODE_LIST_NAMES]?.[index]?.value?.message}
                                     />
-                                </GridCol>
-                                <GridCol setWidth="one-half">
-                                    <Input
-                                        label={t('codeListList.edit.dateTo')}
-                                        id={`${RequestFormEnum.CODE_LIST_NAME}.effectiveTo`}
-                                        {...register(`${RequestFormEnum.CODE_LIST_NAME}.effectiveTo`)}
-                                        type="date"
-                                        error={formState.errors[RequestFormEnum.CODE_LIST_NAME]?.effectiveTo?.message}
-                                    />
-                                </GridCol>
-                            </GridRow>
+                                    <GridRow className={styles.dateGap}>
+                                        <GridCol setWidth="one-half">
+                                            <Input
+                                                required
+                                                label={t('codeListList.edit.dateFrom')}
+                                                id={`${RequestFormEnum.CODE_LIST_NAMES}.effectiveFrom`}
+                                                {...register(`${RequestFormEnum.CODE_LIST_NAMES}.[${index}].effectiveFrom`)}
+                                                type="date"
+                                                error={formState.errors[RequestFormEnum.CODE_LIST_NAMES]?.[index]?.effectiveFrom?.message}
+                                            />
+                                        </GridCol>
+                                        <GridCol setWidth="one-half">
+                                            <Input
+                                                label={t('codeListList.edit.dateTo')}
+                                                id={`${RequestFormEnum.CODE_LIST_NAMES}.effectiveTo`}
+                                                {...register(`${RequestFormEnum.CODE_LIST_NAMES}.[${index}].effectiveTo`)}
+                                                type="date"
+                                                error={formState.errors[RequestFormEnum.CODE_LIST_NAMES]?.[index]?.effectiveTo?.message}
+                                            />
+                                        </GridCol>
+                                    </GridRow>
+                                </>
+                            ))}
 
                             <ButtonLink
                                 className={styles.bottomGap}
@@ -521,28 +541,13 @@ export const CodeListEditView: React.FC<EditCodeListContainerViewProps> = ({
                             ))}
 
                             <ButtonGroupRow className={styles.buttonGroupEdit}>
-                                <ButtonLink
-                                    type="button"
-                                    className={styles.buttonLock}
-                                    label={t('codeListList.edit.removeLock')}
-                                    onClick={handleRemoveLock}
-                                />
-
                                 <Button
                                     label={t('form.cancel')}
                                     type="reset"
                                     variant="secondary"
                                     onClick={() => navigate(`${NavigationSubRoutes.CODELIST}/${data.codeList?.id}`)}
                                 />
-
                                 <Button label={t('codeListDetail.button.save')} type="submit" />
-
-                                <ButtonLink
-                                    className={styles.buttonDiscard}
-                                    label={t('codeListList.edit.discardUpdating')}
-                                    type="button"
-                                    onClick={handleDiscardChanges}
-                                />
                             </ButtonGroupRow>
                         </form>
                     </QueryFeedback>

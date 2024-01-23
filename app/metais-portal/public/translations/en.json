@@ -330,6 +330,7 @@
         "fixLink": "Correct",
         "invalidEntityId": "Invalid entity",
         "codeList": {
+            "uploadValidationFallbackError": "File validation error. Check the correctness of the data.",
             "cl.missing.header.name": "Invalid request. Name of the codelist is required.",
             "cl.missing.header.master.manager": "Invalid request. Main authority of codelist is mandatory.",
             "cl.missing.header.validity": "Invalid request. Validity of the codelist is required.",
@@ -1267,6 +1268,7 @@
             "effective": "Effective as of today"
         },
         "languages": {
+            "sk": "Slovak",
             "en": "English",
             "de": "German",
             "hu": "Hungarian"
@@ -1283,13 +1285,16 @@
         },
         "feedback": {
             "editCodeListItems": "Codelist items have been changed",
+            "editItemSuccess": "Codelist item has been changed",
+            "createItemSuccess": "Codelist item has been created",
             "translationCreated": "The language version of codelist has been created. You can now add translation of items in this language.",
             "translationWarning": "The language version of the codelist should be published only when completely translated.",
             "returnToMainGestor": "Codelist was returned for revision.",
             "sendToSzzc": "Request has been sent to administrator of BC list.",
             "publishCodeListItems": "Codelist items were published.",
             "requestRejected": "This request was rejected on {{day}}. Reason for rejection: {{cause}}",
-            "requestSentToKSISVS": "This request was sent for approval to the Committee for Standardization ISPA on {{day}}."
+            "requestSentToKSISVS": "This request was sent for approval to the Committee for Standardization ISPA on {{day}}.",
+            "importDone": "Codelist import was successful"
         },
         "modal": {
             "title": {
@@ -1302,7 +1307,9 @@
                 "sendToIsvs": "Move to the Committee for Standardization ISPA",
                 "sendToSzzc": "Sent to headers list administrator",
                 "returnToMainGestor": "Return codelist to main gestor",
-                "publishCodeList": "Publish codelist"
+                "publishCodeList": "Publish codelist",
+                "removeLock": "Cancel lock",
+                "discardUpdating": "Discard version in-progress"
             },
             "form": {
                 "validFrom": "Valid from:",
@@ -1337,12 +1344,17 @@
             "addNewItem": "Add new item",
             "markItemReadyForPublishing": "Mark as ready for publishing",
             "markReadyForPublishingBulk": "Mark as ready for publishing",
-            "setDatesBulk": "Fill in the validity date and effective start date"
+            "setDatesBulk": "Fill in the validity date and effective start date",
+            "removeLock": "Cancel lock",
+            "discardUpdating": "Discard version in-progress",
+            "showOriginalInNewWindow": "Open previous version in a new window"
         },
         "warning": {
+            "codelistLocked": "By making changes you have automatically locked the counter and its items to prevent third party modifications",
             "itemLocked": "This is a version in-progress by authorized user {{user}} as of {{day}}",
-            "workVersion": "This is a version in-progress.",
-            "updatingVersion": "You are modifying a version in-progress by authorized user {{user}} as of {{day}}."
+            "workVersion": "This is a version in-progress",
+            "updatingVersion": "You are modifying a version in-progress by authorized user {{user}} as of {{day}}",
+            "workingLanguageNotice": "You are modifying language: {{language}}"
         },
         "validation": {
             "code": "Codelist ID is required field",
@@ -1373,9 +1385,7 @@
             "cancelAddNewGestor": "Cancel adding a new main manager",
             "addNewRow": "Add a new row",
             "addNewVersionName": "Add a new version of the title",
-            "cancelAddNewVersionName": "Cancel new version of name",
-            "removeLock": "Cancel lock",
-            "discardUpdating": "Discard version in-progress"
+            "cancelAddNewVersionName": "Cancel new version of name"
         },
         "requestCreate": {
             "btnCheck": "Check",
@@ -1413,9 +1423,9 @@
         "requestModal": {
             "yes": "Yes",
             "no": "No",
-            "validate": "Dátum platnosti",
-            "startDate": "Začiatok účinnosti",
-            "endDate": "Koniec účinnosti",
+            "validate": "Expiry date",
+            "startDate": "Effective from",
+            "endDate": "Effective to",
             "acceptTitle": "Accepting request",
             "acceptDesc": "By accepting request is base counter draft sent for approval to the Committee for Standardization of ISPA. Upon its approval it is moved to counter list and relevant authority will be asked to complete counter items within the statutory deadline.",
             "acceptSzzcTitle": "Accept by headers list administrator",

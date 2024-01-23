@@ -9,7 +9,6 @@ import {
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 import React, { useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
 import { RequestListState } from '@isdd/metais-common/constants'
 import { useNavigate } from 'react-router-dom'
@@ -28,10 +27,13 @@ import { getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 export interface CreateRequestViewProps {
     requestId?: string
+    workingLanguage: string
     isLoading: boolean
     isLoadingMutation: boolean
     isError: boolean
     errorMessages: string[]
+    isSuccessSetDates?: boolean
+    errorMessageSetDates?: string
     attributeProfile: AttributeProfile
     canEdit?: boolean
     firstNotUsedCode?: string
@@ -61,9 +63,12 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     const {
         state: { user },
     } = useAuth()
-    const { i18n } = useTranslation()
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
+
+    // WorkingLanguage is forced to system default 'sk' for requests.
+    // Content is created and displayed in only one language.
+    const workingLanguage = 'sk'
 
     const addOrGetGroupHook = useAddOrGetGroupHook()
     const { invalidate } = useInvalidateCodeListRequestCache()
@@ -125,7 +130,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
 
     const onSave = async (formData: IRequestForm) => {
         const uuid = getRoleUUID(user?.groupData ?? [], Roles.SZC_HLGES)
-        const saveData = mapFormToSave(formData, i18n.language)
+        const saveData = mapFormToSave(formData, workingLanguage)
         setAddOrGetGroupError(undefined)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
@@ -149,7 +154,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
         setAddOrGetGroupError(undefined)
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
-                mutateSendASync({ data: mapFormToSave(formData, i18n.language) }).then(() => {
+                mutateSendASync({ data: mapFormToSave(formData, workingLanguage) }).then(() => {
                     invalidate()
                     setIsActionSuccess({
                         value: true,
@@ -172,6 +177,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     return (
         <RequestListPermissionsWrapper>
             <View
+                workingLanguage={workingLanguage}
                 isError={isError}
                 errorMessages={errorMessages}
                 isLoading={isLoading}

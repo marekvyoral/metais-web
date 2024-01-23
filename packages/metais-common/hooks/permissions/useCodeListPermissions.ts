@@ -27,6 +27,8 @@ export enum Actions {
     SEND_TO = 'sendTo',
     PUBLISH = 'publish',
     BULK_ACTIONS = 'bulk_actions',
+    UNLOCK = 'unlock',
+    DISCARD = 'discard',
 }
 
 export enum Subjects {
@@ -81,6 +83,7 @@ export const useCodeListPermissions = (id: string) => {
         const isManager = user?.roles.some((role: string) => role === 'SZC_SZZC') ?? false
         const state = codeListData?.codelistState ?? ''
         const baseOnTempAndOrigin = !codeListOriginalData?.base && !codeListData?.base
+        const isLocked = codeListData?.locked
         const isTemporal = codeListData?.temporal
 
         if (isMainGestor || isManager) can(Actions.IMPORT, Subjects.DETAIL)
@@ -90,8 +93,15 @@ export const useCodeListPermissions = (id: string) => {
             state !== CodeListState.KS_ISVS_ACCEPTED &&
             state !== CodeListState.ISVS_PROCESSING &&
             state !== CodeListState.READY_TO_PUBLISH
-        )
+        ) {
             can(Actions.EDIT, Subjects.DETAIL)
+            if (isLocked) {
+                can(Actions.UNLOCK, Subjects.DETAIL)
+            }
+            if (isTemporal) {
+                can(Actions.DISCARD, Subjects.DETAIL)
+            }
+        }
         if ((isMainGestor && baseOnTempAndOrigin && state === CodeListState.UPDATING) || (isMainGestor && state === CodeListState.KS_ISVS_ACCEPTED))
             can(Actions.PUBLISH, Subjects.DETAIL)
         if (isMainGestor || isManager) can(Actions.PUBLISH, Subjects.ITEM, 'all')
@@ -115,6 +125,7 @@ export const useCodeListPermissions = (id: string) => {
         abilityContext,
         codeListData?.base,
         codeListData?.codelistState,
+        codeListData?.locked,
         codeListData?.temporal,
         codeListOriginalData?.base,
         mainGestorIds?.gids,

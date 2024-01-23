@@ -9,7 +9,7 @@ interface IOutput {
     schema: ObjectSchema<{
         base?: boolean
         code: string
-        codeListName?: ApiCodelistName
+        codeListNames: ApiCodelistName[]
         newCodeListName?: ApiCodelistName
         codeListNotes?: IFieldTextRow[]
         codeListSource?: IFieldTextRow[]
@@ -26,7 +26,7 @@ interface IOutput {
     }>
 }
 
-const effectiveToGreaterThanEffectiveFrom = (value: string | undefined, context: TestContext) => {
+export const effectiveToGreaterThanEffectiveFrom = (value: string | undefined, context: TestContext) => {
     const effectiveFrom = context.from?.[0].value.effectiveFrom
     if (!value || !effectiveFrom) return true
     return new Date(effectiveFrom) < new Date(value)
@@ -40,18 +40,29 @@ export const useEditCodeListSchema = (): IOutput => {
             .required(t('codeListList.requestValidations.codelistCode'))
             .matches(/CL0[0-9]{5}/, t('codeListList.requestValidations.codelistCodeFormat'))
             .length(8, t('codeListList.requestValidations.codelistCodeFormat')),
-        codeListName: object().shape({
-            value: string().required(t('codeListList.requestValidations.codelistName')),
-            effectiveFrom: string().required(t('codeListList.requestValidations.dateFrom')),
-            effectiveTo: string(),
-        }),
+        codeListNames: array()
+            .of(
+                object().shape({
+                    value: string().required(t('codeListList.requestValidations.codelistName')),
+                    effectiveFrom: string().when('value', {
+                        is: (value: string | undefined) => value && value.length > 0,
+                        then: () => string().required(t('codeListList.requestValidations.dateFrom')),
+                    }),
+                    effectiveTo: string().test(
+                        'largerThan',
+                        t('codeListList.requestValidations.dateGreaterThan'),
+                        effectiveToGreaterThanEffectiveFrom,
+                    ),
+                }),
+            )
+            .defined(),
         newCodeListName: object().shape({
             value: string(),
             effectiveFrom: string().when('value', {
                 is: (value: string | undefined) => value && value.length > 0,
                 then: () => string().required(t('codeListList.requestValidations.dateFrom')),
             }),
-            effectiveTo: string(),
+            effectiveTo: string().test('largerThan', t('codeListList.requestValidations.dateGreaterThan'), effectiveToGreaterThanEffectiveFrom),
         }),
         codeListNotes: array().of(
             object().shape({
