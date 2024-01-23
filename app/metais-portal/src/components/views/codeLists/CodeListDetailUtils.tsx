@@ -1,6 +1,7 @@
 import { RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
-import { ApiCodelistItemValidity } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
+import { ApiCodelistItemValidity, ApiCodelistPreview } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { Attribute, AttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
+import { TFunction } from 'i18next'
 
 interface CodeListItemWithLanguageAndDate {
     language?: string
@@ -74,7 +75,7 @@ export const findClosestDateInterval = (languageData: CodeListItemWithLanguageAn
 export const selectBasedOnLanguageAndDate = (
     languageData?: CodeListItemWithLanguageAndDate[],
     language?: string,
-    returnDefaultLanguageOnNotFound = true,
+    returnDefaultLanguageOnNotFound = false,
 ): string | boolean | null => {
     if (!languageData || !languageData.length || !language) return null
 
@@ -106,4 +107,18 @@ export const getName = (technicalName: string, language: string, profile?: Attri
 
 export const getGestorName = (gestors?: RoleParticipantUI[], gid?: string): string => {
     return gestors?.find((gestor) => gestor?.gid === gid)?.configurationItemUi?.attributes?.['Gen_Profil_nazov'] ?? ''
+}
+
+export const getDateIntervalString = (item: CodeListItemWithLanguageAndDate, t: TFunction<'translation', undefined, 'translation'>): string => {
+    if (item.effectiveFrom === null) {
+        return t('codeListDetail.unlimited')
+    }
+    return `${item.effectiveFrom ? t('date', { date: item.effectiveFrom }) : ''} - ${
+        item.effectiveTo ? t('date', { date: item.effectiveTo }) : t('codeListDetail.unlimited')
+    }`
+}
+
+export const getAllWorkingLanguages = (codelist?: ApiCodelistPreview): string[] => {
+    const languages = codelist?.codelistNames?.map((name) => name.language || '') ?? []
+    return languages.filter((item, index) => languages.indexOf(item) === index)
 }

@@ -29,6 +29,7 @@ import { CellContext, ColumnDef, ExpandedState, Row } from '@tanstack/react-tabl
 import { Actions, Subjects } from '@isdd/metais-common/hooks/permissions/useRequestPermissions'
 import { Can, useAbilityContext } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { Pagination, IFilter } from '@isdd/idsk-ui-kit/types/'
+import { CHECKBOX_CELL } from '@isdd/idsk-ui-kit/table/constants'
 
 import { getDescription, getName } from '@/components/views/codeLists/CodeListDetailUtils'
 import { RequestDetailItemsTableExpandedRow } from '@/components/views/requestLists/components/RequestDetailItemsTableExpandedRow'
@@ -54,8 +55,8 @@ export interface IOption {
 }
 
 export interface INoteRow {
-    id: number
-    text: string
+    id?: number
+    text?: string
 }
 
 export enum RequestFormEnum {
@@ -76,10 +77,13 @@ export enum RequestFormEnum {
 }
 
 export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
+    workingLanguage,
     isError,
     errorMessages,
     isLoading,
     isLoadingMutation,
+    errorMessageSetDates,
+    isSuccessSetDates,
     editData,
     onHandleCheckIfCodeIsAvailable,
     firstNotUsedCode,
@@ -91,10 +95,6 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     onSaveDates,
     requestId,
 }) => {
-    // WorkingLanguage is forced to system default 'sk' for requests.
-    // Content is created and displayed in only one language.
-    const workingLanguage = 'sk'
-
     const {
         t,
         i18n: { language },
@@ -127,7 +127,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
     })
 
     const onHandleSubmit = (formData: IRequestForm) => {
-        const res = { ...formData, notes: [...notes], codeLists: [...codeList] }
+        const res = { ...formData, codeLists: [...codeList] }
         isSend ? onSend(res) : onSave(res)
     }
 
@@ -255,7 +255,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
 
     const colDef: ColumnDef<IItemForm>[] = [
         {
-            id: 'checkbox',
+            id: CHECKBOX_CELL,
             header: ({ table }) => {
                 const tableRows = table.getRowModel().rows
                 const checked =
@@ -309,17 +309,17 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
             header: '',
             accessorFn: (row: IItemForm) => row?.codeItem,
             id: 'btn',
-            cell: (ctx: CellContext<IItemForm, unknown>) => (
-                <Button
-                    disabled={!canEdit}
-                    label={t('form.editItem')}
-                    type="submit"
-                    onClick={() => {
-                        setCodeListItem(ctx?.row?.original)
-                        setOpen(true)
-                    }}
-                />
-            ),
+            cell: (ctx: CellContext<IItemForm, unknown>) =>
+                canEdit && (
+                    <Button
+                        label={t('form.editItem')}
+                        type="submit"
+                        onClick={() => {
+                            setCodeListItem(ctx?.row?.original)
+                            setOpen(true)
+                        }}
+                    />
+                ),
         },
     ]
 
@@ -443,7 +443,7 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 </>
                             )}
                             {notes?.map((note, index) => {
-                                const name = (RequestFormEnum.NOTES + index).toString()
+                                const name = `${RequestFormEnum.NOTES}.${index}.text`
                                 return (
                                     <TextArea
                                         key={index}
@@ -454,8 +454,8 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                         }`}
                                         info={getName('Gui_Profil_ZC_poznamka_pre_ciselnik', language, attributeProfile)}
                                         id={name}
-                                        error={formState.errors[RequestFormEnum.NOTES]?.message}
-                                        name={name}
+                                        {...register(name)}
+                                        error={formState.errors[RequestFormEnum.NOTES]?.[index]?.text?.message}
                                     />
                                 )
                             })}
@@ -518,6 +518,11 @@ export const CreateRequestView: React.FC<CreateRequestViewProps> = ({
                                 </GridCol>
                             </GridRow>
                             <TextHeading size="L">{t('codeListList.requestCreate.codeListTableTitle')}</TextHeading>
+                            <MutationFeedback
+                                success={isSuccessSetDates ?? false}
+                                successMessage={t('codeListDetail.feedback.editCodeListItems')}
+                                error={errorMessageSetDates && t([errorMessageSetDates, 'feedback.mutationErrorMessage'])}
+                            />
                             <ActionsOverTable
                                 pagination={{ pageNumber: BASE_PAGE_NUMBER, pageSize: BASE_PAGE_SIZE, dataLength: 0 }}
                                 entityName={''}

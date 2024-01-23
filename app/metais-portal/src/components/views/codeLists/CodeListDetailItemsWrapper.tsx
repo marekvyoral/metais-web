@@ -61,6 +61,7 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
     workingLanguage,
     filter,
     invalidateCodeListDetailCache,
+    onModalOpen,
     handleFilterChange,
     handleMarkForPublish,
     handleSetDates,
@@ -89,11 +90,13 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
     }
 
     const handleOpenEditItem = async (item: ApiCodelistItem) => {
+        onModalOpen()
         setEditingCodeListItem(item)
         setIsItemEditOpen(true)
     }
 
     const handleOpenCreateItem = () => {
+        onModalOpen()
         setEditingCodeListItem(undefined)
         setIsItemEditOpen(true)
     }
@@ -151,10 +154,15 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                                 { value: CodeListFilterEffective.FALSE, label: t('codeListDetail.filter.effective.false') },
                             ]}
                             setValue={setValue}
-                            defaultValue={formFilter.effective || defaultFilterValues.effective}
+                            defaultValue={formFilter.effective}
                         />
                     </div>
                 )}
+            />
+            <MutationFeedback
+                success={isSuccessItemActionMutation}
+                successMessage={t('codeListDetail.feedback.editCodeListItems')}
+                error={undefined}
             />
             <ActionsOverTable
                 pagination={{
@@ -174,16 +182,24 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                     <Can I={Actions.BULK_ACTIONS} a={Subjects.ITEM}>
                         <BulkPopup
                             checkedRowItems={Object.keys(rowSelection).length}
-                            items={() => [
+                            items={(closePopup) => [
                                 <ButtonLink
                                     key={'markReadyForPublishing'}
                                     label={t('codeListDetail.button.markReadyForPublishingBulk')}
-                                    onClick={() => setIsMarkForPublishDialogOpened(true)}
+                                    onClick={() => {
+                                        onModalOpen()
+                                        setIsMarkForPublishDialogOpened(true)
+                                        closePopup()
+                                    }}
                                 />,
                                 <ButtonLink
                                     key={'setDates'}
                                     label={t('codeListDetail.button.setDatesBulk')}
-                                    onClick={() => setIsSetDatesDialogOpened(true)}
+                                    onClick={() => {
+                                        onModalOpen()
+                                        setIsSetDatesDialogOpened(true)
+                                        closePopup()
+                                    }}
                                 />,
                             ]}
                         />
@@ -247,11 +263,6 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                         }}
                     />
                 ))}
-                <MutationFeedback
-                    success={isSuccessItemActionMutation}
-                    successMessage={t('codeListDetail.feedback.editCodeListItems')}
-                    error={undefined}
-                />
             </BaseModal>
             <BaseModal isOpen={isMarkForPublishDialogOpened} close={() => setIsMarkForPublishDialogOpened(false)}>
                 {isLoadingItemAction && <LoadingIndicator label={t('feedback.saving')} />}
@@ -277,11 +288,6 @@ export const CodeListDetailItemsWrapper: React.FC<CodeListDetailItemsViewProps> 
                         }}
                     />
                 ))}
-                <MutationFeedback
-                    success={isSuccessItemActionMutation}
-                    successMessage={t('codeListDetail.feedback.editCodeListItems')}
-                    error={undefined}
-                />
             </BaseModal>
             {isItemEditOpen && (
                 <ItemFormModal

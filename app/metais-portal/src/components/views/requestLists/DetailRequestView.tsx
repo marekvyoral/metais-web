@@ -25,6 +25,7 @@ import { Can } from '@isdd/metais-common/hooks/permissions/useAbilityContext'
 import { ApiCodelistItem } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE, DEFAULT_PAGESIZE_OPTIONS, RequestListState } from '@isdd/metais-common/constants'
+import { Spacer } from '@isdd/metais-common/components/spacer/Spacer'
 
 import { BasicInfoTabView } from '@/components/views/codeLists/components/tabs/BasicInfoTabView'
 import { GestorTabView } from '@/components/views/codeLists/components/tabs/GestorTabView'
@@ -39,6 +40,7 @@ import { DetailRequestViewProps, ApiRequestAction } from '@/components/container
 
 export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
     data,
+    workingLanguage,
     isError,
     isLoading,
     isLoadingMutation,
@@ -48,10 +50,6 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
     onAccept,
     handleFilterChange,
 }) => {
-    // WorkingLanguage is forced to system default 'sk' for requests.
-    // Content is created and displayed in only one language.
-    const workingLanguage = 'sk'
-
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
@@ -74,18 +72,33 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
     const [isImportModalOpen, setIsImportModalOpen] = useState<boolean>(false)
     const [expanded, setExpanded] = useState<ExpandedState>({})
 
+    const breadcrumbs = (
+        <BreadCrumbs
+            withWidthContainer
+            links={[
+                { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
+                { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
+                { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
+                { label: t('codeList.breadcrumbs.requestList'), href: NavigationSubRoutes.REQUESTLIST },
+                { label: data?.detail.code ?? '', href: `${NavigationSubRoutes.REQUESTLIST}/${data?.detail.code}` },
+            ]}
+        />
+    )
+
+    if (!data?.detail.code && isError) {
+        return (
+            <>
+                {breadcrumbs}
+                <MainContentWrapper>
+                    <QueryFeedback error={isError} loading={false} />
+                </MainContentWrapper>
+            </>
+        )
+    }
+
     return (
         <>
-            <BreadCrumbs
-                withWidthContainer
-                links={[
-                    { label: t('codeList.breadcrumbs.home'), href: RouteNames.HOME, icon: HomeIcon },
-                    { label: t('codeList.breadcrumbs.dataObjects'), href: RouteNames.HOW_TO_DATA_OBJECTS },
-                    { label: t('codeList.breadcrumbs.codeLists'), href: RouteNames.HOW_TO_CODELIST },
-                    { label: t('codeList.breadcrumbs.requestList'), href: NavigationSubRoutes.REQUESTLIST },
-                    { label: data?.detail.code ?? '', href: `${NavigationSubRoutes.REQUESTLIST}/${data?.detail.code}` },
-                ]}
-            />
+            {breadcrumbs}
             <Can I={Actions.SHOW} a={Subjects.DETAIL}>
                 <MainContentWrapper>
                     {isSuccess && (
@@ -212,6 +225,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                             workingLanguage={workingLanguage}
                             showState
                         />
+                        <Spacer vertical />
                         <TextHeading size="L">{t('codeListList.requestTitleContact')}</TextHeading>
                         <GestorTabView codeList={data.detail} attributeProfile={data.attributeProfile} />
                         <TextBody>
@@ -289,6 +303,7 @@ export const DetailRequestView: React.FC<DetailRequestViewProps> = ({
                         />
                         <ImportCodeListModal
                             code={data?.detail.code ?? ''}
+                            id={Number(data?.detail.id)}
                             isRequest
                             isOpen={isImportModalOpen}
                             onClose={() => setIsImportModalOpen(false)}

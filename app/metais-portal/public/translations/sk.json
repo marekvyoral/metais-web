@@ -322,6 +322,7 @@
         "fixLink": "Opraviť",
         "invalidEntityId": "Nevalidná entita",
         "codeList": {
+            "uploadValidationFallbackError": "Chyba pri validácii súboru. Skontrolujte správnosť údajov.",
             "cl.missing.header.name": "Nesprávna požiadavka. Názov číselníka je povinný.",
             "cl.missing.header.master.manager": "Nesprávna požiadavka. Hlavný gestor číselníka je povinný.",
             "cl.missing.header.validity": "Nesprávna požiadavka. Platnosť číselníka je povinná.",
@@ -1274,6 +1275,7 @@
             "effective": "Účinnosť k dnešnému dňu"
         },
         "languages": {
+            "sk": "Slovenčina",
             "en": "Angličtina",
             "de": "Nemčina",
             "hu": "Maďarčina"
@@ -1290,13 +1292,16 @@
         },
         "feedback": {
             "editCodeListItems": "Položky číselníka boli zmenené",
+            "editItemSuccess": "Položka číselníka bola zmenená",
+            "createItemSuccess": "Položka číselníka bola vytvorená",
             "translationCreated": "Jazyková verzia číselníka bola vytvorená. Teraz môžete pridávať preklad položiek v tomto jazyku.",
             "translationWarning": "Jazyková verzia číselníka by mala byť publikovaná len kompletne preložená.",
             "returnToMainGestor": "Číselník bol vrátený na prepracovanie.",
             "sendToSzzc": "Požiadavka bola odoslaná správcovi zoznamu ZČ.",
             "publishCodeListItems": "Položky číselníka boli zverejnené.",
             "requestRejected": "Táto žiadosť bola zamietnutá dňa {{day}}. Dôvod zamietnutia: {{cause}}",
-            "requestSentToKSISVS": "Táto žiadosť bola dňa {{day}} odoslaná na schválenie Komisiou pre štandardizáciu ISVS."
+            "requestSentToKSISVS": "Táto žiadosť bola dňa {{day}} odoslaná na schválenie Komisiou pre štandardizáciu ISVS.",
+            "importDone": "Import číselníka bol úspešný"
         },
         "modal": {
             "title": {
@@ -1309,7 +1314,9 @@
                 "sendToIsvs": "Presunúť do Komisie pre štandardizáciu ISVS",
                 "sendToSzzc": "Presunúť na správcu zoznamu ZČ",
                 "returnToMainGestor": "Vrátiť hlavnému gestorovi",
-                "publishCodeList": "Publikovať číselník"
+                "publishCodeList": "Publikovať číselník",
+                "removeLock": "Zrušiť zámok",
+                "discardUpdating": "Zahodiť rozpracovanú verziu"
             },
             "form": {
                 "validFrom": "Platné od:",
@@ -1344,12 +1351,17 @@
             "addNewItem": "Pridať novú položku",
             "markItemReadyForPublishing": "Pripraviť na publikovanie",
             "markReadyForPublishingBulk": "Označiť ako pripravené pre publikovanie",
-            "setDatesBulk": "Doplniť dátum platnosti a začiatok účinnosti"
+            "setDatesBulk": "Doplniť dátum platnosti a začiatok účinnosti",
+            "removeLock": "Zrušiť zámok",
+            "discardUpdating": "Zahodiť rozpracovanú verziu",
+            "showOriginalInNewWindow": "Zobraziť pôvodnú verziu do nového okna"
         },
         "warning": {
+            "codelistLocked": "Vykonávaním zmien ste atomaticky uzamkli číselník a jeho položky voči zmenám iných osôb",
             "itemLocked": "Toto je rozpracovaná verzia oprávneným používateľom {{user}} zo dňa {{date}}",
             "workVersion": "Toto je rozpracovaná verzia",
-            "updatingVersion": "Upravujete rozpracovanú verziu oprávneným používateľom {{user}} zo dňa {{day}}"
+            "updatingVersion": "Upravujete rozpracovanú verziu oprávneným používateľom {{user}} zo dňa {{day}}",
+            "workingLanguageNotice": "Aktuálne upravujete jazyk: {{language}}"
         },
         "validation": {
             "code": "Kód položky je povinné pole",
@@ -1380,9 +1392,7 @@
             "cancelAddNewGestor": "Zrušiť pridanie nového hlavného gestora",
             "addNewRow": "Pridať nový riadok",
             "addNewVersionName": "Pridať novú verziu názvu",
-            "cancelAddNewVersionName": "Zrušiť pridanie novej verzie názvu",
-            "removeLock": "Zrušiť zámok",
-            "discardUpdating": "Zahodiť rozpracovanú verziu"
+            "cancelAddNewVersionName": "Zrušiť pridanie novej verzie názvu"
         },
         "requestCreate": {
             "btnCheck": "Overiť dostupnosť",

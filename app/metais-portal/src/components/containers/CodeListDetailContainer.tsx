@@ -1,7 +1,9 @@
 import {
     ApiCodelistPreview,
+    useDeleteTemporalCodelistHeader,
     useGetCodelistHeader,
     useGetOriginalCodelistHeader,
+    useGetUnlockTemporalCodelistHeader,
     useProcessAllItemsAction,
     useProcessHeaderAction,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
@@ -13,8 +15,10 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useCodeListWorkingLanguage } from '@isdd/metais-common/contexts/codeListWorkingLanguage/codeListWorkingLanguageContext'
 
-import { ApiCodeListActions, ApiCodeListItemsActions, getErrorTranslateKeys } from '@/componentHelpers/codeList'
+import { getAllWorkingLanguages } from '@/components/views/codeLists/CodeListDetailUtils'
+import { ApiCodeListActions, getErrorTranslateKeys } from '@/componentHelpers/codeList'
 
 export interface CodeListDetailData {
     codeList?: ApiCodelistPreview
@@ -39,6 +43,9 @@ export interface CodeListDetailWrapperProps {
     handlePublishCodeList: (close: () => void) => void
     handleSendToSzzc: (close: () => void) => void
     handleReturnToMainGestor: (close: () => void) => void
+    handleRemoveLock: (close: () => void) => void
+    handleDiscardChanges: (close: () => void) => void
+    handleEdit: () => void
 }
 
 interface CodeListDetailContainerProps {
@@ -47,19 +54,13 @@ interface CodeListDetailContainerProps {
 }
 
 export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = ({ id, View }) => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
-
-    const [workingLanguage, setWorkingLanguage] = useState<string>('')
-    const [successMessage, setSuccessMessage] = useState<string>('')
-
+    const { workingLanguage, setWorkingLanguage } = useCodeListWorkingLanguage()
     const { invalidate } = useInvalidateCodeListCache()
-
-    useEffect(() => {
-        setWorkingLanguage(i18n.language)
-    }, [i18n.language])
+    const [successMessage, setSuccessMessage] = useState<string>('')
 
     const {
         isFetching: isLoadingAttributeProfile,
@@ -88,6 +89,8 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
             query: { enabled: requestGestorGids.length > 0 },
         },
     )
+    const unlockTemporalMutation = useGetUnlockTemporalCodelistHeader()
+    const deleteTemporalMutation = useDeleteTemporalCodelistHeader()
 
     const data = {
         codeList: codeListData,
@@ -99,6 +102,13 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
     const itemsActionMutation = useProcessAllItemsAction()
     const codelistActionMutation = useProcessHeaderAction()
 
+    useEffect(() => {
+        const languages = getAllWorkingLanguages(codeListData)
+        if (!languages.includes(workingLanguage)) {
+            setWorkingLanguage('sk')
+        }
+    }, [codeListData, setWorkingLanguage, workingLanguage])
+
     const invalidateCodeListDetailCache = () => {
         invalidate(data.codeList?.code ?? '', Number(id))
     }
@@ -108,7 +118,7 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
         const code = data.codeList?.code
         if (!code) return
         itemsActionMutation.mutate(
-            { code, params: { action: ApiCodeListItemsActions.CODELIST_ITEMS_TO_PUBLISH } },
+            { code, params: { action: ApiCodeListActions.CODELIST_ITEMS_TO_PUBLISH } },
             {
                 onSuccess: () => {
                     invalidateCodeListDetailCache()
@@ -178,11 +188,51 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
             )
     }
 
+    const handleRemoveLock = (close: () => void) => {
+        close()
+        unlockTemporalMutation.mutate(
+            { code: codeListData?.code ?? '' },
+            {
+                onSuccess: () => {
+                    invalidate(codeListData?.code ?? '', Number(codeListData?.id))
+                    const path = `${NavigationSubRoutes.CODELIST}/${codeListData?.id}`
+                    setIsActionSuccess({ value: true, path })
+                    navigate(path)
+                },
+            },
+        )
+    }
+
+    const handleDiscardChanges = (close: () => void) => {
+        close()
+        deleteTemporalMutation.mutate(
+            { code: codeListData?.code ?? '' },
+            {
+                onSuccess: () => {
+                    invalidate(codeListData?.code ?? '', Number(codeListData?.id))
+                    const path = `${NavigationSubRoutes.CODELIST}`
+                    setIsActionSuccess({ value: true, path })
+                    navigate(path)
+                },
+            },
+        )
+    }
+
+    const handleEdit = () => {
+        navigate(`${NavigationSubRoutes.CODELIST}/${codeListData?.id}/edit`)
+    }
+
     const isLoading = [isLoadingRoleParticipants, isLoadingAttributeProfile, isLoadingData, isLoadingOriginal].some((item) => item)
     const isError = [isErrorRoleParticipants, isErrorAttributeProfile, isErrorData, isErrorOriginal].some((item) => item)
-    const isLoadingMutation = [codelistActionMutation, itemsActionMutation].some((item) => item.isLoading)
+    const isLoadingMutation = [codelistActionMutation, itemsActionMutation, unlockTemporalMutation, deleteTemporalMutation].some(
+        (item) => item.isLoading,
+    )
     const isSuccessMutation = [codelistActionMutation, itemsActionMutation].some((item) => item.isSuccess)
-    const actionsErrorMessages = getErrorTranslateKeys([codelistActionMutation, itemsActionMutation].map((item) => item.error as { message: string }))
+    const actionsErrorMessages = getErrorTranslateKeys(
+        [codelistActionMutation, itemsActionMutation, unlockTemporalMutation, deleteTemporalMutation].map(
+            (item) => item.error as { message: string },
+        ),
+    )
 
     return (
         <View
@@ -201,6 +251,9 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
             handlePublishCodeList={handlePublishCodeList}
             handleSendToSzzc={handleSendToSzzc}
             handleReturnToMainGestor={handleReturnToMainGestor}
+            handleRemoveLock={handleRemoveLock}
+            handleDiscardChanges={handleDiscardChanges}
+            handleEdit={handleEdit}
         />
     )
 }

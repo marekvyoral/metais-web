@@ -4,7 +4,6 @@ import { ApiCodelistPreview, useGetCodelistRequests } from '@isdd/metais-common/
 import { CodeListFilterOnlyBase } from '@isdd/metais-common/constants'
 import { IFilterParams, useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { RoleParticipantUI } from '@isdd/metais-common/api/generated/cmdb-swagger'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
@@ -48,7 +47,9 @@ export const defaultFilterValues = {
 }
 
 export const RequestListContainer: React.FC<RequestListContainerProps> = ({ View }) => {
-    const { i18n } = useTranslation()
+    // WorkingLanguage is forced to system default 'sk' for requests.
+    // Content is created and displayed in only one language.
+    const workingLanguage = 'sk'
 
     const { filter, handleFilterChange } = useFilterParams<RequestListFilterData>({
         sort: [
@@ -65,7 +66,7 @@ export const RequestListContainer: React.FC<RequestListContainerProps> = ({ View
         isError: isErrorCodelistHeaders,
         data: requestListHeadersData,
     } = useGetCodelistRequests({
-        language: i18n.language ?? 'sk',
+        language: workingLanguage,
         pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
         perPage: filter.pageSize ?? BASE_PAGE_SIZE,
         sortBy: filter.sort?.[0]?.orderBy ?? 'id',

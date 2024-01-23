@@ -6,7 +6,6 @@ import {
     useProcessRequestAction,
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/constants'
 import { AttributeProfile, useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-repo-swagger'
@@ -40,6 +39,7 @@ export interface RequestDetailData {
 
 export interface DetailRequestViewProps {
     data: RequestDetailData
+    workingLanguage: string
     isLoading: boolean
     isLoadingMutation: boolean
     isError: boolean
@@ -55,9 +55,12 @@ interface DetailRequestContainerProps {
 }
 
 export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ View }) => {
-    const { i18n } = useTranslation()
     const { requestId } = useParams()
     const navigate = useNavigate()
+
+    // WorkingLanguage is forced to system default 'sk' for requests.
+    // Content is created and displayed in only one language.
+    const workingLanguage = 'sk'
 
     const { setIsActionSuccess } = useActionSuccess()
     const { invalidate } = useInvalidateCodeListRequestCache()
@@ -75,7 +78,7 @@ export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ 
         isFetching: isLoadingItemList,
         isError: isErrorItemList,
     } = useGetCodelistRequestItems(Number(requestId), {
-        language: i18n.language,
+        language: workingLanguage,
         pageNumber: filter.pageNumber ?? BASE_PAGE_NUMBER,
         perPage: filter.pageSize ?? BASE_PAGE_SIZE,
     })
@@ -130,6 +133,7 @@ export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ 
             <View
                 requestId={requestId}
                 data={data}
+                workingLanguage={workingLanguage}
                 isLoading={isLoading}
                 isLoadingMutation={isLoadingRequestAction}
                 actionsErrorMessages={actionsErrorMessages}
