@@ -46,7 +46,7 @@ export const RefRegisterCreateRegistrarContactSection: React.FC<IProps> = ({
                 info={getInfoRR(RefRegisterViewItems.REGISTRATOR_NAME, renamedAttributes)}
                 name={'refRegisters.registrar.PO'}
                 id={'refRegisters.registrar.PO'}
-                loadOptions={(searchTerm, _, additional) => loadPOOptions(additional, readCiList1, POData)}
+                loadOptions={(searchTerm, _, additional) => loadPOOptions(additional, readCiList1, POData, searchTerm)}
                 option={(optionProps) => SelectFilterCMDBParamsOption(optionProps)}
                 getOptionValue={(item) => item?.value}
                 getOptionLabel={(item) => item?.label}
