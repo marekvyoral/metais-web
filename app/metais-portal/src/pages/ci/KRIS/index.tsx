@@ -21,7 +21,7 @@ export interface KRISFilterType extends IFilterParams {
 const KRISListPage: React.FC<Props> = ({ importantEntityName, noSideMenu }) => {
     const ciType = ENTITY_KRIS
     const { t } = useTranslation()
-    document.title = `${t('titles.ciList', { ci: ciType })} | MetaIS`
+    document.title = `${t('titles.ciList', { ci: 'KRIT' })} | MetaIS`
 
     const defaultFilterValues: KRISFilterType = { owner: '', Profil_KRIS_stav_kris: '' }
     const defaultFilterOperators: KRISFilterType = { Profil_KRIS_stav_kris: OPERATOR_OPTIONS.EQUAL, owner: OPERATOR_OPTIONS.EQUAL }

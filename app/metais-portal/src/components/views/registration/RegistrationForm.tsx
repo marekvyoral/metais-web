@@ -156,6 +156,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                         error={errors[InputNames.FIRST_NAME]?.message?.toString()}
                         correct={!errors[InputNames.FIRST_NAME] && isSubmitted}
                         {...register(InputNames.FIRST_NAME)}
+                        required
                         type="text"
                     />
                     <Input
@@ -163,6 +164,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                         label={t('registration.lastName')}
                         correct={!errors[InputNames.LAST_NAME] && isSubmitted}
                         {...register(InputNames.LAST_NAME)}
+                        required
                         type="text"
                     />
                     <Input
@@ -170,6 +172,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                         label={t('registration.login')}
                         correct={!errors[InputNames.LOGIN] && isSubmitted}
                         {...register(InputNames.LOGIN)}
+                        required
                         type="text"
                     />
                     <Input
@@ -177,6 +180,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                         label={t('registration.email')}
                         correct={!errors[InputNames.EMAIL] && isSubmitted}
                         {...register(InputNames.EMAIL)}
+                        required
                         type="email"
                     />
                     <Input
@@ -186,6 +190,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                         {...register(InputNames.PHONE)}
                         hint={t('registration.phoneHint')}
                         type="tel"
+                        required
                         inputClassName={styles.halfWidth}
                     />
                     <CiLazySelect
@@ -195,6 +200,7 @@ export const RegistrationForm: React.FC<Props> = () => {
                         clearErrors={clearErrors}
                         name={InputNames.PO}
                         metaAttributes={metaAttributesForRegistrationCiSelect}
+                        required
                         error={errors[InputNames.PO]?.message?.toString()}
                     />
                     <SubmitWithFeedback submitButtonLabel={t('registration.submit')} loading={isRegisterLoading || isSubmitting || isValidating} />

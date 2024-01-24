@@ -123,6 +123,7 @@ export const loadPOOptions = async (
     additional: { page: number } | undefined,
     readCiList1: (ciListFilterContainerUi: CiListFilterContainerUi) => Promise<ConfigurationItemSetUi>,
     POData?: ConfigurationItemSetUi,
+    searchTerm?: string,
 ) => {
     const page = !additional?.page ? 1 : (additional?.page || 0) + 1
 
@@ -140,6 +141,7 @@ export const loadPOOptions = async (
                     ],
                 },
             ],
+            fullTextSearch: searchTerm,
             metaAttributes: {
                 state: ['DRAFT'],
             },
@@ -154,7 +156,7 @@ export const loadPOOptions = async (
     const hasMore = page + 1 <= (data.pagination?.totalPages ?? 0)
 
     const configurationItemSet =
-        page === 1 ? [...(POData?.configurationItemSet ?? []), ...(data.configurationItemSet ?? [])] : data.configurationItemSet
+        page === 1 && !searchTerm ? [...(POData?.configurationItemSet ?? []), ...(data.configurationItemSet ?? [])] : data.configurationItemSet
 
     const options = mapReportsCiItemToOptions(configurationItemSet)
     return {
