@@ -251,8 +251,12 @@ export const getErrorTranslateKeys = (errors: { message: string }[]): string[] =
     return errors
         .filter((error) => !!error && error.message)
         .map((error) => {
-            const message = JSON.parse(error.message)
-            return `errors.codeList.${message.message}`
+            try {
+                const message = JSON.parse(error.message)
+                return `errors.codeList.${message.message}`
+            } catch {
+                return ''
+            }
         })
 }
 

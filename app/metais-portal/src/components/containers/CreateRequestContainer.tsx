@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
-import { useInvalidateCodeListRequestCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
 
 import { RequestListPermissionsWrapper } from '@/components/permissions/RequestListPermissionsWrapper'
@@ -71,7 +71,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
     const workingLanguage = 'sk'
 
     const addOrGetGroupHook = useAddOrGetGroupHook()
-    const { invalidate } = useInvalidateCodeListRequestCache()
+    const { invalidateRequests } = useInvalidateCodeListCache()
 
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
     const [errorAddOrGetGroup, setAddOrGetGroupError] = useState<{ message: string }>()
@@ -135,7 +135,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
                 mutateAsync({ data: saveData }).then(() => {
-                    invalidate()
+                    invalidateRequests()
                     setIsActionSuccess({
                         value: true,
                         path: NavigationSubRoutes.REQUESTLIST,
@@ -155,7 +155,7 @@ export const CreateRequestContainer: React.FC<CreateRequestContainerProps> = ({ 
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
                 mutateSendASync({ data: mapFormToSave(formData, workingLanguage) }).then(() => {
-                    invalidate()
+                    invalidateRequests()
                     setIsActionSuccess({
                         value: true,
                         path: NavigationSubRoutes.REQUESTLIST,

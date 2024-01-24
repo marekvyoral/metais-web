@@ -77,8 +77,11 @@ export const useEditCodeListSchema = (): IOutput => {
         ),
         mainGestor: array().of(
             object().shape({
-                value: string().required(t('codeListList.requestValidations.mainGestor')),
-                effectiveFrom: string().required(t('codeListList.requestValidations.dateFrom')),
+                value: string(),
+                effectiveFrom: string().when('value', {
+                    is: (value: string | undefined) => value && value.length > 0,
+                    then: () => string().required(t('codeListList.requestValidations.dateFrom')),
+                }),
                 effectiveTo: string().test('largerThan', t('codeListList.requestValidations.dateGreaterThan'), effectiveToGreaterThanEffectiveFrom),
             }),
         ),

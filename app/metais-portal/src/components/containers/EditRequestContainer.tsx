@@ -18,7 +18,7 @@ import { useGetAttributeProfile } from '@isdd/metais-common/api/generated/types-
 import { formatDateForDefaultValue } from '@isdd/metais-common/index'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
-import { useInvalidateCodeListRequestCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useAddOrGetGroupHook } from '@isdd/metais-common/api/generated/iam-swagger'
 import { getOrgIdFromGid } from '@isdd/metais-common/utils/utils'
 
@@ -45,7 +45,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
     const workingLanguage = 'sk'
 
     const { setIsActionSuccess } = useActionSuccess()
-    const { invalidate } = useInvalidateCodeListRequestCache()
+    const { invalidateRequests } = useInvalidateCodeListCache()
     const addOrGetGroupHook = useAddOrGetGroupHook()
 
     const userDataGroups = useMemo(() => user?.groupData ?? [], [user])
@@ -143,7 +143,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
                     ...(mappedData.validFrom && { validFrom: mappedData.validFrom && formatDateForDefaultValue(mappedData.validFrom, 'dd.MM.yyyy') }),
                 },
             }).then(() => {
-                invalidate(Number(requestId))
+                invalidateRequests(Number(requestId))
                 setIsActionSuccess({ value: true, path: redirectPath, additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' } })
                 navigate(redirectPath)
             })
@@ -152,7 +152,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
             addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
                 .then(() => {
                     mutateAsync({ data: mappedData }).then(() => {
-                        invalidate(Number(requestId))
+                        invalidateRequests(Number(requestId))
                         setIsActionSuccess({ value: true, path: redirectPath, additionalInfo: { messageKey: 'mutationFeedback.successfulUpdated' } })
                         navigate(redirectPath)
                     })
@@ -168,7 +168,7 @@ export const EditRequestContainer: React.FC<EditRequestContainerProps> = ({ View
         addOrGetGroupHook(uuid, getOrgIdFromGid(formData?.mainGestor))
             .then(() => {
                 mutateSendASync({ data: mapFormToSave(formData, workingLanguage, data?.id) }).then(() => {
-                    invalidate(Number(requestId))
+                    invalidateRequests(Number(requestId))
                     setIsActionSuccess({
                         value: true,
                         path: NavigationSubRoutes.REQUESTLIST,

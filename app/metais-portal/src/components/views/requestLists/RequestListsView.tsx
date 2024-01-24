@@ -65,7 +65,7 @@ export const RequestListsView: React.FC<RequestListViewProps> = ({ data, filter,
         },
         {
             id: 'codelistState',
-            header: t('state'),
+            header: t('codeListList.table.state'),
             accessorFn: (row) => row.codelistState,
             enableSorting: true,
             cell: (row) => {

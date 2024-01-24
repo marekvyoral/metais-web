@@ -59,7 +59,7 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
     const { workingLanguage, setWorkingLanguage } = useCodeListWorkingLanguage()
-    const { invalidate } = useInvalidateCodeListCache()
+    const { invalidateCodelists } = useInvalidateCodeListCache()
     const [successMessage, setSuccessMessage] = useState<string>('')
 
     const {
@@ -110,7 +110,7 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
     }, [codeListData, setWorkingLanguage, workingLanguage])
 
     const invalidateCodeListDetailCache = () => {
-        invalidate(data.codeList?.code ?? '', Number(id))
+        invalidateCodelists(data.codeList?.code ?? '', Number(id))
     }
 
     const handleAllItemsReadyToPublish = (close: () => void) => {
@@ -194,7 +194,7 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
             { code: codeListData?.code ?? '' },
             {
                 onSuccess: () => {
-                    invalidate(codeListData?.code ?? '', Number(codeListData?.id))
+                    invalidateCodelists(codeListData?.code ?? '', Number(codeListData?.id))
                     const path = `${NavigationSubRoutes.CODELIST}/${codeListData?.id}`
                     setIsActionSuccess({ value: true, path })
                     navigate(path)
@@ -209,7 +209,7 @@ export const CodeListDetailContainer: React.FC<CodeListDetailContainerProps> = (
             { code: codeListData?.code ?? '' },
             {
                 onSuccess: () => {
-                    invalidate(codeListData?.code ?? '', Number(codeListData?.id))
+                    invalidateCodelists(codeListData?.code ?? '', Number(codeListData?.id))
                     const path = `${NavigationSubRoutes.CODELIST}`
                     setIsActionSuccess({ value: true, path })
                     navigate(path)

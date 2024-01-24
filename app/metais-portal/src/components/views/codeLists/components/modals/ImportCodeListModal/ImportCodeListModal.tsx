@@ -36,7 +36,7 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
     const { t } = useTranslation()
     const [fileImportStep, setFileImportStep] = useState<FileImportStepEnum>(FileImportStepEnum.VALIDATE)
     const navigate = useNavigate()
-    const { invalidate } = useInvalidateCodeListCache()
+    const { invalidateCodelists, invalidateRequests } = useInvalidateCodeListCache()
     const { setIsActionSuccess } = useActionSuccess()
 
     const baseURL = import.meta.env.VITE_REST_CLIENT_CODELIST_REPO_TARGET_URL
@@ -93,12 +93,30 @@ export const ImportCodeListModal: React.FC<ImportCodeListModalProps> = ({ code, 
 
     const processUpload = () => {
         handleUpload().then((response) => {
-            const body = response?.successful.find((item) => item.response?.body)?.response?.body
-            invalidate(code, id)
-            if (body?.newId) {
-                const path = `${isRequest ? NavigationSubRoutes.REQUESTLIST : NavigationSubRoutes.CODELIST}/${body?.newId}`
-                setIsActionSuccess({ value: true, path, additionalInfo: { action: IsSuccessActions.IMPORT } })
-                navigate(path)
+            response?.successful.forEach((item) => updateUploadFilesStatus(item, true))
+            response?.failed.forEach((item) => {
+                const errorMessage = `${item.name}: ${t([
+                    `errors.codeList.${item.response?.body.message}`,
+                    'errors.codeList.uploadValidationFallbackError',
+                ])}`
+
+                updateUploadFilesStatus(item, false, errorMessage)
+            })
+
+            if (response?.successful && response.successful.length > 0) {
+                const body = response?.successful.find((item) => item.response?.body)?.response?.body
+
+                if (isRequest) {
+                    invalidateRequests(id)
+                } else {
+                    invalidateCodelists(code, id)
+                }
+
+                if (body?.newId) {
+                    const path = `${isRequest ? NavigationSubRoutes.REQUESTLIST : NavigationSubRoutes.CODELIST}/${body?.newId}`
+                    setIsActionSuccess({ value: true, path, additionalInfo: { action: IsSuccessActions.IMPORT } })
+                    navigate(path)
+                }
             }
         })
     }

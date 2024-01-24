@@ -53,7 +53,11 @@ const DraftDetail: React.FC = () => {
                                         <DraftsListStateMachineWrapper data={requestData}>
                                             <>
                                                 {!isLoading && (
-                                                    <DraftsListIdHeader entityId={entityId ?? ''} entityItemName={requestData?.srName ?? ''} />
+                                                    <DraftsListIdHeader
+                                                        entityId={entityId ?? ''}
+                                                        entityItemName={requestData?.srName ?? ''}
+                                                        requestChannel={requestData?.requestChannel ?? ''}
+                                                    />
                                                 )}
                                                 <DraftListDetailView data={data} />
                                             </>
