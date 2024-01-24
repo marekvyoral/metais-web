@@ -15,7 +15,7 @@ import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 export enum RequestFormFields {
     PO = 'po',
-    PHONE = 'phone',
+    PHONE = 'mobile',
     EMAIL = 'email',
     DESCRIPTION = 'description',
 }
@@ -72,7 +72,10 @@ export const UserProfileRequestRightsModal: React.FC<Props> = ({ isOpen, onClose
             type: 'CREATE_EVENT',
             claimUi: {
                 createdBy: user?.uuid,
-                ...formData,
+                po: formData?.[RequestFormFields.PO],
+                mobile: formData?.[RequestFormFields.PHONE],
+                email: formData?.[RequestFormFields.EMAIL],
+                description: formData?.[RequestFormFields.DESCRIPTION],
             },
         })
         if (!resp) {

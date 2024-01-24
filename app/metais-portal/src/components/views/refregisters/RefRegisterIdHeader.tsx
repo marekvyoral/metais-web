@@ -10,8 +10,9 @@ import {
     useDeleteReferenceRegister,
     useProcessRequestAction,
 } from '@isdd/metais-common/api/generated/reference-registers-swagger'
-import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { MutationFeedback, QueryFeedback, QueryKeysByEntity } from '@isdd/metais-common/index'
 import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { RefRegisterChangeStateModal } from '@/components/views/refregisters/RefRegisterChangeStateModal'
 import { RefRegisterButtonPopupContent } from '@/components/views/refregisters/RefRegisterButtonPopupContent'
@@ -37,6 +38,7 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
     const [targetState, setTargetState] = useState<ApiReferenceRegisterState>()
     const { mutateAsync: changeState, isSuccess, isError: mutationIsError, isLoading: mutationIsLoading } = useProcessRequestAction()
     const { mutateAsync: deleteReferenceRegister } = useDeleteReferenceRegister()
+    const queryClient = useQueryClient()
 
     const onClick = (incomingState: ApiReferenceRegisterState) => {
         setOpenChangeStateDialog(true)
@@ -53,8 +55,9 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
                     targetState,
                 },
             })
+            queryClient.invalidateQueries([QueryKeysByEntity.REFERENCE_REGISTER])
         },
-        [changeState, entityId, targetState],
+        [changeState, entityId, queryClient, targetState],
     )
 
     const handleDeleteRefRegister = useCallback(async () => {
@@ -74,6 +77,7 @@ export const RefRegisterIdHeader: React.FC<Props> = ({ entityId, entityItemName,
                     entityId={entityId}
                     targetState={targetState}
                     handleChangeState={handleChangeState}
+                    entityItemName={entityItemName}
                 />
                 <RefRegisterGeneratePropDialog
                     openGeneratePropDialog={openGeneratePropDialog}
