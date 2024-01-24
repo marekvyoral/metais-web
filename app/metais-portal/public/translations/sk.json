@@ -1066,7 +1066,9 @@
             "groupShortNameRequired": "Skratka skupiny je povinná",
             "descriptionRequired": "Popis je povinný",
             "chairmanRequired": "Predseda skupiny je povinný",
-            "organizationRequired": "Organizácia je povinná"
+            "organizationRequired": "Organizácia je povinná",
+            "uniqueName":"Názov skupiny musí byť jedinečný",
+            "uniqueShortName":"Skratka skupiny musí byť jedinečná"
         },
         "creatingGroup": "Vytváram novú skupinu",
         "editingGroup": "Upravujem skupinu"

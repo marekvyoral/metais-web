@@ -6,6 +6,7 @@ import { GROUP_ROLES } from '@isdd/metais-common/constants'
 import { FieldValues } from 'react-hook-form'
 import { useInvalidateGroupsListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
+import { useTranslation } from 'react-i18next'
 
 import { GroupCreateEditView } from '@/components/views/standardization/groups/GroupCreateEditView'
 import { GroupFormEnum } from '@/components/views/standardization/groups/groupSchema'
@@ -18,6 +19,7 @@ interface INewGroupRelationRequest {
 }
 
 export const GroupCreateContainer: React.FC = () => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
 
@@ -36,6 +38,7 @@ export const GroupCreateContainer: React.FC = () => {
         orgId: '',
     })
     const [creatingRelation, setCreatingRelation] = useState(false)
+    const [uniqueConstraintError, setUniqueConstraintError] = useState<{ [key: string]: string }>()
     const invalidateCache = useInvalidateGroupsListCache({ sortBy: 'name', ascending: false })
     const { mutateAsync: createGroup, isLoading: creatingGroupLoading } = useUpdateOrCreate2({
         mutation: {
@@ -56,6 +59,16 @@ export const GroupCreateContainer: React.FC = () => {
                     additionalInfo: { entity: 'group', type: 'create' },
                 })
                 navigate(`${RouterRoutes.STANDARDIZATION_GROUPS_LIST}/${res?.uuid}`)
+            },
+            onError(error) {
+                if (error instanceof Error && typeof error.message === 'string') {
+                    const errorData = JSON.parse(error.message)
+                    if (errorData.type === 'UniqueConstraintException') {
+                        const err: { [key: string]: string } = {}
+                        err[errorData.property] = errorData.property === 'name' ? t('groups.errors.uniqueName') : t('groups.errors.uniqueShortName')
+                        setUniqueConstraintError(err)
+                    }
+                }
             },
         },
     })
@@ -85,6 +98,7 @@ export const GroupCreateContainer: React.FC = () => {
             infoData={undefined}
             isEdit={false}
             isLoading={[creatingGroupLoading, creatingRelation].some((item) => item)}
+            uniqueConstraintError={uniqueConstraintError}
         />
     )
 }

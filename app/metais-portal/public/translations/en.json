@@ -1060,7 +1060,9 @@
             "groupShortNameRequired": "Abbreviation of group is required",
             "descriptionRequired": "Description is required",
             "chairmanRequired": "Chairman is required",
-            "organizationRequired": "Organization is required"
+            "organizationRequired": "Organization is required",
+            "uniqueName":"Name of group must be unique",
+            "uniqueShortName":"Abbreviation of group must be unique"
         },
         "creatingGroup": "Creating group",
         "editingGroup": "Editing group"
