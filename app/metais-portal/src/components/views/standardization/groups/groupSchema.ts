@@ -3,7 +3,7 @@ import { object, string } from 'yup'
 
 export enum GroupFormEnum {
     NAME = 'name',
-    SHORT_NAME = 'short_name',
+    SHORT_NAME = 'shortName',
     DESCRIPTION = 'description',
     USER = 'user',
     ORGANIZATION = 'organization',
