@@ -13,7 +13,7 @@ import { RoleParticipantUI, useGetRoleParticipantBulk } from '@isdd/metais-commo
 import { useActionSuccess } from '@isdd/metais-common/contexts/actionSuccess/actionSuccessContext'
 import { NavigationSubRoutes } from '@isdd/metais-common/navigation/routeNames'
 import { formatDateForDefaultValue } from '@isdd/metais-common/componentHelpers/formatting/formatDateUtils'
-import { useInvalidateCodeListRequestCache } from '@isdd/metais-common/hooks/invalidate-cache'
+import { useInvalidateCodeListCache } from '@isdd/metais-common/hooks/invalidate-cache'
 import { IFilter } from '@isdd/idsk-ui-kit/types'
 import { useFilterParams } from '@isdd/metais-common/hooks/useFilter'
 
@@ -63,7 +63,7 @@ export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ 
     const workingLanguage = 'sk'
 
     const { setIsActionSuccess } = useActionSuccess()
-    const { invalidate } = useInvalidateCodeListRequestCache()
+    const { invalidateRequests } = useInvalidateCodeListCache()
 
     const { filter, handleFilterChange } = useFilterParams<IFilter>({
         pageNumber: BASE_PAGE_NUMBER,
@@ -113,7 +113,7 @@ export const DetailRequestContainer: React.FC<DetailRequestContainerProps> = ({ 
             },
             {
                 onSuccess: () => {
-                    invalidate(detailData?.id)
+                    invalidateRequests(detailData?.id)
                     setIsActionSuccess({ value: true, path: NavigationSubRoutes.REQUESTLIST })
                     navigate(`${NavigationSubRoutes.REQUESTLIST}`)
                 },

@@ -27,7 +27,6 @@ export interface RequestListFilterData extends IFilterParams, IFilter {
     sortBy?: string
     ascending?: boolean
     onlyBase?: CodeListFilterOnlyBase
-    toDate?: string
     wfState?: string[]
     code?: string
     name?: string
@@ -39,8 +38,6 @@ interface RequestListContainerProps {
 
 export const defaultFilterValues = {
     onlyBase: undefined,
-    mainGestorPoUuid: '',
-    toDate: '',
     wfState: [],
     code: '',
     name: '',

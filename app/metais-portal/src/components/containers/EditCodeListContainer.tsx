@@ -71,7 +71,7 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
     const { id: codeId } = useParams()
     const navigate = useNavigate()
     const { setIsActionSuccess } = useActionSuccess()
-    const { invalidate } = useInvalidateCodeListCache()
+    const { invalidateCodelists } = useInvalidateCodeListCache()
 
     const [errorCheck, setErrorCheck] = useState<{ message: string }>()
     const [isLoadingCheck, setIsLoadingCheck] = useState<boolean>()
@@ -174,7 +174,7 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
         mutateAsyncSave({ code: codeListTemporalLockedData?.code ?? '', data: requestData })
             .then(() => mutateAsyncContactData({ code: codeListTemporalLockedData?.code ?? '', data: mapFormToContactData(requestData) }))
             .then(() => {
-                invalidate(codeListTemporalLockedData?.code ?? '', Number(codeListTemporalLockedData?.id))
+                invalidateCodelists(codeListTemporalLockedData?.code ?? '', Number(codeListTemporalLockedData?.id))
                 const path = `${NavigationSubRoutes.CODELIST}/${codeListTemporalLockedData?.id}`
                 setIsActionSuccess({ value: true, path })
                 navigate(path)
@@ -183,27 +183,28 @@ export const EditCodeListContainerContainer: React.FC<EditCodeListContainerConta
 
     const handleSave = async (formData: IEditCodeListForm) => {
         const normalizedData = mapEditFormDataToCodeList(formData, codeListTemporalLockedData, workingLanguage)
-        const nextGestors = formData.nextGestor || []
         const mainGestors = [...(formData.mainGestor ?? [])]
+        const nextGestors = formData.nextGestor || []
+        if (formData.newMainGestor?.value) {
+            mainGestors.push(formData.newMainGestor)
+        }
 
         const gestorPromises = [...mainGestors, ...nextGestors]?.map(async (item) =>
             canGetGroup(getRoleUuidFromGid(item?.value ?? ''), getOrgIdFromGid(item?.value ?? '')),
         )
 
-        if (gestorPromises.length > 0) {
-            setErrorCheck(undefined)
-            setIsLoadingCheck(true)
-            Promise.all(gestorPromises)
-                .then(() => {
-                    saveData(normalizedData)
-                })
-                .catch((error) => {
-                    setErrorCheck(error)
-                })
-                .finally(() => {
-                    setIsLoadingCheck(false)
-                })
-        }
+        setErrorCheck(undefined)
+        setIsLoadingCheck(true)
+        Promise.all(gestorPromises)
+            .then(() => {
+                saveData(normalizedData)
+            })
+            .catch((error) => {
+                setErrorCheck(error)
+            })
+            .finally(() => {
+                setIsLoadingCheck(false)
+            })
     }
 
     const isLoading = [isLoadingData, isLoadingTemporalLocked, isLoadingAttributeProfile, isLoadingRoleParticipants].some((item) => item)
