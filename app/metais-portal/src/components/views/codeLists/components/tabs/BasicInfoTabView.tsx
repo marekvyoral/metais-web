@@ -64,6 +64,7 @@ export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({
                                 ?.filter((item) => item.language === workingLanguage)
                                 .map((item) => `${item.value} (${getDateIntervalString(item, t)})`)
                                 .join('\n')}
+                            label={value}
                         >
                             {value}
                         </InfoIconWithText>
@@ -99,7 +100,10 @@ export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({
                     (() => {
                         const value = getGestorName(gestorList, codeList.mainCodelistManagers?.[0]?.value)
                         return showDateIntervals ? (
-                            <InfoIconWithText tooltip={codeList?.mainCodelistManagers?.map((item) => getDateIntervalString(item, t)).join('<br />')}>
+                            <InfoIconWithText
+                                tooltip={codeList?.mainCodelistManagers?.map((item) => getDateIntervalString(item, t)).join('<br />')}
+                                label={value}
+                            >
                                 {value}
                             </InfoIconWithText>
                         ) : (
@@ -117,7 +121,10 @@ export const BasicInfoTabView: React.FC<BasicInfoTabViewProps> = ({
                     (() => {
                         const value = codeList?.codelistManagers?.map((gestor) => <p key={gestor.id}>{getGestorName(gestorList, gestor.value)}</p>)
                         return showDateIntervals ? (
-                            <InfoIconWithText tooltip={codeList?.codelistManagers?.map((item) => getDateIntervalString(item, t)).join('<br />')}>
+                            <InfoIconWithText
+                                tooltip={codeList?.codelistManagers?.map((item) => getDateIntervalString(item, t)).join('<br />')}
+                                label={value}
+                            >
                                 {value}
                             </InfoIconWithText>
                         ) : (

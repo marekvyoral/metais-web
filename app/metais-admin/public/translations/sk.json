@@ -102,7 +102,9 @@
     },
     "sidebar": {
         "hide": "SKRYŤ",
-        "unhide": "ODKRYŤ"
+        "unhide": "ODKRYŤ",
+        "expandableExpandItem": "Otvoriť položky menu {{name}}",
+        "expandableCloseItem": "Zatvoriť položky menu {{name}}"
     },
     "filter": {
         "chooseState": "Vyberte stav",
@@ -172,7 +174,9 @@
         "paginationSummaryEmpty": "Zobrazených 0 z celkových 0 záznamov",
         "noRowsFound": "Nenašli sa žiadne záznamy",
         "ico": "ICO",
-        "adress": "Adresa"
+        "adress": "Adresa",
+        "expandableExpandItem": "Otvoriť detail položky",
+        "expandableCloseItem": "Zatvoriť detail položky"
     },
     "form": {
         "userFirstName": "Meno použivateľa",
@@ -218,7 +222,7 @@
         "description": "Popis",
         "engDescription": "Anglický popis",
         "color": "Farebné označenie",
-        "roles": "Opravnené role",
+        "roles": "Oprávnené role",
         "order": "Poradie",
         "invisible": "Viditeľnosť",
         "clarification": "Spresnenie",
@@ -674,6 +678,9 @@
             "massUpdate": "Hromadné aktualizácie"
         }
     },
+    "tooltip": {
+        "iconAltText": "Popis {{text}}"
+    },
     "tooltips": {
         "selectedEntries": "Vybrané záznamy",
         "addNewProfile": "Pridať nový profil",
@@ -1078,9 +1085,9 @@
     },
     "monitoring": {
         "breadcrumbs": {
-            "home":"Hlavná stránka",
-            "monitoring":"Správa monitoringu",
-            "params" :"Monitorovacie parametre",
+            "home": "Hlavná stránka",
+            "monitoring": "Správa monitoringu",
+            "params": "Monitorovacie parametre",
             "list": "Záznamy z monitoringu",
             "detail": "Detail",
             "create": "Nový záznam",
@@ -1110,9 +1117,9 @@
             },
             "newMonitoringButton": "Pridať záznam"
         },
-        "detail":{
+        "detail": {
             "heading": "Detail monitoringu",
-            "table":{
+            "table": {
                 "intervalStart": "Začiatok Intervalu",
                 "intervalEnd": "Koniec Intervalu",
                 "status": "Stav"
@@ -1133,7 +1140,7 @@
                 "responseBody": "Response Body",
                 "close": "Zavrieť",
                 "StatusOk": "Zodpovedá očakávanej hodnote",
-                "StatusNotOk": "Nezodpovedá očakávanej hodnote" 
+                "StatusNotOk": "Nezodpovedá očakávanej hodnote"
             },
             "edit": "Upraviť",
             "delete": "Vymazať",
@@ -1157,9 +1164,9 @@
             "enabled": "povolené",
             "create": "Vytvoriť",
             "update": "Upraviť",
-            "cancel": "Zrušiť", 
+            "cancel": "Zrušiť",
             "httpPart": "HTTP - časť",
-            "radioButton":{
+            "radioButton": {
                 "get": "GET",
                 "post": "POST"
             },

@@ -144,7 +144,7 @@ export const KSEvaluationRow: React.FC<IKSEvaluationRowProps> = ({ uuid, entityI
             id: 'name',
             cell: ({ row }) => {
                 return (
-                    <InfoIconWithText key={row?.original?.name} tooltip={row?.original?.tooltip}>
+                    <InfoIconWithText key={row?.original?.name} tooltip={row?.original?.tooltip} label={row?.original?.name}>
                         {row?.original?.name}
                         <input readOnly hidden {...register(`${row?.index}.id`)} key={row?.original?.id} value={row?.original?.id} />
                     </InfoIconWithText>

@@ -191,7 +191,9 @@
     },
     "sidebar": {
         "hide": "SKRYŤ",
-        "unhide": "ODKRYŤ"
+        "unhide": "ODKRYŤ",
+        "expandableExpandItem": "Otvoriť položky menu {{name}}",
+        "expandableCloseItem": "Zatvoriť položky menu {{name}}"
     },
     "userManagement": {
         "error": {
@@ -835,7 +837,9 @@
         "pagination": "Tabuľková navigácia",
         "sortBy": "Zoraď podľa",
         "selectAllItems": "Vyber všetky položky",
-        "noDataLoaded": "Nenačítali sa žiadne záznamy"
+        "noDataLoaded": "Nenačítali sa žiadne záznamy",
+        "expandableExpandItem": "Otvoriť detail položky",
+        "expandableCloseItem": "Zatvoriť detail položky"
     },
     "state": "Stav evidencie",
     "group": "Skupina",
@@ -1084,7 +1088,8 @@
             "validItem": "Položka je platná, nie je možné nad ňou vykonať vybranú operáciu.",
             "notFoundPO": "Chyba pri získávaní informácií o právach - pre dané položke nebola nájdená povinná osoba.",
             "notToClone": "Z tejto položky nie je možné vytvoriť inštanciu nakoľko táto položka je inštanciou a nie je možné vytvárať inštancie z inštancií"
-        }
+        },
+        "iconAltText": "Popis {{text}}"
     },
     "addFileSuccess": "Dokument {{docs}} bol úspešne pridaný",
     "addFilesSuccess": "Dokumenty {{docs}} boli úspešne pridané",

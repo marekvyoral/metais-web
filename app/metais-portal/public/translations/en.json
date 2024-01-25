@@ -193,7 +193,9 @@
     },
     "sidebar": {
         "hide": "HIDE",
-        "unhide": "SHOW"
+        "unhide": "SHOW",
+        "expandableExpandItem": "Open menu item {{name}}",
+        "expandableCloseItem": "Close menu item {{name}}"
     },
     "userManagement": {
         "error": {
@@ -834,7 +836,9 @@
         "pagination": "Page navigation",
         "sortBy": "Sort by",
         "selectAllItems": "Select all items",
-        "noDataLoaded": "No data loaded"
+        "noDataLoaded": "No data loaded",
+        "expandableExpandItem": "Open item detail",
+        "expandableCloseItem": "Close item detail"
     },
     "state": "Evidence status",
     "group": "Group",
@@ -1078,7 +1082,8 @@
             "validItem": "Item is valid, it is not possible to carry out selected operation.",
             "notFoundPO": "Error in rights - not find public authority.",
             "notToClone": "For this item, you can not create an instance because this item is an instance and can not create instances of instances"
-        }
+        },
+        "iconAltText": "Description {{text}}"
     },
     "addFileSuccess": "Document {{docs}} has been added successfully",
     "addFilesSuccess": "Documents {{docs}} have been added successfully",

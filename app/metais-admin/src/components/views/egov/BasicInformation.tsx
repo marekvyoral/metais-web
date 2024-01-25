@@ -22,29 +22,31 @@ export const BasicInformation = ({ data: { ciTypeData }, roles }: ProjectInforma
     const { t } = useTranslation()
     return (
         <DefinitionList>
-            <InformationGridRow key={'name'} label={t('egov.name')} value={ciTypeData?.name} />
-            {ciTypeData?.engName && <InformationGridRow key={'engName'} label={t('egov.engName')} value={ciTypeData?.engName} />}
-            <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={ciTypeData?.technicalName} />
-            {ciTypeData?.codePrefix && <InformationGridRow key={'codePrefix'} label={t('egov.codePrefix')} value={ciTypeData?.codePrefix} />}
-            {ciTypeData?.uriPrefix && <InformationGridRow key={'uriPrefix'} label={t('egov.uriPrefix')} value={ciTypeData?.uriPrefix} />}
-            <InformationGridRow key={'type'} label={t('egov.type')} value={ciTypeData?.type ? t(`tooltips.type.${ciTypeData.type}`) : ''} />
-            <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`validity.${ciTypeData?.valid}`)} />
-            <InformationGridRow key={'description'} label={t('egov.description')} value={ciTypeData?.description} />
+            <InformationGridRow key={'name'} label={t('egov.name')} value={ciTypeData?.name} hideIcon />
+            {ciTypeData?.engName && <InformationGridRow key={'engName'} label={t('egov.engName')} value={ciTypeData?.engName} hideIcon />}
+            <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={ciTypeData?.technicalName} hideIcon />
+            {ciTypeData?.codePrefix && <InformationGridRow key={'codePrefix'} label={t('egov.codePrefix')} value={ciTypeData?.codePrefix} hideIcon />}
+            {ciTypeData?.uriPrefix && <InformationGridRow key={'uriPrefix'} label={t('egov.uriPrefix')} value={ciTypeData?.uriPrefix} hideIcon />}
+            <InformationGridRow key={'type'} label={t('egov.type')} value={ciTypeData?.type ? t(`tooltips.type.${ciTypeData.type}`) : ''} hideIcon />
+            <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`validity.${ciTypeData?.valid}`)} hideIcon />
+            <InformationGridRow key={'description'} label={t('egov.description')} value={ciTypeData?.description} hideIcon />
             {ciTypeData?.engDescription && (
-                <InformationGridRow key={'engDescription'} label={t('egov.engDescription')} value={ciTypeData?.engDescription} />
+                <InformationGridRow key={'engDescription'} label={t('egov.engDescription')} value={ciTypeData?.engDescription} hideIcon />
             )}
-            {ciTypeData?.color && <InformationGridRow key={'color'} label={t('egov.color')} value={<ColorRow color={ciTypeData?.color} />} />}
+            {ciTypeData?.color && (
+                <InformationGridRow key={'color'} label={t('egov.color')} value={<ColorRow color={ciTypeData?.color} />} hideIcon />
+            )}
             {Array.isArray(roles) ? (
                 ciTypeData?.roleList?.map((role, index) => (
                     <InformationGridRow
                         key={'roles' + index}
                         label={index == 0 ? t('egov.roles') : ''}
-                        hideIcon={index != 0}
+                        hideIcon
                         value={<>{roles.find((r) => r.name == role)?.description}</>}
                     />
                 ))
             ) : (
-                <InformationGridRow key={'roles'} label={t('egov.roles')} value={<>{roles?.description}</>} />
+                <InformationGridRow key={'roles'} label={t('egov.roles')} value={<>{roles?.description}</>} hideIcon />
             )}
         </DefinitionList>
     )

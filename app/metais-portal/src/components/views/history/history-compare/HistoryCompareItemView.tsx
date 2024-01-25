@@ -93,7 +93,7 @@ export const HistoryCompareItemView: React.FC<IHistoryCompareItemViewProps> = ({
         <DefinitionListItem
             label={
                 tooltip ? (
-                    <InfoIconWithText tooltip={tooltip} hideIcon={!tooltip}>
+                    <InfoIconWithText tooltip={tooltip} hideIcon={!tooltip} label={label}>
                         {label}
                     </InfoIconWithText>
                 ) : (

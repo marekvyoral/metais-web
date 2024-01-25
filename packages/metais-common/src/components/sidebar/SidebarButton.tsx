@@ -15,7 +15,7 @@ export const SidebarButton = ({ isSidebarExpanded, setIsSidebarExpanded }: Props
     return (
         <button className={styles.closeSidebarButton} onClick={() => setIsSidebarExpanded(!isSidebarExpanded)} aria-hidden>
             <div className={styles.rotate}>{isSidebarExpanded ? t('sidebar.hide') : t('sidebar.unhide')}</div>
-            <img src={ArrowDownIcon} alt="arrow-down" className={classNames(!isSidebarExpanded ? styles.rotate : styles.rotateClockWise)} />
+            <img src={ArrowDownIcon} alt=" " className={classNames(!isSidebarExpanded ? styles.rotate : styles.rotateClockWise)} />
         </button>
     )
 }
