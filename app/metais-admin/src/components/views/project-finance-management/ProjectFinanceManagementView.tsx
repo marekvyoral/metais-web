@@ -7,11 +7,11 @@ import {
     projectsFinanceManagementInvestmentType,
 } from '@isdd/metais-common/constants'
 import { ActionsOverTable, MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
+import { removeNonDigitCharacters } from '@isdd/metais-common/utils/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { removeNonDigitCharacters } from '@isdd/metais-common/utils/utils'
 
 import { IView, defaultFilter } from '@/components/containers/ProjectFinanceManagement/ProjectFinanceManagementContainer'
 
@@ -35,7 +35,7 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
     const [editing, setEditing] = useState(false)
     const [editingInputId, setEditingInputId] = useState(DEFAULT_FOCUS_KEY)
 
-    const { register, reset, handleSubmit, setValue, formState, getValues, setError, clearErrors } = useForm({
+    const { reset, handleSubmit, setValue, formState, getValues, setError, clearErrors } = useForm({
         defaultValues: {
             program,
         },
@@ -134,7 +134,7 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
                 <Input
                     type="text"
                     disabled={!editing}
-                    {...register(`program.partFinances.${cell.row.index}.min`)}
+                    name={`program.partFinances.${cell.row.index}.min`}
                     error={formState.errors?.program?.partFinances?.[cell.row.index]?.min?.message}
                     onChange={(newValue) => {
                         setValue(`program.partFinances.${cell.row.index}.min`, Number(newValue.target.value.replace(/[^\d]+/g, '')))
@@ -158,7 +158,7 @@ export const ProjectFinanceManagementView: React.FC<IView> = ({
                     <Input
                         type="text"
                         disabled={!editing}
-                        {...register(`program.partFinances.${cell.row.index}.max`)}
+                        name={`program.partFinances.${cell.row.index}.max`}
                         onChange={(newValue) => {
                             setValue(`program.partFinances.${cell.row.index}.max`, Number(newValue.target.value.replace(/[^\d]+/g, '')))
                             setEditingInputId(`program.partFinances.${cell.row.index}.max`)
