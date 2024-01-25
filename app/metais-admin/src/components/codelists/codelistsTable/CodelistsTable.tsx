@@ -301,7 +301,7 @@ export const CodelistsTable: React.FC<ICodelistsTable> = ({ filteredData, mutati
                 const rowObject = ctx.getValue() as CodelistsTableColumnsDefinition
                 return (
                     <TransparentButtonWrapper onClick={() => navigate('./' + rowObject.code)}>
-                        <img src={ListIcon} className={styles.iconList} />
+                        <img src={ListIcon} className={styles.iconList} alt={t('codelists.link')} />
                     </TransparentButtonWrapper>
                 )
             },

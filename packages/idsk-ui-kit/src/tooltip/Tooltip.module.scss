@@ -11,3 +11,9 @@
     align-items: center;
     font-family: 'Source Sans Pro', 'Arial', sans-serif;
 }
+
+.transparentButton {
+    background-color: transparent;
+    border: none;
+    display: flex;
+}

@@ -144,7 +144,7 @@ export const IsvsEvaluationRow: React.FC<IIsvsEvaluationRowProps> = ({ uuid, ent
             header: '',
             id: 'name',
             cell: ({ row }) => (
-                <InfoIconWithText key={row?.original?.name} tooltip={row?.original?.tooltip}>
+                <InfoIconWithText key={row?.original?.name} tooltip={row?.original?.tooltip} label={row?.original?.name}>
                     {row?.original?.name}
                     <input readOnly hidden {...register(`${row?.index}.id`)} key={row?.original?.id} value={row?.original?.id} />
                 </InfoIconWithText>

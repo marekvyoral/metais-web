@@ -176,22 +176,23 @@ export const EntityDetailViewAttributes = ({
                                 {data?.name}
                             </Link>
                         }
+                        hideIcon
                     />
-                    <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={data?.technicalName} />
-                    <InformationGridRow key={'type'} label={t('egov.type')} value={data?.type ? t(`tooltips.type.${data.type}`) : ''} />
-                    <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`validity.${data?.valid}`)} />
-                    <InformationGridRow key={'description'} label={t('egov.description')} value={data?.description} />
+                    <InformationGridRow key={'technicalName'} label={t('egov.technicalName')} value={data?.technicalName} hideIcon />
+                    <InformationGridRow key={'type'} label={t('egov.type')} value={data?.type ? t(`tooltips.type.${data.type}`) : ''} hideIcon />
+                    <InformationGridRow key={'valid'} label={t('egov.valid')} value={t(`validity.${data?.valid}`)} hideIcon />
+                    <InformationGridRow key={'description'} label={t('egov.description')} value={data?.description} hideIcon />
                     {Array.isArray(roles) ? (
                         data?.roleList?.map((role, index) => (
                             <InformationGridRow
                                 key={'roles' + index}
                                 label={index == 0 ? t('egov.roles') : ''}
-                                hideIcon={index != 0}
+                                hideIcon
                                 value={<>{roles.find((r) => r.name == role)?.description}</>}
                             />
                         ))
                     ) : (
-                        <InformationGridRow key={'roles'} label={t('egov.roles')} value={<>{roles?.description}</>} />
+                        <InformationGridRow key={'roles'} label={t('egov.roles')} value={<>{roles?.description}</>} hideIcon />
                     )}{' '}
                 </DefinitionList>
             </div>

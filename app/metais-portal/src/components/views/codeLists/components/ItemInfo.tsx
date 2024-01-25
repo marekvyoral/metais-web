@@ -32,7 +32,13 @@ export const CodeListItemInfo: React.FC<CodeListItemInfoProps> = ({ workingLangu
     }
 
     const getInfoRowContent = (params: { value?: string | boolean | null; tooltip?: string }) => {
-        return showDateIntervals ? <InfoIconWithText tooltip={params.tooltip}>{params.value}</InfoIconWithText> : params.value
+        return showDateIntervals ? (
+            <InfoIconWithText tooltip={params.tooltip} label={params.value}>
+                {params.value}
+            </InfoIconWithText>
+        ) : (
+            params.value
+        )
     }
 
     return (
