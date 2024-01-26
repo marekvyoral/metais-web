@@ -42,7 +42,7 @@ interface ICreateCiEntityForm {
     relationSchema?: RelationshipType
     isProcessing: boolean
     withRelation?: boolean
-    selectedRole: GidRoleData | null
+    selectedRole?: GidRoleData | null
 }
 
 export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
@@ -115,7 +115,7 @@ export const CreateCiEntityForm: React.FC<ICreateCiEntityForm> = ({
         ),
     })
 
-    const { handleSubmit, setValue, reset, formState, getValues } = methods
+    const { handleSubmit, setValue, reset, formState, getValues, watch } = methods
 
     useEffect(() => {
         if (!isUpdate) {

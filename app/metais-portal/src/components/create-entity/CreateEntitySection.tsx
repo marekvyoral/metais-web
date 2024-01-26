@@ -25,7 +25,7 @@ interface ISection {
     hasResetState: HasResetState
     updateCiItemId?: string
     sectionRoles: string[]
-    selectedRole: GidRoleData | null
+    selectedRole?: GidRoleData | null
 }
 
 export const CreateEntitySection: React.FC<ISection> = ({

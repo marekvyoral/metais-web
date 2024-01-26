@@ -14,9 +14,9 @@ import { useUserAbility } from '@isdd/metais-common/hooks/permissions/useUserAbi
 
 import { getSlaContractTabList, useGetEntityParamsFromUrl } from '@/componentHelpers/ci'
 import { MainContentWrapper } from '@/components/MainContentWrapper'
-import { CiEntityIdHeader } from '@/components/views/ci/CiEntityIdHeader'
 import { RelationsListContainer } from '@/components/containers/RelationsListContainer'
-import { CiPermissionsWrapper } from '@/components/permissions/CiPermissionsWrapper'
+import { SlaContractDetailHeader } from '@/components/views/sla-contract/SlaContractHeader'
+import { SlaContractPermissionsWrapper } from '@/components/permissions/SlaContractPermissionWrapper'
 
 export const SlaContractDetailPage: React.FC = () => {
     const { t } = useTranslation()
@@ -24,7 +24,6 @@ export const SlaContractDetailPage: React.FC = () => {
     const { entityId, entityName } = useGetEntityParamsFromUrl()
     const navigate = useNavigate()
     const location = useLocation()
-
     const {
         data: ciItemData,
         isLoading: isCiItemDataLoading,
@@ -35,7 +34,6 @@ export const SlaContractDetailPage: React.FC = () => {
             queryKey: [CI_ITEM_QUERY_KEY, entityId],
         },
     })
-
     const userAbility = useUserAbility()
     const entityItemName = ciItemData?.attributes?.[ATTRIBUTE_NAME.Gen_Profil_nazov]
     document.title = `${t('titles.ciDetail', { ci: entityItemName })} | MetaIS`
@@ -44,7 +42,6 @@ export const SlaContractDetailPage: React.FC = () => {
     const isInvalidated = ciItemData?.metaAttributes?.state === INVALIDATED
 
     const { wrapperRef, scrollToMutationFeedback } = useScroll()
-
     useEffect(() => {
         if (isActionSuccess.value) {
             scrollToMutationFeedback()
@@ -63,10 +60,10 @@ export const SlaContractDetailPage: React.FC = () => {
             />
 
             <MainContentWrapper>
-                <CiPermissionsWrapper entityId={entityId ?? ''} entityName={entityName ?? ''}>
+                <SlaContractPermissionsWrapper entityId={entityId ?? ''} entityName={entityName ?? ''}>
                     <QueryFeedback loading={isCiItemDataLoading}>
                         <FlexColumnReverseWrapper>
-                            <CiEntityIdHeader
+                            <SlaContractDetailHeader
                                 editButton={
                                     <Button
                                         label={t('ciType.editButton')}
@@ -80,6 +77,7 @@ export const SlaContractDetailPage: React.FC = () => {
                                 refetchCi={refetch}
                                 entityName={entityName ?? ''}
                                 ciRoles={[]}
+                                isLocked={!!ciItemData?.attributes?.[ATTRIBUTE_NAME.Manazment_Profil_Integracia_uzamknuty_dokument]}
                             />
                             <QueryFeedback loading={false} error={isCiItemDataError} />
                             {isActionSuccess.value && isActionSuccess.additionalInfo?.type !== 'relationCreated' && (
@@ -101,7 +99,7 @@ export const SlaContractDetailPage: React.FC = () => {
 
                         <RelationsListContainer entityId={entityId ?? ''} technicalName={entityName ?? ''} showOnlyTabsWithRelations hideButtons />
                     </QueryFeedback>
-                </CiPermissionsWrapper>
+                </SlaContractPermissionsWrapper>
             </MainContentWrapper>
         </>
     )

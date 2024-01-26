@@ -30,6 +30,7 @@ import {
 } from '@isdd/metais-common/api/generated/codelist-repo-swagger'
 import { BASE_PAGE_NUMBER, BASE_PAGE_SIZE } from '@isdd/metais-common/api'
 import { getGetTraineesQueryKey, getGetTrainingsForUserQueryKey } from '@isdd/metais-common/api/generated/trainings-swagger'
+import { ApiSlaContractRead, ApiSlaContractWrite, getGetSlaContractQueryKey } from '@isdd/metais-common/api/generated/monitoring-swagger'
 
 const isCiListFilterContainerUi = (obj: unknown): obj is CiListFilterContainerUi => {
     return !!obj && typeof obj === 'object'
@@ -68,6 +69,22 @@ export const useInvalidateCiListFilteredCache = () => {
     }
 
     return { invalidate }
+}
+
+export const useSlaContractCache = () => {
+    const queryClient = useQueryClient()
+
+    const invalidateItemCache = (ciItemUuid: string) => {
+        const ciItemQueryKey = getGetSlaContractQueryKey(ciItemUuid)
+        queryClient.invalidateQueries(ciItemQueryKey)
+    }
+
+    const setItemCache = (ciItemUuid: string, data: ApiSlaContractWrite) => {
+        const ciItemQueryKey = getGetSlaContractQueryKey(ciItemUuid)
+        queryClient.setQueryData(ciItemQueryKey, (): ApiSlaContractRead => data)
+    }
+
+    return { invalidateItemCache, setItemCache }
 }
 
 export const useInvalidateCiItemCache = () => {

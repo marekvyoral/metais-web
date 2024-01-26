@@ -2386,6 +2386,19 @@
             "providerIsvsMainPerson": "Povinná osoba za ISVS poskytovateľa",
             "providerIsvs": "ISVS za poskytovateľa",
             "consumerIsvs": "ISVS za konzumenta"
+        },
+        "actions": {
+            "manualSign": "Nahrať manuálne podpísaný dokument",
+            "cancelManualSignature": "Zrušiť manuálny podpis",
+            "approveConsumer": "Schváliť DIZ za konzumenta",
+            "approveProvider": "Schváliť DIZ za poskytovateľa",
+            "signConsumer": "Podpísať DIZ za konzumenta",
+            "signProvider": "Podpísať DIZ za poskytovateľa",
+            "reject": "Zamietnuť DIZ",
+            "uploadDoc": "Nahrať dokument na schválenie a podpísanie",
+            "unlock": "Odomknúť SLA parametre",
+            "lock": "Zamknúť SLA parametre",
+            "checkParams": "Skontrolovať povinné SLA parametre"
         }
     },
     "olaContracts": {

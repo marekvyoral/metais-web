@@ -2379,6 +2379,19 @@
             "providerIsvsMainPerson": "PA for ISPA provider",
             "providerIsvs": "ISPA for provider",
             "consumerIsvs": "ISPA for consumer"
+        },
+        "actions": {
+            "manualSign": "Upload manually signed document",
+            "cancelManualSignature": "Cancel manual signature",
+            "approveConsumer": "Approve DIZ for consumer",
+            "approveProvider": "Approve DIZ for provider",
+            "signConsumer": "Sign DIZ for consumer",
+            "signProvider": "Sign DIZ for provider",
+            "reject": "Reject DIZ",
+            "uploadDoc": "Upload document for approval and signing",
+            "unlock": "Unlock SLA parameters",
+            "lock": "Lock SLA parameters",
+            "checkParams": "Check required SLA parameters"
         }
     },
     "olaContracts": {

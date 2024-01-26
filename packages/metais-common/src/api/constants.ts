@@ -1,5 +1,6 @@
 export const BASE_PAGE_NUMBER = 1
 export const BASE_PAGE_SIZE = 10
+export const ZERO_DATA_LENGTH = 0
 export const urlBase = 'https://metais.vicepremier.gov.sk'
 export const DMS_DOWNLOAD_FILE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file/`
 export const DMS_DOWNLOAD_BASE = `${import.meta.env.VITE_REST_CLIENT_DMS_TARGET_URL}/file`
@@ -73,11 +74,20 @@ export enum ATTRIBUTE_NAME {
     Profil_Kontrakt_podpora_max_odozva_mimo_prevadzky = 'Profil_Kontrakt_podpora_max_odozva_mimo_prevadzky',
     Profil_Kontrakt_podpora_max_odozva_pocas_prevadzky = 'Profil_Kontrakt_podpora_max_odozva_pocas_prevadzky',
     Profil_Skolenie_pocet_volnych_miest = 'Profil_Skolenie_pocet_volnych_miest',
+    Profil_Kontrakt_typ_kontraktu = 'Profil_Kontrakt_typ_kontraktu',
+    Profil_Kontrakt_platnost_od = 'Profil_Kontrakt_platnost_od',
+    Profil_Kontrakt_platnost_do = 'Profil_Kontrakt_platnost_do',
+    Profil_Kontrakt_predmet = 'Profil_Kontrakt_predmet',
+    Profil_Kontrakt_typ_podpory = 'Profil_Kontrakt_typ_podpory',
+    Profil_Kontrakt_popis_eskalacie = 'Profil_Kontrakt_popis_eskalacie',
+    Profil_Kontrakt_udaje_o_podpore = 'Profil_Kontrakt_udaje_o_podpore',
+    Manazment_Profil_Integracia_uzamknuty_dokument = 'Manazment_Profil_Integracia_uzamknuty_dokument',
 }
 
 export enum ATTRIBUTE_PROFILE_NAME {
     Profil_KRIS = 'Profil_KRIS',
     Financny_Profil_Projekt = 'Financny_Profil_Projekt',
+    Profil_Kontrakt = 'Profil_Kontrakt',
 }
 
 export enum API_STANDARD_REQUEST_ATTRIBUTES {

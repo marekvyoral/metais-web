@@ -120,6 +120,7 @@ import { SlaContractInformation } from '@/pages/ci/Kontrakt/[entityId]/informati
 import { SlaContractDetailPage } from '@/pages/ci/Kontrakt/[entityId]'
 import { SlaContractList } from '@/pages/ci/Kontrakt/list'
 import { OlaContractAdd } from '@/pages/ola-contract-list/add'
+import { EditSlaContractPage } from '@/pages/ci/Kontrakt/[entityId]/edit'
 
 export interface RouteConfig {
     path?: string
@@ -772,6 +773,11 @@ export const routesConfig: RouteConfig[] = [
                 path: RouterRoutes.OLA_CONTRACT_ADD,
                 slug: RouterRoutes.OLA_CONTRACT_ADD,
                 component: OlaContractAdd,
+            },
+            {
+                path: RouterRoutes.SLA_CONTRACT_EDIT,
+                slug: RouterRoutes.SLA_CONTRACT_EDIT,
+                component: EditSlaContractPage,
             },
             {
                 path: RouterRoutes.SLA_CONTRACT_DETAIL,
