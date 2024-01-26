@@ -18,7 +18,7 @@ import { ImportButton } from '@isdd/metais-common/components/actions-over-table/
 import styles from '@isdd/metais-common/components/actions-over-table/actionsOverTable.module.scss'
 import { DynamicFilterAttributes } from '@isdd/metais-common/components/dynamicFilterAttributes/DynamicFilterAttributes'
 import { FlexColumnReverseWrapper } from '@isdd/metais-common/components/flex-column-reverse-wrapper/FlexColumnReverseWrapper'
-import { DEFAULT_PAGESIZE_OPTIONS } from '@isdd/metais-common/constants'
+import { DEFAULT_PAGESIZE_OPTIONS, ENTITY_TRAINING } from '@isdd/metais-common/constants'
 import { useNewRelationData } from '@isdd/metais-common/contexts/new-relation/newRelationContext'
 import { IBulkActionResult, useBulkAction } from '@isdd/metais-common/hooks/useBulkAction'
 import { useGetCiTypeConstraintsData } from '@isdd/metais-common/hooks/useGetCiTypeConstraintsData'
@@ -26,9 +26,10 @@ import { useScroll } from '@isdd/metais-common/hooks/useScroll'
 import { MutationFeedback, QueryFeedback } from '@isdd/metais-common/index'
 import { Languages } from '@isdd/metais-common/localization/languages'
 import { useQueryClient } from '@tanstack/react-query'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '@isdd/metais-common/contexts/auth/authContext'
 
 import { ICiListContainerView } from '@/components/containers/CiListContainer'
 import { ColumnsOutputDefinition } from '@/componentHelpers/ci/ciTableHelpers'
@@ -68,7 +69,9 @@ export const ListWrapper: React.FC<IListWrapper> = ({
         isLoading: isCiTypeConstraintsLoading,
         uuidsToMatchedCiItemsMap,
     } = useGetCiTypeConstraintsData(ciTypeData, tableData?.configurationItemSet ?? [])
-
+    const {
+        state: { user },
+    } = useAuth()
     const { errorMessage, isBulkLoading, handleInvalidate, handleReInvalidate, handleChangeOwner } = useBulkAction()
     const queryKey = getReadCiList1QueryKey({})
     const navigate = useNavigate()
@@ -87,14 +90,19 @@ export const ListWrapper: React.FC<IListWrapper> = ({
 
     const checkedItemList = tableData?.configurationItemSet?.filter((i) => Object.keys(rowSelection).includes(i.uuid || '')) || []
     const queryClient = useQueryClient()
-
+    const typeTraining = ciType === ENTITY_TRAINING
+    const isUserTrainer = user?.roles?.includes('SKOLITEL')
     const handleCloseBulkModal = (actionResult: IBulkActionResult, closeFunction: (value: React.SetStateAction<boolean>) => void) => {
         closeFunction(false)
         queryClient.invalidateQueries([queryKey[0]])
         refetch()
         setBulkActionResult(actionResult)
     }
-
+    const showCreateEntityButton = useMemo(() => {
+        if (typeTraining) {
+            return isUserTrainer ? true : false
+        } else return true
+    }, [isUserTrainer, typeTraining])
     useEffect(() => {
         if (isNewRelationModal && selectedItems) {
             if (Array.isArray(selectedItems))
@@ -202,10 +210,12 @@ export const ListWrapper: React.FC<IListWrapper> = ({
                     columnListData={columnListData}
                     ciTypeData={ciTypeData}
                     createButton={
-                        <CreateEntityButton
-                            ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
-                            onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })}
-                        />
+                        showCreateEntityButton && (
+                            <CreateEntityButton
+                                ciTypeName={i18n.language === Languages.SLOVAK ? ciTypeData?.name : ciTypeData?.engName}
+                                onClick={() => navigate(`/ci/${ciType}/create`, { state: { from: location } })}
+                            />
+                        )
                     }
                     importButton={<ImportButton ciType={ciType ?? ''} />}
                     exportButton={<ExportButton />}
